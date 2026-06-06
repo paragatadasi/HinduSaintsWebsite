@@ -64,9 +64,19 @@ This starts an idempotent `postgres:16` container named `hindu-saints-dev-postgr
 
 If Docker is unavailable in the selected cloud environment, disable `CODEX_START_POSTGRES` and set `DATABASE_URL` to an external development Postgres database.
 
-## Verification command
+## Development checks
 
-Ask Codex Cloud agents to run:
+For ordinary UI, component, route, and data-contract work, ask agents to run the lightweight checker:
+
+```bash
+npm run dev:check
+```
+
+This generates the Prisma client and runs TypeScript without doing a production Next.js build.
+
+## Production verification
+
+Ask Codex Cloud agents to run the heavier production-build gate only after dependency/setup changes, before handing off a large route/rendering change, before deployment-oriented commits, or when a production-build failure is specifically suspected:
 
 ```bash
 npm run codex:verify

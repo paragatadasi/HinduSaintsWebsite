@@ -33,7 +33,10 @@ Security:
 - Protect all admin routes.
 
 Verification:
-- After dependency setup, use `npm run codex:verify` for Codex Cloud validation.
+- Use `npm run dev:check` for the normal development loop after TypeScript, component, route, or data-contract edits.
+- `npm run dev:check` generates the Prisma client and runs TypeScript without doing a production Next.js build.
+- Use `npm run codex:verify` only as a heavier gate: after dependency/setup changes, before handing off a large route/rendering change, before commits intended for deployment, or when a production-build failure is specifically suspected.
+- Do not run `npm run codex:verify` as the default checker for every small frontend iteration.
 - Do not run database migrations against production from Codex Cloud.
 - Cloud tasks that need database access must use a development PostgreSQL database configured through environment settings.
 - If `CODEX_START_POSTGRES=1` and Docker is available in Codex Cloud, use `scripts/start-dev-postgres.sh` to run a disposable local Postgres 16 container for development tasks.

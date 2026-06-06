@@ -49,6 +49,16 @@ Then open <http://localhost:3000>.
 
 See `docs/codex-cloud.md` for the hosted Codex environment setup script, environment variables, and verification command.
 
+## Development checks
+
+Use the lightweight checker during ordinary frontend and TypeScript work:
+
+```powershell
+npm run dev:check
+```
+
+Use `npm run codex:verify` only when you need the production-build gate, such as dependency/setup changes, large route/rendering changes, pre-deployment handoff, or suspected build-only failures.
+
 ## Project principles
 
 - Public pages only show published content.
