@@ -24,10 +24,10 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
         <div className="hero-media" aria-label={`${saint.displayName} visual placeholder`} />
       </section>
       <section className="page-shell section">
-        <div className="card-grid">
-          <div><strong>Era</strong><p>{saint.eraLabel}</p></div>
-          <div><strong>Location</strong><p>{saint.primaryLocation}</p></div>
-          <div><strong>Tradition</strong><p>{saint.sampradaya}</p></div>
+        <div className="fact-grid">
+          <div className="fact"><strong>Era</strong><p>{saint.eraLabel}</p></div>
+          <div className="fact"><strong>Location</strong><p>{saint.primaryLocation}</p></div>
+          <div className="fact"><strong>Tradition</strong><p>{saint.sampradaya}</p></div>
         </div>
       </section>
       <section className="page-shell section">

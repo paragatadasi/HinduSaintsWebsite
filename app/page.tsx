@@ -18,7 +18,7 @@ export default function HomePage() {
             A public archive for the @hindu_saints project, bringing together devotional profiles,
             biographies, tradition pages, and related Instagram posts.
           </p>
-          <div style={{ display: "flex", gap: "var(--space-3)", flexWrap: "wrap", marginTop: "var(--space-6)" }}>
+          <div className="cluster hero-actions">
             <Button href="/saints" icon={<Search size={18} />}>Explore saints</Button>
             <Button href="https://www.instagram.com/hindu_saints/" variant="secondary" icon={<Instagram size={18} />}>
               Instagram
@@ -40,7 +40,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section" style={{ background: "var(--color-surface-muted)" }}>
+      <section className="section section-muted">
         <div className="page-shell site-grid">
           <div>
             <div className="eyebrow">Traditions</div>

@@ -4,7 +4,7 @@ import remarkGfm from "remark-gfm";
 
 export function Prose({ markdown }: { markdown: string }) {
   return (
-    <div style={{ maxWidth: "var(--width-prose)" }}>
+    <div className="prose">
       <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
         {markdown}
       </ReactMarkdown>

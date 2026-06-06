@@ -6,6 +6,7 @@
   --color-surface: #ffffff;
   --color-surface-muted: #f3efe6;
   --color-text: #211f1a;
+  --color-text-inverse: #ffffff;
   --color-muted: #6f685f;
   --color-border: #ddd5c6;
   --color-accent: #a23b2a;
@@ -21,6 +22,7 @@
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
+  --space-5: 1.25rem;
   --space-6: 1.5rem;
   --space-8: 2rem;
   --space-12: 3rem;
@@ -40,6 +42,7 @@
   --color-surface: #fffaf0;
   --color-surface-muted: #efe3ce;
   --color-text: #211b15;
+  --color-text-inverse: #fffaf0;
   --color-muted: #6d6254;
   --color-border: #dcc9a9;
   --color-accent: #b46d2b;
@@ -60,6 +63,7 @@
   --color-surface: #0d1d24;
   --color-surface-muted: #10262e;
   --color-text: #f7ead1;
+  --color-text-inverse: #07141a;
   --color-muted: #cabfaa;
   --color-border: #31434a;
   --color-accent: #d79b39;
@@ -80,6 +84,7 @@
   --color-surface: #17201d;
   --color-surface-muted: #efe7da;
   --color-text: #f8efe2;
+  --color-text-inverse: #101614;
   --color-muted: #d0c4b4;
   --color-border: #33433d;
   --color-accent: #c9652d;
