@@ -142,18 +142,18 @@ model VerificationToken {
 }
 
 model Saint {
-  id                  String              @id @default(cuid())
-  slug                String              @unique
+  id                  String               @id @default(cuid())
+  slug                String               @unique
   canonicalName       String
   displayName         String
   shortDescription    String?
   biographySummary    String?
-  status              ContentStatus       @default(draft)
-  featured            Boolean             @default(false)
-  launchMvp           Boolean             @default(false)
-  hasInstagramContent Boolean             @default(false)
+  status              ContentStatus        @default(draft)
+  featured            Boolean              @default(false)
+  launchMvp           Boolean              @default(false)
+  hasInstagramContent Boolean              @default(false)
   primaryImageId      String?
-  primaryImage        MediaAsset?         @relation("PrimarySaintImage", fields: [primaryImageId], references: [id])
+  primaryImage        MediaAsset?          @relation("PrimarySaintImage", fields: [primaryImageId], references: [id])
   eraLabel            String?
   birthYear           Int?
   deathYear           Int?
@@ -166,13 +166,13 @@ model Saint {
   galleryImages       SaintGalleryImage[]
   instagramItems      InstagramItemSaint[]
   places              SaintPlace[]
-  relationshipsFrom   SaintRelationship[] @relation("RelationshipFrom")
-  relationshipsTo     SaintRelationship[] @relation("RelationshipTo")
+  relationshipsFrom   SaintRelationship[]  @relation("RelationshipFrom")
+  relationshipsTo     SaintRelationship[]  @relation("RelationshipTo")
   sampradayas         SaintSampradaya[]
   createdById         String?
   updatedById         String?
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
   publishedAt         DateTime?
   reviewedAt          DateTime?
 }
@@ -190,22 +190,22 @@ model SaintAlias {
 }
 
 model Sampradaya {
-  id                       String             @id @default(cuid())
-  slug                     String             @unique
+  id                       String            @id @default(cuid())
+  slug                     String            @unique
   name                     String
   alternateNames           String[]
   shortDescription         String?
   longIntroductionMarkdown String?
-  status                   ContentStatus      @default(draft)
+  status                   ContentStatus     @default(draft)
   founderSaintId           String?
   parentSampradayaId       String?
-  parentSampradaya         Sampradaya?        @relation("SampradayaParent", fields: [parentSampradayaId], references: [id])
-  childSampradayas         Sampradaya[]       @relation("SampradayaParent")
+  parentSampradaya         Sampradaya?       @relation("SampradayaParent", fields: [parentSampradayaId], references: [id])
+  childSampradayas         Sampradaya[]      @relation("SampradayaParent")
   seoTitle                 String?
   seoDescription           String?
   saints                   SaintSampradaya[]
-  createdAt                DateTime           @default(now())
-  updatedAt                DateTime           @updatedAt
+  createdAt                DateTime          @default(now())
+  updatedAt                DateTime          @updatedAt
   publishedAt              DateTime?
 }
 
@@ -258,19 +258,19 @@ model SaintRelationship {
 }
 
 model MediaAsset {
-  id                   String              @id @default(cuid())
-  url                  String
-  storageKey           String?
-  altText              String?
-  caption              String?
-  credit               String?
-  sourceUrl            String?
-  width                Int?
-  height               Int?
-  mimeType             String?
-  primaryForSaints     Saint[]             @relation("PrimarySaintImage")
-  saintGalleryImages   SaintGalleryImage[]
-  createdAt            DateTime            @default(now())
+  id                 String              @id @default(cuid())
+  url                String
+  storageKey         String?
+  altText            String?
+  caption            String?
+  credit             String?
+  sourceUrl          String?
+  width              Int?
+  height             Int?
+  mimeType           String?
+  primaryForSaints   Saint[]             @relation("PrimarySaintImage")
+  saintGalleryImages SaintGalleryImage[]
+  createdAt          DateTime            @default(now())
 }
 
 model SaintGalleryImage {
@@ -283,55 +283,55 @@ model SaintGalleryImage {
 }
 
 model InstagramItem {
-  id                  String                @id @default(cuid())
-  instagramUrl        String                @unique
+  id                  String               @id @default(cuid())
+  instagramUrl        String               @unique
   instagramShortcode  String?
-  type                InstagramType         @default(unknown)
+  type                InstagramType        @default(unknown)
   captionText         String?
   extractedSaintName  String?
   postedAt            DateTime?
   thumbnailUrl        String?
-  status              MatchStatus           @default(imported)
+  status              MatchStatus          @default(imported)
   matchConfidence     Confidence?
   sourceImportBatchId String?
-  sourceImportBatch   ImportBatch?          @relation(fields: [sourceImportBatchId], references: [id])
+  sourceImportBatch   ImportBatch?         @relation(fields: [sourceImportBatchId], references: [id])
   notes               String?
   saints              InstagramItemSaint[]
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
 }
 
 model InstagramItemSaint {
-  id                 String        @id @default(cuid())
-  instagramItemId    String
-  instagramItem      InstagramItem @relation(fields: [instagramItemId], references: [id], onDelete: Cascade)
-  saintId            String
-  saint              Saint         @relation(fields: [saintId], references: [id], onDelete: Cascade)
-  matchStatus        MatchStatus   @default(suggested)
-  matchConfidence    Confidence    @default(low)
-  isPrimary          Boolean       @default(false)
-  reviewedById       String?
-  reviewedAt         DateTime?
-  notes              String?
+  id              String        @id @default(cuid())
+  instagramItemId String
+  instagramItem   InstagramItem @relation(fields: [instagramItemId], references: [id], onDelete: Cascade)
+  saintId         String
+  saint           Saint         @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  matchStatus     MatchStatus   @default(suggested)
+  matchConfidence Confidence    @default(low)
+  isPrimary       Boolean       @default(false)
+  reviewedById    String?
+  reviewedAt      DateTime?
+  notes           String?
 
   @@unique([instagramItemId, saintId])
 }
 
 model Biography {
-  id              String        @id @default(cuid())
-  saintId         String
-  saint           Saint         @relation(fields: [saintId], references: [id], onDelete: Cascade)
-  title           String
-  slug            String
-  bodyMarkdown    String
-  status          ContentStatus @default(draft)
-  authorOrEditor  String?
-  createdById     String?
-  updatedById     String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  publishedAt     DateTime?
-  lastReviewedAt  DateTime?
+  id             String        @id @default(cuid())
+  saintId        String
+  saint          Saint         @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  title          String
+  slug           String
+  bodyMarkdown   String
+  status         ContentStatus @default(draft)
+  authorOrEditor String?
+  createdById    String?
+  updatedById    String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  publishedAt    DateTime?
+  lastReviewedAt DateTime?
 
   @@unique([saintId, slug])
 }
@@ -350,25 +350,26 @@ model Source {
 }
 
 model ContentSource {
-  id         String @id @default(cuid())
+  id         String  @id @default(cuid())
   sourceId   String
-  source     Source @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  source     Source  @relation(fields: [sourceId], references: [id], onDelete: Cascade)
   entityType String
   entityId   String
   notes      String?
-  sortOrder  Int    @default(0)
+  sortOrder  Int     @default(0)
 }
 
 model ImportBatch {
-  id             String          @id @default(cuid())
-  sourceType     ImportSourceType
-  sourceName     String?
-  startedAt      DateTime        @default(now())
-  completedAt    DateTime?
-  status         String
-  rawSummary     String?
-  notes          String?
-  instagramItems InstagramItem[]
+  id              String                 @id @default(cuid())
+  sourceType      ImportSourceType
+  sourceName      String?
+  startedAt       DateTime               @default(now())
+  completedAt     DateTime?
+  status          String
+  rawSummary      String?
+  notes           String?
+  instagramItems  InstagramItem[]
+  airtableRecords AirtableMirrorRecord[]
 }
 
 model ExternalRecord {
@@ -382,6 +383,25 @@ model ExternalRecord {
   lastSeenAt     DateTime @default(now())
 
   @@unique([sourceType, externalId])
+}
+
+model AirtableMirrorRecord {
+  id                  String       @id @default(cuid())
+  baseId              String
+  tableIdOrName       String
+  recordId            String
+  airtableCreatedTime DateTime?
+  rawFieldsJson       Json
+  rawPayloadJson      Json
+  sourceImportBatchId String?
+  sourceImportBatch   ImportBatch? @relation(fields: [sourceImportBatchId], references: [id], onDelete: SetNull)
+  firstSeenAt         DateTime     @default(now())
+  lastSeenAt          DateTime     @default(now())
+  importedAt          DateTime     @default(now())
+
+  @@unique([baseId, tableIdOrName, recordId])
+  @@index([tableIdOrName])
+  @@index([lastSeenAt])
 }
 
 model ReconciliationIssue {
