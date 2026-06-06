@@ -36,6 +36,7 @@ Verification:
 - After dependency setup, use `npm run codex:verify` for Codex Cloud validation.
 - Do not run database migrations against production from Codex Cloud.
 - Cloud tasks that need database access must use a development PostgreSQL database configured through environment settings.
+- If `CODEX_START_POSTGRES=1` and Docker is available in Codex Cloud, use `scripts/start-dev-postgres.sh` to run a disposable local Postgres 16 container for development tasks.
 
 Data ingestion and reconciliation:
 - "Import" means bringing external content records into the website database from Airtable exports, Instagram exports/scrapes, CSV files, or other editorial data sources.
@@ -45,6 +46,9 @@ Data ingestion and reconciliation:
 
 Commit workflow:
 - Multiple agents may work in this repository at the same time, so commits must be intentionally scoped.
+- On this Windows/Codex setup, Git commands that write repository metadata may need to run elevated/outside the sandbox because `.git` can be write-protected for the sandbox user.
+- It is acceptable to request/run elevated Git commands for normal repository operations such as `remote`, `fetch`, `pull`, `status`, `add`, `commit`, `push`, `log`, and `branch` when sandbox permissions block them.
+- Elevated Git commands must still follow the scoped commit rules below and must not be used for destructive operations such as `reset --hard`, broad checkout/revert, or deleting branches unless explicitly requested.
 - Before committing, inspect the working tree and identify only the files changed for the current task.
 - Commit with one atomic command that resets the staged area, stages only the intended paths, and creates the commit.
 - Do not use broad `git add .` or `git add -A` unless the current task genuinely owns every changed file.

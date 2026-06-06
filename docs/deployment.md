@@ -8,6 +8,12 @@ Copy `.env.example` to `.env`, then start PostgreSQL:
 docker compose -f infra/docker-compose.yml up -d postgres
 ```
 
+Alternatively, start just the development Postgres container with:
+
+```powershell
+bash scripts/start-dev-postgres.sh
+```
+
 Run migrations and seeds:
 
 ```powershell

@@ -22,8 +22,7 @@ bash scripts/codex-cloud-setup.sh
 Maintenance script:
 
 ```bash
-npm install
-npx prisma generate
+bash scripts/codex-cloud-setup.sh
 ```
 
 ## Environment variables
@@ -42,6 +41,28 @@ Optional until auth is fully enabled:
 - `ADMIN_EMAIL_ALLOWLIST`
 
 For ordinary UI and component work, `DATABASE_URL` can point to a disposable development Postgres database. For import, CMS, and migration tasks, point it at a real development database, never production.
+
+## Local Postgres inside Codex Cloud
+
+If the Codex Cloud environment has Docker available, set:
+
+```bash
+CODEX_START_POSTGRES=1
+DATABASE_URL=postgresql://saints_dev:saints_dev_password_2026@localhost:5432/hindu_saints_dev?schema=public
+POSTGRES_DB=hindu_saints_dev
+POSTGRES_USER=saints_dev
+POSTGRES_PASSWORD=saints_dev_password_2026
+```
+
+The setup script will run:
+
+```bash
+bash scripts/start-dev-postgres.sh
+```
+
+This starts an idempotent `postgres:16` container named `hindu-saints-dev-postgres` and waits until it is ready. Use this only for disposable development data in Codex Cloud.
+
+If Docker is unavailable in the selected cloud environment, disable `CODEX_START_POSTGRES` and set `DATABASE_URL` to an external development Postgres database.
 
 ## Verification command
 
