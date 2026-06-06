@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    env_file:
+      - ../.env
+    volumes:
+      - app_uploads:/app/uploads
+
+  proxy:
+    image: caddy:latest
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+  backup:
+    image: postgres:16
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    env_file:
+      - ../.env
+    volumes:
+      - ../backups:/backups
+      - ../scripts/backup-db.sh:/backup-db.sh:ro
+    command: ["sh", "-c", "while true; do /backup-db.sh; sleep 86400; done"]
+
+volumes:
+  postgres_data:
+  app_uploads:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,411 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ContentStatus {
+  draft
+  needs_review
+  published
+  hidden
+  archived
+}
+
+enum UserRole {
+  admin
+  editor
+  contributor
+}
+
+enum InstagramType {
+  post
+  reel
+  carousel
+  unknown
+}
+
+enum MatchStatus {
+  imported
+  suggested
+  needs_review
+  matched
+  ignored
+  published
+  hidden
+}
+
+enum Confidence {
+  low
+  medium
+  high
+}
+
+enum RelationshipType {
+  guru
+  disciple
+  contemporary
+  associated
+  lineage
+  related
+}
+
+enum AliasType {
+  alternate_spelling
+  title
+  regional_name
+  transliteration
+  instagram_name
+  airtable_name
+  other
+}
+
+enum PlaceType {
+  primary
+  birth
+  samadhi
+  sadhana
+  associated
+  other
+}
+
+enum SourceType {
+  book
+  article
+  website
+  scripture
+  oral_tradition
+  other
+}
+
+enum ImportSourceType {
+  airtable
+  instagram
+  csv
+  manual
+}
+
+enum ReconciliationStatus {
+  open
+  resolved
+  ignored
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  role          UserRole  @default(contributor)
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Saint {
+  id                  String              @id @default(cuid())
+  slug                String              @unique
+  canonicalName       String
+  displayName         String
+  shortDescription    String?
+  biographySummary    String?
+  status              ContentStatus       @default(draft)
+  featured            Boolean             @default(false)
+  launchMvp           Boolean             @default(false)
+  hasInstagramContent Boolean             @default(false)
+  primaryImageId      String?
+  primaryImage        MediaAsset?         @relation("PrimarySaintImage", fields: [primaryImageId], references: [id])
+  eraLabel            String?
+  birthYear           Int?
+  deathYear           Int?
+  datePrecision       String?
+  dateNotes           String?
+  seoTitle            String?
+  seoDescription      String?
+  aliases             SaintAlias[]
+  biographies         Biography[]
+  galleryImages       SaintGalleryImage[]
+  instagramItems      InstagramItemSaint[]
+  places              SaintPlace[]
+  relationshipsFrom   SaintRelationship[] @relation("RelationshipFrom")
+  relationshipsTo     SaintRelationship[] @relation("RelationshipTo")
+  sampradayas         SaintSampradaya[]
+  createdById         String?
+  updatedById         String?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  publishedAt         DateTime?
+  reviewedAt          DateTime?
+}
+
+model SaintAlias {
+  id        String    @id @default(cuid())
+  saintId   String
+  saint     Saint     @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  alias     String
+  aliasType AliasType @default(other)
+  source    String?
+  createdAt DateTime  @default(now())
+
+  @@index([alias])
+}
+
+model Sampradaya {
+  id                       String             @id @default(cuid())
+  slug                     String             @unique
+  name                     String
+  alternateNames           String[]
+  shortDescription         String?
+  longIntroductionMarkdown String?
+  status                   ContentStatus      @default(draft)
+  founderSaintId           String?
+  parentSampradayaId       String?
+  parentSampradaya         Sampradaya?        @relation("SampradayaParent", fields: [parentSampradayaId], references: [id])
+  childSampradayas         Sampradaya[]       @relation("SampradayaParent")
+  seoTitle                 String?
+  seoDescription           String?
+  saints                   SaintSampradaya[]
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+  publishedAt              DateTime?
+}
+
+model Place {
+  id             String       @id @default(cuid())
+  slug           String       @unique
+  name           String
+  alternateNames String[]
+  region         String?
+  country        String?
+  latitude       Decimal?
+  longitude      Decimal?
+  notes          String?
+  saints         SaintPlace[]
+}
+
+model SaintPlace {
+  id        String    @id @default(cuid())
+  saintId   String
+  saint     Saint     @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  placeId   String
+  place     Place     @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeType PlaceType @default(associated)
+  notes     String?
+}
+
+model SaintSampradaya {
+  id           String     @id @default(cuid())
+  saintId      String
+  saint        Saint      @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  sampradayaId String
+  sampradaya   Sampradaya @relation(fields: [sampradayaId], references: [id], onDelete: Cascade)
+  isPrimary    Boolean    @default(false)
+  notes        String?
+
+  @@unique([saintId, sampradayaId])
+}
+
+model SaintRelationship {
+  id               String           @id @default(cuid())
+  fromSaintId      String
+  fromSaint        Saint            @relation("RelationshipFrom", fields: [fromSaintId], references: [id], onDelete: Cascade)
+  toSaintId        String
+  toSaint          Saint            @relation("RelationshipTo", fields: [toSaintId], references: [id], onDelete: Cascade)
+  relationshipType RelationshipType
+  confidence       Confidence       @default(medium)
+  notes            String?
+  sourceId         String?
+  source           Source?          @relation(fields: [sourceId], references: [id])
+}
+
+model MediaAsset {
+  id                   String              @id @default(cuid())
+  url                  String
+  storageKey           String?
+  altText              String?
+  caption              String?
+  credit               String?
+  sourceUrl            String?
+  width                Int?
+  height               Int?
+  mimeType             String?
+  primaryForSaints     Saint[]             @relation("PrimarySaintImage")
+  saintGalleryImages   SaintGalleryImage[]
+  createdAt            DateTime            @default(now())
+}
+
+model SaintGalleryImage {
+  id           String     @id @default(cuid())
+  saintId      String
+  saint        Saint      @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  mediaAssetId String
+  mediaAsset   MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  sortOrder    Int        @default(0)
+}
+
+model InstagramItem {
+  id                  String                @id @default(cuid())
+  instagramUrl        String                @unique
+  instagramShortcode  String?
+  type                InstagramType         @default(unknown)
+  captionText         String?
+  extractedSaintName  String?
+  postedAt            DateTime?
+  thumbnailUrl        String?
+  status              MatchStatus           @default(imported)
+  matchConfidence     Confidence?
+  sourceImportBatchId String?
+  sourceImportBatch   ImportBatch?          @relation(fields: [sourceImportBatchId], references: [id])
+  notes               String?
+  saints              InstagramItemSaint[]
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+}
+
+model InstagramItemSaint {
+  id                 String        @id @default(cuid())
+  instagramItemId    String
+  instagramItem      InstagramItem @relation(fields: [instagramItemId], references: [id], onDelete: Cascade)
+  saintId            String
+  saint              Saint         @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  matchStatus        MatchStatus   @default(suggested)
+  matchConfidence    Confidence    @default(low)
+  isPrimary          Boolean       @default(false)
+  reviewedById       String?
+  reviewedAt         DateTime?
+  notes              String?
+
+  @@unique([instagramItemId, saintId])
+}
+
+model Biography {
+  id              String        @id @default(cuid())
+  saintId         String
+  saint           Saint         @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  title           String
+  slug            String
+  bodyMarkdown    String
+  status          ContentStatus @default(draft)
+  authorOrEditor  String?
+  createdById     String?
+  updatedById     String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  publishedAt     DateTime?
+  lastReviewedAt  DateTime?
+
+  @@unique([saintId, slug])
+}
+
+model Source {
+  id              String              @id @default(cuid())
+  title           String
+  author          String?
+  url             String?
+  publisher       String?
+  publicationYear Int?
+  sourceType      SourceType          @default(other)
+  notes           String?
+  relationships   SaintRelationship[]
+  contentSources  ContentSource[]
+}
+
+model ContentSource {
+  id         String @id @default(cuid())
+  sourceId   String
+  source     Source @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  entityType String
+  entityId   String
+  notes      String?
+  sortOrder  Int    @default(0)
+}
+
+model ImportBatch {
+  id             String          @id @default(cuid())
+  sourceType     ImportSourceType
+  sourceName     String?
+  startedAt      DateTime        @default(now())
+  completedAt    DateTime?
+  status         String
+  rawSummary     String?
+  notes          String?
+  instagramItems InstagramItem[]
+}
+
+model ExternalRecord {
+  id             String   @id @default(cuid())
+  sourceType     String
+  externalId     String
+  entityType     String
+  entityId       String?
+  rawPayloadJson Json
+  importedAt     DateTime @default(now())
+  lastSeenAt     DateTime @default(now())
+
+  @@unique([sourceType, externalId])
+}
+
+model ReconciliationIssue {
+  id             String               @id @default(cuid())
+  issueType      String
+  severity       String
+  entityType     String
+  entityId       String?
+  message        String
+  rawValue       String?
+  suggestedValue String?
+  status         ReconciliationStatus @default(open)
+  resolvedById   String?
+  resolvedAt     DateTime?
+  createdAt      DateTime             @default(now())
+}
+
+model AuditEvent {
+  id         String   @id @default(cuid())
+  userId     String?
+  action     String
+  entityType String
+  entityId   String
+  beforeJson Json?
+  afterJson  Json?
+  createdAt  DateTime @default(now())
+}
