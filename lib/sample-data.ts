@@ -1,23 +1,16 @@
-export type SaintSummary = {
-  slug: string;
-  displayName: string;
-  canonicalName: string;
-  shortDescription: string;
-  eraLabel: string;
-  primaryLocation: string;
-  sampradaya: string;
-  featured: boolean;
-  instagramUrls: string[];
-};
+import {
+  isPublishedSaint,
+  isPublishedSampradaya,
+  type PublicSaintSummary,
+  type PublicSampradayaSummary,
+  type SaintRecord,
+  type SampradayaRecord
+} from "@/lib/public-contracts";
 
-export type SampradayaSummary = {
-  slug: string;
-  name: string;
-  shortDescription: string;
-  founder?: string;
-};
+export type SaintSummary = PublicSaintSummary;
+export type SampradayaSummary = PublicSampradayaSummary;
 
-export const saints: SaintSummary[] = [
+export const saints: SaintRecord[] = [
   {
     slug: "sri-ramakrishna",
     displayName: "Sri Ramakrishna",
@@ -27,7 +20,8 @@ export const saints: SaintSummary[] = [
     primaryLocation: "Dakshineswar, Bengal",
     sampradaya: "Ramakrishna tradition",
     featured: true,
-    instagramUrls: ["https://www.instagram.com/p/example/"]
+    instagramUrls: ["https://www.instagram.com/p/example/"],
+    status: "published"
   },
   {
     slug: "sri-anandamayi-ma",
@@ -38,7 +32,8 @@ export const saints: SaintSummary[] = [
     primaryLocation: "Bengal, Varanasi, Haridwar",
     sampradaya: "Non-sectarian",
     featured: true,
-    instagramUrls: []
+    instagramUrls: [],
+    status: "published"
   },
   {
     slug: "sri-ramana-maharshi",
@@ -49,46 +44,50 @@ export const saints: SaintSummary[] = [
     primaryLocation: "Tiruvannamalai, Tamil Nadu",
     sampradaya: "Advaita Vedanta",
     featured: true,
-    instagramUrls: []
+    instagramUrls: [],
+    status: "published"
   }
 ];
 
-export const sampradayas: SampradayaSummary[] = [
+export const sampradayas: SampradayaRecord[] = [
   {
     slug: "advaita-vedanta",
     name: "Advaita Vedanta",
     shortDescription: "A non-dual Vedantic tradition emphasizing the identity of Atman and Brahman.",
-    founder: "Adi Shankaracharya"
+    founder: "Adi Shankaracharya",
+    status: "published"
   },
   {
     slug: "bhakti-traditions",
     name: "Bhakti Traditions",
-    shortDescription: "Devotional lineages centered on love, surrender, chanting, service, and remembrance."
+    shortDescription: "Devotional lineages centered on love, surrender, chanting, service, and remembrance.",
+    status: "published"
   },
   {
     slug: "ramakrishna-tradition",
     name: "Ramakrishna Tradition",
     shortDescription: "A modern spiritual movement shaped by Sri Ramakrishna, Holy Mother, and Swami Vivekananda.",
-    founder: "Sri Ramakrishna"
+    founder: "Sri Ramakrishna",
+    status: "published"
   }
 ];
 
 export function getFeaturedSaints() {
-  return saints.filter((saint) => saint.featured);
+  return getPublishedSaints().filter((saint) => saint.featured);
 }
 
 export function getPublishedSaints() {
-  return saints;
+  return saints.filter(isPublishedSaint);
 }
 
 export function getSaintBySlug(slug: string) {
-  return saints.find((saint) => saint.slug === slug);
+  return getPublishedSaints().find((saint) => saint.slug === slug);
 }
 
 export function getPublishedSampradayas() {
-  return sampradayas;
+  return sampradayas.filter(isPublishedSampradaya);
 }
 
 export function getSampradayaBySlug(slug: string) {
-  return sampradayas.find((sampradaya) => sampradaya.slug === slug);
+  return getPublishedSampradayas().find((sampradaya) => sampradaya.slug === slug);
 }

@@ -28,6 +28,10 @@ Important rules:
 - Airtable record IDs and raw payloads are preserved in `ExternalRecord`.
 - Conflicts become `ReconciliationIssue` records.
 
+## Public frontend contracts
+
+Frontend public views should consume explicit public contracts rather than full CMS records. The current launch contract lives in `lib/public-contracts.ts` and intentionally contains only display-safe fields for saint and sampradaya cards/detail headers. Museum, relic, raw import payload, reconciliation, and internal editorial fields must stay out of those public shapes.
+
 ## Saint relationship graph
 
 Long-term, saint-to-saint connections should be modeled as a first-class relationship graph, not only as prose inside biographies. Biographies can narrate relationships, but they should not be the only source of truth for them.
