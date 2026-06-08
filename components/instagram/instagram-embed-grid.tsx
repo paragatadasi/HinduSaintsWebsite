@@ -1,12 +1,15 @@
 import { Instagram } from "lucide-react";
+import { getInstagramSectionContent } from "@/lib/site-content";
 
 export function InstagramEmbedGrid({ urls }: { urls: string[] }) {
   if (urls.length === 0) return null;
 
+  const content = getInstagramSectionContent();
+
   return (
     <section className="section">
-      <div className="eyebrow">Instagram</div>
-      <h2>Related posts and reels</h2>
+      <div className="eyebrow">{content.eyebrow}</div>
+      <h2>{content.title}</h2>
       <div className="card-grid">
         {urls.map((url) => (
           <a
@@ -24,7 +27,7 @@ export function InstagramEmbedGrid({ urls }: { urls: string[] }) {
             }}
           >
             <Instagram size={22} />
-            View on Instagram
+            {content.linkLabel}
           </a>
         ))}
       </div>

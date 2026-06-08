@@ -142,39 +142,46 @@ model VerificationToken {
 }
 
 model Saint {
-  id                  String               @id @default(cuid())
-  slug                String               @unique
-  canonicalName       String
-  displayName         String
-  shortDescription    String?
-  biographySummary    String?
-  status              ContentStatus        @default(draft)
-  featured            Boolean              @default(false)
-  launchMvp           Boolean              @default(false)
-  hasInstagramContent Boolean              @default(false)
-  primaryImageId      String?
-  primaryImage        MediaAsset?          @relation("PrimarySaintImage", fields: [primaryImageId], references: [id])
-  eraLabel            String?
-  birthYear           Int?
-  deathYear           Int?
-  datePrecision       String?
-  dateNotes           String?
-  seoTitle            String?
-  seoDescription      String?
-  aliases             SaintAlias[]
-  biographies         Biography[]
-  galleryImages       SaintGalleryImage[]
-  instagramItems      InstagramItemSaint[]
-  places              SaintPlace[]
-  relationshipsFrom   SaintRelationship[]  @relation("RelationshipFrom")
-  relationshipsTo     SaintRelationship[]  @relation("RelationshipTo")
-  sampradayas         SaintSampradaya[]
-  createdById         String?
-  updatedById         String?
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  publishedAt         DateTime?
-  reviewedAt          DateTime?
+  id                   String               @id @default(cuid())
+  slug                 String               @unique
+  canonicalName        String
+  displayName          String
+  shortDescription     String?
+  biographySummary     String?
+  status               ContentStatus        @default(draft)
+  featured             Boolean              @default(false)
+  launchMvp            Boolean              @default(false)
+  hasInstagramContent  Boolean              @default(false)
+  primaryImageId       String?
+  primaryImage         MediaAsset?          @relation("PrimarySaintImage", fields: [primaryImageId], references: [id])
+  eraLabel             String?
+  birthDateRaw         String?
+  birthYear            Int?
+  birthMonth           Int?
+  birthDay             Int?
+  birthDatePrecision   String?
+  samadhiDateRaw       String?
+  samadhiYear          Int?
+  samadhiMonth         Int?
+  samadhiDay           Int?
+  samadhiDatePrecision String?
+  dateNotes            String?
+  seoTitle             String?
+  seoDescription       String?
+  aliases              SaintAlias[]
+  biographies          Biography[]
+  galleryImages        SaintGalleryImage[]
+  instagramItems       InstagramItemSaint[]
+  places               SaintPlace[]
+  relationshipsFrom    SaintRelationship[]  @relation("RelationshipFrom")
+  relationshipsTo      SaintRelationship[]  @relation("RelationshipTo")
+  traditions           SaintTradition[]
+  createdById          String?
+  updatedById          String?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  publishedAt          DateTime?
+  reviewedAt           DateTime?
 }
 
 model SaintAlias {
@@ -189,23 +196,23 @@ model SaintAlias {
   @@index([alias])
 }
 
-model Sampradaya {
-  id                       String            @id @default(cuid())
-  slug                     String            @unique
+model Tradition {
+  id                       String           @id @default(cuid())
+  slug                     String           @unique
   name                     String
   alternateNames           String[]
   shortDescription         String?
   longIntroductionMarkdown String?
-  status                   ContentStatus     @default(draft)
+  status                   ContentStatus    @default(draft)
   founderSaintId           String?
-  parentSampradayaId       String?
-  parentSampradaya         Sampradaya?       @relation("SampradayaParent", fields: [parentSampradayaId], references: [id])
-  childSampradayas         Sampradaya[]      @relation("SampradayaParent")
+  parentTraditionId        String?
+  parentTradition          Tradition?       @relation("TraditionParent", fields: [parentTraditionId], references: [id])
+  childTraditions          Tradition[]      @relation("TraditionParent")
   seoTitle                 String?
   seoDescription           String?
-  saints                   SaintSampradaya[]
-  createdAt                DateTime          @default(now())
-  updatedAt                DateTime          @updatedAt
+  saints                   SaintTradition[]
+  createdAt                DateTime         @default(now())
+  updatedAt                DateTime         @updatedAt
   publishedAt              DateTime?
 }
 
@@ -232,16 +239,16 @@ model SaintPlace {
   notes     String?
 }
 
-model SaintSampradaya {
-  id           String     @id @default(cuid())
-  saintId      String
-  saint        Saint      @relation(fields: [saintId], references: [id], onDelete: Cascade)
-  sampradayaId String
-  sampradaya   Sampradaya @relation(fields: [sampradayaId], references: [id], onDelete: Cascade)
-  isPrimary    Boolean    @default(false)
-  notes        String?
+model SaintTradition {
+  id          String    @id @default(cuid())
+  saintId     String
+  saint       Saint     @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  traditionId String
+  tradition   Tradition @relation(fields: [traditionId], references: [id], onDelete: Cascade)
+  isPrimary   Boolean   @default(false)
+  notes       String?
 
-  @@unique([saintId, sampradayaId])
+  @@unique([saintId, traditionId])
 }
 
 model SaintRelationship {
@@ -360,16 +367,17 @@ model ContentSource {
 }
 
 model ImportBatch {
-  id              String                 @id @default(cuid())
-  sourceType      ImportSourceType
-  sourceName      String?
-  startedAt       DateTime               @default(now())
-  completedAt     DateTime?
-  status          String
-  rawSummary      String?
-  notes           String?
-  instagramItems  InstagramItem[]
-  airtableRecords AirtableMirrorRecord[]
+  id                   String                 @id @default(cuid())
+  sourceType           ImportSourceType
+  sourceName           String?
+  startedAt            DateTime               @default(now())
+  completedAt          DateTime?
+  status               String
+  rawSummary           String?
+  notes                String?
+  instagramItems       InstagramItem[]
+  airtableRecords      AirtableMirrorRecord[]
+  instagramTrackerRows InstagramTrackerRow[]
 }
 
 model ExternalRecord {
@@ -386,22 +394,52 @@ model ExternalRecord {
 }
 
 model AirtableMirrorRecord {
-  id                  String       @id @default(cuid())
-  baseId              String
-  tableIdOrName       String
-  recordId            String
-  airtableCreatedTime DateTime?
-  rawFieldsJson       Json
-  rawPayloadJson      Json
-  sourceImportBatchId String?
-  sourceImportBatch   ImportBatch? @relation(fields: [sourceImportBatchId], references: [id], onDelete: SetNull)
-  firstSeenAt         DateTime     @default(now())
-  lastSeenAt          DateTime     @default(now())
-  importedAt          DateTime     @default(now())
+  id                            String                @id @default(cuid())
+  baseId                        String
+  tableIdOrName                 String
+  recordId                      String
+  airtableCreatedTime           DateTime?
+  rawFieldsJson                 Json
+  rawPayloadJson                Json
+  sourceImportBatchId           String?
+  sourceImportBatch             ImportBatch?          @relation(fields: [sourceImportBatchId], references: [id], onDelete: SetNull)
+  firstSeenAt                   DateTime              @default(now())
+  lastSeenAt                    DateTime              @default(now())
+  importedAt                    DateTime              @default(now())
+  hasInstagramContent           Boolean               @default(false)
+  instagramTrackerMatchCount    Int                   @default(0)
+  instagramTrackerLastMatchedAt DateTime?
+  instagramTrackerRows          InstagramTrackerRow[]
 
   @@unique([baseId, tableIdOrName, recordId])
   @@index([tableIdOrName])
   @@index([lastSeenAt])
+  @@index([hasInstagramContent])
+}
+
+model InstagramTrackerRow {
+  id                      String                @id @default(cuid())
+  sourceName              String                @default("google_sheets")
+  sourceRowKey            String
+  rowNumber               Int
+  saintName               String?
+  postUrl                 String?
+  postedAt                DateTime?
+  rawPayloadJson          Json
+  matchStatus             MatchStatus           @default(imported)
+  matchConfidence         Confidence?
+  matchedAirtableRecordId String?
+  matchedAirtableRecord   AirtableMirrorRecord? @relation(fields: [matchedAirtableRecordId], references: [id], onDelete: SetNull)
+  sourceImportBatchId     String?
+  sourceImportBatch       ImportBatch?          @relation(fields: [sourceImportBatchId], references: [id], onDelete: SetNull)
+  importedAt              DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
+  matchedAt               DateTime?
+  notes                   String?
+
+  @@unique([sourceName, sourceRowKey])
+  @@index([matchStatus])
+  @@index([matchedAirtableRecordId])
 }
 
 model ReconciliationIssue {

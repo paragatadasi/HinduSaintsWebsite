@@ -16,14 +16,18 @@ Public content:
 - Missing data must be handled gracefully.
 
 Admin/CMS:
-- Build domain-specific admin workflows for saints, aliases, sampradayas, biographies, sources, Instagram items, and reconciliation.
+- Build domain-specific admin workflows for saints, aliases, traditions, biographies, sources, Instagram items, and reconciliation.
 - Contributors can draft and preview.
 - Editors/admins can publish.
 - Preview routes must require auth and be noindexed.
 
 Design system:
 - Use design tokens for colors, fonts, spacing, shadows, radii, widths, and image treatments.
-- Do not hard-code colors or fonts in components.
+- All design and layout changes must go through the design system first: tokens, shared CSS classes, shared configuration, or reusable components.
+- Do not hard-code colors, fonts, spacing, shadows, radii, widths, or image treatments in components.
+- Do not add one-off inline styles or page-specific layout wrappers unless the pattern is genuinely unique and explicitly justified.
+- If a visual or layout pattern appears in more than one place, promote it into `styles/tokens.css`, `styles/globals.css`, shared configuration, or a reusable component.
+- Theme-specific changes must use theme tokens instead of conditional component logic.
 - Reuse existing UI components before creating new ones.
 
 Security:

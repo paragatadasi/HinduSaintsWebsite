@@ -6,17 +6,24 @@ type ButtonProps = {
   href: string;
   children: ReactNode;
   icon?: ReactNode;
-  variant?: "primary" | "secondary";
+  iconPosition?: "start" | "end";
+  variant?: "primary" | "secondary" | "text";
 };
 
-export function Button({ href, children, icon, variant = "primary" }: ButtonProps) {
+export function Button({ href, children, icon, iconPosition = "start", variant = "primary" }: ButtonProps) {
   const className = `button button--${variant}`;
+  const content = (
+    <>
+      {iconPosition === "start" ? icon : null}
+      {children}
+      {iconPosition === "end" ? icon : null}
+    </>
+  );
 
   if (href.startsWith("http")) {
     return (
       <a href={href} className={className}>
-        {icon}
-        {children}
+        {content}
       </a>
     );
   }
@@ -26,8 +33,7 @@ export function Button({ href, children, icon, variant = "primary" }: ButtonProp
       href={href as Route}
       className={className}
     >
-      {icon}
-      {children}
+      {content}
     </Link>
   );
 }

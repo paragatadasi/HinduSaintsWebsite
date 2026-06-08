@@ -39,8 +39,40 @@ npm run import:airtable
 Override tables for one run:
 
 ```sh
-npm run import:airtable -- --tables "Saints,Sampradayas"
+npm run import:airtable -- --tables "Saints,Traditions"
 ```
+
+Find likely duplicate Airtable saint records from the local mirror:
+
+```sh
+npm run reconcile:airtable
+```
+
+Create or update local reconciliation issues for those duplicate clusters:
+
+```sh
+npm run reconcile:airtable -- --write
+```
+
+This reconciliation script compares normalized Airtable `Saints.Name` values and
+removes common honorifics such as Sri, Shri, Swami, Maharaj, Baba, and Ji before
+grouping candidates. It also runs a date-informed second pass for records that
+share a core identity and birth/samadhi year context. Human review feedback can
+be encoded in the script so known false positives are ignored and known true
+duplicates stay proposed. It writes only to the website development database,
+not back to Airtable.
+
+Merge human-approved duplicate records into the selected Airtable primary rows:
+
+```sh
+npm run merge:airtable
+npm run merge:airtable -- --write
+```
+
+The merge script updates primary Airtable records by filling missing scalar fields,
+combining link/text fields, unioning linked-record and attachment arrays, and
+resolving the corresponding local reconciliation issues. It does not delete
+duplicate Airtable rows.
 
 ## Instagram
 
@@ -52,3 +84,40 @@ Recommended flow:
 4. Auto-suggest matches with confidence.
 5. Send uncertain items to `/admin/instagram`.
 6. Editors can match, create saint, add alias, ignore, or mark needs review.
+
+## Instagram tracker
+
+The Google Sheets Instagram tracker can be imported before full Instagram post
+data is available. Tracker rows are preserved in `InstagramTrackerRow`, and
+obvious matches flag local `AirtableMirrorRecord` saint rows with
+`hasInstagramContent`.
+
+Configure a published Google Sheets CSV export URL:
+
+```sh
+GOOGLE_SHEETS_TRACKER_CSV_URL="https://docs.google.com/spreadsheets/d/.../export?format=csv&gid=..."
+```
+
+Run a dry import:
+
+```sh
+npm run import:instagram-tracker -- --dry-run
+```
+
+Import and flag matched Airtable mirror saints:
+
+```sh
+npm run import:instagram-tracker
+```
+
+For a local CSV file:
+
+```sh
+npm run import:instagram-tracker -- --file path/to/tracker.csv
+```
+
+The importer uses conservative name matching against the Airtable mirror:
+exact normalized names, exact core names before place text such as `of ...`,
+and unique contained-name matches. Ambiguous or missing names remain
+`needs_review` rather than being guessed. Multiple posts can match the same
+saint, and `instagramTrackerMatchCount` tracks how many tracker rows matched.

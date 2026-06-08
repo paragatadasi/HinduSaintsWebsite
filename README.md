@@ -39,11 +39,22 @@ Then open <http://localhost:3000>.
 ## Important routes
 
 - `/` public home
+- `/about` public about page
 - `/saints` public saints index
 - `/saints/[slug]` public saint pages
-- `/sampradayas` public sampradaya index
+- `/traditions` public traditions index
 - `/admin` protected CMS dashboard
+- `/admin/media` protected media upload workflow
+- `/media/[...key]` public delivery for uploaded media assets
 - `/admin/instagram` reconciliation queue
+
+## Local image hosting
+
+Local media uploads are stored on disk under `MEDIA_UPLOAD_ROOT`, which defaults to `./uploads`. Uploaded image metadata is recorded in the `MediaAsset` table, while public reads are served through `/media/[...key]`.
+
+Supported local upload formats are JPEG, PNG, WebP, and GIF. The default upload size limit is 5 MB through `MEDIA_UPLOAD_MAX_BYTES`.
+
+For local-only development without OAuth configured, set `MEDIA_UPLOADS_REQUIRE_AUTH="false"` in `.env`. Keep it enabled anywhere the site is reachable by other users.
 
 ## Codex Cloud
 

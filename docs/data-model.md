@@ -6,7 +6,7 @@ Core entities:
 
 - `Saint`
 - `SaintAlias`
-- `Sampradaya`
+- `Tradition`
 - `Place`
 - `SaintRelationship`
 - `MediaAsset`
@@ -30,7 +30,7 @@ Important rules:
 
 ## Public frontend contracts
 
-Frontend public views should consume explicit public contracts rather than full CMS records. The current launch contract lives in `lib/public-contracts.ts` and intentionally contains only display-safe fields for saint and sampradaya cards/detail headers. Museum, relic, raw import payload, reconciliation, and internal editorial fields must stay out of those public shapes.
+Frontend public views should consume explicit public contracts rather than full CMS records. The current launch contract lives in `lib/public-contracts.ts` and intentionally contains only display-safe fields for saint and tradition cards/detail headers. Museum, relic, raw import payload, reconciliation, and internal editorial fields must stay out of those public shapes.
 
 ## Saint relationship graph
 
@@ -58,6 +58,6 @@ Display rank should be treated as an editorial presentation field, not as eviden
 
 Individual biography stories or events should eventually be linkable to saints and to `SaintRelationship` records. This allows a story to serve as narrative context or evidence for a connection without making the story itself the canonical relationship record.
 
-Sampradaya and grouping pages may render curated tree, lineage, timeline, or network views from this graph. The underlying data should allow graph-shaped relationships even when a public page presents a simplified tree.
+Public tradition and grouping pages may render curated tree, lineage, timeline, or network views from this graph. The underlying data should allow graph-shaped relationships even when a public page presents a simplified tree.
 
 Imported Airtable, Instagram, CSV, and manual-ingest values may create candidate relationship records or reconciliation issues, but they must not silently overwrite reviewed CMS relationship data.

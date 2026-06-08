@@ -7,6 +7,8 @@ dist
 .env.production
 *.log
 *.tsbuildinfo
+dev-server*.id
+dev-server*.pid
 backups/*
 !backups/.gitkeep
 uploads/*

@@ -1,30 +1,40 @@
+import Link from "next/link";
+import type { Route } from "next";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { db } from "@/lib/db";
 
-const widgets = [
-  ["Unmatched Instagram items", "3"],
-  ["Low-confidence matches", "2"],
-  ["Saints missing required fields", "8"],
-  ["Biographies awaiting review", "1"],
-  ["Sampradaya drafts", "3"],
-  ["Recently edited", "5"]
-];
+export default async function AdminDashboardPage() {
+  const [saintCounts, trackerNeedsReview, biographiesNeedsReview, traditionsNeedsReview] = await Promise.all([
+    db.saint.groupBy({ by: ["status"], _count: { _all: true } }),
+    db.instagramTrackerRow.count({ where: { matchStatus: "needs_review" } }),
+    db.biography.count({ where: { status: "needs_review" } }),
+    db.tradition.count({ where: { status: "needs_review" } })
+  ]);
+  const counts = Object.fromEntries(saintCounts.map((row) => [row.status, row._count._all]));
 
-export default function AdminDashboardPage() {
   return (
-    <div className="site-grid">
+    <div className="admin-stack">
       <div>
         <div className="eyebrow">Dashboard</div>
         <h1>Content workflow</h1>
-        <p className="lede">This shell will become the protected CMS for volunteers, reviewers, and admins.</p>
+        <p className="lede">Review imported records, approve public saint pages, and track remaining reconciliation work.</p>
       </div>
-      <div className="card-grid">
-        {widgets.map(([label, count]) => (
-          <article key={label} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-md)", padding: "var(--space-4)" }}>
-            <StatusBadge label={count} />
-            <h3>{label}</h3>
-          </article>
-        ))}
+      <div className="admin-stat-grid">
+        <DashboardCard href="/admin/saints?status=needs_review" label="Saints awaiting review" value={counts.needs_review ?? 0} />
+        <DashboardCard href="/admin/saints?status=published" label="Published saints" value={counts.published ?? 0} />
+        <DashboardCard href="/admin/instagram" label="Unmatched tracker rows" value={trackerNeedsReview} />
+        <DashboardCard href="/admin/biographies" label="Biographies awaiting review" value={biographiesNeedsReview} />
+        <DashboardCard href="/admin/traditions" label="Traditions awaiting review" value={traditionsNeedsReview} />
       </div>
     </div>
+  );
+}
+
+function DashboardCard({ href, label, value }: { href: Route; label: string; value: number }) {
+  return (
+    <Link className="admin-stat" href={href}>
+      <StatusBadge label={String(value)} />
+      <h2>{label}</h2>
+    </Link>
   );
 }

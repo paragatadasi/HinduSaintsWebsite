@@ -4,7 +4,12 @@ import { toSlug } from "../lib/slugs";
 const prisma = new PrismaClient();
 
 async function main() {
-  const advaita = await prisma.sampradaya.upsert({
+  if (process.env.SEED_SAMPLE_CONTENT !== "1") {
+    console.log("Skipping sample saint content. Set SEED_SAMPLE_CONTENT=1 to seed mock content.");
+    return;
+  }
+
+  const advaita = await prisma.tradition.upsert({
     where: { slug: "advaita-vedanta" },
     update: {},
     create: {
@@ -30,9 +35,9 @@ async function main() {
       featured: true,
       launchMvp: true,
       publishedAt: new Date(),
-      sampradayas: {
+      traditions: {
         create: {
-          sampradayaId: advaita.id,
+          traditionId: advaita.id,
           isPrimary: true
         }
       },

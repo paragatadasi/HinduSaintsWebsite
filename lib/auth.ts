@@ -1,16 +1,21 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
+const googleClientId = process.env.GOOGLE_CLIENT_ID ?? process.env.AUTH_GOOGLE_ID;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET ?? process.env.AUTH_GOOGLE_SECRET;
+
 const allowlist = (process.env.ADMIN_EMAIL_ALLOWLIST ?? "")
   .split(",")
   .map((email) => email.trim().toLowerCase())
   .filter(Boolean);
 
+export const isGoogleAuthConfigured = Boolean(googleClientId && googleClientSecret);
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET
+      clientId: googleClientId,
+      clientSecret: googleClientSecret
     })
   ],
   callbacks: {

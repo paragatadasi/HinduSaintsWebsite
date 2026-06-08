@@ -14,7 +14,12 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
+    "approve:obvious-cms-saints": "tsx scripts/approve-obvious-cms-saints.ts",
     "import:airtable": "tsx scripts/import-airtable.ts",
+    "import:airtable-saints": "tsx scripts/import-airtable-saints-to-cms.ts",
+    "import:instagram-tracker": "tsx scripts/import-instagram-tracker.ts",
+    "merge:airtable": "tsx scripts/merge-airtable-duplicates.ts",
+    "reconcile:airtable": "tsx scripts/reconcile-airtable.ts",
     "ingest:instagram": "tsx scripts/ingest-instagram.ts",
     "reconcile:instagram": "tsx scripts/reconcile-instagram.ts",
     "create-admin": "tsx scripts/create-admin-user.ts"

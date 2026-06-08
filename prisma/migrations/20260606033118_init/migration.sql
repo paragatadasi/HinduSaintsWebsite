@@ -123,7 +123,7 @@ CREATE TABLE "SaintAlias" (
 );
 
 -- CreateTable
-CREATE TABLE "Sampradaya" (
+CREATE TABLE "Tradition" (
     "id" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -132,14 +132,14 @@ CREATE TABLE "Sampradaya" (
     "longIntroductionMarkdown" TEXT,
     "status" "ContentStatus" NOT NULL DEFAULT 'draft',
     "founderSaintId" TEXT,
-    "parentSampradayaId" TEXT,
+    "parentTraditionId" TEXT,
     "seoTitle" TEXT,
     "seoDescription" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "publishedAt" TIMESTAMP(3),
 
-    CONSTRAINT "Sampradaya_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Tradition_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -169,14 +169,14 @@ CREATE TABLE "SaintPlace" (
 );
 
 -- CreateTable
-CREATE TABLE "SaintSampradaya" (
+CREATE TABLE "SaintTradition" (
     "id" TEXT NOT NULL,
     "saintId" TEXT NOT NULL,
-    "sampradayaId" TEXT NOT NULL,
+    "traditionId" TEXT NOT NULL,
     "isPrimary" BOOLEAN NOT NULL DEFAULT false,
     "notes" TEXT,
 
-    CONSTRAINT "SaintSampradaya_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "SaintTradition_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -381,13 +381,13 @@ CREATE UNIQUE INDEX "Saint_slug_key" ON "Saint"("slug");
 CREATE INDEX "SaintAlias_alias_idx" ON "SaintAlias"("alias");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Sampradaya_slug_key" ON "Sampradaya"("slug");
+CREATE UNIQUE INDEX "Tradition_slug_key" ON "Tradition"("slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Place_slug_key" ON "Place"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "SaintSampradaya_saintId_sampradayaId_key" ON "SaintSampradaya"("saintId", "sampradayaId");
+CREATE UNIQUE INDEX "SaintTradition_saintId_traditionId_key" ON "SaintTradition"("saintId", "traditionId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "InstagramItem_instagramUrl_key" ON "InstagramItem"("instagramUrl");
@@ -414,7 +414,7 @@ ALTER TABLE "Saint" ADD CONSTRAINT "Saint_primaryImageId_fkey" FOREIGN KEY ("pri
 ALTER TABLE "SaintAlias" ADD CONSTRAINT "SaintAlias_saintId_fkey" FOREIGN KEY ("saintId") REFERENCES "Saint"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Sampradaya" ADD CONSTRAINT "Sampradaya_parentSampradayaId_fkey" FOREIGN KEY ("parentSampradayaId") REFERENCES "Sampradaya"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Tradition" ADD CONSTRAINT "Tradition_parentTraditionId_fkey" FOREIGN KEY ("parentTraditionId") REFERENCES "Tradition"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "SaintPlace" ADD CONSTRAINT "SaintPlace_saintId_fkey" FOREIGN KEY ("saintId") REFERENCES "Saint"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -423,10 +423,10 @@ ALTER TABLE "SaintPlace" ADD CONSTRAINT "SaintPlace_saintId_fkey" FOREIGN KEY ("
 ALTER TABLE "SaintPlace" ADD CONSTRAINT "SaintPlace_placeId_fkey" FOREIGN KEY ("placeId") REFERENCES "Place"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SaintSampradaya" ADD CONSTRAINT "SaintSampradaya_saintId_fkey" FOREIGN KEY ("saintId") REFERENCES "Saint"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "SaintTradition" ADD CONSTRAINT "SaintTradition_saintId_fkey" FOREIGN KEY ("saintId") REFERENCES "Saint"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SaintSampradaya" ADD CONSTRAINT "SaintSampradaya_sampradayaId_fkey" FOREIGN KEY ("sampradayaId") REFERENCES "Sampradaya"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "SaintTradition" ADD CONSTRAINT "SaintTradition_traditionId_fkey" FOREIGN KEY ("traditionId") REFERENCES "Tradition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "SaintRelationship" ADD CONSTRAINT "SaintRelationship_fromSaintId_fkey" FOREIGN KEY ("fromSaintId") REFERENCES "Saint"("id") ON DELETE CASCADE ON UPDATE CASCADE;

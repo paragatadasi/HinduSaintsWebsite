@@ -40,3 +40,22 @@ Valid initial values:
 - `temple`
 
 Omitting `data-theme` uses `archive-light`.
+
+## Layout Variants
+
+Layout choices live beside editable site copy in `lib/site-content.ts` so visual compositions can be switched without rewriting page data.
+
+Current homepage layouts:
+
+- `devotional`: the image-led nocturne homepage with the large search pill, stat row, horizontal scroll rails, and Instagram previews.
+- `archive`: the original MVP homepage layout with a two-column hero, action buttons, and responsive card grids.
+
+The default is controlled by `siteDesignConfig.homeLayout`:
+
+```ts
+export const siteDesignConfig = {
+  homeLayout: "devotional"
+};
+```
+
+For a temporary runtime toggle, set `NEXT_PUBLIC_HOME_LAYOUT` to `archive` or `devotional`. Invalid values fall back to `siteDesignConfig.homeLayout`.

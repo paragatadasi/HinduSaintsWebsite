@@ -1,8 +1,12 @@
+import { getFooterContent } from "@/lib/site-content";
+
 export function SiteFooter() {
+  const content = getFooterContent();
+
   return (
     <footer className="site-footer">
       <div className="page-shell">
-        <p>Hindu Saints Archive. Public pages show only reviewed and published content.</p>
+        <p>{content.summary}</p>
       </div>
     </footer>
   );
