@@ -208,7 +208,7 @@ export const aboutPageContent: AboutPageContent = {
 };
 
 export const footerContent = {
-  summary: "Hindu Saints Archive. Public pages show only reviewed and published content."
+  summary: "Hindu Saints Project."
 };
 
 export function getHomeHeroContent() {
