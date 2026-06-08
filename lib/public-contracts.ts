@@ -106,6 +106,11 @@ export type PublicPlaceMapSaint = {
   birthYear?: number;
   samadhiYear?: number;
   tradition: string;
+  placeType: "primary" | "birth" | "samadhi" | "sadhana" | "associated" | "other";
+  routeOrder?: number;
+  routeLabel?: string;
+  routeConfidence?: "low" | "medium" | "high";
+  image?: PublicImage;
 };
 
 export type PublicPlaceMapPoint = {
@@ -113,6 +118,8 @@ export type PublicPlaceMapPoint = {
   name: string;
   region?: string;
   country?: string;
+  placeScope: "state" | "place";
+  stateSlug?: string;
   latitude: number;
   longitude: number;
   saintCount: number;

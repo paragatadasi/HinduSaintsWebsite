@@ -21,6 +21,8 @@ Core database records:
 - `Place` stores reusable place names and optional geography.
 - `SaintPlace` links saints to places and classifies the relationship with
   `PlaceType`.
+- `SaintPlace.routeOrder`, `routeLabel`, and `routeConfidence` optionally
+  describe an editorially reviewed route sequence for a saint's mapped places.
 - `Saint` provides publication status and date fields used by the map timeline.
 
 Public adapters:
@@ -78,9 +80,47 @@ Current MVP behavior:
 - always-visible intro/prompt text from `lib/site-content.ts`
 - selected place details below the intro
 - optional year slider that filters saints who lived during the selected year
+- time-filter route mode that shows each saint portrait once at the visible
+  route start and draws dotted connectors to other visible route places
 
 Styling belongs in `styles/globals.css` and should use design tokens from
 `styles/tokens.css`. Avoid inline layout/color styles in the component.
+
+## Route Rules
+
+The map route view is derived from visible `SaintPlace` links while the time
+filter is enabled. It does not expose unpublished saints or private import data.
+
+Portrait display place precedence:
+
+1. birth place
+2. lowest explicit `routeOrder`
+3. primary place
+4. samadhi place
+5. sadhana, associated, then other places by stable name order
+
+Ordered dotted route precedence:
+
+1. birth place links
+2. non-birth/non-samadhi links with explicit `routeOrder`, sorted ascending
+3. samadhi place links
+
+Links without `routeOrder` are not inserted into the chronological route. If
+they are visible and are not the portrait display place, the map may show them
+as quieter associated connectors from the display place. This avoids inventing a
+life sequence while still showing that the saint is associated with more than
+one visible location.
+
+When the same saint has both a broad state-level place and a more specific
+mapped city/town in that state, route mode suppresses the state-level
+association for that saint. The all-eras map keeps state associations visible
+for regional discovery, and state markers are styled distinctly from city/town
+markers. The state can still appear in route mode for saints who only have the
+broad association.
+
+Editors should use `birth` and `samadhi` place types only when the source
+identifies those roles. Use `routeOrder` for reviewed route sequence among other
+key places, and leave it blank when the order is unknown.
 
 ## Timeline Rules
 

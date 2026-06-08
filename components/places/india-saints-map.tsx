@@ -17,6 +17,18 @@ type ProjectedPoint = PublicPlaceMapPoint & {
   y: number;
 };
 
+type RouteSaintLocation = {
+  point: ProjectedPoint;
+  saint: PublicPlaceMapSaint;
+};
+
+type RouteSegment = {
+  id: string;
+  from: ProjectedPoint;
+  to: ProjectedPoint;
+  variant: "ordered" | "associated";
+};
+
 const MAP_WIDTH = 720;
 const MAP_HEIGHT = 640;
 const MAP_PADDING = 40;
@@ -73,14 +85,22 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
 
   const projectedPoints = useMemo(() => {
     const groupedCoordinateCounts = new Map<string, number>();
-
-    return mapData.points
+    const filteredPoints = mapData.points
       .map((point) => {
         const activeSaints = timeFilterEnabled
           ? point.saints.filter((saint) => saintLivedDuringYear(saint, selectedYear))
           : point.saints;
 
-        if (activeSaints.length === 0) return null;
+        return {
+          ...point,
+          activeSaints
+        };
+      });
+    const visiblePoints = timeFilterEnabled ? removeSupersededStateAssociations(filteredPoints) : filteredPoints;
+
+    return visiblePoints
+      .map((point) => {
+        if (point.activeSaints.length === 0) return null;
 
         const projected = projectCoordinate(point.latitude, point.longitude);
         const coordinateKey = `${Math.round(projected.x)}:${Math.round(projected.y)}`;
@@ -90,7 +110,6 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
 
         return {
           ...point,
-          activeSaints,
           x: projected.x + offset.x,
           y: projected.y + offset.y
         };
@@ -98,9 +117,23 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
       .filter((point): point is ProjectedPoint => Boolean(point));
   }, [mapData.points, selectedYear, timeFilterEnabled]);
 
+  const saintRoutes = useMemo(() => buildSaintRoutes(projectedPoints), [projectedPoints]);
   const selectedPoint = projectedPoints.find((point) => point.slug === selectedSlug);
-  const hoveredPoint = projectedPoints.find((point) => point.slug === hoveredSlug);
+  const hoveredPoint = timeFilterEnabled ? undefined : projectedPoints.find((point) => point.slug === hoveredSlug);
   const visibleSaintCount = new Set(projectedPoints.flatMap((point) => point.activeSaints.map((saint) => saint.slug))).size;
+  const enableTimeFilter = () => {
+    setHoveredSlug("");
+    setTimeFilterEnabled(true);
+  };
+  const updateSelectedYear = (value: string) => {
+    enableTimeFilter();
+    setSelectedYear(Number(value));
+  };
+  const updateHoveredSlug = (slug: string) => {
+    if (!timeFilterEnabled) {
+      setHoveredSlug(slug);
+    }
+  };
 
   return (
     <section className="places-map-section" aria-labelledby="places-map-title">
@@ -120,21 +153,28 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
               return `${point.x},${point.y}`;
             }).join(" ")} />
             <path className="places-map__coastline" d={buildOutlinePath()} />
+            {timeFilterEnabled ? saintRoutes.segments.map((segment) => (
+              <path
+                className={segment.variant === "ordered" ? "places-map__route" : "places-map__route places-map__route--associated"}
+                d={buildRoutePath(segment.from, segment.to)}
+                key={segment.id}
+              />
+            )) : null}
             {projectedPoints.map((point) => (
               <g
                 aria-label={`${point.name}, ${point.activeSaints.length} ${point.activeSaints.length === 1 ? "saint" : "saints"}`}
-                className="places-map__marker"
+                className={point.placeScope === "state" ? "places-map__marker places-map__marker--state" : "places-map__marker"}
                 key={point.slug}
                 onClick={() => setSelectedSlug(point.slug)}
                 onBlur={() => setHoveredSlug("")}
-                onFocus={() => setHoveredSlug(point.slug)}
+                onFocus={() => updateHoveredSlug(point.slug)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
                     setSelectedSlug(point.slug);
                   }
                 }}
-                onMouseEnter={() => setHoveredSlug(point.slug)}
+                onMouseEnter={() => updateHoveredSlug(point.slug)}
                 onMouseLeave={() => setHoveredSlug("")}
                 role="button"
                 tabIndex={0}
@@ -143,6 +183,37 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
                 <circle className="places-map__marker-core" cx={point.x} cy={point.y} r="4" />
               </g>
             ))}
+            {timeFilterEnabled ? projectedPoints.map((point) => {
+              const saints = saintRoutes.cardSaintsByPoint.get(point.slug);
+              if (!saints || saints.length === 0) return null;
+
+              return (
+                <foreignObject
+                  aria-hidden="true"
+                  className="places-map__saint-card-object"
+                  height="82"
+                  key={`${point.slug}-saints`}
+                  width="148"
+                  x={Math.max(4, Math.min(point.x - 74, MAP_WIDTH - 152))}
+                  y={Math.max(4, point.y - 98)}
+                >
+                  <div className="places-map__saint-card">
+                    <div className="places-map__saint-card-images">
+                      {saints.slice(0, 3).map((saint) => (
+                        <img
+                          alt=""
+                          height={40}
+                          key={saint.slug}
+                          src={saint.image?.url ?? "/images/devotional-archive-placeholder.svg"}
+                          width={40}
+                        />
+                      ))}
+                    </div>
+                    <span>{formatSaintCardLabel(saints)}</span>
+                  </div>
+                </foreignObject>
+              );
+            }) : null}
             {hoveredPoint ? (
               <g className="places-map__hover-card" transform={`translate(${Math.min(hoveredPoint.x + 18, MAP_WIDTH - 182)} ${Math.max(hoveredPoint.y - 52, 16)})`}>
                 <rect height="48" rx="8" width="164" />
@@ -186,16 +257,22 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
             <span>Time filter</span>
             <input
               checked={timeFilterEnabled}
-              onChange={(event) => setTimeFilterEnabled(event.target.checked)}
+              onChange={(event) => {
+                setHoveredSlug("");
+                setTimeFilterEnabled(event.target.checked);
+              }}
               type="checkbox"
             />
           </label>
           <input
             aria-label="Filter map by year"
-            disabled={!timeFilterEnabled}
+            aria-disabled={!timeFilterEnabled}
+            className={timeFilterEnabled ? undefined : "places-timeline__range--inactive"}
             max={yearRange.max}
             min={yearRange.min}
-            onChange={(event) => setSelectedYear(Number(event.target.value))}
+            onChange={(event) => updateSelectedYear(event.target.value)}
+            onFocus={enableTimeFilter}
+            onPointerDown={enableTimeFilter}
             step="1"
             type="range"
             value={selectedYear}
@@ -227,6 +304,133 @@ function buildOutlinePath() {
   }).join(" ") + " Z";
 }
 
+function buildSaintRoutes(points: ProjectedPoint[]) {
+  const locationsBySaint = new Map<string, RouteSaintLocation[]>();
+
+  for (const point of points) {
+    for (const saint of point.activeSaints) {
+      const locations = locationsBySaint.get(saint.slug) ?? [];
+      locations.push({ point, saint });
+      locationsBySaint.set(saint.slug, locations);
+    }
+  }
+
+  const cardSaintsByPoint = new Map<string, PublicPlaceMapSaint[]>();
+  const segments: RouteSegment[] = [];
+
+  for (const [saintSlug, locations] of locationsBySaint) {
+    const startLocation = getRouteStartLocation(locations);
+    const cardSaints = cardSaintsByPoint.get(startLocation.point.slug) ?? [];
+    cardSaints.push(startLocation.saint);
+    cardSaintsByPoint.set(startLocation.point.slug, cardSaints);
+
+    if (locations.length < 2) continue;
+
+    const orderedLocations = getOrderedRouteLocations(locations);
+    if (orderedLocations.length > 1) {
+      for (let index = 0; index < orderedLocations.length - 1; index += 1) {
+        segments.push({
+          id: `${saintSlug}-route-${orderedLocations[index].point.slug}-${orderedLocations[index + 1].point.slug}`,
+          from: orderedLocations[index].point,
+          to: orderedLocations[index + 1].point,
+          variant: "ordered"
+        });
+      }
+    }
+
+    for (const location of locations) {
+      if (location.point.slug === startLocation.point.slug || orderedLocations.some((ordered) => ordered.point.slug === location.point.slug)) {
+        continue;
+      }
+
+      segments.push({
+        id: `${saintSlug}-associated-${startLocation.point.slug}-${location.point.slug}`,
+        from: startLocation.point,
+        to: location.point,
+        variant: "associated"
+      });
+    }
+  }
+
+  for (const saints of cardSaintsByPoint.values()) {
+    saints.sort((a, b) => a.displayName.localeCompare(b.displayName));
+  }
+
+  return { cardSaintsByPoint, segments };
+}
+
+function removeSupersededStateAssociations(points: Array<PublicPlaceMapPoint & { activeSaints: PublicPlaceMapSaint[] }>) {
+  const visibleStateSlugsBySaint = new Map<string, Set<string>>();
+
+  for (const point of points) {
+    if (point.placeScope === "state" || !point.stateSlug) continue;
+
+    for (const saint of point.activeSaints) {
+      const stateSlugs = visibleStateSlugsBySaint.get(saint.slug) ?? new Set<string>();
+      stateSlugs.add(point.stateSlug);
+      visibleStateSlugsBySaint.set(saint.slug, stateSlugs);
+    }
+  }
+
+  return points
+    .map((point) => {
+      if (point.placeScope !== "state" || !point.stateSlug) return point;
+      const stateSlug = point.stateSlug;
+
+      return {
+        ...point,
+        activeSaints: point.activeSaints.filter((saint) => !visibleStateSlugsBySaint.get(saint.slug)?.has(stateSlug))
+      };
+    })
+    .filter((point) => point.activeSaints.length > 0);
+}
+
+function getRouteStartLocation(locations: RouteSaintLocation[]) {
+  return [...locations].sort(compareRouteStartLocations)[0];
+}
+
+function getOrderedRouteLocations(locations: RouteSaintLocation[]) {
+  const birthLocations = locations.filter((location) => location.saint.placeType === "birth").sort(compareRouteStartLocations);
+  const orderedMiddleLocations = locations
+    .filter((location) => location.saint.placeType !== "birth" && location.saint.placeType !== "samadhi" && location.saint.routeOrder != null)
+    .sort(compareRouteOrderLocations);
+  const samadhiLocations = locations.filter((location) => location.saint.placeType === "samadhi").sort(compareRouteStartLocations);
+  const routeLocations = [...birthLocations, ...orderedMiddleLocations, ...samadhiLocations];
+  const seenPointSlugs = new Set<string>();
+
+  return routeLocations.filter((location) => {
+    if (seenPointSlugs.has(location.point.slug)) return false;
+    seenPointSlugs.add(location.point.slug);
+    return true;
+  });
+}
+
+function compareRouteStartLocations(first: RouteSaintLocation, second: RouteSaintLocation) {
+  return getRouteStartRank(first.saint) - getRouteStartRank(second.saint)
+    || compareRouteOrderLocations(first, second);
+}
+
+function compareRouteOrderLocations(first: RouteSaintLocation, second: RouteSaintLocation) {
+  return (first.saint.routeOrder ?? Number.MAX_SAFE_INTEGER) - (second.saint.routeOrder ?? Number.MAX_SAFE_INTEGER)
+    || first.point.name.localeCompare(second.point.name);
+}
+
+function getRouteStartRank(saint: PublicPlaceMapSaint) {
+  if (saint.placeType === "birth") return 0;
+  if (saint.routeOrder != null) return 1;
+  if (saint.placeType === "primary") return 2;
+  if (saint.placeType === "samadhi") return 3;
+  if (saint.placeType === "sadhana") return 4;
+  if (saint.placeType === "associated") return 5;
+  return 6;
+}
+
+function buildRoutePath(from: ProjectedPoint, to: ProjectedPoint) {
+  const midpointX = (from.x + to.x) / 2;
+  const midpointY = (from.y + to.y) / 2 - Math.min(48, Math.hypot(to.x - from.x, to.y - from.y) / 5);
+  return `M ${from.x} ${from.y} Q ${midpointX} ${midpointY} ${to.x} ${to.y}`;
+}
+
 function saintLivedDuringYear(saint: PublicPlaceMapSaint, year: number) {
   if (saint.birthYear == null && saint.samadhiYear == null) return false;
 
@@ -252,4 +456,10 @@ function getMarkerOffset(index: number) {
 
 function formatHoverPlaceName(name: string) {
   return name.length > 22 ? `${name.slice(0, 19)}...` : name;
+}
+
+function formatSaintCardLabel(saints: PublicPlaceMapSaint[]) {
+  const [firstSaint] = saints;
+  if (!firstSaint) return "";
+  return saints.length === 1 ? firstSaint.displayName : `${firstSaint.displayName} +${saints.length - 1}`;
 }

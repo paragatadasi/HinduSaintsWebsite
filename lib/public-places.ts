@@ -11,13 +11,54 @@ import type {
 
 type PublishedPlaceRow = Awaited<ReturnType<typeof getPublishedPlaceRows>>[number];
 type PublishedPlaceDetailRow = NonNullable<Awaited<ReturnType<typeof getPublishedPlaceRowBySlug>>>;
-type PublishedPlaceSaint = PublishedPlaceRow["saints"][number]["saint"];
+type PublishedPlaceSaintLink = PublishedPlaceRow["saints"][number];
+type PublishedPlaceSaint = PublishedPlaceSaintLink["saint"];
 
 const DEFAULT_DESCRIPTION = "A reviewed place associated with published saint profiles.";
 const DEFAULT_LOCATION = "Location in review";
 const DEFAULT_TRADITION = "Tradition in review";
 const DEFAULT_ERA = "Dates in review";
 const MIN_PUBLIC_PLACE_SAINTS = 3;
+const STATE_PLACE_SLUGS = new Set([
+  "andhra-pradesh",
+  "assam",
+  "bengal",
+  "gujarat",
+  "karnataka",
+  "kerala",
+  "madhya-pradesh",
+  "maharashtra",
+  "rajasthan",
+  "tamil-nadu",
+  "uttar-pradesh",
+  "uttarakhand",
+  "uttarkhand",
+  "west-bengal"
+]);
+const PLACE_STATE_SLUGS = new Map([
+  ["akkalkot", "maharashtra"],
+  ["alandi", "maharashtra"],
+  ["amravati", "maharashtra"],
+  ["bangalore", "karnataka"],
+  ["burdwan", "west-bengal"],
+  ["bardwan", "west-bengal"],
+  ["calcutta", "west-bengal"],
+  ["cuttack", "odisha"],
+  ["cuttack-orissa", "odisha"],
+  ["guntur", "andhra-pradesh"],
+  ["hubli", "karnataka"],
+  ["kolhapur", "maharashtra"],
+  ["kopargaon", "maharashtra"],
+  ["majuli-assam", "assam"],
+  ["mumbai", "maharashtra"],
+  ["nagpur", "maharashtra"],
+  ["narasimha-wadi", "maharashtra"],
+  ["nellore", "andhra-pradesh"],
+  ["pandharpur", "maharashtra"],
+  ["pune", "maharashtra"],
+  ["pune-india", "maharashtra"],
+  ["shirdi", "maharashtra"]
+]);
 
 async function getPublishedPlaceRows() {
   return db.place.findMany({
@@ -39,11 +80,19 @@ async function getPublishedPlaceRows() {
             include: {
               places: {
                 include: { place: true },
-                orderBy: { placeType: "asc" }
+                orderBy: [
+                  { routeOrder: "asc" },
+                  { placeType: "asc" }
+                ]
               },
               traditions: {
                 include: { tradition: true },
                 orderBy: { isPrimary: "desc" }
+              },
+              primaryImage: true,
+              galleryImages: {
+                include: { mediaAsset: true },
+                orderBy: { sortOrder: "asc" }
               }
             }
           }
@@ -73,11 +122,19 @@ async function getPublishedPlaceRowBySlug(slug: string) {
             include: {
               places: {
                 include: { place: true },
-                orderBy: { placeType: "asc" }
+                orderBy: [
+                  { routeOrder: "asc" },
+                  { placeType: "asc" }
+                ]
               },
               traditions: {
                 include: { tradition: true },
                 orderBy: { isPrimary: "desc" }
+              },
+              primaryImage: true,
+              galleryImages: {
+                include: { mediaAsset: true },
+                orderBy: { sortOrder: "asc" }
               }
             }
           }
@@ -158,13 +215,15 @@ function toPublicPlaceMapPoint(place: PublishedPlaceRow): PublicPlaceMapPoint | 
 
   if (!coordinate) return null;
 
-  const saints = getSortedPublishedSaints(place).map(toPublicPlaceMapSaint);
+  const saints = getSortedPublishedSaintLinks(place).map(toPublicPlaceMapSaint);
 
   return {
     slug: place.slug,
     name: place.name,
     region: place.region ?? undefined,
     country: place.country ?? undefined,
+    placeScope: getPlaceScope(place.name),
+    stateSlug: getPlaceStateSlug(place.name),
     latitude: coordinate.latitude,
     longitude: coordinate.longitude,
     saintCount: saints.length,
@@ -187,14 +246,36 @@ function toPublicSaintSummary(saint: PublishedPlaceSaint): PublicSaintSummary {
   };
 }
 
-function toPublicPlaceMapSaint(saint: PublishedPlaceSaint): PublicPlaceMapSaint {
+function toPublicPlaceMapSaint(saintPlace: PublishedPlaceSaintLink): PublicPlaceMapSaint {
+  const saint = saintPlace.saint;
+  const galleryImage = saint.galleryImages[0]?.mediaAsset;
+  const image = saint.primaryImage ?? galleryImage;
+
   return {
     slug: saint.slug,
     displayName: saint.displayName,
     eraLabel: saint.eraLabel ?? DEFAULT_ERA,
     birthYear: saint.birthYear ?? undefined,
     samadhiYear: saint.samadhiYear ?? undefined,
-    tradition: getPrimaryTradition(saint.traditions)
+    tradition: getPrimaryTradition(saint.traditions),
+    placeType: saintPlace.placeType,
+    routeOrder: saintPlace.routeOrder ?? undefined,
+    routeLabel: saintPlace.routeLabel ?? undefined,
+    routeConfidence: saintPlace.routeConfidence ?? undefined,
+    image: image
+      ? {
+          url: image.url,
+          alt: image.altText ?? `${saint.displayName} portrait`,
+          caption: image.caption ?? undefined,
+          credit: image.credit ?? undefined,
+          sourceUrl: image.sourceUrl ?? undefined,
+          width: image.width ?? undefined,
+          height: image.height ?? undefined
+        }
+      : {
+          url: "/images/devotional-archive-placeholder.svg",
+          alt: `${saint.displayName} portrait`
+        }
   };
 }
 
@@ -202,6 +283,10 @@ function getSortedPublishedSaints(place: PublishedPlaceRow | PublishedPlaceDetai
   return place.saints
     .map(({ saint }) => saint)
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
+}
+
+function getSortedPublishedSaintLinks(place: PublishedPlaceRow) {
+  return place.saints.sort((a, b) => a.saint.displayName.localeCompare(b.saint.displayName));
 }
 
 function hasMinimumPublishedSaints(place: PublishedPlaceRow | PublishedPlaceDetailRow) {
@@ -256,7 +341,7 @@ function aggregateMapPoints(points: PublicPlaceMapPoint[]) {
 
     const saintsBySlug = new Map(existingPoint.saints.map((saint) => [saint.slug, saint]));
     for (const saint of point.saints) {
-      saintsBySlug.set(saint.slug, saint);
+      saintsBySlug.set(saint.slug, getPreferredMapSaintAssociation(saintsBySlug.get(saint.slug), saint));
     }
 
     existingPoint.saints = Array.from(saintsBySlug.values()).sort((a, b) => a.displayName.localeCompare(b.displayName));
@@ -272,4 +357,39 @@ function getMapPlaceKey(name: string) {
 
 function getMapPlaceName(name: string) {
   return name.replace(/,\s*(india|orissa)$/i, "").trim();
+}
+
+function getPlaceScope(name: string) {
+  return STATE_PLACE_SLUGS.has(getMapPlaceKey(name)) ? "state" : "place";
+}
+
+function getPlaceStateSlug(name: string) {
+  const slug = getMapPlaceKey(name);
+  if (STATE_PLACE_SLUGS.has(slug)) return slug;
+  return PLACE_STATE_SLUGS.get(slug);
+}
+
+function getPreferredMapSaintAssociation(
+  currentSaint: PublicPlaceMapSaint | undefined,
+  nextSaint: PublicPlaceMapSaint
+) {
+  if (!currentSaint) return nextSaint;
+  return getPlaceTypeRank(nextSaint.placeType) < getPlaceTypeRank(currentSaint.placeType) ? nextSaint : currentSaint;
+}
+
+function getPlaceTypeRank(placeType: PublicPlaceMapSaint["placeType"]) {
+  switch (placeType) {
+    case "birth":
+      return 0;
+    case "samadhi":
+      return 1;
+    case "primary":
+      return 2;
+    case "sadhana":
+      return 3;
+    case "associated":
+      return 4;
+    case "other":
+      return 5;
+  }
 }

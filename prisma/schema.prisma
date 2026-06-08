@@ -230,13 +230,18 @@ model Place {
 }
 
 model SaintPlace {
-  id        String    @id @default(cuid())
-  saintId   String
-  saint     Saint     @relation(fields: [saintId], references: [id], onDelete: Cascade)
-  placeId   String
-  place     Place     @relation(fields: [placeId], references: [id], onDelete: Cascade)
-  placeType PlaceType @default(associated)
-  notes     String?
+  id              String      @id @default(cuid())
+  saintId         String
+  saint           Saint       @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  placeId         String
+  place           Place       @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeType       PlaceType   @default(associated)
+  notes           String?
+  routeOrder      Int?
+  routeLabel      String?
+  routeConfidence Confidence?
+
+  @@index([saintId, routeOrder])
 }
 
 model SaintTradition {

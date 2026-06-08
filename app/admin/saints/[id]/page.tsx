@@ -91,7 +91,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
         <h2>Names, Places, Traditions</h2>
         <div className="field-grid">
           <ReviewField label="Aliases" value={saint.aliases.map((alias) => alias.alias).join(", ")} />
-          <ReviewField label="Places" value={saint.places.map(({ place, placeType }) => `${place.name} (${formatStatus(placeType)})`).join(", ")} />
+          <ReviewField label="Places" value={saint.places.map(formatSaintPlace).join(", ")} />
           <ReviewField label="Traditions" value={saint.traditions.map(({ tradition }) => tradition.name).join(", ")} />
         </div>
       </section>
@@ -157,7 +157,10 @@ async function getSaint(slugOrId: string) {
       },
       places: {
         include: { place: true },
-        orderBy: { placeType: "asc" }
+        orderBy: [
+          { routeOrder: "asc" },
+          { placeType: "asc" }
+        ]
       },
       traditions: {
         include: { tradition: true },
@@ -190,6 +193,15 @@ function ReviewField({ label, value }: { label: string; value?: string | null })
       <span>{value || "Not set"}</span>
     </div>
   );
+}
+
+function formatSaintPlace({ place, placeType, routeOrder, routeLabel }: NonNullable<Awaited<ReturnType<typeof getSaint>>>["places"][number]) {
+  const routeParts = [
+    routeOrder == null ? undefined : `route ${routeOrder}`,
+    routeLabel
+  ].filter(Boolean);
+  const routeSuffix = routeParts.length > 0 ? `, ${routeParts.join(": ")}` : "";
+  return `${place.name} (${formatStatus(placeType)}${routeSuffix})`;
 }
 
 function StatusForm({
