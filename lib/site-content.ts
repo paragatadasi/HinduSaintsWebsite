@@ -57,6 +57,14 @@ export type PlaceDetailTemplateContent = {
   emptySaintsMessage: string;
 };
 
+export type PlacesMapContent = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  promptTitle: string;
+  promptBody: string;
+};
+
 export type InstagramSectionContent = {
   eyebrow: string;
   title: string;
@@ -128,9 +136,9 @@ export const traditionsIndexContent: PageIntroContent = {
 };
 
 export const placesIndexContent: PageIntroContent = {
-  eyebrow: "Places",
-  title: "Places",
-  description: "Explore locations associated with published saint profiles."
+  eyebrow: "Map",
+  title: "Map",
+  description: "Explore where published saints lived, traveled, practiced, and taught."
 };
 
 export const saintDetailTemplateContent: SaintDetailTemplateContent = {
@@ -155,6 +163,16 @@ export const placeDetailTemplateContent: PlaceDetailTemplateContent = {
   associatedSaintsTitle: "Associated saints",
   contextTitle: "Place context",
   emptySaintsMessage: "Associated saints will appear here after editorial review."
+};
+
+export const placesMapContent: PlacesMapContent = {
+  eyebrow: "Map",
+  title: "Saints Across India",
+  description:
+    "Explore Indian places connected to published saints. Use the time filter to see which saints may have lived during the same period.",
+  promptTitle: "Choose a place on the map",
+  promptBody:
+    "Click any point to view associated saints, eras, traditions, and a link to the place page."
 };
 
 export const instagramSectionContent: InstagramSectionContent = {
@@ -233,6 +251,10 @@ export function getTraditionDetailTemplateContent() {
 
 export function getPlaceDetailTemplateContent() {
   return placeDetailTemplateContent;
+}
+
+export function getPlacesMapContent() {
+  return placesMapContent;
 }
 
 export function getInstagramSectionContent() {

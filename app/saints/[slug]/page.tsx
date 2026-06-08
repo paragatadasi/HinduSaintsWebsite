@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, MessageSquare } from "lucide-react";
 import type { ReactNode } from "react";
 import { InstagramEmbedGrid } from "@/components/instagram/instagram-embed-grid";
 import { Prose } from "@/components/content/prose";
+import { Button } from "@/components/ui/button";
 import { getPublishedSaintBySlug, getPublishedSaintSlugs } from "@/lib/public-saints";
 import { getSaintDetailTemplateContent } from "@/lib/site-content";
 import type { PublicFurtherReadingItem, PublicImage, PublicSourceSummary } from "@/lib/public-contracts";
@@ -28,6 +29,15 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
             <div className="eyebrow">{saint.tradition}</div>
             <h1>{saint.displayName}</h1>
             <p>{saint.shortDescription}</p>
+            <div className="saint-detail-actions">
+              <Button
+                href={`/contact?saint=${encodeURIComponent(saint.displayName)}&page=${encodeURIComponent(`/saints/${saint.slug}`)}`}
+                variant="secondary"
+                icon={<MessageSquare size={18} aria-hidden="true" />}
+              >
+                Send feedback
+              </Button>
+            </div>
             {saint.aliases.length > 0 ? (
               <div className="chip-list" aria-label="Aliases">
                 {saint.aliases.map((alias) => (

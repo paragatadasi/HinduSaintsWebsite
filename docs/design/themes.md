@@ -47,7 +47,7 @@ Layout choices live beside editable site copy in `lib/site-content.ts` so visual
 
 Current homepage layouts:
 
-- `devotional`: the image-led nocturne homepage with the large search pill, stat row, horizontal scroll rails, and Instagram previews.
+- `devotional`: the image-led nocturne homepage with the large search pill, intentional hero spacing, horizontal scroll rails, and Instagram previews.
 - `archive`: the original MVP homepage layout with a two-column hero, action buttons, and responsive card grids.
 
 The default is controlled by `siteDesignConfig.homeLayout`:
@@ -59,3 +59,18 @@ export const siteDesignConfig = {
 ```
 
 For a temporary runtime toggle, set `NEXT_PUBLIC_HOME_LAYOUT` to `archive` or `devotional`. Invalid values fall back to `siteDesignConfig.homeLayout`.
+
+## Layout Lessons
+
+Treat theme, layout, and component variants as separate decisions:
+
+- Theme changes belong in token values. For example, the nocturne palette defines the dark background, gold accents, translucent card surface, cream text, and image treatments.
+- Layout changes belong in layout variants or shared layout classes. The archive and devotional homepages should be switchable without deleting either composition.
+- Component presentation changes belong in component variants. Saint cards use summary and portrait variants; tradition cards use summary and icon variants.
+
+When adjusting a section:
+
+- Use `.section-heading` for section titles and section-level actions so headings align consistently across homepage and index-page sections.
+- Avoid relying on a removed section to create vertical spacing. If a band such as stats is removed, move the intended spacing onto the surrounding layout.
+- Prefer page-scoped rhythm fixes over global spacing edits when only one page is visually off.
+- For visual carousels in the devotional layout, set `ScrollRail` controls explicitly so arrows remain part of the design even when overflow measurement changes during rendering.

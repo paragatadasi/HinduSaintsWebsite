@@ -28,9 +28,49 @@ Important rules:
 - Airtable record IDs and raw payloads are preserved in `ExternalRecord`.
 - Conflicts become `ReconciliationIssue` records.
 
+## Imported saint fields
+
+Imported saint records should keep source values reviewable while exposing only
+safe public fields.
+
+Dates are separated by meaning:
+
+- birth values use `birthDateRaw`, `birthYear`, `birthMonth`, `birthDay`, and
+  `birthDatePrecision`.
+- samadhi values use `samadhiDateRaw`, `samadhiYear`, `samadhiMonth`,
+  `samadhiDay`, and `samadhiDatePrecision`.
+- `dateNotes` can preserve parsing notes or traditional/textual date context.
+
+This allows partial dates such as `June 2013`, year-only values, and text such
+as `Still alive` without inventing invalid Gregorian dates.
+
+Locations are first-class records:
+
+- `Place` stores the reusable place name and optional future geography.
+- `SaintPlace` links a saint to a place and classifies the relationship with
+  `PlaceType`.
+- uncertain imported locations should use `associated`.
+- `birth` and `samadhi` place types should only be used when the source
+  explicitly supports that meaning.
+
+The public Map page and place detail routes are documented in
+`docs/map-and-places.md`, including the published-content threshold, geocoding
+fallback, and timeline behavior.
+
+Names are separated for review:
+
+- `displayName` is the public-facing name.
+- `canonicalName` is the normalized primary identity.
+- original external names should be preserved in `SaintAlias`, often with
+  `AliasType.airtable_name`.
+
 ## Public frontend contracts
 
 Frontend public views should consume explicit public contracts rather than full CMS records. The current launch contract lives in `lib/public-contracts.ts` and intentionally contains only display-safe fields for saint and tradition cards/detail headers. Museum, relic, raw import payload, reconciliation, and internal editorial fields must stay out of those public shapes.
+
+The current DB-backed saint public adapter lives in `lib/public-saints.ts`. It
+queries only `ContentStatus.published` saints and maps safe CMS fields into the
+public contract used by `/`, `/saints`, and `/saints/[slug]`.
 
 ## Saint relationship graph
 

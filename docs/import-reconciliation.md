@@ -42,6 +42,31 @@ Override tables for one run:
 npm run import:airtable -- --tables "Saints,Traditions"
 ```
 
+Import Airtable mirror saints that have matched Instagram tracker content into
+the CMS:
+
+```sh
+npm run import:airtable-saints -- --dry-run
+npm run import:airtable-saints -- --write
+```
+
+The CMS import is idempotent through `ExternalRecord` links. Imported saint
+records enter as `needs_review`, preserve original Airtable names as aliases,
+split birth and samadhi date fields into raw/year/month/day/precision parts,
+and map safe saint images from `Picture(s) of Saint`. It does not import relic
+or museum fields into public saint records.
+
+Publish only the obvious high-confidence CMS saints:
+
+```sh
+npm run approve:obvious-cms-saints -- --dry-run
+npm run approve:obvious-cms-saints -- --write
+```
+
+This approval script only publishes CMS saints whose linked Google Sheets
+tracker rows are all `matched` with `high` confidence. It leaves ambiguous
+tracker rows and non-obvious cases for human review.
+
 Find likely duplicate Airtable saint records from the local mirror:
 
 ```sh
@@ -121,3 +146,6 @@ exact normalized names, exact core names before place text such as `of ...`,
 and unique contained-name matches. Ambiguous or missing names remain
 `needs_review` rather than being guessed. Multiple posts can match the same
 saint, and `instagramTrackerMatchCount` tracks how many tracker rows matched.
+
+See `docs/data-integrations.md` for the current status, completed counts, and
+end-to-end runbook.

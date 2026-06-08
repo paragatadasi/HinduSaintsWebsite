@@ -34,11 +34,19 @@ Required for most cloud coding tasks:
 - `NEXTAUTH_URL`
 - `PUBLIC_SITE_URL`
 
-Optional until auth is fully enabled:
+Required for admin sign-in tasks:
 
 - `GOOGLE_CLIENT_ID`
 - `GOOGLE_CLIENT_SECRET`
 - `ADMIN_EMAIL_ALLOWLIST`
+
+The Google OAuth client must allow the app callback URL for the environment being tested. For local development that callback is:
+
+```text
+http://localhost:3000/api/auth/callback/google
+```
+
+`ADMIN_EMAIL_ALLOWLIST` is a comma-separated list of Google account emails allowed into `/admin`. Missing Google client credentials will make the admin page disable the sign-in button locally, and a stale dev server can show Google `client_id` errors until it is restarted.
 
 For ordinary UI and component work, `DATABASE_URL` can point to a disposable development Postgres database. For import, CMS, and migration tasks, point it at a real development database, never production.
 

@@ -8,15 +8,20 @@ The project is a Next.js App Router application using TypeScript, PostgreSQL, Pr
 
 Implemented foundation:
 
-- Public routes for home, saints index, saint detail pages, tradition index, and tradition detail pages.
-- Protected admin route structure for dashboard, saints, saint detail editing, biographies, traditions, Instagram reconciliation, and saint preview.
+- Public routes for home, about, saints index, saint detail pages, tradition index, tradition detail pages, places index, and place detail pages.
+- Public saints and places now read published records from the Prisma/PostgreSQL CMS database through typed public loaders.
+- Public traditions still read from shared fixture data in `lib/sample-data.ts`.
+- Protected admin route structure for dashboard, saints, saint detail review/editing, media uploads, biographies, traditions, Instagram reconciliation, and saint preview.
+- Narrow saint review mutations for editing public saint basics and changing review/publication status with server-side validation.
+- Local media upload route, filesystem storage helper, public `/media/[...key]` delivery, and `MediaAsset` creation.
 - Prisma schema covering saints, aliases, traditions, places, relationships, media assets, Instagram items, biographies, sources, import batches, external records, reconciliation issues, audit events, and auth models.
-- Initial Prisma migration and seed data.
+- Initial and follow-up Prisma migrations plus seed data.
 - NextAuth/Prisma auth wiring, role and permission helpers, and protected admin layout.
 - Markdown rendering through a shared prose component with sanitization.
 - Import and reconciliation scripts for Airtable and Instagram-oriented workflows.
+- Airtable mirror, Google Sheets Instagram tracker import, Airtable-to-CMS saint import, and high-confidence saint approval scripts.
 - Docker infrastructure for local PostgreSQL, app runtime, Caddy, and backups.
-- Codex Cloud setup and verification path through `npm run codex:verify`.
+- Codex Cloud setup, lightweight development check through `npm run dev:check`, and heavier verification path through `npm run codex:verify`.
 - Design system docs and token files for centralized styling.
 
 Existing docs:
@@ -26,10 +31,18 @@ Existing docs:
 - `docs/data-model.md` covers the database shape and relationship graph direction.
 - `docs/content-workflow.md` covers editorial roles, saint workflow, biography workflow, and preview requirements.
 - `docs/import-reconciliation.md` covers Airtable and Instagram import rules.
+- `docs/data-integrations.md` covers the current Airtable mirror, Instagram tracker, CMS saint import, approval, public rendering, and admin review status.
 - `docs/design-system.md` and `docs/design/themes.md` cover visual system direction.
 - `docs/deployment.md` and `docs/codex-cloud.md` cover local, VPS, and Codex Cloud operations.
 
-Known working-tree note as of this plan: `package-lock.json` and `prisma/migrations/` are untracked locally. Treat them as existing work unless the current task explicitly owns them.
+Known working-tree note as of June 8, 2026: the local tree has documentation changes in `README.md` and several files under `docs/`, plus a new `docs/data-integrations.md`. Treat them as existing work unless the current task explicitly owns them.
+
+Current local data snapshot documented in `docs/data-integrations.md`:
+
+- 270 CMS saints imported from matched Airtable mirror records and approved as published after high-confidence Instagram tracker matching.
+- 84 Google Sheets Instagram tracker rows still need review.
+- 270 Airtable `ExternalRecord` links connect imported CMS saints back to source mirror records.
+- 273 places, 530 saint-place links, 24 traditions, 52 saint-tradition links, and 237 saint gallery image links have been imported from safe saint fields.
 
 ## MVP principles
 
@@ -122,7 +135,7 @@ Needs to include:
 - Instagram/media links that are approved for public display
 - SEO title and description
 
-Current seam: `lib/sample-data.ts` provides early `SaintSummary` fixtures used by public pages and some admin shells. This should evolve into shared contract types plus database-backed loaders.
+Current seam: `lib/public-contracts.ts` defines public saint shapes, and `lib/public-saints.ts` maps published Prisma saint records into those shapes. Public saint pages no longer use sample saints as their live source. The next work is to harden this adapter with tests, richer source/further-reading intent, reviewed media handling, and relationship display.
 
 ### 2. Public tradition contract
 
@@ -138,6 +151,23 @@ Needs to include:
 - sources and further reading for the tradition, lineage, or organization
 - SEO title and description
 - public status filtering
+
+Current seam: public tradition pages still use `lib/sample-data.ts`. The database has `Tradition` and `SaintTradition` records, but the public tradition loader should be moved to Prisma-backed contracts like saints and places.
+
+### 2a. Public place contract
+
+Purpose: render places that have enough published saint associations to be useful publicly.
+
+Needs to include:
+
+- slug, name, alternate names, region, country, and optional coordinates
+- public-safe summary copy generated or edited from reviewed place data
+- published saint summaries associated with the place
+- tradition and era facets derived from associated published saints
+- minimum-public-content rules so sparse imported places do not create thin public pages
+- SEO title and description
+
+Current seam: `lib/public-places.ts` maps Prisma place records with at least three published saints into public place summaries/details. This is useful for launch browsing, but the minimum threshold, SEO fields, edited place descriptions, and source/media support still need product decisions.
 
 ### 3. Site content contract
 
@@ -181,6 +211,8 @@ Recommended data model direction:
 - Keep private museum/relic images out of public contracts even when preserved in raw import records.
 - Store enough credit/source/license metadata to render public attribution and support editorial review.
 
+Current seam: local upload, storage-key normalization, MIME sniffing, authenticated upload handling, and public media delivery exist. Imported Airtable saint images are represented as `MediaAsset`/`SaintGalleryImage` records, but reviewed image usage roles, focal points, rights metadata, responsive dimensions/variants, and image review workflows are still incomplete. The admin media page also needs a design-system pass because it currently uses inline layout styles.
+
 ### 5. Admin saint editing contract
 
 Purpose: support saint creation, editing, preview, review, and publish decisions.
@@ -199,6 +231,8 @@ Needs to include:
 - role-sensitive actions: save draft, submit for review, publish, hide, archive
 
 The frontend can first build this as a form against seeded/editable fixtures. The backend then supplies loaders and mutations with validation and permission checks.
+
+Current seam: `/admin/saints` provides status-filtered queues and `/admin/saints/[id]` supports editing display name, canonical name, short description, biography summary, and status. The page displays aliases, places, traditions, tracker matches, and images, but does not yet provide full edit workflows for those related records. Server actions validate inputs, but publish permissions are currently authenticated-user based rather than role-sensitive.
 
 ### 6. Biography and Markdown contract
 
@@ -255,6 +289,8 @@ Needs to include:
 
 Frontend can iterate on the queue and decision UI with seed data while backend match logic improves.
 
+Current seam: Instagram tracker rows can be imported and linked to Airtable mirror records; high-confidence matches can drive CMS saint approval. The admin Instagram page is still a placeholder, and the 84 unmatched tracker rows need a real review queue with match/create/ignore actions.
+
 ### 9. Airtable import contract
 
 Purpose: preserve Airtable as an import/reference source while migrating useful editorial data into the website review flow.
@@ -272,6 +308,8 @@ Needs to include:
 - dry-run/report mode for reviewing what an import would change
 
 This contract belongs to the data integration track, then hands reviewed candidates to backend/CMS workflows.
+
+Current seam: Airtable mirror import, duplicate reconciliation, duplicate merge, matched saint CMS import, and safe-field mapping are implemented in scripts. Imported CMS saints are linked to their source Airtable mirror records through `ExternalRecord`. Public imports intentionally exclude museum/relic/private collection fields. Attachment URLs are preserved for review, but production should rehost approved images instead of depending on Airtable URLs.
 
 ### 10. External record and import batch contract
 
@@ -338,38 +376,44 @@ When no specific task is assigned, choose the next task by track:
 
 Near-term frontend candidates:
 
-- Expand saint and tradition contracts beyond current summaries.
-- Define a shared public image shape for URL, dimensions, alt text, caption, credit, focal point, and usage role.
-- Build richer public saint detail states against fixtures.
-- Add fixture image states for saint portraits, tradition images, homepage/site images, and special feature images.
-- Add source/further-reading display states for saints and traditions.
-- Build admin saint editor UI against seeded draft/review/published records.
+- Move public tradition pages from sample-data fixtures to database-backed loaders.
+- Add tests and empty/error states around public saints, places, and traditions loaders.
+- Refine public place browsing: threshold rules, descriptions, SEO, and filters.
+- Expand the shared public image shape with usage role, reviewed visibility, dimensions, credit/source/license, and focal point.
+- Build richer public saint detail states from database records: relationships, curated sources, further reading, image galleries, and biography sections.
+- Add fixture or seed image states for tradition images, homepage/site images, and special feature images.
+- Add source/further-reading display states for saints, traditions, biographies, and relationships.
+- Expand admin saint editor UI beyond public basics into aliases, places, traditions, biographies, sources, images, and relationship review.
 - Add admin source attachment UI states: cited source, further reading, unresolved imported source, duplicate warning.
-- Build Instagram review queue interactions against fixture data.
-- Build reconciliation issue list/detail UI against fixture data.
+- Build Instagram review queue interactions for unmatched tracker rows and ambiguous matches.
+- Build reconciliation issue list/detail UI for duplicate and conflict issues.
+- Move inline admin media form layout into shared design-system classes/components.
 
 Near-term backend candidates:
 
-- Protect admin and preview routes server-side.
-- Confirm and commit baseline lockfile and migration artifacts when appropriate.
-- Add database-backed loaders that return the public saint and tradition contracts.
+- Tighten admin and preview route protection with explicit role-aware permissions for contributor/editor/admin actions.
+- Confirm and commit current documentation, lockfile, and migration artifacts when appropriate.
+- Add database-backed loaders that return the public tradition contract.
 - Add media loaders that map `MediaAsset` and usage relationships into public image contracts.
 - Extend source/content-source modeling if the current fields are not enough for connection intent, visibility, and display metadata.
 - Extend media modeling if the current fields are not enough for usage roles, per-context captions, focal points, visibility, and rights metadata.
-- Add server-side validation and mutations for saint draft editing.
-- Add audit events for publish and reconciliation decisions.
+- Add server-side validation and mutations for alias, place, tradition, biography, source, relationship, and image edits.
+- Add audit events for saint edits, publish/unpublish, media changes, import writes, and reconciliation decisions.
+- Add regression tests for public adapters, import idempotency, safe-field mapping, and saint review server actions.
 
 Near-term data integration candidates:
 
-- Define Airtable field mapping for saints, aliases, traditions, biographies, sources, places, and relationships.
-- Define Airtable attachment/image mapping for public images, private museum/relic images, credits, source URLs, and rights notes.
+- Finish Airtable field mapping for biographies, sources, relationships, richer tradition records, and source/further-reading attachments.
+- Finish Airtable attachment/image mapping for public images, private museum/relic images, credits, source URLs, and rights notes.
 - Expand import fixtures to include messy real-world cases: duplicate names, alternate spellings, missing dates, conflicting descriptions, private museum/relic fields, duplicate source citations, vague further-reading strings, multiple source references, duplicate images, missing alt text, and ambiguous image rights.
-- Implement or verify dry-run Airtable import reporting before writing draft/candidate records.
-- Normalize Instagram item URLs, shortcodes, captions, extracted names, thumbnails, and match confidence.
+- Keep dry-run Airtable import reporting current before changing write behavior.
+- Build review flow for the 84 unmatched Google Sheets tracker rows.
+- Normalize Instagram item URLs, shortcodes, captions, extracted names, thumbnails, and match confidence into reviewable records.
 - Preserve Instagram thumbnails as imported media references until reviewed for public display.
 - Normalize and dedupe source references from Airtable, CSV, Instagram captions, and manual batches.
-- Ensure each integration path creates `ExternalRecord` and `ImportBatch` traces.
+- Ensure each integration path creates complete `ExternalRecord` and `ImportBatch` traces.
 - Ensure conflicts create `ReconciliationIssue` rows instead of overwriting reviewed content.
+- Rehost or download reviewed Airtable image attachments before production so public image URLs are stable.
 
 ## Method of working
 

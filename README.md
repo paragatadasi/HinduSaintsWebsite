@@ -36,6 +36,27 @@ npm run dev
 
 Then open <http://localhost:3000>.
 
+## Local admin sign-in
+
+The admin CMS at `/admin` uses Google OAuth through Auth.js/NextAuth and then checks the signed-in email against `ADMIN_EMAIL_ALLOWLIST`.
+
+For local development, create a Google OAuth web client and add:
+
+- Authorized JavaScript origin: `http://localhost:3000`
+- Authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
+
+Then set these values in `.env`:
+
+```env
+GOOGLE_CLIENT_ID="..."
+GOOGLE_CLIENT_SECRET="..."
+ADMIN_EMAIL_ALLOWLIST="admin@example.com,editor@example.com"
+```
+
+Auth.js-style names `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` are also accepted by the app, but `.env.example` uses the `GOOGLE_*` names.
+
+Restart `npm run dev` after changing these variables. If Google shows `Missing required parameter: client_id`, the running server does not have a Google client ID loaded. If the admin page disables the Google button and says sign-in needs a client ID and secret, fill in the Google OAuth values and restart the dev server.
+
 ## Important routes
 
 - `/` public home
@@ -43,6 +64,8 @@ Then open <http://localhost:3000>.
 - `/saints` public saints index
 - `/saints/[slug]` public saint pages
 - `/traditions` public traditions index
+- `/map` public map of India and place index
+- `/places/[slug]` public place detail pages
 - `/admin` protected CMS dashboard
 - `/admin/media` protected media upload workflow
 - `/media/[...key]` public delivery for uploaded media assets
@@ -59,6 +82,15 @@ For local-only development without OAuth configured, set `MEDIA_UPLOADS_REQUIRE_
 ## Codex Cloud
 
 See `docs/codex-cloud.md` for the hosted Codex environment setup script, environment variables, and verification command.
+
+## Data integrations
+
+See `docs/data-integrations.md` for the current Airtable mirror, Google Sheets
+Instagram tracker, CMS saint import, approval, public rendering, and admin
+review workflow status.
+
+See `docs/map-and-places.md` for the public Map page, Places detail routes,
+geocoding fallback, timeline filter, and place data workflow.
 
 ## Development checks
 

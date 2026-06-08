@@ -14,7 +14,7 @@ export function SiteHeader() {
         <div className="site-links">
           <Link href="/saints">Saints</Link>
           <Link href="/traditions">Traditions</Link>
-          <Link href="/places">Places</Link>
+          <Link href="/map">Map</Link>
           <Link href="/about">About</Link>
           <Link href="https://www.instagram.com/hindu_saints/">Instagram</Link>
           <Link href="/saints" aria-label="Search saints">

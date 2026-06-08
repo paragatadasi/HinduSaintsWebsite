@@ -99,6 +99,34 @@ export type PublicPlaceDetail = PublicPlaceSummary & {
   eras: string[];
 };
 
+export type PublicPlaceMapSaint = {
+  slug: string;
+  displayName: string;
+  eraLabel: string;
+  birthYear?: number;
+  samadhiYear?: number;
+  tradition: string;
+};
+
+export type PublicPlaceMapPoint = {
+  slug: string;
+  name: string;
+  region?: string;
+  country?: string;
+  latitude: number;
+  longitude: number;
+  saintCount: number;
+  saints: PublicPlaceMapSaint[];
+};
+
+export type PublicPlaceMapData = {
+  points: PublicPlaceMapPoint[];
+  yearRange?: {
+    min: number;
+    max: number;
+  };
+};
+
 export type PublicTraditionDetail = PublicTraditionSummary & {
   alternateNames?: string[];
   introductionMarkdown?: string;

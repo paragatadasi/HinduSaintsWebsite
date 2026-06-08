@@ -1,6 +1,10 @@
 import { db } from "@/lib/db";
+import { getPlaceCoordinate } from "@/lib/place-geocoding";
 import type {
   PublicPlaceDetail,
+  PublicPlaceMapData,
+  PublicPlaceMapPoint,
+  PublicPlaceMapSaint,
   PublicPlaceSummary,
   PublicSaintSummary
 } from "@/lib/public-contracts";
@@ -112,6 +116,27 @@ export async function getPublishedPlaceBySlug(slug: string): Promise<PublicPlace
   };
 }
 
+export async function getIndiaPlaceMapData(): Promise<PublicPlaceMapData> {
+  const places = await getPublishedPlaceRows();
+  const rawPoints = places
+    .filter(hasMinimumPublishedSaints)
+    .map(toPublicPlaceMapPoint)
+    .filter((point): point is PublicPlaceMapPoint => Boolean(point))
+    .sort((a, b) => b.saintCount - a.saintCount || a.name.localeCompare(b.name));
+  const points = aggregateMapPoints(rawPoints);
+  const years = points.flatMap((point) => point.saints.flatMap(getSaintYears));
+
+  return {
+    points,
+    yearRange: years.length > 0
+      ? {
+          min: Math.min(...years),
+          max: Math.max(...years)
+        }
+      : undefined
+  };
+}
+
 function toPublicPlaceSummary(place: PublishedPlaceRow | PublishedPlaceDetailRow): PublicPlaceSummary {
   const saints = getSortedPublishedSaints(place);
 
@@ -121,6 +146,29 @@ function toPublicPlaceSummary(place: PublishedPlaceRow | PublishedPlaceDetailRow
     shortDescription: buildPlaceDescription(place, saints),
     saintCount: saints.length,
     status: "published"
+  };
+}
+
+function toPublicPlaceMapPoint(place: PublishedPlaceRow): PublicPlaceMapPoint | null {
+  const coordinate = getPlaceCoordinate(
+    place.name,
+    place.latitude == null ? null : Number(place.latitude),
+    place.longitude == null ? null : Number(place.longitude)
+  );
+
+  if (!coordinate) return null;
+
+  const saints = getSortedPublishedSaints(place).map(toPublicPlaceMapSaint);
+
+  return {
+    slug: place.slug,
+    name: place.name,
+    region: place.region ?? undefined,
+    country: place.country ?? undefined,
+    latitude: coordinate.latitude,
+    longitude: coordinate.longitude,
+    saintCount: saints.length,
+    saints
   };
 }
 
@@ -136,6 +184,17 @@ function toPublicSaintSummary(saint: PublishedPlaceSaint): PublicSaintSummary {
     featured: saint.featured,
     instagramUrls: [],
     status: "published"
+  };
+}
+
+function toPublicPlaceMapSaint(saint: PublishedPlaceSaint): PublicPlaceMapSaint {
+  return {
+    slug: saint.slug,
+    displayName: saint.displayName,
+    eraLabel: saint.eraLabel ?? DEFAULT_ERA,
+    birthYear: saint.birthYear ?? undefined,
+    samadhiYear: saint.samadhiYear ?? undefined,
+    tradition: getPrimaryTradition(saint.traditions)
   };
 }
 
@@ -174,4 +233,43 @@ function buildPlaceDescription(place: PublishedPlaceRow | PublishedPlaceDetailRo
 
 function getSaintLabel(count: number) {
   return count === 1 ? "saint" : "saints";
+}
+
+function getSaintYears(saint: PublicPlaceMapSaint) {
+  return [saint.birthYear, saint.samadhiYear].filter((year): year is number => typeof year === "number");
+}
+
+function aggregateMapPoints(points: PublicPlaceMapPoint[]) {
+  const pointsByName = new Map<string, PublicPlaceMapPoint>();
+
+  for (const point of points) {
+    const key = getMapPlaceKey(point.name);
+    const existingPoint = pointsByName.get(key);
+
+    if (!existingPoint) {
+      pointsByName.set(key, {
+        ...point,
+        name: getMapPlaceName(point.name)
+      });
+      continue;
+    }
+
+    const saintsBySlug = new Map(existingPoint.saints.map((saint) => [saint.slug, saint]));
+    for (const saint of point.saints) {
+      saintsBySlug.set(saint.slug, saint);
+    }
+
+    existingPoint.saints = Array.from(saintsBySlug.values()).sort((a, b) => a.displayName.localeCompare(b.displayName));
+    existingPoint.saintCount = existingPoint.saints.length;
+  }
+
+  return Array.from(pointsByName.values()).sort((a, b) => b.saintCount - a.saintCount || a.name.localeCompare(b.name));
+}
+
+function getMapPlaceKey(name: string) {
+  return getMapPlaceName(name).toLowerCase();
+}
+
+function getMapPlaceName(name: string) {
+  return name.replace(/,\s*(india|orissa)$/i, "").trim();
 }
