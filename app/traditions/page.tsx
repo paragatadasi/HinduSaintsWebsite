@@ -1,9 +1,10 @@
 import { TraditionCard } from "@/components/traditions/tradition-card";
-import { getPublishedTraditions } from "@/lib/sample-data";
+import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
 import { getTraditionsIndexContent } from "@/lib/site-content";
 
-export default function TraditionsIndexPage() {
+export default async function TraditionsIndexPage() {
   const content = getTraditionsIndexContent();
+  const traditions = await getPublishedTraditionSummaries();
 
   return (
     <main className="page-shell section site-grid">
@@ -13,7 +14,7 @@ export default function TraditionsIndexPage() {
         <p className="lede">{content.description}</p>
       </div>
       <div className="card-grid">
-        {getPublishedTraditions().map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} />)}
+        {traditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} />)}
       </div>
     </main>
   );

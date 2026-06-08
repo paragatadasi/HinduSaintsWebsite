@@ -324,12 +324,14 @@ export const traditions: TraditionRecord[] = [
     name: "Advaita Vedanta",
     shortDescription: "A non-dual Vedantic tradition emphasizing the identity of Atman and Brahman.",
     founder: "Adi Shankaracharya",
+    saints: [],
     status: "published"
   },
   {
     slug: "bhakti-traditions",
     name: "Bhakti Traditions",
     shortDescription: "Devotional lineages centered on love, surrender, chanting, service, and remembrance.",
+    saints: [],
     status: "published"
   },
   {
@@ -337,6 +339,7 @@ export const traditions: TraditionRecord[] = [
     name: "Ramakrishna Tradition",
     shortDescription: "A modern spiritual movement shaped by Sri Ramakrishna, Holy Mother, and Swami Vivekananda.",
     founder: "Sri Ramakrishna",
+    saints: [],
     status: "published"
   },
   {
@@ -344,12 +347,14 @@ export const traditions: TraditionRecord[] = [
     name: "Gaudiya Vaishnavism",
     shortDescription: "A Krishna-centered Vaishnava tradition emphasizing bhakti, kirtan, and devotion to Radha-Krishna.",
     founder: "Sri Chaitanya Mahaprabhu",
+    saints: [],
     status: "published"
   },
   {
     slug: "varkari-sampradaya",
     name: "Varkari Sampradaya",
     shortDescription: "A Maharashtrian bhakti tradition centered on Vithoba, pilgrimage, abhangas, and devotional remembrance.",
+    saints: [],
     status: "published"
   },
   {
@@ -357,6 +362,7 @@ export const traditions: TraditionRecord[] = [
     name: "Lingayat Tradition",
     shortDescription: "A Shaiva devotional tradition associated with Basavanna, vachana literature, and worship of the ishtalinga.",
     founder: "Basavanna",
+    saints: [],
     status: "published"
   }
 ];

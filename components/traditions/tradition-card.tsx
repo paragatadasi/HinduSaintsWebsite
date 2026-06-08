@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Flame, Flower2, Waves } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import type { TraditionSummary } from "@/lib/sample-data";
+import type { PublicTraditionSummary } from "@/lib/public-contracts";
 
 type TraditionCardProps = {
-  tradition: TraditionSummary;
+  tradition: PublicTraditionSummary;
   variant?: "summary" | "icon";
 };
 

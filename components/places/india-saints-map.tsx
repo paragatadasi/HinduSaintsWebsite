@@ -42,6 +42,7 @@ type StateMapSummary = {
 const MAP_WIDTH = 720;
 const MAP_HEIGHT = 640;
 const MAP_PADDING = 40;
+const PANEL_SAINT_PREVIEW_LIMIT = 4;
 const INDIA_BOUNDS = {
   minLatitude: 6,
   maxLatitude: 37.6,
@@ -99,6 +100,9 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
   const selectedState = selectedStateSlug ? stateSummariesBySlug.get(selectedStateSlug) : undefined;
   const hoveredPoint = timeFilterEnabled ? undefined : projectedPoints.find((point) => point.slug === hoveredSlug);
   const selectedPanelItem = selectedPoint ?? selectedState;
+  const selectedPanelSaints = selectedPanelItem?.activeSaints ?? [];
+  const visiblePanelSaints = selectedPanelSaints.slice(0, PANEL_SAINT_PREVIEW_LIMIT);
+  const hiddenPanelSaintCount = Math.max(0, selectedPanelSaints.length - visiblePanelSaints.length);
   const visibleSaintCount = new Set(projectedPoints.flatMap((point) => point.activeSaints.map((saint) => saint.slug))).size;
   const enableTimeFilter = () => {
     setHoveredSlug("");
@@ -240,14 +244,14 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
                 {selectedPoint?.region || selectedPoint?.country ? <p>{[selectedPoint.region, selectedPoint.country].filter(Boolean).join(", ")}</p> : null}
               </div>
               <ul className="places-map__saint-list">
-                {selectedPanelItem.activeSaints.slice(0, 8).map((saint) => (
+                {visiblePanelSaints.map((saint) => (
                   <li key={saint.slug}>
                     <Link href={`/saints/${saint.slug}`}>{saint.displayName}</Link>
                     <span>{saint.eraLabel} - {saint.tradition}</span>
                   </li>
                 ))}
               </ul>
-              {selectedPanelItem.activeSaints.length > 8 ? <p className="empty-note">+{selectedPanelItem.activeSaints.length - 8} more associated saints</p> : null}
+              {hiddenPanelSaintCount > 0 ? <p className="empty-note">+{hiddenPanelSaintCount} more associated saints</p> : null}
               {selectedPoint ? (
                 <Link className="button button--secondary" href={`/places/${selectedPoint.slug}`}>Open place</Link>
               ) : selectedState?.detailPoint ? (

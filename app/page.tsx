@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { SaintCard } from "@/components/saints/saint-card";
 import { TraditionCard } from "@/components/traditions/tradition-card";
-import { getPublishedTraditions } from "@/lib/sample-data";
 import { getFeaturedSaintSummaries, getPublishedSaintSummaries } from "@/lib/public-saints";
+import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
 import { getHomeHeroContent, getHomeLayoutVariant, getHomeSectionContent } from "@/lib/site-content";
 
 export default async function HomePage() {
@@ -12,12 +12,12 @@ export default async function HomePage() {
   const hero = getHomeHeroContent();
   const featuredSaintsSection = getHomeSectionContent("featuredSaints");
   const traditionsSection = getHomeSectionContent("traditions");
-  const [featuredSaints, publishedSaints] = await Promise.all([
+  const [featuredSaints, publishedSaints, traditions] = await Promise.all([
     getFeaturedSaintSummaries(),
-    getPublishedSaintSummaries()
+    getPublishedSaintSummaries(),
+    getPublishedTraditionSummaries()
   ]);
   const saints = [...featuredSaints, ...publishedSaints.filter((saint) => !saint.featured)].slice(0, 6);
-  const traditions = getPublishedTraditions();
   const instagramPreviews = [
     "Temple lights",
     "Teachings",
@@ -125,7 +125,7 @@ type ArchiveHomePageProps = {
   featuredSaintsSection: ReturnType<typeof getHomeSectionContent>;
   traditionsSection: ReturnType<typeof getHomeSectionContent>;
   saints: Awaited<ReturnType<typeof getPublishedSaintSummaries>>;
-  traditions: ReturnType<typeof getPublishedTraditions>;
+  traditions: Awaited<ReturnType<typeof getPublishedTraditionSummaries>>;
 };
 
 function ArchiveHomePage({ hero, featuredSaintsSection, traditionsSection, saints, traditions }: ArchiveHomePageProps) {
