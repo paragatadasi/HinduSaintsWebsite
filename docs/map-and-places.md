@@ -68,13 +68,26 @@ those values over the fallback dictionary.
 
 ## Visualization Component
 
-`components/places/india-saints-map.tsx` is a client component rendered on the
-`/map` page. It receives serialized map data from `getIndiaPlaceMapData()`.
+`components/places/india-saints-map.tsx` is the interactive client component
+rendered on the `/map` page. It receives serialized map data from
+`getIndiaPlaceMapData()`.
+
+The precise state/UT paths live in `lib/india-state-map-shapes.ts`. The current
+implementation renders those paths from `app/map/page.tsx` as a server-rendered
+`stateLayer` prop so the large SVG path data does not ship inside the client
+component bundle. The client component owns point projection, marker hover,
+marker selection, state selection, the timeline checkbox/range, route drawing,
+and saint portrait cards.
 
 Current MVP behavior:
 
-- simplified SVG India silhouette
+- simplified SVG state/UT paths derived from Bharatlas 2024 LGD state
+  boundaries, stored in `lib/india-state-map-shapes.ts`
+- state outlines fill and become clickable when published saint associations
+  are present in that state
 - markers sized by active saint count
+- broad state-level place markers are hidden in the all-eras view because the
+  state fill replaces the old green state dot
 - keyboard-accessible marker selection
 - hover/focus card with place name and saint count
 - always-visible intro/prompt text from `lib/site-content.ts`
@@ -114,9 +127,51 @@ one visible location.
 When the same saint has both a broad state-level place and a more specific
 mapped city/town in that state, route mode suppresses the state-level
 association for that saint. The all-eras map keeps state associations visible
-for regional discovery, and state markers are styled distinctly from city/town
-markers. The state can still appear in route mode for saints who only have the
-broad association.
+for regional discovery by filling the state outline instead of showing a green
+state marker. The state can still appear as a marker in route mode for saints
+who only have the broad association.
+
+State fills are derived from each visible point's `stateSlug`, or from the
+point slug when the point itself is state-scoped. Keep slug aliases in the map
+geometry layer for known imported variants such as `bengal`, `orissa`, and
+`uttarkhand`.
+
+## State Layer Interaction Note
+
+On June 8, 2026, after adding the precise state/UT SVG layer, active state CSS
+hover styling worked, but React-driven map interactions regressed:
+
+- location hover cards do not appear for place markers
+- marker click/selection behavior may not update the side panel
+- the time filter checkbox/range does not appear to activate route/timeline
+  mode in the browser
+
+The fix keeps the state geometry server-side and passes the generated SVG path
+markup into the client component as inert markup. The client component still
+owns delegated state selection, marker hover/selection, the timeline controls,
+route drawing, and portrait cards.
+
+Important notes from the state-outline iteration:
+
+- The old simplified polygon was replaced with Bharatlas-derived state paths in
+  `lib/india-state-map-shapes.ts`.
+- The state path layer was first imported directly into
+  `components/places/india-saints-map.tsx`, which made the `/map` client chunk
+  very large. It was later moved to server rendering in `app/map/page.tsx`.
+- The client chunk was verified not to contain `INDIA_STATE_MAP_SHAPES` or raw
+  state path data after that split.
+- Inactive state paths have `pointer-events: none`; active state paths use
+  `pointer-events: auto`.
+- Place markers now include an invisible `.places-map__marker-hit-area` circle
+  to make hover/click easier above the state layer.
+- State hover cards were intentionally removed during debugging so state hover
+  does not compete with the original point hover card behavior.
+- `npx.cmd tsc --noEmit` passed after the changes. `npm.cmd run dev:check`
+  remained blocked by the known Windows Prisma client DLL rename lock during
+  `prisma generate`.
+- Browser-level verification was blocked in the Codex desktop environment:
+  Chrome and Edge headless both failed with GPU process errors, and the in-app
+  browser connector failed during Node/browser setup.
 
 Editors should use `birth` and `samadhi` place types only when the source
 identifies those roles. Use `routeOrder` for reviewed route sequence among other

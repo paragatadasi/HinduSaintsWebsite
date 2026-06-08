@@ -640,18 +640,41 @@ img {
   width: 100%;
 }
 
-.places-map__land {
-  fill: color-mix(in srgb, var(--color-gold) 20%, var(--color-surface));
-  stroke: color-mix(in srgb, var(--color-gold) 34%, transparent);
-  stroke-width: 1.5;
+.places-map__states {
+  filter: drop-shadow(0 12px 26px color-mix(in srgb, var(--color-bg) 16%, transparent));
 }
 
-.places-map__coastline {
-  fill: none;
-  stroke: var(--color-gold);
+.places-map__state {
+  fill: color-mix(in srgb, var(--color-gold) 12%, var(--color-surface));
+  fill-rule: evenodd;
+  outline: none;
+  pointer-events: none;
+  stroke: color-mix(in srgb, var(--color-gold) 36%, transparent);
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 2;
+  stroke-width: 1;
+  transition: fill 160ms ease, stroke 160ms ease, stroke-width 160ms ease;
+}
+
+.places-map__state--active {
+  cursor: pointer;
+  fill: color-mix(in srgb, var(--color-green) 20%, var(--color-surface));
+  pointer-events: auto;
+  stroke: color-mix(in srgb, var(--color-green) 82%, var(--color-gold));
+  stroke-width: 1.4;
+}
+
+.places-map__state--active:hover,
+.places-map__state--active:focus-visible {
+  fill: color-mix(in srgb, var(--color-green) 30%, var(--color-surface));
+  stroke: var(--color-focus);
+  stroke-width: 2.4;
+}
+
+.places-map__state--selected {
+  fill: color-mix(in srgb, var(--color-gold) 34%, var(--color-surface));
+  stroke: var(--color-gold);
+  stroke-width: 2.6;
 }
 
 .places-map__marker {
@@ -679,6 +702,11 @@ img {
   fill: color-mix(in srgb, var(--color-accent) 24%, transparent);
   stroke: var(--color-accent);
   stroke-width: 2;
+}
+
+.places-map__marker-hit-area {
+  fill: transparent;
+  stroke: transparent;
 }
 
 .places-map__marker--state .places-map__marker-ring {

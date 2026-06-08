@@ -169,6 +169,14 @@ Needs to include:
 
 Current seam: `lib/public-places.ts` maps Prisma place records with at least three published saints into public place summaries/details. This is useful for launch browsing, but the minimum threshold, SEO fields, edited place descriptions, and source/media support still need product decisions.
 
+Map visualization note as of June 8, 2026: `/map` now has Bharatlas-derived
+state/UT SVG outlines in `lib/india-state-map-shapes.ts`, rendered from
+`app/map/page.tsx` so the full geometry does not live in the client bundle.
+Active state fill, state selection, place hover cards, marker selection, and
+the timeline filter are expected to work after a clean Next dev-server restart.
+`npm run dev` clears stale production `.next` output before starting so the
+dev server does not serve HTML that points at missing client chunks.
+
 ### 3. Site content contract
 
 Purpose: support editable public copy that is not owned by a specific saint or tradition, such as the homepage banner, about page, footer copy, and future landing-page sections.

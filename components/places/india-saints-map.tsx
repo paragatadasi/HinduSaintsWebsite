@@ -9,6 +9,8 @@ import type { PlacesMapContent } from "@/lib/site-content";
 type IndiaSaintsMapProps = {
   content: PlacesMapContent;
   mapData: PublicPlaceMapData;
+  stateLayerMarkup: string;
+  stateNamesBySlug: Record<string, string>;
 };
 
 type ProjectedPoint = PublicPlaceMapPoint & {
@@ -29,6 +31,14 @@ type RouteSegment = {
   variant: "ordered" | "associated";
 };
 
+type StateMapSummary = {
+  slug: string;
+  name: string;
+  activeSaints: PublicPlaceMapSaint[];
+  representativePoint?: ProjectedPoint;
+  detailPoint?: ProjectedPoint;
+};
+
 const MAP_WIDTH = 720;
 const MAP_HEIGHT = 640;
 const MAP_PADDING = 40;
@@ -39,48 +49,12 @@ const INDIA_BOUNDS = {
   maxLongitude: 98
 };
 
-const INDIA_OUTLINE: Array<[number, number]> = [
-  [68.1, 23.6],
-  [69.3, 24.4],
-  [70.9, 24.9],
-  [72.2, 26.6],
-  [73.8, 30.3],
-  [74.7, 32.6],
-  [76.2, 34.6],
-  [78.3, 35.8],
-  [80.4, 34.9],
-  [82.7, 32.7],
-  [84.4, 28.6],
-  [88.2, 27.8],
-  [91.8, 26.8],
-  [95.0, 28.0],
-  [97.0, 27.0],
-  [95.2, 24.2],
-  [92.8, 23.6],
-  [91.2, 22.2],
-  [88.4, 21.7],
-  [87.1, 20.2],
-  [86.0, 19.0],
-  [84.8, 18.7],
-  [83.0, 17.9],
-  [81.7, 16.4],
-  [80.6, 13.6],
-  [80.2, 11.2],
-  [78.4, 8.3],
-  [77.3, 7.7],
-  [76.1, 8.9],
-  [74.9, 12.1],
-  [73.7, 15.1],
-  [72.8, 18.6],
-  [71.0, 20.7],
-  [68.1, 23.6]
-];
-
-export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
+export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesBySlug }: IndiaSaintsMapProps) {
   const yearRange = mapData.yearRange;
   const [timeFilterEnabled, setTimeFilterEnabled] = useState(false);
   const [selectedYear, setSelectedYear] = useState(yearRange ? Math.round((yearRange.min + yearRange.max) / 2) : 0);
   const [selectedSlug, setSelectedSlug] = useState("");
+  const [selectedStateSlug, setSelectedStateSlug] = useState("");
   const [hoveredSlug, setHoveredSlug] = useState("");
 
   const projectedPoints = useMemo(() => {
@@ -118,8 +92,13 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
   }, [mapData.points, selectedYear, timeFilterEnabled]);
 
   const saintRoutes = useMemo(() => buildSaintRoutes(projectedPoints), [projectedPoints]);
+  const stateSummaries = useMemo(() => buildStateSummaries(projectedPoints, stateNamesBySlug), [projectedPoints, stateNamesBySlug]);
+  const stateSummariesBySlug = useMemo(() => new Map(stateSummaries.map((state) => [state.slug, state])), [stateSummaries]);
+  const activeStateSlugs = useMemo(() => new Set(stateSummaries.map((state) => state.slug)), [stateSummaries]);
   const selectedPoint = projectedPoints.find((point) => point.slug === selectedSlug);
+  const selectedState = selectedStateSlug ? stateSummariesBySlug.get(selectedStateSlug) : undefined;
   const hoveredPoint = timeFilterEnabled ? undefined : projectedPoints.find((point) => point.slug === hoveredSlug);
+  const selectedPanelItem = selectedPoint ?? selectedState;
   const visibleSaintCount = new Set(projectedPoints.flatMap((point) => point.activeSaints.map((saint) => saint.slug))).size;
   const enableTimeFilter = () => {
     setHoveredSlug("");
@@ -132,6 +111,21 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
   const updateHoveredSlug = (slug: string) => {
     if (!timeFilterEnabled) {
       setHoveredSlug(slug);
+    }
+  };
+  const selectPoint = (slug: string) => {
+    setSelectedStateSlug("");
+    setSelectedSlug(slug);
+  };
+  const selectState = (slug: string) => {
+    setSelectedSlug("");
+    setSelectedStateSlug(slug);
+  };
+  const selectDelegatedState = (target: EventTarget | null) => {
+    const element = target instanceof Element ? target.closest<SVGElement>("[data-state-slug]") : null;
+    const stateSlug = element?.dataset.stateSlug;
+    if (stateSlug && activeStateSlugs.has(stateSlug)) {
+      selectState(stateSlug);
     }
   };
 
@@ -147,12 +141,25 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
       </div>
       <div className="places-map">
         <div className="places-map__canvas">
-          <svg viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`} role="img" aria-label="Interactive map of Indian places associated with published saints">
-            <polygon className="places-map__land" points={INDIA_OUTLINE.map(([longitude, latitude]) => {
-              const point = projectCoordinate(latitude, longitude);
-              return `${point.x},${point.y}`;
-            }).join(" ")} />
-            <path className="places-map__coastline" d={buildOutlinePath()} />
+          <svg
+            onClick={(event) => selectDelegatedState(event.target)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                const element = event.target instanceof Element ? event.target.closest("[data-state-slug]") : null;
+                if (element) {
+                  event.preventDefault();
+                  selectDelegatedState(event.target);
+                }
+              }
+            }}
+            viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
+            role="img"
+            aria-label="Interactive map of Indian places associated with published saints"
+          >
+            <g
+              className={timeFilterEnabled ? "places-map__states places-map__states--time-filter" : "places-map__states"}
+              dangerouslySetInnerHTML={{ __html: stateLayerMarkup }}
+            />
             {timeFilterEnabled ? saintRoutes.segments.map((segment) => (
               <path
                 className={segment.variant === "ordered" ? "places-map__route" : "places-map__route places-map__route--associated"}
@@ -160,18 +167,18 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
                 key={segment.id}
               />
             )) : null}
-            {projectedPoints.map((point) => (
+            {projectedPoints.filter((point) => timeFilterEnabled || point.placeScope !== "state").map((point) => (
               <g
                 aria-label={`${point.name}, ${point.activeSaints.length} ${point.activeSaints.length === 1 ? "saint" : "saints"}`}
                 className={point.placeScope === "state" ? "places-map__marker places-map__marker--state" : "places-map__marker"}
                 key={point.slug}
-                onClick={() => setSelectedSlug(point.slug)}
+                onClick={() => selectPoint(point.slug)}
                 onBlur={() => setHoveredSlug("")}
                 onFocus={() => updateHoveredSlug(point.slug)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
-                    setSelectedSlug(point.slug);
+                    selectPoint(point.slug);
                   }
                 }}
                 onMouseEnter={() => updateHoveredSlug(point.slug)}
@@ -179,6 +186,7 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
                 role="button"
                 tabIndex={0}
               >
+                <circle className="places-map__marker-hit-area" cx={point.x} cy={point.y} r={getMarkerRadius(point.activeSaints.length) + 8} />
                 <circle className={point.slug === selectedPoint?.slug ? "places-map__marker-ring places-map__marker-ring--selected" : "places-map__marker-ring"} cx={point.x} cy={point.y} r={getMarkerRadius(point.activeSaints.length)} />
                 <circle className="places-map__marker-core" cx={point.x} cy={point.y} r="4" />
               </g>
@@ -224,23 +232,27 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
           </svg>
         </div>
         <aside className="places-map__panel" aria-live="polite">
-          {selectedPoint ? (
+          {selectedPanelItem ? (
             <>
               <div>
-                <div className="eyebrow">{selectedPoint.activeSaints.length} {selectedPoint.activeSaints.length === 1 ? "saint" : "saints"}</div>
-                <h3>{selectedPoint.name}</h3>
-                {selectedPoint.region || selectedPoint.country ? <p>{[selectedPoint.region, selectedPoint.country].filter(Boolean).join(", ")}</p> : null}
+                <div className="eyebrow">{selectedPanelItem.activeSaints.length} {selectedPanelItem.activeSaints.length === 1 ? "saint" : "saints"}</div>
+                <h3>{selectedPanelItem.name}</h3>
+                {selectedPoint?.region || selectedPoint?.country ? <p>{[selectedPoint.region, selectedPoint.country].filter(Boolean).join(", ")}</p> : null}
               </div>
               <ul className="places-map__saint-list">
-                {selectedPoint.activeSaints.slice(0, 8).map((saint) => (
+                {selectedPanelItem.activeSaints.slice(0, 8).map((saint) => (
                   <li key={saint.slug}>
                     <Link href={`/saints/${saint.slug}`}>{saint.displayName}</Link>
                     <span>{saint.eraLabel} - {saint.tradition}</span>
                   </li>
                 ))}
               </ul>
-              {selectedPoint.activeSaints.length > 8 ? <p className="empty-note">+{selectedPoint.activeSaints.length - 8} more associated saints</p> : null}
-              <Link className="button button--secondary" href={`/places/${selectedPoint.slug}`}>Open place</Link>
+              {selectedPanelItem.activeSaints.length > 8 ? <p className="empty-note">+{selectedPanelItem.activeSaints.length - 8} more associated saints</p> : null}
+              {selectedPoint ? (
+                <Link className="button button--secondary" href={`/places/${selectedPoint.slug}`}>Open place</Link>
+              ) : selectedState?.detailPoint ? (
+                <Link className="button button--secondary" href={`/places/${selectedState.detailPoint.slug}`}>Open state place</Link>
+              ) : null}
             </>
           ) : (
             <div className="places-map__prompt">
@@ -278,7 +290,11 @@ export function IndiaSaintsMap({ content, mapData }: IndiaSaintsMapProps) {
             value={selectedYear}
           />
           <strong>{timeFilterEnabled ? selectedYear : "All eras"}</strong>
-          <button aria-label="Reset time filter" onClick={() => setTimeFilterEnabled(false)} type="button">
+          <button
+            aria-label="Reset time filter"
+            onClick={() => setTimeFilterEnabled(false)}
+            type="button"
+          >
             <RotateCcw size={18} />
           </button>
         </div>
@@ -295,13 +311,6 @@ function projectCoordinate(latitude: number, longitude: number) {
     x: MAP_PADDING + ((longitude - INDIA_BOUNDS.minLongitude) / (INDIA_BOUNDS.maxLongitude - INDIA_BOUNDS.minLongitude)) * drawableWidth,
     y: MAP_PADDING + ((INDIA_BOUNDS.maxLatitude - latitude) / (INDIA_BOUNDS.maxLatitude - INDIA_BOUNDS.minLatitude)) * drawableHeight
   };
-}
-
-function buildOutlinePath() {
-  return INDIA_OUTLINE.map(([longitude, latitude], index) => {
-    const point = projectCoordinate(latitude, longitude);
-    return `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`;
-  }).join(" ") + " Z";
 }
 
 function buildSaintRoutes(points: ProjectedPoint[]) {
@@ -357,6 +366,42 @@ function buildSaintRoutes(points: ProjectedPoint[]) {
   }
 
   return { cardSaintsByPoint, segments };
+}
+
+function buildStateSummaries(points: ProjectedPoint[], stateNamesBySlug: Record<string, string>) {
+  const stateSummariesBySlug = new Map<string, StateMapSummary>();
+
+  for (const point of points) {
+    const stateSlug = point.stateSlug ?? (point.placeScope === "state" ? point.slug : undefined);
+    if (!stateSlug) continue;
+
+    const existingState = stateSummariesBySlug.get(stateSlug);
+    const saintsBySlug = new Map(existingState?.activeSaints.map((saint) => [saint.slug, saint]));
+
+    for (const saint of point.activeSaints) {
+      saintsBySlug.set(saint.slug, saint);
+    }
+
+    stateSummariesBySlug.set(stateSlug, {
+      slug: stateSlug,
+      name: existingState?.name ?? stateNamesBySlug[stateSlug] ?? formatStateSlug(stateSlug),
+      activeSaints: Array.from(saintsBySlug.values()).sort((a, b) => a.displayName.localeCompare(b.displayName)),
+      representativePoint: getRepresentativeStatePoint(existingState?.representativePoint, point),
+      detailPoint: existingState?.detailPoint ?? (point.placeScope === "state" ? point : undefined)
+    });
+  }
+
+  return Array.from(stateSummariesBySlug.values()).sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function getRepresentativeStatePoint(currentPoint: ProjectedPoint | undefined, nextPoint: ProjectedPoint) {
+  if (!currentPoint) return nextPoint;
+  if (currentPoint.placeScope !== "state" && nextPoint.placeScope === "state") return nextPoint;
+  return nextPoint.activeSaints.length > currentPoint.activeSaints.length ? nextPoint : currentPoint;
+}
+
+function formatStateSlug(slug: string) {
+  return slug.split("-").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
 }
 
 function removeSupersededStateAssociations(points: Array<PublicPlaceMapPoint & { activeSaints: PublicPlaceMapSaint[] }>) {
