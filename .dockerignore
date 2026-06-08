@@ -3,5 +3,7 @@ node_modules
 .git
 backups
 uploads
-.env
+.env*
+!.env.example
+!.env.codex.example
 *.log

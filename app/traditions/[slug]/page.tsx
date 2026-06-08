@@ -1,13 +1,10 @@
 import { notFound } from "next/navigation";
 import { SaintCard } from "@/components/saints/saint-card";
 import { Prose } from "@/components/content/prose";
-import { getPublishedTraditionBySlug, getPublishedTraditionSlugs } from "@/lib/public-traditions";
+import { getPublishedTraditionBySlug } from "@/lib/public-traditions";
 import { getTraditionDetailTemplateContent } from "@/lib/site-content";
 
-export async function generateStaticParams() {
-  const traditions = await getPublishedTraditionSlugs();
-  return traditions.map((tradition) => ({ slug: tradition.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function TraditionDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

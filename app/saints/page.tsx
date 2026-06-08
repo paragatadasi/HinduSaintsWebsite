@@ -4,6 +4,8 @@ import { SaintCard } from "@/components/saints/saint-card";
 import { getPublishedSaintSummaries, searchPublishedSaintSummaries } from "@/lib/public-saints";
 import { getSaintsIndexContent } from "@/lib/site-content";
 
+export const dynamic = "force-dynamic";
+
 type SaintsIndexPageProps = {
   searchParams?: Promise<{
     era?: string | string[];

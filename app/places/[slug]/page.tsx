@@ -1,11 +1,9 @@
 import { notFound } from "next/navigation";
 import { SaintCard } from "@/components/saints/saint-card";
-import { getPublishedPlaceBySlug, getPublishedPlaceSlugs } from "@/lib/public-places";
+import { getPublishedPlaceBySlug } from "@/lib/public-places";
 import { getPlaceDetailTemplateContent } from "@/lib/site-content";
 
-export async function generateStaticParams() {
-  return getPublishedPlaceSlugs();
-}
+export const dynamic = "force-dynamic";
 
 export default async function PlaceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

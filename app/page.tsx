@@ -7,6 +7,8 @@ import { getFeaturedSaintSummaries, getPublishedSaintSummaries } from "@/lib/pub
 import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
 import { getHomeHeroContent, getHomeLayoutVariant, getHomeSectionContent } from "@/lib/site-content";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const layout = getHomeLayoutVariant();
   const hero = getHomeHeroContent();

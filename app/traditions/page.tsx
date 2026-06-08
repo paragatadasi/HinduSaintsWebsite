@@ -2,6 +2,8 @@ import { TraditionCard } from "@/components/traditions/tradition-card";
 import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
 import { getTraditionsIndexContent } from "@/lib/site-content";
 
+export const dynamic = "force-dynamic";
+
 export default async function TraditionsIndexPage() {
   const content = getTraditionsIndexContent();
   const traditions = await getPublishedTraditionSummaries();

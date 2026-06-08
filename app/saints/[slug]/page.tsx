@@ -5,14 +5,11 @@ import type { ReactNode } from "react";
 import { InstagramEmbedGrid } from "@/components/instagram/instagram-embed-grid";
 import { Prose } from "@/components/content/prose";
 import { Button } from "@/components/ui/button";
-import { getPublishedSaintBySlug, getPublishedSaintSlugs } from "@/lib/public-saints";
+import { getPublishedSaintBySlug } from "@/lib/public-saints";
 import { getSaintDetailTemplateContent } from "@/lib/site-content";
 import type { PublicFurtherReadingItem, PublicImage, PublicSourceSummary } from "@/lib/public-contracts";
 
-export async function generateStaticParams() {
-  const saints = await getPublishedSaintSlugs();
-  return saints.map((saint) => ({ slug: saint.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function SaintDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

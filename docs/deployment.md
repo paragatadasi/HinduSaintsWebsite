@@ -27,14 +27,23 @@ npm run db:seed
 docker compose -f infra/docker-compose.yml up -d --build
 ```
 
-## VPS notes
+## Production deployment
 
-1. Install Docker and Docker Compose.
-2. Copy the project to the server.
-3. Set real production secrets in `.env`.
-4. Set `CADDY_DOMAIN` to the domain.
-5. Start the stack.
-6. Confirm HTTPS and admin access.
+Production deployment details are intentionally not stored in this public app repository.
+Do not add Strato host details, Caddy production routing, production Compose files,
+SSH keys, GitHub Actions deploy workflows, backup destinations, or real environment
+values here.
+
+Private production deployment details live in the local BMIT engineering checkout:
+
+```text
+../bmit-eng/deploy/hindu-saints/prod.md
+```
+
+That private deploy area owns the Strato runbook, production Compose file,
+deploy scripts, backup scripts, and GitHub Actions workflow. This public repo may
+keep generic app requirements only, such as the `Dockerfile`, health endpoint,
+Prisma migrations, and local-development Docker setup.
 
 ## Backups
 

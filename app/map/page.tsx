@@ -5,6 +5,8 @@ import { getIndiaPlaceMapData, getPublishedPlaceSummaries } from "@/lib/public-p
 import type { PublicPlaceMapData } from "@/lib/public-contracts";
 import { getPlacesIndexContent, getPlacesMapContent } from "@/lib/site-content";
 
+export const dynamic = "force-dynamic";
+
 export default async function MapIndexPage() {
   const content = getPlacesIndexContent();
   const mapContent = getPlacesMapContent();
