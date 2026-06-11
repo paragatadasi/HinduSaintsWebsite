@@ -137,6 +137,8 @@ Location handling:
 - trailing place phrases removed from names are also preserved as place links.
 - uncertain imported places default to `associated`.
 - birth and samadhi place types should only be set when the source explicitly supports that classification.
+- review/import flows should not add a second `SaintPlace` link for the same
+  saint and `Place` when another relationship type already exists.
 
 Media handling:
 
@@ -167,6 +169,11 @@ Editors can use `/admin/instagram` to filter real Instagram items by status and 
 - return an Instagram item to review, hide it, or ignore individual suggested saint links.
 
 Instagram review is a matching workflow, not a direct publishing workflow.
+Accepted Instagram place claims add an `associated` place link only when the
+saint does not already have that same `Place` linked under any relationship
+type. If a stronger reviewed relationship such as `primary`, `birth`, or
+`samadhi` already exists, the claim is considered applied without creating a
+duplicate place chip on public profiles.
 Public saint pages show Instagram links only when all conditions are true:
 
 - the saint has `status = published`.

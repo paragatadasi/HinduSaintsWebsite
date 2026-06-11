@@ -6,6 +6,7 @@ import type { Route } from "next";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { acceptSaintInstagramClaim } from "@/lib/instagram-claims";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "hidden", "archived"]);
 
@@ -26,6 +27,12 @@ const bulkSaintStatusSchema = z.object({
   saintIds: z.array(z.string().cuid()).min(1).max(500),
   status: contentStatusSchema,
   returnTo: z.string().startsWith("/admin/saints").optional()
+});
+
+const instagramClaimReviewSchema = z.object({
+  claimId: z.string().cuid(),
+  saintId: z.string().cuid(),
+  intent: z.enum(["accept", "ignore"])
 });
 
 export async function updateSaintBasics(formData: FormData) {
@@ -103,6 +110,37 @@ export async function bulkUpdateSaintReviewStatus(formData: FormData) {
   saints.forEach((saint) => revalidateSaintPaths(saint.slug));
   revalidatePath(destination);
   redirect(destination);
+}
+
+export async function reviewSaintInstagramClaim(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = instagramClaimReviewSchema.parse({
+    claimId: formData.get("claimId"),
+    saintId: formData.get("saintId"),
+    intent: formData.get("intent")
+  });
+
+  const saint = await db.$transaction(async (tx) => {
+    if (parsed.intent === "accept") {
+      await acceptSaintInstagramClaim(tx, parsed.claimId, parsed.saintId);
+    } else {
+      await tx.instagramDerivedClaim.update({
+        where: { id: parsed.claimId },
+        data: { status: "ignored" }
+      });
+    }
+
+    return tx.saint.findUnique({
+      where: { id: parsed.saintId },
+      select: { slug: true }
+    });
+  });
+
+  if (!saint) redirect("/admin/saints");
+
+  revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${saint.slug}` as Route);
 }
 
 async function requireAdminSession() {

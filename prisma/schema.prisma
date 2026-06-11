@@ -182,6 +182,7 @@ model Saint {
   galleryImages        SaintGalleryImage[]
   instagramItems       InstagramItemSaint[]
   places               SaintPlace[]
+  instagramClaims      InstagramDerivedClaim[] @relation("InstagramClaimAppliedSaint")
   relationshipsFrom    SaintRelationship[]  @relation("RelationshipFrom")
   relationshipsTo      SaintRelationship[]  @relation("RelationshipTo")
   traditions           SaintTradition[]
@@ -338,6 +339,7 @@ model InstagramDerivedClaim {
   status          MatchStatus               @default(suggested)
   confidence      Confidence                @default(medium)
   appliedSaintId  String?
+  appliedSaint    Saint?                    @relation("InstagramClaimAppliedSaint", fields: [appliedSaintId], references: [id], onDelete: SetNull)
   appliedAt       DateTime?
   notes           String?
   createdAt       DateTime                  @default(now())

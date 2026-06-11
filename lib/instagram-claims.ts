@@ -1,5 +1,6 @@
 import type { Confidence, InstagramDerivedClaim, InstagramDerivedClaimType, MatchStatus, PlaceType, Prisma } from "@prisma/client";
 import { parseImportedDate } from "@/lib/import-dates";
+import { compactMetadata, parseInstagramFirstPageMetadata, type InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { toSlug } from "@/lib/slugs";
 
 type Tx = Prisma.TransactionClient;
@@ -13,6 +14,7 @@ type ClaimInput = {
   targetEntityId?: string;
   confidence?: Confidence;
   status?: MatchStatus;
+  appliedSaintId?: string;
   notes?: string;
 };
 
@@ -27,6 +29,72 @@ export async function acceptInstagramDerivedClaim(tx: Tx, input: ClaimInput) {
 
   await applyInstagramClaimToSaint(tx, claim, primarySaintId);
   return claim;
+}
+
+export async function createDirectInstagramClaimsForSaint(tx: Tx, instagramItemId: string, saintId: string) {
+  const item = await tx.instagramItem.findUnique({
+    where: { id: instagramItemId },
+    select: {
+      firstPageText: true,
+      firstPageMetadata: true
+    }
+  });
+  if (!item) return;
+
+  const metadata = getStoredFirstPageMetadata(item.firstPageMetadata, item.firstPageText);
+  type DirectClaimInput = {
+    claimType: InstagramDerivedClaimType;
+    rawValue: string;
+    sourceField: string;
+  };
+  const directClaimCandidates: Array<DirectClaimInput | undefined> = [
+    metadata.displayName ? {
+      claimType: "alias" as const,
+      rawValue: metadata.displayName,
+      sourceField: "displayName"
+    } : undefined,
+    metadata.born ? {
+      claimType: "birth_date" as const,
+      rawValue: metadata.born,
+      sourceField: "born"
+    } : undefined,
+    metadata.samadhi ? {
+      claimType: "samadhi_date" as const,
+      rawValue: metadata.samadhi,
+      sourceField: "samadhi"
+    } : undefined,
+    metadata.tradition ? {
+      claimType: "tradition" as const,
+      rawValue: metadata.tradition,
+      sourceField: "tradition"
+    } : undefined
+  ];
+  const directClaims = directClaimCandidates.filter((claim): claim is DirectClaimInput => Boolean(claim));
+
+  for (const claim of directClaims) {
+    await upsertInstagramDerivedClaim(tx, {
+      instagramItemId,
+      claimType: claim.claimType,
+      rawValue: claim.rawValue,
+      sourceField: claim.sourceField,
+      status: "needs_review",
+      confidence: "medium",
+      appliedSaintId: saintId,
+      notes: "Piped to saint review from matched Instagram first-page biodata."
+    });
+  }
+}
+
+export async function acceptSaintInstagramClaim(tx: Tx, claimId: string, saintId: string) {
+  const claim = await tx.instagramDerivedClaim.update({
+    where: { id: claimId },
+    data: {
+      status: "matched",
+      appliedSaintId: saintId
+    }
+  });
+
+  await applyInstagramClaimToSaint(tx, claim, saintId);
 }
 
 export async function pipeAcceptedInstagramClaimsToSaint(tx: Tx, instagramItemId: string, saintId: string) {
@@ -52,7 +120,8 @@ async function upsertInstagramDerivedClaim(tx: Tx, input: ClaimInput) {
       claimType: input.claimType,
       rawValue,
       targetEntityType: input.targetEntityType ?? null,
-      targetEntityId: input.targetEntityId ?? null
+      targetEntityId: input.targetEntityId ?? null,
+      ...(input.appliedSaintId ? { appliedSaintId: input.appliedSaintId } : {})
     }
   });
 
@@ -64,13 +133,20 @@ async function upsertInstagramDerivedClaim(tx: Tx, input: ClaimInput) {
     targetEntityId: input.targetEntityId,
     status: input.status ?? "suggested",
     confidence: input.confidence ?? "medium",
+    appliedSaintId: input.appliedSaintId,
     notes: input.notes
   };
 
   if (existing) {
     return tx.instagramDerivedClaim.update({
       where: { id: existing.id },
-      data
+      data: existing.status === "matched" || existing.status === "published"
+        ? {
+            ...data,
+            status: existing.status,
+            appliedAt: existing.appliedAt
+          }
+        : data
     });
   }
 
@@ -97,7 +173,7 @@ async function getPrimaryMatchedSaintId(tx: Tx, instagramItemId: string) {
 }
 
 async function applyInstagramClaimToSaint(tx: Tx, claim: InstagramDerivedClaim, saintId: string) {
-  if (claim.appliedSaintId === saintId) return;
+  if (claim.appliedSaintId === saintId && claim.appliedAt) return;
 
   let handled = false;
 
@@ -128,6 +204,11 @@ async function applyInstagramClaimToSaint(tx: Tx, claim: InstagramDerivedClaim, 
 
   if (claim.claimType === "tradition" && claim.targetEntityType === "Tradition" && claim.targetEntityId) {
     await applyTraditionClaim(tx, saintId, claim.targetEntityId, claim);
+    handled = true;
+  }
+
+  if (claim.claimType === "tradition" && !claim.targetEntityId) {
+    await applyRawTraditionClaim(tx, saintId, claim);
     handled = true;
   }
 
@@ -221,7 +302,7 @@ async function applyDateClaim(tx: Tx, claim: InstagramDerivedClaim, saintId: str
 
 async function applyPlaceClaim(tx: Tx, saintId: string, placeId: string, placeType: PlaceType, claim: InstagramDerivedClaim) {
   const existing = await tx.saintPlace.findFirst({
-    where: { saintId, placeId, placeType }
+    where: { saintId, placeId }
   });
   if (existing) return;
 
@@ -293,6 +374,36 @@ async function applyTraditionClaim(tx: Tx, saintId: string, traditionId: string,
   });
 }
 
+async function applyRawTraditionClaim(tx: Tx, saintId: string, claim: InstagramDerivedClaim) {
+  const rawSlug = toSlug(claim.rawValue);
+  const traditions = await tx.tradition.findMany({
+    select: { id: true, name: true, alternateNames: true }
+  });
+  const tradition = traditions.find((candidate) => {
+    const names = [candidate.name, ...candidate.alternateNames];
+    return names.some((name) => toSlug(name) === rawSlug);
+  });
+
+  if (tradition) {
+    await applyTraditionClaim(tx, saintId, tradition.id, claim);
+    return;
+  }
+
+  await createOpenReconciliationIssue(tx, {
+    issueType: "instagram_tradition_candidate",
+    severity: "low",
+    entityType: "Saint",
+    entityId: saintId,
+    message: "Instagram first-page biodata suggests a tradition that needs matching to a CMS tradition.",
+    rawValue: claim.rawValue,
+    suggestedValue: JSON.stringify({
+      instagramItemId: claim.instagramItemId,
+      claimId: claim.id,
+      sourceValue: claim.rawValue
+    })
+  });
+}
+
 async function createOpenReconciliationIssue(
   tx: Tx,
   input: {
@@ -323,4 +434,39 @@ async function createOpenReconciliationIssue(
 
 function normalizeComparable(value: string) {
   return value.trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+function getStoredFirstPageMetadata(value: unknown, firstPageText: string | null) {
+  const storedMetadata = getFirstPageMetadata(value);
+  const parsedMetadata = parseInstagramFirstPageMetadata(firstPageText);
+
+  return compactMetadata({
+    ...parsedMetadata,
+    ...storedMetadata
+  });
+}
+
+function getFirstPageMetadata(value: unknown): InstagramFirstPageMetadata {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  const metadata = value as Record<string, unknown>;
+
+  return {
+    displayName: getString(metadata.displayName),
+    subtitle: getString(metadata.subtitle),
+    born: getString(metadata.born),
+    samadhi: getString(metadata.samadhi),
+    keyPlace: getString(metadata.keyPlace),
+    keyPlaces: getStringArray(metadata.keyPlaces),
+    tradition: getString(metadata.tradition),
+    guru: getString(metadata.guru),
+    gurus: getStringArray(metadata.gurus)
+  };
+}
+
+function getString(value: unknown) {
+  return typeof value === "string" ? value : undefined;
+}
+
+function getStringArray(value: unknown) {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string" && Boolean(item.trim())) : undefined;
 }

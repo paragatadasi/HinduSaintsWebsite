@@ -8,8 +8,9 @@ import { compactMetadata, parseInstagramFirstPageMetadata, splitGurus, splitKeyP
 import { rankSaintSearchResults } from "@/lib/saint-search";
 import { searchScoreToConfidence } from "@/lib/search-text";
 import { toSlug } from "@/lib/slugs";
-import { acceptInstagramClaim, attachSaintToInstagramItem, createSaintFromInstagramItem, extractInstagramFirstPageFromImage, updateInstagramItemSaintStatus, updateInstagramItemStatus } from "../actions";
+import { acceptInstagramClaim, createSaintFromInstagramItem, extractInstagramFirstPageFromImage, updateInstagramItemSaintStatus, updateInstagramItemStatus } from "../actions";
 import { FirstPageMetadataForm } from "./first-page-metadata-form";
+import { SaintAttachForm } from "./saint-attach-form";
 
 type AdminInstagramReviewPageProps = {
   params: Promise<{ id: string }>;
@@ -18,13 +19,6 @@ type AdminInstagramReviewPageProps = {
     firstPageExtractionMessage?: string;
     saintQuery?: string | string[];
   }>;
-};
-
-type SaintOption = {
-  id: string;
-  displayName: string;
-  status: string;
-  confidence?: "low" | "medium" | "high";
 };
 
 export default async function AdminInstagramReviewPage({ params, searchParams }: AdminInstagramReviewPageProps) {
@@ -44,11 +38,10 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
     || firstPageMetadata.displayName
     || item.extractedSaintName
     || "";
-  const [placeSuggestions, guruSuggestions, traditionSuggestions, saints] = await Promise.all([
+  const [placeSuggestions, guruSuggestions, saints] = await Promise.all([
     getPlaceSuggestions(firstPageMetadata),
     getGuruSuggestions(firstPageMetadata),
-    getTraditionSuggestions(firstPageMetadata),
-    getSaintOptions(saintQuery)
+    getSaintOptions()
   ]);
   const acceptedClaims = getAcceptedClaimKeys(item.derivedClaims);
 
@@ -154,13 +147,6 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
             targetEntityType="Saint"
           />
         </div>
-        <DirectClaimList
-          acceptedClaims={acceptedClaims}
-          instagramItemId={item.id}
-          metadata={firstPageMetadata}
-          returnTo={returnTo}
-          traditionSuggestions={traditionSuggestions}
-        />
       </section>
 
       <section className="review-panel">
@@ -196,44 +182,12 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
 
       <section className="review-panel">
         <h2>Attach Saint</h2>
-        <form action={`/admin/instagram/${item.id}`} className="admin-search" role="search">
-          <label className="sr-only" htmlFor="instagram-saint-search">Search matching saints</label>
-          <input
-            id="instagram-saint-search"
-            name="saintQuery"
-            placeholder="Search by name, alias, place, tradition, or date"
-            type="search"
-            defaultValue={saintQuery}
-          />
-          <button className="admin-form-button" type="submit">Search</button>
-          {saintQuery ? <Link className="admin-form-button admin-form-button--secondary" href={`/admin/instagram/${item.id}`}>Reset</Link> : null}
-        </form>
-        <form action={attachSaintToInstagramItem} className="form-stack">
-          <input name="instagramItemId" type="hidden" value={item.id} />
-          <input name="returnTo" type="hidden" value={returnTo} />
-          <label>
-            Saint
-            <select name="saintId" required>
-              <option value="">Choose a saint...</option>
-              {saints.map((saint) => (
-                <option key={saint.id} value={saint.id}>
-                  {saint.displayName}{saint.confidence ? ` - ${saint.confidence} match` : ""}{saint.status ? ` (${formatStatus(saint.status)})` : ""}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Confidence
-            <select name="matchConfidence" defaultValue="medium">
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
-            </select>
-          </label>
-          <div className="review-actions">
-            <button className="admin-form-button" type="submit">Attach and confirm match</button>
-          </div>
-        </form>
+        <SaintAttachForm
+          initialQuery={saintQuery}
+          instagramItemId={item.id}
+          returnTo={returnTo}
+          saints={saints}
+        />
       </section>
 
       <section className="review-panel">
@@ -318,12 +272,11 @@ async function getInstagramItem(id: string) {
   return { ...item, externalRecord };
 }
 
-async function getSaintOptions(query: string): Promise<SaintOption[]> {
-  const saints = await db.saint.findMany({
+async function getSaintOptions() {
+  return db.saint.findMany({
     orderBy: { displayName: "asc" },
     select: {
       id: true,
-      slug: true,
       displayName: true,
       canonicalName: true,
       status: true,
@@ -343,23 +296,6 @@ async function getSaintOptions(query: string): Promise<SaintOption[]> {
       }
     }
   });
-
-  if (!query) {
-    return saints.map((saint) => ({
-      id: saint.id,
-      displayName: saint.displayName,
-      status: saint.status,
-      confidence: undefined
-    }));
-  }
-
-  return rankSaintSearchResults(saints, query, { includeAdminFields: true, limit: 25 })
-    .map(({ item, score }) => ({
-      id: item.id,
-      displayName: item.displayName,
-      status: item.status,
-      confidence: searchScoreToConfidence(score)
-    }));
 }
 
 function getFirstPageMetadata(value: unknown): InstagramFirstPageMetadata {
@@ -488,31 +424,6 @@ async function getGuruSuggestions(metadata: InstagramFirstPageMetadata) {
   }));
 }
 
-async function getTraditionSuggestions(metadata: InstagramFirstPageMetadata) {
-  if (!metadata.tradition) return [];
-
-  const traditions = await db.tradition.findMany({
-    orderBy: { name: "asc" },
-    select: { id: true, slug: true, name: true, alternateNames: true, status: true }
-  });
-  const rawValue = metadata.tradition;
-
-  return traditions
-    .map((tradition) => {
-      const confidence = getPlaceMatchConfidence(rawValue, [tradition.name, ...tradition.alternateNames]);
-      return confidence === "low" ? undefined : {
-        id: tradition.id,
-        href: `/admin/traditions`,
-        label: tradition.name,
-        detail: formatStatus(tradition.status),
-        confidence
-      };
-    })
-    .filter((match): match is MetadataSuggestionMatch => Boolean(match))
-    .sort(sortSuggestionMatches)
-    .slice(0, 3);
-}
-
 type MetadataSuggestion = Awaited<ReturnType<typeof getPlaceSuggestions>>[number];
 
 type MetadataSuggestionMatch = {
@@ -581,100 +492,6 @@ function MetadataSuggestionList({
   );
 }
 
-type DirectClaim = {
-  claimType: "alias" | "birth_date" | "samadhi_date";
-  rawValue: string;
-  sourceField: string;
-  label: string;
-  targetEntityType?: undefined;
-  targetEntityId?: undefined;
-};
-
-function DirectClaimList({
-  acceptedClaims,
-  instagramItemId,
-  metadata,
-  returnTo,
-  traditionSuggestions
-}: {
-  acceptedClaims: Set<string>;
-  instagramItemId: string;
-  metadata: InstagramFirstPageMetadata;
-  returnTo: string;
-  traditionSuggestions: MetadataSuggestionMatch[];
-}) {
-  const alias = metadata.displayName;
-  const directClaimCandidates: Array<DirectClaim | undefined> = [
-    alias ? {
-      claimType: "alias" as const,
-      rawValue: alias,
-      sourceField: "displayName",
-      label: `Alias: ${alias}`,
-      targetEntityType: undefined,
-      targetEntityId: undefined
-    } : undefined,
-    metadata.born ? {
-      claimType: "birth_date" as const,
-      rawValue: metadata.born,
-      sourceField: "born",
-      label: `Birth date: ${metadata.born}`,
-      targetEntityType: undefined,
-      targetEntityId: undefined
-    } : undefined,
-    metadata.samadhi ? {
-      claimType: "samadhi_date" as const,
-      rawValue: metadata.samadhi,
-      sourceField: "samadhi",
-      label: `Samadhi date: ${metadata.samadhi}`,
-      targetEntityType: undefined,
-      targetEntityId: undefined
-    } : undefined
-  ];
-  const directClaims = directClaimCandidates.filter((claim): claim is DirectClaim => Boolean(claim));
-
-  if (directClaims.length === 0 && !metadata.tradition) return null;
-
-  return (
-    <div className="review-suggestion-list">
-      <h3>Direct claims</h3>
-      <div className="review-meta">
-        {directClaims.map((claim) => (
-          <AcceptClaimForm
-            accepted={acceptedClaims.has(getClaimKey(claim.claimType, claim.rawValue, claim.targetEntityType, claim.targetEntityId))}
-            claimType={claim.claimType}
-            confidence="medium"
-            instagramItemId={instagramItemId}
-            key={`${claim.claimType}:${claim.rawValue}`}
-            label={claim.label}
-            rawValue={claim.rawValue}
-            returnTo={returnTo}
-            sourceField={claim.sourceField}
-            targetEntityId={claim.targetEntityId}
-            targetEntityType={claim.targetEntityType}
-          />
-        ))}
-        {metadata.tradition && traditionSuggestions.length > 0 ? traditionSuggestions.map((suggestion) => (
-          <AcceptClaimForm
-            accepted={acceptedClaims.has(getClaimKey("tradition", metadata.tradition ?? "", "Tradition", suggestion.id))}
-            claimType="tradition"
-            confidence={suggestion.confidence}
-            instagramItemId={instagramItemId}
-            key={suggestion.id}
-            label={`Tradition: ${suggestion.label}: ${suggestion.confidence}`}
-            rawValue={metadata.tradition ?? ""}
-            returnTo={returnTo}
-            sourceField="tradition"
-            targetEntityId={suggestion.id}
-            targetEntityType="Tradition"
-          />
-        )) : metadata.tradition ? (
-          <StatusBadge label={`Tradition pending: ${metadata.tradition}`} />
-        ) : null}
-      </div>
-    </div>
-  );
-}
-
 function AcceptClaimForm({
   accepted,
   claimType,
@@ -688,7 +505,7 @@ function AcceptClaimForm({
   targetEntityType
 }: {
   accepted: boolean;
-  claimType: "alias" | "birth_date" | "guru" | "place" | "samadhi_date" | "tradition";
+  claimType: "guru" | "place";
   confidence: "low" | "medium" | "high";
   instagramItemId: string;
   label: string;

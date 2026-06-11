@@ -7,7 +7,7 @@ import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { acceptInstagramDerivedClaim, pipeAcceptedInstagramClaimsToSaint } from "@/lib/instagram-claims";
+import { acceptInstagramDerivedClaim, createDirectInstagramClaimsForSaint, pipeAcceptedInstagramClaimsToSaint } from "@/lib/instagram-claims";
 import { extractInstagramFirstPageDraft } from "@/lib/instagram-first-page-extraction";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { toSlug } from "@/lib/slugs";
@@ -125,6 +125,7 @@ export async function updateInstagramItemSaintStatus(formData: FormData) {
         where: { id: updatedLink.saintId },
         data: { hasInstagramContent: true }
       });
+      await createDirectInstagramClaimsForSaint(tx, updatedLink.instagramItemId, updatedLink.saintId);
       await pipeAcceptedInstagramClaimsToSaint(tx, updatedLink.instagramItemId, updatedLink.saintId);
     }
 
@@ -188,6 +189,7 @@ export async function attachSaintToInstagramItem(formData: FormData) {
       where: { id: parsed.saintId },
       data: { hasInstagramContent: true }
     });
+    await createDirectInstagramClaimsForSaint(tx, parsed.instagramItemId, parsed.saintId);
     await pipeAcceptedInstagramClaimsToSaint(tx, parsed.instagramItemId, parsed.saintId);
 
     return updatedLink;
@@ -243,6 +245,7 @@ export async function createSaintFromInstagramItem(formData: FormData) {
         notes: "Created saint from Instagram review workflow."
       }
     });
+    await createDirectInstagramClaimsForSaint(tx, parsed.instagramItemId, createdSaint.id);
     await pipeAcceptedInstagramClaimsToSaint(tx, parsed.instagramItemId, createdSaint.id);
 
     return createdSaint;
@@ -281,11 +284,24 @@ export async function updateInstagramFirstPageMetadata(formData: FormData) {
         guru: parsed.guru
       });
 
-  await db.instagramItem.update({
-    where: { id: parsed.instagramItemId },
-    data: {
-      firstPageText: parsed.firstPageText,
-      firstPageMetadata: Object.keys(metadata).length > 0 ? metadata as Prisma.InputJsonValue : Prisma.JsonNull
+  await db.$transaction(async (tx) => {
+    await tx.instagramItem.update({
+      where: { id: parsed.instagramItemId },
+      data: {
+        firstPageText: parsed.firstPageText,
+        firstPageMetadata: Object.keys(metadata).length > 0 ? metadata as Prisma.InputJsonValue : Prisma.JsonNull
+      }
+    });
+
+    const links = await tx.instagramItemSaint.findMany({
+      where: {
+        instagramItemId: parsed.instagramItemId,
+        matchStatus: { in: ["matched", "published"] }
+      },
+      select: { saintId: true }
+    });
+    for (const link of links) {
+      await createDirectInstagramClaimsForSaint(tx, parsed.instagramItemId, link.saintId);
     }
   });
 
@@ -325,11 +341,24 @@ export async function extractInstagramFirstPageFromImage(formData: FormData) {
   const hasMetadata = Object.keys(draft.metadata).length > 0;
 
   if (draft.firstPageText || hasMetadata) {
-    await db.instagramItem.update({
-      where: { id: parsed.instagramItemId },
-      data: {
-        firstPageText: draft.firstPageText,
-        firstPageMetadata: hasMetadata ? draft.metadata as Prisma.InputJsonValue : Prisma.JsonNull
+    await db.$transaction(async (tx) => {
+      await tx.instagramItem.update({
+        where: { id: parsed.instagramItemId },
+        data: {
+          firstPageText: draft.firstPageText,
+          firstPageMetadata: hasMetadata ? draft.metadata as Prisma.InputJsonValue : Prisma.JsonNull
+        }
+      });
+
+      const links = await tx.instagramItemSaint.findMany({
+        where: {
+          instagramItemId: parsed.instagramItemId,
+          matchStatus: { in: ["matched", "published"] }
+        },
+        select: { saintId: true }
+      });
+      for (const link of links) {
+        await createDirectInstagramClaimsForSaint(tx, parsed.instagramItemId, link.saintId);
       }
     });
   }

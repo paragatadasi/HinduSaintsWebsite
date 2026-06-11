@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
-import { updateSaintBasics, updateSaintReviewStatus } from "../actions";
+import { reviewSaintInstagramClaim, updateSaintBasics, updateSaintReviewStatus } from "../actions";
 
 type AdminSaintEditorPageProps = {
   params: Promise<{ id: string }>;
@@ -97,6 +97,43 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
       </section>
 
       <section className="review-panel">
+        <h2>Instagram Claims</h2>
+        {saint.instagramClaims.length > 0 ? (
+          <div className="review-list">
+            {saint.instagramClaims.map((claim) => (
+              <div className="review-row" key={claim.id}>
+                <div>
+                  <div className="review-meta">
+                    <StatusBadge label={formatStatus(claim.status)} />
+                    <StatusBadge label={claim.confidence} />
+                    <StatusBadge label={formatStatus(claim.claimType)} />
+                  </div>
+                  <h3>{formatClaimLabel(claim.claimType)}</h3>
+                  <p>{claim.rawValue}</p>
+                  <div className="review-actions">
+                    <Link className="admin-text-link" href={`/admin/instagram/${claim.instagramItemId}`}>Open Instagram item</Link>
+                    {claim.instagramItem.instagramShortcode ? <a className="admin-text-link" href={claim.instagramItem.instagramUrl}>View post</a> : null}
+                  </div>
+                </div>
+                <div className="review-actions">
+                  {claim.status === "needs_review" || claim.status === "suggested" ? (
+                    <>
+                      <ClaimReviewForm claimId={claim.id} saintId={saint.id} intent="accept" label="Accept" />
+                      <ClaimReviewForm claimId={claim.id} saintId={saint.id} intent="ignore" label="Ignore" variant="warning" />
+                    </>
+                  ) : (
+                    <StatusBadge label={claim.appliedAt ? `applied ${claim.appliedAt.toLocaleDateString()}` : formatStatus(claim.status)} />
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No direct Instagram claims are waiting for review.</p>
+        )}
+      </section>
+
+      <section className="review-panel">
         <h2>Instagram Tracker Matches</h2>
         {trackerRows.length > 0 ? (
           <div className="review-list">
@@ -142,7 +179,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
 }
 
 async function getSaint(slugOrId: string) {
-  return db.saint.findFirst({
+  const saint = await db.saint.findFirst({
     where: {
       OR: [
         { slug: slugOrId },
@@ -168,6 +205,31 @@ async function getSaint(slugOrId: string) {
       }
     }
   });
+
+  if (!saint) return null;
+
+  const instagramClaims = await db.instagramDerivedClaim.findMany({
+    where: {
+      appliedSaintId: saint.id,
+      claimType: { in: ["alias", "birth_date", "samadhi_date", "tradition"] },
+      status: { in: ["needs_review", "suggested", "matched", "ignored"] }
+    },
+    include: {
+      instagramItem: {
+        select: {
+          id: true,
+          instagramUrl: true,
+          instagramShortcode: true
+        }
+      }
+    },
+    orderBy: [
+      { status: "asc" },
+      { createdAt: "asc" }
+    ]
+  });
+
+  return { ...saint, instagramClaims };
 }
 
 async function getTrackerRows(externalId: string) {
@@ -228,6 +290,43 @@ function StatusForm({
       <button className={className} type="submit">{label}</button>
     </form>
   );
+}
+
+function ClaimReviewForm({
+  claimId,
+  intent,
+  label,
+  saintId,
+  variant = "secondary"
+}: {
+  claimId: string;
+  intent: "accept" | "ignore";
+  label: string;
+  saintId: string;
+  variant?: "secondary" | "warning";
+}) {
+  const className = [
+    "admin-form-button",
+    variant === "secondary" ? "admin-form-button--secondary" : null,
+    variant === "warning" ? "admin-form-button--warning" : null
+  ].filter(Boolean).join(" ");
+
+  return (
+    <form action={reviewSaintInstagramClaim}>
+      <input name="claimId" type="hidden" value={claimId} />
+      <input name="saintId" type="hidden" value={saintId} />
+      <input name="intent" type="hidden" value={intent} />
+      <button className={className} type="submit">{label}</button>
+    </form>
+  );
+}
+
+function formatClaimLabel(claimType: string) {
+  if (claimType === "birth_date") return "Birth date candidate";
+  if (claimType === "samadhi_date") return "Samadhi date candidate";
+  if (claimType === "alias") return "Alias candidate";
+  if (claimType === "tradition") return "Tradition candidate";
+  return formatStatus(claimType);
 }
 
 function formatStatus(status: string) {

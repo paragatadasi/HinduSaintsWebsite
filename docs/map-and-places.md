@@ -29,12 +29,21 @@ Public adapters:
 
 - `lib/public-places.ts` is the DB-backed adapter for place summaries, place
   detail pages, and map data.
+- `lib/public-saints.ts` is the DB-backed adapter for saint summaries and
+  saint detail pages, including the public list of place chips.
 - `lib/public-contracts.ts` defines public-safe place and map types.
 - `lib/place-geocoding.ts` resolves map coordinates.
 
 The adapter only includes saints with `status: "published"`. Do not expose raw
 import payloads, museum/relic fields, private editorial notes, or unpublished
 saints in map responses.
+
+Saint detail pages may receive multiple `SaintPlace` rows for the same `Place`
+when editorial data records different relationship types. The public saint
+adapter deduplicates the simple `places` chip list by `Place.id` so profiles do
+not show the same place name twice. Route-aware map data can still use the full
+`SaintPlace` relationship set where the relationship type or route fields are
+meaningful.
 
 ## Filtering Rules
 

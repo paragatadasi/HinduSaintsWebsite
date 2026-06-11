@@ -36,3 +36,6 @@ CREATE INDEX "InstagramDerivedClaim_appliedSaintId_idx" ON "InstagramDerivedClai
 
 -- AddForeignKey
 ALTER TABLE "InstagramDerivedClaim" ADD CONSTRAINT "InstagramDerivedClaim_instagramItemId_fkey" FOREIGN KEY ("instagramItemId") REFERENCES "InstagramItem"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InstagramDerivedClaim" ADD CONSTRAINT "InstagramDerivedClaim_appliedSaintId_fkey" FOREIGN KEY ("appliedSaintId") REFERENCES "Saint"("id") ON DELETE SET NULL ON UPDATE CASCADE;

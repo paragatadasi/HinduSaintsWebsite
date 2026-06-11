@@ -163,7 +163,7 @@ function toPublicSaintDetail(
       shortDescription: tradition.shortDescription ?? undefined
     })),
     facts: buildFacts(saint, summary),
-    places: saint.places.map(({ place }) => place.name),
+    places: getUniquePlaceNames(saint.places),
     biography: biography
       ? {
           title: biography.title,
@@ -189,6 +189,20 @@ function toPublicSaintDetail(
 function getPrimaryLocation(places: SaintListRow["places"]) {
   const primary = places.find((place) => place.placeType === "primary") ?? places[0];
   return primary?.place.name ?? DEFAULT_LOCATION;
+}
+
+function getUniquePlaceNames(places: SaintDetailRow["places"]) {
+  const placeNames: string[] = [];
+  const seenPlaceIds = new Set<string>();
+
+  for (const { place } of places) {
+    if (seenPlaceIds.has(place.id)) continue;
+
+    seenPlaceIds.add(place.id);
+    placeNames.push(place.name);
+  }
+
+  return placeNames;
 }
 
 function getPrimaryTradition(traditions: SaintListRow["traditions"]) {

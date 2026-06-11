@@ -1,24 +1,43 @@
 import Link from "next/link";
 import type { Route } from "next";
+import type { Prisma } from "@prisma/client";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
+import { rankWeightedTextSearch, type WeightedSearchField } from "@/lib/search-text";
 import { updateInstagramItemSaintStatus, updateInstagramItemStatus } from "./actions";
 
 const statuses = ["needs_review", "suggested", "matched", "ignored", "published", "hidden", "imported"] as const;
 type StatusFilter = typeof statuses[number] | "all";
 
 type AdminInstagramPageProps = {
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{ q?: string | string[]; status?: string }>;
 };
 
+type InstagramQueueItem = Prisma.InstagramItemGetPayload<{
+  include: {
+    saints: {
+      include: {
+        saint: {
+          select: {
+            canonicalName: true;
+            displayName: true;
+            slug: true;
+          };
+        };
+      };
+    };
+  };
+}>;
+
 export default async function AdminInstagramPage({ searchParams }: AdminInstagramPageProps) {
-  const { status } = await searchParams;
+  const { q, status } = await searchParams;
+  const query = getSearchParam(q);
   const activeStatus = getActiveStatus(status);
   const [itemCounts, trackerCounts, items, trackerRows] = await Promise.all([
     getInstagramItemCounts(),
     getTrackerCounts(),
-    getInstagramItems(activeStatus),
+    getInstagramItems(activeStatus, query),
     getTrackerRows()
   ]);
 
@@ -36,11 +55,11 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
         <h2>Imported posts and reels</h2>
         <p>These records come from Instagram exports or ingests and become public only through matched, published saint pages.</p>
         <div className="admin-stat-grid">
-          <Stat href="/admin/instagram" active={activeStatus === "all"} label="All" value={getTotalCount(itemCounts)} />
+          <Stat href={getInstagramReturnTo("all", query)} active={activeStatus === "all"} label="All" value={getTotalCount(itemCounts)} />
           {statuses.map((status) => (
             <Stat
               active={activeStatus === status}
-              href={`/admin/instagram?status=${status}`}
+              href={getInstagramReturnTo(status, query)}
               key={status}
               label={formatStatus(status)}
               value={itemCounts[status]}
@@ -48,27 +67,40 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
           ))}
         </div>
         <nav className="admin-tabs" aria-label="Instagram item status filters">
-          <Link aria-current={activeStatus === "all" ? "page" : undefined} className="admin-tab" href="/admin/instagram">
+          <Link aria-current={activeStatus === "all" ? "page" : undefined} className="admin-tab" href={getInstagramReturnTo("all", query) as Route}>
             All
           </Link>
           {statuses.map((status) => (
             <Link
               aria-current={activeStatus === status ? "page" : undefined}
               className="admin-tab"
-              href={`/admin/instagram?status=${status}`}
+              href={getInstagramReturnTo(status, query) as Route}
               key={status}
             >
               {formatStatus(status)}
             </Link>
           ))}
         </nav>
+        <form action="/admin/instagram" className="admin-search" role="search">
+          {activeStatus === "all" ? null : <input name="status" type="hidden" value={activeStatus} />}
+          <label className="sr-only" htmlFor="admin-instagram-search">Search Instagram queue</label>
+          <input
+            id="admin-instagram-search"
+            name="q"
+            placeholder="Search by saint, shortcode, caption, biodata, URL, or status"
+            type="search"
+            defaultValue={query}
+          />
+          <button className="admin-form-button" type="submit">Search</button>
+          {query ? <Link className="admin-form-button admin-form-button--secondary" href={getInstagramReturnTo(activeStatus, "") as Route}>Clear</Link> : null}
+        </form>
         <div className="instagram-review-list">
           {items.length > 0 ? items.map((item) => (
             <InstagramReviewCard item={item} key={item.id} />
           )) : (
             <div className="empty-state">
               <h3>No imported Instagram items in this queue</h3>
-              <p>Try another status filter or run `npm run ingest:instagram -- --api --dry-run` to preview a fresh import.</p>
+              <p>{query ? "Try another search or clear the queue search." : "Try another status filter or run `npm run ingest:instagram -- --api --dry-run` to preview a fresh import."}</p>
             </div>
           )}
         </div>
@@ -111,7 +143,7 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
   );
 }
 
-function InstagramReviewCard({ item }: { item: Awaited<ReturnType<typeof getInstagramItems>>[number] }) {
+function InstagramReviewCard({ item }: { item: InstagramQueueItem }) {
   const firstPageMetadata = getFirstPageMetadata(item.firstPageMetadata);
   const metadataBadges = [
     firstPageMetadata.born ? `Born: ${firstPageMetadata.born}` : undefined,
@@ -248,18 +280,29 @@ async function getTrackerCounts() {
   return Object.fromEntries(grouped.map((row) => [row.matchStatus, row._count._all])) as Record<string, number>;
 }
 
-async function getInstagramItems(status: StatusFilter) {
-  return db.instagramItem.findMany({
+async function getInstagramItems(status: StatusFilter, query: string): Promise<InstagramQueueItem[]> {
+  const items = await db.instagramItem.findMany({
     where: status === "all" ? undefined : { status },
     orderBy: [{ status: "asc" }, { postedAt: "desc" }, { updatedAt: "desc" }],
     include: {
       saints: {
-        include: { saint: { select: { displayName: true, slug: true } } },
+        include: { saint: { select: { canonicalName: true, displayName: true, slug: true } } },
         orderBy: [{ isPrimary: "desc" }, { matchConfidence: "desc" }]
       }
     },
-    take: 30
+    take: query ? undefined : 30
   });
+
+  if (!query) return items;
+  return rankWeightedTextSearch(
+    items,
+    query,
+    buildInstagramItemSearchFields,
+    {
+      limit: 30,
+      tieBreaker: (left: InstagramQueueItem, right: InstagramQueueItem) => getInstagramSortDate(right) - getInstagramSortDate(left)
+    }
+  ).map(({ item }) => item);
 }
 
 async function getTrackerRows() {
@@ -315,7 +358,51 @@ function getString(value: unknown) {
   return typeof value === "string" ? value : undefined;
 }
 
-function getInstagramPreviewAlt(item: Awaited<ReturnType<typeof getInstagramItems>>[number]) {
+function buildInstagramItemSearchFields(item: InstagramQueueItem): WeightedSearchField[] {
+  const metadata = getFirstPageMetadata(item.firstPageMetadata);
+  return [
+    { value: metadata.displayName, weight: 6 },
+    { value: item.extractedSaintName, weight: 6 },
+    ...item.saints.flatMap((link) => [
+      { value: link.saint.displayName, weight: 6 },
+      { value: link.saint.canonicalName, weight: 5 },
+      { value: link.matchStatus, weight: 2 },
+      { value: link.matchConfidence, weight: 1.5 }
+    ]),
+    { value: item.instagramShortcode, weight: 5 },
+    { value: metadata.subtitle, weight: 3 },
+    { value: metadata.keyPlace, weight: 3 },
+    { value: metadata.tradition, weight: 3 },
+    { value: metadata.guru, weight: 3 },
+    { value: metadata.born, weight: 2 },
+    { value: metadata.samadhi, weight: 2 },
+    { value: item.firstPageText, weight: 2 },
+    { value: item.captionText, weight: 1.4 },
+    { value: item.instagramUrl, weight: 1 },
+    { value: item.status, weight: 1 },
+    { value: item.type, weight: 1 },
+    { value: item.postedAt?.toLocaleDateString(), weight: 0.8 }
+  ];
+}
+
+function getInstagramSortDate(item: InstagramQueueItem) {
+  return (item.postedAt ?? item.updatedAt).getTime();
+}
+
+function getSearchParam(value: string | string[] | undefined) {
+  if (Array.isArray(value)) return value[0]?.trim() ?? "";
+  return value?.trim() ?? "";
+}
+
+function getInstagramReturnTo(status: StatusFilter, query: string) {
+  const params = new URLSearchParams();
+  if (status !== "all") params.set("status", status);
+  if (query) params.set("q", query);
+  const qs = params.toString();
+  return qs ? `/admin/instagram?${qs}` : "/admin/instagram";
+}
+
+function getInstagramPreviewAlt(item: InstagramQueueItem) {
   return item.captionText ? `Instagram preview: ${item.captionText.slice(0, 80)}` : "Instagram media preview";
 }
 
