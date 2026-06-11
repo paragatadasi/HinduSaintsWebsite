@@ -116,7 +116,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
       </section>
 
       <div className="page-shell">
-        <InstagramEmbedGrid urls={saint.instagramUrls} />
+        <InstagramEmbedGrid items={saint.instagramItems} saintName={saint.displayName} urls={saint.instagramUrls} />
       </div>
     </main>
   );

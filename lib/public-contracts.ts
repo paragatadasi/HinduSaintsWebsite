@@ -41,16 +41,28 @@ export type PublicTraditionLink = {
   shortDescription?: string;
 };
 
+export type PublicInstagramItem = {
+  url: string;
+  shortcode?: string;
+  type: "post" | "reel" | "carousel" | "unknown";
+  caption?: string;
+  thumbnailUrl?: string;
+  carouselImageUrls?: string[];
+  postedAt?: string;
+};
+
 export type PublicSaintSummary = {
   slug: string;
   displayName: string;
   canonicalName: string;
   shortDescription: string;
+  image?: PublicImage;
   eraLabel: string;
   primaryLocation: string;
   tradition: string;
   featured: boolean;
   instagramUrls: string[];
+  instagramItems: PublicInstagramItem[];
   status: "published";
 };
 

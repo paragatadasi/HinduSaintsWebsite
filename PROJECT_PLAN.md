@@ -103,7 +103,7 @@ Goal: bring Airtable, Instagram, CSV, and other editorial source data into the w
 This track owns:
 
 - Airtable export/import mapping, raw payload preservation, and source record traceability.
-- Instagram export/scrape ingestion, shortcode/URL normalization, caption preservation, thumbnail references, and saint-name extraction.
+- Instagram API ingestion, shortcode/URL normalization, caption preservation, thumbnail/media references, raw API payload preservation, and saint-name extraction when an explicit source field exists.
 - CSV/manual ingest patterns for editorial batches that do not originate in Airtable or Instagram.
 - Normalization of names, aliases, dates, places, traditions, captions, URLs, and source references.
 - Candidate creation for saints, aliases, biographies, sources, relationships, media, and Instagram mappings.
@@ -297,7 +297,7 @@ Needs to include:
 
 Frontend can iterate on the queue and decision UI with seed data while backend match logic improves.
 
-Current seam: Instagram tracker rows can be imported and linked to Airtable mirror records; high-confidence matches can drive CMS saint approval. The admin Instagram page is still a placeholder, and the 84 unmatched tracker rows need a real review queue with match/create/ignore actions.
+Current seam: real Instagram media can be imported from the Instagram API into `InstagramItem`, with raw API payloads preserved in `ExternalRecord`. `/admin/instagram` provides status-filtered queues, rich preview cards, clickable status counters, and links to `/admin/instagram/[id]` detail review screens. The detail screen supports media/caption/source review, manual saint attachment, confirmed/ignored saint matches, and publish/review/hide actions. Public saint pages show Instagram links only for published `InstagramItem` records with matched/published saint links. Google Sheets tracker rows remain manual triangulation/reference data; richer tracker-specific review actions for the 84 unmatched rows remain follow-up work.
 
 ### 9. Airtable import contract
 
@@ -393,7 +393,7 @@ Near-term frontend candidates:
 - Add source/further-reading display states for saints, traditions, biographies, and relationships.
 - Expand admin saint editor UI beyond public basics into aliases, places, traditions, biographies, sources, images, and relationship review.
 - Add admin source attachment UI states: cited source, further reading, unresolved imported source, duplicate warning.
-- Build Instagram review queue interactions for unmatched tracker rows and ambiguous matches.
+- Add caption-assisted saint suggestion logic and richer tracker-specific review actions for unmatched tracker rows and ambiguous matches.
 - Build reconciliation issue list/detail UI for duplicate and conflict issues.
 - Move inline admin media form layout into shared design-system classes/components.
 
@@ -415,8 +415,8 @@ Near-term data integration candidates:
 - Finish Airtable attachment/image mapping for public images, private museum/relic images, credits, source URLs, and rights notes.
 - Expand import fixtures to include messy real-world cases: duplicate names, alternate spellings, missing dates, conflicting descriptions, private museum/relic fields, duplicate source citations, vague further-reading strings, multiple source references, duplicate images, missing alt text, and ambiguous image rights.
 - Keep dry-run Airtable import reporting current before changing write behavior.
-- Build review flow for the 84 unmatched Google Sheets tracker rows.
-- Normalize Instagram item URLs, shortcodes, captions, extracted names, thumbnails, and match confidence into reviewable records.
+- Build tracker-specific review flow for the 84 unmatched Google Sheets tracker rows.
+- Improve Instagram API matching with conservative caption/name extraction while preserving the current review-first behavior.
 - Preserve Instagram thumbnails as imported media references until reviewed for public display.
 - Normalize and dedupe source references from Airtable, CSV, Instagram captions, and manual batches.
 - Ensure each integration path creates complete `ExternalRecord` and `ImportBatch` traces.

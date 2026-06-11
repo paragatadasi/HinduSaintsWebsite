@@ -301,6 +301,8 @@ model InstagramItem {
   type                InstagramType        @default(unknown)
   captionText         String?
   extractedSaintName  String?
+  firstPageText       String?
+  firstPageMetadata   Json?
   postedAt            DateTime?
   thumbnailUrl        String?
   status              MatchStatus          @default(imported)

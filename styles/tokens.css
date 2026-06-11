@@ -41,6 +41,7 @@
   --width-page: 1180px;
   --width-prose: 760px;
   --width-aside: 320px;
+  --width-instagram-post-card: 360px;
   --height-map: clamp(520px, 54vw, 640px);
   --height-map-mobile-canvas: 340px;
   --height-map-mobile-panel: 300px;

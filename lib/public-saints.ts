@@ -1,11 +1,14 @@
 import { db } from "@/lib/db";
+import { getInstagramCarouselImageUrls } from "@/lib/instagram";
 import type { Prisma } from "@prisma/client";
 import type {
   PublicImage,
+  PublicInstagramItem,
   PublicSaintDetail,
   PublicSaintSummary,
   PublicSourceSummary
 } from "@/lib/public-contracts";
+import { rankSaintSearchResults } from "@/lib/saint-search";
 
 type SaintListRow = Awaited<ReturnType<typeof getPublishedSaintRows>>[number];
 type SaintDetailRow = NonNullable<Awaited<ReturnType<typeof getPublishedSaintRowBySlug>>>;
@@ -71,11 +74,8 @@ export async function searchPublishedSaintSummaries(query: string) {
   if (!term) return getPublishedSaintSummaries();
 
   const rows = await getPublishedSaintRows();
-  return rows
-    .map((saint) => ({ saint, score: scorePublicSaintSearch(saint, term) }))
-    .filter(({ score }) => score > 0)
-    .sort((a, b) => b.score - a.score || a.saint.displayName.localeCompare(b.saint.displayName))
-    .map(({ saint }) => toPublicSaintSummary(saint));
+  return rankSaintSearchResults(rows, term)
+    .map(({ item }) => toPublicSaintSummary(item));
 }
 
 export async function getFeaturedSaintSummaries() {
@@ -97,8 +97,9 @@ export async function getPublishedSaintBySlug(slug: string): Promise<PublicSaint
   if (!saint) return null;
 
   const instagramUrls = await getInstagramUrlsForSaint(saint.id);
+  const instagramItems = await getInstagramItemsForSaint(saint.id);
   const sources = await getSourcesForSaint(saint.id);
-  return toPublicSaintDetail(saint, instagramUrls, sources);
+  return toPublicSaintDetail(saint, instagramUrls, instagramItems, sources);
 }
 
 function toPublicSaintSummary(saint: SaintListRow): PublicSaintSummary {
@@ -107,11 +108,13 @@ function toPublicSaintSummary(saint: SaintListRow): PublicSaintSummary {
     displayName: saint.displayName,
     canonicalName: saint.canonicalName,
     shortDescription: saint.shortDescription ?? saint.biographySummary ?? DEFAULT_DESCRIPTION,
+    image: saint.primaryImage ? toPublicImage(saint.primaryImage, saint.displayName) : undefined,
     eraLabel: saint.eraLabel ?? DEFAULT_ERA,
     primaryLocation: getPrimaryLocation(saint.places),
     tradition: getPrimaryTradition(saint.traditions),
     featured: saint.featured,
     instagramUrls: [],
+    instagramItems: [],
     status: "published"
   };
 }
@@ -275,6 +278,7 @@ const SEARCH_HONORIFICS = new Set([
 function toPublicSaintDetail(
   saint: SaintDetailRow,
   instagramUrls: string[],
+  instagramItems: PublicInstagramItem[],
   sources: PublicSourceSummary[]
 ): PublicSaintDetail {
   const summary = toPublicSaintSummary(saint);
@@ -285,6 +289,7 @@ function toPublicSaintDetail(
   return {
     ...summary,
     instagramUrls,
+    instagramItems,
     heroImage,
     gallery,
     aliases: saint.aliases.map((alias) => alias.alias),
@@ -368,24 +373,78 @@ async function getSourcesForSaint(saintId: string): Promise<PublicSourceSummary[
 }
 
 async function getInstagramUrlsForSaint(saintId: string) {
-  const externalRecord = await db.externalRecord.findFirst({
-    where: { sourceType: "airtable", entityType: "Saint", entityId: saintId },
-    select: { externalId: true }
-  });
-  if (!externalRecord) return [];
-
-  const [, tableIdOrName, recordId] = externalRecord.externalId.split(":");
-  if (!recordId) return [];
-
-  const mirror = await db.airtableMirrorRecord.findFirst({
-    where: { tableIdOrName, recordId },
-    include: {
-      instagramTrackerRows: {
-        where: { matchStatus: "matched" },
-        select: { postUrl: true }
+  const links = await db.instagramItemSaint.findMany({
+    where: {
+      saintId,
+      matchStatus: { in: ["matched", "published"] },
+      instagramItem: { status: { in: ["matched", "published"] } }
+    },
+    orderBy: [
+      { isPrimary: "desc" },
+      { instagramItem: { postedAt: "desc" } }
+    ],
+    select: {
+      instagramItem: {
+        select: { instagramUrl: true }
       }
     }
   });
 
-  return mirror?.instagramTrackerRows.map((row) => row.postUrl).filter((url): url is string => Boolean(url)) ?? [];
+  return links.map((link) => link.instagramItem.instagramUrl);
+}
+
+async function getInstagramItemsForSaint(saintId: string): Promise<PublicInstagramItem[]> {
+  const links = await db.instagramItemSaint.findMany({
+    where: {
+      saintId,
+      matchStatus: { in: ["matched", "published"] },
+      instagramItem: { status: { in: ["matched", "published"] } }
+    },
+    orderBy: [
+      { isPrimary: "desc" },
+      { instagramItem: { postedAt: "desc" } }
+    ],
+    select: {
+      instagramItem: {
+        select: {
+          id: true,
+          instagramUrl: true,
+          instagramShortcode: true,
+          type: true,
+          captionText: true,
+          thumbnailUrl: true,
+          postedAt: true
+        }
+      }
+    }
+  });
+
+  const externalRecords = await db.externalRecord.findMany({
+    where: {
+      sourceType: "instagram",
+      entityType: "InstagramItem",
+      entityId: { in: links.map(({ instagramItem }) => instagramItem.id) }
+    },
+    orderBy: { lastSeenAt: "desc" },
+    select: {
+      entityId: true,
+      rawPayloadJson: true
+    }
+  });
+  const rawPayloadByItemId = new Map<string, unknown>();
+  for (const record of externalRecords) {
+    if (record.entityId && !rawPayloadByItemId.has(record.entityId)) {
+      rawPayloadByItemId.set(record.entityId, record.rawPayloadJson);
+    }
+  }
+
+  return links.map(({ instagramItem }) => ({
+    url: instagramItem.instagramUrl,
+    shortcode: instagramItem.instagramShortcode ?? undefined,
+    type: instagramItem.type,
+    caption: instagramItem.captionText ?? undefined,
+    thumbnailUrl: instagramItem.thumbnailUrl ?? undefined,
+    carouselImageUrls: getInstagramCarouselImageUrls(rawPayloadByItemId.get(instagramItem.id)),
+    postedAt: instagramItem.postedAt?.toISOString()
+  }));
 }

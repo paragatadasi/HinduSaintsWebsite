@@ -242,6 +242,7 @@ function toPublicSaintSummary(saint: PublishedPlaceSaint): PublicSaintSummary {
     tradition: getPrimaryTradition(saint.traditions),
     featured: saint.featured,
     instagramUrls: [],
+    instagramItems: [],
     status: "published"
   };
 }

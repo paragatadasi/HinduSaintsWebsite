@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import type { Route } from "next";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -19,6 +20,12 @@ const saintBasicsSchema = z.object({
 const saintStatusSchema = z.object({
   saintId: z.string().cuid(),
   status: contentStatusSchema
+});
+
+const bulkSaintStatusSchema = z.object({
+  saintIds: z.array(z.string().cuid()).min(1).max(500),
+  status: contentStatusSchema,
+  returnTo: z.string().startsWith("/admin/saints").optional()
 });
 
 export async function updateSaintBasics(formData: FormData) {
@@ -67,6 +74,35 @@ export async function updateSaintReviewStatus(formData: FormData) {
 
   revalidateSaintPaths(saint.slug);
   redirect(`/admin/saints/${saint.slug}`);
+}
+
+export async function bulkUpdateSaintReviewStatus(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = bulkSaintStatusSchema.parse({
+    saintIds: formData.getAll("saintIds"),
+    status: formData.get("status"),
+    returnTo: emptyToUndefined(formData.get("returnTo"))
+  });
+  const now = new Date();
+  const saints = await db.saint.findMany({
+    where: { id: { in: parsed.saintIds } },
+    select: { id: true, slug: true }
+  });
+
+  await db.saint.updateMany({
+    where: { id: { in: saints.map((saint) => saint.id) } },
+    data: {
+      status: parsed.status,
+      reviewedAt: parsed.status === "needs_review" ? null : now,
+      publishedAt: parsed.status === "published" ? now : null
+    }
+  });
+
+  const destination = (parsed.returnTo ?? "/admin/saints") as Route;
+  saints.forEach((saint) => revalidateSaintPaths(saint.slug));
+  revalidatePath(destination);
+  redirect(destination);
 }
 
 async function requireAdminSession() {

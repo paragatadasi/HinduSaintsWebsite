@@ -25,6 +25,18 @@ Current admin review surfaces:
   aliases, places, traditions, dates, Airtable linkage, Instagram tracker
   matches, and imported images, then publishing, returning to review, or hiding
   the saint.
+- `/admin/instagram` lists real imported Instagram posts/reels/carousels by
+  status, separate from manual Google Sheets tracker rows.
+- `/admin/instagram/[id]` supports reviewing a real Instagram item, previewing
+  media and caption metadata, attaching an existing saint, creating a new saint
+  draft from first-page biodata, inspecting the preserved raw API payload, and
+  returning the item to review or hiding it.
+
+Instagram review does not publish content directly. A reviewed Instagram item is
+resolved by creating or confirming an `InstagramItemSaint` match. Public
+visibility is controlled by the saint: once the saint is `published`, every
+matched non-hidden Instagram item attached to that saint is available on the
+saint page. Multiple Instagram posts can be attached to the same saint.
 
 The current review UI is intentionally focused on saint publication. Full
 relationship editing, source editing, image approval, biography editing, and

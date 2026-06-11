@@ -101,21 +101,93 @@ duplicate Airtable rows.
 
 ## Instagram
 
+The project distinguishes two Instagram-related inputs:
+
+- `InstagramItem` is the real imported Instagram post/reel/carousel record. It
+  is the source record editors should reconcile, cite, and attach to saints.
+- `InstagramTrackerRow` is manually maintained tracker data from Google Sheets.
+  It is useful for triangulation, bulk discovery, and Airtable matching, but it
+  is noisy reference data and is not treated as the Instagram source of truth.
+
 Recommended flow:
 
-1. Ingest URL, type, caption text, posted date, thumbnail, and extracted saint names.
-2. Normalize extracted names.
-3. Compare against saints and aliases.
-4. Auto-suggest matches with confidence.
+1. Ingest URL, type, caption text, posted date, thumbnail/media URL, shortcode, Meta media ID, and raw API payload.
+2. Preserve the raw API media object in `ExternalRecord`.
+3. Normalize explicit extracted saint names when the source provides them.
+4. Compare explicit names against saints and aliases and auto-suggest matches with confidence.
 5. Send uncertain items to `/admin/instagram`.
-6. Editors can match, create saint, add alias, ignore, or mark needs review.
+6. Editors review `/admin/instagram/[id]`, attach saint matches, confirm or ignore matches, and publish/hide/return items to review.
+
+Import real Instagram data from the Instagram API:
+
+```sh
+npm run ingest:instagram -- --api --dry-run
+npm run ingest:instagram -- --api
+```
+
+Required API environment:
+
+```env
+INSTAGRAM_ACCESS_TOKEN="..."
+INSTAGRAM_API_BASE_URL="https://graph.instagram.com"
+INSTAGRAM_MEDIA_FIELDS="id,caption,media_type,media_url,children{media_type,media_url,thumbnail_url},permalink,thumbnail_url,timestamp,username"
+OPENAI_API_KEY=""
+OPENAI_FIRST_PAGE_MODEL="gpt-5.5"
+```
+
+`--api` reads `/me/media`, follows pagination, and writes `InstagramItem`
+records. The importer preserves each raw API media object in `ExternalRecord`
+with `sourceType=instagram`; the Meta media `id` is used as the stable external
+identifier when present. `thumbnail_url` is used for previews when present, and
+`media_url` is used as the fallback preview for image posts. It creates
+suggested `InstagramItemSaint` links only when explicit extracted names match
+CMS saint names or aliases. It does not infer saints from captions by default,
+does not publish saint pages, and does not overwrite reviewed saint content.
+
+For carousel records imported before child media URLs were present in the raw
+payload, backfill the preserved Instagram `ExternalRecord` payloads from the
+Meta media IDs:
+
+```sh
+npm run backfill:instagram-carousels -- --dry-run
+npm run backfill:instagram-carousels
+```
+
+The backfill updates only the local Instagram raw payload snapshot for existing
+carousel items. It does not change saint matches, review status, captions, or
+human CMS edits.
+
+The admin review flow is:
+
+- `/admin/instagram`: status-filtered real Instagram queue with clickable status counters and rich media cards.
+- `/admin/instagram?status=published`: view items already published from the queue.
+- `/admin/instagram/[id]`: item detail review screen with media preview, caption, AI-assisted first-page biodata extraction from imported image data, import metadata, raw API payload, saint match list, manual saint attachment, and item publish/review/hide actions.
+
+Public display requires both:
+
+- `InstagramItem.status = published`.
+- an `InstagramItemSaint` link for the saint with `matchStatus` of `matched` or `published`.
+
+Published saint pages render matched Instagram items as rich post cards with
+caption expansion and a carousel viewer. Carousel viewer images come from the
+reviewed Instagram item's preserved child media URLs, exposed through the public
+adapter without exposing raw import payloads.
+
+For debugging or one-off backfills, the same importer can still read JSON/CSV
+exports with common field names such as `url`, `permalink`, `caption`,
+`postedAt`, `thumbnailUrl`, `shortcode`, and `saintName`:
+
+```sh
+npm run ingest:instagram -- --file path/to/instagram-posts.json --dry-run
+```
 
 ## Instagram tracker
 
-The Google Sheets Instagram tracker can be imported before full Instagram post
-data is available. Tracker rows are preserved in `InstagramTrackerRow`, and
+The Google Sheets Instagram tracker can be imported before or alongside full
+Instagram post data. Tracker rows are preserved in `InstagramTrackerRow`, and
 obvious matches flag local `AirtableMirrorRecord` saint rows with
-`hasInstagramContent`.
+`hasInstagramContent`. These flags are a discovery signal for CMS import and
+review, not a replacement for real `InstagramItem` source records.
 
 Configure a published Google Sheets CSV export URL:
 

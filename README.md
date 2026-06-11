@@ -85,9 +85,15 @@ See `docs/codex-cloud.md` for the hosted Codex environment setup script, environ
 
 ## Data integrations
 
-See `docs/data-integrations.md` for the current Airtable mirror, Google Sheets
-Instagram tracker, CMS saint import, approval, public rendering, and admin
-review workflow status.
+See `docs/data-integrations.md` for the current Airtable mirror, Instagram API
+ingest, Google Sheets tracker, CMS saint import, approval, public rendering,
+and admin review workflow status.
+
+Existing Instagram carousel records can refresh their child image URLs with:
+
+```powershell
+npm run backfill:instagram-carousels
+```
 
 See `docs/map-and-places.md` for the public Map page, Places detail routes,
 geocoding fallback, timeline filter, and place data workflow.

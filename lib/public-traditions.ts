@@ -136,6 +136,7 @@ function toPublicSaintSummary(saint: TraditionSaintRow): PublicSaintSummary {
     tradition: getPrimaryTradition(saint.traditions),
     featured: saint.featured,
     instagramUrls: [],
+    instagramItems: [],
     status: "published"
   };
 }
