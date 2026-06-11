@@ -69,11 +69,11 @@ export async function extractInstagramFirstPageDraft({
   const storedDraft = draftFromText(storedText, "stored_text");
   if (storedDraft) return storedDraft;
 
-  const captionDraft = draftFromText(captionText, "caption");
-  if (captionDraft) return captionDraft;
-
   const imageUrl = getFirstPageImageUrl(raw, thumbnailUrl);
-  if (!imageUrl) return { metadata: {}, source: "none", error: "No first-page image URL was found in the Instagram import." };
+  if (!imageUrl) {
+    const captionDraft = draftFromStrictCaptionText(captionText);
+    return captionDraft ?? { metadata: {}, source: "none", error: "No first-page image URL was found in the Instagram import." };
+  }
   if (!process.env.OPENAI_API_KEY) {
     return { metadata: {}, source: "none", imageUrl, error: "Set OPENAI_API_KEY to extract first-page text from images." };
   }
@@ -123,6 +123,19 @@ function draftFromText(value: string | null | undefined, source: "stored_text" |
   ].filter(Boolean).length;
 
   return fieldCount > 1 ? { firstPageText: text, metadata, source } satisfies InstagramFirstPageDraft : undefined;
+}
+
+function draftFromStrictCaptionText(value: string | null | undefined) {
+  const text = normalizeText(value);
+  if (!text) return undefined;
+
+  const explicitFieldCount = text
+    .split(/\r?\n/)
+    .filter((line) => /^\s*(?:born|samadhi|key\s+place|tradition|guru)\s*[:\-–—]/i.test(line))
+    .length;
+  if (explicitFieldCount < 2) return undefined;
+
+  return draftFromText(text, "caption");
 }
 
 async function extractFirstPageWithOpenAI(imageUrl: string) {

@@ -161,7 +161,22 @@ The admin review flow is:
 
 - `/admin/instagram`: status-filtered real Instagram queue with clickable status counters and rich media cards.
 - `/admin/instagram?status=published`: view items already published from the queue.
-- `/admin/instagram/[id]`: item detail review screen with media preview, caption, AI-assisted first-page biodata extraction from imported image data, import metadata, raw API payload, saint match list, manual saint attachment, and item publish/review/hide actions.
+- `/admin/instagram/[id]`: item detail review screen with media preview, caption, AI-assisted first-page biodata extraction from imported image data, import metadata, raw API payload, saint match list, first-page claim review, manual saint attachment, and item publish/review/hide actions.
+
+First-page biodata can create accepted `InstagramDerivedClaim` records for:
+
+- aliases from extracted display names.
+- birth and samadhi dates.
+- associated places.
+- guru saint relationships.
+- tradition links.
+
+Accepted claims are preserved as review records before they are applied. If an
+Instagram item already has a matched saint, accepting a claim applies it to that
+saint immediately when the target field is empty or the relationship/link is
+missing. If the item is matched later, previously accepted claims are piped into
+the newly matched saint during the match transaction. Date conflicts create open
+`ReconciliationIssue` records instead of overwriting reviewed CMS values.
 
 Public display requires both:
 

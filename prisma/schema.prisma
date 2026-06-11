@@ -94,6 +94,15 @@ enum ReconciliationStatus {
   ignored
 }
 
+enum InstagramDerivedClaimType {
+  alias
+  birth_date
+  guru
+  place
+  samadhi_date
+  tradition
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -311,8 +320,33 @@ model InstagramItem {
   sourceImportBatch   ImportBatch?         @relation(fields: [sourceImportBatchId], references: [id])
   notes               String?
   saints              InstagramItemSaint[]
+  derivedClaims       InstagramDerivedClaim[]
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
+}
+
+model InstagramDerivedClaim {
+  id              String                    @id @default(cuid())
+  instagramItemId String
+  instagramItem   InstagramItem             @relation(fields: [instagramItemId], references: [id], onDelete: Cascade)
+  claimType       InstagramDerivedClaimType
+  rawValue        String
+  normalizedValue String?
+  targetEntityType String?
+  targetEntityId   String?
+  sourceField     String?
+  status          MatchStatus               @default(suggested)
+  confidence      Confidence                @default(medium)
+  appliedSaintId  String?
+  appliedAt       DateTime?
+  notes           String?
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt
+
+  @@index([instagramItemId, claimType])
+  @@index([status])
+  @@index([targetEntityType, targetEntityId])
+  @@index([appliedSaintId])
 }
 
 model InstagramItemSaint {

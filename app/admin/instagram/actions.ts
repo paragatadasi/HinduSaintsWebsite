@@ -7,6 +7,7 @@ import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { acceptInstagramDerivedClaim, pipeAcceptedInstagramClaimsToSaint } from "@/lib/instagram-claims";
 import { extractInstagramFirstPageDraft } from "@/lib/instagram-first-page-extraction";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { toSlug } from "@/lib/slugs";
@@ -59,6 +60,17 @@ const firstPageImageExtractionSchema = z.object({
   returnTo: z.string().optional()
 });
 
+const derivedClaimSchema = z.object({
+  instagramItemId: z.string().cuid(),
+  claimType: z.enum(["alias", "birth_date", "guru", "place", "samadhi_date", "tradition"]),
+  rawValue: z.string().trim().min(1).max(500),
+  sourceField: z.string().trim().max(80).optional(),
+  targetEntityType: z.enum(["Place", "Saint", "Tradition"]).optional(),
+  targetEntityId: z.string().cuid().optional(),
+  confidence: z.enum(["low", "medium", "high"]).default("medium"),
+  returnTo: z.string().optional()
+});
+
 export async function updateInstagramItemStatus(formData: FormData) {
   await requireAdminSession();
 
@@ -92,29 +104,32 @@ export async function updateInstagramItemSaintStatus(formData: FormData) {
   });
   const now = new Date();
 
-  const link = await db.instagramItemSaint.update({
-    where: { id: parsed.instagramItemSaintId },
-    data: {
-      matchStatus: parsed.matchStatus,
-      reviewedAt: parsed.matchStatus === "matched" || parsed.matchStatus === "published" || parsed.matchStatus === "ignored" ? now : null
-    },
-    include: {
-      saint: { select: { slug: true } }
-    }
-  });
+  const link = await db.$transaction(async (tx) => {
+    const updatedLink = await tx.instagramItemSaint.update({
+      where: { id: parsed.instagramItemSaintId },
+      data: {
+        matchStatus: parsed.matchStatus,
+        reviewedAt: parsed.matchStatus === "matched" || parsed.matchStatus === "published" || parsed.matchStatus === "ignored" ? now : null
+      },
+      include: {
+        saint: { select: { slug: true } }
+      }
+    });
 
-  if (parsed.matchStatus === "matched" || parsed.matchStatus === "published") {
-    await db.$transaction([
-      db.instagramItem.update({
-        where: { id: link.instagramItemId },
+    if (parsed.matchStatus === "matched" || parsed.matchStatus === "published") {
+      await tx.instagramItem.update({
+        where: { id: updatedLink.instagramItemId },
         data: { status: "matched" }
-      }),
-      db.saint.update({
-        where: { id: link.saintId },
+      });
+      await tx.saint.update({
+        where: { id: updatedLink.saintId },
         data: { hasInstagramContent: true }
-      })
-    ]);
-  }
+      });
+      await pipeAcceptedInstagramClaimsToSaint(tx, updatedLink.instagramItemId, updatedLink.saintId);
+    }
+
+    return updatedLink;
+  });
 
   revalidateInstagramPaths([link.saint.slug]);
   redirect(getReturnTo(parsed.returnTo) as Route);
@@ -137,43 +152,46 @@ export async function attachSaintToInstagramItem(formData: FormData) {
     }
   });
 
-  const link = await db.instagramItemSaint.upsert({
-    where: {
-      instagramItemId_saintId: {
+  const link = await db.$transaction(async (tx) => {
+    const updatedLink = await tx.instagramItemSaint.upsert({
+      where: {
+        instagramItemId_saintId: {
+          instagramItemId: parsed.instagramItemId,
+          saintId: parsed.saintId
+        }
+      },
+      create: {
         instagramItemId: parsed.instagramItemId,
-        saintId: parsed.saintId
+        saintId: parsed.saintId,
+        matchStatus: "matched",
+        matchConfidence: parsed.matchConfidence,
+        isPrimary: existingLinks === 0,
+        reviewedAt: new Date(),
+        notes: "Matched manually in the Instagram review workflow."
+      },
+      update: {
+        matchStatus: "matched",
+        matchConfidence: parsed.matchConfidence,
+        reviewedAt: new Date(),
+        notes: "Matched manually in the Instagram review workflow."
+      },
+      include: {
+        saint: { select: { slug: true } }
       }
-    },
-    create: {
-      instagramItemId: parsed.instagramItemId,
-      saintId: parsed.saintId,
-      matchStatus: "matched",
-      matchConfidence: parsed.matchConfidence,
-      isPrimary: existingLinks === 0,
-      reviewedAt: new Date(),
-      notes: "Matched manually in the Instagram review workflow."
-    },
-    update: {
-      matchStatus: "matched",
-      matchConfidence: parsed.matchConfidence,
-      reviewedAt: new Date(),
-      notes: "Matched manually in the Instagram review workflow."
-    },
-    include: {
-      saint: { select: { slug: true } }
-    }
-  });
+    });
 
-  await db.$transaction([
-    db.instagramItem.update({
+    await tx.instagramItem.update({
       where: { id: parsed.instagramItemId },
       data: { status: "matched" }
-    }),
-    db.saint.update({
+    });
+    await tx.saint.update({
       where: { id: parsed.saintId },
       data: { hasInstagramContent: true }
-    })
-  ]);
+    });
+    await pipeAcceptedInstagramClaimsToSaint(tx, parsed.instagramItemId, parsed.saintId);
+
+    return updatedLink;
+  });
 
   revalidateInstagramPaths([link.saint.slug]);
   redirect(getReturnTo(parsed.returnTo) as Route);
@@ -225,6 +243,7 @@ export async function createSaintFromInstagramItem(formData: FormData) {
         notes: "Created saint from Instagram review workflow."
       }
     });
+    await pipeAcceptedInstagramClaimsToSaint(tx, parsed.instagramItemId, createdSaint.id);
 
     return createdSaint;
   });
@@ -322,6 +341,37 @@ export async function extractInstagramFirstPageFromImage(formData: FormData) {
     ? `Extracted first-page biodata from ${formatExtractionSource(draft.source)}.`
     : draft.error ?? "No first-page biodata could be extracted.";
   redirect(getExtractionReturnTo(parsed.returnTo, status, message) as Route);
+}
+
+export async function acceptInstagramClaim(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = derivedClaimSchema.parse({
+    instagramItemId: formData.get("instagramItemId"),
+    claimType: formData.get("claimType"),
+    rawValue: formData.get("rawValue"),
+    sourceField: emptyToUndefined(formData.get("sourceField")),
+    targetEntityType: emptyToUndefined(formData.get("targetEntityType")),
+    targetEntityId: emptyToUndefined(formData.get("targetEntityId")),
+    confidence: formData.get("confidence") || "medium",
+    returnTo: formData.get("returnTo") || undefined
+  });
+
+  const affectedSaintSlugs = await db.$transaction(async (tx) => {
+    await acceptInstagramDerivedClaim(tx, parsed);
+    const links = await tx.instagramItemSaint.findMany({
+      where: {
+        instagramItemId: parsed.instagramItemId,
+        matchStatus: { in: ["matched", "published"] }
+      },
+      select: { saint: { select: { slug: true } } }
+    });
+
+    return links.map((link) => link.saint.slug);
+  });
+
+  revalidateInstagramPaths(affectedSaintSlugs);
+  redirect(getReturnTo(parsed.returnTo) as Route);
 }
 
 async function requireAdminSession() {

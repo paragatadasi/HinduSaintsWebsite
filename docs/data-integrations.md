@@ -161,6 +161,7 @@ Imported Instagram items initially enter the CMS as `needs_review` unless a conf
 Editors can use `/admin/instagram` to filter real Instagram items by status and `/admin/instagram/[id]` to:
 
 - inspect the media preview, caption, posted date, shortcode, import batch, and raw API payload.
+- accept first-page biodata claims for aliases, dates, places, gurus, and traditions while preserving the accepted source value.
 - attach a saint and mark the `InstagramItemSaint` link as `matched`.
 - create a new `needs_review` saint draft from first-page biodata and attach the Instagram item immediately.
 - return an Instagram item to review, hide it, or ignore individual suggested saint links.

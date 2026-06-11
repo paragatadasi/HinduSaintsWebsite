@@ -8,7 +8,7 @@ import { compactMetadata, parseInstagramFirstPageMetadata, splitGurus, splitKeyP
 import { rankSaintSearchResults } from "@/lib/saint-search";
 import { searchScoreToConfidence } from "@/lib/search-text";
 import { toSlug } from "@/lib/slugs";
-import { attachSaintToInstagramItem, createSaintFromInstagramItem, extractInstagramFirstPageFromImage, updateInstagramItemSaintStatus, updateInstagramItemStatus } from "../actions";
+import { acceptInstagramClaim, attachSaintToInstagramItem, createSaintFromInstagramItem, extractInstagramFirstPageFromImage, updateInstagramItemSaintStatus, updateInstagramItemStatus } from "../actions";
 import { FirstPageMetadataForm } from "./first-page-metadata-form";
 
 type AdminInstagramReviewPageProps = {
@@ -37,7 +37,6 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
   const returnTo = `/admin/instagram/${item.id}`;
   const firstPageText = item.firstPageText
     ?? getRawFirstPageText(item.externalRecord?.rawPayloadJson)
-    ?? getCaptionFirstPageText(item.captionText)
     ?? "";
   const firstPageMetadata = getInitialFirstPageMetadata(item.firstPageMetadata, firstPageText);
   const isImageExtractionConfigured = Boolean(process.env.OPENAI_API_KEY);
@@ -45,11 +44,13 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
     || firstPageMetadata.displayName
     || item.extractedSaintName
     || "";
-  const [placeSuggestions, guruSuggestions, saints] = await Promise.all([
+  const [placeSuggestions, guruSuggestions, traditionSuggestions, saints] = await Promise.all([
     getPlaceSuggestions(firstPageMetadata),
     getGuruSuggestions(firstPageMetadata),
+    getTraditionSuggestions(firstPageMetadata),
     getSaintOptions(saintQuery)
   ]);
+  const acceptedClaims = getAcceptedClaimKeys(item.derivedClaims);
 
   return (
     <div className="admin-stack">
@@ -131,16 +132,35 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
         />
         <div className="review-suggestion-grid">
           <MetadataSuggestionList
+            acceptedClaims={acceptedClaims}
+            claimType="place"
             emptyText="No key places parsed yet."
             heading="Place suggestions"
+            instagramItemId={item.id}
+            returnTo={returnTo}
+            sourceField="keyPlace"
             suggestions={placeSuggestions}
+            targetEntityType="Place"
           />
           <MetadataSuggestionList
+            acceptedClaims={acceptedClaims}
+            claimType="guru"
             emptyText="No gurus parsed yet."
             heading="Guru saint suggestions"
+            instagramItemId={item.id}
+            returnTo={returnTo}
+            sourceField="guru"
             suggestions={guruSuggestions}
+            targetEntityType="Saint"
           />
         </div>
+        <DirectClaimList
+          acceptedClaims={acceptedClaims}
+          instagramItemId={item.id}
+          metadata={firstPageMetadata}
+          returnTo={returnTo}
+          traditionSuggestions={traditionSuggestions}
+        />
       </section>
 
       <section className="review-panel">
@@ -281,6 +301,9 @@ async function getInstagramItem(id: string) {
       saints: {
         include: { saint: { select: { displayName: true, slug: true, status: true } } },
         orderBy: [{ isPrimary: "desc" }, { matchConfidence: "desc" }]
+      },
+      derivedClaims: {
+        orderBy: { createdAt: "asc" }
       }
     }
   });
@@ -407,20 +430,6 @@ function getRawFirstPageText(value: unknown) {
   return typeof match === "string" ? match.trim() : undefined;
 }
 
-function getCaptionFirstPageText(value: string | null | undefined) {
-  if (!value?.trim()) return undefined;
-  const parsed = parseInstagramFirstPageMetadata(value);
-  const parsedFieldCount = [
-    parsed.born,
-    parsed.samadhi,
-    parsed.keyPlace,
-    parsed.tradition,
-    parsed.guru
-  ].filter(Boolean).length;
-
-  return parsedFieldCount > 0 ? value.trim() : undefined;
-}
-
 async function getPlaceSuggestions(metadata: InstagramFirstPageMetadata) {
   const rawPlaces = metadata.keyPlaces?.length ? metadata.keyPlaces : splitKeyPlaces(metadata.keyPlace);
   if (rawPlaces.length === 0) return [];
@@ -479,6 +488,31 @@ async function getGuruSuggestions(metadata: InstagramFirstPageMetadata) {
   }));
 }
 
+async function getTraditionSuggestions(metadata: InstagramFirstPageMetadata) {
+  if (!metadata.tradition) return [];
+
+  const traditions = await db.tradition.findMany({
+    orderBy: { name: "asc" },
+    select: { id: true, slug: true, name: true, alternateNames: true, status: true }
+  });
+  const rawValue = metadata.tradition;
+
+  return traditions
+    .map((tradition) => {
+      const confidence = getPlaceMatchConfidence(rawValue, [tradition.name, ...tradition.alternateNames]);
+      return confidence === "low" ? undefined : {
+        id: tradition.id,
+        href: `/admin/traditions`,
+        label: tradition.name,
+        detail: formatStatus(tradition.status),
+        confidence
+      };
+    })
+    .filter((match): match is MetadataSuggestionMatch => Boolean(match))
+    .sort(sortSuggestionMatches)
+    .slice(0, 3);
+}
+
 type MetadataSuggestion = Awaited<ReturnType<typeof getPlaceSuggestions>>[number];
 
 type MetadataSuggestionMatch = {
@@ -490,13 +524,25 @@ type MetadataSuggestionMatch = {
 };
 
 function MetadataSuggestionList({
+  acceptedClaims,
+  claimType,
   emptyText,
   heading,
-  suggestions
+  instagramItemId,
+  returnTo,
+  sourceField,
+  suggestions,
+  targetEntityType
 }: {
+  acceptedClaims: Set<string>;
+  claimType: "guru" | "place";
   emptyText: string;
   heading: string;
+  instagramItemId: string;
+  returnTo: string;
+  sourceField: string;
   suggestions: MetadataSuggestion[];
+  targetEntityType: "Place" | "Saint";
 }) {
   return (
     <div className="review-suggestion-list">
@@ -508,9 +554,19 @@ function MetadataSuggestionList({
             {suggestion.matches.length > 0 ? (
               <div className="review-meta">
                 {suggestion.matches.map((match) => (
-                  <Link className="status-badge" href={match.href as Route} key={match.id}>
-                    {match.label}{match.detail ? `, ${match.detail}` : ""}: {match.confidence}
-                  </Link>
+                  <AcceptClaimForm
+                    accepted={acceptedClaims.has(getClaimKey(claimType, suggestion.rawValue, targetEntityType, match.id))}
+                    claimType={claimType}
+                    confidence={match.confidence}
+                    instagramItemId={instagramItemId}
+                    key={match.id}
+                    label={`${match.label}${match.detail ? `, ${match.detail}` : ""}: ${match.confidence}`}
+                    rawValue={suggestion.rawValue}
+                    returnTo={returnTo}
+                    sourceField={sourceField}
+                    targetEntityId={match.id}
+                    targetEntityType={targetEntityType}
+                  />
                 ))}
               </div>
             ) : (
@@ -522,6 +578,140 @@ function MetadataSuggestionList({
         <p>{emptyText}</p>
       )}
     </div>
+  );
+}
+
+type DirectClaim = {
+  claimType: "alias" | "birth_date" | "samadhi_date";
+  rawValue: string;
+  sourceField: string;
+  label: string;
+  targetEntityType?: undefined;
+  targetEntityId?: undefined;
+};
+
+function DirectClaimList({
+  acceptedClaims,
+  instagramItemId,
+  metadata,
+  returnTo,
+  traditionSuggestions
+}: {
+  acceptedClaims: Set<string>;
+  instagramItemId: string;
+  metadata: InstagramFirstPageMetadata;
+  returnTo: string;
+  traditionSuggestions: MetadataSuggestionMatch[];
+}) {
+  const alias = metadata.displayName;
+  const directClaimCandidates: Array<DirectClaim | undefined> = [
+    alias ? {
+      claimType: "alias" as const,
+      rawValue: alias,
+      sourceField: "displayName",
+      label: `Alias: ${alias}`,
+      targetEntityType: undefined,
+      targetEntityId: undefined
+    } : undefined,
+    metadata.born ? {
+      claimType: "birth_date" as const,
+      rawValue: metadata.born,
+      sourceField: "born",
+      label: `Birth date: ${metadata.born}`,
+      targetEntityType: undefined,
+      targetEntityId: undefined
+    } : undefined,
+    metadata.samadhi ? {
+      claimType: "samadhi_date" as const,
+      rawValue: metadata.samadhi,
+      sourceField: "samadhi",
+      label: `Samadhi date: ${metadata.samadhi}`,
+      targetEntityType: undefined,
+      targetEntityId: undefined
+    } : undefined
+  ];
+  const directClaims = directClaimCandidates.filter((claim): claim is DirectClaim => Boolean(claim));
+
+  if (directClaims.length === 0 && !metadata.tradition) return null;
+
+  return (
+    <div className="review-suggestion-list">
+      <h3>Direct claims</h3>
+      <div className="review-meta">
+        {directClaims.map((claim) => (
+          <AcceptClaimForm
+            accepted={acceptedClaims.has(getClaimKey(claim.claimType, claim.rawValue, claim.targetEntityType, claim.targetEntityId))}
+            claimType={claim.claimType}
+            confidence="medium"
+            instagramItemId={instagramItemId}
+            key={`${claim.claimType}:${claim.rawValue}`}
+            label={claim.label}
+            rawValue={claim.rawValue}
+            returnTo={returnTo}
+            sourceField={claim.sourceField}
+            targetEntityId={claim.targetEntityId}
+            targetEntityType={claim.targetEntityType}
+          />
+        ))}
+        {metadata.tradition && traditionSuggestions.length > 0 ? traditionSuggestions.map((suggestion) => (
+          <AcceptClaimForm
+            accepted={acceptedClaims.has(getClaimKey("tradition", metadata.tradition ?? "", "Tradition", suggestion.id))}
+            claimType="tradition"
+            confidence={suggestion.confidence}
+            instagramItemId={instagramItemId}
+            key={suggestion.id}
+            label={`Tradition: ${suggestion.label}: ${suggestion.confidence}`}
+            rawValue={metadata.tradition ?? ""}
+            returnTo={returnTo}
+            sourceField="tradition"
+            targetEntityId={suggestion.id}
+            targetEntityType="Tradition"
+          />
+        )) : metadata.tradition ? (
+          <StatusBadge label={`Tradition pending: ${metadata.tradition}`} />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function AcceptClaimForm({
+  accepted,
+  claimType,
+  confidence,
+  instagramItemId,
+  label,
+  rawValue,
+  returnTo,
+  sourceField,
+  targetEntityId,
+  targetEntityType
+}: {
+  accepted: boolean;
+  claimType: "alias" | "birth_date" | "guru" | "place" | "samadhi_date" | "tradition";
+  confidence: "low" | "medium" | "high";
+  instagramItemId: string;
+  label: string;
+  rawValue: string;
+  returnTo: string;
+  sourceField: string;
+  targetEntityId?: string;
+  targetEntityType?: "Place" | "Saint" | "Tradition";
+}) {
+  if (accepted) return <StatusBadge label={`Accepted ${label}`} />;
+
+  return (
+    <form action={acceptInstagramClaim}>
+      <input name="instagramItemId" type="hidden" value={instagramItemId} />
+      <input name="returnTo" type="hidden" value={returnTo} />
+      <input name="claimType" type="hidden" value={claimType} />
+      <input name="rawValue" type="hidden" value={rawValue} />
+      <input name="sourceField" type="hidden" value={sourceField} />
+      <input name="confidence" type="hidden" value={confidence} />
+      {targetEntityType ? <input name="targetEntityType" type="hidden" value={targetEntityType} /> : null}
+      {targetEntityId ? <input name="targetEntityId" type="hidden" value={targetEntityId} /> : null}
+      <button className="status-badge" type="submit">{label}</button>
+    </form>
   );
 }
 
@@ -562,6 +752,18 @@ function sortSuggestionMatches(left: MetadataSuggestionMatch, right: MetadataSug
 
 function confidenceScore(confidence: "low" | "medium" | "high") {
   return confidence === "high" ? 3 : confidence === "medium" ? 2 : 1;
+}
+
+function getAcceptedClaimKeys(claims: NonNullable<Awaited<ReturnType<typeof getInstagramItem>>>["derivedClaims"]) {
+  return new Set(
+    claims
+      .filter((claim) => claim.status === "matched" || claim.status === "published")
+      .map((claim) => getClaimKey(claim.claimType, claim.rawValue, claim.targetEntityType ?? undefined, claim.targetEntityId ?? undefined))
+  );
+}
+
+function getClaimKey(claimType: string, rawValue: string, targetEntityType?: string, targetEntityId?: string) {
+  return [claimType, toSlug(rawValue), targetEntityType ?? "", targetEntityId ?? ""].join(":");
 }
 
 function ItemStatusForm({
