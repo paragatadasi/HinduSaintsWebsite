@@ -1,8 +1,10 @@
-import { ArrowRight, Instagram, Play, Search } from "lucide-react";
+import { ArrowRight, Instagram, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { SaintCard } from "@/components/saints/saint-card";
 import { TraditionCard } from "@/components/traditions/tradition-card";
+import { getInstagramLinkProps } from "@/lib/external-links";
+import { getRecentInstagramCarouselPreviews } from "@/lib/public-instagram";
 import { getFeaturedSaintSummaries, getPublishedSaintSummaries } from "@/lib/public-saints";
 import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
 import { getHomeHeroContent, getHomeLayoutVariant, getHomeSectionContent } from "@/lib/site-content";
@@ -12,19 +14,16 @@ export default async function HomePage() {
   const hero = getHomeHeroContent();
   const featuredSaintsSection = getHomeSectionContent("featuredSaints");
   const traditionsSection = getHomeSectionContent("traditions");
-  const [featuredSaints, publishedSaints, traditions] = await Promise.all([
+  const [featuredSaints, publishedSaints, traditions, instagramPreviews] = await Promise.all([
     getFeaturedSaintSummaries(),
     getPublishedSaintSummaries(),
-    getPublishedTraditionSummaries()
+    getPublishedTraditionSummaries(),
+    getRecentInstagramCarouselPreviews()
   ]);
-  const saints = [...featuredSaints, ...publishedSaints.filter((saint) => !saint.featured)].slice(0, 6);
-  const instagramPreviews = [
-    "Temple lights",
-    "Teachings",
-    "Pilgrimage",
-    "Lineage",
-    "Saint stories"
-  ];
+  const saints = uniqueSaintsBySlug([
+    ...featuredSaints,
+    ...publishedSaints.filter((saint) => !saint.featured)
+  ]).slice(0, 6);
 
   if (layout === "archive") {
     return (
@@ -104,16 +103,17 @@ export default async function HomePage() {
               Follow @hindu_saints
             </Button>
           </div>
-          <ScrollRail ariaLabel="Instagram previews" className="instagram-rail" controls="always">
-            {instagramPreviews.map((preview, index) => (
-              <a className={`instagram-preview instagram-preview--${index + 1}`} href={hero.secondaryAction.href} key={preview}>
-                <span className="instagram-preview__play" aria-hidden="true">
-                  <Play size={16} />
-                </span>
-                <span>{preview}</span>
-              </a>
-            ))}
-          </ScrollRail>
+          {instagramPreviews.length > 0 ? (
+            <ScrollRail ariaLabel="Instagram previews" className="instagram-rail" controls="always">
+              {instagramPreviews.map((preview) => (
+                <a className="instagram-preview interactive-media" href={preview.url} key={preview.url} {...getInstagramLinkProps(preview.url)}>
+                  <img src={preview.imageUrl} alt={preview.alt} />
+                </a>
+              ))}
+            </ScrollRail>
+          ) : (
+            <p className="empty-note">Instagram carousel posts will appear here after import.</p>
+          )}
         </div>
       </section>
     </main>
@@ -185,4 +185,8 @@ function ArchiveHomePage({ hero, featuredSaintsSection, traditionsSection, saint
       </section>
     </main>
   );
+}
+
+function uniqueSaintsBySlug(saints: Awaited<ReturnType<typeof getPublishedSaintSummaries>>) {
+  return Array.from(new Map(saints.map((saint) => [saint.slug, saint])).values());
 }

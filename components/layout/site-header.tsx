@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Search, Sun } from "lucide-react";
+import { getInstagramLinkProps } from "@/lib/external-links";
 
 export function SiteHeader() {
   return (
@@ -16,7 +17,7 @@ export function SiteHeader() {
           <Link href="/traditions">Traditions</Link>
           <Link href="/map">Map</Link>
           <Link href="/about">About</Link>
-          <Link href="https://www.instagram.com/hindu_saints/">Instagram</Link>
+          <Link href="https://www.instagram.com/hindu_saints/" {...getInstagramLinkProps("https://www.instagram.com/hindu_saints/")}>Instagram</Link>
           <Link href="/saints" aria-label="Search saints">
             <Search size={20} />
           </Link>

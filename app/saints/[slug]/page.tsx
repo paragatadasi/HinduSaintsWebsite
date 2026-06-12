@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ExternalLink, MessageSquare } from "lucide-react";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { InstagramEmbedGrid } from "@/components/instagram/instagram-embed-grid";
 import { Prose } from "@/components/content/prose";
@@ -12,6 +13,18 @@ import type { PublicFurtherReadingItem, PublicImage, PublicSourceSummary } from 
 export async function generateStaticParams() {
   const saints = await getPublishedSaintSlugs();
   return saints.map((saint) => ({ slug: saint.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const saint = await getPublishedSaintBySlug(slug);
+
+  if (!saint) return {};
+
+  return {
+    title: saint.seo?.title ?? saint.displayName,
+    description: saint.seo?.description ?? saint.shortDescription
+  };
 }
 
 export default async function SaintDetailPage({ params }: { params: Promise<{ slug: string }> }) {

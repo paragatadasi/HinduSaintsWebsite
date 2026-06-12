@@ -32,7 +32,7 @@ export default async function AdminDashboardPage() {
 
 function DashboardCard({ href, label, value }: { href: Route; label: string; value: number }) {
   return (
-    <Link className="admin-stat" href={href}>
+    <Link className="admin-stat admin-stat--link interactive-surface" href={href}>
       <StatusBadge label={String(value)} />
       <h2>{label}</h2>
     </Link>

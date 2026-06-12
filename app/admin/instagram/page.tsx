@@ -3,6 +3,7 @@ import type { Route } from "next";
 import type { Prisma } from "@prisma/client";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
+import { getInstagramLinkProps } from "@/lib/external-links";
 import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { rankWeightedTextSearch, type WeightedSearchField } from "@/lib/search-text";
 import { updateInstagramItemSaintStatus, updateInstagramItemStatus } from "./actions";
@@ -154,7 +155,7 @@ function InstagramReviewCard({ item }: { item: InstagramQueueItem }) {
 
   return (
     <article className="instagram-review-card">
-      <a className="instagram-review-card__media" href={item.instagramUrl}>
+      <a className="instagram-review-card__media interactive-media" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>
         {item.thumbnailUrl ? (
           <img src={item.thumbnailUrl} alt={getInstagramPreviewAlt(item)} />
         ) : (
@@ -181,7 +182,7 @@ function InstagramReviewCard({ item }: { item: InstagramQueueItem }) {
         ) : null}
         {item.captionText ? <p className="instagram-review-card__caption">{item.captionText}</p> : <p>No caption text imported yet.</p>}
         <div className="review-meta">
-          <a className="admin-text-link" href={item.instagramUrl}>Open on Instagram</a>
+          <a className="admin-text-link" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>Open on Instagram</a>
           <Link className="admin-text-link" href={`/admin/instagram/${item.id}`}>Review item</Link>
           {item.instagramShortcode ? <StatusBadge label={item.instagramShortcode} /> : null}
         </div>
@@ -327,7 +328,7 @@ function Stat({ active = false, href, label, value }: { active?: boolean; href?:
   }
 
   return (
-    <Link aria-current={active ? "page" : undefined} className="admin-stat admin-stat--link" href={href as Route}>
+    <Link aria-current={active ? "page" : undefined} className="admin-stat admin-stat--link interactive-surface" href={href as Route}>
       {content}
     </Link>
   );

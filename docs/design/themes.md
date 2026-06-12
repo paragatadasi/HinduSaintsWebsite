@@ -65,7 +65,9 @@ For a temporary runtime toggle, set `NEXT_PUBLIC_HOME_LAYOUT` to `archive` or `d
 Treat theme, layout, and component variants as separate decisions:
 
 - Theme changes belong in token values. For example, the nocturne palette defines the dark background, gold accents, translucent card surface, cream text, and image treatments.
+- Interactive state colors and shadows are theme decisions. Keep clickable-card affordance values such as `--color-interactive-border` and `--shadow-interactive` in each theme, while shared CSS controls when the state appears.
 - Layout changes belong in layout variants or shared layout classes. The archive and devotional homepages should be switchable without deleting either composition.
+- Interactive movement and image scale are layout/motion decisions. Keep values such as `--interactive-surface-lift` and `--interactive-image-scale` in shared tokens unless a future layout variant needs a deliberate override.
 - Component presentation changes belong in component variants. Saint cards use summary and portrait variants; tradition cards use summary and icon variants.
 
 When adjusting a section:

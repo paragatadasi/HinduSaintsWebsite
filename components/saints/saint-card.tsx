@@ -18,7 +18,7 @@ export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
 
   if (variant === "portrait") {
     return (
-      <Card className="entity-card saint-card saint-card--portrait">
+      <Card className="entity-card interactive-surface saint-card saint-card--portrait">
         <Link href={`/saints/${saint.slug}`}>
           <div className={`saint-card__portrait saint-card__portrait--${saint.slug}`}>
             <img src={image.url} alt={image.alt} width={image.width} height={image.height} />
@@ -39,7 +39,7 @@ export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
   const showReadMore = saint.shortDescription.length > SUMMARY_READ_MORE_THRESHOLD;
 
   return (
-    <Card className="entity-card saint-card saint-card--summary">
+    <Card className="entity-card interactive-surface saint-card saint-card--summary">
       <Link href={`/saints/${saint.slug}`}>
         <div className="saint-card__summary-image">
           <img src={image.url} alt={image.alt} width={image.width} height={image.height} />

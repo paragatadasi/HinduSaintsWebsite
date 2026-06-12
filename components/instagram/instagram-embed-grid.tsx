@@ -15,6 +15,7 @@ import {
   Send,
   X
 } from "lucide-react";
+import { getInstagramLinkProps } from "@/lib/external-links";
 import { getInstagramSectionContent } from "@/lib/site-content";
 import type { PublicInstagramItem } from "@/lib/public-contracts";
 
@@ -82,7 +83,7 @@ function InstagramPostCard({
   return (
     <article className="instagram-post-card">
       <header className="instagram-post-card__header">
-        <a className="instagram-post-card__account" href="https://www.instagram.com/hindu_saints/">
+        <a className="instagram-post-card__account" href="https://www.instagram.com/hindu_saints/" {...getInstagramLinkProps("https://www.instagram.com/hindu_saints/")}>
           <span className="instagram-post-card__avatar" aria-hidden="true">
             <Instagram size={18} />
           </span>
@@ -91,13 +92,13 @@ function InstagramPostCard({
             <small>{saintName}</small>
           </span>
         </a>
-        <a className="instagram-post-card__icon-link" href={post.url} aria-label={content.linkLabel}>
+        <a className="instagram-post-card__icon-link" href={post.url} aria-label={content.linkLabel} {...getInstagramLinkProps(post.url)}>
           <MoreHorizontal size={20} aria-hidden="true" />
         </a>
       </header>
 
       <div className="instagram-post-card__media">
-        <a className="instagram-post-card__media-link" href={post.url}>
+        <a className="instagram-post-card__media-link interactive-image-link" href={post.url} {...getInstagramLinkProps(post.url)}>
           {post.thumbnailUrl ? (
             <img src={post.thumbnailUrl} alt={getInstagramAlt(post, saintName)} />
           ) : (
@@ -146,7 +147,7 @@ function InstagramPostCard({
 
         <footer className="instagram-post-card__footer">
           <span>{postedAt ?? postLabel}</span>
-          <a href={post.url}>
+          <a href={post.url} {...getInstagramLinkProps(post.url)}>
             {content.linkLabel}
             <ExternalLink size={15} aria-hidden="true" />
           </a>

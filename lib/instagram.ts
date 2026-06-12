@@ -20,6 +20,17 @@ export function getInstagramCarouselImageUrls(rawPayloadJson: unknown) {
   return Array.from(new Set(urls));
 }
 
+export function getInstagramImageUrls(rawPayloadJson: unknown, fallbackUrl?: string | null) {
+  const raw = getRawPayload(rawPayloadJson);
+  const urls = [
+    ...getInstagramCarouselImageUrls(rawPayloadJson),
+    pickImageUrl(raw),
+    fallbackUrl?.trim() || undefined
+  ].filter((url): url is string => Boolean(url));
+
+  return Array.from(new Set(urls));
+}
+
 type RawPayload = Record<string, unknown>;
 
 const IMAGE_KEYS = ["mediaUrl", "media_url", "thumbnailUrl", "thumbnail_url", "imageUrl", "image_url", "url"];

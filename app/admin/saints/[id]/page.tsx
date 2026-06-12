@@ -2,8 +2,21 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
+import { getInstagramLinkProps } from "@/lib/external-links";
 import { parseImportedDate } from "@/lib/import-dates";
-import { reviewSaintInstagramClaim, updateSaintBasics, updateSaintReviewStatus } from "../actions";
+import { getInstagramImageUrls } from "@/lib/instagram";
+import {
+  removeSaintSource,
+  reviewSaintInstagramClaim,
+  updateSaintAliases,
+  updateSaintBasics,
+  updateSaintPlaces,
+  updateSaintReviewStatus,
+  updateSaintTraditions,
+  upsertSaintBiography,
+  upsertSaintSource
+} from "../actions";
+import { SaintImageCropper } from "./saint-image-cropper";
 
 type AdminSaintEditorPageProps = {
   params: Promise<{ id: string }>;
@@ -15,11 +28,22 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
 
   if (!saint) notFound();
 
-  const externalRecord = await db.externalRecord.findFirst({
-    where: { sourceType: "airtable", entityType: "Saint", entityId: saint.id },
-    select: { externalId: true, lastSeenAt: true }
-  });
+  const [externalRecord, allTraditions, allPlaces, sourceLinks] = await Promise.all([
+    db.externalRecord.findFirst({
+      where: { sourceType: "airtable", entityType: "Saint", entityId: saint.id },
+      select: { externalId: true, lastSeenAt: true }
+    }),
+    db.tradition.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, status: true } }),
+    db.place.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, region: true, country: true } }),
+    db.contentSource.findMany({
+      where: { entityType: "Saint", entityId: saint.id },
+      include: { source: true },
+      orderBy: { sortOrder: "asc" }
+    })
+  ]);
   const trackerRows = externalRecord ? await getTrackerRows(externalRecord.externalId) : [];
+  const instagramImages = await getInstagramImagesForSaint(saint);
+  const primaryBiography = saint.biographies.find((biography) => biography.status === "published") ?? saint.biographies[0];
 
   return (
     <div className="admin-stack">
@@ -59,6 +83,30 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
               Biography summary
               <textarea name="biographySummary" defaultValue={saint.biographySummary ?? ""} maxLength={8000} />
             </label>
+            <label>
+              Era label
+              <input name="eraLabel" defaultValue={saint.eraLabel ?? ""} maxLength={120} />
+            </label>
+            <label>
+              Birth date
+              <input name="birthDateRaw" defaultValue={saint.birthDateRaw ?? ""} maxLength={120} />
+            </label>
+            <label>
+              Samadhi date
+              <input name="samadhiDateRaw" defaultValue={saint.samadhiDateRaw ?? ""} maxLength={120} />
+            </label>
+            <label>
+              Date notes
+              <textarea name="dateNotes" defaultValue={saint.dateNotes ?? ""} maxLength={1000} />
+            </label>
+            <label>
+              SEO title
+              <input name="seoTitle" defaultValue={saint.seoTitle ?? ""} maxLength={120} />
+            </label>
+            <label>
+              SEO description
+              <textarea name="seoDescription" defaultValue={saint.seoDescription ?? ""} maxLength={300} />
+            </label>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save review edits</button>
             </div>
@@ -84,16 +132,223 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
           <ReviewField label="Birth date" value={saint.birthDateRaw} />
           <ReviewField label="Samadhi date" value={saint.samadhiDateRaw} />
           <ReviewField label="Date notes" value={saint.dateNotes} />
+          <ReviewField label="SEO title" value={saint.seoTitle} />
+          <ReviewField label="SEO description" value={saint.seoDescription} />
           <ReviewField label="Last Airtable mirror seen" value={externalRecord?.lastSeenAt.toLocaleString()} />
         </div>
       </section>
 
       <section className="review-panel">
         <h2>Names, Places, Traditions</h2>
-        <div className="field-grid">
-          <ReviewField label="Aliases" value={saint.aliases.map((alias) => alias.alias).join(", ")} />
-          <ReviewField label="Places" value={saint.places.map(formatSaintPlace).join(", ")} />
-          <ReviewField label="Traditions" value={saint.traditions.map(({ tradition }) => tradition.name).join(", ")} />
+        <form action={updateSaintAliases} className="form-stack">
+          <input name="saintId" type="hidden" value={saint.id} />
+          <label>
+            Aliases
+            <textarea name="aliases" defaultValue={saint.aliases.map((alias) => alias.alias).join("\n")} />
+          </label>
+          <div className="review-actions">
+            <button className="admin-form-button" type="submit">Save aliases</button>
+          </div>
+        </form>
+
+        <div className="review-panel__subsection">
+          <h3>Traditions</h3>
+          <form action={updateSaintTraditions} className="form-stack">
+            <input name="saintId" type="hidden" value={saint.id} />
+            {allTraditions.map((tradition) => {
+              const link = saint.traditions.find((item) => item.traditionId === tradition.id);
+
+              return (
+                <label key={tradition.id}>
+                  <input name="traditionIds" type="checkbox" value={tradition.id} defaultChecked={Boolean(link)} />
+                  {tradition.name} ({formatStatus(tradition.status)})
+                  <span>
+                    <input
+                      aria-label={`Primary tradition: ${tradition.name}`}
+                      name="primaryTraditionId"
+                      type="radio"
+                      value={tradition.id}
+                      defaultChecked={Boolean(link?.isPrimary)}
+                    />
+                    Primary
+                  </span>
+                </label>
+              );
+            })}
+            <div className="review-actions">
+              <button className="admin-form-button" type="submit">Save traditions</button>
+            </div>
+          </form>
+        </div>
+
+        <div className="review-panel__subsection">
+          <h3>Places</h3>
+          <form action={updateSaintPlaces} className="form-stack">
+            <input name="saintId" type="hidden" value={saint.id} />
+            {allPlaces.map((place) => {
+              const link = saint.places.find((item) => item.placeId === place.id);
+
+              return (
+                <label key={place.id}>
+                  <input name="placeIds" type="checkbox" value={place.id} defaultChecked={Boolean(link)} />
+                  {formatPlaceName(place)}
+                  <select name={`placeType:${place.id}`} defaultValue={link?.placeType ?? "associated"}>
+                    {placeTypes.map((placeType) => (
+                      <option key={placeType} value={placeType}>{formatStatus(placeType)}</option>
+                    ))}
+                  </select>
+                  <input
+                    aria-label={`Route order for ${place.name}`}
+                    name={`routeOrder:${place.id}`}
+                    placeholder="Route order"
+                    type="number"
+                    defaultValue={link?.routeOrder ?? ""}
+                  />
+                  <input
+                    aria-label={`Route label for ${place.name}`}
+                    name={`routeLabel:${place.id}`}
+                    placeholder="Route label"
+                    defaultValue={link?.routeLabel ?? ""}
+                  />
+                </label>
+              );
+            })}
+            <div className="review-actions">
+              <button className="admin-form-button" type="submit">Save places</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section className="review-panel">
+        <h2>Biography</h2>
+        <form action={upsertSaintBiography} className="form-stack">
+          <input name="saintId" type="hidden" value={saint.id} />
+          {primaryBiography ? <input name="biographyId" type="hidden" value={primaryBiography.id} /> : null}
+          <label>
+            Title
+            <input name="title" defaultValue={primaryBiography?.title ?? "Profile notes"} required maxLength={200} />
+          </label>
+          <label>
+            Status
+            <select name="status" defaultValue={primaryBiography?.status ?? "draft"}>
+              {contentStatuses.map((status) => (
+                <option key={status} value={status}>{formatStatus(status)}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Body Markdown
+            <textarea name="bodyMarkdown" defaultValue={primaryBiography?.bodyMarkdown ?? saint.biographySummary ?? ""} required maxLength={20000} />
+          </label>
+          <div className="review-actions">
+            <button className="admin-form-button" type="submit">Save biography</button>
+          </div>
+        </form>
+      </section>
+
+      <section className="review-panel">
+        <h2>Sources and Further Reading</h2>
+        {sourceLinks.length > 0 ? (
+          <div className="review-list">
+            {sourceLinks.map((link) => (
+              <form action={upsertSaintSource} className="form-stack review-row" key={link.id}>
+                <input name="saintId" type="hidden" value={saint.id} />
+                <input name="contentSourceId" type="hidden" value={link.id} />
+                <input name="sourceId" type="hidden" value={link.sourceId} />
+                <label>
+                  Title
+                  <input name="title" defaultValue={link.source.title} required maxLength={300} />
+                </label>
+                <label>
+                  Type
+                  <select name="sourceType" defaultValue={link.source.sourceType}>
+                    {sourceTypes.map((sourceType) => (
+                      <option key={sourceType} value={sourceType}>{formatStatus(sourceType)}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Author
+                  <input name="author" defaultValue={link.source.author ?? ""} maxLength={200} />
+                </label>
+                <label>
+                  Publisher
+                  <input name="publisher" defaultValue={link.source.publisher ?? ""} maxLength={200} />
+                </label>
+                <label>
+                  Publication year
+                  <input name="publicationYear" type="number" defaultValue={link.source.publicationYear ?? ""} />
+                </label>
+                <label>
+                  URL
+                  <input name="url" type="url" defaultValue={link.source.url ?? ""} maxLength={1000} />
+                </label>
+                <label>
+                  Note
+                  <textarea name="note" defaultValue={link.notes ?? link.source.notes ?? ""} maxLength={1000} />
+                </label>
+                <label>
+                  Sort order
+                  <input name="sortOrder" type="number" defaultValue={link.sortOrder} />
+                </label>
+                <div className="review-actions">
+                  <button className="admin-form-button" type="submit">Save source</button>
+                  <button className="admin-form-button admin-form-button--warning" formAction={removeSaintSource} type="submit">
+                    Remove source
+                  </button>
+                </div>
+              </form>
+            ))}
+          </div>
+        ) : (
+          <p>No reviewed sources have been attached.</p>
+        )}
+
+        <div className="review-panel__subsection">
+          <h3>Add source</h3>
+          <form action={upsertSaintSource} className="form-stack">
+            <input name="saintId" type="hidden" value={saint.id} />
+            <label>
+              Title
+              <input name="title" required maxLength={300} />
+            </label>
+            <label>
+              Type
+              <select name="sourceType" defaultValue="website">
+                {sourceTypes.map((sourceType) => (
+                  <option key={sourceType} value={sourceType}>{formatStatus(sourceType)}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Author
+              <input name="author" maxLength={200} />
+            </label>
+            <label>
+              Publisher
+              <input name="publisher" maxLength={200} />
+            </label>
+            <label>
+              Publication year
+              <input name="publicationYear" type="number" />
+            </label>
+            <label>
+              URL
+              <input name="url" type="url" maxLength={1000} />
+            </label>
+            <label>
+              Note
+              <textarea name="note" maxLength={1000} />
+            </label>
+            <label>
+              Sort order
+              <input name="sortOrder" type="number" defaultValue={sourceLinks.length} />
+            </label>
+            <div className="review-actions">
+              <button className="admin-form-button" type="submit">Add source</button>
+            </div>
+          </form>
         </div>
       </section>
 
@@ -116,7 +371,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
                   ) : null}
                   <div className="review-actions">
                     <Link className="admin-text-link" href={`/admin/instagram/${claim.instagramItemId}`}>Open Instagram item</Link>
-                    {claim.instagramItem.instagramShortcode ? <a className="admin-text-link" href={claim.instagramItem.instagramUrl}>View post</a> : null}
+                    {claim.instagramItem.instagramShortcode ? <a className="admin-text-link" href={claim.instagramItem.instagramUrl} {...getInstagramLinkProps(claim.instagramItem.instagramUrl)}>View post</a> : null}
                   </div>
                 </div>
                 <div className="review-actions">
@@ -162,6 +417,15 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
 
       <section className="review-panel">
         <h2>Images</h2>
+        {saint.primaryImage ? (
+          <figure className="image-with-credit">
+            <img src={saint.primaryImage.url} alt={saint.primaryImage.altText ?? saint.displayName} width={saint.primaryImage.width ?? undefined} height={saint.primaryImage.height ?? undefined} />
+            <figcaption>
+              <span>{saint.primaryImage.caption ?? "Primary saint image"}</span>
+              {saint.primaryImage.sourceUrl ? <small>Source preserved</small> : null}
+            </figcaption>
+          </figure>
+        ) : null}
         {saint.galleryImages.length > 0 ? (
           <div className="media-grid">
             {saint.galleryImages.map(({ mediaAsset }) => (
@@ -177,6 +441,14 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
         ) : (
           <p>No saint images have been attached.</p>
         )}
+        <div className="review-panel__subsection">
+          <h3>Add image</h3>
+          <SaintImageCropper
+            defaultAltText={`${saint.displayName} portrait`}
+            instagramImages={instagramImages}
+            saintId={saint.id}
+          />
+        </div>
       </section>
     </div>
   );
@@ -192,9 +464,26 @@ async function getSaint(slugOrId: string) {
     },
     include: {
       aliases: { orderBy: { createdAt: "asc" } },
+      primaryImage: true,
       galleryImages: {
         include: { mediaAsset: true },
         orderBy: { sortOrder: "asc" }
+      },
+      instagramItems: {
+        include: {
+          instagramItem: {
+            select: {
+              id: true,
+              instagramShortcode: true,
+              instagramUrl: true,
+              thumbnailUrl: true
+            }
+          }
+        },
+        orderBy: [
+          { isPrimary: "desc" },
+          { reviewedAt: "desc" }
+        ]
       },
       places: {
         include: { place: true },
@@ -206,6 +495,12 @@ async function getSaint(slugOrId: string) {
       traditions: {
         include: { tradition: true },
         orderBy: { isPrimary: "desc" }
+      },
+      biographies: {
+        orderBy: [
+          { status: "desc" },
+          { updatedAt: "desc" }
+        ]
       }
     }
   });
@@ -236,6 +531,32 @@ async function getSaint(slugOrId: string) {
   return { ...saint, instagramClaims };
 }
 
+async function getInstagramImagesForSaint(saint: NonNullable<Awaited<ReturnType<typeof getSaint>>>) {
+  const itemIds = saint.instagramItems.map((link) => link.instagramItemId);
+  if (itemIds.length === 0) return [];
+
+  const externalRecords = await db.externalRecord.findMany({
+    where: {
+      sourceType: "instagram",
+      entityType: "InstagramItem",
+      entityId: { in: itemIds }
+    },
+    orderBy: { lastSeenAt: "desc" }
+  });
+  const rawByItemId = new Map(externalRecords.map((record) => [record.entityId, record.rawPayloadJson]));
+
+  return saint.instagramItems.flatMap((link) => {
+    const item = link.instagramItem;
+    const label = item.instagramShortcode ? `Instagram ${item.instagramShortcode}` : "Instagram post";
+    return getInstagramImageUrls(rawByItemId.get(item.id), item.thumbnailUrl).map((sourceUrl, index) => ({
+      id: `${item.id}-${index}`,
+      instagramUrl: item.instagramUrl,
+      label: index === 0 ? label : `${label}, image ${index + 1}`,
+      sourceUrl
+    }));
+  });
+}
+
 async function getTrackerRows(externalId: string) {
   const [, tableIdOrName, recordId] = externalId.split(":");
   if (!tableIdOrName || !recordId) return [];
@@ -259,6 +580,15 @@ function ReviewField({ label, value }: { label: string; value?: string | null })
       <span>{value || "Not set"}</span>
     </div>
   );
+}
+
+const contentStatuses = ["draft", "needs_review", "published", "hidden", "archived"] as const;
+const placeTypes = ["primary", "birth", "samadhi", "sadhana", "associated", "other"] as const;
+const sourceTypes = ["book", "article", "website", "scripture", "oral_tradition", "other"] as const;
+
+function formatPlaceName(place: { name: string; region: string | null; country: string | null }) {
+  const location = [place.region, place.country].filter(Boolean).join(", ");
+  return location ? `${place.name} (${location})` : place.name;
 }
 
 function formatSaintPlace({ place, placeType, routeOrder, routeLabel }: NonNullable<Awaited<ReturnType<typeof getSaint>>>["places"][number]) {

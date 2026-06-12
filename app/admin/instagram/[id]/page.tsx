@@ -3,6 +3,7 @@ import type { Route } from "next";
 import { notFound } from "next/navigation";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
+import { getInstagramLinkProps } from "@/lib/external-links";
 import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { compactMetadata, parseInstagramFirstPageMetadata, splitGurus, splitKeyPlaces } from "@/lib/instagram-metadata";
 import { rankSaintSearchResults } from "@/lib/saint-search";
@@ -60,7 +61,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
         </div>
         <div className="review-actions">
           <Link className="button button--secondary" href="/admin/instagram">Back to queue</Link>
-          <a className="button button--secondary" href={item.instagramUrl}>View on Instagram</a>
+          <a className="button button--secondary" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>View on Instagram</a>
         </div>
       </div>
 
@@ -68,7 +69,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
         <section className="review-panel">
           <h2>Post Preview</h2>
           <div className="instagram-detail-preview">
-            <a className="instagram-detail-preview__media" href={item.instagramUrl}>
+            <a className="instagram-detail-preview__media interactive-media" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>
               {item.thumbnailUrl ? (
                 <img src={item.thumbnailUrl} alt={getInstagramPreviewAlt(item)} />
               ) : (
