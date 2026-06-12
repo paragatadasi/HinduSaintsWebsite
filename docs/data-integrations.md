@@ -130,6 +130,9 @@ Date handling:
 - raw values are preserved in `birthDateRaw` and `samadhiDateRaw`.
 - parsed parts are stored in `birthYear`, `birthMonth`, `birthDay`, `samadhiYear`, `samadhiMonth`, and `samadhiDay`.
 - partial or textual values such as `June 2013` and `Still alive` are preserved with date precision instead of being forced into invalid dates.
+- Instagram date claims use this same parser and compare parsed parts before
+  creating conflicts, so approximate source values such as `c. 1350` can match
+  existing year-only CMS values while preserving the original Instagram text.
 
 Location handling:
 

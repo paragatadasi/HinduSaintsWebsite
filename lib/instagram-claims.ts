@@ -113,15 +113,18 @@ export async function pipeAcceptedInstagramClaimsToSaint(tx: Tx, instagramItemId
 
 async function upsertInstagramDerivedClaim(tx: Tx, input: ClaimInput) {
   const rawValue = input.rawValue.trim();
-  const normalizedValue = toSlug(rawValue);
+  const normalizedValue = getNormalizedClaimValue(input.claimType, rawValue);
   const existing = await tx.instagramDerivedClaim.findFirst({
     where: {
       instagramItemId: input.instagramItemId,
       claimType: input.claimType,
-      rawValue,
       targetEntityType: input.targetEntityType ?? null,
       targetEntityId: input.targetEntityId ?? null,
-      ...(input.appliedSaintId ? { appliedSaintId: input.appliedSaintId } : {})
+      ...(input.appliedSaintId ? { appliedSaintId: input.appliedSaintId } : {}),
+      OR: [
+        { rawValue },
+        { normalizedValue }
+      ]
     }
   });
 
@@ -249,6 +252,7 @@ async function applyAliasClaim(tx: Tx, saintId: string, rawValue: string) {
 }
 
 async function applyDateClaim(tx: Tx, claim: InstagramDerivedClaim, saintId: string, kind: "birth" | "samadhi") {
+  const claimDate = parseImportedDate(claim.rawValue);
   const saint = await tx.saint.findUnique({
     where: { id: saintId },
     select: {
@@ -261,29 +265,29 @@ async function applyDateClaim(tx: Tx, claim: InstagramDerivedClaim, saintId: str
 
   const currentValue = kind === "birth" ? saint.birthDateRaw : saint.samadhiDateRaw;
   if (!currentValue?.trim()) {
-    const parsed = parseImportedDate(claim.rawValue);
     await tx.saint.update({
       where: { id: saintId },
       data: kind === "birth"
         ? {
-            birthDateRaw: parsed.raw,
-            birthYear: parsed.year,
-            birthMonth: parsed.month,
-            birthDay: parsed.day,
-            birthDatePrecision: parsed.precision === "empty" ? undefined : parsed.precision
+            birthDateRaw: claimDate.raw,
+            birthYear: claimDate.year,
+            birthMonth: claimDate.month,
+            birthDay: claimDate.day,
+            birthDatePrecision: claimDate.precision === "empty" ? undefined : claimDate.precision
           }
         : {
-            samadhiDateRaw: parsed.raw,
-            samadhiYear: parsed.year,
-            samadhiMonth: parsed.month,
-            samadhiDay: parsed.day,
-            samadhiDatePrecision: parsed.precision === "empty" ? undefined : parsed.precision
+            samadhiDateRaw: claimDate.raw,
+            samadhiYear: claimDate.year,
+            samadhiMonth: claimDate.month,
+            samadhiDay: claimDate.day,
+            samadhiDatePrecision: claimDate.precision === "empty" ? undefined : claimDate.precision
           }
     });
     return;
   }
 
-  if (normalizeComparable(currentValue) === normalizeComparable(claim.rawValue)) return;
+  const currentDate = parseImportedDate(currentValue);
+  if (areDatePartsCompatible(currentDate, claimDate) || normalizeComparable(currentValue) === normalizeComparable(claim.rawValue)) return;
 
   await createOpenReconciliationIssue(tx, {
     issueType: `instagram_${kind}_date_conflict`,
@@ -298,6 +302,14 @@ async function applyDateClaim(tx: Tx, claim: InstagramDerivedClaim, saintId: str
       sourceValue: claim.rawValue
     })
   });
+}
+
+function areDatePartsCompatible(left: ReturnType<typeof parseImportedDate>, right: ReturnType<typeof parseImportedDate>) {
+  if (left.year && right.year && left.year !== right.year) return false;
+  if (left.month && right.month && left.month !== right.month) return false;
+  if (left.day && right.day && left.day !== right.day) return false;
+
+  return Boolean(left.year && right.year);
 }
 
 async function applyPlaceClaim(tx: Tx, saintId: string, placeId: string, placeType: PlaceType, claim: InstagramDerivedClaim) {
@@ -434,6 +446,22 @@ async function createOpenReconciliationIssue(
 
 function normalizeComparable(value: string) {
   return value.trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+function getNormalizedClaimValue(claimType: InstagramDerivedClaimType, rawValue: string) {
+  if (claimType === "birth_date" || claimType === "samadhi_date") {
+    const parsed = parseImportedDate(rawValue);
+    if (parsed.year) {
+      return [
+        "date",
+        parsed.year,
+        parsed.month ?? "xx",
+        parsed.day ?? "xx"
+      ].join(":");
+    }
+  }
+
+  return toSlug(rawValue);
 }
 
 function getStoredFirstPageMetadata(value: unknown, firstPageText: string | null) {

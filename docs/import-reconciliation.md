@@ -171,6 +171,12 @@ First-page biodata can create accepted `InstagramDerivedClaim` records for:
 - guru saint relationships.
 - tradition links.
 
+Date claims follow the same date model as saint imports: the source string is
+preserved for review, while `parseImportedDate` is used to compare and apply
+year/month/day/precision parts. For example, an Instagram value such as
+`c. 1350` is treated as a year-level `1350` candidate when checking it against
+an existing saint date, without discarding the original source wording.
+
 Accepted claims are preserved as review records before they are applied. If an
 Instagram item already has a matched saint, accepting a claim applies it to that
 saint immediately when the target field is empty or the relationship/link is

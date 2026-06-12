@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
+import { parseImportedDate } from "@/lib/import-dates";
 import { reviewSaintInstagramClaim, updateSaintBasics, updateSaintReviewStatus } from "../actions";
 
 type AdminSaintEditorPageProps = {
@@ -110,6 +111,9 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
                   </div>
                   <h3>{formatClaimLabel(claim.claimType)}</h3>
                   <p>{claim.rawValue}</p>
+                  {isDateClaim(claim.claimType) ? (
+                    <p>{formatDateClaimInterpretation(claim.rawValue)}</p>
+                  ) : null}
                   <div className="review-actions">
                     <Link className="admin-text-link" href={`/admin/instagram/${claim.instagramItemId}`}>Open Instagram item</Link>
                     {claim.instagramItem.instagramShortcode ? <a className="admin-text-link" href={claim.instagramItem.instagramUrl}>View post</a> : null}
@@ -327,6 +331,22 @@ function formatClaimLabel(claimType: string) {
   if (claimType === "alias") return "Alias candidate";
   if (claimType === "tradition") return "Tradition candidate";
   return formatStatus(claimType);
+}
+
+function isDateClaim(claimType: string) {
+  return claimType === "birth_date" || claimType === "samadhi_date";
+}
+
+function formatDateClaimInterpretation(rawValue: string) {
+  const parsed = parseImportedDate(rawValue);
+  const parts = [
+    parsed.year ? `year ${parsed.year}` : undefined,
+    parsed.month ? `month ${parsed.month}` : undefined,
+    parsed.day ? `day ${parsed.day}` : undefined,
+    `precision ${parsed.precision}`
+  ].filter(Boolean);
+
+  return `Parsed as ${parts.join(", ")}.`;
 }
 
 function formatStatus(status: string) {
