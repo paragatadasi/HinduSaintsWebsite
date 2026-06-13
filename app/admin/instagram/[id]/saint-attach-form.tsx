@@ -56,105 +56,105 @@ export function SaintAttachForm({ initialQuery, instagramItemId, returnTo, saint
 
   return (
     <form action={attachSaintToInstagramItem} className="form-stack">
-        <input name="instagramItemId" type="hidden" value={instagramItemId} />
-        <input name="returnTo" type="hidden" value={returnTo} />
-        <input name="saintId" type="hidden" value={selectedSaintId} />
-        <div className="combo-search">
-          <label htmlFor={`${listboxId}-input`}>Saint</label>
-          <div className="combo-search__control">
-            <input
-              aria-activedescendant={isDropdownOpen && activeSaint ? `${listboxId}-${activeSaint.id}` : undefined}
-              aria-autocomplete="list"
-              aria-controls={listboxId}
-              aria-expanded={isDropdownOpen}
-              autoComplete="off"
-              id={`${listboxId}-input`}
-              placeholder="Search by name, alias, place, tradition, or date"
-              role="combobox"
-              type="search"
-              value={query}
-              onBlur={() => {
-                window.setTimeout(() => setIsDropdownOpen(false), 100);
-              }}
-              onChange={(event) => {
-                setQuery(event.target.value);
-                setSelectedSaintId("");
-                setActiveIndex(0);
+      <input name="instagramItemId" type="hidden" value={instagramItemId} />
+      <input name="returnTo" type="hidden" value={returnTo} />
+      <input name="saintId" type="hidden" value={selectedSaintId} />
+      <div className="combo-search">
+        <label htmlFor={`${listboxId}-input`}>Saint</label>
+        <div className="combo-search__control">
+          <input
+            aria-activedescendant={isDropdownOpen && activeSaint ? `${listboxId}-${activeSaint.id}` : undefined}
+            aria-autocomplete="list"
+            aria-controls={listboxId}
+            aria-expanded={isDropdownOpen}
+            autoComplete="off"
+            id={`${listboxId}-input`}
+            placeholder="Search by name, alias, place, tradition, or date"
+            role="combobox"
+            type="search"
+            value={query}
+            onBlur={() => {
+              window.setTimeout(() => setIsDropdownOpen(false), 100);
+            }}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setSelectedSaintId("");
+              setActiveIndex(0);
+              setIsDropdownOpen(true);
+            }}
+            onFocus={() => setIsDropdownOpen(true)}
+            onKeyDown={(event) => {
+              if (event.key === "ArrowDown") {
+                event.preventDefault();
                 setIsDropdownOpen(true);
-              }}
-              onFocus={() => setIsDropdownOpen(true)}
-              onKeyDown={(event) => {
-                if (event.key === "ArrowDown") {
-                  event.preventDefault();
-                  setIsDropdownOpen(true);
-                  setActiveIndex((index) => (visibleSaints.length > 0 ? Math.min(index + 1, visibleSaints.length - 1) : 0));
-                }
+                setActiveIndex((index) => (visibleSaints.length > 0 ? Math.min(index + 1, visibleSaints.length - 1) : 0));
+              }
 
-                if (event.key === "ArrowUp") {
-                  event.preventDefault();
-                  setActiveIndex((index) => Math.max(index - 1, 0));
-                }
+              if (event.key === "ArrowUp") {
+                event.preventDefault();
+                setActiveIndex((index) => Math.max(index - 1, 0));
+              }
 
-                if (event.key === "Enter" && isDropdownOpen && activeSaint) {
-                  event.preventDefault();
-                  selectSaint(activeSaint);
-                }
+              if (event.key === "Enter" && isDropdownOpen && activeSaint) {
+                event.preventDefault();
+                selectSaint(activeSaint);
+              }
 
-                if (event.key === "Escape") {
-                  setIsDropdownOpen(false);
-                }
-              }}
-            />
-            <button
-              aria-label={isDropdownOpen ? "Hide saint options" : "Show saint options"}
-              className="combo-search__toggle"
-              type="button"
-              onClick={() => {
-                setIsDropdownOpen((open) => !open);
-              }}
-            >
-              <ChevronDown aria-hidden="true" size={18} />
-            </button>
+              if (event.key === "Escape") {
+                setIsDropdownOpen(false);
+              }
+            }}
+          />
+          <button
+            aria-label={isDropdownOpen ? "Hide saint options" : "Show saint options"}
+            className="combo-search__toggle"
+            type="button"
+            onClick={() => {
+              setIsDropdownOpen((open) => !open);
+            }}
+          >
+            <ChevronDown aria-hidden="true" size={18} />
+          </button>
+        </div>
+        {isDropdownOpen ? (
+          <div className="combo-search__list" id={listboxId} role="listbox">
+            {visibleSaints.length > 0 ? (
+              visibleSaints.map((saint, index) => (
+                <button
+                  aria-selected={saint.id === selectedSaintId}
+                  className="combo-search__option"
+                  data-active={index === activeIndex ? "true" : undefined}
+                  id={`${listboxId}-${saint.id}`}
+                  key={saint.id}
+                  role="option"
+                  type="button"
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => selectSaint(saint)}
+                  onMouseEnter={() => setActiveIndex(index)}
+                >
+                  <span>{saint.displayName}</span>
+                  <small>{formatSaintMeta(saint)}</small>
+                </button>
+              ))
+            ) : (
+              <div className="combo-search__empty">No saints match this search.</div>
+            )}
           </div>
-          {isDropdownOpen ? (
-            <div className="combo-search__list" id={listboxId} role="listbox">
-              {visibleSaints.length > 0 ? (
-                visibleSaints.map((saint, index) => (
-                  <button
-                    aria-selected={saint.id === selectedSaintId}
-                    className="combo-search__option"
-                    data-active={index === activeIndex ? "true" : undefined}
-                    id={`${listboxId}-${saint.id}`}
-                    key={saint.id}
-                    role="option"
-                    type="button"
-                    onMouseDown={(event) => event.preventDefault()}
-                    onClick={() => selectSaint(saint)}
-                    onMouseEnter={() => setActiveIndex(index)}
-                  >
-                    <span>{saint.displayName}</span>
-                    <small>{formatSaintMeta(saint)}</small>
-                  </button>
-                ))
-              ) : (
-                <div className="combo-search__empty">No saints match this search.</div>
-              )}
-            </div>
-          ) : null}
-          {selectedSaint ? <p className="combo-search__selection">Selected: {selectedSaint.displayName}</p> : null}
-        </div>
-        <label>
-          Confidence
-          <select name="matchConfidence" defaultValue="medium">
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </label>
-        <div className="review-actions">
-          <button className="admin-form-button" type="submit" disabled={!selectedSaintId}>Attach and confirm match</button>
-        </div>
-      </form>
+        ) : null}
+        {selectedSaint ? <p className="combo-search__selection">Selected: {selectedSaint.displayName}</p> : null}
+      </div>
+      <label>
+        Confidence
+        <select name="matchConfidence" defaultValue="medium">
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </label>
+      <div className="review-actions">
+        <button className="admin-form-button" type="submit" disabled={!selectedSaintId}>Attach and confirm match</button>
+      </div>
+    </form>
   );
 
   function selectSaint(saint: RankedSaintAttachOption) {
