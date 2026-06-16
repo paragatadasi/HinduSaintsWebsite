@@ -46,6 +46,14 @@ export const saints: SaintRecord[] = [
     tradition: "Ramakrishna tradition",
     featured: true,
     instagramUrls: ["https://www.instagram.com/p/example/"],
+    instagramItems: [
+      {
+        url: "https://www.instagram.com/p/example/",
+        type: "post",
+        caption: "Fixture Instagram post for the public saint detail layout.",
+        postedAt: "2026-01-01T00:00:00.000Z"
+      }
+    ],
     heroImage: {
       ...portraitPlaceholder,
       alt: "Archival-style portrait placeholder for Sri Ramakrishna.",
@@ -107,6 +115,7 @@ export const saints: SaintRecord[] = [
     tradition: "Non-sectarian",
     featured: true,
     instagramUrls: [],
+    instagramItems: [],
     heroImage: {
       ...portraitPlaceholder,
       alt: "Archival-style portrait placeholder for Sri Anandamayi Ma.",
@@ -154,6 +163,7 @@ export const saints: SaintRecord[] = [
     tradition: "Advaita Vedanta",
     featured: true,
     instagramUrls: [],
+    instagramItems: [],
     heroImage: {
       ...portraitPlaceholder,
       alt: "Archival-style portrait placeholder for Sri Ramana Maharshi.",
@@ -204,6 +214,7 @@ export const saints: SaintRecord[] = [
     tradition: "Gaudiya Vaishnavism",
     featured: false,
     instagramUrls: [],
+    instagramItems: [],
     aliases: ["Chaitanya Mahaprabhu", "Gauranga", "Nimai"],
     traditions: [
       {
@@ -250,6 +261,7 @@ export const saints: SaintRecord[] = [
     tradition: "Varkari Sampradaya",
     featured: false,
     instagramUrls: [],
+    instagramItems: [],
     heroImage: {
       ...portraitPlaceholder,
       alt: "Devotional placeholder for Sant Tukaram.",
@@ -298,6 +310,7 @@ export const saints: SaintRecord[] = [
     tradition: "Lingayat Tradition",
     featured: false,
     instagramUrls: [],
+    instagramItems: [],
     aliases: ["Basava", "Basaveshwara"],
     traditions: [
       {

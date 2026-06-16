@@ -9,7 +9,7 @@ type PlaceCardProps = {
 
 export function PlaceCard({ place }: PlaceCardProps) {
   return (
-    <Card className="entity-card place-card">
+    <Card className="entity-card interactive-surface place-card">
       <Link href={`/places/${place.slug}`}>
         <span className="place-card__icon" aria-hidden="true">
           <MapPin size={34} />

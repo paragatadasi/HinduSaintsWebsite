@@ -23,7 +23,10 @@ Important rules:
 
 - `Saint.slug` is unique.
 - Public pages show only `ContentStatus.published`.
+- `InstagramItem` stores real imported Instagram post/reel/carousel records.
+- `InstagramTrackerRow` stores manual Google Sheets tracker rows for triangulation; it is not the Instagram source of truth.
 - Instagram items can map to multiple saints through `InstagramItemSaint`.
+- Public saint pages expose Instagram URLs for matched/published `InstagramItemSaint` links when the attached `InstagramItem` is matched/published and the saint itself is published.
 - Guru/disciple data belongs in `SaintRelationship`, not in one-off text fields.
 - Airtable record IDs and raw payloads are preserved in `ExternalRecord`.
 - Conflicts become `ReconciliationIssue` records.
@@ -71,6 +74,15 @@ Frontend public views should consume explicit public contracts rather than full 
 The current DB-backed saint public adapter lives in `lib/public-saints.ts`. It
 queries only `ContentStatus.published` saints and maps safe CMS fields into the
 public contract used by `/`, `/saints`, and `/saints/[slug]`.
+
+Instagram public rendering also goes through `lib/public-saints.ts`. It does not
+read Google Sheets tracker rows directly. It queries reviewed `InstagramItemSaint`
+links and returns safe display fields for matched/published Instagram items on
+published saints. Carousel child image URLs are derived from the preserved
+Instagram `ExternalRecord` payload and exposed only as public URL arrays for the
+viewer. Raw API payloads, tracker rows, reconciliation state, and internal notes
+remain outside the public contract. The Instagram item is supporting content;
+`Saint.status` is the direct public publishing gate.
 
 ## Saint relationship graph
 

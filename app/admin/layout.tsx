@@ -61,6 +61,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/instagram">Instagram</Link>
           <Link href="/admin/biographies">Biographies</Link>
           <Link href="/admin/traditions">Traditions</Link>
+          <Link href="/admin/places">Places</Link>
         </aside>
         <section className="admin-content">{children}</section>
       </div>

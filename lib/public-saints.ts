@@ -1,16 +1,19 @@
 import { db } from "@/lib/db";
+import { getInstagramCarouselImageUrls } from "@/lib/instagram";
 import type { Prisma } from "@prisma/client";
 import type {
   PublicImage,
+  PublicInstagramItem,
   PublicSaintDetail,
   PublicSaintSummary,
   PublicSourceSummary
 } from "@/lib/public-contracts";
+import { rankSaintSearchResults } from "@/lib/saint-search";
 
 type SaintListRow = Awaited<ReturnType<typeof getPublishedSaintRows>>[number];
 type SaintDetailRow = NonNullable<Awaited<ReturnType<typeof getPublishedSaintRowBySlug>>>;
 
-const DEFAULT_DESCRIPTION = "A reviewed saint profile from the Hindu Saints Archive.";
+const DEFAULT_DESCRIPTION = "";
 const DEFAULT_LOCATION = "Location in review";
 const DEFAULT_TRADITION = "Tradition in review";
 const DEFAULT_ERA = "Dates in review";
@@ -71,11 +74,8 @@ export async function searchPublishedSaintSummaries(query: string) {
   if (!term) return getPublishedSaintSummaries();
 
   const rows = await getPublishedSaintRows();
-  return rows
-    .map((saint) => ({ saint, score: scorePublicSaintSearch(saint, term) }))
-    .filter(({ score }) => score > 0)
-    .sort((a, b) => b.score - a.score || a.saint.displayName.localeCompare(b.saint.displayName))
-    .map(({ saint }) => toPublicSaintSummary(saint));
+  return rankSaintSearchResults(rows, term)
+    .map(({ item }) => toPublicSaintSummary(item));
 }
 
 export async function getFeaturedSaintSummaries() {
@@ -97,8 +97,9 @@ export async function getPublishedSaintBySlug(slug: string): Promise<PublicSaint
   if (!saint) return null;
 
   const instagramUrls = await getInstagramUrlsForSaint(saint.id);
+  const instagramItems = await getInstagramItemsForSaint(saint.id);
   const sources = await getSourcesForSaint(saint.id);
-  return toPublicSaintDetail(saint, instagramUrls, sources);
+  return toPublicSaintDetail(saint, instagramUrls, instagramItems, sources);
 }
 
 function toPublicSaintSummary(saint: SaintListRow): PublicSaintSummary {
@@ -107,77 +108,15 @@ function toPublicSaintSummary(saint: SaintListRow): PublicSaintSummary {
     displayName: saint.displayName,
     canonicalName: saint.canonicalName,
     shortDescription: saint.shortDescription ?? saint.biographySummary ?? DEFAULT_DESCRIPTION,
+    image: saint.primaryImage ? toPublicImage(saint.primaryImage, saint.displayName) : undefined,
     eraLabel: saint.eraLabel ?? DEFAULT_ERA,
     primaryLocation: getPrimaryLocation(saint.places),
     tradition: getPrimaryTradition(saint.traditions),
     featured: saint.featured,
     instagramUrls: [],
+    instagramItems: [],
     status: "published"
   };
-}
-
-function scorePublicSaintSearch(saint: SaintListRow, query: string) {
-  const weightedFields = buildSaintSearchFields(saint);
-  const queryForms = getQuerySearchForms(query);
-  const uniqueQueryForms = Array.from(new Set(queryForms)).filter(Boolean);
-  const queryTokens = Array.from(new Set(uniqueQueryForms.flatMap(getSearchTokens)))
-    .filter((token) => token.length >= 2 && !SEARCH_HONORIFICS.has(token));
-
-  let score = 0;
-
-  for (const field of weightedFields) {
-    const fieldForms = getSearchForms(field.value);
-    for (const fieldForm of fieldForms) {
-      for (const queryForm of uniqueQueryForms) {
-        if (fieldForm === queryForm) score += 120 * field.weight;
-        else if (fieldForm.startsWith(queryForm)) score += 80 * field.weight;
-        else if (fieldForm.includes(queryForm)) score += 55 * field.weight;
-      }
-
-      const fieldTokens = getSearchTokens(fieldForm);
-      for (const queryToken of queryTokens) {
-        if (fieldTokens.includes(queryToken)) score += 18 * field.weight;
-        else if (fieldTokens.some((fieldToken) => fieldToken.startsWith(queryToken))) score += 10 * field.weight;
-        else if (fieldTokens.some((fieldToken) => fieldToken.includes(queryToken))) score += 4 * field.weight;
-      }
-    }
-  }
-
-  return score;
-}
-
-function buildSaintSearchFields(saint: SaintListRow) {
-  const fields: Array<{ value?: string | null; weight: number }> = [
-    { value: saint.displayName, weight: 6 },
-    { value: saint.canonicalName, weight: 5 },
-    ...saint.aliases.map((alias) => ({ value: alias.alias, weight: 5 })),
-    ...saint.places.flatMap(({ place }) => [
-      { value: place.name, weight: 3 },
-      ...place.alternateNames.map((name) => ({ value: name, weight: 3 })),
-      { value: place.region, weight: 2 },
-      { value: place.country, weight: 2 }
-    ]),
-    ...saint.traditions.flatMap(({ tradition }) => [
-      { value: tradition.name, weight: 2 },
-      ...tradition.alternateNames.map((name) => ({ value: name, weight: 2 }))
-    ]),
-    { value: saint.eraLabel, weight: 1.5 },
-    { value: saint.birthDateRaw, weight: 1 },
-    { value: saint.samadhiDateRaw, weight: 1 },
-    { value: saint.shortDescription, weight: 0.8 },
-    { value: saint.biographySummary, weight: 0.6 }
-  ];
-
-  return fields.filter((field): field is { value: string; weight: number } => Boolean(field.value));
-}
-
-function getSearchForms(value: string) {
-  const normalized = normalizeSearchText(value);
-  const withoutHonorifics = getSearchTokens(normalized)
-    .filter((token) => !SEARCH_HONORIFICS.has(token))
-    .join(" ");
-
-  return [normalized, withoutHonorifics].filter(Boolean);
 }
 
 function normalizeSearchText(value: string) {
@@ -200,91 +139,23 @@ function normalizeSearchText(value: string) {
     .replace(/\s+/g, " ");
 }
 
-function getSearchTokens(value: string) {
-  return value.split(" ").filter(Boolean);
-}
-
-function getQuerySearchForms(value: string) {
-  return expandTransliterationVariants(value).flatMap((variant) => [
-    ...getSearchForms(variant),
-    ...getSearchTokens(variant).flatMap(expandTransliterationVariants).flatMap(getSearchForms)
-  ]);
-}
-
-function expandTransliterationVariants(value: string) {
-  const normalized = normalizeSearchText(value);
-  const variants = new Set([normalized]);
-  const substitutions: Array<[RegExp, string]> = [
-    [/\bmaharishi\b/g, "maharshi"],
-    [/\bmaharshi\b/g, "maharishi"],
-    [/\bkrishna\b/g, "krsna"],
-    [/\bkrsna\b/g, "krishna"],
-    [/\bshiva\b/g, "siva"],
-    [/\bsiva\b/g, "shiva"],
-    [/\bchaitanya\b/g, "caitanya"],
-    [/\bcaitanya\b/g, "chaitanya"],
-    [/\bchandra\b/g, "candra"],
-    [/\bcandra\b/g, "chandra"],
-    [/\bshankar/g, "sankar"],
-    [/\bsankar/g, "shankar"],
-    [/\bshankara\b/g, "sankara"],
-    [/\bsankara\b/g, "shankara"],
-    [/\bvaishnava\b/g, "vaisnava"],
-    [/\bvaisnava\b/g, "vaishnava"],
-    [/\bvrindavan\b/g, "brindavan"],
-    [/\bbrindavan\b/g, "vrindavan"],
-    [/\bv/g, "w"],
-    [/\bw/g, "v"],
-    [/\bb/g, "v"],
-    [/\bv/g, "b"],
-    [/aa/g, "a"],
-    [/ee/g, "i"],
-    [/oo/g, "u"]
-  ];
-
-  for (const [pattern, replacement] of substitutions) {
-    variants.add(normalized.replace(pattern, replacement));
-  }
-
-  return Array.from(variants);
-}
-
-const SEARCH_HONORIFICS = new Set([
-  "acharya",
-  "amma",
-  "baba",
-  "babaji",
-  "bhagavan",
-  "deva",
-  "devi",
-  "ji",
-  "ma",
-  "maharaj",
-  "maharaja",
-  "mata",
-  "paramahamsa",
-  "paramhansa",
-  "saint",
-  "sant",
-  "shree",
-  "shri",
-  "sri",
-  "swami"
-]);
-
 function toPublicSaintDetail(
   saint: SaintDetailRow,
   instagramUrls: string[],
+  instagramItems: PublicInstagramItem[],
   sources: PublicSourceSummary[]
 ): PublicSaintDetail {
   const summary = toPublicSaintSummary(saint);
   const biography = saint.biographies[0];
-  const gallery = saint.galleryImages.map((image) => toPublicImage(image.mediaAsset, saint.displayName));
+  const gallery = saint.galleryImages
+    .filter((image) => image.publicVisible !== false)
+    .map((image) => toPublicImage(image.mediaAsset, saint.displayName));
   const heroImage = saint.primaryImage ? toPublicImage(saint.primaryImage, saint.displayName) : gallery[0];
 
   return {
     ...summary,
     instagramUrls,
+    instagramItems,
     heroImage,
     gallery,
     aliases: saint.aliases.map((alias) => alias.alias),
@@ -294,25 +165,19 @@ function toPublicSaintDetail(
       shortDescription: tradition.shortDescription ?? undefined
     })),
     facts: buildFacts(saint, summary),
-    places: saint.places.map(({ place }) => place.name),
+    places: getUniquePlaceNames(saint.places),
     biography: biography
       ? {
           title: biography.title,
           bodyMarkdown: biography.bodyMarkdown,
           sources
         }
-      : saint.biographySummary
-        ? {
-            title: "Profile notes",
-            bodyMarkdown: saint.biographySummary,
-            sources
-          }
-        : undefined,
+      : undefined,
     sources,
     furtherReading: sources,
     seo: {
       title: saint.seoTitle ?? saint.displayName,
-      description: saint.seoDescription ?? saint.shortDescription ?? saint.biographySummary ?? undefined
+      description: saint.seoDescription ?? saint.shortDescription ?? undefined
     }
   };
 }
@@ -320,6 +185,20 @@ function toPublicSaintDetail(
 function getPrimaryLocation(places: SaintListRow["places"]) {
   const primary = places.find((place) => place.placeType === "primary") ?? places[0];
   return primary?.place.name ?? DEFAULT_LOCATION;
+}
+
+function getUniquePlaceNames(places: SaintDetailRow["places"]) {
+  const placeNames: string[] = [];
+  const seenPlaceIds = new Set<string>();
+
+  for (const { place } of places) {
+    if (seenPlaceIds.has(place.id)) continue;
+
+    seenPlaceIds.add(place.id);
+    placeNames.push(place.name);
+  }
+
+  return placeNames;
 }
 
 function getPrimaryTradition(traditions: SaintListRow["traditions"]) {
@@ -368,24 +247,84 @@ async function getSourcesForSaint(saintId: string): Promise<PublicSourceSummary[
 }
 
 async function getInstagramUrlsForSaint(saintId: string) {
-  const externalRecord = await db.externalRecord.findFirst({
-    where: { sourceType: "airtable", entityType: "Saint", entityId: saintId },
-    select: { externalId: true }
-  });
-  if (!externalRecord) return [];
-
-  const [, tableIdOrName, recordId] = externalRecord.externalId.split(":");
-  if (!recordId) return [];
-
-  const mirror = await db.airtableMirrorRecord.findFirst({
-    where: { tableIdOrName, recordId },
-    include: {
-      instagramTrackerRows: {
-        where: { matchStatus: "matched" },
-        select: { postUrl: true }
+  const links = await db.instagramItemSaint.findMany({
+    where: {
+      saintId,
+      matchStatus: { in: ["matched", "published"] },
+      instagramItem: { status: { in: ["matched", "published"] } }
+    },
+    orderBy: [
+      { isPrimary: "desc" },
+      { instagramItem: { postedAt: "desc" } }
+    ],
+    select: {
+      instagramItem: {
+        select: { instagramUrl: true }
       }
     }
   });
 
-  return mirror?.instagramTrackerRows.map((row) => row.postUrl).filter((url): url is string => Boolean(url)) ?? [];
+  return links.map((link) => link.instagramItem.instagramUrl);
+}
+
+async function getInstagramItemsForSaint(saintId: string): Promise<PublicInstagramItem[]> {
+  const links = await db.instagramItemSaint.findMany({
+    where: {
+      saintId,
+      matchStatus: { in: ["matched", "published"] },
+      instagramItem: { status: { in: ["matched", "published"] } }
+    },
+    orderBy: [
+      { isPrimary: "desc" },
+      { instagramItem: { postedAt: "desc" } }
+    ],
+    select: {
+      instagramItem: {
+        select: {
+          id: true,
+          instagramUrl: true,
+          instagramShortcode: true,
+          type: true,
+          captionText: true,
+          thumbnailUrl: true,
+          mediaAssets: {
+            orderBy: { sortOrder: "asc" },
+            select: { cachedUrl: true }
+          },
+          postedAt: true
+        }
+      }
+    }
+  });
+
+  const externalRecords = await db.externalRecord.findMany({
+    where: {
+      sourceType: "instagram",
+      entityType: "InstagramItem",
+      entityId: { in: links.map(({ instagramItem }) => instagramItem.id) }
+    },
+    orderBy: { lastSeenAt: "desc" },
+    select: {
+      entityId: true,
+      rawPayloadJson: true
+    }
+  });
+  const rawPayloadByItemId = new Map<string, unknown>();
+  for (const record of externalRecords) {
+    if (record.entityId && !rawPayloadByItemId.has(record.entityId)) {
+      rawPayloadByItemId.set(record.entityId, record.rawPayloadJson);
+    }
+  }
+
+  return links.map(({ instagramItem }) => ({
+    url: instagramItem.instagramUrl,
+    shortcode: instagramItem.instagramShortcode ?? undefined,
+    type: instagramItem.type,
+    caption: instagramItem.captionText ?? undefined,
+    thumbnailUrl: instagramItem.mediaAssets[0]?.cachedUrl ?? instagramItem.thumbnailUrl ?? undefined,
+    carouselImageUrls: instagramItem.mediaAssets.length > 0
+      ? instagramItem.mediaAssets.map((asset) => asset.cachedUrl)
+      : getInstagramCarouselImageUrls(rawPayloadByItemId.get(instagramItem.id)),
+    postedAt: instagramItem.postedAt?.toISOString()
+  }));
 }

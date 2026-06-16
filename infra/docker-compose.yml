@@ -18,6 +18,8 @@ services:
       - postgres
     env_file:
       - ../.env
+    environment:
+      MEDIA_UPLOAD_ROOT: /app/uploads
     volumes:
       - app_uploads:/app/uploads
 

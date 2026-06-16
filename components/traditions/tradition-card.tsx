@@ -17,7 +17,7 @@ export function TraditionCard({ tradition, variant = "summary" }: TraditionCardP
 
   if (variant === "icon") {
     return (
-      <Card className="entity-card tradition-card tradition-card--icon">
+      <Card className="entity-card interactive-surface tradition-card tradition-card--icon">
         <Link href={`/traditions/${tradition.slug}`}>
           <span className="tradition-card__icon" aria-hidden="true">
             <Icon size={42} />
@@ -30,7 +30,7 @@ export function TraditionCard({ tradition, variant = "summary" }: TraditionCardP
   }
 
   return (
-    <Card className="entity-card tradition-card tradition-card--summary">
+    <Card className="entity-card interactive-surface tradition-card tradition-card--summary">
       <Link href={`/traditions/${tradition.slug}`}>
         <h3 className="entity-card__title">{tradition.name}</h3>
         <p className="entity-card__body">{tradition.shortDescription}</p>

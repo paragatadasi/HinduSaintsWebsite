@@ -1,23 +1,39 @@
 import Link from "next/link";
-import { StatusBadge } from "@/components/ui/status-badge";
+import type { Route } from "next";
 import { db } from "@/lib/db";
+import { rankSaintSearchResults } from "@/lib/saint-search";
+import { SaintsBulkReviewList } from "./saints-bulk-review-list";
 
 const statuses = ["all", "needs_review", "published", "draft", "hidden", "archived"] as const;
 type StatusFilter = typeof statuses[number];
 
 type AdminSaintsPageProps = {
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{ q?: string | string[]; status?: string }>;
 };
 
 export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageProps) {
-  const { status } = await searchParams;
+  const { q, status } = await searchParams;
+  const query = getSearchParam(q);
   const activeStatus = statuses.includes(status as StatusFilter) ? status as StatusFilter : "all";
   const [counts, saints, linkedSaintIds] = await Promise.all([
     getStatusCounts(),
-    getSaints(activeStatus),
+    getSaints(activeStatus, query),
     getAirtableLinkedSaintIds()
   ]);
   const linkedSaintIdSet = new Set(linkedSaintIds);
+  const returnTo = getSaintsReturnTo(activeStatus, query);
+  const reviewRows = saints.map((saint) => ({
+    id: saint.id,
+    slug: saint.slug,
+    displayName: saint.displayName,
+    status: saint.status,
+    shortDescription: saint.shortDescription,
+    biographySummary: saint.biographySummary,
+    eraLabel: saint.eraLabel,
+    placeName: saint.places[0]?.place.name ?? null,
+    hasInstagramContent: saint.hasInstagramContent,
+    isAirtableLinked: linkedSaintIdSet.has(saint.id)
+  }));
 
   return (
     <div className="admin-stack">
@@ -41,7 +57,7 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
           <Link
             aria-current={activeStatus === item ? "page" : undefined}
             className="admin-tab"
-            href={item === "all" ? "/admin/saints" : `/admin/saints?status=${item}`}
+            href={getSaintsReturnTo(item, query) as Route}
             key={item}
           >
             {formatStatus(item)}
@@ -49,30 +65,21 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
         ))}
       </nav>
 
-      <div className="review-list">
-        {saints.length > 0 ? saints.map((saint) => (
-          <Link className="review-row" href={`/admin/saints/${saint.slug}`} key={saint.id}>
-            <div>
-              <div className="review-meta">
-                <StatusBadge label={formatStatus(saint.status)} />
-                {saint.hasInstagramContent ? <StatusBadge label="Instagram content" /> : null}
-                {linkedSaintIdSet.has(saint.id) ? <StatusBadge label="Airtable linked" /> : null}
-              </div>
-              <h2>{saint.displayName}</h2>
-              <p>{saint.shortDescription ?? saint.biographySummary ?? "No public summary yet."}</p>
-            </div>
-            <div className="review-meta">
-              <StatusBadge label={saint.eraLabel ?? "Dates pending"} />
-              <StatusBadge label={saint.places[0]?.place.name ?? "Place pending"} />
-            </div>
-          </Link>
-        )) : (
-          <div className="review-panel">
-            <h2>No saints in this queue</h2>
-            <p>Try another status filter.</p>
-          </div>
-        )}
-      </div>
+      <form action="/admin/saints" className="admin-search" role="search">
+        {activeStatus === "all" ? null : <input name="status" type="hidden" value={activeStatus} />}
+        <label className="sr-only" htmlFor="admin-saints-search">Search saints</label>
+        <input
+          id="admin-saints-search"
+          name="q"
+          placeholder="Search by name, alias, place, tradition, date, or status"
+          type="search"
+          defaultValue={query}
+        />
+        <button className="admin-form-button" type="submit">Search</button>
+        {query ? <Link className="admin-form-button admin-form-button--secondary" href={getSaintsReturnTo(activeStatus, "") as Route}>Clear</Link> : null}
+      </form>
+
+      <SaintsBulkReviewList returnTo={returnTo} saints={reviewRows} />
     </div>
   );
 }
@@ -85,18 +92,26 @@ async function getStatusCounts() {
   return Object.fromEntries(grouped.map((row) => [row.status, row._count._all])) as Record<string, number>;
 }
 
-async function getSaints(status: StatusFilter) {
-  return db.saint.findMany({
+async function getSaints(status: StatusFilter, query: string) {
+  const saints = await db.saint.findMany({
     where: status === "all" ? undefined : { status },
     orderBy: [{ status: "asc" }, { displayName: "asc" }],
     include: {
+      aliases: { select: { alias: true } },
       places: {
         include: { place: true },
-        orderBy: { placeType: "asc" },
-        take: 1
+        orderBy: { placeType: "asc" }
+      },
+      traditions: {
+        include: { tradition: true },
+        orderBy: { isPrimary: "desc" }
       }
     }
   });
+
+  if (!query) return saints;
+  return rankSaintSearchResults(saints, query, { includeAdminFields: true })
+    .map(({ item }) => item);
 }
 
 async function getAirtableLinkedSaintIds() {
@@ -118,4 +133,17 @@ function Stat({ label, value }: { label: string; value?: number }) {
 
 function formatStatus(status: string) {
   return status.replace(/_/g, " ");
+}
+
+function getSearchParam(value: string | string[] | undefined) {
+  if (Array.isArray(value)) return value[0]?.trim() ?? "";
+  return value?.trim() ?? "";
+}
+
+function getSaintsReturnTo(status: StatusFilter, query: string) {
+  const params = new URLSearchParams();
+  if (status !== "all") params.set("status", status);
+  if (query) params.set("q", query);
+  const qs = params.toString();
+  return qs ? `/admin/saints?${qs}` : "/admin/saints";
 }
