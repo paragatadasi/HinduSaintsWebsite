@@ -1020,8 +1020,9 @@ img {
 .scroll-rail {
   display: flex;
   gap: var(--space-4);
+  margin: calc(var(--space-2) * -1) calc(var(--space-2) * -1) 0;
   overflow-x: auto;
-  padding: 0 0 var(--space-2);
+  padding: var(--space-2) var(--space-2) var(--space-3);
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;

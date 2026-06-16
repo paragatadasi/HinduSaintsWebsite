@@ -39,6 +39,7 @@ Rules:
 - Keep card presentation variants explicit in shared components, such as `summary`, `portrait`, and `icon`, so index pages and homepage rails can share data without inheriting the wrong layout.
 - Use the shared interactive affordance classes for clickable card-like surfaces. Apply `.interactive-surface` to whole clickable cards, `.interactive-media` to standalone clickable image tiles, and `.interactive-image-link` when only an embedded image inside a larger component is clickable.
 - Interactive affordance colors and shadows belong in theme tokens such as `--color-interactive-border` and `--shadow-interactive`; movement and scale belong in layout/motion tokens such as `--interactive-surface-lift` and `--interactive-image-scale`.
+- Clickable-card hover states should read as a tight light glow rather than a dark drop shadow. Scrollable rails need enough internal paint buffer for lifted cards and their glow to remain visible.
 - Do not add one-off hover transforms, borders, image zooms, or clickable-card shadows in components. Add a new shared interaction class only when the existing surface/media/image-link distinction is not accurate.
 - Theme-specific changes should use theme tokens in `styles/tokens.css`, not conditional component logic.
 - If a visual or layout pattern appears twice, promote it into tokens, shared CSS, shared configuration, or a reusable component.
