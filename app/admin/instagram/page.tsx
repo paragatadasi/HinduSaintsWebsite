@@ -28,6 +28,7 @@ type InstagramQueueItem = Prisma.InstagramItemGetPayload<{
         };
       };
     };
+    mediaAssets: true;
   };
 }>;
 
@@ -156,8 +157,8 @@ function InstagramReviewCard({ item }: { item: InstagramQueueItem }) {
   return (
     <article className="instagram-review-card">
       <a className="instagram-review-card__media interactive-media" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>
-        {item.thumbnailUrl ? (
-          <img src={item.thumbnailUrl} alt={getInstagramPreviewAlt(item)} />
+        {getInstagramPreviewUrl(item) ? (
+          <img src={getInstagramPreviewUrl(item)} alt={getInstagramPreviewAlt(item)} />
         ) : (
           <span>{formatStatus(item.type)}</span>
         )}
@@ -289,6 +290,9 @@ async function getInstagramItems(status: StatusFilter, query: string): Promise<I
       saints: {
         include: { saint: { select: { canonicalName: true, displayName: true, slug: true } } },
         orderBy: [{ isPrimary: "desc" }, { matchConfidence: "desc" }]
+      },
+      mediaAssets: {
+        orderBy: { sortOrder: "asc" }
       }
     },
     take: query ? undefined : 30
@@ -405,6 +409,10 @@ function getInstagramReturnTo(status: StatusFilter, query: string) {
 
 function getInstagramPreviewAlt(item: InstagramQueueItem) {
   return item.captionText ? `Instagram preview: ${item.captionText.slice(0, 80)}` : "Instagram media preview";
+}
+
+function getInstagramPreviewUrl(item: InstagramQueueItem) {
+  return item.mediaAssets[0]?.cachedUrl ?? item.thumbnailUrl;
 }
 
 function formatStatus(status: string) {

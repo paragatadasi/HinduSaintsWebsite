@@ -194,23 +194,34 @@ caption expansion and a carousel viewer. Carousel viewer images come from the
 reviewed Instagram item's preserved child media URLs, exposed through the public
 adapter without exposing raw import payloads.
 
+The website treats Instagram CDN media URLs as import-time source URLs only.
+Those `scontent*.cdninstagram.com` links are temporary signed URLs and must not
+be treated as stable display URLs for public pages or the admin queue. Raw
+Instagram payloads remain preserved in `ExternalRecord.rawPayloadJson` for
+review and debugging, while display media is copied into local storage and
+tracked as ordered `InstagramMediaAsset` rows.
+
 The home page Instagram rail must show the first carousel image because that
-cover identifies the saint described in the post. Instagram CDN media URLs are
-temporary signed URLs, so public homepage previews should use locally cached
-cover images when possible instead of relying on raw `scontent*.cdninstagram.com`
-links. `npm run ingest:instagram` attempts to cache the first carousel image
-during import and stores the local `/media/instagram-covers/...` URL in
-`InstagramItem.thumbnailUrl`. For already-imported records, run:
+cover identifies the saint described in the post. `npm run ingest:instagram`
+attempts to cache every displayable media image during import and stores the
+first cached image in `InstagramItem.thumbnailUrl` for legacy thumbnail
+consumers. Public saint pages, the home rail, the admin Instagram queue/detail
+views, and saint image picker should prefer ordered `InstagramMediaAsset`
+records over raw payload media URLs.
+
+For already-imported records, run:
 
 ```sh
-npm run cache:instagram-covers -- --dry-run
-npm run cache:instagram-covers
+npm run cache:instagram-media -- --dry-run
+npm run cache:instagram-media
 ```
 
-If cached cover generation fails because stored CDN URLs have expired, the cache
-script refreshes the Instagram media payload through the Graph API before saving
-the first carousel image. The raw Instagram payload remains preserved for review
-and debugging; only the public preview URL is made durable.
+The older `npm run cache:instagram-covers` command is kept as a compatibility
+alias for the full media cache command. If cached media generation fails because
+stored CDN URLs have expired, the cache script refreshes the Instagram media
+payload through the Graph API before saving ordered local copies. Only website
+display URLs are made durable; raw imported values are not overwritten except
+when the preserved external payload is refreshed from Instagram for review.
 
 For debugging or one-off backfills, the same importer can still read JSON/CSV
 exports with common field names such as `url`, `permalink`, `caption`,

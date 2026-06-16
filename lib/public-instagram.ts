@@ -28,7 +28,11 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
       instagramUrl: true,
       captionText: true,
       postedAt: true,
-      thumbnailUrl: true
+      thumbnailUrl: true,
+      mediaAssets: {
+        orderBy: { sortOrder: "asc" },
+        select: { cachedUrl: true }
+      }
     }
   });
 
@@ -57,7 +61,8 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
   return items
     .flatMap((item) => {
       const coverImageUrl = getInstagramCarouselCoverImageUrl(rawPayloadByItemId.get(item.id));
-      const imageUrls = getFreshInstagramImageUrls([item.thumbnailUrl, coverImageUrl]);
+      const cachedImageUrls = item.mediaAssets.map((asset) => asset.cachedUrl);
+      const imageUrls = getFreshInstagramImageUrls([...cachedImageUrls, item.thumbnailUrl, coverImageUrl]);
       const imageUrl = imageUrls[0];
       if (!imageUrl) return [];
 

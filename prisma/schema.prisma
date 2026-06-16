@@ -334,10 +334,28 @@ model InstagramItem {
   sourceImportBatchId String?
   sourceImportBatch   ImportBatch?         @relation(fields: [sourceImportBatchId], references: [id])
   notes               String?
+  mediaAssets         InstagramMediaAsset[]
   saints              InstagramItemSaint[]
   derivedClaims       InstagramDerivedClaim[]
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
+}
+
+model InstagramMediaAsset {
+  id              String        @id @default(cuid())
+  instagramItemId String
+  instagramItem   InstagramItem @relation(fields: [instagramItemId], references: [id], onDelete: Cascade)
+  sourceUrl       String
+  cachedUrl       String
+  storageKey      String?
+  mediaType       String?
+  sortOrder       Int           @default(0)
+  isCover         Boolean       @default(false)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([instagramItemId, sortOrder])
+  @@index([instagramItemId, isCover])
 }
 
 model InstagramDerivedClaim {

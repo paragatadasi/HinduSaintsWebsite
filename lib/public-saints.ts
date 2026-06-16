@@ -287,6 +287,10 @@ async function getInstagramItemsForSaint(saintId: string): Promise<PublicInstagr
           type: true,
           captionText: true,
           thumbnailUrl: true,
+          mediaAssets: {
+            orderBy: { sortOrder: "asc" },
+            select: { cachedUrl: true }
+          },
           postedAt: true
         }
       }
@@ -317,8 +321,10 @@ async function getInstagramItemsForSaint(saintId: string): Promise<PublicInstagr
     shortcode: instagramItem.instagramShortcode ?? undefined,
     type: instagramItem.type,
     caption: instagramItem.captionText ?? undefined,
-    thumbnailUrl: instagramItem.thumbnailUrl ?? undefined,
-    carouselImageUrls: getInstagramCarouselImageUrls(rawPayloadByItemId.get(instagramItem.id)),
+    thumbnailUrl: instagramItem.mediaAssets[0]?.cachedUrl ?? instagramItem.thumbnailUrl ?? undefined,
+    carouselImageUrls: instagramItem.mediaAssets.length > 0
+      ? instagramItem.mediaAssets.map((asset) => asset.cachedUrl)
+      : getInstagramCarouselImageUrls(rawPayloadByItemId.get(instagramItem.id)),
     postedAt: instagramItem.postedAt?.toISOString()
   }));
 }

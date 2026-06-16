@@ -22,6 +22,7 @@
     "merge:airtable": "tsx scripts/merge-airtable-duplicates.ts",
     "reconcile:airtable": "tsx scripts/reconcile-airtable.ts",
     "ingest:instagram": "tsx scripts/ingest-instagram.ts",
+    "cache:instagram-media": "tsx scripts/cache-instagram-media.ts",
     "cache:instagram-covers": "tsx scripts/cache-instagram-cover-images.ts",
     "backfill:instagram-carousels": "tsx scripts/backfill-instagram-carousel-images.ts",
     "reconcile:instagram": "tsx scripts/reconcile-instagram.ts",

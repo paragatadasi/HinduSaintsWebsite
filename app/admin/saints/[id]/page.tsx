@@ -496,7 +496,11 @@ async function getSaint(slugOrId: string) {
               id: true,
               instagramShortcode: true,
               instagramUrl: true,
-              thumbnailUrl: true
+              thumbnailUrl: true,
+              mediaAssets: {
+                orderBy: { sortOrder: "asc" },
+                select: { cachedUrl: true }
+              }
             }
           }
         },
@@ -568,7 +572,11 @@ async function getInstagramImagesForSaint(saint: NonNullable<Awaited<ReturnType<
   return saint.instagramItems.flatMap((link) => {
     const item = link.instagramItem;
     const label = item.instagramShortcode ? `Instagram ${item.instagramShortcode}` : "Instagram post";
-    return getInstagramImageUrls(rawByItemId.get(item.id), item.thumbnailUrl).map((sourceUrl, index) => ({
+    const sourceUrls = item.mediaAssets.length > 0
+      ? item.mediaAssets.map((asset) => asset.cachedUrl)
+      : getInstagramImageUrls(rawByItemId.get(item.id), item.thumbnailUrl);
+
+    return sourceUrls.map((sourceUrl, index) => ({
       id: `${item.id}-${index}`,
       instagramUrl: item.instagramUrl,
       label: index === 0 ? label : `${label}, image ${index + 1}`,

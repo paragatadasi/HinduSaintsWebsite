@@ -42,7 +42,7 @@ export function getInstagramImageUrls(rawPayloadJson: unknown, fallbackUrl?: str
 
 type RawPayload = Record<string, unknown>;
 
-const IMAGE_KEYS = ["mediaUrl", "media_url", "thumbnailUrl", "thumbnail_url", "imageUrl", "image_url", "url"];
+const IMAGE_KEYS = ["thumbnailUrl", "thumbnail_url", "imageUrl", "image_url", "mediaUrl", "media_url", "url"];
 
 function getRawPayload(value: unknown): RawPayload | undefined {
   return value && typeof value === "object" && !Array.isArray(value) ? value as RawPayload : undefined;

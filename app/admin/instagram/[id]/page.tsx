@@ -70,8 +70,8 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
           <h2>Post Preview</h2>
           <div className="instagram-detail-preview">
             <a className="instagram-detail-preview__media interactive-media" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>
-              {item.thumbnailUrl ? (
-                <img src={item.thumbnailUrl} alt={getInstagramPreviewAlt(item)} />
+              {getInstagramPreviewUrl(item) ? (
+                <img src={getInstagramPreviewUrl(item)} alt={getInstagramPreviewAlt(item)} />
               ) : (
                 <span>{formatStatus(item.type)}</span>
               )}
@@ -256,6 +256,9 @@ async function getInstagramItem(id: string) {
       saints: {
         include: { saint: { select: { displayName: true, slug: true, status: true } } },
         orderBy: [{ isPrimary: "desc" }, { matchConfidence: "desc" }]
+      },
+      mediaAssets: {
+        orderBy: { sortOrder: "asc" }
       },
       derivedClaims: {
         orderBy: { createdAt: "asc" }
@@ -649,6 +652,10 @@ function getActionButtonClassName(variant: "primary" | "secondary" | "warning") 
 
 function getInstagramPreviewAlt(item: NonNullable<Awaited<ReturnType<typeof getInstagramItem>>>) {
   return item.captionText ? `Instagram preview: ${item.captionText.slice(0, 80)}` : "Instagram media preview";
+}
+
+function getInstagramPreviewUrl(item: NonNullable<Awaited<ReturnType<typeof getInstagramItem>>>) {
+  return item.mediaAssets[0]?.cachedUrl ?? item.thumbnailUrl;
 }
 
 function formatStatus(status: string) {
