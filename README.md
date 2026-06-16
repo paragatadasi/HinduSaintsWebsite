@@ -36,6 +36,12 @@ npm run dev
 
 Then open <http://localhost:3000>.
 
+Local `npm run dev` runs `prisma migrate deploy` and `prisma generate`
+before starting Next. This keeps the development database aligned when new
+checked-in migrations are pulled or created by another agent. Use
+`npm run db:migrate` only when intentionally creating a new migration from a
+Prisma schema change.
+
 ## Local admin sign-in
 
 The admin CMS at `/admin` uses Google OAuth through Auth.js/NextAuth and then checks the signed-in email against `ADMIN_EMAIL_ALLOWLIST`.
@@ -106,6 +112,13 @@ Use the lightweight checker during ordinary frontend and TypeScript work:
 
 ```powershell
 npm run dev:check
+```
+
+When a database migration already exists and needs to be applied without
+creating a new migration, run:
+
+```powershell
+npm run db:deploy
 ```
 
 Use `npm run codex:verify` only when you need the production-build gate, such as dependency/setup changes, large route/rendering changes, pre-deployment handoff, or suspected build-only failures.
