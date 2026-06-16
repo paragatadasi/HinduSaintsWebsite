@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { Prisma, type Confidence, type InstagramType, type MatchStatus } from "@prisma/client";
 import { db } from "../lib/db";
 import { getInstagramShortcode, getInstagramTypeFromUrl } from "../lib/instagram";
+import { cacheInstagramCoverImage } from "../lib/instagram-cover-cache";
 import { extractInstagramFirstPageDraft } from "../lib/instagram-first-page-extraction";
 import { parseInstagramFirstPageMetadata, type InstagramFirstPageMetadata } from "../lib/instagram-metadata";
 import { confidenceForNameMatch } from "../lib/reconciliation";
@@ -351,6 +352,7 @@ async function main() {
     });
     const nextStatus = existingItem && isReviewedStatus(existingItem.status) ? existingItem.status : status;
     const nextConfidence = existingItem && isReviewedStatus(existingItem.status) ? existingItem.matchConfidence : suggestions[0]?.confidence;
+    const thumbnailUrl = await getCachedInstagramCoverUrl(row);
 
     const item = await db.instagramItem.upsert({
       where: { instagramUrl: row.instagramUrl },
@@ -363,7 +365,7 @@ async function main() {
         firstPageText: row.firstPageText,
         firstPageMetadata: row.firstPageMetadata as Prisma.InputJsonValue,
         postedAt: row.postedAt,
-        thumbnailUrl: row.thumbnailUrl,
+        thumbnailUrl,
         status: nextStatus,
         matchConfidence: nextConfidence,
         sourceImportBatchId: batch?.id,
@@ -377,7 +379,7 @@ async function main() {
         firstPageText: existingItem?.firstPageText ? undefined : row.firstPageText,
         firstPageMetadata: existingItem?.firstPageMetadata ? undefined : row.firstPageMetadata as Prisma.InputJsonValue,
         postedAt: row.postedAt,
-        thumbnailUrl: row.thumbnailUrl,
+        thumbnailUrl,
         status: nextStatus,
         matchConfidence: nextConfidence,
         sourceImportBatchId: batch?.id
@@ -450,6 +452,19 @@ async function main() {
   }
 
   console.log(JSON.stringify(summary, null, 2));
+}
+
+async function getCachedInstagramCoverUrl(row: InstagramImportRow) {
+  try {
+    return await cacheInstagramCoverImage({
+      fallbackUrl: row.thumbnailUrl,
+      fileName: row.instagramShortcode ? `${row.instagramShortcode}-cover` : `${stableHash(row.instagramUrl)}-cover`,
+      rawPayloadJson: row.raw
+    });
+  } catch (error) {
+    console.warn(`${row.instagramUrl} -> could not cache Instagram cover image: ${error instanceof Error ? error.message : "unknown error"}`);
+    return row.thumbnailUrl;
+  }
 }
 
 main()

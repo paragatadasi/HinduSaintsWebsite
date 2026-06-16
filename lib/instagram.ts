@@ -20,6 +20,15 @@ export function getInstagramCarouselImageUrls(rawPayloadJson: unknown) {
   return Array.from(new Set(urls));
 }
 
+export function getInstagramCarouselCoverImageUrl(rawPayloadJson: unknown) {
+  const raw = getRawPayload(rawPayloadJson);
+  const children = getRawPayload(raw?.children);
+  const data = Array.isArray(children?.data) ? children.data : [];
+  const firstChild = data.map((child) => getRawPayload(child)).find(Boolean);
+
+  return pickImageUrl(firstChild);
+}
+
 export function getInstagramImageUrls(rawPayloadJson: unknown, fallbackUrl?: string | null) {
   const raw = getRawPayload(rawPayloadJson);
   const urls = [

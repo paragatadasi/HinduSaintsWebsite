@@ -1,9 +1,9 @@
 import { ArrowRight, Instagram, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { InstagramPreviewLink } from "@/components/instagram/instagram-preview-link";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { SaintCard } from "@/components/saints/saint-card";
 import { TraditionCard } from "@/components/traditions/tradition-card";
-import { getInstagramLinkProps } from "@/lib/external-links";
 import { getRecentInstagramCarouselPreviews } from "@/lib/public-instagram";
 import { getFeaturedSaintSummaries, getPublishedSaintSummaries } from "@/lib/public-saints";
 import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
@@ -106,9 +106,7 @@ export default async function HomePage() {
           {instagramPreviews.length > 0 ? (
             <ScrollRail ariaLabel="Instagram previews" className="instagram-rail" controls="always">
               {instagramPreviews.map((preview) => (
-                <a className="instagram-preview interactive-media" href={preview.url} key={preview.url} {...getInstagramLinkProps(preview.url)}>
-                  <img src={preview.imageUrl} alt={preview.alt} />
-                </a>
+                <InstagramPreviewLink alt={preview.alt} imageUrl={preview.imageUrl} imageUrls={preview.imageUrls} key={preview.url} url={preview.url} />
               ))}
             </ScrollRail>
           ) : (
