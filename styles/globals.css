@@ -84,8 +84,9 @@ img {
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--width-card-grid-min)), var(--width-card-grid)));
+  justify-content: start;
 }
 
 .catalog-controls {
@@ -1540,6 +1541,13 @@ img {
   width: 100%;
 }
 
+.image-with-credit--admin img {
+  aspect-ratio: auto;
+  background: var(--color-surface-muted);
+  height: auto;
+  object-fit: contain;
+}
+
 .image-with-credit figcaption {
   color: var(--color-muted);
   display: grid;
@@ -2085,11 +2093,17 @@ img {
 }
 
 .review-field strong,
+.form-stack__field > label,
 .form-stack label {
   color: var(--color-text);
   display: block;
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.form-stack__field {
+  display: grid;
+  gap: var(--space-2);
 }
 
 .review-field span {
@@ -2112,6 +2126,85 @@ img {
 .form-stack textarea {
   min-height: 140px;
   resize: vertical;
+}
+
+.admin-reference-text {
+  background: var(--color-surface-muted);
+  color: var(--color-muted);
+}
+
+.markdown-editor {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.markdown-editor__toolbar,
+.markdown-editor__image-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.markdown-editor__tool {
+  align-items: center;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.markdown-editor__tool:hover,
+.markdown-editor__tool:focus-visible,
+.markdown-editor__image:hover,
+.markdown-editor__image:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.markdown-editor textarea {
+  min-height: 320px;
+}
+
+.markdown-editor__image-picker {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+}
+
+.markdown-editor__image {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  cursor: pointer;
+  display: grid;
+  gap: var(--space-2);
+  max-width: 180px;
+  padding: var(--space-2);
+  text-align: left;
+}
+
+.markdown-editor__image img {
+  aspect-ratio: 4 / 3;
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-sm);
+  filter: var(--image-treatment);
+  object-fit: cover;
+  width: 100%;
+}
+
+.markdown-editor__image span {
+  align-items: center;
+  color: var(--color-muted);
+  display: flex;
+  font-size: 0.78rem;
+  font-weight: 700;
+  gap: var(--space-1);
 }
 
 .combo-search {
@@ -2211,6 +2304,83 @@ img {
   margin: 0;
 }
 
+.combo-search--multi .combo-search__selection {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+}
+
+.combo-search__list--multi {
+  gap: 0;
+}
+
+.combo-search__option--check {
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.combo-search__option--check span:last-child {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.combo-search__option--check strong {
+  font-size: 0.92rem;
+}
+
+.combo-search__option--check input {
+  accent-color: var(--color-accent);
+  height: 1.05rem;
+  margin: 0;
+  width: 1.05rem;
+}
+
+.route-editor {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.route-editor__row {
+  align-items: end;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: grab;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: auto minmax(160px, 1fr) minmax(132px, 0.26fr) minmax(160px, 0.34fr);
+  padding: var(--space-3);
+}
+
+.route-editor__row:active {
+  cursor: grabbing;
+}
+
+.route-editor__handle {
+  align-items: center;
+  color: var(--color-muted);
+  display: inline-flex;
+  min-height: 44px;
+}
+
+.route-editor__place {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+  padding-bottom: var(--space-2);
+}
+
+.route-editor__place strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.route-editor__place small {
+  color: var(--color-muted);
+}
+
 .saint-image-cropper {
   display: grid;
   gap: var(--space-4);
@@ -2262,6 +2432,11 @@ img {
   text-align: left;
 }
 
+.saint-image-cropper__staged-source {
+  display: grid;
+  gap: var(--space-2);
+}
+
 .saint-image-cropper__source:hover,
 .saint-image-cropper__source:focus-visible,
 .saint-image-cropper__upload:hover,
@@ -2291,38 +2466,118 @@ img {
 }
 
 .saint-image-cropper__stage {
-  aspect-ratio: 1;
+  aspect-ratio: var(--cropper-aspect, 1);
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   overflow: hidden;
   position: relative;
+  touch-action: none;
+  user-select: none;
 }
 
 .saint-image-cropper__stage img {
   height: 100%;
   object-fit: fill;
+  pointer-events: none;
   width: 100%;
 }
 
 .saint-image-cropper__crop-box {
   border: 2px solid var(--color-text-inverse);
   box-shadow: 0 0 0 999px var(--color-image-overlay-strong);
-  height: var(--crop-size);
+  cursor: move;
+  height: var(--crop-height);
   left: var(--crop-x);
-  pointer-events: none;
   position: absolute;
   top: var(--crop-y);
-  width: var(--crop-size);
+  width: var(--crop-width);
+}
+
+.saint-image-cropper__crop-box::before,
+.saint-image-cropper__crop-box::after {
+  content: "";
+  inset: 33.333% 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text-inverse) 72%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--color-text-inverse) 72%, transparent);
+  pointer-events: none;
+  position: absolute;
+}
+
+.saint-image-cropper__crop-box::after {
+  border: 0;
+  border-left: 1px solid color-mix(in srgb, var(--color-text-inverse) 72%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--color-text-inverse) 72%, transparent);
+  inset: 0 33.333%;
+}
+
+.saint-image-cropper__crop-handle {
+  background: var(--color-text-inverse);
+  border: 1px solid var(--color-accent);
+  border-radius: 999px;
+  height: 14px;
+  position: absolute;
+  width: 14px;
+}
+
+.saint-image-cropper__crop-handle[data-handle="n"] {
+  cursor: ns-resize;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+}
+
+.saint-image-cropper__crop-handle[data-handle="e"] {
+  cursor: ew-resize;
+  right: 0;
+  top: 50%;
+  transform: translate(50%, -50%);
+}
+
+.saint-image-cropper__crop-handle[data-handle="s"] {
+  bottom: 0;
+  cursor: ns-resize;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+.saint-image-cropper__crop-handle[data-handle="w"] {
+  cursor: ew-resize;
+  left: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.saint-image-cropper__crop-handle[data-handle="ne"] {
+  cursor: nesw-resize;
+  right: 0;
+  top: 0;
+  transform: translate(50%, -50%);
+}
+
+.saint-image-cropper__crop-handle[data-handle="nw"] {
+  cursor: nwse-resize;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+}
+
+.saint-image-cropper__crop-handle[data-handle="se"] {
+  bottom: 0;
+  cursor: nwse-resize;
+  right: 0;
+  transform: translate(50%, 50%);
+}
+
+.saint-image-cropper__crop-handle[data-handle="sw"] {
+  bottom: 0;
+  cursor: nesw-resize;
+  left: 0;
+  transform: translate(-50%, 50%);
 }
 
 .saint-image-cropper__controls {
   align-content: start;
-}
-
-.saint-image-cropper__controls input[type="range"] {
-  accent-color: var(--color-accent);
-  padding: 0;
 }
 
 .saint-image-cropper__submit {
@@ -2330,6 +2585,25 @@ img {
   display: inline-flex;
   gap: var(--space-2);
   justify-content: center;
+}
+
+.saint-image-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.saint-image-actions .admin-form-button {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--space-2);
+  min-height: 38px;
+  padding: 0 var(--space-3);
+}
+
+.saint-image-actions .admin-notice {
+  flex-basis: 100%;
+  width: 100%;
 }
 
 .contact-page {
@@ -2491,6 +2765,7 @@ img {
   .review-detail-grid,
   .review-row,
   .review-row__link,
+  .route-editor__row,
   .admin-search,
   .bulk-review-panel,
   .instagram-review-card,

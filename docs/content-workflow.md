@@ -21,10 +21,10 @@ Current admin review surfaces:
 - `/admin` shows live workflow counts.
 - `/admin/saints` lists saints by status so editors can find imported records,
   published records, and hidden records.
-- `/admin/saints/[id]` supports editing core public saint fields, reviewing
-  aliases, places, traditions, dates, Airtable linkage, Instagram tracker
-  matches, and imported images, then publishing, returning to review, or hiding
-  the saint.
+- `/admin/saints/[id]` supports editing core public saint fields, aliases,
+  traditions, places, route order, biographies, sources, dates, Airtable
+  linkage, Instagram tracker matches, and imported images, then publishing,
+  returning to review, or hiding the saint.
 - `/admin/instagram` lists real imported Instagram posts/reels/carousels by
   status, separate from manual Google Sheets tracker rows.
 - `/admin/instagram/[id]` supports reviewing a real Instagram item, previewing
@@ -38,13 +38,28 @@ visibility is controlled by the saint: once the saint is `published`, every
 matched non-hidden Instagram item attached to that saint is available on the
 saint page. Multiple Instagram posts can be attached to the same saint.
 
-The current review UI is intentionally focused on saint publication. Full
-relationship editing, source editing, image approval, biography editing, and
-dedicated reconciliation queues remain follow-up workflows.
+The saint review UI is intentionally compact. Traditions and places use a
+shared searchable multi-select dropdown so the starting view does not expose
+large checkbox lists. Selected places then appear in a focused route editor,
+where editors can drag them into reviewed route order and set public place
+roles/labels.
+
+Dedicated reconciliation queues remain a follow-up workflow.
 
 ## Biography workflow
 
-Biographies are written in Markdown, not MDX. Raw HTML and scripts are not allowed. Sources should be attached as structured records instead of being buried only in body text.
+Biographies are edited from the saint review screen, not from a separate
+biography queue. The editor stores reviewed biography content in `Biography`
+records and uses the shared admin Markdown editor so the same authoring controls
+can be reused for place and tradition text fields.
+
+Biographies are written in Markdown, not MDX. Raw HTML and scripts are not
+allowed. Sources should be attached as structured records instead of being
+buried only in body text.
+
+Imported Airtable biography text is reference material for admins. It should be
+shown near the biography editor as read-only context, but it is not a public
+biography fallback and should not overwrite reviewed `Biography` content.
 
 ## Preview
 

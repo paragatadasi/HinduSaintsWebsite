@@ -44,12 +44,12 @@ export function buildSaintSearchFields(saint: SearchableSaint, options: { includ
     { value: saint.eraLabel, weight: 1.5 },
     { value: saint.birthDateRaw, weight: 1 },
     { value: saint.samadhiDateRaw, weight: 1 },
-    { value: saint.shortDescription, weight: 0.8 },
-    { value: saint.biographySummary, weight: 0.6 }
+    { value: saint.shortDescription, weight: 0.8 }
   ];
 
   if (options.includeAdminFields) {
     fields.push({ value: saint.status, weight: 0.8 });
+    fields.push({ value: saint.biographySummary, weight: 0.6 });
   }
 
   return fields;

@@ -36,7 +36,8 @@ export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
     );
   }
 
-  const showReadMore = saint.shortDescription.length > SUMMARY_READ_MORE_THRESHOLD;
+  const summary = saint.shortDescription.trim();
+  const showReadMore = summary.length > SUMMARY_READ_MORE_THRESHOLD;
 
   return (
     <Card className="entity-card interactive-surface saint-card saint-card--summary">
@@ -47,7 +48,7 @@ export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
         <div className="entity-card__content">
           <div className="eyebrow">{saint.eraLabel}</div>
           <h3 className="entity-card__title">{saint.displayName}</h3>
-          <p className="entity-card__body saint-card__summary-bio">{saint.shortDescription}</p>
+          {summary ? <p className="entity-card__body saint-card__summary-bio">{summary}</p> : null}
           {showReadMore ? <span className="saint-card__read-more" aria-hidden="true">READ MORE</span> : null}
           <p className="entity-card__meta">
             <MapPin size={16} />

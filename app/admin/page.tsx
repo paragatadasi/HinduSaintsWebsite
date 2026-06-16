@@ -4,11 +4,12 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 
 export default async function AdminDashboardPage() {
-  const [saintCounts, trackerNeedsReview, biographiesNeedsReview, traditionsNeedsReview] = await Promise.all([
+  const [saintCounts, trackerNeedsReview, biographiesNeedsReview, traditionsNeedsReview, placeCount] = await Promise.all([
     db.saint.groupBy({ by: ["status"], _count: { _all: true } }),
     db.instagramTrackerRow.count({ where: { matchStatus: "needs_review" } }),
     db.biography.count({ where: { status: "needs_review" } }),
-    db.tradition.count({ where: { status: "needs_review" } })
+    db.tradition.count({ where: { status: "needs_review" } }),
+    db.place.count()
   ]);
   const counts = Object.fromEntries(saintCounts.map((row) => [row.status, row._count._all]));
 
@@ -25,6 +26,7 @@ export default async function AdminDashboardPage() {
         <DashboardCard href="/admin/instagram" label="Unmatched tracker rows" value={trackerNeedsReview} />
         <DashboardCard href="/admin/biographies" label="Biographies awaiting review" value={biographiesNeedsReview} />
         <DashboardCard href="/admin/traditions" label="Traditions awaiting review" value={traditionsNeedsReview} />
+        <DashboardCard href="/admin/places" label="Place records" value={placeCount} />
       </div>
     </div>
   );

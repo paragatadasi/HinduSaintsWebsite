@@ -1,11 +1,13 @@
 import { db } from "@/lib/db";
 import { getPlaceCoordinate } from "@/lib/place-geocoding";
+import { toSlug } from "@/lib/slugs";
 import type {
   PublicPlaceDetail,
   PublicPlaceMapData,
   PublicPlaceMapPoint,
   PublicPlaceMapSaint,
   PublicPlaceSummary,
+  PublicImage,
   PublicSaintSummary
 } from "@/lib/public-contracts";
 
@@ -14,7 +16,7 @@ type PublishedPlaceDetailRow = NonNullable<Awaited<ReturnType<typeof getPublishe
 type PublishedPlaceSaintLink = PublishedPlaceRow["saints"][number];
 type PublishedPlaceSaint = PublishedPlaceSaintLink["saint"];
 
-const DEFAULT_DESCRIPTION = "A reviewed place associated with published saint profiles.";
+const DEFAULT_DESCRIPTION = "";
 const DEFAULT_LOCATION = "Location in review";
 const DEFAULT_TRADITION = "Tradition in review";
 const DEFAULT_ERA = "Dates in review";
@@ -28,6 +30,8 @@ const STATE_PLACE_SLUGS = new Set([
   "kerala",
   "madhya-pradesh",
   "maharashtra",
+  "odisha",
+  "orissa",
   "rajasthan",
   "tamil-nadu",
   "uttar-pradesh",
@@ -39,25 +43,49 @@ const PLACE_STATE_SLUGS = new Map([
   ["akkalkot", "maharashtra"],
   ["alandi", "maharashtra"],
   ["amravati", "maharashtra"],
+  ["arunachala", "tamil-nadu"],
+  ["badrinath", "uttarakhand"],
   ["bangalore", "karnataka"],
+  ["bhavnath", "gujarat"],
   ["burdwan", "west-bengal"],
   ["bardwan", "west-bengal"],
   ["calcutta", "west-bengal"],
   ["cuttack", "odisha"],
   ["cuttack-orissa", "odisha"],
+  ["dwaraka", "gujarat"],
+  ["girnar", "gujarat"],
   ["guntur", "andhra-pradesh"],
+  ["haridwar", "uttarakhand"],
   ["hubli", "karnataka"],
+  ["jabalpur", "madhya-pradesh"],
+  ["jaipur", "rajasthan"],
+  ["jodhpur", "rajasthan"],
+  ["junagadh", "gujarat"],
   ["kolhapur", "maharashtra"],
   ["kopargaon", "maharashtra"],
   ["majuli-assam", "assam"],
+  ["mayapur", "west-bengal"],
   ["mumbai", "maharashtra"],
   ["nagpur", "maharashtra"],
   ["narasimha-wadi", "maharashtra"],
+  ["navadwip", "west-bengal"],
   ["nellore", "andhra-pradesh"],
   ["pandharpur", "maharashtra"],
   ["pune", "maharashtra"],
   ["pune-india", "maharashtra"],
-  ["shirdi", "maharashtra"]
+  ["puri", "odisha"],
+  ["puri-orissa", "odisha"],
+  ["pushkar", "rajasthan"],
+  ["radha-kund", "uttar-pradesh"],
+  ["rajkot-virpur", "gujarat"],
+  ["rishikesh", "uttarakhand"],
+  ["serampur", "west-bengal"],
+  ["shirdi", "maharashtra"],
+  ["sri-rangam", "tamil-nadu"],
+  ["thiruvananthpuram", "kerala"],
+  ["varanasi", "uttar-pradesh"],
+  ["vrindavan", "uttar-pradesh"],
+  ["vrindavan-india", "uttar-pradesh"]
 ]);
 
 async function getPublishedPlaceRows() {
@@ -71,6 +99,7 @@ async function getPublishedPlaceRows() {
     },
     orderBy: { name: "asc" },
     include: {
+      parentState: true,
       saints: {
         where: {
           saint: { status: "published" }
@@ -113,6 +142,7 @@ async function getPublishedPlaceRowBySlug(slug: string) {
       }
     },
     include: {
+      parentState: true,
       saints: {
         where: {
           saint: { status: "published" }
@@ -201,6 +231,7 @@ function toPublicPlaceSummary(place: PublishedPlaceRow | PublishedPlaceDetailRow
     slug: place.slug,
     name: place.name,
     shortDescription: buildPlaceDescription(place, saints),
+    overviewMarkdown: place.overviewMarkdown ?? undefined,
     saintCount: saints.length,
     status: "published"
   };
@@ -222,8 +253,8 @@ function toPublicPlaceMapPoint(place: PublishedPlaceRow): PublicPlaceMapPoint | 
     name: place.name,
     region: place.region ?? undefined,
     country: place.country ?? undefined,
-    placeScope: getPlaceScope(place.name),
-    stateSlug: getPlaceStateSlug(place.name),
+    placeScope: place.placeScope === "state" ? "state" : "place",
+    stateSlug: place.parentState?.slug ?? getPlaceStateSlug(place.name),
     latitude: coordinate.latitude,
     longitude: coordinate.longitude,
     saintCount: saints.length,
@@ -237,6 +268,7 @@ function toPublicSaintSummary(saint: PublishedPlaceSaint): PublicSaintSummary {
     displayName: saint.displayName,
     canonicalName: saint.canonicalName,
     shortDescription: saint.shortDescription ?? saint.biographySummary ?? DEFAULT_DESCRIPTION,
+    image: saint.primaryImage ? toPublicImage(saint.primaryImage, saint.displayName) : undefined,
     eraLabel: saint.eraLabel ?? DEFAULT_ERA,
     primaryLocation: getPrimaryLocation(saint.places),
     tradition: getPrimaryTradition(saint.traditions),
@@ -247,9 +279,21 @@ function toPublicSaintSummary(saint: PublishedPlaceSaint): PublicSaintSummary {
   };
 }
 
+function toPublicImage(image: PublishedPlaceSaint["primaryImage"], displayName: string): PublicImage {
+  return {
+    url: image?.url ?? "/images/devotional-archive-placeholder.svg",
+    alt: image?.altText ?? `${displayName} portrait`,
+    caption: image?.caption ?? undefined,
+    credit: image?.credit ?? undefined,
+    sourceUrl: image?.sourceUrl ?? undefined,
+    width: image?.width ?? undefined,
+    height: image?.height ?? undefined
+  };
+}
+
 function toPublicPlaceMapSaint(saintPlace: PublishedPlaceSaintLink): PublicPlaceMapSaint {
   const saint = saintPlace.saint;
-  const galleryImage = saint.galleryImages[0]?.mediaAsset;
+  const galleryImage = saint.galleryImages.find((image) => image.publicVisible !== false)?.mediaAsset;
   const image = saint.primaryImage ?? galleryImage;
 
   return {
@@ -353,7 +397,7 @@ function aggregateMapPoints(points: PublicPlaceMapPoint[]) {
 }
 
 function getMapPlaceKey(name: string) {
-  return getMapPlaceName(name).toLowerCase();
+  return toSlug(getMapPlaceName(name));
 }
 
 function getMapPlaceName(name: string) {

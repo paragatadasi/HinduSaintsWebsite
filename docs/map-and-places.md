@@ -141,9 +141,15 @@ state marker. The state can still appear as a marker in route mode for saints
 who only have the broad association.
 
 State fills are derived from each visible point's `stateSlug`, or from the
-point slug when the point itself is state-scoped. Keep slug aliases in the map
-geometry layer for known imported variants such as `bengal`, `orissa`, and
-`uttarkhand`.
+point slug when the point itself is state-scoped. Public place map keys must use
+the shared slug normalizer so multi-word records such as `Tamil Nadu`,
+`Sri Rangam`, `Uttar Pradesh`, and `Radha Kund` match the slug-based state and
+place lookup tables. Keep slug aliases in the map geometry layer for known
+imported variants such as `bengal`, `orissa`, and `uttarkhand`.
+
+When a selected state has no dedicated state-scoped place detail record, the
+map panel action should fall back to the state's representative mapped place so
+active states still expose an `Explore` action.
 
 ## State Layer Interaction Note
 
@@ -186,6 +192,11 @@ Editors should use `birth` and `samadhi` place types only when the source
 identifies those roles. Use `routeOrder` for reviewed route sequence among other
 key places, and leave it blank when the order is unknown.
 
+In `/admin/saints/[id]`, place selection is intentionally separate from route
+configuration. Editors first choose places from a searchable multi-select, then
+order only the selected places in the route editor by dragging them into the
+reviewed sequence.
+
 ## Timeline Rules
 
 The time filter uses `Saint.birthYear` and `Saint.samadhiYear`.
@@ -201,8 +212,8 @@ The year range is derived from mapped saints with date metadata.
 Public copy for the page and visualization lives in `lib/site-content.ts`:
 
 - `placesIndexContent` controls the `/map` page intro.
-- `placesMapContent` controls the visualization heading, description, and
-  selection prompt.
+- `placesMapContent` controls the visualization heading, description, selection
+  prompt, and map panel action label.
 - `placeDetailTemplateContent` controls `/places/[slug]` detail labels.
 
 Use site content configuration for copy changes instead of hard-coding page text

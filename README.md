@@ -79,6 +79,8 @@ Supported local upload formats are JPEG, PNG, WebP, and GIF. The default upload 
 
 For local-only development without OAuth configured, set `MEDIA_UPLOADS_REQUIRE_AUTH="false"` in `.env`. Keep it enabled anywhere the site is reachable by other users.
 
+Saint review pages can upload local images or select imported Instagram post images as crop sources. Approved crops create `MediaAsset` records and can be attached as primary images, gallery images, or both. Gallery attachments use `SaintGalleryImage.publicVisible` so editors can hide images from public pages while keeping them in the saint review staging area; staged images can be restored or deleted after confirmation.
+
 ## Codex Cloud
 
 See `docs/codex-cloud.md` for the hosted Codex environment setup script, environment variables, and verification command.

@@ -1,9 +1,11 @@
 "use client";
 
 import { Crop, ImagePlus, Upload } from "lucide-react";
-import type { CSSProperties } from "react";
+import { useRouter } from "next/navigation";
+import type { CSSProperties, PointerEvent } from "react";
 import { useMemo, useRef, useState, useTransition } from "react";
 import { attachImageToSaint } from "../actions";
+import { SaintImageActions } from "./saint-image-actions";
 
 type InstagramImageSource = {
   id: string;
@@ -16,12 +18,31 @@ type SaintImageCropperProps = {
   defaultAltText: string;
   instagramImages: InstagramImageSource[];
   saintId: string;
+  stagedImages: StagedImageSource[];
+};
+
+type StagedImageSource = {
+  altText?: string | null;
+  caption?: string | null;
+  id: string;
+  sourceUrl?: string | null;
+  url: string;
 };
 
 type CropBox = {
   x: number;
   y: number;
-  size: number;
+  width: number;
+  height: number;
+};
+
+type DragMode = "move" | "n" | "e" | "s" | "w" | "ne" | "nw" | "se" | "sw";
+
+type DragState = {
+  cropBox: CropBox;
+  mode: DragMode;
+  pointerX: number;
+  pointerY: number;
 };
 
 type SelectedImage = {
@@ -36,21 +57,29 @@ type UploadState = {
   message?: string;
 };
 
-const cropCanvasSize = 1200;
+const maxCropOutputSize = 1200;
+const minCropSize = 8;
+const defaultCropBox: CropBox = { x: 10, y: 10, width: 80, height: 80 };
+const cropHandles: DragMode[] = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
 
-export function SaintImageCropper({ defaultAltText, instagramImages, saintId }: SaintImageCropperProps) {
+export function SaintImageCropper({ defaultAltText, instagramImages, saintId, stagedImages }: SaintImageCropperProps) {
   const [selected, setSelected] = useState<SelectedImage | null>(null);
-  const [cropBox, setCropBox] = useState<CropBox>({ x: 0, y: 0, size: 100 });
+  const [cropBox, setCropBox] = useState<CropBox>(defaultCropBox);
+  const [naturalSize, setNaturalSize] = useState({ width: 1, height: 1 });
   const [altText, setAltText] = useState(defaultAltText);
   const [caption, setCaption] = useState("");
   const [credit, setCredit] = useState("");
   const [placement, setPlacement] = useState<"gallery" | "primary" | "both">("gallery");
   const [uploadState, setUploadState] = useState<UploadState>({ status: "idle" });
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const imageRef = useRef<HTMLImageElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const dragStateRef = useRef<DragState | null>(null);
 
   const sourceOptions = useMemo(() => instagramImages.slice(0, 12), [instagramImages]);
   const isBusy = isPending || uploadState.status === "uploading";
+  const imageAspect = naturalSize.width / Math.max(1, naturalSize.height);
 
   function selectInstagramImage(image: InstagramImageSource) {
     revokeSelectedPreview(selected);
@@ -60,7 +89,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId }: 
       previewUrl: `/api/admin/media?sourceUrl=${encodeURIComponent(image.sourceUrl)}`
     });
     setCaption(`Image selected from ${image.label}`);
-    setCropBox({ x: 0, y: 0, size: 100 });
+    setCropBox(defaultCropBox);
     setUploadState({ status: "idle" });
   }
 
@@ -73,7 +102,19 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId }: 
       previewUrl: URL.createObjectURL(file)
     });
     setCaption("");
-    setCropBox({ x: 0, y: 0, size: 100 });
+    setCropBox(defaultCropBox);
+    setUploadState({ status: "idle" });
+  }
+
+  function selectStagedImage(image: StagedImageSource) {
+    revokeSelectedPreview(selected);
+    setSelected({
+      sourceUrl: image.sourceUrl ?? undefined,
+      label: image.caption ?? image.altText ?? "Hidden saint image",
+      previewUrl: image.url
+    });
+    setCaption(image.caption ?? "");
+    setCropBox(defaultCropBox);
     setUploadState({ status: "idle" });
   }
 
@@ -83,14 +124,14 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId }: 
     setUploadState({ status: "uploading", message: "Preparing cropped image." });
 
     try {
-      const blob = await renderCropToBlob(imageRef.current, cropBox);
+      const renderedCrop = await renderCropToBlob(imageRef.current, cropBox);
       const formData = new FormData();
-      formData.set("file", new File([blob], `${slugify(defaultAltText || "saint-image")}.jpg`, { type: "image/jpeg" }));
+      formData.set("file", new File([renderedCrop.blob], `${slugify(defaultAltText || "saint-image")}.jpg`, { type: "image/jpeg" }));
       formData.set("altText", altText);
       formData.set("caption", caption);
       formData.set("credit", credit);
-      formData.set("width", String(cropCanvasSize));
-      formData.set("height", String(cropCanvasSize));
+      formData.set("width", String(renderedCrop.width));
+      formData.set("height", String(renderedCrop.height));
 
       if (selected.sourceUrl) {
         formData.set("sourceUrl", selected.sourceUrl);
@@ -113,6 +154,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId }: 
             mediaAssetId: payload.mediaAsset!.id!,
             placement
           });
+          router.refresh();
           setUploadState({ status: "success", message: "Image attached to saint review." });
         } catch (error) {
           setUploadState({ status: "error", message: getErrorMessage(error) });
@@ -120,6 +162,38 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId }: 
       });
     } catch (error) {
       setUploadState({ status: "error", message: getErrorMessage(error) });
+    }
+  }
+
+  function startCropDrag(event: PointerEvent<HTMLElement>, mode: DragMode) {
+    if (isBusy) return;
+    event.preventDefault();
+    event.stopPropagation();
+    dragStateRef.current = {
+      cropBox,
+      mode,
+      pointerX: event.clientX,
+      pointerY: event.clientY
+    };
+    stageRef.current?.setPointerCapture(event.pointerId);
+  }
+
+  function handleCropDrag(event: PointerEvent<HTMLDivElement>) {
+    const dragState = dragStateRef.current;
+    const stage = stageRef.current;
+    if (!dragState || !stage) return;
+
+    const rect = stage.getBoundingClientRect();
+    const deltaX = ((event.clientX - dragState.pointerX) / rect.width) * 100;
+    const deltaY = ((event.clientY - dragState.pointerY) / rect.height) * 100;
+
+    setCropBox(resizeCropBox(dragState.cropBox, dragState.mode, deltaX, deltaY));
+  }
+
+  function stopCropDrag(event: PointerEvent<HTMLDivElement>) {
+    dragStateRef.current = null;
+    if (stageRef.current?.hasPointerCapture(event.pointerId)) {
+      stageRef.current.releasePointerCapture(event.pointerId);
     }
   }
 
@@ -131,8 +205,22 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId }: 
           <span>Upload image</span>
           <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => selectUploadedFile(event.target.files?.[0])} />
         </label>
-        {sourceOptions.length > 0 ? (
-          <div className="saint-image-cropper__source-grid" aria-label="Instagram post images">
+        {stagedImages.length > 0 || sourceOptions.length > 0 ? (
+          <div className="saint-image-cropper__source-grid" aria-label="Image staging sources">
+            {stagedImages.map((image) => (
+              <div className="saint-image-cropper__staged-source" key={image.id}>
+                <button className="saint-image-cropper__source" type="button" onClick={() => selectStagedImage(image)}>
+                  <img src={image.url} alt="" loading="lazy" />
+                  <span>{image.caption ?? image.altText ?? "Hidden saint image"}</span>
+                </button>
+                <SaintImageActions
+                  imageLabel={image.caption ?? image.altText ?? "Hidden saint image"}
+                  mediaAssetId={image.id}
+                  saintId={saintId}
+                  visible={false}
+                />
+              </div>
+            ))}
             {sourceOptions.map((image) => (
               <button className="saint-image-cropper__source" key={`${image.id}-${image.sourceUrl}`} type="button" onClick={() => selectInstagramImage(image)}>
                 <img src={image.sourceUrl} alt="" loading="lazy" />
@@ -147,38 +235,52 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId }: 
 
       {selected ? (
         <div className="saint-image-cropper__workspace">
-          <div className="saint-image-cropper__stage">
+          <div
+            className="saint-image-cropper__stage"
+            ref={stageRef}
+            style={{ "--cropper-aspect": imageAspect } as CSSProperties}
+            onPointerMove={handleCropDrag}
+            onPointerUp={stopCropDrag}
+            onPointerCancel={stopCropDrag}
+          >
             <img
               ref={imageRef}
               src={selected.previewUrl}
               alt=""
+              onLoad={(event) => {
+                setNaturalSize({
+                  width: event.currentTarget.naturalWidth,
+                  height: event.currentTarget.naturalHeight
+                });
+                setCropBox(defaultCropBox);
+              }}
             />
             <div
               className="saint-image-cropper__crop-box"
               style={{
                 "--crop-x": `${cropBox.x}%`,
                 "--crop-y": `${cropBox.y}%`,
-                "--crop-size": `${cropBox.size}%`
+                "--crop-width": `${cropBox.width}%`,
+                "--crop-height": `${cropBox.height}%`
               } as CSSProperties}
-            />
+              onPointerDown={(event) => startCropDrag(event, "move")}
+            >
+              {cropHandles.map((handle) => (
+                <span
+                  aria-hidden="true"
+                  className="saint-image-cropper__crop-handle"
+                  data-handle={handle}
+                  key={handle}
+                  onPointerDown={(event) => startCropDrag(event, handle)}
+                />
+              ))}
+            </div>
           </div>
           <div className="form-stack saint-image-cropper__controls">
             <div>
               <strong>{selected.label}</strong>
-              <p>Adjust the crop, then attach the cropped image to this saint.</p>
+              <p>Drag the crop frame to move it, or drag an edge or corner to resize it.</p>
             </div>
-            <label>
-              Crop size
-              <input type="range" min="35" max="100" value={cropBox.size} onChange={(event) => updateCrop("size", Number(event.target.value))} />
-            </label>
-            <label>
-              Horizontal position
-              <input type="range" min="0" max={100 - cropBox.size} value={cropBox.x} onChange={(event) => updateCrop("x", Number(event.target.value))} />
-            </label>
-            <label>
-              Vertical position
-              <input type="range" min="0" max={100 - cropBox.size} value={cropBox.y} onChange={(event) => updateCrop("y", Number(event.target.value))} />
-            </label>
             <label>
               Alt text
               <input value={altText} maxLength={240} onChange={(event) => setAltText(event.target.value)} />
@@ -213,38 +315,74 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId }: 
       ) : null}
     </div>
   );
-
-  function updateCrop(key: keyof CropBox, value: number) {
-    setCropBox((current) => {
-      const next = { ...current, [key]: value };
-      const maxOffset = 100 - next.size;
-      return {
-        size: next.size,
-        x: Math.min(next.x, maxOffset),
-        y: Math.min(next.y, maxOffset)
-      };
-    });
-  }
 }
 
 async function renderCropToBlob(image: HTMLImageElement, cropBox: CropBox) {
+  const sourceX = Math.round(image.naturalWidth * cropBox.x / 100);
+  const sourceY = Math.round(image.naturalHeight * cropBox.y / 100);
+  const sourceWidth = Math.round(image.naturalWidth * cropBox.width / 100);
+  const sourceHeight = Math.round(image.naturalHeight * cropBox.height / 100);
+  const scale = Math.min(maxCropOutputSize / sourceWidth, maxCropOutputSize / sourceHeight, 1);
+  const width = Math.max(1, Math.round(sourceWidth * scale));
+  const height = Math.max(1, Math.round(sourceHeight * scale));
   const canvas = document.createElement("canvas");
-  canvas.width = cropCanvasSize;
-  canvas.height = cropCanvasSize;
+  canvas.width = width;
+  canvas.height = height;
 
   const context = canvas.getContext("2d");
   if (!context) throw new Error("Could not prepare the image crop.");
 
-  const sourceSize = Math.min(image.naturalWidth, image.naturalHeight) * (cropBox.size / 100);
-  const sourceX = (image.naturalWidth - sourceSize) * (cropBox.x / Math.max(1, 100 - cropBox.size));
-  const sourceY = (image.naturalHeight - sourceSize) * (cropBox.y / Math.max(1, 100 - cropBox.size));
-
-  context.drawImage(image, sourceX, sourceY, sourceSize, sourceSize, 0, 0, cropCanvasSize, cropCanvasSize);
+  context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, width, height);
 
   const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.9));
   if (!blob) throw new Error("Could not export the cropped image.");
 
-  return blob;
+  return { blob, width, height };
+}
+
+function resizeCropBox(initial: CropBox, mode: DragMode, deltaX: number, deltaY: number): CropBox {
+  let { x, y, width, height } = initial;
+
+  if (mode === "move") {
+    return clampCropBox({
+      ...initial,
+      x: initial.x + deltaX,
+      y: initial.y + deltaY
+    });
+  }
+
+  if (mode.includes("w")) {
+    x = initial.x + deltaX;
+    width = initial.width - deltaX;
+  }
+
+  if (mode.includes("e")) {
+    width = initial.width + deltaX;
+  }
+
+  if (mode.includes("n")) {
+    y = initial.y + deltaY;
+    height = initial.height - deltaY;
+  }
+
+  if (mode.includes("s")) {
+    height = initial.height + deltaY;
+  }
+
+  return clampCropBox({ x, y, width, height });
+}
+
+function clampCropBox(cropBox: CropBox): CropBox {
+  const width = clamp(cropBox.width, minCropSize, 100);
+  const height = clamp(cropBox.height, minCropSize, 100);
+  const x = clamp(cropBox.x, 0, 100 - width);
+  const y = clamp(cropBox.y, 0, 100 - height);
+
+  return { x, y, width, height };
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
 }
 
 function revokeSelectedPreview(selected: SelectedImage | null) {

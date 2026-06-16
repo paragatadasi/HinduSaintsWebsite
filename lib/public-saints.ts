@@ -13,7 +13,7 @@ import { rankSaintSearchResults } from "@/lib/saint-search";
 type SaintListRow = Awaited<ReturnType<typeof getPublishedSaintRows>>[number];
 type SaintDetailRow = NonNullable<Awaited<ReturnType<typeof getPublishedSaintRowBySlug>>>;
 
-const DEFAULT_DESCRIPTION = "A reviewed saint profile from the Hindu Saints Archive.";
+const DEFAULT_DESCRIPTION = "";
 const DEFAULT_LOCATION = "Location in review";
 const DEFAULT_TRADITION = "Tradition in review";
 const DEFAULT_ERA = "Dates in review";
@@ -147,7 +147,9 @@ function toPublicSaintDetail(
 ): PublicSaintDetail {
   const summary = toPublicSaintSummary(saint);
   const biography = saint.biographies[0];
-  const gallery = saint.galleryImages.map((image) => toPublicImage(image.mediaAsset, saint.displayName));
+  const gallery = saint.galleryImages
+    .filter((image) => image.publicVisible !== false)
+    .map((image) => toPublicImage(image.mediaAsset, saint.displayName));
   const heroImage = saint.primaryImage ? toPublicImage(saint.primaryImage, saint.displayName) : gallery[0];
 
   return {
@@ -170,18 +172,12 @@ function toPublicSaintDetail(
           bodyMarkdown: biography.bodyMarkdown,
           sources
         }
-      : saint.biographySummary
-        ? {
-            title: "Profile notes",
-            bodyMarkdown: saint.biographySummary,
-            sources
-          }
-        : undefined,
+      : undefined,
     sources,
     furtherReading: sources,
     seo: {
       title: saint.seoTitle ?? saint.displayName,
-      description: saint.seoDescription ?? saint.shortDescription ?? saint.biographySummary ?? undefined
+      description: saint.seoDescription ?? saint.shortDescription ?? undefined
     }
   };
 }

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { Route } from "next";
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -19,7 +20,6 @@ const saintBasicsSchema = z.object({
   displayName: z.string().trim().min(1).max(200),
   canonicalName: z.string().trim().min(1).max(200),
   shortDescription: z.string().trim().max(500).optional(),
-  biographySummary: z.string().trim().max(8000).optional(),
   eraLabel: z.string().trim().max(120).optional(),
   birthDateRaw: z.string().trim().max(120).optional(),
   samadhiDateRaw: z.string().trim().max(120).optional(),
@@ -49,6 +49,17 @@ const saintImageAttachmentSchema = z.object({
   saintId: z.string().cuid(),
   mediaAssetId: z.string().cuid(),
   placement: z.enum(["gallery", "primary", "both"])
+});
+
+const saintImageVisibilitySchema = z.object({
+  saintId: z.string().cuid(),
+  mediaAssetId: z.string().cuid(),
+  publicVisible: z.boolean()
+});
+
+const saintImageDeleteSchema = z.object({
+  saintId: z.string().cuid(),
+  mediaAssetId: z.string().cuid()
 });
 
 const saintAliasesSchema = z.object({
@@ -107,7 +118,6 @@ export async function updateSaintBasics(formData: FormData) {
     displayName: formData.get("displayName"),
     canonicalName: formData.get("canonicalName"),
     shortDescription: emptyToUndefined(formData.get("shortDescription")),
-    biographySummary: emptyToUndefined(formData.get("biographySummary")),
     eraLabel: emptyToUndefined(formData.get("eraLabel")),
     birthDateRaw: emptyToUndefined(formData.get("birthDateRaw")),
     samadhiDateRaw: emptyToUndefined(formData.get("samadhiDateRaw")),
@@ -124,7 +134,6 @@ export async function updateSaintBasics(formData: FormData) {
       displayName: parsed.displayName,
       canonicalName: parsed.canonicalName,
       shortDescription: parsed.shortDescription ?? null,
-      biographySummary: parsed.biographySummary ?? null,
       eraLabel: parsed.eraLabel ?? null,
       birthDateRaw: parsed.birthDateRaw ?? null,
       birthYear: birthDate?.year ?? null,
@@ -544,11 +553,133 @@ export async function attachImageToSaint(input: z.input<typeof saintImageAttachm
             sortOrder: saint._count.galleryImages
           }
         });
+      } else {
+        await setSaintGalleryImageVisibility(tx, parsed.saintId, parsed.mediaAssetId, true);
       }
     }
   });
 
   revalidateSaintPaths(saint.slug);
+}
+
+export async function updateSaintImageVisibility(input: z.input<typeof saintImageVisibilitySchema>) {
+  await requireAdminSession();
+
+  const parsed = saintImageVisibilitySchema.parse(input);
+  const saint = await db.saint.findUnique({
+    where: { id: parsed.saintId },
+    select: {
+      id: true,
+      slug: true,
+      primaryImageId: true,
+      _count: { select: { galleryImages: true } }
+    }
+  });
+
+  if (!saint) throw new Error("Saint was not found.");
+
+  await db.$transaction(async (tx) => {
+    await ensureSaintGalleryVisibilityColumn(tx);
+
+    if (!parsed.publicVisible && saint.primaryImageId === parsed.mediaAssetId) {
+      await tx.saint.update({
+        where: { id: parsed.saintId },
+        data: { primaryImageId: null }
+      });
+    }
+
+    const existing = await tx.saintGalleryImage.findFirst({
+      where: {
+        saintId: parsed.saintId,
+        mediaAssetId: parsed.mediaAssetId
+      },
+      select: { id: true }
+    });
+
+    if (existing) {
+      await setSaintGalleryImageVisibility(tx, parsed.saintId, parsed.mediaAssetId, parsed.publicVisible);
+      return;
+    }
+
+    await tx.saintGalleryImage.create({
+      data: {
+        saintId: parsed.saintId,
+        mediaAssetId: parsed.mediaAssetId,
+        sortOrder: saint._count.galleryImages
+      }
+    });
+    await setSaintGalleryImageVisibility(tx, parsed.saintId, parsed.mediaAssetId, parsed.publicVisible);
+  });
+
+  revalidateSaintPaths(saint.slug);
+}
+
+export async function deleteSaintImage(input: z.input<typeof saintImageDeleteSchema>) {
+  await requireAdminSession();
+
+  const parsed = saintImageDeleteSchema.parse(input);
+  const saint = await db.saint.findUnique({
+    where: { id: parsed.saintId },
+    select: { id: true, slug: true, primaryImageId: true }
+  });
+
+  if (!saint) throw new Error("Saint was not found.");
+
+  await db.$transaction(async (tx) => {
+    if (saint.primaryImageId === parsed.mediaAssetId) {
+      await tx.saint.update({
+        where: { id: parsed.saintId },
+        data: { primaryImageId: null }
+      });
+    }
+
+    await tx.saintGalleryImage.deleteMany({
+      where: {
+        saintId: parsed.saintId,
+        mediaAssetId: parsed.mediaAssetId
+      }
+    });
+
+    const references = await tx.mediaAsset.findUnique({
+      where: { id: parsed.mediaAssetId },
+      select: {
+        _count: {
+          select: {
+            primaryForSaints: true,
+            saintGalleryImages: true
+          }
+        }
+      }
+    });
+
+    if (references && references._count.primaryForSaints === 0 && references._count.saintGalleryImages === 0) {
+      await tx.mediaAsset.delete({ where: { id: parsed.mediaAssetId } });
+    }
+  });
+
+  revalidateSaintPaths(saint.slug);
+}
+
+async function ensureSaintGalleryVisibilityColumn(tx: Prisma.TransactionClient) {
+  await tx.$executeRaw`
+    ALTER TABLE "SaintGalleryImage"
+    ADD COLUMN IF NOT EXISTS "publicVisible" BOOLEAN NOT NULL DEFAULT true
+  `;
+}
+
+async function setSaintGalleryImageVisibility(
+  tx: Prisma.TransactionClient,
+  saintId: string,
+  mediaAssetId: string,
+  publicVisible: boolean
+) {
+  await ensureSaintGalleryVisibilityColumn(tx);
+  await tx.$executeRaw`
+    UPDATE "SaintGalleryImage"
+    SET "publicVisible" = ${publicVisible}
+    WHERE "saintId" = ${saintId}
+      AND "mediaAssetId" = ${mediaAssetId}
+  `;
 }
 
 async function requireAdminSession() {

@@ -72,6 +72,11 @@ enum PlaceType {
   other
 }
 
+enum PlaceScope {
+  locality
+  state
+}
+
 enum SourceType {
   book
   article
@@ -227,16 +232,24 @@ model Tradition {
 }
 
 model Place {
-  id             String       @id @default(cuid())
-  slug           String       @unique
-  name           String
-  alternateNames String[]
-  region         String?
-  country        String?
-  latitude       Decimal?
-  longitude      Decimal?
-  notes          String?
-  saints         SaintPlace[]
+  id               String       @id @default(cuid())
+  slug             String       @unique
+  name             String
+  alternateNames   String[]
+  placeScope       PlaceScope   @default(locality)
+  parentStateId    String?
+  parentState      Place?       @relation("PlaceState", fields: [parentStateId], references: [id], onDelete: SetNull)
+  localities       Place[]      @relation("PlaceState")
+  region           String?
+  country          String?
+  overviewMarkdown String?
+  latitude         Decimal?
+  longitude        Decimal?
+  notes            String?
+  saints           SaintPlace[]
+
+  @@index([placeScope])
+  @@index([parentStateId])
 }
 
 model SaintPlace {
@@ -302,6 +315,7 @@ model SaintGalleryImage {
   mediaAssetId String
   mediaAsset   MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
   sortOrder    Int        @default(0)
+  publicVisible Boolean    @default(true)
 }
 
 model InstagramItem {

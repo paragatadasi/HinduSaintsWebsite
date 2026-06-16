@@ -28,6 +28,8 @@ Rules:
 - Use tokens for broad visual direction: color, type, spacing, radius, shadows, widths, and image treatments.
 - Use shared CSS classes for repeated layout patterns.
 - Use shared components for repeated UI behavior and variants.
+- Use `SearchableMultiSelect` for compact admin relationship pickers that need
+  searchable multi-select checkbox behavior without filling the initial screen.
 - Use page files to compose design-system pieces, not to define new one-off visual systems.
 - Do not hard-code colors, fonts, spacing, shadows, radii, widths, or image treatments in components.
 - Do not add inline styles for design/layout changes unless the exception is explicitly justified in the change.
@@ -35,6 +37,7 @@ Rules:
 - Use `.section-heading` for section titles and section-level actions; avoid ad hoc heading wrappers in page layouts.
 - Keep vertical rhythm in shared layout classes where possible. If one page needs special tuning, add a page-scoped hook such as `.saints-index` before changing global spacing utilities.
 - When moving or removing a section, replace any spacing that section provided intentionally. Do not let a decorative band or content block be the only source of layout breathing room.
+- Use `.card-grid` for catalog-style card collections whose card widths should stay stable when filtering changes the result count. Adjust `--width-card-grid-min` and `--width-card-grid` instead of adding page-specific grid column rules.
 - For horizontal rows, use `ScrollRail`. Use `controls="always"` when arrow controls are part of the visual design, and leave the default auto behavior for utility rails where controls should appear only on overflow.
 - Keep card presentation variants explicit in shared components, such as `summary`, `portrait`, and `icon`, so index pages and homepage rails can share data without inheriting the wrong layout.
 - Use the shared interactive affordance classes for clickable card-like surfaces. Apply `.interactive-surface` to whole clickable cards, `.interactive-media` to standalone clickable image tiles, and `.interactive-image-link` when only an embedded image inside a larger component is clickable.

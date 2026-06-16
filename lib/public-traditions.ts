@@ -130,7 +130,7 @@ function toPublicSaintSummary(saint: TraditionSaintRow): PublicSaintSummary {
     slug: saint.slug,
     displayName: saint.displayName,
     canonicalName: saint.canonicalName,
-    shortDescription: saint.shortDescription ?? saint.biographySummary ?? DEFAULT_DESCRIPTION,
+    shortDescription: saint.shortDescription ?? saint.biographySummary ?? "",
     eraLabel: saint.eraLabel ?? DEFAULT_ERA,
     primaryLocation: getPrimaryLocation(saint.places),
     tradition: getPrimaryTradition(saint.traditions),

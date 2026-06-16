@@ -101,6 +101,7 @@ export type PublicPlaceSummary = {
   slug: string;
   name: string;
   shortDescription: string;
+  overviewMarkdown?: string;
   saintCount: number;
   status: "published";
 };

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Prose } from "@/components/content/prose";
 import { SaintCard } from "@/components/saints/saint-card";
 import { getPublishedPlaceBySlug, getPublishedPlaceSlugs } from "@/lib/public-places";
 import { getPlaceDetailTemplateContent } from "@/lib/site-content";
@@ -21,6 +22,7 @@ export default async function PlaceDetailPage({ params }: { params: Promise<{ sl
         <h1 className="page-title">{place.name}</h1>
         <p className="lede">{place.shortDescription}</p>
       </div>
+      {place.overviewMarkdown ? <Prose markdown={place.overviewMarkdown} /> : null}
       <section className="saint-detail-layout">
         <article className="saint-detail-main">
           <h2>{template.associatedSaintsTitle}</h2>
