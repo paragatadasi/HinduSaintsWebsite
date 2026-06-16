@@ -19,6 +19,8 @@ routes.
 Core database records:
 
 - `Place` stores reusable place names and optional geography.
+- `Place.placeScope` classifies a record as a broad `state` or a smaller
+  `locality`; `Place.parentStateId` attaches localities to state records.
 - `SaintPlace` links saints to places and classifies the relationship with
   `PlaceType`.
 - `SaintPlace.routeOrder`, `routeLabel`, and `routeConfidence` optionally
@@ -33,10 +35,19 @@ Public adapters:
   saint detail pages, including the public list of place chips.
 - `lib/public-contracts.ts` defines public-safe place and map types.
 - `lib/place-geocoding.ts` resolves map coordinates.
+- `lib/place-taxonomy.ts` centralizes known state slugs and known
+  locality-to-state mappings used by admin editing, imports, and public map
+  fallbacks.
 
 The adapter only includes saints with `status: "published"`. Do not expose raw
 import payloads, museum/relic fields, private editorial notes, or unpublished
 saints in map responses.
+
+Known Indian state records such as `Tamil Nadu` must be state-scoped even when
+older imports or default values classified them as localities. The
+`20260616123000_backfill_place_scopes` migration backfills current data, and
+public map serialization still consults `lib/place-taxonomy.ts` defensively so a
+stale row does not break state fills.
 
 Saint detail pages may receive multiple `SaintPlace` rows for the same `Place`
 when editorial data records different relationship types. The public saint

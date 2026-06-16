@@ -6,6 +6,7 @@ import type { PlaceType } from "@prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
 
 const placeScopeSchema = z.enum(["locality", "state"]);
@@ -24,7 +25,6 @@ const placeEditorSchema = z.object({
   alternateNames: z.array(z.string().trim().min(1).max(200)).max(100),
   placeScope: placeScopeSchema,
   parentStateId: z.string().cuid().optional(),
-  region: z.string().trim().max(200).optional(),
   country: z.string().trim().max(120).optional(),
   overviewMarkdown: z.string().trim().max(20000).optional(),
   notes: z.string().trim().max(1000).optional()
@@ -46,7 +46,6 @@ export async function updatePlace(formData: FormData) {
     alternateNames: parseList(formData.get("alternateNames")),
     placeScope: formData.get("placeScope"),
     parentStateId: emptyToUndefined(formData.get("parentStateId")),
-    region: emptyToUndefined(formData.get("region")),
     country: emptyToUndefined(formData.get("country")),
     overviewMarkdown: emptyToUndefined(formData.get("overviewMarkdown")),
     notes: emptyToUndefined(formData.get("notes"))
@@ -59,7 +58,8 @@ export async function updatePlace(formData: FormData) {
   if (!existing) redirect("/admin/places");
 
   const slug = await getUniquePlaceSlug(parsed.name, parsed.placeId);
-  const parentStateId = parsed.placeScope === "locality" && parsed.parentStateId !== parsed.placeId
+  const placeScope = getKnownPlaceScope(slug) === "state" ? "state" : parsed.placeScope;
+  const parentStateId = placeScope === "locality" && parsed.parentStateId !== parsed.placeId
     ? parsed.parentStateId
     : null;
   const place = await db.place.update({
@@ -68,9 +68,8 @@ export async function updatePlace(formData: FormData) {
       name: parsed.name,
       slug,
       alternateNames: parsed.alternateNames,
-      placeScope: parsed.placeScope,
+      placeScope,
       parentStateId,
-      region: parsed.region ?? null,
       country: parsed.country ?? null,
       overviewMarkdown: parsed.overviewMarkdown ?? null,
       notes: parsed.notes ?? null
@@ -80,7 +79,7 @@ export async function updatePlace(formData: FormData) {
 
   revalidatePlacePaths(existing.slug);
   revalidatePlacePaths(place.slug);
-  redirect("/admin/places");
+  redirect(`/admin/places/${place.slug}`);
 }
 
 export async function mergePlaces(formData: FormData) {
@@ -139,7 +138,7 @@ export async function mergePlaces(formData: FormData) {
 
   revalidatePlacePaths(source.slug);
   revalidatePlacePaths(target.slug);
-  redirect("/admin/places");
+  redirect(`/admin/places/${target.slug}`);
 }
 
 async function requireAdminSession() {

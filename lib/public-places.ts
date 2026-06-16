@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { getPlaceCoordinate } from "@/lib/place-geocoding";
+import { getKnownPlaceScope, getKnownStateSlug } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
 import type {
   PublicPlaceDetail,
@@ -21,72 +22,6 @@ const DEFAULT_LOCATION = "Location in review";
 const DEFAULT_TRADITION = "Tradition in review";
 const DEFAULT_ERA = "Dates in review";
 const MIN_PUBLIC_PLACE_SAINTS = 3;
-const STATE_PLACE_SLUGS = new Set([
-  "andhra-pradesh",
-  "assam",
-  "bengal",
-  "gujarat",
-  "karnataka",
-  "kerala",
-  "madhya-pradesh",
-  "maharashtra",
-  "odisha",
-  "orissa",
-  "rajasthan",
-  "tamil-nadu",
-  "uttar-pradesh",
-  "uttarakhand",
-  "uttarkhand",
-  "west-bengal"
-]);
-const PLACE_STATE_SLUGS = new Map([
-  ["akkalkot", "maharashtra"],
-  ["alandi", "maharashtra"],
-  ["amravati", "maharashtra"],
-  ["arunachala", "tamil-nadu"],
-  ["badrinath", "uttarakhand"],
-  ["bangalore", "karnataka"],
-  ["bhavnath", "gujarat"],
-  ["burdwan", "west-bengal"],
-  ["bardwan", "west-bengal"],
-  ["calcutta", "west-bengal"],
-  ["cuttack", "odisha"],
-  ["cuttack-orissa", "odisha"],
-  ["dwaraka", "gujarat"],
-  ["girnar", "gujarat"],
-  ["guntur", "andhra-pradesh"],
-  ["haridwar", "uttarakhand"],
-  ["hubli", "karnataka"],
-  ["jabalpur", "madhya-pradesh"],
-  ["jaipur", "rajasthan"],
-  ["jodhpur", "rajasthan"],
-  ["junagadh", "gujarat"],
-  ["kolhapur", "maharashtra"],
-  ["kopargaon", "maharashtra"],
-  ["majuli-assam", "assam"],
-  ["mayapur", "west-bengal"],
-  ["mumbai", "maharashtra"],
-  ["nagpur", "maharashtra"],
-  ["narasimha-wadi", "maharashtra"],
-  ["navadwip", "west-bengal"],
-  ["nellore", "andhra-pradesh"],
-  ["pandharpur", "maharashtra"],
-  ["pune", "maharashtra"],
-  ["pune-india", "maharashtra"],
-  ["puri", "odisha"],
-  ["puri-orissa", "odisha"],
-  ["pushkar", "rajasthan"],
-  ["radha-kund", "uttar-pradesh"],
-  ["rajkot-virpur", "gujarat"],
-  ["rishikesh", "uttarakhand"],
-  ["serampur", "west-bengal"],
-  ["shirdi", "maharashtra"],
-  ["sri-rangam", "tamil-nadu"],
-  ["thiruvananthpuram", "kerala"],
-  ["varanasi", "uttar-pradesh"],
-  ["vrindavan", "uttar-pradesh"],
-  ["vrindavan-india", "uttar-pradesh"]
-]);
 
 async function getPublishedPlaceRows() {
   return db.place.findMany({
@@ -253,8 +188,8 @@ function toPublicPlaceMapPoint(place: PublishedPlaceRow): PublicPlaceMapPoint | 
     name: place.name,
     region: place.region ?? undefined,
     country: place.country ?? undefined,
-    placeScope: place.placeScope === "state" ? "state" : "place",
-    stateSlug: place.parentState?.slug ?? getPlaceStateSlug(place.name),
+    placeScope: place.placeScope === "state" || getKnownPlaceScope(place.slug) === "state" ? "state" : "place",
+    stateSlug: place.parentState?.slug ?? getKnownStateSlug(place.slug),
     latitude: coordinate.latitude,
     longitude: coordinate.longitude,
     saintCount: saints.length,
@@ -402,16 +337,6 @@ function getMapPlaceKey(name: string) {
 
 function getMapPlaceName(name: string) {
   return name.replace(/,\s*(india|orissa)$/i, "").trim();
-}
-
-function getPlaceScope(name: string) {
-  return STATE_PLACE_SLUGS.has(getMapPlaceKey(name)) ? "state" : "place";
-}
-
-function getPlaceStateSlug(name: string) {
-  const slug = getMapPlaceKey(name);
-  if (STATE_PLACE_SLUGS.has(slug)) return slug;
-  return PLACE_STATE_SLUGS.get(slug);
 }
 
 function getPreferredMapSaintAssociation(

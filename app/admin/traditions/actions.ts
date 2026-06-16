@@ -13,6 +13,7 @@ const traditionEditorSchema = z.object({
   traditionId: z.string().cuid(),
   name: z.string().trim().min(1).max(200),
   alternateNames: z.array(z.string().trim().min(1).max(200)).max(100),
+  parentTraditionId: z.string().cuid().optional(),
   shortDescription: z.string().trim().max(500).optional(),
   longIntroductionMarkdown: z.string().trim().max(20000).optional(),
   status: contentStatusSchema,
@@ -34,6 +35,7 @@ export async function updateTradition(formData: FormData) {
     traditionId: formData.get("traditionId"),
     name: formData.get("name"),
     alternateNames: parseList(formData.get("alternateNames")),
+    parentTraditionId: emptyToUndefined(formData.get("parentTraditionId")),
     shortDescription: emptyToUndefined(formData.get("shortDescription")),
     longIntroductionMarkdown: emptyToUndefined(formData.get("longIntroductionMarkdown")),
     status: formData.get("status"),
@@ -55,6 +57,7 @@ export async function updateTradition(formData: FormData) {
       name: parsed.name,
       slug,
       alternateNames: parsed.alternateNames,
+      parentTraditionId: parsed.parentTraditionId === parsed.traditionId ? null : parsed.parentTraditionId ?? null,
       shortDescription: parsed.shortDescription ?? null,
       longIntroductionMarkdown: parsed.longIntroductionMarkdown ?? null,
       status: parsed.status,
@@ -67,7 +70,7 @@ export async function updateTradition(formData: FormData) {
 
   revalidateTraditionPaths(existing.slug);
   revalidateTraditionPaths(tradition.slug);
-  redirect("/admin/traditions");
+  redirect(`/admin/traditions/${tradition.slug}`);
 }
 
 export async function mergeTraditions(formData: FormData) {
@@ -126,7 +129,7 @@ export async function mergeTraditions(formData: FormData) {
 
   revalidateTraditionPaths(source.slug);
   revalidateTraditionPaths(target.slug);
-  redirect("/admin/traditions");
+  redirect(`/admin/traditions/${target.slug}`);
 }
 
 async function requireAdminSession() {

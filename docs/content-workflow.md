@@ -31,6 +31,11 @@ Current admin review surfaces:
   media and caption metadata, attaching an existing saint, creating a new saint
   draft from first-page biodata, inspecting the preserved raw API payload, and
   returning the item to review or hiding it.
+- `/admin/traditions` and `/admin/places` are index pages for finding records;
+  individual editors live at `/admin/traditions/[id]` and `/admin/places/[id]`.
+  Those detail editors own public overview Markdown, parent/child relationships,
+  and duplicate merge workflows so relationship-preserving consolidation happens
+  from the canonical record.
 
 Instagram review does not publish content directly. A reviewed Instagram item is
 resolved by creating or confirming an `InstagramItemSaint` match. Public

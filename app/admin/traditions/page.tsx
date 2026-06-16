@@ -1,20 +1,23 @@
 import Link from "next/link";
-import { MarkdownEditor } from "@/components/admin/markdown-editor";
+import type { Route } from "next";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
-import { mergeTraditions, updateTradition } from "./actions";
 
-export default async function AdminTraditionsPage() {
-  const traditions = await db.tradition.findMany({
-    orderBy: { name: "asc" },
-    include: {
-      _count: { select: { saints: true, childTraditions: true } }
-    }
-  });
-  const traditionOptions = traditions.map((tradition) => ({
-    id: tradition.id,
-    label: `${tradition.name} (${tradition._count.saints} saints)`
-  }));
+const statuses = ["all", "needs_review", "published", "draft", "hidden", "archived"] as const;
+type StatusFilter = typeof statuses[number];
+
+type AdminTraditionsPageProps = {
+  searchParams: Promise<{ q?: string | string[]; status?: string }>;
+};
+
+export default async function AdminTraditionsPage({ searchParams }: AdminTraditionsPageProps) {
+  const { q, status } = await searchParams;
+  const query = getSearchParam(q);
+  const activeStatus = statuses.includes(status as StatusFilter) ? status as StatusFilter : "all";
+  const [counts, traditions] = await Promise.all([
+    getStatusCounts(),
+    getTraditions(activeStatus, query)
+  ]);
 
   return (
     <div className="admin-stack">
@@ -22,107 +25,117 @@ export default async function AdminTraditionsPage() {
         <div>
           <div className="eyebrow">Tradition editor</div>
           <h1>Traditions</h1>
-          <p className="lede">Edit public tradition pages and consolidate duplicate tradition records.</p>
+          <p className="lede">Choose a tradition to edit page copy, relationships, and duplicate consolidation.</p>
         </div>
       </div>
 
-      <section className="review-panel">
-        <h2>Consolidate duplicates</h2>
-        <p>Move saint relationships, source links, and child tradition links from a duplicate record into the canonical tradition.</p>
-        <form action={mergeTraditions} className="form-stack">
-          <label>
-            Duplicate tradition
-            <select name="sourceTraditionId" required>
-              <option value="">Select duplicate</option>
-              {traditionOptions.map((tradition) => (
-                <option key={tradition.id} value={tradition.id}>{tradition.label}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Canonical tradition
-            <select name="targetTraditionId" required>
-              <option value="">Select canonical</option>
-              {traditionOptions.map((tradition) => (
-                <option key={tradition.id} value={tradition.id}>{tradition.label}</option>
-              ))}
-            </select>
-          </label>
-          <div className="review-actions">
-            <button className="admin-form-button admin-form-button--warning" type="submit">Merge duplicate</button>
-          </div>
-        </form>
-      </section>
+      <div className="admin-stat-grid">
+        <Stat label="Published" value={counts.published} />
+        <Stat label="Needs review" value={counts.needs_review} />
+        <Stat label="Drafts" value={counts.draft} />
+        <Stat label="Hidden" value={counts.hidden} />
+      </div>
+
+      <nav className="admin-tabs" aria-label="Tradition status filters">
+        {statuses.map((item) => (
+          <Link
+            aria-current={activeStatus === item ? "page" : undefined}
+            className="admin-tab"
+            href={getTraditionsReturnTo(item, query) as Route}
+            key={item}
+          >
+            {formatStatus(item)}
+          </Link>
+        ))}
+      </nav>
+
+      <form action="/admin/traditions" className="admin-search" role="search">
+        {activeStatus === "all" ? null : <input name="status" type="hidden" value={activeStatus} />}
+        <label className="sr-only" htmlFor="admin-traditions-search">Search traditions</label>
+        <input
+          id="admin-traditions-search"
+          name="q"
+          placeholder="Search by name, alias, status, or parent tradition"
+          type="search"
+          defaultValue={query}
+        />
+        <button className="admin-form-button" type="submit">Search</button>
+        {query ? <Link className="admin-form-button admin-form-button--secondary" href={getTraditionsReturnTo(activeStatus, "") as Route}>Clear</Link> : null}
+      </form>
 
       <section className="review-list" aria-label="Tradition records">
         {traditions.map((tradition) => (
-          <article className="review-panel" key={tradition.id}>
-            <div className="admin-toolbar">
-              <div>
-                <div className="review-meta">
-                  <StatusBadge label={formatStatus(tradition.status)} />
-                  <StatusBadge label={`${tradition._count.saints} saints`} />
-                  {tradition._count.childTraditions > 0 ? <StatusBadge label={`${tradition._count.childTraditions} child traditions`} /> : null}
-                </div>
-                <h2>{tradition.name}</h2>
+          <Link className="review-row__link review-row interactive-surface" href={`/admin/traditions/${tradition.slug}` as Route} key={tradition.id}>
+            <div>
+              <div className="review-meta">
+                <StatusBadge label={formatStatus(tradition.status)} />
+                <StatusBadge label={`${tradition._count.saints} saints`} />
+                {tradition.parentTradition ? <StatusBadge label={`parent: ${tradition.parentTradition.name}`} /> : null}
+                {tradition._count.childTraditions > 0 ? <StatusBadge label={`${tradition._count.childTraditions} child traditions`} /> : null}
               </div>
-              {tradition.status === "published" ? (
-                <Link className="button button--secondary" href={`/traditions/${tradition.slug}`}>View public page</Link>
-              ) : null}
+              <h2>{tradition.name}</h2>
+              <p>{tradition.shortDescription ?? "No short description has been set."}</p>
             </div>
-
-            <form action={updateTradition} className="form-stack">
-              <input name="traditionId" type="hidden" value={tradition.id} />
-              <label>
-                Name
-                <input name="name" defaultValue={tradition.name} required maxLength={200} />
-              </label>
-              <label>
-                Alternate names
-                <textarea name="alternateNames" defaultValue={tradition.alternateNames.join("\n")} />
-              </label>
-              <label>
-                Status
-                <select name="status" defaultValue={tradition.status}>
-                  {contentStatuses.map((status) => (
-                    <option key={status} value={status}>{formatStatus(status)}</option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                Short description
-                <textarea name="shortDescription" defaultValue={tradition.shortDescription ?? ""} maxLength={500} />
-              </label>
-              <div className="form-stack__field">
-                <label htmlFor={`tradition-overview-${tradition.id}`}>Page overview</label>
-                <MarkdownEditor
-                  defaultValue={tradition.longIntroductionMarkdown ?? ""}
-                  maxLength={20000}
-                  name="longIntroductionMarkdown"
-                  textareaId={`tradition-overview-${tradition.id}`}
-                />
-              </div>
-              <label>
-                SEO title
-                <input name="seoTitle" defaultValue={tradition.seoTitle ?? ""} maxLength={120} />
-              </label>
-              <label>
-                SEO description
-                <textarea name="seoDescription" defaultValue={tradition.seoDescription ?? ""} maxLength={300} />
-              </label>
-              <div className="review-actions">
-                <button className="admin-form-button" type="submit">Save tradition</button>
-              </div>
-            </form>
-          </article>
+            <span className="admin-text-link">Edit</span>
+          </Link>
         ))}
       </section>
     </div>
   );
 }
 
-const contentStatuses = ["draft", "needs_review", "published", "hidden", "archived"] as const;
+async function getStatusCounts() {
+  const grouped = await db.tradition.groupBy({
+    by: ["status"],
+    _count: { _all: true }
+  });
+  return Object.fromEntries(grouped.map((row) => [row.status, row._count._all])) as Record<string, number>;
+}
+
+async function getTraditions(status: StatusFilter, query: string) {
+  const traditions = await db.tradition.findMany({
+    where: status === "all" ? undefined : { status },
+    orderBy: [{ status: "asc" }, { name: "asc" }],
+    include: {
+      parentTradition: { select: { name: true } },
+      _count: { select: { saints: true, childTraditions: true } }
+    }
+  });
+  const term = query.toLowerCase();
+
+  if (!term) return traditions;
+
+  return traditions.filter((tradition) => [
+    tradition.name,
+    tradition.shortDescription,
+    tradition.status,
+    tradition.parentTradition?.name,
+    ...tradition.alternateNames
+  ].filter(Boolean).join(" ").toLowerCase().includes(term));
+}
+
+function Stat({ label, value }: { label: string; value?: number }) {
+  return (
+    <div className="admin-stat">
+      <strong>{value ?? 0}</strong>
+      <span>{label}</span>
+    </div>
+  );
+}
 
 function formatStatus(status: string) {
   return status.replace(/_/g, " ");
+}
+
+function getSearchParam(value: string | string[] | undefined) {
+  if (Array.isArray(value)) return value[0]?.trim() ?? "";
+  return value?.trim() ?? "";
+}
+
+function getTraditionsReturnTo(status: StatusFilter, query: string) {
+  const params = new URLSearchParams();
+  if (status !== "all") params.set("status", status);
+  if (query) params.set("q", query);
+  const qs = params.toString();
+  return qs ? `/admin/traditions?${qs}` : "/admin/traditions";
 }
