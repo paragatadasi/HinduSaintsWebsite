@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { Route } from "next";
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -550,7 +550,8 @@ export async function attachImageToSaint(input: z.input<typeof saintImageAttachm
           data: {
             saintId: parsed.saintId,
             mediaAssetId: parsed.mediaAssetId,
-            sortOrder: saint._count.galleryImages
+            sortOrder: saint._count.galleryImages,
+            publicVisible: true
           }
         });
       } else {
@@ -579,8 +580,6 @@ export async function updateSaintImageVisibility(input: z.input<typeof saintImag
   if (!saint) throw new Error("Saint was not found.");
 
   await db.$transaction(async (tx) => {
-    await ensureSaintGalleryVisibilityColumn(tx);
-
     if (!parsed.publicVisible && saint.primaryImageId === parsed.mediaAssetId) {
       await tx.saint.update({
         where: { id: parsed.saintId },
@@ -605,10 +604,10 @@ export async function updateSaintImageVisibility(input: z.input<typeof saintImag
       data: {
         saintId: parsed.saintId,
         mediaAssetId: parsed.mediaAssetId,
-        sortOrder: saint._count.galleryImages
+        sortOrder: saint._count.galleryImages,
+        publicVisible: parsed.publicVisible
       }
     });
-    await setSaintGalleryImageVisibility(tx, parsed.saintId, parsed.mediaAssetId, parsed.publicVisible);
   });
 
   revalidateSaintPaths(saint.slug);
@@ -660,26 +659,16 @@ export async function deleteSaintImage(input: z.input<typeof saintImageDeleteSch
   revalidateSaintPaths(saint.slug);
 }
 
-async function ensureSaintGalleryVisibilityColumn(tx: Prisma.TransactionClient) {
-  await tx.$executeRaw`
-    ALTER TABLE "SaintGalleryImage"
-    ADD COLUMN IF NOT EXISTS "publicVisible" BOOLEAN NOT NULL DEFAULT true
-  `;
-}
-
 async function setSaintGalleryImageVisibility(
   tx: Prisma.TransactionClient,
   saintId: string,
   mediaAssetId: string,
   publicVisible: boolean
 ) {
-  await ensureSaintGalleryVisibilityColumn(tx);
-  await tx.$executeRaw`
-    UPDATE "SaintGalleryImage"
-    SET "publicVisible" = ${publicVisible}
-    WHERE "saintId" = ${saintId}
-      AND "mediaAssetId" = ${mediaAssetId}
-  `;
+  await tx.saintGalleryImage.updateMany({
+    where: { saintId, mediaAssetId },
+    data: { publicVisible }
+  });
 }
 
 async function requireAdminSession() {

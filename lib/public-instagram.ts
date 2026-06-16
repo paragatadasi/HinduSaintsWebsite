@@ -16,7 +16,13 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
   const items = await db.instagramItem.findMany({
     where: {
       type: "carousel",
-      status: { not: "hidden" }
+      status: { in: ["matched", "published"] },
+      saints: {
+        some: {
+          matchStatus: { in: ["matched", "published"] },
+          saint: { status: "published" }
+        }
+      }
     },
     orderBy: [
       { postedAt: { sort: "desc", nulls: "last" } },

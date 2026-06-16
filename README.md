@@ -103,6 +103,22 @@ Existing Instagram carousel records can refresh their child image URLs with:
 npm run backfill:instagram-carousels
 ```
 
+Quick local Airtable import sequence:
+
+```sh
+npm run import:airtable -- --dry-run
+npm run import:airtable
+npm run import:instagram-tracker -- --dry-run
+npm run import:instagram-tracker
+npm run import:airtable-saints
+npm run import:airtable-saints -- --write
+npm run approve:obvious-cms-saints
+npm run approve:obvious-cms-saints -- --write
+```
+
+Requires `AIRTABLE_ACCESS_TOKEN`, `AIRTABLE_BASE_ID`, `AIRTABLE_TABLES="Saints"`,
+and, for the Instagram-backed CMS saint import, `GOOGLE_SHEETS_TRACKER_CSV_URL`.
+
 See `docs/map-and-places.md` for the public Map page, Places detail routes,
 geocoding fallback, timeline filter, and place data workflow.
 

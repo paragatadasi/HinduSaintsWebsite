@@ -47,11 +47,77 @@ Raw external values are preserved for debugging and review:
 - Google Sheets tracker rows are stored in `InstagramTrackerRow`.
 - Potential conflicts or duplicate candidates are stored in `ReconciliationIssue`.
 
+## Local Airtable import runbook
+
+Airtable is imported in stages. The first stage mirrors raw Airtable rows into the local database; later stages use those mirrored rows to create or update CMS records.
+
+1. Confirm local setup is ready:
+
+```sh
+npm install
+docker compose -f infra/docker-compose.yml up -d postgres
+npm run db:migrate
+```
+
+2. Configure Airtable in `.env`:
+
+```env
+AIRTABLE_ACCESS_TOKEN="pat..."
+AIRTABLE_BASE_ID="app..."
+AIRTABLE_TABLES="Saints"
+AIRTABLE_VIEW=""
+```
+
+Use the Airtable table name `Saints` when you intend to run the CMS saint importer. The CMS importer reads mirrored rows where `tableIdOrName = "Saints"`; using only a table ID for the mirror will not feed that importer.
+
+3. Dry-run the Airtable mirror, then write it:
+
+```sh
+npm run import:airtable -- --dry-run
+npm run import:airtable
+```
+
+`import:airtable` writes by default. Always include `-- --dry-run` first on a new machine, new token, or changed table/view configuration.
+
+4. If importing the Instagram-backed CMS saint set, configure the Google Sheets tracker as a CSV source:
+
+```env
+GOOGLE_SHEETS_TRACKER_CSV_URL="https://docs.google.com/spreadsheets/.../export?format=csv..."
+```
+
+Then dry-run and write the tracker import:
+
+```sh
+npm run import:instagram-tracker -- --dry-run
+npm run import:instagram-tracker
+```
+
+The tracker import matches tracker rows to mirrored Airtable `Saints` rows and sets `hasInstagramContent` flags. The CMS saint importer currently imports only Airtable mirror saints where `hasInstagramContent` is true.
+
+5. Dry-run the CMS saint import, then write it:
+
+```sh
+npm run import:airtable-saints
+npm run import:airtable-saints -- --write
+```
+
+`import:airtable-saints` is dry-run by default. Use `-- --write` only after reviewing the dry-run summary.
+
+6. Optionally publish only high-confidence imported saints:
+
+```sh
+npm run approve:obvious-cms-saints
+npm run approve:obvious-cms-saints -- --write
+```
+
+Public pages show only `published` saints. Imported CMS saints that are not auto-published remain reviewable in `/admin/saints`.
+
 ## Scripts
 
 Mirror Airtable into the local database:
 
 ```sh
+npm run import:airtable -- --dry-run
 npm run import:airtable
 ```
 
