@@ -19,6 +19,8 @@ routes.
 Core database records:
 
 - `Place` stores reusable place names and optional geography.
+- `Place.placeScope` classifies a record as a broad `state` or a smaller
+  `locality`; `Place.parentStateId` attaches localities to state records.
 - `SaintPlace` links saints to places and classifies the relationship with
   `PlaceType`.
 - `SaintPlace.routeOrder`, `routeLabel`, and `routeConfidence` optionally
@@ -29,12 +31,30 @@ Public adapters:
 
 - `lib/public-places.ts` is the DB-backed adapter for place summaries, place
   detail pages, and map data.
+- `lib/public-saints.ts` is the DB-backed adapter for saint summaries and
+  saint detail pages, including the public list of place chips.
 - `lib/public-contracts.ts` defines public-safe place and map types.
 - `lib/place-geocoding.ts` resolves map coordinates.
+- `lib/place-taxonomy.ts` centralizes known state slugs and known
+  locality-to-state mappings used by admin editing, imports, and public map
+  fallbacks.
 
 The adapter only includes saints with `status: "published"`. Do not expose raw
 import payloads, museum/relic fields, private editorial notes, or unpublished
 saints in map responses.
+
+Known Indian state records such as `Tamil Nadu` must be state-scoped even when
+older imports or default values classified them as localities. The
+`20260616123000_backfill_place_scopes` migration backfills current data, and
+public map serialization still consults `lib/place-taxonomy.ts` defensively so a
+stale row does not break state fills.
+
+Saint detail pages may receive multiple `SaintPlace` rows for the same `Place`
+when editorial data records different relationship types. The public saint
+adapter deduplicates the simple `places` chip list by `Place.id` so profiles do
+not show the same place name twice. Route-aware map data can still use the full
+`SaintPlace` relationship set where the relationship type or route fields are
+meaningful.
 
 ## Filtering Rules
 
@@ -132,9 +152,15 @@ state marker. The state can still appear as a marker in route mode for saints
 who only have the broad association.
 
 State fills are derived from each visible point's `stateSlug`, or from the
-point slug when the point itself is state-scoped. Keep slug aliases in the map
-geometry layer for known imported variants such as `bengal`, `orissa`, and
-`uttarkhand`.
+point slug when the point itself is state-scoped. Public place map keys must use
+the shared slug normalizer so multi-word records such as `Tamil Nadu`,
+`Sri Rangam`, `Uttar Pradesh`, and `Radha Kund` match the slug-based state and
+place lookup tables. Keep slug aliases in the map geometry layer for known
+imported variants such as `bengal`, `orissa`, and `uttarkhand`.
+
+When a selected state has no dedicated state-scoped place detail record, the
+map panel action should fall back to the state's representative mapped place so
+active states still expose an `Explore` action.
 
 ## State Layer Interaction Note
 
@@ -177,6 +203,11 @@ Editors should use `birth` and `samadhi` place types only when the source
 identifies those roles. Use `routeOrder` for reviewed route sequence among other
 key places, and leave it blank when the order is unknown.
 
+In `/admin/saints/[id]`, place selection is intentionally separate from route
+configuration. Editors first choose places from a searchable multi-select, then
+order only the selected places in the route editor by dragging them into the
+reviewed sequence.
+
 ## Timeline Rules
 
 The time filter uses `Saint.birthYear` and `Saint.samadhiYear`.
@@ -192,8 +223,8 @@ The year range is derived from mapped saints with date metadata.
 Public copy for the page and visualization lives in `lib/site-content.ts`:
 
 - `placesIndexContent` controls the `/map` page intro.
-- `placesMapContent` controls the visualization heading, description, and
-  selection prompt.
+- `placesMapContent` controls the visualization heading, description, selection
+  prompt, and map panel action label.
 - `placeDetailTemplateContent` controls `/places/[slug]` detail labels.
 
 Use site content configuration for copy changes instead of hard-coding page text

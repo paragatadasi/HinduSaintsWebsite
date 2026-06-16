@@ -98,6 +98,7 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
   const activeStateSlugs = useMemo(() => new Set(stateSummaries.map((state) => state.slug)), [stateSummaries]);
   const selectedPoint = projectedPoints.find((point) => point.slug === selectedSlug);
   const selectedState = selectedStateSlug ? stateSummariesBySlug.get(selectedStateSlug) : undefined;
+  const selectedStateActionPoint = selectedState?.detailPoint ?? selectedState?.representativePoint;
   const hoveredPoint = timeFilterEnabled ? undefined : projectedPoints.find((point) => point.slug === hoveredSlug);
   const selectedPanelItem = selectedPoint ?? selectedState;
   const selectedPanelSaints = selectedPanelItem?.activeSaints ?? [];
@@ -253,9 +254,9 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
               </ul>
               {hiddenPanelSaintCount > 0 ? <p className="empty-note">+{hiddenPanelSaintCount} more associated saints</p> : null}
               {selectedPoint ? (
-                <Link className="button button--secondary" href={`/places/${selectedPoint.slug}`}>Open place</Link>
-              ) : selectedState?.detailPoint ? (
-                <Link className="button button--secondary" href={`/places/${selectedState.detailPoint.slug}`}>Open state place</Link>
+                <Link className="button button--primary" href={`/places/${selectedPoint.slug}`}>{content.exploreActionLabel}</Link>
+              ) : selectedStateActionPoint ? (
+                <Link className="button button--primary" href={`/places/${selectedStateActionPoint.slug}`}>{content.exploreActionLabel}</Link>
               ) : null}
             </>
           ) : (

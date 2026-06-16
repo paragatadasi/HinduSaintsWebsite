@@ -36,6 +36,12 @@ npm run dev
 
 Then open <http://localhost:3000>.
 
+Local `npm run dev` runs `prisma migrate deploy` and `prisma generate`
+before starting Next. This keeps the development database aligned when new
+checked-in migrations are pulled or created by another agent. Use
+`npm run db:migrate` only when intentionally creating a new migration from a
+Prisma schema change.
+
 ## Local admin sign-in
 
 The admin CMS at `/admin` uses Google OAuth through Auth.js/NextAuth and then checks the signed-in email against `ADMIN_EMAIL_ALLOWLIST`.
@@ -79,15 +85,23 @@ Supported local upload formats are JPEG, PNG, WebP, and GIF. The default upload 
 
 For local-only development without OAuth configured, set `MEDIA_UPLOADS_REQUIRE_AUTH="false"` in `.env`. Keep it enabled anywhere the site is reachable by other users.
 
+Saint review pages can upload local images or select imported Instagram post images as crop sources. Approved crops create `MediaAsset` records and can be attached as primary images, gallery images, or both. Gallery attachments use `SaintGalleryImage.publicVisible` so editors can hide images from public pages while keeping them in the saint review staging area; staged images can be restored or deleted after confirmation.
+
 ## Codex Cloud
 
 See `docs/codex-cloud.md` for the hosted Codex environment setup script, environment variables, and verification command.
 
 ## Data integrations
 
-See `docs/data-integrations.md` for the current Airtable mirror, Google Sheets
-Instagram tracker, CMS saint import, approval, public rendering, and admin
-review workflow status.
+See `docs/data-integrations.md` for the current Airtable mirror, Instagram API
+ingest, Google Sheets tracker, CMS saint import, approval, public rendering,
+and admin review workflow status.
+
+Existing Instagram carousel records can refresh their child image URLs with:
+
+```powershell
+npm run backfill:instagram-carousels
+```
 
 See `docs/map-and-places.md` for the public Map page, Places detail routes,
 geocoding fallback, timeline filter, and place data workflow.
@@ -98,6 +112,13 @@ Use the lightweight checker during ordinary frontend and TypeScript work:
 
 ```powershell
 npm run dev:check
+```
+
+When a database migration already exists and needs to be applied without
+creating a new migration, run:
+
+```powershell
+npm run db:deploy
 ```
 
 Use `npm run codex:verify` only when you need the production-build gate, such as dependency/setup changes, large route/rendering changes, pre-deployment handoff, or suspected build-only failures.

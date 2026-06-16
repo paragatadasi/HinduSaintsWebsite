@@ -22,6 +22,13 @@ export type StoredMedia = {
   height?: number;
 };
 
+type ImageBufferInput = {
+  body: Buffer;
+  contentType?: string | null;
+  fileName: string;
+  folder?: string;
+};
+
 export function getMediaUploadRoot() {
   return process.env.MEDIA_UPLOAD_ROOT
     ? path.resolve(process.env.MEDIA_UPLOAD_ROOT)
@@ -76,12 +83,24 @@ export async function saveUploadedImage(file: File): Promise<StoredMedia> {
   }
 
   const body = Buffer.from(await file.arrayBuffer());
-  const mimeType = detectImageMimeType(body, file.type);
+  return saveImageBuffer({ body, contentType: file.type, fileName: file.name });
+}
+
+export async function saveImageBuffer({ body, contentType, fileName, folder = "media" }: ImageBufferInput): Promise<StoredMedia> {
+  if (body.length <= 0) {
+    throw new Error("Image is empty.");
+  }
+
+  if (body.length > getMediaUploadMaxBytes()) {
+    throw new Error("Image is larger than the configured limit.");
+  }
+
+  const mimeType = detectImageMimeType(body, contentType ?? "");
   const extension = allowedImageTypes[mimeType];
   const storageKey = [
-    "media",
+    folder,
     new Date().toISOString().slice(0, 10),
-    `${sanitizeFileStem(file.name)}-${randomUUID()}.${extension}`
+    `${sanitizeFileStem(fileName)}-${randomUUID()}.${extension}`
   ].join("/");
   const filePath = path.join(getMediaUploadRoot(), storageKey);
 

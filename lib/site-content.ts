@@ -63,6 +63,7 @@ export type PlacesMapContent = {
   description: string;
   promptTitle: string;
   promptBody: string;
+  exploreActionLabel: string;
 };
 
 export type InstagramSectionContent = {
@@ -172,7 +173,8 @@ export const placesMapContent: PlacesMapContent = {
     "Explore Indian places connected to published saints. Use the time filter to see which saints may have lived during the same period.",
   promptTitle: "Choose a place on the map",
   promptBody:
-    "Click any point to view associated saints, eras, traditions, and a link to the place page."
+    "Click any point to view associated saints, eras, traditions, and a link to the place page.",
+  exploreActionLabel: "Explore"
 };
 
 export const instagramSectionContent: InstagramSectionContent = {

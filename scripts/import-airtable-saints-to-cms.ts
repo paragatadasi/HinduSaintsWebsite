@@ -1,6 +1,7 @@
 import { Prisma, type ContentStatus, type PlaceType } from "@prisma/client";
 import { db } from "../lib/db";
 import { parseImportedDate, buildEraLabel } from "../lib/import-dates";
+import { getKnownPlaceScope, getKnownStateSlug } from "../lib/place-taxonomy";
 import { toSlug } from "../lib/slugs";
 
 type AirtableFields = Record<string, unknown>;
@@ -388,10 +389,29 @@ async function findUnlinkedImporterSaint(slug: string) {
 async function syncPlaces(saintId: string, plan: ImportPlan) {
   await db.saintPlace.deleteMany({ where: { saintId } });
   for (const placePlan of plan.places) {
+    const placeSlug = toSlug(placePlan.name);
+    const placeScope = getKnownPlaceScope(placeSlug);
+    const stateSlug = getKnownStateSlug(placeSlug);
+    const parentState = placeScope === "locality" && stateSlug
+      ? await db.place.upsert({
+          where: { slug: stateSlug },
+          create: { slug: stateSlug, name: titleizeSlug(stateSlug), alternateNames: [], placeScope: "state" },
+          update: { placeScope: "state", parentStateId: null }
+        })
+      : null;
     const place = await db.place.upsert({
-      where: { slug: toSlug(placePlan.name) },
-      create: { slug: toSlug(placePlan.name), name: placePlan.name, alternateNames: [] },
-      update: {}
+      where: { slug: placeSlug },
+      create: {
+        slug: placeSlug,
+        name: placePlan.name,
+        alternateNames: [],
+        placeScope,
+        parentStateId: parentState?.id
+      },
+      update: {
+        placeScope,
+        parentStateId: placeScope === "state" ? null : parentState?.id
+      }
     });
     await db.saintPlace.create({
       data: {
@@ -402,6 +422,13 @@ async function syncPlaces(saintId: string, plan: ImportPlan) {
       }
     });
   }
+}
+
+function titleizeSlug(slug: string) {
+  return slug
+    .split("-")
+    .map((part) => part ? `${part[0].toUpperCase()}${part.slice(1)}` : part)
+    .join(" ");
 }
 
 async function syncTraditions(saintId: string, plan: ImportPlan) {

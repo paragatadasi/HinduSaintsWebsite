@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ExternalLink, MessageSquare } from "lucide-react";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { InstagramEmbedGrid } from "@/components/instagram/instagram-embed-grid";
 import { Prose } from "@/components/content/prose";
@@ -10,6 +11,18 @@ import { getSaintDetailTemplateContent } from "@/lib/site-content";
 import type { PublicFurtherReadingItem, PublicImage, PublicSourceSummary } from "@/lib/public-contracts";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const saint = await getPublishedSaintBySlug(slug);
+
+  if (!saint) return {};
+
+  return {
+    title: saint.seo?.title ?? saint.displayName,
+    description: saint.seo?.description ?? saint.shortDescription
+  };
+}
 
 export default async function SaintDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -113,7 +126,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
       </section>
 
       <div className="page-shell">
-        <InstagramEmbedGrid urls={saint.instagramUrls} />
+        <InstagramEmbedGrid items={saint.instagramItems} saintName={saint.displayName} urls={saint.instagramUrls} />
       </div>
     </main>
   );

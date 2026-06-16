@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Route } from "next";
 import type { ReactNode } from "react";
+import { getInstagramLinkProps } from "@/lib/external-links";
 
 type ButtonProps = {
   href: string;
@@ -22,7 +23,7 @@ export function Button({ href, children, icon, iconPosition = "start", variant =
 
   if (href.startsWith("http")) {
     return (
-      <a href={href} className={className}>
+      <a href={href} className={className} {...getInstagramLinkProps(href)}>
         {content}
       </a>
     );

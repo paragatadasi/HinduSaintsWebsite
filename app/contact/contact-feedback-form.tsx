@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useActionState } from "react";
+import { sendFeedback, type FeedbackFormState } from "./actions";
 
 type ContactFeedbackFormProps = {
   pagePath?: string;
@@ -8,33 +9,13 @@ type ContactFeedbackFormProps = {
 };
 
 const CONTACT_EMAIL = "hindusaints@gmail.com";
+const initialState: FeedbackFormState = { status: "idle", message: "" };
 
 export function ContactFeedbackForm({ pagePath, saintName }: ContactFeedbackFormProps) {
-  const [name, setName] = useState("");
-  const [replyTo, setReplyTo] = useState("");
-  const [message, setMessage] = useState("");
-
-  const mailtoHref = useMemo(() => {
-    const subject = saintName ? `Feedback for ${saintName}` : "Hindu Saints Archive feedback";
-    const bodyParts = [
-      saintName ? `Saint: ${saintName}` : null,
-      pagePath ? `Page: ${pagePath}` : null,
-      name ? `Name: ${name}` : null,
-      replyTo ? `Reply-to: ${replyTo}` : null,
-      "",
-      message || "Feedback:"
-    ].filter((part) => part !== null);
-
-    const params = new URLSearchParams({
-      subject,
-      body: bodyParts.join("\n")
-    });
-
-    return `mailto:${CONTACT_EMAIL}?${params.toString()}`;
-  }, [message, name, pagePath, replyTo, saintName]);
+  const [state, formAction, isPending] = useActionState(sendFeedback, initialState);
 
   return (
-    <form className="card form-stack contact-form">
+    <form action={formAction} className="card form-stack contact-form">
       {saintName ? (
         <label>
           Saint page
@@ -53,9 +34,7 @@ export function ContactFeedbackForm({ pagePath, saintName }: ContactFeedbackForm
         Your name
         <input
           name="name"
-          onChange={(event) => setName(event.target.value)}
           placeholder="Optional"
-          value={name}
         />
       </label>
 
@@ -63,10 +42,8 @@ export function ContactFeedbackForm({ pagePath, saintName }: ContactFeedbackForm
         Your email
         <input
           name="email"
-          onChange={(event) => setReplyTo(event.target.value)}
           placeholder="Optional"
           type="email"
-          value={replyTo}
         />
       </label>
 
@@ -74,16 +51,26 @@ export function ContactFeedbackForm({ pagePath, saintName }: ContactFeedbackForm
         Feedback
         <textarea
           name="message"
-          onChange={(event) => setMessage(event.target.value)}
           placeholder="Share a correction, source, spelling note, or other feedback."
-          value={message}
+          required
         />
       </label>
 
+      <label className="sr-only">
+        Company
+        <input name="company" tabIndex={-1} autoComplete="off" />
+      </label>
+
+      {state.message ? (
+        <p className={`form-status form-status--${state.status}`} role="status" aria-live="polite">
+          {state.message}
+        </p>
+      ) : null}
+
       <div className="form-actions">
-        <a className="button button--primary" href={mailtoHref}>
-          Send feedback email
-        </a>
+        <button className="button button--primary" type="submit" disabled={isPending}>
+          {isPending ? "Sending..." : "Send feedback email"}
+        </button>
         <a className="button button--secondary" href={`mailto:${CONTACT_EMAIL}`}>
           Email directly
         </a>
