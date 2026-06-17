@@ -17,6 +17,7 @@ import {
   upsertSaintBiography,
   upsertSaintSource
 } from "../actions";
+import { InstagramBiographyImporter } from "./instagram-biography-importer";
 import { SaintImageActions } from "./saint-image-actions";
 import { SaintImageCropper } from "./saint-image-cropper";
 import { SaintPlaceRouteEditor, type SaintPlaceRouteOption } from "./saint-place-route-editor";
@@ -50,6 +51,8 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
   const hiddenGalleryImages = saint.galleryImages.filter((image) => image.publicVisible === false);
   const biographyImages = getBiographyEditorImages(saint, visibleGalleryImages);
   const primaryBiography = saint.biographies.find((biography) => biography.status === "published") ?? saint.biographies[0];
+  const biographyTextareaId = "biography-body-markdown";
+  const instagramBiographyImportPosts = getInstagramBiographyImportPosts(saint);
   const selectedTraditionIds = saint.traditions.map((item) => item.traditionId);
   const traditionOptions = allTraditions.map((tradition) => ({
     value: tradition.id,
@@ -190,7 +193,15 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
                   maxLength={20000}
                   name="bodyMarkdown"
                   required
-                  textareaId="biography-body-markdown"
+                  textareaId={biographyTextareaId}
+                />
+              </div>
+              <div className="form-stack__field">
+                <h4>Import from Instagram slides</h4>
+                <InstagramBiographyImporter
+                  posts={instagramBiographyImportPosts}
+                  saintId={saint.id}
+                  textareaId={biographyTextareaId}
                 />
               </div>
               <div className="form-stack__field">
@@ -201,6 +212,10 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
                   defaultValue={saint.biographySummary ?? ""}
                   readOnly
                 />
+              </div>
+              <div className="form-stack__field">
+                <h4>Instagram biography references</h4>
+                <InstagramBiographyReferences saint={saint} />
               </div>
               <div className="review-actions">
                 <button className="admin-form-button" type="submit">Save biography</button>
@@ -496,6 +511,9 @@ async function getSaint(slugOrId: string) {
               id: true,
               instagramShortcode: true,
               instagramUrl: true,
+              captionText: true,
+              postedAt: true,
+              type: true,
               thumbnailUrl: true,
               mediaAssets: {
                 orderBy: { sortOrder: "asc" },
@@ -642,6 +660,73 @@ function ReviewField({ label, value }: { label: string; value?: string | null })
   );
 }
 
+function InstagramBiographyReferences({ saint }: { saint: NonNullable<Awaited<ReturnType<typeof getSaint>>> }) {
+  const references = saint.instagramItems
+    .filter((link) => link.matchStatus === "matched" || link.matchStatus === "published")
+    .filter((link) => Boolean(link.instagramItem.captionText?.trim()));
+
+  if (references.length === 0) {
+    return <p>No attached Instagram captions are available yet.</p>;
+  }
+
+  return (
+    <div className="instagram-reference-list">
+      {references.map((link) => {
+        const item = link.instagramItem;
+        const title = item.instagramShortcode ? `Instagram ${item.instagramShortcode}` : "Instagram post";
+
+        return (
+          <article className="instagram-reference" key={link.id}>
+            <div className="review-meta">
+              <StatusBadge label={formatStatus(link.matchStatus)} />
+              <StatusBadge label={formatStatus(item.type)} />
+              {item.postedAt ? <StatusBadge label={item.postedAt.toLocaleDateString()} /> : null}
+            </div>
+            <h5>{title}</h5>
+            <FormattedCaption caption={item.captionText} />
+            <div className="review-actions">
+              <Link className="admin-text-link" href={`/admin/instagram/${item.id}`}>Open Instagram review</Link>
+              <a className="admin-text-link" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>View post</a>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  );
+}
+
+function getInstagramBiographyImportPosts(saint: NonNullable<Awaited<ReturnType<typeof getSaint>>>) {
+  return saint.instagramItems
+    .filter((link) => link.matchStatus === "matched" || link.matchStatus === "published")
+    .map((link) => {
+      const item = link.instagramItem;
+      const label = [
+        item.instagramShortcode ? `Instagram ${item.instagramShortcode}` : "Instagram post",
+        item.postedAt ? item.postedAt.toLocaleDateString() : undefined
+      ].filter(Boolean).join(" - ");
+      const caption = item.captionText?.replace(/\s+/g, " ").trim();
+
+      return {
+        id: item.id,
+        label,
+        detail: caption ? caption.slice(0, 180) : undefined
+      };
+    });
+}
+
+function FormattedCaption({ caption }: { caption?: string | null }) {
+  const paragraphs = splitCaptionParagraphs(caption);
+  if (paragraphs.length === 0) return <p>No caption text imported yet.</p>;
+
+  return (
+    <div className="formatted-caption">
+      {paragraphs.map((paragraph, index) => (
+        <p key={`${paragraph}-${index}`}>{paragraph}</p>
+      ))}
+    </div>
+  );
+}
+
 const contentStatuses = ["draft", "needs_review", "published", "hidden", "archived"] as const;
 const placeTypes = ["primary", "birth", "samadhi", "sadhana", "associated", "other"] as const;
 const sourceTypes = ["book", "article", "website", "scripture", "oral_tradition", "other"] as const;
@@ -728,6 +813,15 @@ function formatDateClaimInterpretation(rawValue: string) {
   ].filter(Boolean);
 
   return `Parsed as ${parts.join(", ")}.`;
+}
+
+function splitCaptionParagraphs(caption?: string | null) {
+  return caption
+    ?.replace(/\r\n/g, "\n")
+    .split(/\n{2,}|\n(?=#)/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    ?? [];
 }
 
 function formatStatus(status: string) {

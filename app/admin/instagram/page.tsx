@@ -7,6 +7,7 @@ import { getInstagramLinkProps } from "@/lib/external-links";
 import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { rankWeightedTextSearch, type WeightedSearchField } from "@/lib/search-text";
 import { updateInstagramItemSaintStatus, updateInstagramItemStatus } from "./actions";
+import { InstagramIngestionPanel } from "./instagram-ingestion-panel";
 
 const statuses = ["needs_review", "suggested", "matched", "ignored", "published", "hidden", "imported"] as const;
 type StatusFilter = typeof statuses[number] | "all";
@@ -36,11 +37,13 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
   const { q, status } = await searchParams;
   const query = getSearchParam(q);
   const activeStatus = getActiveStatus(status);
-  const [itemCounts, trackerCounts, items, trackerRows] = await Promise.all([
+  const [itemCounts, trackerCounts, items, trackerRows, ingestionJobs, incompleteCount] = await Promise.all([
     getInstagramItemCounts(),
     getTrackerCounts(),
     getInstagramItems(activeStatus, query),
-    getTrackerRows()
+    getTrackerRows(),
+    getInstagramIngestionJobs(),
+    getIncompleteInstagramItemCount()
   ]);
 
   return (
@@ -52,6 +55,11 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
           <p className="lede">Resolve imported posts by matching them to saint records. Saints are the publishable content layer.</p>
         </div>
       </div>
+
+      <InstagramIngestionPanel
+        incompleteCount={incompleteCount}
+        jobs={ingestionJobs}
+      />
 
       <section className="review-panel">
         <h2>Imported posts and reels</h2>
@@ -316,6 +324,44 @@ async function getTrackerRows() {
     orderBy: [{ matchStatus: "asc" }, { rowNumber: "asc" }],
     include: { matchedAirtableRecord: true },
     take: 30
+  });
+}
+
+async function getInstagramIngestionJobs() {
+  const jobs = await db.instagramIngestionJob.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 8
+  });
+
+  return jobs.map((job) => ({
+    id: job.id,
+    mode: job.mode,
+    status: job.status,
+    sourceName: job.sourceName,
+    totalRows: job.totalRows,
+    processedRows: job.processedRows,
+    importedRows: job.importedRows,
+    skippedRows: job.skippedRows,
+    updatedRows: job.updatedRows,
+    failedRows: job.failedRows,
+    mediaCachedRows: job.mediaCachedRows,
+    incompleteRefetchedRows: job.incompleteRefetchedRows,
+    message: job.message,
+    error: job.error,
+    startedAt: job.startedAt?.toISOString() ?? null,
+    completedAt: job.completedAt?.toISOString() ?? null,
+    createdAt: job.createdAt.toISOString()
+  }));
+}
+
+async function getIncompleteInstagramItemCount() {
+  return db.instagramItem.count({
+    where: {
+      OR: [
+        { firstPageText: null },
+        { mediaAssets: { none: {} } }
+      ]
+    }
   });
 }
 

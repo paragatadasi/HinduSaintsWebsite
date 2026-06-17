@@ -1,4 +1,5 @@
 import { compactMetadata, parseInstagramFirstPageMetadata, type InstagramFirstPageMetadata } from "./instagram-metadata";
+import { getInstagramSlideImageUrls } from "./instagram";
 
 type RawPayload = Record<string, unknown>;
 
@@ -10,9 +11,22 @@ export type InstagramFirstPageDraft = {
   error?: string;
 };
 
+export type InstagramBiographySlidesDraft = {
+  markdown?: string;
+  slideCount: number;
+  source: "openai_vision" | "none";
+  imageUrls: string[];
+  error?: string;
+};
+
 type ExtractionInput = {
   rawPayloadJson?: unknown;
   captionText?: string | null;
+  thumbnailUrl?: string | null;
+};
+
+type BiographySlidesExtractionInput = {
+  rawPayloadJson?: unknown;
   thumbnailUrl?: string | null;
 };
 
@@ -102,6 +116,48 @@ export async function extractInstagramFirstPageDraft({
   }
 }
 
+export async function extractInstagramBiographySlidesDraft({
+  rawPayloadJson,
+  thumbnailUrl
+}: BiographySlidesExtractionInput): Promise<InstagramBiographySlidesDraft> {
+  const imageUrls = getInstagramSlideImageUrls(rawPayloadJson, thumbnailUrl).slice(1);
+
+  if (imageUrls.length === 0) {
+    return {
+      slideCount: 0,
+      source: "none",
+      imageUrls,
+      error: "No slides after the cover image were found in the Instagram import."
+    };
+  }
+  if (!process.env.OPENAI_API_KEY) {
+    return {
+      slideCount: imageUrls.length,
+      source: "none",
+      imageUrls,
+      error: "Set OPENAI_API_KEY to extract biography text from Instagram slides."
+    };
+  }
+
+  try {
+    const markdown = await extractBiographySlidesWithOpenAI(imageUrls);
+
+    return {
+      markdown: normalizeMarkdown(markdown),
+      slideCount: imageUrls.length,
+      source: "openai_vision",
+      imageUrls
+    };
+  } catch (error) {
+    return {
+      slideCount: imageUrls.length,
+      source: "none",
+      imageUrls,
+      error: error instanceof Error ? error.message : "Slide text extraction failed."
+    };
+  }
+}
+
 export function getFirstPageImageUrl(rawPayloadJson: unknown, fallbackUrl?: string | null) {
   const raw = getRawPayload(rawPayloadJson);
   const childImageUrl = getFirstCarouselChildImageUrl(raw);
@@ -139,38 +195,14 @@ function draftFromStrictCaptionText(value: string | null | undefined) {
 }
 
 async function extractFirstPageWithOpenAI(imageUrl: string) {
-  const response = await fetch("https://api.openai.com/v1/responses", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      model: process.env.OPENAI_FIRST_PAGE_MODEL ?? "gpt-5.5",
-      input: [{
-        role: "user",
-        content: [
-          {
-            type: "input_text",
-            text: [
-              "Transcribe the visible text from this Instagram carousel cover image.",
-              "Return only JSON with keys: firstPageText, displayName, subtitle, born, samadhi, keyPlace, tradition, guru.",
-              "Use null for fields that are not visible. Do not infer or invent missing biographical data."
-            ].join(" ")
-          },
-          {
-            type: "input_image",
-            image_url: imageUrl
-          }
-        ]
-      }]
-    })
+  const outputText = await extractInstagramImagesWithOpenAI({
+    imageUrls: [imageUrl],
+    prompt: [
+      "Transcribe the visible text from this Instagram carousel cover image.",
+      "Return only JSON with keys: firstPageText, displayName, subtitle, born, samadhi, keyPlace, tradition, guru.",
+      "Use null for fields that are not visible. Do not infer or invent missing biographical data."
+    ].join(" ")
   });
-
-  const json = await response.json() as OpenAIResponse;
-  if (!response.ok) throw new Error(json.error?.message ?? `OpenAI image extraction failed with status ${response.status}.`);
-
-  const outputText = getOpenAIOutputText(json);
   const parsed = parseJsonObject(outputText);
 
   return {
@@ -185,6 +217,51 @@ async function extractFirstPageWithOpenAI(imageUrl: string) {
       guru: getString(parsed.guru)
     })
   };
+}
+
+async function extractBiographySlidesWithOpenAI(imageUrls: string[]) {
+  return extractInstagramImagesWithOpenAI({
+    imageUrls,
+    prompt: [
+      "Transcribe the visible biography text from these Instagram carousel slides.",
+      "These are slides after the cover image, in order.",
+      "Return Markdown only, with no surrounding code fence.",
+      "Use ## for clear section headings visible in the slides, plain paragraphs for body text, and bullet lists only when the slide visibly uses a list.",
+      "Preserve names, dates, places, quoted terms, and devotional titles as written.",
+      "Do not infer or invent missing biography details. Skip decorative text, page numbers, usernames, like/share UI, and repeated account boilerplate."
+    ].join(" ")
+  });
+}
+
+async function extractInstagramImagesWithOpenAI({ imageUrls, prompt }: { imageUrls: string[]; prompt: string }) {
+  const response = await fetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: getInstagramExtractionModel(),
+      input: [{
+        role: "user",
+        content: [
+          {
+            type: "input_text",
+            text: prompt
+          },
+          ...imageUrls.map((imageUrl) => ({
+            type: "input_image",
+            image_url: imageUrl
+          }))
+        ]
+      }]
+    })
+  });
+
+  const json = await response.json() as OpenAIResponse;
+  if (!response.ok) throw new Error(json.error?.message ?? `OpenAI image extraction failed with status ${response.status}.`);
+
+  return getOpenAIOutputText(json);
 }
 
 function getOpenAIOutputText(response: OpenAIResponse) {
@@ -233,4 +310,19 @@ function stringify(value: unknown) {
 
 function normalizeText(value: string | undefined | null) {
   return value?.replace(/\s+/g, " ").trim() ?? "";
+}
+
+function normalizeMarkdown(value: string | undefined | null) {
+  return value
+    ?.replace(/^```(?:markdown|md)?\s*/i, "")
+    .replace(/```$/i, "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim() || undefined;
+}
+
+function getInstagramExtractionModel() {
+  return process.env.OPENAI_INSTAGRAM_EXTRACTION_MODEL
+    ?? process.env.OPENAI_FIRST_PAGE_MODEL
+    ?? "gpt-5.5";
 }

@@ -40,6 +40,10 @@ export function getInstagramImageUrls(rawPayloadJson: unknown, fallbackUrl?: str
   return Array.from(new Set(urls));
 }
 
+export function getInstagramSlideImageUrls(rawPayloadJson: unknown, fallbackUrl?: string | null) {
+  return getInstagramImageUrls(rawPayloadJson, fallbackUrl);
+}
+
 type RawPayload = Record<string, unknown>;
 
 const IMAGE_KEYS = ["thumbnailUrl", "thumbnail_url", "imageUrl", "image_url", "mediaUrl", "media_url", "url"];

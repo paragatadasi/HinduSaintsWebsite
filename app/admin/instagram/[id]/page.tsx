@@ -85,7 +85,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
               </div>
               <div className="review-field">
                 <strong>Caption</strong>
-                <p>{item.captionText || "No caption text imported yet."}</p>
+                <FormattedCaption caption={item.captionText} />
               </div>
             </div>
           </div>
@@ -642,6 +642,19 @@ function ReviewField({ label, value }: { label: string; value?: string | null })
   );
 }
 
+function FormattedCaption({ caption }: { caption?: string | null }) {
+  const paragraphs = splitCaptionParagraphs(caption);
+  if (paragraphs.length === 0) return <p>No caption text imported yet.</p>;
+
+  return (
+    <div className="formatted-caption">
+      {paragraphs.map((paragraph, index) => (
+        <p key={`${paragraph}-${index}`}>{paragraph}</p>
+      ))}
+    </div>
+  );
+}
+
 function getActionButtonClassName(variant: "primary" | "secondary" | "warning") {
   return [
     "admin-form-button",
@@ -656,6 +669,15 @@ function getInstagramPreviewAlt(item: NonNullable<Awaited<ReturnType<typeof getI
 
 function getInstagramPreviewUrl(item: NonNullable<Awaited<ReturnType<typeof getInstagramItem>>>) {
   return item.mediaAssets[0]?.cachedUrl ?? item.thumbnailUrl;
+}
+
+function splitCaptionParagraphs(caption?: string | null) {
+  return caption
+    ?.replace(/\r\n/g, "\n")
+    .split(/\n{2,}|\n(?=#)/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    ?? [];
 }
 
 function formatStatus(status: string) {

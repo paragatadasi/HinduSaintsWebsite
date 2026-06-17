@@ -1841,6 +1841,93 @@ img {
   gap: var(--space-3);
 }
 
+.instagram-ingestion-panel {
+  gap: var(--space-4);
+}
+
+.instagram-ingestion-panel .admin-form-button {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
+.instagram-ingestion-summary,
+.instagram-job-progress {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.instagram-ingestion-summary {
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.instagram-ingestion-summary span,
+.instagram-job-progress span {
+  color: var(--color-muted);
+  font-size: 0.88rem;
+}
+
+.instagram-job-progress progress {
+  accent-color: var(--color-accent);
+  height: 0.75rem;
+  width: 100%;
+}
+
+.instagram-job-history {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.formatted-caption,
+.instagram-reference-list,
+.instagram-reference {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.formatted-caption {
+  max-width: var(--width-prose);
+}
+
+.formatted-caption p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.instagram-reference {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+}
+
+.instagram-reference h5 {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.instagram-biography-importer {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.instagram-biography-importer .admin-form-button {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
 .instagram-review-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);

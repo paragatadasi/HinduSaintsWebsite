@@ -9,6 +9,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { parseImportedDate } from "@/lib/import-dates";
 import { acceptSaintInstagramClaim } from "@/lib/instagram-claims";
+import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page-extraction";
 import { toSlug } from "@/lib/slugs";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "hidden", "archived"]);
@@ -43,6 +44,11 @@ const instagramClaimReviewSchema = z.object({
   claimId: z.string().cuid(),
   saintId: z.string().cuid(),
   intent: z.enum(["accept", "ignore"])
+});
+
+const instagramBiographyImportSchema = z.object({
+  saintId: z.string().cuid(),
+  instagramItemId: z.string().cuid()
 });
 
 const saintImageAttachmentSchema = z.object({
@@ -505,6 +511,65 @@ export async function reviewSaintInstagramClaim(formData: FormData) {
 
   revalidateSaintPaths(saint.slug);
   redirect(`/admin/saints/${saint.slug}` as Route);
+}
+
+export async function importBiographyTextFromInstagramPost(input: z.input<typeof instagramBiographyImportSchema>) {
+  await requireAdminSession();
+
+  const parsed = instagramBiographyImportSchema.parse(input);
+  const link = await db.instagramItemSaint.findFirst({
+    where: {
+      saintId: parsed.saintId,
+      instagramItemId: parsed.instagramItemId,
+      matchStatus: { in: ["matched", "published"] }
+    },
+    include: {
+      instagramItem: {
+        select: {
+          id: true,
+          instagramShortcode: true,
+          instagramUrl: true,
+          thumbnailUrl: true
+        }
+      },
+      saint: {
+        select: { slug: true }
+      }
+    }
+  });
+
+  if (!link) throw new Error("Select a matched Instagram post attached to this saint.");
+
+  const externalRecord = await db.externalRecord.findFirst({
+    where: {
+      sourceType: "instagram",
+      entityType: "InstagramItem",
+      entityId: parsed.instagramItemId
+    },
+    orderBy: { lastSeenAt: "desc" },
+    select: { rawPayloadJson: true }
+  });
+  const draft = await extractInstagramBiographySlidesDraft({
+    rawPayloadJson: externalRecord?.rawPayloadJson,
+    thumbnailUrl: link.instagramItem.thumbnailUrl
+  });
+
+  if (!draft.markdown) {
+    throw new Error(draft.error ?? "No biography text could be extracted from slides after the cover image.");
+  }
+
+  revalidatePath(`/admin/saints/${link.saint.slug}`);
+
+  return {
+    markdown: [
+      `## Imported from Instagram ${link.instagramItem.instagramShortcode ?? "post"}`,
+      "",
+      draft.markdown,
+      "",
+      `[Source Instagram post](${link.instagramItem.instagramUrl})`
+    ].join("\n"),
+    slideCount: draft.slideCount
+  };
 }
 
 export async function attachImageToSaint(input: z.input<typeof saintImageAttachmentSchema>) {
