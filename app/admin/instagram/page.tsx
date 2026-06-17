@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Route } from "next";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/lib/generated/prisma/client";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { getInstagramLinkProps } from "@/lib/external-links";

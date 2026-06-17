@@ -1,4 +1,4 @@
-import type { Confidence, InstagramDerivedClaim, InstagramDerivedClaimType, MatchStatus, PlaceType, Prisma } from "@prisma/client";
+import type { Confidence, InstagramDerivedClaim, InstagramDerivedClaimType, MatchStatus, PlaceType, Prisma } from "@/lib/generated/prisma/client";
 import { parseImportedDate } from "@/lib/import-dates";
 import { compactMetadata, parseInstagramFirstPageMetadata, type InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { toSlug } from "@/lib/slugs";

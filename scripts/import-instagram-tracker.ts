@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "../lib/generated/prisma/client";
 import { db } from "../lib/db";
 
 type TrackerRow = {

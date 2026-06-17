@@ -2,9 +2,12 @@
   "name": "hindu-saints-website",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "predev": "node scripts/prepare-next-dev.mjs && prisma migrate deploy && prisma generate",
     "dev": "next dev",
+    "dev:stop": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/stop-dev.ps1",
+    "dev:reset": "npm run dev:stop && npm run dev",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
@@ -31,8 +34,10 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.0",
-    "@prisma/client": "^5.22.0",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
     "clsx": "^2.1.1",
+    "dotenv": "^17.4.2",
     "lucide-react": "^0.468.0",
     "next": "^15.0.3",
     "next-auth": "^5.0.0-beta.25",
@@ -51,11 +56,8 @@
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.15.0",
     "eslint-config-next": "^15.0.3",
-    "prisma": "^5.22.0",
+    "prisma": "^7.8.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
   }
 }
