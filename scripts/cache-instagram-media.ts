@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "../lib/generated/prisma/client";
 import { db } from "../lib/db";
 import { cacheInstagramMediaAssets, isLocalMediaUrl } from "../lib/instagram-cover-cache";
 

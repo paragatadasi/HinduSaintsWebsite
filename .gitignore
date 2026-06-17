@@ -2,6 +2,7 @@ node_modules
 .next
 out
 dist
+lib/generated/prisma
 .env
 .env.local
 .env.production

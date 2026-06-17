@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { Prisma, type Confidence, type InstagramType, type MatchStatus } from "@prisma/client";
+import { Prisma, type Confidence, type InstagramType, type MatchStatus } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
 import { getInstagramShortcode, getInstagramTypeFromUrl } from "@/lib/instagram";
 import { cacheInstagramMediaAssets } from "@/lib/instagram-cover-cache";

@@ -1,4 +1,4 @@
-import { Prisma, type ContentStatus, type PlaceType } from "@prisma/client";
+import { Prisma, type ContentStatus, type PlaceType } from "../lib/generated/prisma/client";
 import { db } from "../lib/db";
 import { parseImportedDate, buildEraLabel } from "../lib/import-dates";
 import { getKnownPlaceScope, getKnownStateSlug } from "../lib/place-taxonomy";

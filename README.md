@@ -42,6 +42,22 @@ checked-in migrations are pulled or created by another agent. Use
 `npm run db:migrate` only when intentionally creating a new migration from a
 Prisma schema change.
 
+This project uses Prisma ORM 7. Prisma configuration lives in
+`prisma.config.ts`, including the datasource URL, migrations path, and seed
+command. The generated Prisma client is emitted to `lib/generated/prisma` and
+is intentionally gitignored; application code imports from
+`@/lib/generated/prisma/client`, while `lib/db.ts` creates the client with the
+PostgreSQL driver adapter.
+
+On Windows, Prisma may fail to regenerate the query engine with `EPERM` if a
+hidden Next/Node process is still holding the Prisma DLL. Use the reset command
+to stop local dev processes on ports 3000-3003 and any Node process launched
+from this workspace before starting Next again:
+
+```powershell
+npm run dev:reset
+```
+
 ## Local admin sign-in
 
 The admin CMS at `/admin` uses Google OAuth through Auth.js/NextAuth and then checks the signed-in email against `ADMIN_EMAIL_ALLOWLIST`.

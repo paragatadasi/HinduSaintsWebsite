@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { db as prisma } from "../lib/db";
 import { toSlug } from "../lib/slugs";
-
-const prisma = new PrismaClient();
 
 async function main() {
   if (process.env.SEED_SAMPLE_CONTENT !== "1") {
