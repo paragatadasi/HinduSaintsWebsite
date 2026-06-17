@@ -27,6 +27,13 @@ npm run db:seed
 docker compose -f infra/docker-compose.yml up -d --build
 ```
 
+For a local Windows production build outside Docker, use the wrapper that stops
+workspace dev processes before running the normal build:
+
+```powershell
+npm run build:local
+```
+
 ## Production deployment
 
 Production deployment details are intentionally not stored in this public app repository.

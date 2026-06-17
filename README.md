@@ -58,6 +58,13 @@ from this workspace before starting Next again:
 npm run dev:reset
 ```
 
+For a local production build on Windows, use the local build wrapper. It stops
+the same local dev processes first, then runs the normal deployment-safe build:
+
+```powershell
+npm run build:local
+```
+
 ## Local admin sign-in
 
 The admin CMS at `/admin` uses Google OAuth through Auth.js/NextAuth and then checks the signed-in email against `ADMIN_EMAIL_ALLOWLIST`.
