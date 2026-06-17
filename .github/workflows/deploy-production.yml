@@ -1,0 +1,31 @@
+name: Dispatch Production Deploy
+
+on:
+  push:
+    branches:
+      - deploy
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: hindu-saints-production-dispatch
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    name: Dispatch private production deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out app repo
+        uses: actions/checkout@v4
+
+      - name: Create deployment and dispatch private workflow
+        env:
+          BMIT_ENG_DEPLOY_DISPATCH_TOKEN: ${{ secrets.BMIT_ENG_DEPLOY_DISPATCH_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+          PRIVATE_REF: main
+          PRIVATE_REPO: Bhakti-Marga/bmit-eng
+          PRIVATE_WORKFLOW: deploy-hindu-saints.yml
+        run: scripts/deploy/dispatch-production-deploy.sh

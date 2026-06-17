@@ -38,8 +38,8 @@ npm run build:local
 
 Production deployment details are intentionally not stored in this public app repository.
 Do not add Strato host details, Caddy production routing, production Compose files,
-SSH keys, GitHub Actions deploy workflows, backup destinations, or real environment
-values here.
+SSH keys, private deploy scripts, backup destinations, or real environment values
+here.
 
 Private production deployment details live in the local BMIT engineering checkout:
 
@@ -48,9 +48,15 @@ Private production deployment details live in the local BMIT engineering checkou
 ```
 
 That private deploy area owns the Strato runbook, production Compose file,
-deploy scripts, backup scripts, and GitHub Actions workflow. This public repo may
-keep generic app requirements only, such as the `Dockerfile`, health endpoint,
-Prisma migrations, and local-development Docker setup.
+deploy scripts, backup scripts, and production GitHub Actions workflow. This
+public repo may keep generic app requirements only, such as the `Dockerfile`,
+health endpoint, Prisma migrations, and local-development Docker setup.
+
+Production releases are made by moving the public `deploy` branch. The public
+workflow delegates to `scripts/deploy/dispatch-production-deploy.sh`, which
+creates a GitHub Deployment record for the pushed commit and dispatches the
+private `bmit-eng` workflow. The private workflow performs the Strato deploy and
+writes the final deployment status back to this repository.
 
 ## Backups
 
