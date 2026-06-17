@@ -6,6 +6,7 @@ RUN npm install
 
 FROM deps AS migrate
 WORKDIR /app
+COPY prisma.config.ts ./
 COPY prisma ./prisma
 CMD ["npx", "prisma", "migrate", "deploy"]
 
