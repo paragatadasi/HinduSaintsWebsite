@@ -24,6 +24,12 @@ The admin saint review workflow now has:
 The admin Instagram review workflow now has:
 
 - `/admin/instagram` status-filtered queues for real imported Instagram posts, reels, and carousel records.
+- a `Refresh Queue` admin action that creates a durable ingestion job, imports all
+  Instagram posts when the website queue is empty, and otherwise imports only
+  new posts from the Instagram API.
+- a durable ingestion history panel with progress counts, recent job status,
+  and a `Re-fetch incomplete` action for posts missing cached media or
+  first-page extraction.
 - clickable status counters so editors can view imported, suggested, matched, review, hidden, and legacy published queues.
 - rich queue cards with media previews, status/type/date badges, caption previews, Instagram links, and review actions.
 - `/admin/instagram/[id]` detail review pages with a large preview, AI-assisted first-page biodata extraction from imported image data, caption/import metadata, raw API source snapshot, saint match list, manual saint attachment, saint-draft creation, and review/hide actions.
@@ -147,6 +153,21 @@ npm run ingest:instagram -- --api --dry-run
 npm run ingest:instagram -- --api
 ```
 
+The preferred web workflow is `/admin/instagram` -> `Refresh Queue`. The first
+web refresh imports all available Instagram API posts when no `InstagramItem`
+records exist. Later refreshes stop when they reach an already-known post and
+skip existing records instead of re-importing them.
+
+Instagram queue refresh requires both:
+
+- `INSTAGRAM_ACCESS_TOKEN`, to pull media records from the Instagram API.
+- `OPENAI_API_KEY`, to extract first-page biodata before editorial review.
+
+Imported media is downloaded into the site media store as `InstagramMediaAsset`
+records when API media URLs are available. If a post is missing cached media or
+first-page extraction, use `Re-fetch incomplete` on `/admin/instagram` to retry
+the API pull, media caching, and extraction for those existing records.
+
 Use `--limit N` or `INSTAGRAM_IMPORT_LIMIT` for a smaller refresh:
 
 ```sh
@@ -223,6 +244,9 @@ Editors can use `/admin/saints` to filter by status and `/admin/saints/[id]` to:
 
 - edit public display name, canonical name, short description, and biography summary.
 - inspect aliases, places, traditions, dates, Airtable source linkage, Instagram tracker rows, and images.
+- import biography draft text from slides 2+ of matched Instagram carousel posts
+  into the biography Markdown editor, with best-effort headings preserved from
+  the slide text.
 - approve and publish, return to review, or hide a saint.
 
 Public pages query only `status = published`.
