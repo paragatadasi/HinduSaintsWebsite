@@ -45,7 +45,6 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
       orderBy: { sortOrder: "asc" }
     })
   ]);
-  const trackerRows = externalRecord ? await getTrackerRows(externalRecord.externalId) : [];
   const instagramImages = await getInstagramImagesForSaint(saint);
   const visibleGalleryImages = saint.galleryImages.filter((image) => image.publicVisible !== false);
   const hiddenGalleryImages = saint.galleryImages.filter((image) => image.publicVisible === false);
@@ -409,29 +408,6 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
       </section>
 
       <section className="review-panel">
-        <h2>Instagram Tracker Matches</h2>
-        {trackerRows.length > 0 ? (
-          <div className="review-list">
-            {trackerRows.map((row) => (
-              <div className="review-row" key={row.id}>
-                <div>
-                  <div className="review-meta">
-                    <StatusBadge label={formatStatus(row.matchStatus)} />
-                    {row.matchConfidence ? <StatusBadge label={row.matchConfidence} /> : null}
-                  </div>
-                  <h3>{row.saintName ?? "Unnamed tracker row"}</h3>
-                  {row.postUrl ? <p><a href={row.postUrl}>{row.postUrl}</a></p> : null}
-                </div>
-                <StatusBadge label={`row ${row.rowNumber}`} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>No matched tracker rows are linked to this saint.</p>
-        )}
-      </section>
-
-      <section className="review-panel">
         <h2>Images</h2>
         {saint.primaryImage ? (
           <figure className="image-with-credit image-with-credit--admin">
@@ -633,22 +609,6 @@ function getBiographyEditorImages(
   });
 
   return Array.from(images.values());
-}
-
-async function getTrackerRows(externalId: string) {
-  const [, tableIdOrName, recordId] = externalId.split(":");
-  if (!tableIdOrName || !recordId) return [];
-
-  const mirror = await db.airtableMirrorRecord.findFirst({
-    where: { tableIdOrName, recordId },
-    include: {
-      instagramTrackerRows: {
-        orderBy: { rowNumber: "asc" }
-      }
-    }
-  });
-
-  return mirror?.instagramTrackerRows ?? [];
 }
 
 function ReviewField({ label, value }: { label: string; value?: string | null }) {

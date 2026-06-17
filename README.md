@@ -110,8 +110,7 @@ See `docs/codex-cloud.md` for the hosted Codex environment setup script, environ
 ## Data integrations
 
 See `docs/data-integrations.md` for the current Airtable mirror, Instagram API
-ingest, Google Sheets tracker, CMS saint import, approval, public rendering,
-and admin review workflow status.
+ingest, CMS saint import, public rendering, and admin review workflow status.
 
 Existing Instagram carousel records can refresh their child image URLs with:
 
@@ -124,16 +123,12 @@ Quick local Airtable import sequence:
 ```sh
 npm run import:airtable -- --dry-run
 npm run import:airtable
-npm run import:instagram-tracker -- --dry-run
-npm run import:instagram-tracker
 npm run import:airtable-saints
 npm run import:airtable-saints -- --write
-npm run approve:obvious-cms-saints
-npm run approve:obvious-cms-saints -- --write
 ```
 
-Requires `AIRTABLE_ACCESS_TOKEN`, `AIRTABLE_BASE_ID`, `AIRTABLE_TABLES="Saints"`,
-and, for the Instagram-backed CMS saint import, `GOOGLE_SHEETS_TRACKER_CSV_URL`.
+Requires `AIRTABLE_ACCESS_TOKEN`, `AIRTABLE_BASE_ID`, and
+`AIRTABLE_TABLES="Saints"`.
 
 See `docs/map-and-places.md` for the public Map page, Places detail routes,
 geocoding fallback, timeline filter, and place data workflow.

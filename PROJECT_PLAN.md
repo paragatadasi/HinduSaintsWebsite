@@ -19,7 +19,7 @@ Implemented foundation:
 - NextAuth/Prisma auth wiring, role and permission helpers, and protected admin layout.
 - Markdown rendering through a shared prose component with sanitization.
 - Import and reconciliation scripts for Airtable and Instagram-oriented workflows.
-- Airtable mirror, Google Sheets Instagram tracker import, Airtable-to-CMS saint import, and high-confidence saint approval scripts.
+- Airtable mirror, Airtable-to-CMS saint import, and Instagram ingestion/review scripts.
 - Docker infrastructure for local PostgreSQL, app runtime, Caddy, and backups.
 - Codex Cloud setup, lightweight development check through `npm run dev:check`, and heavier verification path through `npm run codex:verify`.
 - Design system docs and token files for centralized styling.
@@ -31,7 +31,7 @@ Existing docs:
 - `docs/data-model.md` covers the database shape and relationship graph direction.
 - `docs/content-workflow.md` covers editorial roles, saint workflow, biography workflow, and preview requirements.
 - `docs/import-reconciliation.md` covers Airtable and Instagram import rules.
-- `docs/data-integrations.md` covers the current Airtable mirror, Instagram tracker, CMS saint import, approval, public rendering, and admin review status.
+- `docs/data-integrations.md` covers the current Airtable mirror, Instagram API ingest, CMS saint import, public rendering, and admin review status.
 - `docs/design-system.md` and `docs/design/themes.md` cover visual system direction.
 - `docs/deployment.md` and `docs/codex-cloud.md` cover local, VPS, and Codex Cloud operations.
 
@@ -39,8 +39,7 @@ Known working-tree note as of June 8, 2026: the local tree has documentation cha
 
 Current local data snapshot documented in `docs/data-integrations.md`:
 
-- 270 CMS saints imported from matched Airtable mirror records and approved as published after high-confidence Instagram tracker matching.
-- 84 Google Sheets Instagram tracker rows still need review.
+- 270 CMS saints imported from Airtable mirror records and linked back to source rows.
 - 270 Airtable `ExternalRecord` links connect imported CMS saints back to source mirror records.
 - 273 places, 530 saint-place links, 24 traditions, 52 saint-tradition links, and 237 saint gallery image links have been imported from safe saint fields.
 
@@ -240,7 +239,7 @@ Needs to include:
 
 The frontend can first build this as a form against seeded/editable fixtures. The backend then supplies loaders and mutations with validation and permission checks.
 
-Current seam: `/admin/saints` provides status-filtered queues and `/admin/saints/[id]` supports editing display name, canonical name, short description, biography summary, and status. The page displays aliases, places, traditions, tracker matches, and images, but does not yet provide full edit workflows for those related records. Server actions validate inputs, but publish permissions are currently authenticated-user based rather than role-sensitive.
+Current seam: `/admin/saints` provides status-filtered queues and `/admin/saints/[id]` supports editing display name, canonical name, short description, biography summary, and status. The page displays aliases, places, traditions, Instagram-derived claims, and images, but does not yet provide full edit workflows for those related records. Server actions validate inputs, but publish permissions are currently authenticated-user based rather than role-sensitive.
 
 ### 6. Biography and Markdown contract
 
@@ -297,7 +296,7 @@ Needs to include:
 
 Frontend can iterate on the queue and decision UI with seed data while backend match logic improves.
 
-Current seam: real Instagram media can be imported from the Instagram API into `InstagramItem`, with raw API payloads preserved in `ExternalRecord`. `/admin/instagram` provides status-filtered queues, rich preview cards, clickable status counters, and links to `/admin/instagram/[id]` detail review screens. The detail screen supports media/caption/source review, manual saint attachment, confirmed/ignored saint matches, and publish/review/hide actions. Public saint pages show Instagram links only for published `InstagramItem` records with matched/published saint links. Google Sheets tracker rows remain manual triangulation/reference data; richer tracker-specific review actions for the 84 unmatched rows remain follow-up work.
+Current seam: real Instagram media can be imported from the Instagram API into `InstagramItem`, with raw API payloads preserved in `ExternalRecord`. `/admin/instagram` provides status-filtered queues, rich preview cards, clickable status counters, and links to `/admin/instagram/[id]` detail review screens. The detail screen supports media/caption/source review, manual saint attachment, confirmed/ignored saint matches, and publish/review/hide actions. Public saint pages show Instagram links only for published `InstagramItem` records with matched/published saint links.
 
 ### 9. Airtable import contract
 
@@ -393,7 +392,7 @@ Near-term frontend candidates:
 - Add source/further-reading display states for saints, traditions, biographies, and relationships.
 - Expand admin saint editor UI beyond public basics into aliases, places, traditions, biographies, sources, images, and relationship review.
 - Add admin source attachment UI states: cited source, further reading, unresolved imported source, duplicate warning.
-- Add caption-assisted saint suggestion logic and richer tracker-specific review actions for unmatched tracker rows and ambiguous matches.
+- Add caption-assisted saint suggestion logic for API-imported Instagram items, with conservative review-first behavior.
 - Build reconciliation issue list/detail UI for duplicate and conflict issues.
 - Move inline admin media form layout into shared design-system classes/components.
 
@@ -415,7 +414,6 @@ Near-term data integration candidates:
 - Finish Airtable attachment/image mapping for public images, private museum/relic images, credits, source URLs, and rights notes.
 - Expand import fixtures to include messy real-world cases: duplicate names, alternate spellings, missing dates, conflicting descriptions, private museum/relic fields, duplicate source citations, vague further-reading strings, multiple source references, duplicate images, missing alt text, and ambiguous image rights.
 - Keep dry-run Airtable import reporting current before changing write behavior.
-- Build tracker-specific review flow for the 84 unmatched Google Sheets tracker rows.
 - Improve Instagram API matching with conservative caption/name extraction while preserving the current review-first behavior.
 - Preserve Instagram thumbnails as imported media references until reviewed for public display.
 - Normalize and dedupe source references from Airtable, CSV, Instagram captions, and manual batches.

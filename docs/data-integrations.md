@@ -1,15 +1,13 @@
 # Data integrations status and runbook
 
-This document summarizes the Airtable, Instagram API, Instagram tracker, CMS import, and review work completed so far. Airtable, Instagram, and Google Sheets are import/reference sources only; the website database remains the source of truth for public pages.
+This document summarizes the Airtable, Instagram API, CMS import, and review work completed so far. Airtable and Instagram are import/reference sources only; the website database remains the source of truth for public pages.
 
 ## Current state
 
 As of June 10, 2026, the local development database has:
 
-- 270 CMS `Saint` records imported from Airtable mirror saints with matched Instagram tracker content.
-- 270 of those saints marked `published` after approving only high-confidence Google Sheets tracker matches.
+- 270 CMS `Saint` records imported from Airtable mirror saints and linked back to their source Airtable rows.
 - 337 real Instagram media records imported from the Instagram API into `InstagramItem` for editorial review.
-- 84 Google Sheets tracker rows still marked `needs_review`.
 - 270 Airtable `ExternalRecord` links pointing imported CMS saints back to their source Airtable mirror records.
 - 273 places, 530 saint-place links, 24 traditions, 52 saint-tradition links, and 237 saint gallery image links created from safe saint fields.
 
@@ -19,7 +17,7 @@ The admin saint review workflow now has:
 
 - `/admin` live workflow counts.
 - `/admin/saints` status-filtered review queues.
-- `/admin/saints/[id]` review detail pages with editable public fields, source context, tracker matches, images, and publish/review/hide actions.
+- `/admin/saints/[id]` review detail pages with editable public fields, source context, Instagram-derived claims, images, and publish/review/hide actions.
 
 The admin Instagram review workflow now has:
 
@@ -37,20 +35,19 @@ The admin Instagram review workflow now has:
 Public saint pages render matched Instagram items as Instagram-style post cards.
 Carousel posts expose a public carousel viewer with thumbnail and keyboard
 navigation; the image list comes from reviewed Instagram child media URLs stored
-in the preserved API payload, not from tracker rows.
+in the preserved API payload.
 
 ## Integration boundaries
 
 Airtable is import/reference only. Do not use Airtable as the live website source of truth.
 
-Museum, relic, vitrine, shelf, and other private collection fields must never be mapped into public page contracts. The CMS saint import maps only safe saint fields such as names, dates, places, traditions, biography notes, saint images, links, and tracker match context.
+Museum, relic, vitrine, shelf, and other private collection fields must never be mapped into public page contracts. The CMS saint import maps only safe saint fields such as names, dates, places, traditions, biography notes, saint images, and links.
 
 Raw external values are preserved for debugging and review:
 
 - Airtable rows are mirrored in `AirtableMirrorRecord`.
 - Generic source links are tracked in `ExternalRecord`.
 - Instagram API media payloads are preserved in `ExternalRecord` with `sourceType=instagram` and linked to `InstagramItem`.
-- Google Sheets tracker rows are stored in `InstagramTrackerRow`.
 - Potential conflicts or duplicate candidates are stored in `ReconciliationIssue`.
 
 ## Local Airtable import runbook
@@ -85,22 +82,7 @@ npm run import:airtable
 
 `import:airtable` writes by default. Always include `-- --dry-run` first on a new machine, new token, or changed table/view configuration.
 
-4. If importing the Instagram-backed CMS saint set, configure the Google Sheets tracker as a CSV source:
-
-```env
-GOOGLE_SHEETS_TRACKER_CSV_URL="https://docs.google.com/spreadsheets/.../export?format=csv..."
-```
-
-Then dry-run and write the tracker import:
-
-```sh
-npm run import:instagram-tracker -- --dry-run
-npm run import:instagram-tracker
-```
-
-The tracker import matches tracker rows to mirrored Airtable `Saints` rows and sets `hasInstagramContent` flags. The CMS saint importer currently imports only Airtable mirror saints where `hasInstagramContent` is true.
-
-5. Dry-run the CMS saint import, then write it:
+4. Dry-run the CMS saint import, then write it:
 
 ```sh
 npm run import:airtable-saints
@@ -109,14 +91,7 @@ npm run import:airtable-saints -- --write
 
 `import:airtable-saints` is dry-run by default. Use `-- --write` only after reviewing the dry-run summary.
 
-6. Optionally publish only high-confidence imported saints:
-
-```sh
-npm run approve:obvious-cms-saints
-npm run approve:obvious-cms-saints -- --write
-```
-
-Public pages show only `published` saints. Imported CMS saints that are not auto-published remain reviewable in `/admin/saints`.
+Public pages show only `published` saints. Imported CMS saints remain reviewable in `/admin/saints` until an editor publishes them.
 
 ## Scripts
 
@@ -138,12 +113,6 @@ Merge human-approved Airtable duplicate pairs into primary Airtable rows:
 
 ```sh
 npm run merge:airtable -- --write
-```
-
-Import the Google Sheets Instagram tracker and flag matched Airtable mirror saints:
-
-```sh
-npm run import:instagram-tracker
 ```
 
 Import real Instagram media from the Instagram API into the admin review queue:
@@ -182,26 +151,19 @@ npm run backfill:instagram-carousels -- --dry-run
 npm run backfill:instagram-carousels
 ```
 
-Import matched Airtable mirror saints into the CMS:
+Import Airtable mirror saints into the CMS:
 
 ```sh
 npm run import:airtable-saints -- --write
 ```
 
-Publish only imported CMS saints whose tracker rows are all high-confidence matches:
-
-```sh
-npm run approve:obvious-cms-saints -- --write
-```
-
-Most import and approval scripts support a dry-run mode by default or through `--dry-run`. Use dry runs before write runs when changing matching logic.
+Most import scripts support a dry-run mode by default or through `--dry-run`. Use dry runs before write runs when changing matching logic.
 
 ## CMS saint import behavior
 
-`scripts/import-airtable-saints-to-cms.ts` imports only Airtable mirror rows where:
+`scripts/import-airtable-saints-to-cms.ts` imports Airtable mirror rows where:
 
 - `tableIdOrName` is `Saints`
-- `hasInstagramContent` is true
 
 The importer is idempotent by linking each CMS saint to its Airtable source through an `ExternalRecord` with source type `airtable`. It updates importer-owned CMS records on later runs and preserves the Airtable record ID for traceability.
 
@@ -238,12 +200,12 @@ Media handling:
 
 ## Review and publishing behavior
 
-Imported CMS saints initially enter the CMS as `needs_review`. The approval script publishes only saints whose linked tracker rows are all `matched` with `high` confidence.
+Imported CMS saints initially enter the CMS as `needs_review`.
 
 Editors can use `/admin/saints` to filter by status and `/admin/saints/[id]` to:
 
 - edit public display name, canonical name, short description, and biography summary.
-- inspect aliases, places, traditions, dates, Airtable source linkage, Instagram tracker rows, and images.
+- inspect aliases, places, traditions, dates, Airtable source linkage, Instagram claims, and images.
 - import biography draft text from slides 2+ of matched Instagram carousel posts
   into the biography Markdown editor, with best-effort headings preserved from
   the slide text.
@@ -279,12 +241,9 @@ through the public saint page adapter. Carousel child images remain supporting
 Instagram media; the adapter exposes only public-safe URLs and never the raw API
 payload itself.
 
-Manual Google Sheets tracker rows are not public source records. They remain discovery/triangulation inputs for Airtable matching and CMS import decisions.
-
 ## Known gaps and next steps
 
 - Build full edit workflows for aliases, places, traditions, biographies, sources, and image review rather than only displaying imported relationships.
-- Add richer tracker-specific review actions for the 84 unmatched Google Sheets tracker rows.
 - Add caption-assisted saint suggestion logic for API-imported Instagram items, with conservative review-first behavior.
 - Download or rehost reviewed Airtable image attachments so public pages do not depend on expiring Airtable URLs.
 - Add reconciliation UI for open duplicate/conflict issues.

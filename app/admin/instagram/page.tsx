@@ -37,11 +37,9 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
   const { q, status } = await searchParams;
   const query = getSearchParam(q);
   const activeStatus = getActiveStatus(status);
-  const [itemCounts, trackerCounts, items, trackerRows, ingestionJobs, incompleteCount] = await Promise.all([
+  const [itemCounts, items, ingestionJobs, incompleteCount] = await Promise.all([
     getInstagramItemCounts(),
-    getTrackerCounts(),
     getInstagramItems(activeStatus, query),
-    getTrackerRows(),
     getInstagramIngestionJobs(),
     getIncompleteInstagramItemCount()
   ]);
@@ -116,39 +114,6 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
         </div>
       </section>
 
-      <section className="review-panel">
-        <h2>Manual tracker reference</h2>
-        <p>These Google Sheets rows are useful signals, but they are not treated as the Instagram source of truth.</p>
-        <div className="admin-stat-grid">
-          {statuses.map((status) => (
-            <Stat key={status} label={formatStatus(status)} value={trackerCounts[status]} />
-          ))}
-        </div>
-        <div className="review-list">
-          {trackerRows.length > 0 ? trackerRows.map((row) => (
-            <article className="review-row" key={row.id}>
-              <div>
-                <div className="review-meta">
-                  <StatusBadge label={formatStatus(row.matchStatus)} />
-                  {row.matchConfidence ? <StatusBadge label={row.matchConfidence} /> : null}
-                  <StatusBadge label={`row ${row.rowNumber}`} />
-                </div>
-                <h3>{row.saintName ?? "Unnamed tracker row"}</h3>
-                {row.postUrl ? <p><a href={row.postUrl}>{row.postUrl}</a></p> : null}
-                {row.matchedAirtableRecord ? <p>Airtable candidate: {getAirtableName(row.matchedAirtableRecord.rawFieldsJson)}</p> : null}
-              </div>
-              <div className="review-meta">
-                <StatusBadge label={row.postedAt ? row.postedAt.toLocaleDateString() : "date pending"} />
-              </div>
-            </article>
-          )) : (
-            <div className="empty-state">
-              <h3>No tracker rows need review</h3>
-              <p>Tracker imports will appear here when they need editorial attention.</p>
-            </div>
-          )}
-        </div>
-      </section>
     </div>
   );
 }
@@ -282,14 +247,6 @@ async function getInstagramItemCounts() {
   return Object.fromEntries(grouped.map((row) => [row.status, row._count._all])) as Record<string, number>;
 }
 
-async function getTrackerCounts() {
-  const grouped = await db.instagramTrackerRow.groupBy({
-    by: ["matchStatus"],
-    _count: { _all: true }
-  });
-  return Object.fromEntries(grouped.map((row) => [row.matchStatus, row._count._all])) as Record<string, number>;
-}
-
 async function getInstagramItems(status: StatusFilter, query: string): Promise<InstagramQueueItem[]> {
   const items = await db.instagramItem.findMany({
     where: status === "all" ? undefined : { status },
@@ -316,15 +273,6 @@ async function getInstagramItems(status: StatusFilter, query: string): Promise<I
       tieBreaker: (left: InstagramQueueItem, right: InstagramQueueItem) => getInstagramSortDate(right) - getInstagramSortDate(left)
     }
   ).map(({ item }) => item);
-}
-
-async function getTrackerRows() {
-  return db.instagramTrackerRow.findMany({
-    where: { matchStatus: { in: ["needs_review", "suggested", "imported"] } },
-    orderBy: [{ matchStatus: "asc" }, { rowNumber: "asc" }],
-    include: { matchedAirtableRecord: true },
-    take: 30
-  });
 }
 
 async function getInstagramIngestionJobs() {
@@ -382,12 +330,6 @@ function Stat({ active = false, href, label, value }: { active?: boolean; href?:
       {content}
     </Link>
   );
-}
-
-function getAirtableName(rawFieldsJson: unknown) {
-  if (!rawFieldsJson || typeof rawFieldsJson !== "object" || Array.isArray(rawFieldsJson)) return "unknown";
-  const fields = rawFieldsJson as Record<string, unknown>;
-  return typeof fields.Name === "string" ? fields.Name : "unknown";
 }
 
 function getFirstPageMetadata(value: unknown): InstagramFirstPageMetadata {

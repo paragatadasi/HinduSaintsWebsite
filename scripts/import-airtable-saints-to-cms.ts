@@ -33,7 +33,6 @@ type ImportPlan = {
   traditions: string[];
   images: Attachment[];
   links: string[];
-  trackerMatchCount: number;
 };
 
 const AIRTABLE_TABLE = "Saints";
@@ -176,7 +175,6 @@ function buildPlan(row: {
   baseId: string;
   recordId: string;
   rawFieldsJson: Prisma.JsonValue;
-  instagramTrackerMatchCount: number;
 }): ImportPlan | undefined {
   const fields = asObject(row.rawFieldsJson);
   const originalName = stringField(fields, "Name");
@@ -211,8 +209,7 @@ function buildPlan(row: {
     places: uniqueByNormalized([...airtablePlaces, ...phrasePlaces], (place) => place.name),
     traditions: stringArrayField(fields, "Sampradaya"),
     images: attachmentField(fields, "Picture(s) of Saint").filter((image) => image.url),
-    links: parseLinks(stringField(fields, "Links")),
-    trackerMatchCount: row.instagramTrackerMatchCount
+    links: parseLinks(stringField(fields, "Links"))
   };
 }
 
@@ -297,7 +294,6 @@ async function importPlan(plan: ImportPlan) {
       biographySummary: plan.biographySummary,
       status: STATUS,
       launchMvp: true,
-      hasInstagramContent: true,
       eraLabel,
       birthDateRaw: plan.birth.raw,
       birthYear: plan.birth.year,
@@ -317,7 +313,6 @@ async function importPlan(plan: ImportPlan) {
       displayName: plan.displayName,
       biographySummary: plan.biographySummary,
       launchMvp: true,
-      hasInstagramContent: true,
       eraLabel,
       birthDateRaw: plan.birth.raw,
       birthYear: plan.birth.year,
@@ -376,7 +371,7 @@ async function importPlan(plan: ImportPlan) {
 
 async function findUnlinkedImporterSaint(slug: string) {
   const saint = await db.saint.findUnique({ where: { slug } });
-  if (!saint || saint.status !== STATUS || !saint.hasInstagramContent) return undefined;
+  if (!saint || saint.status !== STATUS) return undefined;
 
   const linkedExternal = await db.externalRecord.findFirst({
     where: { entityType: "Saint", entityId: saint.id },
@@ -522,21 +517,20 @@ async function findOrCreateSource(url: string) {
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const rows = await db.airtableMirrorRecord.findMany({
-    where: { tableIdOrName: AIRTABLE_TABLE, hasInstagramContent: true },
+    where: { tableIdOrName: AIRTABLE_TABLE },
     take: options.limit,
     orderBy: { recordId: "asc" },
     select: {
       baseId: true,
       recordId: true,
-      rawFieldsJson: true,
-      instagramTrackerMatchCount: true
+      rawFieldsJson: true
     }
   });
   const plans = rows.map(buildPlan).filter((plan): plan is ImportPlan => Boolean(plan));
   const ramanaCleanup = await deleteMockRamanaIfNeeded(plans, options.dryRun);
 
   if (options.dryRun) {
-    console.log(`Dry run: would import ${plans.length} Airtable mirror saints with Instagram content.`);
+    console.log(`Dry run: would import ${plans.length} Airtable mirror saints into CMS.`);
     console.log(`Would remove seed Ramana mock: ${ramanaCleanup.deleted ? "yes" : "no"}`);
     console.log(`Places to upsert: ${uniqueByNormalized(plans.flatMap((plan) => plan.places), (place) => place.name).length}`);
     console.log(`Traditions to upsert: ${uniqueByNormalized(plans.flatMap((plan) => plan.traditions), (name) => name).length}`);

@@ -42,8 +42,7 @@ Override tables for one run:
 npm run import:airtable -- --tables "Saints,Traditions"
 ```
 
-Import Airtable mirror saints that have matched Instagram tracker content into
-the CMS:
+Import Airtable mirror saints into the CMS:
 
 ```sh
 npm run import:airtable-saints -- --dry-run
@@ -55,17 +54,6 @@ records enter as `needs_review`, preserve original Airtable names as aliases,
 split birth and samadhi date fields into raw/year/month/day/precision parts,
 and map safe saint images from `Picture(s) of Saint`. It does not import relic
 or museum fields into public saint records.
-
-Publish only the obvious high-confidence CMS saints:
-
-```sh
-npm run approve:obvious-cms-saints -- --dry-run
-npm run approve:obvious-cms-saints -- --write
-```
-
-This approval script only publishes CMS saints whose linked Google Sheets
-tracker rows are all `matched` with `high` confidence. It leaves ambiguous
-tracker rows and non-obvious cases for human review.
 
 Find likely duplicate Airtable saint records from the local mirror:
 
@@ -101,13 +89,9 @@ duplicate Airtable rows.
 
 ## Instagram
 
-The project distinguishes two Instagram-related inputs:
-
-- `InstagramItem` is the real imported Instagram post/reel/carousel record. It
-  is the source record editors should reconcile, cite, and attach to saints.
-- `InstagramTrackerRow` is manually maintained tracker data from Google Sheets.
-  It is useful for triangulation, bulk discovery, and Airtable matching, but it
-  is noisy reference data and is not treated as the Instagram source of truth.
+The project stores real imported Instagram post/reel/carousel records in
+`InstagramItem`. These are the source records editors should reconcile, cite,
+and attach to saints.
 
 Recommended flow:
 
@@ -230,44 +214,6 @@ exports with common field names such as `url`, `permalink`, `caption`,
 ```sh
 npm run ingest:instagram -- --file path/to/instagram-posts.json --dry-run
 ```
-
-## Instagram tracker
-
-The Google Sheets Instagram tracker can be imported before or alongside full
-Instagram post data. Tracker rows are preserved in `InstagramTrackerRow`, and
-obvious matches flag local `AirtableMirrorRecord` saint rows with
-`hasInstagramContent`. These flags are a discovery signal for CMS import and
-review, not a replacement for real `InstagramItem` source records.
-
-Configure a published Google Sheets CSV export URL:
-
-```sh
-GOOGLE_SHEETS_TRACKER_CSV_URL="https://docs.google.com/spreadsheets/d/.../export?format=csv&gid=..."
-```
-
-Run a dry import:
-
-```sh
-npm run import:instagram-tracker -- --dry-run
-```
-
-Import and flag matched Airtable mirror saints:
-
-```sh
-npm run import:instagram-tracker
-```
-
-For a local CSV file:
-
-```sh
-npm run import:instagram-tracker -- --file path/to/tracker.csv
-```
-
-The importer uses conservative name matching against the Airtable mirror:
-exact normalized names, exact core names before place text such as `of ...`,
-and unique contained-name matches. Ambiguous or missing names remain
-`needs_review` rather than being guessed. Multiple posts can match the same
-saint, and `instagramTrackerMatchCount` tracks how many tracker rows matched.
 
 See `docs/data-integrations.md` for the current status, completed counts, and
 end-to-end runbook.

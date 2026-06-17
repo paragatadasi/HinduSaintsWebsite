@@ -23,10 +23,10 @@ Current admin review surfaces:
   published records, and hidden records.
 - `/admin/saints/[id]` supports editing core public saint fields, aliases,
   traditions, places, route order, biographies, sources, dates, Airtable
-  linkage, Instagram tracker matches, and imported images, then publishing,
+  linkage, Instagram-derived claims, and imported images, then publishing,
   returning to review, or hiding the saint.
 - `/admin/instagram` lists real imported Instagram posts/reels/carousels by
-  status, separate from manual Google Sheets tracker rows.
+  status.
 - `/admin/instagram/[id]` supports reviewing a real Instagram item, previewing
   media and caption metadata, attaching an existing saint, creating a new saint
   draft from first-page biodata, inspecting the preserved raw API payload, and

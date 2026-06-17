@@ -452,7 +452,6 @@ model ImportBatch {
   notes                String?
   instagramItems       InstagramItem[]
   airtableRecords      AirtableMirrorRecord[]
-  instagramTrackerRows InstagramTrackerRow[]
 }
 
 model InstagramIngestionJob {
@@ -507,40 +506,10 @@ model AirtableMirrorRecord {
   firstSeenAt                   DateTime              @default(now())
   lastSeenAt                    DateTime              @default(now())
   importedAt                    DateTime              @default(now())
-  hasInstagramContent           Boolean               @default(false)
-  instagramTrackerMatchCount    Int                   @default(0)
-  instagramTrackerLastMatchedAt DateTime?
-  instagramTrackerRows          InstagramTrackerRow[]
 
   @@unique([baseId, tableIdOrName, recordId])
   @@index([tableIdOrName])
   @@index([lastSeenAt])
-  @@index([hasInstagramContent])
-}
-
-model InstagramTrackerRow {
-  id                      String                @id @default(cuid())
-  sourceName              String                @default("google_sheets")
-  sourceRowKey            String
-  rowNumber               Int
-  saintName               String?
-  postUrl                 String?
-  postedAt                DateTime?
-  rawPayloadJson          Json
-  matchStatus             MatchStatus           @default(imported)
-  matchConfidence         Confidence?
-  matchedAirtableRecordId String?
-  matchedAirtableRecord   AirtableMirrorRecord? @relation(fields: [matchedAirtableRecordId], references: [id], onDelete: SetNull)
-  sourceImportBatchId     String?
-  sourceImportBatch       ImportBatch?          @relation(fields: [sourceImportBatchId], references: [id], onDelete: SetNull)
-  importedAt              DateTime              @default(now())
-  updatedAt               DateTime              @updatedAt
-  matchedAt               DateTime?
-  notes                   String?
-
-  @@unique([sourceName, sourceRowKey])
-  @@index([matchStatus])
-  @@index([matchedAirtableRecordId])
 }
 
 model ReconciliationIssue {
