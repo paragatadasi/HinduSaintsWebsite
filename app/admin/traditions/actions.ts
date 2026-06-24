@@ -435,6 +435,43 @@ export async function mergeTraditions(formData: FormData) {
       where: { traditionId: source.id },
       data: { traditionId: target.id }
     });
+
+    const targetLineage = await tx.traditionLineageSaint.findMany({
+      where: { traditionId: target.id },
+      select: { id: true, saintId: true, roleLabel: true, parentSaintId: true }
+    });
+    const targetLineageBySaintId = new Map(targetLineage.map((link) => [link.saintId, link]));
+    const sourceLineage = await tx.traditionLineageSaint.findMany({
+      where: { traditionId: source.id },
+      orderBy: { sortOrder: "asc" }
+    });
+    const nextLineageSortOrder = await tx.traditionLineageSaint.count({
+      where: { traditionId: target.id }
+    });
+
+    for (const [index, sourceLink] of sourceLineage.entries()) {
+      const targetLink = targetLineageBySaintId.get(sourceLink.saintId);
+
+      if (targetLink) {
+        await tx.traditionLineageSaint.update({
+          where: { id: targetLink.id },
+          data: {
+            roleLabel: targetLink.roleLabel ?? sourceLink.roleLabel,
+            parentSaintId: targetLink.parentSaintId ?? sourceLink.parentSaintId
+          }
+        });
+        continue;
+      }
+
+      await tx.traditionLineageSaint.update({
+        where: { id: sourceLink.id },
+        data: {
+          traditionId: target.id,
+          sortOrder: nextLineageSortOrder + index
+        }
+      });
+    }
+
     await tx.tradition.delete({ where: { id: source.id } });
   });
 
