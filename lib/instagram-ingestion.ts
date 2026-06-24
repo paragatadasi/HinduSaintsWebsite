@@ -250,13 +250,7 @@ async function runRefreshJob(jobId: string, mode: InstagramIngestionMode, limit:
 
 async function runIncompleteRepairJob(jobId: string, limit: number | undefined) {
   const incompleteItems = await db.instagramItem.findMany({
-    where: {
-      OR: [
-        { firstPageText: null },
-        { firstPageMetadata: { equals: Prisma.JsonNull } },
-        { mediaAssets: { none: {} } }
-      ]
-    },
+    where: getIncompleteInstagramItemWhere(),
     orderBy: [{ postedAt: "desc" }, { updatedAt: "desc" }],
     take: limit
   });
@@ -315,6 +309,13 @@ async function runIncompleteRepairJob(jobId: string, limit: number | undefined) 
     rows,
     skipExisting: false
   });
+  const remainingIncompleteRows = await db.instagramItem.count({
+    where: {
+      id: { in: [...repairIds] },
+      ...getIncompleteInstagramItemWhere()
+    }
+  });
+  const fixedRows = Math.max(0, incompleteItems.length - remainingIncompleteRows);
 
   await updateJob(jobId, {
     status: "completed",
@@ -322,10 +323,12 @@ async function runIncompleteRepairJob(jobId: string, limit: number | undefined) 
     rawSummary: {
       ...summary,
       requestedIncompleteRows: incompleteItems.length,
+      fixedRows,
       matchedApiRows: rows.length,
+      remainingIncompleteRows,
       repairShortcodes: [...repairShortcodes]
     } as Prisma.InputJsonValue,
-    message: `Repair completed: ${summary.updated} refreshed, ${summary.failed} failed.`
+    message: `Repair checked ${summary.updated} records: ${fixedRows} fixed, ${remainingIncompleteRows} still incomplete, ${summary.failed} failed.`
   });
 }
 
@@ -642,6 +645,16 @@ async function getCachedInstagramMediaAssets(instagramItemId: string, row: Insta
 
 function getInstagramSourceName() {
   return process.env.INSTAGRAM_IMPORT_SOURCE_NAME ?? "Instagram API";
+}
+
+function getIncompleteInstagramItemWhere(): Prisma.InstagramItemWhereInput {
+  return {
+    OR: [
+      { firstPageText: null },
+      { firstPageMetadata: { equals: Prisma.JsonNull } },
+      { mediaAssets: { none: {} } }
+    ]
+  };
 }
 
 async function updateJob(jobId: string | undefined, data: Prisma.InstagramIngestionJobUpdateInput) {

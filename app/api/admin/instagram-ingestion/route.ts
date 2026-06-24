@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Prisma } from "@/lib/generated/prisma/client";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import {
@@ -68,6 +69,7 @@ function getIncompleteCount() {
     where: {
       OR: [
         { firstPageText: null },
+        { firstPageMetadata: { equals: Prisma.JsonNull } },
         { mediaAssets: { none: {} } }
       ]
     }

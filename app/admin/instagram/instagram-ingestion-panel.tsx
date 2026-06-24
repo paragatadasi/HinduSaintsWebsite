@@ -20,6 +20,7 @@ type InstagramIngestionJobView = {
   incompleteRefetchedRows: number;
   message: string | null;
   error: string | null;
+  rawSummary: unknown;
   startedAt: string | null;
   completedAt: string | null;
   createdAt: string;
@@ -135,7 +136,7 @@ export function InstagramIngestionPanel({ incompleteCount: initialIncompleteCoun
                   </div>
                   <h3>{job.message ?? formatStatus(job.mode)}</h3>
                   {job.error ? <p className="admin-notice admin-notice--warning">{job.error}</p> : null}
-                  <p>{formatJobCounts(job)}</p>
+                  <p>{formatVisibleJobCounts(job)}</p>
                 </div>
                 <div className="review-meta">
                   <StatusBadge label={formatDate(job.completedAt ?? job.startedAt ?? job.createdAt)} />
@@ -172,15 +173,34 @@ function JobProgress({ job }: { job: InstagramIngestionJobView }) {
   );
 }
 
-function formatJobCounts(job: InstagramIngestionJobView) {
+function formatVisibleJobCounts(job: InstagramIngestionJobView) {
+  if (job.mode === "repair_incomplete") {
+    const fixedRows = getSummaryNumber(job.rawSummary, "fixedRows");
+    const remainingIncompleteRows = getSummaryNumber(job.rawSummary, "remainingIncompleteRows");
+    const checkedRows = job.incompleteRefetchedRows || job.updatedRows;
+
+    return [
+      `${checkedRows} checked`,
+      fixedRows == null ? undefined : `${fixedRows} fixed`,
+      remainingIncompleteRows == null ? undefined : `${remainingIncompleteRows} still incomplete`,
+      `${job.failedRows} failed`,
+      `${job.mediaCachedRows} media cached`
+    ].filter(Boolean).join(" - ");
+  }
+
   return [
     `${job.importedRows} imported`,
     `${job.updatedRows} updated`,
     `${job.skippedRows} skipped`,
     `${job.failedRows} failed`,
-    `${job.mediaCachedRows} media cached`,
-    job.incompleteRefetchedRows ? `${job.incompleteRefetchedRows} incomplete repaired` : undefined
-  ].filter(Boolean).join(" · ");
+    `${job.mediaCachedRows} media cached`
+  ].filter(Boolean).join(" - ");
+}
+
+function getSummaryNumber(rawSummary: unknown, key: string) {
+  if (!rawSummary || typeof rawSummary !== "object" || Array.isArray(rawSummary)) return undefined;
+  const value = (rawSummary as Record<string, unknown>)[key];
+  return typeof value === "number" ? value : undefined;
 }
 
 function formatDate(value: string) {

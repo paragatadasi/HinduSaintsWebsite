@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Route } from "next";
-import type { Prisma } from "@/lib/generated/prisma/client";
+import { Prisma, type Prisma as PrismaTypes } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
 import { getInstagramLinkProps } from "@/lib/external-links";
 import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
@@ -14,7 +14,7 @@ type AdminInstagramPageProps = {
   searchParams: Promise<{ q?: string | string[]; status?: string }>;
 };
 
-type InstagramQueueItem = Prisma.InstagramItemGetPayload<{
+type InstagramQueueItem = PrismaTypes.InstagramItemGetPayload<{
   include: {
     saints: {
       include: {
@@ -195,6 +195,7 @@ async function getInstagramIngestionJobs() {
     incompleteRefetchedRows: job.incompleteRefetchedRows,
     message: job.message,
     error: job.error,
+    rawSummary: job.rawSummary,
     startedAt: job.startedAt?.toISOString() ?? null,
     completedAt: job.completedAt?.toISOString() ?? null,
     createdAt: job.createdAt.toISOString()
@@ -206,6 +207,7 @@ async function getIncompleteInstagramItemCount() {
     where: {
       OR: [
         { firstPageText: null },
+        { firstPageMetadata: { equals: Prisma.JsonNull } },
         { mediaAssets: { none: {} } }
       ]
     }
