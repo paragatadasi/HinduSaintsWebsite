@@ -74,6 +74,26 @@ The current DB-backed saint public adapter lives in `lib/public-saints.ts`. It
 queries only `ContentStatus.published` saints and maps safe CMS fields into the
 public contract used by `/`, `/saints`, and `/saints/[slug]`.
 
+The current DB-backed tradition public adapter lives in
+`lib/public-traditions.ts`. It queries only `ContentStatus.published`
+traditions and maps safe CMS fields into the public contract used by
+`/traditions` and `/traditions/[slug]`. The detail page now expects a richer
+editorial layout than the current database fully stores, so the public adapter
+uses graceful fallbacks for missing data and derives related places from
+published saints until the admin editor can persist curated values.
+
+To fully support the public tradition detail layout, the admin/data model should
+add or expose reviewed fields for:
+
+- a public reviewed hero image or emblem
+- dedicated Markdown for founding acharya, history, and key teachings sections
+- sidebar overview facts: founder, origin, era, focus, and scriptural basis
+- a curated origin place link, separate from places derived through saints
+- ordered lineage saint links, with optional role labels and parent/relationship
+  metadata for tree rendering
+- curated related tradition and related place links with display order
+- source or scripture links that can back the scriptural basis field
+
 Instagram public rendering also goes through `lib/public-saints.ts`. It queries
 reviewed `InstagramItemSaint` links and returns safe display fields for
 matched/published Instagram items on published saints. Carousel child image URLs

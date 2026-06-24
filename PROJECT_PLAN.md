@@ -146,12 +146,16 @@ Needs to include:
 - founder or founder saint summary when available
 - parent/child tradition summaries when available
 - published saint summaries associated with the tradition
+- curated related places, with display order and optional labels when editorially reviewed
+- ordered lineage saints for public tree layouts, with optional parent/relationship metadata
+- section copy for founding acharya, history, and key teachings
+- overview facts: founder, origin, era, focus, and scriptural basis
 - imagery: primary image, hero image, emblem/icon, gallery, credits, and source/license where available
 - sources and further reading for the tradition, lineage, or organization
 - SEO title and description
 - public status filtering
 
-Current seam: public tradition pages still use `lib/sample-data.ts`. The database has `Tradition` and `SaintTradition` records, but the public tradition loader should be moved to Prisma-backed contracts like saints and places.
+Current seam: `lib/public-contracts.ts` defines the public tradition shapes, and `lib/public-traditions.ts` maps published Prisma tradition records into those shapes for `/traditions` and `/traditions/[slug]`. The new tradition detail layout can render with partial data, but several fields are still derived or placeholder-backed until the admin editor persists richer tradition content. The next work is to add editor support for reviewed tradition images, dedicated section Markdown, overview facts, curated related places, and ordered lineage data.
 
 ### 2a. Public place contract
 
@@ -383,7 +387,6 @@ When no specific task is assigned, choose the next task by track:
 
 Near-term frontend candidates:
 
-- Move public tradition pages from sample-data fixtures to database-backed loaders.
 - Add tests and empty/error states around public saints, places, and traditions loaders.
 - Refine public place browsing: threshold rules, descriptions, SEO, and filters.
 - Expand the shared public image shape with usage role, reviewed visibility, dimensions, credit/source/license, and focal point.
@@ -400,7 +403,7 @@ Near-term backend candidates:
 
 - Tighten admin and preview route protection with explicit role-aware permissions for contributor/editor/admin actions.
 - Confirm and commit current documentation, lockfile, and migration artifacts when appropriate.
-- Add database-backed loaders that return the public tradition contract.
+- Extend the tradition schema/admin editor to satisfy the new public tradition layout contract: section Markdown, overview facts, reviewed hero image, curated related places, and ordered lineage saint links.
 - Add media loaders that map `MediaAsset` and usage relationships into public image contracts.
 - Extend source/content-source modeling if the current fields are not enough for connection intent, visibility, and display metadata.
 - Extend media modeling if the current fields are not enough for usage roles, per-context captions, focal points, visibility, and rights metadata.

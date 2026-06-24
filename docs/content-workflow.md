@@ -37,6 +37,33 @@ Current admin review surfaces:
   and duplicate merge workflows so relationship-preserving consolidation happens
   from the canonical record.
 
+## Tradition workflow
+
+Traditions are published records, not live Airtable views. The public tradition
+detail page uses the DB-backed public contract in `lib/public-traditions.ts` and
+must render gracefully while editorial fields are incomplete.
+
+The admin tradition editor should grow toward this reviewed content set:
+
+- identity and hierarchy: name, slug, alternate names, status, parent tradition,
+  and child traditions
+- public summary: short description, SEO title, and SEO description
+- page sections: founding acharya Markdown, history Markdown, and key teachings
+  Markdown
+- overview facts: founder/founder saint, origin place, era label, focus label,
+  and scriptural basis
+- media: reviewed public hero image or emblem, with alt text, credit, source,
+  dimensions, and review status
+- lineage: ordered saint links for the tree, with optional role labels and
+  parent/relationship metadata
+- related context: curated related traditions and curated related places with
+  display order
+- sources and further reading attached as structured records
+
+Until those fields exist, the public page may derive founder, origin, era,
+related places, and lineage ordering from associated published saints, but those
+derived values are editorial fallbacks rather than the desired source of truth.
+
 Instagram review does not publish content directly. A reviewed Instagram item is
 resolved by creating or confirming an `InstagramItemSaint` match. Public
 visibility is controlled by the saint: once the saint is `published`, every

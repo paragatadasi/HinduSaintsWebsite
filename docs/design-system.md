@@ -33,7 +33,9 @@ Rules:
 - Use page files to compose design-system pieces, not to define new one-off visual systems.
 - Do not hard-code colors, fonts, spacing, shadows, radii, widths, or image treatments in components.
 - Do not add inline styles for design/layout changes unless the exception is explicitly justified in the change.
-- Use design-system configuration for layout variants instead of deleting old page compositions.
+- Use design-system configuration for active reusable layout variants. Once a
+  page has a selected production layout, remove exploratory toggles and stale
+  alternate compositions so public routes have one clear template.
 - Use `.section-heading` for section titles and section-level actions; avoid ad hoc heading wrappers in page layouts.
 - Keep vertical rhythm in shared layout classes where possible. If one page needs special tuning, add a page-scoped hook such as `.saints-index` before changing global spacing utilities.
 - When moving or removing a section, replace any spacing that section provided intentionally. Do not let a decorative band or content block be the only source of layout breathing room.
