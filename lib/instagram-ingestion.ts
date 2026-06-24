@@ -628,7 +628,7 @@ function itemStatusFor(row: InstagramImportRow, suggestionCount: number): MatchS
 }
 
 function isReviewedStatus(status: MatchStatus) {
-  return status === "matched" || status === "ignored" || status === "published" || status === "hidden";
+  return status === "matched" || status === "ignored" || status === "published";
 }
 
 async function getCachedInstagramMediaAssets(instagramItemId: string, row: InstagramImportRow) {

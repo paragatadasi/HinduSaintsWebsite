@@ -100,7 +100,7 @@ Recommended flow:
 3. Normalize explicit extracted saint names when the source provides them.
 4. Compare explicit names against saints and aliases and auto-suggest matches with confidence.
 5. Send uncertain items to `/admin/instagram`.
-6. Editors review `/admin/instagram/[id]`, attach saint matches, confirm or ignore matches, and publish/hide/return items to review.
+6. Editors review `/admin/instagram/[id]`, attach saint matches, confirm or ignore matches, and publish/ignore/return items to review.
 
 Import real Instagram data from the Instagram API:
 
@@ -145,7 +145,7 @@ The admin review flow is:
 
 - `/admin/instagram`: status-filtered real Instagram queue with clickable status counters and rich media cards.
 - `/admin/instagram?status=published`: view items already published from the queue.
-- `/admin/instagram/[id]`: item detail review screen with media preview, caption, AI-assisted first-page biodata extraction from imported image data, import metadata, raw API payload, saint match list, first-page claim review, manual saint attachment, and item publish/review/hide actions.
+- `/admin/instagram/[id]`: item detail review screen with media preview, caption, AI-assisted first-page biodata extraction from imported image data, import metadata, raw API payload, saint match list, first-page claim review, manual saint attachment, and item publish/review/ignore actions.
 
 First-page biodata can create accepted `InstagramDerivedClaim` records for:
 

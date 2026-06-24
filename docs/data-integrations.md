@@ -28,9 +28,9 @@ The admin Instagram review workflow now has:
 - a durable ingestion history panel with progress counts, recent job status,
   and a `Re-fetch incomplete` action for posts missing cached media or
   first-page extraction.
-- clickable status counters so editors can view imported, suggested, matched, review, hidden, and legacy published queues.
+- clickable status counters so editors can view imported, suggested, matched, review, ignored, and legacy published queues.
 - rich queue cards with media previews, status/type/date badges, caption previews, Instagram links, and review actions.
-- `/admin/instagram/[id]` detail review pages with a large preview, AI-assisted first-page biodata extraction from imported image data, caption/import metadata, raw API source snapshot, saint match list, manual saint attachment, saint-draft creation, and review/hide actions.
+- `/admin/instagram/[id]` detail review pages with a large preview, AI-assisted first-page biodata extraction from imported image data, caption/import metadata, raw API source snapshot, saint match list, manual saint attachment, saint-draft creation, and review/ignore actions.
 
 Public saint pages render matched Instagram items as Instagram-style post cards.
 Carousel posts expose a public carousel viewer with thumbnail and keyboard
@@ -221,7 +221,7 @@ Editors can use `/admin/instagram` to filter real Instagram items by status and 
 - accept first-page biodata claims for aliases, dates, places, gurus, and traditions while preserving the accepted source value.
 - attach a saint and mark the `InstagramItemSaint` link as `matched`.
 - create a new `needs_review` saint draft from first-page biodata and attach the Instagram item immediately.
-- return an Instagram item to review, hide it, or ignore individual suggested saint links.
+- return an Instagram item to review or ignore it, and ignore individual suggested saint links.
 
 Instagram review is a matching workflow, not a direct publishing workflow.
 Accepted Instagram place claims add an `associated` place link only when the
@@ -236,7 +236,7 @@ Public saint pages show Instagram links only when all conditions are true:
 - the `InstagramItemSaint` link for that saint is `matched` or `published`.
 
 Multiple Instagram posts can be attached to a single saint. Once the saint is
-published, all of that saint's matched, non-hidden Instagram content is available
+published, all of that saint's matched or published Instagram content is available
 through the public saint page adapter. Carousel child images remain supporting
 Instagram media; the adapter exposes only public-safe URLs and never the raw API
 payload itself.

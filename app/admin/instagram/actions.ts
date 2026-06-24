@@ -14,13 +14,13 @@ import { toSlug } from "@/lib/slugs";
 
 const itemStatusSchema = z.object({
   instagramItemId: z.string().cuid(),
-  status: z.enum(["needs_review", "suggested", "matched", "ignored", "published", "hidden"]),
+  status: z.enum(["needs_review", "suggested", "matched", "ignored", "published"]),
   returnTo: z.string().optional()
 });
 
 const linkStatusSchema = z.object({
   instagramItemSaintId: z.string().cuid(),
-  matchStatus: z.enum(["suggested", "needs_review", "matched", "ignored", "published", "hidden"]),
+  matchStatus: z.enum(["suggested", "needs_review", "matched", "ignored", "published"]),
   returnTo: z.string().optional()
 });
 
@@ -121,10 +121,7 @@ export async function updateInstagramItemSaintStatus(formData: FormData) {
         where: { id: updatedLink.instagramItemId },
         data: { status: "matched" }
       });
-      await tx.saint.update({
-        where: { id: updatedLink.saintId },
-        data: { hasInstagramContent: true }
-      });
+      await promoteSaintForInstagramMatch(tx, updatedLink.saintId);
       await createDirectInstagramClaimsForSaint(tx, updatedLink.instagramItemId, updatedLink.saintId);
       await pipeAcceptedInstagramClaimsToSaint(tx, updatedLink.instagramItemId, updatedLink.saintId);
     }
@@ -185,10 +182,7 @@ export async function attachSaintToInstagramItem(formData: FormData) {
       where: { id: parsed.instagramItemId },
       data: { status: "matched" }
     });
-    await tx.saint.update({
-      where: { id: parsed.saintId },
-      data: { hasInstagramContent: true }
-    });
+    await promoteSaintForInstagramMatch(tx, parsed.saintId);
     await createDirectInstagramClaimsForSaint(tx, parsed.instagramItemId, parsed.saintId);
     await pipeAcceptedInstagramClaimsToSaint(tx, parsed.instagramItemId, parsed.saintId);
 
@@ -414,6 +408,23 @@ function emptyToUndefined(value: FormDataEntryValue | null) {
   if (typeof value !== "string") return undefined;
   const trimmed = value.trim();
   return trimmed ? trimmed : undefined;
+}
+
+async function promoteSaintForInstagramMatch(tx: Prisma.TransactionClient, saintId: string) {
+  await tx.saint.updateMany({
+    where: { id: saintId, status: "draft" },
+    data: {
+      status: "needs_review",
+      hasInstagramContent: true,
+      reviewedAt: null,
+      publishedAt: null
+    }
+  });
+
+  await tx.saint.updateMany({
+    where: { id: saintId, status: { not: "draft" } },
+    data: { hasInstagramContent: true }
+  });
 }
 
 function revalidateInstagramPaths(saintSlugs: string[]) {

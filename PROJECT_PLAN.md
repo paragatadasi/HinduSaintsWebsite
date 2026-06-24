@@ -290,13 +290,13 @@ Needs to include:
 - imported item URL, shortcode, type, caption, posted date, thumbnail, extracted names, and raw import reference
 - thumbnail/media reference as an imported media candidate, not automatically a public saint image
 - suggested saint matches with confidence
-- current status: imported, suggested, needs review, matched, ignored, published, hidden
+- current status: imported, suggested, needs review, matched, ignored, published
 - editor actions: match saint, create saint draft, add alias, ignore, mark needs review
 - preservation of raw values and reviewed decisions
 
 Frontend can iterate on the queue and decision UI with seed data while backend match logic improves.
 
-Current seam: real Instagram media can be imported from the Instagram API into `InstagramItem`, with raw API payloads preserved in `ExternalRecord`. `/admin/instagram` provides status-filtered queues, rich preview cards, clickable status counters, and links to `/admin/instagram/[id]` detail review screens. The detail screen supports media/caption/source review, manual saint attachment, confirmed/ignored saint matches, and publish/review/hide actions. Public saint pages show Instagram links only for published `InstagramItem` records with matched/published saint links.
+Current seam: real Instagram media can be imported from the Instagram API into `InstagramItem`, with raw API payloads preserved in `ExternalRecord`. `/admin/instagram` provides status-filtered queues, rich preview cards, clickable status counters, and links to `/admin/instagram/[id]` detail review screens. The detail screen supports media/caption/source review, manual saint attachment, confirmed/ignored saint matches, and publish/review/ignore actions. Public saint pages show Instagram links only for published `InstagramItem` records with matched/published saint links.
 
 ### 9. Airtable import contract
 

@@ -96,7 +96,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
           <p>Resolve this item by matching it to an existing saint or creating a saint draft. Published saint pages show matched Instagram content automatically.</p>
           <div className="review-actions">
             <ItemStatusForm instagramItemId={item.id} returnTo={returnTo} status="needs_review" label="Return to review" variant="secondary" />
-            <ItemStatusForm instagramItemId={item.id} returnTo={returnTo} status="hidden" label="Hide" variant="warning" />
+            <ItemStatusForm instagramItemId={item.id} returnTo={returnTo} status="ignored" label="Ignore" variant="warning" />
           </div>
         </aside>
       </div>
@@ -596,7 +596,7 @@ function ItemStatusForm({
 }: {
   instagramItemId: string;
   returnTo: string;
-  status: "needs_review" | "suggested" | "matched" | "ignored" | "published" | "hidden";
+  status: "needs_review" | "suggested" | "matched" | "ignored" | "published";
   label: string;
   variant?: "primary" | "secondary" | "warning";
 }) {
@@ -618,7 +618,7 @@ function LinkStatusForm({
   variant = "secondary"
 }: {
   instagramItemSaintId: string;
-  matchStatus: "suggested" | "needs_review" | "matched" | "ignored" | "published" | "hidden";
+  matchStatus: "suggested" | "needs_review" | "matched" | "ignored" | "published";
   returnTo: string;
   label: string;
   variant?: "primary" | "secondary" | "warning";

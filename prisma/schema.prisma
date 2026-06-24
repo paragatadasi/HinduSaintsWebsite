@@ -34,7 +34,6 @@ enum MatchStatus {
   matched
   ignored
   published
-  hidden
 }
 
 enum Confidence {

@@ -1,15 +1,13 @@
 import Link from "next/link";
 import type { Route } from "next";
 import type { Prisma } from "@/lib/generated/prisma/client";
-import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { getInstagramLinkProps } from "@/lib/external-links";
 import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { rankWeightedTextSearch, type WeightedSearchField } from "@/lib/search-text";
-import { updateInstagramItemSaintStatus, updateInstagramItemStatus } from "./actions";
 import { InstagramIngestionPanel } from "./instagram-ingestion-panel";
 
-const statuses = ["needs_review", "suggested", "matched", "ignored", "published", "hidden", "imported"] as const;
+const statuses = ["imported", "suggested", "needs_review", "matched", "published", "ignored"] as const;
 type StatusFilter = typeof statuses[number] | "all";
 
 type AdminInstagramPageProps = {
@@ -63,7 +61,7 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
         <h2>Imported posts and reels</h2>
         <p>These records come from Instagram exports or ingests and become public only through matched, published saint pages.</p>
         <div className="admin-stat-grid">
-          <Stat href={getInstagramReturnTo("all", query)} active={activeStatus === "all"} label="All" value={getTotalCount(itemCounts)} />
+          <Stat href={getInstagramReturnTo("all", query)} active={activeStatus === "all"} label="Total items" value={getTotalCount(itemCounts)} />
           {statuses.map((status) => (
             <Stat
               active={activeStatus === status}
@@ -74,21 +72,6 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
             />
           ))}
         </div>
-        <nav className="admin-tabs" aria-label="Instagram item status filters">
-          <Link aria-current={activeStatus === "all" ? "page" : undefined} className="admin-tab" href={getInstagramReturnTo("all", query) as Route}>
-            All
-          </Link>
-          {statuses.map((status) => (
-            <Link
-              aria-current={activeStatus === status ? "page" : undefined}
-              className="admin-tab"
-              href={getInstagramReturnTo(status, query) as Route}
-              key={status}
-            >
-              {formatStatus(status)}
-            </Link>
-          ))}
-        </nav>
         <form action="/admin/instagram" className="admin-search" role="search">
           {activeStatus === "all" ? null : <input name="status" type="hidden" value={activeStatus} />}
           <label className="sr-only" htmlFor="admin-instagram-search">Search Instagram queue</label>
@@ -120,114 +103,30 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
 
 function InstagramReviewCard({ item }: { item: InstagramQueueItem }) {
   const firstPageMetadata = getFirstPageMetadata(item.firstPageMetadata);
-  const metadataBadges = [
-    firstPageMetadata.born ? `Born: ${firstPageMetadata.born}` : undefined,
-    firstPageMetadata.samadhi ? `Samadhi: ${firstPageMetadata.samadhi}` : undefined,
-    firstPageMetadata.keyPlace,
-    firstPageMetadata.tradition
-  ].filter((value): value is string => Boolean(value));
+  const title = firstPageMetadata.displayName ?? item.extractedSaintName ?? item.instagramShortcode ?? "Imported Instagram item";
+  const summary = firstPageMetadata.subtitle ?? item.captionText ?? "No caption text imported yet.";
 
   return (
-    <article className="instagram-review-card">
-      <a className="instagram-review-card__media interactive-media" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>
+    <article className="instagram-review-card instagram-review-card--compact interactive-surface">
+      <Link className="instagram-review-card__media" href={`/admin/instagram/${item.id}`} aria-label={`Review ${title}`}>
         {getInstagramPreviewUrl(item) ? (
           <img src={getInstagramPreviewUrl(item)} alt={getInstagramPreviewAlt(item)} />
         ) : (
           <span>{formatStatus(item.type)}</span>
         )}
-      </a>
-      <div className="instagram-review-card__body">
-        <div className="review-meta">
-          <StatusBadge label={formatStatus(item.status)} />
-          <StatusBadge label={formatStatus(item.type)} />
-          {item.matchConfidence ? <StatusBadge label={item.matchConfidence} /> : null}
-          <StatusBadge label={item.postedAt ? item.postedAt.toLocaleDateString() : "date pending"} />
-        </div>
-        <h3>
-          <Link href={`/admin/instagram/${item.id}`}>
-            {firstPageMetadata.displayName ?? item.extractedSaintName ?? item.instagramShortcode ?? "Imported Instagram item"}
-          </Link>
-        </h3>
-        {firstPageMetadata.subtitle ? <p>{firstPageMetadata.subtitle}</p> : null}
-        {metadataBadges.length > 0 ? (
-          <div className="review-meta">
-            {metadataBadges.map((label) => <StatusBadge key={label} label={label} />)}
-          </div>
-        ) : null}
-        {item.captionText ? <p className="instagram-review-card__caption">{item.captionText}</p> : <p>No caption text imported yet.</p>}
-        <div className="review-meta">
-          <a className="admin-text-link" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>Open on Instagram</a>
-          <Link className="admin-text-link" href={`/admin/instagram/${item.id}`}>Review item</Link>
-          {item.instagramShortcode ? <StatusBadge label={item.instagramShortcode} /> : null}
-        </div>
-        {item.saints.length > 0 ? (
-          <div className="review-meta">
-            {item.saints.map((link) => (
-              <div className="review-match" key={link.id}>
-                <Link href={`/admin/saints/${link.saint.slug}`}>
-                  <StatusBadge label={`${link.saint.displayName}: ${formatStatus(link.matchStatus)} ${link.matchConfidence}`} />
-                </Link>
-                <LinkStatusForm instagramItemSaintId={link.id} matchStatus="matched" label="Confirm match" />
-                <LinkStatusForm instagramItemSaintId={link.id} matchStatus="ignored" label="Ignore match" variant="warning" />
-              </div>
-            ))}
-          </div>
-        ) : null}
-        <div className="review-actions">
-          <ItemStatusForm instagramItemId={item.id} status="needs_review" label="Needs review" variant="secondary" />
-          <ItemStatusForm instagramItemId={item.id} status="hidden" label="Hide item" variant="warning" />
-        </div>
-      </div>
+      </Link>
+      <span className="instagram-review-card__body">
+        <Link className="instagram-review-card__link" href={`/admin/instagram/${item.id}`}>
+          <span className="instagram-review-card__title">{title}</span>
+          <span className="instagram-review-card__caption">{summary}</span>
+        </Link>
+        <span className="instagram-review-card__actions">
+          <Link className="admin-form-button" href={`/admin/instagram/${item.id}`}>Review</Link>
+          <a className="admin-form-button admin-form-button--outline" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>Open on Instagram</a>
+        </span>
+      </span>
     </article>
   );
-}
-
-function ItemStatusForm({
-  instagramItemId,
-  status,
-  label,
-  variant = "primary"
-}: {
-  instagramItemId: string;
-  status: "needs_review" | "suggested" | "matched" | "ignored" | "published" | "hidden";
-  label: string;
-  variant?: "primary" | "secondary" | "warning";
-}) {
-  return (
-    <form action={updateInstagramItemStatus}>
-      <input name="instagramItemId" type="hidden" value={instagramItemId} />
-      <input name="status" type="hidden" value={status} />
-      <button className={getActionButtonClassName(variant)} type="submit">{label}</button>
-    </form>
-  );
-}
-
-function LinkStatusForm({
-  instagramItemSaintId,
-  matchStatus,
-  label,
-  variant = "secondary"
-}: {
-  instagramItemSaintId: string;
-  matchStatus: "suggested" | "needs_review" | "matched" | "ignored" | "published" | "hidden";
-  label: string;
-  variant?: "primary" | "secondary" | "warning";
-}) {
-  return (
-    <form action={updateInstagramItemSaintStatus}>
-      <input name="instagramItemSaintId" type="hidden" value={instagramItemSaintId} />
-      <input name="matchStatus" type="hidden" value={matchStatus} />
-      <button className={getActionButtonClassName(variant)} type="submit">{label}</button>
-    </form>
-  );
-}
-
-function getActionButtonClassName(variant: "primary" | "secondary" | "warning") {
-  return [
-    "admin-form-button",
-    variant === "secondary" ? "admin-form-button--secondary" : null,
-    variant === "warning" ? "admin-form-button--warning" : null
-  ].filter(Boolean).join(" ");
 }
 
 function getActiveStatus(status: string | undefined): StatusFilter {

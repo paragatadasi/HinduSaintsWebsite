@@ -20,7 +20,7 @@ type SaintsBulkReviewListProps = {
 const bulkActions = [
   { status: "published", label: "Publish selected", variant: "primary" },
   { status: "draft", label: "Unpublish selected", variant: "secondary" },
-  { status: "archived", label: "Archive selected", variant: "warning" }
+  { status: "archived", label: "Archive selected", variant: "low-priority" }
 ] as const;
 
 export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListProps) {
@@ -75,7 +75,7 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
               className={[
                 "admin-form-button",
                 action.variant === "secondary" ? "admin-form-button--secondary" : null,
-                action.variant === "warning" ? "admin-form-button--warning" : null
+                action.variant === "low-priority" ? "admin-form-button--low-priority" : null
               ].filter(Boolean).join(" ")}
               disabled={selectedCount === 0}
               key={action.status}

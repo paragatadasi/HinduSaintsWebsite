@@ -196,7 +196,7 @@ img {
 .filter-submit {
   background: var(--color-accent);
   border: 1px solid var(--color-accent);
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   color: var(--color-text-inverse);
   cursor: pointer;
   font: inherit;
@@ -1900,7 +1900,7 @@ img {
 .button {
   align-items: center;
   border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   cursor: pointer;
   display: inline-flex;
   font: inherit;
@@ -2243,6 +2243,42 @@ img {
   font-weight: 500;
   line-height: 1.2;
   margin: 0;
+}
+
+.instagram-review-card--compact {
+  gap: 0;
+  grid-template-columns: 132px minmax(0, 1fr);
+}
+
+.instagram-review-card--compact .instagram-review-card__link {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.instagram-review-card--compact .instagram-review-card__media {
+  min-height: 132px;
+}
+
+.instagram-review-card--compact .instagram-review-card__body {
+  align-content: center;
+  padding: var(--space-4);
+}
+
+.instagram-review-card__title {
+  color: var(--color-text);
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.instagram-review-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
 }
 
 .instagram-review-card__body p {
@@ -3015,13 +3051,16 @@ img {
 }
 
 .admin-form-button {
+  align-items: center;
   background: var(--color-accent);
   border: 1px solid var(--color-accent);
-  border-radius: 999px;
+  border-radius: var(--radius-control);
   color: var(--color-text-inverse);
   cursor: pointer;
+  display: inline-flex;
   font: inherit;
   font-weight: 700;
+  justify-content: center;
   min-height: 44px;
   padding: 0 var(--space-4);
 }
@@ -3032,15 +3071,27 @@ img {
 }
 
 .admin-form-button--secondary {
-  background: var(--color-surface);
-  border-color: var(--color-border);
-  color: var(--color-text);
+  background: transparent;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .admin-form-button--warning {
   background: transparent;
   border-color: var(--color-accent);
   color: var(--color-accent);
+}
+
+.admin-form-button--outline {
+  background: transparent;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.admin-form-button--low-priority {
+  background: transparent;
+  border-color: var(--color-border);
+  color: var(--color-border);
 }
 
 .sr-only {
@@ -3169,5 +3220,10 @@ img {
 
   .bulk-review-panel .review-actions {
     justify-content: flex-start;
+  }
+
+  .instagram-review-card--compact,
+  .instagram-review-card--compact .instagram-review-card__link {
+    grid-template-columns: 1fr;
   }
 }

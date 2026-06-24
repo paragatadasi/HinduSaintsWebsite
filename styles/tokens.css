@@ -36,6 +36,7 @@
   --space-16: 4rem;
   --radius-sm: 4px;
   --radius-md: 8px;
+  --radius-control: var(--radius-md);
   --shadow-soft: 0 12px 40px rgba(33, 31, 26, 0.08);
   --shadow-image: 0 18px 50px rgba(33, 31, 26, 0.14);
   --shadow-interactive:

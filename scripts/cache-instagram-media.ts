@@ -33,7 +33,7 @@ function parsePositiveInt(value: string | undefined) {
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const items = await db.instagramItem.findMany({
-    where: { status: { not: "hidden" } },
+    where: { status: { not: "ignored" } },
     orderBy: [
       { postedAt: { sort: "desc", nulls: "last" } },
       { createdAt: "desc" }
