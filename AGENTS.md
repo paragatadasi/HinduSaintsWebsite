@@ -40,6 +40,7 @@ Verification:
 - Use `npm run dev:check` for the normal development loop after TypeScript, component, route, or data-contract edits.
 - `npm run dev:check` generates the Prisma client and runs TypeScript without doing a production Next.js build.
 - `npm run build` is the web build only. Do not add database migrations, seeds, or other database access to the web build path.
+- Keep database imports build-safe: modules may import `@/lib/db`, but Prisma must not connect or require `DATABASE_URL` at module import time. Initialize the client lazily when query code actually uses `db`.
 - Prisma client generation is code generation, not database access. Keep it explicit in `dev:check`, `db:generate`, Docker build setup, and `codex:verify`.
 - Use `npm run codex:verify` only as a heavier gate: after dependency/setup changes, before handing off a large route/rendering change, before commits intended for deployment, or when a production-build failure is specifically suspected.
 - Do not run `npm run codex:verify` as the default checker for every small frontend iteration.
