@@ -2035,6 +2035,23 @@ img {
   margin: 0;
 }
 
+.tradition-source-list {
+  display: grid;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tradition-source-list li {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.tradition-source-list small {
+  color: var(--color-muted);
+}
+
 .tradition-lineage {
   display: grid;
   gap: var(--space-4);
@@ -2530,10 +2547,55 @@ img {
   grid-template-columns: auto minmax(0, 1fr);
 }
 
+.instagram-ingestion-summary__toggle {
+  cursor: pointer;
+}
+
+.instagram-ingestion-summary__toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.64;
+}
+
+.instagram-ingestion-summary__toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
 .instagram-ingestion-summary span,
 .instagram-job-progress span {
   color: var(--color-muted);
   font-size: 0.88rem;
+}
+
+.instagram-ingestion-summary .status-badge,
+.instagram-ingestion-summary .status-badge span {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+}
+
+.instagram-incomplete-list {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.instagram-incomplete-list__header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: space-between;
+}
+
+.instagram-incomplete-list__header span {
+  color: var(--color-muted);
+  font-size: 0.88rem;
+}
+
+.instagram-incomplete-row {
+  align-items: center;
+}
+
+.instagram-incomplete-row .review-meta:last-child {
+  margin-top: var(--space-3);
 }
 
 .instagram-job-progress progress {
@@ -2593,6 +2655,7 @@ img {
 }
 
 .instagram-review-card {
+  align-items: stretch;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -2639,7 +2702,7 @@ img {
 
 .instagram-review-card--compact {
   gap: 0;
-  grid-template-columns: 132px minmax(0, 1fr);
+  grid-template-columns: var(--width-instagram-review-card-media) minmax(0, 1fr);
 }
 
 .instagram-review-card--compact .instagram-review-card__link {
@@ -2649,12 +2712,21 @@ img {
 }
 
 .instagram-review-card--compact .instagram-review-card__media {
-  min-height: 132px;
+  align-self: start;
+  aspect-ratio: 4 / 5;
+  height: auto;
+  min-height: 0;
 }
 
 .instagram-review-card--compact .instagram-review-card__body {
   align-content: center;
-  padding: var(--space-4);
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+
+.instagram-review-card--compact .instagram-review-card__actions {
+  gap: var(--space-3);
+  margin-top: 0;
 }
 
 .instagram-review-card__title {
@@ -2830,6 +2902,14 @@ img {
 
 .admin-notice--warning {
   color: var(--color-accent);
+}
+
+.admin-error-list {
+  color: var(--color-accent);
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding-left: var(--space-4);
 }
 
 .review-match {
@@ -3644,7 +3724,25 @@ img {
 
   .instagram-review-card--compact,
   .instagram-review-card--compact .instagram-review-card__link {
+    grid-template-columns: var(--width-instagram-review-card-media-mobile) minmax(0, 1fr);
+  }
+
+  .instagram-review-card--compact .instagram-review-card__media {
+    aspect-ratio: 4 / 5;
+  }
+
+  .instagram-review-card--compact .instagram-review-card__body {
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+
+  .instagram-review-card--compact .instagram-review-card__link {
     grid-template-columns: 1fr;
+  }
+
+  .instagram-review-card--compact .instagram-review-card__caption {
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
   }
 }
 

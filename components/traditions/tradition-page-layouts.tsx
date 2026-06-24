@@ -7,7 +7,7 @@ import type { TraditionDetailTemplateContent } from "@/lib/site-content";
 import type {
   PublicImage,
   PublicPlaceLink,
-  PublicSaintSummary,
+  PublicTraditionLineageSaint,
   PublicTraditionDetail,
   PublicTraditionLink
 } from "@/lib/public-contracts";
@@ -21,11 +21,12 @@ const IMAGE_PLACEHOLDER: PublicImage = {
   url: "/images/devotional-archive-placeholder.svg",
   alt: "Reviewed public image pending"
 };
+const SECTION_IN_REVIEW = "Editorial copy for this section is in review.";
 
 export function TraditionPageLayouts({ tradition, template }: TraditionPageLayoutsProps) {
-  const historyMarkdown = tradition.introductionMarkdown ?? template.placeholderMarkdown;
-  const featuredSaints = getLineageSaints(tradition);
-  const founder = getFounderSaint(tradition);
+  const historyMarkdown = tradition.historyMarkdown ?? tradition.introductionMarkdown ?? SECTION_IN_REVIEW;
+  const foundingAcharyaMarkdown = tradition.foundingAcharyaMarkdown ?? SECTION_IN_REVIEW;
+  const keyTeachingsMarkdown = tradition.keyTeachingsMarkdown ?? SECTION_IN_REVIEW;
 
   return (
     <main className="tradition-detail">
@@ -35,20 +36,20 @@ export function TraditionPageLayouts({ tradition, template }: TraditionPageLayou
         <article className="tradition-detail__main">
           <NarrativeSection
             title="Founding Acharya"
-            body={getFoundingSummary(tradition, founder, historyMarkdown)}
+            body={foundingAcharyaMarkdown}
           />
-          <LineageTree saints={featuredSaints} founderName={tradition.founder} />
+          <LineageTree saints={tradition.lineageSaints} founderName={tradition.founder} />
           <section className="tradition-section tradition-section--history">
             <h2>History</h2>
             <Prose markdown={historyMarkdown} />
           </section>
           <NarrativeSection
             title="Key Teachings"
-            body={getTeachingSummary(tradition)}
+            body={keyTeachingsMarkdown}
           />
         </article>
         <aside className="tradition-detail__aside" aria-label={`${tradition.name} context`}>
-          <TraditionOverviewPanel tradition={tradition} founder={founder} />
+          <TraditionOverviewPanel tradition={tradition} />
           <RelatedTraditions traditions={tradition.relatedTraditions} />
           <RelatedPlaces places={tradition.relatedPlaces} />
         </aside>
@@ -104,7 +105,7 @@ function NarrativeSection({ title, body }: { title: string; body: string }) {
   return (
     <section className="tradition-section">
       <h2>{title}</h2>
-      <p>{body}</p>
+      <Prose markdown={body} />
     </section>
   );
 }
@@ -113,7 +114,7 @@ function LineageTree({
   saints,
   founderName
 }: {
-  saints: PublicSaintSummary[];
+  saints: PublicTraditionLineageSaint[];
   founderName?: string;
 }) {
   const [rootSaint, ...descendants] = saints;
@@ -158,7 +159,7 @@ function LineageSaint({
   prominent = false,
   compact = false
 }: {
-  saint: PublicSaintSummary;
+  saint: PublicTraditionLineageSaint;
   prominent?: boolean;
   compact?: boolean;
 }) {
@@ -177,7 +178,7 @@ function LineageSaint({
       {!compact ? (
         <span className="tradition-lineage-saint__text">
           <strong>{saint.displayName}</strong>
-          <small>{saint.eraLabel}</small>
+          <small>{saint.roleLabel ?? saint.eraLabel}</small>
         </span>
       ) : null}
     </Link>
@@ -185,18 +186,15 @@ function LineageSaint({
 }
 
 function TraditionOverviewPanel({
-  tradition,
-  founder
+  tradition
 }: {
   tradition: PublicTraditionDetail;
-  founder?: PublicSaintSummary;
 }) {
   const facts = [
-    ["Founder", tradition.founder ?? "In review"],
-    ["Origin", founder?.primaryLocation ?? tradition.relatedPlaces[0]?.name ?? "In review"],
-    ["Era", founder?.eraLabel ?? "In review"],
-    ["Focus", getFocusLabel(tradition)],
-    ["Scriptural Basis", getSourceSummary(tradition)]
+    ["Founder", tradition.overviewFacts.founder ?? tradition.founder ?? "In review"],
+    ["Origin", tradition.overviewFacts.origin ?? tradition.overviewFacts.originPlace?.name ?? "In review"],
+    ["Era", tradition.overviewFacts.eraLabel ?? "In review"],
+    ["Focus", tradition.overviewFacts.focus ?? "In review"]
   ];
 
   return (
@@ -210,6 +208,23 @@ function TraditionOverviewPanel({
           </div>
         ))}
       </dl>
+      {tradition.scripturalBasis.length > 0 ? (
+        <dl className="tradition-facts tradition-facts--stacked">
+          <div>
+            <dt>Scriptural Basis</dt>
+            <dd>
+              <ul className="tradition-source-list">
+                {tradition.scripturalBasis.map((item) => (
+                  <li key={`${item.title}-${item.url ?? item.note ?? ""}`}>
+                    {item.url ? <a href={item.url}>{item.title}</a> : <span>{item.title}</span>}
+                    {item.note ? <small>{item.note}</small> : null}
+                  </li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        </dl>
+      ) : null}
     </section>
   );
 }
@@ -220,13 +235,19 @@ function RelatedTraditions({ traditions }: { traditions: PublicTraditionLink[] }
       <h2>Related Traditions</h2>
       {traditions.length > 0 ? (
         <>
-          <div className="tradition-context-thumbs">
-            {traditions.slice(0, 2).map((tradition) => (
-              <Link key={tradition.slug} href={`/traditions/${tradition.slug}`} aria-label={tradition.name}>
-                <img src={IMAGE_PLACEHOLDER.url} alt="" />
-              </Link>
+          <ul className="tradition-place-list">
+            {traditions.slice(0, 3).map((tradition) => (
+              <li key={tradition.slug}>
+                <Link href={`/traditions/${tradition.slug}`}>
+                  <img src={IMAGE_PLACEHOLDER.url} alt="" />
+                  <span>
+                    <strong>{tradition.name}</strong>
+                    <small>{tradition.shortDescription}</small>
+                  </span>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
           <ContextLink href="/traditions" label="View all traditions" />
         </>
       ) : (
@@ -273,57 +294,3 @@ function ContextLink({ href, label }: { href: Route; label: string }) {
   );
 }
 
-function getFounderSaint(tradition: PublicTraditionDetail) {
-  if (!tradition.founder) return undefined;
-  return tradition.saints.find((saint) => saint.displayName === tradition.founder);
-}
-
-function getLineageSaints(tradition: PublicTraditionDetail) {
-  const saints = [...tradition.saints];
-  if (!tradition.founder) return saints;
-
-  return saints.sort((first, second) => {
-    if (first.displayName === tradition.founder) return -1;
-    if (second.displayName === tradition.founder) return 1;
-    return first.displayName.localeCompare(second.displayName);
-  });
-}
-
-function getFoundingSummary(
-  tradition: PublicTraditionDetail,
-  founder: PublicSaintSummary | undefined,
-  markdown: string
-) {
-  if (founder) {
-    return `${tradition.name} is associated with ${founder.displayName}, whose profile is currently connected to ${founder.primaryLocation} and the era ${founder.eraLabel}. ${tradition.shortDescription}`;
-  }
-
-  return getFirstParagraph(markdown) || tradition.shortDescription;
-}
-
-function getTeachingSummary(tradition: PublicTraditionDetail) {
-  if (tradition.sources && tradition.sources.length > 0) {
-    return `Editorial sources for ${tradition.name} are being used to refine a concise teaching summary. Current source coverage includes ${getSourceSummary(tradition)}.`;
-  }
-
-  return "A concise teaching summary is in review. Published tradition pages will keep this section focused on reviewed doctrine, practice, lineage, and source-backed context.";
-}
-
-function getFocusLabel(tradition: PublicTraditionDetail) {
-  const sentence = tradition.shortDescription.split(/[.!?]/)[0]?.trim();
-  return sentence || "In review";
-}
-
-function getSourceSummary(tradition: PublicTraditionDetail) {
-  const sources = tradition.sources ?? [];
-  if (sources.length === 0) return "In review";
-
-  return sources.slice(0, 2).map((source) => source.title).join(", ");
-}
-
-function getFirstParagraph(markdown: string) {
-  return markdown
-    .split(/\n{2,}/)
-    .map((paragraph) => paragraph.replace(/^#+\s*/, "").trim())
-    .find(Boolean);
-}

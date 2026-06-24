@@ -105,6 +105,26 @@ export type PublicTraditionSummary = {
   status: "published";
 };
 
+export type PublicTraditionOverviewFacts = {
+  founder?: string;
+  origin?: string;
+  eraLabel?: string;
+  focus?: string;
+  originPlace?: PublicPlaceLink;
+};
+
+export type PublicTraditionLineageSaint = PublicSaintSummary & {
+  roleLabel?: string;
+  parentSaintSlug?: string;
+};
+
+export type PublicTraditionScripturalBasis = {
+  title: string;
+  url?: string;
+  note?: string;
+  source?: PublicSourceSummary;
+};
+
 export type PublicPlaceSummary = {
   slug: string;
   name: string;
@@ -157,8 +177,15 @@ export type PublicPlaceMapData = {
 
 export type PublicTraditionDetail = PublicTraditionSummary & {
   alternateNames?: string[];
+  historyMarkdown?: string;
+  foundingAcharyaMarkdown?: string;
+  keyTeachingsMarkdown?: string;
   introductionMarkdown?: string;
   heroImage?: PublicImage;
+  gallery?: PublicImage[];
+  overviewFacts: PublicTraditionOverviewFacts;
+  lineageSaints: PublicTraditionLineageSaint[];
+  scripturalBasis: PublicTraditionScripturalBasis[];
   saints: PublicSaintSummary[];
   relatedTraditions: PublicTraditionLink[];
   relatedPlaces: PublicPlaceLink[];

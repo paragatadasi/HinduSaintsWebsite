@@ -166,6 +166,7 @@ model Saint {
   hasInstagramContent  Boolean              @default(false)
   primaryImageId       String?
   primaryImage         MediaAsset?          @relation("PrimarySaintImage", fields: [primaryImageId], references: [id])
+  foundedTraditions    Tradition[]          @relation("TraditionFounder")
   eraLabel             String?
   birthDateRaw         String?
   birthYear            Int?
@@ -188,6 +189,8 @@ model Saint {
   instagramClaims      InstagramDerivedClaim[] @relation("InstagramClaimAppliedSaint")
   relationshipsFrom    SaintRelationship[]  @relation("RelationshipFrom")
   relationshipsTo      SaintRelationship[]  @relation("RelationshipTo")
+  traditionLineageEntries TraditionLineageSaint[] @relation("TraditionLineageSaint")
+  traditionLineageChildren TraditionLineageSaint[] @relation("TraditionLineageParentSaint")
   traditions           SaintTradition[]
   createdById          String?
   updatedById          String?
@@ -216,14 +219,33 @@ model Tradition {
   alternateNames           String[]
   shortDescription         String?
   longIntroductionMarkdown String?
+  historyMarkdown          String?
+  foundingAcharyaMarkdown  String?
+  keyTeachingsMarkdown     String?
+  heroImageId              String?
+  heroImage                MediaAsset?      @relation("TraditionHeroImage", fields: [heroImageId], references: [id])
   status                   ContentStatus    @default(draft)
   founderSaintId           String?
+  founderSaint             Saint?           @relation("TraditionFounder", fields: [founderSaintId], references: [id], onDelete: SetNull)
+  founderDisplayName       String?
+  origin                   String?
+  eraLabel                 String?
+  focus                    String?
+  originPlaceId            String?
+  originPlace              Place?           @relation("TraditionOriginPlace", fields: [originPlaceId], references: [id], onDelete: SetNull)
+  originPlaceLabel         String?
   parentTraditionId        String?
   parentTradition          Tradition?       @relation("TraditionParent", fields: [parentTraditionId], references: [id])
   childTraditions          Tradition[]      @relation("TraditionParent")
   seoTitle                 String?
   seoDescription           String?
   saints                   SaintTradition[]
+  galleryImages            TraditionGalleryImage[]
+  lineageSaints            TraditionLineageSaint[]
+  relatedPlaces            TraditionRelatedPlace[]
+  relatedTraditions        TraditionRelatedTradition[] @relation("RelatedTraditionSource")
+  relatedByTraditions      TraditionRelatedTradition[] @relation("RelatedTraditionTarget")
+  scripturalBasis          TraditionScripturalBasis[]
   createdAt                DateTime         @default(now())
   updatedAt                DateTime         @updatedAt
   publishedAt              DateTime?
@@ -245,6 +267,8 @@ model Place {
   longitude        Decimal?
   notes            String?
   saints           SaintPlace[]
+  traditionOrigins Tradition[] @relation("TraditionOriginPlace")
+  traditionRelatedPlaces TraditionRelatedPlace[]
 
   @@index([placeScope])
   @@index([parentStateId])
@@ -277,6 +301,63 @@ model SaintTradition {
   @@unique([saintId, traditionId])
 }
 
+model TraditionLineageSaint {
+  id             String     @id @default(cuid())
+  traditionId    String
+  tradition      Tradition  @relation(fields: [traditionId], references: [id], onDelete: Cascade)
+  saintId        String
+  saint          Saint      @relation("TraditionLineageSaint", fields: [saintId], references: [id], onDelete: Cascade)
+  sortOrder      Int        @default(0)
+  roleLabel      String?
+  parentSaintId  String?
+  parentSaint    Saint?     @relation("TraditionLineageParentSaint", fields: [parentSaintId], references: [id], onDelete: SetNull)
+
+  @@unique([traditionId, saintId])
+  @@index([traditionId, sortOrder])
+  @@index([parentSaintId])
+}
+
+model TraditionRelatedTradition {
+  id                  String     @id @default(cuid())
+  traditionId         String
+  tradition           Tradition  @relation("RelatedTraditionSource", fields: [traditionId], references: [id], onDelete: Cascade)
+  relatedTraditionId  String
+  relatedTradition    Tradition  @relation("RelatedTraditionTarget", fields: [relatedTraditionId], references: [id], onDelete: Cascade)
+  sortOrder           Int        @default(0)
+  label               String?
+
+  @@unique([traditionId, relatedTraditionId])
+  @@index([traditionId, sortOrder])
+}
+
+model TraditionRelatedPlace {
+  id           String     @id @default(cuid())
+  traditionId  String
+  tradition    Tradition  @relation(fields: [traditionId], references: [id], onDelete: Cascade)
+  placeId      String
+  place        Place      @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  sortOrder    Int        @default(0)
+  label        String?
+
+  @@unique([traditionId, placeId])
+  @@index([traditionId, sortOrder])
+}
+
+model TraditionScripturalBasis {
+  id           String     @id @default(cuid())
+  traditionId  String
+  tradition    Tradition  @relation(fields: [traditionId], references: [id], onDelete: Cascade)
+  title        String
+  sourceId     String?
+  source       Source?    @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+  url          String?
+  note         String?
+  sortOrder    Int        @default(0)
+
+  @@index([traditionId, sortOrder])
+  @@index([sourceId])
+}
+
 model SaintRelationship {
   id               String           @id @default(cuid())
   fromSaintId      String
@@ -302,7 +383,9 @@ model MediaAsset {
   height             Int?
   mimeType           String?
   primaryForSaints   Saint[]             @relation("PrimarySaintImage")
+  heroForTraditions   Tradition[]         @relation("TraditionHeroImage")
   saintGalleryImages SaintGalleryImage[]
+  traditionGalleryImages TraditionGalleryImage[]
   createdAt          DateTime            @default(now())
 }
 
@@ -314,6 +397,19 @@ model SaintGalleryImage {
   mediaAsset   MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
   sortOrder    Int        @default(0)
   publicVisible Boolean    @default(true)
+}
+
+model TraditionGalleryImage {
+  id           String     @id @default(cuid())
+  traditionId  String
+  tradition    Tradition  @relation(fields: [traditionId], references: [id], onDelete: Cascade)
+  mediaAssetId String
+  mediaAsset   MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  sortOrder    Int        @default(0)
+  publicVisible Boolean   @default(true)
+
+  @@unique([traditionId, mediaAssetId])
+  @@index([traditionId, sortOrder])
 }
 
 model InstagramItem {
@@ -427,6 +523,7 @@ model Source {
   notes           String?
   relationships   SaintRelationship[]
   contentSources  ContentSource[]
+  traditionScripturalBasis TraditionScripturalBasis[]
 }
 
 model ContentSource {
@@ -473,6 +570,33 @@ model InstagramIngestionJob {
   completedAt              DateTime?
   createdAt                DateTime  @default(now())
   updatedAt                DateTime  @updatedAt
+
+  @@index([status, createdAt])
+  @@index([mode, createdAt])
+}
+
+model AirtableImportJob {
+  id                            String    @id @default(cuid())
+  mode                          String
+  status                        String
+  sourceName                    String?
+  createdByEmail                String?
+  mirrorRowsChecked             Int       @default(0)
+  existingCmsSaintsSkipped      Int       @default(0)
+  newDraftSaintsCreated         Int       @default(0)
+  slugNameCollisionsSkipped     Int       @default(0)
+  guruRelationshipsCreated      Int       @default(0)
+  guruRelationshipsExisting     Int       @default(0)
+  guruRelationshipsUnresolved   Int       @default(0)
+  skippedSelfRelationships      Int       @default(0)
+  failedRows                    Int       @default(0)
+  message                       String?
+  error                         String?
+  rawSummary                    Json?
+  startedAt                     DateTime?
+  completedAt                   DateTime?
+  createdAt                     DateTime  @default(now())
+  updatedAt                     DateTime  @updatedAt
 
   @@index([status, createdAt])
   @@index([mode, createdAt])

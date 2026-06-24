@@ -2,8 +2,10 @@ import { db } from "@/lib/db";
 import type {
   PublicImage,
   PublicPlaceLink,
+  PublicTraditionLineageSaint,
   PublicSaintSummary,
   PublicSourceSummary,
+  PublicTraditionScripturalBasis,
   PublicTraditionDetail,
   PublicTraditionLink,
   PublicTraditionSummary
@@ -53,6 +55,45 @@ async function getPublishedTraditionRowBySlug(slug: string) {
       childTraditions: {
         where: { status: "published" },
         orderBy: { name: "asc" }
+      },
+      heroImage: true,
+      galleryImages: {
+        include: { mediaAsset: true },
+        orderBy: { sortOrder: "asc" }
+      },
+      originPlace: true,
+      lineageSaints: {
+        where: { saint: { status: "published" } },
+        include: {
+          saint: {
+            include: {
+              places: {
+                include: { place: true },
+                orderBy: { placeType: "asc" }
+              },
+              primaryImage: true,
+              traditions: {
+                include: { tradition: true },
+                orderBy: { isPrimary: "desc" }
+              }
+            }
+          },
+          parentSaint: { select: { slug: true } }
+        },
+        orderBy: { sortOrder: "asc" }
+      },
+      relatedTraditions: {
+        where: { relatedTradition: { status: "published" } },
+        include: { relatedTradition: true },
+        orderBy: { sortOrder: "asc" }
+      },
+      relatedPlaces: {
+        include: { place: true },
+        orderBy: { sortOrder: "asc" }
+      },
+      scripturalBasis: {
+        include: { source: true },
+        orderBy: { sortOrder: "asc" }
       },
       saints: {
         where: { saint: { status: "published" } },
@@ -111,7 +152,7 @@ function toPublicTraditionSummary(
     slug: tradition.slug,
     name: tradition.name,
     shortDescription: tradition.shortDescription ?? DEFAULT_DESCRIPTION,
-    founder: tradition.founderSaintId ? founderNames.get(tradition.founderSaintId) : undefined,
+    founder: getFounderLabel(tradition, founderNames),
     status: "published"
   };
 }
@@ -124,7 +165,23 @@ function toPublicTraditionDetail(
   return {
     ...toPublicTraditionSummary(tradition, founderNames),
     alternateNames: tradition.alternateNames.length > 0 ? tradition.alternateNames : undefined,
-    introductionMarkdown: tradition.longIntroductionMarkdown ?? undefined,
+    historyMarkdown: tradition.historyMarkdown ?? tradition.longIntroductionMarkdown ?? undefined,
+    foundingAcharyaMarkdown: tradition.foundingAcharyaMarkdown ?? undefined,
+    keyTeachingsMarkdown: tradition.keyTeachingsMarkdown ?? undefined,
+    introductionMarkdown: tradition.historyMarkdown ?? tradition.longIntroductionMarkdown ?? undefined,
+    heroImage: tradition.heroImage ? toPublicImage(tradition.heroImage, tradition.name) : undefined,
+    gallery: tradition.galleryImages
+      .filter((image) => image.publicVisible !== false)
+      .map((image) => toPublicImage(image.mediaAsset, tradition.name)),
+    overviewFacts: {
+      founder: getFounderLabel(tradition, founderNames),
+      origin: tradition.origin ?? undefined,
+      eraLabel: tradition.eraLabel ?? undefined,
+      focus: tradition.focus ?? undefined,
+      originPlace: getOriginPlace(tradition)
+    },
+    lineageSaints: getLineageSaints(tradition),
+    scripturalBasis: getScripturalBasis(tradition),
     saints: getSortedSaints(tradition).map(toPublicSaintSummary),
     relatedTraditions: getRelatedTraditions(tradition),
     relatedPlaces: getRelatedPlaces(tradition),
@@ -138,12 +195,23 @@ function toPublicTraditionDetail(
 }
 
 function getRelatedTraditions(tradition: TraditionDetailRow) {
-  return [
+  const hierarchyLinks = [
     tradition.parentTradition && tradition.parentTradition.status === "published"
       ? toPublicTraditionLink(tradition.parentTradition)
       : null,
     ...tradition.childTraditions.map(toPublicTraditionLink)
   ].filter((relatedTradition): relatedTradition is PublicTraditionLink => Boolean(relatedTradition));
+  const manualLinks = tradition.relatedTraditions.map(({ label, relatedTradition }) => ({
+    ...toPublicTraditionLink(relatedTradition),
+    shortDescription: label ?? relatedTradition.shortDescription ?? undefined
+  }));
+  const links = new Map<string, PublicTraditionLink>();
+
+  [...hierarchyLinks, ...manualLinks].forEach((link) => {
+    if (!links.has(link.slug)) links.set(link.slug, link);
+  });
+
+  return Array.from(links.values());
 }
 
 function toPublicTraditionLink(tradition: {
@@ -193,28 +261,58 @@ function getSortedSaints(tradition: TraditionListRow | TraditionDetailRow) {
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
 }
 
-function getRelatedPlaces(tradition: TraditionDetailRow): PublicPlaceLink[] {
-  const places = new Map<string, PublicPlaceLink>();
-
-  for (const saintLink of tradition.saints) {
-    for (const placeLink of saintLink.saint.places) {
-      const place = placeLink.place;
-      if (places.has(place.slug)) continue;
-
-      places.set(place.slug, {
-        slug: place.slug,
-        name: place.name,
-        region: place.region ?? undefined,
-        country: place.country ?? undefined,
-        shortDescription: buildPlaceSummary(place)
-      });
-    }
-  }
-
-  return Array.from(places.values()).sort((a, b) => a.name.localeCompare(b.name));
+function getLineageSaints(tradition: TraditionDetailRow): PublicTraditionLineageSaint[] {
+  return tradition.lineageSaints.map((item) => ({
+    ...toPublicSaintSummary(item.saint),
+    roleLabel: item.roleLabel ?? undefined,
+    parentSaintSlug: item.parentSaint?.slug ?? undefined
+  }));
 }
 
-function buildPlaceSummary(place: TraditionSaintRow["places"][number]["place"]) {
+function getRelatedPlaces(tradition: TraditionDetailRow): PublicPlaceLink[] {
+  return tradition.relatedPlaces.map((placeLink) => {
+    const place = placeLink.place;
+
+    return {
+      slug: place.slug,
+      name: placeLink.label ?? place.name,
+      region: place.region ?? undefined,
+      country: place.country ?? undefined,
+      shortDescription: buildPlaceSummary(place)
+    };
+  });
+}
+
+function getScripturalBasis(tradition: TraditionDetailRow): PublicTraditionScripturalBasis[] {
+  return tradition.scripturalBasis.map((item) => ({
+    title: item.title,
+    url: item.url ?? item.source?.url ?? undefined,
+    note: item.note ?? undefined,
+    source: item.source ? toPublicSourceSummary(item.source, item.note) : undefined
+  }));
+}
+
+function getOriginPlace(tradition: TraditionDetailRow): PublicPlaceLink | undefined {
+  if (!tradition.originPlace) return undefined;
+
+  return {
+    slug: tradition.originPlace.slug,
+    name: tradition.originPlaceLabel ?? tradition.originPlace.name,
+    region: tradition.originPlace.region ?? undefined,
+    country: tradition.originPlace.country ?? undefined,
+    shortDescription: buildPlaceSummary(tradition.originPlace)
+  };
+}
+
+function getFounderLabel(
+  tradition: { founderDisplayName: string | null; founderSaintId: string | null },
+  founderNames: Map<string, string>
+) {
+  return tradition.founderDisplayName
+    ?? (tradition.founderSaintId ? founderNames.get(tradition.founderSaintId) : undefined);
+}
+
+function buildPlaceSummary(place: { region: string | null; country: string | null }) {
   return [place.region, place.country].filter(Boolean).join(", ") || "Location details in review";
 }
 
@@ -247,13 +345,28 @@ async function getSourcesForTradition(traditionId: string): Promise<PublicSource
     include: { source: true }
   });
 
-  return sourceLinks.map(({ source }) => ({
+  return sourceLinks.map(({ source }) => toPublicSourceSummary(source, source.notes));
+}
+
+function toPublicSourceSummary(
+  source: {
+    title: string;
+    sourceType: "book" | "article" | "website" | "scripture" | "oral_tradition" | "other";
+    author: string | null;
+    publisher: string | null;
+    publicationYear: number | null;
+    url: string | null;
+    notes: string | null;
+  },
+  note?: string | null
+): PublicSourceSummary {
+  return {
     title: source.title,
     sourceType: source.sourceType,
     author: source.author ?? undefined,
     publisher: source.publisher ?? undefined,
     publicationYear: source.publicationYear ? String(source.publicationYear) : undefined,
     url: source.url ?? undefined,
-    note: source.notes ?? undefined
-  }));
+    note: note ?? undefined
+  };
 }
