@@ -17,7 +17,7 @@ The admin saint review workflow now has:
 
 - `/admin` live workflow counts.
 - `/admin/saints` status-filtered review queues.
-- `/admin/saints/[id]` review detail pages with editable public fields, source context, Instagram-derived claims, images, and publish/review/hide actions.
+- `/admin/saints/[id]` review detail pages with editable public fields, source context, Instagram-derived claims, images, and publish/review/archive actions.
 
 The admin Instagram review workflow now has:
 
@@ -209,7 +209,7 @@ Editors can use `/admin/saints` to filter by status and `/admin/saints/[id]` to:
 - import biography draft text from slides 2+ of matched Instagram carousel posts
   into the biography Markdown editor, with best-effort headings preserved from
   the slide text.
-- approve and publish, return to review, or hide a saint.
+- approve and publish, return to review, or archive a saint.
 
 Public pages query only `status = published`.
 

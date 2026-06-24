@@ -3,7 +3,7 @@ import type { Route } from "next";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 
-const statuses = ["all", "needs_review", "published", "draft", "hidden", "archived"] as const;
+const statuses = ["all", "needs_review", "published", "draft", "archived"] as const;
 type StatusFilter = typeof statuses[number];
 
 type AdminTraditionsPageProps = {
@@ -33,7 +33,7 @@ export default async function AdminTraditionsPage({ searchParams }: AdminTraditi
         <Stat label="Published" value={counts.published} />
         <Stat label="Needs review" value={counts.needs_review} />
         <Stat label="Drafts" value={counts.draft} />
-        <Stat label="Hidden" value={counts.hidden} />
+        <Stat label="Archived" value={counts.archived} />
       </div>
 
       <nav className="admin-tabs" aria-label="Tradition status filters">

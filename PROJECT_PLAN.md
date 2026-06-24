@@ -187,7 +187,7 @@ Needs to include:
 - display fields such as eyebrow, title, body Markdown, call-to-action labels/URLs, and section ordering
 - media references for hero images, section images, background images, feature thumbnails, and decorative-but-managed imagery
 - public template copy such as saints/traditions index intros, homepage section headings, detail-page section labels, and reusable Instagram/source section labels
-- publication status: draft, needs review, published, hidden, archived
+- publication status: draft, needs review, published, archived
 - preview support under protected admin routes
 - SEO title and description for full pages
 - audit trail and role-sensitive actions for publishing changes
@@ -227,7 +227,7 @@ Purpose: support saint creation, editing, preview, review, and publish decisions
 Needs to include:
 
 - all editable public fields
-- status fields: draft, needs review, published, hidden, archived
+- status fields: draft, needs review, published, archived
 - required-field completeness indicators
 - aliases with alias type and source
 - tradition links and primary tradition selection
@@ -235,7 +235,7 @@ Needs to include:
 - image selection, upload references, primary image choice, gallery order, captions, credits, and visibility
 - source and further-reading links connected to the saint as a whole
 - internal notes and audit history where appropriate
-- role-sensitive actions: save draft, submit for review, publish, hide, archive
+- role-sensitive actions: save draft, submit for review, publish, archive
 
 The frontend can first build this as a form against seeded/editable fixtures. The backend then supplies loaders and mutations with validation and permission checks.
 
@@ -268,7 +268,7 @@ Needs to include:
 - connection from sources to saints, traditions, biographies, relationships, places, media, and other content records
 - connection intent: citation, further reading, primary source, biography source, lineage source, image credit, external profile, or internal reference
 - display metadata on each connection: label, excerpt/page reference, note, sort order, and public/private visibility
-- editorial status on each connection where needed: draft, needs review, published, hidden
+- editorial status on each connection where needed: draft, needs review, published, archived
 - public contract shape that exposes only approved source summaries and approved notes
 - admin contract shape that exposes internal notes, raw import references, unresolved source candidates, and duplicate warnings
 

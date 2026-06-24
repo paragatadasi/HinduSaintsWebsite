@@ -1108,6 +1108,17 @@ img {
   gap: var(--space-5);
 }
 
+.home-instagram__rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+}
+
+.home-instagram__rail .instagram-post-card {
+  flex: 1 1 min(100%, var(--width-instagram-post-card));
+  max-width: var(--width-instagram-post-card);
+}
+
 .instagram-link-card {
   align-items: center;
   background: var(--color-surface);
@@ -1132,6 +1143,19 @@ img {
   box-shadow: var(--shadow-soft);
   display: grid;
   overflow: hidden;
+}
+
+.instagram-post-card--interactive {
+  cursor: pointer;
+}
+
+.instagram-post-card--interactive:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.instagram-post-card--interactive:hover {
+  box-shadow: var(--shadow-interactive);
 }
 
 .instagram-post-card__header {
@@ -2026,18 +2050,38 @@ img {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  grid-template-columns: minmax(160px, 1fr) auto;
-  padding: var(--space-3) var(--space-4);
+  grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr);
+  padding: var(--space-4);
 }
 
-.bulk-review-panel strong,
-.bulk-review-panel span {
+.bulk-review-select-all {
+  align-items: center;
+  border-right: 1px solid var(--color-border);
+  cursor: pointer;
+  display: inline-flex;
+  gap: var(--space-3);
+  min-height: 72px;
+  padding-right: var(--space-4);
+}
+
+.bulk-review-select-all input {
+  accent-color: var(--color-accent);
+  height: 1.1rem;
+  width: 1.1rem;
+}
+
+.bulk-review-select-all strong,
+.bulk-review-select-all small {
   display: block;
 }
 
-.bulk-review-panel span {
+.bulk-review-select-all small {
   color: var(--color-muted);
   font-size: 0.88rem;
+}
+
+.bulk-review-panel .review-actions {
+  justify-content: flex-end;
 }
 
 .review-suggestion-grid {
@@ -2290,6 +2334,23 @@ img {
   display: grid;
   gap: var(--space-4);
   grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.review-row--compact {
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0;
+}
+
+.review-row--compact .review-row__link {
+  gap: var(--space-2);
+  grid-template-columns: 1fr;
+  min-width: 0;
+  padding: var(--space-4) var(--space-4) var(--space-4) 0;
+}
+
+.review-row--compact .bulk-review-checkbox {
+  padding-left: var(--space-4);
 }
 
 .bulk-review-checkbox {
@@ -3094,5 +3155,19 @@ img {
 
   .instagram-review-card__body {
     padding: 0 var(--space-4) var(--space-4);
+  }
+
+  .review-row--selectable {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .bulk-review-select-all {
+    border-bottom: 1px solid var(--color-border);
+    border-right: 0;
+    padding: 0 0 var(--space-4);
+  }
+
+  .bulk-review-panel .review-actions {
+    justify-content: flex-start;
   }
 }

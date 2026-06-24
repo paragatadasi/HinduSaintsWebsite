@@ -107,7 +107,7 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
           <div className="review-actions">
             <StatusForm traditionId={tradition.id} status="published" label="Publish tradition" />
             <StatusForm traditionId={tradition.id} status="needs_review" label="Return to review" variant="secondary" />
-            <StatusForm traditionId={tradition.id} status="hidden" label="Hide" variant="warning" />
+            <StatusForm traditionId={tradition.id} status="archived" label="Archive" variant="warning" />
           </div>
 
           <div className="review-panel__subsection">
@@ -169,7 +169,7 @@ async function getTradition(slugOrId: string) {
   });
 }
 
-const contentStatuses = ["draft", "needs_review", "published", "hidden", "archived"] as const;
+const contentStatuses = ["draft", "needs_review", "published", "archived"] as const;
 
 function StatusForm({
   traditionId,
@@ -178,7 +178,7 @@ function StatusForm({
   variant = "primary"
 }: {
   traditionId: string;
-  status: "needs_review" | "published" | "hidden";
+  status: "needs_review" | "published" | "archived";
   label: string;
   variant?: "primary" | "secondary" | "warning";
 }) {

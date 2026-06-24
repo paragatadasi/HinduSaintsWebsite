@@ -1,4 +1,4 @@
-export type SitePageStatus = "draft" | "needs_review" | "published" | "hidden" | "archived";
+export type SitePageStatus = "draft" | "needs_review" | "published" | "archived";
 export type HomeLayoutVariant = "archive" | "devotional";
 
 export type SiteDesignConfig = {

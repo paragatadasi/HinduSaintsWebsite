@@ -7,7 +7,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { toSlug } from "@/lib/slugs";
 
-const contentStatusSchema = z.enum(["draft", "needs_review", "published", "hidden", "archived"]);
+const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 
 const traditionEditorSchema = z.object({
   traditionId: z.string().cuid(),
@@ -30,7 +30,7 @@ const mergeTraditionsSchema = z.object({
 
 const traditionStatusSchema = z.object({
   traditionId: z.string().cuid(),
-  status: z.enum(["needs_review", "published", "hidden"])
+  status: z.enum(["needs_review", "published", "archived"])
 });
 
 export async function updateTradition(formData: FormData) {

@@ -2,20 +2,14 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { StatusBadge } from "@/components/ui/status-badge";
 import { bulkUpdateSaintReviewStatus } from "./actions";
 
 type SaintReviewRow = {
   id: string;
   slug: string;
   displayName: string;
-  status: string;
   shortDescription: string | null;
   biographySummary: string | null;
-  eraLabel: string | null;
-  placeName: string | null;
-  hasInstagramContent: boolean;
-  isAirtableLinked: boolean;
 };
 
 type SaintsBulkReviewListProps = {
@@ -25,8 +19,7 @@ type SaintsBulkReviewListProps = {
 
 const bulkActions = [
   { status: "published", label: "Publish selected", variant: "primary" },
-  { status: "needs_review", label: "Unpublish selected", variant: "secondary" },
-  { status: "hidden", label: "Hide selected", variant: "warning" },
+  { status: "draft", label: "Unpublish selected", variant: "secondary" },
   { status: "archived", label: "Archive selected", variant: "warning" }
 ] as const;
 
@@ -65,19 +58,18 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
       ))}
 
       <div className="bulk-review-panel">
-        <div>
-          <strong>{selectedCount} selected</strong>
-          <span>{saints.length} visible in this queue</span>
-        </div>
+        <label className="bulk-review-select-all">
+          <input
+            checked={allVisibleSelected}
+            onChange={toggleAllVisible}
+            type="checkbox"
+          />
+          <span>
+            <strong>Select visible</strong>
+            <small>{selectedCount > 0 ? `${selectedCount} selected` : `${saints.length} visible in this queue`}</small>
+          </span>
+        </label>
         <div className="review-actions">
-          <button className="admin-form-button admin-form-button--secondary" type="button" onClick={toggleAllVisible}>
-            {allVisibleSelected ? "Clear visible" : "Select visible"}
-          </button>
-          {selectedCount > 0 ? (
-            <button className="admin-form-button admin-form-button--secondary" type="button" onClick={() => setSelectedIds([])}>
-              Clear selection
-            </button>
-          ) : null}
           {bulkActions.map((action) => (
             <button
               className={[
@@ -99,7 +91,7 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
 
       <div className="review-list">
         {saints.map((saint) => (
-          <article className="review-row review-row--selectable" key={saint.id}>
+          <article className="review-row review-row--compact review-row--selectable interactive-surface" key={saint.id}>
             <label className="bulk-review-checkbox">
               <input
                 aria-label={`Select ${saint.displayName}`}
@@ -109,27 +101,12 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
               />
             </label>
             <Link className="review-row__link" href={`/admin/saints/${saint.slug}`}>
-              <div>
-                <div className="review-meta">
-                  <StatusBadge label={formatStatus(saint.status)} />
-                  {saint.hasInstagramContent ? <StatusBadge label="Instagram content" /> : null}
-                  {saint.isAirtableLinked ? <StatusBadge label="Airtable linked" /> : null}
-                </div>
-                <h2>{saint.displayName}</h2>
-                <p>{saint.shortDescription ?? saint.biographySummary ?? "No public summary yet."}</p>
-              </div>
-              <div className="review-meta">
-                <StatusBadge label={saint.eraLabel ?? "Dates pending"} />
-                <StatusBadge label={saint.placeName ?? "Place pending"} />
-              </div>
+              <h2>{saint.displayName}</h2>
+              <p>{saint.shortDescription ?? saint.biographySummary ?? "No public summary yet."}</p>
             </Link>
           </article>
         ))}
       </div>
     </form>
   );
-}
-
-function formatStatus(status: string) {
-  return status.replace(/_/g, " ");
 }

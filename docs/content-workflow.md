@@ -20,11 +20,11 @@ Current admin review surfaces:
 
 - `/admin` shows live workflow counts.
 - `/admin/saints` lists saints by status so editors can find imported records,
-  published records, and hidden records.
+  published records, and archived records.
 - `/admin/saints/[id]` supports editing core public saint fields, aliases,
   traditions, places, route order, biographies, sources, dates, Airtable
   linkage, Instagram-derived claims, and imported images, then publishing,
-  returning to review, or hiding the saint.
+  returning to review, or archiving the saint.
 - `/admin/instagram` lists real imported Instagram posts/reels/carousels by
   status.
 - `/admin/instagram/[id]` supports reviewing a real Instagram item, previewing

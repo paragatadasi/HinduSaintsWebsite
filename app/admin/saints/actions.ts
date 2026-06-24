@@ -12,7 +12,7 @@ import { acceptSaintInstagramClaim } from "@/lib/instagram-claims";
 import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page-extraction";
 import { toSlug } from "@/lib/slugs";
 
-const contentStatusSchema = z.enum(["draft", "needs_review", "published", "hidden", "archived"]);
+const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 const placeTypeSchema = z.enum(["primary", "birth", "samadhi", "sadhana", "associated", "other"]);
 const sourceTypeSchema = z.enum(["book", "article", "website", "scripture", "oral_tradition", "other"]);
 

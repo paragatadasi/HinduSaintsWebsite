@@ -334,7 +334,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
           <div className="review-actions">
             <StatusForm saintId={saint.id} status="published" label="Approve and publish" />
             <StatusForm saintId={saint.id} status="needs_review" label="Return to review" variant="secondary" />
-            <StatusForm saintId={saint.id} status="hidden" label="Hide" variant="warning" />
+            <StatusForm saintId={saint.id} status="archived" label="Archive" variant="warning" />
           </div>
         </aside>
       </div>
@@ -687,7 +687,7 @@ function FormattedCaption({ caption }: { caption?: string | null }) {
   );
 }
 
-const contentStatuses = ["draft", "needs_review", "published", "hidden", "archived"] as const;
+const contentStatuses = ["draft", "needs_review", "published", "archived"] as const;
 const placeTypes = ["primary", "birth", "samadhi", "sadhana", "associated", "other"] as const;
 const sourceTypes = ["book", "article", "website", "scripture", "oral_tradition", "other"] as const;
 
@@ -703,7 +703,7 @@ function StatusForm({
   variant = "primary"
 }: {
   saintId: string;
-  status: "needs_review" | "published" | "hidden";
+  status: "needs_review" | "published" | "archived";
   label: string;
   variant?: "primary" | "secondary" | "warning";
 }) {
