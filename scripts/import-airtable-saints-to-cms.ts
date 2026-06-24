@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { Prisma, type ContentStatus, type PlaceType } from "../lib/generated/prisma/client";
 import { db } from "../lib/db";
 import { parseImportedDate, buildEraLabel } from "../lib/import-dates";
@@ -35,11 +36,18 @@ type ImportPlan = {
   links: string[];
 };
 
+type ImportResult =
+  | { status: "created"; saintId: string }
+  | { status: "updated"; saintId: string }
+  | { status: "skipped_existing_external"; saintId?: string | null }
+  | { status: "skipped_slug_collision"; saintId: string };
+
 const AIRTABLE_TABLE = "Saints";
 const IMPORTER_SOURCE = "airtable_saints_cms_import";
 const RAMANA_AIRTABLE_RECORD_ID = "recnTSlt2x2pAPPAA";
 const MOCK_RAMANA_SLUG = "sri-ramana-maharshi";
 const STATUS: ContentStatus = "needs_review";
+const MISSING_DRAFT_STATUS: ContentStatus = "draft";
 
 const HONORIFIC_PREFIXES = [
   "108",
@@ -65,7 +73,8 @@ const HONORIFIC_PREFIXES = [
 function parseArgs(argv: string[]) {
   return {
     dryRun: !argv.includes("--write"),
-    limit: numberArg(argv, "--limit")
+    limit: numberArg(argv, "--limit"),
+    missingDraftsOnly: argv.includes("--missing-drafts-only") || argv.includes("--draft-missing-only")
   };
 }
 
@@ -272,11 +281,38 @@ async function deleteMockRamanaIfNeeded(plans: ImportPlan[], dryRun: boolean) {
   return { deleted: true, dryRun };
 }
 
-async function importPlan(plan: ImportPlan) {
+async function importPlan(plan: ImportPlan, options: { missingDraftsOnly?: boolean } = {}): Promise<ImportResult> {
   const existingExternal = await db.externalRecord.findUnique({
     where: { sourceType_externalId: { sourceType: "airtable", externalId: plan.externalId } },
     select: { id: true, entityId: true, rawPayloadJson: true }
   });
+
+  if (options.missingDraftsOnly) {
+    if (existingExternal?.entityId) {
+      return { status: "skipped_existing_external", saintId: existingExternal.entityId };
+    }
+
+    const slugCollision = await db.saint.findUnique({
+      where: { slug: plan.baseSlug },
+      select: { id: true }
+    });
+    if (slugCollision) {
+      return { status: "skipped_slug_collision", saintId: slugCollision.id };
+    }
+
+    const saint = await createSaintFromPlan(plan, MISSING_DRAFT_STATUS);
+    await syncPlaces(saint.id, plan);
+    await syncTraditions(saint.id, plan);
+    const primaryImageId = await syncImages(saint.id, plan);
+    if (primaryImageId) {
+      await db.saint.update({ where: { id: saint.id }, data: { primaryImageId } });
+    }
+    await syncSources(saint.id, plan);
+    await linkExternalRecordToSaint(plan, saint.id);
+
+    return { status: "created", saintId: saint.id };
+  }
+
   const linkedSaint = existingExternal?.entityId
     ? await db.saint.findUnique({ where: { id: existingExternal.entityId } })
     : undefined;
@@ -347,26 +383,70 @@ async function importPlan(plan: ImportPlan) {
     await db.saint.update({ where: { id: saint.id }, data: { primaryImageId } });
   }
   await syncSources(saint.id, plan);
+  await linkExternalRecordToSaint(plan, saint.id);
 
+  return { status: existingSaint ? "updated" : "created", saintId: saint.id };
+}
+
+async function createSaintFromPlan(plan: ImportPlan, status: ContentStatus) {
+  const eraLabel = buildEraLabel(plan.birth, plan.samadhi);
+  const slug = await uniqueSlug(plan.baseSlug, undefined, plan.recordId.slice(-6).toLowerCase());
+
+  const saint = await db.saint.create({
+    data: {
+      slug,
+      canonicalName: plan.canonicalName,
+      displayName: plan.displayName,
+      biographySummary: plan.biographySummary,
+      status,
+      launchMvp: true,
+      eraLabel,
+      birthDateRaw: plan.birth.raw,
+      birthYear: plan.birth.year,
+      birthMonth: plan.birth.month,
+      birthDay: plan.birth.day,
+      birthDatePrecision: plan.birth.precision === "empty" ? undefined : plan.birth.precision,
+      samadhiDateRaw: plan.samadhi.raw,
+      samadhiYear: plan.samadhi.year,
+      samadhiMonth: plan.samadhi.month,
+      samadhiDay: plan.samadhi.day,
+      samadhiDatePrecision: plan.samadhi.precision === "empty" ? undefined : plan.samadhi.precision,
+      dateNotes: plan.dateNotes
+    }
+  });
+
+  if (plan.originalName !== plan.displayName) {
+    await db.saintAlias.create({
+      data: {
+        saintId: saint.id,
+        alias: plan.originalName,
+        aliasType: "airtable_name",
+        source: `${IMPORTER_SOURCE}:${plan.recordId}`
+      }
+    });
+  }
+
+  return saint;
+}
+
+async function linkExternalRecordToSaint(plan: ImportPlan, saintId: string) {
   await db.externalRecord.upsert({
     where: { sourceType_externalId: { sourceType: "airtable", externalId: plan.externalId } },
     create: {
       sourceType: "airtable",
       externalId: plan.externalId,
       entityType: "Saint",
-      entityId: saint.id,
+      entityId: saintId,
       rawPayloadJson: { importedBy: IMPORTER_SOURCE, recordId: plan.recordId },
       importedAt: new Date(),
       lastSeenAt: new Date()
     },
     update: {
       entityType: "Saint",
-      entityId: saint.id,
+      entityId: saintId,
       lastSeenAt: new Date()
     }
   });
-
-  return saint;
 }
 
 async function findUnlinkedImporterSaint(slug: string) {
@@ -514,6 +594,54 @@ async function findOrCreateSource(url: string) {
   });
 }
 
+async function summarizeMissingDraftPlans(plans: ImportPlan[]) {
+  const summary = {
+    createDrafts: 0,
+    skipExistingExternal: 0,
+    skipSlugCollision: 0
+  };
+
+  for (const plan of plans) {
+    const existingExternal = await db.externalRecord.findUnique({
+      where: { sourceType_externalId: { sourceType: "airtable", externalId: plan.externalId } },
+      select: { entityId: true }
+    });
+    if (existingExternal?.entityId) {
+      summary.skipExistingExternal += 1;
+      continue;
+    }
+
+    const slugCollision = await db.saint.findUnique({
+      where: { slug: plan.baseSlug },
+      select: { id: true }
+    });
+    if (slugCollision) {
+      summary.skipSlugCollision += 1;
+      continue;
+    }
+
+    summary.createDrafts += 1;
+  }
+
+  return summary;
+}
+
+function emptyImportResultCounts() {
+  return {
+    created: 0,
+    updated: 0,
+    skippedExistingExternal: 0,
+    skippedSlugCollision: 0
+  };
+}
+
+function addImportResult(counts: ReturnType<typeof emptyImportResultCounts>, result: ImportResult) {
+  if (result.status === "created") counts.created += 1;
+  if (result.status === "updated") counts.updated += 1;
+  if (result.status === "skipped_existing_external") counts.skippedExistingExternal += 1;
+  if (result.status === "skipped_slug_collision") counts.skippedSlugCollision += 1;
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const rows = await db.airtableMirrorRecord.findMany({
@@ -527,9 +655,20 @@ async function main() {
     }
   });
   const plans = rows.map(buildPlan).filter((plan): plan is ImportPlan => Boolean(plan));
-  const ramanaCleanup = await deleteMockRamanaIfNeeded(plans, options.dryRun);
+  const ramanaCleanup = options.missingDraftsOnly
+    ? { deleted: false, dryRun: options.dryRun }
+    : await deleteMockRamanaIfNeeded(plans, options.dryRun);
 
   if (options.dryRun) {
+    if (options.missingDraftsOnly) {
+      const summary = await summarizeMissingDraftPlans(plans);
+      console.log(`Dry run: checked ${plans.length} Airtable mirror saints for missing draft import.`);
+      console.log(`Would create draft saints: ${summary.createDrafts}`);
+      console.log(`Would skip existing Airtable-linked CMS saints: ${summary.skipExistingExternal}`);
+      console.log(`Would skip slug collisions with existing CMS saints: ${summary.skipSlugCollision}`);
+      return;
+    }
+
     console.log(`Dry run: would import ${plans.length} Airtable mirror saints into CMS.`);
     console.log(`Would remove seed Ramana mock: ${ramanaCleanup.deleted ? "yes" : "no"}`);
     console.log(`Places to upsert: ${uniqueByNormalized(plans.flatMap((plan) => plan.places), (place) => place.name).length}`);
@@ -546,13 +685,19 @@ async function main() {
     return;
   }
 
-  let imported = 0;
+  const resultCounts = emptyImportResultCounts();
   for (const plan of plans) {
-    await importPlan(plan);
-    imported += 1;
+    const result = await importPlan(plan, { missingDraftsOnly: options.missingDraftsOnly });
+    addImportResult(resultCounts, result);
   }
 
-  console.log(`Imported ${imported} Airtable mirror saints into CMS as ${STATUS}.`);
+  if (options.missingDraftsOnly) {
+    console.log(`Created ${resultCounts.created} missing Airtable saints as ${MISSING_DRAFT_STATUS}.`);
+    console.log(`Skipped ${resultCounts.skippedExistingExternal} existing Airtable-linked CMS saints.`);
+    console.log(`Skipped ${resultCounts.skippedSlugCollision} slug collisions with existing CMS saints.`);
+  } else {
+    console.log(`Created ${resultCounts.created} and updated ${resultCounts.updated} Airtable mirror saints into CMS as ${STATUS}.`);
+  }
   console.log(`Removed seed Ramana mock: ${ramanaCleanup.deleted ? "yes" : "no"}`);
 }
 
