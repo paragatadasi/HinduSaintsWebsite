@@ -64,6 +64,8 @@
   --width-instagram-preview: 230px;
   --width-instagram-post-card-min: 280px;
   --width-instagram-post-card: 360px;
+  --width-instagram-review-card-media: clamp(176px, 16vw, 196px);
+  --width-instagram-review-card-media-mobile: clamp(96px, 28vw, 124px);
   --width-instagram-viewer-panel: min(100%, 1120px);
   --width-instagram-viewer-details: 320px;
   --width-instagram-viewer-details-min: 260px;
