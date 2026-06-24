@@ -1,8 +1,9 @@
 import Link from "next/link";
 import type { Route } from "next";
-import { Prisma, type Prisma as PrismaTypes } from "@/lib/generated/prisma/client";
+import type { Prisma as PrismaTypes } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
 import { getInstagramLinkProps } from "@/lib/external-links";
+import { getIncompleteInstagramItemSummaries, getIncompleteInstagramItemWhere } from "@/lib/instagram-ingestion";
 import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { rankWeightedTextSearch, type WeightedSearchField } from "@/lib/search-text";
 import { InstagramIngestionPanel } from "./instagram-ingestion-panel";
@@ -35,11 +36,12 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
   const { q, status } = await searchParams;
   const query = getSearchParam(q);
   const activeStatus = getActiveStatus(status);
-  const [itemCounts, items, ingestionJobs, incompleteCount] = await Promise.all([
+  const [itemCounts, items, ingestionJobs, incompleteCount, incompleteItems] = await Promise.all([
     getInstagramItemCounts(),
     getInstagramItems(activeStatus, query),
     getInstagramIngestionJobs(),
-    getIncompleteInstagramItemCount()
+    getIncompleteInstagramItemCount(),
+    getIncompleteInstagramItemSummaries()
   ]);
 
   return (
@@ -54,6 +56,7 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
 
       <InstagramIngestionPanel
         incompleteCount={incompleteCount}
+        incompleteItems={incompleteItems}
         jobs={ingestionJobs}
       />
 
@@ -204,13 +207,7 @@ async function getInstagramIngestionJobs() {
 
 async function getIncompleteInstagramItemCount() {
   return db.instagramItem.count({
-    where: {
-      OR: [
-        { firstPageText: null },
-        { firstPageMetadata: { equals: Prisma.JsonNull } },
-        { mediaAssets: { none: {} } }
-      ]
-    }
+    where: getIncompleteInstagramItemWhere()
   });
 }
 

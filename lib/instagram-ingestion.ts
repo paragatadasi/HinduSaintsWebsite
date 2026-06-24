@@ -11,6 +11,17 @@ export type RawInstagramRow = Record<string, unknown>;
 
 export type InstagramIngestionMode = "full_refresh" | "incremental_refresh" | "repair_incomplete";
 
+export type IncompleteInstagramItemSummary = {
+  id: string;
+  instagramShortcode: string | null;
+  instagramUrl: string;
+  missing: string[];
+  postedAt: string | null;
+  status: MatchStatus;
+  title: string;
+  type: InstagramType;
+};
+
 type InstagramImportRow = {
   sourceKey: string;
   instagramUrl: string;
@@ -647,7 +658,7 @@ function getInstagramSourceName() {
   return process.env.INSTAGRAM_IMPORT_SOURCE_NAME ?? "Instagram API";
 }
 
-function getIncompleteInstagramItemWhere(): Prisma.InstagramItemWhereInput {
+export function getIncompleteInstagramItemWhere(): Prisma.InstagramItemWhereInput {
   return {
     OR: [
       { firstPageText: null },
@@ -655,6 +666,60 @@ function getIncompleteInstagramItemWhere(): Prisma.InstagramItemWhereInput {
       { mediaAssets: { none: {} } }
     ]
   };
+}
+
+export async function getIncompleteInstagramItemSummaries(limit = 50): Promise<IncompleteInstagramItemSummary[]> {
+  const items = await db.instagramItem.findMany({
+    where: getIncompleteInstagramItemWhere(),
+    orderBy: [{ postedAt: "desc" }, { updatedAt: "desc" }],
+    select: {
+      id: true,
+      instagramShortcode: true,
+      instagramUrl: true,
+      type: true,
+      status: true,
+      captionText: true,
+      extractedSaintName: true,
+      firstPageText: true,
+      firstPageMetadata: true,
+      postedAt: true,
+      mediaAssets: {
+        select: { id: true },
+        take: 1
+      }
+    },
+    take: limit
+  });
+
+  return items.map((item) => ({
+    id: item.id,
+    instagramShortcode: item.instagramShortcode,
+    instagramUrl: item.instagramUrl,
+    type: item.type,
+    status: item.status,
+    title: getIncompleteItemTitle(item),
+    postedAt: item.postedAt?.toISOString() ?? null,
+    missing: [
+      item.firstPageText ? undefined : "first-page text",
+      hasFirstPageMetadata(item.firstPageMetadata) ? undefined : "first-page metadata",
+      item.mediaAssets.length > 0 ? undefined : "cached media"
+    ].filter((value): value is string => Boolean(value))
+  }));
+}
+
+function getIncompleteItemTitle(item: {
+  captionText: string | null;
+  extractedSaintName: string | null;
+  firstPageMetadata: unknown;
+  instagramShortcode: string | null;
+}) {
+  const metadata = hasFirstPageMetadata(item.firstPageMetadata) ? item.firstPageMetadata as Record<string, unknown> : undefined;
+  const displayName = typeof metadata?.displayName === "string" ? metadata.displayName : undefined;
+  return displayName ?? item.extractedSaintName ?? item.instagramShortcode ?? item.captionText?.slice(0, 72) ?? "Imported Instagram item";
+}
+
+function hasFirstPageMetadata(value: unknown) {
+  return Boolean(value && typeof value === "object" && !Array.isArray(value));
 }
 
 async function updateJob(jobId: string | undefined, data: Prisma.InstagramIngestionJobUpdateInput) {

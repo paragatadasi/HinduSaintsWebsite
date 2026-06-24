@@ -1,25 +1,28 @@
 import { NextResponse } from "next/server";
-import { Prisma } from "@/lib/generated/prisma/client";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import {
   createInstagramIncompleteRepairJob,
   createInstagramRefreshJob,
+  getIncompleteInstagramItemWhere,
+  getIncompleteInstagramItemSummaries,
   runInstagramIngestionJob
 } from "@/lib/instagram-ingestion";
 
 const runningStatuses = ["queued", "running"];
+const incompleteItemLimit = 50;
 
 export async function GET() {
   const session = await auth();
   if (!session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const [jobs, incompleteCount] = await Promise.all([
+  const [jobs, incompleteCount, incompleteItems] = await Promise.all([
     getRecentJobs(),
-    getIncompleteCount()
+    getIncompleteCount(),
+    getIncompleteInstagramItemSummaries(incompleteItemLimit)
   ]);
 
-  return NextResponse.json({ jobs, incompleteCount });
+  return NextResponse.json({ jobs, incompleteCount, incompleteItems });
 }
 
 export async function POST(request: Request) {
@@ -66,12 +69,6 @@ function getRecentJobs() {
 
 function getIncompleteCount() {
   return db.instagramItem.count({
-    where: {
-      OR: [
-        { firstPageText: null },
-        { firstPageMetadata: { equals: Prisma.JsonNull } },
-        { mediaAssets: { none: {} } }
-      ]
-    }
+    where: getIncompleteInstagramItemWhere()
   });
 }
