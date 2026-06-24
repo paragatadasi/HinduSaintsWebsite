@@ -11,7 +11,8 @@ import {
   removeSaintSource,
   reviewSaintInstagramClaim,
   updateSaintAliases,
-  updateSaintBasics,
+  updateSaintOtherPublicFields,
+  updateSaintOverview,
   updateSaintReviewStatus,
   updateSaintTraditions,
   upsertSaintBiography,
@@ -91,10 +92,10 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
         ) : null}
       </div>
 
-      <div className="review-detail-grid">
+      <div className="review-detail-grid review-detail-grid--overview">
         <section className="review-panel">
-          <h2>Public Fields</h2>
-          <form action={updateSaintBasics} className="form-stack">
+          <h2>Overview</h2>
+          <form action={updateSaintOverview} className="form-stack">
             <input name="saintId" type="hidden" value={saint.id} />
             <label>
               Display name
@@ -108,6 +109,26 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
               Short description
               <textarea name="shortDescription" defaultValue={saint.shortDescription ?? ""} maxLength={500} />
             </label>
+            <div className="review-actions">
+              <button className="admin-form-button" type="submit">Save overview</button>
+            </div>
+          </form>
+        </section>
+
+        <aside className="review-panel">
+          <h2>Review Actions</h2>
+          <p>Publishing makes this saint eligible for public display. Returning to review removes it from public pages.</p>
+          <div className="review-actions">
+            <StatusForm saintId={saint.id} status="published" label="Approve and publish" />
+            <StatusForm saintId={saint.id} status="needs_review" label="Return to review" variant="secondary" />
+            <StatusForm saintId={saint.id} status="archived" label="Archive" variant="warning" />
+          </div>
+        </aside>
+
+        <section className="review-panel review-detail-grid__full">
+          <h2>Other Public Fields</h2>
+          <form action={updateSaintOtherPublicFields} className="form-stack">
+            <input name="saintId" type="hidden" value={saint.id} />
             <label>
               Era label
               <input name="eraLabel" defaultValue={saint.eraLabel ?? ""} maxLength={120} />
@@ -133,7 +154,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
               <textarea name="seoDescription" defaultValue={saint.seoDescription ?? ""} maxLength={300} />
             </label>
             <div className="review-actions">
-              <button className="admin-form-button" type="submit">Save review edits</button>
+              <button className="admin-form-button" type="submit">Save public fields</button>
             </div>
           </form>
 
@@ -327,16 +348,6 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
             </div>
           </div>
         </section>
-
-        <aside className="review-panel">
-          <h2>Review Actions</h2>
-          <p>Publishing makes this saint eligible for public display. Returning to review removes it from public pages.</p>
-          <div className="review-actions">
-            <StatusForm saintId={saint.id} status="published" label="Approve and publish" />
-            <StatusForm saintId={saint.id} status="needs_review" label="Return to review" variant="secondary" />
-            <StatusForm saintId={saint.id} status="archived" label="Archive" variant="warning" />
-          </div>
-        </aside>
       </div>
 
       <section className="review-panel">

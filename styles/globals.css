@@ -2371,6 +2371,10 @@ img {
   gap: var(--space-3);
 }
 
+.review-panel {
+  align-content: start;
+}
+
 .admin-sidebar a {
   color: var(--color-muted);
   font-weight: 700;
@@ -2974,9 +2978,18 @@ img {
 }
 
 .review-detail-grid {
+  align-items: start;
   display: grid;
   gap: var(--space-4);
   grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
+}
+
+.review-detail-grid--overview {
+  align-items: stretch;
+}
+
+.review-detail-grid__full {
+  grid-column: 1 / -1;
 }
 
 .field-grid {

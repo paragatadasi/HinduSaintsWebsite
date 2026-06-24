@@ -29,6 +29,23 @@ const saintBasicsSchema = z.object({
   seoDescription: z.string().trim().max(300).optional()
 });
 
+const saintOverviewSchema = saintBasicsSchema.pick({
+  saintId: true,
+  displayName: true,
+  canonicalName: true,
+  shortDescription: true
+});
+
+const saintOtherPublicFieldsSchema = saintBasicsSchema.pick({
+  saintId: true,
+  eraLabel: true,
+  birthDateRaw: true,
+  samadhiDateRaw: true,
+  dateNotes: true,
+  seoTitle: true,
+  seoDescription: true
+});
+
 const saintStatusSchema = z.object({
   saintId: z.string().cuid(),
   status: contentStatusSchema
@@ -140,6 +157,69 @@ export async function updateSaintBasics(formData: FormData) {
       displayName: parsed.displayName,
       canonicalName: parsed.canonicalName,
       shortDescription: parsed.shortDescription ?? null,
+      eraLabel: parsed.eraLabel ?? null,
+      birthDateRaw: parsed.birthDateRaw ?? null,
+      birthYear: birthDate?.year ?? null,
+      birthMonth: birthDate?.month ?? null,
+      birthDay: birthDate?.day ?? null,
+      birthDatePrecision: birthDate?.precision ?? null,
+      samadhiDateRaw: parsed.samadhiDateRaw ?? null,
+      samadhiYear: samadhiDate?.year ?? null,
+      samadhiMonth: samadhiDate?.month ?? null,
+      samadhiDay: samadhiDate?.day ?? null,
+      samadhiDatePrecision: samadhiDate?.precision ?? null,
+      dateNotes: parsed.dateNotes ?? null,
+      seoTitle: parsed.seoTitle ?? null,
+      seoDescription: parsed.seoDescription ?? null
+    },
+    select: { slug: true }
+  });
+
+  revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${saint.slug}`);
+}
+
+export async function updateSaintOverview(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = saintOverviewSchema.parse({
+    saintId: formData.get("saintId"),
+    displayName: formData.get("displayName"),
+    canonicalName: formData.get("canonicalName"),
+    shortDescription: emptyToUndefined(formData.get("shortDescription"))
+  });
+  const saint = await db.saint.update({
+    where: { id: parsed.saintId },
+    data: {
+      displayName: parsed.displayName,
+      canonicalName: parsed.canonicalName,
+      shortDescription: parsed.shortDescription ?? null
+    },
+    select: { slug: true }
+  });
+
+  revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${saint.slug}`);
+}
+
+export async function updateSaintOtherPublicFields(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = saintOtherPublicFieldsSchema.parse({
+    saintId: formData.get("saintId"),
+    eraLabel: emptyToUndefined(formData.get("eraLabel")),
+    birthDateRaw: emptyToUndefined(formData.get("birthDateRaw")),
+    samadhiDateRaw: emptyToUndefined(formData.get("samadhiDateRaw")),
+    dateNotes: emptyToUndefined(formData.get("dateNotes")),
+    seoTitle: emptyToUndefined(formData.get("seoTitle")),
+    seoDescription: emptyToUndefined(formData.get("seoDescription"))
+  });
+  const birthDate = parsed.birthDateRaw ? parseImportedDate(parsed.birthDateRaw) : null;
+  const samadhiDate = parsed.samadhiDateRaw ? parseImportedDate(parsed.samadhiDateRaw) : null;
+
+  const saint = await db.saint.update({
+    where: { id: parsed.saintId },
+    data: {
       eraLabel: parsed.eraLabel ?? null,
       birthDateRaw: parsed.birthDateRaw ?? null,
       birthYear: birthDate?.year ?? null,

@@ -2,10 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Route } from "next";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { getKnownPlaceScope, STATE_PLACE_SLUGS } from "@/lib/place-taxonomy";
-import { mergePlaces, updatePlace } from "../actions";
+import { mergePlaces, updatePlaceOtherPublicFields, updatePlaceOverview } from "../actions";
 
 type AdminPlaceEditorPageProps = {
   params: Promise<{ id: string }>;
@@ -41,6 +42,21 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
       }
     })
   ]);
+  const stateOptions = statePlaces.map((state) => ({
+    value: state.id,
+    label: state.name
+  }));
+  const mergePlaceOptions = mergeOptions.map((option) => ({
+    value: option.id,
+    label: option.name,
+    description: `${formatStatus(option.placeScope)}, ${option._count.saints} saints`,
+    keywords: [
+      option.placeScope,
+      option.region,
+      option.country,
+      ...option.alternateNames
+    ].filter((keyword): keyword is string => Boolean(keyword))
+  }));
 
   return (
     <div className="admin-stack">
@@ -60,10 +76,10 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
         </div>
       </div>
 
-      <div className="review-detail-grid">
+      <div className="review-detail-grid review-detail-grid--overview">
         <section className="review-panel">
-          <h2>Public fields</h2>
-          <form action={updatePlace} className="form-stack">
+          <h2>Overview</h2>
+          <form action={updatePlaceOverview} className="form-stack">
             <input name="placeId" type="hidden" value={place.id} />
             <label>
               Name
@@ -80,34 +96,20 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
                 <option value="state">State</option>
               </select>
             </label>
-            <label>
-              Parent state
-              <select name="parentStateId" defaultValue={place.parentStateId ?? ""}>
-                <option value="">No parent state</option>
-                {statePlaces.map((state) => (
-                  <option key={state.id} value={state.id}>{state.name}</option>
-                ))}
-              </select>
-            </label>
+            <SearchableSelect
+              defaultValue={place.parentStateId ?? ""}
+              emptyText="No states match this search."
+              label="Parent state"
+              name="parentStateId"
+              options={[{ value: "", label: "No parent state" }, ...stateOptions]}
+              placeholder="Search states"
+            />
             <label>
               Country
               <input name="country" defaultValue={place.country ?? ""} maxLength={120} />
             </label>
-            <div className="form-stack__field">
-              <label htmlFor="place-overview">Page overview</label>
-              <MarkdownEditor
-                defaultValue={place.overviewMarkdown ?? ""}
-                maxLength={20000}
-                name="overviewMarkdown"
-                textareaId="place-overview"
-              />
-            </div>
-            <label>
-              Internal notes
-              <textarea name="notes" defaultValue={place.notes ?? ""} maxLength={1000} />
-            </label>
             <div className="review-actions">
-              <button className="admin-form-button" type="submit">Save place</button>
+              <button className="admin-form-button" type="submit">Save overview</button>
             </div>
           </form>
         </section>
@@ -117,17 +119,14 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
           <p>Move saint relationships and child locality links from another record into this place.</p>
           <form action={mergePlaces} className="form-stack">
             <input name="targetPlaceId" type="hidden" value={place.id} />
-            <label>
-              Duplicate place
-              <select name="sourcePlaceId" required>
-                <option value="">Select duplicate</option>
-                {mergeOptions.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.name} ({formatStatus(option.placeScope)}, {option._count.saints} saints)
-                  </option>
-                ))}
-              </select>
-            </label>
+            <SearchableSelect
+              emptyText="No places match this search."
+              label="Duplicate place"
+              name="sourcePlaceId"
+              options={mergePlaceOptions}
+              placeholder="Search duplicate places"
+              required
+            />
             <div className="review-actions">
               <button className="admin-form-button admin-form-button--warning" type="submit">Merge into this place</button>
             </div>
@@ -148,6 +147,29 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
             )}
           </div>
         </aside>
+
+        <section className="review-panel review-detail-grid__full">
+          <h2>Other Public Fields</h2>
+          <form action={updatePlaceOtherPublicFields} className="form-stack">
+            <input name="placeId" type="hidden" value={place.id} />
+            <div className="form-stack__field">
+              <label htmlFor="place-overview">Page overview</label>
+              <MarkdownEditor
+                defaultValue={place.overviewMarkdown ?? ""}
+                maxLength={20000}
+                name="overviewMarkdown"
+                textareaId="place-overview"
+              />
+            </div>
+            <label>
+              Internal notes
+              <textarea name="notes" defaultValue={place.notes ?? ""} maxLength={1000} />
+            </label>
+            <div className="review-actions">
+              <button className="admin-form-button" type="submit">Save public fields</button>
+            </div>
+          </form>
+        </section>
       </div>
     </div>
   );

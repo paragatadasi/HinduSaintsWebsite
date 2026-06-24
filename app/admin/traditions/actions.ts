@@ -31,6 +31,31 @@ const traditionEditorSchema = z.object({
   seoDescription: z.string().trim().max(300).optional()
 });
 
+const traditionOverviewSchema = traditionEditorSchema.pick({
+  traditionId: true,
+  name: true,
+  alternateNames: true,
+  parentTraditionId: true,
+  shortDescription: true,
+  status: true
+});
+
+const traditionOtherPublicFieldsSchema = traditionEditorSchema.pick({
+  traditionId: true,
+  founderSaintId: true,
+  founderDisplayName: true,
+  origin: true,
+  eraLabel: true,
+  focus: true,
+  originPlaceId: true,
+  originPlaceLabel: true,
+  historyMarkdown: true,
+  foundingAcharyaMarkdown: true,
+  keyTeachingsMarkdown: true,
+  seoTitle: true,
+  seoDescription: true
+});
+
 const mergeTraditionsSchema = z.object({
   sourceTraditionId: z.string().cuid(),
   targetTraditionId: z.string().cuid()
@@ -160,6 +185,87 @@ export async function updateTradition(formData: FormData) {
   });
 
   revalidateTraditionPaths(existing.slug);
+  revalidateTraditionPaths(tradition.slug);
+  redirect(`/admin/traditions/${tradition.slug}`);
+}
+
+export async function updateTraditionOverview(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = traditionOverviewSchema.parse({
+    traditionId: formData.get("traditionId"),
+    name: formData.get("name"),
+    alternateNames: parseList(formData.get("alternateNames")),
+    parentTraditionId: emptyToUndefined(formData.get("parentTraditionId")),
+    shortDescription: emptyToUndefined(formData.get("shortDescription")),
+    status: formData.get("status")
+  });
+  const now = new Date();
+  const existing = await db.tradition.findUnique({
+    where: { id: parsed.traditionId },
+    select: { slug: true }
+  });
+
+  if (!existing) redirect("/admin/traditions");
+
+  const slug = await getUniqueTraditionSlug(parsed.name, parsed.traditionId);
+  const tradition = await db.tradition.update({
+    where: { id: parsed.traditionId },
+    data: {
+      name: parsed.name,
+      slug,
+      alternateNames: parsed.alternateNames,
+      parentTraditionId: parsed.parentTraditionId === parsed.traditionId ? null : parsed.parentTraditionId ?? null,
+      shortDescription: parsed.shortDescription ?? null,
+      status: parsed.status,
+      publishedAt: parsed.status === "published" ? now : null
+    },
+    select: { slug: true }
+  });
+
+  revalidateTraditionPaths(existing.slug);
+  revalidateTraditionPaths(tradition.slug);
+  redirect(`/admin/traditions/${tradition.slug}`);
+}
+
+export async function updateTraditionOtherPublicFields(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = traditionOtherPublicFieldsSchema.parse({
+    traditionId: formData.get("traditionId"),
+    founderSaintId: emptyToUndefined(formData.get("founderSaintId")),
+    founderDisplayName: emptyToUndefined(formData.get("founderDisplayName")),
+    origin: emptyToUndefined(formData.get("origin")),
+    eraLabel: emptyToUndefined(formData.get("eraLabel")),
+    focus: emptyToUndefined(formData.get("focus")),
+    originPlaceId: emptyToUndefined(formData.get("originPlaceId")),
+    originPlaceLabel: emptyToUndefined(formData.get("originPlaceLabel")),
+    historyMarkdown: emptyToUndefined(formData.get("historyMarkdown")),
+    foundingAcharyaMarkdown: emptyToUndefined(formData.get("foundingAcharyaMarkdown")),
+    keyTeachingsMarkdown: emptyToUndefined(formData.get("keyTeachingsMarkdown")),
+    seoTitle: emptyToUndefined(formData.get("seoTitle")),
+    seoDescription: emptyToUndefined(formData.get("seoDescription"))
+  });
+  const tradition = await db.tradition.update({
+    where: { id: parsed.traditionId },
+    data: {
+      founderSaintId: parsed.founderSaintId ?? null,
+      founderDisplayName: parsed.founderDisplayName ?? null,
+      origin: parsed.origin ?? null,
+      eraLabel: parsed.eraLabel ?? null,
+      focus: parsed.focus ?? null,
+      originPlaceId: parsed.originPlaceId ?? null,
+      originPlaceLabel: parsed.originPlaceLabel ?? null,
+      historyMarkdown: parsed.historyMarkdown ?? null,
+      longIntroductionMarkdown: parsed.historyMarkdown ?? null,
+      foundingAcharyaMarkdown: parsed.foundingAcharyaMarkdown ?? null,
+      keyTeachingsMarkdown: parsed.keyTeachingsMarkdown ?? null,
+      seoTitle: parsed.seoTitle ?? null,
+      seoDescription: parsed.seoDescription ?? null
+    },
+    select: { slug: true }
+  });
+
   revalidateTraditionPaths(tradition.slug);
   redirect(`/admin/traditions/${tradition.slug}`);
 }

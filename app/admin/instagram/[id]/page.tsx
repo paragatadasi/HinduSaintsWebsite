@@ -65,7 +65,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
         </div>
       </div>
 
-      <div className="review-detail-grid">
+      <div className="review-detail-grid review-detail-grid--overview">
         <section className="review-panel">
           <h2>Post Preview</h2>
           <div className="instagram-detail-preview">

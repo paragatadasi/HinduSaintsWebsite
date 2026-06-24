@@ -30,6 +30,21 @@ const placeEditorSchema = z.object({
   notes: z.string().trim().max(1000).optional()
 });
 
+const placeOverviewSchema = placeEditorSchema.pick({
+  placeId: true,
+  name: true,
+  alternateNames: true,
+  placeScope: true,
+  parentStateId: true,
+  country: true
+});
+
+const placeOtherPublicFieldsSchema = placeEditorSchema.pick({
+  placeId: true,
+  overviewMarkdown: true,
+  notes: true
+});
+
 const mergePlacesSchema = z.object({
   sourcePlaceId: z.string().cuid(),
   targetPlaceId: z.string().cuid()
@@ -78,6 +93,68 @@ export async function updatePlace(formData: FormData) {
   });
 
   revalidatePlacePaths(existing.slug);
+  revalidatePlacePaths(place.slug);
+  redirect(`/admin/places/${place.slug}`);
+}
+
+export async function updatePlaceOverview(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = placeOverviewSchema.parse({
+    placeId: formData.get("placeId"),
+    name: formData.get("name"),
+    alternateNames: parseList(formData.get("alternateNames")),
+    placeScope: formData.get("placeScope"),
+    parentStateId: emptyToUndefined(formData.get("parentStateId")),
+    country: emptyToUndefined(formData.get("country"))
+  });
+  const existing = await db.place.findUnique({
+    where: { id: parsed.placeId },
+    select: { slug: true }
+  });
+
+  if (!existing) redirect("/admin/places");
+
+  const slug = await getUniquePlaceSlug(parsed.name, parsed.placeId);
+  const placeScope = getKnownPlaceScope(slug) === "state" ? "state" : parsed.placeScope;
+  const parentStateId = placeScope === "locality" && parsed.parentStateId !== parsed.placeId
+    ? parsed.parentStateId
+    : null;
+  const place = await db.place.update({
+    where: { id: parsed.placeId },
+    data: {
+      name: parsed.name,
+      slug,
+      alternateNames: parsed.alternateNames,
+      placeScope,
+      parentStateId,
+      country: parsed.country ?? null
+    },
+    select: { slug: true }
+  });
+
+  revalidatePlacePaths(existing.slug);
+  revalidatePlacePaths(place.slug);
+  redirect(`/admin/places/${place.slug}`);
+}
+
+export async function updatePlaceOtherPublicFields(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = placeOtherPublicFieldsSchema.parse({
+    placeId: formData.get("placeId"),
+    overviewMarkdown: emptyToUndefined(formData.get("overviewMarkdown")),
+    notes: emptyToUndefined(formData.get("notes"))
+  });
+  const place = await db.place.update({
+    where: { id: parsed.placeId },
+    data: {
+      overviewMarkdown: parsed.overviewMarkdown ?? null,
+      notes: parsed.notes ?? null
+    },
+    select: { slug: true }
+  });
+
   revalidatePlacePaths(place.slug);
   redirect(`/admin/places/${place.slug}`);
 }

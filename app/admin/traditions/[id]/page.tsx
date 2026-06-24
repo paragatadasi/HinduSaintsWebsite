@@ -2,13 +2,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Route } from "next";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import {
   mergeTraditions,
-  updateTradition,
   updateTraditionHeroImage,
   updateTraditionLineage,
+  updateTraditionOtherPublicFields,
+  updateTraditionOverview,
   updateTraditionRelatedLinks,
   updateTraditionScripturalBasis,
   updateTraditionReviewStatus
@@ -21,9 +23,10 @@ type AdminTraditionEditorPageProps = {
 };
 
 type SelectOption = {
-  id: string;
+  value: string;
   label: string;
-  detail?: string;
+  description?: string;
+  keywords?: string[];
 };
 
 export default async function AdminTraditionEditorPage({ params }: AdminTraditionEditorPageProps) {
@@ -56,25 +59,29 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
       select: { id: true, title: true, sourceType: true, author: true, url: true }
     })
   ]);
-  const saintOptions = allSaints.map((saint) => ({
-    id: saint.id,
+  const saintOptions: SelectOption[] = allSaints.map((saint) => ({
+    value: saint.id,
     label: saint.displayName,
-    detail: `${saint.canonicalName} - ${formatStatus(saint.status)}`
+    description: `${saint.canonicalName} - ${formatStatus(saint.status)}`,
+    keywords: [saint.canonicalName, saint.status]
   }));
-  const placeOptions = allPlaces.map((place) => ({
-    id: place.id,
+  const placeOptions: SelectOption[] = allPlaces.map((place) => ({
+    value: place.id,
     label: place.name,
-    detail: [place.region, place.country].filter(Boolean).join(", ") || undefined
+    description: [place.region, place.country].filter(Boolean).join(", ") || undefined,
+    keywords: [place.region, place.country].filter((keyword): keyword is string => Boolean(keyword))
   }));
-  const traditionOptions = allTraditions.map((option) => ({
-    id: option.id,
+  const traditionOptions: SelectOption[] = allTraditions.map((option) => ({
+    value: option.id,
     label: option.name,
-    detail: `${option._count.saints} saints`
+    description: `${option._count.saints} saints`,
+    keywords: [option.slug, ...option.alternateNames]
   }));
-  const sourceOptions = allSources.map((source) => ({
-    id: source.id,
+  const sourceOptions: SelectOption[] = allSources.map((source) => ({
+    value: source.id,
     label: source.title,
-    detail: [formatStatus(source.sourceType), source.author].filter(Boolean).join(" - ") || undefined
+    description: [formatStatus(source.sourceType), source.author].filter(Boolean).join(" - ") || undefined,
+    keywords: [source.sourceType, source.author, source.url].filter((keyword): keyword is string => Boolean(keyword))
   }));
   const visibleGalleryImages = tradition.galleryImages.filter((image) => image.publicVisible !== false);
   const hiddenGalleryImages = tradition.galleryImages.filter((image) => image.publicVisible === false);
@@ -101,10 +108,10 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
         </div>
       </div>
 
-      <div className="review-detail-grid">
+      <div className="review-detail-grid review-detail-grid--overview">
         <section className="review-panel">
-          <h2>Page Builder</h2>
-          <form action={updateTradition} className="form-stack">
+          <h2>Overview</h2>
+          <form action={updateTraditionOverview} className="form-stack">
             <input name="traditionId" type="hidden" value={tradition.id} />
             <label>
               Name
@@ -114,15 +121,14 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
               Alternate names
               <textarea name="alternateNames" defaultValue={tradition.alternateNames.join("\n")} />
             </label>
-            <label>
-              Parent tradition
-              <select name="parentTraditionId" defaultValue={tradition.parentTraditionId ?? ""}>
-                <option value="">No parent tradition</option>
-                {allTraditions.map((option) => (
-                  <option key={option.id} value={option.id}>{option.name}</option>
-                ))}
-              </select>
-            </label>
+            <SearchableSelect
+              defaultValue={tradition.parentTraditionId ?? ""}
+              emptyText="No traditions match this search."
+              label="Parent tradition"
+              name="parentTraditionId"
+              options={[{ value: "", label: "No parent tradition" }, ...traditionOptions]}
+              placeholder="Search traditions"
+            />
             <label>
               Status
               <select name="status" defaultValue={tradition.status}>
@@ -135,18 +141,70 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
               Short description
               <textarea name="shortDescription" defaultValue={tradition.shortDescription ?? ""} maxLength={500} />
             </label>
+            <div className="review-actions">
+              <button className="admin-form-button" type="submit">Save overview</button>
+            </div>
+          </form>
+        </section>
 
+        <aside className="review-panel">
+          <h2>Publication</h2>
+          <p>Publishing makes reviewed tradition content visible on the public home page, index, and detail routes.</p>
+          <div className="review-actions">
+            <StatusForm traditionId={tradition.id} status="published" label="Publish tradition" />
+            <StatusForm traditionId={tradition.id} status="needs_review" label="Return to review" variant="secondary" />
+            <StatusForm traditionId={tradition.id} status="archived" label="Archive" variant="warning" />
+          </div>
+
+          <div className="review-panel__subsection">
+            <h3>Merge duplicate</h3>
+            <p>Move saint relationships, source links, and child tradition links from another record into this tradition.</p>
+            <form action={mergeTraditions} className="form-stack">
+              <input name="targetTraditionId" type="hidden" value={tradition.id} />
+              <SearchableSelect
+                emptyText="No traditions match this search."
+                label="Duplicate tradition"
+                name="sourceTraditionId"
+                options={traditionOptions}
+                placeholder="Search duplicate traditions"
+                required
+              />
+              <div className="review-actions">
+                <button className="admin-form-button admin-form-button--warning" type="submit">Merge into this tradition</button>
+              </div>
+            </form>
+          </div>
+
+          <div className="review-panel__subsection">
+            <h3>Child traditions</h3>
+            {tradition.childTraditions.length > 0 ? (
+              <div className="review-list">
+                {tradition.childTraditions.map((child) => (
+                  <Link className="admin-text-link" href={`/admin/traditions/${child.slug}` as Route} key={child.id}>
+                    {child.name}
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p>No child traditions are attached.</p>
+            )}
+          </div>
+        </aside>
+
+        <section className="review-panel review-detail-grid__full">
+          <h2>Other Public Fields</h2>
+          <form action={updateTraditionOtherPublicFields} className="form-stack">
+            <input name="traditionId" type="hidden" value={tradition.id} />
             <div className="review-panel__subsection">
               <h3>Overview Facts</h3>
-              <label>
-                Founder saint
-                <select name="founderSaintId" defaultValue={tradition.founderSaintId ?? ""}>
-                  <option value="">No linked founder saint</option>
-                  {saintOptions.map((saint) => (
-                    <option key={saint.id} value={saint.id}>{saint.label}</option>
-                  ))}
-                </select>
-              </label>
+              <SearchableSelect
+                defaultValue={tradition.founderSaintId ?? ""}
+                emptyText="No saints match this search."
+                label="Founder saint"
+                name="founderSaintId"
+                options={[{ value: "", label: "No linked founder saint" }, ...saintOptions]}
+                placeholder="Search saints"
+              />
               <label>
                 Founder display override
                 <input name="founderDisplayName" defaultValue={tradition.founderDisplayName ?? ""} maxLength={200} />
@@ -163,15 +221,14 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
                 Focus
                 <input name="focus" defaultValue={tradition.focus ?? ""} maxLength={300} />
               </label>
-              <label>
-                Origin place
-                <select name="originPlaceId" defaultValue={tradition.originPlaceId ?? ""}>
-                  <option value="">No linked origin place</option>
-                  {placeOptions.map((place) => (
-                    <option key={place.id} value={place.id}>{place.label}</option>
-                  ))}
-                </select>
-              </label>
+              <SearchableSelect
+                defaultValue={tradition.originPlaceId ?? ""}
+                emptyText="No places match this search."
+                label="Origin place"
+                name="originPlaceId"
+                options={[{ value: "", label: "No linked origin place" }, ...placeOptions]}
+                placeholder="Search places"
+              />
               <label>
                 Origin place label override
                 <input name="originPlaceLabel" defaultValue={tradition.originPlaceLabel ?? ""} maxLength={200} />
@@ -217,55 +274,10 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
               <textarea name="seoDescription" defaultValue={tradition.seoDescription ?? ""} maxLength={300} />
             </label>
             <div className="review-actions">
-              <button className="admin-form-button" type="submit">Save page content</button>
+              <button className="admin-form-button" type="submit">Save public fields</button>
             </div>
           </form>
         </section>
-
-        <aside className="review-panel">
-          <h2>Publication</h2>
-          <p>Publishing makes reviewed tradition content visible on the public home page, index, and detail routes.</p>
-          <div className="review-actions">
-            <StatusForm traditionId={tradition.id} status="published" label="Publish tradition" />
-            <StatusForm traditionId={tradition.id} status="needs_review" label="Return to review" variant="secondary" />
-            <StatusForm traditionId={tradition.id} status="archived" label="Archive" variant="warning" />
-          </div>
-
-          <div className="review-panel__subsection">
-            <h3>Merge duplicate</h3>
-            <p>Move saint relationships, source links, and child tradition links from another record into this tradition.</p>
-            <form action={mergeTraditions} className="form-stack">
-              <input name="targetTraditionId" type="hidden" value={tradition.id} />
-              <label>
-                Duplicate tradition
-                <select name="sourceTraditionId" required>
-                  <option value="">Select duplicate</option>
-                  {allTraditions.map((option) => (
-                    <option key={option.id} value={option.id}>{option.name} ({option._count.saints} saints)</option>
-                  ))}
-                </select>
-              </label>
-              <div className="review-actions">
-                <button className="admin-form-button admin-form-button--warning" type="submit">Merge into this tradition</button>
-              </div>
-            </form>
-          </div>
-
-          <div className="review-panel__subsection">
-            <h3>Child traditions</h3>
-            {tradition.childTraditions.length > 0 ? (
-              <div className="review-list">
-                {tradition.childTraditions.map((child) => (
-                  <Link className="admin-text-link" href={`/admin/traditions/${child.slug}` as Route} key={child.id}>
-                    {child.name}
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <p>No child traditions are attached.</p>
-            )}
-          </div>
-        </aside>
       </div>
 
       <section className="review-panel">
@@ -275,28 +287,26 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
           <div className="review-list">
             {buildLineageRows(tradition.lineageSaints).map((row, index) => (
               <div className="review-row" key={row.key}>
-                <label>
-                  Saint
-                  <select name="lineageSaintId" defaultValue={row.saintId}>
-                    <option value="">Select saint</option>
-                    {saintOptions.map((saint) => (
-                      <option key={saint.id} value={saint.id}>{saint.label}</option>
-                    ))}
-                  </select>
-                </label>
+                <SearchableSelect
+                  defaultValue={row.saintId}
+                  emptyText="No saints match this search."
+                  label="Saint"
+                  name="lineageSaintId"
+                  options={saintOptions}
+                  placeholder="Search saints"
+                />
                 <label>
                   Role label
                   <input name="lineageRoleLabel" defaultValue={row.roleLabel} maxLength={120} />
                 </label>
-                <label>
-                  Parent saint
-                  <select name="lineageParentSaintId" defaultValue={row.parentSaintId}>
-                    <option value="">No parent saint</option>
-                    {saintOptions.map((saint) => (
-                      <option key={saint.id} value={saint.id}>{saint.label}</option>
-                    ))}
-                  </select>
-                </label>
+                <SearchableSelect
+                  defaultValue={row.parentSaintId}
+                  emptyText="No saints match this search."
+                  label="Parent saint"
+                  name="lineageParentSaintId"
+                  options={[{ value: "", label: "No parent saint" }, ...saintOptions]}
+                  placeholder="Search saints"
+                />
                 <label>
                   Sort order
                   <input name="lineageSortOrder" type="number" defaultValue={row.sortOrder ?? index} />
@@ -320,15 +330,14 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
             <div className="review-list">
               {buildRelatedTraditionRows(tradition.relatedTraditions).map((row, index) => (
                 <div className="review-row" key={row.key}>
-                  <label>
-                    Tradition
-                    <select name="relatedTraditionId" defaultValue={row.relatedTraditionId}>
-                      <option value="">Select tradition</option>
-                      {traditionOptions.map((option) => (
-                        <option key={option.id} value={option.id}>{option.label}</option>
-                      ))}
-                    </select>
-                  </label>
+                  <SearchableSelect
+                    defaultValue={row.relatedTraditionId}
+                    emptyText="No traditions match this search."
+                    label="Tradition"
+                    name="relatedTraditionId"
+                    options={traditionOptions}
+                    placeholder="Search traditions"
+                  />
                   <label>
                     Label
                     <input name="relatedTraditionLabel" defaultValue={row.label} maxLength={120} />
@@ -347,15 +356,14 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
             <div className="review-list">
               {buildRelatedPlaceRows(tradition.relatedPlaces).map((row, index) => (
                 <div className="review-row" key={row.key}>
-                  <label>
-                    Place
-                    <select name="relatedPlaceId" defaultValue={row.placeId}>
-                      <option value="">Select place</option>
-                      {placeOptions.map((place) => (
-                        <option key={place.id} value={place.id}>{place.label}</option>
-                      ))}
-                    </select>
-                  </label>
+                  <SearchableSelect
+                    defaultValue={row.placeId}
+                    emptyText="No places match this search."
+                    label="Place"
+                    name="relatedPlaceId"
+                    options={placeOptions}
+                    placeholder="Search places"
+                  />
                   <label>
                     Label
                     <input name="relatedPlaceLabel" defaultValue={row.label} maxLength={120} />
@@ -385,15 +393,14 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
                   Display title
                   <input name="scripturalBasisTitle" defaultValue={row.title} maxLength={300} />
                 </label>
-                <label>
-                  Reviewed source
-                  <select name="scripturalBasisSourceId" defaultValue={row.sourceId}>
-                    <option value="">No linked source</option>
-                    {sourceOptions.map((source) => (
-                      <option key={source.id} value={source.id}>{source.label}</option>
-                    ))}
-                  </select>
-                </label>
+                <SearchableSelect
+                  defaultValue={row.sourceId}
+                  emptyText="No sources match this search."
+                  label="Reviewed source"
+                  name="scripturalBasisSourceId"
+                  options={[{ value: "", label: "No linked source" }, ...sourceOptions]}
+                  placeholder="Search sources"
+                />
                 <label>
                   URL override
                   <input name="scripturalBasisUrl" type="url" defaultValue={row.url} maxLength={1000} />
