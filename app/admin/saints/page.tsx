@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Route } from "next";
 import { db } from "@/lib/db";
 import { rankSaintSearchResults } from "@/lib/saint-search";
+import { AirtableImportPanel } from "./airtable-import-panel";
 import { SaintsBulkReviewList } from "./saints-bulk-review-list";
 
 const statuses = ["all", "draft", "needs_review", "published", "archived"] as const;
@@ -15,9 +16,10 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
   const { q, status } = await searchParams;
   const query = getSearchParam(q);
   const activeStatus = statuses.includes(status as StatusFilter) ? status as StatusFilter : "all";
-  const [counts, saints] = await Promise.all([
+  const [counts, saints, airtableJobs] = await Promise.all([
     getStatusCounts(),
-    getSaints(activeStatus, query)
+    getSaints(activeStatus, query),
+    getAirtableImportJobs()
   ]);
   const returnTo = getSaintsReturnTo(activeStatus, query);
   const reviewRows = saints.map((saint) => ({
@@ -37,6 +39,8 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
           <p className="lede">Review imported CMS records, edit public fields, and manage publication status.</p>
         </div>
       </div>
+
+      <AirtableImportPanel jobs={airtableJobs} />
 
       <div className="admin-stat-grid" aria-label="Saint status filters">
         {statuses.map((item) => (
@@ -97,6 +101,35 @@ async function getSaints(status: StatusFilter, query: string) {
   if (!query) return saints;
   return rankSaintSearchResults(saints, query, { includeAdminFields: true })
     .map(({ item }) => item);
+}
+
+async function getAirtableImportJobs() {
+  const jobs = await db.airtableImportJob.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 8
+  });
+
+  return jobs.map((job) => ({
+    id: job.id,
+    mode: job.mode,
+    status: job.status,
+    sourceName: job.sourceName,
+    mirrorRowsChecked: job.mirrorRowsChecked,
+    existingCmsSaintsSkipped: job.existingCmsSaintsSkipped,
+    newDraftSaintsCreated: job.newDraftSaintsCreated,
+    slugNameCollisionsSkipped: job.slugNameCollisionsSkipped,
+    guruRelationshipsCreated: job.guruRelationshipsCreated,
+    guruRelationshipsExisting: job.guruRelationshipsExisting,
+    guruRelationshipsUnresolved: job.guruRelationshipsUnresolved,
+    skippedSelfRelationships: job.skippedSelfRelationships,
+    failedRows: job.failedRows,
+    message: job.message,
+    error: job.error,
+    rawSummary: job.rawSummary,
+    startedAt: job.startedAt?.toISOString() ?? null,
+    completedAt: job.completedAt?.toISOString() ?? null,
+    createdAt: job.createdAt.toISOString()
+  }));
 }
 
 function Stat({ active, href, label, value }: { active: boolean; href: string; label: string; value: number }) {
