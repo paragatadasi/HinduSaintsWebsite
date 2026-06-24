@@ -17,7 +17,7 @@ export function TraditionCard({ tradition, variant = "summary" }: TraditionCardP
 
   if (variant === "icon") {
     return (
-      <Card className="entity-card interactive-surface tradition-card tradition-card--icon">
+      <Card className="entity-card interactive-surface rail-card tradition-card tradition-card--icon">
         <Link href={`/traditions/${tradition.slug}`}>
           <span className="tradition-card__icon" aria-hidden="true">
             <Icon size={42} />

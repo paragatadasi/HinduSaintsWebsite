@@ -22,6 +22,7 @@
   --color-green: #366153;
   --color-image-overlay: rgba(33, 31, 26, 0.14);
   --color-image-overlay-strong: rgba(33, 31, 26, 0.28);
+  --color-modal-scrim: rgba(0, 0, 0, 0.78);
   --color-focus: #c28b2c;
   --font-sans: Arial, Helvetica, sans-serif;
   --font-serif: Georgia, "Times New Roman", serif;
@@ -37,6 +38,7 @@
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-control: var(--radius-md);
+  --border-width-default: 1px;
   --shadow-soft: 0 12px 40px rgba(33, 31, 26, 0.08);
   --shadow-image: 0 18px 50px rgba(33, 31, 26, 0.14);
   --shadow-interactive:
@@ -52,14 +54,47 @@
   --width-aside: 320px;
   --width-card-grid-min: 240px;
   --width-card-grid: 280px;
+  --width-rail-card-max: calc((var(--width-page) - (var(--space-scroll-rail-gutter) * 2) - (var(--space-4) * 3)) / 4);
+  --width-rail-card: clamp(210px, 24vw, var(--width-rail-card-max));
+  --width-rail-card-featured: clamp(230px, 24vw, var(--width-rail-card-max));
   --width-tradition-aside: 340px;
+  --width-instagram-preview-card: clamp(190px, 18vw, var(--width-instagram-preview));
   --width-instagram-preview: 230px;
+  --width-instagram-post-card-min: 280px;
   --width-instagram-post-card: 360px;
+  --width-instagram-viewer-panel: min(100%, 1120px);
+  --width-instagram-viewer-details: 320px;
+  --width-instagram-viewer-details-min: 260px;
+  --width-instagram-viewer-thumb-min: 48px;
+  --width-instagram-viewer-thumb: 64px;
   --height-map: clamp(520px, 54vw, 640px);
   --height-map-mobile-canvas: 340px;
   --height-map-mobile-panel: 300px;
+  --height-instagram-link-card: 92px;
+  --height-instagram-post-card-header: 64px;
+  --height-instagram-viewer-panel: min(92vh, 860px);
+  --height-instagram-viewer-stage-image: min(62vh, 640px);
   --height-instagram-inline-viewer: min(70vh, 720px);
   --height-combobox-list: 320px;
+  --size-instagram-avatar: 38px;
+  --size-instagram-type-badge: 34px;
+  --size-instagram-viewer-button: 42px;
+  --size-icon-xs: 15px;
+  --size-icon-sm: 18px;
+  --size-icon-md: 20px;
+  --size-icon-action: 21px;
+  --size-icon-lg: 22px;
+  --size-icon-nav: 26px;
+  --size-icon-fallback: 42px;
+  --size-scroll-button: 44px;
+  --size-scroll-button-icon: 18px;
+  --space-scroll-rail-control-gap: var(--space-4);
+  --space-scroll-rail-gutter: calc(var(--size-scroll-button) + var(--space-scroll-rail-control-gap));
+  --scroll-button-offset: 0;
+  --scroll-button-block-position: 50%;
+  --size-focus-ring: 2px;
+  --size-focus-offset: 3px;
+  --size-focus-offset-card: 4px;
 }
 
 [data-theme="watercolor"] {

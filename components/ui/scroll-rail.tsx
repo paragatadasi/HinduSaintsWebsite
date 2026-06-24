@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
 
+const scrollRailIconSize = "var(--size-scroll-button-icon)";
+
 type ScrollRailProps = {
   children: ReactNode;
   ariaLabel: string;
@@ -71,7 +73,7 @@ export function ScrollRail({ children, ariaLabel, className, controls: controlsM
           disabled={!controls.canScrollPrevious}
           onClick={() => scroll("previous")}
         >
-          <ArrowLeft size={18} />
+          <ArrowLeft size={scrollRailIconSize} />
         </button>
       ) : null}
       <div ref={railRef} className="scroll-rail" aria-label={ariaLabel} onScroll={updateControls}>
@@ -85,7 +87,7 @@ export function ScrollRail({ children, ariaLabel, className, controls: controlsM
           disabled={!controls.canScrollNext}
           onClick={() => scroll("next")}
         >
-          <ArrowRight size={18} />
+          <ArrowRight size={scrollRailIconSize} />
         </button>
       ) : null}
     </div>

@@ -18,7 +18,7 @@ export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
 
   if (variant === "portrait") {
     return (
-      <Card className="entity-card interactive-surface saint-card saint-card--portrait">
+      <Card className="entity-card interactive-surface rail-card rail-card--featured saint-card saint-card--portrait">
         <Link href={`/saints/${saint.slug}`}>
           <div className={`saint-card__portrait saint-card__portrait--${saint.slug}`}>
             <img src={image.url} alt={image.alt} width={image.width} height={image.height} />
