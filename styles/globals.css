@@ -1820,32 +1820,137 @@ img {
 
 .tradition-hero {
   border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 22%, transparent);
-  padding: var(--space-8) 0;
+  padding: var(--space-12) 0 var(--space-8);
 }
 
 .tradition-hero__inner {
-  align-items: end;
+  align-items: center;
   display: grid;
   gap: var(--space-8);
-  grid-template-columns: minmax(0, 1fr) minmax(260px, var(--width-tradition-aside));
+  grid-template-columns: minmax(0, 1fr) minmax(260px, var(--width-tradition-hero-media));
 }
 
 .tradition-hero__content {
   max-width: var(--width-prose);
 }
 
+.tradition-breadcrumb {
+  align-items: center;
+  color: var(--color-muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+  font-weight: 700;
+  gap: var(--space-2);
+}
+
+.tradition-breadcrumb a {
+  color: var(--color-accent);
+}
+
 .tradition-hero h1 {
   font-family: var(--font-serif);
-  font-size: clamp(3rem, 6vw, 5rem);
+  font-size: clamp(2.6rem, 5vw, 4rem);
   font-weight: 500;
   line-height: 1.06;
-  margin: var(--space-2) 0 var(--space-4);
+  margin: var(--space-3) 0 var(--space-4);
 }
 
 .tradition-hero p {
   color: var(--color-muted);
-  font-size: 1.22rem;
+  font-size: 1.05rem;
   margin: 0;
+}
+
+.tradition-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.tradition-hero__image {
+  align-items: center;
+  aspect-ratio: 1;
+  display: grid;
+  justify-items: center;
+  margin: 0;
+  position: relative;
+}
+
+.tradition-hero__image img {
+  aspect-ratio: 1;
+  background:
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--color-gold) 42%, transparent), transparent 34%),
+    linear-gradient(var(--color-image-overlay), var(--color-image-overlay-strong)),
+    var(--color-surface-muted);
+  border-radius: 50% 50% 46% 46%;
+  filter: var(--image-treatment);
+  height: var(--size-tradition-hero-image);
+  object-fit: cover;
+  width: var(--size-tradition-hero-image);
+}
+
+.tradition-hero__image figcaption {
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 700;
+  left: 50%;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18ch;
+}
+
+.tradition-hero__image-arc {
+  border-color: color-mix(in srgb, var(--color-accent) 58%, transparent);
+  border-style: solid;
+  border-width: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.tradition-hero__image-arc--left,
+.tradition-hero__image-arc--right {
+  border-top-width: 6px;
+  height: 150px;
+  top: var(--space-5);
+  width: 78px;
+}
+
+.tradition-hero__image-arc--left {
+  border-left-width: 6px;
+  border-radius: 100% 0 0 0;
+  left: var(--space-6);
+  transform: rotate(-16deg);
+}
+
+.tradition-hero__image-arc--right {
+  border-radius: 0 100% 0 0;
+  border-right-width: 6px;
+  right: var(--space-6);
+  transform: rotate(16deg);
+}
+
+.tradition-hero__image-arc--base {
+  border-radius: 100% 100% 0 0;
+  border-top: 14px solid color-mix(in srgb, var(--color-green) 46%, transparent);
+  bottom: var(--space-5);
+  height: 70px;
+  width: 240px;
+}
+
+.tradition-detail__divider {
+  border-top: 1px solid var(--color-border);
+}
+
+.tradition-detail__content {
+  align-items: start;
+  display: grid;
+  gap: var(--space-8);
+  grid-template-columns: minmax(0, 1fr) minmax(260px, var(--width-tradition-aside));
+  padding: var(--space-8) 0 var(--space-12);
 }
 
 .tradition-detail__grid,
@@ -1874,11 +1979,26 @@ img {
 }
 
 .tradition-panel {
-  background: var(--color-surface);
+  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
   border: 1px solid var(--color-card-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-soft);
   padding: var(--space-5);
+}
+
+.tradition-panel h2,
+.tradition-section h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.tradition-section p {
+  color: var(--color-muted);
+  margin: 0;
+  max-width: var(--width-prose);
 }
 
 .tradition-panel .section-heading {
@@ -1895,26 +2015,187 @@ img {
 
 .tradition-facts {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-3);
   margin: var(--space-4) 0 0;
 }
 
 .tradition-facts div {
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--space-3);
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: minmax(84px, 0.42fr) minmax(0, 1fr);
 }
 
 .tradition-facts dt {
   color: var(--color-muted);
-  font-size: 0.78rem;
+  font-size: 0.86rem;
   font-weight: 700;
-  text-transform: uppercase;
 }
 
 .tradition-facts dd {
-  font-family: var(--font-serif);
-  font-size: 1.22rem;
-  margin: var(--space-1) 0 0;
+  margin: 0;
+}
+
+.tradition-lineage {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: center;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: var(--space-2) 0 var(--space-3);
+}
+
+.tradition-lineage__row {
+  display: grid;
+  gap: var(--space-4);
+  grid-auto-columns: var(--width-tradition-lineage-node);
+  grid-auto-flow: column;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  min-width: max-content;
+  padding: var(--space-6) 0 0;
+  position: relative;
+}
+
+.tradition-lineage__row--secondary {
+  gap: var(--space-8);
+  opacity: 0.88;
+}
+
+.tradition-lineage__row::before {
+  background: var(--color-border);
+  content: "";
+  height: 2px;
+  left: calc(var(--width-tradition-lineage-node) / 2);
+  position: absolute;
+  right: calc(var(--width-tradition-lineage-node) / 2);
+  top: var(--space-3);
+}
+
+.tradition-lineage__row li {
+  position: relative;
+}
+
+.tradition-lineage__row li::before {
+  background: var(--color-border);
+  content: "";
+  height: var(--space-3);
+  left: 50%;
+  position: absolute;
+  top: calc(var(--space-3) * -1);
+  width: 2px;
+}
+
+.tradition-lineage-saint {
+  align-items: center;
+  color: var(--color-text);
+  display: grid;
+  gap: var(--space-2);
+  justify-items: center;
+  text-align: center;
+}
+
+.tradition-lineage-saint__portrait {
+  background: var(--color-surface-muted);
+  border: 2px solid color-mix(in srgb, var(--color-gold) 62%, transparent);
+  border-radius: 50%;
+  box-shadow: var(--shadow-soft);
+  display: block;
+  height: var(--size-tradition-lineage-portrait);
+  overflow: hidden;
+  width: var(--size-tradition-lineage-portrait);
+}
+
+.tradition-lineage-saint--prominent .tradition-lineage-saint__portrait {
+  height: var(--size-tradition-lineage-portrait-prominent);
+  width: var(--size-tradition-lineage-portrait-prominent);
+}
+
+.tradition-lineage-saint--compact .tradition-lineage-saint__portrait {
+  height: var(--size-tradition-lineage-portrait-compact);
+  width: var(--size-tradition-lineage-portrait-compact);
+}
+
+.tradition-lineage-saint__portrait img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.tradition-lineage-saint__text {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.tradition-lineage-saint strong {
+  font-size: 0.82rem;
+  line-height: 1.2;
+}
+
+.tradition-lineage-saint small {
+  color: var(--color-muted);
+  font-size: 0.74rem;
+  line-height: 1.25;
+}
+
+.tradition-context-thumbs {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(2, var(--size-tradition-context-thumb));
+  margin-top: var(--space-5);
+}
+
+.tradition-context-thumbs a,
+.tradition-place-list img {
+  aspect-ratio: 1;
+  background:
+    radial-gradient(circle at 50% 34%, color-mix(in srgb, var(--color-gold) 30%, transparent), transparent 30%),
+    var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  filter: var(--image-treatment);
+  overflow: hidden;
+}
+
+.tradition-context-thumbs img,
+.tradition-place-list img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.tradition-place-list {
+  display: grid;
+  gap: var(--space-4);
+  list-style: none;
+  margin: var(--space-5) 0 0;
+  padding: 0;
+}
+
+.tradition-place-list a {
+  align-items: center;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: var(--size-tradition-context-thumb) minmax(0, 1fr);
+}
+
+.tradition-place-list strong,
+.tradition-place-list small {
+  display: block;
+}
+
+.tradition-place-list small {
+  color: var(--color-muted);
+  margin-top: var(--space-1);
+}
+
+.tradition-context-link {
+  align-items: center;
+  color: var(--color-accent);
+  display: inline-flex;
+  font-weight: 700;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
 }
 
 .tradition-saint-tree {
@@ -3240,9 +3521,23 @@ img {
   .saint-detail-hero__inner,
   .saint-detail-layout,
   .tradition-hero__inner,
+  .tradition-detail__content,
   .tradition-detail__grid,
   .tradition-detail__reading {
     grid-template-columns: 1fr;
+  }
+
+  .tradition-hero {
+    padding-top: var(--space-8);
+  }
+
+  .tradition-hero__image {
+    justify-self: center;
+    max-width: min(100%, var(--width-tradition-hero-media));
+  }
+
+  .tradition-hero__actions .button {
+    justify-content: center;
   }
 
   .hero__symbol {

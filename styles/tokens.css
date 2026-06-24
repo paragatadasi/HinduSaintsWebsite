@@ -58,6 +58,8 @@
   --width-rail-card: clamp(210px, 24vw, var(--width-rail-card-max));
   --width-rail-card-featured: clamp(230px, 24vw, var(--width-rail-card-max));
   --width-tradition-aside: 340px;
+  --width-tradition-hero-media: 360px;
+  --width-tradition-lineage-node: 118px;
   --width-instagram-preview-card: clamp(190px, 18vw, var(--width-instagram-preview));
   --width-instagram-preview: 230px;
   --width-instagram-post-card-min: 280px;
@@ -86,6 +88,11 @@
   --size-icon-lg: 22px;
   --size-icon-nav: 26px;
   --size-icon-fallback: 42px;
+  --size-tradition-hero-image: 220px;
+  --size-tradition-lineage-portrait: 58px;
+  --size-tradition-lineage-portrait-prominent: 68px;
+  --size-tradition-lineage-portrait-compact: 50px;
+  --size-tradition-context-thumb: 76px;
   --size-scroll-button: 44px;
   --size-scroll-button-icon: 18px;
   --space-scroll-rail-control-gap: var(--space-4);

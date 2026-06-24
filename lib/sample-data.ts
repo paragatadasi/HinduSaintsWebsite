@@ -339,6 +339,7 @@ export const traditions: TraditionRecord[] = [
     founder: "Adi Shankaracharya",
     saints: [],
     relatedTraditions: [],
+    relatedPlaces: [],
     status: "published"
   },
   {
@@ -347,6 +348,7 @@ export const traditions: TraditionRecord[] = [
     shortDescription: "Devotional lineages centered on love, surrender, chanting, service, and remembrance.",
     saints: [],
     relatedTraditions: [],
+    relatedPlaces: [],
     status: "published"
   },
   {
@@ -356,6 +358,7 @@ export const traditions: TraditionRecord[] = [
     founder: "Sri Ramakrishna",
     saints: [],
     relatedTraditions: [],
+    relatedPlaces: [],
     status: "published"
   },
   {
@@ -365,6 +368,7 @@ export const traditions: TraditionRecord[] = [
     founder: "Sri Chaitanya Mahaprabhu",
     saints: [],
     relatedTraditions: [],
+    relatedPlaces: [],
     status: "published"
   },
   {
@@ -373,6 +377,7 @@ export const traditions: TraditionRecord[] = [
     shortDescription: "A Maharashtrian bhakti tradition centered on Vithoba, pilgrimage, abhangas, and devotional remembrance.",
     saints: [],
     relatedTraditions: [],
+    relatedPlaces: [],
     status: "published"
   },
   {
@@ -382,6 +387,7 @@ export const traditions: TraditionRecord[] = [
     founder: "Basavanna",
     saints: [],
     relatedTraditions: [],
+    relatedPlaces: [],
     status: "published"
   }
 ];

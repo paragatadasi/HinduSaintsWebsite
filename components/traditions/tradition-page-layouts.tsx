@@ -1,58 +1,74 @@
 import Link from "next/link";
-import { ArrowRight, GitBranch, Library, Network } from "lucide-react";
+import type { Route } from "next";
+import { ArrowRight, MapPinned, MessageSquare, Network } from "lucide-react";
 import { Prose } from "@/components/content/prose";
-import { SaintCard } from "@/components/saints/saint-card";
-import { TraditionLayoutToggle } from "@/components/traditions/tradition-layout-toggle";
+import { Button } from "@/components/ui/button";
 import type { TraditionDetailTemplateContent } from "@/lib/site-content";
-import type { PublicSaintSummary, PublicTraditionDetail } from "@/lib/public-contracts";
-
-export type TraditionDetailLayoutOption = "overview" | "lineage" | "reading";
-
-export const traditionLayoutOptions: Array<{
-  value: TraditionDetailLayoutOption;
-  label: string;
-}> = [
-  { value: "overview", label: "Overview blocks" },
-  { value: "lineage", label: "Lineage tree" },
-  { value: "reading", label: "Reading layout" }
-];
+import type {
+  PublicImage,
+  PublicPlaceLink,
+  PublicSaintSummary,
+  PublicTraditionDetail,
+  PublicTraditionLink
+} from "@/lib/public-contracts";
 
 type TraditionPageLayoutsProps = {
   tradition: PublicTraditionDetail;
   template: TraditionDetailTemplateContent;
-  layout: TraditionDetailLayoutOption;
 };
 
-export function TraditionPageLayouts({ tradition, template, layout }: TraditionPageLayoutsProps) {
+const IMAGE_PLACEHOLDER: PublicImage = {
+  url: "/images/devotional-archive-placeholder.svg",
+  alt: "Reviewed public image pending"
+};
+
+export function TraditionPageLayouts({ tradition, template }: TraditionPageLayoutsProps) {
   const historyMarkdown = tradition.introductionMarkdown ?? template.placeholderMarkdown;
-  const layoutClass = `tradition-detail tradition-detail--${layout}`;
+  const featuredSaints = getLineageSaints(tradition);
+  const founder = getFounderSaint(tradition);
 
   return (
-    <main className={layoutClass}>
-      <TraditionHero tradition={tradition} template={template} />
-      {layout === "lineage" ? (
-        <LineageLayout tradition={tradition} historyMarkdown={historyMarkdown} />
-      ) : layout === "reading" ? (
-        <ReadingLayout tradition={tradition} historyMarkdown={historyMarkdown} />
-      ) : (
-        <OverviewLayout tradition={tradition} historyMarkdown={historyMarkdown} />
-      )}
-      <div className="page-shell">
-        <TraditionLayoutToggle currentLayout={layout} options={traditionLayoutOptions} />
+    <main className="tradition-detail">
+      <TraditionHero tradition={tradition} />
+      <div className="page-shell tradition-detail__divider" />
+      <div className="page-shell tradition-detail__content">
+        <article className="tradition-detail__main">
+          <NarrativeSection
+            title="Founding Acharya"
+            body={getFoundingSummary(tradition, founder, historyMarkdown)}
+          />
+          <LineageTree saints={featuredSaints} founderName={tradition.founder} />
+          <section className="tradition-section tradition-section--history">
+            <h2>History</h2>
+            <Prose markdown={historyMarkdown} />
+          </section>
+          <NarrativeSection
+            title="Key Teachings"
+            body={getTeachingSummary(tradition)}
+          />
+        </article>
+        <aside className="tradition-detail__aside" aria-label={`${tradition.name} context`}>
+          <TraditionOverviewPanel tradition={tradition} founder={founder} />
+          <RelatedTraditions traditions={tradition.relatedTraditions} />
+          <RelatedPlaces places={tradition.relatedPlaces} />
+        </aside>
       </div>
     </main>
   );
 }
 
-function TraditionHero({ tradition, template }: {
-  tradition: PublicTraditionDetail;
-  template: TraditionDetailTemplateContent;
-}) {
+function TraditionHero({ tradition }: { tradition: PublicTraditionDetail }) {
+  const image = tradition.heroImage ?? IMAGE_PLACEHOLDER;
+
   return (
     <section className="tradition-hero">
       <div className="page-shell tradition-hero__inner">
         <div className="tradition-hero__content">
-          <div className="eyebrow">{template.eyebrow}</div>
+          <nav className="tradition-breadcrumb" aria-label="Breadcrumb">
+            <Link href="/traditions">Traditions</Link>
+            <span aria-hidden="true">/</span>
+            <span>{tradition.name}</span>
+          </nav>
           <h1>{tradition.name}</h1>
           <p>{tradition.shortDescription}</p>
           {tradition.alternateNames && tradition.alternateNames.length > 0 ? (
@@ -60,212 +76,254 @@ function TraditionHero({ tradition, template }: {
               {tradition.alternateNames.map((name) => <span className="chip" key={name}>{name}</span>)}
             </div>
           ) : null}
+          <div className="tradition-hero__actions">
+            <Button href="#tradition-lineage" variant="primary" icon={<Network size={18} aria-hidden="true" />}>
+              Explore Saints
+            </Button>
+            <Button href="/map" variant="secondary" icon={<MapPinned size={18} aria-hidden="true" />}>
+              View on Map
+            </Button>
+            <Button href="/contact" variant="secondary" icon={<MessageSquare size={18} aria-hidden="true" />}>
+              Send feedback
+            </Button>
+          </div>
         </div>
-        <TraditionOverviewPanel tradition={tradition} />
+        <figure className="tradition-hero__image">
+          <img src={image.url} alt={image.alt} width={image.width} height={image.height} />
+          {!tradition.heroImage ? <figcaption>{image.alt}</figcaption> : null}
+          <span className="tradition-hero__image-arc tradition-hero__image-arc--left" aria-hidden="true" />
+          <span className="tradition-hero__image-arc tradition-hero__image-arc--right" aria-hidden="true" />
+          <span className="tradition-hero__image-arc tradition-hero__image-arc--base" aria-hidden="true" />
+        </figure>
       </div>
     </section>
   );
 }
 
-function OverviewLayout({ tradition, historyMarkdown }: {
-  tradition: PublicTraditionDetail;
-  historyMarkdown: string;
-}) {
+function NarrativeSection({ title, body }: { title: string; body: string }) {
   return (
-    <div className="page-shell section tradition-detail__grid">
-      <div className="tradition-detail__main">
-        <HistorySection markdown={historyMarkdown} />
-        <AssociatedSaints saints={tradition.saints} />
-      </div>
-      <aside className="tradition-detail__aside">
-        <SaintTree tradition={tradition} />
-        <RelatedPages tradition={tradition} />
-      </aside>
-    </div>
+    <section className="tradition-section">
+      <h2>{title}</h2>
+      <p>{body}</p>
+    </section>
   );
 }
 
-function LineageLayout({ tradition, historyMarkdown }: {
-  tradition: PublicTraditionDetail;
-  historyMarkdown: string;
+function LineageTree({
+  saints,
+  founderName
+}: {
+  saints: PublicSaintSummary[];
+  founderName?: string;
 }) {
-  return (
-    <div className="page-shell section tradition-detail__stack">
-      <SaintTree tradition={tradition} prominent />
-      <div className="tradition-detail__grid">
-        <HistorySection markdown={historyMarkdown} />
-        <RelatedPages tradition={tradition} />
-      </div>
-      <AssociatedSaints saints={tradition.saints} />
-    </div>
-  );
-}
+  const [rootSaint, ...descendants] = saints;
+  const firstRow = descendants.slice(0, 6);
+  const secondRow = descendants.slice(6, 11);
 
-function ReadingLayout({ tradition, historyMarkdown }: {
-  tradition: PublicTraditionDetail;
-  historyMarkdown: string;
-}) {
   return (
-    <div className="page-shell section tradition-detail__reading">
-      <div className="tradition-detail__main">
-        <HistorySection markdown={historyMarkdown} />
-      </div>
-      <aside className="tradition-detail__aside">
-        <SaintTree tradition={tradition} />
-        <RelatedPages tradition={tradition} />
-      </aside>
-      <AssociatedSaints saints={tradition.saints} />
-    </div>
-  );
-}
-
-function TraditionOverviewPanel({ tradition }: { tradition: PublicTraditionDetail }) {
-  return (
-    <aside className="tradition-panel tradition-panel--summary">
-      <div>
-        <div className="eyebrow">Overview</div>
-        <dl className="tradition-facts">
-          {tradition.founder ? (
-            <div>
-              <dt>Founder</dt>
-              <dd>{tradition.founder}</dd>
-            </div>
+    <section className="tradition-lineage" id="tradition-lineage" aria-label="Associated saints lineage">
+      {rootSaint ? (
+        <>
+          <LineageSaint saint={rootSaint} prominent />
+          {firstRow.length > 0 ? (
+            <ol className="tradition-lineage__row tradition-lineage__row--primary">
+              {firstRow.map((saint) => (
+                <li key={saint.slug}>
+                  <LineageSaint saint={saint} />
+                </li>
+              ))}
+            </ol>
           ) : null}
-          <div>
-            <dt>Published saints</dt>
-            <dd>{tradition.saints.length}</dd>
-          </div>
-          <div>
-            <dt>Related traditions</dt>
-            <dd>{tradition.relatedTraditions.length}</dd>
-          </div>
-        </dl>
-      </div>
-    </aside>
-  );
-}
-
-function HistorySection({ markdown }: { markdown: string }) {
-  return (
-    <section className="tradition-section tradition-section--history">
-      <div className="section-heading section-heading--text">
-        <div>
-          <div className="eyebrow">History</div>
-          <h2>Tradition history</h2>
-        </div>
-      </div>
-      <Prose markdown={markdown} />
+          {secondRow.length > 0 ? (
+            <ol className="tradition-lineage__row tradition-lineage__row--secondary">
+              {secondRow.map((saint) => (
+                <li key={saint.slug}>
+                  <LineageSaint saint={saint} compact />
+                </li>
+              ))}
+            </ol>
+          ) : null}
+        </>
+      ) : (
+        <p className="empty-note">
+          Associated saints will appear here after editorial review{founderName ? ` for ${founderName}` : ""}.
+        </p>
+      )}
     </section>
   );
 }
 
-function SaintTree({ tradition, prominent = false }: {
-  tradition: PublicTraditionDetail;
+function LineageSaint({
+  saint,
+  prominent = false,
+  compact = false
+}: {
+  saint: PublicSaintSummary;
   prominent?: boolean;
+  compact?: boolean;
 }) {
-  const saints = getTreeSaints(tradition);
+  const image = saint.image ?? IMAGE_PLACEHOLDER;
+  const className = [
+    "tradition-lineage-saint",
+    prominent ? "tradition-lineage-saint--prominent" : null,
+    compact ? "tradition-lineage-saint--compact" : null
+  ].filter(Boolean).join(" ");
 
   return (
-    <section className={prominent ? "tradition-panel tradition-panel--tree tradition-panel--tree-prominent" : "tradition-panel tradition-panel--tree"}>
-      <div className="section-heading section-heading--text">
-        <div>
-          <div className="eyebrow">Saint Tree</div>
-          <h2>Connected saints</h2>
-        </div>
-        <Network size={22} aria-hidden="true" />
-      </div>
-      {saints.length > 0 ? (
-        <ol className="tradition-saint-tree">
-          {saints.map((saint, index) => (
-            <li key={saint.slug}>
-              <Link href={`/saints/${saint.slug}`}>
-                <span className="tradition-saint-tree__marker" aria-hidden="true">{index + 1}</span>
-                <span>
-                  <strong>{saint.displayName}</strong>
-                  <small>{saint.eraLabel} · {saint.primaryLocation}</small>
-                </span>
+    <Link className={className} href={`/saints/${saint.slug}`}>
+      <span className="tradition-lineage-saint__portrait">
+        <img src={image.url} alt={image.alt} width={image.width} height={image.height} />
+      </span>
+      {!compact ? (
+        <span className="tradition-lineage-saint__text">
+          <strong>{saint.displayName}</strong>
+          <small>{saint.eraLabel}</small>
+        </span>
+      ) : null}
+    </Link>
+  );
+}
+
+function TraditionOverviewPanel({
+  tradition,
+  founder
+}: {
+  tradition: PublicTraditionDetail;
+  founder?: PublicSaintSummary;
+}) {
+  const facts = [
+    ["Founder", tradition.founder ?? "In review"],
+    ["Origin", founder?.primaryLocation ?? tradition.relatedPlaces[0]?.name ?? "In review"],
+    ["Era", founder?.eraLabel ?? "In review"],
+    ["Focus", getFocusLabel(tradition)],
+    ["Scriptural Basis", getSourceSummary(tradition)]
+  ];
+
+  return (
+    <section className="tradition-panel">
+      <h2>Tradition Overview</h2>
+      <dl className="tradition-facts">
+        {facts.map(([label, value]) => (
+          <div key={label}>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
+function RelatedTraditions({ traditions }: { traditions: PublicTraditionLink[] }) {
+  return (
+    <section className="tradition-panel">
+      <h2>Related Traditions</h2>
+      {traditions.length > 0 ? (
+        <>
+          <div className="tradition-context-thumbs">
+            {traditions.slice(0, 2).map((tradition) => (
+              <Link key={tradition.slug} href={`/traditions/${tradition.slug}`} aria-label={tradition.name}>
+                <img src={IMAGE_PLACEHOLDER.url} alt="" />
               </Link>
-            </li>
-          ))}
-        </ol>
+            ))}
+          </div>
+          <ContextLink href="/traditions" label="View all traditions" />
+        </>
       ) : (
-        <p className="empty-note">A lineage view will appear after published saints are linked.</p>
+        <p className="empty-note">Related traditions will appear as the archive grows.</p>
       )}
     </section>
   );
 }
 
-function RelatedPages({ tradition }: { tradition: PublicTraditionDetail }) {
-  const saintLinks = tradition.saints.slice(0, 6);
-  const hasRelatedPages = tradition.relatedTraditions.length > 0 || saintLinks.length > 0;
-
+function RelatedPlaces({ places }: { places: PublicPlaceLink[] }) {
   return (
-    <section className="tradition-panel tradition-panel--related">
-      <div className="section-heading section-heading--text">
-        <div>
-          <div className="eyebrow">Related</div>
-          <h2>Related pages</h2>
-        </div>
-        <Library size={22} aria-hidden="true" />
-      </div>
-      {hasRelatedPages ? (
-        <ul className="context-list">
-          {tradition.relatedTraditions.map((relatedTradition) => (
-            <li key={relatedTradition.slug}>
-              <Link href={`/traditions/${relatedTradition.slug}`}>
-                {relatedTradition.name}
-                <ArrowRight size={15} aria-hidden="true" />
-              </Link>
-              {relatedTradition.shortDescription ? <p>{relatedTradition.shortDescription}</p> : null}
-            </li>
-          ))}
-          {saintLinks.map((saint) => (
-            <li key={saint.slug}>
-              <Link href={`/saints/${saint.slug}`}>
-                {saint.displayName}
-                <ArrowRight size={15} aria-hidden="true" />
-              </Link>
-              <p>{saint.eraLabel} · {saint.tradition}</p>
-            </li>
-          ))}
-        </ul>
+    <section className="tradition-panel">
+      <h2>Related Places</h2>
+      {places.length > 0 ? (
+        <>
+          <ul className="tradition-place-list">
+            {places.slice(0, 3).map((place) => (
+              <li key={place.slug}>
+                <Link href={`/places/${place.slug}`}>
+                  <img src={IMAGE_PLACEHOLDER.url} alt="" />
+                  <span>
+                    <strong>{place.name}</strong>
+                    <small>{place.shortDescription}</small>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <ContextLink href="/places" label="View all places" />
+        </>
       ) : (
-        <p className="empty-note">Related pages will appear as the archive grows.</p>
+        <p className="empty-note">Related places will appear after published saints are linked.</p>
       )}
     </section>
   );
 }
 
-function AssociatedSaints({ saints }: { saints: PublicSaintSummary[] }) {
+function ContextLink({ href, label }: { href: Route; label: string }) {
   return (
-    <section className="tradition-section tradition-section--saints">
-      <div className="section-heading section-heading--text">
-        <div>
-          <div className="eyebrow">Saints</div>
-          <h2>Associated saints</h2>
-        </div>
-        <GitBranch size={22} aria-hidden="true" />
-      </div>
-      {saints.length > 0 ? (
-        <div className="card-grid">
-          {saints.map((saint) => <SaintCard key={saint.slug} saint={saint} />)}
-        </div>
-      ) : (
-        <div className="empty-state">
-          <h2>No published saints linked yet</h2>
-          <p>Associated saints will appear here after editorial review.</p>
-        </div>
-      )}
-    </section>
+    <Link className="tradition-context-link" href={href}>
+      {label}
+      <ArrowRight size={16} aria-hidden="true" />
+    </Link>
   );
 }
 
-function getTreeSaints(tradition: PublicTraditionDetail) {
-  if (!tradition.founder) return tradition.saints;
+function getFounderSaint(tradition: PublicTraditionDetail) {
+  if (!tradition.founder) return undefined;
+  return tradition.saints.find((saint) => saint.displayName === tradition.founder);
+}
 
-  return [...tradition.saints].sort((first, second) => {
+function getLineageSaints(tradition: PublicTraditionDetail) {
+  const saints = [...tradition.saints];
+  if (!tradition.founder) return saints;
+
+  return saints.sort((first, second) => {
     if (first.displayName === tradition.founder) return -1;
     if (second.displayName === tradition.founder) return 1;
     return first.displayName.localeCompare(second.displayName);
   });
+}
+
+function getFoundingSummary(
+  tradition: PublicTraditionDetail,
+  founder: PublicSaintSummary | undefined,
+  markdown: string
+) {
+  if (founder) {
+    return `${tradition.name} is associated with ${founder.displayName}, whose profile is currently connected to ${founder.primaryLocation} and the era ${founder.eraLabel}. ${tradition.shortDescription}`;
+  }
+
+  return getFirstParagraph(markdown) || tradition.shortDescription;
+}
+
+function getTeachingSummary(tradition: PublicTraditionDetail) {
+  if (tradition.sources && tradition.sources.length > 0) {
+    return `Editorial sources for ${tradition.name} are being used to refine a concise teaching summary. Current source coverage includes ${getSourceSummary(tradition)}.`;
+  }
+
+  return "A concise teaching summary is in review. Published tradition pages will keep this section focused on reviewed doctrine, practice, lineage, and source-backed context.";
+}
+
+function getFocusLabel(tradition: PublicTraditionDetail) {
+  const sentence = tradition.shortDescription.split(/[.!?]/)[0]?.trim();
+  return sentence || "In review";
+}
+
+function getSourceSummary(tradition: PublicTraditionDetail) {
+  const sources = tradition.sources ?? [];
+  if (sources.length === 0) return "In review";
+
+  return sources.slice(0, 2).map((source) => source.title).join(", ");
+}
+
+function getFirstParagraph(markdown: string) {
+  return markdown
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.replace(/^#+\s*/, "").trim())
+    .find(Boolean);
 }

@@ -41,6 +41,14 @@ export type PublicTraditionLink = {
   shortDescription?: string;
 };
 
+export type PublicPlaceLink = {
+  slug: string;
+  name: string;
+  region?: string;
+  country?: string;
+  shortDescription?: string;
+};
+
 export type PublicInstagramItem = {
   url: string;
   shortcode?: string;
@@ -153,6 +161,7 @@ export type PublicTraditionDetail = PublicTraditionSummary & {
   heroImage?: PublicImage;
   saints: PublicSaintSummary[];
   relatedTraditions: PublicTraditionLink[];
+  relatedPlaces: PublicPlaceLink[];
   sources?: PublicSourceSummary[];
   furtherReading?: PublicFurtherReadingItem[];
   seo?: {

@@ -1,5 +1,7 @@
 import { db } from "@/lib/db";
 import type {
+  PublicImage,
+  PublicPlaceLink,
   PublicSaintSummary,
   PublicSourceSummary,
   PublicTraditionDetail,
@@ -30,6 +32,7 @@ async function getPublishedTraditionRows() {
                 include: { place: true },
                 orderBy: { placeType: "asc" }
               },
+              primaryImage: true,
               traditions: {
                 include: { tradition: true },
                 orderBy: { isPrimary: "desc" }
@@ -60,6 +63,7 @@ async function getPublishedTraditionRowBySlug(slug: string) {
                 include: { place: true },
                 orderBy: { placeType: "asc" }
               },
+              primaryImage: true,
               traditions: {
                 include: { tradition: true },
                 orderBy: { isPrimary: "desc" }
@@ -123,6 +127,7 @@ function toPublicTraditionDetail(
     introductionMarkdown: tradition.longIntroductionMarkdown ?? undefined,
     saints: getSortedSaints(tradition).map(toPublicSaintSummary),
     relatedTraditions: getRelatedTraditions(tradition),
+    relatedPlaces: getRelatedPlaces(tradition),
     sources,
     furtherReading: sources,
     seo: {
@@ -159,6 +164,7 @@ function toPublicSaintSummary(saint: TraditionSaintRow): PublicSaintSummary {
     displayName: saint.displayName,
     canonicalName: saint.canonicalName,
     shortDescription: saint.shortDescription ?? saint.biographySummary ?? "",
+    image: saint.primaryImage ? toPublicImage(saint.primaryImage, saint.displayName) : undefined,
     eraLabel: saint.eraLabel ?? DEFAULT_ERA,
     primaryLocation: getPrimaryLocation(saint.places),
     tradition: getPrimaryTradition(saint.traditions),
@@ -169,10 +175,47 @@ function toPublicSaintSummary(saint: TraditionSaintRow): PublicSaintSummary {
   };
 }
 
+function toPublicImage(image: TraditionSaintRow["primaryImage"], displayName: string): PublicImage {
+  return {
+    url: image?.url ?? "/images/devotional-archive-placeholder.svg",
+    alt: image?.altText ?? `${displayName} portrait`,
+    caption: image?.caption ?? undefined,
+    credit: image?.credit ?? undefined,
+    sourceUrl: image?.sourceUrl ?? undefined,
+    width: image?.width ?? undefined,
+    height: image?.height ?? undefined
+  };
+}
+
 function getSortedSaints(tradition: TraditionListRow | TraditionDetailRow) {
   return tradition.saints
     .map(({ saint }) => saint)
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
+}
+
+function getRelatedPlaces(tradition: TraditionDetailRow): PublicPlaceLink[] {
+  const places = new Map<string, PublicPlaceLink>();
+
+  for (const saintLink of tradition.saints) {
+    for (const placeLink of saintLink.saint.places) {
+      const place = placeLink.place;
+      if (places.has(place.slug)) continue;
+
+      places.set(place.slug, {
+        slug: place.slug,
+        name: place.name,
+        region: place.region ?? undefined,
+        country: place.country ?? undefined,
+        shortDescription: buildPlaceSummary(place)
+      });
+    }
+  }
+
+  return Array.from(places.values()).sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function buildPlaceSummary(place: TraditionSaintRow["places"][number]["place"]) {
+  return [place.region, place.country].filter(Boolean).join(", ") || "Location details in review";
 }
 
 function getPrimaryLocation(places: TraditionSaintRow["places"]) {
