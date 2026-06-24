@@ -56,6 +56,7 @@
   --height-map: clamp(520px, 54vw, 640px);
   --height-map-mobile-canvas: 340px;
   --height-map-mobile-panel: 300px;
+  --height-instagram-inline-viewer: min(70vh, 720px);
   --height-combobox-list: 320px;
 }
 

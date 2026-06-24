@@ -193,6 +193,13 @@ consumers. Public saint pages, the home rail, the admin Instagram queue/detail
 views, and saint image picker should prefer ordered `InstagramMediaAsset`
 records over raw payload media URLs.
 
+Public carousel adapters must treat ordered `InstagramMediaAsset` rows as the
+canonical display sequence when they exist. They should deduplicate cached rows
+by their original source image identity and ignore legacy
+`/instagram-covers/` cache entries when full carousel media rows are present, so
+older imports that include both full media and cover-cache artifacts do not
+repeat the first slide in public viewers.
+
 For already-imported records, run:
 
 ```sh

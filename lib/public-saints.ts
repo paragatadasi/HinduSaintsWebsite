@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { getInstagramCarouselImageUrls } from "@/lib/instagram";
+import { getPublicInstagramMediaAssetUrls } from "@/lib/public-instagram";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import type {
   PublicImage,
@@ -289,7 +290,7 @@ async function getInstagramItemsForSaint(saintId: string): Promise<PublicInstagr
           thumbnailUrl: true,
           mediaAssets: {
             orderBy: { sortOrder: "asc" },
-            select: { cachedUrl: true }
+            select: { cachedUrl: true, sourceUrl: true }
           },
           postedAt: true
         }
@@ -323,7 +324,7 @@ async function getInstagramItemsForSaint(saintId: string): Promise<PublicInstagr
     caption: instagramItem.captionText ?? undefined,
     thumbnailUrl: instagramItem.mediaAssets[0]?.cachedUrl ?? instagramItem.thumbnailUrl ?? undefined,
     carouselImageUrls: instagramItem.mediaAssets.length > 0
-      ? instagramItem.mediaAssets.map((asset) => asset.cachedUrl)
+      ? getPublicInstagramMediaAssetUrls(instagramItem.mediaAssets)
       : getInstagramCarouselImageUrls(rawPayloadByItemId.get(instagramItem.id)),
     postedAt: instagramItem.postedAt?.toISOString()
   }));

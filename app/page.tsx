@@ -1,6 +1,6 @@
 import { ArrowRight, Instagram, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { InstagramPreviewLink } from "@/components/instagram/instagram-preview-link";
+import { HomeInstagramRail } from "@/components/instagram/home-instagram-rail";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { SaintCard } from "@/components/saints/saint-card";
 import { TraditionCard } from "@/components/traditions/tradition-card";
@@ -106,11 +106,7 @@ export default async function HomePage() {
             </Button>
           </div>
           {instagramPreviews.length > 0 ? (
-            <ScrollRail ariaLabel="Instagram previews" className="instagram-rail" controls="always">
-              {instagramPreviews.map((preview) => (
-                <InstagramPreviewLink alt={preview.alt} imageUrl={preview.imageUrl} imageUrls={preview.imageUrls} key={preview.url} url={preview.url} />
-              ))}
-            </ScrollRail>
+            <HomeInstagramRail previews={instagramPreviews} />
           ) : (
             <p className="empty-note">Instagram carousel posts will appear here after import.</p>
           )}

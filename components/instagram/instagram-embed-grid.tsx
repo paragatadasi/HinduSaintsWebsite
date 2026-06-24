@@ -59,7 +59,7 @@ export function InstagramEmbedGrid({ items = [], urls = [], saintName }: Instagr
   );
 }
 
-type CarouselViewerState = {
+export type CarouselViewerState = {
   images: string[];
   post: PublicInstagramItem;
   selectedIndex: number;
@@ -182,12 +182,14 @@ function InstagramCaption({ caption, fallback }: { caption?: string; fallback: s
   );
 }
 
-function InstagramCarouselViewer({
+export function InstagramCarouselViewer({
+  mode = "modal",
   onClose,
   onSelect,
   saintName,
   state
 }: {
+  mode?: "modal" | "inline";
   onClose: () => void;
   onSelect: (selectedIndex: number) => void;
   saintName: string;
@@ -210,7 +212,7 @@ function InstagramCarouselViewer({
         onSelect(state.selectedIndex + 1);
       }
 
-      if (event.key === "Escape") {
+      if (mode === "modal" && event.key === "Escape") {
         event.preventDefault();
         onClose();
       }
@@ -218,19 +220,25 @@ function InstagramCarouselViewer({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [hasNext, hasPrevious, onClose, onSelect, state.selectedIndex]);
+  }, [hasNext, hasPrevious, mode, onClose, onSelect, state.selectedIndex]);
+
+  const viewerProps = mode === "modal"
+    ? { role: "dialog", "aria-modal": true, "aria-label": `Carousel images for ${saintName}` }
+    : { role: "region", "aria-label": `Selected Instagram post images for ${saintName}` };
 
   return (
-    <div className="instagram-carousel-viewer" role="dialog" aria-modal="true" aria-label={`Carousel images for ${saintName}`}>
+    <div className={`instagram-carousel-viewer instagram-carousel-viewer--${mode}`} {...viewerProps}>
       <div className="instagram-carousel-viewer__panel">
         <header className="instagram-carousel-viewer__header">
           <div>
             <strong>{saintName}</strong>
             <span>{state.selectedIndex + 1} of {state.images.length}</span>
           </div>
-          <button aria-label="Close carousel viewer" onClick={onClose} type="button">
-            <X size={22} aria-hidden="true" />
-          </button>
+          {mode === "modal" ? (
+            <button aria-label="Close carousel viewer" onClick={onClose} type="button">
+              <X size={22} aria-hidden="true" />
+            </button>
+          ) : null}
         </header>
 
         <div className="instagram-carousel-viewer__stage">
@@ -297,7 +305,7 @@ function getInstagramAlt(post: PublicInstagramItem, saintName: string) {
   return post.caption ? `Instagram post about ${saintName}: ${post.caption.slice(0, 80)}` : `Instagram ${formatPostType(post.type).toLowerCase()} about ${saintName}`;
 }
 
-function getCarouselImages(post: PublicInstagramItem) {
+export function getCarouselImages(post: PublicInstagramItem) {
   const images = post.carouselImageUrls?.length ? post.carouselImageUrls : [post.thumbnailUrl].filter(Boolean);
   return Array.from(new Set(images)) as string[];
 }

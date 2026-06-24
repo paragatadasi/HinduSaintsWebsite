@@ -6,7 +6,13 @@ export type PublicInstagramCarouselPreview = {
   imageUrl: string;
   imageUrls: string[];
   alt: string;
+  caption?: string;
   postedAt?: string;
+};
+
+export type PublicInstagramMediaAsset = {
+  cachedUrl: string;
+  sourceUrl?: string | null;
 };
 
 const INSTAGRAM_CDN_URL_PATTERN = /(^|\.)cdninstagram\.com$/i;
@@ -37,7 +43,7 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
       thumbnailUrl: true,
       mediaAssets: {
         orderBy: { sortOrder: "asc" },
-        select: { cachedUrl: true }
+        select: { cachedUrl: true, sourceUrl: true }
       }
     }
   });
@@ -67,8 +73,11 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
   return items
     .flatMap((item) => {
       const coverImageUrl = getInstagramCarouselCoverImageUrl(rawPayloadByItemId.get(item.id));
-      const cachedImageUrls = item.mediaAssets.map((asset) => asset.cachedUrl);
-      const imageUrls = getFreshInstagramImageUrls([...cachedImageUrls, item.thumbnailUrl, coverImageUrl]);
+      const imageUrls = getPreviewImageUrls({
+        coverImageUrl,
+        mediaAssets: item.mediaAssets,
+        thumbnailUrl: item.thumbnailUrl
+      });
       const imageUrl = imageUrls[0];
       if (!imageUrl) return [];
 
@@ -77,14 +86,75 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
         imageUrl,
         imageUrls,
         alt: getInstagramPreviewAlt(item.captionText),
+        ...(item.captionText ? { caption: item.captionText } : {}),
         ...(item.postedAt ? { postedAt: item.postedAt.toISOString() } : {})
       }];
     })
     .slice(0, limit);
 }
 
+function getPreviewImageUrls({
+  coverImageUrl,
+  mediaAssets,
+  thumbnailUrl
+}: {
+  coverImageUrl?: string;
+  mediaAssets: PublicInstagramMediaAsset[];
+  thumbnailUrl?: string | null;
+}) {
+  const cachedUrls = getPublicInstagramMediaAssetUrls(mediaAssets);
+  if (cachedUrls.length > 0) return cachedUrls;
+
+  return getFreshInstagramImageUrls([thumbnailUrl, coverImageUrl]);
+}
+
+export function getPublicInstagramMediaAssetUrls(mediaAssets: PublicInstagramMediaAsset[]) {
+  const hasCarouselMedia = mediaAssets.some((asset) => !isCachedCoverAsset(asset));
+  const seen = new Set<string>();
+  const urls: string[] = [];
+
+  for (const asset of mediaAssets) {
+    if (hasCarouselMedia && isCachedCoverAsset(asset)) continue;
+
+    const cachedUrl = asset.cachedUrl.trim();
+    if (!cachedUrl || isExpiredInstagramCdnUrl(cachedUrl)) continue;
+
+    const identity = getMediaAssetIdentity(asset) ?? cachedUrl;
+    if (seen.has(identity)) continue;
+
+    seen.add(identity);
+    urls.push(cachedUrl);
+  }
+
+  return urls;
+}
+
 function getInstagramPreviewAlt(caption: string | null) {
   return caption ? `Instagram carousel cover: ${caption.slice(0, 80)}` : "Instagram carousel cover";
+}
+
+function getMediaAssetIdentity(asset: PublicInstagramMediaAsset) {
+  const sourceUrl = asset.sourceUrl?.trim();
+  if (!sourceUrl || isCachedCoverUrl(sourceUrl)) return undefined;
+
+  return getCanonicalImageUrl(sourceUrl);
+}
+
+function isCachedCoverAsset(asset: PublicInstagramMediaAsset) {
+  return isCachedCoverUrl(asset.cachedUrl) || isCachedCoverUrl(asset.sourceUrl);
+}
+
+function isCachedCoverUrl(url?: string | null) {
+  return Boolean(url?.includes("/instagram-covers/"));
+}
+
+function getCanonicalImageUrl(url: string) {
+  try {
+    const parsed = new URL(url);
+    return `${parsed.origin}${parsed.pathname}`.toLowerCase();
+  } catch {
+    return url;
+  }
 }
 
 function getFreshInstagramImageUrls(urls: Array<string | null | undefined>) {

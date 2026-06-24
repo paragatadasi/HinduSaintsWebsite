@@ -1081,10 +1081,27 @@ img {
   position: relative;
 }
 
+.instagram-preview--button {
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-align: inherit;
+}
+
+.instagram-preview--button[aria-pressed="true"] {
+  border-color: var(--color-interactive-border);
+  box-shadow: var(--shadow-interactive);
+}
+
 .instagram-preview img {
   height: 100%;
   object-fit: cover;
   width: 100%;
+}
+
+.home-instagram {
+  display: grid;
+  gap: var(--space-5);
 }
 
 .instagram-link-card {
@@ -1316,6 +1333,14 @@ img {
   z-index: 40;
 }
 
+.instagram-carousel-viewer--inline {
+  background: transparent;
+  display: block;
+  padding: 0;
+  position: static;
+  z-index: auto;
+}
+
 .instagram-carousel-viewer__panel {
   background: var(--color-surface);
   border: 1px solid var(--color-card-border);
@@ -1327,6 +1352,11 @@ img {
   max-width: min(100%, 860px);
   overflow: hidden;
   width: 100%;
+}
+
+.instagram-carousel-viewer--inline .instagram-carousel-viewer__panel {
+  max-height: none;
+  max-width: 100%;
 }
 
 .instagram-carousel-viewer__header {
@@ -1385,6 +1415,10 @@ img {
   height: min(62vh, 640px);
   object-fit: contain;
   width: 100%;
+}
+
+.instagram-carousel-viewer--inline .instagram-carousel-viewer__stage img {
+  height: var(--height-instagram-inline-viewer);
 }
 
 .instagram-carousel-viewer__stage span {
