@@ -39,8 +39,11 @@ Security:
 Verification:
 - Use `npm run dev:check` for the normal development loop after TypeScript, component, route, or data-contract edits.
 - `npm run dev:check` generates the Prisma client and runs TypeScript without doing a production Next.js build.
+- `npm run build` is the web build only. Do not add database migrations, seeds, or other database access to the web build path.
+- Prisma client generation is code generation, not database access. Keep it explicit in `dev:check`, `db:generate`, Docker build setup, and `codex:verify`.
 - Use `npm run codex:verify` only as a heavier gate: after dependency/setup changes, before handing off a large route/rendering change, before commits intended for deployment, or when a production-build failure is specifically suspected.
 - Do not run `npm run codex:verify` as the default checker for every small frontend iteration.
+- Production database migrations must run in the deployment migrate/release phase, not while building the web image.
 - Do not run database migrations against production from Codex Cloud.
 - Cloud tasks that need database access must use a development PostgreSQL database configured through environment settings.
 - If `CODEX_START_POSTGRES=1` and Docker is available in Codex Cloud, use `scripts/start-dev-postgres.sh` to run a disposable local Postgres 16 container for development tasks.

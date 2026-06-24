@@ -163,6 +163,11 @@ npm run db:deploy
 
 Use `npm run codex:verify` only when you need the production-build gate, such as dependency/setup changes, large route/rendering changes, pre-deployment handoff, or suspected build-only failures.
 
+`npm run build` runs the web build only. Use `npm run db:generate` or
+`npm run codex:verify` when the Prisma client needs to be regenerated before a
+build; migrations and seeds belong in explicit database/deployment steps, not
+the web build.
+
 ## Project principles
 
 - Public pages only show published content.

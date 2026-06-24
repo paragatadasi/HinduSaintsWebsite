@@ -82,6 +82,9 @@ npm run dev:check
 
 This generates the Prisma client and runs TypeScript without doing a production Next.js build.
 
+`npm run build` is reserved for the web build itself. It should not run database
+migrations, seeds, or runtime data reads.
+
 ## Production verification
 
 Ask Codex Cloud agents to run the heavier production-build gate only after dependency/setup changes, before handing off a large route/rendering change, before deployment-oriented commits, or when a production-build failure is specifically suspected:
