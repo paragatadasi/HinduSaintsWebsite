@@ -3,6 +3,7 @@ import type {
   PublicSaintSummary,
   PublicSourceSummary,
   PublicTraditionDetail,
+  PublicTraditionLink,
   PublicTraditionSummary
 } from "@/lib/public-contracts";
 
@@ -45,6 +46,11 @@ async function getPublishedTraditionRowBySlug(slug: string) {
   return db.tradition.findFirst({
     where: { slug, status: "published" },
     include: {
+      parentTradition: true,
+      childTraditions: {
+        where: { status: "published" },
+        orderBy: { name: "asc" }
+      },
       saints: {
         where: { saint: { status: "published" } },
         include: {
@@ -116,12 +122,34 @@ function toPublicTraditionDetail(
     alternateNames: tradition.alternateNames.length > 0 ? tradition.alternateNames : undefined,
     introductionMarkdown: tradition.longIntroductionMarkdown ?? undefined,
     saints: getSortedSaints(tradition).map(toPublicSaintSummary),
+    relatedTraditions: getRelatedTraditions(tradition),
     sources,
     furtherReading: sources,
     seo: {
       title: tradition.seoTitle ?? tradition.name,
       description: tradition.seoDescription ?? tradition.shortDescription ?? undefined
     }
+  };
+}
+
+function getRelatedTraditions(tradition: TraditionDetailRow) {
+  return [
+    tradition.parentTradition && tradition.parentTradition.status === "published"
+      ? toPublicTraditionLink(tradition.parentTradition)
+      : null,
+    ...tradition.childTraditions.map(toPublicTraditionLink)
+  ].filter((relatedTradition): relatedTradition is PublicTraditionLink => Boolean(relatedTradition));
+}
+
+function toPublicTraditionLink(tradition: {
+  slug: string;
+  name: string;
+  shortDescription: string | null;
+}): PublicTraditionLink {
+  return {
+    slug: tradition.slug,
+    name: tradition.name,
+    shortDescription: tradition.shortDescription ?? undefined
   };
 }
 

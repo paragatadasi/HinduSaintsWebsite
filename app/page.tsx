@@ -91,9 +91,13 @@ export default async function HomePage() {
               </Button>
             ) : null}
           </div>
-          <ScrollRail ariaLabel="traditions" controls="always">
-            {traditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} variant="icon" />)}
-          </ScrollRail>
+          {traditions.length > 0 ? (
+            <ScrollRail ariaLabel="traditions" controls="always">
+              {traditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} variant="icon" />)}
+            </ScrollRail>
+          ) : (
+            <p className="empty-note">Published traditions will appear here after editorial review.</p>
+          )}
         </div>
       </section>
 
@@ -174,9 +178,13 @@ function ArchiveHomePage({ hero, featuredSaintsSection, traditionsSection, saint
               </Button>
             ) : null}
           </div>
-          <div className="card-grid">
-            {traditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} />)}
-          </div>
+          {traditions.length > 0 ? (
+            <div className="card-grid">
+              {traditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} />)}
+            </div>
+          ) : (
+            <p className="empty-note">Published traditions will appear here after editorial review.</p>
+          )}
         </div>
       </section>
     </main>

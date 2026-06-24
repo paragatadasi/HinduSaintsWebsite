@@ -28,6 +28,11 @@ const mergeTraditionsSchema = z.object({
   message: "Choose two different traditions."
 });
 
+const traditionStatusSchema = z.object({
+  traditionId: z.string().cuid(),
+  status: z.enum(["needs_review", "published", "hidden"])
+});
+
 export async function updateTradition(formData: FormData) {
   await requireAdminSession();
 
@@ -69,6 +74,27 @@ export async function updateTradition(formData: FormData) {
   });
 
   revalidateTraditionPaths(existing.slug);
+  revalidateTraditionPaths(tradition.slug);
+  redirect(`/admin/traditions/${tradition.slug}`);
+}
+
+export async function updateTraditionReviewStatus(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = traditionStatusSchema.parse({
+    traditionId: formData.get("traditionId"),
+    status: formData.get("status")
+  });
+  const now = new Date();
+  const tradition = await db.tradition.update({
+    where: { id: parsed.traditionId },
+    data: {
+      status: parsed.status,
+      publishedAt: parsed.status === "published" ? now : null
+    },
+    select: { slug: true }
+  });
+
   revalidateTraditionPaths(tradition.slug);
   redirect(`/admin/traditions/${tradition.slug}`);
 }

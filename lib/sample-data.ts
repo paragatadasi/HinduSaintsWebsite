@@ -338,6 +338,7 @@ export const traditions: TraditionRecord[] = [
     shortDescription: "A non-dual Vedantic tradition emphasizing the identity of Atman and Brahman.",
     founder: "Adi Shankaracharya",
     saints: [],
+    relatedTraditions: [],
     status: "published"
   },
   {
@@ -345,6 +346,7 @@ export const traditions: TraditionRecord[] = [
     name: "Bhakti Traditions",
     shortDescription: "Devotional lineages centered on love, surrender, chanting, service, and remembrance.",
     saints: [],
+    relatedTraditions: [],
     status: "published"
   },
   {
@@ -353,6 +355,7 @@ export const traditions: TraditionRecord[] = [
     shortDescription: "A modern spiritual movement shaped by Sri Ramakrishna, Holy Mother, and Swami Vivekananda.",
     founder: "Sri Ramakrishna",
     saints: [],
+    relatedTraditions: [],
     status: "published"
   },
   {
@@ -361,6 +364,7 @@ export const traditions: TraditionRecord[] = [
     shortDescription: "A Krishna-centered Vaishnava tradition emphasizing bhakti, kirtan, and devotion to Radha-Krishna.",
     founder: "Sri Chaitanya Mahaprabhu",
     saints: [],
+    relatedTraditions: [],
     status: "published"
   },
   {
@@ -368,6 +372,7 @@ export const traditions: TraditionRecord[] = [
     name: "Varkari Sampradaya",
     shortDescription: "A Maharashtrian bhakti tradition centered on Vithoba, pilgrimage, abhangas, and devotional remembrance.",
     saints: [],
+    relatedTraditions: [],
     status: "published"
   },
   {
@@ -376,6 +381,7 @@ export const traditions: TraditionRecord[] = [
     shortDescription: "A Shaiva devotional tradition associated with Basavanna, vachana literature, and worship of the ishtalinga.",
     founder: "Basavanna",
     saints: [],
+    relatedTraditions: [],
     status: "published"
   }
 ];

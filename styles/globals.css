@@ -677,6 +677,10 @@ img {
   max-width: 13ch;
 }
 
+.tradition-card--summary a {
+  height: 100%;
+}
+
 .place-card {
   min-height: 100%;
 }
@@ -1677,6 +1681,196 @@ img {
 
 .prose {
   max-width: var(--width-prose);
+}
+
+.tradition-hero {
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 22%, transparent);
+  padding: var(--space-8) 0;
+}
+
+.tradition-hero__inner {
+  align-items: end;
+  display: grid;
+  gap: var(--space-8);
+  grid-template-columns: minmax(0, 1fr) minmax(260px, var(--width-tradition-aside));
+}
+
+.tradition-hero__content {
+  max-width: var(--width-prose);
+}
+
+.tradition-hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 500;
+  line-height: 1.06;
+  margin: var(--space-2) 0 var(--space-4);
+}
+
+.tradition-hero p {
+  color: var(--color-muted);
+  font-size: 1.22rem;
+  margin: 0;
+}
+
+.tradition-detail__grid,
+.tradition-detail__reading {
+  align-items: start;
+  display: grid;
+  gap: var(--space-8);
+  grid-template-columns: minmax(0, 1fr) minmax(260px, var(--width-tradition-aside));
+}
+
+.tradition-detail__stack,
+.tradition-detail__main,
+.tradition-detail__aside,
+.tradition-section {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.tradition-detail__reading .tradition-section--saints {
+  grid-column: 1 / -1;
+}
+
+.tradition-panel,
+.tradition-section {
+  min-width: 0;
+}
+
+.tradition-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-5);
+}
+
+.tradition-panel .section-heading {
+  margin-bottom: var(--space-5);
+}
+
+.tradition-panel .section-heading h2 {
+  font-size: 1.35rem;
+}
+
+.tradition-panel--tree-prominent {
+  box-shadow: none;
+}
+
+.tradition-facts {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-4) 0 0;
+}
+
+.tradition-facts div {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-3);
+}
+
+.tradition-facts dt {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.tradition-facts dd {
+  font-family: var(--font-serif);
+  font-size: 1.22rem;
+  margin: var(--space-1) 0 0;
+}
+
+.tradition-saint-tree {
+  display: grid;
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.tradition-saint-tree::before {
+  background: var(--color-border);
+  bottom: var(--space-4);
+  content: "";
+  left: 19px;
+  position: absolute;
+  top: var(--space-4);
+  width: 1px;
+}
+
+.tradition-saint-tree li {
+  position: relative;
+}
+
+.tradition-saint-tree a {
+  align-items: center;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 40px minmax(0, 1fr);
+}
+
+.tradition-saint-tree__marker {
+  align-items: center;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-accent);
+  display: inline-flex;
+  font-size: 0.82rem;
+  font-weight: 700;
+  height: 40px;
+  justify-content: center;
+  position: relative;
+  width: 40px;
+}
+
+.tradition-saint-tree strong,
+.tradition-saint-tree small {
+  display: block;
+}
+
+.tradition-saint-tree small {
+  color: var(--color-muted);
+  margin-top: var(--space-1);
+}
+
+.layout-dev-toggle {
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-8) 0 var(--space-12);
+  max-width: 320px;
+  padding-top: var(--space-4);
+}
+
+.layout-dev-toggle label {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.layout-dev-toggle select {
+  appearance: none;
+  background:
+    linear-gradient(45deg, transparent 50%, var(--color-muted) 50%),
+    linear-gradient(135deg, var(--color-muted) 50%, transparent 50%),
+    var(--color-surface);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 13px) 50%,
+    0 0;
+  background-repeat: no-repeat;
+  background-size: 5px 5px, 5px 5px, 100% 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font: inherit;
+  min-height: 44px;
+  padding: 0 var(--space-8) 0 var(--space-3);
 }
 
 .button {
@@ -2821,7 +3015,10 @@ img {
   }
 
   .saint-detail-hero__inner,
-  .saint-detail-layout {
+  .saint-detail-layout,
+  .tradition-hero__inner,
+  .tradition-detail__grid,
+  .tradition-detail__reading {
     grid-template-columns: 1fr;
   }
 

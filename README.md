@@ -36,11 +36,11 @@ npm run dev
 
 Then open <http://localhost:3000>.
 
-Local `npm run dev` runs `prisma migrate deploy` and `prisma generate`
-before starting Next. This keeps the development database aligned when new
-checked-in migrations are pulled or created by another agent. Use
-`npm run db:migrate` only when intentionally creating a new migration from a
-Prisma schema change.
+Local `npm run dev` starts the Docker Postgres service, runs
+`prisma migrate deploy`, and runs `prisma generate` before starting Next. This
+keeps the development database online and aligned when new checked-in
+migrations are pulled or created by another agent. Use `npm run db:migrate`
+only when intentionally creating a new migration from a Prisma schema change.
 
 This project uses Prisma ORM 7. Prisma configuration lives in
 `prisma.config.ts`, including the datasource URL, migrations path, and seed
@@ -56,6 +56,12 @@ from this workspace before starting Next again:
 
 ```powershell
 npm run dev:reset
+```
+
+If you only need to start the local database, run:
+
+```powershell
+npm run db:start
 ```
 
 For a local production build on Windows, use the local build wrapper. It stops

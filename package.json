@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "node scripts/prepare-next-dev.mjs && prisma migrate deploy && prisma generate",
+    "predev": "npm run db:start && node scripts/prepare-next-dev.mjs && prisma migrate deploy && prisma generate",
     "dev": "next dev",
     "dev:stop": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/stop-dev.ps1",
     "dev:reset": "npm run dev:stop && npm run dev",
@@ -17,6 +17,7 @@
     "verify": "prisma generate && next build",
     "codex:verify": "prisma generate && next build",
     "db:generate": "prisma generate",
+    "db:start": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/start-local-postgres.ps1",
     "db:deploy": "prisma migrate deploy",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",

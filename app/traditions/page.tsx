@@ -15,9 +15,13 @@ export default async function TraditionsIndexPage() {
         <h1 className="page-title">{content.title}</h1>
         <p className="lede">{content.description}</p>
       </div>
-      <div className="card-grid">
-        {traditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} />)}
-      </div>
+      {traditions.length > 0 ? (
+        <div className="card-grid">
+          {traditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} />)}
+        </div>
+      ) : (
+        <p className="empty-note">Published traditions will appear here after editorial review.</p>
+      )}
     </main>
   );
 }

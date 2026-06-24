@@ -4,7 +4,7 @@ import type { Route } from "next";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
-import { mergeTraditions, updateTradition } from "../actions";
+import { mergeTraditions, updateTradition, updateTraditionReviewStatus } from "../actions";
 
 type AdminTraditionEditorPageProps = {
   params: Promise<{ id: string }>;
@@ -102,6 +102,15 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
         </section>
 
         <aside className="review-panel">
+          <h2>Publication</h2>
+          <p>Publish reviewed tradition pages to make them visible on the public home page, index, and detail routes.</p>
+          <div className="review-actions">
+            <StatusForm traditionId={tradition.id} status="published" label="Publish tradition" />
+            <StatusForm traditionId={tradition.id} status="needs_review" label="Return to review" variant="secondary" />
+            <StatusForm traditionId={tradition.id} status="hidden" label="Hide" variant="warning" />
+          </div>
+
+          <div className="review-panel__subsection">
           <h2>Merge duplicate</h2>
           <p>Move saint relationships, source links, and child tradition links from another record into this tradition.</p>
           <form action={mergeTraditions} className="form-stack">
@@ -119,6 +128,7 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
               <button className="admin-form-button admin-form-button--warning" type="submit">Merge into this tradition</button>
             </div>
           </form>
+          </div>
 
           <div className="review-panel__subsection">
             <h3>Child traditions</h3>
@@ -160,6 +170,32 @@ async function getTradition(slugOrId: string) {
 }
 
 const contentStatuses = ["draft", "needs_review", "published", "hidden", "archived"] as const;
+
+function StatusForm({
+  traditionId,
+  status,
+  label,
+  variant = "primary"
+}: {
+  traditionId: string;
+  status: "needs_review" | "published" | "hidden";
+  label: string;
+  variant?: "primary" | "secondary" | "warning";
+}) {
+  const className = [
+    "admin-form-button",
+    variant === "secondary" ? "admin-form-button--secondary" : null,
+    variant === "warning" ? "admin-form-button--warning" : null
+  ].filter(Boolean).join(" ");
+
+  return (
+    <form action={updateTraditionReviewStatus}>
+      <input name="traditionId" type="hidden" value={traditionId} />
+      <input name="status" type="hidden" value={status} />
+      <button className={className} type="submit">{label}</button>
+    </form>
+  );
+}
 
 function formatStatus(status: string) {
   return status.replace(/_/g, " ");

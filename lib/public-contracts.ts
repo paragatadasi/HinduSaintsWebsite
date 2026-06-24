@@ -152,6 +152,7 @@ export type PublicTraditionDetail = PublicTraditionSummary & {
   introductionMarkdown?: string;
   heroImage?: PublicImage;
   saints: PublicSaintSummary[];
+  relatedTraditions: PublicTraditionLink[];
   sources?: PublicSourceSummary[];
   furtherReading?: PublicFurtherReadingItem[];
   seo?: {
