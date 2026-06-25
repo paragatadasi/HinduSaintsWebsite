@@ -11,13 +11,15 @@ type FirstPageMetadataFormProps = {
   returnTo: string;
   firstPageText: string;
   metadata: InstagramFirstPageMetadata;
+  readinessText: string;
 };
 
 export function FirstPageMetadataForm({
   instagramItemId,
   returnTo,
   firstPageText,
-  metadata
+  metadata,
+  readinessText
 }: FirstPageMetadataFormProps) {
   const initialMetadata = useMemo(() => compactMetadata(metadata), [metadata]);
   const initialFields = useMemo(() => fieldsFromMetadata(initialMetadata), [initialMetadata]);
@@ -44,9 +46,10 @@ export function FirstPageMetadataForm({
       <input name="returnTo" type="hidden" value={returnTo} />
       <input name="intent" type="hidden" value="save" />
       <div className="first-page-review__toolbar">
-        <div>
-          <span className="first-page-review__eyebrow">Metadata review</span>
-          <h3>First-page biodata</h3>
+        <div className="first-page-review__heading">
+          <div className="first-page-review__eyebrow">Metadata review</div>
+          <h2>First Page Biodata</h2>
+          <p>{readinessText}</p>
         </div>
         <div className="review-actions">
           <button className="admin-form-button admin-form-button--secondary" type="button" onClick={parseText} disabled={!text.trim()}>

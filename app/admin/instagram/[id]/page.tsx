@@ -102,102 +102,144 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
         </aside>
       </div>
 
-      <section className="review-panel">
-        <h2>Saint Matches</h2>
-        {item.saints.length > 0 ? (
-          <div className="review-list">
-            {item.saints.map((link) => (
-              <div className="review-row" key={link.id}>
-                <div>
-                  <div className="review-meta">
-                    <StatusBadge label={formatStatus(link.matchStatus)} />
-                    <StatusBadge label={link.matchConfidence} />
-                    {link.isPrimary ? <StatusBadge label="primary" /> : null}
+      <section className="review-panel review-panel--workflow review-panel--saint-resolution">
+        <div className="review-workflow__header">
+          <div className="review-workflow__heading">
+            <div className="review-workflow__eyebrow">Review connections</div>
+            <h2>Connect this Post</h2>
+            <p>Confirm the saint connection, create a draft, and review related place or guru suggestions.</p>
+          </div>
+        </div>
+
+        <div className="review-workflow__grid review-workflow__grid--saint-resolution">
+          <section className="review-workflow__section review-workflow__section--matches">
+            <div className="review-workflow__section-title">
+              <UserRound aria-hidden="true" size={18} />
+              <h3>Saint matches</h3>
+            </div>
+            {item.saints.length > 0 ? (
+              <div className="review-list">
+                {item.saints.map((link) => (
+                  <div className="review-row review-row--workflow" key={link.id}>
+                    <div>
+                      <div className="review-meta">
+                        <StatusBadge label={formatStatus(link.matchStatus)} />
+                        <StatusBadge label={link.matchConfidence} />
+                        {link.isPrimary ? <StatusBadge label="primary" /> : null}
+                      </div>
+                      <h3>{link.saint.displayName}</h3>
+                      <p>{link.notes ?? "No match notes."}</p>
+                      <div className="review-actions">
+                        <Link className="admin-text-link" href={`/admin/saints/${link.saint.slug}`}>Open saint review</Link>
+                        {link.saint.status === "published" ? <Link className="admin-text-link" href={`/saints/${link.saint.slug}`}>View public saint</Link> : null}
+                      </div>
+                    </div>
+                    <div className="review-actions">
+                      <LinkStatusForm instagramItemSaintId={link.id} matchStatus="matched" returnTo={returnTo} label="Confirm" />
+                      <LinkStatusForm instagramItemSaintId={link.id} matchStatus="ignored" returnTo={returnTo} label="Ignore" variant="warning" />
+                    </div>
                   </div>
-                  <h3>{link.saint.displayName}</h3>
-                  <p>{link.notes ?? "No match notes."}</p>
-                  <div className="review-actions">
-                    <Link className="admin-text-link" href={`/admin/saints/${link.saint.slug}`}>Open saint review</Link>
-                    {link.saint.status === "published" ? <Link className="admin-text-link" href={`/saints/${link.saint.slug}`}>View public saint</Link> : null}
-                  </div>
-                </div>
-                <div className="review-actions">
-                  <LinkStatusForm instagramItemSaintId={link.id} matchStatus="matched" returnTo={returnTo} label="Confirm" />
-                  <LinkStatusForm instagramItemSaintId={link.id} matchStatus="ignored" returnTo={returnTo} label="Ignore" variant="warning" />
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        ) : (
-          <p>No saint matches have been attached yet.</p>
-        )}
-      </section>
+            ) : (
+              <p>No saint matches have been attached yet.</p>
+            )}
+          </section>
 
-      <section className="review-panel">
-        <h2>Attach Saint</h2>
-        <SaintAttachForm
-          initialQuery={saintQuery}
-          instagramItemId={item.id}
-          returnTo={returnTo}
-          saints={saints}
-        />
-      </section>
-
-      <section className="review-panel">
-        <h2>Create Saint Draft</h2>
-        <p>Create a needs-review saint from this Instagram biodata and attach the post immediately.</p>
-        <form action={createSaintFromInstagramItem} className="form-stack">
-          <input name="instagramItemId" type="hidden" value={item.id} />
-          <div className="field-grid">
-            <label>
-              Display name
-              <input name="displayName" defaultValue={firstPageMetadata.displayName ?? item.extractedSaintName ?? ""} maxLength={200} required />
-            </label>
-            <label>
-              Canonical name
-              <input name="canonicalName" defaultValue={firstPageMetadata.displayName ?? item.extractedSaintName ?? ""} maxLength={200} required />
-            </label>
-            <label>
-              Birth date
-              <input name="birthDateRaw" defaultValue={firstPageMetadata.born ?? ""} maxLength={160} />
-            </label>
-            <label>
-              Samadhi date
-              <input name="samadhiDateRaw" defaultValue={firstPageMetadata.samadhi ?? ""} maxLength={160} />
-            </label>
-            <label>
-              Tradition
-              <input name="tradition" defaultValue={firstPageMetadata.tradition ?? ""} maxLength={240} />
-            </label>
-          </div>
-          <label>
-            Short description
-            <textarea
-              name="shortDescription"
-              defaultValue={buildInstagramSaintDescription(firstPageMetadata)}
-              maxLength={500}
+          <section className="review-workflow__section">
+            <div className="review-workflow__section-title">
+              <UserRound aria-hidden="true" size={18} />
+              <h3>Attach saint</h3>
+            </div>
+            <SaintAttachForm
+              initialQuery={saintQuery}
+              instagramItemId={item.id}
+              returnTo={returnTo}
+              saints={saints}
             />
-          </label>
-          <div className="review-actions">
-            <button className="admin-form-button" type="submit">Create saint draft and attach</button>
+          </section>
+
+          <section className="review-workflow__section review-workflow__section--draft">
+            <div className="review-workflow__section-title">
+              <UserRound aria-hidden="true" size={18} />
+              <h3>Create saint draft</h3>
+            </div>
+            <p>Create a needs-review saint from this Instagram biodata and attach the post immediately.</p>
+            <form action={createSaintFromInstagramItem} className="form-stack">
+              <input name="instagramItemId" type="hidden" value={item.id} />
+              <div className="field-grid">
+                <label>
+                  Display name
+                  <input name="displayName" defaultValue={firstPageMetadata.displayName ?? item.extractedSaintName ?? ""} maxLength={200} required />
+                </label>
+                <label>
+                  Canonical name
+                  <input name="canonicalName" defaultValue={firstPageMetadata.displayName ?? item.extractedSaintName ?? ""} maxLength={200} required />
+                </label>
+                <label>
+                  Birth date
+                  <input name="birthDateRaw" defaultValue={firstPageMetadata.born ?? ""} maxLength={160} />
+                </label>
+                <label>
+                  Samadhi date
+                  <input name="samadhiDateRaw" defaultValue={firstPageMetadata.samadhi ?? ""} maxLength={160} />
+                </label>
+                <label>
+                  Tradition
+                  <input name="tradition" defaultValue={firstPageMetadata.tradition ?? ""} maxLength={240} />
+                </label>
+              </div>
+              <label>
+                Short description
+                <textarea
+                  name="shortDescription"
+                  defaultValue={buildInstagramSaintDescription(firstPageMetadata)}
+                  maxLength={500}
+                />
+              </label>
+              <div className="review-actions">
+                <button className="admin-form-button" type="submit">Create saint draft and attach</button>
+              </div>
+            </form>
+          </section>
+
+          <div className="review-suggestion-grid review-suggestion-grid--metadata review-workflow__suggestions">
+            <MetadataSuggestionList
+              acceptedClaims={acceptedClaims}
+              claimType="place"
+              emptyText="No key places parsed yet."
+              heading="Place suggestions"
+              icon="place"
+              instagramItemId={item.id}
+              returnTo={returnTo}
+              sourceField="keyPlace"
+              suggestions={placeSuggestions}
+              targetEntityType="Place"
+            />
+            <MetadataSuggestionList
+              acceptedClaims={acceptedClaims}
+              claimType="guru"
+              emptyText="No gurus parsed yet."
+              heading="Guru saint suggestions"
+              icon="guru"
+              instagramItemId={item.id}
+              returnTo={returnTo}
+              sourceField="guru"
+              suggestions={guruSuggestions}
+              targetEntityType="Saint"
+            />
           </div>
-        </form>
+        </div>
       </section>
 
       <section className="review-panel review-panel--first-page">
-        <div className="first-page-review__intro">
-          <div>
-            <h2>First-page metadata review</h2>
-            <p>{firstPageText ? "Extracted first-page biodata is ready for human review." : "Extract a first pass from the imported image, then review and edit the fields before saving."}</p>
-          </div>
-          {!firstPageText ? (
-            <form action={extractInstagramFirstPageFromImage} className="review-actions">
-              <input name="instagramItemId" type="hidden" value={item.id} />
-              <input name="returnTo" type="hidden" value={returnTo} />
-              <button className="admin-form-button admin-form-button--secondary" type="submit" disabled={!isImageExtractionConfigured}>Extract from image</button>
-            </form>
-          ) : null}
-        </div>
+        {!firstPageText ? (
+          <form action={extractInstagramFirstPageFromImage} className="review-actions">
+            <input name="instagramItemId" type="hidden" value={item.id} />
+            <input name="returnTo" type="hidden" value={returnTo} />
+            <button className="admin-form-button admin-form-button--secondary" type="submit" disabled={!isImageExtractionConfigured}>Extract from image</button>
+          </form>
+        ) : null}
         <ExtractionNotice
           message={reviewParams.firstPageExtractionMessage}
           status={reviewParams.firstPageExtraction}
@@ -209,34 +251,9 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
           firstPageText={firstPageText}
           instagramItemId={item.id}
           metadata={firstPageMetadata}
+          readinessText={firstPageText ? "Extracted first-page biodata is ready for human review." : "Extract a first pass from the imported image, then review and edit the fields before saving."}
           returnTo={returnTo}
         />
-        <div className="review-suggestion-grid review-suggestion-grid--metadata">
-          <MetadataSuggestionList
-            acceptedClaims={acceptedClaims}
-            claimType="place"
-            emptyText="No key places parsed yet."
-            heading="Place suggestions"
-            icon="place"
-            instagramItemId={item.id}
-            returnTo={returnTo}
-            sourceField="keyPlace"
-            suggestions={placeSuggestions}
-            targetEntityType="Place"
-          />
-          <MetadataSuggestionList
-            acceptedClaims={acceptedClaims}
-            claimType="guru"
-            emptyText="No gurus parsed yet."
-            heading="Guru saint suggestions"
-            icon="guru"
-            instagramItemId={item.id}
-            returnTo={returnTo}
-            sourceField="guru"
-            suggestions={guruSuggestions}
-            targetEntityType="Saint"
-          />
-        </div>
       </section>
 
       <section className="review-panel">
@@ -531,7 +548,7 @@ function AcceptClaimForm({
   targetEntityId?: string;
   targetEntityType?: "Place" | "Saint" | "Tradition";
 }) {
-  if (accepted) return <StatusBadge label={`Accepted ${label}`} />;
+  if (accepted) return <StatusBadge className="status-badge--accepted" label={`Accepted ${label}`} />;
 
   return (
     <form action={acceptInstagramClaim}>
