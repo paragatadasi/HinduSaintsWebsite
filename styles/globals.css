@@ -2503,6 +2503,136 @@ img {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
+.review-panel--first-page {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.first-page-review,
+.first-page-review__card {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.first-page-review__intro,
+.first-page-review__toolbar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: space-between;
+}
+
+.first-page-review__toolbar {
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 28%, transparent);
+  padding-bottom: var(--space-3);
+}
+
+.first-page-review__eyebrow {
+  color: var(--color-accent);
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.first-page-review__toolbar h3,
+.first-page-review__section-title h4 {
+  margin: 0;
+}
+
+.first-page-review__card,
+.review-suggestion-grid--metadata .review-suggestion-list {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--color-gold) 7%, transparent), transparent 42%),
+    var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-border) 78%, var(--color-gold));
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-4);
+}
+
+.first-page-review__section-title,
+.review-suggestion-list h3 {
+  align-items: center;
+  color: var(--color-text);
+  display: flex;
+  gap: var(--space-2);
+}
+
+.first-page-review__section-title svg,
+.review-suggestion-list h3 svg {
+  color: var(--color-gold);
+  flex: 0 0 auto;
+}
+
+.first-page-review__summary-grid {
+  border: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent);
+  border-radius: var(--radius-sm);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.first-page-review__summary-item {
+  border-right: 1px solid color-mix(in srgb, var(--color-border) 78%, transparent);
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3);
+}
+
+.first-page-review__summary-item:last-child {
+  border-right: 0;
+}
+
+.first-page-review__summary-item strong {
+  color: var(--color-muted);
+  font-size: 0.76rem;
+}
+
+.first-page-review__summary-item span {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.first-page-review__label {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.first-page-review label {
+  color: var(--color-text);
+  display: grid;
+  font-size: 0.82rem;
+  font-weight: 700;
+  gap: var(--space-2);
+}
+
+.first-page-review input,
+.first-page-review textarea {
+  background: color-mix(in srgb, var(--color-surface) 86%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font: inherit;
+  min-height: 44px;
+  padding: var(--space-3);
+  width: 100%;
+}
+
+.first-page-review textarea {
+  min-height: 128px;
+  resize: vertical;
+}
+
+.first-page-review__label > textarea {
+  min-height: 160px;
+}
+
+.first-page-review__field-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
 .review-suggestion-list {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
@@ -2519,6 +2649,23 @@ img {
 .review-suggestion:first-of-type {
   border-top: 0;
   padding-top: 0;
+}
+
+.review-suggestion-grid--metadata {
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.review-suggestion-grid--metadata .review-suggestion-list {
+  align-content: start;
+}
+
+.review-suggestion-grid--metadata .review-suggestion {
+  padding-top: var(--space-4);
+}
+
+.review-suggestion-grid--metadata .status-badge {
+  background: color-mix(in srgb, var(--color-surface) 88%, var(--color-gold));
 }
 
 .instagram-review-list {
@@ -2611,6 +2758,57 @@ img {
 .instagram-job-history {
   display: grid;
   gap: var(--space-3);
+}
+
+.airtable-job-details {
+  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+}
+
+.airtable-job-details summary {
+  align-items: center;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: 700;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.airtable-job-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.airtable-job-details[open] summary svg {
+  transform: rotate(180deg);
+}
+
+.airtable-job-detail-list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.airtable-job-detail-row {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.airtable-job-detail-row__body {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.airtable-job-detail-row__body span {
+  color: var(--color-muted);
+  font-size: 0.88rem;
 }
 
 .formatted-caption,
@@ -3552,6 +3750,7 @@ img {
   display: inline-flex;
   font: inherit;
   font-weight: 700;
+  gap: var(--space-2);
   justify-content: center;
   min-height: 44px;
   padding: 0 var(--space-4);

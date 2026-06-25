@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Route } from "next";
 import { db } from "@/lib/db";
+import { serializeAirtableImportJob } from "@/lib/airtable-import-job-view";
 import { rankSaintSearchResults } from "@/lib/saint-search";
 import { AirtableImportPanel } from "./airtable-import-panel";
 import { SaintsBulkReviewList } from "./saints-bulk-review-list";
@@ -109,27 +110,7 @@ async function getAirtableImportJobs() {
     take: 8
   });
 
-  return jobs.map((job) => ({
-    id: job.id,
-    mode: job.mode,
-    status: job.status,
-    sourceName: job.sourceName,
-    mirrorRowsChecked: job.mirrorRowsChecked,
-    existingCmsSaintsSkipped: job.existingCmsSaintsSkipped,
-    newDraftSaintsCreated: job.newDraftSaintsCreated,
-    slugNameCollisionsSkipped: job.slugNameCollisionsSkipped,
-    guruRelationshipsCreated: job.guruRelationshipsCreated,
-    guruRelationshipsExisting: job.guruRelationshipsExisting,
-    guruRelationshipsUnresolved: job.guruRelationshipsUnresolved,
-    skippedSelfRelationships: job.skippedSelfRelationships,
-    failedRows: job.failedRows,
-    message: job.message,
-    error: job.error,
-    rawSummary: job.rawSummary,
-    startedAt: job.startedAt?.toISOString() ?? null,
-    completedAt: job.completedAt?.toISOString() ?? null,
-    createdAt: job.createdAt.toISOString()
-  }));
+  return jobs.map(serializeAirtableImportJob);
 }
 
 function Stat({ active, href, label, value }: { active: boolean; href: string; label: string; value: number }) {

@@ -94,6 +94,28 @@ add or expose reviewed fields for:
 - curated related tradition and related place links with display order
 - source or scripture links that can back the scriptural basis field
 
+### Tradition lineage cutovers
+
+`TraditionLineageSaint` is the curated lineage table for tradition detail
+pages. It is separate from `SaintTradition`, which means a schema or adapter
+change must not simply switch public rendering from `SaintTradition` to
+`TraditionLineageSaint` without also migrating existing links.
+
+When introducing or replacing curated relationship tables:
+
+- backfill from the prior source of truth in a migration, or keep an explicit
+  public fallback until editors have reviewed the new table.
+- preserve existing human CMS edits; imported Airtable, Instagram, CSV, or
+  script data may seed missing rows but must not overwrite reviewed lineage
+  rows.
+- keep merge and delete workflows relationship-aware. If a tradition merge
+  moves `SaintTradition`, source links, or child traditions, it must also move
+  or merge `TraditionLineageSaint` rows before deleting the duplicate record.
+- verify a representative published tradition after the migration. At minimum,
+  compare the tradition's `SaintTradition` count with its
+  `TraditionLineageSaint` count and confirm public rendering still shows
+  associated saints.
+
 Instagram public rendering also goes through `lib/public-saints.ts`. It queries
 reviewed `InstagramItemSaint` links and returns safe display fields for
 matched/published Instagram items on published saints. Carousel child image URLs

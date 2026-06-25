@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Route } from "next";
 import { notFound } from "next/navigation";
+import { MapPin, UserRound } from "lucide-react";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { getInstagramLinkProps } from "@/lib/external-links";
@@ -102,55 +103,6 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
       </div>
 
       <section className="review-panel">
-        <h2>First-page biodata</h2>
-        <p>{firstPageText ? "Extracted first-page biodata is ready for human review." : "Extract a first pass from the imported image, then review and edit the fields before saving."}</p>
-        <ExtractionNotice
-          message={reviewParams.firstPageExtractionMessage}
-          status={reviewParams.firstPageExtraction}
-        />
-        {!firstPageText && !isImageExtractionConfigured ? (
-          <p className="admin-notice admin-notice--warning">Image extraction is not configured. Set OPENAI_API_KEY on the server and restart the app.</p>
-        ) : null}
-        {!firstPageText ? (
-          <form action={extractInstagramFirstPageFromImage} className="review-actions">
-            <input name="instagramItemId" type="hidden" value={item.id} />
-            <input name="returnTo" type="hidden" value={returnTo} />
-            <button className="admin-form-button admin-form-button--secondary" type="submit" disabled={!isImageExtractionConfigured}>Extract from image</button>
-          </form>
-        ) : null}
-        <FirstPageMetadataForm
-          firstPageText={firstPageText}
-          instagramItemId={item.id}
-          metadata={firstPageMetadata}
-          returnTo={returnTo}
-        />
-        <div className="review-suggestion-grid">
-          <MetadataSuggestionList
-            acceptedClaims={acceptedClaims}
-            claimType="place"
-            emptyText="No key places parsed yet."
-            heading="Place suggestions"
-            instagramItemId={item.id}
-            returnTo={returnTo}
-            sourceField="keyPlace"
-            suggestions={placeSuggestions}
-            targetEntityType="Place"
-          />
-          <MetadataSuggestionList
-            acceptedClaims={acceptedClaims}
-            claimType="guru"
-            emptyText="No gurus parsed yet."
-            heading="Guru saint suggestions"
-            instagramItemId={item.id}
-            returnTo={returnTo}
-            sourceField="guru"
-            suggestions={guruSuggestions}
-            targetEntityType="Saint"
-          />
-        </div>
-      </section>
-
-      <section className="review-panel">
         <h2>Saint Matches</h2>
         {item.saints.length > 0 ? (
           <div className="review-list">
@@ -230,6 +182,61 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
             <button className="admin-form-button" type="submit">Create saint draft and attach</button>
           </div>
         </form>
+      </section>
+
+      <section className="review-panel review-panel--first-page">
+        <div className="first-page-review__intro">
+          <div>
+            <h2>First-page metadata review</h2>
+            <p>{firstPageText ? "Extracted first-page biodata is ready for human review." : "Extract a first pass from the imported image, then review and edit the fields before saving."}</p>
+          </div>
+          {!firstPageText ? (
+            <form action={extractInstagramFirstPageFromImage} className="review-actions">
+              <input name="instagramItemId" type="hidden" value={item.id} />
+              <input name="returnTo" type="hidden" value={returnTo} />
+              <button className="admin-form-button admin-form-button--secondary" type="submit" disabled={!isImageExtractionConfigured}>Extract from image</button>
+            </form>
+          ) : null}
+        </div>
+        <ExtractionNotice
+          message={reviewParams.firstPageExtractionMessage}
+          status={reviewParams.firstPageExtraction}
+        />
+        {!firstPageText && !isImageExtractionConfigured ? (
+          <p className="admin-notice admin-notice--warning">Image extraction is not configured. Set OPENAI_API_KEY on the server and restart the app.</p>
+        ) : null}
+        <FirstPageMetadataForm
+          firstPageText={firstPageText}
+          instagramItemId={item.id}
+          metadata={firstPageMetadata}
+          returnTo={returnTo}
+        />
+        <div className="review-suggestion-grid review-suggestion-grid--metadata">
+          <MetadataSuggestionList
+            acceptedClaims={acceptedClaims}
+            claimType="place"
+            emptyText="No key places parsed yet."
+            heading="Place suggestions"
+            icon="place"
+            instagramItemId={item.id}
+            returnTo={returnTo}
+            sourceField="keyPlace"
+            suggestions={placeSuggestions}
+            targetEntityType="Place"
+          />
+          <MetadataSuggestionList
+            acceptedClaims={acceptedClaims}
+            claimType="guru"
+            emptyText="No gurus parsed yet."
+            heading="Guru saint suggestions"
+            icon="guru"
+            instagramItemId={item.id}
+            returnTo={returnTo}
+            sourceField="guru"
+            suggestions={guruSuggestions}
+            targetEntityType="Saint"
+          />
+        </div>
       </section>
 
       <section className="review-panel">
@@ -443,6 +450,7 @@ function MetadataSuggestionList({
   claimType,
   emptyText,
   heading,
+  icon,
   instagramItemId,
   returnTo,
   sourceField,
@@ -453,6 +461,7 @@ function MetadataSuggestionList({
   claimType: "guru" | "place";
   emptyText: string;
   heading: string;
+  icon: "guru" | "place";
   instagramItemId: string;
   returnTo: string;
   sourceField: string;
@@ -461,7 +470,10 @@ function MetadataSuggestionList({
 }) {
   return (
     <div className="review-suggestion-list">
-      <h3>{heading}</h3>
+      <h3>
+        {icon === "place" ? <MapPin aria-hidden="true" size={19} /> : <UserRound aria-hidden="true" size={19} />}
+        {heading}
+      </h3>
       {suggestions.length > 0 ? suggestions.map((suggestion) => (
         <div className="review-suggestion" key={suggestion.rawValue}>
           <div>

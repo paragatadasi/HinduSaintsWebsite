@@ -17,6 +17,9 @@ The admin saint review workflow now has:
 
 - `/admin` live workflow counts.
 - `/admin/saints` status-filtered review queues.
+- `/admin/saints` Airtable sync review controls that create durable
+  `AirtableImportJob` records for checking mirrored saint rows, importing
+  missing draft saints, and importing Airtable guru relationships.
 - `/admin/saints/[id]` review detail pages with editable public fields, source context, Instagram-derived claims, images, and publish/review/archive actions.
 
 The admin Instagram review workflow now has:
@@ -49,6 +52,49 @@ Raw external values are preserved for debugging and review:
 - Generic source links are tracked in `ExternalRecord`.
 - Instagram API media payloads are preserved in `ExternalRecord` with `sourceType=instagram` and linked to `InstagramItem`.
 - Potential conflicts or duplicate candidates are stored in `ReconciliationIssue`.
+
+## Airtable admin import workflow
+
+The preferred editor workflow for Airtable-to-CMS saint imports is now
+`/admin/saints` -> `Airtable sync review`. The panel operates only against
+already mirrored `AirtableMirrorRecord` rows in the website database. It does
+not call Airtable from the browser and does not make Airtable the source of
+truth.
+
+Available actions:
+
+- `Check Airtable`: dry-runs the safe missing-saint import against mirrored
+  Airtable `Saints` rows.
+- `Import missing drafts`: creates only CMS saints that do not already have an
+  Airtable `ExternalRecord` link and do not collide by slug/name. New saints
+  enter as `draft`.
+- `Import guru relationships`: creates only missing `guru` relationship rows
+  from Airtable `Master(s)` linked records where both sides are already mapped
+  to CMS saints.
+
+Each action creates a durable `AirtableImportJob` with recent job history,
+timestamps, short status messages, summary counts, and raw summary JSON. Job
+summaries must stay editor-actionable: when collisions, unresolved guru rows,
+self-skipped guru rows, or failed records are present, the UI should expose an
+expansion such as `Review affected records`.
+
+Affected-record detail rows should be concise and should prefer human-readable
+names over raw IDs:
+
+- saint import collisions: Airtable record ID/name, existing CMS saint
+  name/slug when known, a short reason, and an `/admin/saints/{slug}` link when
+  available.
+- saint import errors: Airtable record ID/name and a short error message.
+- unresolved guru relationships: disciple and guru Airtable record IDs/names,
+  linked CMS saint names/slugs where known, and a short reason such as
+  `Disciple not linked` or `Guru not linked`.
+- self-skipped guru relationships: disciple/guru Airtable record IDs/names,
+  linked CMS saint name/slug when known, and `Same saint on both sides`.
+
+Do not add live Airtable links unless the app has a safe authenticated mirror
+detail page for those records. Raw source values should remain preserved in the
+mirror and job `rawSummary`; public pages must continue to read only reviewed
+CMS content.
 
 ## Local Airtable import runbook
 
@@ -89,7 +135,7 @@ npm run import:airtable-saints
 npm run import:airtable-saints -- --write
 ```
 
-`import:airtable-saints` is dry-run by default. Use `-- --write` only after reviewing the dry-run summary.
+`import:airtable-saints` is dry-run by default. Use `-- --write` only after reviewing the dry-run summary. This script shares the safe missing-draft logic used by the admin panel; it should not update existing CMS saints.
 
 Public pages show only `published` saints. Imported CMS saints remain reviewable in `/admin/saints` until an editor publishes them.
 
@@ -154,6 +200,7 @@ npm run backfill:instagram-carousels
 Import Airtable mirror saints into the CMS:
 
 ```sh
+npm run import:airtable-saints
 npm run import:airtable-saints -- --write
 ```
 
@@ -165,7 +212,13 @@ Most import scripts support a dry-run mode by default or through `--dry-run`. Us
 
 - `tableIdOrName` is `Saints`
 
-The importer is idempotent by linking each CMS saint to its Airtable source through an `ExternalRecord` with source type `airtable`. It updates importer-owned CMS records on later runs and preserves the Airtable record ID for traceability.
+The importer is idempotent by linking each CMS saint to its Airtable source through an `ExternalRecord` with source type `airtable`. It preserves the Airtable record ID for traceability.
+
+Current safe import behavior for admin and script workflows is intentionally
+narrower: create missing saints only, as drafts, and skip any row that already
+has an Airtable `ExternalRecord` link or collides with an existing CMS
+slug/name. Existing CMS saint edits must not be overwritten by later Airtable
+imports.
 
 Name handling:
 

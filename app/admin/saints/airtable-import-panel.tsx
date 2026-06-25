@@ -1,8 +1,11 @@
 "use client";
 
-import { DatabaseZap, RefreshCw, Waypoints } from "lucide-react";
+import type { Route } from "next";
+import Link from "next/link";
+import { ChevronDown, DatabaseZap, RefreshCw, Waypoints } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import type { AirtableImportSummaryDetails } from "@/lib/airtable-import-job-view";
 import { StatusBadge } from "@/components/ui/status-badge";
 
 type AirtableImportJobView = {
@@ -21,7 +24,7 @@ type AirtableImportJobView = {
   failedRows: number;
   message: string | null;
   error: string | null;
-  rawSummary: unknown;
+  rawSummary: AirtableImportSummaryDetails;
   startedAt: string | null;
   completedAt: string | null;
   createdAt: string;
@@ -133,6 +136,7 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
                   <h3>{job.message ?? formatStatus(job.mode)}</h3>
                   {job.error ? <p className="admin-notice admin-notice--warning">{job.error}</p> : null}
                   <p>{formatVisibleJobCounts(job)}</p>
+                  <AffectedRecordDetails job={job} />
                 </div>
                 <div className="review-meta">
                   <StatusBadge label={formatDate(job.completedAt ?? job.startedAt ?? job.createdAt)} />
@@ -146,6 +150,87 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
       </div>
     </section>
   );
+}
+
+function AffectedRecordDetails({ job }: { job: AirtableImportJobView }) {
+  const details = getAffectedRecords(job.rawSummary);
+  if (details.length === 0) return null;
+
+  return (
+    <details className="airtable-job-details">
+      <summary>
+        <span>Review affected records</span>
+        <StatusBadge label={`${details.length} records`} />
+        <ChevronDown aria-hidden="true" size={14} />
+      </summary>
+      <div className="airtable-job-detail-list">
+        {details.map((detail) => (
+          <div className="airtable-job-detail-row" key={detail.key}>
+            <div className="review-meta">
+              <StatusBadge label={detail.kind} />
+              <StatusBadge label={detail.message} />
+            </div>
+            <div className="airtable-job-detail-row__body">
+              <strong>{detail.primary}</strong>
+              {detail.secondary ? <span>{detail.secondary}</span> : null}
+              {detail.href ? <Link className="admin-text-link" href={detail.href as Route}>{detail.linkLabel}</Link> : null}
+            </div>
+          </div>
+        ))}
+      </div>
+    </details>
+  );
+}
+
+function getAffectedRecords(summary: AirtableImportSummaryDetails) {
+  return [
+    ...summary.collisions.map((item) => ({
+      key: `collision:${item.recordId}:${item.existingSaintSlug ?? item.existingSaintId ?? item.reason}`,
+      kind: item.reason === "name_collision" ? "Name collision" : "Slug collision",
+      message: item.message,
+      primary: `Airtable saint: ${item.airtableName ?? item.recordId}`,
+      secondary: item.existingSaintName ? `Existing CMS saint: ${item.existingSaintName}` : `Airtable record: ${item.recordId}`,
+      href: item.existingSaintSlug ? `/admin/saints/${item.existingSaintSlug}` : undefined,
+      linkLabel: "Open existing CMS saint"
+    })),
+    ...summary.unresolvedGuruRelationships.map((item) => ({
+      key: `guru-unresolved:${item.discipleRecordId}:${item.guruRecordId}:${item.reason}`,
+      kind: "Guru issue",
+      message: item.message,
+      primary: `${item.discipleName ?? item.discipleRecordId} -> ${item.guruName ?? item.guruRecordId}`,
+      secondary: formatGuruRelationshipContext(item),
+      href: item.reason === "unmapped_guru" && item.discipleSaintSlug ? `/admin/saints/${item.discipleSaintSlug}` : item.guruSaintSlug ? `/admin/saints/${item.guruSaintSlug}` : undefined,
+      linkLabel: "Open linked CMS saint"
+    })),
+    ...summary.selfSkippedGuruRelationships.map((item) => ({
+      key: `guru-self:${item.discipleRecordId}:${item.guruRecordId}:${item.saintSlug ?? "unlinked"}`,
+      kind: "Self skipped",
+      message: item.message,
+      primary: item.saintName ?? item.discipleName ?? item.guruName ?? item.discipleRecordId,
+      secondary: `${item.discipleName ?? item.discipleRecordId} -> ${item.guruName ?? item.guruRecordId}`,
+      href: item.saintSlug ? `/admin/saints/${item.saintSlug}` : undefined,
+      linkLabel: "Open CMS saint"
+    })),
+    ...summary.errors.map((item) => ({
+      key: `error:${item.recordId}:${item.message}`,
+      kind: "Failed",
+      message: item.message,
+      primary: item.discipleRecordId && item.guruRecordId
+        ? `${item.discipleName ?? item.discipleRecordId} -> ${item.guruName ?? item.guruRecordId}`
+        : item.airtableName ?? item.recordId,
+      secondary: item.discipleRecordId && item.guruRecordId
+        ? `Disciple Airtable record: ${item.discipleRecordId} - Guru Airtable record: ${item.guruRecordId}`
+        : `Airtable record: ${item.recordId}`,
+      href: undefined,
+      linkLabel: "Open CMS saint"
+    }))
+  ];
+}
+
+function formatGuruRelationshipContext(item: AirtableImportSummaryDetails["unresolvedGuruRelationships"][number]) {
+  const disciple = item.discipleSaintName ? `Disciple CMS saint: ${item.discipleSaintName}` : `Disciple Airtable record: ${item.discipleRecordId}`;
+  const guru = item.guruSaintName ? `Guru CMS saint: ${item.guruSaintName}` : `Guru Airtable record: ${item.guruRecordId}`;
+  return `${disciple} - ${guru}`;
 }
 
 function JobProgress({ job }: { job: AirtableImportJobView }) {

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { createAirtableImportJob, runAirtableImportJob } from "@/lib/airtable-saint-import";
+import { serializeAirtableImportJob } from "@/lib/airtable-import-job-view";
 import { db } from "@/lib/db";
 
 const runningStatuses = ["queued", "running"];
@@ -60,5 +61,5 @@ function getRecentJobs() {
   return db.airtableImportJob.findMany({
     orderBy: { createdAt: "desc" },
     take: 8
-  });
+  }).then((jobs) => jobs.map(serializeAirtableImportJob));
 }

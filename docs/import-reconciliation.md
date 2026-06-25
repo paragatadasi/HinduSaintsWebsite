@@ -9,7 +9,7 @@ Museum and relic fields must not be mapped to public pages. If they are preserve
 Recommended flow:
 
 1. Import raw Airtable rows into `ExternalRecord`.
-2. Create or update draft website records only when safe.
+2. Create draft website records only when safe.
 3. If a human-edited website field conflicts with an imported value, create a reconciliation issue.
 4. Do not silently overwrite CMS edits.
 
@@ -45,15 +45,26 @@ npm run import:airtable -- --tables "Saints,Traditions"
 Import Airtable mirror saints into the CMS:
 
 ```sh
-npm run import:airtable-saints -- --dry-run
+npm run import:airtable-saints
 npm run import:airtable-saints -- --write
 ```
 
-The CMS import is idempotent through `ExternalRecord` links. Imported saint
-records enter as `needs_review`, preserve original Airtable names as aliases,
-split birth and samadhi date fields into raw/year/month/day/precision parts,
-and map safe saint images from `Picture(s) of Saint`. It does not import relic
-or museum fields into public saint records.
+The CMS import is idempotent through `ExternalRecord` links. The safe import
+path creates only missing saints as `draft`, skips rows already linked through
+an Airtable `ExternalRecord`, and skips slug/name collisions instead of
+guessing or overwriting. Imported rows preserve original Airtable names as
+aliases, split birth and samadhi date fields into
+raw/year/month/day/precision parts, and map safe saint images from
+`Picture(s) of Saint`. It does not import relic or museum fields into public
+saint records.
+
+The preferred editor workflow is `/admin/saints` -> `Airtable sync review`.
+Those actions create durable `AirtableImportJob` records for dry-run checks,
+missing draft imports, and guru relationship imports. Job summaries should be
+reviewable from the admin UI, including expandable affected-record details for
+saint collisions, import errors, unresolved guru links, and self-skipped guru
+links. Detail rows should use Airtable saint names where possible, use short
+messages, and link to `/admin/saints/{slug}` when a CMS saint is known.
 
 Find likely duplicate Airtable saint records from the local mirror:
 

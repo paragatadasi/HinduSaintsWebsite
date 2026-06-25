@@ -40,13 +40,64 @@ type ImportPlan = {
 type ImportResult =
   | { status: "created"; saintId: string }
   | { status: "skipped_existing_external"; saintId?: string | null }
-  | { status: "skipped_slug_collision"; saintId: string };
+  | { status: "skipped_collision"; saint: SaintReference; reason: AirtableImportCollisionDetail["reason"]; message: string };
+
+type SaintReference = {
+  id: string;
+  slug: string;
+  name: string;
+};
 
 type GuruRelationshipPlan = {
   discipleRecordId: string;
+  discipleName?: string;
+  discipleSaint?: SaintReference;
   guruRecordId: string;
-  discipleSaintId?: string | null;
-  guruSaintId?: string | null;
+  guruName?: string;
+  guruSaint?: SaintReference;
+};
+
+export type AirtableImportCollisionDetail = {
+  recordId: string;
+  airtableName?: string;
+  existingSaintId?: string;
+  existingSaintSlug?: string;
+  existingSaintName?: string;
+  reason: "slug_collision" | "name_collision";
+  message: string;
+};
+
+export type AirtableGuruRelationshipIssueDetail = {
+  discipleRecordId: string;
+  discipleName?: string;
+  discipleSaintSlug?: string;
+  discipleSaintName?: string;
+  guruRecordId: string;
+  guruName?: string;
+  guruSaintSlug?: string;
+  guruSaintName?: string;
+  reason: "unmapped_disciple" | "unmapped_guru";
+  message: string;
+};
+
+export type AirtableSelfSkippedGuruRelationshipDetail = {
+  discipleRecordId: string;
+  discipleName?: string;
+  guruRecordId: string;
+  guruName?: string;
+  saintSlug?: string;
+  saintName?: string;
+  message: string;
+};
+
+export type AirtableImportErrorDetail = {
+  recordId: string;
+  airtableName?: string;
+  discipleRecordId?: string;
+  discipleName?: string;
+  guruRecordId?: string;
+  guruName?: string;
+  message: string;
 };
 
 export type AirtableImportMode = "check" | "import_missing_drafts" | "import_guru_relationships";
@@ -57,7 +108,8 @@ export type AirtableSaintImportSummary = {
   existingCmsSaintsSkipped: number;
   newDraftSaintsCreated: number;
   slugNameCollisionsSkipped: number;
-  errors: string[];
+  collisions: AirtableImportCollisionDetail[];
+  errors: AirtableImportErrorDetail[];
 };
 
 export type AirtableGuruRelationshipSummary = {
@@ -67,7 +119,9 @@ export type AirtableGuruRelationshipSummary = {
   guruRelationshipsExisting: number;
   guruRelationshipsUnresolved: number;
   skippedSelfRelationships: number;
-  errors: string[];
+  unresolvedGuruRelationships: AirtableGuruRelationshipIssueDetail[];
+  selfSkippedGuruRelationships: AirtableSelfSkippedGuruRelationshipDetail[];
+  errors: AirtableImportErrorDetail[];
 };
 
 export type AirtableSaintImportOptions = {
@@ -161,9 +215,9 @@ export async function runAirtableSaintsMissingDraftImport(options: AirtableSaint
   for (const plan of plans) {
     try {
       const result = dryRun ? await classifyMissingDraftPlan(plan) : await importMissingDraftPlan(plan);
-      addImportResult(summary, result);
+      addImportResult(summary, result, plan);
     } catch (error) {
-      summary.errors.push(formatImportError(plan.recordId, error));
+      summary.errors.push(formatImportError(plan.recordId, plan.displayName, error));
     }
   }
 
@@ -187,8 +241,8 @@ async function completeAirtableJob(
     guruRelationshipsUnresolved: isGuruSummary ? summary.guruRelationshipsUnresolved : undefined,
     skippedSelfRelationships: isGuruSummary ? summary.skippedSelfRelationships : undefined,
     failedRows: summary.errors.length,
-    rawSummary: summary as Prisma.InputJsonValue,
-    error: summary.errors.length > 0 ? summary.errors.join("\n") : null,
+    rawSummary: toInputJson(summary),
+    error: summary.errors.length > 0 ? summary.errors.map((item) => `${item.recordId}: ${item.message}`).join("\n") : null,
     message: getCompletedJobMessage(summary)
   });
 }
@@ -209,13 +263,13 @@ export async function runAirtableGuruRelationshipImport(options: AirtableSaintIm
   for (const plan of plans) {
     try {
       const classification = await classifyGuruRelationshipPlan(plan);
-      addGuruClassification(summary, classification);
+      addGuruClassification(summary, classification, plan);
 
-      if (!dryRun && classification === "create" && plan.discipleSaintId && plan.guruSaintId) {
+      if (!dryRun && classification === "create" && plan.discipleSaint && plan.guruSaint) {
         await db.saintRelationship.create({
           data: {
-            fromSaintId: plan.discipleSaintId,
-            toSaintId: plan.guruSaintId,
+            fromSaintId: plan.discipleSaint.id,
+            toSaintId: plan.guruSaint.id,
             relationshipType: "guru",
             confidence: "medium",
             notes: GURU_IMPORTER_NOTE
@@ -223,7 +277,7 @@ export async function runAirtableGuruRelationshipImport(options: AirtableSaintIm
         });
       }
     } catch (error) {
-      summary.errors.push(formatImportError(`${plan.discipleRecordId}:${plan.guruRecordId}`, error));
+      summary.errors.push(formatGuruImportError(plan, error));
     }
   }
 
@@ -298,9 +352,16 @@ async function classifyMissingDraftPlan(plan: ImportPlan): Promise<ImportResult>
 
   const slugCollision = await db.saint.findUnique({
     where: { slug: getPlanSlug(plan) },
-    select: { id: true }
+    select: { id: true, displayName: true, slug: true }
   });
-  if (slugCollision) return { status: "skipped_slug_collision", saintId: slugCollision.id };
+  if (slugCollision) {
+    return {
+      status: "skipped_collision",
+      saint: saintReference(slugCollision),
+      reason: "slug_collision",
+      message: "Slug already exists"
+    };
+  }
 
   const nameCollision = await db.saint.findFirst({
     where: {
@@ -309,11 +370,26 @@ async function classifyMissingDraftPlan(plan: ImportPlan): Promise<ImportResult>
         { canonicalName: { equals: plan.canonicalName, mode: "insensitive" } }
       ]
     },
-    select: { id: true }
+    select: { id: true, displayName: true, slug: true }
   });
-  if (nameCollision) return { status: "skipped_slug_collision", saintId: nameCollision.id };
+  if (nameCollision) {
+    return {
+      status: "skipped_collision",
+      saint: saintReference(nameCollision),
+      reason: "name_collision",
+      message: "Name matches existing saint"
+    };
+  }
 
   return { status: "created", saintId: "" };
+}
+
+function saintReference(saint: { id: string; displayName: string; slug: string }): SaintReference {
+  return {
+    id: saint.id,
+    slug: saint.slug,
+    name: saint.displayName
+  };
 }
 
 async function importMissingDraftPlan(plan: ImportPlan): Promise<ImportResult> {
@@ -530,7 +606,8 @@ async function findOrCreateSource(url: string) {
 }
 
 async function buildGuruRelationshipPlans(rows: Awaited<ReturnType<typeof findAirtableSaintRows>>) {
-  const saintIdByExternalId = await buildExternalSaintMap(rows);
+  const saintByExternalId = await buildExternalSaintMap(rows);
+  const nameByRecordId = buildAirtableNameMap(rows);
   const plans: GuruRelationshipPlan[] = [];
 
   for (const row of rows) {
@@ -538,18 +615,31 @@ async function buildGuruRelationshipPlans(rows: Awaited<ReturnType<typeof findAi
     const guruRecordIds = linkedRecordIds(fields, "Master(s)");
     if (guruRecordIds.length === 0) continue;
 
-    const discipleSaintId = saintIdByExternalId.get(`${row.baseId}:${AIRTABLE_TABLE}:${row.recordId}`);
+    const discipleSaint = saintByExternalId.get(`${row.baseId}:${AIRTABLE_TABLE}:${row.recordId}`);
     for (const guruRecordId of guruRecordIds) {
       plans.push({
         discipleRecordId: row.recordId,
+        discipleName: nameByRecordId.get(row.recordId),
+        discipleSaint,
         guruRecordId,
-        discipleSaintId,
-        guruSaintId: saintIdByExternalId.get(`${row.baseId}:${AIRTABLE_TABLE}:${guruRecordId}`)
+        guruName: nameByRecordId.get(guruRecordId),
+        guruSaint: saintByExternalId.get(`${row.baseId}:${AIRTABLE_TABLE}:${guruRecordId}`)
       });
     }
   }
 
   return plans;
+}
+
+function buildAirtableNameMap(rows: Awaited<ReturnType<typeof findAirtableSaintRows>>) {
+  return new Map(
+    rows
+      .map((row) => {
+        const name = stringField(asObject(row.rawFieldsJson), "Name");
+        return name ? [row.recordId, name] as const : undefined;
+      })
+      .filter((entry): entry is readonly [string, string] => Boolean(entry))
+  );
 }
 
 async function buildExternalSaintMap(rows: Array<{ baseId: string; recordId: string }>) {
@@ -565,19 +655,29 @@ async function buildExternalSaintMap(rows: Array<{ baseId: string; recordId: str
       entityId: true
     }
   });
+  const saintIds = externalRecords.map((record) => record.entityId).filter((id): id is string => Boolean(id));
+  const saints = await db.saint.findMany({
+    where: { id: { in: saintIds } },
+    select: { id: true, displayName: true, slug: true }
+  });
+  const saintById = new Map(saints.map((saint) => [saint.id, saintReference(saint)]));
 
-  return new Map(externalRecords.map((record) => [record.externalId, record.entityId]));
+  return new Map(
+    externalRecords
+      .map((record) => [record.externalId, record.entityId ? saintById.get(record.entityId) : undefined] as const)
+      .filter((entry): entry is readonly [string, SaintReference] => Boolean(entry[1]))
+  );
 }
 
 async function classifyGuruRelationshipPlan(plan: GuruRelationshipPlan) {
-  if (!plan.discipleSaintId) return "skipped_unmapped_disciple" as const;
-  if (!plan.guruSaintId) return "skipped_unmapped_guru" as const;
-  if (plan.discipleSaintId === plan.guruSaintId) return "skipped_self_relationship" as const;
+  if (!plan.discipleSaint) return "skipped_unmapped_disciple" as const;
+  if (!plan.guruSaint) return "skipped_unmapped_guru" as const;
+  if (plan.discipleSaint.id === plan.guruSaint.id) return "skipped_self_relationship" as const;
 
   const existing = await db.saintRelationship.findFirst({
     where: {
-      fromSaintId: plan.discipleSaintId,
-      toSaintId: plan.guruSaintId,
+      fromSaintId: plan.discipleSaint.id,
+      toSaintId: plan.guruSaint.id,
       relationshipType: "guru"
     },
     select: { id: true }
@@ -593,6 +693,7 @@ function emptySaintImportSummary(mode: AirtableSaintImportSummary["mode"], mirro
     existingCmsSaintsSkipped: 0,
     newDraftSaintsCreated: 0,
     slugNameCollisionsSkipped: 0,
+    collisions: [],
     errors: []
   };
 }
@@ -605,26 +706,63 @@ function emptyGuruRelationshipSummary(mode: AirtableGuruRelationshipSummary["mod
     guruRelationshipsExisting: 0,
     guruRelationshipsUnresolved: 0,
     skippedSelfRelationships: 0,
+    unresolvedGuruRelationships: [],
+    selfSkippedGuruRelationships: [],
     errors: []
   };
 }
 
-function addImportResult(summary: AirtableSaintImportSummary, result: ImportResult) {
+function addImportResult(summary: AirtableSaintImportSummary, result: ImportResult, plan: ImportPlan) {
   if (result.status === "created") summary.newDraftSaintsCreated += 1;
   if (result.status === "skipped_existing_external") summary.existingCmsSaintsSkipped += 1;
-  if (result.status === "skipped_slug_collision") summary.slugNameCollisionsSkipped += 1;
+  if (result.status === "skipped_collision") {
+    summary.slugNameCollisionsSkipped += 1;
+    summary.collisions.push({
+      recordId: plan.recordId,
+      airtableName: plan.displayName,
+      existingSaintId: result.saint.id,
+      existingSaintSlug: result.saint.slug,
+      existingSaintName: result.saint.name,
+      reason: result.reason,
+      message: result.message
+    });
+  }
 }
 
 function addGuruClassification(
   summary: AirtableGuruRelationshipSummary,
-  classification: Awaited<ReturnType<typeof classifyGuruRelationshipPlan>>
+  classification: Awaited<ReturnType<typeof classifyGuruRelationshipPlan>>,
+  plan: GuruRelationshipPlan
 ) {
   if (classification === "create") summary.guruRelationshipsCreated += 1;
   if (classification === "existing") summary.guruRelationshipsExisting += 1;
   if (classification === "skipped_unmapped_disciple" || classification === "skipped_unmapped_guru") {
     summary.guruRelationshipsUnresolved += 1;
+    summary.unresolvedGuruRelationships.push({
+      discipleRecordId: plan.discipleRecordId,
+      discipleName: plan.discipleName,
+      discipleSaintSlug: plan.discipleSaint?.slug,
+      discipleSaintName: plan.discipleSaint?.name,
+      guruRecordId: plan.guruRecordId,
+      guruName: plan.guruName,
+      guruSaintSlug: plan.guruSaint?.slug,
+      guruSaintName: plan.guruSaint?.name,
+      reason: classification === "skipped_unmapped_disciple" ? "unmapped_disciple" : "unmapped_guru",
+      message: classification === "skipped_unmapped_disciple" ? "Disciple not linked" : "Guru not linked"
+    });
   }
-  if (classification === "skipped_self_relationship") summary.skippedSelfRelationships += 1;
+  if (classification === "skipped_self_relationship") {
+    summary.skippedSelfRelationships += 1;
+    summary.selfSkippedGuruRelationships.push({
+      discipleRecordId: plan.discipleRecordId,
+      discipleName: plan.discipleName,
+      guruRecordId: plan.guruRecordId,
+      guruName: plan.guruName,
+      saintSlug: plan.discipleSaint?.slug,
+      saintName: plan.discipleSaint?.name,
+      message: "Same saint on both sides"
+    });
+  }
 }
 
 function asObject(value: unknown): AirtableFields {
@@ -732,9 +870,30 @@ function titleizeSlug(slug: string) {
     .join(" ");
 }
 
-function formatImportError(recordId: string, error: unknown) {
+function formatImportError(recordId: string, airtableName: string | undefined, error: unknown): AirtableImportErrorDetail {
   const message = error instanceof Error ? error.message : "Unknown import error.";
-  return `${recordId}: ${message}`;
+  return {
+    recordId,
+    airtableName,
+    message
+  };
+}
+
+function formatGuruImportError(plan: GuruRelationshipPlan, error: unknown): AirtableImportErrorDetail {
+  const message = error instanceof Error ? error.message : "Unknown import error.";
+  return {
+    recordId: `${plan.discipleRecordId}:${plan.guruRecordId}`,
+    airtableName: plan.discipleName,
+    discipleRecordId: plan.discipleRecordId,
+    discipleName: plan.discipleName,
+    guruRecordId: plan.guruRecordId,
+    guruName: plan.guruName,
+    message
+  };
+}
+
+function toInputJson(value: AirtableSaintImportSummary | AirtableGuruRelationshipSummary): Prisma.InputJsonValue {
+  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 }
 
 function getCompletedJobMessage(summary: AirtableSaintImportSummary | AirtableGuruRelationshipSummary) {
