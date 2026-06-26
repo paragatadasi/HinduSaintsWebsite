@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ClipboardList, FileText, Sparkles, UserRound } from "lucide-react";
+import { ReviewFactGrid } from "@/components/admin/review-ui";
 import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { updateInstagramFirstPageMetadata } from "../actions";
@@ -11,20 +12,19 @@ type FirstPageMetadataFormProps = {
   returnTo: string;
   firstPageText: string;
   metadata: InstagramFirstPageMetadata;
-  readinessText: string;
 };
 
 export function FirstPageMetadataForm({
   instagramItemId,
   returnTo,
   firstPageText,
-  metadata,
-  readinessText
+  metadata
 }: FirstPageMetadataFormProps) {
   const initialMetadata = useMemo(() => compactMetadata(metadata), [metadata]);
   const initialFields = useMemo(() => fieldsFromMetadata(initialMetadata), [initialMetadata]);
   const [text, setText] = useState(firstPageText);
   const [fields, setFields] = useState(initialFields);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     setText(firstPageText);
@@ -40,18 +40,47 @@ export function FirstPageMetadataForm({
     setFields((current) => ({ ...current, [name]: value }));
   }
 
+  if (!isEditing) {
+    return (
+      <div className="first-page-review first-page-review--summary">
+        <ReviewFactGrid
+          facts={[
+            { label: "Display name", value: fields.displayName },
+            { label: "Born", value: fields.born },
+            { label: "Samadhi", value: fields.samadhi },
+            { label: "Key place", value: fields.keyPlace },
+            { label: "Tradition", value: fields.tradition },
+            { label: "Guru", value: fields.guru }
+          ]}
+        />
+        {text.trim() ? (
+          <section className="first-page-review__card">
+            <div className="first-page-review__section-title">
+              <FileText aria-hidden="true" size={18} />
+              <h4>First-page text</h4>
+            </div>
+            <p className="first-page-review__source-text">{text}</p>
+          </section>
+        ) : null}
+        <div className="review-actions">
+          <button className="admin-form-button" type="button" onClick={() => setIsEditing(true)}>
+            Edit metadata
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <form action={updateInstagramFirstPageMetadata} className="first-page-review">
       <input name="instagramItemId" type="hidden" value={instagramItemId} />
       <input name="returnTo" type="hidden" value={returnTo} />
       <input name="intent" type="hidden" value="save" />
       <div className="first-page-review__toolbar">
-        <div className="first-page-review__heading">
-          <div className="first-page-review__eyebrow">Metadata review</div>
-          <h2>First Page Biodata</h2>
-          <p>{readinessText}</p>
-        </div>
         <div className="review-actions">
+          <button className="admin-form-button admin-form-button--secondary" type="button" onClick={() => setIsEditing(false)}>
+            Cancel
+          </button>
           <button className="admin-form-button admin-form-button--secondary" type="button" onClick={parseText} disabled={!text.trim()}>
             <Sparkles aria-hidden="true" size={16} />
             Parse from text
@@ -62,20 +91,6 @@ export function FirstPageMetadataForm({
           </button>
         </div>
       </div>
-
-      <section className="first-page-review__card">
-        <div className="first-page-review__section-title">
-          <ClipboardList aria-hidden="true" size={18} />
-          <h4>Quick summary</h4>
-        </div>
-        <div className="first-page-review__summary-grid">
-          <SummaryItem label="Born" value={fields.born} />
-          <SummaryItem label="Samadhi" value={fields.samadhi} />
-          <SummaryItem label="Key place" value={fields.keyPlace} />
-          <SummaryItem label="Tradition" value={fields.tradition} />
-          <SummaryItem label="Guru" value={fields.guru} />
-        </div>
-      </section>
 
       <section className="first-page-review__card">
         <label className="first-page-review__label">
@@ -130,15 +145,6 @@ export function FirstPageMetadataForm({
         </div>
       </section>
     </form>
-  );
-}
-
-function SummaryItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="first-page-review__summary-item">
-      <strong>{label}</strong>
-      <span>{value.trim() || "Not set"}</span>
-    </div>
   );
 }
 

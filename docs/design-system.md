@@ -90,3 +90,46 @@ Principles:
   action token as main buttons, currently `--color-accent`.
 - If a review UI pattern proves useful in more than one workflow, promote it
   from the pilot classes into shared review classes or components before reuse.
+
+### Detail-page review model
+
+Start with item/detail pages, then apply the lessons to bulk/list pages. Detail
+pages should have one primary decision card at first. Additional cards can be
+expanded by the user and should stay expanded/collapsed for the rest of that
+browser session.
+
+Default anatomy:
+
+- Review header: page title, status chips, source links, and one primary page
+  action when available.
+- Primary decision card: open by default and focused on the main resolution
+  task for the page.
+- Summary-first editable cards: show current values as readable facts, then use
+  an Edit action to switch into a per-card form.
+- Short-field cards: compact editing for structured fields.
+- Long-form cards: Markdown, imported text, biographies, notes, captions, and
+  other large text areas in separate cards.
+- Secondary collapsible cards: raw imports, technical snapshots, source JSON,
+  advanced SEO, historical logs, and other reference material.
+
+Use explicit per-card saving as the first implementation pattern. Cards should
+have local Save actions such as `Save biodata`, `Save overview`, or
+`Save lineage`; this keeps changes clear with the current server-action
+architecture. Design these cards so autosave could replace explicit saves later
+without changing the page structure. Autosave will require additional states for
+`Saving`, `Saved`, validation errors, retry, and conflict handling.
+
+Repeatable data should start small. For lists such as lineage saints, aliases,
+or sources, show the existing reviewed rows and one editable row for new input,
+with an `Add more` action instead of rendering a fixed set of empty fields.
+
+Large option sets should use `SearchableSelect` or `SearchableMultiSelect`
+rather than native selects.
+
+Implementation direction:
+
+- Use `ReviewWorkflow` for the primary decision object.
+- Use `ReviewSection` for sections inside a workflow.
+- Use `ReviewFactGrid` for readable current-value summaries.
+- Use `CollapsibleReviewCard` for secondary cards whose open state should
+  persist in `sessionStorage` by route and card ID.

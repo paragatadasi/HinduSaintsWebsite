@@ -2512,6 +2512,57 @@ img {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
+.review-panel.review-panel--detail-card {
+  --review-card-bg: color-mix(in srgb, var(--color-bg) 94%, black);
+  --review-card-section-bg: color-mix(in srgb, var(--color-surface) 88%, var(--color-bg));
+  --review-card-field-bg: color-mix(in srgb, var(--color-bg) 64%, var(--color-surface));
+  --review-card-border: color-mix(in srgb, var(--color-border) 68%, transparent);
+  --review-card-border-soft: color-mix(in srgb, var(--color-border) 42%, transparent);
+
+  background-color: var(--review-card-bg);
+  background-image: none;
+  border: 1px solid var(--review-card-border);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+}
+
+.review-panel--detail-card h2 {
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 34%, transparent);
+  color: var(--color-cream);
+  font-size: clamp(1.7rem, 2.6vw, 2.35rem);
+  padding-bottom: var(--space-4);
+}
+
+.review-panel--detail-card .review-field strong,
+.review-panel--collapsible .review-field strong {
+  color: var(--color-cream);
+}
+
+.review-panel--detail-card .review-field span,
+.review-panel--collapsible .review-field span {
+  color: var(--color-muted);
+}
+
+.review-panel--detail-card .instagram-detail-preview__media {
+  background:
+    radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--color-gold) 20%, transparent), transparent 28%),
+    var(--review-card-field-bg);
+  border-color: var(--review-card-border);
+}
+
+.review-panel--collapsible .raw-json-preview {
+  background: var(--review-workflow-field-bg);
+  border-color: var(--review-workflow-border);
+}
+
+.review-panel--detail-card .status-badge,
+.review-panel--collapsible .status-badge {
+  background: var(--review-card-field-bg, var(--review-workflow-field-bg));
+  border-color: var(--review-card-border, var(--review-workflow-border));
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
 .review-panel.review-panel--workflow {
   --review-workflow-card-bg: color-mix(in srgb, var(--color-bg) 94%, black);
   --review-workflow-section-bg: color-mix(in srgb, var(--color-surface) 88%, var(--color-bg));
@@ -2613,6 +2664,181 @@ img {
   flex: 0 0 auto;
 }
 
+.review-workflow__section-trigger {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  gap: var(--space-4);
+  justify-content: space-between;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.review-workflow__section-trigger .review-workflow__section-title {
+  min-width: 0;
+}
+
+.review-workflow__section-content {
+  border-top: 1px solid var(--review-workflow-border-soft);
+  display: grid;
+  gap: var(--review-field-gap, var(--space-3));
+  margin-top: var(--space-2);
+  padding-top: var(--space-4);
+}
+
+.review-fact-grid {
+  align-items: start;
+  border: 1px solid var(--review-workflow-border-soft, color-mix(in srgb, var(--color-border) 42%, transparent));
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-wrap: wrap;
+  padding: var(--space-3) 0;
+}
+
+.review-fact {
+  align-self: start;
+  border-left: 1px solid var(--review-workflow-border-soft, color-mix(in srgb, var(--color-border) 42%, transparent));
+  display: grid;
+  flex: 1 1 150px;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: 0 var(--space-4);
+}
+
+.review-fact:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.review-fact strong {
+  color: var(--color-cream);
+  font-size: 0.86rem;
+  line-height: 1.2;
+}
+
+.review-fact span {
+  color: var(--color-muted);
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.review-panel--collapsible {
+  --review-workflow-card-bg: color-mix(in srgb, var(--color-bg) 94%, black);
+  --review-workflow-section-bg: color-mix(in srgb, var(--color-surface) 88%, var(--color-bg));
+  --review-workflow-field-bg: color-mix(in srgb, var(--color-bg) 64%, var(--color-surface));
+  --review-workflow-border: color-mix(in srgb, var(--color-border) 68%, transparent);
+  --review-workflow-border-soft: color-mix(in srgb, var(--color-border) 42%, transparent);
+
+  align-content: start;
+  background-color: var(--review-workflow-card-bg);
+  background-image: none;
+  border-color: var(--review-workflow-border);
+  box-shadow: none;
+  margin-inline: auto;
+  max-width: none;
+  width: 100%;
+}
+
+.review-collapsible__trigger {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  gap: var(--space-4);
+  justify-content: space-between;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.review-collapsible__heading {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.review-collapsible__eyebrow {
+  color: var(--color-gold);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.review-collapsible__title {
+  color: var(--color-cream);
+  font-family: var(--font-serif);
+  font-size: clamp(1.7rem, 2.6vw, 2.35rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.review-collapsible__description {
+  color: var(--color-muted);
+  font-size: 0.92rem;
+}
+
+.review-collapsible__icon {
+  color: var(--color-gold);
+  flex: 0 0 auto;
+  transition: transform var(--motion-interactive-duration) var(--motion-interactive-ease);
+}
+
+.review-panel--collapsible[data-open="true"] .review-collapsible__icon {
+  transform: rotate(180deg);
+}
+
+.review-collapsible__content {
+  border-top: 1px solid var(--review-workflow-border);
+  display: grid;
+  gap: var(--review-panel-gap, var(--space-5));
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+}
+
+.first-page-review__source-text {
+  color: var(--color-muted);
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.expandable-text {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.expandable-text__content {
+  display: -webkit-box;
+  line-clamp: var(--expandable-lines, 4);
+  -webkit-line-clamp: var(--expandable-lines, 4);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.expandable-text[data-expanded="true"] .expandable-text__content {
+  display: grid;
+  line-clamp: unset;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+.expandable-text__content p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.expandable-text__toggle {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  justify-self: start;
+  padding: 0;
+}
+
 .review-panel--workflow .review-row--workflow {
   background: var(--review-workflow-field-bg);
   border-color: var(--review-workflow-border);
@@ -2678,8 +2904,9 @@ img {
   border-radius: var(--radius-md);
   box-shadow: none;
   margin-inline: auto;
-  max-width: var(--width-instagram-viewer-panel);
+  max-width: none;
   padding: var(--space-6);
+  width: 100%;
 }
 
 .first-page-review,
@@ -3459,6 +3686,12 @@ img {
 
 .review-field span {
   color: var(--color-muted);
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.field-grid--source-snapshot {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .form-stack input,
@@ -4227,6 +4460,10 @@ img {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .field-grid--source-snapshot {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .review-workflow__grid--saint-resolution {
     grid-template-columns: 1fr;
   }
@@ -4259,6 +4496,10 @@ img {
   }
 
   .first-page-review__field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field-grid--source-snapshot {
     grid-template-columns: 1fr;
   }
 }

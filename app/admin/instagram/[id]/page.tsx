@@ -2,6 +2,9 @@ import Link from "next/link";
 import type { Route } from "next";
 import { notFound } from "next/navigation";
 import { MapPin, UserRound } from "lucide-react";
+import { CollapsibleReviewCard, CollapsibleReviewSection } from "@/components/admin/collapsible-review-card";
+import { ExpandableText } from "@/components/admin/expandable-text";
+import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { getInstagramLinkProps } from "@/lib/external-links";
@@ -67,7 +70,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
       </div>
 
       <div className="review-detail-grid review-detail-grid--overview">
-        <section className="review-panel">
+        <section className="review-panel review-panel--detail-card">
           <h2>Post Preview</h2>
           <div className="instagram-detail-preview">
             <a className="instagram-detail-preview__media interactive-media" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>
@@ -92,7 +95,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
           </div>
         </section>
 
-        <aside className="review-panel">
+        <aside className="review-panel review-panel--detail-card">
           <h2>Review target</h2>
           <p>Resolve this item by matching it to an existing saint or creating a saint draft. Published saint pages show matched Instagram content automatically.</p>
           <div className="review-actions">
@@ -102,21 +105,18 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
         </aside>
       </div>
 
-      <section className="review-panel review-panel--workflow review-panel--saint-resolution">
-        <div className="review-workflow__header">
-          <div className="review-workflow__heading">
-            <div className="review-workflow__eyebrow">Review connections</div>
-            <h2>Connect this Post</h2>
-            <p>Confirm the saint connection, create a draft, and review related place or guru suggestions.</p>
-          </div>
-        </div>
-
-        <div className="review-workflow__grid review-workflow__grid--saint-resolution">
-          <section className="review-workflow__section review-workflow__section--matches">
-            <div className="review-workflow__section-title">
-              <UserRound aria-hidden="true" size={18} />
-              <h3>Saint matches</h3>
-            </div>
+      <ReviewWorkflow
+        className="review-panel--saint-resolution"
+        description="Confirm the saint connection, create a draft, and review related place or guru suggestions."
+        eyebrow="Review connections"
+        gridClassName="review-workflow__grid--saint-resolution"
+        title="Connect this Post"
+      >
+          <ReviewSection
+            className="review-workflow__section--matches"
+            icon={<UserRound aria-hidden="true" size={18} />}
+            title="Saint matches"
+          >
             {item.saints.length > 0 ? (
               <div className="review-list">
                 {item.saints.map((link) => (
@@ -144,26 +144,23 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
             ) : (
               <p>No saint matches have been attached yet.</p>
             )}
-          </section>
+          </ReviewSection>
 
-          <section className="review-workflow__section">
-            <div className="review-workflow__section-title">
-              <UserRound aria-hidden="true" size={18} />
-              <h3>Attach saint</h3>
-            </div>
+          <ReviewSection icon={<UserRound aria-hidden="true" size={18} />} title="Attach saint">
             <SaintAttachForm
               initialQuery={saintQuery}
               instagramItemId={item.id}
               returnTo={returnTo}
               saints={saints}
             />
-          </section>
+          </ReviewSection>
 
-          <section className="review-workflow__section review-workflow__section--draft">
-            <div className="review-workflow__section-title">
-              <UserRound aria-hidden="true" size={18} />
-              <h3>Create saint draft</h3>
-            </div>
+          <CollapsibleReviewSection
+            cardId="create-saint-draft-collapsed"
+            className="review-workflow__section--draft"
+            icon={<UserRound aria-hidden="true" size={18} />}
+            title="Create saint draft"
+          >
             <p>Create a needs-review saint from this Instagram biodata and attach the post immediately.</p>
             <form action={createSaintFromInstagramItem} className="form-stack">
               <input name="instagramItemId" type="hidden" value={item.id} />
@@ -201,7 +198,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
                 <button className="admin-form-button" type="submit">Create saint draft and attach</button>
               </div>
             </form>
-          </section>
+          </CollapsibleReviewSection>
 
           <div className="review-suggestion-grid review-suggestion-grid--metadata review-workflow__suggestions">
             <MetadataSuggestionList
@@ -229,10 +226,16 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
               targetEntityType="Saint"
             />
           </div>
-        </div>
-      </section>
+      </ReviewWorkflow>
 
-      <section className="review-panel review-panel--first-page">
+      <CollapsibleReviewCard
+        cardId="first-page-biodata"
+        className="review-panel--first-page"
+        defaultOpen={!firstPageText || Boolean(reviewParams.firstPageExtraction)}
+        description={firstPageText ? "Extracted first-page biodata is ready for human review." : "Extract a first pass from the imported image, then review and edit the fields before saving."}
+        eyebrow="Metadata review"
+        title="First Page Biodata"
+      >
         {!firstPageText ? (
           <form action={extractInstagramFirstPageFromImage} className="review-actions">
             <input name="instagramItemId" type="hidden" value={item.id} />
@@ -251,14 +254,17 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
           firstPageText={firstPageText}
           instagramItemId={item.id}
           metadata={firstPageMetadata}
-          readinessText={firstPageText ? "Extracted first-page biodata is ready for human review." : "Extract a first pass from the imported image, then review and edit the fields before saving."}
           returnTo={returnTo}
         />
-      </section>
+      </CollapsibleReviewCard>
 
-      <section className="review-panel">
-        <h2>Source Snapshot</h2>
-        <div className="field-grid">
+      <CollapsibleReviewCard
+        cardId="source-snapshot"
+        description="Imported source URLs and preserved external payload for debugging."
+        eyebrow="Technical reference"
+        title="Source Snapshot"
+      >
+        <div className="field-grid field-grid--source-snapshot">
           <ReviewField label="Instagram URL" value={item.instagramUrl} />
           <ReviewField label="Thumbnail URL" value={item.thumbnailUrl} />
           <ReviewField label="Import batch" value={item.sourceImportBatch?.sourceName} />
@@ -267,7 +273,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
         {item.externalRecord ? (
           <pre className="raw-json-preview">{JSON.stringify(item.externalRecord.rawPayloadJson, null, 2)}</pre>
         ) : null}
-      </section>
+      </CollapsibleReviewCard>
     </div>
   );
 }
@@ -672,16 +678,9 @@ function ReviewField({ label, value }: { label: string; value?: string | null })
 }
 
 function FormattedCaption({ caption }: { caption?: string | null }) {
-  const paragraphs = splitCaptionParagraphs(caption);
-  if (paragraphs.length === 0) return <p>No caption text imported yet.</p>;
+  if (!caption?.trim()) return <p>No caption text imported yet.</p>;
 
-  return (
-    <div className="formatted-caption">
-      {paragraphs.map((paragraph, index) => (
-        <p key={`${paragraph}-${index}`}>{paragraph}</p>
-      ))}
-    </div>
-  );
+  return <ExpandableText collapsedLines={5}>{caption}</ExpandableText>;
 }
 
 function getActionButtonClassName(variant: "primary" | "secondary" | "warning") {
@@ -698,15 +697,6 @@ function getInstagramPreviewAlt(item: NonNullable<Awaited<ReturnType<typeof getI
 
 function getInstagramPreviewUrl(item: NonNullable<Awaited<ReturnType<typeof getInstagramItem>>>) {
   return item.mediaAssets[0]?.cachedUrl ?? item.thumbnailUrl;
-}
-
-function splitCaptionParagraphs(caption?: string | null) {
-  return caption
-    ?.replace(/\r\n/g, "\n")
-    .split(/\n{2,}|\n(?=#)/)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean)
-    ?? [];
 }
 
 function formatStatus(status: string) {
