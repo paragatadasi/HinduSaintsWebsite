@@ -106,6 +106,10 @@ Default anatomy:
   task for the page.
 - Summary-first editable cards: show current values as readable facts, then use
   an Edit action to switch into a per-card form.
+- Keep summary and edit modes spatially consistent. When a card switches from
+  readable facts to editable controls, preserve the same field order and grid
+  positions wherever the field set allows it, so reviewers do not have to
+  remap the content before making edits.
 - Short-field cards: compact editing for structured fields.
 - Long-form cards: Markdown, imported text, biographies, notes, captions, and
   other large text areas in separate cards.
@@ -133,3 +137,19 @@ Implementation direction:
 - Use `ReviewFactGrid` for readable current-value summaries.
 - Use `CollapsibleReviewCard` for secondary cards whose open state should
   persist in `sessionStorage` by route and card ID.
+- Use `ReviewEditToggle` when a card should start in summary mode and reveal
+  edit controls only after an explicit edit action.
+
+Current rollout notes:
+
+- Instagram item detail is the first polished pilot. `Connect this Post` is the
+  primary workflow. First Page Biodata starts as a six-field summary, keeps
+  first-page source text out of the default summary, and places parse actions at
+  the start of edit mode with save actions at the bottom.
+- Saint detail is the second pilot. It starts with Public Profile Readiness,
+  uses summary-first editable cards for overview, public fields, traditions,
+  places, biography, and aliases, and places Instagram claims directly below
+  public fields so reviewers can compare imported candidates with current
+  reviewed values.
+- Images sit near biography because they support the public profile review,
+  while sources, snapshots, aliases, and other references remain collapsible.

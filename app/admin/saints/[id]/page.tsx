@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CheckCircle2, UserRound } from "lucide-react";
+import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
+import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
+import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchableMultiSelect } from "@/components/ui/searchable-multi-select";
 import { db } from "@/lib/db";
@@ -92,19 +96,69 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
         ) : null}
       </div>
 
-      <div className="review-detail-grid review-detail-grid--overview">
-        <section className="review-panel">
-          <h2>Overview</h2>
+      <ReviewWorkflow
+        className="review-panel--saint-readiness"
+        description="Check whether the public profile is ready, then choose the review outcome."
+        eyebrow="Review decision"
+        gridClassName="review-workflow__grid--saint-readiness"
+        title="Public Profile Readiness"
+      >
+        <ReviewSection
+          icon={<CheckCircle2 aria-hidden="true" size={18} />}
+          title="Publish state"
+        >
+          <div className="field-grid">
+            <ReviewField label="Current status" value={formatStatus(saint.status)} />
+            <ReviewField label="Biography" value={primaryBiography ? formatStatus(primaryBiography.status) : "Not started"} />
+            <ReviewField label="Traditions" value={`${saint.traditions.length}`} />
+            <ReviewField label="Places" value={`${saint.places.length}`} />
+            <ReviewField label="Public images" value={`${visibleGalleryImages.length + (saint.primaryImage ? 1 : 0)}`} />
+            <ReviewField label="Sources" value={`${sourceLinks.length}`} />
+          </div>
+        </ReviewSection>
+
+        <ReviewSection
+          icon={<UserRound aria-hidden="true" size={18} />}
+          title="Review actions"
+        >
+          <p>Publishing makes this saint eligible for public display. Returning to review removes it from public pages.</p>
+          <div className="review-actions">
+            <StatusForm saintId={saint.id} status="published" label="Approve and publish" />
+            <StatusForm saintId={saint.id} status="needs_review" label="Return to review" variant="secondary" />
+            <StatusForm saintId={saint.id} status="archived" label="Archive" variant="warning" />
+          </div>
+        </ReviewSection>
+      </ReviewWorkflow>
+
+      <CollapsibleReviewCard
+        cardId="saint-overview"
+        defaultOpen
+        description="Review the public identity fields before editing."
+        eyebrow="Profile overview"
+        title="Overview"
+      >
+        <ReviewEditToggle
+          editLabel="Edit overview"
+          summary={(
+            <div className="field-grid saint-review__summary-grid">
+              <ReviewField label="Display name" value={saint.displayName} />
+              <ReviewField label="Canonical name" value={saint.canonicalName} />
+              <ReviewField label="Short description" value={saint.shortDescription} />
+            </div>
+          )}
+        >
           <form action={updateSaintOverview} className="form-stack">
             <input name="saintId" type="hidden" value={saint.id} />
-            <label>
-              Display name
-              <input name="displayName" defaultValue={saint.displayName} required maxLength={200} />
-            </label>
-            <label>
-              Canonical name
-              <input name="canonicalName" defaultValue={saint.canonicalName} required maxLength={200} />
-            </label>
+            <div className="field-grid">
+              <label>
+                Display name
+                <input name="displayName" defaultValue={saint.displayName} required maxLength={200} />
+              </label>
+              <label>
+                Canonical name
+                <input name="canonicalName" defaultValue={saint.canonicalName} required maxLength={200} />
+              </label>
+            </div>
             <label>
               Short description
               <textarea name="shortDescription" defaultValue={saint.shortDescription ?? ""} maxLength={500} />
@@ -113,53 +167,131 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
               <button className="admin-form-button" type="submit">Save overview</button>
             </div>
           </form>
-        </section>
+        </ReviewEditToggle>
+      </CollapsibleReviewCard>
 
-        <aside className="review-panel">
-          <h2>Review Actions</h2>
-          <p>Publishing makes this saint eligible for public display. Returning to review removes it from public pages.</p>
-          <div className="review-actions">
-            <StatusForm saintId={saint.id} status="published" label="Approve and publish" />
-            <StatusForm saintId={saint.id} status="needs_review" label="Return to review" variant="secondary" />
-            <StatusForm saintId={saint.id} status="archived" label="Archive" variant="warning" />
-          </div>
-        </aside>
-
-        <section className="review-panel review-detail-grid__full">
-          <h2>Other Public Fields</h2>
+      <CollapsibleReviewCard
+        cardId="saint-public-fields"
+        defaultOpen
+        description="Dates, era text, and SEO fields used by the public profile."
+        eyebrow="Profile metadata"
+        title="Public Fields"
+      >
+        <ReviewEditToggle
+          editLabel="Edit public fields"
+          summary={(
+            <div className="field-grid saint-review__summary-grid">
+              <ReviewField label="Era" value={saint.eraLabel} />
+              <ReviewField label="Birth date" value={saint.birthDateRaw} />
+              <ReviewField label="Samadhi date" value={saint.samadhiDateRaw} />
+              <ReviewField label="Date notes" value={saint.dateNotes} />
+              <ReviewField label="SEO title" value={saint.seoTitle} />
+              <ReviewField label="SEO description" value={saint.seoDescription} />
+            </div>
+          )}
+        >
           <form action={updateSaintOtherPublicFields} className="form-stack">
             <input name="saintId" type="hidden" value={saint.id} />
-            <label>
-              Era label
-              <input name="eraLabel" defaultValue={saint.eraLabel ?? ""} maxLength={120} />
-            </label>
-            <label>
-              Birth date
-              <input name="birthDateRaw" defaultValue={saint.birthDateRaw ?? ""} maxLength={120} />
-            </label>
-            <label>
-              Samadhi date
-              <input name="samadhiDateRaw" defaultValue={saint.samadhiDateRaw ?? ""} maxLength={120} />
-            </label>
+            <div className="field-grid">
+              <label>
+                Era label
+                <input name="eraLabel" defaultValue={saint.eraLabel ?? ""} maxLength={120} />
+              </label>
+              <label>
+                Birth date
+                <input name="birthDateRaw" defaultValue={saint.birthDateRaw ?? ""} maxLength={120} />
+              </label>
+              <label>
+                Samadhi date
+                <input name="samadhiDateRaw" defaultValue={saint.samadhiDateRaw ?? ""} maxLength={120} />
+              </label>
+            </div>
             <label>
               Date notes
               <textarea name="dateNotes" defaultValue={saint.dateNotes ?? ""} maxLength={1000} />
             </label>
-            <label>
-              SEO title
-              <input name="seoTitle" defaultValue={saint.seoTitle ?? ""} maxLength={120} />
-            </label>
-            <label>
-              SEO description
-              <textarea name="seoDescription" defaultValue={saint.seoDescription ?? ""} maxLength={300} />
-            </label>
+            <div className="field-grid">
+              <label>
+                SEO title
+                <input name="seoTitle" defaultValue={saint.seoTitle ?? ""} maxLength={120} />
+              </label>
+              <label>
+                SEO description
+                <textarea name="seoDescription" defaultValue={saint.seoDescription ?? ""} maxLength={300} />
+              </label>
+            </div>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save public fields</button>
             </div>
           </form>
+        </ReviewEditToggle>
+      </CollapsibleReviewCard>
 
-          <div className="review-panel__subsection">
-            <h3>Traditions</h3>
+      <CollapsibleReviewCard
+        cardId="saint-instagram-claims"
+        defaultOpen={saint.instagramClaims.some((claim) => claim.status === "needs_review" || claim.status === "suggested")}
+        description="Compare imported Instagram candidates against the current reviewed profile values."
+        eyebrow="Imported claims"
+        title="Instagram Claims"
+      >
+        {saint.instagramClaims.length > 0 ? (
+          <div className="review-list">
+            {saint.instagramClaims.map((claim) => (
+              <div className="review-row" key={claim.id}>
+                <div>
+                  <div className="review-meta">
+                    <StatusBadge label={formatStatus(claim.status)} />
+                    <StatusBadge label={claim.confidence} />
+                    <StatusBadge label={formatStatus(claim.claimType)} />
+                  </div>
+                  <h3>{formatClaimLabel(claim.claimType)}</h3>
+                  <div className="field-grid saint-review__claim-comparison">
+                    <ReviewField label="Current value" value={getCurrentClaimValue(saint, claim.claimType)} />
+                    <ReviewField label="Instagram candidate" value={claim.rawValue} />
+                  </div>
+                  {isDateClaim(claim.claimType) ? (
+                    <p>{formatDateClaimInterpretation(claim.rawValue)}</p>
+                  ) : null}
+                  <div className="review-actions">
+                    <Link className="admin-text-link" href={`/admin/instagram/${claim.instagramItemId}`}>Open Instagram item</Link>
+                    {claim.instagramItem.instagramShortcode ? <a className="admin-text-link" href={claim.instagramItem.instagramUrl} {...getInstagramLinkProps(claim.instagramItem.instagramUrl)}>View post</a> : null}
+                  </div>
+                </div>
+                <div className="review-actions">
+                  {claim.status === "needs_review" || claim.status === "suggested" ? (
+                    <>
+                      <ClaimReviewForm claimId={claim.id} saintId={saint.id} intent="accept" label="Accept" />
+                      <ClaimReviewForm claimId={claim.id} saintId={saint.id} intent="ignore" label="Ignore" variant="warning" />
+                    </>
+                  ) : (
+                    <StatusBadge label={claim.appliedAt ? `applied ${claim.appliedAt.toLocaleDateString()}` : formatStatus(claim.status)} />
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No direct Instagram claims are waiting for review.</p>
+        )}
+      </CollapsibleReviewCard>
+
+      <div className="review-detail-grid review-detail-grid--paired">
+        <CollapsibleReviewCard
+          cardId="saint-traditions"
+          defaultOpen
+          description="Tradition memberships and primary tradition."
+          eyebrow="Lineage context"
+          title="Traditions"
+        >
+          <ReviewEditToggle
+            editLabel="Edit traditions"
+            summary={(
+              <div className="field-grid saint-review__summary-grid">
+                <ReviewField label="Primary tradition" value={saint.traditions.find((item) => item.isPrimary)?.tradition.name ?? saint.traditions[0]?.tradition.name} />
+                <ReviewField label="All traditions" value={saint.traditions.map((item) => item.tradition.name).join(", ")} />
+              </div>
+            )}
+          >
             <form action={updateSaintTraditions} className="form-stack">
               <input name="saintId" type="hidden" value={saint.id} />
               <SearchableMultiSelect
@@ -176,21 +308,52 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
                 <button className="admin-form-button" type="submit">Save traditions</button>
               </div>
             </form>
-          </div>
+          </ReviewEditToggle>
+        </CollapsibleReviewCard>
 
-          <div className="review-panel__subsection">
-            <h3>Places and Route Order</h3>
+        <CollapsibleReviewCard
+          cardId="saint-places"
+          defaultOpen
+          description="Map locations and route ordering."
+          eyebrow="Geography"
+          title="Places and Route"
+        >
+          <ReviewEditToggle
+            editLabel="Edit places"
+            summary={(
+              <div className="field-grid saint-review__summary-grid">
+                <ReviewField label="Selected places" value={saint.places.map((item) => item.place.name).join(", ")} />
+                <ReviewField label="Route stops" value={`${saint.places.filter((item) => item.routeOrder != null).length}`} />
+              </div>
+            )}
+          >
             <SaintPlaceRouteEditor
               options={placeOptions}
               placeTypes={placeTypes}
               saintId={saint.id}
               selectedPlaceIds={selectedPlaceIds}
             />
-          </div>
+          </ReviewEditToggle>
+        </CollapsibleReviewCard>
+      </div>
 
-          <div className="review-panel__subsection">
-            <h3>Biography</h3>
-            <form action={upsertSaintBiography} className="form-stack">
+      <CollapsibleReviewCard
+        cardId="saint-biography"
+        description="Long-form narrative and imported text references."
+        eyebrow="Long-form content"
+        title="Biography"
+      >
+        <ReviewEditToggle
+          editLabel="Edit biography"
+          summary={(
+            <div className="field-grid saint-review__summary-grid">
+              <ReviewField label="Title" value={primaryBiography?.title} />
+              <ReviewField label="Status" value={primaryBiography ? formatStatus(primaryBiography.status) : "Not started"} />
+              <ReviewField label="Body" value={primaryBiography?.bodyMarkdown ? `${primaryBiography.bodyMarkdown.length.toLocaleString()} characters` : undefined} />
+            </div>
+          )}
+        >
+          <form action={upsertSaintBiography} className="form-stack">
               <input name="saintId" type="hidden" value={saint.id} />
               {primaryBiography ? <input name="biographyId" type="hidden" value={primaryBiography.id} /> : null}
               <label>
@@ -240,11 +403,76 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
               <div className="review-actions">
                 <button className="admin-form-button" type="submit">Save biography</button>
               </div>
-            </form>
-          </div>
+          </form>
+        </ReviewEditToggle>
+      </CollapsibleReviewCard>
 
-          <div className="review-panel__subsection">
-            <h3>Sources and Further Reading</h3>
+      <CollapsibleReviewCard
+        cardId="saint-images"
+        defaultOpen={!saint.primaryImage && visibleGalleryImages.length === 0}
+        description="Public images, hidden staged images, and Instagram image candidates."
+        eyebrow="Media"
+        title="Images"
+      >
+        {saint.primaryImage ? (
+          <figure className="image-with-credit image-with-credit--admin">
+            <img src={saint.primaryImage.url} alt={saint.primaryImage.altText ?? saint.displayName} width={saint.primaryImage.width ?? undefined} height={saint.primaryImage.height ?? undefined} />
+            <figcaption>
+              <span>{saint.primaryImage.caption ?? "Primary saint image"}</span>
+              {saint.primaryImage.sourceUrl ? <small>Source preserved</small> : null}
+              <SaintImageActions
+                imageLabel={saint.primaryImage.caption ?? saint.primaryImage.altText ?? "Primary saint image"}
+                mediaAssetId={saint.primaryImage.id}
+                saintId={saint.id}
+                visible
+              />
+            </figcaption>
+          </figure>
+        ) : null}
+        {visibleGalleryImages.length > 0 ? (
+          <div className="media-grid">
+            {visibleGalleryImages.map(({ mediaAsset }) => (
+              <figure className="image-with-credit image-with-credit--admin" key={mediaAsset.id}>
+                <img src={mediaAsset.url} alt={mediaAsset.altText ?? saint.displayName} width={mediaAsset.width ?? undefined} height={mediaAsset.height ?? undefined} />
+                <figcaption>
+                  <span>{mediaAsset.caption ?? "Imported saint image"}</span>
+                  {mediaAsset.sourceUrl ? <small>Source preserved</small> : null}
+                  <SaintImageActions
+                    imageLabel={mediaAsset.caption ?? mediaAsset.altText ?? "Imported saint image"}
+                    mediaAssetId={mediaAsset.id}
+                    saintId={saint.id}
+                    visible
+                  />
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        ) : (
+          <p>No public saint images have been attached.</p>
+        )}
+        <div className="review-panel__subsection">
+          <h3>Add image</h3>
+          <SaintImageCropper
+            defaultAltText={`${saint.displayName} portrait`}
+            instagramImages={instagramImages}
+            saintId={saint.id}
+            stagedImages={hiddenGalleryImages.map(({ mediaAsset }) => ({
+              altText: mediaAsset.altText,
+              caption: mediaAsset.caption,
+              id: mediaAsset.id,
+              sourceUrl: mediaAsset.sourceUrl,
+              url: mediaAsset.url
+            }))}
+          />
+        </div>
+      </CollapsibleReviewCard>
+
+      <CollapsibleReviewCard
+        cardId="saint-sources"
+        description="Reviewed sources and public further reading."
+        eyebrow="References"
+        title="Sources and Further Reading"
+      >
             {sourceLinks.length > 0 ? (
               <div className="review-list">
                 {sourceLinks.map((link) => (
@@ -346,12 +574,14 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
                 </div>
               </form>
             </div>
-          </div>
-        </section>
-      </div>
+      </CollapsibleReviewCard>
 
-      <section className="review-panel">
-        <h2>Review Snapshot</h2>
+      <CollapsibleReviewCard
+        cardId="saint-review-snapshot"
+        description="Identifiers, imported metadata, and preserved Airtable linkage."
+        eyebrow="Technical reference"
+        title="Review Snapshot"
+      >
         <div className="field-grid">
           <ReviewField label="Slug" value={saint.slug} />
           <ReviewField label="Era" value={saint.eraLabel} />
@@ -362,116 +592,35 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
           <ReviewField label="SEO description" value={saint.seoDescription} />
           <ReviewField label="Last Airtable mirror seen" value={externalRecord?.lastSeenAt.toLocaleString()} />
         </div>
-      </section>
+      </CollapsibleReviewCard>
 
-      <section className="review-panel">
-        <h2>Aliases</h2>
-        <form action={updateSaintAliases} className="form-stack">
-          <input name="saintId" type="hidden" value={saint.id} />
-          <label>
-            Aliases
-            <textarea name="aliases" defaultValue={saint.aliases.map((alias) => alias.alias).join("\n")} />
-          </label>
-          <div className="review-actions">
-            <button className="admin-form-button" type="submit">Save aliases</button>
-          </div>
-        </form>
-      </section>
+      <CollapsibleReviewCard
+        cardId="saint-aliases"
+        description="Alternate names used for search, matching, and editorial context."
+        eyebrow="Identity"
+        title="Aliases"
+      >
+        <ReviewEditToggle
+          editLabel="Edit aliases"
+          summary={(
+            <div className="field-grid saint-review__summary-grid">
+              <ReviewField label="Aliases" value={saint.aliases.map((alias) => alias.alias).join(", ")} />
+            </div>
+          )}
+        >
+          <form action={updateSaintAliases} className="form-stack">
+            <input name="saintId" type="hidden" value={saint.id} />
+            <label>
+              Aliases
+              <textarea name="aliases" defaultValue={saint.aliases.map((alias) => alias.alias).join("\n")} />
+            </label>
+            <div className="review-actions">
+              <button className="admin-form-button" type="submit">Save aliases</button>
+            </div>
+          </form>
+        </ReviewEditToggle>
+      </CollapsibleReviewCard>
 
-      <section className="review-panel">
-        <h2>Instagram Claims</h2>
-        {saint.instagramClaims.length > 0 ? (
-          <div className="review-list">
-            {saint.instagramClaims.map((claim) => (
-              <div className="review-row" key={claim.id}>
-                <div>
-                  <div className="review-meta">
-                    <StatusBadge label={formatStatus(claim.status)} />
-                    <StatusBadge label={claim.confidence} />
-                    <StatusBadge label={formatStatus(claim.claimType)} />
-                  </div>
-                  <h3>{formatClaimLabel(claim.claimType)}</h3>
-                  <p>{claim.rawValue}</p>
-                  {isDateClaim(claim.claimType) ? (
-                    <p>{formatDateClaimInterpretation(claim.rawValue)}</p>
-                  ) : null}
-                  <div className="review-actions">
-                    <Link className="admin-text-link" href={`/admin/instagram/${claim.instagramItemId}`}>Open Instagram item</Link>
-                    {claim.instagramItem.instagramShortcode ? <a className="admin-text-link" href={claim.instagramItem.instagramUrl} {...getInstagramLinkProps(claim.instagramItem.instagramUrl)}>View post</a> : null}
-                  </div>
-                </div>
-                <div className="review-actions">
-                  {claim.status === "needs_review" || claim.status === "suggested" ? (
-                    <>
-                      <ClaimReviewForm claimId={claim.id} saintId={saint.id} intent="accept" label="Accept" />
-                      <ClaimReviewForm claimId={claim.id} saintId={saint.id} intent="ignore" label="Ignore" variant="warning" />
-                    </>
-                  ) : (
-                    <StatusBadge label={claim.appliedAt ? `applied ${claim.appliedAt.toLocaleDateString()}` : formatStatus(claim.status)} />
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>No direct Instagram claims are waiting for review.</p>
-        )}
-      </section>
-
-      <section className="review-panel">
-        <h2>Images</h2>
-        {saint.primaryImage ? (
-          <figure className="image-with-credit image-with-credit--admin">
-            <img src={saint.primaryImage.url} alt={saint.primaryImage.altText ?? saint.displayName} width={saint.primaryImage.width ?? undefined} height={saint.primaryImage.height ?? undefined} />
-            <figcaption>
-              <span>{saint.primaryImage.caption ?? "Primary saint image"}</span>
-              {saint.primaryImage.sourceUrl ? <small>Source preserved</small> : null}
-              <SaintImageActions
-                imageLabel={saint.primaryImage.caption ?? saint.primaryImage.altText ?? "Primary saint image"}
-                mediaAssetId={saint.primaryImage.id}
-                saintId={saint.id}
-                visible
-              />
-            </figcaption>
-          </figure>
-        ) : null}
-        {visibleGalleryImages.length > 0 ? (
-          <div className="media-grid">
-            {visibleGalleryImages.map(({ mediaAsset }) => (
-              <figure className="image-with-credit image-with-credit--admin" key={mediaAsset.id}>
-                <img src={mediaAsset.url} alt={mediaAsset.altText ?? saint.displayName} width={mediaAsset.width ?? undefined} height={mediaAsset.height ?? undefined} />
-                <figcaption>
-                  <span>{mediaAsset.caption ?? "Imported saint image"}</span>
-                  {mediaAsset.sourceUrl ? <small>Source preserved</small> : null}
-                  <SaintImageActions
-                    imageLabel={mediaAsset.caption ?? mediaAsset.altText ?? "Imported saint image"}
-                    mediaAssetId={mediaAsset.id}
-                    saintId={saint.id}
-                    visible
-                  />
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        ) : (
-          <p>No public saint images have been attached.</p>
-        )}
-        <div className="review-panel__subsection">
-          <h3>Add image</h3>
-          <SaintImageCropper
-            defaultAltText={`${saint.displayName} portrait`}
-            instagramImages={instagramImages}
-            saintId={saint.id}
-            stagedImages={hiddenGalleryImages.map(({ mediaAsset }) => ({
-              altText: mediaAsset.altText,
-              caption: mediaAsset.caption,
-              id: mediaAsset.id,
-              sourceUrl: mediaAsset.sourceUrl,
-              url: mediaAsset.url
-            }))}
-          />
-        </div>
-      </section>
     </div>
   );
 }
@@ -772,6 +921,17 @@ function formatClaimLabel(claimType: string) {
 
 function isDateClaim(claimType: string) {
   return claimType === "birth_date" || claimType === "samadhi_date";
+}
+
+function getCurrentClaimValue(
+  saint: NonNullable<Awaited<ReturnType<typeof getSaint>>>,
+  claimType: string
+) {
+  if (claimType === "alias") return saint.aliases.map((alias) => alias.alias).join(", ");
+  if (claimType === "birth_date") return saint.birthDateRaw;
+  if (claimType === "samadhi_date") return saint.samadhiDateRaw;
+  if (claimType === "tradition") return saint.traditions.map((item) => item.tradition.name).join(", ");
+  return undefined;
 }
 
 function formatDateClaimInterpretation(rawValue: string) {

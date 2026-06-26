@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import { ClipboardList, FileText, Sparkles, UserRound } from "lucide-react";
-import { ReviewFactGrid } from "@/components/admin/review-ui";
 import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { updateInstagramFirstPageMetadata } from "../actions";
@@ -43,25 +43,22 @@ export function FirstPageMetadataForm({
   if (!isEditing) {
     return (
       <div className="first-page-review first-page-review--summary">
-        <ReviewFactGrid
-          facts={[
-            { label: "Display name", value: fields.displayName },
-            { label: "Born", value: fields.born },
-            { label: "Samadhi", value: fields.samadhi },
-            { label: "Key place", value: fields.keyPlace },
-            { label: "Tradition", value: fields.tradition },
-            { label: "Guru", value: fields.guru }
-          ]}
-        />
-        {text.trim() ? (
-          <section className="first-page-review__card">
-            <div className="first-page-review__section-title">
-              <FileText aria-hidden="true" size={18} />
-              <h4>First-page text</h4>
-            </div>
-            <p className="first-page-review__source-text">{text}</p>
-          </section>
-        ) : null}
+        <div className="first-page-review__metadata-grid first-page-review__summary-grid">
+          <ReviewSummaryField
+            label="Display name"
+            value={(
+              <>
+                <span>{fields.displayName || "Not set"}</span>
+                {fields.subtitle ? <small>{fields.subtitle}</small> : null}
+              </>
+            )}
+          />
+          <ReviewSummaryField label="Born" value={fields.born} />
+          <ReviewSummaryField label="Samadhi" value={fields.samadhi} />
+          <ReviewSummaryField label="Key place" value={fields.keyPlace} />
+          <ReviewSummaryField label="Tradition" value={fields.tradition} />
+          <ReviewSummaryField label="Guru" value={fields.guru} />
+        </div>
         <div className="review-actions">
           <button className="admin-form-button" type="button" onClick={() => setIsEditing(true)}>
             Edit metadata
@@ -84,10 +81,6 @@ export function FirstPageMetadataForm({
           <button className="admin-form-button admin-form-button--secondary" type="button" onClick={parseText} disabled={!text.trim()}>
             <Sparkles aria-hidden="true" size={16} />
             Parse from text
-          </button>
-          <button className="admin-form-button" type="submit">
-            <ClipboardList aria-hidden="true" size={16} />
-            Save metadata
           </button>
         </div>
       </div>
@@ -113,14 +106,11 @@ export function FirstPageMetadataForm({
           <UserRound aria-hidden="true" size={18} />
           <h4>Basic information</h4>
         </div>
-        <div className="field-grid first-page-review__field-grid">
-          <label>
+        <div className="first-page-review__metadata-grid first-page-review__field-grid first-page-review__field-grid--basic">
+          <label className="first-page-review__compound-field">
             Display name
             <input name="displayName" value={fields.displayName} onChange={(event) => updateField("displayName", event.target.value)} maxLength={200} />
-          </label>
-          <label>
-            Subtitle
-            <input name="subtitle" value={fields.subtitle} onChange={(event) => updateField("subtitle", event.target.value)} maxLength={200} />
+            <input name="subtitle" value={fields.subtitle} onChange={(event) => updateField("subtitle", event.target.value)} maxLength={200} placeholder="Subtitle" />
           </label>
           <label>
             Born
@@ -144,6 +134,15 @@ export function FirstPageMetadataForm({
           </label>
         </div>
       </section>
+
+      <div className="first-page-review__commit">
+        <div className="review-actions">
+          <button className="admin-form-button" type="submit">
+            <ClipboardList aria-hidden="true" size={16} />
+            Save metadata
+          </button>
+        </div>
+      </div>
     </form>
   );
 }
@@ -160,4 +159,13 @@ function fieldsFromMetadata(metadata: InstagramFirstPageMetadata) {
     tradition: compacted.tradition ?? "",
     guru: compacted.guru ?? ""
   };
+}
+
+function ReviewSummaryField({ label, value }: { label: string; value: ReactNode }) {
+  return (
+    <div className="review-field">
+      <strong>{label}</strong>
+      {typeof value === "string" ? <span>{value || "Not set"}</span> : value}
+    </div>
+  );
 }
