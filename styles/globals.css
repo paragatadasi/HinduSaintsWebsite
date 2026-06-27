@@ -11,9 +11,9 @@ html {
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 15% 8%, color-mix(in srgb, var(--color-gold) 16%, transparent) 0 1px, transparent 2px),
-    radial-gradient(circle at 82% 12%, color-mix(in srgb, var(--color-gold) 22%, transparent) 0 1px, transparent 2px),
-    radial-gradient(circle at 22% 68%, color-mix(in srgb, var(--color-gold) 18%, transparent) 0 1px, transparent 2px),
+    radial-gradient(circle at 15% 8%, var(--color-star) 0 1px, transparent 2px),
+    radial-gradient(circle at 82% 12%, var(--color-star) 0 1px, transparent 2px),
+    radial-gradient(circle at 22% 68%, var(--color-star) 0 1px, transparent 2px),
     linear-gradient(180deg, var(--color-bg), var(--color-night-soft) 68%, var(--color-bg));
   background-size: 86px 86px, 132px 132px, 118px 118px, auto;
   color: var(--color-text);

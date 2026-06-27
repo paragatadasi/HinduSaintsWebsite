@@ -26,6 +26,12 @@ Rules:
 
 - All design and layout changes should start in the design system.
 - Use tokens for broad visual direction: color, type, spacing, radius, shadows, widths, and image treatments.
+- Public theme rollout should favor calm museum-like hierarchy through shared
+  tokens before page-specific restructuring. The `nocturne` theme is the active
+  public baseline: keep borders soft, star texture quiet, and gold accents
+  selective so existing public templates, including the Tradition detail page,
+  remain visually consistent while structure-level redesign awaits approved
+  mockups.
 - Use shared CSS classes for repeated layout patterns.
 - Use shared components for repeated UI behavior and variants.
 - Use `SearchableMultiSelect` for compact admin relationship pickers that need
