@@ -47,7 +47,7 @@ export function PlaceOverviewEditor({
           <input name="alternateNames" defaultValue={alternateNames.join(", ")} maxLength={2000} />
         </label>
       </div>
-      <div className="field-grid">
+      <div className="field-grid field-grid--place-overview-hierarchy">
         <label>
           Place unit
           <select name="placeScope" value={placeScope} onChange={(event) => setPlaceScope(event.target.value as "locality" | "state")}>
@@ -61,25 +61,25 @@ export function PlaceOverviewEditor({
             emptyText="No states match this search."
             label="Parent state"
             name="parentStateId"
-            options={[{ value: "", label: "No parent state" }, ...stateOptions]}
-            placeholder="Search states"
+            options={stateOptions}
+            placeholder="Search states or leave blank"
           />
         ) : (
-          <input name="parentStateId" type="hidden" value="" />
+          <>
+            <input name="parentStateId" type="hidden" value="" />
+            <SearchableMultiSelect
+              defaultSelectedValues={selectedLocalityIds}
+              emptyText="No localities match this search."
+              label="Localities"
+              name="localityIds"
+              options={localityOptions}
+              placeholder="Search localities"
+              selectedLabel="Selected localities"
+            />
+          </>
         )}
+        <CountryCombobox defaultValue={country} options={countryOptions} />
       </div>
-      {placeScope === "state" ? (
-        <SearchableMultiSelect
-          defaultSelectedValues={selectedLocalityIds}
-          emptyText="No localities match this search."
-          label="Localities"
-          name="localityIds"
-          options={localityOptions}
-          placeholder="Search localities"
-          selectedLabel="Selected localities"
-        />
-      ) : null}
-      <CountryCombobox defaultValue={country} options={countryOptions} />
       <div className="review-actions">
         <button className="admin-form-button" type="submit">Save overview</button>
       </div>
