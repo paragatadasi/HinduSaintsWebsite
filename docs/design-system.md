@@ -65,6 +65,9 @@ Principles:
 
 - Compose review workflows as one coherent object, not as a loose stack of
   unrelated boxes.
+- Start detail pages with one primary decision workflow. A reviewer should
+  understand the current state first, then take a clear action such as confirm,
+  attach, edit, publish, ignore, merge, or resolve.
 - Use three quiet surface layers: darkest for the workflow container, lighter
   for review sections, and a middle tone for editable controls or suggestion
   chips.
@@ -80,6 +83,10 @@ Principles:
 - Pin review section content to the top by default. Avoid implicit vertical
   distribution from stretched grid rows; use explicit bottom alignment only for
   actions or controls that intentionally anchor to the bottom of a card.
+- Pin editable controls close to their field labels. Simple values should use
+  one-line inputs, not tall controls that make the value float away from its
+  label. Use asymmetric grid columns when one field is naturally shorter than
+  the next field, such as `Name` beside `Alternate names`.
 - Labels should be more prominent than field values; field values and imported
   text should not be bold by default.
 - Buttons in review headers should be available but secondary to the content
@@ -90,6 +97,8 @@ Principles:
   action token as main buttons, currently `--color-accent`.
 - If a review UI pattern proves useful in more than one workflow, promote it
   from the pilot classes into shared review classes or components before reuse.
+- Avoid card-within-card summary boxes. Prefer flat label/value grids, quiet
+  rows, and shared review surfaces.
 
 ### Detail-page review model
 
@@ -110,6 +119,10 @@ Default anatomy:
   readable facts to editable controls, preserve the same field order and grid
   positions wherever the field set allows it, so reviewers do not have to
   remap the content before making edits.
+- Put comparison workflows and relationship editors near the data they affect.
+  For example, Instagram-derived saint claims belong beside public fields, and
+  parent/child tradition or place hierarchy belongs in the overview/relationship
+  area instead of an isolated technical card.
 - Short-field cards: compact editing for structured fields.
 - Long-form cards: Markdown, imported text, biographies, notes, captions, and
   other large text areas in separate cards.
@@ -124,11 +137,27 @@ without changing the page structure. Autosave will require additional states for
 `Saving`, `Saved`, validation errors, retry, and conflict handling.
 
 Repeatable data should start small. For lists such as lineage saints, aliases,
-or sources, show the existing reviewed rows and one editable row for new input,
-with an `Add more` action instead of rendering a fixed set of empty fields.
+sources, related links, localities, or related places, show existing reviewed
+rows and use an `Add more` action or searchable multi-select instead of
+rendering a fixed set of empty fields.
 
 Large option sets should use `SearchableSelect` or `SearchableMultiSelect`
 rather than native selects.
+
+Relationship and taxonomy controls should respect the data semantics:
+
+- Use `SearchableSelect` for single relationships such as parent state, founder
+  saint, origin place, source, or parent tradition.
+- Use `SearchableMultiSelect` for many-to-many or selected child relationships
+  such as traditions, saint places, and state localities.
+- Do not show impossible relationship controls. A state place should not show a
+  parent-state picker while it is being edited as a state.
+- For controlled vocabularies that can grow editorially, use search/select
+  behavior that reuses saved values while allowing a new value when needed. The
+  place country field is the model for this pattern.
+- Keep relationship fields connected to the real database relationships. For
+  example, child traditions come from `parentTraditionId`, and state localities
+  come from locality records whose `parentStateId` points to the state.
 
 Implementation direction:
 
@@ -153,3 +182,12 @@ Current rollout notes:
   reviewed values.
 - Images sit near biography because they support the public profile review,
   while sources, snapshots, aliases, and other references remain collapsible.
+- Tradition detail follows the same model. It starts with Public Tradition
+  Readiness, keeps Merge Duplicate near the decision workflow but visually
+  narrower, connects parent and child traditions in Overview, keeps lineage and
+  long-form sections summary-first, and uses an add-more editor for manual
+  related sidebar links.
+- Place detail follows the same model without inventing a publish status. It
+  starts with Public Place Readiness, keeps Merge Duplicate near the decision
+  workflow, connects place unit, parent state, localities, and country in
+  Overview, and uses searchable relationship controls for hierarchy editing.

@@ -25,6 +25,7 @@ const placeEditorSchema = z.object({
   alternateNames: z.array(z.string().trim().min(1).max(200)).max(100),
   placeScope: placeScopeSchema,
   parentStateId: z.string().cuid().optional(),
+  localityIds: z.array(z.string().cuid()).max(500),
   country: z.string().trim().max(120).optional(),
   overviewMarkdown: z.string().trim().max(20000).optional(),
   notes: z.string().trim().max(1000).optional()
@@ -36,6 +37,7 @@ const placeOverviewSchema = placeEditorSchema.pick({
   alternateNames: true,
   placeScope: true,
   parentStateId: true,
+  localityIds: true,
   country: true
 });
 
@@ -61,6 +63,7 @@ export async function updatePlace(formData: FormData) {
     alternateNames: parseList(formData.get("alternateNames")),
     placeScope: formData.get("placeScope"),
     parentStateId: emptyToUndefined(formData.get("parentStateId")),
+    localityIds: parseStringList(formData.getAll("localityIds")),
     country: emptyToUndefined(formData.get("country")),
     overviewMarkdown: emptyToUndefined(formData.get("overviewMarkdown")),
     notes: emptyToUndefined(formData.get("notes"))
@@ -106,6 +109,7 @@ export async function updatePlaceOverview(formData: FormData) {
     alternateNames: parseList(formData.get("alternateNames")),
     placeScope: formData.get("placeScope"),
     parentStateId: emptyToUndefined(formData.get("parentStateId")),
+    localityIds: parseStringList(formData.getAll("localityIds")),
     country: emptyToUndefined(formData.get("country"))
   });
   const existing = await db.place.findUnique({
@@ -120,17 +124,39 @@ export async function updatePlaceOverview(formData: FormData) {
   const parentStateId = placeScope === "locality" && parsed.parentStateId !== parsed.placeId
     ? parsed.parentStateId
     : null;
-  const place = await db.place.update({
-    where: { id: parsed.placeId },
-    data: {
-      name: parsed.name,
-      slug,
-      alternateNames: parsed.alternateNames,
-      placeScope,
-      parentStateId,
-      country: parsed.country ?? null
-    },
-    select: { slug: true }
+  const place = await db.$transaction(async (tx) => {
+    const updatedPlace = await tx.place.update({
+      where: { id: parsed.placeId },
+      data: {
+        name: parsed.name,
+        slug,
+        alternateNames: parsed.alternateNames,
+        placeScope,
+        parentStateId,
+        country: parsed.country ?? null
+      },
+      select: { slug: true }
+    });
+
+    await tx.place.updateMany({
+      where: { parentStateId: parsed.placeId },
+      data: { parentStateId: null }
+    });
+
+    if (placeScope === "state") {
+      const localityIds = Array.from(new Set(parsed.localityIds.filter((localityId) => localityId !== parsed.placeId)));
+      if (localityIds.length > 0) {
+        await tx.place.updateMany({
+          where: {
+            id: { in: localityIds },
+            placeScope: "locality"
+          },
+          data: { parentStateId: parsed.placeId }
+        });
+      }
+    }
+
+    return updatedPlace;
   });
 
   revalidatePlacePaths(existing.slug);
@@ -234,6 +260,14 @@ function emptyToUndefined(value: FormDataEntryValue | null) {
 function parseList(value: FormDataEntryValue | null) {
   if (typeof value !== "string") return [];
   return Array.from(new Set(value.split(/\r?\n|,/).map((item) => item.trim()).filter(Boolean)));
+}
+
+function parseStringList(values: FormDataEntryValue[]) {
+  return Array.from(new Set(values.flatMap((value) => {
+    if (typeof value !== "string") return [];
+    const trimmed = value.trim();
+    return trimmed ? [trimmed] : [];
+  })));
 }
 
 function combineNotes(first: string | null, second: string | null) {

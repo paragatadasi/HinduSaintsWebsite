@@ -122,7 +122,7 @@ export function FirstPageMetadataForm({
           </label>
           <label>
             Key place
-            <textarea name="keyPlace" value={fields.keyPlace} onChange={(event) => updateField("keyPlace", event.target.value)} maxLength={500} />
+            <input name="keyPlace" value={fields.keyPlace} onChange={(event) => updateField("keyPlace", event.target.value)} maxLength={500} />
           </label>
           <label>
             Tradition
@@ -130,7 +130,7 @@ export function FirstPageMetadataForm({
           </label>
           <label>
             Guru
-            <textarea name="guru" value={fields.guru} onChange={(event) => updateField("guru", event.target.value)} maxLength={500} />
+            <input name="guru" value={fields.guru} onChange={(event) => updateField("guru", event.target.value)} maxLength={500} />
           </label>
         </div>
       </section>

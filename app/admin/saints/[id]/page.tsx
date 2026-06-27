@@ -612,7 +612,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
             <input name="saintId" type="hidden" value={saint.id} />
             <label>
               Aliases
-              <textarea name="aliases" defaultValue={saint.aliases.map((alias) => alias.alias).join("\n")} />
+              <input name="aliases" defaultValue={saint.aliases.map((alias) => alias.alias).join(", ")} maxLength={2000} />
             </label>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save aliases</button>

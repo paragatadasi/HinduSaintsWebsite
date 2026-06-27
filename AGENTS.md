@@ -24,6 +24,7 @@ Admin/CMS:
 Design system:
 - Use design tokens for colors, fonts, spacing, shadows, radii, widths, and image treatments.
 - All design and layout changes must go through the design system first: tokens, shared CSS classes, shared configuration, or reusable components.
+- Before changing admin review/detail UX, read `docs/design-system.md`, especially "Admin review UX direction" and "Detail-page review model".
 - Do not hard-code colors, fonts, spacing, shadows, radii, widths, or image treatments in components.
 - Do not add one-off inline styles or page-specific layout wrappers unless the pattern is genuinely unique and explicitly justified.
 - If a visual or layout pattern appears in more than one place, promote it into `styles/tokens.css`, `styles/globals.css`, shared configuration, or a reusable component.
