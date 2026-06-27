@@ -45,8 +45,20 @@ img {
   padding: var(--space-8) 0;
 }
 
+.section--surface,
 .section-muted {
-  background: var(--color-surface-muted);
+  background: var(--color-section-surface);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--color-gold) 8%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--color-gold) 7%, transparent);
+}
+
+.home--devotional .section {
+  padding: var(--space-12) 0;
+}
+
+.home--devotional .section--last {
+  padding-bottom: var(--space-16);
 }
 
 .section--last {
@@ -71,13 +83,13 @@ img {
   display: flex;
   gap: var(--space-4);
   justify-content: space-between;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
 .section-heading h2 {
   color: var(--color-cream);
   font-family: var(--font-serif);
-  font-size: clamp(1.55rem, 3vw, 2rem);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
   font-weight: 500;
   margin: 0;
 }
@@ -253,7 +265,7 @@ img {
 }
 
 .hero {
-  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 22%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 10%, transparent);
   overflow: hidden;
   padding: var(--space-6) 0 var(--space-12);
   position: relative;
@@ -261,8 +273,9 @@ img {
 
 .hero::before {
   background:
-    radial-gradient(circle at 67% 39%, color-mix(in srgb, var(--color-gold) 26%, transparent), transparent 22%),
-    radial-gradient(circle at 74% 34%, color-mix(in srgb, var(--color-copper) 22%, transparent), transparent 28%);
+    radial-gradient(circle at 25% 42%, color-mix(in srgb, var(--color-gold) 18%, transparent), transparent 34%),
+    radial-gradient(circle at 67% 39%, color-mix(in srgb, var(--color-gold) 20%, transparent), transparent 24%),
+    radial-gradient(circle at 74% 34%, color-mix(in srgb, var(--color-copper) 16%, transparent), transparent 30%);
   content: "";
   inset: 0;
   pointer-events: none;
@@ -478,6 +491,7 @@ img {
 .interactive-surface,
 .interactive-media {
   transition:
+    background-color var(--motion-interactive-duration) var(--motion-interactive-ease),
     border-color var(--motion-interactive-duration) var(--motion-interactive-ease),
     box-shadow var(--motion-interactive-duration) var(--motion-interactive-ease),
     transform var(--motion-interactive-duration) var(--motion-interactive-ease);
@@ -487,6 +501,7 @@ img {
 .interactive-surface:focus-within,
 .interactive-media:hover,
 .interactive-media:focus-visible {
+  background-color: var(--color-surface-elevated);
   border-color: var(--color-interactive-border);
   box-shadow: var(--shadow-interactive);
   transform: translateY(var(--interactive-surface-lift));
@@ -553,8 +568,7 @@ img {
 }
 
 .saint-card--portrait {
-  background: var(--color-glass);
-  box-shadow: none;
+  background: var(--color-surface);
   overflow: hidden;
   padding: 0;
 }
@@ -647,8 +661,7 @@ img {
 }
 
 .tradition-card--icon {
-  background: var(--color-glass);
-  box-shadow: none;
+  background: var(--color-surface);
   overflow: hidden;
   padding: 0;
 }
@@ -1122,10 +1135,6 @@ img {
   gap: var(--space-5);
 }
 
-.home-instagram__rail .instagram-post-card {
-  box-shadow: none;
-}
-
 .instagram-link-card {
   align-items: center;
   background: var(--color-surface);
@@ -1151,6 +1160,10 @@ img {
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr);
   overflow: hidden;
+  transition:
+    background-color var(--motion-interactive-duration) var(--motion-interactive-ease),
+    border-color var(--motion-interactive-duration) var(--motion-interactive-ease),
+    box-shadow var(--motion-interactive-duration) var(--motion-interactive-ease);
 }
 
 .instagram-post-card--interactive {
@@ -1163,6 +1176,8 @@ img {
 }
 
 .instagram-post-card--interactive:hover {
+  background: var(--color-surface-elevated);
+  border-color: var(--color-interactive-border);
   box-shadow: var(--shadow-interactive);
 }
 

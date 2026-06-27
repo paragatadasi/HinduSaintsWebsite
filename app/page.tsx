@@ -78,7 +78,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section section--surface">
         <div className="page-shell">
           <div className="section-heading">
             <div>
@@ -165,7 +165,7 @@ function ArchiveHomePage({ hero, featuredSaintsSection, traditionsSection, saint
         </div>
       </section>
 
-      <section className="section section-muted">
+      <section className="section section--surface">
         <div className="page-shell">
           <div className="section-heading">
             <div>

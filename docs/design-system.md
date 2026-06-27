@@ -31,7 +31,9 @@ Rules:
   public baseline: keep borders soft, star texture quiet, and gold accents
   selective so existing public templates, including the Tradition detail page,
   remain visually consistent while structure-level redesign awaits approved
-  mockups.
+  mockups. On dark themes, surface contrast should read as subtle but
+  unmistakable; if a panel separation feels barely visible in design review,
+  strengthen the token contrast before adding page-specific effects.
 - Use shared CSS classes for repeated layout patterns.
 - Use shared components for repeated UI behavior and variants.
 - Use `SearchableMultiSelect` for compact admin relationship pickers that need

@@ -4,7 +4,9 @@
   /* Default: archive-light. Inspired by the clean editorial layouts in modern-site-layouts.png. */
   --color-bg: #fbfaf6;
   --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
   --color-surface-muted: #f3efe6;
+  --color-section-surface: #f7f2e9;
   --color-text: #211f1a;
   --color-text-inverse: #ffffff;
   --color-muted: #6f685f;
@@ -110,7 +112,9 @@
   color-scheme: light;
   --color-bg: #fbf4e7;
   --color-surface: #fffaf0;
+  --color-surface-elevated: #ffffff;
   --color-surface-muted: #efe3ce;
+  --color-section-surface: #f5ead7;
   --color-text: #211b15;
   --color-text-inverse: #fffaf0;
   --color-muted: #6d6254;
@@ -139,15 +143,17 @@
 
 [data-theme="nocturne"] {
   color-scheme: dark;
-  --color-bg: #061019;
-  --color-surface: #0b1a24;
-  --color-surface-muted: #102633;
+  --color-bg: #02080f;
+  --color-surface: #0d2331;
+  --color-surface-elevated: #143140;
+  --color-surface-muted: #142c3a;
+  --color-section-surface: #071723;
   --color-text: #f6ead4;
-  --color-text-inverse: #061019;
+  --color-text-inverse: #02080f;
   --color-muted: #c3b69d;
-  --color-border: rgba(226, 173, 78, 0.22);
-  --color-card-border: rgba(226, 173, 78, 0.24);
-  --color-interactive-border: rgba(240, 189, 90, 0.62);
+  --color-border: rgba(226, 173, 78, 0.24);
+  --color-card-border: rgba(226, 173, 78, 0.34);
+  --color-interactive-border: rgba(240, 189, 90, 0.72);
   --color-accent: #d79b39;
   --color-accent-strong: #f0bd5a;
   --color-gold: #e2ad4e;
@@ -155,12 +161,14 @@
   --color-image-overlay: rgba(6, 16, 25, 0.3);
   --color-image-overlay-strong: rgba(6, 16, 25, 0.58);
   --color-focus: #f0bd5a;
-  --shadow-soft: 0 18px 52px rgba(0, 0, 0, 0.24);
+  --shadow-soft:
+    0 0 0 1px rgba(0, 0, 0, 0.2),
+    0 4px 10px rgba(0, 0, 0, 0.26);
   --shadow-image: 0 24px 76px rgba(0, 0, 0, 0.5);
   --shadow-interactive:
-    0 0 0 1px color-mix(in srgb, var(--color-accent-strong) 24%, transparent),
-    0 0 18px color-mix(in srgb, var(--color-gold) 18%, transparent),
-    0 8px 22px rgba(0, 0, 0, 0.18);
+    0 0 0 1px color-mix(in srgb, var(--color-accent-strong) 32%, transparent),
+    0 0 10px color-mix(in srgb, var(--color-gold) 18%, transparent),
+    0 5px 12px rgba(0, 0, 0, 0.3);
   --image-treatment: saturate(1.06) contrast(1.08);
   --color-copper: #9f642c;
   --color-night-soft: #0b2330;
@@ -173,7 +181,9 @@
   color-scheme: dark;
   --color-bg: #101614;
   --color-surface: #17201d;
+  --color-surface-elevated: #1d2a25;
   --color-surface-muted: #efe7da;
+  --color-section-surface: #141c19;
   --color-text: #f8efe2;
   --color-text-inverse: #101614;
   --color-muted: #d0c4b4;
