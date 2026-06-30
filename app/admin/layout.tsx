@@ -56,14 +56,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <main className="admin-shell">
       <div className="page-shell admin-layout">
         <aside className="admin-sidebar">
-          <strong>Admin CMS</strong>
-          <Link href="/admin">Dashboard</Link>
-          <Link href="/admin/saints">Saints</Link>
-          <Link href="/admin/media">Media</Link>
+          <Link href="/admin">
+            <strong>Admin CMS</strong>
+          </Link>
+          <Link href="/admin/home">Homepage</Link>
           <Link href="/admin/instagram">Instagram</Link>
-          <Link href="/admin/biographies">Biographies</Link>
+          <Link href="/admin/saints">Saints</Link>
           <Link href="/admin/traditions">Traditions</Link>
           <Link href="/admin/places">Places</Link>
+          <Link href="/admin/media">Media</Link>
         </aside>
         <section className="admin-content">{children}</section>
       </div>

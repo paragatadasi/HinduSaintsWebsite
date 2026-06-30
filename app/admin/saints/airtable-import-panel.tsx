@@ -6,6 +6,7 @@ import { ChevronDown, DatabaseZap, RefreshCw, Waypoints } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { AirtableImportSummaryDetails } from "@/lib/airtable-import-job-view";
+import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { StatusBadge } from "@/components/ui/status-badge";
 
 type AirtableImportJobView = {
@@ -49,6 +50,8 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
   const [isPending, startTransition] = useTransition();
   const refreshedAfterJobRef = useRef<string | undefined>(undefined);
   const activeJob = useMemo(() => jobs.find((job) => runningStatuses.has(job.status)), [jobs]);
+  const latestJob = jobs[0];
+  const latestJobStatus = latestJob ? `${formatStatus(latestJob.mode)} ${formatStatus(latestJob.status)}` : "No Airtable jobs have run yet.";
   const isBusy = Boolean(activeJob) || isPending;
 
   useEffect(() => {
@@ -96,10 +99,16 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
   }
 
   return (
-    <section className="review-panel instagram-ingestion-panel">
+    <CollapsibleReviewCard
+      cardId="saints-airtable-sync"
+      className="instagram-ingestion-panel"
+      defaultOpen={Boolean(activeJob)}
+      description={activeJob ? activeJob.message ?? "Airtable import is running." : latestJobStatus}
+      eyebrow="Import tools"
+      title="Airtable sync"
+    >
       <div className="admin-toolbar">
         <div>
-          <h2>Airtable sync review</h2>
           <p>Check mirrored Airtable saint rows, create missing CMS saints as drafts, and optionally import guru links for editorial review.</p>
         </div>
         <div className="review-actions">
@@ -121,8 +130,12 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
       {error ? <p className="admin-notice admin-notice--warning">{error}</p> : null}
       {activeJob ? <JobProgress job={activeJob} /> : null}
 
-      <div className="instagram-job-history">
-        <h3>Recent Airtable jobs</h3>
+      <details className="instagram-job-history airtable-job-history">
+        <summary>
+          <span>Recent Airtable jobs</span>
+          <StatusBadge label={`${jobs.length} jobs`} />
+          <ChevronDown aria-hidden="true" size={14} />
+        </summary>
         {jobs.length > 0 ? (
           <div className="review-list">
             {jobs.map((job) => (
@@ -147,8 +160,8 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
         ) : (
           <p>No Airtable jobs have run yet.</p>
         )}
-      </div>
-    </section>
+      </details>
+    </CollapsibleReviewCard>
   );
 }
 

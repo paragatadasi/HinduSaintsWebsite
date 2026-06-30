@@ -8,8 +8,6 @@ type SaintReviewRow = {
   id: string;
   slug: string;
   displayName: string;
-  shortDescription: string | null;
-  biographySummary: string | null;
 };
 
 type SaintsBulkReviewListProps = {
@@ -43,7 +41,7 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
 
   if (saints.length === 0) {
     return (
-      <div className="review-panel">
+      <div className="admin-review-empty">
         <h2>No saints in this queue</h2>
         <p>Try another status filter.</p>
       </div>
@@ -57,7 +55,7 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
         <input key={saintId} name="saintIds" type="hidden" value={saintId} />
       ))}
 
-      <div className="bulk-review-panel">
+      <div className="bulk-review-panel" data-has-selection={selectedCount > 0 ? "true" : "false"}>
         <label className="bulk-review-select-all">
           <input
             checked={allVisibleSelected}
@@ -102,7 +100,6 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
             </label>
             <Link className="review-row__link" href={`/admin/saints/${saint.slug}`}>
               <h2>{saint.displayName}</h2>
-              <p>{saint.shortDescription ?? saint.biographySummary ?? "No public summary yet."}</p>
             </Link>
           </article>
         ))}

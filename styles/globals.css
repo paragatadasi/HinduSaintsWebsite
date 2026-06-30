@@ -2942,6 +2942,75 @@ img {
   gap: var(--space-4);
 }
 
+.admin-review-queue {
+  gap: var(--space-4);
+}
+
+.admin-review-queue__header {
+  border-bottom: 1px solid var(--review-workflow-border);
+  padding-bottom: var(--space-4);
+}
+
+.admin-queue-filters {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.admin-queue-filter-groups {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.admin-queue-filter-group {
+  background: var(--review-workflow-section-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.admin-queue-filter-group > span {
+  color: var(--color-cream);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.admin-queue-filter {
+  align-items: center;
+  background: var(--review-workflow-field-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-control);
+  color: var(--color-muted);
+  display: inline-flex;
+  font-size: 0.88rem;
+  font-weight: 700;
+  gap: var(--space-2);
+  justify-content: space-between;
+  min-height: 38px;
+  padding: var(--space-2) var(--space-3);
+}
+
+.admin-queue-filter-group .admin-queue-filters {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-queue-filter:hover,
+.admin-queue-filter[aria-current="page"] {
+  border-color: var(--color-accent);
+  color: var(--color-cream);
+}
+
+.admin-queue-filter[aria-current="page"] .status-badge {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-text-inverse);
+  font-weight: 700;
+}
+
 .bulk-review-form,
 .admin-search,
 .bulk-review-panel {
@@ -2970,10 +3039,22 @@ img {
   outline-offset: 3px;
 }
 
+.admin-search--queue {
+  background: var(--review-workflow-section-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.admin-search--queue input {
+  background: var(--review-workflow-field-bg);
+  border-color: var(--review-workflow-border);
+}
+
 .bulk-review-panel {
   align-items: center;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: var(--review-workflow-section-bg);
+  border: 1px solid var(--review-workflow-border);
   border-radius: var(--radius-md);
   grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr);
   padding: var(--space-4);
@@ -2981,7 +3062,7 @@ img {
 
 .bulk-review-select-all {
   align-items: center;
-  border-right: 1px solid var(--color-border);
+  border-right: 1px solid var(--review-workflow-border);
   cursor: pointer;
   display: inline-flex;
   gap: var(--space-3);
@@ -3005,8 +3086,40 @@ img {
   font-size: 0.88rem;
 }
 
+.bulk-review-panel .admin-form-button {
+  opacity: 0.72;
+}
+
+.bulk-review-panel[data-has-selection="true"] .admin-form-button {
+  opacity: 1;
+}
+
 .bulk-review-panel .review-actions {
   justify-content: flex-end;
+}
+
+.admin-review-empty {
+  background: var(--review-workflow-section-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-5);
+}
+
+.admin-review-empty h2,
+.admin-review-empty p {
+  margin: 0;
+}
+
+.admin-review-empty h2 {
+  color: var(--color-cream);
+  font-family: var(--font-serif);
+  font-weight: 500;
+}
+
+.admin-review-empty p {
+  color: var(--color-muted);
 }
 
 .review-suggestion-grid {
@@ -3748,6 +3861,39 @@ img {
 .instagram-job-history {
   display: grid;
   gap: var(--space-3);
+}
+
+.airtable-job-history {
+  background: var(--review-workflow-section-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.airtable-job-history > summary {
+  align-items: center;
+  color: var(--color-cream);
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: 700;
+  gap: var(--space-2);
+  justify-content: space-between;
+  list-style: none;
+}
+
+.airtable-job-history > summary::-webkit-details-marker {
+  display: none;
+}
+
+.airtable-job-history[open] > summary {
+  border-bottom: 1px solid var(--review-workflow-border);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+
+.airtable-job-history[open] > summary svg {
+  transform: rotate(180deg);
 }
 
 .airtable-job-details {
