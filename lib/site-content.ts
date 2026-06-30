@@ -1,5 +1,5 @@
 export type SitePageStatus = "draft" | "needs_review" | "published" | "archived";
-export type HomeLayoutVariant = "archive" | "devotional";
+export type HomeLayoutVariant = "archive" | "devotional" | "cosmic";
 
 export type SiteDesignConfig = {
   homeLayout: HomeLayoutVariant;
@@ -27,6 +27,12 @@ export type HomeSectionContent = {
     label: string;
     href: string;
   };
+};
+
+export type HomeQuoteContent = {
+  eyebrow: string;
+  quote: string;
+  attribution: string;
 };
 
 export type PageIntroContent = {
@@ -85,7 +91,7 @@ export type AboutPageContent = {
 };
 
 export const siteDesignConfig: SiteDesignConfig = {
-  homeLayout: "devotional"
+  homeLayout: "cosmic"
 };
 
 export const homeHeroContent: HomeHeroContent = {
@@ -183,6 +189,12 @@ export const instagramSectionContent: InstagramSectionContent = {
   linkLabel: "View on Instagram"
 };
 
+export const homeQuoteContent: HomeQuoteContent = {
+  eyebrow: "Quote of the Day",
+  quote: "The highest wisdom is humility; the highest devotion is service; the highest life is love for all.",
+  attribution: "Sri Ramakrishna Paramahamsa"
+};
+
 export const aboutPageContent: AboutPageContent = {
   slug: "about",
   status: "published",
@@ -221,10 +233,14 @@ export function getHomeSectionContent(key: HomeSectionContent["key"]) {
   return homeSectionContent[key];
 }
 
+export function getHomeQuoteContent() {
+  return homeQuoteContent;
+}
+
 export function getHomeLayoutVariant(): HomeLayoutVariant {
   const requestedLayout = process.env.NEXT_PUBLIC_HOME_LAYOUT;
 
-  if (requestedLayout === "archive" || requestedLayout === "devotional") {
+  if (requestedLayout === "archive" || requestedLayout === "devotional" || requestedLayout === "cosmic") {
     return requestedLayout;
   }
 

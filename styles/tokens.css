@@ -171,7 +171,7 @@
     0 5px 12px rgba(0, 0, 0, 0.3);
   --image-treatment: saturate(1.06) contrast(1.08);
   --color-copper: #9f642c;
-  --color-night-soft: #0b2330;
+  --color-night-soft: var(--color-bg);
   --color-star: rgba(226, 173, 78, 0.3);
   --color-glass: rgba(13, 29, 36, 0.68);
   --color-cream: #f5ead5;

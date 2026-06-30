@@ -427,6 +427,468 @@ img {
   color: var(--color-text);
 }
 
+.home--cosmic {
+  --width-rail-card-featured: clamp(178px, 16vw, 208px);
+  --width-instagram-preview-card: clamp(176px, 17vw, 214px);
+  overflow: hidden;
+}
+
+.home-cosmic-hero {
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 48%, transparent);
+  min-height: clamp(468px, 50vw, 588px);
+  overflow: hidden;
+  position: relative;
+}
+
+.home-cosmic-hero::before {
+  background:
+    radial-gradient(circle at 58% 18%, color-mix(in srgb, var(--color-green) 38%, transparent), transparent 9%),
+    radial-gradient(circle at 64% 36%, color-mix(in srgb, var(--color-gold) 18%, transparent), transparent 19%),
+    radial-gradient(circle at 76% 72%, color-mix(in srgb, var(--color-gold) 24%, transparent), transparent 18%),
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg) 8%, transparent), color-mix(in srgb, var(--color-bg) 92%, transparent)),
+    linear-gradient(120deg, var(--color-bg) 0 30%, color-mix(in srgb, var(--color-bg) 76%, var(--color-night-soft)) 62%, var(--color-bg) 100%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.home-cosmic-hero::after {
+  background:
+    radial-gradient(circle at 18% 17%, var(--color-star) 0 1px, transparent 2px),
+    radial-gradient(circle at 53% 12%, var(--color-star) 0 1px, transparent 2px),
+    radial-gradient(circle at 74% 24%, var(--color-star) 0 1px, transparent 2px),
+    radial-gradient(circle at 89% 48%, var(--color-star) 0 1px, transparent 2px),
+    radial-gradient(ellipse at 58% 42%, color-mix(in srgb, var(--color-cream) 20%, transparent), transparent 24%);
+  background-size: 96px 96px, 138px 138px, 82px 82px, 122px 122px, auto;
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.home-cosmic-hero__inner {
+  align-items: center;
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: minmax(0, 0.92fr) minmax(300px, 0.82fr) minmax(96px, 0.18fr);
+  min-height: inherit;
+  padding: calc(var(--space-16) + var(--space-2)) 0 var(--space-8);
+  position: relative;
+  z-index: 1;
+}
+
+.home-cosmic-hero__content {
+  max-width: 680px;
+}
+
+.home-cosmic-hero h1 {
+  color: var(--color-cream);
+  font-family: var(--font-serif);
+  font-size: clamp(2.35rem, 4.1vw, 3.65rem);
+  font-weight: 500;
+  line-height: 1.06;
+  margin: 0 0 var(--space-4);
+  max-width: 12.5ch;
+}
+
+.home-cosmic-hero p {
+  color: var(--color-cream);
+  font-size: clamp(1rem, 1.6vw, 1.18rem);
+  margin: 0;
+  max-width: 420px;
+}
+
+.home-cosmic-search {
+  margin-top: var(--space-6);
+}
+
+.home-cosmic-hero__visual {
+  align-items: center;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+  max-width: 330px;
+  position: relative;
+  width: min(100%, 32vw);
+}
+
+.home-cosmic-hero__visual::before,
+.home-cosmic-hero__visual::after {
+  border: 2px solid color-mix(in srgb, var(--color-gold) 64%, transparent);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  content: "";
+  inset: 5%;
+  opacity: 0.85;
+  position: absolute;
+  transform: rotate(-24deg);
+}
+
+.home-cosmic-hero__visual::after {
+  border-color: color-mix(in srgb, var(--color-accent) 54%, transparent);
+  border-bottom-color: transparent;
+  inset: 17%;
+  opacity: 0.65;
+  transform: rotate(26deg);
+}
+
+.home-cosmic-hero__emblem {
+  align-items: center;
+  background:
+    radial-gradient(circle at 50% 32%, color-mix(in srgb, var(--color-gold) 88%, transparent) 0 22%, transparent 23%),
+    url("/images/devotional-archive-placeholder.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  display: flex;
+  filter: var(--image-treatment);
+  height: 84%;
+  justify-content: center;
+  position: relative;
+  width: 84%;
+  z-index: 1;
+}
+
+.home-cosmic-hero__emblem span {
+  color: var(--color-gold);
+  font-family: var(--font-serif);
+  font-size: clamp(1.45rem, 3vw, 2.5rem);
+  margin-bottom: 36%;
+}
+
+.home-cosmic-hero__index {
+  align-content: center;
+  display: grid;
+  gap: var(--space-5);
+  justify-self: end;
+  position: relative;
+}
+
+.home-cosmic-hero__index::before {
+  background: linear-gradient(180deg, var(--color-gold), color-mix(in srgb, var(--color-gold) 24%, transparent));
+  bottom: var(--space-3);
+  content: "";
+  left: 0.35rem;
+  position: absolute;
+  top: var(--space-3);
+  width: 1px;
+}
+
+.home-cosmic-hero__index span {
+  color: var(--color-cream);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding-left: var(--space-6);
+  position: relative;
+  text-transform: uppercase;
+}
+
+.home-cosmic-hero__index span::before {
+  background: var(--color-gold);
+  border-radius: 50%;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--color-gold) 56%, transparent);
+  content: "";
+  height: 0.55rem;
+  left: 0.1rem;
+  position: absolute;
+  top: 0.32rem;
+  width: 0.55rem;
+}
+
+.home-cosmic-panel {
+  background: var(--color-bg);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 42%, transparent);
+  padding: var(--space-8) 0;
+}
+
+.home-cosmic-panel--last {
+  border-bottom: 0;
+  padding-bottom: var(--space-12);
+}
+
+.home-cosmic-panel--split {
+  padding-top: var(--space-6);
+}
+
+.home-cosmic-panel--duo {
+  border-top: 1px solid color-mix(in srgb, var(--color-gold) 42%, transparent);
+  padding: 0;
+}
+
+.home-cosmic-heading {
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  margin-bottom: var(--space-5);
+}
+
+.home-cosmic-heading h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.home-cosmic-heading .button {
+  flex: 0 0 auto;
+  font-size: 0.82rem;
+  min-height: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.home-cosmic-feature-grid {
+  align-items: stretch;
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.44fr);
+}
+
+.home-cosmic-feature-grid__saints {
+  min-width: 0;
+}
+
+.home-cosmic-rail .scroll-rail {
+  padding-bottom: var(--space-4);
+}
+
+.home--cosmic .saint-card--portrait .entity-card__content {
+  padding: var(--space-3);
+}
+
+.home--cosmic .saint-card--portrait .entity-card__title {
+  font-size: 1rem;
+}
+
+.home--cosmic .saint-card--portrait .entity-card__body,
+.home--cosmic .saint-card--portrait .entity-card__meta {
+  font-size: 0.78rem;
+}
+
+.home-map-card {
+  align-self: stretch;
+  border-left: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent);
+  display: grid;
+  gap: var(--space-4);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-width: 0;
+  padding-left: var(--space-6);
+}
+
+.home-map-card .home-cosmic-heading {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.home-map-card p {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.home-map-card__visual {
+  background:
+    radial-gradient(circle at 56% 45%, color-mix(in srgb, var(--color-gold) 18%, transparent), transparent 32%),
+    color-mix(in srgb, var(--color-bg) 76%, transparent);
+  background-size: cover;
+  border-radius: var(--radius-md);
+  height: 100%;
+  min-height: 260px;
+  overflow: hidden;
+}
+
+.home-map-card__visual svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.home-map-card__state {
+  fill: color-mix(in srgb, var(--color-surface) 42%, transparent);
+  stroke: color-mix(in srgb, var(--color-gold) 18%, transparent);
+  stroke-width: 1;
+}
+
+.home-map-card__state--active {
+  fill: color-mix(in srgb, var(--color-gold) 13%, var(--color-bg));
+  stroke: color-mix(in srgb, var(--color-gold) 46%, transparent);
+}
+
+.home-map-card__routes path {
+  fill: none;
+  opacity: 0.25;
+  stroke: var(--color-gold);
+  stroke-dasharray: 3 7;
+  stroke-linecap: round;
+  stroke-width: 1.5;
+}
+
+.home-map-card__points circle {
+  fill: var(--color-gold);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-gold) 72%, transparent));
+  opacity: 0.92;
+}
+
+.home-cosmic-duo {
+  align-items: stretch;
+  display: grid;
+  gap: 0;
+  grid-template-columns: minmax(280px, 0.36fr) minmax(0, 0.64fr);
+}
+
+.home-quote-card,
+.home-tradition-feature {
+  min-height: 300px;
+}
+
+.home-quote-card {
+  align-content: start;
+  background:
+    radial-gradient(circle at 86% 83%, color-mix(in srgb, var(--color-gold) 14%, transparent), transparent 18%),
+    var(--color-bg);
+  background-size: cover;
+  border-right: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent);
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-6);
+}
+
+.home-quote-card blockquote {
+  margin: 0;
+}
+
+.home-quote-card blockquote::before {
+  color: var(--color-gold);
+  content: "\201C";
+  display: block;
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 5vw, 4.35rem);
+  line-height: 0.65;
+}
+
+.home-quote-card p {
+  color: var(--color-cream);
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2.25vw, 1.75rem);
+  line-height: 1.2;
+  margin: 0 0 var(--space-5);
+}
+
+.home-quote-card cite {
+  color: var(--color-cream);
+  display: block;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.home-quote-card cite::before {
+  color: var(--color-gold);
+  content: "";
+  display: block;
+  height: 2px;
+  margin: 0 0 var(--space-4);
+  width: 52px;
+  background: var(--color-gold);
+}
+
+.home-tradition-feature {
+  align-items: stretch;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--color-bg) 94%, transparent), color-mix(in srgb, var(--color-bg) 40%, transparent)),
+    radial-gradient(circle at 82% 48%, color-mix(in srgb, var(--color-gold) 24%, transparent), transparent 28%),
+    var(--color-section-surface);
+  background-size: cover;
+  display: grid;
+  gap: var(--space-6);
+  grid-template-rows: auto minmax(0, 1fr);
+  padding: var(--space-8) var(--space-8);
+}
+
+.home-tradition-feature__header {
+  align-items: start;
+  display: flex;
+  gap: var(--space-4);
+  justify-content: space-between;
+}
+
+.home-tradition-feature__header .button {
+  flex: 0 0 auto;
+  font-size: 0.82rem;
+  min-height: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.home-tradition-feature .eyebrow {
+  color: var(--color-cream);
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.15;
+  text-transform: none;
+}
+
+.home-tradition-feature__content {
+  align-items: end;
+  align-self: end;
+  display: grid;
+  gap: var(--space-8);
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 0.32fr);
+  width: 100%;
+}
+
+.home-tradition-feature h2 {
+  color: var(--color-gold);
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.3vw, 2.85rem);
+  font-weight: 500;
+  line-height: 1.08;
+  margin: 0 0 var(--space-3);
+}
+
+.home-tradition-feature p {
+  color: var(--color-cream);
+  font-size: 1.05rem;
+  margin: 0 0 var(--space-6);
+  max-width: 480px;
+}
+
+.home-tradition-feature .button--secondary {
+  background: transparent;
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.home-tradition-feature__mark {
+  align-items: center;
+  align-self: end;
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 56%, transparent);
+  border-radius: 50%;
+  color: var(--color-gold);
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.home-tradition-feature__mark::before,
+.home-tradition-feature__mark::after {
+  border: 1px solid color-mix(in srgb, var(--color-gold) 42%, transparent);
+  border-radius: 50%;
+  content: "";
+  inset: 14%;
+  position: absolute;
+}
+
+.home-tradition-feature__mark::after {
+  inset: 30%;
+}
+
 .site-header {
   background: color-mix(in srgb, var(--color-bg) 88%, transparent);
   inset: 0 0 auto;
@@ -615,7 +1077,7 @@ img {
 }
 
 .saint-card__summary-image {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1;
   background:
     radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--color-gold) 30%, transparent), transparent 30%),
     linear-gradient(var(--color-image-overlay), var(--color-image-overlay-strong)),
@@ -626,8 +1088,12 @@ img {
 }
 
 .saint-card--summary .entity-card__content {
-  grid-template-rows: auto auto 1fr auto auto;
+  grid-template-rows: auto auto 1fr;
   height: 100%;
+}
+
+.saint-card--summary .entity-card__meta {
+  align-self: end;
 }
 
 .saint-card__summary-bio {
@@ -1133,6 +1599,28 @@ img {
 .home-instagram {
   display: grid;
   gap: var(--space-5);
+}
+
+.home--cosmic .home-instagram {
+  gap: var(--space-4);
+}
+
+.home--cosmic .home-instagram__rail .instagram-post-card {
+  grid-template-rows: auto auto auto;
+}
+
+.home--cosmic .home-instagram__rail .instagram-post-card__actions,
+.home--cosmic .home-instagram__rail .instagram-post-card__caption {
+  display: none;
+}
+
+.home--cosmic .home-instagram__rail .instagram-post-card__body {
+  display: block;
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.home--cosmic .home-instagram__rail .instagram-post-card__footer {
+  margin-top: 0;
 }
 
 .instagram-link-card {
@@ -4407,6 +4895,59 @@ img {
     grid-template-columns: 1fr;
     min-height: auto;
     padding-top: var(--space-8);
+  }
+
+  .home-cosmic-hero {
+    min-height: auto;
+  }
+
+  .home-cosmic-hero__inner {
+    grid-template-columns: 1fr;
+    padding: var(--space-12) 0 var(--space-6);
+  }
+
+  .home-cosmic-hero__content {
+    max-width: 100%;
+  }
+
+  .home-cosmic-hero__visual {
+    max-width: 260px;
+    width: min(100%, 260px);
+  }
+
+  .home-cosmic-hero__index {
+    display: none;
+  }
+
+  .home-cosmic-feature-grid,
+  .home-cosmic-duo,
+  .home-tradition-feature__content {
+    grid-template-columns: 1fr;
+  }
+
+  .home-map-card {
+    border-left: 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent);
+    padding-left: 0;
+    padding-top: var(--space-6);
+  }
+
+  .home-quote-card,
+  .home-tradition-feature {
+    min-height: auto;
+  }
+
+  .home-quote-card {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent);
+    border-right: 0;
+  }
+
+  .home-tradition-feature {
+    padding: var(--space-6);
+  }
+
+  .home-tradition-feature__mark {
+    max-width: 160px;
   }
 
   .hero-media {
