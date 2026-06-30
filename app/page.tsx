@@ -1,34 +1,39 @@
+import type { CSSProperties } from "react";
 import { ArrowRight, Instagram, MapPinned, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HomeInstagramRail } from "@/components/instagram/home-instagram-rail";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { SaintCard } from "@/components/saints/saint-card";
 import { TraditionCard } from "@/components/traditions/tradition-card";
+import { getPublicHomePageConfig } from "@/lib/home-page-config";
 import { INDIA_STATE_MAP_SHAPES, type IndiaStateMapShape } from "@/lib/india-state-map-shapes";
 import { getRecentInstagramCarouselPreviews } from "@/lib/public-instagram";
 import { getIndiaPlaceMapData } from "@/lib/public-places";
 import { getFeaturedSaintSummaries, getPublishedSaintSummaries } from "@/lib/public-saints";
 import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
-import type { PublicPlaceMapData } from "@/lib/public-contracts";
-import { getHomeHeroContent, getHomeLayoutVariant, getHomeQuoteContent, getHomeSectionContent } from "@/lib/site-content";
+import type { PublicImage, PublicPlaceMapData } from "@/lib/public-contracts";
+import { getHomeLayoutVariant, getHomeSectionContent, type HomeHeroContent, type HomeQuoteContent } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const layout = getHomeLayoutVariant();
-  const hero = getHomeHeroContent();
-  const quote = getHomeQuoteContent();
   const featuredSaintsSection = getHomeSectionContent("featuredSaints");
   const traditionsSection = getHomeSectionContent("traditions");
-  const [featuredSaints, publishedSaints, traditions, instagramPreviews, mapData] = await Promise.all([
+  const [homeConfig, featuredSaints, publishedSaints, traditions, instagramPreviews, mapData] = await Promise.all([
+    getPublicHomePageConfig(),
     getFeaturedSaintSummaries(),
     getPublishedSaintSummaries(),
     getPublishedTraditionSummaries(),
     getRecentInstagramCarouselPreviews(),
     getIndiaPlaceMapData()
   ]);
+  const hero = homeConfig.hero;
+  const quote = homeConfig.quote;
+  const configuredFeaturedSaints = homeConfig.featuredSaints.length > 0 ? homeConfig.featuredSaints : featuredSaints;
+  const configuredTraditions = homeConfig.featuredTraditions.length > 0 ? homeConfig.featuredTraditions : traditions;
   const saints = uniqueSaintsBySlug([
-    ...featuredSaints,
+    ...configuredFeaturedSaints,
     ...publishedSaints.filter((saint) => !saint.featured)
   ]).slice(0, 6);
 
@@ -39,7 +44,8 @@ export default async function HomePage() {
         featuredSaintsSection={featuredSaintsSection}
         traditionsSection={traditionsSection}
         saints={saints}
-        traditions={traditions}
+        traditions={configuredTraditions}
+        bannerImage={homeConfig.bannerImage}
       />
     );
   }
@@ -52,9 +58,11 @@ export default async function HomePage() {
         traditionsSection={traditionsSection}
         quote={quote}
         saints={saints}
-        traditions={traditions}
+        traditions={configuredTraditions}
         instagramPreviews={instagramPreviews}
         mapData={mapData}
+        bannerImage={homeConfig.bannerImage}
+        bannerFocalArea={homeConfig.bannerFocalArea}
       />
     );
   }
@@ -75,7 +83,7 @@ export default async function HomePage() {
               </button>
             </form>
           </div>
-          <div className="hero-media" aria-label="Devotional archive visual" />
+          <HomeHeroImage image={homeConfig.bannerImage} className="hero-media" />
         </div>
       </section>
 
@@ -141,22 +149,25 @@ export default async function HomePage() {
 }
 
 type ArchiveHomePageProps = {
-  hero: ReturnType<typeof getHomeHeroContent>;
+  hero: HomeHeroContent;
   featuredSaintsSection: ReturnType<typeof getHomeSectionContent>;
   traditionsSection: ReturnType<typeof getHomeSectionContent>;
   saints: Awaited<ReturnType<typeof getPublishedSaintSummaries>>;
   traditions: Awaited<ReturnType<typeof getPublishedTraditionSummaries>>;
+  bannerImage?: PublicImage;
 };
 
 type CosmicHomePageProps = {
-  hero: ReturnType<typeof getHomeHeroContent>;
+  hero: HomeHeroContent;
   featuredSaintsSection: ReturnType<typeof getHomeSectionContent>;
   traditionsSection: ReturnType<typeof getHomeSectionContent>;
-  quote: ReturnType<typeof getHomeQuoteContent>;
+  quote: HomeQuoteContent;
   saints: Awaited<ReturnType<typeof getPublishedSaintSummaries>>;
   traditions: Awaited<ReturnType<typeof getPublishedTraditionSummaries>>;
   instagramPreviews: Awaited<ReturnType<typeof getRecentInstagramCarouselPreviews>>;
   mapData: PublicPlaceMapData;
+  bannerImage?: PublicImage;
+  bannerFocalArea: Awaited<ReturnType<typeof getPublicHomePageConfig>>["bannerFocalArea"];
 };
 
 function CosmicHomePage({
@@ -167,14 +178,24 @@ function CosmicHomePage({
   saints,
   traditions,
   instagramPreviews,
-  mapData
+  mapData,
+  bannerImage,
+  bannerFocalArea
 }: CosmicHomePageProps) {
   const featuredTradition = traditions[0];
   const mappedSaintCount = new Set(mapData.points.flatMap((point) => point.saints.map((saint) => saint.slug))).size;
 
   return (
     <main className="home home--cosmic">
-      <section className="home-cosmic-hero">
+      <section className={bannerImage ? "home-cosmic-hero home-cosmic-hero--with-banner" : "home-cosmic-hero"}>
+        {bannerImage ? (
+          <HomeHeroImage
+            image={bannerImage}
+            className="home-cosmic-hero__banner"
+            focalArea={bannerFocalArea}
+            preserveFocalArea={shouldPreserveFullBannerArea(bannerFocalArea)}
+          />
+        ) : null}
         <div className="page-shell home-cosmic-hero__inner">
           <div className="home-cosmic-hero__content">
             <h1>{hero.title}</h1>
@@ -186,11 +207,6 @@ function CosmicHomePage({
                 <Search size={22} />
               </button>
             </form>
-          </div>
-          <div className="home-cosmic-hero__visual" aria-hidden="true">
-            <div className="home-cosmic-hero__emblem">
-              <span>{hero.eyebrow}</span>
-            </div>
           </div>
           <nav className="home-cosmic-hero__index" aria-label="Homepage sections">
             {["Saints", "Traditions", "Places", "Wisdom", "Legacy"].map((item) => (
@@ -358,7 +374,7 @@ function projectHomeMapCoordinate(latitude: number, longitude: number) {
   };
 }
 
-function ArchiveHomePage({ hero, featuredSaintsSection, traditionsSection, saints, traditions }: ArchiveHomePageProps) {
+function ArchiveHomePage({ hero, featuredSaintsSection, traditionsSection, saints, traditions, bannerImage }: ArchiveHomePageProps) {
   return (
     <main className="home home--archive">
       <section className="page-shell hero">
@@ -373,7 +389,7 @@ function ArchiveHomePage({ hero, featuredSaintsSection, traditionsSection, saint
             </Button>
           </div>
         </div>
-        <div className="hero-media" aria-label="Devotional archive visual" />
+        <HomeHeroImage image={bannerImage} className="hero-media" />
       </section>
 
       <section className="section">
@@ -419,6 +435,39 @@ function ArchiveHomePage({ hero, featuredSaintsSection, traditionsSection, saint
       </section>
     </main>
   );
+}
+
+function HomeHeroImage({
+  className,
+  focalArea,
+  image,
+  preserveFocalArea = false
+}: {
+  className: string;
+  focalArea?: { x: number; y: number };
+  image?: PublicImage;
+  preserveFocalArea?: boolean;
+}) {
+  const imageStyle = focalArea
+    ? ({
+        "--banner-object-position": `${focalArea.x}% ${focalArea.y}%`
+      } as CSSProperties)
+    : undefined;
+
+  return (
+    <div className={className} data-preserve-area={preserveFocalArea ? "true" : undefined} aria-label={image?.alt ?? "Devotional archive visual"}>
+      {image ? (
+        <>
+          {preserveFocalArea ? <img className="home-cosmic-hero__banner-backdrop" src={image.url} alt="" style={imageStyle} /> : null}
+          <img className="home-cosmic-hero__banner-image" src={image.url} alt="" style={imageStyle} />
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function shouldPreserveFullBannerArea(focalArea: { width: number; height: number }) {
+  return focalArea.width >= 86 || focalArea.height >= 86;
 }
 
 function uniqueSaintsBySlug(saints: Awaited<ReturnType<typeof getPublishedSaintSummaries>>) {

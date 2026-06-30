@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import type { Prisma } from "@/lib/generated/prisma/client";
 import type {
   PublicImage,
   PublicPlaceLink,
@@ -20,9 +21,9 @@ const DEFAULT_LOCATION = "Location in review";
 const DEFAULT_TRADITION = "Tradition in review";
 const DEFAULT_ERA = "Dates in review";
 
-async function getPublishedTraditionRows() {
+async function getPublishedTraditionRows(where: Prisma.TraditionWhereInput = {}) {
   return db.tradition.findMany({
-    where: { status: "published" },
+    where: { status: "published", ...where },
     orderBy: { name: "asc" },
     include: {
       saints: {
@@ -122,6 +123,20 @@ export async function getPublishedTraditionSummaries(): Promise<PublicTraditionS
   const founderNames = await getFounderNames(traditions.map((tradition) => tradition.founderSaintId));
 
   return traditions.map((tradition) => toPublicTraditionSummary(tradition, founderNames));
+}
+
+export async function getPublishedTraditionSummariesByIds(traditionIds: string[]): Promise<PublicTraditionSummary[]> {
+  const uniqueIds = Array.from(new Set(traditionIds));
+  if (uniqueIds.length === 0) return [];
+
+  const traditions = await getPublishedTraditionRows({ id: { in: uniqueIds } });
+  const founderNames = await getFounderNames(traditions.map((tradition) => tradition.founderSaintId));
+  const summariesById = new Map(traditions.map((tradition) => [tradition.id, toPublicTraditionSummary(tradition, founderNames)]));
+
+  return uniqueIds.flatMap((id) => {
+    const summary = summariesById.get(id);
+    return summary ? [summary] : [];
+  });
 }
 
 export async function getPublishedTraditionSlugs() {

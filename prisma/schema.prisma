@@ -382,11 +382,36 @@ model MediaAsset {
   width              Int?
   height             Int?
   mimeType           String?
+  homeBannerConfigs  HomePageConfig[]    @relation("HomeBannerImage")
   primaryForSaints   Saint[]             @relation("PrimarySaintImage")
   heroForTraditions   Tradition[]         @relation("TraditionHeroImage")
   saintGalleryImages SaintGalleryImage[]
   traditionGalleryImages TraditionGalleryImage[]
   createdAt          DateTime            @default(now())
+}
+
+model HomePageConfig {
+  id                   String       @id @default("home")
+  heroEyebrow          String?
+  heroTitle            String?
+  heroBody             String?
+  heroPrimaryLabel     String?
+  heroPrimaryHref      String?
+  heroSecondaryLabel   String?
+  heroSecondaryHref    String?
+  bannerImageId        String?
+  bannerImage          MediaAsset?  @relation("HomeBannerImage", fields: [bannerImageId], references: [id], onDelete: SetNull)
+  bannerFocalX         Float        @default(50)
+  bannerFocalY         Float        @default(50)
+  bannerFocalWidth     Float        @default(60)
+  bannerFocalHeight    Float        @default(60)
+  featuredSaintIds     String[]     @default([])
+  featuredTraditionIds String[]     @default([])
+  quoteEyebrow         String?
+  quoteText            String?
+  quoteAttribution     String?
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
 }
 
 model SaintGalleryImage {

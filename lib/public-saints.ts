@@ -85,6 +85,19 @@ export async function getFeaturedSaintSummaries() {
   return featured.length > 0 ? featured : saints.slice(0, 6);
 }
 
+export async function getPublishedSaintSummariesByIds(saintIds: string[]) {
+  const uniqueIds = Array.from(new Set(saintIds));
+  if (uniqueIds.length === 0) return [];
+
+  const rows = await getPublishedSaintRows({ id: { in: uniqueIds } });
+  const summariesById = new Map(rows.map((row) => [row.id, toPublicSaintSummary(row)]));
+
+  return uniqueIds.flatMap((id) => {
+    const summary = summariesById.get(id);
+    return summary ? [summary] : [];
+  });
+}
+
 export async function getPublishedSaintSlugs() {
   return db.saint.findMany({
     where: { status: "published" },
