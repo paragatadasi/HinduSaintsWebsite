@@ -44,6 +44,11 @@ Rules:
 - Use design-system configuration for active reusable layout variants. Once a
   page has a selected production layout, remove exploratory toggles and stale
   alternate compositions so public routes have one clear template.
+- The active public homepage layout is `cosmic`, configured in
+  `lib/site-content.ts` and documented in `docs/design/themes.md`. Homepage
+  refinements should preserve the cosmic blue/gold star-field identity, shorter
+  hero, map preview, quote-of-the-day panel, featured tradition panel, and
+  Instagram rail unless a new approved layout replaces it.
 - Use `.section-heading` for section titles and section-level actions; avoid ad hoc heading wrappers in page layouts.
 - Keep vertical rhythm in shared layout classes where possible. If one page needs special tuning, add a page-scoped hook such as `.saints-index` before changing global spacing utilities.
 - When moving or removing a section, replace any spacing that section provided intentionally. Do not let a decorative band or content block be the only source of layout breathing room.

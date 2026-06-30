@@ -18,6 +18,9 @@ Implemented foundation:
 - Initial and follow-up Prisma migrations plus seed data.
 - NextAuth/Prisma auth wiring, role and permission helpers, and protected admin layout.
 - Markdown rendering through a shared prose component with sanitization.
+- Active `cosmic` homepage layout using the nocturne visual identity, a shorter
+  star-field hero, featured saints, a map preview, quote-of-the-day content, a
+  featured tradition panel, and Instagram previews.
 - Import and reconciliation scripts for Airtable and Instagram-oriented workflows.
 - Airtable mirror, Airtable-to-CMS saint import, and Instagram ingestion/review scripts.
 - Docker infrastructure for local PostgreSQL, app runtime, Caddy, and backups.
@@ -196,7 +199,12 @@ Needs to include:
 - SEO title and description for full pages
 - audit trail and role-sensitive actions for publishing changes
 
-Current seam: `lib/site-content.ts` provides typed fixture content for the homepage hero and about page. This should evolve into CMS-managed site content records and database-backed loaders.
+Current seam: `lib/site-content.ts` provides typed fixture/config content for
+the homepage hero, active homepage layout, quote-of-the-day content, reusable
+homepage section labels/actions, and about page. The active homepage layout is
+`cosmic`; it composes published saint, tradition, place-map, and Instagram
+loaders with site-content configuration. This should evolve into CMS-managed
+site content records and database-backed loaders.
 
 ### 4. Media asset and image usage contract
 

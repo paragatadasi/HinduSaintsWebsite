@@ -16,17 +16,17 @@ export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
 
   if (variant === "portrait") {
     return (
-      <Card className="entity-card interactive-surface rail-card rail-card--featured saint-card saint-card--portrait">
+      <Card className="entity-card interactive-surface rail-card rail-card--featured saint-card saint-card--summary">
         <Link href={`/saints/${saint.slug}`}>
-          <div className={`saint-card__portrait saint-card__portrait--${saint.slug}`}>
+          <div className="saint-card__summary-image">
             <img src={image.url} alt={image.alt} width={image.width} height={image.height} />
           </div>
           <div className="entity-card__content">
+            <div className="eyebrow">{saint.eraLabel}</div>
             <h3 className="entity-card__title">{saint.displayName}</h3>
-            <p className="entity-card__body">{saint.tradition}</p>
             <p className="entity-card__meta">
-              <MapPin size={15} />
-              {saint.eraLabel}
+              <MapPin size={16} />
+              {saint.primaryLocation}
             </p>
           </div>
         </Link>
