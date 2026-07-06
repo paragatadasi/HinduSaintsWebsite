@@ -21,12 +21,12 @@ Total proposed saint placements: 1399.
 - Sri Vaishnava & South Indian Vaishnava Traditions: 47 total (4 primary, 1 secondary, 42 tertiary)
 - Shaiva Siddhanta & Tamil Traditions: 39 total (2 primary, 1 secondary, 36 tertiary)
 - Andhra Avadhuta & Datta-Advaita Lineages: 50 total (1 primary, 11 secondary, 38 tertiary)
-- Gujarat & Swaminarayan Traditions: 163 total (5 primary, 9 secondary, 149 tertiary)
+- Gujarat & Swaminarayan Traditions: 165 total (5 primary, 11 secondary, 149 tertiary)
 - Sikh & Punjab Traditions: 21 total (3 primary, 0 secondary, 18 tertiary)
 - Bengal Shakta, Baul & Modern Saints: 75 total (4 primary, 16 secondary, 55 tertiary)
 - Buddhist Saints: 4 total (1 primary, 0 secondary, 3 tertiary)
 - Udasin Saints: 8 total (1 primary, 1 secondary, 6 tertiary)
-- Bhakti Marga & Mauritius Lineage: 10 total (0 primary, 10 secondary, 0 tertiary)
+- Bhakti Marga & Mauritius Lineage: 8 total (0 primary, 8 secondary, 0 tertiary)
 - Global & Diaspora Lineages: 4 total (0 primary, 0 secondary, 4 tertiary)
 - Needs Research: 155 total (0 primary, 0 secondary, 155 tertiary)
 
@@ -1219,7 +1219,7 @@ Total proposed saint placements: 1399.
 
 **Idea:** A western devotional section for Gujarat saints, Swaminarayan/BAPS gurus, Pushkar and Rajputana-adjacent western devotional clusters, and Gujarat-centered saint families.
 
-**Placement Count:** 163 total: 5 featured, 9 secondary, 149 tertiary.
+**Placement Count:** 165 total: 5 featured, 11 secondary, 149 tertiary.
 
 ### Primary Saints And Affiliated Secondary Saints
 
@@ -1242,6 +1242,9 @@ Total proposed saint placements: 1399.
   - Sri Swami Narayan Barah Dadaji Siddha Purushadas Family
     - Sri Gori Shankar Giri (Nepal Baba - Chota Dadaji) of Sri Dada Darbar Sidhnat temple, Jodhpur, Rajasthan
     - Sri Swami Narayan Barah Dadaji Siddha Purushadas of Sri Dada Darbar Sidhnath temple, Jodhpur, Rajasthan
+  - Sri Sri 1008 Paramahamsa Kishan Giri Maharaj Family
+    - Sri Mahamandaleshwar 1008 Someshwar Giri Maharaj of Bijolai Ashram, Jodhpur, Rajasthan
+    - Sri Sri 1008 Paramahamsa Kishan Giri Maharaj of Bijolai Ashram, near Kailana Lake, Jodhpur, Rajasthan
 
 ### Tertiary Saints
 
@@ -1560,7 +1563,7 @@ Total proposed saint placements: 1399.
 
 **Idea:** A curatorial lineage section for saints connected to Bhakti Marga and the Mauritius-centered devotional context of the Founder, overriding generic global or country-based placement when needed.
 
-**Placement Count:** 10 total: 0 featured, 10 secondary, 0 tertiary.
+**Placement Count:** 8 total: 0 featured, 8 secondary, 0 tertiary.
 
 ### Primary Saints And Affiliated Secondary Saints
 
@@ -1575,9 +1578,6 @@ Secondary saints are listed here because this section currently has no primary s
 - Sri Narendra Kumar Geerjanan Family
   - Sri Narendra Kumar Geerjanan (Dinesh) of Rose Hill Mauritius
   - Sri Rashmanee Geerjanan (Manee) of Rose Hill, Mauritius
-- Sri Sri 1008 Paramahamsa Kishan Giri Maharaj Family
-  - Sri Mahamandaleshwar 1008 Someshwar Giri Maharaj of Bijolai Ashram, Jodhpur, Rajasthan
-  - Sri Sri 1008 Paramahamsa Kishan Giri Maharaj of Bijolai Ashram, near Kailana Lake, Jodhpur, Rajasthan
 
 ### Tertiary Saints
 

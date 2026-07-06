@@ -58,6 +58,7 @@ export type MuseumSection = {
   families: MuseumFamilyGroup[];
   primaryGroups: MuseumFamilyGroup[];
   secondaryOnlyGroups: MuseumFamilyGroup[];
+  secondaryUngrouped: MuseumSaintPlacement[];
   tertiaryGroups: MuseumFamilyGroup[];
   tertiaryUngrouped: MuseumSaintPlacement[];
   geography: Array<{ label: string; count: number }>;
@@ -331,6 +332,7 @@ export function getMuseumProposalData() {
         families,
         primaryGroups,
         secondaryOnlyGroups,
+        secondaryUngrouped: rows.filter((row) => row.tier === "Secondary" && !usedSecondary.has(row.id)).sort(sortSaints),
         tertiaryGroups,
         tertiaryUngrouped: rows.filter((row) => row.tier === "Tertiary" && !usedTertiary.has(row.id)).sort(sortSaints),
         geography: topCounts(rows.flatMap((row) => row.normalizedPlaces.map((place) => museumLocationLabel(place, "Unspecified")))),

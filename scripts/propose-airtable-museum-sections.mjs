@@ -67,8 +67,7 @@ const familySectionOverrides = new Map(Object.entries({
   "FAM-021": SECTION.rishikesh,
   "FAM-022": SECTION.sai,
   "FAM-023": SECTION.nath,
-  "FAM-024": SECTION.bengal,
-  "FAM-060": SECTION.bhaktiMarga
+  "FAM-024": SECTION.bengal
 }));
 
 const familyLabelSectionOverrides = [

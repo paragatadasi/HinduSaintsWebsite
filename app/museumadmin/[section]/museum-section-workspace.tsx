@@ -134,6 +134,12 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
                   tierById={tierById}
                 />
               ))}
+              <SecondaryStandaloneCard
+                anchorById={anchorById}
+                onSaintClick={setSelectedSaintId}
+                rows={section.secondaryUngrouped}
+                tierById={tierById}
+              />
             </div>
           </section>
 
@@ -400,6 +406,38 @@ function SecondaryFamilyCard({
       <div className="museum-family-card__header">
         <div>
           <h3>{family.label}</h3>
+          <p>{cardRows.length} affiliated saint{cardRows.length === 1 ? "" : "s"}</p>
+        </div>
+      </div>
+      <ul>
+        {cardRows.map((row) => <li key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>)}
+      </ul>
+    </article>
+  );
+}
+
+function SecondaryStandaloneCard({
+  anchorById,
+  onSaintClick,
+  rows,
+  tierById
+}: {
+  anchorById: Record<string, string>;
+  onSaintClick: (id: string) => void;
+  rows: MuseumSaintPlacement[];
+  tierById: Record<string, MuseumTier>;
+}) {
+  const cardRows = rows
+    .filter((row) => !anchorById[row.id])
+    .filter((row) => (tierById[row.id] || row.tier) === "Secondary")
+    .sort(sortSaints);
+  if (!cardRows.length) return null;
+
+  return (
+    <article className="museum-family-card museum-family-card--secondary">
+      <div className="museum-family-card__header">
+        <div>
+          <h3>Other affiliated saints</h3>
           <p>{cardRows.length} affiliated saint{cardRows.length === 1 ? "" : "s"}</p>
         </div>
       </div>
