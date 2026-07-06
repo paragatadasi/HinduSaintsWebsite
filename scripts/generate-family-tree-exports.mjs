@@ -7,6 +7,7 @@ const treeDir = path.join(exportsDir, "family-trees");
 const membersPath = path.join(exportsDir, "airtable-saint-family-members.csv");
 const edgesPath = path.join(exportsDir, "airtable-saint-family-relationship-edges.csv");
 const visualsPath = path.join(exportsDir, "airtable-saint-family-tree-visuals.csv");
+const labelsPath = path.join(exportsDir, "airtable-saint-family-labels.csv");
 
 const NODE_W = 260;
 const NODE_H = 112;
@@ -15,6 +16,15 @@ const Y_GAP = 128;
 const MARGIN_X = 78;
 const HEADER_H = 150;
 const PALETTE = ["#2b6cb0", "#b7791f", "#6b46c1", "#2f855a", "#c05621", "#0f766e", "#9f1239"];
+
+const familyLabelOverrides = new Map([
+  ["FAM-001", "Gaudiya Math"],
+  ["FAM-003", "Dattatreya Incarnations & Lineages"]
+]);
+
+const familyLabelAnchorOverrides = [
+  { recordIds: ["recDQE3wQ8BNrmIpR", "rec9cGrqgBRNKmfQV"], label: "Sai Family" },
+];
 
 function parseCsv(text) {
   const rows = [];
@@ -61,6 +71,12 @@ function parseCsv(text) {
 function csvEscape(value) {
   const s = String(value ?? "");
   return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+
+function writeCsv(filePath, rows, headers) {
+  const lines = [headers.join(",")];
+  for (const row of rows) lines.push(headers.map((h) => csvEscape(row[h])).join(","));
+  fs.writeFileSync(filePath, `${lines.join("\n")}\n`);
 }
 
 function splitIds(value) {
@@ -444,6 +460,7 @@ for (const row of members) {
   byFamily.get(row.FamilyID).push({
     id: row.RecordId,
     name: row.Name.trim(),
+    Masters: row.Masters,
     Disciples: row.Disciples,
     Partner: row.Partner,
     Incarnation: row.Incarnation,
@@ -457,11 +474,168 @@ for (const row of members) {
   });
 }
 
+const sampradayaFamilyCounts = new Map();
+for (const [familyId, nodes] of byFamily.entries()) {
+  for (const [sampradaya] of countEntries(nodes.map((node) => node.Sampradaya))) {
+    if (!sampradayaFamilyCounts.has(sampradaya)) sampradayaFamilyCounts.set(sampradaya, new Set());
+    sampradayaFamilyCounts.get(sampradaya).add(familyId);
+  }
+}
+
+const labelRows = [...byFamily.entries()]
+  .sort((a, b) => a[0].localeCompare(b[0]))
+  .map(([familyId, nodes]) => {
+    const proposal = proposeFamilyLabel(familyId, nodes, sampradayaFamilyCounts);
+    const rootCandidates = nodes
+      .filter((node) => !isNonSaintName(node.name))
+      .filter((node) => !splitIds(node.Masters).length && (relationshipCount(node.Disciples) || relationshipCount(node.Partner) || relationshipCount(node.Incarnation)))
+      .sort((a, b) =>
+        (parseYear(a.BirthYear) ?? 9999) - (parseYear(b.BirthYear) ?? 9999) ||
+        relationshipCount(b.Disciples) - relationshipCount(a.Disciples) ||
+        cleanName(a.name).localeCompare(cleanName(b.name))
+      );
+    return {
+      "Family ID": familyId,
+      "Family Size": nodes.length,
+      "Proposed Family Label": proposal.label,
+      "Label Basis": proposal.basis,
+      "Label Confidence": proposal.confidence,
+      "Guidance Status": proposal.guidance,
+      "Root Candidates": rootCandidates.map((node) => cleanName(node.name)).join("; "),
+      "Dominant Sampradayas": counts(nodes.map((node) => node.Sampradaya)),
+      "Dominant Spiritual Regions": counts(nodes.map((node) => node.SpiritualRegion)),
+      "Rationale": proposal.rationale
+    };
+  });
+
+writeCsv(labelsPath, labelRows, [
+  "Family ID",
+  "Family Size",
+  "Proposed Family Label",
+  "Label Basis",
+  "Label Confidence",
+  "Guidance Status",
+  "Root Candidates",
+  "Dominant Sampradayas",
+  "Dominant Spiritual Regions",
+  "Rationale"
+]);
+
 fs.mkdirSync(treeDir, { recursive: true });
+for (const file of fs.readdirSync(treeDir)) {
+  if (/^fam-\d+-tree\.svg$/.test(file)) {
+    fs.unlinkSync(path.join(treeDir, file));
+  }
+}
+
+function countEntries(values) {
+  const map = new Map();
+  for (const raw of values) {
+    for (const value of String(raw || "").split(";").map((s) => s.trim()).filter(Boolean)) {
+      if (/^\(?no sampradaya\)?$/i.test(value)) continue;
+      map.set(value, (map.get(value) || 0) + 1);
+    }
+  }
+  return [...map.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+}
+
+function cleanName(value) {
+  return String(value || "").trim().replace(/\s+/g, " ");
+}
+
+function isNonSaintName(value) {
+  const name = cleanName(value).toLowerCase();
+  return /^https?:\/\//.test(name) || /^rec[a-z0-9]+$/i.test(name);
+}
+
+function shortName(value) {
+  return cleanName(value)
+    .replace(/\s+of\s+.+$/i, "")
+    .replace(/\s+\(.+?\)\s*$/g, "")
+    .trim();
+}
+
+function relationshipCount(value) {
+  return splitIds(value).length;
+}
+
+function chooseHead(nodes) {
+  const candidates = nodes
+    .filter((node) => !isNonSaintName(node.name))
+    .filter((node) => !splitIds(node.Masters).length && (relationshipCount(node.Disciples) || relationshipCount(node.Partner) || relationshipCount(node.Incarnation)))
+    .sort((a, b) =>
+      (parseYear(a.BirthYear) ?? 9999) - (parseYear(b.BirthYear) ?? 9999) ||
+      relationshipCount(b.Disciples) - relationshipCount(a.Disciples) ||
+      cleanName(a.name).localeCompare(cleanName(b.name))
+    );
+  if (candidates.length) return candidates[0];
+  return [...nodes].filter((node) => !isNonSaintName(node.name)).sort((a, b) =>
+    relationshipCount(b.Disciples) - relationshipCount(a.Disciples) ||
+    (parseYear(a.BirthYear) ?? 9999) - (parseYear(b.BirthYear) ?? 9999) ||
+    cleanName(a.name).localeCompare(cleanName(b.name))
+  )[0] || nodes[0];
+}
+
+function proposeFamilyLabel(familyId, nodes, sampradayaFamilyCounts) {
+  for (const override of familyLabelAnchorOverrides) {
+    if (override.recordIds.some((recordId) => nodes.some((node) => node.id === recordId))) {
+      return {
+        label: override.label,
+        basis: "Human-approved anchor override",
+        confidence: "High",
+        guidance: "",
+        rationale: "Explicit family label provided by archivalist and matched by anchor record ID."
+      };
+    }
+  }
+
+  if (familyLabelOverrides.has(familyId)) {
+    return {
+      label: familyLabelOverrides.get(familyId),
+      basis: "Human-approved override",
+      confidence: "High",
+      guidance: "",
+      rationale: "Explicit family label provided by archivalist."
+    };
+  }
+
+  const sampradayas = countEntries(nodes.map((node) => node.Sampradaya));
+  const dominantSampradaya = sampradayas[0];
+  if (dominantSampradaya) {
+    const [sampradaya, count] = dominantSampradaya;
+    const familiesForSampradaya = sampradayaFamilyCounts.get(sampradaya) || new Set();
+    const coversFamily = count === nodes.length || count >= Math.ceil(nodes.length * 0.8);
+    if (coversFamily && familiesForSampradaya.size === 1) {
+      return {
+        label: sampradaya,
+        basis: "Sampradaya-contained",
+        confidence: "High",
+        guidance: "",
+        rationale: `${sampradaya} appears concentrated in ${familyId} and covers ${count}/${nodes.length} family members.`
+      };
+    }
+  }
+
+  const head = chooseHead(nodes);
+  const rootCandidates = nodes
+    .filter((node) => !isNonSaintName(node.name))
+    .filter((node) => !splitIds(node.Masters).length && (relationshipCount(node.Disciples) || relationshipCount(node.Partner) || relationshipCount(node.Incarnation)));
+  const label = `${shortName(head.name)} Family`;
+  const multipleRootCandidates = rootCandidates.length > 1;
+  return {
+    label,
+    basis: multipleRootCandidates ? "Senior member - ambiguous roots" : "Senior member",
+    confidence: multipleRootCandidates ? "Medium" : "High",
+    guidance: multipleRootCandidates ? "Needs Guidance" : "",
+    rationale: multipleRootCandidates
+      ? `Multiple senior/root candidates are present: ${rootCandidates.map((node) => shortName(node.name)).slice(0, 4).join("; ")}. Proposed label uses the earliest/highest-connectivity candidate.`
+      : `Proposed from the clearest senior/root member: ${cleanName(head.name)}.`
+  };
+}
 const visuals = [["FamilyID", "SaintCount", "TreeFile", "States", "SpiritualRegions", "Sampradayas"]];
 const cards = [];
 for (const [familyId, nodes] of [...byFamily.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
-  if (nodes.length < 4) continue;
+  if (nodes.length < 3) continue;
   const familyEdges = edges.filter((e) => nodes.some((n) => n.id === e.FromRecordId) && nodes.some((n) => n.id === e.ToRecordId));
   const meta = {
     states: counts(nodes.map((n) => n.State)),
@@ -478,7 +652,8 @@ for (const [familyId, nodes] of [...byFamily.entries()].sort((a, b) => a[0].loca
 
 fs.writeFileSync(visualsPath, visuals.map((row) => row.map(csvEscape).join(",")).join("\n") + "\n");
 
-const html = `<!doctype html><html><head><meta charset="utf-8"><title>Saint Family Trees</title><style>:root{color-scheme:light}body{margin:0;background:#f7f3eb;color:#1f2933;font-family:Arial,sans-serif}main{max-width:1240px;margin:0 auto;padding:32px 24px 60px}h1{font-family:Georgia,serif;font-size:34px;margin:0 0 8px}p{color:#4b5563;line-height:1.5}.card{background:#fff;border:1px solid #d8d0c4;border-radius:8px;margin:22px 0;padding:16px;box-shadow:0 2px 10px rgba(31,41,55,.08)}.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}h2{margin:0 0 8px;font-size:22px}.meta{font-size:14px;color:#4b5563}.tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.tools button{border:1px solid #b9b0a3;background:#fffdf8;border-radius:6px;padding:7px 10px;font-weight:600;color:#1f2933;cursor:pointer}.zoom-label{min-width:46px;text-align:center;color:#4b5563;font-size:13px}.tree{width:100%;height:min(78vh,790px);overflow:auto;border:1px solid #e5ded4;border-radius:6px;background:#f7f3eb}.tree img{display:block;width:100%;height:auto;transform-origin:top left}.hint{font-size:13px;color:#6b7280;margin-top:8px}</style></head><body><main><h1>Saint Family Trees</h1><p>Families with at least 4 members. Colored arrows show guru-disciple lineages, pink dashed lines show partner links, and green dotted lines show incarnation associations. Guru-disciple rows are preserved except for partner/Guru Ma pair placement.</p>${cards.map((card) => `<section class="card" data-zoom="1" data-natural-width="${card.width}"><div class="card-head"><div><h2>${esc(card.familyId)} - ${card.count} saints</h2><div class="meta">${esc([card.meta.states, card.meta.regions, card.meta.sampradayas].filter(Boolean).join(" | "))}</div></div><div class="tools"><button data-zoom="fit">Fit</button><button data-zoom="actual">100%</button><button data-zoom="out">-</button><span class="zoom-label">100%</span><button data-zoom="in">+</button></div></div><div class="tree"><img src="${card.fileName}" width="${card.width}" height="${card.height}" alt="${esc(card.familyId)} family tree"></div><div class="hint">Colored arrows: guru-disciple lineages. Pink dashed: partner. Green dotted: incarnation association.</div></section>`).join("\n")}</main><script>document.querySelectorAll('.card').forEach(card=>{const img=card.querySelector('img'),label=card.querySelector('.zoom-label'),tree=card.querySelector('.tree');let z=1;function fit(){z=Math.min(1,tree.clientWidth/Number(card.dataset.naturalWidth));apply()}function apply(){img.style.width=(Number(card.dataset.naturalWidth)*z)+'px';label.textContent=Math.round(z*100)+'%'}card.querySelector('[data-zoom="fit"]').onclick=fit;card.querySelector('[data-zoom="actual"]').onclick=()=>{z=1;apply()};card.querySelector('[data-zoom="in"]').onclick=()=>{z=Math.min(2.5,z+.15);apply()};card.querySelector('[data-zoom="out"]').onclick=()=>{z=Math.max(.2,z-.15);apply()};setTimeout(fit,0);});</script></body></html>`;
+const html = `<!doctype html><html><head><meta charset="utf-8"><title>Saint Family Trees</title><style>:root{color-scheme:light}body{margin:0;background:#f7f3eb;color:#1f2933;font-family:Arial,sans-serif}main{max-width:1240px;margin:0 auto;padding:32px 24px 60px}h1{font-family:Georgia,serif;font-size:34px;margin:0 0 8px}p{color:#4b5563;line-height:1.5}.card{background:#fff;border:1px solid #d8d0c4;border-radius:8px;margin:22px 0;padding:16px;box-shadow:0 2px 10px rgba(31,41,55,.08)}.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}h2{margin:0 0 8px;font-size:22px}.meta{font-size:14px;color:#4b5563}.tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.tools button{border:1px solid #b9b0a3;background:#fffdf8;border-radius:6px;padding:7px 10px;font-weight:600;color:#1f2933;cursor:pointer}.zoom-label{min-width:46px;text-align:center;color:#4b5563;font-size:13px}.tree{width:100%;height:min(78vh,790px);overflow:auto;border:1px solid #e5ded4;border-radius:6px;background:#f7f3eb}.tree img{display:block;width:100%;height:auto;transform-origin:top left}.hint{font-size:13px;color:#6b7280;margin-top:8px}</style></head><body><main><h1>Saint Family Trees</h1><p>Families with at least 3 members. Colored arrows show guru-disciple lineages, pink dashed lines show partner links, and green dotted lines show incarnation associations. Guru-disciple rows are preserved except for partner/Guru Ma pair placement.</p>${cards.map((card) => `<section class="card" data-zoom="1" data-natural-width="${card.width}"><div class="card-head"><div><h2>${esc(card.familyId)} - ${card.count} saints</h2><div class="meta">${esc([card.meta.states, card.meta.regions, card.meta.sampradayas].filter(Boolean).join(" | "))}</div></div><div class="tools"><button data-zoom="fit">Fit</button><button data-zoom="actual">100%</button><button data-zoom="out">-</button><span class="zoom-label">100%</span><button data-zoom="in">+</button></div></div><div class="tree"><img src="${card.fileName}" width="${card.width}" height="${card.height}" alt="${esc(card.familyId)} family tree"></div><div class="hint">Colored arrows: guru-disciple lineages. Pink dashed: partner. Green dotted: incarnation association.</div></section>`).join("\n")}</main><script>document.querySelectorAll('.card').forEach(card=>{const img=card.querySelector('img'),label=card.querySelector('.zoom-label'),tree=card.querySelector('.tree');let z=1;function fit(){z=Math.min(1,tree.clientWidth/Number(card.dataset.naturalWidth));apply()}function apply(){img.style.width=(Number(card.dataset.naturalWidth)*z)+'px';label.textContent=Math.round(z*100)+'%'}card.querySelector('[data-zoom="fit"]').onclick=fit;card.querySelector('[data-zoom="actual"]').onclick=()=>{z=1;apply()};card.querySelector('[data-zoom="in"]').onclick=()=>{z=Math.min(2.5,z+.15);apply()};card.querySelector('[data-zoom="out"]').onclick=()=>{z=Math.max(.2,z-.15);apply()};setTimeout(fit,0);});</script></body></html>`;
 fs.writeFileSync(path.join(treeDir, "index.html"), html);
 
 console.log(`Generated ${cards.length} family tree SVGs.`);
+console.log(`Wrote ${labelRows.length} family label proposals to ${labelsPath}.`);

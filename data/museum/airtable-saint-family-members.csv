@@ -1,0 +1,254 @@
+FamilyID,FamilySize,RecordId,Name,Masters,Disciples,Partner,Incarnation,NormalizedPlaces,SpiritualRegion,Sampradaya,BirthDate,SamadhiDate,BirthYear,SamadhiYear
+FAM-001,16,recdWTI4NXwgPek2O,A. C. Bhaktivedanta Swami Prabhupada,rec4ZYq1brPdqn8Px,recu0OJ76jqCF2Wmj,,,,Braj Mandal,Brahma-Madhva-Gaudiya Sampradaya???,1896-09-01,1977-11-14,1896,1977
+FAM-001,16,rec4ZYq1brPdqn8Px,Bhaktisiddhanta Sarasvati Thakura Goswami,recjEQvrerGobZcVO,recdWTI4NXwgPek2O;rec8kLoCs2julYZOc;reccRAlL008YucnZG;recDske4jSTiuYtga;receYXrNaTeGyvi3M;reckHUfQ5SSZ3CGWg;recyu7A0Cmfh0EA9N;recozhkjd7tfSJLxO;recsy2wkjoTURVDaG,,,,Coastal Odisha; Jagannath-Puri Tradition,Gaudiya Vaishnava,1874-02-06,1936-12-31,1874,1936
+FAM-001,16,recMF6lJ4Vq5sZPUN,"Om Vishnupad Tridandi Swami 108 Sri Srimat Bhakti Sravan Tirtha Goswami Maharaj of Bhubaneshwar, Orissa",recDske4jSTiuYtga,,,,,Coastal Odisha,Gaudiya Vaishnava,16.03.1926,01.12.2004,1926,2004
+FAM-001,16,recu0OJ76jqCF2Wmj,"Sri Aindra Prabhu of Arlington, USA",recdWTI4NXwgPek2O,,,,,Global,Gaudiya Vaishnava,1953-03-12,2010-07-17,1953,2010
+FAM-001,16,recyu7A0Cmfh0EA9N,"Sri Aoudolom Maharaj of Cuttack, Orissa ",rec4ZYq1brPdqn8Px,,,,,Coastal Odisha,Gaudiya Vaishnava,,,,
+FAM-001,16,rec3ulkcd4vs7FA6v,"Sri Balak Siddha Mahatma Srila Yadav Chandra Rai (Balak Sadhu) of Jagannath Bari, Navadwip   ",,recDske4jSTiuYtga;reccRAlL008YucnZG;rec8kLoCs2julYZOc;reckHUfQ5SSZ3CGWg,,,,Gaudiya Vaishnava Heartland,Sri Vaishnava,06.02.1874,01.01.1937,1874,1937
+FAM-001,16,recDske4jSTiuYtga,"Sri Bhakti Pradeep Tirtha Goswami Maharaj of Cuttack, Orissa",rec4ZYq1brPdqn8Px;rec3ulkcd4vs7FA6v,recMF6lJ4Vq5sZPUN,,,,Coastal Odisha,Gaudiya Vaishnava,1877,1953,1877,1953
+FAM-001,16,reccRAlL008YucnZG,"Sri Bhakti Prasad Puri Goswami Maharaj of Cuttack, Orissa 18 C",rec4ZYq1brPdqn8Px;rec3ulkcd4vs7FA6v,,,,,Coastal Odisha,Gaudiya Vaishnava,1895,1940,1895,1940
+FAM-001,16,reckHUfQ5SSZ3CGWg,"Sri Bhakti Sri Rupesh Bhagavat Goswami Maharaj of Cuttack, Orissa ",rec4ZYq1brPdqn8Px;rec3ulkcd4vs7FA6v,,,,,Coastal Odisha,Gaudiya Vaishnava,1897,,1897,
+FAM-001,16,rec8kLoCs2julYZOc,"Sri Bhakti Sumit Paribrajak Maharaj of Cuttack, Orissa",rec4ZYq1brPdqn8Px;rec3ulkcd4vs7FA6v,,,,,Coastal Odisha,Gaudiya Vaishnava,1947,,1947,
+FAM-001,16,recjEQvrerGobZcVO,Sri Gaura Kishor Das Babaji of Navadwip ,recs5oR89BMYi1sGB,rec4ZYq1brPdqn8Px,,,,Gaudiya Vaishnava Heartland,,18.11.1838,,1838,
+FAM-001,16,recs5oR89BMYi1sGB,"Sri Jagannath Das Babaji of Navadwip Dham, West Bengal ",,recjEQvrerGobZcVO;recseCcZfyiPXe8GD,,,,Gaudiya Vaishnava Heartland,Gaudiya Vaishnava,,,,
+FAM-001,16,recseCcZfyiPXe8GD,"Sri Prabhupad Srimad Jay Nitai Das Babaji of Navadwip, West Bengal ",recs5oR89BMYi1sGB,,,,,Gaudiya Vaishnava Heartland,Nityananda Sampradaya,1307,1415,1307,1415
+FAM-001,16,recsy2wkjoTURVDaG,Sri Srila Srimad Bhakti Kamal Madhusudan Goswami Maharaj of Mayapur ,rec4ZYq1brPdqn8Px,,,,,Gaudiya Vaishnava Heartland,Gaudiya Vaishnava,19.12.1901,,1901,
+FAM-001,16,receYXrNaTeGyvi3M,"Sri Srimat Bhakti Pramod Paryajak Maharaj of Bhubaneswar, Tridandi Gaudiya Math ",rec4ZYq1brPdqn8Px,,,,,Coastal Odisha,Gaudiya Vaishnava,1907,2000,1907,2000
+FAM-001,16,recozhkjd7tfSJLxO,Sri Tridandi Swami Srimad Bhakti Pramod Puri Goswami Maharaj of Mayapur ,rec4ZYq1brPdqn8Px,,,,,Gaudiya Vaishnava Heartland,Gaudiya Vaishnava,1898-10-08,1999-11-02,1898,1999
+FAM-002,12,recNmKsCz7Kg7x7Dr,Sri Baya Baba (Sri Srimad 108 Sachinandan Das Baba) of Bengal ,recqPwPML5FbWMvaV,,,,,West Bengal General; Odisha General,Gaudiya Vaishnava,1898,1981,1898,1981
+FAM-002,12,rec1bOVrWmAFek7Tn,Sri Harendranath Mukarji of Panihati ,recqPwPML5FbWMvaV,,,,,Gaudiya Vaishnava Heartland,Gaudiya Vaishnava,1920,1995,1920,1995
+FAM-002,12,recKh2RvgoYZimvdt,Sri Jagad Bandhu Sundar of Faridpur ,,recqPwPML5FbWMvaV;recsYELxoJkSd4fJB;rec72DZPKexDMty7G;recOs3jGNyfMlakIB,,,,South Asia,,28.04.1871,17.09.1921,1871,1921
+FAM-002,12,recvIK4EYJwVrkvk5,"Sri Krishnananda Das Babaji of Pathbari Ashram, Calcutta 14 D",recqPwPML5FbWMvaV,,,,,Kolkata Spiritual Sphere,Gaudiya Vaishnava,1914,1990,1914,1990
+FAM-002,12,recsYELxoJkSd4fJB,Sri Mahanambrata Brahmachari of Bangladesh ,recKh2RvgoYZimvdt,,,,,South Asia,Gaudiya Vaishnava,1904-12-25,1999-10-18,1904,1999
+FAM-002,12,recmJs0NX4r3MNORL,Sri Murali Das Babaji Maharaj of Pathbari Ashram,recqPwPML5FbWMvaV,,,,,Gaudiya Vaishnava Heartland,,,,,
+FAM-002,12,reco84eCakzUdrmmP,Sri Radha Raman Charan Das of Bengal  ,rec7cV8OOW6dYau1K,recqPwPML5FbWMvaV;recsygmC7mtnPPp1W,,,,South Asia,,1853-04-13,"second day of month phalguna sukla paksha, bangabda 1905",1853,1905
+FAM-002,12,rec72DZPKexDMty7G,Sri Rajarshi Banamali Roy of Vrindavan ,recKh2RvgoYZimvdt,,,,,Braj Mandal,,1862,,1862,
+FAM-002,12,recOs3jGNyfMlakIB,Sri Rajarshi Banamali Roy of Vrindavan ,recKh2RvgoYZimvdt,,,,,Braj Mandal,,,,,
+FAM-002,12,recqPwPML5FbWMvaV,Sri Ramdas Babaji Maharaj of Bengal ,recKh2RvgoYZimvdt;reco84eCakzUdrmmP,rec1bOVrWmAFek7Tn;recmJs0NX4r3MNORL;recNmKsCz7Kg7x7Dr;recvIK4EYJwVrkvk5,,,,South Asia,,,1953,,1953
+FAM-002,12,rec7cV8OOW6dYau1K,Sri Sankaranya Puri Goswami of Navadwip ( Sri Yogendranath Goswami ) ,,reco84eCakzUdrmmP,,,,Gaudiya Vaishnava Heartland,Nityananda Sampradaya,,,,
+FAM-002,12,recsygmC7mtnPPp1W,"Sri Srimat Govardhandas Babaji of Puri, Orissa ",reco84eCakzUdrmmP,,,,,Jagannath-Puri Tradition,Gaudiya Vaishnava,,,,
+FAM-003,11,rec2H25WTkUXoX3wl,Dattatreya (Girnar) ,,recEhlZJadMj1ae8L,,rec542avx5EJLdPqI;recEvPtUXEpvPZtBk;recAdoHb834kJnkig,,Girnar & Nath Tradition,,,,,
+FAM-003,11,recUzBdPjfszv1w8D,Sri Ballapa Maharaj of Akkalkot ,recAdoHb834kJnkig,recKmUNZB0LwvnQYV;recWCBILl4t5fUT1c,,,,Datta Sampradaya Belt,,,,,
+FAM-003,11,recEGuGQQ4N4EXAil,Sri Dattatreya Sonar of Mungurwadi,recKmUNZB0LwvnQYV,,,,,,,,,,
+FAM-003,11,recWCBILl4t5fUT1c,Sri Gangadhara Maharaj of Akkalkot,recUzBdPjfszv1w8D,,,,,Datta Sampradaya Belt,,,,,
+FAM-003,11,recrMH17Ga8tP11z0,Sri Gawdi Baba of Narsobawadi,recEhlZJadMj1ae8L,,,,,Datta Sampradaya Belt,,1946-04-27,Still alive,1946,
+FAM-003,11,rec542avx5EJLdPqI,"Sri Narasimha Saraswati 
+of Lad-Karanja, Washim, Vidarbha, Maharashtra",,,,rec2H25WTkUXoX3wl;recEvPtUXEpvPZtBk;recAdoHb834kJnkig,,Maharashtra General,,,,,
+FAM-003,11,recEvPtUXEpvPZtBk,"Sri Narasimha Saraswati of Narasimha Wadi, Kolhapur,  Maharashtra ",,,,rec2H25WTkUXoX3wl;rec542avx5EJLdPqI;recAdoHb834kJnkig,,Datta Sampradaya Belt,,1378,1459,1378,1459
+FAM-003,11,recKmUNZB0LwvnQYV,Sri Pant Maharaj of Balekundri/ Mungarwadi,recUzBdPjfszv1w8D,recEGuGQQ4N4EXAil,,,,Veerashaiva / Lingayat Belt,,1855-09-03 (Gokulashtami),1905-10-16,1855,1905
+FAM-003,11,recEhlZJadMj1ae8L,Sri Tembe Swami ,rec2H25WTkUXoX3wl,recZ8dSUCZSv0HSTl;recrMH17Ga8tP11z0,,,,Modern Guru Centers; Narmada Region; Nath & Shaiva Maharashtra,,1854-08-13,1914,1854,1914
+FAM-003,11,recAdoHb834kJnkig,Swami Samarth Maharaj of Akkalkot,,recUzBdPjfszv1w8D,,rec2H25WTkUXoX3wl;rec542avx5EJLdPqI;recEvPtUXEpvPZtBk,,Datta Sampradaya Belt,,,,,
+FAM-003,11,recZ8dSUCZSv0HSTl,Yogananda Swami,recEhlZJadMj1ae8L,,,,,,,,,,
+FAM-004,11,recoRltXupeZas8zP,Mahavatar Kriya Babaji,,reciPBtb5T1Js7Lqz;recH8o102sJ3mQ7aT;recx6n6mmw1tEEnFF;recKFP79mZ8Fyhvao,,,,Char Dham & Upper Himalaya,Kriya Yoga,,,,
+FAM-004,11,recUCW4T6Le8f3ZdX,"Sri Daya Mata of Salt Lake City, Utah, USA ",reciPBtb5T1Js7Lqz,,,,,Global,Kriya Yoga,,,,
+FAM-004,11,recIc9E1BwdIFc4OD,"Sri Durga Mata of Iron Mountain, Michigan, USA ",reciPBtb5T1Js7Lqz,,,,,Global,Kriya Yoga,08.11.1903,1993,1903,1993
+FAM-004,11,rec9T6tpXGtrCWdxV,"Sri Hariharananda Giri of Karar Ashram, Puri ",recH8o102sJ3mQ7aT,,,,,Gaudiya Vaishnava Heartland,Gaudiya Vaishnava,,,,
+FAM-004,11,recx6n6mmw1tEEnFF,Sri Lahiri Mahasaya of Varanasi ,recoRltXupeZas8zP,recH8o102sJ3mQ7aT;recLVwMPBTBcxHJG1,,,,Kashi Region,Kriya Yoga,1828-09-30,1895-09-26,1828,1895
+FAM-004,11,recwX7dFfmlq9FfAh,"Sri Motilal Mukhabadhyay, Mukarji  of Serampur ",recH8o102sJ3mQ7aT,,,,,Gaudiya Vaishnava Heartland,,1876-01-05,1945-09,1876,1945
+FAM-004,11,reciPBtb5T1Js7Lqz,Sri Paramahamsa Yogananda of Gorakhpur ,recH8o102sJ3mQ7aT;recoRltXupeZas8zP,recUTlwjCvniL1hEv;recIc9E1BwdIFc4OD;recUCW4T6Le8f3ZdX,,,,Gorakh Tradition,Kriya Yoga,1893-01-05,1952-03-07,1893,1952
+FAM-004,11,recLVwMPBTBcxHJG1,"Sri Sri Bhupendranath Sanyal of Puri, Orissa ",recx6n6mmw1tEEnFF,,,,,Jagannath-Puri Tradition,,01.1877,18.01.1962,1877,1962
+FAM-004,11,recKFP79mZ8Fyhvao,Sri Sri Hanuman Das Babaji of Vrindavan,recoRltXupeZas8zP,,,,,Braj Mandal,Ramanandi Sampradaya,1845 ca,2013-11-14,1845,2013
+FAM-004,11,recUTlwjCvniL1hEv,"Sri Swami Kriyananda of Azuga, Romania",reciPBtb5T1Js7Lqz,,,,,Global,Kriya Yoga,1926-05-19,2013-04-21,1926,2013
+FAM-004,11,recH8o102sJ3mQ7aT,Sri Swami SriYukteshwar Giri of Serampur,recx6n6mmw1tEEnFF;recoRltXupeZas8zP,reciPBtb5T1Js7Lqz;rec9T6tpXGtrCWdxV;recwX7dFfmlq9FfAh,,,,Gaudiya Vaishnava Heartland; Modern Guru Centers,Kriya Yoga,1855-05-10,1936-03-09,1855,1936
+FAM-005,9,recBvAIzHPy3xmzNr,Goswamis of Vrindavan ,recgLvBMiGOevOuZM,,,,,Braj Mandal,,,,,
+FAM-005,9,recgLvBMiGOevOuZM,Sri Chaitanya Mahaprabhu of Puri/ Navadwip,,recBvAIzHPy3xmzNr;reczcdKSdHDeOlHdt;rec7064CikptruWW3;recCtoBgaO6q9LlU9,recwXgwhRieoQeKxm,,,Jagannath-Puri Tradition; Gaudiya Vaishnava Heartland,Gaudiya Vaishnava,1486-02-18,1534-06-14,1486,1534
+FAM-005,9,rec7064CikptruWW3,Sri Gopala Bhatta Goswami of Vrindavan,recgLvBMiGOevOuZM,,,,,Braj Mandal,,,,,
+FAM-005,9,rechBZw1LyW9TTX9L,Sri Hemalata Thakurani of ??? ,recJepdkXi90kdROh,,,,,West Bengal General,,,,,
+FAM-005,9,reczcdKSdHDeOlHdt,Sri Jiva Goswami of Vrindavan,recgLvBMiGOevOuZM,recJepdkXi90kdROh,,,,Braj Mandal,Gaudiya Vaishnava,1511/13 ,1596/98,1511,1596
+FAM-005,9,recK4u1sUzyWGtVTu,Sri Nityananda Prabhu of Navadwip,,,recgLvBMiGOevOuZM,,,Gaudiya Vaishnava Heartland,,,,,
+FAM-005,9,recCtoBgaO6q9LlU9,Sri Sarvabhauma Bhattacharya of Puri,recgLvBMiGOevOuZM,,,,,Jagannath-Puri Tradition,Gaudiya Vaishnava,,,,
+FAM-005,9,recJepdkXi90kdROh,Sri Srinivasa Acharya of Vrindavan ,reczcdKSdHDeOlHdt,rechBZw1LyW9TTX9L,,,,Braj Mandal,,1517-05-15,09.05.,1517,
+FAM-005,9,recwXgwhRieoQeKxm,Sri Vishnupriya Devi of Navadwip ,,,recgLvBMiGOevOuZM,,,Gaudiya Vaishnava Heartland,,,,,
+FAM-006,8,rec8zRjsV6xnw4mwa,Kuladananda Brahmachari of Puri,rec1cTbJ4iPAMUW0v,,,,,Jagannath-Puri Tradition,,1867 Karthik month,1930,1867,1930
+FAM-006,8,rechEXrlzldl7ZpoA,Sri Mata Saroj Bala Devi of Varanasi ,,,recPw3FxLbHjXdgaD,,,Kashi Region,,,,,
+FAM-006,8,recPw3FxLbHjXdgaD,Sri Sri Kiranchand  Darveshji of Varanasi ,rec1cTbJ4iPAMUW0v,,rechEXrlzldl7ZpoA,,,Kashi Region,,02.08.1878,,1878,
+FAM-006,8,recsumN8i2tdC7GbV,"Sri Sri Maa Moni of Puri, Orissa (Brajadham) ",rec1cTbJ4iPAMUW0v,,,,,Jagannath-Puri Tradition,Gaudiya Vaishnava,1993,1996,1993,1996
+FAM-006,8,recwXrEbirWApVteB,Sri Swami Didhishananda Saraswati of Puri ,rec1cTbJ4iPAMUW0v,,,,,Jagannath-Puri Tradition,,,,,
+FAM-006,8,rec1cTbJ4iPAMUW0v,Sri Vijay Krishna Goswami of Puri ,,rec8zRjsV6xnw4mwa;recaSmpkXpqslt29K;recPw3FxLbHjXdgaD;recRZkHSnl8nDNArl;recsumN8i2tdC7GbV;recwXrEbirWApVteB,recRZkHSnl8nDNArl;recaSmpkXpqslt29K,,,Jagannath-Puri Tradition,,1841-08-02,died 22nd day of month jyestha in 1899 after poisoned jagannath laddu prasad;,1841,1899
+FAM-006,8,recaSmpkXpqslt29K,Sri Yogmaya Devi of Puri/ Vrindavan,rec1cTbJ4iPAMUW0v,,rec1cTbJ4iPAMUW0v,,,Jagannath-Puri Tradition; Braj Mandal,,1852,left her body magha sukla trayodasi -day of nityanandas appearance,1852,
+FAM-006,8,recRZkHSnl8nDNArl,Sri Yogmaya Devi of Puri/ Vrindavan ,rec1cTbJ4iPAMUW0v,,rec1cTbJ4iPAMUW0v,,,Jagannath-Puri Tradition; Braj Mandal,,1852,left her body magha sukla trayodasi -day of nityanandas appearance,1852,
+FAM-007,8,rec6NG6MDSYvD0JT5,Sri Bala Sai Baba of Kurnool,,,,recDQE3wQ8BNrmIpR;rec9cGrqgBRNKmfQV;recKQvAzazop2jggr,,Datta & Advaita Belt,,1960-01-14,2018-11-?,1960,2018
+FAM-007,8,recjqj3HtOfhT7hmY,Sri Godavari Mata,recV8xezfabpzSS0B,,,,,Maharashtra General,,24.12.1914,,1914,
+FAM-007,8,recAzBZTh80FmTUJN,Sri Hazrat Babajan of Pune  ,,recGN3z8hfy3Z0qqU,,,,Modern Guru Centers,,,21.09.1931,,1931
+FAM-007,8,recGN3z8hfy3Z0qqU,Sri Meher Baba of Pune  ,recAzBZTh80FmTUJN;recV8xezfabpzSS0B,,,,,Modern Guru Centers,,1894-02-25,1969-01-31,1894,1969
+FAM-007,8,recKQvAzazop2jggr,Sri Sai Leela Amma of Andhra Pradesh,recDQE3wQ8BNrmIpR,,,recDQE3wQ8BNrmIpR;rec9cGrqgBRNKmfQV;rec6NG6MDSYvD0JT5,,Andhra Pradesh General,,,,,
+FAM-007,8,rec9cGrqgBRNKmfQV,Sri Sathya Sai Baba of Puttaparthi,,,,recDQE3wQ8BNrmIpR;recKQvAzazop2jggr;rec6NG6MDSYvD0JT5,,Modern Saints,,1926-11-23,2011-04-24,1926,2011
+FAM-007,8,recDQE3wQ8BNrmIpR,Sri Shirdi Sai Baba of Shirdi ,,recV8xezfabpzSS0B;recKQvAzazop2jggr,,rec9cGrqgBRNKmfQV;recKQvAzazop2jggr;rec6NG6MDSYvD0JT5,,Maharashtra General,,,15.10.1918,,1918
+FAM-007,8,recV8xezfabpzSS0B,Sri Upasani Maharaj of Shirdi,recDQE3wQ8BNrmIpR,recjqj3HtOfhT7hmY;recGN3z8hfy3Z0qqU,,,,Maharashtra General,Advaita Vedanta,15.05.1870,24.12.1941,1870,1941
+FAM-008,5,rec896V7fs1lwnSkY,Sri (Ishwar) Tota Puri Baba of Punjap/ or Puri/ - wandering monk,,reckV8sJXL5cq978J,,,,Jagannath-Puri Tradition,Satnami Puri Sampradaya,1761,,1761,
+FAM-008,5,recSUU4X56pAqF1JC,Sri Lakshmi Mani Devi of Calcutta ,reckV8sJXL5cq978J,,,,,Kolkata Spiritual Sphere,,1864,1926,1864,1926
+FAM-008,5,recgjan7BxjyG7CeZ,Sri Manisen of Panihati ,reckV8sJXL5cq978J,,,,,Jagannath-Puri Tradition,Gaudiya Vaishnava,,,,
+FAM-008,5,reckV8sJXL5cq978J,Sri Paramahansa Ramakrishna of Calcutta,rec896V7fs1lwnSkY,recgjan7BxjyG7CeZ;recSUU4X56pAqF1JC;recqrHsjXJuayrZml,,,,Kolkata Spiritual Sphere,,1836-02-18,1886-08-16,1836,1886
+FAM-008,5,recqrHsjXJuayrZml,Sri Swami Vivekananda of Calcutta & Sri Lokmanya Tilak of (from where?)  ,reckV8sJXL5cq978J,,,,,Kolkata Spiritual Sphere,,12.01.1863,04.07.1902,1863,1902
+FAM-009,5,recI9vNewSjgz1HYE,Sri Akhil Brahmanand Nayika Parivajakacharya Paramahamsa Yogini Vishwamata Sadguru Om Malati Devi of Miraj,rec8qDaH8zmGtELbj,,,,,Varkari Heartland,,,,,
+FAM-009,5,recyTkbGdrdvC5hto,Sri Maa Bhavamayee Paramahansa of Puri ,rec8qDaH8zmGtELbj,,,,,Jagannath-Puri Tradition,,,,,
+FAM-009,5,recosc27YgiELa175,Sri Swami Chidananda Saraswati of Rishikesh,rec8qDaH8zmGtELbj,,,,,Rishikesh-Haridwar Spiritual Corridor,,1916/09/24,2008/08/28,1916,2008
+FAM-009,5,rec8qDaH8zmGtELbj,Sri Swami Shivananda Saraswati of Rishikesh ,,recosc27YgiELa175;reci9mOaQMMeNqeeW;recI9vNewSjgz1HYE;recyTkbGdrdvC5hto,,,,Rishikesh-Haridwar Spiritual Corridor,,1987-09-08,1963-06-14,1987,1963
+FAM-009,5,reci9mOaQMMeNqeeW,Sri Swami Vishnudevananda Saraswati of Kerala,rec8qDaH8zmGtELbj,,,,,Kerala General,Shivananda,1927-12-31,1993-11-09,1927,1993
+FAM-010,5,recBVn7Vp9onOO9Bh,Sri Anandamoyi Ma of Bangladesh ,,recCIuQTzNZY1KNsQ;rec41qsOfiZMDpPHZ;recgWx4aYAekvRxg1;recSp8gOh0CJjhDej,recgWx4aYAekvRxg1,,,South Asia,,30.04.1896,1982-09-27,1896,1982
+FAM-010,5,recCIuQTzNZY1KNsQ,Sri Baba Bolanath of Bangladesh,recBVn7Vp9onOO9Bh,,,,,South Asia,,,,,
+FAM-010,5,recgWx4aYAekvRxg1,"Sri Ramani Mohan Chakrabarti later Bholanath of Haridwar, Dehradun, Uttharkand/ Vikrampur, UP",recBVn7Vp9onOO9Bh,,recBVn7Vp9onOO9Bh,,,Rishikesh-Haridwar Spiritual Corridor,,1909,1938-05-07,1909,1938
+FAM-010,5,recSp8gOh0CJjhDej,Sri Swami Kedarnath Maharaj ,recBVn7Vp9onOO9Bh,,,,,,,,,,
+FAM-010,5,rec41qsOfiZMDpPHZ,Sri Swami Shudanshu Maharaj ,recBVn7Vp9onOO9Bh,,,,,Gaudiya Vaishnava Heartland,,02.05.1955,,1955,
+FAM-011,5,recABPrtD68P30Ofc,"Sri Avadoota Swami Pranavananda of ??, Andhra Pradesh",recq1Hm4YN4lo8Nfw;recnTSlt2x2pAPPAA,,,,,Andhra Pradesh General,,1888,1969,1888,1969
+FAM-011,5,recHodc9GuD8FIVXk,"Sri Brahmananda ji Maharaj of (near) Nellore, Andhra Pradesh",recnTSlt2x2pAPPAA,,,,,Coastal Andhra,Ramana Maharshi,1933-03-01,2017-07-22,1933,2017
+FAM-011,5,recaZAFD5zqsXXWrK,"Sri Nirvishiananda Giri of ??, Andhra Pradesh ",recnTSlt2x2pAPPAA,,,,,Andhra Pradesh General,Ramana Maharshi,,,,
+FAM-011,5,recq1Hm4YN4lo8Nfw,Sri Ramana Maharishi of Arunachala,,recABPrtD68P30Ofc,,,,Shaiva Siddhanta Heartland,,30.12.1879,14.04.1950,1879,1950
+FAM-011,5,recnTSlt2x2pAPPAA,Sri Ramana Maharishi of Arunachala ,,recABPrtD68P30Ofc;recHodc9GuD8FIVXk;recaZAFD5zqsXXWrK,,,,Shaiva Siddhanta Heartland,,30.12.1879,14.04.1950,1879,1950
+FAM-012,5,recyQbBAPywfZ41O2,Sri Dada Godsay of Pune ,recGtVWuUclVacwiB,,,,,Modern Guru Centers,,,still alive,,
+FAM-012,5,recfi9BOPvQP4SGAE,"Sri Samarth Ramdas of Sajjangad, Maharashtra",,recGtVWuUclVacwiB;recCGUZ0GOInZQ8y3;rec8ob3C56Q6tv3kb,,,,Modern Guru Centers; Samarth Ramdas Tradition,,1608,1681-02-02,1608,1681
+FAM-012,5,rec8ob3C56Q6tv3kb,Sri Shivaji Maharaj of Maharashtra,recfi9BOPvQP4SGAE,,,,,Maharashtra General,,1627,1680-04-03,1627,1680
+FAM-012,5,recGtVWuUclVacwiB,Sri Shridhar Swami of Varadpur ,recfi9BOPvQP4SGAE,recyQbBAPywfZ41O2,,,,Modern Guru Centers,,1908-12-07,1973-04-19,1908,1973
+FAM-012,5,recCGUZ0GOInZQ8y3,"Sri Vena Bai Swami of Miraj, Kolhapur (Veena Bai) ",recfi9BOPvQP4SGAE,,,,,Varkari Heartland; Datta Sampradaya Belt,,1628,1678,1628,1678
+FAM-013,4,recPsY71GwqYWDzP5,Balyogi Sri Sadanand Maharaj of Ganeshpuri,recR3GYnCgnZXfM5l,,,,,Maharashtra General,,1958-08-29,,1958,
+FAM-013,4,recR3GYnCgnZXfM5l,Sri Bhagavan Nityananda of Ganeshpuri ,,recPsY71GwqYWDzP5;recdSaWxQfj3RnIDO;recAclecFyTw7dEIc,,,,Maharashtra General,,1897,1961-08-08,1897,1961
+FAM-013,4,recAclecFyTw7dEIc,Sri Kuttiram Nityanand Swami of Ganeshpuri,recR3GYnCgnZXfM5l,,,,,Maharashtra General,,,,,
+FAM-013,4,recdSaWxQfj3RnIDO,Sri Saligram Swami of Ganeshpuri ,recR3GYnCgnZXfM5l,,,,,Maharashtra General,,,,,
+FAM-014,4,recqmLqmvvMlTI9Q0,https://sites.google.com/site/mukatanandgirimaharaj/about-us,,rec3nvB9eJa9oBCnp,,,,,,,,,
+FAM-014,4,recUGf2K67AR5c59I,Sri Janardhana Giri (Swami) Maharaj of Ellora ,,rec3nvB9eJa9oBCnp;rec9kMxYCspmmByD1,,,,Maharashtra General,,1914-09-24,1989-12-10,1914,1989
+FAM-014,4,rec3nvB9eJa9oBCnp,Sri Paramananda Giri Maharaj of Aurangabad,recqmLqmvvMlTI9Q0;recUGf2K67AR5c59I,,,,,Maharashtra General,,1959-05-10,Still alive ,1959,
+FAM-014,4,rec9kMxYCspmmByD1,Sri Shanti Giri Maharaj of Ellora ,recUGf2K67AR5c59I,,,,,Maharashtra General,,1960,Still alive ,1960,
+FAM-015,3,recoF07pYRQ2VIA3E,Mahant Sri Bhagwan Das of Vrindavan ,rec5C2z9xBit3ohbJ,,,,,Braj Mandal,,,,,
+FAM-015,3,recQuv0GfFMdzTtHv,Sri Shyam Sundar ji of Vrindavan,rec5C2z9xBit3ohbJ,,,,,Braj Mandal,,,1998 c/a,,1998
+FAM-015,3,rec5C2z9xBit3ohbJ,Sri Sudama Dasji Maharaj,,recQuv0GfFMdzTtHv;recoF07pYRQ2VIA3E,,,,,Ramanandi Sampradaya,,,,
+FAM-016,3,recZb2o8xbSZi6An4,Nange Baba,,reckBOeFbqITjkppf,,,,,,,,,
+FAM-016,3,reckBOeFbqITjkppf,"Sri Adhbhangnath Maharaj (Arjun Baba) of Dvaha Village, Hingoli ",recZb2o8xbSZi6An4;recj1Kgc42NXnBTla,,,,,Nath & Shaiva Maharashtra,,,,,
+FAM-016,3,recj1Kgc42NXnBTla,Vidurdas Maharaj (Vishwanath Baba),,reckBOeFbqITjkppf,,,,,,,,,
+FAM-017,3,recLsRC0bhkL9JO8E,Sri Ayodhya Dasji  Maharaj ,rec5AxgKNzgnmRgvH,,,,,,,1893,26.06.2013,1893,2013
+FAM-017,3,rec5AxgKNzgnmRgvH,Sri DevRaha Baba of Vrindavan,,recLn3bLLWAWw2Q0v;recLsRC0bhkL9JO8E,,,,Braj Mandal,,,,,
+FAM-017,3,recLn3bLLWAWw2Q0v,Sri Madhusudan of Bodhgaya ,rec5AxgKNzgnmRgvH,,,,,Bihar General,,,,,
+FAM-018,3,reccOHbK0BcyzNftg,Sri Baba Sitaramanada Swami ,recLPboyEJSXcyDhx,,,,,,,,,,
+FAM-018,3,recLPboyEJSXcyDhx,"Sri Haidakhan Babaji of Haidakhan, Uttarakhand",,reccOHbK0BcyzNftg;recMQQQzFR0cD6IZd,,,,Kumaon Saints,,N.A.,1984-02-14,,1984
+FAM-018,3,recMQQQzFR0cD6IZd,Sri Mahendra Das Baba of Vrindavan,recLPboyEJSXcyDhx,,,,,Braj Mandal,,,1969-06-23,,1969
+FAM-019,3,recka2nXCe1N5AZHn,Sri Bahina Bai of Shivoori,recnGc8AjeiSKvU0F,,,,,South Asia,,1629,1700,1629,1700
+FAM-019,3,recAGoqcP2Mxt4alb,Sri Jaganade Maharaj of Pune ,recnGc8AjeiSKvU0F,,,,,Modern Guru Centers,Vaikari,1624-12-08,1688,1624,1688
+FAM-019,3,recnGc8AjeiSKvU0F,"Sri Tukaram Maharaj of Dehru, Pune ",,recAGoqcP2Mxt4alb;recka2nXCe1N5AZHn,,,,Varkari Heartland; Modern Guru Centers,,,,,
+FAM-020,3,recasMrurmAu0iQ8J,Sri Bhagavan Sri Swaminarayan of Gujarat (Sri Sahajanand Swami - Neelkanth Varuni),,recotj9QaQaUUzAbE;recjvIW2squH6mA0M,,,,Gujarat General,Swaminarayan,,,,
+FAM-020,3,recotj9QaQaUUzAbE,Sri Pramukh Swami Maharaj  (BAPS-5th Guru after Swaminarayan) of Gujarat,recasMrurmAu0iQ8J,,,,,Gujarat General,Swaminarayan,1921-12-07,,1921,
+FAM-020,3,recjvIW2squH6mA0M,Sri Yogiji Maharaj(BAPS-4th Guru after Swaminarayn) ,recasMrurmAu0iQ8J,,,,,Swaminarayan & Modern Gujarat,Swaminarayan,1892-05-23,1971-01-23,1892,1971
+FAM-021,3,rech5NjFF9igacZOG,Sri Bhaskar Maharaj of Shegaon,recOFdAquHaua3csH,recops2O0wjNvudCR,,,,Gajanan Maharaj & Vidarbha Saints,,,1907,,1907
+FAM-021,3,recOFdAquHaua3csH,Sri Gajanan Maharaj of Shegaon,,rech5NjFF9igacZOG,,,,Gajanan Maharaj & Vidarbha Saints,,1850's,1910-09-10,1850,1910
+FAM-021,3,recops2O0wjNvudCR,Vasudev Maharaj,rech5NjFF9igacZOG,,,,,,,,,,
+FAM-022,3,rec8CzHCFrZ3P5v06,Sri Bhramachaitanya Gondolekar Maharaj,recZIUYP9Lvl4Z1Hq,,,,,,,,,,
+FAM-022,3,reckvQNbpExEDFhIS,"Sri Swami Chinmayananda of Tapovan Ashram, Dharamshala ",,recZIUYP9Lvl4Z1Hq,,,,Rishikesh-Haridwar Spiritual Corridor,,1916-05-08,1993-08-03,1916,1993
+FAM-022,3,recZIUYP9Lvl4Z1Hq,Sri Tukamayi of Hingoli,reckvQNbpExEDFhIS,rec8CzHCFrZ3P5v06,,,,Nath & Shaiva Maharashtra,,1813-03,1887,1813,1887
+FAM-023,3,rec4OqIqWOTDRvYLU,Sri Binod Bihari Das Babaji of Barsana,recF52jndG5wSaY9c;recf4vRbtCanSjor4,,,,,Braj Mandal,,1947,Still alive,1947,
+FAM-023,3,recF52jndG5wSaY9c,"Sri Sri Bhaktivedanta Baman Goswami Maharaj of Navadwip ,",,rec4OqIqWOTDRvYLU,,,,Gaudiya Vaishnava Heartland,,,,,
+FAM-023,3,recf4vRbtCanSjor4,Sri Srimad Kishorikishorananda Das Babaji Maharaj Goswami of Navadwip (Tinkodi Baba) ,,rec4OqIqWOTDRvYLU,,,,Gaudiya Vaishnava Heartland,Nityananda Sampradaya,,,,
+FAM-024,3,recj3tFdEZ16m85Qs,Sri Daji Maharaj (Bhaiya ji Maharaj) of Nagpur,recZxEDfwSCOpkXyC,,,,,Gajanan Maharaj & Vidarbha Saints,,1910-01-29,1984-04-15,1910,1984
+FAM-024,3,rec0WHeheDqNQnKw4,Sri Shafi Baba Kadari (Taji) of Nagpur,recZxEDfwSCOpkXyC,,,,,Gajanan Maharaj & Vidarbha Saints,,Unknown ,1970-01-27,,1970
+FAM-024,3,recZxEDfwSCOpkXyC,Sri Tajuddin Baba (Auliya) of Nagpur,,rec0WHeheDqNQnKw4;recj3tFdEZ16m85Qs,,,,Gajanan Maharaj & Vidarbha Saints,,1861-01-27,1925-08-17,1861,1925
+FAM-025,3,recDUrDJEvXGc72TG,"Sri Mahantji 108 Shivgiriji Maharaj of Neelgiri Parvat, Triyambakeshwar, Nashik, Madhya Pradesh",,recSqiUbE2a6zrjgf,,,,Nath & Shaiva Maharashtra,Juna Akhara,,1984,,1984
+FAM-025,3,recSqiUbE2a6zrjgf,"Sri Sri 108 Sri Bhagat Giri Bacchu Maharaj of Amoleshwar Dham, distr. Umariya, Dindauri, Madhya Pradesh",recDUrDJEvXGc72TG,rec3D6iohFPg7iNya,,,,Madhya Pradesh General,Juna Akhara,Unknown ,Still alive (62+),,
+FAM-025,3,rec3D6iohFPg7iNya,"Sri Thanapati Sukhdev Giri of Sri Panch Dashnam, Juna Akhara, Neelparvat, Triyambakeshwar, Nashik",recSqiUbE2a6zrjgf,,,,,Nath & Shaiva Maharashtra,Juna Akhara,,Still alive ,,
+FAM-026,3,recS8S1NXfk8NgRoq,"Sri Parvathy Baul of Thiruvananthapuram, Kerala (originally from Bengal)",reci9HfgQoLxj6igt,,rec7pUhtDroFBKYZ9,,,West Bengal General; Kerala General,Baul,1975/ 1976,still alive,1975,
+FAM-026,3,rec7pUhtDroFBKYZ9,"Sri Ravi Gopalam Nair of Nedumangad, Trivandrum, Kerala",,,recS8S1NXfk8NgRoq,,,Southern Kerala,Baul,,,,
+FAM-026,3,reci9HfgQoLxj6igt,"Sri Shashanko Goshai of Shingar Village of Murshidabad District, West Bengal ",,recS8S1NXfk8NgRoq,,,,West Bengal General,Baul,1905,2007,1905,2007
+FAM-027,2,rec041caipfsm61E9,"Mahant Sri Komalanand Giriji Maharaj of Muchukunda Goofa, Girnar ",recnR9BtC1LF5bWsh,,,,,Girnar & Nath Tradition,,1973,,1973,
+FAM-027,2,recnR9BtC1LF5bWsh,"Sri Umed Giri Maharaj of Muchukunda Goofa, Girnar",,rec041caipfsm61E9,,,,Girnar & Nath Tradition,,,,,
+FAM-028,2,recCS06A5SE7baG0N,Mahant Sri Mahakal Giriji Maharaj of Girnar,recrRhd31Aeu5IjXn,,,,,Girnar & Nath Tradition,,,,,
+FAM-028,2,recrRhd31Aeu5IjXn,Sri Digambar Manmast Mahesh Giri Maharaj of Girnar ,,recCS06A5SE7baG0N,,,,Girnar & Nath Tradition,,,,,
+FAM-029,2,rec87xFN9peRkTdhY,Mahant Sri Sri Sri 108 Sri Ramcharan Das Tyagiji Maharaj of Varanasi ,,receCbIjIoMadEX8E,,,,Kashi Region,Ramanandi Sampradaya,,still alive,,
+FAM-029,2,receCbIjIoMadEX8E,Sri Sukhdev Das Ji Maharaj of Jaipur,rec87xFN9peRkTdhY,,,,,Rajputana Spiritual Centers,,,,,
+FAM-030,2,recrHwxTGSlqDn2Ff,Paramahamsa Sri Pundalik Baba of Murtyjapur,,reckCTwbniQyfKdob,,,,Gajanan Maharaj & Vidarbha Saints,,1932-04-10,1985-10-10,1932,1985
+FAM-030,2,reckCTwbniQyfKdob,"Sri Anashuya Mataji of Paradsinga, near Arunachala ",recrHwxTGSlqDn2Ff,,,,,Maharashtra General,,1926-05-05,1997-01-24,1926,1997
+FAM-031,2,rec2Xmz15pP16n1dR,Paramahamsa Sri Swami Nigammananda ji Saraswati Deva of Calcutta,rec093BrDsvyYbvhP,,,,,Kolkata Spiritual Sphere; Jagannath-Puri Tradition; South Asia,"Tantra,Jnana; Shankaracharya Sampradaya",1880-08-18,1935-11-29,1880,1935
+FAM-031,2,rec093BrDsvyYbvhP,Sri Bamakhepa Baba of Tarapith ,,rec2Xmz15pP16n1dR,,,,Shakta Bengal,,1837,1911,1837,1911
+FAM-032,2,recj1Z8U2UixjGAOP,Sadhu T.L. Vaswani,,recijV9iaAVLbXW2F,,,,Modern Guru Centers,,,,,
+FAM-032,2,recijV9iaAVLbXW2F,Sri Dada J.P. Vaswani of Pune,recj1Z8U2UixjGAOP,,,,,Modern Guru Centers,,1918-08-02,2018-07-12,1918,2018
+FAM-033,2,receJdtoix1yXOu4k,"Sant Gajo Singh of Amritsar, Punjab",recKHsX7NM77DdRwx,,,,,Sikh Heartland,,1962-07-05,still alive,1962,
+FAM-033,2,recKHsX7NM77DdRwx,"Sant Gyaneshwar Singh of Amritsar, Punjab",,receJdtoix1yXOu4k,,,,Sikh Heartland,,1935,2008-01-24,1935,2008
+FAM-034,2,recmNqjW54MTnx5oZ,"Sant Sri Bhoja Bhagat of Amreli, Gujarat",,rec5bMBZLbIgDKTi3,,,,Gujarat General,,,,,
+FAM-034,2,rec5bMBZLbIgDKTi3,"Sri Jalaram Babaji of Virpur, Gujarat",recmNqjW54MTnx5oZ,,,,,Swaminarayan & Modern Gujarat,,1799-11-04,1881-02-23,1799,1881
+FAM-035,2,recXr00H5P0KlYhAO,"Sri 1008 Bhikhi Bai Ji Maharaj of Behind Gorakhnath Ashram, Pushkar, Rajasthan",rec1MAZOzdCRybJGN,,,,,Pushkar Tradition,,1919-01-29,2013-12-18,1919,2013
+FAM-035,2,rec1MAZOzdCRybJGN,"Sri Sri 1008 Sri Anuvrat Swami Ji of Behind Gorakhnath Mandir, Pushkar, Rajasthan",,recXr00H5P0KlYhAO,,,,Pushkar Tradition,,,,,
+FAM-036,2,rectxzbiD3OeRYLrv,"Sri Aditya Sabrup (Lal Baba) of Tara Mandir, Kangra",recpKvax2OFIJNQWT,,,,,Kangra Shakti Region,,1940s,alive,,
+FAM-036,2,recpKvax2OFIJNQWT,"Sri Vishudhanand Ji Saraswati (Khir Baba) of Kangra, Himachal",,rectxzbiD3OeRYLrv,,,,Himachal Pradesh General,,1874 +/-,still alive,1874,
+FAM-037,2,rec4bgn1KKkTDDEkG,Sri Amritananda Natha Saraswati of Devipuram,,recdMdwOnTHhwbwFI,,,,Modern Saints,,,,,
+FAM-037,2,recdMdwOnTHhwbwFI,Sri Minati Patra Brahmacharini,rec4bgn1KKkTDDEkG,,,,,Kolkata Spiritual Sphere,,"1956/1957, around Janmashtami on a Thursday",,1956,
+FAM-038,2,rec6IMLj9eDVWGP71,Sri Avadhuta Polai Tata Swami Venkatapalem,,recutsIc9XZrXmzXY,,,,Datta & Advaita Belt,,,Still alive ,,
+FAM-038,2,recutsIc9XZrXmzXY,Sri Prabarkar Garu of Andhra Pradesh,rec6IMLj9eDVWGP71,,,,,Andhra Pradesh General,,,,,
+FAM-039,2,rechvP0GkLNLWbCqe,"Sri Balabai of Nikamwadi village, Kolhapur",rec4UVZHlrTAqW16b,,rec4UVZHlrTAqW16b,,,Datta Sampradaya Belt,,1951,Still alive - 68 (2019) ,1951,2019
+FAM-039,2,rec4UVZHlrTAqW16b,"Sri Satyendranath Swami of Nikamwadi village, Kolhapur",,rechvP0GkLNLWbCqe,rechvP0GkLNLWbCqe,,,Datta Sampradaya Belt,,1947 (approximately),2011-07-21,1947,2011
+FAM-040,2,recW6BHfpK6hd8n7S,Sri Bhagat ji of Gorakpur (Gita Vatika) ,recf5WiUhs05Gg6dK,,,,,Gorakh Tradition,,1925,,1925,
+FAM-040,2,recf5WiUhs05Gg6dK,Sri Radha Babaji of Gorakpur ,,recW6BHfpK6hd8n7S,,,,Gorakh Tradition,,,,,
+FAM-041,2,rec1zHMns6EOTfUe7,Sri Chidambar Mahaswami Dixit ,,recNPHOM32FPJbH4o,,,,,,,,,
+FAM-041,2,recNPHOM32FPJbH4o,Sri Eshwar Shastri Dixit ,rec1zHMns6EOTfUe7,,,,,,,1910-10-28,1988-12-11,1910,1988
+FAM-042,2,recXXBTDJy7Tp8LoG,Sri Dadaji Dilip Kumar Roy of Pune ,,recXYK78omBVuEYQM,,,,Modern Guru Centers,,,,,
+FAM-042,2,recXYK78omBVuEYQM,Sri Indira Devi of Pune,recXXBTDJy7Tp8LoG,,,,,Modern Guru Centers,,1920-03-26,1997-12-31,1920,1997
+FAM-043,2,recCC420vYWEjA1ZK,"Sri Dadu Dayal ji of Naraina, Rajasthan",,rec2bbFehLglJVIEe,,,,Rajasthan General,,1544,1603,1544,1603
+FAM-043,2,rec2bbFehLglJVIEe,"Sri Garib Das ji of Naraina, Gujarat",recCC420vYWEjA1ZK,,,,,Gujarat General,,1717,1778,1717,1778
+FAM-044,2,recoGHUjw3ejyIp10,Sri Dhunda Maharaj of Pandharpur (Deglurkar),recwaqzrPJ8GnzVjC,,,,,Varkari Heartland,,,,,
+FAM-044,2,recwaqzrPJ8GnzVjC,"Sri Gyaneshwar of Alandi, Pune",,recoGHUjw3ejyIp10,,,,Modern Guru Centers,,1275 AD,,1275,
+FAM-045,2,recVkkhtVH8yfppid,Sri Dutta Das of Kolhapur ,recToCTKv11kDx7Ax,,,,,Datta Sampradaya Belt,,,Still alive ,,
+FAM-045,2,recToCTKv11kDx7Ax,Sri Narayan Das Maharaj of Kolhapur,,recVkkhtVH8yfppid,,,,Datta Sampradaya Belt,,1808,1933,1808,1933
+FAM-046,2,recfnKOjMiG6f1CTw,Sri Gangavarti of Bhadrinath,,recfC3aq74ATZisCg,,,,Char Dham & Upper Himalaya,,,,,
+FAM-046,2,recfC3aq74ATZisCg,Sri Swami Dharmaraj Bharati Mouni Baba of Badrinath,recfnKOjMiG6f1CTw,,,,,Char Dham & Upper Himalaya,,1982,Still alive ,1982,
+FAM-047,2,recZM3KMfTmphlQfL,"Sri Ganore Baba of Bhukum, near Pune",,,recQvIm2NIXuAvutD,,,Modern Guru Centers,,1918-12-19,1978-11-07,1918,1978
+FAM-047,2,recQvIm2NIXuAvutD,"Sri Sita Mai of Bhukum, near Pune ",,,recZM3KMfTmphlQfL,,,Modern Guru Centers,,,2006,,2006
+FAM-048,2,rec4elXmBtM7Xh3sw,"Sri Girinari Baba of Arail, Naini, Prayagraj",,recWO9W36FOMPA4fV,,,,Prayag Region,,Unknown ,,,
+FAM-048,2,recWO9W36FOMPA4fV,"Sri Sachcha Baba of Arail, Naini, Prayagraj",rec4elXmBtM7Xh3sw,,,,,Prayag Region,,Unknown,,,
+FAM-049,2,recaeoWdBMpV6js3e,"Sri Gori Shankar Giri (Nepal Baba - Chota Dadaji) of Sri Dada Darbar Sidhnat temple, Jodhpur, Rajasthan",recGiFrjeMnduqdeu,,,,,Rajputana Spiritual Centers,Swaminarayan,Unknown ,1990,,1990
+FAM-049,2,recGiFrjeMnduqdeu,"Sri Swami Narayan Barah Dadaji Siddha Purushadas of Sri Dada Darbar Sidhnath temple, Jodhpur, Rajasthan ",,recaeoWdBMpV6js3e,,,,Rajputana Spiritual Centers,,Unknown,1958,,1958
+FAM-050,2,recrFB4BzrxVE7gr6,"Sri Goswami Tulsidas ji of Tulsi Ghat, Varanasi ",,recQZKY6JlRy7W4tz,,,,Kashi Region,Ramanandi Sampradaya,1497-07-13,1623,1497,1623
+FAM-050,2,recQZKY6JlRy7W4tz,"Sri Siddha Baba of Tulsi Goofa, Ram Ghat, Chitrakoot ",recrFB4BzrxVE7gr6,,,,,Uttar Pradesh General,,,1480,,1480
+FAM-051,2,recgLw2yBtYPzYLhV,Sri Gunda Maharaj of Pandharpur (Siddha Sihasan Peetha) ,,recAtq7P7l6ZxatKD,,,,Varkari Heartland,,,,,
+FAM-051,2,recAtq7P7l6ZxatKD,Sri Gunda Narayan Maharaj of Pandharpur,recgLw2yBtYPzYLhV,,,,,Varkari Heartland,,,Still alive ,,
+FAM-052,2,recGNdSReai0re5Hu,Sri Hanumath Kali Vara Prasada Babuji Maharaj,,rec1WWN7Xb1ZRGGhA,,,,Coastal Andhra,,,,,
+FAM-052,2,rec1WWN7Xb1ZRGGhA,Yogini Sri Chandra Kali Prasad Mataji ,recGNdSReai0re5Hu,,,,,Coastal Andhra,,,,,
+FAM-053,2,recScF5b1ChfaQuFr,Sri Hum Itho Ikaan Sidap of Manipur ,,recyhz7fhVbudWcOu,,,,Manipur General,,,,,
+FAM-053,2,recyhz7fhVbudWcOu,Sri Kuman Poreiton (Mauna Baba) of Assam,recScF5b1ChfaQuFr,,,,,Assam General,,,,,
+FAM-054,2,recLUMkn9nchq6xSn,Sri Jaganath Das Ji Maharaj  ,,rec9f2J4B7qkcMQ3p,,,,,,,,,
+FAM-054,2,rec9f2J4B7qkcMQ3p,Sri Raghavdas Ji Maharaj of Vrindavan ,recLUMkn9nchq6xSn,,,,,Braj Mandal,Ramanandi Sampradaya,,2015-01-25 10pm,,2015
+FAM-055,2,recZQoZ10WJGCQxUR,"Sri Jiva Krishnadas Babaji of Pathbari Ashram, Calcutta ",,rec0OP1dCSvyKBTCm,,,,Kolkata Spiritual Sphere,Gaudiya Vaishnava,1899,1973,1899,1973
+FAM-055,2,rec0OP1dCSvyKBTCm,Sri Nityananda Das Babaji of Calcutta ,recZQoZ10WJGCQxUR,,,,,Kolkata Spiritual Sphere,Gaudiya Vaishnava,1926,2010,1926,2010
+FAM-056,2,recn1M2JOkfv9RJ4h,"Sri Kashi Nath Gagare Maharaj Dada of Mulund, Mumbai",recW7laXHVOzMRFpg,,,,,Modern Guru Centers,,1924-11-16,2012-03-15,1924,2012
+FAM-056,2,recW7laXHVOzMRFpg,Sri Pachale Gaonkar Ji Maharaj of Hingoli/Mumbai ,,recn1M2JOkfv9RJ4h,,,,Nath & Shaiva Maharashtra,,1908,1985,1908,1985
+FAM-057,2,recQnJiLpdWx5oj2e,"Sri Khappar Baba of Ahraura, Mirzapur, U.P. ",,recA18Pm6DOLH5ajY,,,,Kashi Region,,,1991,,1991
+FAM-057,2,recA18Pm6DOLH5ajY,"Sri Sudarshan Dasji of Ahraura, Mirzapur, U.P. ",recQnJiLpdWx5oj2e,,,,,Kashi Region,,,25.01.2013,,2013
+FAM-058,2,reccnulmO6FScVCsI,"Sri Krishna Chaitanya Das Babaji Maharaj of Navadwip, West Bengal 19 A",,recrEYRZ9hjV39ORO,,,,Gaudiya Vaishnava Heartland,,,,,
+FAM-058,2,recrEYRZ9hjV39ORO,"Sri Vishwambhar Das Ji  Maharaj of Navadwip Dham, West Bengal ",reccnulmO6FScVCsI,,,,,Gaudiya Vaishnava Heartland,Gopal Bhatta Sampradaya,1885,alive,1885,
+FAM-059,2,rec8dNXWS2LIRcLGe,Sri Krishna Saraswati Datt Maharaj of Kolhapur,,recFeb8DyNtLuEtfs,,,,Datta Sampradaya Belt,,1836-02-07,1900-08-20,1836,1900
+FAM-059,2,recFeb8DyNtLuEtfs,Sri Naamdevji Maharaj of Pandharpur/Kolhapur,rec8dNXWS2LIRcLGe,,,,,Maharashtra General,,1835-04,1971-10-28,1835,1971
+FAM-060,2,recEQQYgmuQftTjJl,"Sri Mahamandaleshwar 1008 Someshwar Giri Maharaj of Bijolai Ashram, Jodhpur, Rajasthan",recqFP7HP0TK5Q0xE,,,,,Rajputana Spiritual Centers,,1942,Still alive ,1942,
+FAM-060,2,recqFP7HP0TK5Q0xE,"Sri Sri 1008 Paramahamsa Kishan Giri Maharaj of Bijolai Ashram, near Kailana Lake, Jodhpur, Rajasthan ",,recEQQYgmuQftTjJl,,,,Rajputana Spiritual Centers,,Unknown,2005,,2005
+FAM-061,2,recmarxKCZnFGzlo0,Sri Mira Bai of Rajasthan,recwLihcAMWgrOkeh,,,,,Rajasthan General,,,,,
+FAM-061,2,recwLihcAMWgrOkeh,Sri Ravidas of Varanasi,,recmarxKCZnFGzlo0,,,,Kashi Region,,Ca 1450,Ca 1520,1450,1520
+FAM-062,2,recdMAels2akbjDQa,Sri Narendra Kumar Geerjanan (Dinesh) of Rose Hill Mauritius ,,,recyTkjSKsUMkXMGp,,,Global,,1935-05-29,2018-12-16,1935,2018
+FAM-062,2,recyTkjSKsUMkXMGp,"Sri Rashmanee Geerjanan (Manee) of Rose Hill, Mauritius",,,recdMAels2akbjDQa,,,Global,,1942-05-27,2016-05-27,1942,2016
+FAM-063,2,recyokcxEvhxvtyPk,"Sri Paramahamsa Sant Vedananda Saraswati Maharaj of Vedananda Tapovan, Dwarahat",rec6XzopLLlm06Rtt,,,,,Kumaon Saints; Rishikesh-Haridwar Spiritual Corridor,,1956,Still alive ,1956,
+FAM-063,2,rec6XzopLLlm06Rtt,Sri Vitthalananda Saraswati (Vitthal Babaji) of Pandharpur/ Kurvapur,,recyokcxEvhxvtyPk,,,,Varkari Heartland; Datta Sampradaya Belt,,Unknown ,2014-07-18,,2014
+FAM-064,2,rec5GvGX2G8pL2JKX,"Sri Potuluri Veerabrahmendhra Swami Varu of Brahmamgari Matam, Kadapa, Andhra Pradesh",,rec1tbLaeSzcd2o2S,,,,Andhra Pradesh General,,1608,1693,1608,1693
+FAM-064,2,rec1tbLaeSzcd2o2S,"Sri Siddhaiah Swami of near Paluguvallapalle, Kadapa district, Andhra Pradesh",rec5GvGX2G8pL2JKX,,,,,Andhra Pradesh General,,,,,
+FAM-065,2,recGZmNHXYJFpPf9e,"Sri Radhikadasji Maharaj of Mari (Paral?), Girnar, Ramji Ashram ",,recTJ9SOWK0p8ClDn,,,,Girnar & Nath Tradition,,,,,
+FAM-065,2,recTJ9SOWK0p8ClDn,"Sri Tyagi Rameshwardasji Maharaj of Girnar, Rama Temple ",recGZmNHXYJFpPf9e,,,,,Girnar & Nath Tradition,,,,,
+FAM-066,2,rec4X9Xuul5WnIpxq,Sri Ragavendarar Swamigal of ?? ,recAVeGTLNbxSMVs7,,,,,,,,,,
+FAM-066,2,recAVeGTLNbxSMVs7,Sri Sri Vijayandeerar of Kumbakonam ,,rec4X9Xuul5WnIpxq,,,,Shaiva Siddhanta Heartland,,,,,
+FAM-067,2,recT2VuCD6lF7YwX0,"Sri Ramdas Babaji of Pathbari Ashram, Calcutta  ",,rec1r3rtk9HfJiU4d,,,,Kolkata Spiritual Sphere,,1876,1953,1876,1953
+FAM-067,2,rec1r3rtk9HfJiU4d,Sri Srimad Madhusudan Das Babaji Maharaj of Pathbari Ashram ,recT2VuCD6lF7YwX0,,,,,Gaudiya Vaishnava Heartland,,,,,
+FAM-068,2,recKXywibOANlUi7r,"Sri Ramyananda Bharathi Swamini of Guntur, Andhra Pradesh",recds79Q1Tt4TrJeV,,,,,Coastal Andhra,,,,,
+FAM-068,2,recds79Q1Tt4TrJeV,"Sri Siddheswarananda Bharati Swami of Guntur, Andhra Pradesh",,recKXywibOANlUi7r,,,,Coastal Andhra,,1937-01-23,Still alive ,1937,
+FAM-069,2,recDXz1rB8pmUAiM9,"Sri Sadwi Pushpamata of Kaikalur, Krishna district, Eluru, near Guntur, Andhra Pradesh",reckQmTmjq7q6zGQO,,,,,Andhra Pradesh General,,1960-01-04,Still alive ,1960,
+FAM-069,2,reckQmTmjq7q6zGQO,"Sri Sri Sri Shiva Satya Balayogi Swami ji of Kondangi Ashram, Kaikalur, Krishna district, Eluru, (near Guntur) Andhra Pradesh",,recDXz1rB8pmUAiM9,,,,Andhra Pradesh General,,1938-07-12,2002-07-11,1938,2002
+FAM-070,2,recnthhKz3ywaXM8Q,"Sri Shanteshwar Maharaj ji Babaji of Sri Sri 1008 Ajneshwar Maharaj Ashram, Jodhpur, Rajasthan ",recLfl2CGYJTNN55c,,,,,Rajputana Spiritual Centers,Om Upasya Sampradaya,1939,Still alive ,1939,
+FAM-070,2,recLfl2CGYJTNN55c,"Sri Tulsidas ji Maharaj of Jodhpur, Rajasthan ",,recnthhKz3ywaXM8Q,,,,Rajputana Spiritual Centers,Om Upasya Sampradaya,,,,
+FAM-071,2,recbSiDH0qSzRl5vY,"Sri Shivpuri Baba of Kathmandu, Nepal",,recwALNXldWfBLASm,,,,South Asia,,1826,1963-01-28,1826,1963
+FAM-071,2,recwALNXldWfBLASm,"Sri Todke Baba of Shivapuri, Nepal",recbSiDH0qSzRl5vY,,,,,South Asia,,1960-01-22,Still alive ,1960,
+FAM-072,2,recvsfoIEOsRMKMsv,"Sri Siddha Datta Avadoota of Malleswaram, Andhra Pradesh",recmn633G3pzYKcYx,,,,,Andhra Pradesh General,,1953-08-22,Still alive ,1953,
+FAM-072,2,recmn633G3pzYKcYx,"Sri Sri Krishna Paramahamsa Swami of Malleswaram, near Siddantam, Andhra Pradesh",,recvsfoIEOsRMKMsv,,,,Andhra Pradesh General,,1877,1996,1877,1996
+FAM-073,2,receKwP5AatQcIms7,Sri Sri Nitya Gopal Avadhoot Maharaj of (Maha Nirvana Math;) Navadwip ,recHsKZhvosClISUN,recHsKZhvosClISUN,,,,Gaudiya Vaishnava Heartland,Avadhoot Sampradaya,1855,,1855,
+FAM-073,2,recHsKZhvosClISUN,Sri Srimat Swami Nityapadanand Avadhoot of Navadwip ,receKwP5AatQcIms7,receKwP5AatQcIms7,,,,Gaudiya Vaishnava Heartland,Avadhoot Sampradaya,,,,
+FAM-074,2,reckCzqScd99ZzKth,Sri Sri Siddha Chaitanya Das Babaji of Navadwip ,,recVBH9QlLXVBdYW9,,,,Gaudiya Vaishnava Heartland,Gaudiya Vaishnava,,,,
+FAM-074,2,recVBH9QlLXVBdYW9,Sri Srila Krishnadas Babaji of Navadwip,reckCzqScd99ZzKth,,,,,Gaudiya Vaishnava Heartland,Gaudiya Vaishnava,,,,
+FAM-075,2,recJZk6jvfhmm2Tea,"Sri Srimad Swami Lakshman Ramanuj of Sri Rangam, Phal Hari Jiyarmath ",,recich5ddJOLsUnVm,,,,Sri Vaishnava Tradition,Sri Vaishnava,1929, 06.05.2012,1929,2012
+FAM-075,2,recich5ddJOLsUnVm,Sri Srimad Swami Parang Kush Ramanuj of Calcutta ,recJZk6jvfhmm2Tea,,,,,Kolkata Spiritual Sphere,,05.09.1933,14.07.2011,1933,2011
+FAM-076,2,rec2kY7DzT3Kldfoc,Sri Sudama Das ji,,recRilUnKZLBWeHqG,,,,,,,,,
+FAM-076,2,recRilUnKZLBWeHqG,Sri Vishnu Das Babaji of Vrindavan,rec2kY7DzT3Kldfoc,,,,,Braj Mandal,Ramanandi Sampradaya,,,,
+FAM-077,2,recFjWjXyxkIFkeMr,Sri Swami Bhoomanand ji Maharaj of Uttarkashi,,recz8ehiRtPIbdX6A,,,,Char Dham & Upper Himalaya,,Unknown,1970,,1970
+FAM-077,2,recz8ehiRtPIbdX6A,Sri Swami Ramji Maharaj (Udasin Saint) of Uttarkashi,recFjWjXyxkIFkeMr,,,,,Char Dham & Upper Himalaya,,1901,2013-11-13,1901,2013
+FAM-078,2,reccunqD9m6z3jBCR,"Sri Swami Narayan Tirth Maharaj of Siddhayogi Ashram, Varanasi ",recZGXdXsTwRpOfc6,,,,,Kashi Region,,06.11.1915,02.03.2001,1915,2001
+FAM-078,2,recZGXdXsTwRpOfc6,Sri Swami Shankar Purushottam Tirth Maharaj of Varanasi ,,reccunqD9m6z3jBCR,,,,Kashi Region,,1890,1958,1890,1958
+FAM-079,2,rec7GxgNvmubmTvMM,"Sri Vishwaguru Avaduth Pagal Baba of Cuttack, Orissa ",rec37kfAtkuXhvjd8,,,,,Coastal Odisha,,,1969,,1969
+FAM-079,2,rec37kfAtkuXhvjd8,"Sri Vishwaguru Baya Baba of Sailanga, Cuttack, Orissa ",,rec7GxgNvmubmTvMM,,,,Coastal Odisha,,,,,
+FAM-080,2,recYsyXC0Rvgr28JH,Sri Yedehalli Ajji of Mughal Khod,recjdimhvlLtDD0Zs,,,,,Veerashaiva / Lingayat Belt,,1900s,still alive,,
+FAM-080,2,recjdimhvlLtDD0Zs,Sri Yellaling Maharaj of Mughal Khod,,recYsyXC0Rvgr28JH,,,,Veerashaiva / Lingayat Belt,,,,,
