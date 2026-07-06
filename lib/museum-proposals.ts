@@ -28,6 +28,7 @@ export type MuseumSaintPlacement = {
   spiritualRegions: string[];
   sampradaya: string;
   normalizedPlaces: string[];
+  needsResearch: boolean;
 };
 
 export type MuseumFamilyGroup = {
@@ -241,22 +242,33 @@ export function getMuseumProposalData() {
   const membersById = new Map(memberRows.map((row) => [row.RecordId, row]));
   const cleanupById = new Set(cleanupRows.map((row) => row["Airtable Record ID"]));
 
-  const placements = proposalRows.map((row): MuseumSaintPlacement => ({
-    id: row["Saint ID"],
-    name: clean(row.Saint),
-    section: clean(row["Primary Museum Section"]),
-    alternatives: splitMulti(row["Alternative Museum Sections"]),
-    tier: row["Museum Section Tier"] as MuseumTier,
-    confidence: clean(row["Museum Section Confidence"]),
-    rationale: clean(row["Museum Section Rationale"]),
-    note: clean(row["Museum Section Internal Placement Note"]),
-    familyId: clean(row["Family ID"]),
-    curatorialFamily: clean(row["Curatorial Family"]),
-    familySize: numberValue(row["Family Size"]),
-    spiritualRegions: splitMulti(row["Spiritual regions"]),
-    sampradaya: clean(row.Sampradaya),
-    normalizedPlaces: splitMulti(row["Normalized places"])
-  }));
+  const placements = proposalRows.map((row): MuseumSaintPlacement => {
+    const section = clean(row["Primary Museum Section"]);
+    const alternatives = splitMulti(row["Alternative Museum Sections"]);
+    const confidence = clean(row["Museum Section Confidence"]);
+    const rationale = clean(row["Museum Section Rationale"]);
+    const note = clean(row["Museum Section Internal Placement Note"]);
+    const id = row["Saint ID"];
+    const researchText = `${section} ${alternatives.join(" ")} ${confidence} ${rationale} ${note}`.toLowerCase();
+
+    return {
+      id,
+      name: clean(row.Saint),
+      section,
+      alternatives,
+      tier: row["Museum Section Tier"] as MuseumTier,
+      confidence,
+      rationale,
+      note,
+      familyId: clean(row["Family ID"]),
+      curatorialFamily: clean(row["Curatorial Family"]),
+      familySize: numberValue(row["Family Size"]),
+      spiritualRegions: splitMulti(row["Spiritual regions"]),
+      sampradaya: clean(row.Sampradaya),
+      normalizedPlaces: splitMulti(row["Normalized places"]),
+      needsResearch: cleanupById.has(id) || researchText.includes("needs research") || confidence === "Low"
+    };
+  });
 
   const rowsBySection = new Map<string, MuseumSaintPlacement[]>();
   for (const row of placements) {

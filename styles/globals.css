@@ -4831,8 +4831,10 @@ img {
 }
 
 .museum-family-card {
+  align-content: start;
   display: grid;
   gap: var(--space-3);
+  grid-template-rows: auto auto;
   padding: var(--space-4);
 }
 
@@ -4856,6 +4858,7 @@ img {
 .museum-family-card ul,
 .museum-health-list,
 .museum-geography-list {
+  align-content: start;
   display: grid;
   gap: var(--space-2);
   list-style: none;
@@ -4863,18 +4866,23 @@ img {
   padding: 0;
 }
 
+.museum-family-card ul {
+  align-self: start;
+}
+
 .museum-family-card li {
   color: var(--color-muted);
+  display: grid;
   font-size: 0.88rem;
-  padding-left: var(--space-3);
-  position: relative;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-2);
+  line-height: 1.35;
 }
 
 .museum-family-card li::before {
   color: var(--color-gold);
   content: "•";
-  left: 0;
-  position: absolute;
+  line-height: inherit;
 }
 
 .museum-family-card__primary {
@@ -4943,9 +4951,26 @@ img {
 }
 
 .museum-view-toggle:hover,
-.museum-view-toggle[aria-current="page"] {
+.museum-view-toggle[aria-current="page"],
+.museum-view-toggle[aria-pressed="true"] {
   border-color: var(--color-gold);
   color: var(--color-gold);
+}
+
+.museum-view-toggle {
+  cursor: pointer;
+}
+
+.museum-check-toggle {
+  align-items: center;
+  color: var(--color-muted);
+  display: inline-flex;
+  font-size: 0.82rem;
+  gap: var(--space-2);
+}
+
+.museum-check-toggle input {
+  accent-color: var(--color-gold);
 }
 
 .museum-tertiary-search {
@@ -4992,6 +5017,148 @@ img {
 .museum-tertiary-card span {
   color: var(--color-muted);
   font-size: 0.78rem;
+}
+
+.museum-tertiary-card small {
+  color: var(--color-gold);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.museum-saint-link {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-align: left;
+}
+
+.museum-saint-link:hover,
+.museum-saint-link:focus-visible {
+  color: var(--color-gold);
+  outline: 0;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.museum-modal-backdrop {
+  align-items: start;
+  background: color-mix(in srgb, var(--color-bg) 72%, transparent);
+  display: grid;
+  inset: 0;
+  justify-items: center;
+  overflow: auto;
+  padding: var(--space-6);
+  position: fixed;
+  z-index: 50;
+}
+
+.museum-modal {
+  background: var(--color-surface);
+  border: 1px solid color-mix(in srgb, var(--color-border) 76%, transparent);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-lg);
+  display: grid;
+  gap: var(--space-4);
+  max-width: min(100%, 760px);
+  padding: var(--space-5);
+  width: 100%;
+}
+
+.museum-modal__header {
+  align-items: start;
+  display: flex;
+  gap: var(--space-4);
+  justify-content: space-between;
+}
+
+.museum-modal__header h2 {
+  color: var(--color-cream);
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  margin: var(--space-1) 0 0;
+}
+
+.museum-icon-button {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-bg) 72%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-border) 62%, transparent);
+  border-radius: var(--radius-control);
+  color: var(--color-muted);
+  cursor: pointer;
+  display: inline-flex;
+  height: 38px;
+  justify-content: center;
+  width: 38px;
+}
+
+.museum-icon-button:hover,
+.museum-icon-button:focus-visible {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.museum-modal__actions {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+
+.museum-modal__actions label {
+  color: var(--color-muted);
+  display: grid;
+  gap: var(--space-2);
+  font-size: 0.82rem;
+  font-weight: 700;
+  min-width: 0;
+}
+
+.museum-modal__actions select {
+  background: color-mix(in srgb, var(--color-bg) 72%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-border) 62%, transparent);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font: inherit;
+  min-height: 42px;
+  min-width: 0;
+  padding: 0 var(--space-3);
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.museum-saint-data {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  margin: 0;
+}
+
+.museum-saint-data div {
+  background: color-mix(in srgb, var(--color-bg) 72%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-border) 48%, transparent);
+  border-radius: var(--radius-card);
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3);
+}
+
+.museum-saint-data__wide {
+  grid-column: 1 / -1;
+}
+
+.museum-saint-data dt {
+  color: var(--color-gold);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.museum-saint-data dd {
+  color: var(--color-text);
+  font-size: 0.9rem;
+  margin: 0;
 }
 
 .museum-health-list li,
