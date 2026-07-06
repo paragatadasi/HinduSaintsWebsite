@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Route } from "next";
+import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { getBulkDeletePasswordStatus } from "@/lib/admin-secrets";
 import { db } from "@/lib/db";
@@ -36,17 +37,17 @@ export default async function AdminDashboardPage({ searchParams }: AdminDashboar
         <DashboardCard href="/admin/places" label="Place records" value={placeCount} />
       </div>
 
-      <section className="review-panel review-panel--workflow admin-settings-panel">
-        <div className="review-workflow__header">
-          <div className="review-workflow__heading">
-            <div className="review-workflow__eyebrow">Admin settings</div>
-            <h2>Bulk delete password</h2>
-            <p>Set the password required before selected saints can be removed from the review queue for re-import.</p>
-          </div>
-          <div className="review-meta">
-            <StatusBadge label={bulkDeletePasswordStatus.isConfigured ? "Configured" : "Not configured"} />
-            {bulkDeletePasswordStatus.isDatabaseConfigured ? <StatusBadge label="Managed in CMS" /> : null}
-          </div>
+      <CollapsibleReviewCard
+        cardId="admin-bulk-delete-password"
+        className="admin-settings-panel"
+        defaultOpen={passwordUpdated}
+        description="Set the password required before selected saints can be removed from the review queue for re-import."
+        eyebrow="Admin settings"
+        title="Bulk delete password"
+      >
+        <div className="review-meta">
+          <StatusBadge label={bulkDeletePasswordStatus.isConfigured ? "Configured" : "Not configured"} />
+          {bulkDeletePasswordStatus.isDatabaseConfigured ? <StatusBadge label="Managed in CMS" /> : null}
         </div>
 
         {passwordUpdated ? <p className="admin-notice form-status form-status--success">Bulk delete password updated.</p> : null}
@@ -83,7 +84,7 @@ export default async function AdminDashboardPage({ searchParams }: AdminDashboar
             {bulkDeletePasswordStatus.updatedByEmail ? ` by ${bulkDeletePasswordStatus.updatedByEmail}` : ""}.
           </p>
         ) : null}
-      </section>
+      </CollapsibleReviewCard>
     </div>
   );
 }
