@@ -6,10 +6,12 @@ import { getInstagramLinkProps } from "@/lib/external-links";
 import { getIncompleteInstagramItemSummaries, getIncompleteInstagramItemWhere } from "@/lib/instagram-ingestion";
 import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { rankWeightedTextSearch, type WeightedSearchField } from "@/lib/search-text";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { InstagramIngestionPanel } from "./instagram-ingestion-panel";
 
 const statuses = ["imported", "suggested", "needs_review", "matched", "published", "ignored"] as const;
 type StatusFilter = typeof statuses[number] | "all";
+const statusFilters = ["all", ...statuses] as const;
 
 type AdminInstagramPageProps = {
   searchParams: Promise<{ q?: string | string[]; status?: string }>;
@@ -60,22 +62,28 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
         jobs={ingestionJobs}
       />
 
-      <section className="review-panel">
-        <h2>Imported posts and reels</h2>
-        <p>These records come from Instagram exports or ingests and become public only through matched, published saint pages.</p>
-        <div className="admin-stat-grid">
-          <Stat href={getInstagramReturnTo("all", query)} active={activeStatus === "all"} label="Total items" value={getTotalCount(itemCounts)} />
-          {statuses.map((status) => (
-            <Stat
+      <section className="review-panel review-panel--workflow admin-review-queue">
+        <div className="review-workflow__header admin-review-queue__header">
+          <div className="review-workflow__heading">
+            <div className="review-workflow__eyebrow">Review queue</div>
+            <h2>{formatQueueTitle(activeStatus)}</h2>
+            <p>{formatQueueDescription(activeStatus, query, items.length)}</p>
+          </div>
+        </div>
+
+        <nav className="admin-queue-filters" aria-label="Instagram status filters">
+          {statusFilters.map((status) => (
+            <FilterLink
               active={activeStatus === status}
               href={getInstagramReturnTo(status, query)}
               key={status}
-              label={formatStatus(status)}
-              value={itemCounts[status]}
+              label={formatQueueTitle(status)}
+              value={getStatusCount(itemCounts, status)}
             />
           ))}
-        </div>
-        <form action="/admin/instagram" className="admin-search" role="search">
+        </nav>
+
+        <form action="/admin/instagram" className="admin-search admin-search--queue" role="search">
           {activeStatus === "all" ? null : <input name="status" type="hidden" value={activeStatus} />}
           <label className="sr-only" htmlFor="admin-instagram-search">Search Instagram queue</label>
           <input
@@ -92,8 +100,8 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
           {items.length > 0 ? items.map((item) => (
             <InstagramReviewCard item={item} key={item.id} />
           )) : (
-            <div className="empty-state">
-              <h3>No imported Instagram items in this queue</h3>
+            <div className="admin-review-empty">
+              <h2>No imported Instagram items in this queue</h2>
               <p>{query ? "Try another search or clear the queue search." : "Try another status filter or run `npm run ingest:instagram -- --api --dry-run` to preview a fresh import."}</p>
             </div>
           )}
@@ -135,10 +143,6 @@ function InstagramReviewCard({ item }: { item: InstagramQueueItem }) {
 function getActiveStatus(status: string | undefined): StatusFilter {
   if (!status || status === "all") return "all";
   return statuses.includes(status as typeof statuses[number]) ? status as typeof statuses[number] : "all";
-}
-
-function getTotalCount(counts: Record<string, number>) {
-  return Object.values(counts).reduce((total, count) => total + count, 0);
 }
 
 async function getInstagramItemCounts() {
@@ -211,21 +215,11 @@ async function getIncompleteInstagramItemCount() {
   });
 }
 
-function Stat({ active = false, href, label, value }: { active?: boolean; href?: string; label: string; value?: number }) {
-  const content = (
-    <>
-      <strong>{value ?? 0}</strong>
-      <span>{label}</span>
-    </>
-  );
-
-  if (!href) {
-    return <div className="admin-stat">{content}</div>;
-  }
-
+function FilterLink({ active, href, label, value }: { active: boolean; href: string; label: string; value?: number }) {
   return (
-    <Link aria-current={active ? "page" : undefined} className="admin-stat admin-stat--link interactive-surface" href={href as Route}>
-      {content}
+    <Link aria-current={active ? "page" : undefined} className="admin-queue-filter" href={href as Route}>
+      <span>{label}</span>
+      {typeof value === "number" ? <StatusBadge label={String(value)} /> : null}
     </Link>
   );
 }
@@ -293,6 +287,25 @@ function getInstagramReturnTo(status: StatusFilter, query: string) {
   return qs ? `/admin/instagram?${qs}` : "/admin/instagram";
 }
 
+function getStatusCount(counts: Record<string, number>, status: StatusFilter) {
+  if (status === "all") {
+    return statuses.reduce((total, item) => total + (counts[item] ?? 0), 0);
+  }
+  return counts[status] ?? 0;
+}
+
+function formatQueueTitle(status: StatusFilter) {
+  if (status === "all") return "All items";
+  if (status === "needs_review") return "Needs review";
+  return toTitleCase(formatStatus(status));
+}
+
+function formatQueueDescription(status: StatusFilter, query: string, count: number) {
+  const queue = status === "all" ? "Instagram items" : formatQueueTitle(status).toLowerCase();
+  const base = `${count.toLocaleString()} ${count === 1 ? "record" : "records"} in ${queue}.`;
+  return query ? `${base} Filtered by "${query}".` : base;
+}
+
 function getInstagramPreviewAlt(item: InstagramQueueItem) {
   return item.captionText ? `Instagram preview: ${item.captionText.slice(0, 80)}` : "Instagram media preview";
 }
@@ -303,4 +316,8 @@ function getInstagramPreviewUrl(item: InstagramQueueItem) {
 
 function formatStatus(status: string) {
   return status.replace(/_/g, " ");
+}
+
+function toTitleCase(value: string) {
+  return value.replace(/\b\w/g, (match) => match.toUpperCase());
 }

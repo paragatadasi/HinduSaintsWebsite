@@ -114,11 +114,23 @@ export function InstagramIngestionPanel({ incompleteCount: initialIncompleteCoun
   }
 
   return (
-    <section className="review-panel instagram-ingestion-panel">
-      <div className="admin-toolbar">
+    <details className="review-panel review-panel--workflow instagram-ingestion-panel">
+      <summary className="instagram-ingestion-panel__summary">
         <div>
           <h2>Queue ingestion</h2>
           <p>Refresh imports new Instagram posts, extracts first-page biodata, caches media, and records job history for review.</p>
+        </div>
+        <span className="instagram-ingestion-panel__summary-meta">
+          <StatusBadge label={`${incompleteCount} incomplete`} />
+          {activeJob ? <StatusBadge label={formatStatus(activeJob.status)} /> : null}
+          <ChevronDown aria-hidden="true" size={18} />
+        </span>
+      </summary>
+
+      <div className="admin-toolbar">
+        <div>
+          <h3>Import controls</h3>
+          <p>Run ingestion when the review queue needs fresh Instagram source material.</p>
         </div>
         <div className="review-actions">
           <button className="admin-form-button" type="button" disabled={isBusy} onClick={() => startJob("refresh")}>
@@ -183,8 +195,11 @@ export function InstagramIngestionPanel({ incompleteCount: initialIncompleteCoun
         </div>
       ) : null}
 
-      <div className="instagram-job-history">
-        <h3>Recent ingestion jobs</h3>
+      <details className="instagram-job-history">
+        <summary>
+          <span>Recent ingestion jobs</span>
+          <ChevronDown aria-hidden="true" size={16} />
+        </summary>
         {jobs.length > 0 ? (
           <div className="review-list">
             {jobs.map((job) => (
@@ -208,8 +223,8 @@ export function InstagramIngestionPanel({ incompleteCount: initialIncompleteCoun
         ) : (
           <p>No ingestion jobs have run yet.</p>
         )}
-      </div>
-    </section>
+      </details>
+    </details>
   );
 }
 
