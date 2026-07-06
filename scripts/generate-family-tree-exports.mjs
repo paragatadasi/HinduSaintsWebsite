@@ -289,6 +289,16 @@ function renderTree(familyId, nodes, allEdges, meta) {
   for (const [row, rowGroups] of [...rows.entries()].sort((a, b) => a[0] - b[0])) {
     const weighted = rowGroups.map((g) => ({ group: g, weight: Math.max(g.width / (NODE_W + X_GAP), ...g.items.map((n) => span(n.id))) }));
     weighted.sort((a, b) => {
+      if (row === 0) {
+        const rootSkipScore = (group) =>
+          group.items.reduce((sum, item) =>
+            sum + rankingEdges
+              .filter((edge) => edge.from === item.id)
+              .reduce((edgeSum, edge) => edgeSum + Math.max(0, (depth.get(edge.to) ?? 0) - (depth.get(edge.from) ?? 0) - 1), 0),
+          0);
+        const skipDiff = rootSkipScore(b.group) - rootSkipScore(a.group);
+        if (skipDiff !== 0) return skipDiff;
+      }
       const aOutlier = a.group.items.some((item) => terminalOutlierIds.has(item.id));
       const bOutlier = b.group.items.some((item) => terminalOutlierIds.has(item.id));
       if (aOutlier !== bOutlier) return aOutlier ? -1 : 1;
