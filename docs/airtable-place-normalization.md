@@ -368,6 +368,10 @@ Tree rendering should follow these layout principles:
   route around them.
 - Order sibling branches by their parent lineage where possible, so branches
   descending from different heads do not unnecessarily cross each other.
+- For families with multiple root/head saints, place roots with skip-level
+  descendant links on the outer side of the root row before roots with simple
+  vertical branches. This keeps long side-lane routes from crossing through a
+  neighboring root's main branch.
 - Incarnation associations should connect saints into the same family, but stay
   visually distinct from guru-disciple lineage. They should be green dotted
   links and should not imply teacher/disciple direction.
