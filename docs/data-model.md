@@ -55,6 +55,20 @@ Locations are first-class records:
 - `birth` and `samadhi` place types should only be used when the source
   explicitly supports that meaning.
 
+Places are no longer limited to a flat state/locality split. A `Place` can now
+represent a country, state, city, sacred site, ashram, monastery, route area, or
+spiritual region through `Place.placeKind`. Hierarchy and sacred geography live
+in `PlaceRelationship` records:
+
+- administrative containment: `Bengaluru contained_in Karnataka`.
+- site containment: `Nilachal Math contained_in Puri`.
+- sacred grouping: `Vrindavan associated_region Braj Mandal`.
+- broader regions: `Bangladesh part_of South Asia`.
+
+Prefer linking a saint to the most specific reviewed place that is known. Broader
+state, country, and spiritual-region associations should be derived from the
+place graph unless the broad place is the only known reviewed location.
+
 The public Map page and place detail routes are documented in
 `docs/map-and-places.md`, including the published-content threshold, geocoding
 fallback, and timeline behavior.

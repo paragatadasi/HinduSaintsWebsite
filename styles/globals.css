@@ -3147,9 +3147,19 @@ img {
 .bulk-review-actions {
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: var(--space-2);
   justify-content: flex-end;
+  min-width: 0;
+}
+
+.bulk-review-actions .admin-form-button {
+  white-space: nowrap;
+}
+
+.bulk-review-actions .review-actions,
+.bulk-review-actions .bulk-delete-form {
+  flex-wrap: nowrap;
 }
 
 .bulk-review-panel .review-actions {
@@ -4188,6 +4198,15 @@ img {
 .instagram-review-card--compact {
   gap: 0;
   grid-template-columns: var(--width-instagram-review-card-media) minmax(0, 1fr);
+}
+
+.instagram-review-card--selectable {
+  grid-template-columns: auto var(--width-instagram-review-card-media) minmax(0, 1fr);
+}
+
+.instagram-review-card__checkbox {
+  align-self: start;
+  padding: var(--space-4) 0 0 var(--space-4);
 }
 
 .instagram-review-card--compact .instagram-review-card__link {
@@ -5529,7 +5548,13 @@ img {
   }
 
   .bulk-review-actions {
+    flex-wrap: wrap;
     justify-content: flex-start;
+  }
+
+  .bulk-review-actions .review-actions,
+  .bulk-review-actions .bulk-delete-form {
+    flex-wrap: wrap;
   }
 
   .admin-settings-form__actions {
@@ -5543,6 +5568,10 @@ img {
   .instagram-review-card--compact,
   .instagram-review-card--compact .instagram-review-card__link {
     grid-template-columns: var(--width-instagram-review-card-media-mobile) minmax(0, 1fr);
+  }
+
+  .instagram-review-card--selectable {
+    grid-template-columns: auto var(--width-instagram-review-card-media-mobile) minmax(0, 1fr);
   }
 
   .instagram-review-card--compact .instagram-review-card__media {

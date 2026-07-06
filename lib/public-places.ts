@@ -35,6 +35,18 @@ async function getPublishedPlaceRows() {
     orderBy: { name: "asc" },
     include: {
       parentState: true,
+      relationshipsFrom: {
+        where: { relationshipType: "contained_in" },
+        include: {
+          toPlace: {
+            select: {
+              placeKind: true,
+              placeScope: true,
+              slug: true
+            }
+          }
+        }
+      },
       saints: {
         where: {
           saint: { status: "published" }
@@ -78,6 +90,18 @@ async function getPublishedPlaceRowBySlug(slug: string) {
     },
     include: {
       parentState: true,
+      relationshipsFrom: {
+        where: { relationshipType: "contained_in" },
+        include: {
+          toPlace: {
+            select: {
+              placeKind: true,
+              placeScope: true,
+              slug: true
+            }
+          }
+        }
+      },
       saints: {
         where: {
           saint: { status: "published" }
@@ -189,12 +213,20 @@ function toPublicPlaceMapPoint(place: PublishedPlaceRow): PublicPlaceMapPoint | 
     region: place.region ?? undefined,
     country: place.country ?? undefined,
     placeScope: place.placeScope === "state" || getKnownPlaceScope(place.slug) === "state" ? "state" : "place",
-    stateSlug: place.parentState?.slug ?? getKnownStateSlug(place.slug),
+    stateSlug: place.parentState?.slug ?? getStateSlugFromPlaceGraph(place) ?? getKnownStateSlug(place.slug),
     latitude: coordinate.latitude,
     longitude: coordinate.longitude,
     saintCount: saints.length,
     saints
   };
+}
+
+function getStateSlugFromPlaceGraph(place: PublishedPlaceRow | PublishedPlaceDetailRow) {
+  const stateRelation = place.relationshipsFrom.find(({ toPlace }) =>
+    toPlace.placeKind === "state" || toPlace.placeScope === "state" || getKnownPlaceScope(toPlace.slug) === "state"
+  );
+
+  return stateRelation?.toPlace.slug;
 }
 
 function toPublicSaintSummary(saint: PublishedPlaceSaint): PublicSaintSummary {

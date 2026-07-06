@@ -16,9 +16,9 @@ type SaintsBulkReviewListProps = {
 };
 
 const bulkActions = [
-  { status: "published", label: "Publish selected", variant: "primary" },
-  { status: "draft", label: "Unpublish selected", variant: "secondary" },
-  { status: "archived", label: "Archive selected", variant: "low-priority" }
+  { status: "published", label: "Publish", variant: "primary" },
+  { status: "draft", label: "Unpublish", variant: "secondary" },
+  { status: "archived", label: "Archive", variant: "low-priority" }
 ] as const;
 
 export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListProps) {
@@ -107,7 +107,7 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
               onClick={isDeleteArmed ? undefined : armDelete}
               type={isDeleteArmed ? "submit" : "button"}
             >
-              {isDeleteArmed ? `Remove ${selectedCount} selected saints` : "Remove selected"}
+              {isDeleteArmed ? `Remove ${selectedCount} saints` : "Remove"}
             </button>
           </form>
         </div>

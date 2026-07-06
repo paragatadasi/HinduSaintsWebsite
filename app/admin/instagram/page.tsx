@@ -2,11 +2,11 @@ import Link from "next/link";
 import type { Route } from "next";
 import type { Prisma as PrismaTypes } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
-import { getInstagramLinkProps } from "@/lib/external-links";
 import { getIncompleteInstagramItemSummaries, getIncompleteInstagramItemWhere } from "@/lib/instagram-ingestion";
 import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { rankWeightedTextSearch, type WeightedSearchField } from "@/lib/search-text";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { InstagramBulkReviewList } from "./instagram-bulk-review-list";
 import { InstagramIngestionPanel } from "./instagram-ingestion-panel";
 
 const statuses = ["imported", "suggested", "needs_review", "matched", "published", "ignored"] as const;
@@ -45,6 +45,8 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
     getIncompleteInstagramItemCount(),
     getIncompleteInstagramItemSummaries()
   ]);
+  const returnTo = getInstagramReturnTo(activeStatus, query);
+  const reviewRows = items.map(toInstagramReviewRow);
 
   return (
     <div className="admin-stack">
@@ -96,48 +98,31 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
           <button className="admin-form-button" type="submit">Search</button>
           {query ? <Link className="admin-form-button admin-form-button--secondary" href={getInstagramReturnTo(activeStatus, "") as Route}>Clear</Link> : null}
         </form>
-        <div className="instagram-review-list">
-          {items.length > 0 ? items.map((item) => (
-            <InstagramReviewCard item={item} key={item.id} />
-          )) : (
-            <div className="admin-review-empty">
-              <h2>No imported Instagram items in this queue</h2>
-              <p>{query ? "Try another search or clear the queue search." : "Try another status filter or run `npm run ingest:instagram -- --api --dry-run` to preview a fresh import."}</p>
-            </div>
-          )}
-        </div>
+        <InstagramBulkReviewList
+          emptyMessage={query ? "Try another search or clear the queue search." : "Try another status filter or run `npm run ingest:instagram -- --api --dry-run` to preview a fresh import."}
+          items={reviewRows}
+          returnTo={returnTo}
+        />
       </section>
 
     </div>
   );
 }
 
-function InstagramReviewCard({ item }: { item: InstagramQueueItem }) {
+function toInstagramReviewRow(item: InstagramQueueItem) {
   const firstPageMetadata = getFirstPageMetadata(item.firstPageMetadata);
   const title = firstPageMetadata.displayName ?? item.extractedSaintName ?? item.instagramShortcode ?? "Imported Instagram item";
   const summary = firstPageMetadata.subtitle ?? item.captionText ?? "No caption text imported yet.";
 
-  return (
-    <article className="instagram-review-card instagram-review-card--compact interactive-surface">
-      <Link className="instagram-review-card__media" href={`/admin/instagram/${item.id}`} aria-label={`Review ${title}`}>
-        {getInstagramPreviewUrl(item) ? (
-          <img src={getInstagramPreviewUrl(item)} alt={getInstagramPreviewAlt(item)} />
-        ) : (
-          <span>{formatStatus(item.type)}</span>
-        )}
-      </Link>
-      <span className="instagram-review-card__body">
-        <Link className="instagram-review-card__link" href={`/admin/instagram/${item.id}`}>
-          <span className="instagram-review-card__title">{title}</span>
-          <span className="instagram-review-card__caption">{summary}</span>
-        </Link>
-        <span className="instagram-review-card__actions">
-          <Link className="admin-form-button" href={`/admin/instagram/${item.id}`}>Review</Link>
-          <a className="admin-form-button admin-form-button--outline" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>Open on Instagram</a>
-        </span>
-      </span>
-    </article>
-  );
+  return {
+    id: item.id,
+    instagramUrl: item.instagramUrl,
+    previewAlt: item.captionText ? `Instagram preview: ${item.captionText.slice(0, 80)}` : "Instagram media preview",
+    previewLabel: formatStatus(item.type),
+    previewUrl: item.mediaAssets[0]?.cachedUrl ?? item.thumbnailUrl,
+    summary,
+    title
+  };
 }
 
 function getActiveStatus(status: string | undefined): StatusFilter {
@@ -304,14 +289,6 @@ function formatQueueDescription(status: StatusFilter, query: string, count: numb
   const queue = status === "all" ? "Instagram items" : formatQueueTitle(status).toLowerCase();
   const base = `${count.toLocaleString()} ${count === 1 ? "record" : "records"} in ${queue}.`;
   return query ? `${base} Filtered by "${query}".` : base;
-}
-
-function getInstagramPreviewAlt(item: InstagramQueueItem) {
-  return item.captionText ? `Instagram preview: ${item.captionText.slice(0, 80)}` : "Instagram media preview";
-}
-
-function getInstagramPreviewUrl(item: InstagramQueueItem) {
-  return item.mediaAssets[0]?.cachedUrl ?? item.thumbnailUrl;
 }
 
 function formatStatus(status: string) {

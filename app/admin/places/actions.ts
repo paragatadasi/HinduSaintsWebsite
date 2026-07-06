@@ -2,7 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import type { PlaceType } from "@/lib/generated/prisma/client";
+import {
+  Prisma,
+  type Confidence,
+  type PlaceKind,
+  type PlaceRelationshipType,
+  type PlaceType
+} from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -10,6 +16,7 @@ import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
 
 const placeScopeSchema = z.enum(["locality", "state"]);
+const LEGACY_PARENT_STATE_RELATIONSHIP_NOTE = "Mirrored from legacy parentStateId.";
 const saintPlaceTypeRank = new Map<PlaceType, number>([
   ["birth", 0],
   ["samadhi", 1],
@@ -80,19 +87,26 @@ export async function updatePlace(formData: FormData) {
   const parentStateId = placeScope === "locality" && parsed.parentStateId !== parsed.placeId
     ? parsed.parentStateId
     : null;
-  const place = await db.place.update({
-    where: { id: parsed.placeId },
-    data: {
-      name: parsed.name,
-      slug,
-      alternateNames: parsed.alternateNames,
-      placeScope,
-      parentStateId,
-      country: parsed.country ?? null,
-      overviewMarkdown: parsed.overviewMarkdown ?? null,
-      notes: parsed.notes ?? null
-    },
-    select: { slug: true }
+  const place = await db.$transaction(async (tx) => {
+    const updatedPlace = await tx.place.update({
+      where: { id: parsed.placeId },
+      data: {
+        name: parsed.name,
+        slug,
+        alternateNames: parsed.alternateNames,
+        placeKind: getPlaceKindForScope(placeScope),
+        placeScope,
+        parentStateId,
+        country: parsed.country ?? null,
+        overviewMarkdown: parsed.overviewMarkdown ?? null,
+        notes: parsed.notes ?? null
+      },
+      select: { slug: true }
+    });
+
+    await syncParentStateRelationship(tx, parsed.placeId, parentStateId);
+
+    return updatedPlace;
   });
 
   revalidatePlacePaths(existing.slug);
@@ -131,6 +145,7 @@ export async function updatePlaceOverview(formData: FormData) {
         name: parsed.name,
         slug,
         alternateNames: parsed.alternateNames,
+        placeKind: getPlaceKindForScope(placeScope),
         placeScope,
         parentStateId,
         country: parsed.country ?? null
@@ -141,6 +156,13 @@ export async function updatePlaceOverview(formData: FormData) {
     await tx.place.updateMany({
       where: { parentStateId: parsed.placeId },
       data: { parentStateId: null }
+    });
+    await tx.placeRelationship.deleteMany({
+      where: {
+        toPlaceId: parsed.placeId,
+        relationshipType: "contained_in",
+        notes: LEGACY_PARENT_STATE_RELATIONSHIP_NOTE
+      }
     });
 
     if (placeScope === "state") {
@@ -153,8 +175,11 @@ export async function updatePlaceOverview(formData: FormData) {
           },
           data: { parentStateId: parsed.placeId }
         });
+        await Promise.all(localityIds.map((localityId) => syncParentStateRelationship(tx, localityId, parsed.placeId)));
       }
     }
+
+    await syncParentStateRelationship(tx, parsed.placeId, parentStateId);
 
     return updatedPlace;
   });
@@ -195,7 +220,11 @@ export async function mergePlaces(formData: FormData) {
   const [source, target] = await Promise.all([
     db.place.findUnique({
       where: { id: parsed.sourcePlaceId },
-      include: { saints: true }
+      include: {
+        relationshipsFrom: true,
+        relationshipsTo: true,
+        saints: true
+      }
     }),
     db.place.findUnique({
       where: { id: parsed.targetPlaceId },
@@ -236,6 +265,7 @@ export async function mergePlaces(formData: FormData) {
       where: { parentStateId: source.id },
       data: { parentStateId: target.id }
     });
+    await movePlaceRelationships(tx, source, target.id);
     await tx.place.delete({ where: { id: source.id } });
   });
 
@@ -278,6 +308,126 @@ function getPreferredPlaceType(first: PlaceType, second: PlaceType): PlaceType {
   const firstRank = saintPlaceTypeRank.get(first) ?? 99;
   const secondRank = saintPlaceTypeRank.get(second) ?? 99;
   return secondRank < firstRank ? second : first;
+}
+
+function getPlaceKindForScope(placeScope: "locality" | "state"): PlaceKind {
+  return placeScope === "state" ? "state" : "locality";
+}
+
+async function syncParentStateRelationship(
+  tx: Prisma.TransactionClient,
+  placeId: string,
+  parentStateId: string | null | undefined
+) {
+  await tx.placeRelationship.deleteMany({
+    where: {
+      fromPlaceId: placeId,
+      relationshipType: "contained_in",
+      notes: LEGACY_PARENT_STATE_RELATIONSHIP_NOTE
+    }
+  });
+
+  if (!parentStateId) return;
+
+  await tx.placeRelationship.upsert({
+    where: {
+      fromPlaceId_toPlaceId_relationshipType: {
+        fromPlaceId: placeId,
+        toPlaceId: parentStateId,
+        relationshipType: "contained_in"
+      }
+    },
+    create: {
+      fromPlaceId: placeId,
+      toPlaceId: parentStateId,
+      relationshipType: "contained_in",
+      confidence: "high",
+      notes: LEGACY_PARENT_STATE_RELATIONSHIP_NOTE
+    },
+    update: {
+      confidence: "high",
+      notes: LEGACY_PARENT_STATE_RELATIONSHIP_NOTE
+    }
+  });
+}
+
+async function movePlaceRelationships(
+  tx: Prisma.TransactionClient,
+  source: {
+    id: string;
+    relationshipsFrom: Array<{
+      toPlaceId: string;
+      relationshipType: PlaceRelationshipType;
+      confidence: Confidence;
+      notes: string | null;
+    }>;
+    relationshipsTo: Array<{
+      fromPlaceId: string;
+      relationshipType: PlaceRelationshipType;
+      confidence: Confidence;
+      notes: string | null;
+    }>;
+  },
+  targetPlaceId: string
+) {
+  for (const relationship of source.relationshipsFrom) {
+    if (relationship.toPlaceId === targetPlaceId) continue;
+    await upsertPlaceRelationship(tx, {
+      fromPlaceId: targetPlaceId,
+      toPlaceId: relationship.toPlaceId,
+      relationshipType: relationship.relationshipType,
+      confidence: relationship.confidence,
+      notes: relationship.notes
+    });
+  }
+
+  for (const relationship of source.relationshipsTo) {
+    if (relationship.fromPlaceId === targetPlaceId) continue;
+    await upsertPlaceRelationship(tx, {
+      fromPlaceId: relationship.fromPlaceId,
+      toPlaceId: targetPlaceId,
+      relationshipType: relationship.relationshipType,
+      confidence: relationship.confidence,
+      notes: relationship.notes
+    });
+  }
+
+  await tx.placeRelationship.deleteMany({
+    where: {
+      OR: [
+        { fromPlaceId: source.id },
+        { toPlaceId: source.id }
+      ]
+    }
+  });
+}
+
+async function upsertPlaceRelationship(
+  tx: Prisma.TransactionClient,
+  relationship: {
+    fromPlaceId: string;
+    toPlaceId: string;
+    relationshipType: PlaceRelationshipType;
+    confidence: Confidence;
+    notes: string | null;
+  }
+) {
+  if (relationship.fromPlaceId === relationship.toPlaceId) return;
+
+  await tx.placeRelationship.upsert({
+    where: {
+      fromPlaceId_toPlaceId_relationshipType: {
+        fromPlaceId: relationship.fromPlaceId,
+        toPlaceId: relationship.toPlaceId,
+        relationshipType: relationship.relationshipType
+      }
+    },
+    create: relationship,
+    update: {
+      confidence: relationship.confidence,
+      notes: relationship.notes
+    }
+  });
 }
 
 async function getUniquePlaceSlug(name: string, placeId: string) {

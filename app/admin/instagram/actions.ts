@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import type { Route } from "next";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
+import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { acceptInstagramDerivedClaim, createDirectInstagramClaimsForSaint, pipeAcceptedInstagramClaimsToSaint } from "@/lib/instagram-claims";
@@ -58,6 +59,12 @@ const firstPageMetadataSchema = z.object({
 const firstPageImageExtractionSchema = z.object({
   instagramItemId: z.string().cuid(),
   returnTo: z.string().optional()
+});
+
+const bulkInstagramDeleteSchema = z.object({
+  instagramItemIds: z.array(z.string().cuid()).min(1).max(500),
+  password: z.string().min(1),
+  returnTo: z.string().startsWith("/admin/instagram").optional()
 });
 
 const derivedClaimSchema = z.object({
@@ -397,17 +404,93 @@ export async function acceptInstagramClaim(formData: FormData) {
   redirect(getReturnTo(parsed.returnTo) as Route);
 }
 
+export async function bulkDeleteInstagramItems(formData: FormData) {
+  const session = await requireAdminSession();
+
+  const parsed = bulkInstagramDeleteSchema.parse({
+    instagramItemIds: formData.getAll("instagramItemIds"),
+    password: formData.get("bulkDeletePassword"),
+    returnTo: emptyToUndefined(formData.get("returnTo"))
+  });
+
+  if (!(await verifyBulkDeletePassword(parsed.password))) {
+    throw new Error("The bulk delete password was incorrect.");
+  }
+
+  const items = await db.instagramItem.findMany({
+    where: { id: { in: parsed.instagramItemIds } },
+    select: {
+      id: true,
+      instagramShortcode: true,
+      instagramUrl: true,
+      saints: {
+        select: {
+          saint: { select: { slug: true } }
+        }
+      }
+    }
+  });
+  const itemIds = items.map((item) => item.id);
+  const affectedSaintSlugs = uniqueList(items.flatMap((item) => item.saints.map((link) => link.saint.slug)));
+
+  if (itemIds.length === 0) {
+    redirect(getReturnTo(parsed.returnTo) as Route);
+  }
+
+  await db.$transaction(async (tx) => {
+    await tx.externalRecord.updateMany({
+      where: {
+        sourceType: "instagram",
+        entityType: "InstagramItem",
+        entityId: { in: itemIds }
+      },
+      data: { entityId: null }
+    });
+
+    await tx.instagramItem.deleteMany({
+      where: { id: { in: itemIds } }
+    });
+
+    await tx.auditEvent.create({
+      data: {
+        userId: session.user?.email ?? null,
+        action: "bulk_delete_instagram_items",
+        entityType: "InstagramItem",
+        entityId: itemIds.join(","),
+        beforeJson: toInputJson({
+          deletedInstagramItems: items.map((item) => ({
+            id: item.id,
+            instagramShortcode: item.instagramShortcode,
+            instagramUrl: item.instagramUrl
+          }))
+        }),
+        afterJson: Prisma.JsonNull
+      }
+    });
+  });
+
+  const destination = getReturnTo(parsed.returnTo) as Route;
+  revalidateInstagramPaths(affectedSaintSlugs);
+  revalidatePath(destination);
+  redirect(destination);
+}
+
 async function requireAdminSession() {
   const session = await auth();
   if (!session?.user?.email) {
     redirect("/admin");
   }
+  return session;
 }
 
 function emptyToUndefined(value: FormDataEntryValue | null) {
   if (typeof value !== "string") return undefined;
   const trimmed = value.trim();
   return trimmed ? trimmed : undefined;
+}
+
+function uniqueList(values: string[]) {
+  return Array.from(new Set(values));
 }
 
 async function promoteSaintForInstagramMatch(tx: Prisma.TransactionClient, saintId: string) {
@@ -457,6 +540,10 @@ function formatExtractionSource(source: string) {
   if (source === "stored_text") return "imported text";
   if (source === "caption") return "caption text";
   return "import data";
+}
+
+function toInputJson(value: unknown): Prisma.InputJsonValue {
+  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 }
 
 async function uniqueSaintSlug(baseSlug: string) {

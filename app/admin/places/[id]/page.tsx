@@ -102,6 +102,7 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
           <h1>{place.name}</h1>
           <div className="review-meta">
             <StatusBadge label={formatStatus(effectivePlaceScope)} />
+            <StatusBadge label={formatStatus(place.placeKind)} />
             <StatusBadge label={`${place._count.saints} saints`} />
             {place.parentState ? <StatusBadge label={`state: ${place.parentState.name}`} /> : null}
           </div>
@@ -125,6 +126,7 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
           >
             <div className="field-grid field-grid--compact-facts">
               <ReviewField label="Place unit" value={formatStatus(effectivePlaceScope)} />
+              <ReviewField label="Place kind" value={formatStatus(place.placeKind)} />
               <ReviewField label="Parent state" value={place.parentState?.name} />
               <ReviewField label="Localities" value={`${place.localities.length}`} />
               <ReviewField label="Saint links" value={`${place._count.saints}`} />
@@ -184,6 +186,7 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
               <ReviewField label="Name" value={place.name} />
               <ReviewField label="Alternate names" value={place.alternateNames.join(", ")} />
               <ReviewField label="Place unit" value={formatStatus(effectivePlaceScope)} />
+              <ReviewField label="Place kind" value={formatStatus(place.placeKind)} />
               <ReviewField label="Parent state" value={place.parentState?.name} />
               <ReviewField label="Localities" value={formatLocalities(place.localities)} />
               <ReviewField label="Country" value={place.country} />

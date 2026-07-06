@@ -19,8 +19,17 @@ routes.
 Core database records:
 
 - `Place` stores reusable place names and optional geography.
+- `Place.placeKind` classifies the kind of place node, such as country, state,
+  city, sacred site, ashram, temple, route area, or spiritual region.
 - `Place.placeScope` classifies a record as a broad `state` or a smaller
-  `locality`; `Place.parentStateId` attaches localities to state records.
+  `locality`; this remains as compatibility infrastructure for the current map
+  state-fill behavior.
+- `Place.parentStateId` attaches localities to state records for legacy admin
+  and map flows. New hierarchy should also be represented as
+  `PlaceRelationship` rows.
+- `PlaceRelationship` stores typed place-to-place edges, including
+  `contained_in`, `part_of`, `near`, `associated_region`,
+  `historical_alias_of`, and `successor_name_of`.
 - `SaintPlace` links saints to places and classifies the relationship with
   `PlaceType`.
 - `SaintPlace.routeOrder`, `routeLabel`, and `routeConfidence` optionally
@@ -42,6 +51,30 @@ Public adapters:
 The adapter only includes saints with `status: "published"`. Do not expose raw
 import payloads, museum/relic fields, private editorial notes, or unpublished
 saints in map responses.
+
+## Place Graph Model
+
+The website database should treat places as reusable graph nodes, not as parsed
+comma-separated labels. A saint should usually link to the most specific
+reviewed place that is known, while broader associations are derived through
+place relationships.
+
+Examples:
+
+- `Nilachal Math contained_in Puri`
+- `Puri contained_in Odisha`
+- `Odisha contained_in India`
+- `Vrindavan associated_region Braj Mandal`
+- `Braj Mandal part_of Uttar Pradesh` when a regional rollup is useful
+
+This lets a saint linked to `Nilachal Math` appear in Puri, Odisha, India, and
+Jagannath-Puri discovery contexts without storing duplicate `SaintPlace` links
+for every level. If the only known location is broad, such as `Odisha`, link the
+saint directly to that broad place until editors review a more specific place.
+
+The current public map still uses `placeScope` and `parentStateId` first for
+state behavior. It also consults `contained_in` place relationships as the
+forward-compatible graph source for state rollups.
 
 Known Indian state records such as `Tamil Nadu` must be state-scoped even when
 older imports or default values classified them as localities. The

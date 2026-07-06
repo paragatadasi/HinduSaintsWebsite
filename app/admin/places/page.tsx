@@ -69,6 +69,7 @@ export default async function AdminPlacesPage({ searchParams }: AdminPlacesPageP
             <div>
               <div className="review-meta">
                 <StatusBadge label={formatStatus(getEffectivePlaceScope(place))} />
+                <StatusBadge label={formatStatus(place.placeKind)} />
                 <StatusBadge label={`${place._count.saints} saints`} />
                 {place.parentState ? <StatusBadge label={`state: ${place.parentState.name}`} /> : null}
                 {place._count.localities > 0 ? <StatusBadge label={`${place._count.localities} localities`} /> : null}

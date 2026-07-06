@@ -14,3 +14,4 @@ backups/*
 !backups/.gitkeep
 uploads/*
 !uploads/.gitkeep
+exports/

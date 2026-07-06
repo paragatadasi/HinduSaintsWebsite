@@ -75,6 +75,34 @@ enum PlaceScope {
   state
 }
 
+enum PlaceKind {
+  country
+  region
+  state
+  district
+  city
+  town
+  village
+  sacred_site
+  ashram
+  temple
+  monastery
+  neighborhood
+  route_area
+  spiritual_region
+  locality
+  unknown
+}
+
+enum PlaceRelationshipType {
+  contained_in
+  part_of
+  near
+  associated_region
+  historical_alias_of
+  successor_name_of
+}
+
 enum SourceType {
   book
   article
@@ -256,6 +284,7 @@ model Place {
   slug             String       @unique
   name             String
   alternateNames   String[]
+  placeKind        PlaceKind    @default(locality)
   placeScope       PlaceScope   @default(locality)
   parentStateId    String?
   parentState      Place?       @relation("PlaceState", fields: [parentStateId], references: [id], onDelete: SetNull)
@@ -267,11 +296,31 @@ model Place {
   longitude        Decimal?
   notes            String?
   saints           SaintPlace[]
+  relationshipsFrom PlaceRelationship[] @relation("PlaceRelationshipFrom")
+  relationshipsTo   PlaceRelationship[] @relation("PlaceRelationshipTo")
   traditionOrigins Tradition[] @relation("TraditionOriginPlace")
   traditionRelatedPlaces TraditionRelatedPlace[]
 
+  @@index([placeKind])
   @@index([placeScope])
   @@index([parentStateId])
+}
+
+model PlaceRelationship {
+  id               String                @id @default(cuid())
+  fromPlaceId      String
+  fromPlace        Place                 @relation("PlaceRelationshipFrom", fields: [fromPlaceId], references: [id], onDelete: Cascade)
+  toPlaceId        String
+  toPlace          Place                 @relation("PlaceRelationshipTo", fields: [toPlaceId], references: [id], onDelete: Cascade)
+  relationshipType PlaceRelationshipType
+  confidence       Confidence            @default(high)
+  notes            String?
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+
+  @@unique([fromPlaceId, toPlaceId, relationshipType])
+  @@index([fromPlaceId, relationshipType])
+  @@index([toPlaceId, relationshipType])
 }
 
 model SaintPlace {

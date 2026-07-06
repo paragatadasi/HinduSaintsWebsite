@@ -244,6 +244,10 @@ Location handling:
 - birth and samadhi place types should only be set when the source explicitly supports that classification.
 - review/import flows should not add a second `SaintPlace` link for the same
   saint and `Place` when another relationship type already exists.
+- Airtable place cleanup now also maintains `Normalized places`, `Place keys`,
+  and `Spiritual Region` helper fields in the source base. See
+  `docs/airtable-place-normalization.md` for the cleanup rules and generated
+  review exports.
 
 Media handling:
 
