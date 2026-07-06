@@ -2944,6 +2944,63 @@ img {
   padding-bottom: var(--space-4);
 }
 
+.admin-settings-panel {
+  gap: var(--space-4);
+}
+
+.admin-settings-form {
+  align-items: end;
+  background: var(--review-workflow-section-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(2, minmax(180px, 1fr)) auto;
+  padding: var(--space-4);
+}
+
+.admin-field {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.admin-field span {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.admin-field input,
+.admin-field select,
+.admin-field textarea {
+  background: var(--review-workflow-field-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font: inherit;
+  min-height: 44px;
+  padding: var(--space-3);
+  width: 100%;
+}
+
+.admin-field input:focus-visible,
+.admin-field select:focus-visible,
+.admin-field textarea:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.admin-settings-form__actions {
+  justify-content: flex-end;
+}
+
+.admin-settings-note {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
 .admin-queue-filters {
   display: grid;
   gap: var(--space-2);
@@ -3049,7 +3106,7 @@ img {
   background: var(--review-workflow-section-bg);
   border: 1px solid var(--review-workflow-border);
   border-radius: var(--radius-md);
-  grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr);
+  grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr) minmax(220px, auto);
   padding: var(--space-4);
 }
 
@@ -3089,6 +3146,42 @@ img {
 
 .bulk-review-panel .review-actions {
   justify-content: flex-end;
+}
+
+.bulk-delete-form {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+.bulk-delete-password {
+  display: grid;
+  gap: var(--space-1);
+  min-width: min(100%, 240px);
+}
+
+.bulk-delete-password span {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.bulk-delete-password input {
+  background: var(--review-workflow-field-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font: inherit;
+  min-height: 44px;
+  padding: var(--space-3);
+}
+
+.bulk-delete-password input:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
 }
 
 .admin-review-empty {
@@ -5343,6 +5436,7 @@ img {
   }
 
   .admin-layout,
+  .admin-settings-form,
   .review-detail-grid,
   .review-row,
   .review-row__link,
@@ -5370,6 +5464,14 @@ img {
   }
 
   .bulk-review-panel .review-actions {
+    justify-content: flex-start;
+  }
+
+  .admin-settings-form__actions {
+    justify-content: flex-start;
+  }
+
+  .bulk-delete-form {
     justify-content: flex-start;
   }
 

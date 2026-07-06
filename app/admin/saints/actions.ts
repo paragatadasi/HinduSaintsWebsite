@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import type { Route } from "next";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
+import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { parseImportedDate } from "@/lib/import-dates";
@@ -54,6 +55,12 @@ const saintStatusSchema = z.object({
 const bulkSaintStatusSchema = z.object({
   saintIds: z.array(z.string().cuid()).min(1).max(500),
   status: contentStatusSchema,
+  returnTo: z.string().startsWith("/admin/saints").optional()
+});
+
+const bulkSaintDeleteSchema = z.object({
+  saintIds: z.array(z.string().cuid()).min(1).max(500),
+  password: z.string().min(1),
   returnTo: z.string().startsWith("/admin/saints").optional()
 });
 
@@ -562,6 +569,88 @@ export async function bulkUpdateSaintReviewStatus(formData: FormData) {
   redirect(destination);
 }
 
+export async function bulkDeleteSaints(formData: FormData) {
+  const session = await requireAdminSession();
+
+  const parsed = bulkSaintDeleteSchema.parse({
+    saintIds: formData.getAll("saintIds"),
+    password: formData.get("bulkDeletePassword"),
+    returnTo: emptyToUndefined(formData.get("returnTo"))
+  });
+
+  if (!(await verifyBulkDeletePassword(parsed.password))) {
+    throw new Error("The bulk delete password was incorrect.");
+  }
+
+  const saints = await db.saint.findMany({
+    where: { id: { in: parsed.saintIds } },
+    select: { id: true, slug: true, displayName: true }
+  });
+  const saintIds = saints.map((saint) => saint.id);
+
+  if (saintIds.length === 0) {
+    const destination = (parsed.returnTo ?? "/admin/saints") as Route;
+    redirect(destination);
+  }
+
+  await db.$transaction(async (tx) => {
+    await tx.contentSource.deleteMany({
+      where: {
+        entityType: "Saint",
+        entityId: { in: saintIds }
+      }
+    });
+
+    await tx.reconciliationIssue.deleteMany({
+      where: {
+        entityType: "Saint",
+        entityId: { in: saintIds }
+      }
+    });
+
+    await tx.externalRecord.updateMany({
+      where: {
+        entityType: "Saint",
+        entityId: { in: saintIds }
+      },
+      data: {
+        entityId: null
+      }
+    });
+
+    await tx.tradition.updateMany({
+      where: { founderSaintId: { in: saintIds } },
+      data: { founderSaintId: null }
+    });
+
+    await tx.saint.deleteMany({
+      where: { id: { in: saintIds } }
+    });
+
+    await tx.auditEvent.create({
+      data: {
+        userId: session.user?.email ?? null,
+        action: "bulk_delete_saints",
+        entityType: "Saint",
+        entityId: saintIds.join(","),
+        beforeJson: toInputJson({
+          deletedSaints: saints.map((saint) => ({
+            id: saint.id,
+            slug: saint.slug,
+            displayName: saint.displayName
+          }))
+        }),
+        afterJson: Prisma.JsonNull
+      }
+    });
+  });
+
+  const destination = (parsed.returnTo ?? "/admin/saints") as Route;
+  saints.forEach((saint) => revalidateSaintPaths(saint.slug));
+  revalidatePath(destination);
+  redirect(destination);
+}
+
 export async function reviewSaintInstagramClaim(formData: FormData) {
   await requireAdminSession();
 
@@ -821,6 +910,7 @@ async function requireAdminSession() {
   if (!session?.user?.email) {
     redirect("/admin");
   }
+  return session;
 }
 
 function emptyToUndefined(value: FormDataEntryValue | null) {
@@ -885,4 +975,8 @@ function revalidateSaintPaths(slug: string) {
   revalidatePath("/admin");
   revalidatePath("/admin/saints");
   revalidatePath(`/admin/saints/${slug}`);
+}
+
+function toInputJson(value: unknown): Prisma.InputJsonValue {
+  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 }

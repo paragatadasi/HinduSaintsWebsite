@@ -627,6 +627,14 @@ model AirtableImportJob {
   @@index([mode, createdAt])
 }
 
+model AdminSecret {
+  key            String   @id
+  passwordHash   String
+  updatedByEmail String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
 model ExternalRecord {
   id             String   @id @default(cuid())
   sourceType     String

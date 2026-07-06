@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { bulkUpdateSaintReviewStatus } from "./actions";
+import { bulkDeleteSaints, bulkUpdateSaintReviewStatus } from "./actions";
 
 type SaintReviewRow = {
   id: string;
@@ -23,6 +23,7 @@ const bulkActions = [
 
 export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [isDeleteArmed, setIsDeleteArmed] = useState(false);
   const selectedIdSet = useMemo(() => new Set(selectedIds), [selectedIds]);
   const selectedCount = selectedIds.length;
   const allVisibleSelected = saints.length > 0 && selectedCount === saints.length;
@@ -39,6 +40,10 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
     setSelectedIds(allVisibleSelected ? [] : saints.map((saint) => saint.id));
   }
 
+  function armDelete() {
+    setIsDeleteArmed(true);
+  }
+
   if (saints.length === 0) {
     return (
       <div className="admin-review-empty">
@@ -49,12 +54,7 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
   }
 
   return (
-    <form action={bulkUpdateSaintReviewStatus} className="bulk-review-form">
-      <input name="returnTo" type="hidden" value={returnTo} />
-      {selectedIds.map((saintId) => (
-        <input key={saintId} name="saintIds" type="hidden" value={saintId} />
-      ))}
-
+    <div className="bulk-review-form">
       <div className="bulk-review-panel" data-has-selection={selectedCount > 0 ? "true" : "false"}>
         <label className="bulk-review-select-all">
           <input
@@ -67,7 +67,8 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
             <small>{selectedCount > 0 ? `${selectedCount} selected` : `${saints.length} visible in this queue`}</small>
           </span>
         </label>
-        <div className="review-actions">
+        <form action={bulkUpdateSaintReviewStatus} className="review-actions">
+          <BulkReviewHiddenFields returnTo={returnTo} saintIds={selectedIds} />
           {bulkActions.map((action) => (
             <button
               className={[
@@ -84,7 +85,30 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
               {action.label}
             </button>
           ))}
-        </div>
+        </form>
+        <form action={bulkDeleteSaints} className="bulk-delete-form">
+          <BulkReviewHiddenFields returnTo={returnTo} saintIds={selectedIds} />
+          {isDeleteArmed ? (
+            <label className="bulk-delete-password">
+              <span>Delete password</span>
+              <input
+                autoComplete="off"
+                name="bulkDeletePassword"
+                placeholder="Required to remove selected saints"
+                required
+                type="password"
+              />
+            </label>
+          ) : null}
+          <button
+            className="admin-form-button admin-form-button--warning"
+            disabled={selectedCount === 0}
+            onClick={isDeleteArmed ? undefined : armDelete}
+            type={isDeleteArmed ? "submit" : "button"}
+          >
+            {isDeleteArmed ? `Remove ${selectedCount} selected saints` : "Remove selected"}
+          </button>
+        </form>
       </div>
 
       <div className="review-list">
@@ -104,6 +128,17 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
           </article>
         ))}
       </div>
-    </form>
+    </div>
+  );
+}
+
+function BulkReviewHiddenFields({ returnTo, saintIds }: { returnTo: string; saintIds: string[] }) {
+  return (
+    <>
+      <input name="returnTo" type="hidden" value={returnTo} />
+      {saintIds.map((saintId) => (
+        <input key={saintId} name="saintIds" type="hidden" value={saintId} />
+      ))}
+    </>
   );
 }
