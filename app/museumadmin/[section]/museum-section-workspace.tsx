@@ -204,19 +204,26 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
               <p className="museum-filter-note">{tertiaryRows.length} tertiary saints match the current filters.</p>
             ) : null}
 
-            {groupMode === "location" ? (
-              <div className="museum-location-groups">
-                {tertiaryByLocation.map((location) => (
-                  <section className="museum-location-group" key={location.label}>
-                    <h3>{location.label}</h3>
-                    <div className="museum-tertiary-grid">
-                      {location.rows.map((row) => (
-                        <TertiaryCard key={row.id} locationMode="specific" onSaintClick={setSelectedSaintId} row={row} />
-                      ))}
-                    </div>
-                  </section>
-                ))}
-              </div>
+              {groupMode === "location" ? (
+                <div className="museum-location-groups">
+                  {tertiaryByLocation.map((location) => (
+                    <section className="museum-location-group" key={location.label}>
+                      <h3>{location.label}</h3>
+                      <div className="museum-location-place-groups">
+                        {location.places.map((place) => (
+                          <div className="museum-location-place-group" key={place.label}>
+                            <h4>{place.label}</h4>
+                            <div className="museum-tertiary-grid">
+                              {place.rows.map((row) => (
+                                <TertiaryCard key={row.id} locationMode="specific" onSaintClick={setSelectedSaintId} row={row} />
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  ))}
+                </div>
             ) : (
               <div className="museum-tertiary-grid">
                 {tertiaryRows.map((row) => (
@@ -552,18 +559,36 @@ function SaintButton({ onSaintClick, row }: { onSaintClick: (id: string) => void
 }
 
 function groupTertiaryByLocation(rows: MuseumSaintPlacement[]) {
-  const groups = new Map<string, MuseumSaintPlacement[]>();
+  const groups = new Map<string, Map<string, MuseumSaintPlacement[]>>();
   for (const row of rows) {
-    const label = locationGroupLabel(row);
-    if (!groups.has(label)) groups.set(label, []);
-    groups.get(label)?.push(row);
+    const stateLabel = locationStateGroupLabel(row);
+    const placeLabel = locationPlaceGroupLabel(row);
+    if (!groups.has(stateLabel)) groups.set(stateLabel, new Map());
+    const placeGroups = groups.get(stateLabel);
+    if (!placeGroups?.has(placeLabel)) placeGroups?.set(placeLabel, []);
+    placeGroups?.get(placeLabel)?.push(row);
   }
   return [...groups.entries()]
-    .map(([label, groupRows]) => ({ label, rows: groupRows.sort(sortSaints) }))
-    .sort((a, b) => b.rows.length - a.rows.length || a.label.localeCompare(b.label));
+    .map(([label, placeGroups]) => {
+      const places = [...placeGroups.entries()]
+        .map(([placeLabel, placeRows]) => ({ label: placeLabel, rows: placeRows.sort(sortSaints) }))
+        .sort((a, b) => b.rows.length - a.rows.length || a.label.localeCompare(b.label));
+      return {
+        label,
+        places,
+        count: places.reduce((total, place) => total + place.rows.length, 0)
+      };
+    })
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 }
 
-function locationGroupLabel(row: MuseumSaintPlacement) {
+function locationStateGroupLabel(row: MuseumSaintPlacement) {
+  const place = row.normalizedPlaces[0];
+  if (!place) return row.spiritualRegions[0] || "Location pending";
+  return statePlaceGroupLabel(place);
+}
+
+function locationPlaceGroupLabel(row: MuseumSaintPlacement) {
   const place = row.normalizedPlaces[0];
   if (!place) return row.spiritualRegions[0] || "Location pending";
   return specificPlaceGroupLabel(place);
@@ -584,6 +609,19 @@ function specificPlaceGroupLabel(value: string) {
   if (!parts[0]) return "Location pending";
   if (parts.length === 1 && indianStateNames.has(parts[0].toLowerCase())) return `${parts[0]}, India`;
   return parts.join(", ");
+}
+
+function statePlaceGroupLabel(value: string) {
+  const parts = String(value || "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (!parts[0]) return "Location pending";
+  if (parts.length >= 2) return parts.slice(-2).join(", ");
+  if (indianStateNames.has(parts[0].toLowerCase())) return `${parts[0]}, India`;
+  return parts[0];
 }
 
 const indianStateNames = new Set([
