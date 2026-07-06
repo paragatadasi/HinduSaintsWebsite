@@ -566,12 +566,24 @@ function groupTertiaryByLocation(rows: MuseumSaintPlacement[]) {
 function locationGroupLabel(row: MuseumSaintPlacement) {
   const place = row.normalizedPlaces[0];
   if (!place) return row.spiritualRegions[0] || "Location pending";
-  return museumLocationLabel(place);
+  return specificPlaceGroupLabel(place);
 }
 
 function specificLocationLabel(row: MuseumSaintPlacement) {
   if (row.normalizedPlaces.length) return row.normalizedPlaces.join("; ");
   return row.spiritualRegions.join("; ") || "Place pending";
+}
+
+function specificPlaceGroupLabel(value: string) {
+  const parts = String(value || "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (!parts[0]) return "Location pending";
+  if (parts.length === 1 && indianStateNames.has(parts[0].toLowerCase())) return `${parts[0]}, India`;
+  return parts.join(", ");
 }
 
 const indianStateNames = new Set([

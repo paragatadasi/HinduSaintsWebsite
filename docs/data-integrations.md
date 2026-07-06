@@ -61,6 +61,11 @@ already mirrored `AirtableMirrorRecord` rows in the website database. It does
 not call Airtable from the browser and does not make Airtable the source of
 truth.
 
+For full erase-and-reingest work, use `/admin/airtable`. That page exposes the
+same mirror refresh, reset, and import queue steps used by the CLI runbook. Write
+actions require the bulk delete password configured on `/admin`; dry-run/status
+views require normal admin sign-in.
+
 Available actions:
 
 - `Check Airtable`: dry-runs the safe missing-saint import against mirrored
@@ -128,7 +133,21 @@ npm run import:airtable
 
 `import:airtable` writes by default. Always include `-- --dry-run` first on a new machine, new token, or changed table/view configuration.
 
-4. Dry-run the CMS saint import, then write it:
+4. If you intentionally want a clean Airtable reingest, dry-run the CMS reset,
+   then write it:
+
+```sh
+npm run reset:airtable-cms
+npm run reset:airtable-cms -- --write
+```
+
+`reset:airtable-cms` clears Airtable-derived CMS saint rows, related graph and
+review artifacts, Airtable saint `ExternalRecord` links, and Airtable import
+jobs by default. It leaves `AirtableMirrorRecord` rows intact so the refreshed
+mirror remains available for reimport. Use `-- --keep-jobs` if you want to keep
+the old Airtable import job history.
+
+5. Dry-run the CMS saint import, then write it:
 
 ```sh
 npm run import:airtable-saints
@@ -136,6 +155,13 @@ npm run import:airtable-saints -- --write
 ```
 
 `import:airtable-saints` is dry-run by default. Use `-- --write` only after reviewing the dry-run summary. This script shares the safe missing-draft logic used by the admin panel; it should not update existing CMS saints.
+
+6. Dry-run the cleanup graph import, then write it:
+
+```sh
+npm run import:airtable-cleanup
+npm run import:airtable-cleanup -- --write
+```
 
 Public pages show only `published` saints. Imported CMS saints remain reviewable in `/admin/saints` until an editor publishes them.
 
@@ -204,7 +230,25 @@ npm run import:airtable-saints
 npm run import:airtable-saints -- --write
 ```
 
+Import reviewed Airtable cleanup graph fields into the CMS:
+
+```sh
+npm run import:airtable-cleanup
+npm run import:airtable-cleanup -- --write
+```
+
 Most import scripts support a dry-run mode by default or through `--dry-run`. Use dry runs before write runs when changing matching logic.
+
+Reset Airtable-derived CMS data before a clean reingest:
+
+```sh
+npm run reset:airtable-cms
+npm run reset:airtable-cms -- --write
+```
+
+The same reset and import sequence is available from `/admin/airtable` for the
+deployed web app. The reset and write actions are protected by the bulk delete
+password.
 
 ## CMS saint import behavior
 
@@ -246,8 +290,33 @@ Location handling:
   saint and `Place` when another relationship type already exists.
 - Airtable place cleanup now also maintains `Normalized places`, `Place keys`,
   and `Spiritual Region` helper fields in the source base. See
-  `docs/airtable-place-normalization.md` for the cleanup rules and generated
+  `docs/airtable-saints-cleanup-workstream.md` for the cleanup rules and generated
   review exports.
+- Website import logic should map normalized place labels into `Place` records
+  and `PlaceRelationship` edges. Spiritual regions should become
+  `placeKind = spiritual_region` nodes connected through the place graph, not a
+  permanent saint scalar field.
+
+Relationship, family, duplicate, and museum-section cleanup:
+
+- Airtable `Master(s)`, `Disciples`, `Partner`, and `Incarnation` fields should
+  seed `needs_review` `SaintRelationship` rows, preserving Airtable provenance
+  and avoiding overwrites of human CMS edits. Existing guru import direction is
+  preserved: disciple `fromSaintId` -> guru `toSaintId` with
+  `relationshipType = guru`.
+- Airtable `Family ID` remains a review/export label. The cleanup importer
+  creates private `SaintFamily`/`SaintFamilyMember` review rows from it; family
+  truth should still be recomputed or curated from reviewed relationship edges.
+- Airtable `Potential duplicate match` creates `DuplicateCandidate` rows, not
+  public saint relationships.
+- Museum-section fields import only into private `MuseumSection` and
+  `SaintMuseumSection` taxonomy tables. They must not expose museum, relic,
+  vitrine, shelf, or storage details publicly.
+- Airtable `Normalized places` and `Spiritual Region` create place nodes and
+  `associated_region` place graph edges. Saint-place links are associated and
+  review-first.
+- The implemented site-model infrastructure is tracked in
+  `docs/airtable-cleanup-site-model-roadmap.md`.
 
 Media handling:
 
@@ -301,6 +370,15 @@ payload itself.
 ## Known gaps and next steps
 
 - Build full edit workflows for aliases, places, traditions, biographies, sources, and image review rather than only displaying imported relationships.
+- Wire Airtable relationship cleanup fields into the expanded
+  `SaintRelationship` admin review UI, preserving existing guru-direction
+  semantics.
+- Build family graph computation and review workflows on top of `SaintFamily`
+  and `SaintFamilyMember` rather than importing Airtable `Family ID` as durable
+  truth.
+- Add duplicate-candidate review UI backed by `ReconciliationIssue` or a
+  `DuplicateCandidate`.
+- Add private museum-section assignment review workflows.
 - Add caption-assisted saint suggestion logic for API-imported Instagram items, with conservative review-first behavior.
 - Download or rehost reviewed Airtable image attachments so public pages do not depend on expiring Airtable URLs.
 - Add reconciliation UI for open duplicate/conflict issues.

@@ -45,10 +45,49 @@ enum Confidence {
 enum RelationshipType {
   guru
   disciple
+  partner
+  incarnation
+  family
+  influence
+  initiator
+  patron
+  successor
+  debate_opponent
   contemporary
   associated
   lineage
   related
+  untyped
+}
+
+enum RelationshipEvidenceStatus {
+  certain
+  probable
+  traditional
+  disputed
+  imported
+  uncategorized
+}
+
+enum FamilyMemberRole {
+  head
+  subgroup_head
+  member
+  partner
+  incarnation
+  successor
+  associated
+}
+
+enum MuseumSectionAssignmentType {
+  primary
+  alternative
+}
+
+enum MuseumSectionTier {
+  featured
+  secondary
+  tertiary
 }
 
 enum AliasType {
@@ -182,50 +221,52 @@ model VerificationToken {
 }
 
 model Saint {
-  id                   String               @id @default(cuid())
-  slug                 String               @unique
-  canonicalName        String
-  displayName          String
-  shortDescription     String?
-  biographySummary     String?
-  status               ContentStatus        @default(draft)
-  featured             Boolean              @default(false)
-  launchMvp            Boolean              @default(false)
-  hasInstagramContent  Boolean              @default(false)
-  primaryImageId       String?
-  primaryImage         MediaAsset?          @relation("PrimarySaintImage", fields: [primaryImageId], references: [id])
-  foundedTraditions    Tradition[]          @relation("TraditionFounder")
-  eraLabel             String?
-  birthDateRaw         String?
-  birthYear            Int?
-  birthMonth           Int?
-  birthDay             Int?
-  birthDatePrecision   String?
-  samadhiDateRaw       String?
-  samadhiYear          Int?
-  samadhiMonth         Int?
-  samadhiDay           Int?
-  samadhiDatePrecision String?
-  dateNotes            String?
-  seoTitle             String?
-  seoDescription       String?
-  aliases              SaintAlias[]
-  biographies          Biography[]
-  galleryImages        SaintGalleryImage[]
-  instagramItems       InstagramItemSaint[]
-  places               SaintPlace[]
-  instagramClaims      InstagramDerivedClaim[] @relation("InstagramClaimAppliedSaint")
-  relationshipsFrom    SaintRelationship[]  @relation("RelationshipFrom")
-  relationshipsTo      SaintRelationship[]  @relation("RelationshipTo")
-  traditionLineageEntries TraditionLineageSaint[] @relation("TraditionLineageSaint")
+  id                       String                  @id @default(cuid())
+  slug                     String                  @unique
+  canonicalName            String
+  displayName              String
+  shortDescription         String?
+  biographySummary         String?
+  status                   ContentStatus           @default(draft)
+  featured                 Boolean                 @default(false)
+  launchMvp                Boolean                 @default(false)
+  hasInstagramContent      Boolean                 @default(false)
+  primaryImageId           String?
+  primaryImage             MediaAsset?             @relation("PrimarySaintImage", fields: [primaryImageId], references: [id])
+  foundedTraditions        Tradition[]             @relation("TraditionFounder")
+  eraLabel                 String?
+  birthDateRaw             String?
+  birthYear                Int?
+  birthMonth               Int?
+  birthDay                 Int?
+  birthDatePrecision       String?
+  samadhiDateRaw           String?
+  samadhiYear              Int?
+  samadhiMonth             Int?
+  samadhiDay               Int?
+  samadhiDatePrecision     String?
+  dateNotes                String?
+  seoTitle                 String?
+  seoDescription           String?
+  aliases                  SaintAlias[]
+  biographies              Biography[]
+  galleryImages            SaintGalleryImage[]
+  instagramItems           InstagramItemSaint[]
+  places                   SaintPlace[]
+  instagramClaims          InstagramDerivedClaim[] @relation("InstagramClaimAppliedSaint")
+  relationshipsFrom        SaintRelationship[]     @relation("RelationshipFrom")
+  relationshipsTo          SaintRelationship[]     @relation("RelationshipTo")
+  familyMemberships        SaintFamilyMember[]
+  museumSectionAssignments SaintMuseumSection[]
+  traditionLineageEntries  TraditionLineageSaint[] @relation("TraditionLineageSaint")
   traditionLineageChildren TraditionLineageSaint[] @relation("TraditionLineageParentSaint")
-  traditions           SaintTradition[]
-  createdById          String?
-  updatedById          String?
-  createdAt            DateTime             @default(now())
-  updatedAt            DateTime             @updatedAt
-  publishedAt          DateTime?
-  reviewedAt           DateTime?
+  traditions               SaintTradition[]
+  createdById              String?
+  updatedById              String?
+  createdAt                DateTime                @default(now())
+  updatedAt                DateTime                @updatedAt
+  publishedAt              DateTime?
+  reviewedAt               DateTime?
 }
 
 model SaintAlias {
@@ -241,8 +282,8 @@ model SaintAlias {
 }
 
 model Tradition {
-  id                       String           @id @default(cuid())
-  slug                     String           @unique
+  id                       String                      @id @default(cuid())
+  slug                     String                      @unique
   name                     String
   alternateNames           String[]
   shortDescription         String?
@@ -251,20 +292,20 @@ model Tradition {
   foundingAcharyaMarkdown  String?
   keyTeachingsMarkdown     String?
   heroImageId              String?
-  heroImage                MediaAsset?      @relation("TraditionHeroImage", fields: [heroImageId], references: [id])
-  status                   ContentStatus    @default(draft)
+  heroImage                MediaAsset?                 @relation("TraditionHeroImage", fields: [heroImageId], references: [id])
+  status                   ContentStatus               @default(draft)
   founderSaintId           String?
-  founderSaint             Saint?           @relation("TraditionFounder", fields: [founderSaintId], references: [id], onDelete: SetNull)
+  founderSaint             Saint?                      @relation("TraditionFounder", fields: [founderSaintId], references: [id], onDelete: SetNull)
   founderDisplayName       String?
   origin                   String?
   eraLabel                 String?
   focus                    String?
   originPlaceId            String?
-  originPlace              Place?           @relation("TraditionOriginPlace", fields: [originPlaceId], references: [id], onDelete: SetNull)
+  originPlace              Place?                      @relation("TraditionOriginPlace", fields: [originPlaceId], references: [id], onDelete: SetNull)
   originPlaceLabel         String?
   parentTraditionId        String?
-  parentTradition          Tradition?       @relation("TraditionParent", fields: [parentTraditionId], references: [id])
-  childTraditions          Tradition[]      @relation("TraditionParent")
+  parentTradition          Tradition?                  @relation("TraditionParent", fields: [parentTraditionId], references: [id])
+  childTraditions          Tradition[]                 @relation("TraditionParent")
   seoTitle                 String?
   seoDescription           String?
   saints                   SaintTradition[]
@@ -274,31 +315,31 @@ model Tradition {
   relatedTraditions        TraditionRelatedTradition[] @relation("RelatedTraditionSource")
   relatedByTraditions      TraditionRelatedTradition[] @relation("RelatedTraditionTarget")
   scripturalBasis          TraditionScripturalBasis[]
-  createdAt                DateTime         @default(now())
-  updatedAt                DateTime         @updatedAt
+  createdAt                DateTime                    @default(now())
+  updatedAt                DateTime                    @updatedAt
   publishedAt              DateTime?
 }
 
 model Place {
-  id               String       @id @default(cuid())
-  slug             String       @unique
-  name             String
-  alternateNames   String[]
-  placeKind        PlaceKind    @default(locality)
-  placeScope       PlaceScope   @default(locality)
-  parentStateId    String?
-  parentState      Place?       @relation("PlaceState", fields: [parentStateId], references: [id], onDelete: SetNull)
-  localities       Place[]      @relation("PlaceState")
-  region           String?
-  country          String?
-  overviewMarkdown String?
-  latitude         Decimal?
-  longitude        Decimal?
-  notes            String?
-  saints           SaintPlace[]
-  relationshipsFrom PlaceRelationship[] @relation("PlaceRelationshipFrom")
-  relationshipsTo   PlaceRelationship[] @relation("PlaceRelationshipTo")
-  traditionOrigins Tradition[] @relation("TraditionOriginPlace")
+  id                     String                  @id @default(cuid())
+  slug                   String                  @unique
+  name                   String
+  alternateNames         String[]
+  placeKind              PlaceKind               @default(locality)
+  placeScope             PlaceScope              @default(locality)
+  parentStateId          String?
+  parentState            Place?                  @relation("PlaceState", fields: [parentStateId], references: [id], onDelete: SetNull)
+  localities             Place[]                 @relation("PlaceState")
+  region                 String?
+  country                String?
+  overviewMarkdown       String?
+  latitude               Decimal?
+  longitude              Decimal?
+  notes                  String?
+  saints                 SaintPlace[]
+  relationshipsFrom      PlaceRelationship[]     @relation("PlaceRelationshipFrom")
+  relationshipsTo        PlaceRelationship[]     @relation("PlaceRelationshipTo")
+  traditionOrigins       Tradition[]             @relation("TraditionOriginPlace")
   traditionRelatedPlaces TraditionRelatedPlace[]
 
   @@index([placeKind])
@@ -351,15 +392,15 @@ model SaintTradition {
 }
 
 model TraditionLineageSaint {
-  id             String     @id @default(cuid())
-  traditionId    String
-  tradition      Tradition  @relation(fields: [traditionId], references: [id], onDelete: Cascade)
-  saintId        String
-  saint          Saint      @relation("TraditionLineageSaint", fields: [saintId], references: [id], onDelete: Cascade)
-  sortOrder      Int        @default(0)
-  roleLabel      String?
-  parentSaintId  String?
-  parentSaint    Saint?     @relation("TraditionLineageParentSaint", fields: [parentSaintId], references: [id], onDelete: SetNull)
+  id            String    @id @default(cuid())
+  traditionId   String
+  tradition     Tradition @relation(fields: [traditionId], references: [id], onDelete: Cascade)
+  saintId       String
+  saint         Saint     @relation("TraditionLineageSaint", fields: [saintId], references: [id], onDelete: Cascade)
+  sortOrder     Int       @default(0)
+  roleLabel     String?
+  parentSaintId String?
+  parentSaint   Saint?    @relation("TraditionLineageParentSaint", fields: [parentSaintId], references: [id], onDelete: SetNull)
 
   @@unique([traditionId, saintId])
   @@index([traditionId, sortOrder])
@@ -367,80 +408,219 @@ model TraditionLineageSaint {
 }
 
 model TraditionRelatedTradition {
-  id                  String     @id @default(cuid())
-  traditionId         String
-  tradition           Tradition  @relation("RelatedTraditionSource", fields: [traditionId], references: [id], onDelete: Cascade)
-  relatedTraditionId  String
-  relatedTradition    Tradition  @relation("RelatedTraditionTarget", fields: [relatedTraditionId], references: [id], onDelete: Cascade)
-  sortOrder           Int        @default(0)
-  label               String?
+  id                 String    @id @default(cuid())
+  traditionId        String
+  tradition          Tradition @relation("RelatedTraditionSource", fields: [traditionId], references: [id], onDelete: Cascade)
+  relatedTraditionId String
+  relatedTradition   Tradition @relation("RelatedTraditionTarget", fields: [relatedTraditionId], references: [id], onDelete: Cascade)
+  sortOrder          Int       @default(0)
+  label              String?
 
   @@unique([traditionId, relatedTraditionId])
   @@index([traditionId, sortOrder])
 }
 
 model TraditionRelatedPlace {
-  id           String     @id @default(cuid())
-  traditionId  String
-  tradition    Tradition  @relation(fields: [traditionId], references: [id], onDelete: Cascade)
-  placeId      String
-  place        Place      @relation(fields: [placeId], references: [id], onDelete: Cascade)
-  sortOrder    Int        @default(0)
-  label        String?
+  id          String    @id @default(cuid())
+  traditionId String
+  tradition   Tradition @relation(fields: [traditionId], references: [id], onDelete: Cascade)
+  placeId     String
+  place       Place     @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  sortOrder   Int       @default(0)
+  label       String?
 
   @@unique([traditionId, placeId])
   @@index([traditionId, sortOrder])
 }
 
 model TraditionScripturalBasis {
-  id           String     @id @default(cuid())
-  traditionId  String
-  tradition    Tradition  @relation(fields: [traditionId], references: [id], onDelete: Cascade)
-  title        String
-  sourceId     String?
-  source       Source?    @relation(fields: [sourceId], references: [id], onDelete: SetNull)
-  url          String?
-  note         String?
-  sortOrder    Int        @default(0)
+  id          String    @id @default(cuid())
+  traditionId String
+  tradition   Tradition @relation(fields: [traditionId], references: [id], onDelete: Cascade)
+  title       String
+  sourceId    String?
+  source      Source?   @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+  url         String?
+  note        String?
+  sortOrder   Int       @default(0)
 
   @@index([traditionId, sortOrder])
   @@index([sourceId])
 }
 
 model SaintRelationship {
-  id               String           @id @default(cuid())
-  fromSaintId      String
-  fromSaint        Saint            @relation("RelationshipFrom", fields: [fromSaintId], references: [id], onDelete: Cascade)
-  toSaintId        String
-  toSaint          Saint            @relation("RelationshipTo", fields: [toSaintId], references: [id], onDelete: Cascade)
-  relationshipType RelationshipType
-  confidence       Confidence       @default(medium)
-  notes            String?
+  id                  String                     @id @default(cuid())
+  fromSaintId         String
+  fromSaint           Saint                      @relation("RelationshipFrom", fields: [fromSaintId], references: [id], onDelete: Cascade)
+  toSaintId           String
+  toSaint             Saint                      @relation("RelationshipTo", fields: [toSaintId], references: [id], onDelete: Cascade)
+  relationshipType    RelationshipType
+  status              ContentStatus              @default(needs_review)
+  evidenceStatus      RelationshipEvidenceStatus @default(imported)
+  confidence          Confidence                 @default(medium)
+  publicVisible       Boolean                    @default(false)
+  displayOrder        Int                        @default(0)
+  publicNote          String?
+  notes               String?
+  internalNotes       String?
+  sourceId            String?
+  source              Source?                    @relation(fields: [sourceId], references: [id])
+  externalRecordId    String?
+  externalRecord      ExternalRecord?            @relation(fields: [externalRecordId], references: [id], onDelete: SetNull)
+  importJobId         String?
+  importJob           AirtableImportJob?         @relation(fields: [importJobId], references: [id], onDelete: SetNull)
+  relationshipSources SaintRelationshipSource[]
+  createdAt           DateTime                   @default(now())
+  updatedAt           DateTime                   @updatedAt
+
+  @@index([fromSaintId, relationshipType, status])
+  @@index([toSaintId, relationshipType, status])
+  @@index([status, publicVisible])
+  @@index([externalRecordId])
+  @@index([importJobId])
+}
+
+model SaintRelationshipSource {
+  id               String            @id @default(cuid())
+  relationshipId   String
+  relationship     SaintRelationship @relation(fields: [relationshipId], references: [id], onDelete: Cascade)
   sourceId         String?
-  source           Source?          @relation(fields: [sourceId], references: [id])
+  source           Source?           @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  externalRecordId String?
+  externalRecord   ExternalRecord?   @relation(fields: [externalRecordId], references: [id], onDelete: Cascade)
+  notes            String?
+  createdAt        DateTime          @default(now())
+
+  @@unique([relationshipId, sourceId])
+  @@unique([relationshipId, externalRecordId])
+  @@index([sourceId])
+  @@index([externalRecordId])
+}
+
+model SaintFamily {
+  id                  String              @id @default(cuid())
+  slug                String              @unique
+  displayName         String
+  descriptionMarkdown String?
+  status              ContentStatus       @default(needs_review)
+  publicVisible       Boolean             @default(false)
+  graphVersion        String?
+  computedFrom        String?
+  sourceExternalId    String?
+  notes               String?
+  members             SaintFamilyMember[]
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  @@index([status, publicVisible])
+}
+
+model SaintFamilyMember {
+  id               String             @id @default(cuid())
+  familyId         String
+  family           SaintFamily        @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  saintId          String
+  saint            Saint              @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  role             FamilyMemberRole   @default(member)
+  tier             MuseumSectionTier?
+  sortOrder        Int                @default(0)
+  notes            String?
+  externalRecordId String?
+  externalRecord   ExternalRecord?    @relation(fields: [externalRecordId], references: [id], onDelete: SetNull)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  @@unique([familyId, saintId])
+  @@index([saintId])
+  @@index([familyId, sortOrder])
+  @@index([externalRecordId])
+}
+
+model DuplicateCandidate {
+  id                    String               @id @default(cuid())
+  entityType            String
+  entityId              String?
+  candidateEntityId     String?
+  sourceType            String?
+  sourceExternalId      String?
+  confidence            Confidence           @default(medium)
+  evidenceJson          Json?
+  message               String?
+  status                ReconciliationStatus @default(open)
+  reconciliationIssueId String?
+  reconciliationIssue   ReconciliationIssue? @relation(fields: [reconciliationIssueId], references: [id], onDelete: SetNull)
+  reviewedById          String?
+  resolvedAt            DateTime?
+  resolutionNotes       String?
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+
+  @@unique([entityType, entityId, candidateEntityId, sourceType, sourceExternalId])
+  @@index([entityType, entityId, status])
+  @@index([candidateEntityId])
+  @@index([reconciliationIssueId])
+}
+
+model MuseumSection {
+  id                  String               @id @default(cuid())
+  slug                String               @unique
+  name                String
+  descriptionMarkdown String?
+  sortOrder           Int                  @default(0)
+  status              ContentStatus        @default(needs_review)
+  publicVisible       Boolean              @default(false)
+  assignments         SaintMuseumSection[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  @@index([status, publicVisible, sortOrder])
+}
+
+model SaintMuseumSection {
+  id                    String                      @id @default(cuid())
+  saintId               String
+  saint                 Saint                       @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  museumSectionId       String
+  museumSection         MuseumSection               @relation(fields: [museumSectionId], references: [id], onDelete: Cascade)
+  assignmentType        MuseumSectionAssignmentType @default(primary)
+  tier                  MuseumSectionTier           @default(secondary)
+  confidence            Confidence                  @default(medium)
+  rationale             String?
+  internalPlacementNote String?
+  status                ContentStatus               @default(needs_review)
+  externalRecordId      String?
+  externalRecord        ExternalRecord?             @relation(fields: [externalRecordId], references: [id], onDelete: SetNull)
+  createdAt             DateTime                    @default(now())
+  updatedAt             DateTime                    @updatedAt
+
+  @@unique([saintId, museumSectionId, assignmentType])
+  @@index([saintId, assignmentType])
+  @@index([museumSectionId, assignmentType, tier])
+  @@index([status])
+  @@index([externalRecordId])
 }
 
 model MediaAsset {
-  id                 String              @id @default(cuid())
-  url                String
-  storageKey         String?
-  altText            String?
-  caption            String?
-  credit             String?
-  sourceUrl          String?
-  width              Int?
-  height             Int?
-  mimeType           String?
-  homeBannerConfigs  HomePageConfig[]    @relation("HomeBannerImage")
-  primaryForSaints   Saint[]             @relation("PrimarySaintImage")
-  heroForTraditions   Tradition[]         @relation("TraditionHeroImage")
-  saintGalleryImages SaintGalleryImage[]
+  id                     String                  @id @default(cuid())
+  url                    String
+  storageKey             String?
+  altText                String?
+  caption                String?
+  credit                 String?
+  sourceUrl              String?
+  width                  Int?
+  height                 Int?
+  mimeType               String?
+  homeBannerConfigs      HomePageConfig[]        @relation("HomeBannerImage")
+  primaryForSaints       Saint[]                 @relation("PrimarySaintImage")
+  heroForTraditions      Tradition[]             @relation("TraditionHeroImage")
+  saintGalleryImages     SaintGalleryImage[]
   traditionGalleryImages TraditionGalleryImage[]
-  createdAt          DateTime            @default(now())
+  createdAt              DateTime                @default(now())
 }
 
 model HomePageConfig {
-  id                   String       @id @default("home")
+  id                   String      @id @default("home")
   heroEyebrow          String?
   heroTitle            String?
   heroBody             String?
@@ -449,64 +629,64 @@ model HomePageConfig {
   heroSecondaryLabel   String?
   heroSecondaryHref    String?
   bannerImageId        String?
-  bannerImage          MediaAsset?  @relation("HomeBannerImage", fields: [bannerImageId], references: [id], onDelete: SetNull)
-  bannerFocalX         Float        @default(50)
-  bannerFocalY         Float        @default(50)
-  bannerFocalWidth     Float        @default(60)
-  bannerFocalHeight    Float        @default(60)
-  featuredSaintIds     String[]     @default([])
-  featuredTraditionIds String[]     @default([])
+  bannerImage          MediaAsset? @relation("HomeBannerImage", fields: [bannerImageId], references: [id], onDelete: SetNull)
+  bannerFocalX         Float       @default(50)
+  bannerFocalY         Float       @default(50)
+  bannerFocalWidth     Float       @default(60)
+  bannerFocalHeight    Float       @default(60)
+  featuredSaintIds     String[]    @default([])
+  featuredTraditionIds String[]    @default([])
   quoteEyebrow         String?
   quoteText            String?
   quoteAttribution     String?
-  createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
 }
 
 model SaintGalleryImage {
-  id           String     @id @default(cuid())
-  saintId      String
-  saint        Saint      @relation(fields: [saintId], references: [id], onDelete: Cascade)
-  mediaAssetId String
-  mediaAsset   MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
-  sortOrder    Int        @default(0)
+  id            String     @id @default(cuid())
+  saintId       String
+  saint         Saint      @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  mediaAssetId  String
+  mediaAsset    MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  sortOrder     Int        @default(0)
   publicVisible Boolean    @default(true)
 }
 
 model TraditionGalleryImage {
-  id           String     @id @default(cuid())
-  traditionId  String
-  tradition    Tradition  @relation(fields: [traditionId], references: [id], onDelete: Cascade)
-  mediaAssetId String
-  mediaAsset   MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
-  sortOrder    Int        @default(0)
-  publicVisible Boolean   @default(true)
+  id            String     @id @default(cuid())
+  traditionId   String
+  tradition     Tradition  @relation(fields: [traditionId], references: [id], onDelete: Cascade)
+  mediaAssetId  String
+  mediaAsset    MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  sortOrder     Int        @default(0)
+  publicVisible Boolean    @default(true)
 
   @@unique([traditionId, mediaAssetId])
   @@index([traditionId, sortOrder])
 }
 
 model InstagramItem {
-  id                  String               @id @default(cuid())
-  instagramUrl        String               @unique
+  id                  String                  @id @default(cuid())
+  instagramUrl        String                  @unique
   instagramShortcode  String?
-  type                InstagramType        @default(unknown)
+  type                InstagramType           @default(unknown)
   captionText         String?
   extractedSaintName  String?
   firstPageText       String?
   firstPageMetadata   Json?
   postedAt            DateTime?
   thumbnailUrl        String?
-  status              MatchStatus          @default(imported)
+  status              MatchStatus             @default(imported)
   matchConfidence     Confidence?
   sourceImportBatchId String?
-  sourceImportBatch   ImportBatch?         @relation(fields: [sourceImportBatchId], references: [id])
+  sourceImportBatch   ImportBatch?            @relation(fields: [sourceImportBatchId], references: [id])
   notes               String?
   mediaAssets         InstagramMediaAsset[]
   saints              InstagramItemSaint[]
   derivedClaims       InstagramDerivedClaim[]
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
 }
 
 model InstagramMediaAsset {
@@ -527,23 +707,23 @@ model InstagramMediaAsset {
 }
 
 model InstagramDerivedClaim {
-  id              String                    @id @default(cuid())
-  instagramItemId String
-  instagramItem   InstagramItem             @relation(fields: [instagramItemId], references: [id], onDelete: Cascade)
-  claimType       InstagramDerivedClaimType
-  rawValue        String
-  normalizedValue String?
+  id               String                    @id @default(cuid())
+  instagramItemId  String
+  instagramItem    InstagramItem             @relation(fields: [instagramItemId], references: [id], onDelete: Cascade)
+  claimType        InstagramDerivedClaimType
+  rawValue         String
+  normalizedValue  String?
   targetEntityType String?
   targetEntityId   String?
-  sourceField     String?
-  status          MatchStatus               @default(suggested)
-  confidence      Confidence                @default(medium)
-  appliedSaintId  String?
-  appliedSaint    Saint?                    @relation("InstagramClaimAppliedSaint", fields: [appliedSaintId], references: [id], onDelete: SetNull)
-  appliedAt       DateTime?
-  notes           String?
-  createdAt       DateTime                  @default(now())
-  updatedAt       DateTime                  @updatedAt
+  sourceField      String?
+  status           MatchStatus               @default(suggested)
+  confidence       Confidence                @default(medium)
+  appliedSaintId   String?
+  appliedSaint     Saint?                    @relation("InstagramClaimAppliedSaint", fields: [appliedSaintId], references: [id], onDelete: SetNull)
+  appliedAt        DateTime?
+  notes            String?
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
 
   @@index([instagramItemId, claimType])
   @@index([status])
@@ -587,16 +767,17 @@ model Biography {
 }
 
 model Source {
-  id              String              @id @default(cuid())
-  title           String
-  author          String?
-  url             String?
-  publisher       String?
-  publicationYear Int?
-  sourceType      SourceType          @default(other)
-  notes           String?
-  relationships   SaintRelationship[]
-  contentSources  ContentSource[]
+  id                       String                     @id @default(cuid())
+  title                    String
+  author                   String?
+  url                      String?
+  publisher                String?
+  publicationYear          Int?
+  sourceType               SourceType                 @default(other)
+  notes                    String?
+  relationships            SaintRelationship[]
+  relationshipSources      SaintRelationshipSource[]
+  contentSources           ContentSource[]
   traditionScripturalBasis TraditionScripturalBasis[]
 }
 
@@ -611,66 +792,76 @@ model ContentSource {
 }
 
 model ImportBatch {
-  id                   String                 @id @default(cuid())
-  sourceType           ImportSourceType
-  sourceName           String?
-  startedAt            DateTime               @default(now())
-  completedAt          DateTime?
-  status               String
-  rawSummary           String?
-  notes                String?
-  instagramItems       InstagramItem[]
-  airtableRecords      AirtableMirrorRecord[]
+  id              String                 @id @default(cuid())
+  sourceType      ImportSourceType
+  sourceName      String?
+  startedAt       DateTime               @default(now())
+  completedAt     DateTime?
+  status          String
+  rawSummary      String?
+  notes           String?
+  instagramItems  InstagramItem[]
+  airtableRecords AirtableMirrorRecord[]
 }
 
 model InstagramIngestionJob {
-  id                       String    @id @default(cuid())
-  mode                     String
-  status                   String
-  sourceName               String?
-  createdByEmail           String?
-  totalRows                Int       @default(0)
-  processedRows            Int       @default(0)
-  importedRows             Int       @default(0)
-  skippedRows              Int       @default(0)
-  updatedRows              Int       @default(0)
-  failedRows               Int       @default(0)
-  mediaCachedRows          Int       @default(0)
-  incompleteRefetchedRows  Int       @default(0)
-  message                  String?
-  error                    String?
-  rawSummary               Json?
-  startedAt                DateTime?
-  completedAt              DateTime?
-  createdAt                DateTime  @default(now())
-  updatedAt                DateTime  @updatedAt
+  id                      String    @id @default(cuid())
+  mode                    String
+  status                  String
+  sourceName              String?
+  createdByEmail          String?
+  totalRows               Int       @default(0)
+  processedRows           Int       @default(0)
+  importedRows            Int       @default(0)
+  skippedRows             Int       @default(0)
+  updatedRows             Int       @default(0)
+  failedRows              Int       @default(0)
+  mediaCachedRows         Int       @default(0)
+  incompleteRefetchedRows Int       @default(0)
+  message                 String?
+  error                   String?
+  rawSummary              Json?
+  startedAt               DateTime?
+  completedAt             DateTime?
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
 
   @@index([status, createdAt])
   @@index([mode, createdAt])
 }
 
 model AirtableImportJob {
-  id                            String    @id @default(cuid())
-  mode                          String
-  status                        String
-  sourceName                    String?
-  createdByEmail                String?
-  mirrorRowsChecked             Int       @default(0)
-  existingCmsSaintsSkipped      Int       @default(0)
-  newDraftSaintsCreated         Int       @default(0)
-  slugNameCollisionsSkipped     Int       @default(0)
-  guruRelationshipsCreated      Int       @default(0)
-  guruRelationshipsExisting     Int       @default(0)
-  guruRelationshipsUnresolved   Int       @default(0)
-  skippedSelfRelationships      Int       @default(0)
-  failedRows                    Int       @default(0)
-  message                       String?
-  error                         String?
-  rawSummary                    Json?
-  startedAt                     DateTime?
-  completedAt                   DateTime?
-  createdAt                     DateTime  @default(now())
-  updatedAt                     DateTime  @updatedAt
+  id                               String              @id @default(cuid())
+  mode                             String
+  status                           String
+  sourceName                       String?
+  createdByEmail                   String?
+  mirrorRowsChecked                Int                 @default(0)
+  existingCmsSaintsSkipped         Int                 @default(0)
+  newDraftSaintsCreated            Int                 @default(0)
+  slugNameCollisionsSkipped        Int                 @default(0)
+  guruRelationshipsCreated         Int                 @default(0)
+  guruRelationshipsExisting        Int                 @default(0)
+  guruRelationshipsUnresolved      Int                 @default(0)
+  relationshipCandidatesCreated    Int                 @default(0)
+  relationshipCandidatesExisting   Int                 @default(0)
+  relationshipCandidatesUnresolved Int                 @default(0)
+  placeRelationshipsCreated        Int                 @default(0)
+  placeRelationshipsExisting       Int                 @default(0)
+  familyGroupsCreated              Int                 @default(0)
+  familyMembershipsCreated         Int                 @default(0)
+  duplicateCandidatesCreated       Int                 @default(0)
+  museumSectionAssignmentsCreated  Int                 @default(0)
+  skippedSelfRelationships         Int                 @default(0)
+  failedRows                       Int                 @default(0)
+  message                          String?
+  error                            String?
+  rawSummary                       Json?
+  saintRelationships               SaintRelationship[]
+  startedAt                        DateTime?
+  completedAt                      DateTime?
+  createdAt                        DateTime            @default(now())
+  updatedAt                        DateTime            @updatedAt
 
   @@index([status, createdAt])
   @@index([mode, createdAt])
@@ -685,31 +876,35 @@ model AdminSecret {
 }
 
 model ExternalRecord {
-  id             String   @id @default(cuid())
-  sourceType     String
-  externalId     String
-  entityType     String
-  entityId       String?
-  rawPayloadJson Json
-  importedAt     DateTime @default(now())
-  lastSeenAt     DateTime @default(now())
+  id                       String                    @id @default(cuid())
+  sourceType               String
+  externalId               String
+  entityType               String
+  entityId                 String?
+  rawPayloadJson           Json
+  saintRelationships       SaintRelationship[]
+  saintRelationshipSources SaintRelationshipSource[]
+  saintFamilyMembers       SaintFamilyMember[]
+  saintMuseumSections      SaintMuseumSection[]
+  importedAt               DateTime                  @default(now())
+  lastSeenAt               DateTime                  @default(now())
 
   @@unique([sourceType, externalId])
 }
 
 model AirtableMirrorRecord {
-  id                            String                @id @default(cuid())
-  baseId                        String
-  tableIdOrName                 String
-  recordId                      String
-  airtableCreatedTime           DateTime?
-  rawFieldsJson                 Json
-  rawPayloadJson                Json
-  sourceImportBatchId           String?
-  sourceImportBatch             ImportBatch?          @relation(fields: [sourceImportBatchId], references: [id], onDelete: SetNull)
-  firstSeenAt                   DateTime              @default(now())
-  lastSeenAt                    DateTime              @default(now())
-  importedAt                    DateTime              @default(now())
+  id                  String       @id @default(cuid())
+  baseId              String
+  tableIdOrName       String
+  recordId            String
+  airtableCreatedTime DateTime?
+  rawFieldsJson       Json
+  rawPayloadJson      Json
+  sourceImportBatchId String?
+  sourceImportBatch   ImportBatch? @relation(fields: [sourceImportBatchId], references: [id], onDelete: SetNull)
+  firstSeenAt         DateTime     @default(now())
+  lastSeenAt          DateTime     @default(now())
+  importedAt          DateTime     @default(now())
 
   @@unique([baseId, tableIdOrName, recordId])
   @@index([tableIdOrName])
@@ -717,18 +912,19 @@ model AirtableMirrorRecord {
 }
 
 model ReconciliationIssue {
-  id             String               @id @default(cuid())
-  issueType      String
-  severity       String
-  entityType     String
-  entityId       String?
-  message        String
-  rawValue       String?
-  suggestedValue String?
-  status         ReconciliationStatus @default(open)
-  resolvedById   String?
-  resolvedAt     DateTime?
-  createdAt      DateTime             @default(now())
+  id                  String               @id @default(cuid())
+  issueType           String
+  severity            String
+  entityType          String
+  entityId            String?
+  message             String
+  rawValue            String?
+  suggestedValue      String?
+  status              ReconciliationStatus @default(open)
+  duplicateCandidates DuplicateCandidate[]
+  resolvedById        String?
+  resolvedAt          DateTime?
+  createdAt           DateTime             @default(now())
 }
 
 model AuditEvent {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Route } from "next";
-import { Search, Sparkles } from "lucide-react";
+import { GitBranch, Map, Search } from "lucide-react";
+import { museumBridgeCards, museumFlowZones } from "@/lib/museum-layout-groups";
 import { getMuseumProposalData, museumSectionSlug, searchMuseumPlacements } from "@/lib/museum-proposals";
 
 type MuseumAdminPageProps = {
@@ -78,33 +79,50 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
         ) : null}
       </section>
 
-      <section className="museum-admin-panel">
+      <section className="museum-admin-panel museum-flow-panel" aria-labelledby="museum-flow-title">
         <div className="museum-admin-section-heading">
           <div>
-            <div className="museum-admin-kicker">Final sections</div>
-            <h2>Browse the proposal</h2>
+            <div className="museum-admin-kicker">Visitor circuit</div>
+            <h2 id="museum-flow-title">Proposed museum flow and bridges</h2>
           </div>
+          <Map aria-hidden="true" size={22} />
         </div>
-        <div className="museum-section-grid">
-          {sections.map((section) => (
-            <Link className="museum-section-card interactive-surface" href={`/museumadmin/${section.slug}` as Route} key={section.slug}>
-              <div className="museum-section-card__icon">
-                <Sparkles aria-hidden="true" size={18} />
+
+        <ol className="museum-flow-zones" aria-label="Proposed visitor flow">
+          {museumFlowZones.map((zone, index) => (
+            <li className="museum-flow-zone" key={zone.title}>
+              <div className="museum-flow-zone__index">{String(index + 1).padStart(2, "0")}</div>
+              <div className="museum-flow-zone__content">
+                <h3>{zone.title}</h3>
+                <p>{zone.summary}</p>
+                <div className="museum-flow-zone__sections">
+                  {zone.sections.map((section) => (
+                    <Link href={`/museumadmin/${museumSectionSlug(section)}` as Route} key={section}>
+                      {section}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div className="museum-bridge-map" aria-label="Bridge traditions that connect the visitor circuit">
+          {museumBridgeCards.map((bridge) => (
+            <article className="museum-bridge-card" key={bridge.title}>
+              <div className="museum-bridge-card__icon">
+                <GitBranch aria-hidden="true" size={17} />
               </div>
               <div>
-                <h3>{section.name}</h3>
-                <p>{section.idea}</p>
+                <h3>{bridge.title}</h3>
+                <p>{bridge.summary}</p>
+                <small>{bridge.evidence}</small>
               </div>
-              <div className="museum-section-card__stats">
-                <span>{section.total} saints</span>
-                <span>{section.featured} primary</span>
-                <span>{section.secondary} secondary</span>
-                <span>{section.tertiary} tertiary</span>
-              </div>
-            </Link>
+            </article>
           ))}
         </div>
       </section>
+
     </div>
   );
 }

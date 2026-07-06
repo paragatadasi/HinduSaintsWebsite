@@ -1,3 +1,4 @@
+import { pathToFileURL } from "node:url";
 import { Prisma } from "../lib/generated/prisma/client";
 import { db } from "../lib/db";
 
@@ -22,6 +23,14 @@ type ImportOptions = {
   tables: string[];
   view?: string;
   dryRun: boolean;
+};
+
+export type AirtableMirrorImportSummary = {
+  baseId: string;
+  tables: Record<string, number>;
+  dryRun: boolean;
+  startedAt: string;
+  completedAt: string;
 };
 
 const AIRTABLE_API_URL = "https://api.airtable.com/v0";
@@ -207,8 +216,7 @@ async function mirrorRecord(options: ImportOptions, table: string, record: Airta
   ]);
 }
 
-async function main() {
-  const options = getOptions();
+export async function runAirtableMirrorImport(options: ImportOptions): Promise<AirtableMirrorImportSummary> {
   const startedAt = new Date();
   const summary: Record<string, number> = {};
 
@@ -221,7 +229,13 @@ async function main() {
       summary[table] = records.length;
       console.log(`[dry-run] ${table}: fetched ${records.length} records`);
     }
-    return;
+    return {
+      baseId: options.baseId,
+      tables: summary,
+      dryRun: true,
+      startedAt: startedAt.toISOString(),
+      completedAt: new Date().toISOString()
+    };
   }
 
   const batch = await db.importBatch.create({
@@ -258,6 +272,14 @@ async function main() {
         })
       }
     });
+
+    return {
+      baseId: options.baseId,
+      tables: summary,
+      dryRun: false,
+      startedAt: startedAt.toISOString(),
+      completedAt: new Date().toISOString()
+    };
   } catch (error) {
     await db.importBatch.update({
       where: { id: batch.id },
@@ -276,11 +298,17 @@ async function main() {
   }
 }
 
-main()
-  .catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
-    await db.$disconnect();
-  });
+async function main() {
+  await runAirtableMirrorImport(getOptions());
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main()
+    .catch((error) => {
+      console.error(error);
+      process.exitCode = 1;
+    })
+    .finally(async () => {
+      await db.$disconnect();
+    });
+}

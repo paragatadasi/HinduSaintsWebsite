@@ -6,7 +6,7 @@ import { serializeAirtableImportJob } from "@/lib/airtable-import-job-view";
 import { db } from "@/lib/db";
 
 const runningStatuses = ["queued", "running"];
-const airtableImportIntentSchema = z.enum(["check", "import_missing_drafts", "import_guru_relationships"]);
+const airtableImportIntentSchema = z.enum(["check", "import_missing_drafts", "import_guru_relationships", "import_airtable_cleanup"]);
 
 export async function GET() {
   const session = await auth();

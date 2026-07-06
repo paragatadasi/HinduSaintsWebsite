@@ -1,4 +1,4 @@
-import { Prisma, type ContentStatus, type PlaceType } from "@/lib/generated/prisma/client";
+import { Prisma, type Confidence, type ContentStatus, type PlaceType, type RelationshipType } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
 import { buildEraLabel, parseImportedDate } from "@/lib/import-dates";
 import { getKnownPlaceScope, getKnownStateSlug } from "@/lib/place-taxonomy";
@@ -57,6 +57,63 @@ type GuruRelationshipPlan = {
   guruSaint?: SaintReference;
 };
 
+type AirtableSaintRow = Awaited<ReturnType<typeof findAirtableSaintRows>>[number];
+
+type ExternalSaintReference = SaintReference & {
+  externalRecordId: string;
+  externalId: string;
+};
+
+type CleanupRelationshipPlan = {
+  sourceRecordId: string;
+  sourceName?: string;
+  fromRecordId: string;
+  fromName?: string;
+  fromSaint?: ExternalSaintReference;
+  toRecordId: string;
+  toName?: string;
+  toSaint?: ExternalSaintReference;
+  relationshipType: RelationshipType;
+  sourceField: string;
+};
+
+type CleanupFamilyPlan = {
+  recordId: string;
+  airtableName?: string;
+  saint?: ExternalSaintReference;
+  familyId: string;
+};
+
+type CleanupDuplicatePlan = {
+  sourceRecordId: string;
+  sourceName?: string;
+  sourceSaint?: ExternalSaintReference;
+  candidateRecordId: string;
+  candidateName?: string;
+  candidateSaint?: ExternalSaintReference;
+  sourceExternalId: string;
+};
+
+type CleanupMuseumSectionPlan = {
+  recordId: string;
+  airtableName?: string;
+  saint?: ExternalSaintReference;
+  sectionName: string;
+  assignmentType: "primary" | "alternative";
+  tier: "featured" | "secondary" | "tertiary";
+  confidence: Confidence;
+  rationale?: string;
+  internalPlacementNote?: string;
+};
+
+type CleanupPlacePlan = {
+  recordId: string;
+  airtableName?: string;
+  saint?: ExternalSaintReference;
+  placeName: string;
+  spiritualRegions: string[];
+};
+
 export type AirtableImportCollisionDetail = {
   recordId: string;
   airtableName?: string;
@@ -100,7 +157,17 @@ export type AirtableImportErrorDetail = {
   message: string;
 };
 
-export type AirtableImportMode = "check" | "import_missing_drafts" | "import_guru_relationships";
+export type AirtableCleanupIssueDetail = {
+  recordId: string;
+  airtableName?: string;
+  relatedRecordId?: string;
+  relatedName?: string;
+  field: string;
+  reason: "unmapped_saint" | "unmapped_related_saint" | "self_relationship" | "missing_value";
+  message: string;
+};
+
+export type AirtableImportMode = "check" | "import_missing_drafts" | "import_guru_relationships" | "import_airtable_cleanup";
 
 export type AirtableSaintImportSummary = {
   mode: "check" | "import_missing_drafts";
@@ -124,6 +191,27 @@ export type AirtableGuruRelationshipSummary = {
   errors: AirtableImportErrorDetail[];
 };
 
+export type AirtableCleanupImportSummary = {
+  mode: "import_airtable_cleanup";
+  mirrorRowsChecked: number;
+  relationshipCandidatesCreated: number;
+  relationshipCandidatesExisting: number;
+  relationshipCandidatesUnresolved: number;
+  placeRelationshipsCreated: number;
+  placeRelationshipsExisting: number;
+  familyGroupsCreated: number;
+  familyGroupsExisting: number;
+  familyMembershipsCreated: number;
+  familyMembershipsExisting: number;
+  duplicateCandidatesCreated: number;
+  duplicateCandidatesExisting: number;
+  museumSectionAssignmentsCreated: number;
+  museumSectionAssignmentsExisting: number;
+  skippedSelfRelationships: number;
+  issues: AirtableCleanupIssueDetail[];
+  errors: AirtableImportErrorDetail[];
+};
+
 export type AirtableSaintImportOptions = {
   dryRun?: boolean;
   limit?: number;
@@ -133,6 +221,7 @@ const AIRTABLE_TABLE = "Saints";
 const IMPORTER_SOURCE = "airtable_saints_cms_import";
 const MISSING_DRAFT_STATUS: ContentStatus = "draft";
 const GURU_IMPORTER_NOTE = "Imported from Airtable Master(s) field; pending editorial review.";
+const CLEANUP_IMPORTER_NOTE = "Imported from Airtable cleanup fields; pending editorial review.";
 
 const HONORIFIC_PREFIXES = [
   "108",
@@ -191,6 +280,12 @@ export async function runAirtableImportJob(jobId: string) {
       return;
     }
 
+    if (job.mode === "import_airtable_cleanup") {
+      const summary = await runAirtableCleanupImport({ dryRun: false });
+      await completeAirtableJob(jobId, summary);
+      return;
+    }
+
     const summary = await runAirtableSaintsMissingDraftImport({
       dryRun: job.mode !== "import_missing_drafts"
     });
@@ -226,20 +321,30 @@ export async function runAirtableSaintsMissingDraftImport(options: AirtableSaint
 
 async function completeAirtableJob(
   jobId: string,
-  summary: AirtableSaintImportSummary | AirtableGuruRelationshipSummary
+  summary: AirtableSaintImportSummary | AirtableGuruRelationshipSummary | AirtableCleanupImportSummary
 ) {
   const isGuruSummary = "guruRelationshipsCreated" in summary;
+  const isCleanupSummary = "relationshipCandidatesCreated" in summary;
   await updateAirtableJob(jobId, {
     status: "completed",
     completedAt: new Date(),
     mirrorRowsChecked: summary.mirrorRowsChecked,
-    existingCmsSaintsSkipped: isGuruSummary ? undefined : summary.existingCmsSaintsSkipped,
-    newDraftSaintsCreated: isGuruSummary ? undefined : summary.newDraftSaintsCreated,
-    slugNameCollisionsSkipped: isGuruSummary ? undefined : summary.slugNameCollisionsSkipped,
+    existingCmsSaintsSkipped: isGuruSummary || isCleanupSummary ? undefined : summary.existingCmsSaintsSkipped,
+    newDraftSaintsCreated: isGuruSummary || isCleanupSummary ? undefined : summary.newDraftSaintsCreated,
+    slugNameCollisionsSkipped: isGuruSummary || isCleanupSummary ? undefined : summary.slugNameCollisionsSkipped,
     guruRelationshipsCreated: isGuruSummary ? summary.guruRelationshipsCreated : undefined,
     guruRelationshipsExisting: isGuruSummary ? summary.guruRelationshipsExisting : undefined,
     guruRelationshipsUnresolved: isGuruSummary ? summary.guruRelationshipsUnresolved : undefined,
-    skippedSelfRelationships: isGuruSummary ? summary.skippedSelfRelationships : undefined,
+    relationshipCandidatesCreated: isCleanupSummary ? summary.relationshipCandidatesCreated : undefined,
+    relationshipCandidatesExisting: isCleanupSummary ? summary.relationshipCandidatesExisting : undefined,
+    relationshipCandidatesUnresolved: isCleanupSummary ? summary.relationshipCandidatesUnresolved : undefined,
+    placeRelationshipsCreated: isCleanupSummary ? summary.placeRelationshipsCreated : undefined,
+    placeRelationshipsExisting: isCleanupSummary ? summary.placeRelationshipsExisting : undefined,
+    familyGroupsCreated: isCleanupSummary ? summary.familyGroupsCreated : undefined,
+    familyMembershipsCreated: isCleanupSummary ? summary.familyMembershipsCreated : undefined,
+    duplicateCandidatesCreated: isCleanupSummary ? summary.duplicateCandidatesCreated : undefined,
+    museumSectionAssignmentsCreated: isCleanupSummary ? summary.museumSectionAssignmentsCreated : undefined,
+    skippedSelfRelationships: isGuruSummary || isCleanupSummary ? summary.skippedSelfRelationships : undefined,
     failedRows: summary.errors.length,
     rawSummary: toInputJson(summary),
     error: summary.errors.length > 0 ? summary.errors.map((item) => `${item.recordId}: ${item.message}`).join("\n") : null,
@@ -278,6 +383,55 @@ export async function runAirtableGuruRelationshipImport(options: AirtableSaintIm
       }
     } catch (error) {
       summary.errors.push(formatGuruImportError(plan, error));
+    }
+  }
+
+  return summary;
+}
+
+export async function runAirtableCleanupImport(options: AirtableSaintImportOptions = {}) {
+  const dryRun = options.dryRun ?? true;
+  const rows = await findAirtableSaintRows(options.limit);
+  const context = await buildCleanupContext(rows);
+  const summary = emptyCleanupImportSummary(rows.length);
+
+  for (const plan of buildCleanupRelationshipPlans(rows, context)) {
+    try {
+      await applyCleanupRelationshipPlan(summary, plan, dryRun);
+    } catch (error) {
+      summary.errors.push(formatImportError(`${plan.fromRecordId}:${plan.toRecordId}`, plan.fromName, error));
+    }
+  }
+
+  for (const plan of buildCleanupPlacePlans(rows, context)) {
+    try {
+      await applyCleanupPlacePlan(summary, plan, dryRun);
+    } catch (error) {
+      summary.errors.push(formatImportError(plan.recordId, plan.airtableName, error));
+    }
+  }
+
+  for (const plan of buildCleanupFamilyPlans(rows, context)) {
+    try {
+      await applyCleanupFamilyPlan(summary, plan, dryRun);
+    } catch (error) {
+      summary.errors.push(formatImportError(plan.recordId, plan.airtableName, error));
+    }
+  }
+
+  for (const plan of buildCleanupDuplicatePlans(rows, context)) {
+    try {
+      await applyCleanupDuplicatePlan(summary, plan, dryRun);
+    } catch (error) {
+      summary.errors.push(formatImportError(`${plan.sourceRecordId}:${plan.candidateRecordId}`, plan.sourceName, error));
+    }
+  }
+
+  for (const plan of buildCleanupMuseumSectionPlans(rows, context)) {
+    try {
+      await applyCleanupMuseumSectionPlan(summary, plan, dryRun);
+    } catch (error) {
+      summary.errors.push(formatImportError(plan.recordId, plan.airtableName, error));
     }
   }
 
@@ -631,6 +785,204 @@ async function buildGuruRelationshipPlans(rows: Awaited<ReturnType<typeof findAi
   return plans;
 }
 
+async function buildCleanupContext(rows: AirtableSaintRow[]) {
+  return {
+    nameByRecordId: buildAirtableNameMap(rows),
+    saintByExternalId: await buildExternalSaintRecordMap(rows)
+  };
+}
+
+function buildCleanupRelationshipPlans(
+  rows: AirtableSaintRow[],
+  context: Awaited<ReturnType<typeof buildCleanupContext>>
+) {
+  const plans: CleanupRelationshipPlan[] = [];
+
+  for (const row of rows) {
+    const fields = asObject(row.rawFieldsJson);
+    const rowExternalId = airtableExternalId(row.baseId, row.recordId);
+    const rowSaint = context.saintByExternalId.get(rowExternalId);
+    const rowName = context.nameByRecordId.get(row.recordId);
+
+    for (const guruRecordId of linkedRecordIds(fields, "Master(s)")) {
+      plans.push({
+        sourceRecordId: row.recordId,
+        sourceName: rowName,
+        fromRecordId: row.recordId,
+        fromName: rowName,
+        fromSaint: rowSaint,
+        toRecordId: guruRecordId,
+        toName: context.nameByRecordId.get(guruRecordId),
+        toSaint: context.saintByExternalId.get(airtableExternalId(row.baseId, guruRecordId)),
+        relationshipType: "guru",
+        sourceField: "Master(s)"
+      });
+    }
+
+    for (const discipleRecordId of linkedRecordIds(fields, "Disciples")) {
+      plans.push({
+        sourceRecordId: row.recordId,
+        sourceName: rowName,
+        fromRecordId: discipleRecordId,
+        fromName: context.nameByRecordId.get(discipleRecordId),
+        fromSaint: context.saintByExternalId.get(airtableExternalId(row.baseId, discipleRecordId)),
+        toRecordId: row.recordId,
+        toName: rowName,
+        toSaint: rowSaint,
+        relationshipType: "guru",
+        sourceField: "Disciples"
+      });
+    }
+
+    for (const partnerRecordId of linkedRecordIds(fields, "Partner")) {
+      plans.push(symmetricRelationshipPlan({
+        row,
+        rowName,
+        rowSaint,
+        relatedRecordId: partnerRecordId,
+        relatedName: context.nameByRecordId.get(partnerRecordId),
+        relatedSaint: context.saintByExternalId.get(airtableExternalId(row.baseId, partnerRecordId)),
+        relationshipType: "partner",
+        sourceField: "Partner"
+      }));
+    }
+
+    for (const incarnationRecordId of linkedRecordIds(fields, "Incarnation")) {
+      plans.push(symmetricRelationshipPlan({
+        row,
+        rowName,
+        rowSaint,
+        relatedRecordId: incarnationRecordId,
+        relatedName: context.nameByRecordId.get(incarnationRecordId),
+        relatedSaint: context.saintByExternalId.get(airtableExternalId(row.baseId, incarnationRecordId)),
+        relationshipType: "incarnation",
+        sourceField: "Incarnation"
+      }));
+    }
+  }
+
+  return uniqueByNormalized(plans, (plan) => [
+    plan.relationshipType,
+    plan.fromRecordId,
+    plan.toRecordId,
+    plan.sourceField
+  ].join(":"));
+}
+
+function symmetricRelationshipPlan({
+  row,
+  rowName,
+  rowSaint,
+  relatedRecordId,
+  relatedName,
+  relatedSaint,
+  relationshipType,
+  sourceField
+}: {
+  row: AirtableSaintRow;
+  rowName?: string;
+  rowSaint?: ExternalSaintReference;
+  relatedRecordId: string;
+  relatedName?: string;
+  relatedSaint?: ExternalSaintReference;
+  relationshipType: RelationshipType;
+  sourceField: string;
+}): CleanupRelationshipPlan {
+  const firstIsRow = row.recordId.localeCompare(relatedRecordId) <= 0;
+  return {
+    sourceRecordId: row.recordId,
+    sourceName: rowName,
+    fromRecordId: firstIsRow ? row.recordId : relatedRecordId,
+    fromName: firstIsRow ? rowName : relatedName,
+    fromSaint: firstIsRow ? rowSaint : relatedSaint,
+    toRecordId: firstIsRow ? relatedRecordId : row.recordId,
+    toName: firstIsRow ? relatedName : rowName,
+    toSaint: firstIsRow ? relatedSaint : rowSaint,
+    relationshipType,
+    sourceField
+  };
+}
+
+function buildCleanupPlacePlans(rows: AirtableSaintRow[], context: Awaited<ReturnType<typeof buildCleanupContext>>) {
+  const plans: CleanupPlacePlan[] = [];
+  for (const row of rows) {
+    const fields = asObject(row.rawFieldsJson);
+    const places = listField(fields, "Normalized places");
+    const spiritualRegions = listField(fields, "Spiritual Region");
+    if (places.length === 0 && spiritualRegions.length === 0) continue;
+    for (const placeName of places.length > 0 ? places : spiritualRegions) {
+      plans.push({
+        recordId: row.recordId,
+        airtableName: context.nameByRecordId.get(row.recordId),
+        saint: context.saintByExternalId.get(airtableExternalId(row.baseId, row.recordId)),
+        placeName,
+        spiritualRegions
+      });
+    }
+  }
+  return uniqueByNormalized(plans, (plan) => `${plan.recordId}:${plan.placeName}`);
+}
+
+function buildCleanupFamilyPlans(rows: AirtableSaintRow[], context: Awaited<ReturnType<typeof buildCleanupContext>>) {
+  return rows
+    .map((row): CleanupFamilyPlan | undefined => {
+      const fields = asObject(row.rawFieldsJson);
+      const familyId = stringField(fields, "Family ID");
+      if (!familyId) return undefined;
+      return {
+        recordId: row.recordId,
+        airtableName: context.nameByRecordId.get(row.recordId),
+        saint: context.saintByExternalId.get(airtableExternalId(row.baseId, row.recordId)),
+        familyId
+      };
+    })
+    .filter((plan): plan is CleanupFamilyPlan => Boolean(plan));
+}
+
+function buildCleanupDuplicatePlans(rows: AirtableSaintRow[], context: Awaited<ReturnType<typeof buildCleanupContext>>) {
+  const plans: CleanupDuplicatePlan[] = [];
+  for (const row of rows) {
+    const fields = asObject(row.rawFieldsJson);
+    const sourceName = context.nameByRecordId.get(row.recordId);
+    const sourceSaint = context.saintByExternalId.get(airtableExternalId(row.baseId, row.recordId));
+    for (const candidateRecordId of linkedRecordIds(fields, "Potential duplicate match")) {
+      const pair = [row.recordId, candidateRecordId].sort();
+      plans.push({
+        sourceRecordId: row.recordId,
+        sourceName,
+        sourceSaint,
+        candidateRecordId,
+        candidateName: context.nameByRecordId.get(candidateRecordId),
+        candidateSaint: context.saintByExternalId.get(airtableExternalId(row.baseId, candidateRecordId)),
+        sourceExternalId: `${row.baseId}:${AIRTABLE_TABLE}:duplicate:${pair.join(":")}`
+      });
+    }
+  }
+  return uniqueByNormalized(plans, (plan) => plan.sourceExternalId);
+}
+
+function buildCleanupMuseumSectionPlans(rows: AirtableSaintRow[], context: Awaited<ReturnType<typeof buildCleanupContext>>) {
+  const plans: CleanupMuseumSectionPlan[] = [];
+  for (const row of rows) {
+    const fields = asObject(row.rawFieldsJson);
+    const base = {
+      recordId: row.recordId,
+      airtableName: context.nameByRecordId.get(row.recordId),
+      saint: context.saintByExternalId.get(airtableExternalId(row.baseId, row.recordId)),
+      tier: parseMuseumTier(stringField(fields, "Museum Section Tier")),
+      confidence: parseConfidence(stringField(fields, "Museum Section Confidence")),
+      rationale: stringField(fields, "Museum Section Rationale"),
+      internalPlacementNote: stringField(fields, "Museum Section Internal Placement Note")
+    };
+    const primary = stringField(fields, "Primary Museum Section");
+    if (primary) plans.push({ ...base, sectionName: primary, assignmentType: "primary" });
+    for (const sectionName of listField(fields, "Alternative Museum Sections")) {
+      plans.push({ ...base, sectionName, assignmentType: "alternative" });
+    }
+  }
+  return uniqueByNormalized(plans, (plan) => `${plan.recordId}:${plan.assignmentType}:${plan.sectionName}`);
+}
+
 function buildAirtableNameMap(rows: Awaited<ReturnType<typeof findAirtableSaintRows>>) {
   return new Map(
     rows
@@ -643,7 +995,7 @@ function buildAirtableNameMap(rows: Awaited<ReturnType<typeof findAirtableSaintR
 }
 
 async function buildExternalSaintMap(rows: Array<{ baseId: string; recordId: string }>) {
-  const externalIds = rows.map((row) => `${row.baseId}:${AIRTABLE_TABLE}:${row.recordId}`);
+  const externalIds = rows.map((row) => airtableExternalId(row.baseId, row.recordId));
   const externalRecords = await db.externalRecord.findMany({
     where: {
       sourceType: "airtable",
@@ -667,6 +1019,41 @@ async function buildExternalSaintMap(rows: Array<{ baseId: string; recordId: str
       .map((record) => [record.externalId, record.entityId ? saintById.get(record.entityId) : undefined] as const)
       .filter((entry): entry is readonly [string, SaintReference] => Boolean(entry[1]))
   );
+}
+
+async function buildExternalSaintRecordMap(rows: Array<{ baseId: string; recordId: string }>) {
+  const externalIds = rows.map((row) => airtableExternalId(row.baseId, row.recordId));
+  const externalRecords = await db.externalRecord.findMany({
+    where: {
+      sourceType: "airtable",
+      externalId: { in: externalIds },
+      entityType: "Saint"
+    },
+    select: {
+      id: true,
+      externalId: true,
+      entityId: true
+    }
+  });
+  const saintIds = externalRecords.map((record) => record.entityId).filter((id): id is string => Boolean(id));
+  const saints = await db.saint.findMany({
+    where: { id: { in: saintIds } },
+    select: { id: true, displayName: true, slug: true }
+  });
+  const saintById = new Map(saints.map((saint) => [saint.id, saintReference(saint)]));
+
+  return new Map(
+    externalRecords
+      .map((record) => {
+        const saint = record.entityId ? saintById.get(record.entityId) : undefined;
+        return saint ? [record.externalId, { ...saint, externalRecordId: record.id, externalId: record.externalId }] as const : undefined;
+      })
+      .filter((entry): entry is readonly [string, ExternalSaintReference] => Boolean(entry))
+  );
+}
+
+function airtableExternalId(baseId: string, recordId: string) {
+  return `${baseId}:${AIRTABLE_TABLE}:${recordId}`;
 }
 
 async function classifyGuruRelationshipPlan(plan: GuruRelationshipPlan) {
@@ -710,6 +1097,365 @@ function emptyGuruRelationshipSummary(mode: AirtableGuruRelationshipSummary["mod
     selfSkippedGuruRelationships: [],
     errors: []
   };
+}
+
+function emptyCleanupImportSummary(mirrorRowsChecked: number): AirtableCleanupImportSummary {
+  return {
+    mode: "import_airtable_cleanup",
+    mirrorRowsChecked,
+    relationshipCandidatesCreated: 0,
+    relationshipCandidatesExisting: 0,
+    relationshipCandidatesUnresolved: 0,
+    placeRelationshipsCreated: 0,
+    placeRelationshipsExisting: 0,
+    familyGroupsCreated: 0,
+    familyGroupsExisting: 0,
+    familyMembershipsCreated: 0,
+    familyMembershipsExisting: 0,
+    duplicateCandidatesCreated: 0,
+    duplicateCandidatesExisting: 0,
+    museumSectionAssignmentsCreated: 0,
+    museumSectionAssignmentsExisting: 0,
+    skippedSelfRelationships: 0,
+    issues: [],
+    errors: []
+  };
+}
+
+async function applyCleanupRelationshipPlan(summary: AirtableCleanupImportSummary, plan: CleanupRelationshipPlan, dryRun: boolean) {
+  if (!plan.fromSaint) {
+    addCleanupIssue(summary, {
+      recordId: plan.fromRecordId,
+      airtableName: plan.fromName,
+      relatedRecordId: plan.toRecordId,
+      relatedName: plan.toName,
+      field: plan.sourceField,
+      reason: "unmapped_saint",
+      message: "Source saint is not linked to a CMS saint."
+    });
+    return;
+  }
+  if (!plan.toSaint) {
+    addCleanupIssue(summary, {
+      recordId: plan.fromRecordId,
+      airtableName: plan.fromName,
+      relatedRecordId: plan.toRecordId,
+      relatedName: plan.toName,
+      field: plan.sourceField,
+      reason: "unmapped_related_saint",
+      message: "Related saint is not linked to a CMS saint."
+    });
+    return;
+  }
+  if (plan.fromSaint.id === plan.toSaint.id) {
+    summary.skippedSelfRelationships += 1;
+    addCleanupIssue(summary, {
+      recordId: plan.fromRecordId,
+      airtableName: plan.fromName,
+      relatedRecordId: plan.toRecordId,
+      relatedName: plan.toName,
+      field: plan.sourceField,
+      reason: "self_relationship",
+      message: "Relationship points to the same CMS saint."
+    });
+    return;
+  }
+
+  const existing = await db.saintRelationship.findFirst({
+    where: {
+      fromSaintId: plan.fromSaint.id,
+      toSaintId: plan.toSaint.id,
+      relationshipType: plan.relationshipType
+    },
+    select: { id: true }
+  });
+  if (existing) {
+    summary.relationshipCandidatesExisting += 1;
+    return;
+  }
+
+  summary.relationshipCandidatesCreated += 1;
+  if (dryRun) return;
+
+  await db.saintRelationship.create({
+    data: {
+      fromSaintId: plan.fromSaint.id,
+      toSaintId: plan.toSaint.id,
+      relationshipType: plan.relationshipType,
+      confidence: "medium",
+      evidenceStatus: "imported",
+      status: "needs_review",
+      publicVisible: false,
+      notes: `${CLEANUP_IMPORTER_NOTE} Source field: ${plan.sourceField}.`,
+      externalRecordId: plan.fromSaint.externalRecordId
+    }
+  });
+}
+
+async function applyCleanupPlacePlan(summary: AirtableCleanupImportSummary, plan: CleanupPlacePlan, dryRun: boolean) {
+  if (!plan.saint) {
+    addCleanupIssue(summary, {
+      recordId: plan.recordId,
+      airtableName: plan.airtableName,
+      field: "Normalized places",
+      reason: "unmapped_saint",
+      message: "Place cleanup row is not linked to a CMS saint."
+    });
+    return;
+  }
+
+  const placeSlug = toSlug(plan.placeName);
+  const regionSlugs = plan.spiritualRegions.map(toSlug);
+  const existingPlace = await db.place.findUnique({ where: { slug: placeSlug }, select: { id: true } });
+  const existingLink = existingPlace
+    ? await db.saintPlace.findFirst({ where: { saintId: plan.saint.id, placeId: existingPlace.id }, select: { id: true } })
+    : null;
+
+  if (!dryRun) {
+    const place = await db.place.upsert({
+      where: { slug: placeSlug },
+      create: {
+        slug: placeSlug,
+        name: plan.placeName,
+        alternateNames: [],
+        placeKind: "unknown",
+        placeScope: "locality",
+        notes: CLEANUP_IMPORTER_NOTE
+      },
+      update: {}
+    });
+    if (!existingLink) {
+      await db.saintPlace.create({
+        data: {
+          saintId: plan.saint.id,
+          placeId: place.id,
+          placeType: "associated",
+          notes: "Imported from Airtable Normalized places cleanup field."
+        }
+      });
+    }
+
+    for (let index = 0; index < plan.spiritualRegions.length; index += 1) {
+      const regionName = plan.spiritualRegions[index];
+      const region = await db.place.upsert({
+        where: { slug: regionSlugs[index] },
+        create: {
+          slug: regionSlugs[index],
+          name: regionName,
+          alternateNames: [],
+          placeKind: "spiritual_region",
+          placeScope: "locality",
+          notes: CLEANUP_IMPORTER_NOTE
+        },
+        update: { placeKind: "spiritual_region" }
+      });
+      const existingRelationship = await db.placeRelationship.findUnique({
+        where: {
+          fromPlaceId_toPlaceId_relationshipType: {
+            fromPlaceId: place.id,
+            toPlaceId: region.id,
+            relationshipType: "associated_region"
+          }
+        },
+        select: { id: true }
+      });
+      if (existingRelationship) {
+        summary.placeRelationshipsExisting += 1;
+      } else {
+        await db.placeRelationship.create({
+          data: {
+            fromPlaceId: place.id,
+            toPlaceId: region.id,
+            relationshipType: "associated_region",
+            confidence: "medium",
+            notes: "Imported from Airtable Spiritual Region cleanup field."
+          }
+        });
+        summary.placeRelationshipsCreated += 1;
+      }
+    }
+    return;
+  }
+
+  for (const regionSlug of regionSlugs) {
+    const region = await db.place.findUnique({ where: { slug: regionSlug }, select: { id: true } });
+    if (existingPlace && region) {
+      const existingRelationship = await db.placeRelationship.findUnique({
+        where: {
+          fromPlaceId_toPlaceId_relationshipType: {
+            fromPlaceId: existingPlace.id,
+            toPlaceId: region.id,
+            relationshipType: "associated_region"
+          }
+        },
+        select: { id: true }
+      });
+      if (existingRelationship) summary.placeRelationshipsExisting += 1;
+      else summary.placeRelationshipsCreated += 1;
+    } else {
+      summary.placeRelationshipsCreated += 1;
+    }
+  }
+}
+
+async function applyCleanupFamilyPlan(summary: AirtableCleanupImportSummary, plan: CleanupFamilyPlan, dryRun: boolean) {
+  if (!plan.saint) {
+    addCleanupIssue(summary, {
+      recordId: plan.recordId,
+      airtableName: plan.airtableName,
+      field: "Family ID",
+      reason: "unmapped_saint",
+      message: "Family row is not linked to a CMS saint."
+    });
+    return;
+  }
+
+  const slug = toSlug(plan.familyId);
+  const existingFamily = await db.saintFamily.findUnique({ where: { slug }, select: { id: true } });
+  if (existingFamily) summary.familyGroupsExisting += 1;
+  else summary.familyGroupsCreated += 1;
+
+  const existingMembership = existingFamily
+    ? await db.saintFamilyMember.findUnique({
+        where: { familyId_saintId: { familyId: existingFamily.id, saintId: plan.saint.id } },
+        select: { id: true }
+      })
+    : null;
+  if (existingMembership) summary.familyMembershipsExisting += 1;
+  else summary.familyMembershipsCreated += 1;
+  if (dryRun) return;
+
+  const family = await db.saintFamily.upsert({
+    where: { slug },
+    create: {
+      slug,
+      displayName: plan.familyId,
+      status: "needs_review",
+      publicVisible: false,
+      sourceExternalId: plan.familyId,
+      computedFrom: "Airtable Family ID cleanup field",
+      notes: CLEANUP_IMPORTER_NOTE
+    },
+    update: {}
+  });
+  await db.saintFamilyMember.upsert({
+    where: { familyId_saintId: { familyId: family.id, saintId: plan.saint.id } },
+    create: {
+      familyId: family.id,
+      saintId: plan.saint.id,
+      role: "member",
+      externalRecordId: plan.saint.externalRecordId,
+      notes: CLEANUP_IMPORTER_NOTE
+    },
+    update: {}
+  });
+}
+
+async function applyCleanupDuplicatePlan(summary: AirtableCleanupImportSummary, plan: CleanupDuplicatePlan, dryRun: boolean) {
+  if (!plan.sourceSaint || !plan.candidateSaint) {
+    addCleanupIssue(summary, {
+      recordId: plan.sourceRecordId,
+      airtableName: plan.sourceName,
+      relatedRecordId: plan.candidateRecordId,
+      relatedName: plan.candidateName,
+      field: "Potential duplicate match",
+      reason: plan.sourceSaint ? "unmapped_related_saint" : "unmapped_saint",
+      message: "Duplicate candidate includes an Airtable row that is not linked to a CMS saint."
+    });
+    return;
+  }
+  const [entityId, candidateEntityId] = [plan.sourceSaint.id, plan.candidateSaint.id].sort();
+  const existing = await db.duplicateCandidate.findFirst({
+    where: { entityType: "Saint", entityId, candidateEntityId, sourceType: "airtable", sourceExternalId: plan.sourceExternalId },
+    select: { id: true }
+  });
+  if (existing) {
+    summary.duplicateCandidatesExisting += 1;
+    return;
+  }
+  summary.duplicateCandidatesCreated += 1;
+  if (dryRun) return;
+
+  await db.duplicateCandidate.create({
+    data: {
+      entityType: "Saint",
+      entityId,
+      candidateEntityId,
+      sourceType: "airtable",
+      sourceExternalId: plan.sourceExternalId,
+      confidence: "medium",
+      message: "Imported from Airtable Potential duplicate match field.",
+      evidenceJson: {
+        sourceRecordId: plan.sourceRecordId,
+        sourceName: plan.sourceName,
+        candidateRecordId: plan.candidateRecordId,
+        candidateName: plan.candidateName
+      } satisfies Prisma.InputJsonValue
+    }
+  });
+}
+
+async function applyCleanupMuseumSectionPlan(summary: AirtableCleanupImportSummary, plan: CleanupMuseumSectionPlan, dryRun: boolean) {
+  if (!plan.saint) {
+    addCleanupIssue(summary, {
+      recordId: plan.recordId,
+      airtableName: plan.airtableName,
+      field: "Primary Museum Section",
+      reason: "unmapped_saint",
+      message: "Museum section row is not linked to a CMS saint."
+    });
+    return;
+  }
+
+  const slug = toSlug(plan.sectionName);
+  const existingSection = await db.museumSection.findUnique({ where: { slug }, select: { id: true } });
+  const existingAssignment = existingSection
+    ? await db.saintMuseumSection.findUnique({
+        where: {
+          saintId_museumSectionId_assignmentType: {
+            saintId: plan.saint.id,
+            museumSectionId: existingSection.id,
+            assignmentType: plan.assignmentType
+          }
+        },
+        select: { id: true }
+      })
+    : null;
+  if (existingAssignment) {
+    summary.museumSectionAssignmentsExisting += 1;
+    return;
+  }
+  summary.museumSectionAssignmentsCreated += 1;
+  if (dryRun) return;
+
+  const section = await db.museumSection.upsert({
+    where: { slug },
+    create: {
+      slug,
+      name: plan.sectionName,
+      status: "needs_review",
+      publicVisible: false
+    },
+    update: {}
+  });
+  await db.saintMuseumSection.create({
+    data: {
+      saintId: plan.saint.id,
+      museumSectionId: section.id,
+      assignmentType: plan.assignmentType,
+      tier: plan.tier,
+      confidence: plan.confidence,
+      rationale: plan.rationale,
+      internalPlacementNote: plan.internalPlacementNote,
+      status: "needs_review",
+      externalRecordId: plan.saint.externalRecordId
+    }
+  });
+}
+
+function addCleanupIssue(summary: AirtableCleanupImportSummary, issue: AirtableCleanupIssueDetail) {
+  summary.relationshipCandidatesUnresolved += issue.field === "Master(s)" || issue.field === "Disciples" || issue.field === "Partner" || issue.field === "Incarnation" ? 1 : 0;
+  summary.issues.push(issue);
 }
 
 function addImportResult(summary: AirtableSaintImportSummary, result: ImportResult, plan: ImportPlan) {
@@ -892,11 +1638,22 @@ function formatGuruImportError(plan: GuruRelationshipPlan, error: unknown): Airt
   };
 }
 
-function toInputJson(value: AirtableSaintImportSummary | AirtableGuruRelationshipSummary): Prisma.InputJsonValue {
+function toInputJson(value: AirtableSaintImportSummary | AirtableGuruRelationshipSummary | AirtableCleanupImportSummary): Prisma.InputJsonValue {
   return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 }
 
-function getCompletedJobMessage(summary: AirtableSaintImportSummary | AirtableGuruRelationshipSummary) {
+function getCompletedJobMessage(summary: AirtableSaintImportSummary | AirtableGuruRelationshipSummary | AirtableCleanupImportSummary) {
+  if ("relationshipCandidatesCreated" in summary) {
+    return [
+      "Completed cleanup import:",
+      `${summary.relationshipCandidatesCreated} relationships created`,
+      `${summary.familyMembershipsCreated} family memberships`,
+      `${summary.duplicateCandidatesCreated} duplicate candidates`,
+      `${summary.museumSectionAssignmentsCreated} museum assignments`,
+      `${summary.relationshipCandidatesUnresolved} relationship issues`
+    ].join(" ");
+  }
+
   if ("guruRelationshipsCreated" in summary) {
     return `Completed: ${summary.guruRelationshipsCreated} guru relationships created, ${summary.guruRelationshipsExisting} existing, ${summary.guruRelationshipsUnresolved} unresolved.`;
   }
@@ -910,4 +1667,28 @@ function getCompletedJobMessage(summary: AirtableSaintImportSummary | AirtableGu
 
 function formatMode(mode: string) {
   return mode.replace(/_/g, " ");
+}
+
+function listField(fields: AirtableFields, key: string) {
+  const value = fields[key];
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item ?? "").trim()).filter(Boolean);
+  }
+  if (typeof value !== "string") return [];
+  return value
+    .split(/\s*;\s*|\r?\n+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function parseConfidence(value: string | undefined): Confidence {
+  const normalized = value?.toLowerCase();
+  if (normalized === "high" || normalized === "low") return normalized;
+  return "medium";
+}
+
+function parseMuseumTier(value: string | undefined): "featured" | "secondary" | "tertiary" {
+  const normalized = value?.toLowerCase();
+  if (normalized === "featured" || normalized === "tertiary") return normalized;
+  return "secondary";
 }

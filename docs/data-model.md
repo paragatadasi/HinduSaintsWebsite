@@ -8,7 +8,11 @@ Core entities:
 - `SaintAlias`
 - `Tradition`
 - `Place`
+- `PlaceRelationship`
 - `SaintRelationship`
+- `SaintFamily`
+- `MuseumSection`
+- `DuplicateCandidate`
 - `MediaAsset`
 - `InstagramItem`
 - `Biography`
@@ -72,6 +76,9 @@ place graph unless the broad place is the only known reviewed location.
 The public Map page and place detail routes are documented in
 `docs/map-and-places.md`, including the published-content threshold, geocoding
 fallback, and timeline behavior.
+
+The July 2026 Airtable cleanup workflow and recommended site-model follow-ups
+are documented in `docs/airtable-cleanup-site-model-roadmap.md`.
 
 Names are separated for review:
 
@@ -140,23 +147,28 @@ is supporting content; `Saint.status` is the direct public publishing gate.
 
 ## Saint relationship graph
 
-Long-term, saint-to-saint connections should be modeled as a first-class relationship graph, not only as prose inside biographies. Biographies can narrate relationships, but they should not be the only source of truth for them.
+Saint-to-saint connections are modeled as a first-class relationship graph, not
+only as prose inside biographies. Biographies can narrate relationships, but
+they should not be the only source of truth for them.
 
 `SaintRelationship` should support both typed and untyped connections:
 
 - A typed relationship identifies a known relationship category, such as guru, disciple, initiator, lineage successor, family relation, influence, contemporary, patron, debate opponent, or association.
 - An untyped relationship records that two saints are known or believed to be connected, while leaving the exact relationship category uncategorized until an editor can review it.
 
-Relationship records should be able to carry:
+Relationship records carry or are now structured to carry:
 
 - source saint and target saint
-- optional relationship type
-- directionality, when known
+- relationship type, including guru, disciple, partner, incarnation, family,
+  influence, initiator, patron, successor, debate opponent, association,
+  lineage, related, and untyped relationships.
+- directionality through the source and target saint fields.
 - certainty or evidence status, such as certain, probable, traditional, disputed, imported, or uncategorized
 - editorial display rank or weight, for prioritizing which relationships appear first on saint biographies and other public pages
 - public description, when appropriate
 - internal editorial notes
-- citations and source records
+- citations and source records through `sourceId`, `SaintRelationshipSource`,
+  `externalRecordId`, and `importJobId`.
 - draft, review, and published status
 - public/private visibility controls
 
@@ -167,3 +179,37 @@ Individual biography stories or events should eventually be linkable to saints a
 Public tradition and grouping pages may render curated tree, lineage, timeline, or network views from this graph. The underlying data should allow graph-shaped relationships even when a public page presents a simplified tree.
 
 Imported Airtable, Instagram, CSV, and manual-ingest values may create candidate relationship records or reconciliation issues, but they must not silently overwrite reviewed CMS relationship data.
+
+## Family graph
+
+Family IDs from Airtable are review/export labels, not website truth. The
+`SaintFamily` and `SaintFamilyMember` models support computed or curated saint
+families from reviewed `SaintRelationship` edges such as guru-disciple,
+partner, incarnation, and explicit family relationships.
+
+- family slug, display name, description, graph version, status, and visibility.
+- saint membership with role, tier, sort order, notes, and provenance.
+- public tree rendering from reviewed relationship edges instead of committed
+  SVG/HTML export artifacts.
+
+Duplicate candidates and loose association-only links should not automatically
+join family components unless editors explicitly approve that behavior.
+
+## Duplicate review
+
+Potential duplicate matches are reconciliation data, not saint relationships.
+They should create `DuplicateCandidate` rows, optionally linked to
+`ReconciliationIssue`, with evidence, confidence, review status, and resolution
+notes.
+
+Public pages should never expose duplicate-review candidates.
+
+## Museum sections
+
+Museum sections should be modeled as private editorial taxonomy. A future
+`MuseumSection` plus `SaintMuseumSection` assignment model stores primary and
+alternative placements, tier, confidence, rationale, and internal placement
+notes. Visibility defaults to private.
+
+Do not expose relic, vitrine, shelf, storage, or other collection-management
+fields through public contracts.

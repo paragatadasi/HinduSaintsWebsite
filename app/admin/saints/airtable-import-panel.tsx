@@ -21,6 +21,15 @@ type AirtableImportJobView = {
   guruRelationshipsCreated: number;
   guruRelationshipsExisting: number;
   guruRelationshipsUnresolved: number;
+  relationshipCandidatesCreated: number;
+  relationshipCandidatesExisting: number;
+  relationshipCandidatesUnresolved: number;
+  placeRelationshipsCreated: number;
+  placeRelationshipsExisting: number;
+  familyGroupsCreated: number;
+  familyMembershipsCreated: number;
+  duplicateCandidatesCreated: number;
+  museumSectionAssignmentsCreated: number;
   skippedSelfRelationships: number;
   failedRows: number;
   message: string | null;
@@ -39,7 +48,7 @@ type JobsResponse = {
   jobs: AirtableImportJobView[];
 };
 
-type AirtableImportIntent = "check" | "import_missing_drafts" | "import_guru_relationships";
+type AirtableImportIntent = "check" | "import_missing_drafts" | "import_guru_relationships" | "import_airtable_cleanup";
 
 const runningStatuses = new Set(["queued", "running"]);
 
@@ -109,7 +118,7 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
     >
       <div className="admin-toolbar">
         <div>
-          <p>Check mirrored Airtable saint rows, create missing CMS saints as drafts, and optionally import guru links for editorial review.</p>
+          <p>Check mirrored Airtable saint rows, create missing CMS saints as drafts, and import reviewed Airtable relationship cleanup fields for editorial review.</p>
         </div>
         <div className="review-actions">
           <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isBusy} onClick={() => startJob("check")}>
@@ -123,6 +132,10 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
           <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isBusy} onClick={() => startJob("import_guru_relationships")}>
             <Waypoints aria-hidden="true" size={16} />
             Import guru relationships
+          </button>
+          <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isBusy} onClick={() => startJob("import_airtable_cleanup")}>
+            <Waypoints aria-hidden="true" size={16} />
+            Import cleanup graph
           </button>
         </div>
       </div>
@@ -224,6 +237,15 @@ function getAffectedRecords(summary: AirtableImportSummaryDetails) {
       href: item.saintSlug ? `/admin/saints/${item.saintSlug}` : undefined,
       linkLabel: "Open CMS saint"
     })),
+    ...summary.cleanupIssues.map((item) => ({
+      key: `cleanup:${item.field}:${item.recordId}:${item.relatedRecordId ?? item.reason}`,
+      kind: item.field,
+      message: item.message,
+      primary: item.airtableName ?? item.recordId,
+      secondary: item.relatedRecordId ? `${item.relatedName ?? item.relatedRecordId} - ${formatStatus(item.reason)}` : formatStatus(item.reason),
+      href: undefined,
+      linkLabel: "Open CMS saint"
+    })),
     ...summary.errors.map((item) => ({
       key: `error:${item.recordId}:${item.message}`,
       kind: "Failed",
@@ -259,6 +281,7 @@ function JobProgress({ job }: { job: AirtableImportJobView }) {
         <StatusBadge label={`${job.existingCmsSaintsSkipped} existing skipped`} />
         <StatusBadge label={`${job.slugNameCollisionsSkipped} collisions`} />
         <StatusBadge label={`${job.guruRelationshipsCreated} gurus created`} />
+        <StatusBadge label={`${job.relationshipCandidatesCreated} graph links`} />
         <StatusBadge label={`${job.failedRows} failed`} />
       </div>
     </div>
@@ -273,6 +296,21 @@ function formatVisibleJobCounts(job: AirtableImportJobView) {
       `${job.guruRelationshipsExisting} existing`,
       `${job.guruRelationshipsUnresolved} unresolved`,
       `${job.skippedSelfRelationships} self skipped`,
+      `${job.failedRows} failed`
+    ].join(" - ");
+  }
+
+  if (job.mode === "import_airtable_cleanup") {
+    return [
+      `${job.mirrorRowsChecked} mirror rows checked`,
+      `${job.relationshipCandidatesCreated} relationships created`,
+      `${job.relationshipCandidatesExisting} relationships existing`,
+      `${job.relationshipCandidatesUnresolved} relationship issues`,
+      `${job.placeRelationshipsCreated} place edges created`,
+      `${job.familyGroupsCreated} families created`,
+      `${job.familyMembershipsCreated} family memberships created`,
+      `${job.duplicateCandidatesCreated} duplicate candidates created`,
+      `${job.museumSectionAssignmentsCreated} museum assignments created`,
       `${job.failedRows} failed`
     ].join(" - ");
   }

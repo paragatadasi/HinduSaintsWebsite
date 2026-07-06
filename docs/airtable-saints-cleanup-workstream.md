@@ -1,12 +1,20 @@
-# Airtable Place Normalization
+# Airtable Saints Cleanup Workstream
 
-This document records the July 2026 Airtable cleanup work for saint place data.
-Airtable remains an import/reference source only; the website database is still
-the source of truth for public pages.
+This document records the July 2026 Airtable cleanup workstream: place
+normalization, spiritual region grouping, relationship/family graph cleanup,
+family-tree exports, and duplicate review links. Airtable remains an
+import/reference source only; the website database is still the source of truth
+for public pages.
 
-## Airtable fields
+Current status: Airtable has normalized place helpers, active spiritual-region
+grouping, partner/incarnation/family relationship helpers, and linked-record
+duplicate review matches. The latest family graph covers 78 connected families
+and 240 saint records, with 14 families exported as SVG/HTML trees.
 
-The `Saints` table now has these place cleanup fields:
+## Current Airtable Fields
+
+The `Saints` table currently uses these Airtable helper fields from this
+workstream:
 
 - `Place`: original multiple-select field. Leave this untouched as source data.
 - `Normalized places`: semicolon-separated full place labels, usually ordered as
@@ -15,14 +23,27 @@ The `Saints` table now has these place cleanup fields:
   `Normalized places`.
 - `Spiritual Region`: multiple-select spiritual geography grouping derived from
   `Place keys`.
+- `Partner`: same-table linked records for spouse/partner relationships. Used
+  when computing family IDs and family-tree connected components.
 - `Incarnation`: linked records in the `Saints` table used for incarnation or
   reincarnation associations. This relationship is used in family graphs, but it
   is visually distinct from guru-disciple lineage.
+- `Family ID`: deterministic family/component label such as `FAM-001`.
+- `Potential duplicate match`: same-table linked records for duplicate review.
+  This replaced the earlier checkbox-only `Potential duplicate` field so
+  reviewers can click directly to candidate duplicate records.
 
 A temporary `Sacred site` field was created during exploration, but the final
 model does not use it. Airtable's metadata API returned `404 NOT_FOUND` when
 asked to delete it, so remove it manually in the Airtable UI if it is still
 present.
+
+Same-table linked-record fields in Airtable create automatic inverse fields with
+names like `From field: Partner`, `From field: Incarnation`, and
+`From field: Potential duplicate match`. Those inverse fields are structural
+artifacts of Airtable's link model, not separate relationship concepts. Hide
+them from editor-facing views if they are visually noisy; do not use them as
+independent inputs in scripts or exports.
 
 ## Normalized Places
 
@@ -195,10 +216,10 @@ normalized places do not disappear from regional analysis:
 
 Because Airtable rejected adding new multiple-select options through record
 typecasting and the metadata field-update endpoint did not accept select choice
-updates, the catch-all pass created a replacement `Spiritual Region` field with
-the expanded option list. The previous field was preserved as
-`Spiritual Region (pre-general)`. This pass added catch-all labels to 320 saint
-records.
+updates at the time, the catch-all pass created a replacement
+`Spiritual Region` field with the expanded option list. A temporary backup field
+named `Spiritual Region (pre-general)` existed during that transition. This
+pass added catch-all labels to 320 saint records.
 
 `Sri Parvathy Baul of Thiruvananthapuram, Kerala (originally from Bengal)` was
 repaired after the catch-all pass because its older normalized value was stored
@@ -229,8 +250,8 @@ Two rows were later corrected after they were incorrectly grouped as `Global`:
 - `Sri Naagalinga Swami Sidhar of Puducherry` now uses
   `Puducherry, Puducherry, India` and `Puducherry General` instead of `Global`.
   Adding `Puducherry General` required creating a replacement active
-  `Spiritual Region` field; the prior field was preserved as
-  `Spiritual Region (pre-puducherry 2026-07-05)`.
+  `Spiritual Region` field. A temporary backup field named
+  `Spiritual Region (pre-puducherry 2026-07-05)` existed during that repair.
 
 ## Guru, Disciple, and Partner Families
 
@@ -390,9 +411,77 @@ The `Incarnation` field was populated for two initial clusters:
 
 After adding incarnation links, the family graph was recomputed from live
 Airtable across `Master(s)`, `Disciples`, `Partner`, and `Incarnation`. The
-current graph has 78 connected families covering 234 saint records. Existing
-family IDs were preserved where possible, but splits and merges caused some
-`FAM-###` labels to shift.
+graph had 78 connected families covering 234 saint records. Existing family IDs
+were preserved where possible, but splits and merges caused some `FAM-###`
+labels to shift.
+
+A later manual relationship pass added three guru-disciple links and two partner
+links, then recomputed `Family ID` values and refreshed the family exports:
+
+- `Sri Rajarshi Banamali Roy of Vrindavan` -> `Sri Jagad Bandhu Sundar of
+  Faridpur`
+- `Sri Daya Mata of Salt Lake City, Utah, USA` -> `Sri Paramahamsa Yogananda of
+  Gorakhpur`
+- `Sri Lakshmi Mani Devi of Calcutta` -> `Sri Paramahansa Ramakrishna of
+  Calcutta`
+- `Sri Nityananda Prabhu of Navadwip` <-> `Sri Chaitanya Mahaprabhu of Puri/
+  Navadwip`
+- `Sri Chaitanya Mahaprabhu of Puri/ Navadwip` <-> `Sri Vishnupriya Devi of
+  Navadwip`
+
+After this pass, the graph still had 78 connected families, covering 239 saint
+records. The visual export included 14 families with at least four members.
+
+A duplicate cleanup pass then added `Potential duplicate match`, a same-table
+linked-record field that points directly to the potential duplicate record(s).
+An earlier checkbox field named `Potential duplicate` was retired after the
+linked-record field was added, because reviewers need clickable access to the
+candidate match rather than a bare boolean flag. The scan links exact
+normalized-name matches and a small set of reviewed fuzzy matches. As of the
+latest pass, 22 saint records are linked across 11 review groups: 9 exact-name
+groups and 2 reviewed fuzzy groups. This is only a review aid; duplicate
+records were not merged or deleted.
+
+During the same pass, both duplicate `Sri Rajarshi Banamali Roy of Vrindavan`
+records were linked to `Sri Jagad Bandhu Sundar of Faridpur` through
+`Master(s)`, and Jagad Bandhu's `Disciples` field was updated reciprocally to
+include both records. This keeps both duplicate rows in the family graph until
+the editorial team decides which record to preserve or how to merge them.
+
+The two reviewed fuzzy duplicate groups currently flagged are:
+
+- `Sri Bhagat Namdev of Gurudwara Ghoman, Gurdaspur, Punjab` and
+  `Namdev (13th century)`. The names are not exact matches, but the date fields
+  support treating them as a likely duplicate pair.
+- `Sri Hatiram Baba of Tirupati, Andhra Pradesh` and `Sri Hathiram Baba of
+  Dalpatpur, Uparhar, Maya, Ayodhya, Uttar Pradesh`. The spelling differs and
+  place fields may reflect relic or association context, but the date fields
+  support treating them as a likely duplicate pair.
+
+The fuzzy scan also writes review-only candidate pairs to
+`airtable-fuzzy-duplicate-candidates.csv`. These are not flagged in Airtable
+unless explicitly reviewed, because place strings sometimes describe where a
+relic came from rather than where the saint lived.
+
+The main duplicate export includes both `PotentialDuplicateMatchIds` and
+`PotentialDuplicateMatchNames` columns so CSV review reflects the clickable
+linked-record field now available in Airtable.
+
+Because `Partner`, `Incarnation`, and `Potential duplicate match` are Airtable
+same-table linked-record fields, Airtable automatically creates paired inverse
+fields such as `From field: Partner`, `From field: Incarnation`, and
+`From field: Potential duplicate match`. These are implementation artifacts of
+the linked-record relationship, not separate relationship types. They can be
+hidden from working views if they are visually noisy, but they should not be
+treated as independent data columns in exports or scripts. The archived
+`Spiritual Region (pre-puducherry 2026-07-05)` field that existed during the
+Puducherry-region repair was different: it was a manual backup copy, not a
+structural inverse field. The current Airtable schema inspection shows only the
+active `Spiritual Region` field.
+
+After this pass, the graph still has 78 connected families, now covering 240
+saint records. The visual export includes 14 families with at least four
+members.
 
 ## Export Artifacts
 
@@ -400,7 +489,14 @@ The cleanup generated CSVs under `exports/` for review and traceability:
 
 - `airtable-place-normalization-audit.csv`
 - `airtable-place-broad-dedupe-changes.csv`
+- `airtable-saints-by-place-sampradaya-counts.csv`
+- `airtable-saints-by-place-sampradaya.csv`
+- `airtable-place-sampradaya-summary-gt2.csv`
+- `airtable-place-sampradaya-summary-gt2-wide.csv`
+- `airtable-cleaned-place-saint-counts-by-state.csv`
+- `airtable-saints-places-sampradayas-guru-disciple.csv`
 - `airtable-normalized-places-missing-state-country.csv`
+- `airtable-normalized-places-still-missing-state-country.csv`
 - `airtable-bengal-place-cleanup.csv`
 - `airtable-bengal-final-cleanup.csv`
 - `airtable-place-name-clue-cleanup.csv`
@@ -438,15 +534,20 @@ The cleanup generated CSVs under `exports/` for review and traceability:
 - `airtable-bio-relationship-updates-accepted-applied.csv`
 - `airtable-bio-relationship-proposals-unmatched-only.csv`
 - `airtable-bio-relationship-proposals-unmatched-high-priority.csv`
+- `airtable-manual-relationship-updates-applied.csv`
+- `airtable-potential-duplicate-saints.csv`
+- `airtable-fuzzy-duplicate-candidates.csv`
+- `airtable-rajarshi-duplicate-guru-update.csv`
 - `airtable-incarnation-links-applied.csv`
 - `airtable-sai-incarnation-candidates.csv`
 - `airtable-family-id-updates-after-incarnation.csv`
 - `airtable-saint-families-flat-by-state-region-sampradaya.csv`
 - `airtable-saint-family-descriptions.md`
 - `airtable-saint-family-descriptions.csv`
+- `airtable-saint-family-labels.csv`
 - `airtable-saint-family-tree-visuals.csv`
 - `family-trees/index.html`
-- `family-trees/fam-001-tree.svg` through `family-trees/fam-013-tree.svg`
+- `family-trees/fam-001-tree.svg` through `family-trees/fam-014-tree.svg`
 
 The `airtable-saint-family-members.csv` export includes `BirthDate`,
 `SamadhiDate`, `BirthYear`, and `SamadhiYear` columns from Airtable's
@@ -454,6 +555,67 @@ The `airtable-saint-family-members.csv` export includes `BirthDate`,
 use date-aware placement where available.
 
 These are working artifacts, not public data contracts.
+
+## Maintenance Scripts
+
+The relationship/family-tree workstream now has reusable scripts under
+`scripts/`:
+
+- `apply-manual-airtable-relationships-and-refresh-families.mjs`: applies a
+  reviewed set of Airtable guru-disciple and partner links, refreshes connected
+  family membership from live Airtable, recomputes Airtable `Family ID` values,
+  and rewrites `airtable-saint-family-members.csv` plus
+  `airtable-saint-family-relationship-edges.csv`. The current script includes
+  the July 2026 manual relationship additions listed above. If it is reused for
+  a future reviewed batch, update the `guruLinks`, `partnerLinks`, and any
+  `explicitRecordIds` disambiguation at the top of the file before running it.
+- `flag-airtable-potential-duplicates.mjs`: ensures the Airtable
+  `Potential duplicate match` same-table linked-record field exists, links each
+  duplicate record to the other record(s) in its exact normalized-name or
+  explicitly reviewed fuzzy duplicate group, exports the duplicate review list,
+  exports additional fuzzy name/date candidates for review only, and applies the
+  special Rajarshi duplicate guru-disciple repair described above. Update the
+  explicit fuzzy groups and Rajarshi constants before reusing it for a different
+  duplicate repair pass.
+- `enrich-family-members-with-airtable-dates.mjs`: reads the current family
+  member record IDs from `airtable-saint-family-members.csv`, fetches Airtable's
+  `Birth (YYYY-MM-DD)` and `Samadhi (YYYY-MM-DD)` fields, and appends
+  `BirthDate`, `SamadhiDate`, `BirthYear`, and `SamadhiYear` columns to the
+  local export. Run this after regenerating family membership if the tree layout
+  should use date-aware placement.
+- `generate-family-tree-exports.mjs`: reads the family member and relationship
+  edge CSVs, writes `airtable-saint-family-labels.csv`, clears stale
+  `fam-###-tree.svg` files, regenerates the SVG family trees, rewrites
+  `airtable-saint-family-tree-visuals.csv`, and rebuilds `family-trees/index.html`.
+  Family labels are review proposals: sampradaya labels are used only when a
+  sampradaya appears concentrated in one family; otherwise the script proposes
+  the clearest senior/root member and marks multi-root cases as `Needs Guidance`.
+- `apply-airtable-museum-section-updates.mjs`: applies the reviewed museum
+  section proposal fields, generated `Family Label` values, reviewed
+  sampradaya corrections, and linkable guru-disciple updates to Airtable. It
+  creates the museum helper fields if needed, patches records with `typecast`,
+  and writes `airtable-museum-section-updates-applied.csv`. Rows that reference
+  absent source figures, such as Sri Aurobindo, are logged and skipped for
+  linked-record updates.
+- `inspect-airtable-cleanup-fields.mjs`: read-only Airtable metadata inspector
+  for the fields touched by this workstream. Use it to confirm whether helper
+  fields, inverse linked-record fields, and retired fields are still present.
+- `retire-airtable-potential-duplicate-checkbox.mjs`: narrow legacy cleanup
+  utility that clears the old `Potential duplicate` checkbox if it exists and
+  is still a checkbox. The current inspected schema no longer has that field,
+  so this script should normally be a no-op.
+
+Recommended order after live Airtable relationship edits:
+
+1. Run `flag-airtable-potential-duplicates.mjs` only when intentionally
+   refreshing duplicate review links or applying its explicit Rajarshi duplicate
+   repair.
+2. Run `apply-manual-airtable-relationships-and-refresh-families.mjs` if the
+   relationship edits are part of a reviewed batch that should update Airtable
+   and family IDs.
+3. Run `enrich-family-members-with-airtable-dates.mjs` if date columns are
+   missing or the family membership export was rewritten without dates.
+4. Run `generate-family-tree-exports.mjs` to refresh the visual tree outputs.
 
 ## Import Considerations
 

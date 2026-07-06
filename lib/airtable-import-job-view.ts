@@ -40,6 +40,15 @@ export type AirtableImportSummaryDetails = {
     guruName?: string;
     message: string;
   }>;
+  cleanupIssues: Array<{
+    recordId: string;
+    airtableName?: string;
+    relatedRecordId?: string;
+    relatedName?: string;
+    field: string;
+    reason: string;
+    message: string;
+  }>;
 };
 
 export function serializeAirtableImportJob(job: AirtableImportJob) {
@@ -55,6 +64,15 @@ export function serializeAirtableImportJob(job: AirtableImportJob) {
     guruRelationshipsCreated: job.guruRelationshipsCreated,
     guruRelationshipsExisting: job.guruRelationshipsExisting,
     guruRelationshipsUnresolved: job.guruRelationshipsUnresolved,
+    relationshipCandidatesCreated: job.relationshipCandidatesCreated,
+    relationshipCandidatesExisting: job.relationshipCandidatesExisting,
+    relationshipCandidatesUnresolved: job.relationshipCandidatesUnresolved,
+    placeRelationshipsCreated: job.placeRelationshipsCreated,
+    placeRelationshipsExisting: job.placeRelationshipsExisting,
+    familyGroupsCreated: job.familyGroupsCreated,
+    familyMembershipsCreated: job.familyMembershipsCreated,
+    duplicateCandidatesCreated: job.duplicateCandidatesCreated,
+    museumSectionAssignmentsCreated: job.museumSectionAssignmentsCreated,
     skippedSelfRelationships: job.skippedSelfRelationships,
     failedRows: job.failedRows,
     message: job.message,
@@ -99,6 +117,15 @@ export function normalizeAirtableSummaryDetails(rawSummary: unknown): AirtableIm
       saintName: getString(item.saintName),
       message: getString(item.message) ?? "Same saint on both sides"
     })).filter((item) => item.discipleRecordId && item.guruRecordId),
+    cleanupIssues: arrayOfRecords(summary?.issues).map((item) => ({
+      recordId: getString(item.recordId) ?? "",
+      airtableName: getString(item.airtableName),
+      relatedRecordId: getString(item.relatedRecordId),
+      relatedName: getString(item.relatedName),
+      field: getString(item.field) ?? "Airtable cleanup",
+      reason: getString(item.reason) ?? "needs_review",
+      message: getString(item.message) ?? "Needs review"
+    })).filter((item) => item.recordId),
     errors: normalizeErrors(summary?.errors)
   };
 }

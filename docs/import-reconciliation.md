@@ -42,11 +42,36 @@ Override tables for one run:
 npm run import:airtable -- --tables "Saints,Traditions"
 ```
 
+When the Airtable mirror has been refreshed and the CMS has no human edits that
+need preservation, reset Airtable-derived CMS rows before reimporting:
+
+```sh
+npm run reset:airtable-cms
+npm run reset:airtable-cms -- --write
+```
+
+The reset script is dry-run by default. It clears Airtable-linked CMS saints,
+their imported child records through cascades, Airtable relationship/family/
+duplicate/museum review rows, Airtable saint `ExternalRecord` links, and
+Airtable import jobs. It does not clear `AirtableMirrorRecord`, so the refreshed
+mirror remains the source for the next import.
+
+The deployed admin equivalent lives at `/admin/airtable`. It uses the same bulk
+delete password gate as bulk saint and Instagram deletes for mirror writes,
+resets, and queued import writes.
+
 Import Airtable mirror saints into the CMS:
 
 ```sh
 npm run import:airtable-saints
 npm run import:airtable-saints -- --write
+```
+
+Import Airtable cleanup fields into the new graph/review infrastructure:
+
+```sh
+npm run import:airtable-cleanup
+npm run import:airtable-cleanup -- --write
 ```
 
 The CMS import is idempotent through `ExternalRecord` links. The safe import
@@ -57,6 +82,29 @@ aliases, split birth and samadhi date fields into
 raw/year/month/day/precision parts, and map safe saint images from
 `Picture(s) of Saint`. It does not import relic or museum fields into public
 saint records.
+
+The July 2026 Airtable cleanup added richer review fields for normalized
+places, spiritual regions, saint relationships, family graphs, duplicate
+matches, and museum-section planning. These fields should seed website domain
+models, not become public page contracts directly:
+
+- `Normalized places` and `Place keys` should create or match `Place` records.
+- `Spiritual Region` should create spiritual-region `Place` nodes and
+  `PlaceRelationship` edges.
+- `Master(s)`, `Disciples`, `Partner`, and `Incarnation` should seed
+  `SaintRelationship` candidates with provenance. The cleanup importer preserves
+  the existing guru relationship direction used by the earlier importer:
+  disciple `fromSaintId` -> guru `toSaintId`.
+- `Family ID` should remain a review/export label; website family groupings
+  should be recomputed into `SaintFamily` and `SaintFamilyMember` from reviewed
+  relationships.
+- `Potential duplicate match` should create `DuplicateCandidate` rows and may
+  link to `ReconciliationIssue`.
+- museum-section fields should import only into private `MuseumSection` and
+  `SaintMuseumSection` planning metadata.
+
+The detailed recommendations live in
+`docs/airtable-cleanup-site-model-roadmap.md`.
 
 The preferred editor workflow is `/admin/saints` -> `Airtable sync review`.
 Those actions create durable `AirtableImportJob` records for dry-run checks,
