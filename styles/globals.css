@@ -3106,7 +3106,7 @@ img {
   background: var(--review-workflow-section-bg);
   border: 1px solid var(--review-workflow-border);
   border-radius: var(--radius-md);
-  grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr) minmax(220px, auto);
+  grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr);
   padding: var(--space-4);
 }
 
@@ -3142,6 +3142,14 @@ img {
 
 .bulk-review-panel[data-has-selection="true"] .admin-form-button {
   opacity: 1;
+}
+
+.bulk-review-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-end;
 }
 
 .bulk-review-panel .review-actions {
@@ -5464,6 +5472,10 @@ img {
   }
 
   .bulk-review-panel .review-actions {
+    justify-content: flex-start;
+  }
+
+  .bulk-review-actions {
     justify-content: flex-start;
   }
 

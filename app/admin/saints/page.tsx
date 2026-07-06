@@ -12,25 +12,25 @@ const statuses = ["all", "needs_review", "draft", "published", "archived"] as co
 type StatusFilter = typeof statuses[number];
 const instagramFilters = ["all", "has_match", "missing_match"] as const;
 type InstagramFilter = typeof instagramFilters[number];
-const summaryFilters = ["all", "has_summary", "missing_summary"] as const;
-type SummaryFilter = typeof summaryFilters[number];
+const photoFilters = ["all", "has_photo", "missing_photo"] as const;
+type PhotoFilter = typeof photoFilters[number];
 
 type SaintQueueFilters = {
   instagram: InstagramFilter;
-  summary: SummaryFilter;
+  photo: PhotoFilter;
 };
 
 type AdminSaintsPageProps = {
-  searchParams: Promise<{ q?: string | string[]; status?: string; instagram?: string; summary?: string }>;
+  searchParams: Promise<{ q?: string | string[]; status?: string; instagram?: string; photo?: string }>;
 };
 
 export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageProps) {
-  const { q, status, instagram, summary } = await searchParams;
+  const { q, status, instagram, photo } = await searchParams;
   const query = getSearchParam(q);
   const activeStatus = statuses.includes(status as StatusFilter) ? status as StatusFilter : "all";
   const activeFilters: SaintQueueFilters = {
     instagram: instagramFilters.includes(instagram as InstagramFilter) ? instagram as InstagramFilter : "all",
-    summary: summaryFilters.includes(summary as SummaryFilter) ? summary as SummaryFilter : "all"
+    photo: photoFilters.includes(photo as PhotoFilter) ? photo as PhotoFilter : "all"
   };
   const [counts, saints, airtableJobs] = await Promise.all([
     getStatusCounts(activeFilters),
@@ -88,13 +88,13 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
               />
             ))}
           </FilterGroup>
-          <FilterGroup label="Public summary">
-            {summaryFilters.map((item) => (
+          <FilterGroup label="Primary photo">
+            {photoFilters.map((item) => (
               <FilterLink
-                active={activeFilters.summary === item}
-                href={getSaintsReturnTo(activeStatus, { ...activeFilters, summary: item }, query)}
+                active={activeFilters.photo === item}
+                href={getSaintsReturnTo(activeStatus, { ...activeFilters, photo: item }, query)}
                 key={item}
-                label={formatSummaryFilterLabel(item)}
+                label={formatPhotoFilterLabel(item)}
               />
             ))}
           </FilterGroup>
@@ -103,7 +103,7 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
         <form action="/admin/saints" className="admin-search admin-search--queue" role="search">
           {activeStatus === "all" ? null : <input name="status" type="hidden" value={activeStatus} />}
           {activeFilters.instagram === "all" ? null : <input name="instagram" type="hidden" value={activeFilters.instagram} />}
-          {activeFilters.summary === "all" ? null : <input name="summary" type="hidden" value={activeFilters.summary} />}
+          {activeFilters.photo === "all" ? null : <input name="photo" type="hidden" value={activeFilters.photo} />}
           <label className="sr-only" htmlFor="admin-saints-search">Search saints</label>
           <input
             id="admin-saints-search"
@@ -181,29 +181,13 @@ function FilterLink({ active, href, label, value }: { active: boolean; href: str
 }
 
 function getSaintQueueWhere(status: StatusFilter, filters: SaintQueueFilters) {
-  const where = {
+  return {
     ...(status === "all" ? {} : { status }),
     ...(filters.instagram === "has_match" ? { instagramItems: { some: {} } } : {}),
-    ...(filters.instagram === "missing_match" ? { instagramItems: { none: {} } } : {})
+    ...(filters.instagram === "missing_match" ? { instagramItems: { none: {} } } : {}),
+    ...(filters.photo === "has_photo" ? { primaryImageId: { not: null } } : {}),
+    ...(filters.photo === "missing_photo" ? { primaryImageId: null } : {})
   };
-  const summaryClause = getSummaryWhere(filters.summary);
-  return summaryClause ? { ...where, ...summaryClause } : where;
-}
-
-function getSummaryWhere(filter: SummaryFilter) {
-  const hasSummary = [
-    { AND: [{ shortDescription: { not: null } }, { shortDescription: { not: "" } }] },
-    { AND: [{ biographySummary: { not: null } }, { biographySummary: { not: "" } }] }
-  ];
-
-  if (filter === "has_summary") return { OR: hasSummary };
-  if (filter === "missing_summary") return {
-    AND: [
-      { OR: [{ shortDescription: null }, { shortDescription: "" }] },
-      { OR: [{ biographySummary: null }, { biographySummary: "" }] }
-    ]
-  };
-  return undefined;
 }
 
 function getStatusCount(counts: Record<string, number>, status: StatusFilter) {
@@ -229,9 +213,9 @@ function formatInstagramFilterLabel(filter: InstagramFilter) {
   return "Any";
 }
 
-function formatSummaryFilterLabel(filter: SummaryFilter) {
-  if (filter === "has_summary") return "Has summary";
-  if (filter === "missing_summary") return "Missing summary";
+function formatPhotoFilterLabel(filter: PhotoFilter) {
+  if (filter === "has_photo") return "Has photo";
+  if (filter === "missing_photo") return "Missing photo";
   return "Any";
 }
 
@@ -250,7 +234,7 @@ function getSaintsReturnTo(status: StatusFilter, filters: SaintQueueFilters, que
   const params = new URLSearchParams();
   if (status !== "all") params.set("status", status);
   if (filters.instagram !== "all") params.set("instagram", filters.instagram);
-  if (filters.summary !== "all") params.set("summary", filters.summary);
+  if (filters.photo !== "all") params.set("photo", filters.photo);
   if (query) params.set("q", query);
   const qs = params.toString();
   return qs ? `/admin/saints?${qs}` : "/admin/saints";

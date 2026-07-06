@@ -67,48 +67,50 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
             <small>{selectedCount > 0 ? `${selectedCount} selected` : `${saints.length} visible in this queue`}</small>
           </span>
         </label>
-        <form action={bulkUpdateSaintReviewStatus} className="review-actions">
-          <BulkReviewHiddenFields returnTo={returnTo} saintIds={selectedIds} />
-          {bulkActions.map((action) => (
+        <div className="bulk-review-actions">
+          <form action={bulkUpdateSaintReviewStatus} className="review-actions">
+            <BulkReviewHiddenFields returnTo={returnTo} saintIds={selectedIds} />
+            {bulkActions.map((action) => (
+              <button
+                className={[
+                  "admin-form-button",
+                  action.variant === "secondary" ? "admin-form-button--secondary" : null,
+                  action.variant === "low-priority" ? "admin-form-button--low-priority" : null
+                ].filter(Boolean).join(" ")}
+                disabled={selectedCount === 0}
+                key={action.status}
+                name="status"
+                type="submit"
+                value={action.status}
+              >
+                {action.label}
+              </button>
+            ))}
+          </form>
+          <form action={bulkDeleteSaints} className="bulk-delete-form">
+            <BulkReviewHiddenFields returnTo={returnTo} saintIds={selectedIds} />
+            {isDeleteArmed ? (
+              <label className="bulk-delete-password">
+                <span>Delete password</span>
+                <input
+                  autoComplete="off"
+                  name="bulkDeletePassword"
+                  placeholder="Required to remove selected saints"
+                  required
+                  type="password"
+                />
+              </label>
+            ) : null}
             <button
-              className={[
-                "admin-form-button",
-                action.variant === "secondary" ? "admin-form-button--secondary" : null,
-                action.variant === "low-priority" ? "admin-form-button--low-priority" : null
-              ].filter(Boolean).join(" ")}
+              className="admin-form-button admin-form-button--low-priority"
               disabled={selectedCount === 0}
-              key={action.status}
-              name="status"
-              type="submit"
-              value={action.status}
+              onClick={isDeleteArmed ? undefined : armDelete}
+              type={isDeleteArmed ? "submit" : "button"}
             >
-              {action.label}
+              {isDeleteArmed ? `Remove ${selectedCount} selected saints` : "Remove selected"}
             </button>
-          ))}
-        </form>
-        <form action={bulkDeleteSaints} className="bulk-delete-form">
-          <BulkReviewHiddenFields returnTo={returnTo} saintIds={selectedIds} />
-          {isDeleteArmed ? (
-            <label className="bulk-delete-password">
-              <span>Delete password</span>
-              <input
-                autoComplete="off"
-                name="bulkDeletePassword"
-                placeholder="Required to remove selected saints"
-                required
-                type="password"
-              />
-            </label>
-          ) : null}
-          <button
-            className="admin-form-button admin-form-button--warning"
-            disabled={selectedCount === 0}
-            onClick={isDeleteArmed ? undefined : armDelete}
-            type={isDeleteArmed ? "submit" : "button"}
-          >
-            {isDeleteArmed ? `Remove ${selectedCount} selected saints` : "Remove selected"}
-          </button>
-        </form>
+          </form>
+        </div>
       </div>
 
       <div className="review-list">
