@@ -9,6 +9,7 @@ import {
   resetAirtableCmsAction,
   writeAirtableMirrorAction
 } from "./actions";
+import { AirtableSubmitButton } from "./airtable-submit-button";
 
 type AirtableReingestPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -62,13 +63,21 @@ export default async function AirtableReingestPage({ searchParams }: AirtableRei
           {recentMirrorBatch ? <StatusBadge label={`Last ${recentMirrorBatch.status}`} /> : null}
           {recentMirrorBatch?.completedAt ? <StatusBadge label={formatDate(recentMirrorBatch.completedAt)} /> : null}
         </div>
+        {recentMirrorBatch ? (
+          <p className="admin-settings-note">
+            Last mirror run {recentMirrorBatch.status}
+            {recentMirrorBatch.completedAt ? ` at ${formatDate(recentMirrorBatch.completedAt)}` : recentMirrorBatch.startedAt ? `; started ${formatDate(recentMirrorBatch.startedAt)}` : ""}.
+          </p>
+        ) : (
+          <p className="admin-settings-note">No Airtable mirror batch has completed yet.</p>
+        )}
         <div className="review-actions">
           <form action={dryRunAirtableMirrorAction}>
-            <button className="admin-form-button admin-form-button--secondary" type="submit">Dry-run mirror</button>
+            <AirtableSubmitButton pendingLabel="Checking mirror..." variant="secondary">Dry-run mirror</AirtableSubmitButton>
           </form>
           <form action={writeAirtableMirrorAction} className="review-actions">
             <PasswordField />
-            <button className="admin-form-button" type="submit">Refresh mirror</button>
+            <AirtableSubmitButton pendingLabel="Refreshing mirror...">Refresh mirror</AirtableSubmitButton>
           </form>
         </div>
       </CollapsibleReviewCard>
@@ -92,7 +101,7 @@ export default async function AirtableReingestPage({ searchParams }: AirtableRei
             <span>Keep Airtable import job history</span>
           </label>
           <div className="review-actions admin-settings-form__actions">
-            <button className="admin-form-button admin-form-button--danger" type="submit">Reset Airtable CMS data</button>
+            <AirtableSubmitButton pendingLabel="Resetting CMS data..." variant="danger">Reset Airtable CMS data</AirtableSubmitButton>
           </div>
         </form>
       </CollapsibleReviewCard>
@@ -138,7 +147,7 @@ function QueueForm({ mode, label }: { mode: string; label: string }) {
     <form action={queueAirtableImportAction} className="review-actions">
       <input name="mode" type="hidden" value={mode} />
       <PasswordField />
-      <button className="admin-form-button" type="submit">{label}</button>
+      <AirtableSubmitButton pendingLabel={`Queueing ${formatStatus(mode)}...`}>{label}</AirtableSubmitButton>
     </form>
   );
 }
