@@ -103,7 +103,7 @@ async function requireProtectedAction(formData: FormData) {
   const { email } = await requireAdminSession();
   const parsed = protectedActionSchema.parse({
     bulkDeletePassword: formData.get("bulkDeletePassword"),
-    returnTo: formData.get("returnTo")
+    returnTo: emptyToUndefined(formData.get("returnTo"))
   });
   if (!(await verifyBulkDeletePassword(parsed.bulkDeletePassword))) {
     throw new Error("The bulk delete password was incorrect.");
@@ -152,6 +152,10 @@ function errorMessage(error: unknown) {
   if (error instanceof z.ZodError) return "The submitted form was incomplete or invalid.";
   if (error instanceof Error) return error.message;
   return "The Airtable action failed.";
+}
+
+function emptyToUndefined(value: FormDataEntryValue | null) {
+  return typeof value === "string" && value.trim() ? value.trim() : undefined;
 }
 
 function toInputJson(value: unknown): Prisma.InputJsonValue {
