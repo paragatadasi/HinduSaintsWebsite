@@ -5971,6 +5971,18 @@ img {
   font-weight: 700;
 }
 
+.combo-search__option-title {
+  align-items: baseline;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.combo-search__option-title span {
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
 .combo-search__option small,
 .combo-search__empty,
 .combo-search__selection {

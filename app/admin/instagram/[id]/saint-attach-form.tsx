@@ -119,23 +119,30 @@ export function SaintAttachForm({ initialQuery, instagramItemId, returnTo, saint
         {isDropdownOpen ? (
           <div className="combo-search__list" id={listboxId} role="listbox">
             {visibleSaints.length > 0 ? (
-              visibleSaints.map((saint, index) => (
-                <button
-                  aria-selected={saint.id === selectedSaintId}
-                  className="combo-search__option"
-                  data-active={index === activeIndex ? "true" : undefined}
-                  id={`${listboxId}-${saint.id}`}
-                  key={saint.id}
-                  role="option"
-                  type="button"
-                  onMouseDown={(event) => event.preventDefault()}
-                  onClick={() => selectSaint(saint)}
-                  onMouseEnter={() => setActiveIndex(index)}
-                >
-                  <span>{saint.displayName}</span>
-                  <small>{formatSaintMeta(saint)}</small>
-                </button>
-              ))
+              visibleSaints.map((saint, index) => {
+                const saintDates = formatSaintDates(saint);
+
+                return (
+                  <button
+                    aria-selected={saint.id === selectedSaintId}
+                    className="combo-search__option"
+                    data-active={index === activeIndex ? "true" : undefined}
+                    id={`${listboxId}-${saint.id}`}
+                    key={saint.id}
+                    role="option"
+                    type="button"
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => selectSaint(saint)}
+                    onMouseEnter={() => setActiveIndex(index)}
+                  >
+                    <span className="combo-search__option-title">
+                      <strong>{saint.displayName}</strong>
+                      {saintDates ? <span>({saintDates})</span> : null}
+                    </span>
+                    <small>{formatSaintMeta(saint)}</small>
+                  </button>
+                );
+              })
             ) : (
               <div className="combo-search__empty">No saints match this search.</div>
             )}
@@ -179,6 +186,13 @@ function formatSaintMeta(saint: RankedSaintAttachOption) {
   return [
     saint.confidence ? `${saint.confidence} match` : undefined,
     formatStatus(saint.status)
+  ].filter(Boolean).join(" - ");
+}
+
+function formatSaintDates(saint: RankedSaintAttachOption) {
+  return [
+    saint.birthDateRaw,
+    saint.samadhiDateRaw
   ].filter(Boolean).join(" - ");
 }
 
