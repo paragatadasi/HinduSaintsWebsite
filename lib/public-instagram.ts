@@ -21,14 +21,7 @@ const INSTAGRAM_URL_EXPIRY_BUFFER_MS = 60 * 60 * 1000;
 export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<PublicInstagramCarouselPreview[]> {
   const items = await db.instagramItem.findMany({
     where: {
-      type: "carousel",
-      status: { in: ["matched", "published"] },
-      saints: {
-        some: {
-          matchStatus: { in: ["matched", "published"] },
-          saint: { status: "published" }
-        }
-      }
+      type: "carousel"
     },
     orderBy: [
       { postedAt: { sort: "desc", nulls: "last" } },
