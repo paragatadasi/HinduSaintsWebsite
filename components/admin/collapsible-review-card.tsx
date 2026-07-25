@@ -39,7 +39,7 @@ export function CollapsibleReviewCard({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   useEffect(() => {
-    const storedValue = window.sessionStorage.getItem(storageKey);
+    const storedValue = safeSessionStorageGet(storageKey);
     if (storedValue === "open") setIsOpen(true);
     if (storedValue === "closed") setIsOpen(false);
   }, [storageKey]);
@@ -47,7 +47,7 @@ export function CollapsibleReviewCard({
   function toggleOpen() {
     setIsOpen((current) => {
       const next = !current;
-      window.sessionStorage.setItem(storageKey, next ? "open" : "closed");
+      safeSessionStorageSet(storageKey, next ? "open" : "closed");
       return next;
     });
   }
@@ -107,7 +107,7 @@ function useSessionOpenState(cardId: string, defaultOpen: boolean) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   useEffect(() => {
-    const storedValue = window.sessionStorage.getItem(storageKey);
+    const storedValue = safeSessionStorageGet(storageKey);
     if (storedValue === "open") setIsOpen(true);
     if (storedValue === "closed") setIsOpen(false);
   }, [storageKey]);
@@ -115,10 +115,26 @@ function useSessionOpenState(cardId: string, defaultOpen: boolean) {
   function toggleOpen() {
     setIsOpen((current) => {
       const next = !current;
-      window.sessionStorage.setItem(storageKey, next ? "open" : "closed");
+      safeSessionStorageSet(storageKey, next ? "open" : "closed");
       return next;
     });
   }
 
   return { isOpen, toggleOpen };
+}
+
+function safeSessionStorageGet(key: string) {
+  try {
+    return window.sessionStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeSessionStorageSet(key: string, value: string) {
+  try {
+    window.sessionStorage.setItem(key, value);
+  } catch {
+    // Collapsible state is a convenience; blocked browser storage should not break admin pages.
+  }
 }

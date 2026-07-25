@@ -60,7 +60,7 @@ export default async function AirtableReingestPage({ searchParams }: AirtableRei
         <div className="review-meta">
           <StatusBadge label={process.env.AIRTABLE_TABLES || "Saints"} />
           {recentMirrorBatch ? <StatusBadge label={`Last ${recentMirrorBatch.status}`} /> : null}
-          {recentMirrorBatch?.completedAt ? <StatusBadge label={recentMirrorBatch.completedAt.toLocaleString()} /> : null}
+          {recentMirrorBatch?.completedAt ? <StatusBadge label={formatDate(recentMirrorBatch.completedAt)} /> : null}
         </div>
         <div className="review-actions">
           <form action={dryRunAirtableMirrorAction}>
@@ -122,7 +122,7 @@ export default async function AirtableReingestPage({ searchParams }: AirtableRei
                   <h3>{job.message ?? formatStatus(job.mode)}</h3>
                 </div>
                 <div className="review-meta">
-                  <StatusBadge label={(job.completedAt ?? job.createdAt).toLocaleString()} />
+                  <StatusBadge label={formatDate(job.completedAt ?? job.createdAt)} />
                 </div>
               </article>
             ))}
@@ -190,4 +190,8 @@ function getParam(value: string | string[] | undefined) {
 
 function formatStatus(status: string) {
   return status.replace(/_/g, " ");
+}
+
+function formatDate(value: Date) {
+  return value.toISOString().replace("T", " ").slice(0, 16);
 }
