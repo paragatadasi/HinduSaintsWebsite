@@ -48,15 +48,6 @@ type SaintReference = {
   name: string;
 };
 
-type GuruRelationshipPlan = {
-  discipleRecordId: string;
-  discipleName?: string;
-  discipleSaint?: SaintReference;
-  guruRecordId: string;
-  guruName?: string;
-  guruSaint?: SaintReference;
-};
-
 type AirtableSaintRow = Awaited<ReturnType<typeof findAirtableSaintRows>>[number];
 
 type ExternalSaintReference = SaintReference & {
@@ -167,7 +158,7 @@ export type AirtableCleanupIssueDetail = {
   message: string;
 };
 
-export type AirtableImportMode = "check" | "import_missing_drafts" | "import_guru_relationships" | "import_airtable_cleanup";
+export type AirtableImportMode = "check" | "import_missing_drafts" | "import_airtable_cleanup";
 
 export type AirtableSaintImportSummary = {
   mode: "check" | "import_missing_drafts";
@@ -176,18 +167,6 @@ export type AirtableSaintImportSummary = {
   newDraftSaintsCreated: number;
   slugNameCollisionsSkipped: number;
   collisions: AirtableImportCollisionDetail[];
-  errors: AirtableImportErrorDetail[];
-};
-
-export type AirtableGuruRelationshipSummary = {
-  mode: "check" | "import_guru_relationships";
-  mirrorRowsChecked: number;
-  guruRelationshipsCreated: number;
-  guruRelationshipsExisting: number;
-  guruRelationshipsUnresolved: number;
-  skippedSelfRelationships: number;
-  unresolvedGuruRelationships: AirtableGuruRelationshipIssueDetail[];
-  selfSkippedGuruRelationships: AirtableSelfSkippedGuruRelationshipDetail[];
   errors: AirtableImportErrorDetail[];
 };
 
@@ -220,7 +199,6 @@ export type AirtableSaintImportOptions = {
 const AIRTABLE_TABLE = "Saints";
 const IMPORTER_SOURCE = "airtable_saints_cms_import";
 const MISSING_DRAFT_STATUS: ContentStatus = "draft";
-const GURU_IMPORTER_NOTE = "Imported from Airtable Master(s) field; pending editorial review.";
 const CLEANUP_IMPORTER_NOTE = "Imported from Airtable cleanup fields; pending editorial review.";
 
 const HONORIFIC_PREFIXES = [
@@ -274,16 +252,14 @@ export async function runAirtableImportJob(jobId: string) {
   });
 
   try {
-    if (job.mode === "import_guru_relationships") {
-      const summary = await runAirtableGuruRelationshipImport({ dryRun: false });
-      await completeAirtableJob(jobId, summary);
-      return;
-    }
-
     if (job.mode === "import_airtable_cleanup") {
       const summary = await runAirtableCleanupImport({ dryRun: false });
       await completeAirtableJob(jobId, summary);
       return;
+    }
+
+    if (job.mode !== "check" && job.mode !== "import_missing_drafts") {
+      throw new Error(`Unsupported Airtable import mode: ${job.mode}.`);
     }
 
     const summary = await runAirtableSaintsMissingDraftImport({
@@ -321,20 +297,19 @@ export async function runAirtableSaintsMissingDraftImport(options: AirtableSaint
 
 async function completeAirtableJob(
   jobId: string,
-  summary: AirtableSaintImportSummary | AirtableGuruRelationshipSummary | AirtableCleanupImportSummary
+  summary: AirtableSaintImportSummary | AirtableCleanupImportSummary
 ) {
-  const isGuruSummary = "guruRelationshipsCreated" in summary;
   const isCleanupSummary = "relationshipCandidatesCreated" in summary;
   await updateAirtableJob(jobId, {
     status: "completed",
     completedAt: new Date(),
     mirrorRowsChecked: summary.mirrorRowsChecked,
-    existingCmsSaintsSkipped: isGuruSummary || isCleanupSummary ? undefined : summary.existingCmsSaintsSkipped,
-    newDraftSaintsCreated: isGuruSummary || isCleanupSummary ? undefined : summary.newDraftSaintsCreated,
-    slugNameCollisionsSkipped: isGuruSummary || isCleanupSummary ? undefined : summary.slugNameCollisionsSkipped,
-    guruRelationshipsCreated: isGuruSummary ? summary.guruRelationshipsCreated : undefined,
-    guruRelationshipsExisting: isGuruSummary ? summary.guruRelationshipsExisting : undefined,
-    guruRelationshipsUnresolved: isGuruSummary ? summary.guruRelationshipsUnresolved : undefined,
+    existingCmsSaintsSkipped: isCleanupSummary ? undefined : summary.existingCmsSaintsSkipped,
+    newDraftSaintsCreated: isCleanupSummary ? undefined : summary.newDraftSaintsCreated,
+    slugNameCollisionsSkipped: isCleanupSummary ? undefined : summary.slugNameCollisionsSkipped,
+    guruRelationshipsCreated: undefined,
+    guruRelationshipsExisting: undefined,
+    guruRelationshipsUnresolved: undefined,
     relationshipCandidatesCreated: isCleanupSummary ? summary.relationshipCandidatesCreated : undefined,
     relationshipCandidatesExisting: isCleanupSummary ? summary.relationshipCandidatesExisting : undefined,
     relationshipCandidatesUnresolved: isCleanupSummary ? summary.relationshipCandidatesUnresolved : undefined,
@@ -344,7 +319,7 @@ async function completeAirtableJob(
     familyMembershipsCreated: isCleanupSummary ? summary.familyMembershipsCreated : undefined,
     duplicateCandidatesCreated: isCleanupSummary ? summary.duplicateCandidatesCreated : undefined,
     museumSectionAssignmentsCreated: isCleanupSummary ? summary.museumSectionAssignmentsCreated : undefined,
-    skippedSelfRelationships: isGuruSummary || isCleanupSummary ? summary.skippedSelfRelationships : undefined,
+    skippedSelfRelationships: isCleanupSummary ? summary.skippedSelfRelationships : undefined,
     failedRows: summary.errors.length,
     rawSummary: toInputJson(summary),
     error: summary.errors.length > 0 ? summary.errors.map((item) => `${item.recordId}: ${item.message}`).join("\n") : null,
@@ -357,36 +332,6 @@ async function updateAirtableJob(jobId: string, data: Prisma.AirtableImportJobUp
     where: { id: jobId },
     data
   });
-}
-
-export async function runAirtableGuruRelationshipImport(options: AirtableSaintImportOptions = {}) {
-  const dryRun = options.dryRun ?? true;
-  const rows = await findAirtableSaintRows(options.limit);
-  const plans = await buildGuruRelationshipPlans(rows);
-  const summary = emptyGuruRelationshipSummary(dryRun ? "check" : "import_guru_relationships", rows.length);
-
-  for (const plan of plans) {
-    try {
-      const classification = await classifyGuruRelationshipPlan(plan);
-      addGuruClassification(summary, classification, plan);
-
-      if (!dryRun && classification === "create" && plan.discipleSaint && plan.guruSaint) {
-        await db.saintRelationship.create({
-          data: {
-            fromSaintId: plan.discipleSaint.id,
-            toSaintId: plan.guruSaint.id,
-            relationshipType: "guru",
-            confidence: "medium",
-            notes: GURU_IMPORTER_NOTE
-          }
-        });
-      }
-    } catch (error) {
-      summary.errors.push(formatGuruImportError(plan, error));
-    }
-  }
-
-  return summary;
 }
 
 export async function runAirtableCleanupImport(options: AirtableSaintImportOptions = {}) {
@@ -759,32 +704,6 @@ async function findOrCreateSource(url: string) {
   });
 }
 
-async function buildGuruRelationshipPlans(rows: Awaited<ReturnType<typeof findAirtableSaintRows>>) {
-  const saintByExternalId = await buildExternalSaintMap(rows);
-  const nameByRecordId = buildAirtableNameMap(rows);
-  const plans: GuruRelationshipPlan[] = [];
-
-  for (const row of rows) {
-    const fields = asObject(row.rawFieldsJson);
-    const guruRecordIds = linkedRecordIds(fields, "Master(s)");
-    if (guruRecordIds.length === 0) continue;
-
-    const discipleSaint = saintByExternalId.get(`${row.baseId}:${AIRTABLE_TABLE}:${row.recordId}`);
-    for (const guruRecordId of guruRecordIds) {
-      plans.push({
-        discipleRecordId: row.recordId,
-        discipleName: nameByRecordId.get(row.recordId),
-        discipleSaint,
-        guruRecordId,
-        guruName: nameByRecordId.get(guruRecordId),
-        guruSaint: saintByExternalId.get(`${row.baseId}:${AIRTABLE_TABLE}:${guruRecordId}`)
-      });
-    }
-  }
-
-  return plans;
-}
-
 async function buildCleanupContext(rows: AirtableSaintRow[]) {
   return {
     nameByRecordId: buildAirtableNameMap(rows),
@@ -994,33 +913,6 @@ function buildAirtableNameMap(rows: Awaited<ReturnType<typeof findAirtableSaintR
   );
 }
 
-async function buildExternalSaintMap(rows: Array<{ baseId: string; recordId: string }>) {
-  const externalIds = rows.map((row) => airtableExternalId(row.baseId, row.recordId));
-  const externalRecords = await db.externalRecord.findMany({
-    where: {
-      sourceType: "airtable",
-      externalId: { in: externalIds },
-      entityType: "Saint"
-    },
-    select: {
-      externalId: true,
-      entityId: true
-    }
-  });
-  const saintIds = externalRecords.map((record) => record.entityId).filter((id): id is string => Boolean(id));
-  const saints = await db.saint.findMany({
-    where: { id: { in: saintIds } },
-    select: { id: true, displayName: true, slug: true }
-  });
-  const saintById = new Map(saints.map((saint) => [saint.id, saintReference(saint)]));
-
-  return new Map(
-    externalRecords
-      .map((record) => [record.externalId, record.entityId ? saintById.get(record.entityId) : undefined] as const)
-      .filter((entry): entry is readonly [string, SaintReference] => Boolean(entry[1]))
-  );
-}
-
 async function buildExternalSaintRecordMap(rows: Array<{ baseId: string; recordId: string }>) {
   const externalIds = rows.map((row) => airtableExternalId(row.baseId, row.recordId));
   const externalRecords = await db.externalRecord.findMany({
@@ -1056,23 +948,6 @@ function airtableExternalId(baseId: string, recordId: string) {
   return `${baseId}:${AIRTABLE_TABLE}:${recordId}`;
 }
 
-async function classifyGuruRelationshipPlan(plan: GuruRelationshipPlan) {
-  if (!plan.discipleSaint) return "skipped_unmapped_disciple" as const;
-  if (!plan.guruSaint) return "skipped_unmapped_guru" as const;
-  if (plan.discipleSaint.id === plan.guruSaint.id) return "skipped_self_relationship" as const;
-
-  const existing = await db.saintRelationship.findFirst({
-    where: {
-      fromSaintId: plan.discipleSaint.id,
-      toSaintId: plan.guruSaint.id,
-      relationshipType: "guru"
-    },
-    select: { id: true }
-  });
-
-  return existing ? "existing" as const : "create" as const;
-}
-
 function emptySaintImportSummary(mode: AirtableSaintImportSummary["mode"], mirrorRowsChecked: number): AirtableSaintImportSummary {
   return {
     mode,
@@ -1081,20 +956,6 @@ function emptySaintImportSummary(mode: AirtableSaintImportSummary["mode"], mirro
     newDraftSaintsCreated: 0,
     slugNameCollisionsSkipped: 0,
     collisions: [],
-    errors: []
-  };
-}
-
-function emptyGuruRelationshipSummary(mode: AirtableGuruRelationshipSummary["mode"], mirrorRowsChecked: number): AirtableGuruRelationshipSummary {
-  return {
-    mode,
-    mirrorRowsChecked,
-    guruRelationshipsCreated: 0,
-    guruRelationshipsExisting: 0,
-    guruRelationshipsUnresolved: 0,
-    skippedSelfRelationships: 0,
-    unresolvedGuruRelationships: [],
-    selfSkippedGuruRelationships: [],
     errors: []
   };
 }
@@ -1475,42 +1336,6 @@ function addImportResult(summary: AirtableSaintImportSummary, result: ImportResu
   }
 }
 
-function addGuruClassification(
-  summary: AirtableGuruRelationshipSummary,
-  classification: Awaited<ReturnType<typeof classifyGuruRelationshipPlan>>,
-  plan: GuruRelationshipPlan
-) {
-  if (classification === "create") summary.guruRelationshipsCreated += 1;
-  if (classification === "existing") summary.guruRelationshipsExisting += 1;
-  if (classification === "skipped_unmapped_disciple" || classification === "skipped_unmapped_guru") {
-    summary.guruRelationshipsUnresolved += 1;
-    summary.unresolvedGuruRelationships.push({
-      discipleRecordId: plan.discipleRecordId,
-      discipleName: plan.discipleName,
-      discipleSaintSlug: plan.discipleSaint?.slug,
-      discipleSaintName: plan.discipleSaint?.name,
-      guruRecordId: plan.guruRecordId,
-      guruName: plan.guruName,
-      guruSaintSlug: plan.guruSaint?.slug,
-      guruSaintName: plan.guruSaint?.name,
-      reason: classification === "skipped_unmapped_disciple" ? "unmapped_disciple" : "unmapped_guru",
-      message: classification === "skipped_unmapped_disciple" ? "Disciple not linked" : "Guru not linked"
-    });
-  }
-  if (classification === "skipped_self_relationship") {
-    summary.skippedSelfRelationships += 1;
-    summary.selfSkippedGuruRelationships.push({
-      discipleRecordId: plan.discipleRecordId,
-      discipleName: plan.discipleName,
-      guruRecordId: plan.guruRecordId,
-      guruName: plan.guruName,
-      saintSlug: plan.discipleSaint?.slug,
-      saintName: plan.discipleSaint?.name,
-      message: "Same saint on both sides"
-    });
-  }
-}
-
 function asObject(value: unknown): AirtableFields {
   return value && typeof value === "object" && !Array.isArray(value) ? value as AirtableFields : {};
 }
@@ -1625,24 +1450,11 @@ function formatImportError(recordId: string, airtableName: string | undefined, e
   };
 }
 
-function formatGuruImportError(plan: GuruRelationshipPlan, error: unknown): AirtableImportErrorDetail {
-  const message = error instanceof Error ? error.message : "Unknown import error.";
-  return {
-    recordId: `${plan.discipleRecordId}:${plan.guruRecordId}`,
-    airtableName: plan.discipleName,
-    discipleRecordId: plan.discipleRecordId,
-    discipleName: plan.discipleName,
-    guruRecordId: plan.guruRecordId,
-    guruName: plan.guruName,
-    message
-  };
-}
-
-function toInputJson(value: AirtableSaintImportSummary | AirtableGuruRelationshipSummary | AirtableCleanupImportSummary): Prisma.InputJsonValue {
+function toInputJson(value: AirtableSaintImportSummary | AirtableCleanupImportSummary): Prisma.InputJsonValue {
   return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 }
 
-function getCompletedJobMessage(summary: AirtableSaintImportSummary | AirtableGuruRelationshipSummary | AirtableCleanupImportSummary) {
+function getCompletedJobMessage(summary: AirtableSaintImportSummary | AirtableCleanupImportSummary) {
   if ("relationshipCandidatesCreated" in summary) {
     return [
       "Completed cleanup import:",
@@ -1652,10 +1464,6 @@ function getCompletedJobMessage(summary: AirtableSaintImportSummary | AirtableGu
       `${summary.museumSectionAssignmentsCreated} museum assignments`,
       `${summary.relationshipCandidatesUnresolved} relationship issues`
     ].join(" ");
-  }
-
-  if ("guruRelationshipsCreated" in summary) {
-    return `Completed: ${summary.guruRelationshipsCreated} guru relationships created, ${summary.guruRelationshipsExisting} existing, ${summary.guruRelationshipsUnresolved} unresolved.`;
   }
 
   if (summary.mode === "check") {

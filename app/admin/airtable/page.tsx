@@ -106,7 +106,6 @@ export default async function AirtableReingestPage({ searchParams }: AirtableRei
         <div className="review-actions">
           <QueueForm mode="import_missing_drafts" label="Import missing saint drafts" />
           <QueueForm mode="import_airtable_cleanup" label="Import cleanup graph" />
-          <QueueForm mode="import_guru_relationships" label="Import guru relationships" />
         </div>
         {recentJobs.length > 0 ? (
           <div className="review-list">

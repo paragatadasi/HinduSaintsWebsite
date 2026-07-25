@@ -108,10 +108,10 @@ The detailed recommendations live in
 
 The preferred editor workflow is `/admin/saints` -> `Airtable sync review`.
 Those actions create durable `AirtableImportJob` records for dry-run checks,
-missing draft imports, and guru relationship imports. Job summaries should be
+missing draft imports, and cleanup graph imports. Job summaries should be
 reviewable from the admin UI, including expandable affected-record details for
-saint collisions, import errors, unresolved guru links, and self-skipped guru
-links. Detail rows should use Airtable saint names where possible, use short
+saint collisions, import errors, unresolved cleanup graph links, and
+self-skipped relationship rows. Detail rows should use Airtable saint names where possible, use short
 messages, and link to `/admin/saints/{slug}` when a CMS saint is known.
 
 Find likely duplicate Airtable saint records from the local mirror:

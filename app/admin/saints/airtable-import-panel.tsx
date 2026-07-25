@@ -48,7 +48,7 @@ type JobsResponse = {
   jobs: AirtableImportJobView[];
 };
 
-type AirtableImportIntent = "check" | "import_missing_drafts" | "import_guru_relationships" | "import_airtable_cleanup";
+type AirtableImportIntent = "check" | "import_missing_drafts" | "import_airtable_cleanup";
 
 const runningStatuses = new Set(["queued", "running"]);
 
@@ -118,7 +118,7 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
     >
       <div className="admin-toolbar">
         <div>
-          <p>Check mirrored Airtable saint rows, create missing CMS saints as drafts, and import reviewed Airtable relationship cleanup fields for editorial review.</p>
+          <p>Check mirrored Airtable saint rows, create missing CMS saints as drafts, and import the current cleanup graph into the new review schema.</p>
         </div>
         <div className="review-actions">
           <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isBusy} onClick={() => startJob("check")}>
@@ -129,11 +129,7 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
             <DatabaseZap aria-hidden="true" size={16} />
             Import missing drafts
           </button>
-          <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isBusy} onClick={() => startJob("import_guru_relationships")}>
-            <Waypoints aria-hidden="true" size={16} />
-            Import guru relationships
-          </button>
-          <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isBusy} onClick={() => startJob("import_airtable_cleanup")}>
+          <button className="admin-form-button" type="button" disabled={isBusy} onClick={() => startJob("import_airtable_cleanup")}>
             <Waypoints aria-hidden="true" size={16} />
             Import cleanup graph
           </button>
@@ -161,7 +157,7 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
                   </div>
                   <h3>{job.message ?? formatStatus(job.mode)}</h3>
                   {job.error ? <p className="admin-notice admin-notice--warning">{job.error}</p> : null}
-                  <p>{formatVisibleJobCounts(job)}</p>
+                  <JobCountSummary job={job} />
                   <AffectedRecordDetails job={job} />
                 </div>
                 <div className="review-meta">
@@ -277,51 +273,47 @@ function JobProgress({ job }: { job: AirtableImportJobView }) {
       </div>
       <progress aria-label="Airtable import progress" max={100} value={job.status === "completed" ? 100 : 20} />
       <div className="review-meta">
-        <StatusBadge label={`${job.newDraftSaintsCreated} drafts`} />
-        <StatusBadge label={`${job.existingCmsSaintsSkipped} existing skipped`} />
-        <StatusBadge label={`${job.slugNameCollisionsSkipped} collisions`} />
-        <StatusBadge label={`${job.guruRelationshipsCreated} gurus created`} />
-        <StatusBadge label={`${job.relationshipCandidatesCreated} graph links`} />
-        <StatusBadge label={`${job.failedRows} failed`} />
+        {schemaCountBadges(job).map((badge) => (
+          <StatusBadge key={badge} label={badge} />
+        ))}
       </div>
     </div>
   );
 }
 
-function formatVisibleJobCounts(job: AirtableImportJobView) {
-  if (job.mode === "import_guru_relationships") {
-    return [
-      `${job.mirrorRowsChecked} mirror rows checked`,
-      `${job.guruRelationshipsCreated} created`,
-      `${job.guruRelationshipsExisting} existing`,
-      `${job.guruRelationshipsUnresolved} unresolved`,
-      `${job.skippedSelfRelationships} self skipped`,
-      `${job.failedRows} failed`
-    ].join(" - ");
-  }
+function JobCountSummary({ job }: { job: AirtableImportJobView }) {
+  const badges = schemaCountBadges(job);
+  return (
+    <div className="review-meta" aria-label="Airtable import counts">
+      {badges.map((badge) => (
+        <StatusBadge key={badge} label={badge} />
+      ))}
+    </div>
+  );
+}
 
+function schemaCountBadges(job: AirtableImportJobView) {
   if (job.mode === "import_airtable_cleanup") {
     return [
-      `${job.mirrorRowsChecked} mirror rows checked`,
-      `${job.relationshipCandidatesCreated} relationships created`,
-      `${job.relationshipCandidatesExisting} relationships existing`,
+      `${job.mirrorRowsChecked} mirror rows`,
+      `${job.relationshipCandidatesCreated} relationships`,
+      `${job.placeRelationshipsCreated} place edges`,
+      `${job.familyGroupsCreated} families`,
+      `${job.familyMembershipsCreated} family memberships`,
+      `${job.duplicateCandidatesCreated} duplicates`,
+      `${job.museumSectionAssignmentsCreated} museum assignments`,
       `${job.relationshipCandidatesUnresolved} relationship issues`,
-      `${job.placeRelationshipsCreated} place edges created`,
-      `${job.familyGroupsCreated} families created`,
-      `${job.familyMembershipsCreated} family memberships created`,
-      `${job.duplicateCandidatesCreated} duplicate candidates created`,
-      `${job.museumSectionAssignmentsCreated} museum assignments created`,
       `${job.failedRows} failed`
-    ].join(" - ");
+    ];
   }
 
   return [
-    `${job.mirrorRowsChecked} mirror rows checked`,
+    `${job.mirrorRowsChecked} mirror rows`,
     `${job.newDraftSaintsCreated} drafts ${job.mode === "check" ? "available" : "created"}`,
     `${job.existingCmsSaintsSkipped} existing skipped`,
     `${job.slugNameCollisionsSkipped} collisions skipped`,
     `${job.failedRows} failed`
-  ].join(" - ");
+  ];
 }
 
 function formatDate(value: string) {

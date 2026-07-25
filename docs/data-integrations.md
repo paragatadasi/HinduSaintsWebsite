@@ -19,7 +19,7 @@ The admin saint review workflow now has:
 - `/admin/saints` status-filtered review queues.
 - `/admin/saints` Airtable sync review controls that create durable
   `AirtableImportJob` records for checking mirrored saint rows, importing
-  missing draft saints, and importing Airtable guru relationships.
+  missing draft saints, and importing the Airtable cleanup graph.
 - `/admin/saints/[id]` review detail pages with editable public fields, source context, Instagram-derived claims, images, and publish/review/archive actions.
 
 The admin Instagram review workflow now has:
@@ -73,15 +73,15 @@ Available actions:
 - `Import missing drafts`: creates only CMS saints that do not already have an
   Airtable `ExternalRecord` link and do not collide by slug/name. New saints
   enter as `draft`.
-- `Import guru relationships`: creates only missing `guru` relationship rows
-  from Airtable `Master(s)` linked records where both sides are already mapped
-  to CMS saints.
+- `Import cleanup graph`: creates imported review records from the new Airtable
+  cleanup schema, including saint relationships, place edges, family groups,
+  family memberships, duplicate candidates, and museum section assignments.
 
 Each action creates a durable `AirtableImportJob` with recent job history,
 timestamps, short status messages, summary counts, and raw summary JSON. Job
-summaries must stay editor-actionable: when collisions, unresolved guru rows,
-self-skipped guru rows, or failed records are present, the UI should expose an
-expansion such as `Review affected records`.
+summaries must stay editor-actionable: when collisions, unresolved cleanup graph
+relationships, self-skipped relationship rows, or failed records are present,
+the UI should expose an expansion such as `Review affected records`.
 
 Affected-record detail rows should be concise and should prefer human-readable
 names over raw IDs:
@@ -90,11 +90,10 @@ names over raw IDs:
   name/slug when known, a short reason, and an `/admin/saints/{slug}` link when
   available.
 - saint import errors: Airtable record ID/name and a short error message.
-- unresolved guru relationships: disciple and guru Airtable record IDs/names,
-  linked CMS saint names/slugs where known, and a short reason such as
-  `Disciple not linked` or `Guru not linked`.
-- self-skipped guru relationships: disciple/guru Airtable record IDs/names,
-  linked CMS saint name/slug when known, and `Same saint on both sides`.
+- cleanup graph issues: source and related Airtable record IDs/names, the source
+  Airtable field, linked CMS saint names/slugs where known, and a short reason
+  such as `unmapped_saint`, `unmapped_related_saint`, `self_relationship`, or
+  `missing_value`.
 
 Do not add live Airtable links unless the app has a safe authenticated mirror
 detail page for those records. Raw source values should remain preserved in the

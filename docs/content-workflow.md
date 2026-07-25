@@ -83,9 +83,10 @@ roles/labels.
 Dedicated reconciliation queues remain a follow-up workflow.
 
 Airtable import job history should remain actionable. When a job reports
-collisions, unresolved guru relationships, self-skipped rows, or failures, the
-job card should expose an expansion with the affected Airtable names/record IDs,
-short reasons, and links to CMS saint detail pages where a linked saint exists.
+collisions, cleanup graph issues, self-skipped relationship rows, or failures,
+the job card should expose an expansion with the affected Airtable names/record
+IDs, short reasons, and links to CMS saint detail pages where a linked saint
+exists.
 Editors should not need a deploy log or one-off script output to identify which
 records need review.
 
