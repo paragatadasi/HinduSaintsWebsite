@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { serializeAirtableImportJob } from "@/lib/airtable-import-job-view";
+import type { Prisma } from "@/lib/generated/prisma/client";
 import { rankSaintSearchResults } from "@/lib/saint-search";
 import { AirtableImportPanel } from "./airtable-import-panel";
 import { SaintsBulkReviewList } from "./saints-bulk-review-list";
@@ -192,12 +193,19 @@ function FilterLink({ active, href, label, value }: { active: boolean; href: str
   );
 }
 
-function getSaintQueueWhere(status: StatusFilter, filters: SaintQueueFilters) {
+function getSaintQueueWhere(status: StatusFilter, filters: SaintQueueFilters): Prisma.SaintWhereInput {
   const descriptionWhere = getShortDescriptionWhere(filters.description);
 
   return {
     ...(status !== "all" && status !== "matched" ? { status } : {}),
-    ...(status === "matched" ? { instagramItems: { some: {} } } : {}),
+    ...(status === "matched" ? {
+      instagramItems: {
+        some: {
+          matchStatus: { in: ["matched", "published"] },
+          instagramItem: { status: { in: ["matched", "published"] } }
+        }
+      }
+    } : {}),
     ...descriptionWhere,
     ...(filters.photo === "has_photo" ? { primaryImageId: { not: null } } : {}),
     ...(filters.photo === "missing_photo" ? { primaryImageId: null } : {})
