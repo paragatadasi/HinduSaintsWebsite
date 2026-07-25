@@ -1,16 +1,19 @@
 "use client";
 
-import { Crop, ImagePlus, Upload } from "lucide-react";
+import { ChevronDown, Crop, ImagePlus, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { CSSProperties, PointerEvent } from "react";
 import { useMemo, useRef, useState, useTransition } from "react";
 import { attachImageToSaint } from "../actions";
+import { InstagramSlideActions } from "./instagram-slide-actions";
 import { SaintImageActions } from "./saint-image-actions";
 
 type InstagramImageSource = {
   id: string;
   instagramUrl: string;
+  instagramMediaAssetId?: string;
   label: string;
+  previewUrl: string;
   sourceUrl: string;
 };
 
@@ -59,6 +62,7 @@ type UploadState = {
 
 const maxCropOutputSize = 1200;
 const minCropSize = 8;
+const instagramSlideBatchSize = 12;
 const defaultCropBox: CropBox = { x: 10, y: 10, width: 80, height: 80 };
 const cropHandles: DragMode[] = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
 
@@ -70,6 +74,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
   const [caption, setCaption] = useState("");
   const [credit, setCredit] = useState("");
   const [placement, setPlacement] = useState<"gallery" | "primary" | "both">("gallery");
+  const [visibleInstagramSlideCount, setVisibleInstagramSlideCount] = useState(instagramSlideBatchSize);
   const [uploadState, setUploadState] = useState<UploadState>({ status: "idle" });
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -77,7 +82,11 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
   const stageRef = useRef<HTMLDivElement>(null);
   const dragStateRef = useRef<DragState | null>(null);
 
-  const sourceOptions = useMemo(() => instagramImages.slice(0, 12), [instagramImages]);
+  const sourceOptions = useMemo(
+    () => instagramImages.slice(0, visibleInstagramSlideCount),
+    [instagramImages, visibleInstagramSlideCount]
+  );
+  const remainingInstagramSlideCount = instagramImages.length - sourceOptions.length;
   const isBusy = isPending || uploadState.status === "uploading";
   const imageAspect = naturalSize.width / Math.max(1, naturalSize.height);
 
@@ -86,7 +95,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
     setSelected({
       sourceUrl: image.sourceUrl,
       label: image.label,
-      previewUrl: getCropPreviewUrl(image.sourceUrl)
+      previewUrl: getCropPreviewUrl(image.previewUrl)
     });
     setCaption(`Image selected from ${image.label}`);
     setCropBox(defaultCropBox);
@@ -206,28 +215,50 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
           <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => selectUploadedFile(event.target.files?.[0])} />
         </label>
         {stagedImages.length > 0 || sourceOptions.length > 0 ? (
-          <div className="saint-image-cropper__source-grid" aria-label="Image staging sources">
-            {stagedImages.map((image) => (
-              <div className="saint-image-cropper__staged-source" key={image.id}>
-                <button className="saint-image-cropper__source" type="button" onClick={() => selectStagedImage(image)}>
-                  <img src={image.url} alt="" loading="lazy" />
-                  <span>{image.caption ?? image.altText ?? "Hidden saint image"}</span>
-                </button>
-                <SaintImageActions
-                  imageLabel={image.caption ?? image.altText ?? "Hidden saint image"}
-                  mediaAssetId={image.id}
-                  saintId={saintId}
-                  visible={false}
-                />
-              </div>
-            ))}
-            {sourceOptions.map((image) => (
-              <button className="saint-image-cropper__source" key={`${image.id}-${image.sourceUrl}`} type="button" onClick={() => selectInstagramImage(image)}>
-                <img src={image.sourceUrl} alt="" loading="lazy" />
-                <span>{image.label}</span>
+          <>
+            <div className="saint-image-cropper__source-grid" aria-label="Image staging sources">
+              {stagedImages.map((image) => (
+                <div className="saint-image-cropper__staged-source" key={image.id}>
+                  <button className="saint-image-cropper__source" type="button" onClick={() => selectStagedImage(image)}>
+                    <img src={image.url} alt="" loading="lazy" />
+                    <span>{image.caption ?? image.altText ?? "Hidden saint image"}</span>
+                  </button>
+                  <SaintImageActions
+                    imageLabel={image.caption ?? image.altText ?? "Hidden saint image"}
+                    mediaAssetId={image.id}
+                    saintId={saintId}
+                    visible={false}
+                  />
+                </div>
+              ))}
+              {sourceOptions.map((image) => (
+                <div className="saint-image-cropper__staged-source" key={`${image.id}-${image.previewUrl}`}>
+                  <button className="saint-image-cropper__source" type="button" onClick={() => selectInstagramImage(image)}>
+                    <img src={image.previewUrl} alt="" loading="lazy" />
+                    <span>{image.label}</span>
+                  </button>
+                  {image.instagramMediaAssetId ? (
+                    <InstagramSlideActions
+                      instagramMediaAssetId={image.instagramMediaAssetId}
+                      label={image.label}
+                      saintId={saintId}
+                    />
+                  ) : null}
+                </div>
+              ))}
+            </div>
+            {remainingInstagramSlideCount > 0 ? (
+              <button
+                className="admin-form-button admin-form-button--secondary saint-image-cropper__show-more"
+                type="button"
+                onClick={() => setVisibleInstagramSlideCount((count) => count + instagramSlideBatchSize)}
+              >
+                <ChevronDown size={16} aria-hidden="true" />
+                Show {Math.min(instagramSlideBatchSize, remainingInstagramSlideCount)} more
+                <span>({remainingInstagramSlideCount} remaining)</span>
               </button>
-            ))}
-          </div>
+            ) : null}
+          </>
         ) : (
           <p>No attached Instagram post images are available yet.</p>
         )}

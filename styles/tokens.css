@@ -68,6 +68,7 @@
   --width-instagram-post-card: 360px;
   --width-instagram-review-card-media: clamp(176px, 16vw, 196px);
   --width-instagram-review-card-media-mobile: clamp(96px, 28vw, 124px);
+  --width-saint-review-image: clamp(18rem, 42vw, 34rem);
   --width-instagram-viewer-panel: min(100%, 1120px);
   --width-instagram-viewer-details: 320px;
   --width-instagram-viewer-details-min: 260px;
@@ -81,6 +82,7 @@
   --height-instagram-viewer-panel: min(92vh, 860px);
   --height-instagram-viewer-stage-image: min(62vh, 640px);
   --height-instagram-inline-viewer: min(70vh, 720px);
+  --height-saint-review-image: clamp(16rem, 48vh, 34rem);
   --height-combobox-list: 320px;
   --size-instagram-avatar: 38px;
   --size-instagram-type-badge: 34px;

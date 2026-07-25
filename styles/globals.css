@@ -6199,6 +6199,18 @@ img {
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
 }
 
+.saint-image-cropper__show-more {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--space-2);
+  justify-self: start;
+}
+
+.saint-image-cropper__show-more span {
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
 .saint-image-cropper__source {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -6372,6 +6384,43 @@ img {
   gap: var(--space-2);
 }
 
+.saint-image-actions__placement {
+  align-items: end;
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: minmax(0, 1fr) auto;
+  width: 100%;
+}
+
+.saint-image-actions__placement label {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.saint-image-library__preview {
+  align-items: center;
+  background: var(--color-surface-muted);
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.saint-image-library {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--width-card-grid-min)), var(--width-saint-review-image)));
+  justify-content: start;
+}
+
+.saint-image-library__preview img {
+  max-height: var(--height-saint-review-image);
+  object-fit: contain;
+}
+
+.saint-image-library__preview .status-pill {
+  left: var(--space-2);
+  position: absolute;
+  top: var(--space-2);
+}
+
 .saint-image-actions .admin-form-button {
   align-items: center;
   display: inline-flex;
@@ -6383,6 +6432,30 @@ img {
 .saint-image-actions .admin-notice {
   flex-basis: 100%;
   width: 100%;
+}
+
+.instagram-slide-actions {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.instagram-slide-actions label {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.saint-image-cropper__staged-source > .admin-form-button {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--space-2);
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .saint-image-actions__placement {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+  }
 }
 
 .contact-page {

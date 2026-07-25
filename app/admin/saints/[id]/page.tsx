@@ -55,6 +55,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
   const instagramImages = await getInstagramImagesForSaint(saint);
   const visibleGalleryImages = saint.galleryImages.filter((image) => image.publicVisible !== false);
   const hiddenGalleryImages = saint.galleryImages.filter((image) => image.publicVisible === false);
+  const publicImages = getPublicSaintImages(saint.primaryImage, visibleGalleryImages);
   const biographyImages = getBiographyEditorImages(saint, visibleGalleryImages);
   const primaryBiography = saint.biographies.find((biography) => biography.status === "published") ?? saint.biographies[0];
   const biographyTextareaId = "biography-body-markdown";
@@ -426,32 +427,21 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
         eyebrow="Media"
         title="Images"
       >
-        {saint.primaryImage ? (
-          <figure className="image-with-credit image-with-credit--admin">
-            <img src={saint.primaryImage.url} alt={saint.primaryImage.altText ?? saint.displayName} width={saint.primaryImage.width ?? undefined} height={saint.primaryImage.height ?? undefined} />
-            <figcaption>
-              <span>{saint.primaryImage.caption ?? "Primary saint image"}</span>
-              {saint.primaryImage.sourceUrl ? <small>Source preserved</small> : null}
-              <SaintImageActions
-                imageLabel={saint.primaryImage.caption ?? saint.primaryImage.altText ?? "Primary saint image"}
-                mediaAssetId={saint.primaryImage.id}
-                saintId={saint.id}
-                visible
-              />
-            </figcaption>
-          </figure>
-        ) : null}
-        {visibleGalleryImages.length > 0 ? (
-          <div className="media-grid">
-            {visibleGalleryImages.map(({ mediaAsset }) => (
+        {publicImages.length > 0 ? (
+          <div className="media-grid saint-image-library">
+            {publicImages.map(({ mediaAsset, placement }) => (
               <figure className="image-with-credit image-with-credit--admin" key={mediaAsset.id}>
-                <img src={mediaAsset.url} alt={mediaAsset.altText ?? saint.displayName} width={mediaAsset.width ?? undefined} height={mediaAsset.height ?? undefined} />
+                <div className="saint-image-library__preview">
+                  <img src={mediaAsset.url} alt={mediaAsset.altText ?? saint.displayName} width={mediaAsset.width ?? undefined} height={mediaAsset.height ?? undefined} />
+                  <span className="status-pill status-pill--good">{formatImagePlacement(placement)}</span>
+                </div>
                 <figcaption>
                   <span>{mediaAsset.caption ?? "Imported saint image"}</span>
                   {mediaAsset.sourceUrl ? <small>Source preserved</small> : null}
                   <SaintImageActions
                     imageLabel={mediaAsset.caption ?? mediaAsset.altText ?? "Imported saint image"}
                     mediaAssetId={mediaAsset.id}
+                    placement={placement}
                     saintId={saint.id}
                     visible
                   />
@@ -460,7 +450,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
             ))}
           </div>
         ) : (
-          <p>No public saint images have been attached.</p>
+          <p className="empty-note">No public saint images have been attached.</p>
         )}
         <div className="review-panel__subsection">
           <h3>Add image</h3>
@@ -668,7 +658,7 @@ async function getSaint(slugOrId: string) {
               thumbnailUrl: true,
               mediaAssets: {
                 orderBy: { sortOrder: "asc" },
-                select: { cachedUrl: true }
+                select: { id: true, cachedUrl: true, sourceUrl: true }
               }
             }
           }
@@ -741,14 +731,23 @@ async function getInstagramImagesForSaint(saint: NonNullable<Awaited<ReturnType<
   return saint.instagramItems.flatMap((link) => {
     const item = link.instagramItem;
     const label = item.instagramShortcode ? `Instagram ${item.instagramShortcode}` : "Instagram post";
-    const sourceUrls = item.mediaAssets.length > 0
-      ? item.mediaAssets.map((asset) => asset.cachedUrl)
-      : getInstagramImageUrls(rawByItemId.get(item.id), item.thumbnailUrl);
+    const sources: Array<{ instagramMediaAssetId?: string; previewUrl: string; sourceUrl: string }> = item.mediaAssets.length > 0
+      ? item.mediaAssets.map((asset) => ({
+          instagramMediaAssetId: asset.id,
+          previewUrl: asset.cachedUrl,
+          sourceUrl: asset.sourceUrl
+        }))
+      : getInstagramImageUrls(rawByItemId.get(item.id), item.thumbnailUrl).map((sourceUrl) => ({
+          previewUrl: sourceUrl,
+          sourceUrl
+        }));
 
-    return sourceUrls.map((sourceUrl, index) => ({
+    return sources.map(({ instagramMediaAssetId, previewUrl, sourceUrl }, index) => ({
       id: `${item.id}-${index}`,
+      instagramMediaAssetId,
       instagramUrl: item.instagramUrl,
       label: index === 0 ? label : `${label}, image ${index + 1}`,
+      previewUrl,
       sourceUrl
     }));
   });
@@ -828,6 +827,36 @@ function InstagramBiographyReferences({ saint }: { saint: NonNullable<Awaited<Re
       })}
     </div>
   );
+}
+
+function getPublicSaintImages(
+  primaryImage: NonNullable<Awaited<ReturnType<typeof getSaint>>>["primaryImage"],
+  galleryImages: NonNullable<Awaited<ReturnType<typeof getSaint>>>["galleryImages"]
+) {
+  const images = new Map<string, {
+    mediaAsset: NonNullable<NonNullable<Awaited<ReturnType<typeof getSaint>>>["primaryImage"]>;
+    placement: "gallery" | "primary" | "both";
+  }>();
+
+  if (primaryImage) {
+    images.set(primaryImage.id, { mediaAsset: primaryImage, placement: "primary" });
+  }
+
+  for (const { mediaAsset } of galleryImages) {
+    const existing = images.get(mediaAsset.id);
+    images.set(mediaAsset.id, {
+      mediaAsset,
+      placement: existing?.placement === "primary" ? "both" : "gallery"
+    });
+  }
+
+  return Array.from(images.values());
+}
+
+function formatImagePlacement(placement: "gallery" | "primary" | "both") {
+  if (placement === "primary") return "Primary";
+  if (placement === "gallery") return "Gallery";
+  return "Primary + gallery";
 }
 
 function SaintInstagramMatches({ saint }: { saint: NonNullable<Awaited<ReturnType<typeof getSaint>>> }) {

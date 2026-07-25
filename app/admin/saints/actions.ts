@@ -87,9 +87,17 @@ const saintImageVisibilitySchema = z.object({
   publicVisible: z.boolean()
 });
 
+const saintImagePlacementSchema = saintImageAttachmentSchema;
+
 const saintImageDeleteSchema = z.object({
   saintId: z.string().cuid(),
   mediaAssetId: z.string().cuid()
+});
+
+const instagramSlideDeleteSchema = z.object({
+  saintId: z.string().cuid(),
+  instagramMediaAssetId: z.string().cuid(),
+  password: z.string().min(1)
 });
 
 const saintAliasesSchema = z.object({
@@ -795,6 +803,155 @@ export async function attachImageToSaint(input: z.input<typeof saintImageAttachm
   });
 
   revalidateSaintPaths(saint.slug);
+}
+
+export async function updateSaintImagePlacement(input: z.input<typeof saintImagePlacementSchema>) {
+  await requireAdminSession();
+
+  const parsed = saintImagePlacementSchema.parse(input);
+  const saint = await db.saint.findUnique({
+    where: { id: parsed.saintId },
+    select: {
+      id: true,
+      slug: true,
+      primaryImageId: true,
+      _count: { select: { galleryImages: true } }
+    }
+  });
+
+  if (!saint) throw new Error("Saint was not found.");
+
+  const mediaAsset = await db.mediaAsset.findUnique({
+    where: { id: parsed.mediaAssetId },
+    select: { id: true }
+  });
+
+  if (!mediaAsset) throw new Error("Media asset was not found.");
+
+  await db.$transaction(async (tx) => {
+    const shouldBePrimary = parsed.placement === "primary" || parsed.placement === "both";
+    const shouldBeInGallery = parsed.placement === "gallery" || parsed.placement === "both";
+
+    if (shouldBePrimary) {
+      if (saint.primaryImageId && saint.primaryImageId !== parsed.mediaAssetId) {
+        const previousPrimaryGalleryImage = await tx.saintGalleryImage.findFirst({
+          where: {
+            saintId: parsed.saintId,
+            mediaAssetId: saint.primaryImageId
+          },
+          select: { id: true }
+        });
+
+        if (previousPrimaryGalleryImage) {
+          await setSaintGalleryImageVisibility(tx, parsed.saintId, saint.primaryImageId, true);
+        } else {
+          await tx.saintGalleryImage.create({
+            data: {
+              saintId: parsed.saintId,
+              mediaAssetId: saint.primaryImageId,
+              sortOrder: saint._count.galleryImages,
+              publicVisible: true
+            }
+          });
+        }
+      }
+
+      await tx.saint.update({
+        where: { id: parsed.saintId },
+        data: { primaryImageId: parsed.mediaAssetId }
+      });
+    } else if (saint.primaryImageId === parsed.mediaAssetId) {
+      await tx.saint.update({
+        where: { id: parsed.saintId },
+        data: { primaryImageId: null }
+      });
+    }
+
+    const existing = await tx.saintGalleryImage.findFirst({
+      where: {
+        saintId: parsed.saintId,
+        mediaAssetId: parsed.mediaAssetId
+      },
+      select: { id: true }
+    });
+
+    if (shouldBeInGallery) {
+      if (existing) {
+        await setSaintGalleryImageVisibility(tx, parsed.saintId, parsed.mediaAssetId, true);
+      } else {
+        await tx.saintGalleryImage.create({
+          data: {
+            saintId: parsed.saintId,
+            mediaAssetId: parsed.mediaAssetId,
+            sortOrder: saint._count.galleryImages,
+            publicVisible: true
+          }
+        });
+      }
+    } else if (existing) {
+      await tx.saintGalleryImage.delete({ where: { id: existing.id } });
+    }
+  });
+
+  revalidateSaintPaths(saint.slug);
+}
+
+export async function deleteAttachedInstagramSlide(input: z.input<typeof instagramSlideDeleteSchema>) {
+  const session = await requireAdminSession();
+  const parsed = instagramSlideDeleteSchema.parse(input);
+
+  if (!(await verifyBulkDeletePassword(parsed.password))) {
+    throw new Error("The bulk delete password was incorrect.");
+  }
+
+  const slide = await db.instagramMediaAsset.findFirst({
+    where: {
+      id: parsed.instagramMediaAssetId,
+      instagramItem: {
+        saints: { some: { saintId: parsed.saintId } }
+      }
+    },
+    select: {
+      id: true,
+      cachedUrl: true,
+      isCover: true,
+      sortOrder: true,
+      sourceUrl: true,
+      instagramItem: {
+        select: {
+          id: true,
+          saints: { select: { saint: { select: { slug: true } } } }
+        }
+      }
+    }
+  });
+
+  if (!slide) throw new Error("The Instagram slide is no longer attached to this saint.");
+
+  await db.$transaction(async (tx) => {
+    await tx.instagramMediaAsset.delete({ where: { id: slide.id } });
+    await tx.auditEvent.create({
+      data: {
+        userId: session.user?.email ?? null,
+        action: "delete_attached_instagram_slide",
+        entityType: "InstagramMediaAsset",
+        entityId: slide.id,
+        beforeJson: toInputJson({
+          instagramItemId: slide.instagramItem.id,
+          cachedUrl: slide.cachedUrl,
+          sourceUrl: slide.sourceUrl,
+          sortOrder: slide.sortOrder,
+          isCover: slide.isCover
+        }),
+        afterJson: Prisma.JsonNull
+      }
+    });
+  });
+
+  for (const link of slide.instagramItem.saints) {
+    revalidateSaintPaths(link.saint.slug);
+  }
+  revalidatePath(`/admin/instagram/${slide.instagramItem.id}`);
 }
 
 export async function updateSaintImageVisibility(input: z.input<typeof saintImageVisibilitySchema>) {

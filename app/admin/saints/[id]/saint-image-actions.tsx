@@ -1,19 +1,23 @@
 "use client";
 
-import { Eye, EyeOff, Trash2 } from "lucide-react";
+import { Eye, EyeOff, Save, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { deleteSaintImage, updateSaintImageVisibility } from "../actions";
+import { deleteSaintImage, updateSaintImagePlacement, updateSaintImageVisibility } from "../actions";
+
+type ImagePlacement = "gallery" | "primary" | "both";
 
 type SaintImageActionsProps = {
   imageLabel: string;
   mediaAssetId: string;
   saintId: string;
   visible: boolean;
+  placement?: ImagePlacement;
 };
 
-export function SaintImageActions({ imageLabel, mediaAssetId, saintId, visible }: SaintImageActionsProps) {
+export function SaintImageActions({ imageLabel, mediaAssetId, placement, saintId, visible }: SaintImageActionsProps) {
   const [message, setMessage] = useState<string | null>(null);
+  const [selectedPlacement, setSelectedPlacement] = useState<ImagePlacement>(placement ?? "gallery");
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -22,6 +26,20 @@ export function SaintImageActions({ imageLabel, mediaAssetId, saintId, visible }
     startTransition(async () => {
       try {
         await updateSaintImageVisibility({ saintId, mediaAssetId, publicVisible });
+        router.refresh();
+      } catch (error) {
+        setMessage(getErrorMessage(error));
+      }
+    });
+  }
+
+  function savePlacement() {
+    if (!placement || selectedPlacement === placement) return;
+    setMessage(null);
+    startTransition(async () => {
+      try {
+        await updateSaintImagePlacement({ saintId, mediaAssetId, placement: selectedPlacement });
+        setMessage("Placement updated.");
         router.refresh();
       } catch (error) {
         setMessage(getErrorMessage(error));
@@ -46,6 +64,31 @@ export function SaintImageActions({ imageLabel, mediaAssetId, saintId, visible }
 
   return (
     <div className="saint-image-actions">
+      {placement ? (
+        <div className="saint-image-actions__placement">
+          <label>
+            Public placement
+            <select
+              value={selectedPlacement}
+              disabled={isPending}
+              onChange={(event) => setSelectedPlacement(event.target.value as ImagePlacement)}
+            >
+              <option value="primary">Primary only</option>
+              <option value="gallery">Gallery only</option>
+              <option value="both">Primary and gallery</option>
+            </select>
+          </label>
+          <button
+            className="admin-form-button"
+            type="button"
+            disabled={isPending || selectedPlacement === placement}
+            onClick={savePlacement}
+          >
+            <Save size={16} aria-hidden="true" />
+            Save placement
+          </button>
+        </div>
+      ) : null}
       <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isPending} onClick={() => updateVisibility(!visible)}>
         {visible ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
         {visible ? "Hide" : "Restore"}
