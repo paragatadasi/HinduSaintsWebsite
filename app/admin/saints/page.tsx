@@ -8,28 +8,29 @@ import { rankSaintSearchResults } from "@/lib/saint-search";
 import { AirtableImportPanel } from "./airtable-import-panel";
 import { SaintsBulkReviewList } from "./saints-bulk-review-list";
 
-const statuses = ["all", "needs_review", "draft", "published", "archived"] as const;
+const reviewStatuses = ["needs_review", "draft", "published", "archived"] as const;
+const statuses = ["all", "needs_review", "matched", "draft", "published", "archived"] as const;
 type StatusFilter = typeof statuses[number];
-const instagramFilters = ["all", "has_match", "missing_match"] as const;
-type InstagramFilter = typeof instagramFilters[number];
+const descriptionFilters = ["all", "has_short_description", "missing_short_description"] as const;
+type DescriptionFilter = typeof descriptionFilters[number];
 const photoFilters = ["all", "has_photo", "missing_photo"] as const;
 type PhotoFilter = typeof photoFilters[number];
 
 type SaintQueueFilters = {
-  instagram: InstagramFilter;
+  description: DescriptionFilter;
   photo: PhotoFilter;
 };
 
 type AdminSaintsPageProps = {
-  searchParams: Promise<{ q?: string | string[]; status?: string; instagram?: string; photo?: string }>;
+  searchParams: Promise<{ description?: string; q?: string | string[]; status?: string; photo?: string }>;
 };
 
 export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageProps) {
-  const { q, status, instagram, photo } = await searchParams;
+  const { description, q, status, photo } = await searchParams;
   const query = getSearchParam(q);
   const activeStatus = statuses.includes(status as StatusFilter) ? status as StatusFilter : "all";
   const activeFilters: SaintQueueFilters = {
-    instagram: instagramFilters.includes(instagram as InstagramFilter) ? instagram as InstagramFilter : "all",
+    description: descriptionFilters.includes(description as DescriptionFilter) ? description as DescriptionFilter : "all",
     photo: photoFilters.includes(photo as PhotoFilter) ? photo as PhotoFilter : "all"
   };
   const [counts, saints, airtableJobs] = await Promise.all([
@@ -41,7 +42,9 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
   const reviewRows = saints.map((saint) => ({
     id: saint.id,
     slug: saint.slug,
-    displayName: saint.displayName
+    displayName: saint.displayName,
+    birthDateRaw: saint.birthDateRaw,
+    samadhiDateRaw: saint.samadhiDateRaw
   }));
 
   return (
@@ -78,13 +81,13 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
         </nav>
 
         <div className="admin-queue-filter-groups">
-          <FilterGroup label="Instagram match">
-            {instagramFilters.map((item) => (
+          <FilterGroup label="Short description">
+            {descriptionFilters.map((item) => (
               <FilterLink
-                active={activeFilters.instagram === item}
-                href={getSaintsReturnTo(activeStatus, { ...activeFilters, instagram: item }, query)}
+                active={activeFilters.description === item}
+                href={getSaintsReturnTo(activeStatus, { ...activeFilters, description: item }, query)}
                 key={item}
-                label={formatInstagramFilterLabel(item)}
+                label={formatDescriptionFilterLabel(item)}
               />
             ))}
           </FilterGroup>
@@ -102,7 +105,7 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
 
         <form action="/admin/saints" className="admin-search admin-search--queue" role="search">
           {activeStatus === "all" ? null : <input name="status" type="hidden" value={activeStatus} />}
-          {activeFilters.instagram === "all" ? null : <input name="instagram" type="hidden" value={activeFilters.instagram} />}
+          {activeFilters.description === "all" ? null : <input name="description" type="hidden" value={activeFilters.description} />}
           {activeFilters.photo === "all" ? null : <input name="photo" type="hidden" value={activeFilters.photo} />}
           <label className="sr-only" htmlFor="admin-saints-search">Search saints</label>
           <input
@@ -123,12 +126,21 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
 }
 
 async function getStatusCounts(filters: SaintQueueFilters) {
-  const grouped = await db.saint.groupBy({
-    by: ["status"],
-    where: getSaintQueueWhere("all", filters),
-    _count: { _all: true }
-  });
-  return Object.fromEntries(grouped.map((row) => [row.status, row._count._all])) as Record<string, number>;
+  const [grouped, matched] = await Promise.all([
+    db.saint.groupBy({
+      by: ["status"],
+      where: getSaintQueueWhere("all", filters),
+      _count: { _all: true }
+    }),
+    db.saint.count({
+      where: getSaintQueueWhere("matched", filters)
+    })
+  ]);
+
+  return {
+    ...Object.fromEntries(grouped.map((row) => [row.status, row._count._all])),
+    matched
+  } as Record<StatusFilter, number>;
 }
 
 async function getSaints(status: StatusFilter, filters: SaintQueueFilters, query: string) {
@@ -181,19 +193,32 @@ function FilterLink({ active, href, label, value }: { active: boolean; href: str
 }
 
 function getSaintQueueWhere(status: StatusFilter, filters: SaintQueueFilters) {
+  const descriptionWhere = getShortDescriptionWhere(filters.description);
+
   return {
-    ...(status === "all" ? {} : { status }),
-    ...(filters.instagram === "has_match" ? { instagramItems: { some: {} } } : {}),
-    ...(filters.instagram === "missing_match" ? { instagramItems: { none: {} } } : {}),
+    ...(status !== "all" && status !== "matched" ? { status } : {}),
+    ...(status === "matched" ? { instagramItems: { some: {} } } : {}),
+    ...descriptionWhere,
     ...(filters.photo === "has_photo" ? { primaryImageId: { not: null } } : {}),
     ...(filters.photo === "missing_photo" ? { primaryImageId: null } : {})
   };
 }
 
+function getShortDescriptionWhere(filter: DescriptionFilter) {
+  if (filter === "has_short_description") {
+    return { AND: [{ shortDescription: { not: null } }, { shortDescription: { not: "" } }] };
+  }
+
+  if (filter === "missing_short_description") {
+    return { OR: [{ shortDescription: null }, { shortDescription: "" }] };
+  }
+
+  return {};
+}
+
 function getStatusCount(counts: Record<string, number>, status: StatusFilter) {
   if (status === "all") {
-    return statuses
-      .filter((item) => item !== "all")
+    return reviewStatuses
       .reduce((total, item) => total + (counts[item] ?? 0), 0);
   }
   return counts[status] ?? 0;
@@ -204,12 +229,13 @@ function formatStatusLabel(status: StatusFilter) {
   if (status === "draft") return "Drafts";
   if (status === "needs_review") return "Needs review";
   if (status === "published") return "Published";
+  if (status === "matched") return "Matched";
   return "Archived";
 }
 
-function formatInstagramFilterLabel(filter: InstagramFilter) {
-  if (filter === "has_match") return "Has match";
-  if (filter === "missing_match") return "Missing match";
+function formatDescriptionFilterLabel(filter: DescriptionFilter) {
+  if (filter === "has_short_description") return "Has short description";
+  if (filter === "missing_short_description") return "Missing short description";
   return "Any";
 }
 
@@ -233,7 +259,7 @@ function getSearchParam(value: string | string[] | undefined) {
 function getSaintsReturnTo(status: StatusFilter, filters: SaintQueueFilters, query: string) {
   const params = new URLSearchParams();
   if (status !== "all") params.set("status", status);
-  if (filters.instagram !== "all") params.set("instagram", filters.instagram);
+  if (filters.description !== "all") params.set("description", filters.description);
   if (filters.photo !== "all") params.set("photo", filters.photo);
   if (query) params.set("q", query);
   const qs = params.toString();

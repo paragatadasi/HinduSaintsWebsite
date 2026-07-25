@@ -8,6 +8,8 @@ type SaintReviewRow = {
   id: string;
   slug: string;
   displayName: string;
+  birthDateRaw: string | null;
+  samadhiDateRaw: string | null;
 };
 
 type SaintsBulkReviewListProps = {
@@ -114,24 +116,38 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
       </div>
 
       <div className="review-list">
-        {saints.map((saint) => (
-          <article className="review-row review-row--compact review-row--selectable interactive-surface" key={saint.id}>
-            <label className="bulk-review-checkbox">
-              <input
-                aria-label={`Select ${saint.displayName}`}
-                checked={selectedIdSet.has(saint.id)}
-                onChange={() => toggleSaint(saint.id)}
-                type="checkbox"
-              />
-            </label>
-            <Link className="review-row__link" href={`/admin/saints/${saint.slug}`}>
-              <h2>{saint.displayName}</h2>
-            </Link>
-          </article>
-        ))}
+        {saints.map((saint) => {
+          const saintDates = formatSaintDates(saint);
+
+          return (
+            <article className="review-row review-row--compact review-row--selectable interactive-surface" key={saint.id}>
+              <label className="bulk-review-checkbox">
+                <input
+                  aria-label={`Select ${saint.displayName}`}
+                  checked={selectedIdSet.has(saint.id)}
+                  onChange={() => toggleSaint(saint.id)}
+                  type="checkbox"
+                />
+              </label>
+              <Link className="review-row__link" href={`/admin/saints/${saint.slug}`}>
+                <h2 className="review-row__title">
+                  <span>{saint.displayName}</span>
+                  {saintDates ? <small>({saintDates})</small> : null}
+                </h2>
+              </Link>
+            </article>
+          );
+        })}
       </div>
     </div>
   );
+}
+
+function formatSaintDates(saint: SaintReviewRow) {
+  return [
+    saint.birthDateRaw,
+    saint.samadhiDateRaw
+  ].filter(Boolean).join(" - ");
 }
 
 function BulkReviewHiddenFields({ returnTo, saintIds }: { returnTo: string; saintIds: string[] }) {

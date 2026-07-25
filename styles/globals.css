@@ -4385,6 +4385,20 @@ img {
   margin: 0;
 }
 
+.review-row__title {
+  align-items: baseline;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.review-row__title small {
+  color: var(--color-muted);
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  font-weight: 400;
+}
+
 .review-row p,
 .review-panel p {
   color: var(--color-muted);
