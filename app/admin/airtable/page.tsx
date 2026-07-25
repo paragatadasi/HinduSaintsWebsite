@@ -1,4 +1,3 @@
-import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { getBulkDeletePasswordStatus } from "@/lib/admin-secrets";
 import { db } from "@/lib/db";
@@ -9,7 +8,6 @@ import {
   resetAirtableCmsAction,
   writeAirtableMirrorAction
 } from "./actions";
-import { AirtableSubmitButton } from "./airtable-submit-button";
 
 type AirtableReingestPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -50,10 +48,7 @@ export default async function AirtableReingestPage({ searchParams }: AirtableRei
         <Stat label="Museum assignments" value={resetCounts.saintMuseumSections} />
       </div>
 
-      <CollapsibleReviewCard
-        cardId="airtable-mirror-refresh"
-        className="admin-settings-panel"
-        defaultOpen
+      <ReviewPanel
         description="Pull the configured Airtable tables into the private mirror before reimporting CMS records."
         eyebrow="Step 1"
         title="Refresh Airtable mirror"
@@ -73,19 +68,16 @@ export default async function AirtableReingestPage({ searchParams }: AirtableRei
         )}
         <div className="review-actions">
           <form action={dryRunAirtableMirrorAction}>
-            <AirtableSubmitButton pendingLabel="Checking mirror..." variant="secondary">Dry-run mirror</AirtableSubmitButton>
+            <button className="admin-form-button admin-form-button--secondary" type="submit">Dry-run mirror</button>
           </form>
           <form action={writeAirtableMirrorAction} className="review-actions">
             <PasswordField />
-            <AirtableSubmitButton pendingLabel="Refreshing mirror...">Refresh mirror</AirtableSubmitButton>
+            <button className="admin-form-button" type="submit">Refresh mirror</button>
           </form>
         </div>
-      </CollapsibleReviewCard>
+      </ReviewPanel>
 
-      <CollapsibleReviewCard
-        cardId="airtable-cms-reset"
-        className="admin-settings-panel"
-        defaultOpen
+      <ReviewPanel
         description="Clear Airtable-derived CMS data so the next import starts from the refreshed mirror."
         eyebrow="Step 2"
         title="Reset CMS import data"
@@ -101,15 +93,12 @@ export default async function AirtableReingestPage({ searchParams }: AirtableRei
             <span>Keep Airtable import job history</span>
           </label>
           <div className="review-actions admin-settings-form__actions">
-            <AirtableSubmitButton pendingLabel="Resetting CMS data..." variant="danger">Reset Airtable CMS data</AirtableSubmitButton>
+            <button className="admin-form-button admin-form-button--danger" type="submit">Reset Airtable CMS data</button>
           </div>
         </form>
-      </CollapsibleReviewCard>
+      </ReviewPanel>
 
-      <CollapsibleReviewCard
-        cardId="airtable-reimport-jobs"
-        className="admin-settings-panel"
-        defaultOpen
+      <ReviewPanel
         description="Queue the safe CMS import jobs after the mirror has been refreshed and the reset has completed."
         eyebrow="Step 3"
         title="Queue imports"
@@ -137,7 +126,7 @@ export default async function AirtableReingestPage({ searchParams }: AirtableRei
             ))}
           </div>
         ) : null}
-      </CollapsibleReviewCard>
+      </ReviewPanel>
     </div>
   );
 }
@@ -147,8 +136,31 @@ function QueueForm({ mode, label }: { mode: string; label: string }) {
     <form action={queueAirtableImportAction} className="review-actions">
       <input name="mode" type="hidden" value={mode} />
       <PasswordField />
-      <AirtableSubmitButton pendingLabel={`Queueing ${formatStatus(mode)}...`}>{label}</AirtableSubmitButton>
+      <button className="admin-form-button" type="submit">{label}</button>
     </form>
+  );
+}
+
+function ReviewPanel({
+  children,
+  description,
+  eyebrow,
+  title
+}: {
+  children: React.ReactNode;
+  description: string;
+  eyebrow: string;
+  title: string;
+}) {
+  return (
+    <section className="review-panel admin-settings-panel">
+      <div>
+        <div className="review-collapsible__eyebrow">{eyebrow}</div>
+        <h2>{title}</h2>
+        <p>{description}</p>
+      </div>
+      {children}
+    </section>
   );
 }
 
