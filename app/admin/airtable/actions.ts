@@ -1,6 +1,7 @@
 "use server";
 
 import { Prisma } from "@/lib/generated/prisma/client";
+import type { Route } from "next";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -20,56 +21,82 @@ const queueModeSchema = z.enum(["import_missing_drafts", "import_guru_relationsh
 
 export async function dryRunAirtableMirrorAction() {
   await requireAdminSession();
-  const summary = await runAirtableMirrorImport({ ...getAirtableMirrorOptions(), dryRun: true });
-  redirect(`/admin/airtable?mirrorDryRun=${encodeURIComponent(formatTableSummary(summary.tables))}`);
+  let target = "/admin/airtable";
+  try {
+    const summary = await runAirtableMirrorImport({ ...getAirtableMirrorOptions(), dryRun: true });
+    target = `/admin/airtable?mirrorDryRun=${encodeURIComponent(formatTableSummary(summary.tables))}`;
+  } catch (error) {
+    target = errorRedirect("mirrorError", error);
+  }
+  redirect(target as Route);
 }
 
 export async function writeAirtableMirrorAction(formData: FormData) {
-  await requireProtectedAction(formData);
-  const summary = await runAirtableMirrorImport({ ...getAirtableMirrorOptions(), dryRun: false });
-  revalidatePath("/admin/airtable");
-  redirect(`/admin/airtable?mirrorWrite=${encodeURIComponent(formatTableSummary(summary.tables))}`);
+  let target = "/admin/airtable";
+  try {
+    await requireProtectedAction(formData);
+    const summary = await runAirtableMirrorImport({ ...getAirtableMirrorOptions(), dryRun: false });
+    revalidatePath("/admin/airtable");
+    target = `/admin/airtable?mirrorWrite=${encodeURIComponent(formatTableSummary(summary.tables))}`;
+  } catch (error) {
+    target = errorRedirect("mirrorError", error);
+  }
+  redirect(target as Route);
 }
 
 export async function resetAirtableCmsAction(formData: FormData) {
-  const parsed = await requireProtectedAction(formData);
-  await resetAirtableCmsImport({ keepJobs: formData.get("keepJobs") === "on" });
-  await db.auditEvent.create({
-    data: {
-      userId: parsed.email,
-      action: "reset_airtable_cms_import",
-      entityType: "AirtableImport",
-      entityId: "airtable-cms-reset",
-      beforeJson: Prisma.JsonNull,
-      afterJson: toInputJson({ keepJobs: formData.get("keepJobs") === "on" })
-    }
-  });
-  revalidatePath("/admin/airtable");
-  revalidatePath("/admin/saints");
-  redirect("/admin/airtable?reset=completed");
+  let target = "/admin/airtable";
+  try {
+    const parsed = await requireProtectedAction(formData);
+    await resetAirtableCmsImport({ keepJobs: formData.get("keepJobs") === "on" });
+    await db.auditEvent.create({
+      data: {
+        userId: parsed.email,
+        action: "reset_airtable_cms_import",
+        entityType: "AirtableImport",
+        entityId: "airtable-cms-reset",
+        beforeJson: Prisma.JsonNull,
+        afterJson: toInputJson({ keepJobs: formData.get("keepJobs") === "on" })
+      }
+    });
+    revalidatePath("/admin/airtable");
+    revalidatePath("/admin/saints");
+    target = "/admin/airtable?reset=completed";
+  } catch (error) {
+    target = errorRedirect("resetError", error);
+  }
+  redirect(target as Route);
 }
 
 export async function queueAirtableImportAction(formData: FormData) {
-  const parsed = await requireProtectedAction(formData);
-  const mode = queueModeSchema.parse(formData.get("mode"));
-  const activeJob = await db.airtableImportJob.findFirst({
-    where: { status: { in: ["queued", "running"] } },
-    orderBy: { createdAt: "desc" },
-    select: { id: true }
-  });
-  if (activeJob) redirect("/admin/airtable?job=already-running");
+  let target = "/admin/airtable";
+  try {
+    const parsed = await requireProtectedAction(formData);
+    const mode = queueModeSchema.parse(formData.get("mode"));
+    const activeJob = await db.airtableImportJob.findFirst({
+      where: { status: { in: ["queued", "running"] } },
+      orderBy: { createdAt: "desc" },
+      select: { id: true }
+    });
+    if (activeJob) {
+      target = "/admin/airtable?job=already-running";
+    } else {
+      const job = await createAirtableImportJob({
+        createdByEmail: parsed.email,
+        mode: mode as AirtableImportMode
+      });
 
-  const job = await createAirtableImportJob({
-    createdByEmail: parsed.email,
-    mode: mode as AirtableImportMode
-  });
+      runAirtableImportJob(job.id).catch((error) => {
+        console.error("Airtable reingest job failed", error);
+      });
 
-  runAirtableImportJob(job.id).catch((error) => {
-    console.error("Airtable reingest job failed", error);
-  });
-
-  revalidatePath("/admin/airtable");
-  redirect(`/admin/airtable?job=${encodeURIComponent(mode)}`);
+      revalidatePath("/admin/airtable");
+      target = `/admin/airtable?job=${encodeURIComponent(mode)}`;
+    }
+  } catch (error) {
+    target = errorRedirect("jobError", error);
+  }
+  redirect(target as Route);
 }
 
 async function requireProtectedAction(formData: FormData) {
@@ -115,6 +142,16 @@ function listFromCsv(value: string | undefined) {
 
 function formatTableSummary(tables: Record<string, number>) {
   return Object.entries(tables).map(([table, count]) => `${table}: ${count}`).join(", ");
+}
+
+function errorRedirect(key: "mirrorError" | "resetError" | "jobError", error: unknown) {
+  return `/admin/airtable?${key}=${encodeURIComponent(errorMessage(error))}`;
+}
+
+function errorMessage(error: unknown) {
+  if (error instanceof z.ZodError) return "The submitted form was incomplete or invalid.";
+  if (error instanceof Error) return error.message;
+  return "The Airtable action failed.";
 }
 
 function toInputJson(value: unknown): Prisma.InputJsonValue {

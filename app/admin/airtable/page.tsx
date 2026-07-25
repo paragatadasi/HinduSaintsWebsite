@@ -166,6 +166,9 @@ function StatusMessages({ params }: { params: Record<string, string | string[] |
   const mirrorWrite = getParam(params.mirrorWrite);
   const reset = getParam(params.reset);
   const job = getParam(params.job);
+  const mirrorError = getParam(params.mirrorError);
+  const resetError = getParam(params.resetError);
+  const jobError = getParam(params.jobError);
   return (
     <>
       {mirrorDryRun ? <p className="admin-notice form-status form-status--success">Mirror dry-run completed: {mirrorDryRun}</p> : null}
@@ -173,6 +176,9 @@ function StatusMessages({ params }: { params: Record<string, string | string[] |
       {reset === "completed" ? <p className="admin-notice form-status form-status--success">Airtable-derived CMS data reset.</p> : null}
       {job === "already-running" ? <p className="admin-notice admin-notice--warning">An Airtable import job is already running.</p> : null}
       {job && job !== "already-running" ? <p className="admin-notice form-status form-status--success">Queued {formatStatus(job)}.</p> : null}
+      {mirrorError ? <p className="admin-notice admin-notice--warning">Mirror action failed: {mirrorError}</p> : null}
+      {resetError ? <p className="admin-notice admin-notice--warning">Reset failed: {resetError}</p> : null}
+      {jobError ? <p className="admin-notice admin-notice--warning">Import job action failed: {jobError}</p> : null}
     </>
   );
 }
