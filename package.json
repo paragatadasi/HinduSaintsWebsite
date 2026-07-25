@@ -30,6 +30,7 @@
     "ingest:instagram": "tsx scripts/ingest-instagram.ts",
     "cache:instagram-media": "tsx scripts/cache-instagram-media.ts",
     "cache:instagram-covers": "tsx scripts/cache-instagram-cover-images.ts",
+    "cache:airtable-media": "tsx scripts/cache-airtable-media.ts",
     "backfill:instagram-carousels": "tsx scripts/backfill-instagram-carousel-images.ts",
     "reconcile:instagram": "tsx scripts/reconcile-instagram.ts",
     "create-admin": "tsx scripts/create-admin-user.ts"

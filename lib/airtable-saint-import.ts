@@ -1,5 +1,6 @@
 import { Prisma, type Confidence, type ContentStatus, type PlaceType, type RelationshipType } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
+import { cacheExternalImage } from "@/lib/external-image-cache";
 import { buildEraLabel, parseImportedDate } from "@/lib/import-dates";
 import { getKnownPlaceScope, getKnownStateSlug } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
@@ -660,19 +661,57 @@ async function syncImages(saintId: string, plan: ImportPlan) {
 
 async function findOrCreateMediaAsset(image: Attachment, preferredUrl: string, displayName: string) {
   const existing = await db.mediaAsset.findFirst({ where: { sourceUrl: image.url } });
-  if (existing) return existing;
+  if (existing?.storageKey) return existing;
 
-  return db.mediaAsset.create({
-    data: {
-      url: preferredUrl,
-      sourceUrl: image.url,
-      altText: displayName,
-      caption: image.filename,
-      mimeType: image.type,
-      width: image.thumbnails?.large?.width ?? image.width,
-      height: image.thumbnails?.large?.height ?? image.height
+  try {
+    const cached = await cacheExternalImage({
+      fileName: image.filename ?? `${displayName}-airtable-image`,
+      folder: "airtable-media",
+      sourceUrls: [preferredUrl, image.url]
+    });
+
+    if (existing) {
+      return db.mediaAsset.update({
+        where: { id: existing.id },
+        data: {
+          url: cached.url,
+          storageKey: cached.storageKey,
+          mimeType: cached.mimeType
+        }
+      });
     }
-  });
+
+    return db.mediaAsset.create({
+      data: {
+        url: cached.url,
+        storageKey: cached.storageKey,
+        sourceUrl: image.url,
+        altText: displayName,
+        caption: image.filename,
+        mimeType: cached.mimeType,
+        width: image.thumbnails?.large?.width ?? image.width,
+        height: image.thumbnails?.large?.height ?? image.height
+      }
+    });
+  } catch (error) {
+    console.warn(
+      `Could not cache Airtable image ${image.filename ?? image.url}: ${error instanceof Error ? error.message : "unknown error"}`
+    );
+
+    if (existing) return existing;
+
+    return db.mediaAsset.create({
+      data: {
+        url: preferredUrl,
+        sourceUrl: image.url,
+        altText: displayName,
+        caption: image.filename,
+        mimeType: image.type,
+        width: image.thumbnails?.large?.width ?? image.width,
+        height: image.thumbnails?.large?.height ?? image.height
+      }
+    });
+  }
 }
 
 async function syncSources(saintId: string, plan: ImportPlan) {
