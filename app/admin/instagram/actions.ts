@@ -131,6 +131,8 @@ export async function updateInstagramItemSaintStatus(formData: FormData) {
       await promoteSaintForInstagramMatch(tx, updatedLink.saintId);
       await createDirectInstagramClaimsForSaint(tx, updatedLink.instagramItemId, updatedLink.saintId);
       await pipeAcceptedInstagramClaimsToSaint(tx, updatedLink.instagramItemId, updatedLink.saintId);
+    } else if (parsed.matchStatus === "ignored") {
+      await reconcileAfterInstagramUnmatch(tx, updatedLink.instagramItemId, updatedLink.saintId);
     }
 
     return updatedLink;
@@ -510,6 +512,62 @@ async function promoteSaintForInstagramMatch(tx: Prisma.TransactionClient, saint
   });
 }
 
+async function reconcileAfterInstagramUnmatch(tx: Prisma.TransactionClient, instagramItemId: string, saintId: string) {
+  const [remainingItemMatch, remainingSaintMatch] = await Promise.all([
+    tx.instagramItemSaint.findFirst({
+      where: {
+        instagramItemId,
+        matchStatus: { in: ["matched", "published"] }
+      },
+      orderBy: [{ isPrimary: "desc" }, { reviewedAt: "desc" }],
+      select: { id: true, isPrimary: true }
+    }),
+    tx.instagramItemSaint.findFirst({
+      where: {
+        saintId,
+        matchStatus: { in: ["matched", "published"] }
+      },
+      select: { id: true }
+    })
+  ]);
+
+  await tx.instagramItemSaint.updateMany({
+    where: { instagramItemId, saintId, matchStatus: "ignored" },
+    data: { isPrimary: false }
+  });
+
+  if (remainingItemMatch && !remainingItemMatch.isPrimary) {
+    await tx.instagramItemSaint.update({
+      where: { id: remainingItemMatch.id },
+      data: { isPrimary: true }
+    });
+  }
+
+  await tx.instagramItem.update({
+    where: { id: instagramItemId },
+    data: { status: remainingItemMatch ? "matched" : "needs_review" }
+  });
+
+  await tx.saint.update({
+    where: { id: saintId },
+    data: { hasInstagramContent: Boolean(remainingSaintMatch) }
+  });
+
+  await tx.instagramDerivedClaim.updateMany({
+    where: {
+      instagramItemId,
+      appliedSaintId: saintId,
+      appliedAt: null,
+      status: { in: ["suggested", "needs_review"] }
+    },
+    data: {
+      status: "ignored",
+      appliedSaintId: null,
+      notes: "Detached after the Instagram post was unmatched from this saint."
+    }
+  });
+}
+
 function revalidateInstagramPaths(saintSlugs: string[]) {
   revalidatePath("/");
   revalidatePath("/saints");
@@ -522,7 +580,7 @@ function revalidateInstagramPaths(saintSlugs: string[]) {
 }
 
 function getReturnTo(value: string | undefined) {
-  if (value?.startsWith("/admin/instagram")) return value;
+  if (value?.startsWith("/admin/instagram") || value?.startsWith("/admin/saints/")) return value;
   return "/admin/instagram";
 }
 

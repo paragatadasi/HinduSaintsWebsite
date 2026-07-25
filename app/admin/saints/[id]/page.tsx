@@ -4,13 +4,14 @@ import { CheckCircle2, UserRound } from "lucide-react";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
-import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { ReviewFactGrid, ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchableMultiSelect } from "@/components/ui/searchable-multi-select";
 import { db } from "@/lib/db";
 import { getInstagramLinkProps } from "@/lib/external-links";
 import { parseImportedDate } from "@/lib/import-dates";
 import { getInstagramImageUrls } from "@/lib/instagram";
+import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import {
   removeSaintSource,
   reviewSaintInstagramClaim,
@@ -22,6 +23,7 @@ import {
   upsertSaintBiography,
   upsertSaintSource
 } from "../actions";
+import { updateInstagramItemSaintStatus } from "../../instagram/actions";
 import { InstagramBiographyImporter } from "./instagram-biography-importer";
 import { SaintImageActions } from "./saint-image-actions";
 import { SaintImageCropper } from "./saint-image-cropper";
@@ -273,6 +275,16 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
         ) : (
           <p>No direct Instagram claims are waiting for review.</p>
         )}
+      </CollapsibleReviewCard>
+
+      <CollapsibleReviewCard
+        cardId="saint-instagram-posts"
+        defaultOpen={saint.instagramItems.some((link) => link.matchStatus === "matched" || link.matchStatus === "published")}
+        description="Review posts currently connected to this saint and remove incorrect matches."
+        eyebrow="Content relationships"
+        title="Matched Instagram Posts"
+      >
+        <SaintInstagramMatches saint={saint} />
       </CollapsibleReviewCard>
 
       <div className="review-detail-grid review-detail-grid--paired">
@@ -648,6 +660,9 @@ async function getSaint(slugOrId: string) {
               instagramShortcode: true,
               instagramUrl: true,
               captionText: true,
+              extractedSaintName: true,
+              firstPageMetadata: true,
+              firstPageText: true,
               postedAt: true,
               type: true,
               thumbnailUrl: true,
@@ -813,6 +828,85 @@ function InstagramBiographyReferences({ saint }: { saint: NonNullable<Awaited<Re
       })}
     </div>
   );
+}
+
+function SaintInstagramMatches({ saint }: { saint: NonNullable<Awaited<ReturnType<typeof getSaint>>> }) {
+  const matches = saint.instagramItems.filter((link) => link.matchStatus === "matched" || link.matchStatus === "published");
+
+  if (matches.length === 0) {
+    return <p>No Instagram posts are currently matched to this saint.</p>;
+  }
+
+  return (
+    <div className="review-list">
+      {matches.map((link) => {
+        const item = link.instagramItem;
+        const title = item.instagramShortcode ? `Instagram ${item.instagramShortcode}` : "Instagram post";
+        const metadata = getInstagramPostMetadata(item.firstPageMetadata, item.firstPageText);
+        const firstPageImageUrl = item.mediaAssets[0]?.cachedUrl ?? item.thumbnailUrl;
+        const postSaintName = metadata.displayName ?? item.extractedSaintName;
+
+        return (
+          <div className="review-row review-row--media-summary" key={link.id}>
+            {firstPageImageUrl ? (
+              <a className="review-row__media interactive-media" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>
+                <img src={firstPageImageUrl} alt={`First page of ${postSaintName ?? title}`} />
+              </a>
+            ) : (
+              <div className="review-row__media review-row__media--empty">No image</div>
+            )}
+            <div className="review-row__content">
+              <div>
+                <div className="review-meta">
+                  <StatusBadge label={formatStatus(link.matchStatus)} />
+                  <StatusBadge label={link.matchConfidence} />
+                  {link.isPrimary ? <StatusBadge label="primary" /> : null}
+                </div>
+                <h3>{title}</h3>
+              </div>
+              <ReviewFactGrid
+                facts={[
+                  { label: "Saint named in post", value: postSaintName },
+                  { label: "Born", value: metadata.born },
+                  { label: "Samadhi", value: metadata.samadhi }
+                ]}
+              />
+              <div className="review-actions">
+                <Link className="admin-text-link" href={`/admin/instagram/${item.id}`}>Open Instagram review</Link>
+                <a className="admin-text-link" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>View post</a>
+              </div>
+            </div>
+            <form action={updateInstagramItemSaintStatus}>
+              <input name="instagramItemSaintId" type="hidden" value={link.id} />
+              <input name="returnTo" type="hidden" value={`/admin/saints/${saint.slug}`} />
+              <input name="matchStatus" type="hidden" value="ignored" />
+              <button className="admin-form-button admin-form-button--warning" type="submit">Unmatch</button>
+            </form>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function getInstagramPostMetadata(value: unknown, firstPageText: string | null) {
+  const stored = value && typeof value === "object" && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : {};
+  const storedMetadata = compactMetadata({
+    displayName: getOptionalString(stored.displayName),
+    born: getOptionalString(stored.born),
+    samadhi: getOptionalString(stored.samadhi)
+  });
+
+  return compactMetadata({
+    ...parseInstagramFirstPageMetadata(firstPageText),
+    ...storedMetadata
+  });
+}
+
+function getOptionalString(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : undefined;
 }
 
 function getInstagramBiographyImportPosts(saint: NonNullable<Awaited<ReturnType<typeof getSaint>>>) {

@@ -136,7 +136,13 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
                     </div>
                     <div className="review-actions">
                       <LinkStatusForm instagramItemSaintId={link.id} matchStatus="matched" returnTo={returnTo} label="Confirm" />
-                      <LinkStatusForm instagramItemSaintId={link.id} matchStatus="ignored" returnTo={returnTo} label="Ignore" variant="warning" />
+                      <LinkStatusForm
+                        instagramItemSaintId={link.id}
+                        matchStatus="ignored"
+                        returnTo={returnTo}
+                        label={link.matchStatus === "matched" || link.matchStatus === "published" ? "Unmatch" : "Ignore"}
+                        variant="warning"
+                      />
                     </div>
                   </div>
                 ))}

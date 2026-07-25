@@ -4336,6 +4336,41 @@ img {
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
+.review-row--media-summary {
+  align-items: start;
+  grid-template-columns: minmax(120px, 0.2fr) minmax(0, 1fr) auto;
+}
+
+.review-row__media {
+  align-items: center;
+  aspect-ratio: 4 / 5;
+  background: var(--review-card-field-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-muted);
+  display: flex;
+  justify-content: center;
+  max-width: var(--width-card-grid-min);
+  overflow: hidden;
+}
+
+.review-row__media img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.review-row__media--empty {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.review-row__content {
+  display: grid;
+  gap: var(--review-field-gap, var(--space-3));
+  min-width: 0;
+}
+
 .review-row--selectable {
   align-items: start;
   grid-template-columns: auto minmax(0, 1fr);
@@ -6611,6 +6646,7 @@ img {
   .admin-settings-form,
   .review-detail-grid,
   .review-row,
+  .review-row--media-summary,
   .review-row__link,
   .route-editor__row,
   .admin-search,
