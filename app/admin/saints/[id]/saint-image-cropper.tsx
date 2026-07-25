@@ -86,7 +86,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
     setSelected({
       sourceUrl: image.sourceUrl,
       label: image.label,
-      previewUrl: `/api/admin/media?sourceUrl=${encodeURIComponent(image.sourceUrl)}`
+      previewUrl: getCropPreviewUrl(image.sourceUrl)
     });
     setCaption(`Image selected from ${image.label}`);
     setCropBox(defaultCropBox);
@@ -389,6 +389,12 @@ function revokeSelectedPreview(selected: SelectedImage | null) {
   if (selected?.file) {
     URL.revokeObjectURL(selected.previewUrl);
   }
+}
+
+function getCropPreviewUrl(sourceUrl: string) {
+  return sourceUrl.startsWith("/")
+    ? sourceUrl
+    : `/api/admin/media?sourceUrl=${encodeURIComponent(sourceUrl)}`;
 }
 
 function slugify(value: string) {
