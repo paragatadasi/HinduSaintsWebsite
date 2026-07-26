@@ -439,6 +439,9 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
                   <span>{mediaAsset.caption ?? "Imported saint image"}</span>
                   {mediaAsset.sourceUrl ? <small>Source preserved</small> : null}
                   <SaintImageActions
+                    altText={mediaAsset.altText}
+                    caption={mediaAsset.caption}
+                    credit={mediaAsset.credit}
                     imageLabel={mediaAsset.caption ?? mediaAsset.altText ?? "Imported saint image"}
                     mediaAssetId={mediaAsset.id}
                     placement={placement}
@@ -461,6 +464,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
             stagedImages={hiddenGalleryImages.map(({ mediaAsset }) => ({
               altText: mediaAsset.altText,
               caption: mediaAsset.caption,
+              credit: mediaAsset.credit,
               id: mediaAsset.id,
               sourceUrl: mediaAsset.sourceUrl,
               url: mediaAsset.url

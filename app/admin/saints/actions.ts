@@ -94,6 +94,14 @@ const saintImageDeleteSchema = z.object({
   mediaAssetId: z.string().cuid()
 });
 
+const saintImageMetadataSchema = z.object({
+  saintId: z.string().cuid(),
+  mediaAssetId: z.string().cuid(),
+  altText: z.string().trim().max(240),
+  caption: z.string().trim().max(500),
+  credit: z.string().trim().max(160)
+});
+
 const instagramSlideDeleteSchema = z.object({
   saintId: z.string().cuid(),
   instagramMediaAssetId: z.string().cuid(),
@@ -890,6 +898,40 @@ export async function updateSaintImagePlacement(input: z.input<typeof saintImage
       }
     } else if (existing) {
       await tx.saintGalleryImage.delete({ where: { id: existing.id } });
+    }
+  });
+
+  revalidateSaintPaths(saint.slug);
+}
+
+export async function updateSaintImageMetadata(input: z.input<typeof saintImageMetadataSchema>) {
+  await requireAdminSession();
+  const parsed = saintImageMetadataSchema.parse(input);
+
+  const saint = await db.saint.findUnique({
+    where: { id: parsed.saintId },
+    select: {
+      slug: true,
+      primaryImageId: true,
+      galleryImages: {
+        where: { mediaAssetId: parsed.mediaAssetId },
+        select: { id: true },
+        take: 1
+      }
+    }
+  });
+
+  if (!saint) throw new Error("Saint was not found.");
+
+  const isAttached = saint.primaryImageId === parsed.mediaAssetId || saint.galleryImages.length > 0;
+  if (!isAttached) throw new Error("The image is no longer attached to this saint.");
+
+  await db.mediaAsset.update({
+    where: { id: parsed.mediaAssetId },
+    data: {
+      altText: parsed.altText || null,
+      caption: parsed.caption || null,
+      credit: parsed.credit || null
     }
   });
 

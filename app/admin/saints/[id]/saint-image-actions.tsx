@@ -1,13 +1,16 @@
 "use client";
 
-import { Eye, EyeOff, Save, Trash2 } from "lucide-react";
+import { Eye, EyeOff, Pencil, Save, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { deleteSaintImage, updateSaintImagePlacement, updateSaintImageVisibility } from "../actions";
+import { deleteSaintImage, updateSaintImageMetadata, updateSaintImagePlacement, updateSaintImageVisibility } from "../actions";
 
 type ImagePlacement = "gallery" | "primary" | "both";
 
 type SaintImageActionsProps = {
+  altText?: string | null;
+  caption?: string | null;
+  credit?: string | null;
   imageLabel: string;
   mediaAssetId: string;
   saintId: string;
@@ -15,8 +18,21 @@ type SaintImageActionsProps = {
   placement?: ImagePlacement;
 };
 
-export function SaintImageActions({ imageLabel, mediaAssetId, placement, saintId, visible }: SaintImageActionsProps) {
+export function SaintImageActions({
+  altText,
+  caption,
+  credit,
+  imageLabel,
+  mediaAssetId,
+  placement,
+  saintId,
+  visible
+}: SaintImageActionsProps) {
   const [message, setMessage] = useState<string | null>(null);
+  const [isEditingMetadata, setIsEditingMetadata] = useState(false);
+  const [editedAltText, setEditedAltText] = useState(altText ?? "");
+  const [editedCaption, setEditedCaption] = useState(caption ?? "");
+  const [editedCredit, setEditedCredit] = useState(credit ?? "");
   const [selectedPlacement, setSelectedPlacement] = useState<ImagePlacement>(placement ?? "gallery");
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -47,6 +63,34 @@ export function SaintImageActions({ imageLabel, mediaAssetId, placement, saintId
     });
   }
 
+  function saveMetadata() {
+    setMessage(null);
+    startTransition(async () => {
+      try {
+        await updateSaintImageMetadata({
+          saintId,
+          mediaAssetId,
+          altText: editedAltText,
+          caption: editedCaption,
+          credit: editedCredit
+        });
+        setMessage("Image details updated.");
+        setIsEditingMetadata(false);
+        router.refresh();
+      } catch (error) {
+        setMessage(getErrorMessage(error));
+      }
+    });
+  }
+
+  function cancelMetadataEdit() {
+    setEditedAltText(altText ?? "");
+    setEditedCaption(caption ?? "");
+    setEditedCredit(credit ?? "");
+    setIsEditingMetadata(false);
+    setMessage(null);
+  }
+
   function deleteImage() {
     const confirmed = window.confirm(`Delete "${imageLabel}" from this saint? This cannot be undone.`);
     if (!confirmed) return;
@@ -64,6 +108,37 @@ export function SaintImageActions({ imageLabel, mediaAssetId, placement, saintId
 
   return (
     <div className="saint-image-actions">
+      {isEditingMetadata ? (
+        <div className="saint-image-actions__metadata">
+          <label>
+            Caption
+            <textarea value={editedCaption} maxLength={500} onChange={(event) => setEditedCaption(event.target.value)} />
+          </label>
+          <label>
+            Alt text
+            <input value={editedAltText} maxLength={240} onChange={(event) => setEditedAltText(event.target.value)} />
+          </label>
+          <label>
+            Credit
+            <input value={editedCredit} maxLength={160} onChange={(event) => setEditedCredit(event.target.value)} />
+          </label>
+          <div className="review-actions">
+            <button className="admin-form-button" type="button" disabled={isPending} onClick={saveMetadata}>
+              <Save size={16} aria-hidden="true" />
+              Save details
+            </button>
+            <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isPending} onClick={cancelMetadataEdit}>
+              <X size={16} aria-hidden="true" />
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isPending} onClick={() => setIsEditingMetadata(true)}>
+          <Pencil size={16} aria-hidden="true" />
+          Edit details
+        </button>
+      )}
       {placement ? (
         <div className="saint-image-actions__placement">
           <label>

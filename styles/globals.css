@@ -2118,6 +2118,20 @@ img {
   margin: var(--space-2) 0 0;
 }
 
+.fact-links {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+}
+
+.fact-links a {
+  color: var(--color-foreground);
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
 .saint-detail-hero {
   border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 22%, transparent);
   padding: var(--space-8) 0 var(--space-12);
@@ -6390,6 +6404,21 @@ img {
   gap: var(--space-2);
   grid-template-columns: minmax(0, 1fr) auto;
   width: 100%;
+}
+
+.saint-image-actions__metadata {
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.saint-image-actions__metadata label {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.saint-image-actions__metadata textarea {
+  min-height: 88px;
 }
 
 .saint-image-actions__placement label {

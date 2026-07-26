@@ -27,6 +27,7 @@ type SaintImageCropperProps = {
 type StagedImageSource = {
   altText?: string | null;
   caption?: string | null;
+  credit?: string | null;
   id: string;
   sourceUrl?: string | null;
   url: string;
@@ -224,6 +225,9 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
                     <span>{image.caption ?? image.altText ?? "Hidden saint image"}</span>
                   </button>
                   <SaintImageActions
+                    altText={image.altText}
+                    caption={image.caption}
+                    credit={image.credit}
                     imageLabel={image.caption ?? image.altText ?? "Hidden saint image"}
                     mediaAssetId={image.id}
                     saintId={saintId}
