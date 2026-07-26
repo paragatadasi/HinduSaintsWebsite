@@ -31,6 +31,15 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
 
   if (!saint) notFound();
 
+  const hasBiography = Boolean(
+    saint.biography?.bodyMarkdown.trim() || saint.biography?.summary?.trim()
+  );
+  const hasTraditionContext = saint.traditions.length > 0;
+  const hasPlaces = saint.places.length > 0;
+  const hasContext = hasTraditionContext || hasPlaces;
+  const hasSources = saint.sources.length > 0;
+  const hasFurtherReading = saint.furtherReading.length > 0;
+
   return (
     <main>
       <section className="saint-detail-hero">
@@ -68,43 +77,45 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
         ]} />
       </section>
 
-      <section className="page-shell section saint-detail-layout">
-        <article className="saint-detail-main">
-          <div className="eyebrow">{template.biographyEyebrow}</div>
-          <h2>{saint.biography?.title ?? "Biography in review"}</h2>
-          {saint.biography?.summary ? <p className="lede">{saint.biography.summary}</p> : null}
-          <Prose markdown={saint.biography?.bodyMarkdown ?? template.biographyPlaceholderMarkdown} />
-        </article>
+      {hasBiography || hasContext ? (
+        <section className="page-shell section saint-detail-layout">
+          {hasBiography && saint.biography ? (
+            <article className="saint-detail-main">
+              <div className="eyebrow">{template.biographyEyebrow}</div>
+              <h2>{saint.biography.title}</h2>
+              {saint.biography.summary ? <p className="lede">{saint.biography.summary}</p> : null}
+              <Prose markdown={saint.biography.bodyMarkdown} />
+            </article>
+          ) : null}
 
-        <aside className="saint-detail-aside" aria-label={`${saint.displayName} context`}>
-          <ContextBlock title="Tradition Context">
-            {saint.traditions.length > 0 ? (
-              <ul className="context-list">
-                {saint.traditions.map((tradition) => (
-                  <li key={tradition.slug}>
-                    <Link href={`/traditions/${tradition.slug}`}>{tradition.name}</Link>
-                    {tradition.shortDescription ? <p>{tradition.shortDescription}</p> : null}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="empty-note">Tradition links will appear here after editorial review.</p>
-            )}
-          </ContextBlock>
+          {hasContext ? (
+            <aside className="saint-detail-aside" aria-label={`${saint.displayName} context`}>
+              {hasTraditionContext ? (
+                <ContextBlock title="Tradition Context">
+                  <ul className="context-list">
+                    {saint.traditions.map((tradition) => (
+                      <li key={tradition.slug}>
+                        <Link href={`/traditions/${tradition.slug}`}>{tradition.name}</Link>
+                        {tradition.shortDescription ? <p>{tradition.shortDescription}</p> : null}
+                      </li>
+                    ))}
+                  </ul>
+                </ContextBlock>
+              ) : null}
 
-          <ContextBlock title="Places">
-            {saint.places.length > 0 ? (
-              <div className="chip-list">
-                {saint.places.map((place) => <span className="chip" key={place}>{place}</span>)}
-              </div>
-            ) : (
-              <p className="empty-note">Places have not been reviewed for public display yet.</p>
-            )}
-          </ContextBlock>
-        </aside>
-      </section>
+              {hasPlaces ? (
+                <ContextBlock title="Places">
+                  <div className="chip-list">
+                    {saint.places.map((place) => <span className="chip" key={place}>{place}</span>)}
+                  </div>
+                </ContextBlock>
+              ) : null}
+            </aside>
+          ) : null}
+        </section>
+      ) : null}
 
-      {saint.gallery && saint.gallery.length > 0 ? (
+      {saint.gallery && saint.gallery.length > 1 ? (
         <section className="page-shell section">
           <div className="section-heading section-heading--text">
             <div>
@@ -120,10 +131,12 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
         </section>
       ) : null}
 
-      <section className="page-shell section saint-detail-layout section--last">
-        <SourceList title="Sources" sources={saint.sources} emptyText="Reviewed public sources will appear here as editors attach them." />
-        <FurtherReading items={saint.furtherReading} />
-      </section>
+      {hasSources || hasFurtherReading ? (
+        <section className="page-shell section saint-detail-layout section--last">
+          {hasSources ? <SourceList title="Sources" sources={saint.sources} /> : null}
+          {hasFurtherReading ? <FurtherReading items={saint.furtherReading} /> : null}
+        </section>
+      ) : null}
 
       <div className="page-shell">
         <InstagramEmbedGrid items={saint.instagramItems} saintName={saint.displayName} urls={saint.instagramUrls} />
@@ -176,24 +189,20 @@ function ContextBlock({ title, children }: { title: string; children: ReactNode 
   );
 }
 
-function SourceList({ title, sources, emptyText }: { title: string; sources: PublicSourceSummary[]; emptyText: string }) {
+function SourceList({ title, sources }: { title: string; sources: PublicSourceSummary[] }) {
   return (
     <section className="source-section">
       <div className="eyebrow">References</div>
       <h2>{title}</h2>
-      {sources.length > 0 ? (
-        <ul className="source-list">
-          {sources.map((source) => (
-            <li key={`${source.title}-${source.author ?? source.publisher ?? ""}`}>
-              <SourceTitle source={source} />
-              <SourceMeta source={source} />
-              {source.note ? <p>{source.note}</p> : null}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="empty-note">{emptyText}</p>
-      )}
+      <ul className="source-list">
+        {sources.map((source) => (
+          <li key={`${source.title}-${source.author ?? source.publisher ?? ""}`}>
+            <SourceTitle source={source} />
+            <SourceMeta source={source} />
+            {source.note ? <p>{source.note}</p> : null}
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
@@ -203,20 +212,16 @@ function FurtherReading({ items }: { items: PublicFurtherReadingItem[] }) {
     <section className="source-section">
       <div className="eyebrow">Further Reading</div>
       <h2>Continue Exploring</h2>
-      {items.length > 0 ? (
-        <ul className="source-list">
-          {items.map((item) => (
-            <li key={`${item.title}-${item.label ?? ""}`}>
-              {item.label ? <span className="source-label">{item.label}</span> : null}
-              <SourceTitle source={item} />
-              <SourceMeta source={item} />
-              {item.note ? <p>{item.note}</p> : null}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="empty-note">Curated further reading has not been added to this profile yet.</p>
-      )}
+      <ul className="source-list">
+        {items.map((item) => (
+          <li key={`${item.title}-${item.label ?? ""}`}>
+            {item.label ? <span className="source-label">{item.label}</span> : null}
+            <SourceTitle source={item} />
+            <SourceMeta source={item} />
+            {item.note ? <p>{item.note}</p> : null}
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
