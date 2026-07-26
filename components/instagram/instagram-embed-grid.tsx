@@ -19,6 +19,7 @@ import {
 import { getInstagramLinkProps } from "@/lib/external-links";
 import { getInstagramSectionContent } from "@/lib/site-content";
 import type { PublicInstagramItem } from "@/lib/public-contracts";
+import { formatPublicCalendarDate } from "@/lib/public-date-format";
 
 const iconSize = {
   action: "var(--size-icon-action)",
@@ -457,15 +458,7 @@ function getVisibleCarouselThumbs(images: string[], start: number) {
 }
 
 function formatPostedAt(postedAt?: string) {
-  if (!postedAt) return undefined;
-  const date = new Date(postedAt);
-  if (Number.isNaN(date.getTime())) return undefined;
-
-  return new Intl.DateTimeFormat("en", {
-    month: "short",
-    day: "numeric",
-    year: "numeric"
-  }).format(date);
+  return formatPublicCalendarDate(postedAt);
 }
 
 function formatPostType(type: PublicInstagramItem["type"]) {

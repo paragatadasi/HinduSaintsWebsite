@@ -9,6 +9,7 @@ import type {
   PublicSaintSummary,
   PublicSourceSummary
 } from "@/lib/public-contracts";
+import { formatSaintDate, formatSaintEraLabel } from "@/lib/public-date-format";
 import { rankSaintSearchResults } from "@/lib/saint-search";
 
 type SaintListRow = Awaited<ReturnType<typeof getPublishedSaintRows>>[number];
@@ -123,7 +124,7 @@ function toPublicSaintSummary(saint: SaintListRow): PublicSaintSummary {
     canonicalName: saint.canonicalName,
     shortDescription: saint.shortDescription ?? saint.biographySummary ?? DEFAULT_DESCRIPTION,
     image: saint.primaryImage ? toPublicImage(saint.primaryImage, saint.displayName) : undefined,
-    eraLabel: saint.eraLabel ?? DEFAULT_ERA,
+    eraLabel: saint.eraLabel ? formatSaintEraLabel(saint.eraLabel) : DEFAULT_ERA,
     primaryLocation: getPrimaryLocation(saint.places),
     tradition: getPrimaryTradition(saint.traditions),
     featured: saint.featured,
@@ -233,12 +234,27 @@ function toPublicImage(image: SaintDetailRow["primaryImage"], displayName: strin
 }
 
 function buildFacts(saint: SaintDetailRow, summary: PublicSaintSummary) {
+  const birthDate = formatSaintDate({
+    raw: saint.birthDateRaw,
+    year: saint.birthYear,
+    month: saint.birthMonth,
+    day: saint.birthDay,
+    precision: saint.birthDatePrecision
+  });
+  const samadhiDate = formatSaintDate({
+    raw: saint.samadhiDateRaw,
+    year: saint.samadhiYear,
+    month: saint.samadhiMonth,
+    day: saint.samadhiDay,
+    precision: saint.samadhiDatePrecision
+  });
+
   return [
     { label: "Era", value: summary.eraLabel },
     { label: "Primary place", value: summary.primaryLocation },
     { label: "Tradition", value: summary.tradition },
-    saint.birthDateRaw ? { label: "Birth date", value: saint.birthDateRaw } : undefined,
-    saint.samadhiDateRaw ? { label: "Samadhi date", value: saint.samadhiDateRaw } : undefined
+    birthDate ? { label: "Birth date", value: birthDate } : undefined,
+    samadhiDate ? { label: "Samadhi date", value: samadhiDate } : undefined
   ].filter((fact): fact is { label: string; value: string } => Boolean(fact));
 }
 
