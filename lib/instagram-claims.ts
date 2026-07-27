@@ -1,6 +1,6 @@
 import type { Confidence, InstagramDerivedClaim, InstagramDerivedClaimType, MatchStatus, PlaceType, Prisma } from "@/lib/generated/prisma/client";
 import { parseImportedDate } from "@/lib/import-dates";
-import { compactMetadata, parseInstagramFirstPageMetadata, type InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
+import { compactMetadata, parseInstagramFirstPageMetadata, splitKeyPlaces, type InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { toSlug } from "@/lib/slugs";
 
 type Tx = Prisma.TransactionClient;
@@ -81,6 +81,69 @@ export async function createDirectInstagramClaimsForSaint(tx: Tx, instagramItemI
       confidence: "medium",
       appliedSaintId: saintId,
       notes: "Piped to saint review from matched Instagram first-page biodata."
+    });
+  }
+}
+
+export async function connectInstagramPlacesToSaintDraft(tx: Tx, instagramItemId: string, saintId: string) {
+  const item = await tx.instagramItem.findUnique({
+    where: { id: instagramItemId },
+    select: {
+      firstPageText: true,
+      firstPageMetadata: true
+    }
+  });
+  if (!item) return;
+
+  const metadata = getStoredFirstPageMetadata(item.firstPageMetadata, item.firstPageText);
+  const rawPlaces = metadata.keyPlaces?.length ? metadata.keyPlaces : splitKeyPlaces(metadata.keyPlace);
+  if (rawPlaces.length === 0) return;
+
+  const places = await tx.place.findMany({
+    select: {
+      id: true,
+      name: true,
+      alternateNames: true,
+      region: true,
+      country: true
+    }
+  });
+
+  for (const rawValue of rawPlaces) {
+    const normalizedRawValue = toSlug(rawValue);
+    const matches = places.filter((place) => getPlaceMatchKeys(place).has(normalizedRawValue));
+
+    if (matches.length === 1) {
+      const [place] = matches;
+      const claim = await upsertInstagramDerivedClaim(tx, {
+        instagramItemId,
+        claimType: "place",
+        rawValue,
+        sourceField: "keyPlace",
+        targetEntityType: "Place",
+        targetEntityId: place.id,
+        confidence: "high",
+        status: "matched",
+        notes: "Automatically matched while creating a saint draft from Instagram biodata."
+      });
+      await applyInstagramClaimToSaint(tx, claim, saintId);
+      continue;
+    }
+
+    const claim = await upsertInstagramDerivedClaim(tx, {
+      instagramItemId,
+      claimType: "place",
+      rawValue,
+      sourceField: "keyPlace",
+      confidence: matches.length > 1 ? "medium" : "low",
+      status: "needs_review",
+      notes: matches.length > 1
+        ? "Multiple exact place matches found while creating a saint draft."
+        : "No exact place match found while creating a saint draft."
+    });
+    await tx.instagramDerivedClaim.update({
+      where: { id: claim.id },
+      data: { appliedSaintId: saintId }
     });
   }
 }
@@ -462,6 +525,25 @@ function getNormalizedClaimValue(claimType: InstagramDerivedClaimType, rawValue:
   }
 
   return toSlug(rawValue);
+}
+
+function getPlaceMatchKeys(place: {
+  name: string;
+  alternateNames: string[];
+  region: string | null;
+  country: string | null;
+}) {
+  const names = [place.name, ...place.alternateNames];
+  const contexts = [
+    place.region,
+    place.country,
+    [place.region, place.country].filter(Boolean).join(", ")
+  ].filter((value): value is string => Boolean(value));
+
+  return new Set([
+    ...names,
+    ...names.flatMap((name) => contexts.map((context) => `${name}, ${context}`))
+  ].map(toSlug).filter(Boolean));
 }
 
 function getStoredFirstPageMetadata(value: unknown, firstPageText: string | null) {

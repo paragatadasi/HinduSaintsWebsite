@@ -15,7 +15,12 @@ import {
   rankInstagramQueueItems,
   type InstagramQueueStatus
 } from "@/lib/instagram-admin-queue";
-import { acceptInstagramDerivedClaim, createDirectInstagramClaimsForSaint, pipeAcceptedInstagramClaimsToSaint } from "@/lib/instagram-claims";
+import {
+  acceptInstagramDerivedClaim,
+  connectInstagramPlacesToSaintDraft,
+  createDirectInstagramClaimsForSaint,
+  pipeAcceptedInstagramClaimsToSaint
+} from "@/lib/instagram-claims";
 import { extractInstagramFirstPageDraft } from "@/lib/instagram-first-page-extraction";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { toSlug } from "@/lib/slugs";
@@ -277,6 +282,7 @@ export async function createSaintFromInstagramItem(formData: FormData) {
         notes: "Created saint from Instagram review workflow."
       }
     });
+    await connectInstagramPlacesToSaintDraft(tx, parsed.instagramItemId, createdSaint.id);
     await createDirectInstagramClaimsForSaint(tx, parsed.instagramItemId, createdSaint.id);
     await pipeAcceptedInstagramClaimsToSaint(tx, parsed.instagramItemId, createdSaint.id);
 
