@@ -241,6 +241,11 @@ configuration. Editors first choose places from a searchable multi-select, then
 order only the selected places in the route editor by dragging them into the
 reviewed sequence.
 
+When the needed place does not exist, editors can quick-create it in the same
+Places and Route card. The new place is attached to the saint and appended to
+the route immediately; its full hierarchy and public fields can be refined from
+the place review screen afterward.
+
 ## Timeline Rules
 
 The time filter uses `Saint.birthYear` and `Saint.samadhiYear`.
