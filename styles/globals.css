@@ -3127,6 +3127,24 @@ img {
   border-color: var(--review-workflow-border);
 }
 
+.admin-pagination {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+.admin-pagination__status {
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.admin-pagination .admin-form-button[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .bulk-review-panel {
   align-items: center;
   background: var(--review-workflow-section-bg);

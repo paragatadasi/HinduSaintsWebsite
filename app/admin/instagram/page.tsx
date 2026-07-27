@@ -2,19 +2,25 @@ import Link from "next/link";
 import type { Route } from "next";
 import type { Prisma as PrismaTypes } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
+import {
+  getInstagramFirstPageMetadata,
+  getInstagramQueueWhere,
+  instagramQueueStatuses,
+  rankInstagramQueueItems,
+  type InstagramQueueStatus
+} from "@/lib/instagram-admin-queue";
 import { getIncompleteInstagramItemSummaries, getIncompleteInstagramItemWhere } from "@/lib/instagram-ingestion";
-import type { InstagramFirstPageMetadata } from "@/lib/instagram-metadata";
-import { rankWeightedTextSearch, type WeightedSearchField } from "@/lib/search-text";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { InstagramBulkReviewList } from "./instagram-bulk-review-list";
 import { InstagramIngestionPanel } from "./instagram-ingestion-panel";
 
-const statuses = ["imported", "suggested", "needs_review", "matched", "published", "ignored"] as const;
-type StatusFilter = typeof statuses[number] | "all";
-const statusFilters = ["all", ...statuses] as const;
+const PAGE_SIZE = 30;
+const statuses = instagramQueueStatuses;
+type StatusFilter = InstagramQueueStatus;
+const statusFilters = ["all", ...instagramQueueStatuses] as const;
 
 type AdminInstagramPageProps = {
-  searchParams: Promise<{ q?: string | string[]; status?: string }>;
+  searchParams: Promise<{ page?: string | string[]; q?: string | string[]; status?: string }>;
 };
 
 type InstagramQueueItem = PrismaTypes.InstagramItemGetPayload<{
@@ -35,18 +41,19 @@ type InstagramQueueItem = PrismaTypes.InstagramItemGetPayload<{
 }>;
 
 export default async function AdminInstagramPage({ searchParams }: AdminInstagramPageProps) {
-  const { q, status } = await searchParams;
+  const { page, q, status } = await searchParams;
   const query = getSearchParam(q);
   const activeStatus = getActiveStatus(status);
-  const [itemCounts, items, ingestionJobs, incompleteCount, incompleteItems] = await Promise.all([
+  const requestedPage = getPageParam(page);
+  const [itemCounts, queue, ingestionJobs, incompleteCount, incompleteItems] = await Promise.all([
     getInstagramItemCounts(),
-    getInstagramItems(activeStatus, query),
+    getInstagramItems(activeStatus, query, requestedPage),
     getInstagramIngestionJobs(),
     getIncompleteInstagramItemCount(),
     getIncompleteInstagramItemSummaries()
   ]);
-  const returnTo = getInstagramReturnTo(activeStatus, query);
-  const reviewRows = items.map(toInstagramReviewRow);
+  const returnTo = getInstagramReturnTo(activeStatus, query, queue.page);
+  const reviewRows = queue.items.map(toInstagramReviewRow);
 
   return (
     <div className="admin-stack">
@@ -69,7 +76,7 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
           <div className="review-workflow__heading">
             <div className="review-workflow__eyebrow">Review queue</div>
             <h2>{formatQueueTitle(activeStatus)}</h2>
-            <p>{formatQueueDescription(activeStatus, query, items.length)}</p>
+            <p>{formatQueueDescription(activeStatus, query, queue)}</p>
           </div>
         </div>
 
@@ -99,9 +106,19 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
           {query ? <Link className="admin-form-button admin-form-button--secondary" href={getInstagramReturnTo(activeStatus, "") as Route}>Clear</Link> : null}
         </form>
         <InstagramBulkReviewList
+          activeStatus={activeStatus}
           emptyMessage={query ? "Try another search or clear the queue search." : "Try another status filter or run `npm run ingest:instagram -- --api --dry-run` to preview a fresh import."}
           items={reviewRows}
+          key={returnTo}
+          query={query}
           returnTo={returnTo}
+          totalMatchingCount={queue.totalCount}
+        />
+        <InstagramQueuePagination
+          activeStatus={activeStatus}
+          page={queue.page}
+          pageCount={queue.pageCount}
+          query={query}
         />
       </section>
 
@@ -110,7 +127,7 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
 }
 
 function toInstagramReviewRow(item: InstagramQueueItem) {
-  const firstPageMetadata = getFirstPageMetadata(item.firstPageMetadata);
+  const firstPageMetadata = getInstagramFirstPageMetadata(item.firstPageMetadata);
   const title = firstPageMetadata.displayName ?? item.extractedSaintName ?? item.instagramShortcode ?? "Imported Instagram item";
   const summary = firstPageMetadata.subtitle ?? item.captionText ?? "No caption text imported yet.";
 
@@ -138,9 +155,10 @@ async function getInstagramItemCounts() {
   return Object.fromEntries(grouped.map((row) => [row.status, row._count._all])) as Record<string, number>;
 }
 
-async function getInstagramItems(status: StatusFilter, query: string): Promise<InstagramQueueItem[]> {
-  const items = await db.instagramItem.findMany({
-    where: status === "all" ? undefined : { status },
+async function getInstagramItems(status: StatusFilter, query: string, requestedPage: number) {
+  const where = getInstagramQueueWhere(status);
+  const baseQuery = {
+    where,
     orderBy: [{ status: "asc" }, { postedAt: "desc" }, { updatedAt: "desc" }],
     include: {
       saints: {
@@ -150,20 +168,34 @@ async function getInstagramItems(status: StatusFilter, query: string): Promise<I
       mediaAssets: {
         orderBy: { sortOrder: "asc" }
       }
-    },
-    take: query ? undefined : 30
+    }
+  } satisfies PrismaTypes.InstagramItemFindManyArgs;
+
+  if (query) {
+    const rankedItems = rankInstagramQueueItems(
+      await db.instagramItem.findMany(baseQuery),
+      query
+    );
+    return paginateInstagramItems(rankedItems, requestedPage);
+  }
+
+  const totalCount = await db.instagramItem.count({ where });
+  const pageCount = getPageCount(totalCount);
+  const page = Math.min(requestedPage, pageCount);
+  const items = await db.instagramItem.findMany({
+    ...baseQuery,
+    skip: (page - 1) * PAGE_SIZE,
+    take: PAGE_SIZE
   });
 
-  if (!query) return items;
-  return rankWeightedTextSearch(
+  return {
     items,
-    query,
-    buildInstagramItemSearchFields,
-    {
-      limit: 30,
-      tieBreaker: (left: InstagramQueueItem, right: InstagramQueueItem) => getInstagramSortDate(right) - getInstagramSortDate(left)
-    }
-  ).map(({ item }) => item);
+    page,
+    pageCount,
+    totalCount,
+    rangeStart: totalCount === 0 ? 0 : (page - 1) * PAGE_SIZE + 1,
+    rangeEnd: (page - 1) * PAGE_SIZE + items.length
+  };
 }
 
 async function getInstagramIngestionJobs() {
@@ -209,54 +241,67 @@ function FilterLink({ active, href, label, value }: { active: boolean; href: str
   );
 }
 
-function getFirstPageMetadata(value: unknown): InstagramFirstPageMetadata {
-  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
-  const metadata = value as Record<string, unknown>;
+function InstagramQueuePagination({
+  activeStatus,
+  page,
+  pageCount,
+  query
+}: {
+  activeStatus: StatusFilter;
+  page: number;
+  pageCount: number;
+  query: string;
+}) {
+  if (pageCount <= 1) return null;
+
+  return (
+    <nav className="admin-pagination" aria-label="Instagram queue pages">
+      {page > 1 ? (
+        <Link
+          className="admin-form-button admin-form-button--secondary"
+          href={getInstagramReturnTo(activeStatus, query, page - 1) as Route}
+          rel="prev"
+        >
+          Previous
+        </Link>
+      ) : (
+        <span aria-disabled="true" className="admin-form-button admin-form-button--secondary">Previous</span>
+      )}
+      <span className="admin-pagination__status">Page {page.toLocaleString()} of {pageCount.toLocaleString()}</span>
+      {page < pageCount ? (
+        <Link
+          className="admin-form-button admin-form-button--secondary"
+          href={getInstagramReturnTo(activeStatus, query, page + 1) as Route}
+          rel="next"
+        >
+          Next
+        </Link>
+      ) : (
+        <span aria-disabled="true" className="admin-form-button admin-form-button--secondary">Next</span>
+      )}
+    </nav>
+  );
+}
+
+function paginateInstagramItems<T>(items: T[], requestedPage: number) {
+  const totalCount = items.length;
+  const pageCount = getPageCount(totalCount);
+  const page = Math.min(requestedPage, pageCount);
+  const rangeStart = totalCount === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+  const pageItems = items.slice(rangeStart === 0 ? 0 : rangeStart - 1, page * PAGE_SIZE);
 
   return {
-    displayName: getString(metadata.displayName),
-    subtitle: getString(metadata.subtitle),
-    born: getString(metadata.born),
-    samadhi: getString(metadata.samadhi),
-    keyPlace: getString(metadata.keyPlace),
-    tradition: getString(metadata.tradition),
-    guru: getString(metadata.guru)
+    items: pageItems,
+    page,
+    pageCount,
+    totalCount,
+    rangeStart,
+    rangeEnd: rangeStart === 0 ? 0 : rangeStart + pageItems.length - 1
   };
 }
 
-function getString(value: unknown) {
-  return typeof value === "string" ? value : undefined;
-}
-
-function buildInstagramItemSearchFields(item: InstagramQueueItem): WeightedSearchField[] {
-  const metadata = getFirstPageMetadata(item.firstPageMetadata);
-  return [
-    { value: metadata.displayName, weight: 6 },
-    { value: item.extractedSaintName, weight: 6 },
-    ...item.saints.flatMap((link) => [
-      { value: link.saint.displayName, weight: 6 },
-      { value: link.saint.canonicalName, weight: 5 },
-      { value: link.matchStatus, weight: 2 },
-      { value: link.matchConfidence, weight: 1.5 }
-    ]),
-    { value: item.instagramShortcode, weight: 5 },
-    { value: metadata.subtitle, weight: 3 },
-    { value: metadata.keyPlace, weight: 3 },
-    { value: metadata.tradition, weight: 3 },
-    { value: metadata.guru, weight: 3 },
-    { value: metadata.born, weight: 2 },
-    { value: metadata.samadhi, weight: 2 },
-    { value: item.firstPageText, weight: 2 },
-    { value: item.captionText, weight: 1.4 },
-    { value: item.instagramUrl, weight: 1 },
-    { value: item.status, weight: 1 },
-    { value: item.type, weight: 1 },
-    { value: item.postedAt?.toLocaleDateString(), weight: 0.8 }
-  ];
-}
-
-function getInstagramSortDate(item: InstagramQueueItem) {
-  return (item.postedAt ?? item.updatedAt).getTime();
+function getPageCount(totalCount: number) {
+  return Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 }
 
 function getSearchParam(value: string | string[] | undefined) {
@@ -264,10 +309,17 @@ function getSearchParam(value: string | string[] | undefined) {
   return value?.trim() ?? "";
 }
 
-function getInstagramReturnTo(status: StatusFilter, query: string) {
+function getPageParam(value: string | string[] | undefined) {
+  const rawValue = Array.isArray(value) ? value[0] : value;
+  const page = Number.parseInt(rawValue ?? "", 10);
+  return Number.isSafeInteger(page) && page > 0 ? page : 1;
+}
+
+function getInstagramReturnTo(status: StatusFilter, query: string, page = 1) {
   const params = new URLSearchParams();
   if (status !== "all") params.set("status", status);
   if (query) params.set("q", query);
+  if (page > 1) params.set("page", String(page));
   const qs = params.toString();
   return qs ? `/admin/instagram?${qs}` : "/admin/instagram";
 }
@@ -285,9 +337,19 @@ function formatQueueTitle(status: StatusFilter) {
   return toTitleCase(formatStatus(status));
 }
 
-function formatQueueDescription(status: StatusFilter, query: string, count: number) {
-  const queue = status === "all" ? "Instagram items" : formatQueueTitle(status).toLowerCase();
-  const base = `${count.toLocaleString()} ${count === 1 ? "record" : "records"} in ${queue}.`;
+function formatQueueDescription(
+  status: StatusFilter,
+  query: string,
+  stats: { rangeEnd: number; rangeStart: number; totalCount: number }
+) {
+  const queueLabel = status === "all" ? "Instagram items" : formatQueueTitle(status).toLowerCase();
+  const recordLabel = stats.totalCount === 1 ? "record" : "records";
+  const range = stats.totalCount === 0
+    ? "0"
+    : stats.rangeStart === stats.rangeEnd
+      ? stats.rangeStart.toLocaleString()
+      : `${stats.rangeStart.toLocaleString()}–${stats.rangeEnd.toLocaleString()}`;
+  const base = `Showing ${range} of ${stats.totalCount.toLocaleString()} ${recordLabel} in ${queueLabel}.`;
   return query ? `${base} Filtered by "${query}".` : base;
 }
 

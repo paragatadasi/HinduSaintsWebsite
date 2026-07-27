@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { getInstagramLinkProps } from "@/lib/external-links";
+import type { InstagramQueueStatus } from "@/lib/instagram-admin-queue";
 import { bulkDeleteInstagramItems } from "./actions";
 
 type InstagramReviewRow = {
@@ -16,19 +17,38 @@ type InstagramReviewRow = {
 };
 
 type InstagramBulkReviewListProps = {
+  activeStatus: InstagramQueueStatus;
   emptyMessage: string;
   items: InstagramReviewRow[];
+  query: string;
   returnTo: string;
+  totalMatchingCount: number;
 };
 
-export function InstagramBulkReviewList({ emptyMessage, items, returnTo }: InstagramBulkReviewListProps) {
+export function InstagramBulkReviewList({
+  activeStatus,
+  emptyMessage,
+  items,
+  query,
+  returnTo,
+  totalMatchingCount
+}: InstagramBulkReviewListProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [allMatchingSelected, setAllMatchingSelected] = useState(false);
   const [isDeleteArmed, setIsDeleteArmed] = useState(false);
   const selectedIdSet = useMemo(() => new Set(selectedIds), [selectedIds]);
-  const selectedCount = selectedIds.length;
-  const allVisibleSelected = items.length > 0 && selectedCount === items.length;
+  const selectedCount = allMatchingSelected ? totalMatchingCount : selectedIds.length;
+  const allVisibleSelected = items.length > 0 && (allMatchingSelected || selectedIds.length === items.length);
+  const canSelectAllMatching = allVisibleSelected && !allMatchingSelected && totalMatchingCount > items.length;
 
   function toggleItem(itemId: string) {
+    if (allMatchingSelected) {
+      setAllMatchingSelected(false);
+      setSelectedIds(items.filter((item) => item.id !== itemId).map((item) => item.id));
+      setIsDeleteArmed(false);
+      return;
+    }
+
     setSelectedIds((current) => (
       current.includes(itemId)
         ? current.filter((id) => id !== itemId)
@@ -37,7 +57,21 @@ export function InstagramBulkReviewList({ emptyMessage, items, returnTo }: Insta
   }
 
   function toggleAllVisible() {
+    setAllMatchingSelected(false);
     setSelectedIds(allVisibleSelected ? [] : items.map((item) => item.id));
+    setIsDeleteArmed(false);
+  }
+
+  function selectAllMatching() {
+    setAllMatchingSelected(true);
+    setSelectedIds([]);
+    setIsDeleteArmed(false);
+  }
+
+  function clearSelection() {
+    setAllMatchingSelected(false);
+    setSelectedIds([]);
+    setIsDeleteArmed(false);
   }
 
   function armDelete() {
@@ -63,13 +97,43 @@ export function InstagramBulkReviewList({ emptyMessage, items, returnTo }: Insta
             type="checkbox"
           />
           <span>
-            <strong>Select visible</strong>
-            <small>{selectedCount > 0 ? `${selectedCount} selected` : `${items.length} visible in this queue`}</small>
+            <strong>{allMatchingSelected ? "All matching selected" : "Select visible"}</strong>
+            <small>
+              {allMatchingSelected
+                ? `All ${totalMatchingCount.toLocaleString()} matching items selected`
+                : selectedCount > 0
+                  ? `${selectedCount.toLocaleString()} selected on this page`
+                  : `${items.length.toLocaleString()} visible on this page`}
+            </small>
           </span>
         </label>
         <div className="bulk-review-actions">
+          {canSelectAllMatching ? (
+            <button
+              className="admin-form-button admin-form-button--secondary"
+              onClick={selectAllMatching}
+              type="button"
+            >
+              Select all {totalMatchingCount.toLocaleString()} matching items
+            </button>
+          ) : null}
+          {allMatchingSelected ? (
+            <button
+              className="admin-form-button admin-form-button--secondary"
+              onClick={clearSelection}
+              type="button"
+            >
+              Clear selection
+            </button>
+          ) : null}
           <form action={bulkDeleteInstagramItems} className="bulk-delete-form">
-            <BulkReviewHiddenFields itemIds={selectedIds} returnTo={returnTo} />
+            <BulkReviewHiddenFields
+              activeStatus={activeStatus}
+              allMatchingSelected={allMatchingSelected}
+              itemIds={selectedIds}
+              query={query}
+              returnTo={returnTo}
+            />
             {isDeleteArmed ? (
               <label className="bulk-delete-password">
                 <span>Delete password</span>
@@ -88,7 +152,7 @@ export function InstagramBulkReviewList({ emptyMessage, items, returnTo }: Insta
               onClick={isDeleteArmed ? undefined : armDelete}
               type={isDeleteArmed ? "submit" : "button"}
             >
-              {isDeleteArmed ? `Remove ${selectedCount} items` : "Remove"}
+              {isDeleteArmed ? `Remove ${selectedCount.toLocaleString()} items` : "Remove"}
             </button>
           </form>
         </div>
@@ -99,7 +163,7 @@ export function InstagramBulkReviewList({ emptyMessage, items, returnTo }: Insta
           <InstagramReviewCard
             item={item}
             key={item.id}
-            selected={selectedIdSet.has(item.id)}
+            selected={allMatchingSelected || selectedIdSet.has(item.id)}
             toggleItem={toggleItem}
           />
         ))}
@@ -148,10 +212,25 @@ function InstagramReviewCard({
   );
 }
 
-function BulkReviewHiddenFields({ itemIds, returnTo }: { itemIds: string[]; returnTo: string }) {
+function BulkReviewHiddenFields({
+  activeStatus,
+  allMatchingSelected,
+  itemIds,
+  query,
+  returnTo
+}: {
+  activeStatus: InstagramQueueStatus;
+  allMatchingSelected: boolean;
+  itemIds: string[];
+  query: string;
+  returnTo: string;
+}) {
   return (
     <>
       <input name="returnTo" type="hidden" value={returnTo} />
+      <input name="selectionMode" type="hidden" value={allMatchingSelected ? "matching" : "visible"} />
+      {allMatchingSelected ? <input name="status" type="hidden" value={activeStatus} /> : null}
+      {allMatchingSelected && query ? <input name="query" type="hidden" value={query} /> : null}
       {itemIds.map((itemId) => (
         <input key={itemId} name="instagramItemIds" type="hidden" value={itemId} />
       ))}

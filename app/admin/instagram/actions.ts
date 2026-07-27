@@ -8,6 +8,13 @@ import { z } from "zod";
 import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { buildEraLabel, parseImportedDate } from "@/lib/import-dates";
+import {
+  getInstagramQueueWhere,
+  instagramQueueStatuses,
+  rankInstagramQueueItems,
+  type InstagramQueueStatus
+} from "@/lib/instagram-admin-queue";
 import { acceptInstagramDerivedClaim, createDirectInstagramClaimsForSaint, pipeAcceptedInstagramClaimsToSaint } from "@/lib/instagram-claims";
 import { extractInstagramFirstPageDraft } from "@/lib/instagram-first-page-extraction";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
@@ -61,11 +68,21 @@ const firstPageImageExtractionSchema = z.object({
   returnTo: z.string().optional()
 });
 
-const bulkInstagramDeleteSchema = z.object({
-  instagramItemIds: z.array(z.string().cuid()).min(1).max(500),
-  password: z.string().min(1),
-  returnTo: z.string().startsWith("/admin/instagram").optional()
-});
+const bulkInstagramDeleteSchema = z.discriminatedUnion("selectionMode", [
+  z.object({
+    selectionMode: z.literal("visible"),
+    instagramItemIds: z.array(z.string().cuid()).min(1).max(500),
+    password: z.string().min(1),
+    returnTo: z.string().startsWith("/admin/instagram").optional()
+  }),
+  z.object({
+    selectionMode: z.literal("matching"),
+    status: z.enum(["all", ...instagramQueueStatuses]),
+    query: z.string().trim().max(500).optional(),
+    password: z.string().min(1),
+    returnTo: z.string().startsWith("/admin/instagram").optional()
+  })
+]);
 
 const derivedClaimSchema = z.object({
   instagramItemId: z.string().cuid(),
@@ -216,6 +233,9 @@ export async function createSaintFromInstagramItem(formData: FormData) {
   });
 
   const slug = await uniqueSaintSlug(toSlug(parsed.displayName || parsed.canonicalName));
+  const birthDate = parseImportedDate(parsed.birthDateRaw);
+  const samadhiDate = parseImportedDate(parsed.samadhiDateRaw);
+  const eraLabel = buildEraLabel(birthDate, samadhiDate);
   const saint = await db.$transaction(async (tx) => {
     const createdSaint = await tx.saint.create({
       data: {
@@ -223,8 +243,17 @@ export async function createSaintFromInstagramItem(formData: FormData) {
         displayName: parsed.displayName,
         canonicalName: parsed.canonicalName,
         shortDescription: parsed.shortDescription,
+        eraLabel,
         birthDateRaw: parsed.birthDateRaw,
+        birthYear: birthDate.year,
+        birthMonth: birthDate.month,
+        birthDay: birthDate.day,
+        birthDatePrecision: birthDate.precision === "empty" ? undefined : birthDate.precision,
         samadhiDateRaw: parsed.samadhiDateRaw,
+        samadhiYear: samadhiDate.year,
+        samadhiMonth: samadhiDate.month,
+        samadhiDay: samadhiDate.day,
+        samadhiDatePrecision: samadhiDate.precision === "empty" ? undefined : samadhiDate.precision,
         dateNotes: parsed.tradition ? `Instagram first-page tradition: ${parsed.tradition}` : undefined,
         status: "needs_review",
         hasInstagramContent: true
@@ -410,7 +439,10 @@ export async function bulkDeleteInstagramItems(formData: FormData) {
   const session = await requireAdminSession();
 
   const parsed = bulkInstagramDeleteSchema.parse({
+    selectionMode: formData.get("selectionMode") || "visible",
     instagramItemIds: formData.getAll("instagramItemIds"),
+    status: formData.get("status"),
+    query: emptyToUndefined(formData.get("query")),
     password: formData.get("bulkDeletePassword"),
     returnTo: emptyToUndefined(formData.get("returnTo"))
   });
@@ -419,8 +451,11 @@ export async function bulkDeleteInstagramItems(formData: FormData) {
     throw new Error("The bulk delete password was incorrect.");
   }
 
+  const requestedItemIds = parsed.selectionMode === "matching"
+    ? await getMatchingInstagramItemIds(parsed.status, parsed.query ?? "")
+    : parsed.instagramItemIds;
   const items = await db.instagramItem.findMany({
-    where: { id: { in: parsed.instagramItemIds } },
+    where: { id: { in: requestedItemIds } },
     select: {
       id: true,
       instagramShortcode: true,
@@ -475,6 +510,48 @@ export async function bulkDeleteInstagramItems(formData: FormData) {
   revalidateInstagramPaths(affectedSaintSlugs);
   revalidatePath(destination);
   redirect(destination);
+}
+
+async function getMatchingInstagramItemIds(status: InstagramQueueStatus, query: string) {
+  const where = getInstagramQueueWhere(status);
+  if (!query) {
+    const items = await db.instagramItem.findMany({
+      where,
+      select: { id: true }
+    });
+    return items.map((item) => item.id);
+  }
+
+  const items = await db.instagramItem.findMany({
+    where,
+    select: {
+      id: true,
+      captionText: true,
+      extractedSaintName: true,
+      firstPageMetadata: true,
+      firstPageText: true,
+      instagramShortcode: true,
+      instagramUrl: true,
+      postedAt: true,
+      status: true,
+      type: true,
+      updatedAt: true,
+      saints: {
+        select: {
+          matchConfidence: true,
+          matchStatus: true,
+          saint: {
+            select: {
+              canonicalName: true,
+              displayName: true
+            }
+          }
+        }
+      }
+    }
+  });
+
+  return rankInstagramQueueItems(items, query).map((item) => item.id);
 }
 
 async function requireAdminSession() {
