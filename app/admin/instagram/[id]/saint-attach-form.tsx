@@ -152,7 +152,7 @@ export function SaintAttachForm({ initialQuery, instagramItemId, returnTo, saint
       </div>
       <label>
         Confidence
-        <select name="matchConfidence" defaultValue="medium">
+        <select name="matchConfidence" defaultValue="high">
           <option value="high">High</option>
           <option value="medium">Medium</option>
           <option value="low">Low</option>
