@@ -371,7 +371,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
               {primaryBiography ? <input name="biographyId" type="hidden" value={primaryBiography.id} /> : null}
               <label>
                 Title
-                <input name="title" defaultValue={primaryBiography?.title ?? "Profile notes"} required maxLength={200} />
+                <input name="title" defaultValue={primaryBiography?.title ?? "The Life of a Saint"} required maxLength={200} />
               </label>
               <label>
                 Status
