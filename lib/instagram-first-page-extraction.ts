@@ -1,5 +1,6 @@
 import { compactMetadata, parseInstagramFirstPageMetadata, type InstagramFirstPageMetadata } from "./instagram-metadata";
 import { getInstagramSlideImageUrls } from "./instagram";
+import { getStoredMediaFile } from "./media-storage";
 
 type RawPayload = Record<string, unknown>;
 
@@ -28,6 +29,15 @@ type ExtractionInput = {
 type BiographySlidesExtractionInput = {
   rawPayloadJson?: unknown;
   thumbnailUrl?: string | null;
+  cachedMediaAssets?: CachedInstagramMediaAsset[];
+};
+
+type CachedInstagramMediaAsset = {
+  cachedUrl: string;
+  isCover: boolean;
+  sortOrder: number;
+  sourceUrl?: string | null;
+  storageKey?: string | null;
 };
 
 type OpenAIResponse = {
@@ -118,9 +128,13 @@ export async function extractInstagramFirstPageDraft({
 
 export async function extractInstagramBiographySlidesDraft({
   rawPayloadJson,
-  thumbnailUrl
+  thumbnailUrl,
+  cachedMediaAssets
 }: BiographySlidesExtractionInput): Promise<InstagramBiographySlidesDraft> {
-  const imageUrls = getInstagramSlideImageUrls(rawPayloadJson, thumbnailUrl).slice(1);
+  const cachedSlides = getCachedBiographySlides(cachedMediaAssets);
+  const imageUrls = cachedSlides.length > 0
+    ? cachedSlides.map((slide) => slide.cachedUrl)
+    : getInstagramSlideImageUrls(rawPayloadJson, thumbnailUrl).slice(1);
 
   if (imageUrls.length === 0) {
     return {
@@ -140,7 +154,10 @@ export async function extractInstagramBiographySlidesDraft({
   }
 
   try {
-    const markdown = await extractBiographySlidesWithOpenAI(imageUrls);
+    const imageInputs = cachedSlides.length > 0
+      ? await loadCachedSlideImageInputs(cachedSlides)
+      : imageUrls;
+    const markdown = await extractBiographySlidesWithOpenAI(imageInputs);
 
     return {
       markdown: normalizeMarkdown(markdown),
@@ -155,6 +172,67 @@ export async function extractInstagramBiographySlidesDraft({
       imageUrls,
       error: error instanceof Error ? error.message : "Slide text extraction failed."
     };
+  }
+}
+
+function getCachedBiographySlides(mediaAssets: CachedInstagramMediaAsset[] | undefined) {
+  const assets = [...(mediaAssets ?? [])].sort((left, right) => left.sortOrder - right.sortOrder);
+  const coverIdentities = new Set(
+    assets
+      .filter((asset) => asset.isCover || asset.sortOrder === 0)
+      .map(getCachedMediaIdentity)
+      .filter((identity): identity is string => Boolean(identity))
+  );
+  const seen = new Set<string>();
+
+  return assets.filter((asset) => {
+    if (asset.isCover || asset.sortOrder === 0) return false;
+
+    const identity = getCachedMediaIdentity(asset);
+    if (identity && (coverIdentities.has(identity) || seen.has(identity))) return false;
+    if (identity) seen.add(identity);
+
+    return true;
+  });
+}
+
+async function loadCachedSlideImageInputs(slides: CachedInstagramMediaAsset[]) {
+  const imageInputs: string[] = [];
+
+  for (const slide of slides) {
+    const storageKey = getCachedMediaStorageKey(slide);
+    const slideNumber = slide.sortOrder + 1;
+
+    if (!storageKey) {
+      throw new Error(`Instagram slide ${slideNumber} is not stored in the local media cache. Re-cache this post and try again.`);
+    }
+
+    try {
+      const media = await getStoredMediaFile(storageKey);
+      imageInputs.push(`data:${media.contentType};base64,${media.body.toString("base64")}`);
+    } catch {
+      throw new Error(`Cached Instagram slide ${slideNumber} is missing from media storage. Re-cache this post and try again.`);
+    }
+  }
+
+  return imageInputs;
+}
+
+function getCachedMediaStorageKey(asset: CachedInstagramMediaAsset) {
+  if (asset.storageKey?.trim()) return asset.storageKey.trim();
+  if (asset.cachedUrl.startsWith("/media/")) return asset.cachedUrl.slice("/media/".length);
+  return undefined;
+}
+
+function getCachedMediaIdentity(asset: CachedInstagramMediaAsset) {
+  const value = asset.sourceUrl?.trim() || asset.cachedUrl.trim();
+  if (!value) return undefined;
+
+  try {
+    const parsed = new URL(value, "https://local-media.invalid");
+    return `${parsed.origin}${parsed.pathname}`.toLowerCase();
+  } catch {
+    return value.toLowerCase();
   }
 }
 

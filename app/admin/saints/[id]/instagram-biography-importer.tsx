@@ -38,6 +38,10 @@ export function InstagramBiographyImporter({ posts, saintId, textareaId }: Insta
           saintId,
           instagramItemId: selectedPostId
         });
+        if (!result.ok) {
+          setError(result.error);
+          return;
+        }
         insertIntoBiographyEditor(textareaId, result.markdown);
         setMessage(`Imported text from ${result.slideCount} slide${result.slideCount === 1 ? "" : "s"}. Review the draft before saving.`);
       } catch (caught) {
