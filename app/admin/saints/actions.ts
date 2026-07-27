@@ -469,30 +469,47 @@ export async function upsertSaintBiography(formData: FormData) {
 
   if (!saint) redirect("/admin/saints");
 
-  if (parsed.biographyId) {
-    await db.biography.update({
-      where: { id: parsed.biographyId },
-      data: {
-        title: parsed.title,
-        bodyMarkdown: parsed.bodyMarkdown,
-        status: parsed.status,
-        publishedAt: parsed.status === "published" ? now : null,
-        lastReviewedAt: parsed.status === "published" ? now : null
-      }
-    });
-  } else {
-    await db.biography.create({
-      data: {
-        saintId: parsed.saintId,
-        title: parsed.title,
-        slug: await getUniqueBiographySlug(parsed.saintId, parsed.title),
-        bodyMarkdown: parsed.bodyMarkdown,
-        status: parsed.status,
-        publishedAt: parsed.status === "published" ? now : null,
-        lastReviewedAt: parsed.status === "published" ? now : null
-      }
-    });
-  }
+  const biographySlug = parsed.biographyId
+    ? undefined
+    : await getUniqueBiographySlug(parsed.saintId, parsed.title);
+
+  await db.$transaction(async (tx) => {
+    if (parsed.biographyId) {
+      await tx.biography.update({
+        where: { id: parsed.biographyId },
+        data: {
+          title: parsed.title,
+          bodyMarkdown: parsed.bodyMarkdown,
+          status: parsed.status,
+          publishedAt: parsed.status === "published" ? now : null,
+          lastReviewedAt: parsed.status === "published" ? now : null
+        }
+      });
+    } else {
+      await tx.biography.create({
+        data: {
+          saintId: parsed.saintId,
+          title: parsed.title,
+          slug: biographySlug!,
+          bodyMarkdown: parsed.bodyMarkdown,
+          status: parsed.status,
+          publishedAt: parsed.status === "published" ? now : null,
+          lastReviewedAt: parsed.status === "published" ? now : null
+        }
+      });
+    }
+
+    if (parsed.status === "needs_review") {
+      await tx.saint.update({
+        where: { id: parsed.saintId },
+        data: {
+          status: "needs_review",
+          reviewedAt: null,
+          publishedAt: null
+        }
+      });
+    }
+  });
 
   revalidateSaintPaths(saint.slug);
   redirect(`/admin/saints/${saint.slug}`);
