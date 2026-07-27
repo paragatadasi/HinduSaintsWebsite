@@ -415,15 +415,28 @@ async function applyGuruClaim(tx: Tx, saintId: string, guruSaintId: string, clai
       fromSaintId: saintId,
       toSaintId: guruSaintId,
       relationshipType: "guru"
+    },
+    select: {
+      id: true,
+      status: true
     }
   });
-  if (existing) return;
+  if (existing) {
+    if (existing.status !== "published") {
+      await tx.saintRelationship.update({
+        where: { id: existing.id },
+        data: { status: "published" }
+      });
+    }
+    return;
+  }
 
   await tx.saintRelationship.create({
     data: {
       fromSaintId: saintId,
       toSaintId: guruSaintId,
       relationshipType: "guru",
+      status: "published",
       confidence: claim.confidence,
       notes: `Accepted from Instagram first-page biodata: ${claim.rawValue}`
     }

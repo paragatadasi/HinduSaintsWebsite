@@ -226,6 +226,9 @@ saint immediately when the target field is empty or the relationship/link is
 missing. If the item is matched later, previously accepted claims are piped into
 the newly matched saint during the match transaction. Date conflicts create open
 `ReconciliationIssue` records instead of overwriting reviewed CMS values.
+Accepted place claims create the saint-place link directly. Accepted guru claims
+create a `published` saint relationship, or promote an existing candidate guru
+relationship to `published`, because the editor has approved that connection.
 
 Public display requires both:
 
