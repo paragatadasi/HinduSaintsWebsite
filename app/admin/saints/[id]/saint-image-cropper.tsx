@@ -61,6 +61,8 @@ type UploadState = {
   message?: string;
 };
 
+type ImagePlacement = "gallery" | "both";
+
 const maxCropOutputSize = 1200;
 const minCropSize = 8;
 const instagramSlideBatchSize = 12;
@@ -74,7 +76,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
   const [altText, setAltText] = useState(defaultAltText);
   const [caption, setCaption] = useState("");
   const [credit, setCredit] = useState("");
-  const [placement, setPlacement] = useState<"gallery" | "primary" | "both">("gallery");
+  const [placement, setPlacement] = useState<ImagePlacement>("both");
   const [visibleInstagramSlideCount, setVisibleInstagramSlideCount] = useState(instagramSlideBatchSize);
   const [uploadState, setUploadState] = useState<UploadState>({ status: "idle" });
   const [isPending, startTransition] = useTransition();
@@ -98,7 +100,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
       label: image.label,
       previewUrl: getCropPreviewUrl(image.previewUrl)
     });
-    setCaption(`Image selected from ${image.label}`);
+    setCaption("");
     setCropBox(defaultCropBox);
     setUploadState({ status: "idle" });
   }
@@ -332,7 +334,6 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
               Placement
               <select value={placement} onChange={(event) => setPlacement(event.target.value as typeof placement)}>
                 <option value="gallery">Gallery image</option>
-                <option value="primary">Primary image</option>
                 <option value="both">Primary and gallery</option>
               </select>
             </label>

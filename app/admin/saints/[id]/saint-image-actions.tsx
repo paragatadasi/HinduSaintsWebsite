@@ -6,6 +6,7 @@ import { useState, useTransition } from "react";
 import { deleteSaintImage, updateSaintImageMetadata, updateSaintImagePlacement, updateSaintImageVisibility } from "../actions";
 
 type ImagePlacement = "gallery" | "primary" | "both";
+type SelectableImagePlacement = Exclude<ImagePlacement, "primary">;
 
 type SaintImageActionsProps = {
   altText?: string | null;
@@ -33,7 +34,9 @@ export function SaintImageActions({
   const [editedAltText, setEditedAltText] = useState(altText ?? "");
   const [editedCaption, setEditedCaption] = useState(caption ?? "");
   const [editedCredit, setEditedCredit] = useState(credit ?? "");
-  const [selectedPlacement, setSelectedPlacement] = useState<ImagePlacement>(placement ?? "gallery");
+  const [selectedPlacement, setSelectedPlacement] = useState<SelectableImagePlacement>(
+    placement === "primary" ? "both" : placement ?? "gallery"
+  );
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -146,9 +149,8 @@ export function SaintImageActions({
             <select
               value={selectedPlacement}
               disabled={isPending}
-              onChange={(event) => setSelectedPlacement(event.target.value as ImagePlacement)}
+              onChange={(event) => setSelectedPlacement(event.target.value as SelectableImagePlacement)}
             >
-              <option value="primary">Primary only</option>
               <option value="gallery">Gallery only</option>
               <option value="both">Primary and gallery</option>
             </select>
