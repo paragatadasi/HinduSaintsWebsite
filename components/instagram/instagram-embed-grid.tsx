@@ -1,7 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import type { KeyboardEvent as ReactKeyboardEvent, MouseEvent as ReactMouseEvent } from "react";
+import { useEffect, useRef, useState } from "react";
+import type {
+  KeyboardEvent as ReactKeyboardEvent,
+  MouseEvent as ReactMouseEvent,
+  TouchEvent as ReactTouchEvent
+} from "react";
 import {
   Bookmark,
   ChevronLeft,
@@ -32,7 +36,8 @@ const iconSize = {
 } as const;
 
 const visibleThumbnailCount = 7;
-const viewerCaptionPreviewLength = 360;
+const viewerCaptionPreviewLength = 220;
+const swipeThreshold = 48;
 
 type InstagramEmbedGridProps = {
   items?: PublicInstagramItem[];
@@ -250,6 +255,10 @@ export function InstagramCarouselViewer({
   const [isCaptionExpanded, setIsCaptionExpanded] = useState(false);
   const viewerCaption = getViewerCaption(state.post.caption, `Related ${postLabel.toLowerCase()} for ${saintName}.`, isCaptionExpanded);
   const [thumbnailStart, setThumbnailStart] = useState(() => getVisibleThumbnailStart(state.images, state.selectedIndex));
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileThumbsRef = useRef<HTMLDivElement>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const maxThumbnailStart = Math.max(state.images.length - visibleThumbnailCount, 0);
   const canScrollThumbnailsPrevious = thumbnailStart > 0;
   const canScrollThumbnailsNext = thumbnailStart < maxThumbnailStart;
@@ -274,6 +283,11 @@ export function InstagramCarouselViewer({
   }, [state.post.url]);
 
   useEffect(() => {
+    const selectedThumbnail = mobileThumbsRef.current?.querySelector<HTMLElement>('[aria-current="true"]');
+    selectedThumbnail?.scrollIntoView({ block: "nearest", inline: "center" });
+  }, [state.selectedIndex]);
+
+  useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "ArrowLeft" && hasPrevious) {
         event.preventDefault();
@@ -289,26 +303,101 @@ export function InstagramCarouselViewer({
         event.preventDefault();
         onClose();
       }
+
+      if (mode === "modal" && event.key === "Tab") {
+        const focusableElements = getFocusableElements(panelRef.current);
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
     }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [hasNext, hasPrevious, mode, onClose, onSelect, state.selectedIndex]);
 
+  useEffect(() => {
+    if (mode !== "modal") return;
+
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const scrollPosition = window.scrollY;
+    const previousBodyStyles = {
+      overflow: document.body.style.overflow,
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width
+    };
+
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollPosition}px`;
+    document.body.style.width = "100%";
+    closeButtonRef.current?.focus();
+
+    return () => {
+      document.body.style.overflow = previousBodyStyles.overflow;
+      document.body.style.position = previousBodyStyles.position;
+      document.body.style.top = previousBodyStyles.top;
+      document.body.style.width = previousBodyStyles.width;
+      window.scrollTo(0, scrollPosition);
+      previouslyFocused?.focus();
+    };
+  }, [mode]);
+
+  function handleTouchStart(event: ReactTouchEvent<HTMLDivElement>) {
+    const touch = event.touches[0];
+    touchStartRef.current = touch ? { x: touch.clientX, y: touch.clientY } : null;
+  }
+
+  function handleTouchEnd(event: ReactTouchEvent<HTMLDivElement>) {
+    const start = touchStartRef.current;
+    const touch = event.changedTouches[0];
+    touchStartRef.current = null;
+    if (!start || !touch) return;
+
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+    if (Math.abs(deltaX) < swipeThreshold || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+
+    if (deltaX > 0 && hasPrevious) onSelect(state.selectedIndex - 1);
+    if (deltaX < 0 && hasNext) onSelect(state.selectedIndex + 1);
+  }
+
   const viewerProps = mode === "modal"
     ? { role: "dialog", "aria-modal": true, "aria-label": `Carousel images for ${saintName}` }
     : { role: "region", "aria-label": `Selected Instagram post images for ${saintName}` };
 
   return (
-    <div className={`instagram-carousel-viewer instagram-carousel-viewer--${mode}`} {...viewerProps}>
-      <div className="instagram-carousel-viewer__panel">
+    <div
+      className={`instagram-carousel-viewer instagram-carousel-viewer--${mode}`}
+      onMouseDown={(event) => {
+        if (mode === "modal" && event.target === event.currentTarget) onClose();
+      }}
+      {...viewerProps}
+    >
+      <div className="instagram-carousel-viewer__panel" ref={panelRef}>
         <header className="instagram-carousel-viewer__header">
           <div>
             <strong>{saintName}</strong>
             <span>{state.selectedIndex + 1} of {state.images.length}</span>
           </div>
           {mode === "modal" ? (
-            <button className="instagram-carousel-viewer__control" aria-label="Close carousel viewer" onClick={onClose} type="button">
+            <button
+              className="instagram-carousel-viewer__control instagram-carousel-viewer__close"
+              aria-label="Close carousel viewer"
+              onClick={onClose}
+              ref={closeButtonRef}
+              type="button"
+            >
               <X size={iconSize.lg} aria-hidden="true" />
             </button>
           ) : null}
@@ -316,7 +405,11 @@ export function InstagramCarouselViewer({
 
         <div className="instagram-carousel-viewer__content">
           <div className="instagram-carousel-viewer__media-column">
-            <div className="instagram-carousel-viewer__stage">
+            <div
+              className="instagram-carousel-viewer__stage"
+              onTouchEnd={handleTouchEnd}
+              onTouchStart={handleTouchStart}
+            >
               <button
                 className="instagram-carousel-viewer__control"
                 aria-label="Previous image"
@@ -375,6 +468,19 @@ export function InstagramCarouselViewer({
               >
                 <ChevronRight size={iconSize.lg} aria-hidden="true" />
               </button>
+            </div>
+            <div className="instagram-carousel-viewer__mobile-thumbs" aria-label="Carousel image picker" ref={mobileThumbsRef}>
+              {state.images.map((url, index) => (
+                <button
+                  aria-current={index === state.selectedIndex ? "true" : undefined}
+                  aria-label={`Show image ${index + 1}`}
+                  key={`${url}-mobile-${index}`}
+                  onClick={() => onSelect(index)}
+                  type="button"
+                >
+                  <img src={url} alt="" />
+                </button>
+              ))}
             </div>
           </div>
 
@@ -460,6 +566,16 @@ function getVisibleCarouselThumbs(images: string[], start: number) {
 
 function formatPostedAt(postedAt?: string) {
   return formatPublicCalendarDate(postedAt);
+}
+
+function getFocusableElements(container: HTMLElement | null) {
+  if (!container) return [] as HTMLElement[];
+
+  return Array.from(
+    container.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )
+  ).filter((element) => !element.hasAttribute("hidden") && element.getClientRects().length > 0);
 }
 
 function formatPostType(type: PublicInstagramItem["type"]) {
