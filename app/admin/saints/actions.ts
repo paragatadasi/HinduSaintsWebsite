@@ -129,6 +129,16 @@ const saintPlacesSchema = z.object({
   })).max(100)
 });
 
+const saintPlaceCreationSchema = z.object({
+  saintId: z.string().cuid(),
+  name: z.string().trim().min(1).max(200),
+  placeScope: z.enum(["locality", "state"]),
+  placeType: placeTypeSchema,
+  region: z.string().trim().max(120).optional(),
+  country: z.string().trim().max(120).optional(),
+  routeLabel: z.string().trim().max(120).optional()
+});
+
 const saintBiographySchema = z.object({
   biographyId: z.string().cuid().optional(),
   saintId: z.string().cuid(),
@@ -381,6 +391,63 @@ export async function updateSaintPlaces(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${saint.slug}`);
+}
+
+export async function createAndAttachSaintPlace(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = saintPlaceCreationSchema.parse({
+    saintId: formData.get("saintId"),
+    name: formData.get("name"),
+    placeScope: formData.get("placeScope"),
+    placeType: formData.get("placeType"),
+    region: emptyToUndefined(formData.get("region")),
+    country: emptyToUndefined(formData.get("country")),
+    routeLabel: emptyToUndefined(formData.get("routeLabel"))
+  });
+  const [saint, routeOrder] = await Promise.all([
+    db.saint.findUnique({
+      where: { id: parsed.saintId },
+      select: { slug: true }
+    }),
+    db.saintPlace.aggregate({
+      where: { saintId: parsed.saintId },
+      _max: { routeOrder: true }
+    })
+  ]);
+
+  if (!saint) redirect("/admin/saints");
+
+  const placeSlug = await getUniquePlaceSlug(parsed.name);
+  await db.$transaction(async (tx) => {
+    const place = await tx.place.create({
+      data: {
+        name: parsed.name,
+        slug: placeSlug,
+        alternateNames: [],
+        placeKind: parsed.placeScope === "state" ? "state" : "locality",
+        placeScope: parsed.placeScope,
+        region: parsed.region ?? null,
+        country: parsed.country ?? null
+      },
+      select: { id: true }
+    });
+
+    await tx.saintPlace.create({
+      data: {
+        saintId: parsed.saintId,
+        placeId: place.id,
+        placeType: parsed.placeType,
+        routeOrder: (routeOrder._max.routeOrder ?? -1) + 1,
+        routeLabel: parsed.routeLabel ?? null
+      }
+    });
+  });
+
+  revalidateSaintPaths(saint.slug);
+  revalidatePath("/admin/places");
+  revalidatePath("/map");
   redirect(`/admin/saints/${saint.slug}`);
 }
 
@@ -1180,6 +1247,19 @@ async function getUniqueBiographySlug(saintId: string, title: string) {
   let suffix = 2;
 
   while (await db.biography.findUnique({ where: { saintId_slug: { saintId, slug: candidate } }, select: { id: true } })) {
+    candidate = `${baseSlug}-${suffix}`;
+    suffix += 1;
+  }
+
+  return candidate;
+}
+
+async function getUniquePlaceSlug(name: string) {
+  const baseSlug = toSlug(name) || "place";
+  let candidate = baseSlug;
+  let suffix = 2;
+
+  while (await db.place.findUnique({ where: { slug: candidate }, select: { id: true } })) {
     candidate = `${baseSlug}-${suffix}`;
     suffix += 1;
   }
