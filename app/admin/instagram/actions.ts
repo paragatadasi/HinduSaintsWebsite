@@ -40,7 +40,7 @@ const linkStatusSchema = z.object({
 const itemSaintSchema = z.object({
   instagramItemId: z.string().cuid(),
   saintId: z.string().cuid(),
-  matchConfidence: z.enum(["low", "medium", "high"]).default("medium"),
+  matchConfidence: z.enum(["low", "medium", "high"]).default("high"),
   returnTo: z.string().optional()
 });
 
@@ -170,7 +170,7 @@ export async function attachSaintToInstagramItem(formData: FormData) {
   const parsed = itemSaintSchema.parse({
     instagramItemId: formData.get("instagramItemId"),
     saintId: formData.get("saintId"),
-    matchConfidence: formData.get("matchConfidence") || "medium",
+    matchConfidence: formData.get("matchConfidence") || "high",
     returnTo: formData.get("returnTo") || undefined
   });
 

@@ -228,6 +228,68 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
             </div>
           </form>
         </ReviewEditToggle>
+
+        <div className="review-detail-grid review-detail-grid--paired">
+          <CollapsibleReviewCard
+            cardId="saint-traditions"
+            defaultOpen
+            description="Tradition memberships and primary tradition."
+            eyebrow="Lineage context"
+            title="Traditions"
+          >
+            <ReviewEditToggle
+              editLabel="Edit traditions"
+              summary={(
+                <div className="field-grid saint-review__summary-grid">
+                  <ReviewField label="Primary tradition" value={saint.traditions.find((item) => item.isPrimary)?.tradition.name ?? saint.traditions[0]?.tradition.name} />
+                  <ReviewField label="All traditions" value={saint.traditions.map((item) => item.tradition.name).join(", ")} />
+                </div>
+              )}
+            >
+              <form action={updateSaintTraditions} className="form-stack">
+                <input name="saintId" type="hidden" value={saint.id} />
+                <SearchableMultiSelect
+                  defaultSelectedValues={selectedTraditionIds}
+                  emptyText="No traditions match this search."
+                  label="Traditions"
+                  name="traditionIds"
+                  options={traditionOptions}
+                  placeholder="Search traditions"
+                  primaryName="primaryTraditionId"
+                  selectedLabel="Selected traditions"
+                />
+                <div className="review-actions">
+                  <button className="admin-form-button" type="submit">Save traditions</button>
+                </div>
+              </form>
+            </ReviewEditToggle>
+          </CollapsibleReviewCard>
+
+          <CollapsibleReviewCard
+            cardId="saint-places"
+            defaultOpen
+            description="Map locations and route ordering."
+            eyebrow="Geography"
+            title="Places and Route"
+          >
+            <ReviewEditToggle
+              editLabel="Edit places"
+              summary={(
+                <div className="field-grid saint-review__summary-grid">
+                  <ReviewField label="Selected places" value={saint.places.map((item) => item.place.name).join(", ")} />
+                  <ReviewField label="Route stops" value={`${saint.places.filter((item) => item.routeOrder != null).length}`} />
+                </div>
+              )}
+            >
+              <SaintPlaceRouteEditor
+                options={placeOptions}
+                placeTypes={placeTypes}
+                saintId={saint.id}
+                selectedPlaceIds={selectedPlaceIds}
+              />
+            </ReviewEditToggle>
+          </CollapsibleReviewCard>
+        </div>
       </CollapsibleReviewCard>
 
       <CollapsibleReviewCard
@@ -287,68 +349,6 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
       >
         <SaintInstagramMatches saint={saint} />
       </CollapsibleReviewCard>
-
-      <div className="review-detail-grid review-detail-grid--paired">
-        <CollapsibleReviewCard
-          cardId="saint-traditions"
-          defaultOpen
-          description="Tradition memberships and primary tradition."
-          eyebrow="Lineage context"
-          title="Traditions"
-        >
-          <ReviewEditToggle
-            editLabel="Edit traditions"
-            summary={(
-              <div className="field-grid saint-review__summary-grid">
-                <ReviewField label="Primary tradition" value={saint.traditions.find((item) => item.isPrimary)?.tradition.name ?? saint.traditions[0]?.tradition.name} />
-                <ReviewField label="All traditions" value={saint.traditions.map((item) => item.tradition.name).join(", ")} />
-              </div>
-            )}
-          >
-            <form action={updateSaintTraditions} className="form-stack">
-              <input name="saintId" type="hidden" value={saint.id} />
-              <SearchableMultiSelect
-                defaultSelectedValues={selectedTraditionIds}
-                emptyText="No traditions match this search."
-                label="Traditions"
-                name="traditionIds"
-                options={traditionOptions}
-                placeholder="Search traditions"
-                primaryName="primaryTraditionId"
-                selectedLabel="Selected traditions"
-              />
-              <div className="review-actions">
-                <button className="admin-form-button" type="submit">Save traditions</button>
-              </div>
-            </form>
-          </ReviewEditToggle>
-        </CollapsibleReviewCard>
-
-        <CollapsibleReviewCard
-          cardId="saint-places"
-          defaultOpen
-          description="Map locations and route ordering."
-          eyebrow="Geography"
-          title="Places and Route"
-        >
-          <ReviewEditToggle
-            editLabel="Edit places"
-            summary={(
-              <div className="field-grid saint-review__summary-grid">
-                <ReviewField label="Selected places" value={saint.places.map((item) => item.place.name).join(", ")} />
-                <ReviewField label="Route stops" value={`${saint.places.filter((item) => item.routeOrder != null).length}`} />
-              </div>
-            )}
-          >
-            <SaintPlaceRouteEditor
-              options={placeOptions}
-              placeTypes={placeTypes}
-              saintId={saint.id}
-              selectedPlaceIds={selectedPlaceIds}
-            />
-          </ReviewEditToggle>
-        </CollapsibleReviewCard>
-      </div>
 
       <CollapsibleReviewCard
         cardId="saint-biography"

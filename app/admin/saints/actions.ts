@@ -714,7 +714,17 @@ export async function importBiographyTextFromInstagramPost(input: z.input<typeof
           id: true,
           instagramShortcode: true,
           instagramUrl: true,
-          thumbnailUrl: true
+          thumbnailUrl: true,
+          mediaAssets: {
+            orderBy: { sortOrder: "asc" },
+            select: {
+              cachedUrl: true,
+              isCover: true,
+              sortOrder: true,
+              sourceUrl: true,
+              storageKey: true
+            }
+          }
         }
       },
       saint: {
@@ -723,7 +733,12 @@ export async function importBiographyTextFromInstagramPost(input: z.input<typeof
     }
   });
 
-  if (!link) throw new Error("Select a matched Instagram post attached to this saint.");
+  if (!link) {
+    return {
+      ok: false as const,
+      error: "Select a matched Instagram post attached to this saint."
+    };
+  }
 
   const externalRecord = await db.externalRecord.findFirst({
     where: {
@@ -735,17 +750,22 @@ export async function importBiographyTextFromInstagramPost(input: z.input<typeof
     select: { rawPayloadJson: true }
   });
   const draft = await extractInstagramBiographySlidesDraft({
+    cachedMediaAssets: link.instagramItem.mediaAssets,
     rawPayloadJson: externalRecord?.rawPayloadJson,
     thumbnailUrl: link.instagramItem.thumbnailUrl
   });
 
   if (!draft.markdown) {
-    throw new Error(draft.error ?? "No biography text could be extracted from slides after the cover image.");
+    return {
+      ok: false as const,
+      error: draft.error ?? "No biography text could be extracted from slides after the cover image."
+    };
   }
 
   revalidatePath(`/admin/saints/${link.saint.slug}`);
 
   return {
+    ok: true as const,
     markdown: [
       `## Imported from Instagram ${link.instagramItem.instagramShortcode ?? "post"}`,
       "",
