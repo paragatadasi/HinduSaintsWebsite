@@ -13,6 +13,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "test": "tsx --test lib/instagram-claims.test.ts",
     "dev:check": "prisma generate && tsc --noEmit",
     "verify": "npm run db:generate && npm run build",
     "codex:verify": "npm run db:generate && npm run build",
