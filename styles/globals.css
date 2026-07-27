@@ -2022,6 +2022,10 @@ img {
   width: 100%;
 }
 
+.instagram-carousel-viewer__mobile-thumbs {
+  display: none;
+}
+
 .instagram-carousel-viewer__details {
   border-left: var(--border-width-default) solid var(--color-border);
   display: grid;
@@ -6773,9 +6777,152 @@ img {
     grid-template-columns: 1fr;
   }
 
+  .instagram-carousel-viewer--modal {
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__panel {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    gap: 0;
+    height: 100dvh;
+    max-height: 100dvh;
+    max-width: none;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__header {
+    background: var(--color-surface);
+    padding:
+      calc(var(--space-instagram-viewer-safe-top) + var(--space-3))
+      var(--space-4)
+      var(--space-3);
+    position: relative;
+    z-index: 2;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__content {
+    display: block;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: var(--space-instagram-viewer-safe-bottom);
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__media-column {
+    display: block;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__stage {
+    background: var(--color-bg);
+    display: block;
+    height: var(--height-instagram-viewer-mobile-media);
+    padding: 0;
+    position: relative;
+    touch-action: pan-y;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__stage img {
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__stage > .instagram-carousel-viewer__control {
+    background: color-mix(in srgb, var(--color-surface) 84%, transparent);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__stage > .instagram-carousel-viewer__control:first-child {
+    left: var(--space-3);
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__stage > .instagram-carousel-viewer__control:last-child {
+    right: var(--space-3);
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__stage > .instagram-carousel-viewer__control:disabled {
+    display: none;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__thumb-nav {
+    display: none;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__mobile-thumbs {
+    background: var(--color-surface);
+    display: flex;
+    gap: var(--space-2);
+    overflow-x: auto;
+    padding: var(--space-3) var(--space-4);
+    scroll-padding-inline: var(--space-4);
+    scrollbar-width: none;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__mobile-thumbs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__mobile-thumbs button {
+    background: transparent;
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    flex: 0 0 var(--size-instagram-viewer-mobile-thumb);
+    height: var(--size-instagram-viewer-mobile-thumb);
+    overflow: hidden;
+    padding: 0;
+    scroll-snap-align: center;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__mobile-thumbs button[aria-current="true"] {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 var(--border-width-default) var(--color-accent);
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__mobile-thumbs img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
   .instagram-carousel-viewer__details {
     border-left: 0;
     border-top: var(--border-width-default) solid var(--color-border);
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__details {
+    display: block;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__account {
+    display: none;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__caption {
+    overflow: visible;
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__caption--expanded {
+    overflow: visible;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__caption p {
+    line-height: 1.6;
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__meta {
+    padding: var(--space-4);
+  }
+
+  .instagram-carousel-viewer--modal .instagram-carousel-viewer__meta a {
+    min-height: 44px;
   }
 
   .admin-layout,
