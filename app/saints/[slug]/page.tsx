@@ -34,9 +34,10 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
   const hasBiography = Boolean(
     saint.biography?.bodyMarkdown.trim() || saint.biography?.summary?.trim()
   );
-  const hasTraditionContext = saint.traditions.length > 0;
-  const hasPlaces = saint.places.length > 0;
-  const hasContext = hasTraditionContext || hasPlaces;
+  const placeLinks = saint.placeLinks ?? [];
+  const keyFacts = saint.facts.filter(
+    ({ label }) => !["primary place", "places", "tradition", "traditions"].includes(label.toLowerCase())
+  );
   const hasSources = saint.sources.length > 0;
   const hasFurtherReading = saint.furtherReading.length > 0;
 
@@ -70,48 +71,41 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
       </section>
 
       <section className="page-shell section">
-        <FactGrid facts={saint.facts.length > 0 ? saint.facts : [
-          { label: template.factLabels.era, value: saint.eraLabel },
-          { label: template.factLabels.location, value: saint.primaryLocation },
-          { label: template.factLabels.tradition, value: saint.tradition }
-        ]} />
+        <FactGrid
+          facts={[
+            ...(keyFacts.length > 0 ? keyFacts : [{ label: template.factLabels.era, value: saint.eraLabel }]),
+            ...(placeLinks.length > 0 ? [{
+              label: "Places",
+              value: (
+                <span className="fact-links">
+                  {placeLinks.map((place) => (
+                    <Link href={`/places/${place.slug}`} key={place.slug}>{place.name}</Link>
+                  ))}
+                </span>
+              )
+            }] : []),
+            ...(saint.traditions.length > 0 ? [{
+              label: template.factLabels.tradition,
+              value: (
+                <span className="fact-links">
+                  {saint.traditions.map((tradition) => (
+                    <Link href={`/traditions/${tradition.slug}`} key={tradition.slug}>{tradition.name}</Link>
+                  ))}
+                </span>
+              )
+            }] : [])
+          ]}
+        />
       </section>
 
-      {hasBiography || hasContext ? (
-        <section className="page-shell section saint-detail-layout">
-          {hasBiography && saint.biography ? (
-            <article className="saint-detail-main">
-              <div className="eyebrow">{template.biographyEyebrow}</div>
-              <h2>{saint.biography.title}</h2>
-              {saint.biography.summary ? <p className="lede">{saint.biography.summary}</p> : null}
-              <Prose markdown={saint.biography.bodyMarkdown} />
-            </article>
-          ) : null}
-
-          {hasContext ? (
-            <aside className="saint-detail-aside" aria-label={`${saint.displayName} context`}>
-              {hasTraditionContext ? (
-                <ContextBlock title="Tradition Context">
-                  <ul className="context-list">
-                    {saint.traditions.map((tradition) => (
-                      <li key={tradition.slug}>
-                        <Link href={`/traditions/${tradition.slug}`}>{tradition.name}</Link>
-                        {tradition.shortDescription ? <p>{tradition.shortDescription}</p> : null}
-                      </li>
-                    ))}
-                  </ul>
-                </ContextBlock>
-              ) : null}
-
-              {hasPlaces ? (
-                <ContextBlock title="Places">
-                  <div className="chip-list">
-                    {saint.places.map((place) => <span className="chip" key={place}>{place}</span>)}
-                  </div>
-                </ContextBlock>
-              ) : null}
-            </aside>
-          ) : null}
+      {hasBiography && saint.biography ? (
+        <section className="page-shell section">
+          <article className="saint-detail-main">
+            <div className="eyebrow">{template.biographyEyebrow}</div>
+            <h2>{saint.biography.title}</h2>
+            {saint.biography.summary ? <p className="lede">{saint.biography.summary}</p> : null}
+            <Prose markdown={saint.biography.bodyMarkdown} />
+          </article>
         </section>
       ) : null}
 
@@ -145,7 +139,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
   );
 }
 
-function FactGrid({ facts }: { facts: Array<{ label: string; value: string }> }) {
+function FactGrid({ facts }: { facts: Array<{ label: string; value: ReactNode }> }) {
   return (
     <div className="fact-grid">
       {facts.map((fact) => (
@@ -177,15 +171,6 @@ function ImageWithCredit({ image, label }: { image?: PublicImage; label: string 
         </figcaption>
       ) : null}
     </figure>
-  );
-}
-
-function ContextBlock({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <section className="context-block">
-      <h2>{title}</h2>
-      {children}
-    </section>
   );
 }
 

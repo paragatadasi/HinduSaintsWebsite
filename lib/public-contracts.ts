@@ -84,6 +84,7 @@ export type PublicSaintDetail = PublicSaintSummary & {
     value: string;
   }>;
   places: string[];
+  placeLinks?: PublicPlaceLink[];
   biography?: PublicBiographySection;
   sources: PublicSourceSummary[];
   furtherReading: PublicFurtherReadingItem[];

@@ -181,6 +181,7 @@ function toPublicSaintDetail(
     })),
     facts: buildFacts(saint, summary),
     places: getUniquePlaceNames(saint.places),
+    placeLinks: getUniquePlaceLinks(saint.places),
     biography: biography
       ? {
           title: biography.title,
@@ -214,6 +215,25 @@ function getUniquePlaceNames(places: SaintDetailRow["places"]) {
   }
 
   return placeNames;
+}
+
+function getUniquePlaceLinks(places: SaintDetailRow["places"]) {
+  const placeLinks: PublicSaintDetail["placeLinks"] = [];
+  const seenPlaceIds = new Set<string>();
+
+  for (const { place } of places) {
+    if (seenPlaceIds.has(place.id)) continue;
+
+    seenPlaceIds.add(place.id);
+    placeLinks.push({
+      slug: place.slug,
+      name: place.name,
+      region: place.region ?? undefined,
+      country: place.country ?? undefined
+    });
+  }
+
+  return placeLinks;
 }
 
 function getPrimaryTradition(traditions: SaintListRow["traditions"]) {
@@ -251,8 +271,6 @@ function buildFacts(saint: SaintDetailRow, summary: PublicSaintSummary) {
 
   return [
     { label: "Era", value: summary.eraLabel },
-    { label: "Primary place", value: summary.primaryLocation },
-    { label: "Tradition", value: summary.tradition },
     birthDate ? { label: "Birth date", value: birthDate } : undefined,
     samadhiDate ? { label: "Samadhi date", value: samadhiDate } : undefined
   ].filter((fact): fact is { label: string; value: string } => Boolean(fact));

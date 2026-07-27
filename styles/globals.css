@@ -2126,7 +2126,7 @@ img {
 }
 
 .fact-links a {
-  color: var(--color-foreground);
+  color: var(--color-text);
   text-decoration-color: var(--color-accent);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
