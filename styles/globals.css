@@ -1633,6 +1633,14 @@ img {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--width-instagram-post-card-min)), var(--width-instagram-post-card)));
 }
 
+.instagram-embed-grid--sidebar h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.instagram-embed-grid--sidebar .instagram-post-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .instagram-post-card {
   background: var(--color-surface);
   border: var(--border-width-default) solid var(--color-card-border);
@@ -2189,6 +2197,10 @@ img {
 .saint-detail-aside {
   display: grid;
   gap: var(--space-4);
+}
+
+.saint-detail-aside--instagram {
+  grid-column: 2;
 }
 
 .chip-list {
@@ -6658,6 +6670,10 @@ img {
   .tradition-detail__grid,
   .tradition-detail__reading {
     grid-template-columns: 1fr;
+  }
+
+  .saint-detail-aside--instagram {
+    grid-column: auto;
   }
 
   .tradition-hero {

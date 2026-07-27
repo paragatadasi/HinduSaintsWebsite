@@ -40,6 +40,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
   );
   const hasSources = saint.sources.length > 0;
   const hasFurtherReading = saint.furtherReading.length > 0;
+  const hasInstagram = saint.instagramItems.length > 0 || saint.instagramUrls.length > 0;
 
   return (
     <main>
@@ -98,14 +99,26 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
         />
       </section>
 
-      {hasBiography && saint.biography ? (
-        <section className="page-shell section">
-          <article className="saint-detail-main">
-            <div className="eyebrow">{template.biographyEyebrow}</div>
-            <h2>{saint.biography.title}</h2>
-            {saint.biography.summary ? <p className="lede">{saint.biography.summary}</p> : null}
-            <Prose markdown={saint.biography.bodyMarkdown} />
-          </article>
+      {hasBiography || hasInstagram ? (
+        <section className="page-shell section saint-detail-layout">
+          {hasBiography && saint.biography ? (
+            <article className="saint-detail-main">
+              <div className="eyebrow">{template.biographyEyebrow}</div>
+              <h2>{saint.biography.title}</h2>
+              {saint.biography.summary ? <p className="lede">{saint.biography.summary}</p> : null}
+              <Prose markdown={saint.biography.bodyMarkdown} />
+            </article>
+          ) : null}
+          {hasInstagram ? (
+            <aside className="saint-detail-aside saint-detail-aside--instagram" aria-label={`Instagram posts about ${saint.displayName}`}>
+              <InstagramEmbedGrid
+                items={saint.instagramItems}
+                layout="sidebar"
+                saintName={saint.displayName}
+                urls={saint.instagramUrls}
+              />
+            </aside>
+          ) : null}
         </section>
       ) : null}
 
@@ -131,10 +144,6 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
           {hasFurtherReading ? <FurtherReading items={saint.furtherReading} /> : null}
         </section>
       ) : null}
-
-      <div className="page-shell">
-        <InstagramEmbedGrid items={saint.instagramItems} saintName={saint.displayName} urls={saint.instagramUrls} />
-      </div>
     </main>
   );
 }

@@ -36,11 +36,12 @@ const viewerCaptionPreviewLength = 360;
 
 type InstagramEmbedGridProps = {
   items?: PublicInstagramItem[];
+  layout?: "section" | "sidebar";
   urls?: string[];
   saintName: string;
 };
 
-export function InstagramEmbedGrid({ items = [], urls = [], saintName }: InstagramEmbedGridProps) {
+export function InstagramEmbedGrid({ items = [], layout = "section", urls = [], saintName }: InstagramEmbedGridProps) {
   const posts = items.length > 0 ? items : urls.map((url) => ({ url, type: "unknown" as const }));
   const [activeCarousel, setActiveCarousel] = useState<CarouselViewerState | null>(null);
   if (posts.length === 0) return null;
@@ -48,7 +49,7 @@ export function InstagramEmbedGrid({ items = [], urls = [], saintName }: Instagr
   const content = getInstagramSectionContent();
 
   return (
-    <section className="section">
+    <section className={`instagram-embed-grid instagram-embed-grid--${layout}${layout === "section" ? " section" : ""}`}>
       <div className="eyebrow">{content.eyebrow}</div>
       <h2>{content.title}</h2>
       <div className="instagram-post-grid">
