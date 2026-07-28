@@ -186,6 +186,7 @@ function ImageWithCredit({ image, label }: { image?: PublicImage; label: string 
         alt={image.alt}
         width={image.width}
         height={image.height}
+        cropAspect={1 / 0.86}
         focalPoint={image.focalPoint}
       />
       {image.caption || image.credit ? (
