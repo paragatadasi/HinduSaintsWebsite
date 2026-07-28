@@ -1845,9 +1845,10 @@ img {
 }
 
 .instagram-post-card__footer {
-  align-items: center;
+  align-items: stretch;
   border-top: var(--border-width-default) solid var(--color-border);
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   font-size: 0.8rem;
   font-weight: 700;
@@ -1858,11 +1859,30 @@ img {
   text-transform: uppercase;
 }
 
+.instagram-post-card__footer-actions {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
 .instagram-post-card__footer a {
   align-items: center;
-  color: var(--color-accent);
   display: inline-flex;
   gap: var(--space-1);
+}
+
+.instagram-post-card__profile-link {
+  align-self: stretch;
+  justify-content: space-between;
+}
+
+.instagram-post-card__footer .instagram-post-card__profile-link:hover {
+  color: var(--color-text-inverse);
+}
+
+.instagram-post-card__instagram-link {
+  color: var(--color-muted);
 }
 
 .instagram-carousel-viewer {

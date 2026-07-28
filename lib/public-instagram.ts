@@ -8,6 +8,10 @@ export type PublicInstagramCarouselPreview = {
   alt: string;
   caption?: string;
   postedAt?: string;
+  saint?: {
+    slug: string;
+    displayName: string;
+  };
 };
 
 export type PublicInstagramMediaAsset = {
@@ -34,6 +38,25 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
       captionText: true,
       postedAt: true,
       thumbnailUrl: true,
+      saints: {
+        where: {
+          matchStatus: { in: ["matched", "published"] },
+          saint: { status: "published" }
+        },
+        orderBy: [
+          { isPrimary: "desc" },
+          { reviewedAt: "desc" }
+        ],
+        take: 1,
+        select: {
+          saint: {
+            select: {
+              slug: true,
+              displayName: true
+            }
+          }
+        }
+      },
       mediaAssets: {
         orderBy: { sortOrder: "asc" },
         select: { cachedUrl: true, sourceUrl: true }
@@ -80,7 +103,8 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
         imageUrls,
         alt: getInstagramPreviewAlt(item.captionText),
         ...(item.captionText ? { caption: item.captionText } : {}),
-        ...(item.postedAt ? { postedAt: item.postedAt.toISOString() } : {})
+        ...(item.postedAt ? { postedAt: item.postedAt.toISOString() } : {}),
+        ...(item.saints[0]?.saint ? { saint: item.saints[0].saint } : {})
       }];
     })
     .slice(0, limit);

@@ -7,6 +7,7 @@ import type {
   TouchEvent as ReactTouchEvent
 } from "react";
 import {
+  ArrowRight,
   Bookmark,
   ChevronLeft,
   ChevronRight,
@@ -91,12 +92,14 @@ export function InstagramPostCard({
   content,
   onOpenPost,
   post,
+  saintHref,
   saintName
 }: {
   className?: string;
   content: ReturnType<typeof getInstagramSectionContent>;
   onOpenPost: () => void;
   post: PublicInstagramItem;
+  saintHref?: string;
   saintName: string;
 }) {
   const postedAt = formatPostedAt(post.postedAt);
@@ -196,10 +199,18 @@ export function InstagramPostCard({
 
         <footer className="instagram-post-card__footer">
           <span>{postedAt ?? postLabel}</span>
-          <a href={post.url} onClick={stopCardClick} {...getInstagramLinkProps(post.url)}>
-            {content.linkLabel}
-            <ExternalLink size={iconSize.xs} aria-hidden="true" />
-          </a>
+          <div className="instagram-post-card__footer-actions">
+            {saintHref ? (
+              <a className="button button--primary instagram-post-card__profile-link" href={saintHref} onClick={stopCardClick}>
+                View Saint Profile
+                <ArrowRight size={iconSize.xs} aria-hidden="true" />
+              </a>
+            ) : null}
+            <a className="instagram-post-card__instagram-link" href={post.url} onClick={stopCardClick} {...getInstagramLinkProps(post.url)}>
+              {content.linkLabel}
+              <ExternalLink size={iconSize.xs} aria-hidden="true" />
+            </a>
+          </div>
         </footer>
       </div>
     </article>
