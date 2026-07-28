@@ -688,7 +688,7 @@ img {
     radial-gradient(circle at 56% 45%, color-mix(in srgb, var(--color-gold) 18%, transparent), transparent 32%),
     color-mix(in srgb, var(--color-bg) 76%, transparent);
   background-size: cover;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   height: 100%;
   min-height: 260px;
   overflow: hidden;
@@ -938,7 +938,7 @@ img {
 .card {
   background: var(--color-surface);
   border: 1px solid var(--color-card-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
   padding: var(--space-5);
 }
@@ -1173,7 +1173,7 @@ img {
 .places-map {
   background: var(--color-surface);
   border: 1px solid var(--color-card-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
   display: grid;
   gap: var(--space-4);
@@ -1306,7 +1306,7 @@ img {
   align-items: center;
   background: var(--color-glass);
   border: 1px solid var(--color-card-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
   display: grid;
   gap: var(--space-1);
@@ -1432,7 +1432,7 @@ img {
   align-items: center;
   background: var(--color-surface);
   border: 1px solid var(--color-card-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-3);
   grid-template-columns: auto minmax(180px, 1fr) minmax(80px, auto) auto;
@@ -1564,7 +1564,7 @@ img {
   background-position: center;
   background-size: cover;
   border: var(--border-width-default) solid var(--color-card-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   display: block;
   flex: 0 0 var(--width-instagram-preview-card);
   overflow: hidden;
@@ -1620,7 +1620,7 @@ img {
   align-items: center;
   background: var(--color-surface);
   border: var(--border-width-default) solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   display: flex;
   gap: var(--space-3);
   min-height: var(--height-instagram-link-card);
@@ -1644,7 +1644,7 @@ img {
 .instagram-post-card {
   background: var(--color-surface);
   border: var(--border-width-default) solid var(--color-card-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr);
@@ -1887,7 +1887,7 @@ img {
 .instagram-carousel-viewer__panel {
   background: var(--color-surface);
   border: var(--border-width-default) solid var(--color-card-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow-image);
   display: grid;
   gap: var(--space-3);
@@ -2226,7 +2226,7 @@ img {
 .image-with-credit {
   background: var(--color-surface);
   border: 1px solid var(--color-card-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow-image);
   margin: 0;
   overflow: hidden;
@@ -2507,7 +2507,7 @@ img {
 .tradition-panel {
   background: color-mix(in srgb, var(--color-surface) 72%, transparent);
   border: 1px solid var(--color-card-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
   padding: var(--space-5);
 }
@@ -3046,7 +3046,7 @@ img {
 .admin-queue-filter-group {
   background: var(--review-workflow-section-bg);
   border: 1px solid var(--review-workflow-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-2);
   padding: var(--space-3);
@@ -3122,7 +3122,7 @@ img {
 .admin-search--queue {
   background: var(--review-workflow-section-bg);
   border: 1px solid var(--review-workflow-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   padding: var(--space-3);
 }
 
@@ -3153,7 +3153,7 @@ img {
   align-items: center;
   background: var(--review-workflow-section-bg);
   border: 1px solid var(--review-workflow-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr);
   padding: var(--space-4);
 }
@@ -3253,7 +3253,7 @@ img {
 .admin-review-empty {
   background: var(--review-workflow-section-bg);
   border: 1px solid var(--review-workflow-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-2);
   padding: var(--space-5);
@@ -3290,7 +3290,7 @@ img {
   background-color: var(--review-card-bg);
   background-image: none;
   border: 1px solid var(--review-card-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: none;
 }
 
@@ -3365,7 +3365,7 @@ img {
   background-color: var(--review-workflow-card-bg);
   background-image: none;
   border: 1px solid var(--review-workflow-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: none;
   margin-inline: auto;
   max-width: none;
@@ -3429,7 +3429,7 @@ img {
   background-color: var(--review-workflow-section-bg);
   background-image: none;
   border: 1px solid var(--review-workflow-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: none;
   display: grid;
   gap: var(--review-field-gap, var(--space-3));
@@ -3691,7 +3691,7 @@ img {
   background-color: var(--first-page-card-bg);
   background-image: none;
   border: 1px solid var(--first-page-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: none;
   margin-inline: auto;
   max-width: none;
@@ -3768,7 +3768,7 @@ img {
   background-color: var(--first-page-section-bg);
   background-image: none;
   border: 1px solid var(--first-page-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   box-shadow: none;
   padding: var(--space-5);
 }
@@ -3876,7 +3876,7 @@ img {
 .review-suggestion-list {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   gap: var(--space-4);
   padding: var(--review-row-padding, var(--space-5));
 }
@@ -3991,7 +3991,7 @@ img {
 .instagram-job-progress {
   background: var(--review-workflow-section-bg);
   border: 1px solid var(--review-workflow-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-3);
   padding: var(--space-3);
@@ -4062,7 +4062,7 @@ img {
 .instagram-job-history {
   background: var(--review-workflow-section-bg);
   border: 1px solid var(--review-workflow-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-3);
   padding: var(--space-3);
@@ -4071,7 +4071,7 @@ img {
 .airtable-job-history {
   background: var(--review-workflow-section-bg);
   border: 1px solid var(--review-workflow-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   padding: var(--space-3);
 }
 
@@ -4136,7 +4136,7 @@ img {
 .airtable-job-detail-row {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-2);
   padding: var(--space-3);
@@ -4171,7 +4171,7 @@ img {
 .instagram-reference {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   padding: var(--review-row-padding, var(--space-5));
 }
 
@@ -4185,7 +4185,7 @@ img {
 .instagram-biography-importer {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--review-field-gap, var(--space-3));
   padding: var(--review-row-padding, var(--space-5));
@@ -4201,7 +4201,7 @@ img {
   align-items: stretch;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--review-row-gap, var(--space-5));
   grid-template-columns: 168px minmax(0, 1fr);
@@ -4335,7 +4335,7 @@ img {
     radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--color-gold) 28%, transparent), transparent 28%),
     var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   color: var(--color-muted);
   display: flex;
   font-size: 0.78rem;
@@ -4360,7 +4360,7 @@ img {
 .raw-json-preview {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   color: var(--color-muted);
   font-size: 0.78rem;
   max-height: 360px;
@@ -4374,7 +4374,7 @@ img {
 .admin-stat {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   padding: var(--review-panel-padding, var(--space-6));
 }
 
@@ -4394,7 +4394,7 @@ img {
   aspect-ratio: 4 / 5;
   background: var(--review-card-field-bg);
   border: 1px solid var(--review-workflow-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   color: var(--color-muted);
   display: flex;
   justify-content: center;
@@ -4553,7 +4553,7 @@ img {
 .museum-admin {
   background: var(--color-bg);
   border: 1px solid color-mix(in srgb, var(--color-border) 40%, transparent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   color: var(--color-text);
   display: grid;
   gap: var(--space-5);
@@ -4579,7 +4579,7 @@ img {
   align-content: start;
   background: color-mix(in srgb, var(--color-surface) 74%, transparent);
   border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-4);
   max-height: calc(100vh - var(--space-8));
@@ -4720,7 +4720,7 @@ img {
 .museum-admin-panel {
   background: color-mix(in srgb, var(--color-surface) 72%, transparent);
   border: 1px solid color-mix(in srgb, var(--color-border) 72%, transparent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
 }
 
 .museum-admin-hero {
@@ -4894,7 +4894,7 @@ img {
 .museum-tertiary-card {
   background: color-mix(in srgb, var(--color-bg) 72%, var(--color-surface));
   border: 1px solid color-mix(in srgb, var(--color-border) 62%, transparent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
 }
 
 .museum-section-card {
@@ -4963,7 +4963,7 @@ img {
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--color-surface-elevated) 72%, transparent), color-mix(in srgb, var(--color-bg) 72%, var(--color-surface)));
   border: 1px solid color-mix(in srgb, var(--color-border) 62%, transparent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-3);
   min-height: 310px;
@@ -5039,7 +5039,7 @@ img {
 .museum-bridge-card {
   background: color-mix(in srgb, var(--color-bg) 78%, var(--color-surface));
   border: 1px dashed color-mix(in srgb, var(--color-gold) 42%, transparent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-3);
   grid-template-columns: auto minmax(0, 1fr);
@@ -5198,7 +5198,7 @@ img {
 .museum-tree-panel {
   background: color-mix(in srgb, var(--color-bg) 72%, var(--color-surface));
   border: 1px solid color-mix(in srgb, var(--color-border) 62%, transparent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   overflow: hidden;
 }
 
@@ -5733,7 +5733,7 @@ img {
   aspect-ratio: 16 / 9;
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   cursor: crosshair;
   overflow: hidden;
   position: relative;
@@ -5968,7 +5968,7 @@ img {
 .markdown-editor__image img {
   aspect-ratio: 4 / 3;
   background: var(--color-surface-muted);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   filter: var(--image-treatment);
   object-fit: cover;
   width: 100%;
@@ -6029,7 +6029,7 @@ img {
 .combo-search__list {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
   display: grid;
   left: 0;
@@ -6222,7 +6222,7 @@ img {
   align-items: center;
   background: var(--color-surface-muted);
   border: 1px dashed var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   color: var(--color-text);
   cursor: pointer;
   display: inline-flex;
