@@ -39,6 +39,7 @@
   --space-16: 4rem;
   --radius-sm: 4px;
   --radius-md: 8px;
+  --radius-pill: 999px;
   --radius-card: 0;
   --radius-control: var(--radius-md);
   --border-width-default: 1px;
