@@ -5,6 +5,7 @@ import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-car
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewFactGrid, ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchableMultiSelect } from "@/components/ui/searchable-multi-select";
 import { db } from "@/lib/db";
@@ -164,7 +165,11 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
             </div>
             <label>
               Short description
-              <textarea name="shortDescription" defaultValue={saint.shortDescription ?? ""} maxLength={500} />
+              <SoftLimitTextarea
+                name="shortDescription"
+                defaultValue={saint.shortDescription ?? ""}
+                softLimit={500}
+              />
             </label>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save overview</button>

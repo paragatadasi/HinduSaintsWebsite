@@ -48,7 +48,7 @@ const createSaintFromInstagramSchema = z.object({
   instagramItemId: z.string().cuid(),
   displayName: z.string().trim().min(1).max(200),
   canonicalName: z.string().trim().min(1).max(200),
-  shortDescription: z.string().trim().max(500).optional(),
+  shortDescription: z.string().trim().optional(),
   birthDateRaw: z.string().trim().max(160).optional(),
   samadhiDateRaw: z.string().trim().max(160).optional(),
   tradition: z.string().trim().max(240).optional()
