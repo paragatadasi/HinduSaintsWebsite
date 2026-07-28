@@ -1,8 +1,9 @@
-export type ImportedDatePrecision = "day" | "month" | "year" | "text" | "empty";
+export type ImportedDatePrecision = "day" | "month" | "year" | "range" | "unknown" | "text" | "empty";
 
 export type ImportedDateParts = {
   raw?: string;
   year?: number;
+  endYear?: number;
   month?: number;
   day?: number;
   precision: ImportedDatePrecision;
@@ -40,6 +41,34 @@ export function parseImportedDate(value: unknown): ImportedDateParts {
   const raw = String(value ?? "").trim();
 
   if (!raw) return { precision: "empty" };
+
+  if (/^unknown$/i.test(raw)) {
+    return {
+      raw: "Unknown",
+      precision: "unknown"
+    };
+  }
+
+  const yearRange = raw.match(/^(?:(?:c(?:irca)?|ca)\.?\s+)?(1[0-9]{3}|20[0-9]{2})\s*[-–—]\s*(1[0-9]{3}|20[0-9]{2})$/i);
+  if (yearRange) {
+    const year = Number(yearRange[1]);
+    const endYear = Number(yearRange[2]);
+
+    if (year <= endYear) {
+      return {
+        raw,
+        year,
+        endYear,
+        precision: "range"
+      };
+    }
+
+    return {
+      raw,
+      precision: "text",
+      note: "Year range must run from the earlier year to the later year."
+    };
+  }
 
   const iso = raw.match(/^(1[0-9]{3}|20[0-9]{2})-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$/);
   if (iso) {
@@ -103,8 +132,23 @@ export function parseImportedDate(value: unknown): ImportedDateParts {
 }
 
 export function buildEraLabel(birth: ImportedDateParts, samadhi: ImportedDateParts) {
+  const birthRange = formatYearRange(birth);
+  const samadhiRange = formatYearRange(samadhi);
+
+  if (birthRange || samadhiRange) {
+    return [
+      birthRange ? `b. ${birthRange}` : birth.year ? `b. ${birth.year}` : undefined,
+      samadhiRange ? `samadhi ${samadhiRange}` : samadhi.year ? `samadhi ${samadhi.year}` : undefined
+    ].filter(Boolean).join("; ") || undefined;
+  }
+
   if (birth.year && samadhi.year) return `${birth.year}-${samadhi.year}`;
   if (birth.year) return `b. ${birth.year}`;
   if (samadhi.year) return `samadhi ${samadhi.year}`;
   return undefined;
+}
+
+function formatYearRange(value: ImportedDateParts) {
+  if (value.precision !== "range" || value.year == null || value.endYear == null) return undefined;
+  return `${value.year}–${value.endYear}`;
 }

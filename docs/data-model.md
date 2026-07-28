@@ -41,14 +41,19 @@ safe public fields.
 
 Dates are separated by meaning:
 
-- birth values use `birthDateRaw`, `birthYear`, `birthMonth`, `birthDay`, and
-  `birthDatePrecision`.
-- samadhi values use `samadhiDateRaw`, `samadhiYear`, `samadhiMonth`,
-  `samadhiDay`, and `samadhiDatePrecision`.
+- birth values use `birthDateRaw`, `birthYear`, `birthYearEnd`, `birthMonth`,
+  `birthDay`, and `birthDatePrecision`.
+- samadhi values use `samadhiDateRaw`, `samadhiYear`, `samadhiYearEnd`,
+  `samadhiMonth`, `samadhiDay`, and `samadhiDatePrecision`.
 - `dateNotes` can preserve parsing notes or traditional/textual date context.
 
 This allows partial dates such as `June 2013`, year-only values, and text such
-as `Still alive` without inventing invalid Gregorian dates.
+as `Still alive` without inventing invalid Gregorian dates. An uncertain year
+range such as `1914-1915` is retained in the raw field, parsed with `range`
+precision, and stores both endpoints in the corresponding start/end year
+columns. `Unknown` uses explicit `unknown` precision and no numeric parts. This
+is intentionally different from a blank field, which means that no reviewed
+date value has been recorded.
 
 Locations are first-class records:
 

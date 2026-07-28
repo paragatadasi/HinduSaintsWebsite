@@ -261,11 +261,13 @@ model Saint {
   eraLabel                 String?
   birthDateRaw             String?
   birthYear                Int?
+  birthYearEnd             Int?
   birthMonth               Int?
   birthDay                 Int?
   birthDatePrecision       String?
   samadhiDateRaw           String?
   samadhiYear              Int?
+  samadhiYearEnd           Int?
   samadhiMonth             Int?
   samadhiDay               Int?
   samadhiDatePrecision     String?

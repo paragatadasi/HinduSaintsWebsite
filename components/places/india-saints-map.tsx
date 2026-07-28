@@ -534,7 +534,10 @@ function saintLivedDuringYear(saint: PublicPlaceMapSaint, year: number) {
   if (saint.birthYear == null && saint.samadhiYear == null) return false;
 
   const birthYear = saint.birthYear ?? saint.samadhiYear;
-  const samadhiYear = saint.samadhiYear ?? saint.birthYear;
+  const samadhiYear = saint.samadhiYearEnd
+    ?? saint.samadhiYear
+    ?? saint.birthYearEnd
+    ?? saint.birthYear;
   return birthYear != null && samadhiYear != null && birthYear <= year && samadhiYear >= year;
 }
 

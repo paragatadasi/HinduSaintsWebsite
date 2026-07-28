@@ -5,6 +5,7 @@ import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-car
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewFactGrid, ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { SaintDateField } from "@/components/admin/saint-date-field";
 import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
@@ -204,15 +205,20 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
                 Era label
                 <input name="eraLabel" defaultValue={saint.eraLabel ?? ""} maxLength={120} />
               </label>
-              <label>
-                Birth date
-                <input name="birthDateRaw" defaultValue={saint.birthDateRaw ?? ""} maxLength={120} />
-              </label>
-              <label>
-                Samadhi date
-                <input name="samadhiDateRaw" defaultValue={saint.samadhiDateRaw ?? ""} maxLength={120} />
-              </label>
+              <SaintDateField
+                defaultValue={saint.birthDateRaw}
+                label="Birth date"
+                name="birthDateRaw"
+              />
+              <SaintDateField
+                defaultValue={saint.samadhiDateRaw}
+                label="Samadhi date"
+                name="samadhiDateRaw"
+              />
             </div>
+            <p className="form-field-hint">
+              Dates accept a year, full or partial date, or a year range such as 1914-1915. Leave blank when unreviewed.
+            </p>
             <label>
               Date notes
               <textarea name="dateNotes" defaultValue={saint.dateNotes ?? ""} maxLength={1000} />

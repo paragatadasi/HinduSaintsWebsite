@@ -146,7 +146,9 @@ export type PublicPlaceMapSaint = {
   displayName: string;
   eraLabel: string;
   birthYear?: number;
+  birthYearEnd?: number;
   samadhiYear?: number;
+  samadhiYearEnd?: number;
   tradition: string;
   placeType: "primary" | "birth" | "samadhi" | "sadhana" | "associated" | "other";
   routeOrder?: number;

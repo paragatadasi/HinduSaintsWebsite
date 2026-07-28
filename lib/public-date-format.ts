@@ -37,7 +37,13 @@ const PUBLIC_CALENDAR_DATE_FORMATTER = new Intl.DateTimeFormat("en-GB", {
 
 export function formatSaintDate(value: SaintDateValue) {
   const raw = value.raw?.trim();
+  const parsedRange = raw ? parseDisplayYearRange(raw) : undefined;
   const parsedRaw = raw ? parseDisplayDate(raw) : undefined;
+
+  if (parsedRange) {
+    const prefix = parsedRange.approximate ? "c. " : "";
+    return `${prefix}${parsedRange.year}–${parsedRange.endYear}`;
+  }
 
   if (parsedRaw) {
     return formatDateParts(parsedRaw.year, parsedRaw.month, parsedRaw.day, parsedRaw.approximate);
@@ -70,6 +76,21 @@ type ParsedDisplayDate = {
   day?: number;
   approximate?: boolean;
 };
+
+function parseDisplayYearRange(value: string) {
+  const match = value.match(/^(?:(c(?:irca)?|ca)\.?\s+)?(\d{1,4})\s*[-–—]\s*(\d{1,4})$/i);
+  if (!match) return undefined;
+
+  const year = Number(match[2]);
+  const endYear = Number(match[3]);
+  if (year < 1 || endYear < year) return undefined;
+
+  return {
+    year,
+    endYear,
+    approximate: Boolean(match[1])
+  };
+}
 
 function parseDisplayDate(value: string): ParsedDisplayDate | undefined {
   const approximateMatch = value.match(/^(?:(?:c(?:irca)?|ca)\.?\s+)(.+)$/i);

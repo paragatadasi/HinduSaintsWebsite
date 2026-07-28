@@ -250,10 +250,15 @@ the place review screen afterward.
 
 ## Timeline Rules
 
-The time filter uses `Saint.birthYear` and `Saint.samadhiYear`.
+The time filter uses `Saint.birthYear`, `Saint.birthYearEnd`,
+`Saint.samadhiYear`, and `Saint.samadhiYearEnd`.
 
 - Saints with both years are active when `birthYear <= selectedYear <= samadhiYear`.
 - Saints with one known endpoint use that known year as both start and end.
+- For an uncertain endpoint range, the filter includes the full possible
+  interval (the earliest birth year through the latest samadhi year).
+- An explicitly `Unknown` date has no numeric endpoint. If both endpoints are
+  unknown or absent, the saint is hidden while the time filter is enabled.
 - Saints with no usable years are hidden when the time filter is enabled.
 
 The year range is derived from mapped saints with date metadata.
