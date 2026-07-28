@@ -82,11 +82,18 @@
   --height-instagram-viewer-panel: min(92vh, 860px);
   --height-instagram-viewer-stage-image: min(62vh, 640px);
   --height-instagram-inline-viewer: min(70vh, 720px);
+  --height-gallery-viewer-panel: min(94vh, 900px);
+  --height-gallery-viewer-stage-image: min(68vh, 700px);
+  --height-gallery-viewer-mobile-media: clamp(320px, 64dvh, 620px);
+  --space-instagram-viewer-safe-top: env(safe-area-inset-top, 0px);
+  --space-instagram-viewer-safe-bottom: env(safe-area-inset-bottom, 0px);
   --height-saint-review-image: clamp(16rem, 48vh, 34rem);
   --height-combobox-list: 320px;
   --size-instagram-avatar: 38px;
   --size-instagram-type-badge: 34px;
   --size-instagram-viewer-button: 42px;
+  --size-gallery-viewer-thumb: 64px;
+  --size-gallery-viewer-mobile-thumb: 56px;
   --size-icon-xs: 15px;
   --size-icon-sm: 18px;
   --size-icon-md: 20px;
