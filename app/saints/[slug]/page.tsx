@@ -44,6 +44,8 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
   const hasSources = saint.sources.length > 0;
   const hasFurtherReading = saint.furtherReading.length > 0;
   const hasInstagram = saint.instagramItems.length > 0 || saint.instagramUrls.length > 0;
+  const displayNameKey = normalizeName(saint.displayName);
+  const visibleAliases = saint.aliases.filter((alias) => normalizeName(alias) !== displayNameKey);
 
   return (
     <main>
@@ -62,9 +64,9 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
                 Send feedback
               </Button>
             </div>
-            {saint.aliases.length > 0 ? (
+            {visibleAliases.length > 0 ? (
               <div className="chip-list" aria-label="Aliases">
-                {saint.aliases.map((alias) => (
+                {visibleAliases.map((alias) => (
                   <span className="chip" key={alias}>{alias}</span>
                 ))}
               </div>
@@ -252,7 +254,11 @@ function SourceTitle({ source }: { source: PublicSourceSummary }) {
 }
 
 function SourceMeta({ source }: { source: PublicSourceSummary }) {
-  const meta = [source.author, source.publisher, source.publicationYear].filter(Boolean).join(" · ");
+  const meta = [source.author, source.publisher, source.publicationYear].filter(Boolean).join(" Â· ");
 
   return meta ? <p className="source-meta">{meta}</p> : null;
+}
+
+function normalizeName(value: string) {
+  return value.normalize("NFKC").trim().replace(/\s+/g, " ").toLocaleLowerCase();
 }

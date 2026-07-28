@@ -1,12 +1,12 @@
 import { TraditionCard } from "@/components/traditions/tradition-card";
-import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
+import { getPublicTraditionSummaries } from "@/lib/public-traditions";
 import { getTraditionsIndexContent } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function TraditionsIndexPage() {
   const content = getTraditionsIndexContent();
-  const traditions = await getPublishedTraditionSummaries();
+  const traditions = await getPublicTraditionSummaries();
 
   return (
     <main className="page-shell section site-grid">
@@ -20,7 +20,7 @@ export default async function TraditionsIndexPage() {
           {traditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} />)}
         </div>
       ) : (
-        <p className="empty-note">Published traditions will appear here after editorial review.</p>
+        <p className="empty-note">Traditions will appear here after they are added to the archive.</p>
       )}
     </main>
   );

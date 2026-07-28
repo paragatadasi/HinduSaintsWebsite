@@ -103,7 +103,7 @@ export type PublicTraditionSummary = {
   name: string;
   shortDescription: string;
   founder?: string;
-  status: "published";
+  status: "basic" | "published";
 };
 
 export type PublicTraditionOverviewFacts = {
@@ -178,7 +178,8 @@ export type PublicPlaceMapData = {
   };
 };
 
-export type PublicTraditionDetail = PublicTraditionSummary & {
+export type PublicTraditionDetail = Omit<PublicTraditionSummary, "status"> & {
+  status: "published";
   alternateNames?: string[];
   historyMarkdown?: string;
   foundingAcharyaMarkdown?: string;

@@ -119,9 +119,9 @@ export default async function HomePage() {
               </Button>
             ) : null}
           </div>
-          {traditions.length > 0 ? (
+          {configuredTraditions.length > 0 ? (
             <ScrollRail ariaLabel="traditions" controls="always">
-              {traditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} variant="icon" />)}
+              {configuredTraditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} variant="icon" />)}
             </ScrollRail>
           ) : (
             <p className="empty-note">Published traditions will appear here after editorial review.</p>

@@ -10,7 +10,11 @@ Architecture:
 - Do not introduce Directus, Payload, Sanity, or another CMS unless explicitly requested.
 
 Public content:
-- Public pages show only published content.
+- Public pages show only published content, except `draft` and `needs_review`
+  traditions may appear as basic directory/detail pages and configured homepage
+  features. Basic tradition views expose only the tradition name, neutral
+  fallback copy, and associated published saints; unpublished editorial fields
+  remain private. Archived traditions never appear publicly.
 - Never expose museum/relic fields publicly.
 - Saint pages must use shared templates and components.
 - Missing data must be handled gracefully.
@@ -72,3 +76,12 @@ git restore --staged :/ && git add path/to/file-a path/to/file-b && git commit -
 ```
 
 - For multi-line commit messages, use the shell-appropriate equivalent of a single atomic command that includes unstaging, targeted staging, and committing together.
+
+Deployment workflow:
+- When explicitly asked to deploy, complete the full release sequence; do not stop after committing or pushing a feature branch.
+- First inspect the working tree, identify all and only the uncommitted changes relevant to the requested deployment, run the appropriate verification, and commit those relevant changes using the scoped commit workflow above.
+- Integrate the deployment commit(s) into `main` and push `main` to `origin` before updating `deploy`.
+- Then merge the updated `main` into `deploy` and push `deploy` to `origin`. A push to `deploy` triggers the production deployment workflow.
+- Never merge a feature branch directly into `deploy`, and never let `deploy` move ahead of the corresponding pushed `main` commit.
+- Do not include unrelated working-tree changes or commits from other agents. If unrelated changes prevent a safe branch switch or merge, preserve them and use a safe worktree or stop and report the blocker rather than discarding them.
+- After pushing `deploy`, confirm that the production deployment workflow was triggered and report its status. If workflow access is unavailable, report that verification limitation explicitly.

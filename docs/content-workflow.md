@@ -14,7 +14,11 @@
 4. Submit as `needs_review`.
 5. Editor reviews and publishes.
 
-Public pages must query only `published` content.
+Public saint pages must query only `published` content. Traditions are the
+deliberate exception: `draft` and `needs_review` traditions may be publicly
+listed and featured using a basic page that exposes only their name, neutral
+fallback copy, and associated published saints. Archived traditions remain
+private.
 
 Current admin review surfaces:
 
@@ -43,9 +47,11 @@ Current admin review surfaces:
 
 ## Tradition workflow
 
-Traditions are published records, not live Airtable views. The public tradition
-detail page uses the DB-backed public contract in `lib/public-traditions.ts` and
-must render gracefully while editorial fields are incomplete.
+Traditions are database records, not live Airtable views. The public tradition
+detail page uses the DB-backed public contract in `lib/public-traditions.ts`.
+Published traditions receive the reviewed detail layout. Draft and
+`needs_review` traditions receive only the basic public page; their unpublished
+editorial fields are not part of the public contract.
 
 The admin tradition editor should grow toward this reviewed content set:
 

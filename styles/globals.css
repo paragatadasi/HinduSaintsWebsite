@@ -4937,6 +4937,7 @@ img {
   line-height: 1.25;
 }
 
+
 .admin-stat strong {
   display: block;
   font-family: var(--font-serif);
@@ -5578,7 +5579,7 @@ img {
 
 .museum-family-card li::before {
   color: var(--color-gold);
-  content: "•";
+  content: "â€¢";
   line-height: inherit;
 }
 
@@ -8073,4 +8074,3 @@ img {
     grid-area: auto;
   }
 }
-

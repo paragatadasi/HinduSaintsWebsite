@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import { SaintCard } from "@/components/saints/saint-card";
 import { TraditionPageLayouts } from "@/components/traditions/tradition-page-layouts";
 import {
+  getPublicBasicTraditionBySlug,
   getPublishedTraditionBySlug,
-  getTraditionSaintIndexBySlug
 } from "@/lib/public-traditions";
 import { getTraditionDetailTemplateContent } from "@/lib/site-content";
 
@@ -22,7 +22,7 @@ export default async function TraditionDetailPage({
     return <TraditionPageLayouts tradition={tradition} template={template} />;
   }
 
-  const traditionIndex = await getTraditionSaintIndexBySlug(slug);
+  const traditionIndex = await getPublicBasicTraditionBySlug(slug);
 
   if (!traditionIndex) notFound();
 

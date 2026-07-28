@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import type { PublicImage } from "@/lib/public-contracts";
 import { getPublishedSaintSummariesByIds } from "@/lib/public-saints";
-import { getPublishedTraditionSummariesByIds } from "@/lib/public-traditions";
+import { getPublicTraditionSummariesByIds } from "@/lib/public-traditions";
 import {
   getHomeHeroContent,
   getHomeQuoteContent,
@@ -32,7 +32,7 @@ export async function getPublicHomePageConfig() {
 
   const [featuredSaints, featuredTraditions] = await Promise.all([
     getPublishedSaintSummariesByIds(config.featuredSaintIds),
-    getPublishedTraditionSummariesByIds(config.featuredTraditionIds)
+    getPublicTraditionSummariesByIds(config.featuredTraditionIds)
   ]);
 
   return {

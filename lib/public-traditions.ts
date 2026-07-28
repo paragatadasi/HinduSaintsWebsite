@@ -12,19 +12,32 @@ import type {
   PublicTraditionSummary
 } from "@/lib/public-contracts";
 import { getPublishedSaintSummariesByIds } from "@/lib/public-saints";
+import {
+  getPublicTraditionPresentation,
+  PUBLIC_TRADITION_STATUSES
+} from "@/lib/public-tradition-visibility";
 
-type TraditionListRow = Awaited<ReturnType<typeof getPublishedTraditionRows>>[number];
+type TraditionListRow = Awaited<ReturnType<typeof getTraditionRows>>[number];
 type TraditionDetailRow = NonNullable<Awaited<ReturnType<typeof getPublishedTraditionRowBySlug>>>;
 type TraditionSaintRow = TraditionListRow["saints"][number]["saint"];
 
 const DEFAULT_DESCRIPTION = "A reviewed tradition profile from the Hindu Saints Archive.";
+const BASIC_DESCRIPTION = "Explore saints associated with this tradition in the archive.";
 const DEFAULT_LOCATION = "Location in review";
 const DEFAULT_TRADITION = "Tradition in review";
 const DEFAULT_ERA = "Dates in review";
 
-async function getPublishedTraditionRows(where: Prisma.TraditionWhereInput = {}) {
+async function getTraditionRows(
+  statuses: readonly ("draft" | "needs_review" | "published")[],
+  where: Prisma.TraditionWhereInput = {}
+) {
   return db.tradition.findMany({
-    where: { status: "published", ...where },
+    where: {
+      AND: [
+        { status: { in: [...statuses] } },
+        where
+      ]
+    },
     orderBy: { name: "asc" },
     include: {
       saints: {
@@ -120,18 +133,33 @@ async function getPublishedTraditionRowBySlug(slug: string) {
 }
 
 export async function getPublishedTraditionSummaries(): Promise<PublicTraditionSummary[]> {
-  const traditions = await getPublishedTraditionRows();
+  const traditions = await getTraditionRows(["published"]);
   const founderNames = await getFounderNames(traditions.map((tradition) => tradition.founderSaintId));
 
   return traditions.map((tradition) => toPublicTraditionSummary(tradition, founderNames));
 }
 
-export async function getPublishedTraditionSummariesByIds(traditionIds: string[]): Promise<PublicTraditionSummary[]> {
+export async function getPublicTraditionSummaries(): Promise<PublicTraditionSummary[]> {
+  const traditions = await getTraditionRows(PUBLIC_TRADITION_STATUSES);
+  const founderNames = await getFounderNames(
+    traditions
+      .filter((tradition) => tradition.status === "published")
+      .map((tradition) => tradition.founderSaintId)
+  );
+
+  return traditions.map((tradition) => toPublicTraditionSummary(tradition, founderNames));
+}
+
+export async function getPublicTraditionSummariesByIds(traditionIds: string[]): Promise<PublicTraditionSummary[]> {
   const uniqueIds = Array.from(new Set(traditionIds));
   if (uniqueIds.length === 0) return [];
 
-  const traditions = await getPublishedTraditionRows({ id: { in: uniqueIds } });
-  const founderNames = await getFounderNames(traditions.map((tradition) => tradition.founderSaintId));
+  const traditions = await getTraditionRows(PUBLIC_TRADITION_STATUSES, { id: { in: uniqueIds } });
+  const founderNames = await getFounderNames(
+    traditions
+      .filter((tradition) => tradition.status === "published")
+      .map((tradition) => tradition.founderSaintId)
+  );
   const summariesById = new Map(traditions.map((tradition) => [tradition.id, toPublicTraditionSummary(tradition, founderNames)]));
 
   return uniqueIds.flatMap((id) => {
@@ -160,9 +188,12 @@ export async function getPublishedTraditionBySlug(slug: string): Promise<PublicT
   return toPublicTraditionDetail(tradition, founderNames, sources);
 }
 
-export async function getTraditionSaintIndexBySlug(slug: string) {
-  const tradition = await db.tradition.findUnique({
-    where: { slug },
+export async function getPublicBasicTraditionBySlug(slug: string) {
+  const tradition = await db.tradition.findFirst({
+    where: {
+      slug,
+      status: { in: [...PUBLIC_TRADITION_STATUSES] }
+    },
     select: {
       name: true,
       slug: true,
@@ -189,12 +220,20 @@ function toPublicTraditionSummary(
   tradition: TraditionListRow,
   founderNames: Map<string, string>
 ): PublicTraditionSummary {
+  const status = getPublicTraditionPresentation(tradition.status);
+
+  if (!status) {
+    throw new Error(`Cannot map non-public tradition status: ${tradition.status}`);
+  }
+
   return {
     slug: tradition.slug,
     name: tradition.name,
-    shortDescription: tradition.shortDescription ?? DEFAULT_DESCRIPTION,
-    founder: getFounderLabel(tradition, founderNames),
-    status: "published"
+    shortDescription: status === "published"
+      ? tradition.shortDescription ?? DEFAULT_DESCRIPTION
+      : BASIC_DESCRIPTION,
+    founder: status === "published" ? getFounderLabel(tradition, founderNames) : undefined,
+    status
   };
 }
 
@@ -205,6 +244,7 @@ function toPublicTraditionDetail(
 ): PublicTraditionDetail {
   return {
     ...toPublicTraditionSummary(tradition, founderNames),
+    status: "published",
     alternateNames: tradition.alternateNames.length > 0 ? tradition.alternateNames : undefined,
     historyMarkdown: tradition.historyMarkdown ?? tradition.longIntroductionMarkdown ?? undefined,
     foundingAcharyaMarkdown: tradition.foundingAcharyaMarkdown ?? undefined,

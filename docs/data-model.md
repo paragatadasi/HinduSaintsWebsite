@@ -26,7 +26,10 @@ Core entities:
 Important rules:
 
 - `Saint.slug` is unique.
-- Public pages show only `ContentStatus.published`.
+- Public saint and full editorial pages show only `ContentStatus.published`.
+- `Tradition` records in `draft` or `needs_review` may appear through a
+  deliberately minimal public contract containing their name, neutral fallback
+  copy, and associated published saints. Archived traditions remain private.
 - `InstagramItem` stores real imported Instagram post/reel/carousel records.
 - Instagram items can map to multiple saints through `InstagramItemSaint`.
 - Public saint pages expose Instagram URLs for matched/published `InstagramItemSaint` links when the attached `InstagramItem` is matched/published and the saint itself is published.
@@ -101,12 +104,14 @@ queries only `ContentStatus.published` saints and maps safe CMS fields into the
 public contract used by `/`, `/saints`, and `/saints/[slug]`.
 
 The current DB-backed tradition public adapter lives in
-`lib/public-traditions.ts`. It queries only `ContentStatus.published`
-traditions and maps safe CMS fields into the public contract used by
-`/traditions` and `/traditions/[slug]`. The detail page now expects a richer
-editorial layout than the current database fully stores, so the public adapter
-uses graceful fallbacks for missing data and derives related places from
-published saints until the admin editor can persist curated values.
+`lib/public-traditions.ts`. It maps published traditions into the full public
+contract used by `/traditions` and `/traditions/[slug]`. Draft and
+`needs_review` traditions use a separate basic presentation that does not expose
+unpublished descriptions, founder data, media, sources, or other editorial
+fields. The full detail page expects a richer editorial layout than the current
+database fully stores, so published records use graceful fallbacks for missing
+data and derive related places from published saints until the admin editor can
+persist curated values.
 
 To fully support the public tradition detail layout, the admin/data model should
 add or expose reviewed fields for:
