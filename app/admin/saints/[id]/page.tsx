@@ -437,7 +437,12 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
             {publicImages.map(({ mediaAsset, placement }) => (
               <figure className="image-with-credit image-with-credit--admin" key={mediaAsset.id}>
                 <div className="saint-image-library__preview">
-                  <img src={mediaAsset.url} alt={mediaAsset.altText ?? saint.displayName} width={mediaAsset.width ?? undefined} height={mediaAsset.height ?? undefined} />
+                  <img
+                    src={mediaAsset.url}
+                    alt={mediaAsset.altText ?? saint.displayName}
+                    width={mediaAsset.width ?? undefined}
+                    height={mediaAsset.height ?? undefined}
+                  />
                   <span className="status-pill status-pill--good">{formatImagePlacement(placement)}</span>
                 </div>
                 <figcaption>

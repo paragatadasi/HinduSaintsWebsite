@@ -73,7 +73,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
         </div>
       </section>
 
-      <section className="page-shell section">
+      <section className="page-shell section saint-detail-facts">
         <FactGrid
           facts={[
             ...(keyFacts.length > 0 ? keyFacts : [{ label: template.factLabels.era, value: saint.eraLabel }]),
@@ -119,6 +119,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
                 items={saint.instagramItems}
                 layout="sidebar"
                 saintName={saint.displayName}
+                presentation="inline"
                 urls={saint.instagramUrls}
               />
             </aside>

@@ -3228,7 +3228,7 @@ img {
   align-items: end;
   background: var(--review-workflow-section-bg);
   border: 1px solid var(--review-workflow-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-3);
   grid-template-columns: repeat(2, minmax(180px, 1fr)) auto;
@@ -4637,7 +4637,7 @@ img {
     radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--color-gold) 28%, transparent), transparent 28%),
     var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-md);
   color: var(--color-muted);
   display: flex;
   font-size: 0.78rem;
@@ -4702,6 +4702,37 @@ img {
   justify-content: center;
   max-width: var(--width-card-grid-min);
   overflow: hidden;
+}
+
+.places-map__panel-heading {
+  align-items: start;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.places-map__panel-close {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-muted);
+  cursor: pointer;
+  display: inline-flex;
+  height: var(--size-scroll-button);
+  justify-content: center;
+  padding: 0;
+  width: var(--size-scroll-button);
+}
+
+.places-map__panel-close:hover {
+  border-color: var(--color-interactive-border);
+  color: var(--color-accent);
+}
+
+.places-map__panel-close:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus);
+  outline-offset: var(--size-focus-offset);
 }
 
 .review-row__media img {
@@ -6005,7 +6036,7 @@ img {
 .home-config-media figure {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-3);
   margin: 0;
@@ -6035,7 +6066,7 @@ img {
   aspect-ratio: 16 / 9;
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-sm);
   cursor: crosshair;
   overflow: hidden;
   position: relative;
@@ -6303,14 +6334,14 @@ img {
 .markdown-editor__image-picker {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   padding: var(--space-3);
 }
 
 .markdown-editor__image {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   color: var(--color-text);
   cursor: pointer;
   display: grid;
@@ -6323,7 +6354,7 @@ img {
 .markdown-editor__image img {
   aspect-ratio: 4 / 3;
   background: var(--color-surface-muted);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-sm);
   filter: var(--image-treatment);
   object-fit: cover;
   width: 100%;
@@ -6384,7 +6415,7 @@ img {
 .combo-search__list {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-sm);
   box-shadow: var(--shadow-soft);
   display: grid;
   left: 0;
@@ -6492,7 +6523,7 @@ img {
   align-items: end;
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-card);
   cursor: grab;
   display: grid;
   gap: var(--space-3);
@@ -6577,7 +6608,7 @@ img {
   align-items: center;
   background: var(--color-surface-muted);
   border: 1px dashed var(--color-border);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-sm);
   color: var(--color-text);
   cursor: pointer;
   display: inline-flex;
@@ -7131,6 +7162,19 @@ img {
 
   .saint-detail-aside--instagram {
     grid-column: auto;
+  }
+
+  .saint-detail-hero {
+    padding-bottom: var(--space-6);
+  }
+
+  .saint-detail-facts {
+    padding-bottom: var(--space-6);
+    padding-top: var(--space-6);
+  }
+
+  .saint-detail-facts + .page-shell .instagram-embed-grid.section {
+    padding-top: var(--space-4);
   }
 
   .tradition-hero {

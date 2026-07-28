@@ -92,6 +92,8 @@
   --height-gallery-viewer-stage-image: min(68vh, 700px);
   --height-gallery-viewer-mobile-media: clamp(320px, 64dvh, 620px);
   --size-instagram-viewer-mobile-thumb: 52px;
+  --size-gallery-viewer-thumb: 64px;
+  --size-gallery-viewer-mobile-thumb: 56px;
   --space-instagram-viewer-safe-top: env(safe-area-inset-top, 0px);
   --space-instagram-viewer-safe-bottom: env(safe-area-inset-bottom, 0px);
   --height-saint-review-image: clamp(16rem, 48vh, 34rem);
