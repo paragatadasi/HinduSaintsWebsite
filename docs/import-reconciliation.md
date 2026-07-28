@@ -76,9 +76,11 @@ npm run import:airtable-cleanup -- --write
 
 The CMS import is idempotent through `ExternalRecord` links. The safe import
 path creates only missing saints as `draft`, skips rows already linked through
-an Airtable `ExternalRecord`, and skips slug/name collisions instead of
-guessing or overwriting. Imported rows preserve original Airtable names as
-aliases, split birth and samadhi date fields into
+an Airtable `ExternalRecord`, and resolves a normalized slug collision by
+falling back to the full Airtable name when that produces a distinct unused
+slug. Exact detailed-slug and name collisions remain skipped for human review
+instead of being guessed or overwritten. Imported rows preserve original
+Airtable names as aliases, split birth and samadhi date fields into
 raw/year/month/day/precision parts, and map safe saint images from
 `Picture(s) of Saint`. It does not import relic or museum fields into public
 saint records.
@@ -108,11 +110,14 @@ The detailed recommendations live in
 
 The preferred editor workflow is `/admin/saints` -> `Airtable sync review`.
 Those actions create durable `AirtableImportJob` records for dry-run checks,
-missing draft imports, and cleanup graph imports. Job summaries should be
+missing draft imports, safe slug-collision repairs, and cleanup graph imports.
+The repair action creates draft saints only for previously skipped rows whose
+full Airtable names produce unused detailed slugs. Job summaries should be
 reviewable from the admin UI, including expandable affected-record details for
-saint collisions, import errors, unresolved cleanup graph links, and
-self-skipped relationship rows. Detail rows should use Airtable saint names where possible, use short
-messages, and link to `/admin/saints/{slug}` when a CMS saint is known.
+resolved and unresolved saint collisions, import errors, unresolved cleanup
+graph links, and self-skipped relationship rows. Detail rows should use Airtable
+saint names where possible, use short messages, and link to
+`/admin/saints/{slug}` when a CMS saint is known.
 
 Find likely duplicate Airtable saint records from the local mirror:
 

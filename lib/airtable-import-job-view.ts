@@ -1,6 +1,14 @@
 import type { AirtableImportJob } from "@/lib/generated/prisma/client";
 
 export type AirtableImportSummaryDetails = {
+  slugRepairs: Array<{
+    recordId: string;
+    airtableName: string;
+    resolvedSlug: string;
+    existingSaintId: string;
+    existingSaintSlug: string;
+    existingSaintName: string;
+  }>;
   collisions: Array<{
     recordId: string;
     airtableName?: string;
@@ -87,6 +95,14 @@ export function serializeAirtableImportJob(job: AirtableImportJob) {
 export function normalizeAirtableSummaryDetails(rawSummary: unknown): AirtableImportSummaryDetails {
   const summary = asRecord(rawSummary);
   return {
+    slugRepairs: arrayOfRecords(summary?.slugRepairs).map((item) => ({
+      recordId: getString(item.recordId) ?? "",
+      airtableName: getString(item.airtableName) ?? "",
+      resolvedSlug: getString(item.resolvedSlug) ?? "",
+      existingSaintId: getString(item.existingSaintId) ?? "",
+      existingSaintSlug: getString(item.existingSaintSlug) ?? "",
+      existingSaintName: getString(item.existingSaintName) ?? ""
+    })).filter((item) => item.recordId && item.airtableName && item.resolvedSlug),
     collisions: arrayOfRecords(summary?.collisions).map((item) => ({
       recordId: getString(item.recordId) ?? "",
       airtableName: getString(item.airtableName),

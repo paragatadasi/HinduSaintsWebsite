@@ -2,7 +2,7 @@
 
 import type { Route } from "next";
 import Link from "next/link";
-import { ChevronDown, DatabaseZap, RefreshCw, Waypoints } from "lucide-react";
+import { ChevronDown, DatabaseZap, RefreshCw, Waypoints, Wrench } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { AirtableImportSummaryDetails } from "@/lib/airtable-import-job-view";
@@ -48,7 +48,7 @@ type JobsResponse = {
   jobs: AirtableImportJobView[];
 };
 
-type AirtableImportIntent = "check" | "import_missing_drafts" | "import_airtable_cleanup";
+type AirtableImportIntent = "check" | "import_missing_drafts" | "repair_slug_collisions" | "import_airtable_cleanup";
 
 const runningStatuses = new Set(["queued", "running"]);
 
@@ -118,7 +118,7 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
     >
       <div className="admin-toolbar">
         <div>
-          <p>Check mirrored Airtable saint rows, create missing CMS saints as drafts, and import the current cleanup graph into the new review schema.</p>
+          <p>Check mirrored Airtable saint rows, create missing CMS saints as drafts, repair safe slug collisions with detailed Airtable names, and import the current cleanup graph.</p>
         </div>
         <div className="review-actions">
           <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isBusy} onClick={() => startJob("check")}>
@@ -128,6 +128,10 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
           <button className="admin-form-button" type="button" disabled={isBusy} onClick={() => startJob("import_missing_drafts")}>
             <DatabaseZap aria-hidden="true" size={16} />
             Import missing drafts
+          </button>
+          <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isBusy} onClick={() => startJob("repair_slug_collisions")}>
+            <Wrench aria-hidden="true" size={16} />
+            Repair slug collisions
           </button>
           <button className="admin-form-button" type="button" disabled={isBusy} onClick={() => startJob("import_airtable_cleanup")}>
             <Waypoints aria-hidden="true" size={16} />
@@ -175,7 +179,7 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
 }
 
 function AffectedRecordDetails({ job }: { job: AirtableImportJobView }) {
-  const details = getAffectedRecords(job.rawSummary);
+  const details = getAffectedRecords(job);
   if (details.length === 0) return null;
 
   return (
@@ -204,8 +208,20 @@ function AffectedRecordDetails({ job }: { job: AirtableImportJobView }) {
   );
 }
 
-function getAffectedRecords(summary: AirtableImportSummaryDetails) {
+function getAffectedRecords(job: AirtableImportJobView) {
+  const summary = job.rawSummary;
   return [
+    ...summary.slugRepairs.map((item) => ({
+      key: `slug-repair:${item.recordId}:${item.resolvedSlug}`,
+      kind: job.mode === "check" ? "Repair available" : "Slug repaired",
+      message: item.resolvedSlug,
+      primary: `Airtable saint: ${item.airtableName}`,
+      secondary: `Keeps separate from existing CMS saint: ${item.existingSaintName}`,
+      href: job.mode === "check"
+        ? `/admin/saints/${item.existingSaintSlug}`
+        : `/admin/saints/${item.resolvedSlug}`,
+      linkLabel: job.mode === "check" ? "Open existing CMS saint" : "Open repaired draft"
+    })),
     ...summary.collisions.map((item) => ({
       key: `collision:${item.recordId}:${item.existingSaintSlug ?? item.existingSaintId ?? item.reason}`,
       kind: item.reason === "name_collision" ? "Name collision" : "Slug collision",
@@ -307,11 +323,21 @@ function schemaCountBadges(job: AirtableImportJobView) {
     ];
   }
 
+  if (job.mode === "repair_slug_collisions") {
+    return [
+      `${job.mirrorRowsChecked} mirror rows`,
+      `${job.rawSummary.slugRepairs.length} collisions repaired`,
+      `${job.slugNameCollisionsSkipped} unresolved collisions`,
+      `${job.failedRows} failed`
+    ];
+  }
+
   return [
     `${job.mirrorRowsChecked} mirror rows`,
     `${job.newDraftSaintsCreated} drafts ${job.mode === "check" ? "available" : "created"}`,
+    `${job.rawSummary.slugRepairs.length} detailed slugs`,
     `${job.existingCmsSaintsSkipped} existing skipped`,
-    `${job.slugNameCollisionsSkipped} collisions skipped`,
+    `${job.slugNameCollisionsSkipped} unresolved collisions`,
     `${job.failedRows} failed`
   ];
 }

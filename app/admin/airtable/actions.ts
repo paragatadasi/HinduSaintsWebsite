@@ -17,7 +17,7 @@ const protectedActionSchema = z.object({
   returnTo: z.string().startsWith("/admin/airtable").optional()
 });
 
-const queueModeSchema = z.enum(["import_missing_drafts", "import_airtable_cleanup"]);
+const queueModeSchema = z.enum(["import_missing_drafts", "repair_slug_collisions", "import_airtable_cleanup"]);
 
 export async function dryRunAirtableMirrorAction() {
   await requireAdminSession();

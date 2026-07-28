@@ -105,6 +105,7 @@ export default async function AirtableReingestPage({ searchParams }: AirtableRei
       >
         <div className="review-actions">
           <QueueForm mode="import_missing_drafts" label="Import missing saint drafts" />
+          <QueueForm mode="repair_slug_collisions" label="Repair saint slug collisions" />
           <QueueForm mode="import_airtable_cleanup" label="Import cleanup graph" />
         </div>
         {recentJobs.length > 0 ? (

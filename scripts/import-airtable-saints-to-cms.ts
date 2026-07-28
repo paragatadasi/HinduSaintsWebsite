@@ -23,6 +23,7 @@ async function main() {
 
   console.log(`${options.dryRun ? "Dry run: checked" : "Checked"} ${summary.mirrorRowsChecked} Airtable mirror saints.`);
   console.log(`${options.dryRun ? "Would create" : "Created"} ${summary.newDraftSaintsCreated} missing draft saints.`);
+  console.log(`${options.dryRun ? "Would resolve" : "Resolved"} ${summary.slugCollisionsResolved} slug collisions with detailed Airtable names.`);
   console.log(`Existing Airtable-linked CMS saints skipped: ${summary.existingCmsSaintsSkipped}`);
   console.log(`Slug/name collisions skipped: ${summary.slugNameCollisionsSkipped}`);
   if (summary.errors.length > 0) {

@@ -1,6 +1,7 @@
 import { Prisma, type Confidence, type ContentStatus, type PlaceType, type RelationshipType } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
 import { cacheExternalImage } from "@/lib/external-image-cache";
+import { buildAirtableSaintSlugCandidates } from "@/lib/airtable-saint-slugs";
 import { buildEraLabel, parseImportedDate } from "@/lib/import-dates";
 import { getKnownPlaceScope, getKnownStateSlug } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
@@ -26,6 +27,7 @@ type ImportPlan = {
   displayName: string;
   canonicalName: string;
   baseSlug: string;
+  detailedSlug?: string;
   rawFieldsJson: Prisma.JsonValue;
   rawPayloadJson?: Prisma.JsonValue;
   biographySummary?: string;
@@ -39,7 +41,13 @@ type ImportPlan = {
 };
 
 type ImportResult =
-  | { status: "created"; saintId: string }
+  | {
+      status: "created";
+      saintId: string;
+      slug: string;
+      slugResolution: "base" | "detailed";
+      resolvedCollision?: SaintReference;
+    }
   | { status: "skipped_existing_external"; saintId?: string | null }
   | { status: "skipped_collision"; saint: SaintReference; reason: AirtableImportCollisionDetail["reason"]; message: string };
 
@@ -116,6 +124,15 @@ export type AirtableImportCollisionDetail = {
   message: string;
 };
 
+export type AirtableSlugRepairDetail = {
+  recordId: string;
+  airtableName: string;
+  resolvedSlug: string;
+  existingSaintId: string;
+  existingSaintSlug: string;
+  existingSaintName: string;
+};
+
 export type AirtableGuruRelationshipIssueDetail = {
   discipleRecordId: string;
   discipleName?: string;
@@ -159,14 +176,16 @@ export type AirtableCleanupIssueDetail = {
   message: string;
 };
 
-export type AirtableImportMode = "check" | "import_missing_drafts" | "import_airtable_cleanup";
+export type AirtableImportMode = "check" | "import_missing_drafts" | "repair_slug_collisions" | "import_airtable_cleanup";
 
 export type AirtableSaintImportSummary = {
-  mode: "check" | "import_missing_drafts";
+  mode: "check" | "import_missing_drafts" | "repair_slug_collisions";
   mirrorRowsChecked: number;
   existingCmsSaintsSkipped: number;
   newDraftSaintsCreated: number;
+  slugCollisionsResolved: number;
   slugNameCollisionsSkipped: number;
+  slugRepairs: AirtableSlugRepairDetail[];
   collisions: AirtableImportCollisionDetail[];
   errors: AirtableImportErrorDetail[];
 };
@@ -259,6 +278,12 @@ export async function runAirtableImportJob(jobId: string) {
       return;
     }
 
+    if (job.mode === "repair_slug_collisions") {
+      const summary = await runAirtableSlugCollisionRepair({ dryRun: false });
+      await completeAirtableJob(jobId, summary);
+      return;
+    }
+
     if (job.mode !== "check" && job.mode !== "import_missing_drafts") {
       throw new Error(`Unsupported Airtable import mode: ${job.mode}.`);
     }
@@ -290,6 +315,29 @@ export async function runAirtableSaintsMissingDraftImport(options: AirtableSaint
       addImportResult(summary, result, plan);
     } catch (error) {
       summary.errors.push(formatImportError(plan.recordId, plan.displayName, error));
+    }
+  }
+
+  return summary;
+}
+
+export async function runAirtableSlugCollisionRepair(options: AirtableSaintImportOptions = {}) {
+  const dryRun = options.dryRun ?? true;
+  const rows = await findAirtableSaintRows(options.limit);
+  const plans = rows.map(buildPlan).filter((plan): plan is ImportPlan => Boolean(plan));
+  const summary = emptySaintImportSummary("repair_slug_collisions", rows.length);
+
+  for (const plan of plans) {
+    try {
+      const classification = await classifyMissingDraftPlan(plan);
+      if (classification.status === "created" && classification.slugResolution === "detailed") {
+        const result = dryRun ? classification : await createSaintFromClassification(plan, classification);
+        addImportResult(summary, result, plan);
+      } else if (classification.status !== "created") {
+        addImportResult(summary, classification, plan);
+      }
+    } catch (error) {
+      summary.errors.push(formatImportError(plan.recordId, plan.originalName, error));
     }
   }
 
@@ -410,6 +458,7 @@ function buildPlan(row: {
 
   const { displayName, locationPhrase } = cleanDisplayName(originalName);
   const canonicalName = canonicalizeName(displayName);
+  const { baseSlug, detailedSlug } = buildAirtableSaintSlugCandidates({ displayName, originalName });
   const birth = parseImportedDate(stringField(fields, "Birth (YYYY-MM-DD)"));
   const samadhi = parseImportedDate(stringField(fields, "Samadhi (YYYY-MM-DD)"));
   const airtablePlaces = stringArrayField(fields, "Place").map((name, index) => ({
@@ -429,7 +478,8 @@ function buildPlan(row: {
     originalName,
     displayName,
     canonicalName,
-    baseSlug: toSlug(displayName || canonicalName),
+    baseSlug,
+    detailedSlug,
     rawFieldsJson: row.rawFieldsJson,
     rawPayloadJson: row.rawPayloadJson,
     biographySummary: stringField(fields, "Bio/Info"),
@@ -451,10 +501,51 @@ async function classifyMissingDraftPlan(plan: ImportPlan): Promise<ImportResult>
   if (existingExternal?.entityId) return { status: "skipped_existing_external", saintId: existingExternal.entityId };
 
   const slugCollision = await db.saint.findUnique({
-    where: { slug: getPlanSlug(plan) },
-    select: { id: true, displayName: true, slug: true }
+    where: { slug: plan.baseSlug },
+    select: {
+      id: true,
+      displayName: true,
+      slug: true,
+      aliases: {
+        where: { alias: { equals: plan.originalName, mode: "insensitive" } },
+        select: { id: true },
+        take: 1
+      }
+    }
   });
   if (slugCollision) {
+    if (slugCollision.aliases.length > 0) {
+      return {
+        status: "skipped_collision",
+        saint: saintReference(slugCollision),
+        reason: "name_collision",
+        message: "Detailed Airtable name matches an existing saint alias"
+      };
+    }
+
+    if (plan.detailedSlug) {
+      const detailedSlugCollision = await db.saint.findUnique({
+        where: { slug: plan.detailedSlug },
+        select: { id: true, displayName: true, slug: true }
+      });
+      if (!detailedSlugCollision) {
+        return {
+          status: "created",
+          saintId: "",
+          slug: plan.detailedSlug,
+          slugResolution: "detailed",
+          resolvedCollision: saintReference(slugCollision)
+        };
+      }
+
+      return {
+        status: "skipped_collision",
+        saint: saintReference(detailedSlugCollision),
+        reason: "slug_collision",
+        message: "Detailed slug already exists"
+      };
+    }
+
     return {
       status: "skipped_collision",
       saint: saintReference(slugCollision),
@@ -481,7 +572,12 @@ async function classifyMissingDraftPlan(plan: ImportPlan): Promise<ImportResult>
     };
   }
 
-  return { status: "created", saintId: "" };
+  return {
+    status: "created",
+    saintId: "",
+    slug: plan.baseSlug,
+    slugResolution: "base"
+  };
 }
 
 function saintReference(saint: { id: string; displayName: string; slug: string }): SaintReference {
@@ -496,7 +592,14 @@ async function importMissingDraftPlan(plan: ImportPlan): Promise<ImportResult> {
   const classification = await classifyMissingDraftPlan(plan);
   if (classification.status !== "created") return classification;
 
-  const saint = await createSaintFromPlan(plan, MISSING_DRAFT_STATUS);
+  return createSaintFromClassification(plan, classification);
+}
+
+async function createSaintFromClassification(
+  plan: ImportPlan,
+  classification: Extract<ImportResult, { status: "created" }>
+): Promise<ImportResult> {
+  const saint = await createSaintFromPlan(plan, MISSING_DRAFT_STATUS, classification.slug);
   await syncPlaces(saint.id, plan);
   await syncTraditions(saint.id, plan);
   const primaryImageId = await syncImages(saint.id, plan);
@@ -506,15 +609,18 @@ async function importMissingDraftPlan(plan: ImportPlan): Promise<ImportResult> {
   await syncSources(saint.id, plan);
   await linkExternalRecordToSaint(plan, saint.id);
 
-  return { status: "created", saintId: saint.id };
+  return {
+    ...classification,
+    saintId: saint.id
+  };
 }
 
-async function createSaintFromPlan(plan: ImportPlan, status: ContentStatus) {
+async function createSaintFromPlan(plan: ImportPlan, status: ContentStatus, slug: string) {
   const eraLabel = buildEraLabel(plan.birth, plan.samadhi);
 
   const saint = await db.saint.create({
     data: {
-      slug: getPlanSlug(plan),
+      slug,
       canonicalName: plan.canonicalName,
       displayName: plan.displayName,
       biographySummary: plan.biographySummary,
@@ -547,10 +653,6 @@ async function createSaintFromPlan(plan: ImportPlan, status: ContentStatus) {
   }
 
   return saint;
-}
-
-function getPlanSlug(plan: ImportPlan) {
-  return plan.baseSlug || "saint";
 }
 
 async function linkExternalRecordToSaint(plan: ImportPlan, saintId: string) {
@@ -993,7 +1095,9 @@ function emptySaintImportSummary(mode: AirtableSaintImportSummary["mode"], mirro
     mirrorRowsChecked,
     existingCmsSaintsSkipped: 0,
     newDraftSaintsCreated: 0,
+    slugCollisionsResolved: 0,
     slugNameCollisionsSkipped: 0,
+    slugRepairs: [],
     collisions: [],
     errors: []
   };
@@ -1359,13 +1463,26 @@ function addCleanupIssue(summary: AirtableCleanupImportSummary, issue: AirtableC
 }
 
 function addImportResult(summary: AirtableSaintImportSummary, result: ImportResult, plan: ImportPlan) {
-  if (result.status === "created") summary.newDraftSaintsCreated += 1;
+  if (result.status === "created") {
+    summary.newDraftSaintsCreated += 1;
+    if (result.slugResolution === "detailed" && result.resolvedCollision) {
+      summary.slugCollisionsResolved += 1;
+      summary.slugRepairs.push({
+        recordId: plan.recordId,
+        airtableName: plan.originalName,
+        resolvedSlug: result.slug,
+        existingSaintId: result.resolvedCollision.id,
+        existingSaintSlug: result.resolvedCollision.slug,
+        existingSaintName: result.resolvedCollision.name
+      });
+    }
+  }
   if (result.status === "skipped_existing_external") summary.existingCmsSaintsSkipped += 1;
   if (result.status === "skipped_collision") {
     summary.slugNameCollisionsSkipped += 1;
     summary.collisions.push({
       recordId: plan.recordId,
-      airtableName: plan.displayName,
+      airtableName: plan.originalName,
       existingSaintId: result.saint.id,
       existingSaintSlug: result.saint.slug,
       existingSaintName: result.saint.name,
@@ -1506,10 +1623,14 @@ function getCompletedJobMessage(summary: AirtableSaintImportSummary | AirtableCl
   }
 
   if (summary.mode === "check") {
-    return `Check completed: ${summary.newDraftSaintsCreated} draft saints available, ${summary.existingCmsSaintsSkipped} existing skipped, ${summary.slugNameCollisionsSkipped} collisions.`;
+    return `Check completed: ${summary.newDraftSaintsCreated} draft saints available, ${summary.slugCollisionsResolved} with detailed slugs, ${summary.slugNameCollisionsSkipped} unresolved collisions.`;
   }
 
-  return `Completed: ${summary.newDraftSaintsCreated} draft saints created, ${summary.existingCmsSaintsSkipped} existing skipped, ${summary.slugNameCollisionsSkipped} collisions.`;
+  if (summary.mode === "repair_slug_collisions") {
+    return `Completed collision repair: ${summary.slugCollisionsResolved} draft saints created with detailed slugs, ${summary.slugNameCollisionsSkipped} unresolved collisions.`;
+  }
+
+  return `Completed: ${summary.newDraftSaintsCreated} draft saints created, ${summary.slugCollisionsResolved} with detailed slugs, ${summary.slugNameCollisionsSkipped} unresolved collisions.`;
 }
 
 function formatMode(mode: string) {
