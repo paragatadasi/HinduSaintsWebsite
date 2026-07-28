@@ -378,6 +378,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
                 <label htmlFor="biography-body-markdown">Body Markdown</label>
                 <MarkdownEditor
                   defaultValue={primaryBiography?.bodyMarkdown ?? ""}
+                  enableDefinitions
                   images={biographyImages}
                   maxLength={20000}
                   name="bodyMarkdown"

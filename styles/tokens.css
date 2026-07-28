@@ -29,6 +29,8 @@
   --color-focus: #c28b2c;
   --font-sans: Arial, Helvetica, sans-serif;
   --font-serif: Georgia, "Times New Roman", serif;
+  --font-size-definition-tooltip: 0.875rem;
+  --line-height-definition-tooltip: 1.45;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -56,6 +58,7 @@
   --interactive-image-scale: 1.035;
   --width-page: 1180px;
   --width-prose: 760px;
+  --width-definition-tooltip: 18rem;
   --width-aside: 320px;
   --width-card-grid-min: 240px;
   --width-card-grid: 280px;
@@ -128,6 +131,7 @@
   --size-focus-ring: 2px;
   --size-focus-offset: 3px;
   --size-focus-offset-card: 4px;
+  --z-index-definition-tooltip: 1;
 }
 
 [data-theme="watercolor"] {
