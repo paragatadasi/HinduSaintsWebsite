@@ -12,22 +12,26 @@ type HomeInstagramRailProps = {
 };
 
 export function HomeInstagramRail({ previews }: HomeInstagramRailProps) {
-  const posts = useMemo(() => previews.map(toInstagramPost), [previews]);
+  const cards = useMemo(() => previews.map((preview) => ({
+    post: toInstagramPost(preview),
+    saint: preview.saint
+  })), [previews]);
   const [activeState, setActiveState] = useState<CarouselViewerState | null>(null);
   const content = getInstagramSectionContent();
 
-  if (posts.length === 0) return null;
+  if (cards.length === 0) return null;
 
   return (
     <div className="home-instagram">
       <ScrollRail ariaLabel="Instagram previews" className="home-instagram__rail" controls="always">
-        {posts.map((post) => (
+        {cards.map(({ post, saint }) => (
           <InstagramPostCard
             className="rail-card"
             content={content}
             key={post.url}
             onOpenPost={() => setActiveState(getViewerState(post, 0))}
             post={post}
+            saintHref={saint ? `/saints/${saint.slug}` : undefined}
             saintName="hindu_saints"
           />
         ))}

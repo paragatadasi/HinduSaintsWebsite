@@ -11,6 +11,7 @@ import type {
   PublicTraditionLink,
   PublicTraditionSummary
 } from "@/lib/public-contracts";
+import { getPublishedSaintSummariesByIds } from "@/lib/public-saints";
 
 type TraditionListRow = Awaited<ReturnType<typeof getPublishedTraditionRows>>[number];
 type TraditionDetailRow = NonNullable<Awaited<ReturnType<typeof getPublishedTraditionRowBySlug>>>;
@@ -157,6 +158,31 @@ export async function getPublishedTraditionBySlug(slug: string): Promise<PublicT
   ]);
 
   return toPublicTraditionDetail(tradition, founderNames, sources);
+}
+
+export async function getTraditionSaintIndexBySlug(slug: string) {
+  const tradition = await db.tradition.findUnique({
+    where: { slug },
+    select: {
+      name: true,
+      slug: true,
+      saints: {
+        where: { saint: { status: "published" } },
+        orderBy: { saint: { displayName: "asc" } },
+        select: { saintId: true }
+      }
+    }
+  });
+
+  if (!tradition) return null;
+
+  return {
+    name: tradition.name,
+    slug: tradition.slug,
+    saints: await getPublishedSaintSummariesByIds(
+      tradition.saints.map(({ saintId }) => saintId)
+    )
+  };
 }
 
 function toPublicTraditionSummary(
