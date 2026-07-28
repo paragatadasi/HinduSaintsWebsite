@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { auth, isGoogleAuthConfigured, signIn } from "@/lib/auth";
+import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -52,12 +54,18 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     );
   }
 
+  const newFeedbackCount = await db.feedbackSubmission.count({ where: { status: "new" } });
+
   return (
     <main className="admin-shell">
       <div className="page-shell admin-layout">
         <aside className="admin-sidebar">
           <Link href="/admin">
             <strong>Admin CMS</strong>
+          </Link>
+          <Link className="admin-sidebar__link" href="/admin/feedback">
+            <span>Inbox</span>
+            {newFeedbackCount > 0 ? <StatusBadge label={String(newFeedbackCount)} /> : null}
           </Link>
           <Link href="/admin/home">Homepage</Link>
           <Link href="/admin/instagram">Instagram</Link>

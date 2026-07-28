@@ -54,7 +54,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
             <p>{saint.shortDescription}</p>
             <div className="saint-detail-actions">
               <Button
-                href={`/contact?saint=${encodeURIComponent(saint.displayName)}&page=${encodeURIComponent(`/saints/${saint.slug}`)}`}
+                href={`/contact?type=saint&slug=${encodeURIComponent(saint.slug)}`}
                 variant="secondary"
                 icon={<MessageSquare size={18} aria-hidden="true" />}
               >
