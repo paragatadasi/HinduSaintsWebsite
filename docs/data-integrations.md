@@ -198,10 +198,22 @@ web refresh imports all available Instagram API posts when no `InstagramItem`
 records exist. Later refreshes stop when they reach an already-known post and
 skip existing records instead of re-importing them.
 
+Production also runs the same refresh path automatically once per day at
+7:05 AM Europe/Berlin. The public GitHub Actions workflow calls the deployed
+app's protected `/api/cron/instagram-refresh` endpoint; the endpoint queues the
+same ingestion job as the admin `Refresh Queue` button and skips itself if an
+Instagram ingestion job is already queued or running.
+
 Instagram queue refresh requires both:
 
 - `INSTAGRAM_ACCESS_TOKEN`, to pull media records from the Instagram API.
 - `OPENAI_API_KEY`, to extract first-page biodata before editorial review.
+
+The scheduled production refresh also requires:
+
+- `INSTAGRAM_REFRESH_CRON_SECRET` as an environment variable on the deployed app.
+- Matching GitHub repository secrets named `INSTAGRAM_REFRESH_CRON_SECRET` and
+  `HINDU_SAINTS_PRODUCTION_URL`.
 
 Imported media is downloaded into the site media store as `InstagramMediaAsset`
 records when API media URLs are available. If a post is missing cached media or

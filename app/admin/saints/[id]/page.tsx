@@ -376,7 +376,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
               {primaryBiography ? <input name="biographyId" type="hidden" value={primaryBiography.id} /> : null}
               <label>
                 Title
-                <input name="title" defaultValue={primaryBiography?.title ?? "Profile notes"} required maxLength={200} />
+                <input name="title" defaultValue={primaryBiography?.title ?? "The Life of a Saint"} required maxLength={200} />
               </label>
               <label>
                 Status
@@ -437,7 +437,12 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
             {publicImages.map(({ mediaAsset, placement }) => (
               <figure className="image-with-credit image-with-credit--admin" key={mediaAsset.id}>
                 <div className="saint-image-library__preview">
-                  <img src={mediaAsset.url} alt={mediaAsset.altText ?? saint.displayName} width={mediaAsset.width ?? undefined} height={mediaAsset.height ?? undefined} />
+                  <img
+                    src={mediaAsset.url}
+                    alt={mediaAsset.altText ?? saint.displayName}
+                    width={mediaAsset.width ?? undefined}
+                    height={mediaAsset.height ?? undefined}
+                  />
                   <span className="status-pill status-pill--good">{formatImagePlacement(placement)}</span>
                 </div>
                 <figcaption>

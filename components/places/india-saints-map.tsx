@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, X } from "lucide-react";
 import { FocalImage } from "@/components/ui/focal-image";
 import type { PublicPlaceMapData, PublicPlaceMapPoint, PublicPlaceMapSaint } from "@/lib/public-contracts";
 import type { PlacesMapContent } from "@/lib/site-content";
@@ -58,6 +58,9 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
   const [selectedSlug, setSelectedSlug] = useState("");
   const [selectedStateSlug, setSelectedStateSlug] = useState("");
   const [hoveredSlug, setHoveredSlug] = useState("");
+  const panelRef = useRef<HTMLElement>(null);
+  const panelHeadingRef = useRef<HTMLHeadingElement>(null);
+  const selectionMethodRef = useRef<"keyboard" | "pointer" | null>(null);
 
   const projectedPoints = useMemo(() => {
     const groupedCoordinateCounts = new Map<string, number>();
@@ -119,21 +122,52 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
       setHoveredSlug(slug);
     }
   };
-  const selectPoint = (slug: string) => {
+  const selectPoint = (slug: string, method: "keyboard" | "pointer") => {
+    selectionMethodRef.current = method;
     setSelectedStateSlug("");
     setSelectedSlug(slug);
   };
-  const selectState = (slug: string) => {
+  const selectState = (slug: string, method: "keyboard" | "pointer") => {
+    selectionMethodRef.current = method;
     setSelectedSlug("");
     setSelectedStateSlug(slug);
   };
-  const selectDelegatedState = (target: EventTarget | null) => {
+  const selectDelegatedState = (target: EventTarget | null, method: "keyboard" | "pointer") => {
     const element = target instanceof Element ? target.closest<SVGElement>("[data-state-slug]") : null;
     const stateSlug = element?.dataset.stateSlug;
     if (stateSlug && activeStateSlugs.has(stateSlug)) {
-      selectState(stateSlug);
+      selectState(stateSlug, method);
     }
   };
+  const clearSelection = () => {
+    selectionMethodRef.current = null;
+    setSelectedSlug("");
+    setSelectedStateSlug("");
+  };
+
+  useEffect(() => {
+    if (!selectedPanelItem) return;
+
+    const animationFrame = window.requestAnimationFrame(() => {
+      const panel = panelRef.current;
+      const heading = panelHeadingRef.current;
+      if (!panel || !heading) return;
+
+      const panelBounds = panel.getBoundingClientRect();
+      if (panelBounds.top >= window.innerHeight - 80) {
+        heading.scrollIntoView({
+          block: "nearest",
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+        });
+      }
+
+      if (selectionMethodRef.current === "keyboard") {
+        heading.focus({ preventScroll: true });
+      }
+    });
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [selectedPanelItem]);
 
   return (
     <section className="places-map-section" aria-labelledby="places-map-title">
@@ -145,16 +179,16 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
         </div>
         <p>{visibleSaintCount} {visibleSaintCount === 1 ? "saint" : "saints"} across {projectedPoints.length} mapped places</p>
       </div>
-      <div className="places-map">
+      <div className={selectedPanelItem ? "places-map places-map--selected" : "places-map"}>
         <div className="places-map__canvas">
           <svg
-            onClick={(event) => selectDelegatedState(event.target)}
+            onClick={(event) => selectDelegatedState(event.target, "pointer")}
             onKeyDown={(event) => {
               if (event.key === "Enter" || event.key === " ") {
                 const element = event.target instanceof Element ? event.target.closest("[data-state-slug]") : null;
                 if (element) {
                   event.preventDefault();
-                  selectDelegatedState(event.target);
+                  selectDelegatedState(event.target, "keyboard");
                 }
               }
             }}
@@ -178,13 +212,13 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
                 aria-label={`${point.name}, ${point.activeSaints.length} ${point.activeSaints.length === 1 ? "saint" : "saints"}`}
                 className={point.placeScope === "state" ? "places-map__marker places-map__marker--state" : "places-map__marker"}
                 key={point.slug}
-                onClick={() => selectPoint(point.slug)}
+                onClick={() => selectPoint(point.slug, "pointer")}
                 onBlur={() => setHoveredSlug("")}
                 onFocus={() => updateHoveredSlug(point.slug)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
-                    selectPoint(point.slug);
+                    selectPoint(point.slug, "keyboard");
                   }
                 }}
                 onMouseEnter={() => updateHoveredSlug(point.slug)}
@@ -238,13 +272,23 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
             ) : null}
           </svg>
         </div>
-        <aside className="places-map__panel" aria-live="polite">
+        <aside
+          aria-labelledby={selectedPanelItem ? "places-map-selection-title" : "places-map-prompt-title"}
+          aria-live="polite"
+          className={selectedPanelItem ? "places-map__panel places-map__panel--selected" : "places-map__panel"}
+          ref={panelRef}
+        >
           {selectedPanelItem ? (
             <>
-              <div>
-                <div className="eyebrow">{selectedPanelItem.activeSaints.length} {selectedPanelItem.activeSaints.length === 1 ? "saint" : "saints"}</div>
-                <h3>{selectedPanelItem.name}</h3>
-                {selectedPoint?.region || selectedPoint?.country ? <p>{[selectedPoint.region, selectedPoint.country].filter(Boolean).join(", ")}</p> : null}
+              <div className="places-map__panel-heading">
+                <div>
+                  <div className="eyebrow">{selectedPanelItem.activeSaints.length} {selectedPanelItem.activeSaints.length === 1 ? "saint" : "saints"}</div>
+                  <h3 id="places-map-selection-title" ref={panelHeadingRef} tabIndex={-1}>{selectedPanelItem.name}</h3>
+                  {selectedPoint?.region || selectedPoint?.country ? <p>{[selectedPoint.region, selectedPoint.country].filter(Boolean).join(", ")}</p> : null}
+                </div>
+                <button aria-label="Clear map selection" className="places-map__panel-close" onClick={clearSelection} type="button">
+                  <X size={18} aria-hidden="true" />
+                </button>
               </div>
               <ul className="places-map__saint-list">
                 {visiblePanelSaints.map((saint) => (
@@ -264,7 +308,7 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
           ) : (
             <div className="places-map__prompt">
               <div className="eyebrow">Explore</div>
-              <h3>{content.promptTitle}</h3>
+              <h3 id="places-map-prompt-title">{content.promptTitle}</h3>
               <p>{projectedPoints.length > 0 ? content.promptBody : "No mapped places match the selected year."}</p>
             </div>
           )}
@@ -299,6 +343,7 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
           <strong>{timeFilterEnabled ? selectedYear : "All eras"}</strong>
           <button
             aria-label="Reset time filter"
+            disabled={!timeFilterEnabled}
             onClick={() => setTimeFilterEnabled(false)}
             type="button"
           >

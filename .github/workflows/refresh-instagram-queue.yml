@@ -1,0 +1,57 @@
+name: Refresh Instagram Queue
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "5 5,6 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: refresh-instagram-queue
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Refresh deployed Instagram queue
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Europe/Berlin refresh time
+        id: berlin_time
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            echo "should_run=true" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+
+          berlin_time="$(TZ=Europe/Berlin date +%H:%M)"
+          if [ "${berlin_time}" != "07:05" ]; then
+            echo "Skipping because Europe/Berlin time is ${berlin_time}, not 07:05."
+            echo "should_run=false" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+
+          echo "should_run=true" >> "${GITHUB_OUTPUT}"
+
+      - name: Call deployed refresh endpoint
+        if: steps.berlin_time.outputs.should_run == 'true'
+        env:
+          INSTAGRAM_REFRESH_CRON_SECRET: ${{ secrets.INSTAGRAM_REFRESH_CRON_SECRET }}
+          PRODUCTION_BASE_URL: ${{ secrets.HINDU_SAINTS_PRODUCTION_URL }}
+        run: |
+          if [ -z "${PRODUCTION_BASE_URL}" ]; then
+            echo "Missing HINDU_SAINTS_PRODUCTION_URL repository secret." >&2
+            exit 1
+          fi
+
+          if [ -z "${INSTAGRAM_REFRESH_CRON_SECRET}" ]; then
+            echo "Missing INSTAGRAM_REFRESH_CRON_SECRET repository secret." >&2
+            exit 1
+          fi
+
+          base_url="${PRODUCTION_BASE_URL%/}"
+          curl --fail-with-body --show-error --silent \
+            --request POST \
+            --header "Authorization: Bearer ${INSTAGRAM_REFRESH_CRON_SECRET}" \
+            "${base_url}/api/cron/instagram-refresh"
