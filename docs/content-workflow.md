@@ -74,13 +74,15 @@ visibility is controlled by the saint: once the saint is `published`, every
 matched or published Instagram item attached to that saint is available on the
 saint page. Multiple Instagram posts can be attached to the same saint.
 
-The saint review UI is intentionally compact. Traditions and places use a
-shared searchable multi-select dropdown so the starting view does not expose
-large checkbox lists. Selected places then appear in a focused route editor,
-where editors can drag them into reviewed route order and set public place
-roles/labels. Missing traditions and places can be quick-created from their
-respective saint review cards, attached immediately, and refined in their
-dedicated review screens afterward.
+The saint review UI is intentionally compact. Traditions and places sit in flat
+subsections within Public Fields and use a shared relationship picker: clicking
+a search result adds it immediately to the unsaved selection, with no checkbox
+list or summary card. Selected rows own removal and relationship-specific
+metadata; traditions expose an explicit primary action, while places form a
+focused route editor where editors can drag them into reviewed order and set
+public roles/labels. If a search has no exact saved match, its create result
+opens a minimal inline form seeded from the search. New drafts are attached on
+creation and can be refined in their dedicated review screens afterward.
 
 Dedicated reconciliation queues remain a follow-up workflow.
 

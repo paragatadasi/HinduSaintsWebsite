@@ -30,6 +30,7 @@
   --font-sans: Arial, Helvetica, sans-serif;
   --font-serif: Georgia, "Times New Roman", serif;
   --font-size-definition-tooltip: 0.875rem;
+  --font-size-review-field: 0.92rem;
   --font-size-review-hint: 0.78rem;
   --line-height-definition-tooltip: 1.45;
   --space-1: 0.25rem;
@@ -105,6 +106,7 @@
   --size-instagram-avatar: 38px;
   --size-instagram-type-badge: 34px;
   --size-instagram-viewer-button: 42px;
+  --size-control: 44px;
   --size-gallery-viewer-thumb: 64px;
   --size-gallery-viewer-mobile-thumb: 56px;
   --size-icon-xs: 15px;

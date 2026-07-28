@@ -38,6 +38,9 @@ Rules:
 - Use shared components for repeated UI behavior and variants.
 - Use `SearchableMultiSelect` for compact admin relationship pickers that need
   searchable multi-select checkbox behavior without filling the initial screen.
+- Use `SearchableRelationshipPicker` for additive review workflows: clicking a
+  search result adds it, selected rows own removal and relationship metadata,
+  and an unmatched search can open the smallest useful create form.
 - Use page files to compose design-system pieces, not to define new one-off visual systems.
 - Do not hard-code colors, fonts, spacing, shadows, radii, widths, or image treatments in components.
 - Do not add inline styles for design/layout changes unless the exception is explicitly justified in the change.
@@ -161,8 +164,10 @@ Relationship and taxonomy controls should respect the data semantics:
 
 - Use `SearchableSelect` for single relationships such as parent state, founder
   saint, origin place, source, or parent tradition.
-- Use `SearchableMultiSelect` for many-to-many or selected child relationships
-  such as traditions, saint places, and state localities.
+- Use `SearchableRelationshipPicker` for many-to-many review relationships such
+  as saint traditions and saint places, where selected rows also own primary,
+  route, or removal controls. Keep `SearchableMultiSelect` for checkbox-based
+  child selection such as state localities.
 - Do not show impossible relationship controls. A state place should not show a
   parent-state picker while it is being edited as a state.
 - For controlled vocabularies that can grow editorially, use search/select
