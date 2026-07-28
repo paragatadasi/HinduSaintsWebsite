@@ -218,7 +218,6 @@ export async function updateSaintBasics(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function updateSaintOverview(formData: FormData) {
@@ -241,7 +240,6 @@ export async function updateSaintOverview(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function updateSaintOtherPublicFields(formData: FormData) {
@@ -281,7 +279,6 @@ export async function updateSaintOtherPublicFields(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function updateSaintAliases(formData: FormData) {
@@ -323,7 +320,6 @@ export async function updateSaintAliases(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function updateSaintTraditions(formData: FormData) {
@@ -360,7 +356,6 @@ export async function updateSaintTraditions(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function updateSaintPlaces(formData: FormData) {
@@ -400,7 +395,6 @@ export async function updateSaintPlaces(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function createAndAttachSaintTradition(formData: FormData) {
@@ -451,7 +445,6 @@ export async function createAndAttachSaintTradition(formData: FormData) {
   revalidatePath("/admin/traditions");
   revalidatePath(`/admin/traditions/${traditionSlug}`);
   revalidatePath("/traditions");
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function createAndAttachSaintPlace(formData: FormData) {
@@ -508,7 +501,6 @@ export async function createAndAttachSaintPlace(formData: FormData) {
   revalidateSaintPaths(saint.slug);
   revalidatePath("/admin/places");
   revalidatePath("/map");
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function upsertSaintBiography(formData: FormData) {
@@ -572,7 +564,6 @@ export async function upsertSaintBiography(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function upsertSaintSource(formData: FormData) {
@@ -649,7 +640,6 @@ export async function upsertSaintSource(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function removeSaintSource(formData: FormData) {
@@ -675,7 +665,6 @@ export async function removeSaintSource(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function updateSaintReviewStatus(formData: FormData) {
@@ -697,7 +686,6 @@ export async function updateSaintReviewStatus(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}`);
 }
 
 export async function bulkUpdateSaintReviewStatus(formData: FormData) {
@@ -839,7 +827,6 @@ export async function reviewSaintInstagramClaim(formData: FormData) {
   if (!saint) redirect("/admin/saints");
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}` as Route);
 }
 
 export async function importBiographyTextFromInstagramPost(input: z.input<typeof instagramBiographyImportSchema>) {
