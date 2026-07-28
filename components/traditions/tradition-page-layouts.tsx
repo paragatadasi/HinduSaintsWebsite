@@ -3,6 +3,7 @@ import type { Route } from "next";
 import { ArrowRight, MapPinned, MessageSquare, Network } from "lucide-react";
 import { Prose } from "@/components/content/prose";
 import { Button } from "@/components/ui/button";
+import { FocalImage } from "@/components/ui/focal-image";
 import type { TraditionDetailTemplateContent } from "@/lib/site-content";
 import type {
   PublicImage,
@@ -84,7 +85,11 @@ function TraditionHero({ tradition }: { tradition: PublicTraditionDetail }) {
             <Button href="/map" variant="secondary" icon={<MapPinned size={18} aria-hidden="true" />}>
               View on Map
             </Button>
-            <Button href="/contact" variant="secondary" icon={<MessageSquare size={18} aria-hidden="true" />}>
+            <Button
+              href={`/contact?type=tradition&slug=${encodeURIComponent(tradition.slug)}`}
+              variant="secondary"
+              icon={<MessageSquare size={18} aria-hidden="true" />}
+            >
               Send feedback
             </Button>
           </div>
@@ -173,7 +178,13 @@ function LineageSaint({
   return (
     <Link className={className} href={`/saints/${saint.slug}`}>
       <span className="tradition-lineage-saint__portrait">
-        <img src={image.url} alt={image.alt} width={image.width} height={image.height} />
+        <FocalImage
+          src={image.url}
+          alt={image.alt}
+          width={image.width}
+          height={image.height}
+          focalPoint={image.focalPoint}
+        />
       </span>
       {!compact ? (
         <span className="tradition-lineage-saint__text">

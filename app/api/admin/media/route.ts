@@ -10,7 +10,9 @@ const metadataSchema = z.object({
   credit: z.string().trim().max(160).optional(),
   sourceUrl: z.string().trim().url().max(2048).optional(),
   width: z.coerce.number().int().positive().max(12000).optional(),
-  height: z.coerce.number().int().positive().max(12000).optional()
+  height: z.coerce.number().int().positive().max(12000).optional(),
+  focalX: z.coerce.number().min(0).max(100).optional(),
+  focalY: z.coerce.number().min(0).max(100).optional()
 });
 
 export async function GET(request: Request) {
@@ -72,7 +74,9 @@ export async function POST(request: Request) {
     credit: getOptionalFormString(formData, "credit"),
     sourceUrl: getOptionalFormString(formData, "sourceUrl"),
     width: getOptionalFormString(formData, "width"),
-    height: getOptionalFormString(formData, "height")
+    height: getOptionalFormString(formData, "height"),
+    focalX: getOptionalFormString(formData, "focalX"),
+    focalY: getOptionalFormString(formData, "focalY")
   });
 
   if (!parsedMetadata.success) {
