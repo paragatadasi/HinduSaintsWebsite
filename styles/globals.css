@@ -6727,6 +6727,39 @@ img {
   box-shadow: var(--shadow-soft);
 }
 
+.contact-related-page__label {
+  color: var(--color-text);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.contact-related-page {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  display: grid;
+  gap: var(--space-1);
+  min-height: 44px;
+  padding: var(--review-control-padding-block, var(--space-3)) var(--review-control-padding-inline, var(--space-4));
+}
+
+.contact-related-page:hover {
+  border-color: var(--color-interactive-border);
+  color: var(--color-accent);
+}
+
+.contact-related-page:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.contact-related-page small {
+  color: var(--color-muted);
+  font-size: 0.82rem;
+}
+
 .feedback-reference {
   color: var(--color-muted);
   font-size: 0.86rem;

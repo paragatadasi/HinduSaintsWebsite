@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
+import Link from "next/link";
+import type { Route } from "next";
 import type { FeedbackContext } from "@/lib/feedback-context";
 import { sendFeedback, type FeedbackFormState } from "./actions";
 
@@ -39,10 +41,13 @@ export function ContactFeedbackForm({ context, submissionKey }: ContactFeedbackF
       {context?.pagePath ? <input name="page" type="hidden" value={context.pagePath} /> : null}
 
       {context ? (
-        <label>
-          Related page
-          <input value={context.pageTitle ? `${context.pageTitle} — ${context.pagePath}` : context.pagePath} readOnly />
-        </label>
+        <div className="form-stack__field">
+          <span className="contact-related-page__label">Related page</span>
+          <Link className="contact-related-page" href={context.pagePath as Route}>
+            <span>{context.pageTitle ?? context.pagePath}</span>
+            {context.pageTitle ? <small>{context.pagePath}</small> : null}
+          </Link>
+        </div>
       ) : null}
 
       <label>
