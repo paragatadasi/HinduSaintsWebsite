@@ -21,38 +21,16 @@ export default async function PlaceDetailPage({ params }: { params: Promise<{ sl
         <p className="lede">{place.shortDescription}</p>
       </div>
       {place.overviewMarkdown ? <Prose markdown={place.overviewMarkdown} /> : null}
-      <section className="saint-detail-layout">
-        <article className="saint-detail-main">
-          <h2>{template.associatedSaintsTitle}</h2>
-          {place.saints.length > 0 ? (
-            <div className="card-grid">
-              {place.saints.map((saint) => <SaintCard key={saint.slug} saint={saint} />)}
-            </div>
-          ) : (
-            <p className="empty-note">{template.emptySaintsMessage}</p>
-          )}
-        </article>
-        <aside className="saint-detail-aside" aria-label={`${place.name} context`}>
-          <h2>{template.contextTitle}</h2>
-          <ContextList label="Traditions" values={place.traditions} />
-          <ContextList label="Eras" values={place.eras} />
-        </aside>
+      <section className="saint-detail-main">
+        <h2>{template.associatedSaintsTitle}</h2>
+        {place.saints.length > 0 ? (
+          <div className="card-grid">
+            {place.saints.map((saint) => <SaintCard key={saint.slug} saint={saint} />)}
+          </div>
+        ) : (
+          <p className="empty-note">{template.emptySaintsMessage}</p>
+        )}
       </section>
     </main>
-  );
-}
-
-function ContextList({ label, values }: { label: string; values: string[] }) {
-  return (
-    <div>
-      <h3>{label}</h3>
-      {values.length > 0 ? (
-        <ul>
-          {values.map((value) => <li key={value}>{value}</li>)}
-        </ul>
-      ) : (
-        <p className="empty-note">Editorial context is in review.</p>
-      )}
-    </div>
   );
 }
