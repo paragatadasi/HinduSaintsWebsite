@@ -4913,7 +4913,12 @@ img {
 .admin-stat-grid {
   display: grid;
   gap: var(--space-2);
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--width-admin-stat-card-min), 1fr));
+}
+
+.admin-stat h2 {
+  font-size: var(--font-size-admin-stat-heading);
+  line-height: 1.25;
 }
 
 .admin-stat strong {
