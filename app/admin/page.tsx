@@ -11,12 +11,21 @@ type AdminDashboardPageProps = {
 };
 
 export default async function AdminDashboardPage({ searchParams }: AdminDashboardPageProps) {
-  const [{ bulkDeletePassword }, saintCounts, instagramNeedsReview, traditionsNeedsReview, placeCount, bulkDeletePasswordStatus] = await Promise.all([
+  const [
+    { bulkDeletePassword },
+    saintCounts,
+    instagramNeedsReview,
+    traditionsNeedsReview,
+    placeCount,
+    newFeedbackCount,
+    bulkDeletePasswordStatus
+  ] = await Promise.all([
     searchParams,
     db.saint.groupBy({ by: ["status"], _count: { _all: true } }),
     db.instagramItem.count({ where: { status: "needs_review" } }),
     db.tradition.count({ where: { status: "needs_review" } }),
     db.place.count(),
+    db.feedbackSubmission.count({ where: { status: "new" } }),
     getBulkDeletePasswordStatus()
   ]);
   const counts = Object.fromEntries(saintCounts.map((row) => [row.status, row._count._all]));
@@ -30,6 +39,7 @@ export default async function AdminDashboardPage({ searchParams }: AdminDashboar
         <p className="lede">Review imported records, approve public saint pages, and track remaining reconciliation work.</p>
       </div>
       <div className="admin-stat-grid">
+        <DashboardCard href="/admin/feedback?status=new" label="New feedback" value={newFeedbackCount} />
         <DashboardCard href="/admin/saints?status=needs_review" label="Saints awaiting review" value={counts.needs_review ?? 0} />
         <DashboardCard href="/admin/saints?status=published" label="Published saints" value={counts.published ?? 0} />
         <DashboardCard href="/admin/instagram?status=needs_review" label="Instagram items awaiting review" value={instagramNeedsReview} />
