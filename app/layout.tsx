@@ -3,6 +3,8 @@ import "@/styles/globals.css";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: {
     default: "Hindu Saints Archive",

@@ -89,6 +89,18 @@ export type AboutPageContent = {
   }>;
 };
 
+export type FooterContent = {
+  copyright: string;
+  imprint: {
+    label: string;
+    href: string;
+  };
+  privacyPolicy: {
+    label: string;
+    href: string;
+  };
+};
+
 export const siteDesignConfig: SiteDesignConfig = {
   homeLayout: "cosmic"
 };
@@ -219,8 +231,16 @@ export const aboutPageContent: AboutPageContent = {
   ]
 };
 
-export const footerContent = {
-  summary: "Hindu Saints Project."
+export const footerContent: FooterContent = {
+  copyright: "© 2026 Bhakti Marga Yoga gGmbH. All rights reserved.",
+  imprint: {
+    label: "Imprint",
+    href: "https://back.bhaktimarga.org/wp-content/uploads/2024/07/Bhakti-Marga-Yoga-gGmbH-impressum.pdf"
+  },
+  privacyPolicy: {
+    label: "Privacy Policy",
+    href: "https://bhaktimarga.org/privacy-policy"
+  }
 };
 
 export function getHomeHeroContent() {

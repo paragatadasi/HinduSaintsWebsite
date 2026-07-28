@@ -1,12 +1,16 @@
-import { getFooterContent } from "@/lib/site-content";
+import { getPublicFooterContent } from "@/lib/site-config";
 
-export function SiteFooter() {
-  const content = getFooterContent();
+export async function SiteFooter() {
+  const content = await getPublicFooterContent();
 
   return (
     <footer className="site-footer">
       <div className="page-shell">
-        <p>{content.summary}</p>
+        <p className="site-footer__legal">
+          {content.copyright}{" "}
+          <a href={content.imprint.href}>{content.imprint.label}</a>.{" "}
+          <a href={content.privacyPolicy.href}>{content.privacyPolicy.label}</a>.
+        </p>
       </div>
     </footer>
   );

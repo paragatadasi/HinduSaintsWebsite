@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Route } from "next";
 import Link from "next/link";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { auth, isGoogleAuthConfigured, signIn } from "@/lib/auth";
@@ -74,6 +74,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/traditions">Traditions</Link>
           <Link href="/admin/places">Places</Link>
           <Link href="/admin/media">Media</Link>
+          <Link href={"/admin/site" as Route}>Site settings</Link>
         </aside>
         <section className="admin-content">{children}</section>
       </div>
