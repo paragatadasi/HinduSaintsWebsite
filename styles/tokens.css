@@ -88,6 +88,9 @@
   --height-instagram-viewer-stage-image: min(62vh, 640px);
   --height-instagram-inline-viewer: min(70vh, 720px);
   --height-instagram-viewer-mobile-media: clamp(300px, 55dvh, 560px);
+  --height-gallery-viewer-panel: min(94vh, 900px);
+  --height-gallery-viewer-stage-image: min(68vh, 700px);
+  --height-gallery-viewer-mobile-media: clamp(320px, 64dvh, 620px);
   --size-instagram-viewer-mobile-thumb: 52px;
   --space-instagram-viewer-safe-top: env(safe-area-inset-top, 0px);
   --space-instagram-viewer-safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -96,6 +99,8 @@
   --size-instagram-avatar: 38px;
   --size-instagram-type-badge: 34px;
   --size-instagram-viewer-button: 42px;
+  --size-gallery-viewer-thumb: 64px;
+  --size-gallery-viewer-mobile-thumb: 56px;
   --size-icon-xs: 15px;
   --size-icon-sm: 18px;
   --size-icon-md: 20px;
