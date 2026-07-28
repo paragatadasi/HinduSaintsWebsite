@@ -42,11 +42,12 @@ const swipeThreshold = 48;
 type InstagramEmbedGridProps = {
   items?: PublicInstagramItem[];
   layout?: "section" | "sidebar";
+  presentation?: "modal" | "inline";
   urls?: string[];
   saintName: string;
 };
 
-export function InstagramEmbedGrid({ items = [], layout = "section", urls = [], saintName }: InstagramEmbedGridProps) {
+export function InstagramEmbedGrid({ items = [], layout = "section", presentation = "modal", urls = [], saintName }: InstagramEmbedGridProps) {
   const posts = items.length > 0 ? items : urls.map((url) => ({ url, type: "unknown" as const }));
   const [activeCarousel, setActiveCarousel] = useState<CarouselViewerState | null>(null);
   if (posts.length === 0) return null;
@@ -70,6 +71,7 @@ export function InstagramEmbedGrid({ items = [], layout = "section", urls = [], 
       </div>
       {activeCarousel ? (
         <InstagramCarouselViewer
+          mode={presentation}
           onClose={() => setActiveCarousel(null)}
           onSelect={(selectedIndex) => setActiveCarousel({ ...activeCarousel, selectedIndex })}
           saintName={saintName}
