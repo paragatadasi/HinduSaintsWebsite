@@ -2,9 +2,10 @@
 
 import { useRef } from "react";
 import type { ReactNode } from "react";
-import { Bold, Heading1, Heading2, Image, Italic, List, ListOrdered, Minus, Quote } from "lucide-react";
+import { Bold, BookOpen, Heading1, Heading2, Image, Italic, List, ListOrdered, Minus, Quote } from "lucide-react";
 import { FocalImage } from "@/components/ui/focal-image";
 import { IMAGE_CROP_ASPECT } from "@/lib/image-crop-config";
+import { createDefinitionMarkdown } from "@/lib/markdown";
 import type { PublicImage } from "@/lib/public-contracts";
 
 export type MarkdownEditorImage = {
@@ -19,6 +20,7 @@ export type MarkdownEditorImage = {
 
 type MarkdownEditorProps = {
   defaultValue: string;
+  enableDefinitions?: boolean;
   images?: MarkdownEditorImage[];
   maxLength?: number;
   name: string;
@@ -30,6 +32,7 @@ type InsertionMode = "block" | "linePrefix" | "wrap";
 
 export function MarkdownEditor({
   defaultValue,
+  enableDefinitions = false,
   images = [],
   maxLength,
   name,
@@ -53,6 +56,11 @@ export function MarkdownEditor({
         <ToolbarButton label="Italic" onClick={() => insertMarkdown("*", "emphasis", "wrap", "*")}>
           <Italic size={18} />
         </ToolbarButton>
+        {enableDefinitions ? (
+          <ToolbarButton label="Definition" onClick={insertDefinition}>
+            <BookOpen size={18} />
+          </ToolbarButton>
+        ) : null}
         <ToolbarButton label="Quote" onClick={() => insertMarkdown("> ", "Quoted passage", "linePrefix")}>
           <Quote size={18} />
         </ToolbarButton>
@@ -120,6 +128,41 @@ export function MarkdownEditor({
           : `${prefix}${insertValue}${suffix}`;
 
     textarea.setRangeText(next, start, end, "end");
+    textarea.focus();
+  }
+
+  function insertDefinition() {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = textarea.value.slice(start, end);
+    const selectedTerm = selected.trim();
+    const term = selectedTerm || window.prompt("Word or phrase to define:");
+
+    if (!term) {
+      textarea.focus();
+      return;
+    }
+
+    const definition = window.prompt(`Definition for "${term}":`);
+    if (!definition) {
+      textarea.focus();
+      return;
+    }
+
+    const markdown = createDefinitionMarkdown(term, definition);
+    if (!markdown) {
+      textarea.focus();
+      return;
+    }
+
+    const leadingWhitespace = selectedTerm ? selected.match(/^\s*/)?.[0] ?? "" : "";
+    const trailingWhitespace = selectedTerm ? selected.match(/\s*$/)?.[0] ?? "" : "";
+    const replacement = `${leadingWhitespace}${markdown}${trailingWhitespace}`;
+
+    textarea.setRangeText(replacement, start, end, "end");
     textarea.focus();
   }
 }
