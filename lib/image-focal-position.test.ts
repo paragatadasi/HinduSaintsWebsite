@@ -17,6 +17,18 @@ test("top-aligns a tall portrait when its focal point is above the visible squar
   );
 });
 
+test("top-aligns a very tall portrait when its focal point is still the legacy default", () => {
+  assert.deepEqual(
+    getFocalObjectPosition({
+      focalPoint: { x: 50, y: 30 },
+      sourceWidth: 367,
+      sourceHeight: 1200,
+      targetAspect: 1 / 0.86
+    }),
+    { x: 50, y: 0 }
+  );
+});
+
 test("centers a middle focal point in a tall portrait", () => {
   assert.deepEqual(
     getFocalObjectPosition({

@@ -254,6 +254,8 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
                           height={40}
                           key={saint.slug}
                           src={saint.image?.url ?? "/images/devotional-archive-placeholder.svg"}
+                          sourceHeight={saint.image?.height}
+                          sourceWidth={saint.image?.width}
                           width={40}
                         />
                       ))}

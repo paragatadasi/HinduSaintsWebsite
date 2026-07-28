@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { TouchEvent as ReactTouchEvent } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { FocalImage } from "@/components/ui/focal-image";
+import { IMAGE_CROP_ASPECT } from "@/lib/image-crop-config";
 import type { PublicImage } from "@/lib/public-contracts";
 
 const iconSize = {
@@ -150,6 +151,7 @@ export function SaintGallery({ images, saintName }: SaintGalleryProps) {
                 alt={image.alt}
                 width={image.width}
                 height={image.height}
+                cropAspect={IMAGE_CROP_ASPECT.saintWide}
                 focalPoint={image.focalPoint}
               />
             </button>

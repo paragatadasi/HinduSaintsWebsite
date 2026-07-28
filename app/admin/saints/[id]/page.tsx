@@ -783,16 +783,28 @@ function getBiographyEditorImages(
   const images = new Map<string, {
     altText: string;
     caption: string;
+    focalPoint: {
+      x: number;
+      y: number;
+    };
+    height?: number;
     id: string;
     url: string;
+    width?: number;
   }>();
 
   if (saint.primaryImage) {
     images.set(saint.primaryImage.id, {
       altText: saint.primaryImage.altText ?? saint.displayName,
       caption: saint.primaryImage.caption ?? "Primary saint image",
+      focalPoint: {
+        x: saint.primaryImage.focalX,
+        y: saint.primaryImage.focalY
+      },
+      height: saint.primaryImage.height ?? undefined,
       id: saint.primaryImage.id,
-      url: saint.primaryImage.url
+      url: saint.primaryImage.url,
+      width: saint.primaryImage.width ?? undefined
     });
   }
 
@@ -800,8 +812,14 @@ function getBiographyEditorImages(
     images.set(mediaAsset.id, {
       altText: mediaAsset.altText ?? saint.displayName,
       caption: mediaAsset.caption ?? "Imported saint image",
+      focalPoint: {
+        x: mediaAsset.focalX,
+        y: mediaAsset.focalY
+      },
+      height: mediaAsset.height ?? undefined,
       id: mediaAsset.id,
-      url: mediaAsset.url
+      url: mediaAsset.url,
+      width: mediaAsset.width ?? undefined
     });
   });
 

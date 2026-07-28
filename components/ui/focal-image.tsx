@@ -5,14 +5,25 @@ import type { PublicImage } from "@/lib/public-contracts";
 type FocalImageProps = ImgHTMLAttributes<HTMLImageElement> & {
   cropAspect?: number;
   focalPoint?: PublicImage["focalPoint"];
+  sourceHeight?: number;
+  sourceWidth?: number;
 };
 
-export function FocalImage({ cropAspect = 1, focalPoint, height, style, width, ...props }: FocalImageProps) {
+export function FocalImage({
+  cropAspect = 1,
+  focalPoint,
+  height,
+  sourceHeight,
+  sourceWidth,
+  style,
+  width,
+  ...props
+}: FocalImageProps) {
   const objectPosition = focalPoint
     ? getFocalObjectPosition({
         focalPoint,
-        sourceHeight: height,
-        sourceWidth: width,
+        sourceHeight: sourceHeight ?? height,
+        sourceWidth: sourceWidth ?? width,
         targetAspect: cropAspect
       })
     : undefined;

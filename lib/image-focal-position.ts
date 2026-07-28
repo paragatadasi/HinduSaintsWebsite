@@ -3,6 +3,11 @@ export type ImageFocalPoint = {
   y: number;
 };
 
+const defaultSaintFocalPoint: ImageFocalPoint = {
+  x: 50,
+  y: 30
+};
+
 type FocalObjectPositionInput = {
   focalPoint: ImageFocalPoint;
   sourceHeight?: number | string;
@@ -44,6 +49,10 @@ export function getFocalObjectPosition({
   }
 
   if (sourceAspect < targetAspect) {
+    if (isDefaultSaintFocalPoint(normalizedFocalPoint)) {
+      return { x: 50, y: 0 };
+    }
+
     return {
       x: 50,
       y: getOverflowAxisPosition(normalizedFocalPoint.y, targetAspect / sourceAspect)
@@ -98,6 +107,13 @@ export function getSourceFocalPointFromCropClick({
     ),
     y: normalizedClickPoint.y
   };
+}
+
+function isDefaultSaintFocalPoint(focalPoint: ImageFocalPoint) {
+  return (
+    Math.abs(focalPoint.x - defaultSaintFocalPoint.x) < 0.001
+    && Math.abs(focalPoint.y - defaultSaintFocalPoint.y) < 0.001
+  );
 }
 
 function getOverflowAxisPosition(focalPercentage: number, renderedToContainerRatio: number) {

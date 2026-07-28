@@ -3,12 +3,18 @@
 import { useRef } from "react";
 import type { ReactNode } from "react";
 import { Bold, Heading1, Heading2, Image, Italic, List, ListOrdered, Minus, Quote } from "lucide-react";
+import { FocalImage } from "@/components/ui/focal-image";
+import { IMAGE_CROP_ASPECT } from "@/lib/image-crop-config";
+import type { PublicImage } from "@/lib/public-contracts";
 
 export type MarkdownEditorImage = {
   altText: string;
   caption: string;
+  focalPoint?: PublicImage["focalPoint"];
+  height?: number;
   id: string;
   url: string;
+  width?: number;
 };
 
 type MarkdownEditorProps = {
@@ -78,7 +84,14 @@ export function MarkdownEditor({
               type="button"
               onClick={() => insertMarkdown(`\n![${escapeMarkdownAlt(image.altText)}](${image.url})\n`, "", "block")}
             >
-              <img src={image.url} alt={image.altText} />
+              <FocalImage
+                src={image.url}
+                alt={image.altText}
+                width={image.width}
+                height={image.height}
+                cropAspect={IMAGE_CROP_ASPECT.markdownPreview}
+                focalPoint={image.focalPoint}
+              />
               <span>
                 <Image size={14} />
                 {image.caption}

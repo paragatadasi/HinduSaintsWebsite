@@ -292,7 +292,11 @@ function toPublicImage(image: TraditionSaintRow["primaryImage"], displayName: st
     credit: image?.credit ?? undefined,
     sourceUrl: image?.sourceUrl ?? undefined,
     width: image?.width ?? undefined,
-    height: image?.height ?? undefined
+    height: image?.height ?? undefined,
+    focalPoint: image ? {
+      x: image.focalX,
+      y: image.focalY
+    } : undefined
   };
 }
 

@@ -254,7 +254,11 @@ function toPublicImage(image: PublishedPlaceSaint["primaryImage"], displayName: 
     credit: image?.credit ?? undefined,
     sourceUrl: image?.sourceUrl ?? undefined,
     width: image?.width ?? undefined,
-    height: image?.height ?? undefined
+    height: image?.height ?? undefined,
+    focalPoint: image ? {
+      x: image.focalX,
+      y: image.focalY
+    } : undefined
   };
 }
 
@@ -282,7 +286,11 @@ function toPublicPlaceMapSaint(saintPlace: PublishedPlaceSaintLink): PublicPlace
           credit: image.credit ?? undefined,
           sourceUrl: image.sourceUrl ?? undefined,
           width: image.width ?? undefined,
-          height: image.height ?? undefined
+          height: image.height ?? undefined,
+          focalPoint: {
+            x: image.focalX,
+            y: image.focalY
+          }
         }
       : {
           url: "/images/devotional-archive-placeholder.svg",

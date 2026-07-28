@@ -4,6 +4,7 @@ import { ChevronDown, Crop, ImagePlus, ScanFace, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { CSSProperties, PointerEvent } from "react";
 import { useMemo, useRef, useState, useTransition } from "react";
+import { FocalImage } from "@/components/ui/focal-image";
 import { attachImageToSaint } from "../actions";
 import { InstagramSlideActions } from "./instagram-slide-actions";
 import { SaintImageActions } from "./saint-image-actions";
@@ -299,7 +300,16 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
               {stagedImages.map((image) => (
                 <div className="saint-image-cropper__staged-source" key={image.id}>
                   <button className="saint-image-cropper__source" type="button" onClick={() => selectStagedImage(image)}>
-                    <img src={image.url} alt="" loading="lazy" />
+                    <FocalImage
+                      src={image.url}
+                      alt=""
+                      width={image.width ?? undefined}
+                      height={image.height ?? undefined}
+                      focalPoint={image.focalX !== null && image.focalY !== null && image.focalX !== undefined && image.focalY !== undefined
+                        ? { x: image.focalX, y: image.focalY }
+                        : undefined}
+                      loading="lazy"
+                    />
                     <span>{image.caption ?? image.altText ?? "Hidden saint image"}</span>
                   </button>
                   <SaintImageActions

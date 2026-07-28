@@ -95,7 +95,13 @@ function TraditionHero({ tradition }: { tradition: PublicTraditionDetail }) {
           </div>
         </div>
         <figure className="tradition-hero__image">
-          <img src={image.url} alt={image.alt} width={image.width} height={image.height} />
+          <FocalImage
+            src={image.url}
+            alt={image.alt}
+            width={image.width}
+            height={image.height}
+            focalPoint={image.focalPoint}
+          />
           {!tradition.heroImage ? <figcaption>{image.alt}</figcaption> : null}
           <span className="tradition-hero__image-arc tradition-hero__image-arc--left" aria-hidden="true" />
           <span className="tradition-hero__image-arc tradition-hero__image-arc--right" aria-hidden="true" />

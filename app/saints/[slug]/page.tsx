@@ -8,6 +8,7 @@ import { SaintGallery } from "@/components/saints/saint-gallery";
 import { Button } from "@/components/ui/button";
 import { FocalImage } from "@/components/ui/focal-image";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
+import { IMAGE_CROP_ASPECT } from "@/lib/image-crop-config";
 import { getPublishedSaintBySlug } from "@/lib/public-saints";
 import { getSaintDetailTemplateContent } from "@/lib/site-content";
 import type { PublicFurtherReadingItem, PublicImage, PublicSourceSummary } from "@/lib/public-contracts";
@@ -187,7 +188,7 @@ function ImageWithCredit({ image, label }: { image?: PublicImage; label: string 
         alt={image.alt}
         width={image.width}
         height={image.height}
-        cropAspect={1 / 0.86}
+        cropAspect={IMAGE_CROP_ASPECT.saintWide}
         focalPoint={image.focalPoint}
       />
       {image.caption || image.credit ? (

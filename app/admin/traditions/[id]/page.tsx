@@ -645,16 +645,28 @@ function getMarkdownEditorImages(tradition: NonNullable<Awaited<ReturnType<typeo
   const images = new Map<string, {
     altText: string;
     caption: string;
+    focalPoint: {
+      x: number;
+      y: number;
+    };
+    height?: number;
     id: string;
     url: string;
+    width?: number;
   }>();
 
   if (tradition.heroImage) {
     images.set(tradition.heroImage.id, {
       altText: tradition.heroImage.altText ?? tradition.name,
       caption: tradition.heroImage.caption ?? "Hero tradition image",
+      focalPoint: {
+        x: tradition.heroImage.focalX,
+        y: tradition.heroImage.focalY
+      },
+      height: tradition.heroImage.height ?? undefined,
       id: tradition.heroImage.id,
-      url: tradition.heroImage.url
+      url: tradition.heroImage.url,
+      width: tradition.heroImage.width ?? undefined
     });
   }
 
@@ -664,8 +676,14 @@ function getMarkdownEditorImages(tradition: NonNullable<Awaited<ReturnType<typeo
       images.set(mediaAsset.id, {
         altText: mediaAsset.altText ?? tradition.name,
         caption: mediaAsset.caption ?? "Tradition gallery image",
+        focalPoint: {
+          x: mediaAsset.focalX,
+          y: mediaAsset.focalY
+        },
+        height: mediaAsset.height ?? undefined,
         id: mediaAsset.id,
-        url: mediaAsset.url
+        url: mediaAsset.url,
+        width: mediaAsset.width ?? undefined
       });
     });
 
