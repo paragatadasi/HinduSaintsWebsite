@@ -442,7 +442,10 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
                     altText={mediaAsset.altText}
                     caption={mediaAsset.caption}
                     credit={mediaAsset.credit}
+                    focalX={mediaAsset.focalX}
+                    focalY={mediaAsset.focalY}
                     imageLabel={mediaAsset.caption ?? mediaAsset.altText ?? "Imported saint image"}
+                    imageUrl={mediaAsset.url}
                     mediaAssetId={mediaAsset.id}
                     placement={placement}
                     saintId={saint.id}
@@ -465,6 +468,8 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
               altText: mediaAsset.altText,
               caption: mediaAsset.caption,
               credit: mediaAsset.credit,
+              focalX: mediaAsset.focalX,
+              focalY: mediaAsset.focalY,
               id: mediaAsset.id,
               sourceUrl: mediaAsset.sourceUrl,
               url: mediaAsset.url

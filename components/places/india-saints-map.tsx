@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { RotateCcw, X } from "lucide-react";
+import { FocalImage } from "@/components/ui/focal-image";
 import type { PublicPlaceMapData, PublicPlaceMapPoint, PublicPlaceMapSaint } from "@/lib/public-contracts";
 import type { PlacesMapContent } from "@/lib/site-content";
 
@@ -247,8 +248,9 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
                   <div className="places-map__saint-card">
                     <div className="places-map__saint-card-images">
                       {saints.slice(0, 3).map((saint) => (
-                        <img
+                        <FocalImage
                           alt=""
+                          focalPoint={saint.image?.focalPoint}
                           height={40}
                           key={saint.slug}
                           src={saint.image?.url ?? "/images/devotional-archive-placeholder.svg"}

@@ -21,7 +21,7 @@ const saintBasicsSchema = z.object({
   saintId: z.string().cuid(),
   displayName: z.string().trim().min(1).max(200),
   canonicalName: z.string().trim().min(1).max(200),
-  shortDescription: z.string().trim().max(500).optional(),
+  shortDescription: z.string().trim().optional(),
   eraLabel: z.string().trim().max(120).optional(),
   birthDateRaw: z.string().trim().max(120).optional(),
   samadhiDateRaw: z.string().trim().max(120).optional(),
@@ -99,7 +99,9 @@ const saintImageMetadataSchema = z.object({
   mediaAssetId: z.string().cuid(),
   altText: z.string().trim().max(240),
   caption: z.string().trim().max(500),
-  credit: z.string().trim().max(160)
+  credit: z.string().trim().max(160),
+  focalX: z.number().min(0).max(100),
+  focalY: z.number().min(0).max(100)
 });
 
 const instagramSlideDeleteSchema = z.object({
@@ -1035,7 +1037,9 @@ export async function updateSaintImageMetadata(input: z.input<typeof saintImageM
     data: {
       altText: parsed.altText || null,
       caption: parsed.caption || null,
-      credit: parsed.credit || null
+      credit: parsed.credit || null,
+      focalX: parsed.focalX,
+      focalY: parsed.focalY
     }
   });
 

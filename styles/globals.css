@@ -1066,6 +1066,7 @@ img {
 .saint-card__summary-image img {
   height: 100%;
   object-fit: cover;
+  object-position: var(--image-object-position, var(--position-saint-image-default));
   width: 100%;
 }
 
@@ -1329,6 +1330,7 @@ img {
   filter: var(--image-treatment);
   height: 40px;
   object-fit: cover;
+  object-position: var(--image-object-position, var(--position-saint-image-default));
   width: 40px;
 }
 
@@ -2306,6 +2308,7 @@ img {
   filter: var(--image-treatment);
   height: 100%;
   object-fit: cover;
+  object-position: var(--image-object-position, center);
   width: 100%;
 }
 
@@ -2731,6 +2734,7 @@ img {
 .tradition-lineage-saint__portrait img {
   height: 100%;
   object-fit: cover;
+  object-position: var(--image-object-position, var(--position-saint-image-default));
   width: 100%;
 }
 
@@ -6522,6 +6526,48 @@ img {
 
 .saint-image-actions__metadata textarea {
   min-height: 88px;
+}
+
+.saint-image-actions__focus {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.saint-image-actions__focus p {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.saint-image-actions__focus-preview {
+  aspect-ratio: 1;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  cursor: crosshair;
+  max-width: var(--width-saint-review-image);
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+.saint-image-actions__focus-preview img {
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--image-object-position, var(--position-saint-image-default));
+  width: 100%;
+}
+
+.saint-image-actions__focus-marker {
+  border: 2px solid var(--color-text-inverse);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 0 0 2px var(--color-accent);
+  height: var(--space-3);
+  left: var(--saint-image-focus-x);
+  pointer-events: none;
+  position: absolute;
+  top: var(--saint-image-focus-y);
+  transform: translate(-50%, -50%);
+  width: var(--space-3);
 }
 
 .saint-image-actions__placement label {
