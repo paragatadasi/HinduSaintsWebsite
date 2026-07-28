@@ -7,7 +7,6 @@ import type {
   TouchEvent as ReactTouchEvent
 } from "react";
 import {
-  ArrowRight,
   Bookmark,
   ChevronLeft,
   ChevronRight,
@@ -203,7 +202,6 @@ export function InstagramPostCard({
             {saintHref ? (
               <a className="instagram-post-card__profile-link" href={saintHref} onClick={stopCardClick}>
                 View Saint Profile
-                <ArrowRight size={iconSize.xs} aria-hidden="true" />
               </a>
             ) : null}
             <a className="instagram-post-card__instagram-link" href={post.url} onClick={stopCardClick} {...getInstagramLinkProps(post.url)}>
