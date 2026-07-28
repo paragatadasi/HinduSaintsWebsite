@@ -7,7 +7,6 @@ import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewFactGrid, ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { SearchableMultiSelect } from "@/components/ui/searchable-multi-select";
 import { db } from "@/lib/db";
 import { getInstagramLinkProps } from "@/lib/external-links";
 import { parseImportedDate } from "@/lib/import-dates";
@@ -20,7 +19,6 @@ import {
   updateSaintOtherPublicFields,
   updateSaintOverview,
   updateSaintReviewStatus,
-  updateSaintTraditions,
   upsertSaintBiography,
   upsertSaintSource
 } from "../actions";
@@ -29,6 +27,7 @@ import { InstagramBiographyImporter } from "./instagram-biography-importer";
 import { SaintImageActions } from "./saint-image-actions";
 import { SaintImageCropper } from "./saint-image-cropper";
 import { SaintPlaceRouteEditor, type SaintPlaceRouteOption } from "./saint-place-route-editor";
+import { SaintTraditionEditor } from "./saint-tradition-editor";
 
 type AdminSaintEditorPageProps = {
   params: Promise<{ id: string }>;
@@ -251,22 +250,11 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
                 </div>
               )}
             >
-              <form action={updateSaintTraditions} className="form-stack">
-                <input name="saintId" type="hidden" value={saint.id} />
-                <SearchableMultiSelect
-                  defaultSelectedValues={selectedTraditionIds}
-                  emptyText="No traditions match this search."
-                  label="Traditions"
-                  name="traditionIds"
-                  options={traditionOptions}
-                  placeholder="Search traditions"
-                  primaryName="primaryTraditionId"
-                  selectedLabel="Selected traditions"
-                />
-                <div className="review-actions">
-                  <button className="admin-form-button" type="submit">Save traditions</button>
-                </div>
-              </form>
+              <SaintTraditionEditor
+                options={traditionOptions}
+                saintId={saint.id}
+                selectedTraditionIds={selectedTraditionIds}
+              />
             </ReviewEditToggle>
           </CollapsibleReviewCard>
 
