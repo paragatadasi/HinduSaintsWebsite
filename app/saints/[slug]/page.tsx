@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { ExternalLink, MessageSquare } from "lucide-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { InstagramEmbedGrid } from "@/components/instagram/instagram-embed-grid";
 import { Prose } from "@/components/content/prose";
 import { Button } from "@/components/ui/button";
+import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
 import { getPublishedSaintBySlug } from "@/lib/public-saints";
 import { getSaintDetailTemplateContent } from "@/lib/site-content";
 import type { PublicFurtherReadingItem, PublicImage, PublicSourceSummary } from "@/lib/public-contracts";
@@ -78,21 +78,25 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
             ...(placeLinks.length > 0 ? [{
               label: "Places",
               value: (
-                <span className="fact-links">
-                  {placeLinks.map((place) => (
-                    <Link href={`/places/${place.slug}`} key={place.slug}>{place.name}</Link>
-                  ))}
-                </span>
+                <TaxonomyLinkList
+                  items={placeLinks.map((place) => ({
+                    href: `/places/${place.slug}`,
+                    label: place.name
+                  }))}
+                  label={`Places associated with ${saint.displayName}`}
+                />
               )
             }] : []),
             ...(saint.traditions.length > 0 ? [{
               label: template.factLabels.tradition,
               value: (
-                <span className="fact-links">
-                  {saint.traditions.map((tradition) => (
-                    <Link href={`/traditions/${tradition.slug}`} key={tradition.slug}>{tradition.name}</Link>
-                  ))}
-                </span>
+                <TaxonomyLinkList
+                  items={saint.traditions.map((tradition) => ({
+                    href: `/traditions/${tradition.slug}`,
+                    label: tradition.name
+                  }))}
+                  label={`Traditions associated with ${saint.displayName}`}
+                />
               )
             }] : [])
           ]}
