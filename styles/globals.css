@@ -2504,6 +2504,56 @@ img {
   max-width: var(--width-prose);
 }
 
+.prose-definition {
+  border-bottom: var(--border-width-default) dotted var(--color-accent-strong);
+  cursor: help;
+  font-style: normal;
+  position: relative;
+}
+
+.prose-definition::after {
+  background: var(--color-surface-elevated);
+  border: var(--border-width-default) solid var(--color-border);
+  border-radius: var(--radius-control);
+  bottom: calc(100% + var(--space-2));
+  box-shadow: var(--shadow-soft);
+  color: var(--color-text);
+  content: attr(data-definition);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-definition-tooltip);
+  font-style: normal;
+  font-weight: 400;
+  left: 50%;
+  line-height: var(--line-height-definition-tooltip);
+  max-width: calc(100vw - var(--space-8));
+  opacity: 0;
+  padding: var(--space-3);
+  pointer-events: none;
+  position: absolute;
+  text-align: left;
+  transform: translate(-50%, var(--space-1));
+  transition:
+    opacity var(--motion-interactive-duration) var(--motion-interactive-ease),
+    transform var(--motion-interactive-duration) var(--motion-interactive-ease),
+    visibility var(--motion-interactive-duration) var(--motion-interactive-ease);
+  visibility: hidden;
+  white-space: normal;
+  width: max-content;
+  z-index: var(--z-index-definition-tooltip);
+}
+
+.prose-definition:hover::after,
+.prose-definition:focus::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  visibility: visible;
+}
+
+.prose-definition:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus);
+  outline-offset: var(--size-focus-offset);
+}
+
 .tradition-hero {
   border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 22%, transparent);
   padding: var(--space-12) 0 var(--space-8);
