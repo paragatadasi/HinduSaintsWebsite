@@ -121,6 +121,13 @@ const saintTraditionsSchema = z.object({
   primaryTraditionId: z.string().cuid().optional()
 });
 
+const saintTraditionCreationSchema = z.object({
+  saintId: z.string().cuid(),
+  name: z.string().trim().min(1).max(200),
+  alternateNames: z.array(z.string().trim().min(1).max(200)).max(100),
+  shortDescription: z.string().trim().max(500).optional()
+});
+
 const saintPlacesSchema = z.object({
   saintId: z.string().cuid(),
   places: z.array(z.object({
@@ -393,6 +400,57 @@ export async function updateSaintPlaces(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${saint.slug}`);
+}
+
+export async function createAndAttachSaintTradition(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = saintTraditionCreationSchema.parse({
+    saintId: formData.get("saintId"),
+    name: formData.get("name"),
+    alternateNames: uniqueList(parseList(formData.get("alternateNames"))),
+    shortDescription: emptyToUndefined(formData.get("shortDescription"))
+  });
+  const saint = await db.saint.findUnique({
+    where: { id: parsed.saintId },
+    select: {
+      slug: true,
+      traditions: {
+        select: { id: true },
+        take: 1
+      }
+    }
+  });
+
+  if (!saint) redirect("/admin/saints");
+
+  const traditionSlug = await getUniqueTraditionSlug(parsed.name);
+  await db.$transaction(async (tx) => {
+    const tradition = await tx.tradition.create({
+      data: {
+        name: parsed.name,
+        slug: traditionSlug,
+        alternateNames: parsed.alternateNames,
+        shortDescription: parsed.shortDescription ?? null,
+        status: "draft"
+      },
+      select: { id: true }
+    });
+
+    await tx.saintTradition.create({
+      data: {
+        saintId: parsed.saintId,
+        traditionId: tradition.id,
+        isPrimary: saint.traditions.length === 0
+      }
+    });
+  });
+
+  revalidateSaintPaths(saint.slug);
+  revalidatePath("/admin/traditions");
+  revalidatePath(`/admin/traditions/${traditionSlug}`);
+  revalidatePath("/traditions");
   redirect(`/admin/saints/${saint.slug}`);
 }
 
@@ -1281,6 +1339,19 @@ async function getUniquePlaceSlug(name: string) {
   let suffix = 2;
 
   while (await db.place.findUnique({ where: { slug: candidate }, select: { id: true } })) {
+    candidate = `${baseSlug}-${suffix}`;
+    suffix += 1;
+  }
+
+  return candidate;
+}
+
+async function getUniqueTraditionSlug(name: string) {
+  const baseSlug = toSlug(name) || "tradition";
+  let candidate = baseSlug;
+  let suffix = 2;
+
+  while (await db.tradition.findUnique({ where: { slug: candidate }, select: { id: true } })) {
     candidate = `${baseSlug}-${suffix}`;
     suffix += 1;
   }

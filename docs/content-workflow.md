@@ -78,7 +78,9 @@ The saint review UI is intentionally compact. Traditions and places use a
 shared searchable multi-select dropdown so the starting view does not expose
 large checkbox lists. Selected places then appear in a focused route editor,
 where editors can drag them into reviewed route order and set public place
-roles/labels.
+roles/labels. Missing traditions and places can be quick-created from their
+respective saint review cards, attached immediately, and refined in their
+dedicated review screens afterward.
 
 Dedicated reconciliation queues remain a follow-up workflow.
 
