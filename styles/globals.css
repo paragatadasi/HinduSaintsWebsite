@@ -1912,16 +1912,13 @@ img {
 }
 
 .instagram-post-card__profile-link {
-  align-self: stretch;
-  justify-content: space-between;
-}
-
-.instagram-post-card__footer .instagram-post-card__profile-link:hover {
-  color: var(--color-text-inverse);
+  color: var(--color-accent);
 }
 
 .instagram-post-card__instagram-link {
   color: var(--color-muted);
+  font-weight: 400;
+  text-transform: none;
 }
 
 .instagram-carousel-viewer {
