@@ -4,7 +4,7 @@ import { CheckCircle2, UserRound } from "lucide-react";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
-import { ReviewFactGrid, ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { ReviewFactGrid, ReviewSection, ReviewSubsection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { SaintDateField } from "@/components/admin/saint-date-field";
 import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -62,6 +62,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
   const biographyTextareaId = "biography-body-markdown";
   const instagramBiographyImportPosts = getInstagramBiographyImportPosts(saint);
   const selectedTraditionIds = saint.traditions.map((item) => item.traditionId);
+  const primaryTraditionId = saint.traditions.find((item) => item.isPrimary)?.traditionId ?? selectedTraditionIds[0];
   const traditionOptions = allTraditions.map((tradition) => ({
     value: tradition.id,
     label: tradition.name,
@@ -239,55 +240,32 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
           </form>
         </ReviewEditToggle>
 
-        <div className="review-detail-grid review-detail-grid--paired">
-          <CollapsibleReviewCard
-            cardId="saint-traditions"
-            defaultOpen
+        <div className="review-detail-grid review-detail-grid--paired review-relationship-grid">
+          <ReviewSubsection
             description="Tradition memberships and primary tradition."
             eyebrow="Lineage context"
             title="Traditions"
           >
-            <ReviewEditToggle
-              editLabel="Edit traditions"
-              summary={(
-                <div className="field-grid saint-review__summary-grid">
-                  <ReviewField label="Primary tradition" value={saint.traditions.find((item) => item.isPrimary)?.tradition.name ?? saint.traditions[0]?.tradition.name} />
-                  <ReviewField label="All traditions" value={saint.traditions.map((item) => item.tradition.name).join(", ")} />
-                </div>
-              )}
-            >
-              <SaintTraditionEditor
-                options={traditionOptions}
-                saintId={saint.id}
-                selectedTraditionIds={selectedTraditionIds}
-              />
-            </ReviewEditToggle>
-          </CollapsibleReviewCard>
+            <SaintTraditionEditor
+              options={traditionOptions}
+              primaryTraditionId={primaryTraditionId}
+              saintId={saint.id}
+              selectedTraditionIds={selectedTraditionIds}
+            />
+          </ReviewSubsection>
 
-          <CollapsibleReviewCard
-            cardId="saint-places"
-            defaultOpen
+          <ReviewSubsection
             description="Map locations and route ordering."
             eyebrow="Geography"
             title="Places and Route"
           >
-            <ReviewEditToggle
-              editLabel="Edit places"
-              summary={(
-                <div className="field-grid saint-review__summary-grid">
-                  <ReviewField label="Selected places" value={saint.places.map((item) => item.place.name).join(", ")} />
-                  <ReviewField label="Route stops" value={`${saint.places.filter((item) => item.routeOrder != null).length}`} />
-                </div>
-              )}
-            >
-              <SaintPlaceRouteEditor
-                options={placeOptions}
-                placeTypes={placeTypes}
-                saintId={saint.id}
-                selectedPlaceIds={selectedPlaceIds}
-              />
-            </ReviewEditToggle>
-          </CollapsibleReviewCard>
+            <SaintPlaceRouteEditor
+              options={placeOptions}
+              placeTypes={placeTypes}
+              saintId={saint.id}
+              selectedPlaceIds={selectedPlaceIds}
+            />
+          </ReviewSubsection>
         </div>
       </CollapsibleReviewCard>
 

@@ -55,6 +55,33 @@ export function ReviewSection({ title, icon, children, className }: ReviewSectio
   );
 }
 
+type ReviewSubsectionProps = {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  children: ReactNode;
+  className?: string;
+};
+
+export function ReviewSubsection({
+  eyebrow,
+  title,
+  description,
+  children,
+  className
+}: ReviewSubsectionProps) {
+  return (
+    <section className={clsx("review-subsection", className)}>
+      <div className="review-collapsible__heading">
+        {eyebrow ? <span className="review-collapsible__eyebrow">{eyebrow}</span> : null}
+        <h2 className="review-collapsible__title">{title}</h2>
+        {description ? <p className="review-collapsible__description">{description}</p> : null}
+      </div>
+      <div className="review-subsection__content">{children}</div>
+    </section>
+  );
+}
+
 type ReviewFact = {
   label: string;
   value?: ReactNode;
