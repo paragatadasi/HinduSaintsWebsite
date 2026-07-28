@@ -2198,7 +2198,9 @@ img {
   border-radius: var(--radius-pill);
   color: var(--color-text);
   display: inline-flex;
-  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: var(--space-1) var(--space-3);
   text-decoration: none;
   transition:
     border-color var(--motion-interactive-duration) var(--motion-interactive-ease),
