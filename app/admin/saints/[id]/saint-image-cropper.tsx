@@ -30,9 +30,11 @@ type StagedImageSource = {
   credit?: string | null;
   focalX?: number | null;
   focalY?: number | null;
+  height?: number | null;
   id: string;
   sourceUrl?: string | null;
   url: string;
+  width?: number | null;
 };
 
 type CropBox = {
@@ -306,8 +308,10 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
                     credit={image.credit}
                     focalX={image.focalX}
                     focalY={image.focalY}
+                    imageHeight={image.height}
                     imageLabel={image.caption ?? image.altText ?? "Hidden saint image"}
                     imageUrl={image.url}
+                    imageWidth={image.width}
                     mediaAssetId={image.id}
                     saintId={saintId}
                     visible={false}

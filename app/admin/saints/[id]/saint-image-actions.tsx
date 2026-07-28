@@ -4,6 +4,10 @@ import { Eye, EyeOff, Pencil, Save, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { CSSProperties, MouseEvent } from "react";
 import { useState, useTransition } from "react";
+import {
+  getFocalObjectPosition,
+  getSourceFocalPointFromCropClick
+} from "@/lib/image-focal-position";
 import { deleteSaintImage, updateSaintImageMetadata, updateSaintImagePlacement, updateSaintImageVisibility } from "../actions";
 
 type ImagePlacement = "gallery" | "primary" | "both";
@@ -16,7 +20,9 @@ type SaintImageActionsProps = {
   focalX?: number | null;
   focalY?: number | null;
   imageLabel: string;
+  imageHeight?: number | null;
   imageUrl: string;
+  imageWidth?: number | null;
   mediaAssetId: string;
   saintId: string;
   visible: boolean;
@@ -29,8 +35,10 @@ export function SaintImageActions({
   credit,
   focalX,
   focalY,
+  imageHeight,
   imageLabel,
   imageUrl,
+  imageWidth,
   mediaAssetId,
   placement,
   saintId,
@@ -48,6 +56,12 @@ export function SaintImageActions({
   );
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const previewObjectPosition = getFocalObjectPosition({
+    focalPoint: { x: editedFocalX, y: editedFocalY },
+    sourceHeight: imageHeight ?? undefined,
+    sourceWidth: imageWidth ?? undefined,
+    targetAspect: 1
+  });
 
   function updateVisibility(publicVisible: boolean) {
     setMessage(null);
@@ -109,8 +123,19 @@ export function SaintImageActions({
 
   function setFocusFromPreview(event: MouseEvent<HTMLButtonElement>) {
     const rect = event.currentTarget.getBoundingClientRect();
-    setEditedFocalX(clampPercentage((event.clientX - rect.left) / rect.width * 100));
-    setEditedFocalY(clampPercentage((event.clientY - rect.top) / rect.height * 100));
+    const sourceFocalPoint = getSourceFocalPointFromCropClick({
+      clickPoint: {
+        x: (event.clientX - rect.left) / rect.width * 100,
+        y: (event.clientY - rect.top) / rect.height * 100
+      },
+      objectPosition: previewObjectPosition,
+      sourceHeight: imageHeight ?? undefined,
+      sourceWidth: imageWidth ?? undefined,
+      targetAspect: 1
+    });
+
+    setEditedFocalX(sourceFocalPoint.x);
+    setEditedFocalY(sourceFocalPoint.y);
   }
 
   function deleteImage() {
@@ -157,7 +182,7 @@ export function SaintImageActions({
                 src={imageUrl}
                 alt=""
                 style={{
-                  "--image-object-position": `${editedFocalX}% ${editedFocalY}%`
+                  "--image-object-position": `${previewObjectPosition.x}% ${previewObjectPosition.y}%`
                 } as CSSProperties}
               />
               <span
