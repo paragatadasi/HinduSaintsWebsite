@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { InstagramEmbedGrid } from "@/components/instagram/instagram-embed-grid";
 import { Prose } from "@/components/content/prose";
+import { SaintGallery } from "@/components/saints/saint-gallery";
 import { Button } from "@/components/ui/button";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
 import { getPublishedSaintBySlug } from "@/lib/public-saints";
@@ -131,14 +132,10 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
           <div className="section-heading section-heading--text">
             <div>
               <div className="eyebrow">Media</div>
-              <h2>Reviewed Images</h2>
+              <h2>Gallery</h2>
             </div>
           </div>
-          <div className="media-grid">
-            {saint.gallery.map((image) => (
-              <ImageWithCredit image={image} key={`${image.url}-${image.alt}`} label={image.alt} />
-            ))}
-          </div>
+          <SaintGallery images={saint.gallery} saintName={saint.displayName} />
         </section>
       ) : null}
 
