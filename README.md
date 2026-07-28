@@ -102,13 +102,14 @@ Restart `npm run dev` after changing these variables. If Google shows `Missing r
 - `/map` public map of India and place index
 - `/places/[slug]` public place detail pages
 - `/admin` protected CMS dashboard
-- `/admin/media` protected media upload workflow
 - `/media/[...key]` public delivery for uploaded media assets
 - `/admin/instagram` reconciliation queue
 
 ## Local image hosting
 
 Local media uploads are stored on disk under `MEDIA_UPLOAD_ROOT`, which defaults to `./uploads`. Uploaded image metadata is recorded in the `MediaAsset` table, while public reads are served through `/media/[...key]`.
+
+The admin CMS has no standalone media library. Editors upload and manage images in the homepage, saint, tradition, and other domain-specific workflows where those images are used.
 
 Supported local upload formats are JPEG, PNG, WebP, and GIF. The default upload size limit is 5 MB through `MEDIA_UPLOAD_MAX_BYTES`.
 
