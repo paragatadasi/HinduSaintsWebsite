@@ -59,12 +59,17 @@ export function ScrollRail({ children, ariaLabel, className, controls: controlsM
 
     rail.scrollBy({
       left: (direction === "next" ? 1 : -1) * rail.clientWidth * 0.86,
-      behavior: "smooth"
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
     });
   }
 
   return (
-    <div className={["scroll-section", className].filter(Boolean).join(" ")}>
+    <div
+      className={["scroll-section", className].filter(Boolean).join(" ")}
+      data-can-scroll-next={controls.canScrollNext}
+      data-can-scroll-previous={controls.canScrollPrevious}
+      data-has-overflow={controls.hasOverflow}
+    >
       {shouldShowControls ? (
         <button
           className="scroll-button scroll-button--previous"
