@@ -334,6 +334,7 @@ async function applyDateClaim(tx: Tx, claim: InstagramDerivedClaim, saintId: str
         ? {
             birthDateRaw: claimDate.raw,
             birthYear: claimDate.year,
+            birthYearEnd: claimDate.endYear,
             birthMonth: claimDate.month,
             birthDay: claimDate.day,
             birthDatePrecision: claimDate.precision === "empty" ? undefined : claimDate.precision
@@ -341,6 +342,7 @@ async function applyDateClaim(tx: Tx, claim: InstagramDerivedClaim, saintId: str
         : {
             samadhiDateRaw: claimDate.raw,
             samadhiYear: claimDate.year,
+            samadhiYearEnd: claimDate.endYear,
             samadhiMonth: claimDate.month,
             samadhiDay: claimDate.day,
             samadhiDatePrecision: claimDate.precision === "empty" ? undefined : claimDate.precision

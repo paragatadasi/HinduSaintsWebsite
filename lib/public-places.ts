@@ -268,7 +268,9 @@ function toPublicPlaceMapSaint(saintPlace: PublishedPlaceSaintLink): PublicPlace
     displayName: saint.displayName,
     eraLabel: saint.eraLabel ?? DEFAULT_ERA,
     birthYear: saint.birthYear ?? undefined,
+    birthYearEnd: saint.birthYearEnd ?? undefined,
     samadhiYear: saint.samadhiYear ?? undefined,
+    samadhiYearEnd: saint.samadhiYearEnd ?? undefined,
     tradition: getPrimaryTradition(saint.traditions),
     placeType: saintPlace.placeType,
     routeOrder: saintPlace.routeOrder ?? undefined,
@@ -333,7 +335,12 @@ function getSaintLabel(count: number) {
 }
 
 function getSaintYears(saint: PublicPlaceMapSaint) {
-  return [saint.birthYear, saint.samadhiYear].filter((year): year is number => typeof year === "number");
+  return [
+    saint.birthYear,
+    saint.birthYearEnd,
+    saint.samadhiYear,
+    saint.samadhiYearEnd
+  ].filter((year): year is number => typeof year === "number");
 }
 
 function aggregateMapPoints(points: PublicPlaceMapPoint[]) {
