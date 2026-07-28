@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { randomUUID } from "node:crypto";
+import { resolveFeedbackContext } from "@/lib/feedback-context";
 import { ContactFeedbackForm } from "./contact-feedback-form";
 
 type ContactPageProps = {
   searchParams: Promise<{
+    type?: string;
+    slug?: string;
     page?: string;
-    saint?: string;
   }>;
 };
 
@@ -14,7 +17,12 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage({ searchParams }: ContactPageProps) {
-  const { page, saint } = await searchParams;
+  const { type, slug, page } = await searchParams;
+  const context = await resolveFeedbackContext({
+    entityType: type,
+    entitySlug: slug,
+    pagePath: page
+  });
 
   return (
     <main className="page-shell section site-grid contact-page">
@@ -26,7 +34,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
         </p>
       </div>
 
-      <ContactFeedbackForm pagePath={page} saintName={saint} />
+      <ContactFeedbackForm context={context} submissionKey={randomUUID()} />
     </main>
   );
 }

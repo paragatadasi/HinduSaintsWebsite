@@ -2940,6 +2940,19 @@ img {
   gap: var(--space-3);
 }
 
+.admin-sidebar__link {
+  align-items: center;
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+}
+
+.admin-sidebar__link .status-badge {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-text-inverse);
+}
+
 .review-panel {
   align-content: start;
 }
@@ -4354,6 +4367,62 @@ img {
 .admin-text-link {
   color: var(--color-accent);
   font-weight: 700;
+}
+
+.feedback-inbox-row {
+  align-items: start;
+}
+
+.feedback-inbox-row__preview {
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+.feedback-inbox-row__meta {
+  font-size: 0.86rem;
+}
+
+.feedback-inbox-row__aside {
+  align-items: end;
+  color: var(--color-muted);
+  display: grid;
+  font-size: 0.82rem;
+  gap: var(--space-3);
+  justify-items: end;
+  text-align: right;
+}
+
+.feedback-message {
+  background: var(--review-workflow-field-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  padding: var(--space-4);
+  white-space: pre-wrap;
+}
+
+.feedback-source-link {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--space-2);
+  justify-self: start;
+}
+
+.review-row.feedback-activity-row {
+  background: var(--review-workflow-section-bg);
+  border-color: var(--review-workflow-border);
+  padding: var(--space-3);
+}
+
+.feedback-activity-row span {
+  color: var(--color-muted);
+  font-size: 0.86rem;
 }
 
 .instagram-detail-preview {
@@ -6658,6 +6727,11 @@ img {
   box-shadow: var(--shadow-soft);
 }
 
+.feedback-reference {
+  color: var(--color-muted);
+  font-size: 0.86rem;
+}
+
 .form-status {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -7099,6 +7173,12 @@ img {
 
   .admin-settings-form__actions {
     justify-content: flex-start;
+  }
+
+  .feedback-inbox-row__aside {
+    align-items: start;
+    justify-items: start;
+    text-align: left;
   }
 
   .bulk-delete-form {
