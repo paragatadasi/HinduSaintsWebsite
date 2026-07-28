@@ -2,7 +2,6 @@
 
 import { FileDown } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
-import { importBiographyTextFromInstagramPost } from "../actions";
 
 type InstagramBiographyImportPost = {
   id: string;
@@ -34,12 +33,17 @@ export function InstagramBiographyImporter({ posts, saintId, textareaId }: Insta
 
     startTransition(async () => {
       try {
-        const result = await importBiographyTextFromInstagramPost({
-          saintId,
-          instagramItemId: selectedPostId
+        const response = await fetch("/api/admin/saints/instagram-biography-import", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            saintId,
+            instagramItemId: selectedPostId
+          })
         });
-        if (!result.ok) {
-          setError(result.error);
+        const result = await readImportResponse(response);
+        if (!response.ok || !result.markdown || typeof result.slideCount !== "number") {
+          setError(result.error ?? "Could not import text from this Instagram post.");
           return;
         }
         insertIntoBiographyEditor(textareaId, result.markdown);
@@ -73,6 +77,22 @@ export function InstagramBiographyImporter({ posts, saintId, textareaId }: Insta
       {error ? <p className="admin-notice admin-notice--warning">{error}</p> : null}
     </div>
   );
+}
+
+async function readImportResponse(response: Response) {
+  try {
+    return await response.json() as {
+      error?: string;
+      markdown?: string;
+      slideCount?: number;
+    };
+  } catch {
+    return {
+      error: response.status === 401
+        ? "Your admin session has expired. Sign in again, then retry the import."
+        : "The import service returned an invalid response. Reload the page and try again."
+    };
+  }
 }
 
 function insertIntoBiographyEditor(textareaId: string, markdown: string) {
