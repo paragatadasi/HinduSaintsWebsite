@@ -77,8 +77,10 @@
   --width-instagram-viewer-thumb-min: 48px;
   --width-instagram-viewer-thumb: 64px;
   --height-map: clamp(520px, 54vw, 640px);
-  --height-map-mobile-canvas: 340px;
-  --height-map-mobile-panel: 300px;
+  --height-map-mobile-canvas: clamp(260px, 82vw, 420px);
+  --height-map-short-landscape-canvas: min(72svh, 340px);
+  --space-map-detail-sheet: var(--space-4);
+  --space-map-detail-scroll-margin: var(--space-8);
   --height-instagram-link-card: 92px;
   --height-instagram-post-card-header: 64px;
   --height-instagram-viewer-panel: min(92vh, 860px);
@@ -107,6 +109,9 @@
   --size-tradition-context-thumb: 76px;
   --size-scroll-button: 44px;
   --size-scroll-button-icon: 18px;
+  --color-scroll-button-mobile-bg: var(--color-glass);
+  --scroll-button-mobile-offset: var(--space-2);
+  --width-scroll-rail-edge-fade: 54px;
   --space-scroll-rail-control-gap: var(--space-4);
   --space-scroll-rail-gutter: calc(var(--size-scroll-button) + var(--space-scroll-rail-control-gap));
   --scroll-button-offset: 0;
