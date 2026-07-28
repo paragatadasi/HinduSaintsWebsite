@@ -5,6 +5,7 @@ import { MapPin, UserRound } from "lucide-react";
 import { CollapsibleReviewCard, CollapsibleReviewSection } from "@/components/admin/collapsible-review-card";
 import { ExpandableText } from "@/components/admin/expandable-text";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { getInstagramLinkProps } from "@/lib/external-links";
@@ -194,10 +195,10 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
               </div>
               <label>
                 Short description
-                <textarea
+                <SoftLimitTextarea
                   name="shortDescription"
                   defaultValue={buildInstagramSaintDescription(firstPageMetadata)}
-                  maxLength={500}
+                  softLimit={500}
                 />
               </label>
               <div className="review-actions">

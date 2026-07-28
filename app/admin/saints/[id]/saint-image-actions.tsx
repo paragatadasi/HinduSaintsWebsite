@@ -2,6 +2,7 @@
 
 import { Eye, EyeOff, Pencil, Save, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import type { CSSProperties, MouseEvent } from "react";
 import { useState, useTransition } from "react";
 import { deleteSaintImage, updateSaintImageMetadata, updateSaintImagePlacement, updateSaintImageVisibility } from "../actions";
 
@@ -12,7 +13,10 @@ type SaintImageActionsProps = {
   altText?: string | null;
   caption?: string | null;
   credit?: string | null;
+  focalX?: number | null;
+  focalY?: number | null;
   imageLabel: string;
+  imageUrl: string;
   mediaAssetId: string;
   saintId: string;
   visible: boolean;
@@ -23,7 +27,10 @@ export function SaintImageActions({
   altText,
   caption,
   credit,
+  focalX,
+  focalY,
   imageLabel,
+  imageUrl,
   mediaAssetId,
   placement,
   saintId,
@@ -34,6 +41,8 @@ export function SaintImageActions({
   const [editedAltText, setEditedAltText] = useState(altText ?? "");
   const [editedCaption, setEditedCaption] = useState(caption ?? "");
   const [editedCredit, setEditedCredit] = useState(credit ?? "");
+  const [editedFocalX, setEditedFocalX] = useState(focalX ?? 50);
+  const [editedFocalY, setEditedFocalY] = useState(focalY ?? 30);
   const [selectedPlacement, setSelectedPlacement] = useState<SelectableImagePlacement>(
     placement === "primary" ? "both" : placement ?? "gallery"
   );
@@ -75,7 +84,9 @@ export function SaintImageActions({
           mediaAssetId,
           altText: editedAltText,
           caption: editedCaption,
-          credit: editedCredit
+          credit: editedCredit,
+          focalX: editedFocalX,
+          focalY: editedFocalY
         });
         setMessage("Image details updated.");
         setIsEditingMetadata(false);
@@ -90,8 +101,16 @@ export function SaintImageActions({
     setEditedAltText(altText ?? "");
     setEditedCaption(caption ?? "");
     setEditedCredit(credit ?? "");
+    setEditedFocalX(focalX ?? 50);
+    setEditedFocalY(focalY ?? 30);
     setIsEditingMetadata(false);
     setMessage(null);
+  }
+
+  function setFocusFromPreview(event: MouseEvent<HTMLButtonElement>) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    setEditedFocalX(clampPercentage((event.clientX - rect.left) / rect.width * 100));
+    setEditedFocalY(clampPercentage((event.clientY - rect.top) / rect.height * 100));
   }
 
   function deleteImage() {
@@ -125,6 +144,54 @@ export function SaintImageActions({
             Credit
             <input value={editedCredit} maxLength={160} onChange={(event) => setEditedCredit(event.target.value)} />
           </label>
+          <div className="saint-image-actions__focus">
+            <strong>Card crop focus</strong>
+            <p>Click the face to keep it in square and portrait previews.</p>
+            <button
+              aria-label="Choose the image crop focus"
+              className="saint-image-actions__focus-preview"
+              type="button"
+              onClick={setFocusFromPreview}
+            >
+              <img
+                src={imageUrl}
+                alt=""
+                style={{
+                  "--image-object-position": `${editedFocalX}% ${editedFocalY}%`
+                } as CSSProperties}
+              />
+              <span
+                aria-hidden="true"
+                className="saint-image-actions__focus-marker"
+                style={{
+                  "--saint-image-focus-x": `${editedFocalX}%`,
+                  "--saint-image-focus-y": `${editedFocalY}%`
+                } as CSSProperties}
+              />
+            </button>
+            <div className="field-grid">
+              <label>
+                Horizontal focus: {Math.round(editedFocalX)}%
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={editedFocalX}
+                  onChange={(event) => setEditedFocalX(Number(event.target.value))}
+                />
+              </label>
+              <label>
+                Vertical focus: {Math.round(editedFocalY)}%
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={editedFocalY}
+                  onChange={(event) => setEditedFocalY(Number(event.target.value))}
+                />
+              </label>
+            </div>
+          </div>
           <div className="review-actions">
             <button className="admin-form-button" type="button" disabled={isPending} onClick={saveMetadata}>
               <Save size={16} aria-hidden="true" />
@@ -181,4 +248,8 @@ export function SaintImageActions({
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Image action failed.";
+}
+
+function clampPercentage(value: number) {
+  return Math.min(100, Math.max(0, value));
 }

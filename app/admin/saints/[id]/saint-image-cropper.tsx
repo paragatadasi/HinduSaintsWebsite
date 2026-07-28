@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Crop, ImagePlus, Upload } from "lucide-react";
+import { ChevronDown, Crop, ImagePlus, ScanFace, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { CSSProperties, PointerEvent } from "react";
 import { useMemo, useRef, useState, useTransition } from "react";
@@ -28,6 +28,8 @@ type StagedImageSource = {
   altText?: string | null;
   caption?: string | null;
   credit?: string | null;
+  focalX?: number | null;
+  focalY?: number | null;
   id: string;
   sourceUrl?: string | null;
   url: string;
@@ -56,6 +58,27 @@ type SelectedImage = {
   previewUrl: string;
 };
 
+type FocusPoint = {
+  x: number;
+  y: number;
+};
+
+type DetectedFace = {
+  boundingBox: {
+    height: number;
+    width: number;
+    x: number;
+    y: number;
+  };
+};
+
+type FaceDetectorConstructor = new (options?: {
+  fastMode?: boolean;
+  maxDetectedFaces?: number;
+}) => {
+  detect(source: HTMLImageElement): Promise<DetectedFace[]>;
+};
+
 type UploadState = {
   status: "idle" | "uploading" | "success" | "error";
   message?: string;
@@ -67,11 +90,13 @@ const maxCropOutputSize = 1200;
 const minCropSize = 8;
 const instagramSlideBatchSize = 12;
 const defaultCropBox: CropBox = { x: 10, y: 10, width: 80, height: 80 };
+const defaultFocusPoint: FocusPoint = { x: 50, y: 30 };
 const cropHandles: DragMode[] = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
 
 export function SaintImageCropper({ defaultAltText, instagramImages, saintId, stagedImages }: SaintImageCropperProps) {
   const [selected, setSelected] = useState<SelectedImage | null>(null);
   const [cropBox, setCropBox] = useState<CropBox>(defaultCropBox);
+  const [focusPoint, setFocusPoint] = useState<FocusPoint>(defaultFocusPoint);
   const [naturalSize, setNaturalSize] = useState({ width: 1, height: 1 });
   const [altText, setAltText] = useState(defaultAltText);
   const [caption, setCaption] = useState("");
@@ -79,11 +104,13 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
   const [placement, setPlacement] = useState<ImagePlacement>("both");
   const [visibleInstagramSlideCount, setVisibleInstagramSlideCount] = useState(instagramSlideBatchSize);
   const [uploadState, setUploadState] = useState<UploadState>({ status: "idle" });
+  const [smartCropMessage, setSmartCropMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const imageRef = useRef<HTMLImageElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const dragStateRef = useRef<DragState | null>(null);
+  const smartCropRequestRef = useRef(0);
 
   const sourceOptions = useMemo(
     () => instagramImages.slice(0, visibleInstagramSlideCount),
@@ -94,6 +121,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
   const imageAspect = naturalSize.width / Math.max(1, naturalSize.height);
 
   function selectInstagramImage(image: InstagramImageSource) {
+    smartCropRequestRef.current += 1;
     revokeSelectedPreview(selected);
     setSelected({
       sourceUrl: image.sourceUrl,
@@ -102,11 +130,14 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
     });
     setCaption("");
     setCropBox(defaultCropBox);
+    setFocusPoint(defaultFocusPoint);
+    setSmartCropMessage(null);
     setUploadState({ status: "idle" });
   }
 
   function selectUploadedFile(file: File | undefined) {
     if (!file) return;
+    smartCropRequestRef.current += 1;
     revokeSelectedPreview(selected);
     setSelected({
       file,
@@ -115,10 +146,13 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
     });
     setCaption("");
     setCropBox(defaultCropBox);
+    setFocusPoint(defaultFocusPoint);
+    setSmartCropMessage(null);
     setUploadState({ status: "idle" });
   }
 
   function selectStagedImage(image: StagedImageSource) {
+    smartCropRequestRef.current += 1;
     revokeSelectedPreview(selected);
     setSelected({
       sourceUrl: image.sourceUrl ?? undefined,
@@ -127,7 +161,45 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
     });
     setCaption(image.caption ?? "");
     setCropBox(defaultCropBox);
+    setFocusPoint(defaultFocusPoint);
+    setSmartCropMessage(null);
     setUploadState({ status: "idle" });
+  }
+
+  async function applySmartCrop(image = imageRef.current) {
+    if (!image) return;
+    const requestId = ++smartCropRequestRef.current;
+
+    const FaceDetector = (window as Window & { FaceDetector?: FaceDetectorConstructor }).FaceDetector;
+    if (!FaceDetector) {
+      setSmartCropMessage("Automatic face detection is not available in this browser. Keep the face inside the crop frame.");
+      return;
+    }
+
+    setSmartCropMessage("Finding faces…");
+
+    try {
+      const faces = await new FaceDetector({ fastMode: true, maxDetectedFaces: 10 }).detect(image);
+      if (smartCropRequestRef.current !== requestId || imageRef.current !== image) return;
+
+      if (faces.length === 0) {
+        setSmartCropMessage("No face was detected. Adjust the crop frame manually before attaching.");
+        return;
+      }
+
+      const smartCrop = getFaceAwareCrop(faces, image.naturalWidth, image.naturalHeight);
+      setCropBox(smartCrop.cropBox);
+      setFocusPoint(smartCrop.focusPoint);
+      setSmartCropMessage(
+        faces.length === 1
+          ? "Face found. The crop and saved focus have been positioned automatically."
+          : `${faces.length} faces found. The crop has been expanded to keep them together.`
+      );
+    } catch {
+      if (smartCropRequestRef.current === requestId && imageRef.current === image) {
+        setSmartCropMessage("Face detection could not inspect this image. Adjust the crop frame manually before attaching.");
+      }
+    }
   }
 
   async function handleAttachImage() {
@@ -136,7 +208,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
     setUploadState({ status: "uploading", message: "Preparing cropped image." });
 
     try {
-      const renderedCrop = await renderCropToBlob(imageRef.current, cropBox);
+      const renderedCrop = await renderCropToBlob(imageRef.current, cropBox, focusPoint);
       const formData = new FormData();
       formData.set("file", new File([renderedCrop.blob], `${slugify(defaultAltText || "saint-image")}.jpg`, { type: "image/jpeg" }));
       formData.set("altText", altText);
@@ -144,6 +216,8 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
       formData.set("credit", credit);
       formData.set("width", String(renderedCrop.width));
       formData.set("height", String(renderedCrop.height));
+      formData.set("focalX", String(renderedCrop.focalX));
+      formData.set("focalY", String(renderedCrop.focalY));
 
       if (selected.sourceUrl) {
         formData.set("sourceUrl", selected.sourceUrl);
@@ -230,7 +304,10 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
                     altText={image.altText}
                     caption={image.caption}
                     credit={image.credit}
+                    focalX={image.focalX}
+                    focalY={image.focalY}
                     imageLabel={image.caption ?? image.altText ?? "Hidden saint image"}
+                    imageUrl={image.url}
                     mediaAssetId={image.id}
                     saintId={saintId}
                     visible={false}
@@ -285,11 +362,17 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
               src={selected.previewUrl}
               alt=""
               onLoad={(event) => {
-                setNaturalSize({
+                const nextNaturalSize = {
                   width: event.currentTarget.naturalWidth,
                   height: event.currentTarget.naturalHeight
+                };
+                setNaturalSize({
+                  width: nextNaturalSize.width,
+                  height: nextNaturalSize.height
                 });
-                setCropBox(defaultCropBox);
+                setCropBox(getDefaultSquareCrop(nextNaturalSize.width, nextNaturalSize.height));
+                setFocusPoint(defaultFocusPoint);
+                void applySmartCrop(event.currentTarget);
               }}
             />
             <div
@@ -316,8 +399,18 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
           <div className="form-stack saint-image-cropper__controls">
             <div>
               <strong>{selected.label}</strong>
-              <p>Drag the crop frame to move it, or drag an edge or corner to resize it.</p>
+              <p>Faces are detected locally when possible. Drag the crop frame to fine-tune the result.</p>
             </div>
+            <button
+              className="admin-form-button admin-form-button--secondary"
+              type="button"
+              disabled={isBusy}
+              onClick={() => void applySmartCrop()}
+            >
+              <ScanFace size={16} aria-hidden="true" />
+              Find faces
+            </button>
+            {smartCropMessage ? <p className="admin-notice">{smartCropMessage}</p> : null}
             <label>
               Alt text
               <input value={altText} maxLength={240} onChange={(event) => setAltText(event.target.value)} />
@@ -353,7 +446,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
   );
 }
 
-async function renderCropToBlob(image: HTMLImageElement, cropBox: CropBox) {
+async function renderCropToBlob(image: HTMLImageElement, cropBox: CropBox, focusPoint: FocusPoint) {
   const sourceX = Math.round(image.naturalWidth * cropBox.x / 100);
   const sourceY = Math.round(image.naturalHeight * cropBox.y / 100);
   const sourceWidth = Math.round(image.naturalWidth * cropBox.width / 100);
@@ -373,7 +466,55 @@ async function renderCropToBlob(image: HTMLImageElement, cropBox: CropBox) {
   const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.9));
   if (!blob) throw new Error("Could not export the cropped image.");
 
-  return { blob, width, height };
+  return {
+    blob,
+    width,
+    height,
+    focalX: clamp((focusPoint.x - cropBox.x) / cropBox.width * 100, 0, 100),
+    focalY: clamp((focusPoint.y - cropBox.y) / cropBox.height * 100, 0, 100)
+  };
+}
+
+function getFaceAwareCrop(faces: DetectedFace[], imageWidth: number, imageHeight: number) {
+  const left = Math.min(...faces.map((face) => face.boundingBox.x));
+  const top = Math.min(...faces.map((face) => face.boundingBox.y));
+  const right = Math.max(...faces.map((face) => face.boundingBox.x + face.boundingBox.width));
+  const bottom = Math.max(...faces.map((face) => face.boundingBox.y + face.boundingBox.height));
+  const focusPoint = {
+    x: (left + right) / 2 / imageWidth * 100,
+    y: (top + bottom) / 2 / imageHeight * 100
+  };
+  const faceWidth = right - left;
+  const faceHeight = bottom - top;
+  const cropSize = Math.min(
+    Math.min(imageWidth, imageHeight),
+    Math.max(Math.min(imageWidth, imageHeight) * 0.8, faceWidth * 1.5, faceHeight * 1.7)
+  );
+  const width = cropSize / imageWidth * 100;
+  const height = cropSize / imageHeight * 100;
+
+  return {
+    cropBox: clampCropBox({
+      x: focusPoint.x - width / 2,
+      y: focusPoint.y - height / 2,
+      width,
+      height
+    }),
+    focusPoint
+  };
+}
+
+function getDefaultSquareCrop(imageWidth: number, imageHeight: number): CropBox {
+  const cropSize = Math.min(imageWidth, imageHeight) * 0.8;
+  const width = cropSize / imageWidth * 100;
+  const height = cropSize / imageHeight * 100;
+
+  return clampCropBox({
+    x: defaultFocusPoint.x - width / 2,
+    y: defaultFocusPoint.y - height / 2,
+    width,
+    height
+  });
 }
 
 function resizeCropBox(initial: CropBox, mode: DragMode, deltaX: number, deltaY: number): CropBox {

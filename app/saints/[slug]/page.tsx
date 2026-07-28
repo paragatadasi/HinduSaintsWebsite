@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { InstagramEmbedGrid } from "@/components/instagram/instagram-embed-grid";
 import { Prose } from "@/components/content/prose";
 import { Button } from "@/components/ui/button";
+import { FocalImage } from "@/components/ui/focal-image";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
 import { getPublishedSaintBySlug } from "@/lib/public-saints";
 import { getSaintDetailTemplateContent } from "@/lib/site-content";
@@ -103,16 +104,14 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
         />
       </section>
 
-      {hasBiography || hasInstagram ? (
+      {hasBiography && saint.biography ? (
         <section className="page-shell section saint-detail-layout">
-          {hasBiography && saint.biography ? (
-            <article className="saint-detail-main">
-              <div className="eyebrow">{template.biographyEyebrow}</div>
-              <h2>{saint.biography.title}</h2>
-              {saint.biography.summary ? <p className="lede">{saint.biography.summary}</p> : null}
-              <Prose markdown={saint.biography.bodyMarkdown} />
-            </article>
-          ) : null}
+          <article className="saint-detail-main">
+            <div className="eyebrow">{template.biographyEyebrow}</div>
+            <h2>{saint.biography.title}</h2>
+            {saint.biography.summary ? <p className="lede">{saint.biography.summary}</p> : null}
+            <Prose markdown={saint.biography.bodyMarkdown} />
+          </article>
           {hasInstagram ? (
             <aside className="saint-detail-aside saint-detail-aside--instagram" aria-label={`Instagram posts about ${saint.displayName}`}>
               <InstagramEmbedGrid
@@ -124,6 +123,15 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
             </aside>
           ) : null}
         </section>
+      ) : hasInstagram ? (
+        <div className="page-shell">
+          <InstagramEmbedGrid
+            items={saint.instagramItems}
+            layout="section"
+            saintName={saint.displayName}
+            urls={saint.instagramUrls}
+          />
+        </div>
       ) : null}
 
       {saint.gallery && saint.gallery.length > 1 ? (
@@ -176,7 +184,13 @@ function ImageWithCredit({ image, label }: { image?: PublicImage; label: string 
 
   return (
     <figure className="image-with-credit">
-      <img src={image.url} alt={image.alt} width={image.width} height={image.height} />
+      <FocalImage
+        src={image.url}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        focalPoint={image.focalPoint}
+      />
       {image.caption || image.credit ? (
         <figcaption>
           {image.caption ? <span>{image.caption}</span> : null}

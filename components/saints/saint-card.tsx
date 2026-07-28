@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { FocalImage } from "@/components/ui/focal-image";
 import type { PublicImage, PublicSaintSummary } from "@/lib/public-contracts";
 
 type SaintCardProps = {
@@ -13,13 +14,12 @@ export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
     url: "/images/devotional-archive-placeholder.svg",
     alt: `${saint.displayName} portrait placeholder`
   };
-
   if (variant === "portrait") {
     return (
       <Card className="entity-card interactive-surface rail-card rail-card--featured saint-card saint-card--summary">
         <Link href={`/saints/${saint.slug}`}>
           <div className="saint-card__summary-image">
-            <img src={image.url} alt={image.alt} width={image.width} height={image.height} />
+            <FocalImage src={image.url} alt={image.alt} width={image.width} height={image.height} focalPoint={image.focalPoint} />
           </div>
           <div className="entity-card__content">
             <div className="eyebrow">{saint.eraLabel}</div>
@@ -38,7 +38,7 @@ export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
     <Card className="entity-card interactive-surface saint-card saint-card--summary">
       <Link href={`/saints/${saint.slug}`}>
         <div className="saint-card__summary-image">
-          <img src={image.url} alt={image.alt} width={image.width} height={image.height} />
+          <FocalImage src={image.url} alt={image.alt} width={image.width} height={image.height} focalPoint={image.focalPoint} />
         </div>
         <div className="entity-card__content">
           <div className="eyebrow">{saint.eraLabel}</div>

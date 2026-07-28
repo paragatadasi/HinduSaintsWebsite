@@ -1066,6 +1066,7 @@ img {
 .saint-card__summary-image img {
   height: 100%;
   object-fit: cover;
+  object-position: var(--image-object-position, var(--position-saint-image-default));
   width: 100%;
 }
 
@@ -1329,6 +1330,7 @@ img {
   filter: var(--image-treatment);
   height: 40px;
   object-fit: cover;
+  object-position: var(--image-object-position, var(--position-saint-image-default));
   width: 40px;
 }
 
@@ -1909,16 +1911,13 @@ img {
 }
 
 .instagram-post-card__profile-link {
-  align-self: stretch;
-  justify-content: space-between;
-}
-
-.instagram-post-card__footer .instagram-post-card__profile-link:hover {
-  color: var(--color-text-inverse);
+  color: var(--color-accent);
 }
 
 .instagram-post-card__instagram-link {
   color: var(--color-muted);
+  font-weight: 400;
+  text-transform: none;
 }
 
 .instagram-carousel-viewer {
@@ -2306,6 +2305,7 @@ img {
   filter: var(--image-treatment);
   height: 100%;
   object-fit: cover;
+  object-position: var(--image-object-position, center);
   width: 100%;
 }
 
@@ -2731,6 +2731,7 @@ img {
 .tradition-lineage-saint__portrait img {
   height: 100%;
   object-fit: cover;
+  object-position: var(--image-object-position, var(--position-saint-image-default));
   width: 100%;
 }
 
@@ -5972,6 +5973,59 @@ img {
   resize: vertical;
 }
 
+.soft-limit-textarea {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.soft-limit-textarea__editor {
+  background: var(--review-workflow-field-bg, var(--color-surface));
+  border-radius: var(--radius-sm);
+  display: grid;
+  position: relative;
+}
+
+.soft-limit-textarea__backdrop {
+  inset: var(--border-width-default);
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+}
+
+.soft-limit-textarea__highlight {
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 400;
+  line-height: 1.45;
+  overflow-wrap: break-word;
+  padding: var(--review-control-padding-block, var(--space-3)) var(--review-control-padding-inline, var(--space-4));
+  white-space: pre-wrap;
+  word-break: normal;
+}
+
+.soft-limit-textarea__overflow {
+  color: var(--color-danger);
+}
+
+.form-stack .soft-limit-textarea textarea {
+  background: transparent;
+  caret-color: var(--color-text);
+  color: transparent;
+  position: relative;
+  -webkit-text-fill-color: transparent;
+}
+
+.soft-limit-textarea__hint {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 400;
+  justify-self: end;
+}
+
+.soft-limit-textarea__hint--over {
+  color: var(--color-danger);
+}
+
 .admin-reference-text {
   background: var(--color-surface-muted);
   color: var(--color-muted);
@@ -6522,6 +6576,48 @@ img {
 
 .saint-image-actions__metadata textarea {
   min-height: 88px;
+}
+
+.saint-image-actions__focus {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.saint-image-actions__focus p {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.saint-image-actions__focus-preview {
+  aspect-ratio: 1;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  cursor: crosshair;
+  max-width: var(--width-saint-review-image);
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+.saint-image-actions__focus-preview img {
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--image-object-position, var(--position-saint-image-default));
+  width: 100%;
+}
+
+.saint-image-actions__focus-marker {
+  border: 2px solid var(--color-text-inverse);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 0 0 2px var(--color-accent);
+  height: var(--space-3);
+  left: var(--saint-image-focus-x);
+  pointer-events: none;
+  position: absolute;
+  top: var(--saint-image-focus-y);
+  transform: translate(-50%, -50%);
+  width: var(--space-3);
 }
 
 .saint-image-actions__placement label {
