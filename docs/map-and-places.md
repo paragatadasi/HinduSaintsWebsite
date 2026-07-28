@@ -91,8 +91,8 @@ meaningful.
 
 ## Filtering Rules
 
-The public Map and place index list only places with at least 3 associated
-published saints. The threshold lives in `lib/public-places.ts` as
+The public Map and place index list places with at least 1 associated published
+saint. The threshold lives in `lib/public-places.ts` as
 `MIN_PUBLIC_PLACE_SAINTS` and is applied consistently to:
 
 - map points
@@ -100,6 +100,8 @@ published saints. The threshold lives in `lib/public-places.ts` as
 - generated place slugs
 - place detail lookups
 
+This keeps the map, place cards, and place-detail links consistent: publishing a
+saint with a reviewed place association makes that place publicly discoverable.
 If this threshold changes, update it in one place and verify `/map` and
 `/places/[slug]` behavior together.
 

@@ -173,7 +173,7 @@ Needs to include:
 - minimum-public-content rules so sparse imported places do not create thin public pages
 - SEO title and description
 
-Current seam: `lib/public-places.ts` maps Prisma place records with at least three published saints into public place summaries/details. This is useful for launch browsing, but the minimum threshold, SEO fields, edited place descriptions, and source/media support still need product decisions.
+Current seam: `lib/public-places.ts` maps Prisma place records with at least one published saint into public place summaries/details, so public saint-place associations remain consistent across profiles, the map, and place pages. SEO fields, edited place descriptions, and source/media support still need product decisions.
 
 Map visualization note as of June 8, 2026: `/map` now has Bharatlas-derived
 state/UT SVG outlines in `lib/india-state-map-shapes.ts`, rendered from

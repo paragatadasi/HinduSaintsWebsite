@@ -242,7 +242,10 @@ function CosmicHomePage({
             <div className="home-map-card__visual" aria-hidden="true">
               <HomeMapPreview mapData={mapData} />
             </div>
-            <p>{mappedSaintCount} published saints across {mapData.points.length} mapped places.</p>
+            <p>
+              {mappedSaintCount} mapped {mappedSaintCount === 1 ? "saint" : "saints"} across{" "}
+              {mapData.points.length} {mapData.points.length === 1 ? "place" : "places"}.
+            </p>
           </aside>
         </div>
       </section>

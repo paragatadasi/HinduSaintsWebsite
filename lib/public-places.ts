@@ -21,7 +21,7 @@ const DEFAULT_DESCRIPTION = "";
 const DEFAULT_LOCATION = "Location in review";
 const DEFAULT_TRADITION = "Tradition in review";
 const DEFAULT_ERA = "Dates in review";
-const MIN_PUBLIC_PLACE_SAINTS = 3;
+const MIN_PUBLIC_PLACE_SAINTS = 1;
 
 async function getPublishedPlaceRows() {
   return db.place.findMany({
