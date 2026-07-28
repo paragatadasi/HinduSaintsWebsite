@@ -7315,6 +7315,14 @@ img {
 }
 
 @media (max-width: 760px) {
+  .saints-index .card-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .saints-index .saint-card__summary-image {
+    aspect-ratio: 4 / 3;
+  }
+
   .admin-shell {
     --review-panel-gap: var(--space-4);
     --review-panel-padding: var(--space-4);
