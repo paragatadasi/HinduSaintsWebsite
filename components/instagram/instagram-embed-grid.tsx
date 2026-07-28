@@ -201,7 +201,7 @@ export function InstagramPostCard({
           <span>{postedAt ?? postLabel}</span>
           <div className="instagram-post-card__footer-actions">
             {saintHref ? (
-              <a className="button button--primary instagram-post-card__profile-link" href={saintHref} onClick={stopCardClick}>
+              <a className="instagram-post-card__profile-link" href={saintHref} onClick={stopCardClick}>
                 View Saint Profile
                 <ArrowRight size={iconSize.xs} aria-hidden="true" />
               </a>
