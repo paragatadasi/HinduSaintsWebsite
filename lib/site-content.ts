@@ -59,7 +59,6 @@ export type TraditionDetailTemplateContent = {
 export type PlaceDetailTemplateContent = {
   eyebrow: string;
   associatedSaintsTitle: string;
-  contextTitle: string;
   emptySaintsMessage: string;
 };
 
@@ -168,7 +167,6 @@ export const traditionDetailTemplateContent: TraditionDetailTemplateContent = {
 export const placeDetailTemplateContent: PlaceDetailTemplateContent = {
   eyebrow: "Place",
   associatedSaintsTitle: "Associated saints",
-  contextTitle: "Place context",
   emptySaintsMessage: "Associated saints will appear here after editorial review."
 };
 
