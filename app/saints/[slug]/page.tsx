@@ -6,6 +6,7 @@ import { InstagramEmbedGrid } from "@/components/instagram/instagram-embed-grid"
 import { Prose } from "@/components/content/prose";
 import { SaintGallery } from "@/components/saints/saint-gallery";
 import { Button } from "@/components/ui/button";
+import { FocalImage } from "@/components/ui/focal-image";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
 import { getPublishedSaintBySlug } from "@/lib/public-saints";
 import { getSaintDetailTemplateContent } from "@/lib/site-content";
@@ -180,7 +181,13 @@ function ImageWithCredit({ image, label }: { image?: PublicImage; label: string 
 
   return (
     <figure className="image-with-credit">
-      <img src={image.url} alt={image.alt} width={image.width} height={image.height} />
+      <FocalImage
+        src={image.url}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        focalPoint={image.focalPoint}
+      />
       {image.caption || image.credit ? (
         <figcaption>
           {image.caption ? <span>{image.caption}</span> : null}

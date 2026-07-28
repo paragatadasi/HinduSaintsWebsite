@@ -164,6 +164,30 @@ enum ReconciliationStatus {
   ignored
 }
 
+enum FeedbackStatus {
+  new
+  in_review
+  resolved
+  spam
+  archived
+}
+
+enum FeedbackCategory {
+  correction
+  source_citation
+  name_spelling
+  missing_information
+  technical_issue
+  other
+}
+
+enum FeedbackEntityType {
+  saint
+  tradition
+  place
+  page
+}
+
 enum InstagramDerivedClaimType {
   alias
   birth_date
@@ -611,6 +635,8 @@ model MediaAsset {
   width                  Int?
   height                 Int?
   mimeType               String?
+  focalX                 Float                   @default(50)
+  focalY                 Float                   @default(30)
   homeBannerConfigs      HomePageConfig[]        @relation("HomeBannerImage")
   primaryForSaints       Saint[]                 @relation("PrimarySaintImage")
   heroForTraditions      Tradition[]             @relation("TraditionHeroImage")
@@ -925,6 +951,33 @@ model ReconciliationIssue {
   resolvedById        String?
   resolvedAt          DateTime?
   createdAt           DateTime             @default(now())
+}
+
+model FeedbackSubmission {
+  id                  String              @id @default(cuid())
+  submissionKey       String              @unique
+  status              FeedbackStatus      @default(new)
+  category            FeedbackCategory
+  message             String
+  supportingSourceUrl String?
+  submitterName       String?
+  submitterEmail      String?
+  pagePath            String?
+  pageTitle           String?
+  entityType          FeedbackEntityType?
+  entityId            String?
+  entitySlug          String?
+  assignedToEmail     String?
+  resolutionNote      String?
+  resolvedByEmail     String?
+  resolvedAt          DateTime?
+  abuseFingerprint    String?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  @@index([status, createdAt])
+  @@index([entityType, entityId])
+  @@index([abuseFingerprint, createdAt])
 }
 
 model AuditEvent {
