@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
+import { RouteTransition } from "@/components/layout/route-transition";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" data-theme="nocturne">
       <body>
+        <RouteTransition />
         <SiteHeader />
         {children}
         <SiteFooter />

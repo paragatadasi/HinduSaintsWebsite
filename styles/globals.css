@@ -36,6 +36,71 @@ img {
   max-width: 100%;
 }
 
+.route-progress {
+  height: var(--size-route-progress);
+  inset: 0 0 auto;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: fixed;
+  transition: opacity var(--motion-route-progress-duration) var(--motion-route-ease);
+  z-index: var(--z-index-route-progress);
+}
+
+.route-progress__bar {
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-strong));
+  box-shadow: 0 0 var(--space-3) color-mix(in srgb, var(--color-gold) 68%, transparent);
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  width: 100%;
+}
+
+.route-progress[data-state="loading"],
+.route-progress[data-state="finishing"] {
+  opacity: 1;
+}
+
+.route-progress[data-state="loading"] .route-progress__bar {
+  animation: route-progress-ramp var(--motion-route-progress-ramp-duration) var(--motion-route-ease) forwards;
+}
+
+.route-progress[data-state="finishing"] .route-progress__bar {
+  transform: scaleX(1);
+  transition: transform var(--motion-route-progress-duration) var(--motion-route-ease);
+}
+
+html[data-route-pending="true"] body > main {
+  opacity: var(--opacity-route-pending);
+  transition: opacity var(--motion-route-exit-duration) var(--motion-route-ease);
+}
+
+html[data-route-entering="true"] body > main {
+  animation: route-page-enter var(--motion-route-enter-duration) var(--motion-route-ease) both;
+}
+
+@keyframes route-progress-ramp {
+  from {
+    transform: scaleX(0.08);
+  }
+
+  to {
+    transform: scaleX(0.86);
+  }
+}
+
+@keyframes route-page-enter {
+  from {
+    opacity: var(--opacity-route-pending);
+    transform: translateY(var(--space-2));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .page-shell {
   width: min(100% - 32px, var(--width-page));
   margin: 0 auto;
@@ -6062,6 +6127,26 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .route-progress,
+  .route-progress__bar,
+  html[data-route-pending="true"] body > main,
+  html[data-route-entering="true"] body > main {
+    animation: none;
+    transition: none;
+  }
+
+  .route-progress[data-state="loading"] .route-progress__bar {
+    transform: scaleX(0.5);
+  }
+
+  .route-progress[data-state="finishing"] .route-progress__bar {
+    transform: scaleX(1);
+  }
+
+  html[data-route-pending="true"] body > main {
+    opacity: 1;
+  }
+
   .interactive-surface,
   .interactive-media,
   .interactive-surface img,
