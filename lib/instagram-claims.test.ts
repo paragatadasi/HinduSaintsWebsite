@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { InstagramDerivedClaim, Prisma } from "./generated/prisma/client";
-import { acceptInstagramDerivedClaim } from "./instagram-claims";
+import { acceptInstagramDerivedClaim, acceptSaintInstagramClaim } from "./instagram-claims";
 
 const now = new Date("2026-07-27T12:00:00.000Z");
 
@@ -157,4 +157,167 @@ test("accepting a guru suggestion approves an existing candidate connection", as
     where: { id: "relationship-1" },
     data: { status: "published" }
   }]);
+});
+
+test("accepting an unmatched tradition candidate creates a draft tradition and attaches it", async () => {
+  const claim = makeClaim({
+    claimType: "tradition",
+    rawValue: "Varkari",
+    normalizedValue: "varkari",
+    targetEntityType: null,
+    targetEntityId: null,
+    status: "matched",
+    appliedSaintId: "saint-1",
+    appliedAt: now
+  });
+  const createdTraditions: unknown[] = [];
+  const claimUpdates: unknown[] = [];
+  const traditionLinks: unknown[] = [];
+  const resolvedIssues: unknown[] = [];
+  const tx = {
+    instagramDerivedClaim: {
+      update: async (input: { data: unknown }) => {
+        claimUpdates.push(input);
+        return claim;
+      }
+    },
+    tradition: {
+      findMany: async () => [],
+      findUnique: async () => null,
+      create: async ({ data }: { data: unknown }) => {
+        createdTraditions.push(data);
+        return {
+          id: "tradition-1",
+          name: "Varkari",
+          alternateNames: []
+        };
+      }
+    },
+    saintTradition: {
+      findFirst: async () => null,
+      upsert: async (input: unknown) => {
+        traditionLinks.push(input);
+        return input;
+      }
+    },
+    reconciliationIssue: {
+      updateMany: async (input: unknown) => {
+        resolvedIssues.push(input);
+        return { count: 1 };
+      }
+    }
+  } as unknown as Prisma.TransactionClient;
+
+  await acceptSaintInstagramClaim(tx, claim.id, "saint-1");
+
+  assert.deepEqual(createdTraditions, [{
+    name: "Varkari",
+    slug: "varkari",
+    alternateNames: [],
+    status: "draft"
+  }]);
+  assert.deepEqual(traditionLinks, [{
+    where: {
+      saintId_traditionId: {
+        saintId: "saint-1",
+        traditionId: "tradition-1"
+      }
+    },
+    create: {
+      saintId: "saint-1",
+      traditionId: "tradition-1",
+      isPrimary: true,
+      notes: "Accepted from Instagram first-page biodata: Varkari"
+    },
+    update: {
+      notes: "Accepted from Instagram first-page biodata: Varkari"
+    }
+  }]);
+  assert.equal(claimUpdates.some((input) => (
+    (input as { data?: { targetEntityId?: string } }).data?.targetEntityId === "tradition-1"
+  )), true);
+  assert.equal(claimUpdates.some((input) => (
+    (input as { data?: { appliedAt?: Date } }).data?.appliedAt instanceof Date
+  )), true);
+  assert.equal(resolvedIssues.length, 1);
+});
+
+test("accepting a conflicting date on the saint review replaces the current date", async () => {
+  const claim = makeClaim({
+    claimType: "samadhi_date",
+    rawValue: "1700",
+    normalizedValue: "1700",
+    targetEntityType: null,
+    targetEntityId: null,
+    status: "matched",
+    appliedSaintId: "saint-1",
+    appliedAt: now
+  });
+  const saintUpdates: unknown[] = [];
+  const claimUpdates: unknown[] = [];
+  const resolvedIssues: unknown[] = [];
+  const tx = {
+    instagramDerivedClaim: {
+      update: async (input: unknown) => {
+        claimUpdates.push(input);
+        return claim;
+      }
+    },
+    saint: {
+      findUnique: async () => ({
+        displayName: "Sant Tukaram",
+        birthDateRaw: null,
+        samadhiDateRaw: "1678"
+      }),
+      update: async (input: unknown) => {
+        saintUpdates.push(input);
+        return input;
+      }
+    },
+    reconciliationIssue: {
+      updateMany: async (input: unknown) => {
+        resolvedIssues.push(input);
+        return { count: 1 };
+      }
+    }
+  } as unknown as Prisma.TransactionClient;
+
+  await acceptSaintInstagramClaim(tx, claim.id, "saint-1");
+
+  assert.deepEqual(saintUpdates, [{
+    where: { id: "saint-1" },
+    data: {
+      samadhiDateRaw: "1700",
+      samadhiYear: 1700,
+      samadhiYearEnd: undefined,
+      samadhiMonth: undefined,
+      samadhiDay: undefined,
+      samadhiDatePrecision: "year"
+    }
+  }]);
+  assert.equal(claimUpdates.some((input) => (
+    (input as { data?: { appliedAt?: Date } }).data?.appliedAt instanceof Date
+  )), true);
+  assert.equal(resolvedIssues.length, 1);
+  assert.deepEqual(
+    (resolvedIssues[0] as { where: { rawValue: string; status: string }; data: { status: string } }),
+    {
+      where: {
+        issueType: "instagram_samadhi_date_conflict",
+        entityType: "Saint",
+        entityId: "saint-1",
+        rawValue: "1678",
+        suggestedValue: JSON.stringify({
+          instagramItemId: "instagram-item-1",
+          claimId: "claim-1",
+          sourceValue: "1700"
+        }),
+        status: "open"
+      },
+      data: {
+        status: "resolved",
+        resolvedAt: (resolvedIssues[0] as { data: { resolvedAt: Date } }).data.resolvedAt
+      }
+    }
+  );
 });

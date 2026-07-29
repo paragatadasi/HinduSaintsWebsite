@@ -18,6 +18,10 @@ type ClaimInput = {
   notes?: string;
 };
 
+type ApplyClaimOptions = {
+  replaceConflictingDates?: boolean;
+};
+
 export async function acceptInstagramDerivedClaim(tx: Tx, input: ClaimInput) {
   const claim = await upsertInstagramDerivedClaim(tx, {
     ...input,
@@ -157,7 +161,9 @@ export async function acceptSaintInstagramClaim(tx: Tx, claimId: string, saintId
     }
   });
 
-  await applyInstagramClaimToSaint(tx, claim, saintId);
+  await applyInstagramClaimToSaint(tx, claim, saintId, {
+    replaceConflictingDates: true
+  });
 }
 
 export async function pipeAcceptedInstagramClaimsToSaint(tx: Tx, instagramItemId: string, saintId: string) {
@@ -238,9 +244,12 @@ async function getPrimaryMatchedSaintId(tx: Tx, instagramItemId: string) {
   return link?.saintId;
 }
 
-async function applyInstagramClaimToSaint(tx: Tx, claim: InstagramDerivedClaim, saintId: string) {
-  if (claim.appliedSaintId === saintId && claim.appliedAt) return;
-
+async function applyInstagramClaimToSaint(
+  tx: Tx,
+  claim: InstagramDerivedClaim,
+  saintId: string,
+  options: ApplyClaimOptions = {}
+) {
   let handled = false;
 
   if (claim.claimType === "alias") {
@@ -249,13 +258,11 @@ async function applyInstagramClaimToSaint(tx: Tx, claim: InstagramDerivedClaim, 
   }
 
   if (claim.claimType === "birth_date") {
-    await applyDateClaim(tx, claim, saintId, "birth");
-    handled = true;
+    handled = await applyDateClaim(tx, claim, saintId, "birth", options.replaceConflictingDates);
   }
 
   if (claim.claimType === "samadhi_date") {
-    await applyDateClaim(tx, claim, saintId, "samadhi");
-    handled = true;
+    handled = await applyDateClaim(tx, claim, saintId, "samadhi", options.replaceConflictingDates);
   }
 
   if (claim.claimType === "place" && claim.targetEntityType === "Place" && claim.targetEntityId) {
@@ -314,7 +321,13 @@ async function applyAliasClaim(tx: Tx, saintId: string, rawValue: string) {
   });
 }
 
-async function applyDateClaim(tx: Tx, claim: InstagramDerivedClaim, saintId: string, kind: "birth" | "samadhi") {
+async function applyDateClaim(
+  tx: Tx,
+  claim: InstagramDerivedClaim,
+  saintId: string,
+  kind: "birth" | "samadhi",
+  replaceConflict = false
+) {
   const claimDate = parseImportedDate(claim.rawValue);
   const saint = await tx.saint.findUnique({
     where: { id: saintId },
@@ -324,35 +337,44 @@ async function applyDateClaim(tx: Tx, claim: InstagramDerivedClaim, saintId: str
       samadhiDateRaw: true
     }
   });
-  if (!saint) return;
+  if (!saint) return false;
 
   const currentValue = kind === "birth" ? saint.birthDateRaw : saint.samadhiDateRaw;
-  if (!currentValue?.trim()) {
+  const currentDate = parseImportedDate(currentValue);
+  const valuesMatch = Boolean(
+    currentValue?.trim()
+    && (areDatePartsCompatible(currentDate, claimDate) || normalizeComparable(currentValue) === normalizeComparable(claim.rawValue))
+  );
+  const dateData = kind === "birth"
+    ? {
+        birthDateRaw: claimDate.raw,
+        birthYear: claimDate.year,
+        birthYearEnd: claimDate.endYear,
+        birthMonth: claimDate.month,
+        birthDay: claimDate.day,
+        birthDatePrecision: claimDate.precision === "empty" ? undefined : claimDate.precision
+      }
+    : {
+        samadhiDateRaw: claimDate.raw,
+        samadhiYear: claimDate.year,
+        samadhiYearEnd: claimDate.endYear,
+        samadhiMonth: claimDate.month,
+        samadhiDay: claimDate.day,
+        samadhiDatePrecision: claimDate.precision === "empty" ? undefined : claimDate.precision
+      };
+
+  if (!currentValue?.trim() || (replaceConflict && !valuesMatch)) {
     await tx.saint.update({
       where: { id: saintId },
-      data: kind === "birth"
-        ? {
-            birthDateRaw: claimDate.raw,
-            birthYear: claimDate.year,
-            birthYearEnd: claimDate.endYear,
-            birthMonth: claimDate.month,
-            birthDay: claimDate.day,
-            birthDatePrecision: claimDate.precision === "empty" ? undefined : claimDate.precision
-          }
-        : {
-            samadhiDateRaw: claimDate.raw,
-            samadhiYear: claimDate.year,
-            samadhiYearEnd: claimDate.endYear,
-            samadhiMonth: claimDate.month,
-            samadhiDay: claimDate.day,
-            samadhiDatePrecision: claimDate.precision === "empty" ? undefined : claimDate.precision
-          }
+      data: dateData
     });
-    return;
+    if (currentValue?.trim()) {
+      await resolveDateConflictIssue(tx, claim, saintId, kind, currentValue);
+    }
+    return true;
   }
 
-  const currentDate = parseImportedDate(currentValue);
-  if (areDatePartsCompatible(currentDate, claimDate) || normalizeComparable(currentValue) === normalizeComparable(claim.rawValue)) return;
+  if (valuesMatch) return true;
 
   await createOpenReconciliationIssue(tx, {
     issueType: `instagram_${kind}_date_conflict`,
@@ -366,6 +388,34 @@ async function applyDateClaim(tx: Tx, claim: InstagramDerivedClaim, saintId: str
       claimId: claim.id,
       sourceValue: claim.rawValue
     })
+  });
+  return false;
+}
+
+async function resolveDateConflictIssue(
+  tx: Tx,
+  claim: InstagramDerivedClaim,
+  saintId: string,
+  kind: "birth" | "samadhi",
+  previousValue: string
+) {
+  await tx.reconciliationIssue.updateMany({
+    where: {
+      issueType: `instagram_${kind}_date_conflict`,
+      entityType: "Saint",
+      entityId: saintId,
+      rawValue: previousValue,
+      suggestedValue: JSON.stringify({
+        instagramItemId: claim.instagramItemId,
+        claimId: claim.id,
+        sourceValue: claim.rawValue
+      }),
+      status: "open"
+    },
+    data: {
+      status: "resolved",
+      resolvedAt: new Date()
+    }
   });
 }
 
@@ -446,6 +496,11 @@ async function applyGuruClaim(tx: Tx, saintId: string, guruSaintId: string, clai
 }
 
 async function applyTraditionClaim(tx: Tx, saintId: string, traditionId: string, claim: InstagramDerivedClaim) {
+  const existingTradition = await tx.saintTradition.findFirst({
+    where: { saintId },
+    select: { id: true }
+  });
+
   await tx.saintTradition.upsert({
     where: {
       saintId_traditionId: {
@@ -456,6 +511,7 @@ async function applyTraditionClaim(tx: Tx, saintId: string, traditionId: string,
     create: {
       saintId,
       traditionId,
+      isPrimary: !existingTradition,
       notes: `Accepted from Instagram first-page biodata: ${claim.rawValue}`
     },
     update: {
@@ -465,33 +521,64 @@ async function applyTraditionClaim(tx: Tx, saintId: string, traditionId: string,
 }
 
 async function applyRawTraditionClaim(tx: Tx, saintId: string, claim: InstagramDerivedClaim) {
-  const rawSlug = toSlug(claim.rawValue);
+  const name = claim.rawValue.trim();
+  const rawSlug = toSlug(name);
   const traditions = await tx.tradition.findMany({
     select: { id: true, name: true, alternateNames: true }
   });
-  const tradition = traditions.find((candidate) => {
+  let tradition = traditions.find((candidate) => {
     const names = [candidate.name, ...candidate.alternateNames];
     return names.some((name) => toSlug(name) === rawSlug);
   });
 
-  if (tradition) {
-    await applyTraditionClaim(tx, saintId, tradition.id, claim);
-    return;
+  if (!tradition) {
+    const slug = await getUniqueTraditionSlug(tx, name);
+    tradition = await tx.tradition.create({
+      data: {
+        name,
+        slug,
+        alternateNames: [],
+        status: "draft"
+      },
+      select: { id: true, name: true, alternateNames: true }
+    });
   }
 
-  await createOpenReconciliationIssue(tx, {
-    issueType: "instagram_tradition_candidate",
-    severity: "low",
-    entityType: "Saint",
-    entityId: saintId,
-    message: "Instagram first-page biodata suggests a tradition that needs matching to a CMS tradition.",
-    rawValue: claim.rawValue,
-    suggestedValue: JSON.stringify({
-      instagramItemId: claim.instagramItemId,
-      claimId: claim.id,
-      sourceValue: claim.rawValue
-    })
+  await tx.instagramDerivedClaim.update({
+    where: { id: claim.id },
+    data: {
+      targetEntityType: "Tradition",
+      targetEntityId: tradition.id
+    }
   });
+
+  await applyTraditionClaim(tx, saintId, tradition.id, claim);
+  await tx.reconciliationIssue.updateMany({
+    where: {
+      issueType: "instagram_tradition_candidate",
+      entityType: "Saint",
+      entityId: saintId,
+      rawValue: claim.rawValue,
+      status: "open"
+    },
+    data: {
+      status: "resolved",
+      resolvedAt: new Date()
+    }
+  });
+}
+
+async function getUniqueTraditionSlug(tx: Tx, name: string) {
+  const baseSlug = toSlug(name) || "tradition";
+  let candidate = baseSlug;
+  let suffix = 2;
+
+  while (await tx.tradition.findUnique({ where: { slug: candidate }, select: { id: true } })) {
+    candidate = `${baseSlug}-${suffix}`;
+    suffix += 1;
+  }
+
+  return candidate;
 }
 
 async function createOpenReconciliationIssue(

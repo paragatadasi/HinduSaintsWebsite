@@ -13,6 +13,7 @@ import { getInstagramLinkProps } from "@/lib/external-links";
 import { parseImportedDate } from "@/lib/import-dates";
 import { getInstagramImageUrls } from "@/lib/instagram";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
+import { toSlug } from "@/lib/slugs";
 import {
   removeSaintSource,
   reviewSaintInstagramClaim,
@@ -45,8 +46,8 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
       where: { sourceType: "airtable", entityType: "Saint", entityId: saint.id },
       select: { externalId: true, lastSeenAt: true }
     }),
-    db.tradition.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, status: true } }),
-    db.place.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, region: true, country: true } }),
+    db.tradition.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, alternateNames: true, status: true } }),
+    db.place.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, alternateNames: true, region: true, country: true } }),
     db.contentSource.findMany({
       where: { entityType: "Saint", entityId: saint.id },
       include: { source: true },
@@ -271,49 +272,74 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
 
       <CollapsibleReviewCard
         cardId="saint-instagram-claims"
-        defaultOpen={saint.instagramClaims.some((claim) => claim.status === "needs_review" || claim.status === "suggested")}
+        defaultOpen={saint.instagramClaims.some((claim) => (
+          claim.status === "needs_review"
+          || claim.status === "suggested"
+          || (claim.status === "matched"
+            && isInstagramClaimApplied(saint, claim) === false)
+        ))}
         description="Compare imported Instagram candidates against the current reviewed profile values."
         eyebrow="Imported claims"
         title="Instagram Claims"
       >
         {saint.instagramClaims.length > 0 ? (
           <div className="review-list">
-            {saint.instagramClaims.map((claim) => (
-              <div className="review-row" key={claim.id}>
-                <div>
-                  <div className="review-meta">
-                    <StatusBadge label={formatStatus(claim.status)} />
-                    <StatusBadge label={claim.confidence} />
-                    <StatusBadge label={formatStatus(claim.claimType)} />
+            {saint.instagramClaims.map((claim) => {
+              const canApply = canApplyInstagramClaim(claim);
+              const claimApplied = isInstagramClaimApplied(saint, claim);
+              const pending = claim.status === "needs_review" || claim.status === "suggested";
+              const canReapply = claim.status === "matched" && claimApplied === false && canApply;
+              const targetValue = getInstagramClaimTargetValue(claim, allTraditions, allPlaces);
+
+              return (
+                <div className="review-row" key={claim.id}>
+                  <div>
+                    <div className="review-meta">
+                      <StatusBadge label={formatStatus(claim.status)} />
+                      <StatusBadge label={claim.confidence} />
+                      <StatusBadge label={formatStatus(claim.claimType)} />
+                    </div>
+                    <h3>{formatClaimLabel(claim.claimType)}</h3>
+                    <div className="field-grid saint-review__claim-comparison">
+                      <ReviewField label="Current value" value={getCurrentClaimValue(saint, claim.claimType)} />
+                      <ReviewField label="Instagram candidate" value={claim.rawValue} />
+                      {targetValue ? <ReviewField label="CMS match" value={targetValue} /> : null}
+                    </div>
+                    {isDateClaim(claim.claimType) ? (
+                      <p>{formatDateClaimInterpretation(claim.rawValue)}</p>
+                    ) : null}
+                    {isDateClaim(claim.claimType) && (pending || canReapply) ? (
+                      <p className="form-field-hint">Accepting replaces the current date with this Instagram candidate.</p>
+                    ) : null}
+                    {claim.claimType === "place" && !canApply ? (
+                      <p className="form-field-hint">Choose a CMS location match on the Instagram item before accepting this candidate.</p>
+                    ) : null}
+                    {claim.claimType === "tradition" && !claim.targetEntityId ? (
+                      <p className="form-field-hint">Accepting creates and links a draft tradition when no existing name or alternate name matches.</p>
+                    ) : null}
+                    <div className="review-actions">
+                      <Link className="admin-text-link" href={`/admin/instagram/${claim.instagramItemId}`}>Open Instagram item</Link>
+                      {claim.instagramItem.instagramShortcode ? <a className="admin-text-link" href={claim.instagramItem.instagramUrl} {...getInstagramLinkProps(claim.instagramItem.instagramUrl)}>View post</a> : null}
+                    </div>
                   </div>
-                  <h3>{formatClaimLabel(claim.claimType)}</h3>
-                  <div className="field-grid saint-review__claim-comparison">
-                    <ReviewField label="Current value" value={getCurrentClaimValue(saint, claim.claimType)} />
-                    <ReviewField label="Instagram candidate" value={claim.rawValue} />
-                  </div>
-                  {isDateClaim(claim.claimType) ? (
-                    <p>{formatDateClaimInterpretation(claim.rawValue)}</p>
-                  ) : null}
                   <div className="review-actions">
-                    <Link className="admin-text-link" href={`/admin/instagram/${claim.instagramItemId}`}>Open Instagram item</Link>
-                    {claim.instagramItem.instagramShortcode ? <a className="admin-text-link" href={claim.instagramItem.instagramUrl} {...getInstagramLinkProps(claim.instagramItem.instagramUrl)}>View post</a> : null}
+                    {pending ? (
+                      <>
+                        {canApply ? <ClaimReviewForm claimId={claim.id} saintId={saint.id} intent="accept" label="Accept" /> : null}
+                        <ClaimReviewForm claimId={claim.id} saintId={saint.id} intent="ignore" label="Ignore" variant="warning" />
+                      </>
+                    ) : canReapply ? (
+                      <ClaimReviewForm claimId={claim.id} saintId={saint.id} intent="accept" label="Apply candidate" />
+                    ) : (
+                      <StatusBadge label={claim.appliedAt ? `applied ${claim.appliedAt.toLocaleDateString()}` : formatStatus(claim.status)} />
+                    )}
                   </div>
                 </div>
-                <div className="review-actions">
-                  {claim.status === "needs_review" || claim.status === "suggested" ? (
-                    <>
-                      <ClaimReviewForm claimId={claim.id} saintId={saint.id} intent="accept" label="Accept" />
-                      <ClaimReviewForm claimId={claim.id} saintId={saint.id} intent="ignore" label="Ignore" variant="warning" />
-                    </>
-                  ) : (
-                    <StatusBadge label={claim.appliedAt ? `applied ${claim.appliedAt.toLocaleDateString()}` : formatStatus(claim.status)} />
-                  )}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
-          <p>No direct Instagram claims are waiting for review.</p>
+          <p>No Instagram claims are available for review.</p>
         )}
       </CollapsibleReviewCard>
 
@@ -689,7 +715,7 @@ async function getSaint(slugOrId: string) {
   const instagramClaims = await db.instagramDerivedClaim.findMany({
     where: {
       appliedSaintId: saint.id,
-      claimType: { in: ["alias", "birth_date", "samadhi_date", "tradition"] },
+      claimType: { in: ["alias", "birth_date", "place", "samadhi_date", "tradition"] },
       status: { in: ["needs_review", "suggested", "matched", "ignored"] }
     },
     include: {
@@ -1053,6 +1079,7 @@ function formatClaimLabel(claimType: string) {
   if (claimType === "samadhi_date") return "Samadhi date candidate";
   if (claimType === "alias") return "Alias candidate";
   if (claimType === "tradition") return "Tradition candidate";
+  if (claimType === "place") return "Location candidate";
   return formatStatus(claimType);
 }
 
@@ -1068,6 +1095,82 @@ function getCurrentClaimValue(
   if (claimType === "birth_date") return saint.birthDateRaw;
   if (claimType === "samadhi_date") return saint.samadhiDateRaw;
   if (claimType === "tradition") return saint.traditions.map((item) => item.tradition.name).join(", ");
+  if (claimType === "place") return saint.places.map((item) => item.place.name).join(", ");
+  return undefined;
+}
+
+type InstagramClaimForReview = NonNullable<Awaited<ReturnType<typeof getSaint>>>["instagramClaims"][number];
+
+function canApplyInstagramClaim(claim: InstagramClaimForReview) {
+  if (claim.claimType !== "place") return true;
+  return claim.targetEntityType === "Place" && Boolean(claim.targetEntityId);
+}
+
+function isInstagramClaimApplied(
+  saint: NonNullable<Awaited<ReturnType<typeof getSaint>>>,
+  claim: InstagramClaimForReview
+) {
+  if (claim.claimType === "birth_date" || claim.claimType === "samadhi_date") {
+    const currentValue = claim.claimType === "birth_date" ? saint.birthDateRaw : saint.samadhiDateRaw;
+    if (!currentValue?.trim()) return false;
+
+    const currentDate = parseImportedDate(currentValue);
+    const claimDate = parseImportedDate(claim.rawValue);
+    if (normalizeClaimValue(currentValue) === normalizeClaimValue(claim.rawValue)) return true;
+    if (currentDate.year && claimDate.year && currentDate.year !== claimDate.year) return false;
+    if (currentDate.month && claimDate.month && currentDate.month !== claimDate.month) return false;
+    if (currentDate.day && claimDate.day && currentDate.day !== claimDate.day) return false;
+
+    return Boolean(currentDate.year && claimDate.year);
+  }
+
+  if (claim.claimType === "place") {
+    if (!claim.targetEntityId) return false;
+    return saint.places.some((item) => item.placeId === claim.targetEntityId);
+  }
+
+  if (claim.claimType === "tradition") {
+    if (claim.targetEntityId) {
+      return saint.traditions.some((item) => item.traditionId === claim.targetEntityId);
+    }
+
+    const candidateSlug = toSlug(claim.rawValue);
+    return saint.traditions.some((item) => (
+      [item.tradition.name, ...item.tradition.alternateNames]
+        .some((name) => toSlug(name) === candidateSlug)
+    ));
+  }
+
+  return undefined;
+}
+
+function normalizeClaimValue(value: string) {
+  return value.trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+function getInstagramClaimTargetValue(
+  claim: InstagramClaimForReview,
+  traditions: Array<{ id: string; name: string; alternateNames: string[] }>,
+  places: Array<{ id: string; name: string; alternateNames: string[] }>
+) {
+  if (claim.claimType === "tradition") {
+    if (claim.targetEntityId) {
+      return traditions.find((tradition) => tradition.id === claim.targetEntityId)?.name;
+    }
+
+    const candidateSlug = toSlug(claim.rawValue);
+    const existing = traditions.find((tradition) => (
+      [tradition.name, ...tradition.alternateNames]
+        .some((name) => toSlug(name) === candidateSlug)
+    ));
+    return existing?.name ?? "New draft tradition";
+  }
+
+  if (claim.claimType === "place") {
+    if (!claim.targetEntityId) return "No location selected";
+    return places.find((place) => place.id === claim.targetEntityId)?.name ?? "Selected location";
+  }
+
   return undefined;
 }
 
