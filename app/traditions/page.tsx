@@ -1,4 +1,5 @@
 import { TraditionCard } from "@/components/traditions/tradition-card";
+import { logPageView } from "@/lib/page-views";
 import { getPublicTraditionSummaries } from "@/lib/public-traditions";
 import { getTraditionsIndexContent } from "@/lib/site-content";
 
@@ -7,6 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function TraditionsIndexPage() {
   const content = getTraditionsIndexContent();
   const traditions = await getPublicTraditionSummaries();
+  logPageView("/traditions");
 
   return (
     <main className="page-shell section site-grid">

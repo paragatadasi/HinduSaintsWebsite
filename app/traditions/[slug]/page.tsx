@@ -5,6 +5,7 @@ import {
   getPublicBasicTraditionBySlug,
   getPublishedTraditionBySlug,
 } from "@/lib/public-traditions";
+import { logPageView } from "@/lib/page-views";
 import { getTraditionDetailTemplateContent } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
@@ -19,12 +20,14 @@ export default async function TraditionDetailPage({
   const tradition = await getPublishedTraditionBySlug(slug);
 
   if (tradition) {
+    logPageView(`/traditions/${slug}`);
     return <TraditionPageLayouts tradition={tradition} template={template} />;
   }
 
   const traditionIndex = await getPublicBasicTraditionBySlug(slug);
 
   if (!traditionIndex) notFound();
+  logPageView(`/traditions/${slug}`);
 
   return (
     <main className="page-shell section site-grid">

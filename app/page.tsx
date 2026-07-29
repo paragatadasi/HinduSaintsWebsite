@@ -11,6 +11,7 @@ import { getRecentInstagramCarouselPreviews } from "@/lib/public-instagram";
 import { getIndiaPlaceMapData } from "@/lib/public-places";
 import { getFeaturedSaintSummaries, getPublishedSaintSummaries } from "@/lib/public-saints";
 import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
+import { logPageView } from "@/lib/page-views";
 import type { PublicImage, PublicPlaceMapData } from "@/lib/public-contracts";
 import { getHomeLayoutVariant, getHomeSectionContent, type HomeHeroContent, type HomeQuoteContent } from "@/lib/site-content";
 
@@ -36,6 +37,7 @@ export default async function HomePage() {
     ...configuredFeaturedSaints,
     ...publishedSaints.filter((saint) => !saint.featured)
   ]).slice(0, 6);
+  logPageView("/");
 
   if (layout === "archive") {
     return (

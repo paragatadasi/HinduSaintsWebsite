@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Prose } from "@/components/content/prose";
 import { SaintCard } from "@/components/saints/saint-card";
+import { logPageView } from "@/lib/page-views";
 import { getPublishedPlaceBySlug } from "@/lib/public-places";
 import { getPlaceDetailTemplateContent } from "@/lib/site-content";
 
@@ -12,6 +13,7 @@ export default async function PlaceDetailPage({ params }: { params: Promise<{ sl
   const place = await getPublishedPlaceBySlug(slug);
 
   if (!place) notFound();
+  logPageView(`/places/${slug}`);
 
   return (
     <main className="page-shell section site-grid">

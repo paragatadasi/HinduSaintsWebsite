@@ -1,6 +1,7 @@
 import { IndiaSaintsMap } from "@/components/places/india-saints-map";
 import { PlaceCard } from "@/components/places/place-card";
 import { INDIA_STATE_MAP_SHAPES, type IndiaStateMapShape } from "@/lib/india-state-map-shapes";
+import { logPageView } from "@/lib/page-views";
 import { getIndiaPlaceMapData, getPublishedPlaceSummaries } from "@/lib/public-places";
 import type { PublicPlaceMapData } from "@/lib/public-contracts";
 import { getPlacesIndexContent, getPlacesMapContent } from "@/lib/site-content";
@@ -16,6 +17,7 @@ export default async function MapIndexPage() {
   ]);
   const stateSaintCountsBySlug = getStateSaintCountsBySlug(mapData);
   const stateNamesBySlug = getStateNamesBySlug();
+  logPageView("/map");
 
   return (
     <main className="page-shell section site-grid">

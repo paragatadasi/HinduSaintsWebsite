@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { SaintCard } from "@/components/saints/saint-card";
+import { logPageView } from "@/lib/page-views";
 import { getPublishedSaintSummaries, searchPublishedSaintSummaries } from "@/lib/public-saints";
 import { getSaintsIndexContent } from "@/lib/site-content";
 
@@ -36,6 +37,7 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
   const eraOptions = getUniqueOptions(allSaints.map((saint) => saint.eraLabel));
   const activeFilterCount = [selectedTradition, selectedLocation, selectedEra].filter(Boolean).length;
   const resultLabel = buildResultLabel(saints.length, query, activeFilterCount);
+  logPageView("/saints");
 
   return (
     <main className="page-shell section site-grid saints-index">

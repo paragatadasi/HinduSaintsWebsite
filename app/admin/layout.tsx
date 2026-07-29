@@ -72,6 +72,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/airtable">Airtable</Link>
           <Link href="/admin/traditions">Traditions</Link>
           <Link href="/admin/places">Places</Link>
+          <Link href={"/admin/analytics" as Route}>Analytics</Link>
           <Link href={"/admin/site" as Route}>Site</Link>
         </aside>
         <section className="admin-content">{children}</section>

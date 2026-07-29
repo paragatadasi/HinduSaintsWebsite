@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { FocalImage } from "@/components/ui/focal-image";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
 import { IMAGE_CROP_ASPECT } from "@/lib/image-crop-config";
+import { logPageView } from "@/lib/page-views";
 import { getPublishedSaintBySlug } from "@/lib/public-saints";
 import { getSaintDetailTemplateContent } from "@/lib/site-content";
 import type { PublicFurtherReadingItem, PublicImage, PublicSourceSummary } from "@/lib/public-contracts";
@@ -46,6 +47,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
   const hasInstagram = saint.instagramItems.length > 0 || saint.instagramUrls.length > 0;
   const displayNameKey = normalizeName(saint.displayName);
   const visibleAliases = saint.aliases.filter((alias) => normalizeName(alias) !== displayNameKey);
+  logPageView(`/saints/${slug}`);
 
   return (
     <main>
