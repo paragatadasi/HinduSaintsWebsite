@@ -1155,6 +1155,14 @@ img {
 
 .place-card {
   min-height: 100%;
+  overflow: hidden;
+  padding: 0;
+}
+
+.place-card > a {
+  box-sizing: border-box;
+  height: 100%;
+  padding: var(--space-5);
 }
 
 .place-card__icon {

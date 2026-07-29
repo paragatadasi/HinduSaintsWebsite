@@ -26,6 +26,7 @@ const MIN_PUBLIC_PLACE_SAINTS = 1;
 async function getPublishedPlaceRows() {
   return db.place.findMany({
     where: {
+      slug: { not: "" },
       saints: {
         some: {
           saint: { status: "published" }
