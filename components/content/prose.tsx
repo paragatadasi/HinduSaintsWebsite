@@ -4,9 +4,9 @@ import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import { isDefinitionLink } from "@/lib/markdown";
 
-export function Prose({ markdown }: { markdown: string }) {
+export function Prose({ className, markdown }: { className?: string; markdown: string }) {
   return (
-    <div className="prose">
+    <div className={["prose", className].filter(Boolean).join(" ")}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeSanitize]}

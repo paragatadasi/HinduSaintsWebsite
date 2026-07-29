@@ -1,4 +1,5 @@
 import { BookOpen, ExternalLink, FileText, Save } from "lucide-react";
+import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { SITE_CONFIG_ID } from "@/lib/site-config";
 import { db } from "@/lib/db";
@@ -89,15 +90,17 @@ export default async function AdminSitePage({ searchParams }: AdminSitePageProps
                       />
                     </label>
                   </div>
-                  <label>
-                    Introduction
-                    <textarea
+                  <div className="form-stack">
+                    <label htmlFor="about-introduction">Introduction</label>
+                    <MarkdownEditor
                       defaultValue={config?.aboutIntroduction ?? aboutDefaults.introduction}
+                      formatting="basic"
                       maxLength={1000}
                       name="aboutIntroduction"
                       required
+                      textareaId="about-introduction"
                     />
-                  </label>
+                  </div>
                 </div>
               </ReviewSection>
 

@@ -18,7 +18,7 @@ export default async function AboutPage() {
       <div>
         <div className="eyebrow">{content.eyebrow}</div>
         <h1 className="page-title">{content.title}</h1>
-        <p className="lede">{content.introduction}</p>
+        <Prose className="lede about-introduction" markdown={content.introduction} />
       </div>
 
       <div className="site-grid">

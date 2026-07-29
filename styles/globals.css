@@ -387,6 +387,14 @@ html[data-route-entering="true"] body > main {
   font-size: 1.22rem;
 }
 
+.prose.lede p {
+  margin: 0 0 var(--space-3);
+}
+
+.prose.lede p:last-child {
+  margin-bottom: 0;
+}
+
 .hero-media {
   aspect-ratio: 1 / 0.86;
   min-height: 420px;
