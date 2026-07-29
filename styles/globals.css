@@ -895,13 +895,17 @@ img {
 
 .site-brand__mark {
   align-items: center;
-  border: 1px solid color-mix(in srgb, var(--color-gold) 54%, transparent);
-  border-radius: 50%;
-  color: var(--color-gold);
   display: inline-flex;
-  height: 42px;
+  flex: 0 0 auto;
+  height: var(--size-site-logo);
   justify-content: center;
-  width: 42px;
+  width: var(--size-site-logo);
+}
+
+.site-brand__mark img {
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
 }
 
 .site-links {

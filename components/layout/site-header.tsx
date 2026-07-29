@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Search, Sun } from "lucide-react";
+import { Search } from "lucide-react";
 import { getInstagramLinkProps } from "@/lib/external-links";
 
 export function SiteHeader() {
@@ -8,7 +9,14 @@ export function SiteHeader() {
       <nav className="page-shell site-nav">
         <Link href="/" className="site-brand" aria-label="Hindu Saints home">
           <span className="site-brand__mark" aria-hidden="true">
-            <Sun size={26} />
+            <Image
+              src="/images/hindu-saints-logo.png"
+              alt=""
+              width={794}
+              height={752}
+              priority
+              sizes="52px"
+            />
           </span>
           <span>Hindu Saints</span>
         </Link>
