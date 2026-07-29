@@ -627,48 +627,55 @@ model SaintMuseumSection {
 }
 
 model MediaAsset {
-  id                     String                  @id @default(cuid())
-  url                    String
-  storageKey             String?
-  altText                String?
-  caption                String?
-  credit                 String?
-  sourceUrl              String?
-  width                  Int?
-  height                 Int?
-  mimeType               String?
-  focalX                 Float                   @default(50)
-  focalY                 Float                   @default(30)
-  homeBannerConfigs      HomePageConfig[]        @relation("HomeBannerImage")
-  primaryForSaints       Saint[]                 @relation("PrimarySaintImage")
-  heroForTraditions      Tradition[]             @relation("TraditionHeroImage")
-  saintGalleryImages     SaintGalleryImage[]
-  traditionGalleryImages TraditionGalleryImage[]
-  createdAt              DateTime                @default(now())
+  id                         String                  @id @default(cuid())
+  url                        String
+  storageKey                 String?
+  altText                    String?
+  caption                    String?
+  credit                     String?
+  sourceUrl                  String?
+  width                      Int?
+  height                     Int?
+  mimeType                   String?
+  focalX                     Float                   @default(50)
+  focalY                     Float                   @default(30)
+  homeBannerConfigs          HomePageConfig[]        @relation("HomeBannerImage")
+  homeTraditionBannerConfigs HomePageConfig[]        @relation("HomeFeaturedTraditionBannerImage")
+  primaryForSaints           Saint[]                 @relation("PrimarySaintImage")
+  heroForTraditions          Tradition[]             @relation("TraditionHeroImage")
+  saintGalleryImages         SaintGalleryImage[]
+  traditionGalleryImages     TraditionGalleryImage[]
+  createdAt                  DateTime                @default(now())
 }
 
 model HomePageConfig {
-  id                   String      @id @default("home")
-  heroEyebrow          String?
-  heroTitle            String?
-  heroBody             String?
-  heroPrimaryLabel     String?
-  heroPrimaryHref      String?
-  heroSecondaryLabel   String?
-  heroSecondaryHref    String?
-  bannerImageId        String?
-  bannerImage          MediaAsset? @relation("HomeBannerImage", fields: [bannerImageId], references: [id], onDelete: SetNull)
-  bannerFocalX         Float       @default(50)
-  bannerFocalY         Float       @default(50)
-  bannerFocalWidth     Float       @default(60)
-  bannerFocalHeight    Float       @default(60)
-  featuredSaintIds     String[]    @default([])
-  featuredTraditionIds String[]    @default([])
-  quoteEyebrow         String?
-  quoteText            String?
-  quoteAttribution     String?
-  createdAt            DateTime    @default(now())
-  updatedAt            DateTime    @updatedAt
+  id                                 String      @id @default("home")
+  heroEyebrow                        String?
+  heroTitle                          String?
+  heroBody                           String?
+  heroPrimaryLabel                   String?
+  heroPrimaryHref                    String?
+  heroSecondaryLabel                 String?
+  heroSecondaryHref                  String?
+  bannerImageId                      String?
+  bannerImage                        MediaAsset? @relation("HomeBannerImage", fields: [bannerImageId], references: [id], onDelete: SetNull)
+  bannerFocalX                       Float       @default(50)
+  bannerFocalY                       Float       @default(50)
+  bannerFocalWidth                   Float       @default(60)
+  bannerFocalHeight                  Float       @default(60)
+  featuredTraditionBannerImageId     String?
+  featuredTraditionBannerImage       MediaAsset? @relation("HomeFeaturedTraditionBannerImage", fields: [featuredTraditionBannerImageId], references: [id], onDelete: SetNull)
+  featuredTraditionBannerFocalX      Float       @default(50)
+  featuredTraditionBannerFocalY      Float       @default(50)
+  featuredTraditionBannerFocalWidth  Float       @default(60)
+  featuredTraditionBannerFocalHeight Float       @default(60)
+  featuredSaintIds                   String[]    @default([])
+  featuredTraditionIds               String[]    @default([])
+  quoteEyebrow                       String?
+  quoteText                          String?
+  quoteAttribution                   String?
+  createdAt                          DateTime    @default(now())
+  updatedAt                          DateTime    @updatedAt
 }
 
 model SiteConfig {

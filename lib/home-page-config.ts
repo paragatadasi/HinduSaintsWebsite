@@ -14,7 +14,10 @@ export const HOME_PAGE_CONFIG_ID = "home";
 export async function getPublicHomePageConfig() {
   const config = await db.homePageConfig.findUnique({
     where: { id: HOME_PAGE_CONFIG_ID },
-    include: { bannerImage: true }
+    include: {
+      bannerImage: true,
+      featuredTraditionBannerImage: true
+    }
   });
   const defaultHero = getHomeHeroContent();
   const defaultQuote = getHomeQuoteContent();
@@ -25,6 +28,8 @@ export async function getPublicHomePageConfig() {
       quote: defaultQuote,
       bannerImage: undefined,
       bannerFocalArea: getDefaultBannerFocalArea(),
+      featuredTraditionBannerImage: undefined,
+      featuredTraditionBannerFocalArea: getDefaultBannerFocalArea(),
       featuredSaints: [],
       featuredTraditions: []
     };
@@ -44,6 +49,15 @@ export async function getPublicHomePageConfig() {
       y: config.bannerFocalY,
       width: config.bannerFocalWidth,
       height: config.bannerFocalHeight
+    },
+    featuredTraditionBannerImage: config.featuredTraditionBannerImage
+      ? toPublicImage(config.featuredTraditionBannerImage, "Featured tradition banner")
+      : undefined,
+    featuredTraditionBannerFocalArea: {
+      x: config.featuredTraditionBannerFocalX,
+      y: config.featuredTraditionBannerFocalY,
+      width: config.featuredTraditionBannerFocalWidth,
+      height: config.featuredTraditionBannerFocalHeight
     },
     featuredSaints,
     featuredTraditions

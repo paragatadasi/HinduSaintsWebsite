@@ -12,7 +12,10 @@ export async function HomepageSettings() {
   const [config, saints, traditions] = await Promise.all([
     db.homePageConfig.findUnique({
       where: { id: HOME_PAGE_CONFIG_ID },
-      include: { bannerImage: true }
+      include: {
+        bannerImage: true,
+        featuredTraditionBannerImage: true
+      }
     }),
     db.saint.findMany({
       orderBy: [{ status: "asc" }, { displayName: "asc" }],
@@ -147,6 +150,37 @@ export async function HomepageSettings() {
               placeholder="Search traditions"
               selectedLabel="Featured traditions"
             />
+          </ReviewSection>
+
+          <ReviewSection title="Featured tradition background" icon={<Image size={18} aria-hidden="true" />}>
+            <div className="home-config-media">
+              {config?.featuredTraditionBannerImage ? (
+                <HomeBannerFocalPicker
+                  altText={config.featuredTraditionBannerImage.altText ?? "Featured tradition background"}
+                  defaultArea={{
+                    x: config.featuredTraditionBannerFocalX,
+                    y: config.featuredTraditionBannerFocalY,
+                    width: config.featuredTraditionBannerFocalWidth,
+                    height: config.featuredTraditionBannerFocalHeight
+                  }}
+                  fieldNamePrefix="featuredTraditionBannerFocal"
+                  imageUrl={config.featuredTraditionBannerImage.url}
+                />
+              ) : (
+                <>
+                  <input name="featuredTraditionBannerFocalX" type="hidden" value={50} />
+                  <input name="featuredTraditionBannerFocalY" type="hidden" value={50} />
+                  <input name="featuredTraditionBannerFocalWidth" type="hidden" value={60} />
+                  <input name="featuredTraditionBannerFocalHeight" type="hidden" value={60} />
+                  <p className="empty-note">No featured tradition background selected.</p>
+                </>
+              )}
+              <HomeBannerUploader
+                defaultBannerImageId={config?.featuredTraditionBannerImageId ?? ""}
+                fieldName="featuredTraditionBannerImageId"
+                uploadLabel="featured tradition background"
+              />
+            </div>
           </ReviewSection>
 
           <ReviewSection title="Quote of the day" icon={<Quote size={18} aria-hidden="true" />}>

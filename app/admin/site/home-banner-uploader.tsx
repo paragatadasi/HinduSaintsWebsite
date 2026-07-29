@@ -5,6 +5,8 @@ import { useState } from "react";
 
 type HomeBannerUploaderProps = {
   defaultBannerImageId?: string;
+  fieldName?: string;
+  uploadLabel?: string;
 };
 
 type UploadState = {
@@ -13,7 +15,11 @@ type UploadState = {
   message?: string;
 };
 
-export function HomeBannerUploader({ defaultBannerImageId = "" }: HomeBannerUploaderProps) {
+export function HomeBannerUploader({
+  defaultBannerImageId = "",
+  fieldName = "bannerImageId",
+  uploadLabel = "banner image"
+}: HomeBannerUploaderProps) {
   const [file, setFile] = useState<File | null>(null);
   const [altText, setAltText] = useState("");
   const [caption, setCaption] = useState("");
@@ -25,7 +31,7 @@ export function HomeBannerUploader({ defaultBannerImageId = "" }: HomeBannerUplo
   async function handleUpload() {
     if (!file) return;
 
-    setUploadState({ status: "uploading", mediaAssetId: bannerImageId, message: "Uploading banner image." });
+    setUploadState({ status: "uploading", mediaAssetId: bannerImageId, message: `Uploading ${uploadLabel}.` });
 
     try {
       const formData = new FormData();
@@ -47,7 +53,7 @@ export function HomeBannerUploader({ defaultBannerImageId = "" }: HomeBannerUplo
       setUploadState({
         status: "success",
         mediaAssetId: payload.mediaAsset.id,
-        message: "Banner image is ready. Save homepage settings to publish the selection."
+        message: `${capitalize(uploadLabel)} is ready. Save homepage settings to publish the selection.`
       });
       setFile(null);
       setCaption("");
@@ -59,10 +65,10 @@ export function HomeBannerUploader({ defaultBannerImageId = "" }: HomeBannerUplo
 
   return (
     <div className="form-stack">
-      <input name="bannerImageId" type="hidden" value={bannerImageId} />
+      <input name={fieldName} type="hidden" value={bannerImageId} />
       <label className="saint-image-cropper__upload">
         <ImagePlus size={18} aria-hidden="true" />
-        <span>{file ? file.name : "Upload banner image"}</span>
+        <span>{file ? file.name : `Upload ${uploadLabel}`}</span>
         <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => setFile(event.target.files?.[0] ?? null)} />
       </label>
       <label>
@@ -92,4 +98,8 @@ export function HomeBannerUploader({ defaultBannerImageId = "" }: HomeBannerUplo
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Something went wrong while uploading the image.";
+}
+
+function capitalize(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }

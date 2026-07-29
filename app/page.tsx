@@ -65,6 +65,8 @@ export default async function HomePage() {
         mapData={mapData}
         bannerImage={homeConfig.bannerImage}
         bannerFocalArea={homeConfig.bannerFocalArea}
+        featuredTraditionBannerImage={homeConfig.featuredTraditionBannerImage}
+        featuredTraditionBannerFocalArea={homeConfig.featuredTraditionBannerFocalArea}
       />
     );
   }
@@ -170,6 +172,8 @@ type CosmicHomePageProps = {
   mapData: PublicPlaceMapData;
   bannerImage?: PublicImage;
   bannerFocalArea: Awaited<ReturnType<typeof getPublicHomePageConfig>>["bannerFocalArea"];
+  featuredTraditionBannerImage?: PublicImage;
+  featuredTraditionBannerFocalArea: Awaited<ReturnType<typeof getPublicHomePageConfig>>["featuredTraditionBannerFocalArea"];
 };
 
 function CosmicHomePage({
@@ -182,7 +186,9 @@ function CosmicHomePage({
   instagramPreviews,
   mapData,
   bannerImage,
-  bannerFocalArea
+  bannerFocalArea,
+  featuredTraditionBannerImage,
+  featuredTraditionBannerFocalArea
 }: CosmicHomePageProps) {
   const featuredTradition = traditions[0];
   const mappedSaintCount = new Set(mapData.points.flatMap((point) => point.saints.map((saint) => saint.slug))).size;
@@ -257,7 +263,19 @@ function CosmicHomePage({
             </blockquote>
           </aside>
 
-          <article className="home-tradition-feature">
+          <article className={featuredTraditionBannerImage ? "home-tradition-feature home-tradition-feature--with-background" : "home-tradition-feature"}>
+            {featuredTraditionBannerImage ? (
+              <img
+                alt=""
+                aria-hidden="true"
+                className="home-tradition-feature__background"
+                src={featuredTraditionBannerImage.url}
+                style={{
+                  "--featured-tradition-background-position":
+                    `${featuredTraditionBannerFocalArea.x}% ${featuredTraditionBannerFocalArea.y}%`
+                } as CSSProperties}
+              />
+            ) : null}
             <div className="home-tradition-feature__header">
               <div className="eyebrow">Featured Tradition</div>
               {traditionsSection.action ? (

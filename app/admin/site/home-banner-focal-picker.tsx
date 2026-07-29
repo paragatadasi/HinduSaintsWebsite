@@ -29,13 +29,19 @@ type DragState = {
 type HomeBannerFocalPickerProps = {
   altText: string;
   defaultArea: FocalArea;
+  fieldNamePrefix?: string;
   imageUrl: string;
 };
 
 const minFocalSize = 10;
 const focalHandles: DragMode[] = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
 
-export function HomeBannerFocalPicker({ altText, defaultArea, imageUrl }: HomeBannerFocalPickerProps) {
+export function HomeBannerFocalPicker({
+  altText,
+  defaultArea,
+  fieldNamePrefix = "bannerFocal",
+  imageUrl
+}: HomeBannerFocalPickerProps) {
   const [area, setArea] = useState(() => normalizeArea(defaultArea));
   const stageRef = useRef<HTMLDivElement>(null);
   const dragStateRef = useRef<DragState | null>(null);
@@ -93,10 +99,10 @@ export function HomeBannerFocalPicker({ altText, defaultArea, imageUrl }: HomeBa
 
   return (
     <div className="home-focal-picker">
-      <input name="bannerFocalX" type="hidden" value={formatPercent(area.x)} />
-      <input name="bannerFocalY" type="hidden" value={formatPercent(area.y)} />
-      <input name="bannerFocalWidth" type="hidden" value={formatPercent(area.width)} />
-      <input name="bannerFocalHeight" type="hidden" value={formatPercent(area.height)} />
+      <input name={`${fieldNamePrefix}X`} type="hidden" value={formatPercent(area.x)} />
+      <input name={`${fieldNamePrefix}Y`} type="hidden" value={formatPercent(area.y)} />
+      <input name={`${fieldNamePrefix}Width`} type="hidden" value={formatPercent(area.width)} />
+      <input name={`${fieldNamePrefix}Height`} type="hidden" value={formatPercent(area.height)} />
 
       <div
         className="home-focal-picker__stage"

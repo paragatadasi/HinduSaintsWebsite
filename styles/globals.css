@@ -759,7 +759,31 @@ img {
   display: grid;
   gap: var(--space-6);
   grid-template-rows: auto minmax(0, 1fr);
+  isolation: isolate;
+  overflow: hidden;
   padding: var(--space-8) var(--space-8);
+  position: relative;
+}
+
+.home-tradition-feature--with-background::before {
+  background:
+    linear-gradient(90deg, var(--color-featured-tradition-overlay), color-mix(in srgb, var(--color-featured-tradition-overlay) 42%, transparent)),
+    linear-gradient(0deg, color-mix(in srgb, var(--color-bg) 66%, transparent), transparent 72%);
+  content: "";
+  inset: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.home-tradition-feature__background {
+  filter: var(--image-treatment);
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  object-position: var(--featured-tradition-background-position, center);
+  position: absolute;
+  width: 100%;
+  z-index: -2;
 }
 
 .home-tradition-feature__header {

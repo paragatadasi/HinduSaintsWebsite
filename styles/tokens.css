@@ -25,6 +25,7 @@
   --color-green: #366153;
   --color-image-overlay: rgba(33, 31, 26, 0.14);
   --color-image-overlay-strong: rgba(33, 31, 26, 0.28);
+  --color-featured-tradition-overlay: color-mix(in srgb, var(--color-bg) 76%, transparent);
   --color-modal-scrim: rgba(0, 0, 0, 0.78);
   --color-focus: #c28b2c;
   --font-sans: Arial, Helvetica, sans-serif;
