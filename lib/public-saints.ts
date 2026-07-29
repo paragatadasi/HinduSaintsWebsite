@@ -15,6 +15,7 @@ import type {
 } from "@/lib/public-contracts";
 import { formatSaintDate, formatSaintEraLabel } from "@/lib/public-date-format";
 import { PUBLIC_CACHE_TAGS, PUBLIC_DATA_CACHE_SECONDS } from "@/lib/public-cache";
+import { getPublishedSaintSearchCandidateIds } from "@/lib/postgres-saint-search";
 import { getPublicImageVariants } from "@/lib/responsive-images";
 import { rankSaintSearchResults } from "@/lib/saint-search";
 
@@ -187,10 +188,16 @@ export async function getPublishedSaintCatalog({
   });
 
   if (term) {
-    const [searchRows, facets] = await Promise.all([
-      getPublishedSaintSearchRows(where),
+    const [candidateIds, facets] = await Promise.all([
+      getPublishedSaintSearchCandidateIds(term),
       getPublishedSaintCatalogFacets()
     ]);
+    const searchRows = candidateIds.length > 0
+      ? await getPublishedSaintSearchRows({
+          ...where,
+          id: { in: candidateIds }
+        })
+      : [];
     const rankedRows = rankSaintSearchResults(searchRows, term);
     const total = rankedRows.length;
     const pageCount = Math.max(1, Math.ceil(total / PUBLIC_SAINT_PAGE_SIZE));

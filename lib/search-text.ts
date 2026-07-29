@@ -42,20 +42,24 @@ export function scoreWeightedTextSearch(query: string, fields: WeightedSearchFie
 
     const weight = field.weight ?? 1;
     const fieldForms = getSearchForms(field.value);
+    let bestPhraseScore = 0;
     for (const fieldForm of fieldForms) {
       for (const queryForm of uniqueQueryForms) {
-        if (fieldForm === queryForm) score += 120 * weight;
-        else if (fieldForm.startsWith(queryForm)) score += 80 * weight;
-        else if (fieldForm.includes(queryForm)) score += 55 * weight;
-      }
-
-      const fieldTokens = getSearchTokens(fieldForm);
-      for (const queryToken of queryTokens) {
-        if (fieldTokens.includes(queryToken)) score += 18 * weight;
-        else if (fieldTokens.some((fieldToken) => fieldToken.startsWith(queryToken))) score += 10 * weight;
-        else if (fieldTokens.some((fieldToken) => fieldToken.includes(queryToken))) score += 4 * weight;
+        if (fieldForm === queryForm) bestPhraseScore = Math.max(bestPhraseScore, 120);
+        else if (fieldForm.startsWith(queryForm)) bestPhraseScore = Math.max(bestPhraseScore, 80);
+        else if (fieldForm.includes(queryForm)) bestPhraseScore = Math.max(bestPhraseScore, 55);
       }
     }
+
+    const fieldTokens = Array.from(new Set(fieldForms.flatMap(getSearchTokens)));
+    let tokenScore = 0;
+    for (const queryToken of queryTokens) {
+      if (fieldTokens.includes(queryToken)) tokenScore += 18;
+      else if (fieldTokens.some((fieldToken) => fieldToken.startsWith(queryToken))) tokenScore += 10;
+      else if (fieldTokens.some((fieldToken) => fieldToken.includes(queryToken))) tokenScore += 4;
+    }
+
+    score += (bestPhraseScore + tokenScore) * weight;
 
     if (field.fuzzy) {
       score += scoreFuzzyTokenMatches(uniqueQueryForms, fieldForms) * weight;
@@ -80,6 +84,14 @@ export function normalizeSearchText(value: string) {
     .replace(/[^a-z0-9]+/g, " ")
     .trim()
     .replace(/\s+/g, " ");
+}
+
+export function getSearchQueryTerms(value: string) {
+  return Array.from(new Set(getQuerySearchForms(value)))
+    .filter((term) => (
+      term.length >= 2
+      && getSearchTokens(term).some((token) => !SEARCH_HONORIFICS.has(token))
+    ));
 }
 
 function getSearchForms(value: string) {
@@ -205,11 +217,13 @@ const SEARCH_HONORIFICS = new Set([
   "maharaja",
   "mata",
   "paramahamsa",
+  "paramahansa",
   "paramhansa",
   "saint",
   "sant",
   "shree",
   "shri",
+  "sree",
   "sri",
   "swami"
 ]);
