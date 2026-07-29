@@ -1,5 +1,6 @@
 "use server";
 
+import type { Route } from "next";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -60,8 +61,8 @@ export async function updateHomePageConfig(formData: FormData) {
   });
 
   revalidatePath("/");
-  revalidatePath("/admin/home");
-  redirect("/admin/home");
+  revalidatePath("/admin/site");
+  redirect("/admin/site?homepage=saved#homepage" as Route);
 }
 
 async function requireAdminSession() {

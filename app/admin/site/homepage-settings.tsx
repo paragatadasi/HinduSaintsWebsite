@@ -4,11 +4,11 @@ import { SearchableMultiSelect } from "@/components/ui/searchable-multi-select";
 import { HOME_PAGE_CONFIG_ID } from "@/lib/home-page-config";
 import { db } from "@/lib/db";
 import { getHomeHeroContent, getHomeQuoteContent } from "@/lib/site-content";
-import { updateHomePageConfig } from "./actions";
+import { updateHomePageConfig } from "./home-actions";
 import { HomeBannerFocalPicker } from "./home-banner-focal-picker";
 import { HomeBannerUploader } from "./home-banner-uploader";
 
-export default async function AdminHomePage() {
+export async function HomepageSettings() {
   const [config, saints, traditions] = await Promise.all([
     db.homePageConfig.findUnique({
       where: { id: HOME_PAGE_CONFIG_ID },
@@ -50,10 +50,10 @@ export default async function AdminHomePage() {
   }));
 
   return (
-    <div className="admin-stack">
+    <section className="admin-stack" id="homepage">
       <div>
-        <div className="eyebrow">Homepage</div>
-        <h1>Homepage settings</h1>
+        <div className="eyebrow">Site section</div>
+        <h2>Homepage</h2>
         <p className="lede">Curate the public homepage feature slots, hero banner, and daily quote.</p>
       </div>
 
@@ -174,6 +174,6 @@ export default async function AdminHomePage() {
           </button>
         </div>
       </form>
-    </div>
+    </section>
   );
 }

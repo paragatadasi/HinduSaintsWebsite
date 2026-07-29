@@ -8,6 +8,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { SITE_CONFIG_ID } from "@/lib/site-config";
+import { getFooterContent } from "@/lib/site-content";
 
 const httpsUrl = z
   .string()
@@ -16,14 +17,22 @@ const httpsUrl = z
   .max(1000)
   .refine(isHttpsUrl, "Use an HTTPS URL.");
 
-const siteConfigSchema = z.object({
+const footerConfigSchema = z.object({
   imprintUrl: httpsUrl,
   privacyPolicyUrl: httpsUrl
 });
 
-export async function updateSiteConfig(formData: FormData) {
+const aboutPageConfigSchema = z.object({
+  aboutEyebrow: z.string().trim().min(1).max(80),
+  aboutTitle: z.string().trim().min(1).max(160),
+  aboutIntroduction: z.string().trim().min(1).max(1000),
+  aboutSectionTitles: z.array(z.string().trim().min(1).max(160)).length(3),
+  aboutSectionBodies: z.array(z.string().trim().min(1).max(5000)).length(3)
+});
+
+export async function updateFooterConfig(formData: FormData) {
   const { email } = await requireAdminSession();
-  const parsed = siteConfigSchema.parse({
+  const parsed = footerConfigSchema.parse({
     imprintUrl: formData.get("imprintUrl"),
     privacyPolicyUrl: formData.get("privacyPolicyUrl")
   });
@@ -66,7 +75,67 @@ export async function updateSiteConfig(formData: FormData) {
 
   revalidatePath("/", "layout");
   revalidatePath("/admin/site");
-  redirect("/admin/site?saved=true" as Route);
+  redirect("/admin/site?footer=saved#footer" as Route);
+}
+
+export async function updateAboutPageConfig(formData: FormData) {
+  const { email } = await requireAdminSession();
+  const parsed = aboutPageConfigSchema.parse({
+    aboutEyebrow: formData.get("aboutEyebrow"),
+    aboutTitle: formData.get("aboutTitle"),
+    aboutIntroduction: formData.get("aboutIntroduction"),
+    aboutSectionTitles: formValues(formData, "aboutSectionTitle"),
+    aboutSectionBodies: formValues(formData, "aboutSectionBody")
+  });
+  const footerDefaults = getFooterContent();
+
+  await db.$transaction(async (tx) => {
+    const before = await tx.siteConfig.findUnique({
+      where: { id: SITE_CONFIG_ID },
+      select: {
+        aboutEyebrow: true,
+        aboutTitle: true,
+        aboutIntroduction: true,
+        aboutSectionTitles: true,
+        aboutSectionBodies: true
+      }
+    });
+    const config = await tx.siteConfig.upsert({
+      where: { id: SITE_CONFIG_ID },
+      create: {
+        id: SITE_CONFIG_ID,
+        imprintUrl: footerDefaults.imprint.href,
+        privacyPolicyUrl: footerDefaults.privacyPolicy.href,
+        ...parsed,
+        updatedByEmail: email
+      },
+      update: {
+        ...parsed,
+        updatedByEmail: email
+      }
+    });
+
+    await tx.auditEvent.create({
+      data: {
+        userId: email,
+        action: "update_about_page_config",
+        entityType: "SiteConfig",
+        entityId: SITE_CONFIG_ID,
+        beforeJson: before ? toInputJson(before) : Prisma.JsonNull,
+        afterJson: toInputJson({
+          aboutEyebrow: config.aboutEyebrow,
+          aboutTitle: config.aboutTitle,
+          aboutIntroduction: config.aboutIntroduction,
+          aboutSectionTitles: config.aboutSectionTitles,
+          aboutSectionBodies: config.aboutSectionBodies
+        })
+      }
+    });
+  });
+
+  revalidatePath("/about");
+  revalidatePath("/admin/site");
+  redirect("/admin/site?about=saved#about" as Route);
 }
 
 async function requireAdminSession() {
@@ -88,4 +157,8 @@ function isHttpsUrl(value: string) {
   } catch {
     return false;
   }
+}
+
+function formValues(formData: FormData, name: string) {
+  return formData.getAll(name).filter((value): value is string => typeof value === "string");
 }

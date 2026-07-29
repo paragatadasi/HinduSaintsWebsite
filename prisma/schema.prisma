@@ -672,12 +672,17 @@ model HomePageConfig {
 }
 
 model SiteConfig {
-  id               String   @id @default("site")
-  imprintUrl       String
-  privacyPolicyUrl String
-  updatedByEmail   String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                  String   @id @default("site")
+  imprintUrl          String
+  privacyPolicyUrl    String
+  aboutEyebrow        String?
+  aboutTitle          String?
+  aboutIntroduction   String?
+  aboutSectionTitles  String[] @default([])
+  aboutSectionBodies  String[] @default([])
+  updatedByEmail      String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
 
 model SaintGalleryImage {
