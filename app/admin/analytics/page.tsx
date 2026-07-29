@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Route } from "next";
+import { AggregateViewsChart, type AggregateViewPoint } from "@/components/admin/aggregate-views-chart";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 
@@ -8,13 +9,9 @@ export default async function AdminAnalyticsPage() {
   const thirtyDaysAgo = new Date(today);
   thirtyDaysAgo.setUTCDate(thirtyDaysAgo.getUTCDate() - 29);
 
-  const [allTime, lastThirtyDays, todayTotal, allTimeByPage, lastThirtyDaysByPage, todayByPage] =
+  const [allTime, todayTotal, allTimeByPage, lastThirtyDaysByPage, todayByPage, lastThirtyDaysByDay] =
     await Promise.all([
       db.pageViewDaily.aggregate({ _sum: { views: true } }),
-      db.pageViewDaily.aggregate({
-        where: { date: { gte: thirtyDaysAgo } },
-        _sum: { views: true }
-      }),
       db.pageViewDaily.aggregate({
         where: { date: today },
         _sum: { views: true }
@@ -31,9 +28,17 @@ export default async function AdminAnalyticsPage() {
       db.pageViewDaily.findMany({
         where: { date: today },
         select: { path: true, views: true }
+      }),
+      db.pageViewDaily.groupBy({
+        by: ["date"],
+        where: { date: { gte: thirtyDaysAgo } },
+        _sum: { views: true },
+        orderBy: { date: "asc" }
       })
     ]);
 
+  const dailyViews = buildDailyViewSeries(thirtyDaysAgo, today, lastThirtyDaysByDay);
+  const lastThirtyDaysTotal = dailyViews.reduce((total, point) => total + point.views, 0);
   const thirtyDayCounts = new Map(
     lastThirtyDaysByPage.map((row) => [row.path, row._sum.views ?? 0])
   );
@@ -59,7 +64,7 @@ export default async function AdminAnalyticsPage() {
 
       <div className="admin-stat-grid">
         <AnalyticsStat label="All-time views" value={allTime._sum.views ?? 0} />
-        <AnalyticsStat label="Last 30 days" value={lastThirtyDays._sum.views ?? 0} />
+        <AnalyticsStat label="Last 30 days" value={lastThirtyDaysTotal} />
         <AnalyticsStat label="Today (UTC)" value={todayTotal._sum.views ?? 0} />
         <AnalyticsStat label="Pages viewed" value={pageRows.length} />
       </div>
@@ -76,26 +81,32 @@ export default async function AdminAnalyticsPage() {
         </p>
       </section>
 
+      <AggregateViewsChart points={dailyViews} />
+
       <section className="admin-stack" aria-labelledby="page-view-heading">
         <div>
           <div className="eyebrow">By page</div>
           <h2 id="page-view-heading">Page view totals</h2>
+          <p>Ranked by all-time views, with the most viewed page first.</p>
         </div>
 
         {pageRows.length > 0 ? (
           <div className="review-list">
-            {pageRows.map((row) => (
+            {pageRows.map((row, index) => (
               <article className="review-row" key={row.path}>
                 <div>
-                  <h3>{getPageLabel(row.path)}</h3>
+                  <div className="review-meta">
+                    <StatusBadge label={`#${index + 1}`} />
+                    <h3>{getPageLabel(row.path)}</h3>
+                  </div>
                   <Link className="admin-text-link" href={row.path as Route}>
                     {row.path}
                   </Link>
                 </div>
                 <div className="review-meta" aria-label={`View totals for ${row.path}`}>
-                  <StatusBadge label={`${formatNumber(row.today)} today`} />
-                  <StatusBadge label={`${formatNumber(row.lastThirtyDays)} in 30 days`} />
                   <StatusBadge label={`${formatNumber(row.allTime)} all time`} />
+                  <StatusBadge label={`${formatNumber(row.lastThirtyDays)} in 30 days`} />
+                  <StatusBadge label={`${formatNumber(row.today)} today`} />
                 </div>
               </article>
             ))}
@@ -106,6 +117,29 @@ export default async function AdminAnalyticsPage() {
       </section>
     </div>
   );
+}
+
+type DailyViewRow = {
+  date: Date;
+  _sum: {
+    views: number | null;
+  };
+};
+
+function buildDailyViewSeries(start: Date, end: Date, rows: DailyViewRow[]): AggregateViewPoint[] {
+  const viewsByDate = new Map(
+    rows.map((row) => [getUtcDateKey(row.date), row._sum.views ?? 0])
+  );
+  const points: AggregateViewPoint[] = [];
+
+  for (const date = new Date(start); date <= end; date.setUTCDate(date.getUTCDate() + 1)) {
+    points.push({
+      date: new Date(date),
+      views: viewsByDate.get(getUtcDateKey(date)) ?? 0
+    });
+  }
+
+  return points;
 }
 
 function AnalyticsStat({ label, value }: { label: string; value: number }) {
@@ -120,6 +154,10 @@ function AnalyticsStat({ label, value }: { label: string; value: number }) {
 function getUtcDay() {
   const now = new Date();
   return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+}
+
+function getUtcDateKey(date: Date) {
+  return date.toISOString().slice(0, 10);
 }
 
 function getPageLabel(path: string) {

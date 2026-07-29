@@ -4955,6 +4955,32 @@ img {
   color: var(--color-accent);
 }
 
+.analytics-chart__svg {
+  display: block;
+  height: var(--height-admin-analytics-chart);
+  width: 100%;
+}
+
+.analytics-chart__grid-line {
+  stroke: var(--color-border);
+  stroke-width: var(--border-width-default);
+  vector-effect: non-scaling-stroke;
+}
+
+.analytics-chart__bar {
+  fill: var(--color-accent);
+}
+
+.analytics-chart__bar:hover {
+  fill: var(--color-accent-strong);
+}
+
+.analytics-chart__axis-label {
+  fill: var(--color-muted);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-review-hint);
+}
+
 .museum-admin {
   background: var(--color-bg);
   border: 1px solid color-mix(in srgb, var(--color-border) 40%, transparent);
