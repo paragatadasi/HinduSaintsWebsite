@@ -248,7 +248,7 @@ function SourceTitle({ source }: { source: PublicSourceSummary }) {
   return (
     <h3>
       <a href={source.url}>
-        {source.title}
+        <span>{source.title}</span>
         <ExternalLink size={16} aria-hidden="true" />
       </a>
     </h3>
