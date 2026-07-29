@@ -1,0 +1,220 @@
+{
+  "sourceNotes": [
+    "Names are drawn from data/museum/airtable-museum-section-proposals.csv, which contains 1,399 Airtable-derived saint rows.",
+    "Ramana aliases also reflect prisma/seed.ts.",
+    "Queries intentionally include common ASCII, IAST, transliteration, honorific, and typo variants."
+  ],
+  "saints": [
+    {
+      "id": "ramana-maharshi",
+      "displayName": "Sri Ramana Maharishi of Arunachala",
+      "canonicalName": "Ramana Maharshi",
+      "aliases": [
+        { "alias": "Bhagavan Sri Ramana" },
+        { "alias": "Sri Ramana Maharshi" }
+      ],
+      "places": [
+        {
+          "place": {
+            "name": "Arunachala",
+            "alternateNames": ["Tiruvannamalai"],
+            "region": "Tamil Nadu",
+            "country": "India"
+          }
+        }
+      ],
+      "traditions": [
+        {
+          "tradition": {
+            "name": "Ramana Maharshi",
+            "alternateNames": ["Ramana and Arunachala"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "chaitanya-mahaprabhu",
+      "displayName": "Sri Chaitanya Mahaprabhu of Puri / Navadwip",
+      "canonicalName": "Chaitanya Mahaprabhu",
+      "aliases": [
+        { "alias": "Gauranga Mahaprabhu" }
+      ],
+      "places": [
+        {
+          "place": {
+            "name": "Navadwip",
+            "alternateNames": ["Nabadwip"],
+            "region": "West Bengal",
+            "country": "India"
+          }
+        }
+      ],
+      "traditions": [
+        {
+          "tradition": {
+            "name": "Gaudiya Vaishnava",
+            "alternateNames": ["Gaudiya Vaisnava"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "anandamayi-ma",
+      "displayName": "Sri Anandamoyi Ma of Bangladesh",
+      "canonicalName": "Anandamayi Ma",
+      "aliases": [
+        { "alias": "Anandamoyi Ma" }
+      ]
+    },
+    {
+      "id": "ramakrishna",
+      "displayName": "Sri Paramahansa Ramakrishna of Calcutta",
+      "canonicalName": "Ramakrishna Paramahamsa",
+      "aliases": [
+        { "alias": "Ramakrishna" }
+      ],
+      "places": [
+        {
+          "place": {
+            "name": "Kolkata",
+            "alternateNames": ["Calcutta"],
+            "region": "West Bengal",
+            "country": "India"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ramakrishnananda",
+      "displayName": "Sri Sri Sri Avatar Digambar Bhagavan Ramakrishnananda of Nellore",
+      "canonicalName": "Avatar Digambar Ramakrishnananda",
+      "aliases": []
+    },
+    {
+      "id": "adi-shankara",
+      "displayName": "Sri Adi Shankara Acharya",
+      "canonicalName": "Adi Shankara",
+      "aliases": [
+        { "alias": "Adi Sankara" }
+      ]
+    },
+    {
+      "id": "jagannath-das",
+      "displayName": "Sri Jaganath Das Ji Maharaj",
+      "canonicalName": "Jagannath Das Ji Maharaj",
+      "aliases": [
+        { "alias": "Jaganath Das" }
+      ]
+    },
+    {
+      "id": "kabir",
+      "displayName": "Sri Kabhir Devji of Varanasi",
+      "canonicalName": "Kabir",
+      "aliases": [
+        { "alias": "Kabhir Devji" }
+      ]
+    },
+    {
+      "id": "hanuman-das-babaji",
+      "displayName": "Sri Sri Hanuman Das Babaji of Vrindavan",
+      "canonicalName": "Hanuman Das Babaji",
+      "aliases": [],
+      "places": [
+        {
+          "place": {
+            "name": "Vrindavan",
+            "alternateNames": [],
+            "region": "Uttar Pradesh",
+            "country": "India"
+          }
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "query": "Ramana Maharshi",
+      "expectedFirstId": "ramana-maharshi",
+      "category": "canonical",
+      "reason": "Canonical spelling should outrank all partial name matches."
+    },
+    {
+      "query": "Ramana Maharishi",
+      "expectedFirstId": "ramana-maharshi",
+      "category": "transliteration",
+      "reason": "Maharishi and Maharshi are both present in project data."
+    },
+    {
+      "query": "Śrī Rāmana Maharṣi",
+      "expectedFirstId": "ramana-maharshi",
+      "category": "iast",
+      "reason": "IAST diacritics should normalize to the indexed Latin spelling."
+    },
+    {
+      "query": "Sree Ramana",
+      "expectedFirstId": "ramana-maharshi",
+      "category": "honorific-transliteration",
+      "reason": "Sree should normalize with the Sri honorific used throughout the catalog."
+    },
+    {
+      "query": "Ramna Maharshi",
+      "expectedFirstId": "ramana-maharshi",
+      "category": "typo",
+      "reason": "A one-character omission in a substantial name token should be tolerated."
+    },
+    {
+      "query": "Caitanya Mahaprabhu",
+      "expectedFirstId": "chaitanya-mahaprabhu",
+      "category": "transliteration",
+      "reason": "Caitanya and Chaitanya are standard transliteration variants."
+    },
+    {
+      "query": "Chaitnya Mahaprabhu",
+      "expectedFirstId": "chaitanya-mahaprabhu",
+      "category": "typo",
+      "reason": "A one-character omission should still find the intended saint."
+    },
+    {
+      "query": "Adi Sankara",
+      "expectedFirstId": "adi-shankara",
+      "category": "alias",
+      "reason": "The sh/s spelling difference should resolve through aliases and transliteration folding."
+    },
+    {
+      "query": "Ramakrishna",
+      "expectedFirstId": "ramakrishna",
+      "category": "ranking",
+      "reason": "An exact saint name must outrank the longer Ramakrishnananda partial match."
+    },
+    {
+      "query": "Jaganath Das",
+      "expectedFirstId": "jagannath-das",
+      "category": "alias",
+      "reason": "The single-n spelling appears in the Airtable-derived data."
+    },
+    {
+      "query": "Kabhir Devji",
+      "expectedFirstId": "kabir",
+      "category": "alias",
+      "reason": "The aspirated spelling appears in the Airtable-derived data."
+    },
+    {
+      "query": "Waranasi",
+      "expectedFirstId": "kabir",
+      "category": "place-transliteration",
+      "reason": "The v/w interchange should apply to associated place searches."
+    },
+    {
+      "query": "Brindavan",
+      "expectedFirstId": "hanuman-das-babaji",
+      "category": "place-transliteration",
+      "reason": "Brindavan should match the Vrindavan place attached to a saint."
+    },
+    {
+      "query": "Gaudiya Vaisnava",
+      "expectedFirstId": "chaitanya-mahaprabhu",
+      "category": "tradition-transliteration",
+      "reason": "Tradition spelling variants should remain searchable below saint-name matches."
+    }
+  ]
+}

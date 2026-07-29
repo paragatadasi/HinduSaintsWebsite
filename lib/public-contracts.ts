@@ -2,6 +2,11 @@ export type ContentStatus = "draft" | "review" | "published" | "archived";
 
 export type PublicImage = {
   url: string;
+  variants?: Array<{
+    url: string;
+    width: number;
+    height: number;
+  }>;
   alt: string;
   caption?: string;
   credit?: string;
@@ -55,6 +60,7 @@ export type PublicInstagramItem = {
   type: "post" | "reel" | "carousel" | "unknown";
   caption?: string;
   thumbnailUrl?: string;
+  thumbnailVariants?: PublicImage["variants"];
   carouselImageUrls?: string[];
   postedAt?: string;
 };

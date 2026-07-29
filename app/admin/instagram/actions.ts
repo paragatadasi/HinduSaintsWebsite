@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import type { Route } from "next";
 import { Prisma } from "@/lib/generated/prisma/client";
@@ -8,6 +8,7 @@ import { z } from "zod";
 import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { buildEraLabel, parseImportedDate } from "@/lib/import-dates";
 import {
   getInstagramQueueWhere,
@@ -654,6 +655,9 @@ async function reconcileAfterInstagramUnmatch(tx: Prisma.TransactionClient, inst
 }
 
 function revalidateInstagramPaths(saintSlugs: string[]) {
+  revalidateTag(PUBLIC_CACHE_TAGS.home);
+  revalidateTag(PUBLIC_CACHE_TAGS.instagram);
+  revalidateTag(PUBLIC_CACHE_TAGS.saints);
   revalidatePath("/");
   revalidatePath("/saints");
   revalidatePath("/admin");

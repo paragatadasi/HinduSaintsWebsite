@@ -67,3 +67,30 @@ docker compose -f infra/docker-compose.yml exec -T postgres psql "$env:DATABASE_
 ```
 
 If local media storage is used, back up the uploads volume as well.
+
+## Production media storage
+
+Production can serve uploaded and imported images directly from Amazon S3,
+Cloudflare R2, or another S3-compatible object store. Configure the
+`MEDIA_STORAGE_BACKEND`, `MEDIA_PUBLIC_BASE_URL`, and `MEDIA_S3_*` environment
+variables documented in `.env.example`. The bucket or custom media domain must
+allow public reads through `MEDIA_PUBLIC_BASE_URL`; write credentials remain
+server-only.
+
+New uploads generate responsive WebP variants and store their URLs in the
+database. Existing filesystem media can be migrated in two stages:
+
+```powershell
+npm run media:migrate-object-storage -- --limit=25
+npm run media:migrate-object-storage -- --apply
+```
+
+The first command is a dry run. Back up the database and uploads volume before
+running the apply command in production. Keep the filesystem backup until the
+site has been verified against the object-storage URLs.
+
+Public pages advertise a five-minute shared-cache lifetime with one day of
+stale-while-revalidate through `Cache-Control`, `CDN-Cache-Control`, and
+`Surrogate-Control`. Configure the production CDN to respect the header it
+supports, preserve Next.js response variation headers, and include the full
+query string in the cache key.

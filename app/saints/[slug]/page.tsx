@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { FocalImage } from "@/components/ui/focal-image";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
 import { IMAGE_CROP_ASPECT } from "@/lib/image-crop-config";
-import { logPageView } from "@/lib/page-views";
 import { getPublishedSaintBySlug } from "@/lib/public-saints";
 import { getSaintDetailTemplateContent } from "@/lib/site-content";
 import type { PublicFurtherReadingItem, PublicImage, PublicSourceSummary } from "@/lib/public-contracts";
@@ -47,7 +46,6 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
   const hasInstagram = saint.instagramItems.length > 0 || saint.instagramUrls.length > 0;
   const displayNameKey = normalizeName(saint.displayName);
   const visibleAliases = saint.aliases.filter((alias) => normalizeName(alias) !== displayNameKey);
-  logPageView(`/saints/${slug}`);
 
   return (
     <main>
@@ -194,6 +192,8 @@ function ImageWithCredit({ image, label }: { image?: PublicImage; label: string 
         height={image.height}
         cropAspect={IMAGE_CROP_ASPECT.saintWide}
         focalPoint={image.focalPoint}
+        variants={image.variants}
+        sizes="(max-width: 760px) 92vw, 520px"
       />
       {image.caption || image.credit ? (
         <figcaption>
@@ -256,7 +256,7 @@ function SourceTitle({ source }: { source: PublicSourceSummary }) {
 }
 
 function SourceMeta({ source }: { source: PublicSourceSummary }) {
-  const meta = [source.author, source.publisher, source.publicationYear].filter(Boolean).join(" Â· ");
+  const meta = [source.author, source.publisher, source.publicationYear].filter(Boolean).join(" · ");
 
   return meta ? <p className="source-meta">{meta}</p> : null;
 }

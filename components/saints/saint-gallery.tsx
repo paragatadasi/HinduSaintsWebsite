@@ -153,6 +153,8 @@ export function SaintGallery({ images, saintName }: SaintGalleryProps) {
                 height={image.height}
                 cropAspect={IMAGE_CROP_ASPECT.saintWide}
                 focalPoint={image.focalPoint}
+                variants={image.variants}
+                sizes="(max-width: 720px) 92vw, 420px"
               />
             </button>
             {image.caption || image.credit ? (
@@ -206,11 +208,13 @@ export function SaintGallery({ images, saintName }: SaintGalleryProps) {
               >
                 <ChevronLeft size={iconSize.nav} aria-hidden="true" />
               </button>
-              <img
+              <FocalImage
                 src={selectedImage.url}
                 alt={selectedImage.alt}
                 width={selectedImage.width}
                 height={selectedImage.height}
+                variants={selectedImage.variants}
+                sizes="96vw"
               />
               <button
                 className="saint-gallery-viewer__control"
@@ -243,6 +247,8 @@ export function SaintGallery({ images, saintName }: SaintGalleryProps) {
                       width={image.width}
                       height={image.height}
                       focalPoint={image.focalPoint}
+                      variants={image.variants}
+                      sizes="96px"
                     />
                   </button>
                 ))}

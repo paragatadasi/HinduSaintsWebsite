@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import type {
@@ -12,6 +13,8 @@ import type {
   PublicTraditionSummary
 } from "@/lib/public-contracts";
 import { getPublishedSaintSummariesByIds } from "@/lib/public-saints";
+import { PUBLIC_CACHE_TAGS, PUBLIC_DATA_CACHE_SECONDS } from "@/lib/public-cache";
+import { getPublicImageVariants } from "@/lib/responsive-images";
 import {
   getPublicTraditionPresentation,
   PUBLIC_TRADITION_STATUSES
@@ -133,13 +136,24 @@ async function getPublishedTraditionRowBySlug(slug: string) {
 }
 
 export async function getPublishedTraditionSummaries(): Promise<PublicTraditionSummary[]> {
+  return getPublishedTraditionSummariesCached();
+}
+
+const getPublishedTraditionSummariesCached = unstable_cache(async (): Promise<PublicTraditionSummary[]> => {
   const traditions = await getTraditionRows(["published"]);
   const founderNames = await getFounderNames(traditions.map((tradition) => tradition.founderSaintId));
 
   return traditions.map((tradition) => toPublicTraditionSummary(tradition, founderNames));
-}
+}, ["published-tradition-summaries"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints, PUBLIC_CACHE_TAGS.traditions]
+});
 
 export async function getPublicTraditionSummaries(): Promise<PublicTraditionSummary[]> {
+  return getPublicTraditionSummariesCached();
+}
+
+const getPublicTraditionSummariesCached = unstable_cache(async (): Promise<PublicTraditionSummary[]> => {
   const traditions = await getTraditionRows(PUBLIC_TRADITION_STATUSES);
   const founderNames = await getFounderNames(
     traditions
@@ -148,12 +162,20 @@ export async function getPublicTraditionSummaries(): Promise<PublicTraditionSumm
   );
 
   return traditions.map((tradition) => toPublicTraditionSummary(tradition, founderNames));
-}
+}, ["public-tradition-summaries"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints, PUBLIC_CACHE_TAGS.traditions]
+});
 
 export async function getPublicTraditionSummariesByIds(traditionIds: string[]): Promise<PublicTraditionSummary[]> {
   const uniqueIds = Array.from(new Set(traditionIds));
   if (uniqueIds.length === 0) return [];
+  return getPublicTraditionSummariesByIdsCached(uniqueIds);
+}
 
+const getPublicTraditionSummariesByIdsCached = unstable_cache(async (
+  uniqueIds: string[]
+): Promise<PublicTraditionSummary[]> => {
   const traditions = await getTraditionRows(PUBLIC_TRADITION_STATUSES, { id: { in: uniqueIds } });
   const founderNames = await getFounderNames(
     traditions
@@ -166,7 +188,10 @@ export async function getPublicTraditionSummariesByIds(traditionIds: string[]): 
     const summary = summariesById.get(id);
     return summary ? [summary] : [];
   });
-}
+}, ["public-tradition-summaries-by-ids"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints, PUBLIC_CACHE_TAGS.traditions]
+});
 
 export async function getPublishedTraditionSlugs() {
   return db.tradition.findMany({
@@ -176,7 +201,15 @@ export async function getPublishedTraditionSlugs() {
   });
 }
 
-export async function getPublishedTraditionBySlug(slug: string): Promise<PublicTraditionDetail | null> {
+export async function getPublishedTraditionBySlug(
+  slug: string
+): Promise<PublicTraditionDetail | null> {
+  return getPublishedTraditionBySlugCached(slug);
+}
+
+const getPublishedTraditionBySlugCached = unstable_cache(async (
+  slug: string
+): Promise<PublicTraditionDetail | null> => {
   const tradition = await getPublishedTraditionRowBySlug(slug);
   if (!tradition) return null;
 
@@ -186,9 +219,16 @@ export async function getPublishedTraditionBySlug(slug: string): Promise<PublicT
   ]);
 
   return toPublicTraditionDetail(tradition, founderNames, sources);
-}
+}, ["published-tradition-detail"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints, PUBLIC_CACHE_TAGS.traditions]
+});
 
 export async function getPublicBasicTraditionBySlug(slug: string) {
+  return getPublicBasicTraditionBySlugCached(slug);
+}
+
+const getPublicBasicTraditionBySlugCached = unstable_cache(async (slug: string) => {
   const tradition = await db.tradition.findFirst({
     where: {
       slug,
@@ -214,7 +254,10 @@ export async function getPublicBasicTraditionBySlug(slug: string) {
       tradition.saints.map(({ saintId }) => saintId)
     )
   };
-}
+}, ["public-basic-tradition-detail"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints, PUBLIC_CACHE_TAGS.traditions]
+});
 
 function toPublicTraditionSummary(
   tradition: TraditionListRow,
@@ -327,16 +370,13 @@ function toPublicSaintSummary(saint: TraditionSaintRow): PublicSaintSummary {
 function toPublicImage(image: TraditionSaintRow["primaryImage"], displayName: string): PublicImage {
   return {
     url: image?.url ?? "/images/devotional-archive-placeholder.svg",
+    variants: getPublicImageVariants(image?.variants),
     alt: image?.altText ?? `${displayName} portrait`,
     caption: image?.caption ?? undefined,
     credit: image?.credit ?? undefined,
     sourceUrl: image?.sourceUrl ?? undefined,
     width: image?.width ?? undefined,
-    height: image?.height ?? undefined,
-    focalPoint: image ? {
-      x: image.focalX,
-      y: image.focalY
-    } : undefined
+    height: image?.height ?? undefined
   };
 }
 

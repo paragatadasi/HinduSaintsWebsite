@@ -1,21 +1,25 @@
 import type { CSSProperties, ImgHTMLAttributes } from "react";
 import { getFocalObjectPosition } from "@/lib/image-focal-position";
 import type { PublicImage } from "@/lib/public-contracts";
+import { getResponsiveImageSourceSet } from "@/lib/responsive-images";
 
 type FocalImageProps = ImgHTMLAttributes<HTMLImageElement> & {
   cropAspect?: number;
   focalPoint?: PublicImage["focalPoint"];
   sourceHeight?: number;
   sourceWidth?: number;
+  variants?: PublicImage["variants"];
 };
 
 export function FocalImage({
   cropAspect = 1,
   focalPoint,
   height,
+  sizes = "100vw",
   sourceHeight,
   sourceWidth,
   style,
+  variants,
   width,
   ...props
 }: FocalImageProps) {
@@ -34,5 +38,16 @@ export function FocalImage({
       } as CSSProperties
     : style;
 
-  return <img {...props} height={height} width={width} style={focalStyle} />;
+  return (
+    <img
+      {...props}
+      decoding={props.decoding ?? "async"}
+      height={height}
+      loading={props.loading ?? "lazy"}
+      sizes={variants?.length ? sizes : undefined}
+      srcSet={getResponsiveImageSourceSet(variants)}
+      width={width}
+      style={focalStyle}
+    />
+  );
 }

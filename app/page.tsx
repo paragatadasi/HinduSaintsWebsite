@@ -4,6 +4,7 @@ import { ArrowRight, Instagram, MapPinned, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HomeInstagramRail } from "@/components/instagram/home-instagram-rail";
 import { ScrollRail } from "@/components/ui/scroll-rail";
+import { FocalImage } from "@/components/ui/focal-image";
 import { SaintCard } from "@/components/saints/saint-card";
 import { TraditionCard } from "@/components/traditions/tradition-card";
 import { getPublicHomePageConfig } from "@/lib/home-page-config";
@@ -12,7 +13,6 @@ import { getRecentInstagramCarouselPreviews } from "@/lib/public-instagram";
 import { getIndiaPlaceMapData } from "@/lib/public-places";
 import { getFeaturedSaintSummaries, getPublishedSaintSummaries } from "@/lib/public-saints";
 import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
-import { logPageView } from "@/lib/page-views";
 import type { PublicImage, PublicPlaceMapData } from "@/lib/public-contracts";
 import { getHomeLayoutVariant, getHomeSectionContent, type HomeHeroContent, type HomeQuoteContent } from "@/lib/site-content";
 
@@ -38,7 +38,6 @@ export default async function HomePage() {
     ...configuredFeaturedSaints,
     ...publishedSaints
   ]).slice(0, 6);
-  logPageView("/");
 
   if (layout === "archive") {
     return (
@@ -270,11 +269,13 @@ function CosmicHomePage({
 
           <article className={featuredTraditionBannerImage ? "home-tradition-feature home-tradition-feature--with-background" : "home-tradition-feature"}>
             {featuredTraditionBannerImage ? (
-              <img
+              <FocalImage
                 alt=""
                 aria-hidden="true"
                 className="home-tradition-feature__background"
                 src={featuredTraditionBannerImage.url}
+                variants={featuredTraditionBannerImage.variants}
+                sizes="(max-width: 760px) 92vw, 760px"
                 style={{
                   "--featured-tradition-background-position":
                     `${featuredTraditionBannerFocalArea.x}% ${featuredTraditionBannerFocalArea.y}%`
@@ -481,8 +482,26 @@ function HomeHeroImage({
     <div className={className} data-preserve-area={preserveFocalArea ? "true" : undefined} aria-label={image?.alt ?? "Devotional archive visual"}>
       {image ? (
         <>
-          {preserveFocalArea ? <img className="home-cosmic-hero__banner-backdrop" src={image.url} alt="" style={imageStyle} /> : null}
-          <img className="home-cosmic-hero__banner-image" src={image.url} alt="" style={imageStyle} />
+          {preserveFocalArea ? (
+            <FocalImage
+              className="home-cosmic-hero__banner-backdrop"
+              src={image.url}
+              alt=""
+              style={imageStyle}
+              variants={image.variants}
+              sizes="100vw"
+            />
+          ) : null}
+          <FocalImage
+            className="home-cosmic-hero__banner-image"
+            src={image.url}
+            alt=""
+            style={imageStyle}
+            variants={image.variants}
+            sizes="100vw"
+            loading="eager"
+            fetchPriority="high"
+          />
         </>
       ) : null}
     </div>

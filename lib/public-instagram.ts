@@ -1,10 +1,15 @@
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { getInstagramCarouselCoverImageUrl } from "@/lib/instagram";
+import { PUBLIC_CACHE_TAGS, PUBLIC_DATA_CACHE_SECONDS } from "@/lib/public-cache";
+import type { PublicImage } from "@/lib/public-contracts";
+import { getPublicImageVariants } from "@/lib/responsive-images";
 
 export type PublicInstagramCarouselPreview = {
   url: string;
   imageUrl: string;
   imageUrls: string[];
+  imageVariants?: PublicImage["variants"];
   alt: string;
   caption?: string;
   postedAt?: string;
@@ -17,12 +22,19 @@ export type PublicInstagramCarouselPreview = {
 export type PublicInstagramMediaAsset = {
   cachedUrl: string;
   sourceUrl?: string | null;
+  variants?: unknown;
 };
 
 const INSTAGRAM_CDN_URL_PATTERN = /(^|\.)cdninstagram\.com$/i;
 const INSTAGRAM_URL_EXPIRY_BUFFER_MS = 60 * 60 * 1000;
 
 export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<PublicInstagramCarouselPreview[]> {
+  return getRecentInstagramCarouselPreviewsCached(limit);
+}
+
+const getRecentInstagramCarouselPreviewsCached = unstable_cache(async (
+  limit = 8
+): Promise<PublicInstagramCarouselPreview[]> => {
   const items = await db.instagramItem.findMany({
     where: {
       type: "carousel"
@@ -59,7 +71,7 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
       },
       mediaAssets: {
         orderBy: { sortOrder: "asc" },
-        select: { cachedUrl: true, sourceUrl: true }
+        select: { cachedUrl: true, sourceUrl: true, variants: true }
       }
     }
   });
@@ -89,11 +101,12 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
   return items
     .flatMap((item) => {
       const coverImageUrl = getInstagramCarouselCoverImageUrl(rawPayloadByItemId.get(item.id));
-      const imageUrls = getPreviewImageUrls({
+      const images = getPreviewImages({
         coverImageUrl,
         mediaAssets: item.mediaAssets,
         thumbnailUrl: item.thumbnailUrl
       });
+      const imageUrls = images.map((image) => image.url);
       const imageUrl = imageUrls[0];
       if (!imageUrl) return [];
 
@@ -101,6 +114,7 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
         url: item.instagramUrl,
         imageUrl,
         imageUrls,
+        imageVariants: images[0]?.variants,
         alt: getInstagramPreviewAlt(item.captionText),
         ...(item.captionText ? { caption: item.captionText } : {}),
         ...(item.postedAt ? { postedAt: item.postedAt.toISOString() } : {}),
@@ -108,9 +122,12 @@ export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<Pub
       }];
     })
     .slice(0, limit);
-}
+}, ["public-instagram-carousel-previews"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.instagram]
+});
 
-function getPreviewImageUrls({
+function getPreviewImages({
   coverImageUrl,
   mediaAssets,
   thumbnailUrl
@@ -118,17 +135,22 @@ function getPreviewImageUrls({
   coverImageUrl?: string;
   mediaAssets: PublicInstagramMediaAsset[];
   thumbnailUrl?: string | null;
-}) {
-  const cachedUrls = getPublicInstagramMediaAssetUrls(mediaAssets);
-  if (cachedUrls.length > 0) return cachedUrls;
+}): Array<{ url: string; variants?: PublicImage["variants"] }> {
+  const cachedImages = getPublicInstagramMediaAssetImages(mediaAssets);
+  if (cachedImages.length > 0) return cachedImages;
 
-  return getFreshInstagramImageUrls([thumbnailUrl, coverImageUrl]);
+  return getFreshInstagramImageUrls([thumbnailUrl, coverImageUrl])
+    .map((url) => ({ url }));
 }
 
 export function getPublicInstagramMediaAssetUrls(mediaAssets: PublicInstagramMediaAsset[]) {
+  return getPublicInstagramMediaAssetImages(mediaAssets).map((image) => image.url);
+}
+
+export function getPublicInstagramMediaAssetImages(mediaAssets: PublicInstagramMediaAsset[]) {
   const hasCarouselMedia = mediaAssets.some((asset) => !isCachedCoverAsset(asset));
   const seen = new Set<string>();
-  const urls: string[] = [];
+  const images: Array<{ url: string; variants?: PublicImage["variants"] }> = [];
 
   for (const asset of mediaAssets) {
     if (hasCarouselMedia && isCachedCoverAsset(asset)) continue;
@@ -140,10 +162,13 @@ export function getPublicInstagramMediaAssetUrls(mediaAssets: PublicInstagramMed
     if (seen.has(identity)) continue;
 
     seen.add(identity);
-    urls.push(cachedUrl);
+    images.push({
+      url: cachedUrl,
+      variants: getPublicImageVariants(asset.variants)
+    });
   }
 
-  return urls;
+  return images;
 }
 
 function getInstagramPreviewAlt(caption: string | null) {

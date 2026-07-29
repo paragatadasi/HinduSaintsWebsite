@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { getInstagramCarouselCoverImageUrl, getInstagramImageUrls } from "@/lib/instagram";
-import { saveImageBuffer } from "@/lib/media-storage";
+import { getManagedStorageKeyFromUrl, saveImageBuffer } from "@/lib/media-storage";
 
 type CacheInstagramCoverInput = {
   fallbackUrl?: string | null;
@@ -74,6 +74,7 @@ export async function cacheInstagramMediaAssets({
         cachedUrl: cached.url,
         storageKey: cached.storageKey,
         mediaType: cached.mimeType,
+        variants: cached.variants,
         sortOrder,
         isCover: sortOrder === 0
       },
@@ -82,6 +83,7 @@ export async function cacheInstagramMediaAssets({
         cachedUrl: cached.url,
         storageKey: cached.storageKey,
         mediaType: cached.mimeType,
+        variants: cached.variants,
         isCover: sortOrder === 0
       }
     });
@@ -103,7 +105,7 @@ export async function cacheInstagramMediaAssets({
 }
 
 export function isLocalMediaUrl(url: string) {
-  return url.startsWith("/media/") || url.startsWith("/instagram-covers/");
+  return Boolean(getManagedStorageKeyFromUrl(url)) || url.startsWith("/instagram-covers/");
 }
 
 async function cacheInstagramMediaSource({
@@ -119,7 +121,8 @@ async function cacheInstagramMediaSource({
     return {
       url: sourceUrl,
       storageKey: getStorageKeyFromLocalMediaUrl(sourceUrl),
-      mimeType: undefined
+      mimeType: undefined,
+      variants: undefined
     };
   }
 
@@ -139,7 +142,7 @@ async function cacheInstagramMediaSource({
 }
 
 function getStorageKeyFromLocalMediaUrl(url: string) {
-  return url.startsWith("/media/") ? url.slice("/media/".length) : undefined;
+  return getManagedStorageKeyFromUrl(url);
 }
 
 function normalizeUrl(value: string | null | undefined) {

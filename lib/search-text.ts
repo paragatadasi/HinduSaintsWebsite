@@ -1,6 +1,7 @@
 export type WeightedSearchField = {
   value?: string | null;
   weight?: number;
+  fuzzy?: boolean;
 };
 
 export type WeightedSearchResult<T> = {
@@ -55,6 +56,10 @@ export function scoreWeightedTextSearch(query: string, fields: WeightedSearchFie
         else if (fieldTokens.some((fieldToken) => fieldToken.includes(queryToken))) score += 4 * weight;
       }
     }
+
+    if (field.fuzzy) {
+      score += scoreFuzzyTokenMatches(uniqueQueryForms, fieldForms) * weight;
+    }
   }
 
   return score;
@@ -79,11 +84,14 @@ export function normalizeSearchText(value: string) {
 
 function getSearchForms(value: string) {
   const normalized = normalizeSearchText(value);
-  const withoutHonorifics = getSearchTokens(normalized)
-    .filter((token) => !SEARCH_HONORIFICS.has(token))
-    .join(" ");
+  const transliterationFolded = foldTransliterationVariants(normalized);
 
-  return [normalized, withoutHonorifics].filter(Boolean);
+  return Array.from(new Set([
+    normalized,
+    removeSearchHonorifics(normalized),
+    transliterationFolded,
+    removeSearchHonorifics(transliterationFolded)
+  ].filter(Boolean)));
 }
 
 function getSearchTokens(value: string) {
@@ -91,48 +99,96 @@ function getSearchTokens(value: string) {
 }
 
 function getQuerySearchForms(value: string) {
-  return expandTransliterationVariants(value).flatMap((variant) => [
-    ...getSearchForms(variant),
-    ...getSearchTokens(variant).flatMap(expandTransliterationVariants).flatMap(getSearchForms)
+  const forms = getSearchForms(value);
+  return forms.flatMap((form) => [
+    ...getSearchForms(form),
+    ...getSearchTokens(form).flatMap(getSearchForms)
   ]);
 }
 
-function expandTransliterationVariants(value: string) {
-  const normalized = normalizeSearchText(value);
-  const variants = new Set([normalized]);
-  const substitutions: Array<[RegExp, string]> = [
-    [/\bmaharishi\b/g, "maharshi"],
-    [/\bmaharshi\b/g, "maharishi"],
-    [/\bkrishna\b/g, "krsna"],
-    [/\bkrsna\b/g, "krishna"],
-    [/\bshiva\b/g, "siva"],
-    [/\bsiva\b/g, "shiva"],
-    [/\bchaitanya\b/g, "caitanya"],
-    [/\bcaitanya\b/g, "chaitanya"],
-    [/\bchandra\b/g, "candra"],
-    [/\bcandra\b/g, "chandra"],
-    [/\bshankar/g, "sankar"],
-    [/\bsankar/g, "shankar"],
-    [/\bshankara\b/g, "sankara"],
-    [/\bsankara\b/g, "shankara"],
-    [/\bvaishnava\b/g, "vaisnava"],
-    [/\bvaisnava\b/g, "vaishnava"],
-    [/\bvrindavan\b/g, "brindavan"],
-    [/\bbrindavan\b/g, "vrindavan"],
-    [/\bv/g, "w"],
-    [/\bw/g, "v"],
-    [/\bb/g, "v"],
-    [/\bv/g, "b"],
-    [/aa/g, "a"],
-    [/ee/g, "i"],
-    [/oo/g, "u"]
-  ];
+function removeSearchHonorifics(value: string) {
+  return getSearchTokens(value)
+    .filter((token) => !SEARCH_HONORIFICS.has(token))
+    .join(" ");
+}
 
-  for (const [pattern, replacement] of substitutions) {
-    variants.add(normalized.replace(pattern, replacement));
+function foldTransliterationVariants(value: string) {
+  return value
+    .replace(/\bmaharishi\b/g, "maharshi")
+    .replace(/\bparamahamsa\b|\bparamhansa\b/g, "paramahansa")
+    .replace(/\bkrshna\b|\bkrsna\b/g, "krishna")
+    .replace(/\bchaitanya\b/g, "caitanya")
+    .replace(/\bchandra\b/g, "candra")
+    .replace(/\bshiva\b/g, "siva")
+    .replace(/\bshankar/g, "sankar")
+    .replace(/\bvaish/g, "vais")
+    .replace(/\bbrindavan\b/g, "vrindavan")
+    .replace(/\b[wb]/g, "v")
+    .replace(/aa/g, "a")
+    .replace(/ee/g, "i")
+    .replace(/oo/g, "u");
+}
+
+function scoreFuzzyTokenMatches(queryForms: string[], fieldForms: string[]) {
+  const queryTokens = Array.from(new Set(queryForms.flatMap(getSearchTokens)))
+    .filter((token) => token.length >= 4 && !SEARCH_HONORIFICS.has(token));
+  const fieldTokens = Array.from(new Set(fieldForms.flatMap(getSearchTokens)));
+  let score = 0;
+
+  for (const queryToken of queryTokens) {
+    if (fieldTokens.some((fieldToken) => (
+      fieldToken === queryToken
+      || fieldToken.startsWith(queryToken)
+      || fieldToken.includes(queryToken)
+    ))) {
+      continue;
+    }
+
+    const maximumDistance = queryToken.length >= 7 ? 2 : 1;
+    let bestDistance = maximumDistance + 1;
+
+    for (const fieldToken of fieldTokens) {
+      if (Math.abs(fieldToken.length - queryToken.length) > maximumDistance) continue;
+
+      bestDistance = Math.min(
+        bestDistance,
+        levenshteinDistanceWithin(queryToken, fieldToken, maximumDistance)
+      );
+    }
+
+    if (bestDistance === 1) score += 14;
+    else if (bestDistance === 2) score += 8;
   }
 
-  return Array.from(variants);
+  return score;
+}
+
+function levenshteinDistanceWithin(left: string, right: string, maximumDistance: number) {
+  if (left === right) return 0;
+  if (Math.abs(left.length - right.length) > maximumDistance) return maximumDistance + 1;
+
+  let previous = Array.from({ length: right.length + 1 }, (_, index) => index);
+
+  for (let leftIndex = 1; leftIndex <= left.length; leftIndex += 1) {
+    const current = [leftIndex];
+    let rowMinimum = current[0];
+
+    for (let rightIndex = 1; rightIndex <= right.length; rightIndex += 1) {
+      const substitutionCost = left[leftIndex - 1] === right[rightIndex - 1] ? 0 : 1;
+      const distance = Math.min(
+        previous[rightIndex] + 1,
+        current[rightIndex - 1] + 1,
+        previous[rightIndex - 1] + substitutionCost
+      );
+      current.push(distance);
+      rowMinimum = Math.min(rowMinimum, distance);
+    }
+
+    if (rowMinimum > maximumDistance) return maximumDistance + 1;
+    previous = current;
+  }
+
+  return previous[right.length];
 }
 
 const SEARCH_HONORIFICS = new Set([

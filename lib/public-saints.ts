@@ -1,6 +1,10 @@
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { getInstagramCarouselImageUrls } from "@/lib/instagram";
-import { getPublicInstagramMediaAssetUrls } from "@/lib/public-instagram";
+import {
+  getPublicInstagramMediaAssetImages,
+  getPublicInstagramMediaAssetUrls
+} from "@/lib/public-instagram";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import type {
   PublicImage,
@@ -10,6 +14,8 @@ import type {
   PublicSourceSummary
 } from "@/lib/public-contracts";
 import { formatSaintDate, formatSaintEraLabel } from "@/lib/public-date-format";
+import { PUBLIC_CACHE_TAGS, PUBLIC_DATA_CACHE_SECONDS } from "@/lib/public-cache";
+import { getPublicImageVariants } from "@/lib/responsive-images";
 import { rankSaintSearchResults } from "@/lib/saint-search";
 
 type SaintListRow = Awaited<ReturnType<typeof getPublishedSaintRows>>[number];
@@ -19,11 +25,16 @@ const DEFAULT_DESCRIPTION = "";
 const DEFAULT_LOCATION = "Location in review";
 const DEFAULT_TRADITION = "Tradition in review";
 const DEFAULT_ERA = "Dates in review";
+export const PUBLIC_SAINT_PAGE_SIZE = 24;
 
-async function getPublishedSaintRows(where: Prisma.SaintWhereInput = {}) {
+async function getPublishedSaintRows(
+  where: Prisma.SaintWhereInput = {},
+  pagination: { skip?: number; take?: number } = {}
+) {
   return db.saint.findMany({
     where: { status: "published", ...where },
     orderBy: [{ featured: "desc" }, { displayName: "asc" }],
+    ...pagination,
     include: {
       aliases: { orderBy: { createdAt: "asc" } },
       primaryImage: true,
@@ -34,6 +45,46 @@ async function getPublishedSaintRows(where: Prisma.SaintWhereInput = {}) {
       traditions: {
         include: { tradition: true },
         orderBy: { isPrimary: "desc" }
+      }
+    }
+  });
+}
+
+async function getPublishedSaintSearchRows(where: Prisma.SaintWhereInput = {}) {
+  return db.saint.findMany({
+    where: { status: "published", ...where },
+    select: {
+      id: true,
+      displayName: true,
+      canonicalName: true,
+      eraLabel: true,
+      birthDateRaw: true,
+      samadhiDateRaw: true,
+      shortDescription: true,
+      aliases: {
+        select: { alias: true }
+      },
+      places: {
+        select: {
+          place: {
+            select: {
+              name: true,
+              alternateNames: true,
+              region: true,
+              country: true
+            }
+          }
+        }
+      },
+      traditions: {
+        select: {
+          tradition: {
+            select: {
+              name: true,
+              alternateNames: true
+            }
+          }
+        }
       }
     }
   });
@@ -67,29 +118,40 @@ async function getPublishedSaintRowBySlug(slug: string) {
 }
 
 export async function getPublishedSaintSummaries() {
+  return getPublishedSaintSummariesCached();
+}
+
+const getPublishedSaintSummariesCached = unstable_cache(async () => {
   const rows = await getPublishedSaintRows();
   return rows.map(toPublicSaintSummary);
-}
-
-export async function searchPublishedSaintSummaries(query: string) {
-  const term = query.trim();
-  if (!term) return getPublishedSaintSummaries();
-
-  const rows = await getPublishedSaintRows();
-  return rankSaintSearchResults(rows, term)
-    .map(({ item }) => toPublicSaintSummary(item));
-}
+}, ["published-saint-summaries"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints]
+});
 
 export async function getFeaturedSaintSummaries() {
-  const saints = await getPublishedSaintSummaries();
-  const featured = saints.filter((saint) => saint.featured);
-  return featured.length > 0 ? featured : saints.slice(0, 6);
+  return getFeaturedSaintSummariesCached();
 }
+
+const getFeaturedSaintSummariesCached = unstable_cache(async () => {
+  const featuredRows = await getPublishedSaintRows({ featured: true }, { take: 6 });
+  const rows = featuredRows.length > 0
+    ? featuredRows
+    : await getPublishedSaintRows({}, { take: 6 });
+
+  return rows.map(toPublicSaintSummary);
+}, ["featured-saint-summaries"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints]
+});
 
 export async function getPublishedSaintSummariesByIds(saintIds: string[]) {
   const uniqueIds = Array.from(new Set(saintIds));
   if (uniqueIds.length === 0) return [];
+  return getPublishedSaintSummariesByIdsCached(uniqueIds);
+}
 
+const getPublishedSaintSummariesByIdsCached = unstable_cache(async (uniqueIds: string[]) => {
   const rows = await getPublishedSaintRows({ id: { in: uniqueIds } });
   const summariesById = new Map(rows.map((row) => [row.id, toPublicSaintSummary(row)]));
 
@@ -97,7 +159,119 @@ export async function getPublishedSaintSummariesByIds(saintIds: string[]) {
     const summary = summariesById.get(id);
     return summary ? [summary] : [];
   });
+}, ["published-saint-summaries-by-ids"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints]
+});
+
+export type PublicSaintCatalogQuery = {
+  era?: string;
+  location?: string;
+  page?: number;
+  query?: string;
+  tradition?: string;
+};
+
+export async function getPublishedSaintCatalog({
+  era = "",
+  location = "",
+  page = 1,
+  query = "",
+  tradition = ""
+}: PublicSaintCatalogQuery) {
+  const term = query.trim().slice(0, 120);
+  const where = buildSaintCatalogFilterWhere({
+    era: era.trim(),
+    location: location.trim(),
+    tradition: tradition.trim()
+  });
+
+  if (term) {
+    const [searchRows, facets] = await Promise.all([
+      getPublishedSaintSearchRows(where),
+      getPublishedSaintCatalogFacets()
+    ]);
+    const rankedRows = rankSaintSearchResults(searchRows, term);
+    const total = rankedRows.length;
+    const pageCount = Math.max(1, Math.ceil(total / PUBLIC_SAINT_PAGE_SIZE));
+    const normalizedPage = Math.min(Math.max(1, Math.floor(page)), pageCount);
+    const pageRows = rankedRows.slice(
+      (normalizedPage - 1) * PUBLIC_SAINT_PAGE_SIZE,
+      normalizedPage * PUBLIC_SAINT_PAGE_SIZE
+    );
+    const pageIds = pageRows.map(({ item }) => item.id);
+    const rows = pageIds.length > 0
+      ? await getPublishedSaintRows({ id: { in: pageIds } })
+      : [];
+    const rowsById = new Map(rows.map((row) => [row.id, row]));
+
+    return {
+      facets,
+      items: pageIds.flatMap((id) => {
+        const row = rowsById.get(id);
+        return row ? [toPublicSaintSummary(row)] : [];
+      }),
+      page: normalizedPage,
+      pageCount,
+      pageSize: PUBLIC_SAINT_PAGE_SIZE,
+      total
+    };
+  }
+
+  const [total, facets] = await Promise.all([
+    db.saint.count({ where: { status: "published", ...where } }),
+    getPublishedSaintCatalogFacets()
+  ]);
+  const pageCount = Math.max(1, Math.ceil(total / PUBLIC_SAINT_PAGE_SIZE));
+  const normalizedPage = Math.min(Math.max(1, Math.floor(page)), pageCount);
+  const rows = await getPublishedSaintRows(where, {
+    skip: (normalizedPage - 1) * PUBLIC_SAINT_PAGE_SIZE,
+    take: PUBLIC_SAINT_PAGE_SIZE
+  });
+
+  return {
+    facets,
+    items: rows.map(toPublicSaintSummary),
+    page: normalizedPage,
+    pageCount,
+    pageSize: PUBLIC_SAINT_PAGE_SIZE,
+    total
+  };
 }
+
+const getPublishedSaintCatalogFacets = unstable_cache(async () => {
+  const saints = await db.saint.findMany({
+    where: { status: "published" },
+    select: {
+      eraLabel: true,
+      places: {
+        select: { place: { select: { name: true } } }
+      },
+      traditions: {
+        select: { tradition: { select: { name: true } } }
+      }
+    }
+  });
+
+  return {
+    eras: getUniqueSorted(saints.map((saint) => saint.eraLabel
+      ? formatSaintEraLabel(saint.eraLabel)
+      : DEFAULT_ERA)),
+    locations: getUniqueSorted(
+      saints.flatMap((saint) => saint.places.length > 0
+        ? saint.places.map(({ place }) => place.name)
+        : [DEFAULT_LOCATION])
+    ),
+    traditions: getUniqueSorted(
+      saints.flatMap((saint) => saint.traditions.length > 0
+        ? saint.traditions.map(({ tradition }) => tradition.name)
+        : [DEFAULT_TRADITION])
+    )
+  };
+}, ["published-saint-catalog-facets"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints]
+});
 
 export async function getPublishedSaintSlugs() {
   return db.saint.findMany({
@@ -108,14 +282,25 @@ export async function getPublishedSaintSlugs() {
 }
 
 export async function getPublishedSaintBySlug(slug: string): Promise<PublicSaintDetail | null> {
+  return getPublishedSaintBySlugCached(slug);
+}
+
+const getPublishedSaintBySlugCached = unstable_cache(async (
+  slug: string
+): Promise<PublicSaintDetail | null> => {
   const saint = await getPublishedSaintRowBySlug(slug);
   if (!saint) return null;
 
-  const instagramUrls = await getInstagramUrlsForSaint(saint.id);
-  const instagramItems = await getInstagramItemsForSaint(saint.id);
-  const sources = await getSourcesForSaint(saint.id);
+  const [instagramItems, sources] = await Promise.all([
+    getInstagramItemsForSaint(saint.id),
+    getSourcesForSaint(saint.id)
+  ]);
+  const instagramUrls = instagramItems.map((item) => item.url);
   return toPublicSaintDetail(saint, instagramUrls, instagramItems, sources);
-}
+}, ["published-saint-detail"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.instagram, PUBLIC_CACHE_TAGS.saints]
+});
 
 function toPublicSaintSummary(saint: SaintListRow): PublicSaintSummary {
   return {
@@ -132,26 +317,6 @@ function toPublicSaintSummary(saint: SaintListRow): PublicSaintSummary {
     instagramItems: [],
     status: "published"
   };
-}
-
-function normalizeSearchText(value: string) {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/ṛ/g, "r")
-    .replace(/ṝ/g, "r")
-    .replace(/ḷ/g, "l")
-    .replace(/ṅ/g, "n")
-    .replace(/ñ/g, "n")
-    .replace(/ṇ/g, "n")
-    .replace(/ṃ/g, "m")
-    .replace(/ṁ/g, "m")
-    .replace(/ś/g, "sh")
-    .replace(/ṣ/g, "sh")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim()
-    .replace(/\s+/g, " ");
 }
 
 function toPublicSaintDetail(
@@ -244,6 +409,7 @@ function getPrimaryTradition(traditions: SaintListRow["traditions"]) {
 function toPublicImage(image: SaintDetailRow["primaryImage"], displayName: string): PublicImage {
   return {
     url: image?.url ?? "/images/devotional-archive-placeholder.svg",
+    variants: getPublicImageVariants(image?.variants),
     alt: image?.altText ?? `${displayName} portrait`,
     caption: image?.caption ?? undefined,
     credit: image?.credit ?? undefined,
@@ -298,27 +464,6 @@ async function getSourcesForSaint(saintId: string): Promise<PublicSourceSummary[
   }));
 }
 
-async function getInstagramUrlsForSaint(saintId: string) {
-  const links = await db.instagramItemSaint.findMany({
-    where: {
-      saintId,
-      matchStatus: { in: ["matched", "published"] },
-      instagramItem: { status: { in: ["matched", "published"] } }
-    },
-    orderBy: [
-      { isPrimary: "desc" },
-      { instagramItem: { postedAt: "desc" } }
-    ],
-    select: {
-      instagramItem: {
-        select: { instagramUrl: true }
-      }
-    }
-  });
-
-  return links.map((link) => link.instagramItem.instagramUrl);
-}
-
 async function getInstagramItemsForSaint(saintId: string): Promise<PublicInstagramItem[]> {
   const links = await db.instagramItemSaint.findMany({
     where: {
@@ -341,7 +486,7 @@ async function getInstagramItemsForSaint(saintId: string): Promise<PublicInstagr
           thumbnailUrl: true,
           mediaAssets: {
             orderBy: { sortOrder: "asc" },
-            select: { cachedUrl: true, sourceUrl: true }
+            select: { cachedUrl: true, sourceUrl: true, variants: true }
           },
           postedAt: true
         }
@@ -368,15 +513,55 @@ async function getInstagramItemsForSaint(saintId: string): Promise<PublicInstagr
     }
   }
 
-  return links.map(({ instagramItem }) => ({
+  return links.map(({ instagramItem }) => {
+    const mediaImages = getPublicInstagramMediaAssetImages(instagramItem.mediaAssets);
+
+    return {
     url: instagramItem.instagramUrl,
     shortcode: instagramItem.instagramShortcode ?? undefined,
     type: instagramItem.type,
     caption: instagramItem.captionText ?? undefined,
-    thumbnailUrl: instagramItem.mediaAssets[0]?.cachedUrl ?? instagramItem.thumbnailUrl ?? undefined,
+    thumbnailUrl: mediaImages[0]?.url ?? instagramItem.thumbnailUrl ?? undefined,
+    thumbnailVariants: mediaImages[0]?.variants,
     carouselImageUrls: instagramItem.mediaAssets.length > 0
       ? getPublicInstagramMediaAssetUrls(instagramItem.mediaAssets)
       : getInstagramCarouselImageUrls(rawPayloadByItemId.get(instagramItem.id)),
     postedAt: instagramItem.postedAt?.toISOString()
-  }));
+    };
+  });
+}
+
+function buildSaintCatalogFilterWhere({
+  era,
+  location,
+  tradition
+}: {
+  era: string;
+  location: string;
+  tradition: string;
+}): Prisma.SaintWhereInput {
+  const and: Prisma.SaintWhereInput[] = [];
+
+  if (tradition) {
+    and.push(tradition === DEFAULT_TRADITION
+      ? { traditions: { none: {} } }
+      : { traditions: { some: { tradition: { name: tradition } } } });
+  }
+
+  if (location) {
+    and.push(location === DEFAULT_LOCATION
+      ? { places: { none: {} } }
+      : { places: { some: { place: { name: location } } } });
+  }
+
+  if (era) {
+    and.push(era === DEFAULT_ERA ? { eraLabel: null } : { eraLabel: era });
+  }
+
+  return and.length > 0 ? { AND: and } : {};
+}
+
+function getUniqueSorted(values: string[]) {
+  return Array.from(new Set(values.filter(Boolean)))
+    .sort((left, right) => left.localeCompare(right));
 }

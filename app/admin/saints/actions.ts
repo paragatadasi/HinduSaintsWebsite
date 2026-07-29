@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import type { Route } from "next";
 import { Prisma } from "@/lib/generated/prisma/client";
@@ -8,6 +8,7 @@ import { z } from "zod";
 import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { parseImportedDate } from "@/lib/import-dates";
 import { acceptSaintInstagramClaim } from "@/lib/instagram-claims";
 import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page-extraction";
@@ -1351,6 +1352,10 @@ async function getUniqueTraditionSlug(name: string) {
 }
 
 function revalidateSaintPaths(slug: string) {
+  revalidateTag(PUBLIC_CACHE_TAGS.home);
+  revalidateTag(PUBLIC_CACHE_TAGS.places);
+  revalidateTag(PUBLIC_CACHE_TAGS.saints);
+  revalidateTag(PUBLIC_CACHE_TAGS.traditions);
   revalidatePath("/");
   revalidatePath("/saints");
   revalidatePath(`/saints/${slug}`);

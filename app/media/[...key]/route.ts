@@ -1,10 +1,20 @@
 import { NextResponse } from "next/server";
-import { getStoredMediaFile } from "@/lib/media-storage";
+import {
+  getMediaStorageBackend,
+  getPublicMediaUrl,
+  getStoredMediaFile
+} from "@/lib/media-storage";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ key: string[] }> }) {
   try {
     const { key } = await params;
-    const media = await getStoredMediaFile(key.join("/"));
+    const storageKey = key.join("/");
+
+    if (getMediaStorageBackend() === "s3") {
+      return NextResponse.redirect(getPublicMediaUrl(storageKey), 308);
+    }
+
+    const media = await getStoredMediaFile(storageKey);
 
     return new Response(new Uint8Array(media.body), {
       headers: {

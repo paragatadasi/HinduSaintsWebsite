@@ -1,12 +1,13 @@
 "use server";
 
 import type { Route } from "next";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { HOME_PAGE_CONFIG_ID } from "@/lib/home-page-config";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 
 const homePageConfigSchema = z.object({
   heroEyebrow: z.string().trim().max(24).optional(),
@@ -89,6 +90,7 @@ export async function updateHomePageConfig(formData: FormData) {
     update: data
   });
 
+  revalidateTag(PUBLIC_CACHE_TAGS.home);
   revalidatePath("/");
   revalidatePath("/admin/site");
   redirect("/admin/site?homepage=saved#homepage" as Route);

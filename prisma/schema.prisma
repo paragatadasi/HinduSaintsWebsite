@@ -294,6 +294,8 @@ model Saint {
   updatedAt                DateTime                @updatedAt
   publishedAt              DateTime?
   reviewedAt               DateTime?
+
+  @@index([status, featured, displayName])
 }
 
 model SaintAlias {
@@ -345,6 +347,8 @@ model Tradition {
   createdAt                DateTime                    @default(now())
   updatedAt                DateTime                    @updatedAt
   publishedAt              DateTime?
+
+  @@index([status, name])
 }
 
 model Place {
@@ -404,6 +408,7 @@ model SaintPlace {
   routeConfidence Confidence?
 
   @@index([saintId, routeOrder])
+  @@index([placeId, placeType])
 }
 
 model SaintTradition {
@@ -416,6 +421,7 @@ model SaintTradition {
   notes       String?
 
   @@unique([saintId, traditionId])
+  @@index([traditionId, isPrimary])
 }
 
 model TraditionLineageSaint {
@@ -638,6 +644,7 @@ model MediaAsset {
   width                      Int?
   height                     Int?
   mimeType                   String?
+  variants                   Json?
   focalX                     Float                   @default(50)
   focalY                     Float                   @default(30)
   homeBannerConfigs          HomePageConfig[]        @relation("HomeBannerImage")
@@ -682,17 +689,17 @@ model HomePageConfig {
 }
 
 model SiteConfig {
-  id                  String   @id @default("site")
-  imprintUrl          String
-  privacyPolicyUrl    String
-  aboutEyebrow        String?
-  aboutTitle          String?
-  aboutIntroduction   String?
-  aboutSectionTitles  String[] @default([])
-  aboutSectionBodies  String[] @default([])
-  updatedByEmail      String?
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id                 String   @id @default("site")
+  imprintUrl         String
+  privacyPolicyUrl   String
+  aboutEyebrow       String?
+  aboutTitle         String?
+  aboutIntroduction  String?
+  aboutSectionTitles String[] @default([])
+  aboutSectionBodies String[] @default([])
+  updatedByEmail     String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 model SaintGalleryImage {
@@ -739,6 +746,8 @@ model InstagramItem {
   derivedClaims       InstagramDerivedClaim[]
   createdAt           DateTime                @default(now())
   updatedAt           DateTime                @updatedAt
+
+  @@index([type, postedAt, createdAt])
 }
 
 model InstagramMediaAsset {
@@ -749,6 +758,7 @@ model InstagramMediaAsset {
   cachedUrl       String
   storageKey      String?
   mediaType       String?
+  variants        Json?
   sortOrder       Int           @default(0)
   isCover         Boolean       @default(false)
   createdAt       DateTime      @default(now())
@@ -797,6 +807,7 @@ model InstagramItemSaint {
   notes           String?
 
   @@unique([instagramItemId, saintId])
+  @@index([saintId, matchStatus])
 }
 
 model Biography {
@@ -841,6 +852,8 @@ model ContentSource {
   entityId   String
   notes      String?
   sortOrder  Int     @default(0)
+
+  @@index([entityType, entityId, sortOrder])
 }
 
 model ImportBatch {

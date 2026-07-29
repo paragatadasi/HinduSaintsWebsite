@@ -57,6 +57,7 @@ function toInstagramPost(preview: PublicInstagramCarouselPreview): PublicInstagr
     type: "carousel",
     caption: preview.caption,
     thumbnailUrl: preview.imageUrl,
+    thumbnailVariants: preview.imageVariants,
     carouselImageUrls: preview.imageUrls,
     postedAt: preview.postedAt
   };

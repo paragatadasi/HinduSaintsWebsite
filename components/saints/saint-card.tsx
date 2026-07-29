@@ -19,7 +19,15 @@ export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
       <Card className="entity-card interactive-surface rail-card rail-card--featured saint-card saint-card--summary">
         <Link href={`/saints/${saint.slug}`}>
           <div className="saint-card__summary-image">
-            <FocalImage src={image.url} alt={image.alt} width={image.width} height={image.height} focalPoint={image.focalPoint} />
+            <FocalImage
+              src={image.url}
+              alt={image.alt}
+              width={image.width}
+              height={image.height}
+              focalPoint={image.focalPoint}
+              variants={image.variants}
+              sizes="(max-width: 720px) 84vw, 320px"
+            />
           </div>
           <div className="entity-card__content">
             <div className="eyebrow">{saint.eraLabel}</div>
@@ -38,7 +46,15 @@ export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
     <Card className="entity-card interactive-surface saint-card saint-card--summary">
       <Link href={`/saints/${saint.slug}`}>
         <div className="saint-card__summary-image">
-          <FocalImage src={image.url} alt={image.alt} width={image.width} height={image.height} focalPoint={image.focalPoint} />
+          <FocalImage
+            src={image.url}
+            alt={image.alt}
+            width={image.width}
+            height={image.height}
+            focalPoint={image.focalPoint}
+            variants={image.variants}
+            sizes="(max-width: 720px) 92vw, 360px"
+          />
         </div>
         <div className="entity-card__content">
           <div className="eyebrow">{saint.eraLabel}</div>

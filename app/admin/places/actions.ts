@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   Prisma,
@@ -12,6 +12,7 @@ import {
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
 
@@ -444,6 +445,8 @@ async function getUniquePlaceSlug(name: string, placeId: string) {
 }
 
 function revalidatePlacePaths(slug: string) {
+  revalidateTag(PUBLIC_CACHE_TAGS.places);
+  revalidateTag(PUBLIC_CACHE_TAGS.saints);
   revalidatePath("/");
   revalidatePath("/admin");
   revalidatePath("/admin/places");

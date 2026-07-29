@@ -23,6 +23,7 @@ import {
 import { getInstagramLinkProps } from "@/lib/external-links";
 import { getInstagramSectionContent } from "@/lib/site-content";
 import type { PublicInstagramItem } from "@/lib/public-contracts";
+import { getResponsiveImageSourceSet } from "@/lib/responsive-images";
 import { formatPublicCalendarDate } from "@/lib/public-date-format";
 
 const iconSize = {
@@ -150,7 +151,14 @@ export function InstagramPostCard({
       <div className="instagram-post-card__media">
         <div className="instagram-post-card__media-link">
           {post.thumbnailUrl ? (
-            <img src={post.thumbnailUrl} alt={getInstagramAlt(post, saintName)} />
+            <img
+              src={post.thumbnailUrl}
+              srcSet={getResponsiveImageSourceSet(post.thumbnailVariants)}
+              sizes={post.thumbnailVariants?.length ? "(max-width: 720px) 84vw, 360px" : undefined}
+              loading="lazy"
+              decoding="async"
+              alt={getInstagramAlt(post, saintName)}
+            />
           ) : (
             <span className="instagram-post-card__media-fallback">
               {post.type === "reel" ? <PlayCircle size={iconSize.fallback} aria-hidden="true" /> : <Instagram size={iconSize.fallback} aria-hidden="true" />}

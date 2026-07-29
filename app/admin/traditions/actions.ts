@@ -1,11 +1,12 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { toSlug } from "@/lib/slugs";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
@@ -842,6 +843,9 @@ async function getTraditionSlug(traditionId: string) {
 }
 
 function revalidateTraditionPaths(slug: string) {
+  revalidateTag(PUBLIC_CACHE_TAGS.home);
+  revalidateTag(PUBLIC_CACHE_TAGS.saints);
+  revalidateTag(PUBLIC_CACHE_TAGS.traditions);
   revalidatePath("/");
   revalidatePath("/admin");
   revalidatePath("/admin/traditions");

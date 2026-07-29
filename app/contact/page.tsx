@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { randomUUID } from "node:crypto";
 import { resolveFeedbackContext } from "@/lib/feedback-context";
-import { logPageView } from "@/lib/page-views";
 import { ContactFeedbackForm } from "./contact-feedback-form";
 
 type ContactPageProps = {
@@ -24,7 +23,6 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
     entitySlug: slug,
     pagePath: page
   });
-  logPageView("/contact");
 
   return (
     <main className="page-shell section site-grid contact-page">

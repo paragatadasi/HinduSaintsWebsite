@@ -101,6 +101,8 @@ function TraditionHero({ tradition }: { tradition: PublicTraditionDetail }) {
             width={image.width}
             height={image.height}
             focalPoint={image.focalPoint}
+            variants={image.variants}
+            sizes="(max-width: 760px) 92vw, 560px"
           />
           {!tradition.heroImage ? <figcaption>{image.alt}</figcaption> : null}
           <span className="tradition-hero__image-arc tradition-hero__image-arc--left" aria-hidden="true" />
@@ -190,6 +192,8 @@ function LineageSaint({
           width={image.width}
           height={image.height}
           focalPoint={image.focalPoint}
+          variants={image.variants}
+          sizes="(max-width: 760px) 92vw, 560px"
         />
       </span>
       {!compact ? (

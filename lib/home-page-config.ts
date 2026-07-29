@@ -1,7 +1,10 @@
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
+import { PUBLIC_CACHE_TAGS, PUBLIC_DATA_CACHE_SECONDS } from "@/lib/public-cache";
 import type { PublicImage } from "@/lib/public-contracts";
 import { getPublishedSaintSummariesByIds } from "@/lib/public-saints";
 import { getPublicTraditionSummariesByIds } from "@/lib/public-traditions";
+import { getPublicImageVariants } from "@/lib/responsive-images";
 import {
   getHomeHeroContent,
   getHomeQuoteContent,
@@ -12,6 +15,10 @@ import {
 export const HOME_PAGE_CONFIG_ID = "home";
 
 export async function getPublicHomePageConfig() {
+  return getPublicHomePageConfigCached();
+}
+
+const getPublicHomePageConfigCached = unstable_cache(async () => {
   const config = await db.homePageConfig.findUnique({
     where: { id: HOME_PAGE_CONFIG_ID },
     include: {
@@ -69,7 +76,14 @@ export async function getPublicHomePageConfig() {
     featuredSaints,
     featuredTraditions
   };
-}
+}, ["public-home-page-config"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [
+    PUBLIC_CACHE_TAGS.home,
+    PUBLIC_CACHE_TAGS.saints,
+    PUBLIC_CACHE_TAGS.traditions
+  ]
+});
 
 export function getDefaultBannerFocalArea() {
   return {
@@ -143,11 +157,13 @@ function toPublicImage(
     sourceUrl: string | null;
     width: number | null;
     height: number | null;
+    variants: unknown;
   },
   fallbackAlt: string
 ): PublicImage {
   return {
     url: image.url,
+    variants: getPublicImageVariants(image.variants),
     alt: image.altText ?? fallbackAlt,
     caption: image.caption ?? undefined,
     credit: image.credit ?? undefined,

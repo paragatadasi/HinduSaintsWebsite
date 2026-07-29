@@ -1,7 +1,10 @@
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { getPlaceCoordinate } from "@/lib/place-geocoding";
 import { getKnownPlaceScope, getKnownStateSlug } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
+import { PUBLIC_CACHE_TAGS, PUBLIC_DATA_CACHE_SECONDS } from "@/lib/public-cache";
+import { getPublicImageVariants } from "@/lib/responsive-images";
 import type {
   PublicPlaceDetail,
   PublicPlaceMapData,
@@ -135,20 +138,27 @@ async function getPublishedPlaceRowBySlug(slug: string) {
 }
 
 export async function getPublishedPlaceSummaries(): Promise<PublicPlaceSummary[]> {
-  const places = await getPublishedPlaceRows();
-  return places.filter(hasMinimumPublishedSaints).map(toPublicPlaceSummary);
+  return (await getPublicMapPageData()).places;
 }
 
 export async function getPublishedPlaceSlugs() {
-  const places = await getPublishedPlaceRows();
-
-  return places
-    .filter(hasMinimumPublishedSaints)
-    .map((place) => ({ slug: place.slug }))
-    .sort((a, b) => a.slug.localeCompare(b.slug));
+  return db.place.findMany({
+    where: {
+      slug: { not: "" },
+      saints: { some: { saint: { status: "published" } } }
+    },
+    select: { slug: true },
+    orderBy: { slug: "asc" }
+  });
 }
 
 export async function getPublishedPlaceBySlug(slug: string): Promise<PublicPlaceDetail | null> {
+  return getPublishedPlaceBySlugCached(slug);
+}
+
+const getPublishedPlaceBySlugCached = unstable_cache(async (
+  slug: string
+): Promise<PublicPlaceDetail | null> => {
   const place = await getPublishedPlaceRowBySlug(slug);
   if (!place) return null;
   if (!hasMinimumPublishedSaints(place)) return null;
@@ -161,9 +171,19 @@ export async function getPublishedPlaceBySlug(slug: string): Promise<PublicPlace
     traditions: getUniqueSorted(saints.map((saint) => saint.tradition)),
     eras: getUniqueSorted(saints.map((saint) => saint.eraLabel))
   };
-}
+}, ["published-place-detail"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.places, PUBLIC_CACHE_TAGS.saints]
+});
 
 export async function getIndiaPlaceMapData(): Promise<PublicPlaceMapData> {
+  return (await getPublicMapPageData()).mapData;
+}
+
+export const getPublicMapPageData = unstable_cache(async (): Promise<{
+  mapData: PublicPlaceMapData;
+  places: PublicPlaceSummary[];
+}> => {
   const places = await getPublishedPlaceRows();
   const rawPoints = places
     .filter(hasMinimumPublishedSaints)
@@ -173,7 +193,7 @@ export async function getIndiaPlaceMapData(): Promise<PublicPlaceMapData> {
   const points = aggregateMapPoints(rawPoints);
   const years = points.flatMap((point) => point.saints.flatMap(getSaintYears));
 
-  return {
+  const mapData = {
     points,
     yearRange: years.length > 0
       ? {
@@ -182,7 +202,15 @@ export async function getIndiaPlaceMapData(): Promise<PublicPlaceMapData> {
         }
       : undefined
   };
-}
+
+  return {
+    mapData,
+    places: places.filter(hasMinimumPublishedSaints).map(toPublicPlaceSummary)
+  };
+}, ["public-map-page-data"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.places, PUBLIC_CACHE_TAGS.saints]
+});
 
 function toPublicPlaceSummary(place: PublishedPlaceRow | PublishedPlaceDetailRow): PublicPlaceSummary {
   const saints = getSortedPublishedSaints(place);
@@ -250,16 +278,13 @@ function toPublicSaintSummary(saint: PublishedPlaceSaint): PublicSaintSummary {
 function toPublicImage(image: PublishedPlaceSaint["primaryImage"], displayName: string): PublicImage {
   return {
     url: image?.url ?? "/images/devotional-archive-placeholder.svg",
+    variants: getPublicImageVariants(image?.variants),
     alt: image?.altText ?? `${displayName} portrait`,
     caption: image?.caption ?? undefined,
     credit: image?.credit ?? undefined,
     sourceUrl: image?.sourceUrl ?? undefined,
     width: image?.width ?? undefined,
-    height: image?.height ?? undefined,
-    focalPoint: image ? {
-      x: image.focalX,
-      y: image.focalY
-    } : undefined
+    height: image?.height ?? undefined
   };
 }
 
@@ -284,16 +309,13 @@ function toPublicPlaceMapSaint(saintPlace: PublishedPlaceSaintLink): PublicPlace
     image: image
       ? {
           url: image.url,
+          variants: getPublicImageVariants(image.variants),
           alt: image.altText ?? `${saint.displayName} portrait`,
           caption: image.caption ?? undefined,
           credit: image.credit ?? undefined,
           sourceUrl: image.sourceUrl ?? undefined,
           width: image.width ?? undefined,
-          height: image.height ?? undefined,
-          focalPoint: {
-            x: image.focalX,
-            y: image.focalY
-          }
+          height: image.height ?? undefined
         }
       : {
           url: "/images/devotional-archive-placeholder.svg",

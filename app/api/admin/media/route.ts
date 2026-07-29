@@ -88,6 +88,7 @@ export async function POST(request: Request) {
     const mediaAsset = await db.mediaAsset.create({
       data: {
         ...stored,
+        variants: stored.variants,
         ...parsedMetadata.data
       }
     });

@@ -780,7 +780,10 @@ async function findOrCreateMediaAsset(image: Attachment, preferredUrl: string, d
         data: {
           url: cached.url,
           storageKey: cached.storageKey,
-          mimeType: cached.mimeType
+          mimeType: cached.mimeType,
+          width: cached.width,
+          height: cached.height,
+          variants: cached.variants
         }
       });
     }
@@ -793,8 +796,9 @@ async function findOrCreateMediaAsset(image: Attachment, preferredUrl: string, d
         altText: displayName,
         caption: image.filename,
         mimeType: cached.mimeType,
-        width: image.thumbnails?.large?.width ?? image.width,
-        height: image.thumbnails?.large?.height ?? image.height
+        width: cached.width ?? image.thumbnails?.large?.width ?? image.width,
+        height: cached.height ?? image.thumbnails?.large?.height ?? image.height,
+        variants: cached.variants
       }
     });
   } catch (error) {

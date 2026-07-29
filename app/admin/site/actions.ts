@@ -1,12 +1,13 @@
 "use server";
 
 import type { Route } from "next";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { SITE_CONFIG_ID } from "@/lib/site-config";
 import { ABOUT_PAGE_SECTION_LIMIT, getFooterContent } from "@/lib/site-content";
 
@@ -79,6 +80,7 @@ export async function updateFooterConfig(formData: FormData) {
   });
 
   revalidatePath("/", "layout");
+  revalidateTag(PUBLIC_CACHE_TAGS.site);
   revalidatePath("/admin/site");
   redirect("/admin/site?footer=saved#footer" as Route);
 }
@@ -139,6 +141,7 @@ export async function updateAboutPageConfig(formData: FormData) {
   });
 
   revalidatePath("/about");
+  revalidateTag(PUBLIC_CACHE_TAGS.site);
   revalidatePath("/admin/site");
   redirect("/admin/site?about=saved#about" as Route);
 }

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Prose } from "@/components/content/prose";
-import { logPageView } from "@/lib/page-views";
 import { getPublicAboutPageContent } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -13,7 +12,6 @@ export default async function AboutPage() {
   const content = await getPublicAboutPageContent();
 
   if (!content) notFound();
-  logPageView("/about");
 
   return (
     <main className="page-shell section site-grid">

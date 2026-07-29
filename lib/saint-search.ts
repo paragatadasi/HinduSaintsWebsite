@@ -28,9 +28,9 @@ export type SearchableSaint = {
 
 export function buildSaintSearchFields(saint: SearchableSaint, options: { includeAdminFields?: boolean } = {}) {
   const fields: WeightedSearchField[] = [
-    { value: saint.displayName, weight: 6 },
-    { value: saint.canonicalName, weight: 5 },
-    ...(saint.aliases ?? []).map((alias) => ({ value: alias.alias, weight: 5 })),
+    { value: saint.displayName, weight: 6, fuzzy: true },
+    { value: saint.canonicalName, weight: 5, fuzzy: true },
+    ...(saint.aliases ?? []).map((alias) => ({ value: alias.alias, weight: 5, fuzzy: true })),
     ...(saint.places ?? []).flatMap(({ place }) => [
       { value: place.name, weight: 3 },
       ...(place.alternateNames ?? []).map((name) => ({ value: name, weight: 3 })),
