@@ -2,7 +2,19 @@
 
 import { useRef } from "react";
 import type { ReactNode } from "react";
-import { Bold, BookOpen, Heading1, Heading2, Image, Italic, List, ListOrdered, Minus, Quote } from "lucide-react";
+import {
+  Bold,
+  BookOpen,
+  Heading1,
+  Heading2,
+  Image,
+  Italic,
+  Link2,
+  List,
+  ListOrdered,
+  Minus,
+  Quote
+} from "lucide-react";
 import { FocalImage } from "@/components/ui/focal-image";
 import { IMAGE_CROP_ASPECT } from "@/lib/image-crop-config";
 import { createDefinitionMarkdown } from "@/lib/markdown";
@@ -21,6 +33,7 @@ export type MarkdownEditorImage = {
 type MarkdownEditorProps = {
   defaultValue: string;
   enableDefinitions?: boolean;
+  formatting?: "basic" | "full";
   images?: MarkdownEditorImage[];
   maxLength?: number;
   name: string;
@@ -33,6 +46,7 @@ type InsertionMode = "block" | "linePrefix" | "wrap";
 export function MarkdownEditor({
   defaultValue,
   enableDefinitions = false,
+  formatting = "full",
   images = [],
   maxLength,
   name,
@@ -44,35 +58,46 @@ export function MarkdownEditor({
   return (
     <div className="markdown-editor">
       <div className="markdown-editor__toolbar" aria-label="Text formatting">
-        <ToolbarButton label="Heading 1" onClick={() => insertMarkdown("# ", "Heading", "linePrefix")}>
-          <Heading1 size={18} />
-        </ToolbarButton>
-        <ToolbarButton label="Heading 2" onClick={() => insertMarkdown("## ", "Section heading", "linePrefix")}>
-          <Heading2 size={18} />
-        </ToolbarButton>
+        {formatting === "full" ? (
+          <>
+            <ToolbarButton label="Heading 1" onClick={() => insertMarkdown("# ", "Heading", "linePrefix")}>
+              <Heading1 size={18} />
+            </ToolbarButton>
+            <ToolbarButton label="Heading 2" onClick={() => insertMarkdown("## ", "Section heading", "linePrefix")}>
+              <Heading2 size={18} />
+            </ToolbarButton>
+          </>
+        ) : null}
         <ToolbarButton label="Bold" onClick={() => insertMarkdown("**", "important text", "wrap", "**")}>
           <Bold size={18} />
         </ToolbarButton>
         <ToolbarButton label="Italic" onClick={() => insertMarkdown("*", "emphasis", "wrap", "*")}>
           <Italic size={18} />
         </ToolbarButton>
-        {enableDefinitions ? (
+        <ToolbarButton label="External link" onClick={insertExternalLink}>
+          <Link2 size={18} />
+        </ToolbarButton>
+        {formatting === "full" && enableDefinitions ? (
           <ToolbarButton label="Definition" onClick={insertDefinition}>
             <BookOpen size={18} />
           </ToolbarButton>
         ) : null}
-        <ToolbarButton label="Quote" onClick={() => insertMarkdown("> ", "Quoted passage", "linePrefix")}>
-          <Quote size={18} />
-        </ToolbarButton>
-        <ToolbarButton label="Bullet list" onClick={() => insertMarkdown("- ", "List item", "linePrefix")}>
-          <List size={18} />
-        </ToolbarButton>
-        <ToolbarButton label="Numbered list" onClick={() => insertMarkdown("1. ", "List item", "linePrefix")}>
-          <ListOrdered size={18} />
-        </ToolbarButton>
-        <ToolbarButton label="Divider" onClick={() => insertMarkdown("\n---\n", "", "block")}>
-          <Minus size={18} />
-        </ToolbarButton>
+        {formatting === "full" ? (
+          <>
+            <ToolbarButton label="Quote" onClick={() => insertMarkdown("> ", "Quoted passage", "linePrefix")}>
+              <Quote size={18} />
+            </ToolbarButton>
+            <ToolbarButton label="Bullet list" onClick={() => insertMarkdown("- ", "List item", "linePrefix")}>
+              <List size={18} />
+            </ToolbarButton>
+            <ToolbarButton label="Numbered list" onClick={() => insertMarkdown("1. ", "List item", "linePrefix")}>
+              <ListOrdered size={18} />
+            </ToolbarButton>
+            <ToolbarButton label="Divider" onClick={() => insertMarkdown("\n---\n", "", "block")}>
+              <Minus size={18} />
+            </ToolbarButton>
+          </>
+        ) : null}
       </div>
       <textarea
         id={textareaId}
@@ -165,6 +190,48 @@ export function MarkdownEditor({
     textarea.setRangeText(replacement, start, end, "end");
     textarea.focus();
   }
+
+  function insertExternalLink() {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = textarea.value.slice(start, end);
+    const selectedLabel = selected.trim();
+    const label = selectedLabel || window.prompt("Link text:");
+
+    if (!label) {
+      textarea.focus();
+      return;
+    }
+
+    const inputUrl = window.prompt("External website URL:", "https://");
+    if (!inputUrl) {
+      textarea.focus();
+      return;
+    }
+
+    let normalizedUrl: string;
+    try {
+      const url = new URL(inputUrl);
+      if (url.protocol !== "https:" && url.protocol !== "http:") {
+        throw new Error("Unsupported link protocol");
+      }
+      normalizedUrl = url.toString();
+    } catch {
+      window.alert("Enter a valid website URL beginning with https:// or http://.");
+      textarea.focus();
+      return;
+    }
+
+    const leadingWhitespace = selectedLabel ? selected.match(/^\s*/)?.[0] ?? "" : "";
+    const trailingWhitespace = selectedLabel ? selected.match(/\s*$/)?.[0] ?? "" : "";
+    const replacement = `${leadingWhitespace}[${escapeMarkdownLabel(label)}](<${normalizedUrl}>)${trailingWhitespace}`;
+
+    textarea.setRangeText(replacement, start, end, "end");
+    textarea.focus();
+  }
 }
 
 function ToolbarButton({
@@ -192,4 +259,8 @@ function prefixSelectedLines(prefix: string, value: string) {
 
 function escapeMarkdownAlt(value: string) {
   return value.replace(/[\[\]]/g, "");
+}
+
+function escapeMarkdownLabel(value: string) {
+  return value.replace(/([\[\]\\])/g, "\\$1");
 }

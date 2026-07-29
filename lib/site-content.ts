@@ -1,5 +1,6 @@
 export type SitePageStatus = "draft" | "needs_review" | "published" | "archived";
 export type HomeLayoutVariant = "archive" | "devotional" | "cosmic";
+export const ABOUT_PAGE_SECTION_LIMIT = 20;
 
 export type SiteDesignConfig = {
   homeLayout: HomeLayoutVariant;
@@ -218,16 +219,6 @@ export const aboutPageContent: AboutPageContent = {
       title: "What this archive is for",
       body:
         "The site is being built to help readers discover Hindu saints through clear profiles, respectful biographies, tradition context, sources, and further reading. Public pages show reviewed and published content, while the admin CMS supports drafting, review, and reconciliation before publication."
-    },
-    {
-      title: "How content is handled",
-      body:
-        "Airtable, Instagram, CSV files, and manual editorial notes can all inform the archive, but the website database is the source of truth. Imported records are preserved for review and debugging, and conflicts are routed into reconciliation instead of silently overwriting human edits."
-    },
-    {
-      title: "Where the project is going",
-      body:
-        "The MVP focuses on saints, aliases, traditions, biographies, sources, Instagram items, and reconciliation workflows. Over time, the archive can support richer relationship graphs, lineage views, source trails, and editorial tools for contributors and reviewers."
     }
   ]
 };

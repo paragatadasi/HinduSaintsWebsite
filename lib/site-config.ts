@@ -47,8 +47,8 @@ export async function getPublicAboutPageContent(): Promise<AboutPageContent | nu
   });
   const sections =
     config
-    && config.aboutSectionTitles.length === fallback.sections.length
-    && config.aboutSectionBodies.length === fallback.sections.length
+    && config.aboutSectionTitles.length > 0
+    && config.aboutSectionTitles.length === config.aboutSectionBodies.length
       ? config.aboutSectionTitles.map((title, index) => ({
           title,
           body: config.aboutSectionBodies[index] ?? ""

@@ -8,7 +8,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { SITE_CONFIG_ID } from "@/lib/site-config";
-import { getFooterContent } from "@/lib/site-content";
+import { ABOUT_PAGE_SECTION_LIMIT, getFooterContent } from "@/lib/site-content";
 
 const httpsUrl = z
   .string()
@@ -22,13 +22,18 @@ const footerConfigSchema = z.object({
   privacyPolicyUrl: httpsUrl
 });
 
-const aboutPageConfigSchema = z.object({
-  aboutEyebrow: z.string().trim().min(1).max(80),
-  aboutTitle: z.string().trim().min(1).max(160),
-  aboutIntroduction: z.string().trim().min(1).max(1000),
-  aboutSectionTitles: z.array(z.string().trim().min(1).max(160)).length(3),
-  aboutSectionBodies: z.array(z.string().trim().min(1).max(5000)).length(3)
-});
+const aboutPageConfigSchema = z
+  .object({
+    aboutEyebrow: z.string().trim().min(1).max(80),
+    aboutTitle: z.string().trim().min(1).max(160),
+    aboutIntroduction: z.string().trim().min(1).max(1000),
+    aboutSectionTitles: z.array(z.string().trim().min(1).max(160)).min(1).max(ABOUT_PAGE_SECTION_LIMIT),
+    aboutSectionBodies: z.array(z.string().trim().min(1).max(5000)).min(1).max(ABOUT_PAGE_SECTION_LIMIT)
+  })
+  .refine(
+    ({ aboutSectionBodies, aboutSectionTitles }) => aboutSectionBodies.length === aboutSectionTitles.length,
+    { message: "Every About section must have a title and body." }
+  );
 
 export async function updateFooterConfig(formData: FormData) {
   const { email } = await requireAdminSession();

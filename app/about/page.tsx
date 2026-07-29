@@ -24,8 +24,8 @@ export default async function AboutPage() {
       </div>
 
       <div className="site-grid">
-        {content.sections.map((section) => (
-          <section key={section.title} className="card">
+        {content.sections.map((section, index) => (
+          <section key={`${section.title}-${index}`} className="card">
             <h2>{section.title}</h2>
             <Prose markdown={section.body} />
           </section>

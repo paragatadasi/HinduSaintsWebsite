@@ -4,6 +4,7 @@ import { SITE_CONFIG_ID } from "@/lib/site-config";
 import { db } from "@/lib/db";
 import { getAboutPageContent, getFooterContent } from "@/lib/site-content";
 import { updateAboutPageConfig, updateFooterConfig } from "./actions";
+import { AboutSectionsEditor } from "./about-sections-editor";
 import { HomepageSettings } from "./homepage-settings";
 
 type AdminSitePageProps = {
@@ -24,8 +25,8 @@ export default async function AdminSitePage({ searchParams }: AdminSitePageProps
   const aboutSections =
     config
     && aboutDefaults
-    && config.aboutSectionTitles.length === aboutDefaults.sections.length
-    && config.aboutSectionBodies.length === aboutDefaults.sections.length
+    && config.aboutSectionTitles.length > 0
+    && config.aboutSectionTitles.length === config.aboutSectionBodies.length
       ? config.aboutSectionTitles.map((title, index) => ({
           title,
           body: config.aboutSectionBodies[index] ?? ""
@@ -101,32 +102,7 @@ export default async function AdminSitePage({ searchParams }: AdminSitePageProps
               </ReviewSection>
 
               <ReviewSection title="Content sections" icon={<FileText size={18} aria-hidden="true" />}>
-                <div className="form-stack">
-                  {aboutSections.map((section, index) => (
-                    <div className="form-stack" key={index}>
-                      <div className="eyebrow">Section {index + 1}</div>
-                      <label>
-                        Section title
-                        <input
-                          defaultValue={section.title}
-                          maxLength={160}
-                          name="aboutSectionTitle"
-                          required
-                          type="text"
-                        />
-                      </label>
-                      <label>
-                        Section body
-                        <textarea
-                          defaultValue={section.body}
-                          maxLength={5000}
-                          name="aboutSectionBody"
-                          required
-                        />
-                      </label>
-                    </div>
-                  ))}
-                </div>
+                <AboutSectionsEditor sections={aboutSections} />
               </ReviewSection>
             </ReviewWorkflow>
 
