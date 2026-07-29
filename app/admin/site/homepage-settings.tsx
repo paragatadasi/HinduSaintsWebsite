@@ -152,6 +152,7 @@ export async function HomepageSettings() {
               name="featuredSaintId"
               options={saintOptions}
               placeholder="Search saints"
+              reorderable
               selectedLabel="Featured saints"
             />
           </ReviewSection>

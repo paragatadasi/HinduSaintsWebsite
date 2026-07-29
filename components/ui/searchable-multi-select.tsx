@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronDown, GripVertical, X } from "lucide-react";
 
 export type SearchableMultiSelectOption = {
   value: string;
@@ -20,6 +20,7 @@ type SearchableMultiSelectProps = {
   placeholder?: string;
   primaryName?: string;
   renderHiddenInputs?: boolean;
+  reorderable?: boolean;
   selectedLabel?: string;
 };
 
@@ -33,11 +34,16 @@ export function SearchableMultiSelect({
   placeholder = "Search options",
   primaryName,
   renderHiddenInputs = true,
+  reorderable = false,
   selectedLabel = "Selected"
 }: SearchableMultiSelectProps) {
   const listboxId = useId();
   const [query, setQuery] = useState("");
-  const [selectedValues, setSelectedValues] = useState(defaultSelectedValues);
+  const [selectedValues, setSelectedValues] = useState(() => {
+    const optionValues = new Set(options.map((option) => option.value));
+    return Array.from(new Set(defaultSelectedValues.filter((value) => optionValues.has(value))));
+  });
+  const [draggedValue, setDraggedValue] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const selectedSet = useMemo(() => new Set(selectedValues), [selectedValues]);
   const selectedOptions = selectedValues
@@ -56,71 +62,133 @@ export function SearchableMultiSelect({
           {primaryName && selectedValues[0] ? <input name={primaryName} type="hidden" value={selectedValues[0]} /> : null}
         </>
       ) : null}
-      <div className="combo-search__control">
-        <input
-          aria-controls={listboxId}
-          aria-expanded={isDropdownOpen}
-          autoComplete="off"
-          id={`${listboxId}-input`}
-          placeholder={placeholder}
-          role="combobox"
-          type="search"
-          value={query}
-          onBlur={() => {
-            window.setTimeout(() => setIsDropdownOpen(false), 100);
-          }}
-          onChange={(event) => {
-            setQuery(event.target.value);
-            setIsDropdownOpen(true);
-          }}
-          onFocus={() => setIsDropdownOpen(true)}
-          onKeyDown={(event) => {
-            if (event.key === "Escape") {
-              setIsDropdownOpen(false);
-            }
-          }}
-        />
-        <button
-          aria-label={isDropdownOpen ? `Hide ${label} options` : `Show ${label} options`}
-          className="combo-search__toggle"
-          type="button"
-          onClick={() => setIsDropdownOpen((open) => !open)}
-        >
-          <ChevronDown aria-hidden="true" size={18} />
-        </button>
-      </div>
-      {isDropdownOpen ? (
-        <div className="combo-search__list combo-search__list--multi" id={listboxId} role="listbox" aria-multiselectable="true">
-          {visibleOptions.length > 0 ? (
-            visibleOptions.map((option) => {
-              const isSelected = selectedSet.has(option.value);
+      <div className="combo-search__menu">
+        <div className="combo-search__control">
+          <input
+            aria-controls={listboxId}
+            aria-expanded={isDropdownOpen}
+            autoComplete="off"
+            id={`${listboxId}-input`}
+            placeholder={placeholder}
+            role="combobox"
+            type="search"
+            value={query}
+            onBlur={() => {
+              window.setTimeout(() => setIsDropdownOpen(false), 100);
+            }}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setIsDropdownOpen(true);
+            }}
+            onFocus={() => setIsDropdownOpen(true)}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                setIsDropdownOpen(false);
+              }
+            }}
+          />
+          <button
+            aria-label={isDropdownOpen ? `Hide ${label} options` : `Show ${label} options`}
+            className="combo-search__toggle"
+            type="button"
+            onClick={() => setIsDropdownOpen((open) => !open)}
+          >
+            <ChevronDown aria-hidden="true" size={18} />
+          </button>
+        </div>
+        {isDropdownOpen ? (
+          <div className="combo-search__list combo-search__list--multi" id={listboxId} role="listbox" aria-multiselectable="true">
+            {visibleOptions.length > 0 ? (
+              visibleOptions.map((option) => {
+                const isSelected = selectedSet.has(option.value);
 
-              return (
-                <label
-                  aria-selected={isSelected}
-                  className="combo-search__option combo-search__option--check"
+                return (
+                  <label
+                    aria-selected={isSelected}
+                    className="combo-search__option combo-search__option--check"
+                    key={option.value}
+                    role="option"
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={() => toggleOption(option.value)}
+                  >
+                    <input checked={isSelected} readOnly tabIndex={-1} type="checkbox" />
+                    <span>
+                      <strong>{option.label}</strong>
+                      {option.description ? <small>{option.description}</small> : null}
+                    </span>
+                  </label>
+                );
+              })
+            ) : (
+              <div className="combo-search__empty">{emptyText}</div>
+            )}
+          </div>
+        ) : null}
+      </div>
+      {reorderable ? (
+        <div className="combo-search__selection combo-search__selection--ordered" aria-live="polite">
+          <div className="combo-search__selection-heading">
+            <strong>{selectedLabel}</strong>
+            <span>{selectedOptions.length}</span>
+          </div>
+          <p>Arrange the list in the order it should appear. The first item appears first.</p>
+          {selectedOptions.length > 0 ? (
+            <ol className="combo-search__ordered-list">
+              {selectedOptions.map((option, index) => (
+                <li
+                  className="combo-search__ordered-row"
+                  draggable
                   key={option.value}
-                  role="option"
-                  onMouseDown={(event) => event.preventDefault()}
-                  onClick={() => toggleOption(option.value)}
+                  onDragEnd={() => setDraggedValue(null)}
+                  onDragOver={(event) => event.preventDefault()}
+                  onDragStart={() => setDraggedValue(option.value)}
+                  onDrop={() => moveDraggedOption(option.value)}
                 >
-                  <input checked={isSelected} readOnly tabIndex={-1} type="checkbox" />
-                  <span>
-                    <strong>{option.label}</strong>
+                  <span className="combo-search__ordered-handle" aria-hidden="true">
+                    <GripVertical size={18} />
+                  </span>
+                  <span className="combo-search__ordered-identity">
+                    <strong>{index + 1}. {option.label}</strong>
                     {option.description ? <small>{option.description}</small> : null}
                   </span>
-                </label>
-              );
-            })
+                  <span className="combo-search__ordered-actions">
+                    <button
+                      aria-label={`Move ${option.label} up`}
+                      disabled={index === 0}
+                      type="button"
+                      onClick={() => moveOption(option.value, -1)}
+                    >
+                      <ArrowUp aria-hidden="true" size={16} />
+                    </button>
+                    <button
+                      aria-label={`Move ${option.label} down`}
+                      disabled={index === selectedOptions.length - 1}
+                      type="button"
+                      onClick={() => moveOption(option.value, 1)}
+                    >
+                      <ArrowDown aria-hidden="true" size={16} />
+                    </button>
+                    <button
+                      aria-label={`Remove ${option.label}`}
+                      type="button"
+                      onClick={() => updateSelectedValues(selectedValues.filter((value) => value !== option.value))}
+                    >
+                      <X aria-hidden="true" size={16} />
+                    </button>
+                  </span>
+                </li>
+              ))}
+            </ol>
           ) : (
-            <div className="combo-search__empty">{emptyText}</div>
+            <span>None</span>
           )}
         </div>
-      ) : null}
-      <div className="combo-search__selection" aria-live="polite">
-        <strong>{selectedLabel}:</strong>{" "}
-        {selectedOptions.length > 0 ? selectedOptions.map((option) => option.label).join(", ") : "None"}
-      </div>
+      ) : (
+        <div className="combo-search__selection" aria-live="polite">
+          <strong>{selectedLabel}:</strong>{" "}
+          {selectedOptions.length > 0 ? selectedOptions.map((option) => option.label).join(", ") : "None"}
+        </div>
+      )}
     </div>
   );
 
@@ -129,6 +197,35 @@ export function SearchableMultiSelect({
       ? selectedValues.filter((currentValue) => currentValue !== value)
       : [...selectedValues, value];
 
+    updateSelectedValues(nextValues);
+  }
+
+  function moveOption(value: string, offset: -1 | 1) {
+    const currentIndex = selectedValues.indexOf(value);
+    const targetIndex = currentIndex + offset;
+    if (currentIndex < 0 || targetIndex < 0 || targetIndex >= selectedValues.length) return;
+
+    const nextValues = [...selectedValues];
+    const [movedValue] = nextValues.splice(currentIndex, 1);
+    nextValues.splice(targetIndex, 0, movedValue);
+    updateSelectedValues(nextValues);
+  }
+
+  function moveDraggedOption(targetValue: string) {
+    if (!draggedValue || draggedValue === targetValue) return;
+
+    const draggedIndex = selectedValues.indexOf(draggedValue);
+    const targetIndex = selectedValues.indexOf(targetValue);
+    if (draggedIndex < 0 || targetIndex < 0) return;
+
+    const nextValues = [...selectedValues];
+    const [movedValue] = nextValues.splice(draggedIndex, 1);
+    nextValues.splice(targetIndex, 0, movedValue);
+    updateSelectedValues(nextValues);
+    setDraggedValue(null);
+  }
+
+  function updateSelectedValues(nextValues: string[]) {
     setSelectedValues(nextValues);
     onSelectionChange?.(nextValues);
   }

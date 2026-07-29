@@ -36,7 +36,7 @@ export default async function HomePage() {
   const configuredTraditions = homeConfig.featuredTraditions.length > 0 ? homeConfig.featuredTraditions : traditions;
   const saints = uniqueSaintsBySlug([
     ...configuredFeaturedSaints,
-    ...publishedSaints.filter((saint) => !saint.featured)
+    ...publishedSaints
   ]).slice(0, 6);
   logPageView("/");
 
