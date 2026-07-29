@@ -519,7 +519,7 @@ img {
   align-items: center;
   display: grid;
   gap: var(--space-6);
-  grid-template-columns: minmax(0, 1fr) minmax(96px, auto);
+  grid-template-columns: minmax(0, 1fr);
   min-height: inherit;
   padding: calc(var(--space-16) + var(--space-2)) 0 var(--space-8);
   position: relative;
@@ -549,45 +549,6 @@ img {
 
 .home-cosmic-search {
   margin-top: var(--space-6);
-}
-
-.home-cosmic-hero__index {
-  align-content: center;
-  display: grid;
-  gap: var(--space-5);
-  justify-self: end;
-  position: relative;
-}
-
-.home-cosmic-hero__index::before {
-  background: linear-gradient(180deg, var(--color-gold), color-mix(in srgb, var(--color-gold) 24%, transparent));
-  bottom: var(--space-3);
-  content: "";
-  left: 0.35rem;
-  position: absolute;
-  top: var(--space-3);
-  width: 1px;
-}
-
-.home-cosmic-hero__index span {
-  color: var(--color-cream);
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding-left: var(--space-6);
-  position: relative;
-  text-transform: uppercase;
-}
-
-.home-cosmic-hero__index span::before {
-  background: var(--color-gold);
-  border-radius: 50%;
-  box-shadow: 0 0 16px color-mix(in srgb, var(--color-gold) 56%, transparent);
-  content: "";
-  height: 0.55rem;
-  left: 0.1rem;
-  position: absolute;
-  top: 0.32rem;
-  width: 0.55rem;
 }
 
 .home-cosmic-panel {
@@ -7427,10 +7388,6 @@ img {
 
   .home-cosmic-hero__content {
     max-width: 100%;
-  }
-
-  .home-cosmic-hero__index {
-    display: none;
   }
 
   .home-cosmic-feature-grid,

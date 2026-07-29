@@ -210,11 +210,6 @@ function CosmicHomePage({
               </button>
             </form>
           </div>
-          <nav className="home-cosmic-hero__index" aria-label="Homepage sections">
-            {["Saints", "Traditions", "Places", "Wisdom", "Legacy"].map((item) => (
-              <span key={item}>{item}</span>
-            ))}
-          </nav>
         </div>
       </section>
 
