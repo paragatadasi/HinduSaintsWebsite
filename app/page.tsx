@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Link from "next/link";
 import { ArrowRight, Instagram, MapPinned, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HomeInstagramRail } from "@/components/instagram/home-instagram-rail";
@@ -259,7 +260,11 @@ function CosmicHomePage({
             <div className="eyebrow">{quote.eyebrow}</div>
             <blockquote>
               <p>{quote.quote}</p>
-              <cite>{quote.attribution}</cite>
+              <cite>
+                {quote.attributionHref
+                  ? <Link href={quote.attributionHref}>{quote.attribution}</Link>
+                  : quote.attribution}
+              </cite>
             </blockquote>
           </aside>
 

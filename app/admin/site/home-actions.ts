@@ -30,7 +30,7 @@ const homePageConfigSchema = z.object({
   featuredTraditionIds: z.array(z.string().cuid()).max(8),
   quoteEyebrow: z.string().trim().max(80).optional(),
   quoteText: z.string().trim().max(500).optional(),
-  quoteAttribution: z.string().trim().max(160).optional()
+  quoteSaintId: z.string().cuid()
 });
 
 export async function updateHomePageConfig(formData: FormData) {
@@ -58,16 +58,35 @@ export async function updateHomePageConfig(formData: FormData) {
     featuredTraditionIds: uniqueFormValues(formData.getAll("featuredTraditionId")),
     quoteEyebrow: emptyToUndefined(formData.get("quoteEyebrow")),
     quoteText: emptyToUndefined(formData.get("quoteText")),
-    quoteAttribution: emptyToUndefined(formData.get("quoteAttribution"))
+    quoteSaintId: emptyToUndefined(formData.get("quoteSaintId"))
   });
+
+  const quoteSaint = await db.saint.findFirst({
+    where: {
+      id: parsed.quoteSaintId,
+      status: "published"
+    },
+    select: {
+      displayName: true
+    }
+  });
+
+  if (!quoteSaint) {
+    throw new Error("Quote attribution must be a published saint.");
+  }
+
+  const data = {
+    ...parsed,
+    quoteAttribution: quoteSaint.displayName
+  };
 
   await db.homePageConfig.upsert({
     where: { id: HOME_PAGE_CONFIG_ID },
     create: {
       id: HOME_PAGE_CONFIG_ID,
-      ...parsed
+      ...data
     },
-    update: parsed
+    update: data
   });
 
   revalidatePath("/");

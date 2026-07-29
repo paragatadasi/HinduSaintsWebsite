@@ -16,7 +16,14 @@ export async function getPublicHomePageConfig() {
     where: { id: HOME_PAGE_CONFIG_ID },
     include: {
       bannerImage: true,
-      featuredTraditionBannerImage: true
+      featuredTraditionBannerImage: true,
+      quoteSaint: {
+        select: {
+          displayName: true,
+          slug: true,
+          status: true
+        }
+      }
     }
   });
   const defaultHero = getHomeHeroContent();
@@ -106,12 +113,24 @@ function mergeQuoteContent(
     quoteEyebrow: string | null;
     quoteText: string | null;
     quoteAttribution: string | null;
+    quoteSaint: {
+      displayName: string;
+      slug: string;
+      status: "draft" | "needs_review" | "published" | "archived";
+    } | null;
   }
 ): HomeQuoteContent {
+  const publishedQuoteSaint = config.quoteSaint?.status === "published"
+    ? config.quoteSaint
+    : null;
+
   return {
     eyebrow: config.quoteEyebrow || fallback.eyebrow,
     quote: config.quoteText || fallback.quote,
-    attribution: config.quoteAttribution || fallback.attribution
+    attribution: publishedQuoteSaint?.displayName || config.quoteAttribution || fallback.attribution,
+    attributionHref: publishedQuoteSaint
+      ? `/saints/${publishedQuoteSaint.slug}` as `/saints/${string}`
+      : undefined
   };
 }
 

@@ -284,6 +284,7 @@ model Saint {
   relationshipsTo          SaintRelationship[]     @relation("RelationshipTo")
   familyMemberships        SaintFamilyMember[]
   museumSectionAssignments SaintMuseumSection[]
+  homeQuoteConfigs         HomePageConfig[]        @relation("HomeQuoteSaint")
   traditionLineageEntries  TraditionLineageSaint[] @relation("TraditionLineageSaint")
   traditionLineageChildren TraditionLineageSaint[] @relation("TraditionLineageParentSaint")
   traditions               SaintTradition[]
@@ -674,6 +675,8 @@ model HomePageConfig {
   quoteEyebrow                       String?
   quoteText                          String?
   quoteAttribution                   String?
+  quoteSaintId                       String?
+  quoteSaint                         Saint?      @relation("HomeQuoteSaint", fields: [quoteSaintId], references: [id], onDelete: SetNull)
   createdAt                          DateTime    @default(now())
   updatedAt                          DateTime    @updatedAt
 }

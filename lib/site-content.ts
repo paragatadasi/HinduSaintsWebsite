@@ -33,6 +33,7 @@ export type HomeQuoteContent = {
   eyebrow: string;
   quote: string;
   attribution: string;
+  attributionHref?: `/saints/${string}`;
 };
 
 export type PageIntroContent = {

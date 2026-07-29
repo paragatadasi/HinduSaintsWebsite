@@ -1,6 +1,7 @@
 import { Image, Quote, Save, Sparkles, Star } from "lucide-react";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { SearchableMultiSelect } from "@/components/ui/searchable-multi-select";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 import { HOME_PAGE_CONFIG_ID } from "@/lib/home-page-config";
 import { db } from "@/lib/db";
 import { getHomeHeroContent, getHomeQuoteContent } from "@/lib/site-content";
@@ -39,12 +40,26 @@ export async function HomepageSettings() {
   ]);
   const defaultHero = getHomeHeroContent();
   const defaultQuote = getHomeQuoteContent();
+  const defaultQuoteSaintId = config?.quoteSaintId
+    ?? saints.find((saint) => saint.status === "published" && (
+      saint.displayName === defaultQuote.attribution
+      || saint.canonicalName === defaultQuote.attribution
+    ))?.id
+    ?? "";
   const saintOptions = saints.map((saint) => ({
     value: saint.id,
     label: saint.displayName,
     description: [saint.status, saint.eraLabel].filter(Boolean).join(" · "),
     keywords: [saint.canonicalName, saint.status, saint.eraLabel].filter((value): value is string => Boolean(value))
   }));
+  const quoteSaintOptions = saints
+    .filter((saint) => saint.status === "published")
+    .map((saint) => ({
+      value: saint.id,
+      label: saint.displayName,
+      description: saint.eraLabel ?? undefined,
+      keywords: [saint.canonicalName, saint.eraLabel].filter((value): value is string => Boolean(value))
+    }));
   const traditionOptions = traditions.map((tradition) => ({
     value: tradition.id,
     label: tradition.name,
@@ -193,10 +208,15 @@ export async function HomepageSettings() {
                 Quote
                 <textarea name="quoteText" maxLength={500} defaultValue={config?.quoteText ?? defaultQuote.quote} />
               </label>
-              <label>
-                Attribution
-                <input name="quoteAttribution" type="text" maxLength={160} defaultValue={config?.quoteAttribution ?? defaultQuote.attribution} />
-              </label>
+              <SearchableSelect
+                defaultValue={defaultQuoteSaintId}
+                emptyText="No published saints match this search."
+                label="Attribution"
+                name="quoteSaintId"
+                options={quoteSaintOptions}
+                placeholder="Search published saints"
+                required
+              />
             </div>
           </ReviewSection>
         </ReviewWorkflow>
