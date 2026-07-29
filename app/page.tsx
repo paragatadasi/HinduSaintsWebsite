@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { ArrowRight, Instagram, MapPinned, Search } from "lucide-react";
+import { ArrowRight, Instagram, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HomeInstagramRail } from "@/components/instagram/home-instagram-rail";
 import { ScrollRail } from "@/components/ui/scroll-rail";
@@ -302,9 +302,6 @@ function CosmicHomePage({
                 >
                   Explore tradition
                 </Button>
-              </div>
-              <div className="home-tradition-feature__mark" aria-hidden="true">
-                <MapPinned size={44} />
               </div>
             </div>
           </article>
