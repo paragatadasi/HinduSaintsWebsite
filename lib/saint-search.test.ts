@@ -43,6 +43,17 @@ test("does not rank unrelated honorific-sharing names above a substantive name m
   }
 });
 
+test("allows an honorific-only admin search", () => {
+  const results = rankSaintSearchResults(saints, "sri", { includeAdminFields: true });
+
+  assert.ok(results.length > 0);
+  assert.ok(results.every(({ item }) => item.displayName.toLowerCase().includes("sri")));
+});
+
+test("keeps an honorific-only PostgreSQL candidate term", () => {
+  assert.deepEqual(getSearchQueryTerms("sri"), ["sri"]);
+});
+
 test("builds normalized PostgreSQL candidate terms from one shared query model", () => {
   const terms = getSearchQueryTerms("Śrī Caitanya Mahāprabhu");
 
