@@ -649,6 +649,10 @@ model MediaAsset {
   focalY                     Float                   @default(30)
   homeBannerConfigs          HomePageConfig[]        @relation("HomeBannerImage")
   homeTraditionBannerConfigs HomePageConfig[]        @relation("HomeFeaturedTraditionBannerImage")
+  aboutHeroConfigs           SiteConfig[]            @relation("AboutHeroImage")
+  aboutVisionConfigs         SiteConfig[]            @relation("AboutVisionImage")
+  aboutStoryConfigs          SiteConfig[]            @relation("AboutStoryImage")
+  aboutGuruConfigs           SiteConfig[]            @relation("AboutGuruImage")
   primaryForSaints           Saint[]                 @relation("PrimarySaintImage")
   heroForTraditions          Tradition[]             @relation("TraditionHeroImage")
   saintGalleryImages         SaintGalleryImage[]
@@ -697,6 +701,14 @@ model SiteConfig {
   aboutIntroduction  String?
   aboutSectionTitles String[] @default([])
   aboutSectionBodies String[] @default([])
+  aboutHeroImageId   String?
+  aboutHeroImage     MediaAsset? @relation("AboutHeroImage", fields: [aboutHeroImageId], references: [id], onDelete: SetNull)
+  aboutVisionImageId String?
+  aboutVisionImage   MediaAsset? @relation("AboutVisionImage", fields: [aboutVisionImageId], references: [id], onDelete: SetNull)
+  aboutStoryImageId  String?
+  aboutStoryImage    MediaAsset? @relation("AboutStoryImage", fields: [aboutStoryImageId], references: [id], onDelete: SetNull)
+  aboutGuruImageId   String?
+  aboutGuruImage     MediaAsset? @relation("AboutGuruImage", fields: [aboutGuruImageId], references: [id], onDelete: SetNull)
   updatedByEmail     String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt

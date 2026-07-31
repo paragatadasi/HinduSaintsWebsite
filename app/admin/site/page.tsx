@@ -1,4 +1,4 @@
-import { BookOpen, ExternalLink, FileText, Save } from "lucide-react";
+import { BookOpen, ExternalLink, FileText, Image, Save } from "lucide-react";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { SITE_CONFIG_ID } from "@/lib/site-config";
@@ -7,6 +7,7 @@ import { getAboutPageContent, getFooterContent } from "@/lib/site-content";
 import { updateAboutPageConfig, updateFooterConfig } from "./actions";
 import { AboutSectionsEditor } from "./about-sections-editor";
 import { HomepageSettings } from "./homepage-settings";
+import { HomeBannerUploader } from "./home-banner-uploader";
 
 type AdminSitePageProps = {
   searchParams: Promise<{
@@ -19,7 +20,15 @@ type AdminSitePageProps = {
 export default async function AdminSitePage({ searchParams }: AdminSitePageProps) {
   const [{ about, footer, homepage }, config] = await Promise.all([
     searchParams,
-    db.siteConfig.findUnique({ where: { id: SITE_CONFIG_ID } })
+    db.siteConfig.findUnique({
+      where: { id: SITE_CONFIG_ID },
+      include: {
+        aboutHeroImage: true,
+        aboutVisionImage: true,
+        aboutStoryImage: true,
+        aboutGuruImage: true
+      }
+    })
   ]);
   const aboutDefaults = getAboutPageContent();
   const footerDefaults = getFooterContent();
@@ -107,6 +116,38 @@ export default async function AdminSitePage({ searchParams }: AdminSitePageProps
               <ReviewSection title="Content sections" icon={<FileText size={18} aria-hidden="true" />}>
                 <AboutSectionsEditor sections={aboutSections} />
               </ReviewSection>
+
+              <ReviewSection title="Page imagery" icon={<Image size={18} aria-hidden="true" />}>
+                <p className="review-workflow__description">
+                  Upload an image for each visual slot. Existing selections remain active until replaced and saved.
+                </p>
+                <div className="about-config-image-grid">
+                  <AboutImageField
+                    image={config?.aboutHeroImage}
+                    imageId={config?.aboutHeroImageId}
+                    fieldName="aboutHeroImageId"
+                    label="hero background"
+                  />
+                  <AboutImageField
+                    image={config?.aboutVisionImage}
+                    imageId={config?.aboutVisionImageId}
+                    fieldName="aboutVisionImageId"
+                    label="vision section image"
+                  />
+                  <AboutImageField
+                    image={config?.aboutStoryImage}
+                    imageId={config?.aboutStoryImageId}
+                    fieldName="aboutStoryImageId"
+                    label="story section image"
+                  />
+                  <AboutImageField
+                    image={config?.aboutGuruImage}
+                    imageId={config?.aboutGuruImageId}
+                    fieldName="aboutGuruImageId"
+                    label="Guruji section image"
+                  />
+                </div>
+              </ReviewSection>
             </ReviewWorkflow>
 
             <div className="review-actions">
@@ -177,4 +218,28 @@ export default async function AdminSitePage({ searchParams }: AdminSitePageProps
 function getSearchParam(value: string | string[] | undefined) {
   if (Array.isArray(value)) return value[0]?.trim() ?? "";
   return value?.trim() ?? "";
+}
+
+function AboutImageField({
+  fieldName,
+  image,
+  imageId,
+  label
+}: {
+  fieldName: string;
+  image?: { altText: string | null; url: string } | null;
+  imageId?: string | null;
+  label: string;
+}) {
+  return (
+    <div className="about-config-image-field">
+      <strong>{label.charAt(0).toUpperCase() + label.slice(1)}</strong>
+      {image ? <img className="about-config-image-preview" src={image.url} alt={image.altText ?? label} /> : null}
+      <HomeBannerUploader
+        defaultBannerImageId={imageId ?? ""}
+        fieldName={fieldName}
+        uploadLabel={label}
+      />
+    </div>
+  );
 }

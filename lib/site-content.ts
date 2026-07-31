@@ -210,15 +210,25 @@ export const homeQuoteContent: HomeQuoteContent = {
 export const aboutPageContent: AboutPageContent = {
   slug: "about",
   status: "published",
-  eyebrow: "About",
-  title: "A devotional archive built for careful discovery.",
+  eyebrow: "A living devotional archive",
+  title: "The stories of saints, carried forward.",
   introduction:
-    "Hindu Saints Archive is the website home for the @hindu_saints project: a searchable, source-backed collection of saint profiles, biographies, traditions, and related media.",
+    "Hindu Saints brings together lives, traditions, places and teachings in one contemplative home—made for seekers, students and the simply curious.",
   sections: [
     {
-      title: "What this archive is for",
+      title: "A quiet place to learn, remember and return.",
       body:
-        "The site is being built to help readers discover Hindu saints through clear profiles, respectful biographies, tradition context, sources, and further reading. Public pages show reviewed and published content, while the admin CMS supports drafting, review, and reconciliation before publication."
+        "This is our vision: a one-stop hub for everything saints. Biographies, teachings, relationships, stories and the connections between them.\n\nA single place where inspired seekers can meet and fall in love with saints from across the vast span of Sanātana Dharma—and follow the trail of love to their own Sadguru."
+    },
+    {
+      title: "Built from devotion, shaped by curiosity.",
+      body:
+        "Hindu Saints began as a personal archive—a way to understand how gurus, lineages and places meet across generations. It has grown into a carefully researched, freely accessible home for stories that deserve to remain alive."
+    },
+    {
+      title: "Grounded in grace.",
+      body:
+        "This project is offered in devotion to our beloved Guruji, Paramahamsa Vishwananda. His simple message—Just Love—guides everything we do."
     }
   ]
 };

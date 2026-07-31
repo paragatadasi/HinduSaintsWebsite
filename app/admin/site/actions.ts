@@ -28,6 +28,10 @@ const aboutPageConfigSchema = z
     aboutEyebrow: z.string().trim().min(1).max(80),
     aboutTitle: z.string().trim().min(1).max(160),
     aboutIntroduction: z.string().trim().min(1).max(1000),
+    aboutHeroImageId: z.string().cuid().optional(),
+    aboutVisionImageId: z.string().cuid().optional(),
+    aboutStoryImageId: z.string().cuid().optional(),
+    aboutGuruImageId: z.string().cuid().optional(),
     aboutSectionTitles: z.array(z.string().trim().min(1).max(160)).min(1).max(ABOUT_PAGE_SECTION_LIMIT),
     aboutSectionBodies: z.array(z.string().trim().min(1).max(5000)).min(1).max(ABOUT_PAGE_SECTION_LIMIT)
   })
@@ -91,6 +95,10 @@ export async function updateAboutPageConfig(formData: FormData) {
     aboutEyebrow: formData.get("aboutEyebrow"),
     aboutTitle: formData.get("aboutTitle"),
     aboutIntroduction: formData.get("aboutIntroduction"),
+    aboutHeroImageId: emptyToUndefined(formData.get("aboutHeroImageId")),
+    aboutVisionImageId: emptyToUndefined(formData.get("aboutVisionImageId")),
+    aboutStoryImageId: emptyToUndefined(formData.get("aboutStoryImageId")),
+    aboutGuruImageId: emptyToUndefined(formData.get("aboutGuruImageId")),
     aboutSectionTitles: formValues(formData, "aboutSectionTitle"),
     aboutSectionBodies: formValues(formData, "aboutSectionBody")
   });
@@ -103,6 +111,10 @@ export async function updateAboutPageConfig(formData: FormData) {
         aboutEyebrow: true,
         aboutTitle: true,
         aboutIntroduction: true,
+        aboutHeroImageId: true,
+        aboutVisionImageId: true,
+        aboutStoryImageId: true,
+        aboutGuruImageId: true,
         aboutSectionTitles: true,
         aboutSectionBodies: true
       }
@@ -133,6 +145,10 @@ export async function updateAboutPageConfig(formData: FormData) {
           aboutEyebrow: config.aboutEyebrow,
           aboutTitle: config.aboutTitle,
           aboutIntroduction: config.aboutIntroduction,
+          aboutHeroImageId: config.aboutHeroImageId,
+          aboutVisionImageId: config.aboutVisionImageId,
+          aboutStoryImageId: config.aboutStoryImageId,
+          aboutGuruImageId: config.aboutGuruImageId,
           aboutSectionTitles: config.aboutSectionTitles,
           aboutSectionBodies: config.aboutSectionBodies
         })
@@ -169,4 +185,9 @@ function isHttpsUrl(value: string) {
 
 function formValues(formData: FormData, name: string) {
   return formData.getAll(name).filter((value): value is string => typeof value === "string");
+}
+
+function emptyToUndefined(value: FormDataEntryValue | null) {
+  if (typeof value !== "string") return undefined;
+  return value.trim() || undefined;
 }

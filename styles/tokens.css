@@ -148,6 +148,12 @@
   --size-route-progress: 3px;
   --z-index-definition-tooltip: 1;
   --z-index-route-progress: 100;
+  --height-about-hero: clamp(620px, 78vh, 820px);
+  --height-about-section-media: clamp(420px, 58vw, 700px);
+  --width-about-copy: 640px;
+  --color-about-overlay: rgba(5, 9, 20, 0.78);
+  --color-about-overlay-soft: rgba(5, 9, 20, 0.16);
+  --radius-about-arch: 48% 48% var(--radius-md) var(--radius-md);
 }
 
 [data-theme="watercolor"] {
