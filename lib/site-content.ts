@@ -1,6 +1,7 @@
 export type SitePageStatus = "draft" | "needs_review" | "published" | "archived";
 export type HomeLayoutVariant = "archive" | "devotional" | "cosmic";
 export const ABOUT_PAGE_SECTION_LIMIT = 20;
+export const ABOUT_DISCOVERY_ITEM_LIMIT = 8;
 
 export type SiteDesignConfig = {
   homeLayout: HomeLayoutVariant;
@@ -89,6 +90,15 @@ export type AboutPageContent = {
     title: string;
     body: string;
   }>;
+  discovery: {
+    title: string;
+    items: Array<{
+      title: string;
+      body: string;
+      href: string;
+      icon: "sparkles" | "book" | "map" | "flame";
+    }>;
+  };
 };
 
 export type FooterContent = {
@@ -230,7 +240,16 @@ export const aboutPageContent: AboutPageContent = {
       body:
         "This project is offered in devotion to our beloved Guruji, Paramahamsa Vishwananda. His simple message—Just Love—guides everything we do."
     }
-  ]
+  ],
+  discovery: {
+    title: "Four ways into a vast tradition",
+    items: [
+      { title: "Saints", body: "Explore the lives of realised souls from across traditions.", href: "/saints", icon: "sparkles" },
+      { title: "Traditions", body: "Enter living lineages and the teachings they carry.", href: "/traditions", icon: "book" },
+      { title: "Sacred Map", body: "Discover places connected to saints and seekers.", href: "/map", icon: "map" },
+      { title: "Wisdom", body: "Be inspired by timeless teachings and stories.", href: "/saints", icon: "flame" }
+    ]
+  }
 };
 
 export const footerContent: FooterContent = {

@@ -8,6 +8,7 @@ import { updateAboutPageConfig, updateFooterConfig } from "./actions";
 import { AboutSectionsEditor } from "./about-sections-editor";
 import { HomepageSettings } from "./homepage-settings";
 import { HomeBannerUploader } from "./home-banner-uploader";
+import { AboutDiscoveryEditor } from "./about-discovery-editor";
 
 type AdminSitePageProps = {
   searchParams: Promise<{
@@ -42,6 +43,19 @@ export default async function AdminSitePage({ searchParams }: AdminSitePageProps
           body: config.aboutSectionBodies[index] ?? ""
         }))
       : aboutDefaults?.sections ?? [];
+  const configuredDiscoveryCount = config?.aboutDiscoveryItemTitles.length ?? 0;
+  const aboutDiscoveryItems = config
+    && configuredDiscoveryCount > 0
+    && config.aboutDiscoveryItemBodies.length === configuredDiscoveryCount
+    && config.aboutDiscoveryItemHrefs.length === configuredDiscoveryCount
+    && config.aboutDiscoveryItemIcons.length === configuredDiscoveryCount
+      ? config.aboutDiscoveryItemTitles.map((title, index) => ({
+          title,
+          body: config.aboutDiscoveryItemBodies[index] ?? "",
+          href: config.aboutDiscoveryItemHrefs[index] ?? "/",
+          icon: normalizeDiscoveryIcon(config.aboutDiscoveryItemIcons[index])
+        }))
+      : aboutDefaults?.discovery.items ?? [];
 
   return (
     <div className="admin-stack">
@@ -115,6 +129,16 @@ export default async function AdminSitePage({ searchParams }: AdminSitePageProps
 
               <ReviewSection title="Content sections" icon={<FileText size={18} aria-hidden="true" />}>
                 <AboutSectionsEditor sections={aboutSections} />
+              </ReviewSection>
+
+              <ReviewSection title="Discovery cards" icon={<BookOpen size={18} aria-hidden="true" />}>
+                <div className="form-stack">
+                  <label>
+                    Section title
+                    <input name="aboutDiscoveryTitle" maxLength={160} required type="text" defaultValue={config?.aboutDiscoveryTitle ?? aboutDefaults.discovery.title} />
+                  </label>
+                  <AboutDiscoveryEditor items={aboutDiscoveryItems} />
+                </div>
               </ReviewSection>
 
               <ReviewSection title="Page imagery" icon={<Image size={18} aria-hidden="true" />}>
@@ -242,4 +266,9 @@ function AboutImageField({
       />
     </div>
   );
+}
+
+function normalizeDiscoveryIcon(value: string | undefined): "sparkles" | "book" | "map" | "flame" {
+  if (value === "book" || value === "map" || value === "flame") return value;
+  return "sparkles";
 }

@@ -65,6 +65,11 @@ const getPublicAboutPageContentCached = unstable_cache(async (): Promise<PublicA
       aboutIntroduction: true,
       aboutSectionTitles: true,
       aboutSectionBodies: true,
+      aboutDiscoveryTitle: true,
+      aboutDiscoveryItemTitles: true,
+      aboutDiscoveryItemBodies: true,
+      aboutDiscoveryItemHrefs: true,
+      aboutDiscoveryItemIcons: true,
       aboutHeroImage: true,
       aboutVisionImage: true,
       aboutStoryImage: true,
@@ -80,6 +85,22 @@ const getPublicAboutPageContentCached = unstable_cache(async (): Promise<PublicA
           body: config.aboutSectionBodies[index] ?? ""
         }))
       : fallback.sections;
+  const discoveryItemCount = config?.aboutDiscoveryItemTitles.length ?? 0;
+  const hasConfiguredDiscovery = Boolean(
+    config
+    && discoveryItemCount > 0
+    && config.aboutDiscoveryItemBodies.length === discoveryItemCount
+    && config.aboutDiscoveryItemHrefs.length === discoveryItemCount
+    && config.aboutDiscoveryItemIcons.length === discoveryItemCount
+  );
+  const discoveryItems = hasConfiguredDiscovery && config
+    ? config.aboutDiscoveryItemTitles.map((title, index) => ({
+        title,
+        body: config.aboutDiscoveryItemBodies[index] ?? "",
+        href: config.aboutDiscoveryItemHrefs[index] ?? "/",
+        icon: normalizeDiscoveryIcon(config.aboutDiscoveryItemIcons[index])
+      }))
+    : fallback.discovery.items;
 
   return {
     ...fallback,
@@ -87,6 +108,10 @@ const getPublicAboutPageContentCached = unstable_cache(async (): Promise<PublicA
     title: config?.aboutTitle || fallback.title,
     introduction: config?.aboutIntroduction || fallback.introduction,
     sections,
+    discovery: {
+      title: config?.aboutDiscoveryTitle || fallback.discovery.title,
+      items: discoveryItems
+    },
     heroImage: config?.aboutHeroImage ? toPublicImage(config.aboutHeroImage, "A devotee beside a sacred river") : undefined,
     visionImage: config?.aboutVisionImage ? toPublicImage(config.aboutVisionImage, "A temple beneath a star-filled sky") : undefined,
     storyImage: config?.aboutStoryImage ? toPublicImage(config.aboutStoryImage, "A devotional gathering by lamplight") : undefined,
@@ -111,4 +136,9 @@ function toPublicImage(
     width: image.width ?? undefined,
     height: image.height ?? undefined
   };
+}
+
+function normalizeDiscoveryIcon(value: string | undefined): "sparkles" | "book" | "map" | "flame" {
+  if (value === "book" || value === "map" || value === "flame") return value;
+  return "sparkles";
 }

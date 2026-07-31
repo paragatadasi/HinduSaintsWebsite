@@ -701,6 +701,11 @@ model SiteConfig {
   aboutIntroduction  String?
   aboutSectionTitles String[] @default([])
   aboutSectionBodies String[] @default([])
+  aboutDiscoveryTitle String?
+  aboutDiscoveryItemTitles String[] @default([])
+  aboutDiscoveryItemBodies String[] @default([])
+  aboutDiscoveryItemHrefs String[] @default([])
+  aboutDiscoveryItemIcons String[] @default([])
   aboutHeroImageId   String?
   aboutHeroImage     MediaAsset? @relation("AboutHeroImage", fields: [aboutHeroImageId], references: [id], onDelete: SetNull)
   aboutVisionImageId String?

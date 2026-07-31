@@ -9,7 +9,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { SITE_CONFIG_ID } from "@/lib/site-config";
-import { ABOUT_PAGE_SECTION_LIMIT, getFooterContent } from "@/lib/site-content";
+import { ABOUT_DISCOVERY_ITEM_LIMIT, ABOUT_PAGE_SECTION_LIMIT, getFooterContent } from "@/lib/site-content";
 
 const httpsUrl = z
   .string()
@@ -32,12 +32,22 @@ const aboutPageConfigSchema = z
     aboutVisionImageId: z.string().cuid().optional(),
     aboutStoryImageId: z.string().cuid().optional(),
     aboutGuruImageId: z.string().cuid().optional(),
+    aboutDiscoveryTitle: z.string().trim().min(1).max(160),
+    aboutDiscoveryItemTitles: z.array(z.string().trim().min(1).max(80)).min(1).max(ABOUT_DISCOVERY_ITEM_LIMIT),
+    aboutDiscoveryItemBodies: z.array(z.string().trim().min(1).max(300)).min(1).max(ABOUT_DISCOVERY_ITEM_LIMIT),
+    aboutDiscoveryItemHrefs: z.array(z.string().trim().min(1).max(500)).min(1).max(ABOUT_DISCOVERY_ITEM_LIMIT),
+    aboutDiscoveryItemIcons: z.array(z.enum(["sparkles", "book", "map", "flame"])).min(1).max(ABOUT_DISCOVERY_ITEM_LIMIT),
     aboutSectionTitles: z.array(z.string().trim().min(1).max(160)).min(1).max(ABOUT_PAGE_SECTION_LIMIT),
     aboutSectionBodies: z.array(z.string().trim().min(1).max(5000)).min(1).max(ABOUT_PAGE_SECTION_LIMIT)
   })
   .refine(
     ({ aboutSectionBodies, aboutSectionTitles }) => aboutSectionBodies.length === aboutSectionTitles.length,
     { message: "Every About section must have a title and body." }
+  )
+  .refine(
+    ({ aboutDiscoveryItemBodies, aboutDiscoveryItemHrefs, aboutDiscoveryItemIcons, aboutDiscoveryItemTitles }) =>
+      new Set([aboutDiscoveryItemBodies.length, aboutDiscoveryItemHrefs.length, aboutDiscoveryItemIcons.length, aboutDiscoveryItemTitles.length]).size === 1,
+    { message: "Every discovery card must have a title, body, destination, and icon." }
   );
 
 export async function updateFooterConfig(formData: FormData) {
@@ -99,6 +109,11 @@ export async function updateAboutPageConfig(formData: FormData) {
     aboutVisionImageId: emptyToUndefined(formData.get("aboutVisionImageId")),
     aboutStoryImageId: emptyToUndefined(formData.get("aboutStoryImageId")),
     aboutGuruImageId: emptyToUndefined(formData.get("aboutGuruImageId")),
+    aboutDiscoveryTitle: formData.get("aboutDiscoveryTitle"),
+    aboutDiscoveryItemTitles: formValues(formData, "aboutDiscoveryItemTitle"),
+    aboutDiscoveryItemBodies: formValues(formData, "aboutDiscoveryItemBody"),
+    aboutDiscoveryItemHrefs: formValues(formData, "aboutDiscoveryItemHref"),
+    aboutDiscoveryItemIcons: formValues(formData, "aboutDiscoveryItemIcon"),
     aboutSectionTitles: formValues(formData, "aboutSectionTitle"),
     aboutSectionBodies: formValues(formData, "aboutSectionBody")
   });
@@ -115,6 +130,11 @@ export async function updateAboutPageConfig(formData: FormData) {
         aboutVisionImageId: true,
         aboutStoryImageId: true,
         aboutGuruImageId: true,
+        aboutDiscoveryTitle: true,
+        aboutDiscoveryItemTitles: true,
+        aboutDiscoveryItemBodies: true,
+        aboutDiscoveryItemHrefs: true,
+        aboutDiscoveryItemIcons: true,
         aboutSectionTitles: true,
         aboutSectionBodies: true
       }
@@ -149,6 +169,11 @@ export async function updateAboutPageConfig(formData: FormData) {
           aboutVisionImageId: config.aboutVisionImageId,
           aboutStoryImageId: config.aboutStoryImageId,
           aboutGuruImageId: config.aboutGuruImageId,
+          aboutDiscoveryTitle: config.aboutDiscoveryTitle,
+          aboutDiscoveryItemTitles: config.aboutDiscoveryItemTitles,
+          aboutDiscoveryItemBodies: config.aboutDiscoveryItemBodies,
+          aboutDiscoveryItemHrefs: config.aboutDiscoveryItemHrefs,
+          aboutDiscoveryItemIcons: config.aboutDiscoveryItemIcons,
           aboutSectionTitles: config.aboutSectionTitles,
           aboutSectionBodies: config.aboutSectionBodies
         })
