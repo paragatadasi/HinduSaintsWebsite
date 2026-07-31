@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { SaintCard } from "@/components/saints/saint-card";
-import { Button } from "@/components/ui/button";
 import { getPublishedSaintCatalog } from "@/lib/public-saints";
 import { getSaintsIndexContent } from "@/lib/site-content";
 
@@ -11,7 +10,6 @@ type SaintsIndexPageProps = {
   searchParams?: Promise<{
     era?: string | string[];
     location?: string | string[];
-    page?: string | string[];
     q?: string | string[];
     tradition?: string | string[];
   }>;
@@ -24,13 +22,11 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
   const selectedTradition = getSearchParam(params?.tradition);
   const selectedLocation = getSearchParam(params?.location);
   const selectedEra = getSearchParam(params?.era);
-  const requestedPage = getPositivePage(params?.page);
   const hasActiveFilters = Boolean(selectedTradition || selectedLocation || selectedEra);
   const hasActiveCatalogQuery = Boolean(query || hasActiveFilters);
   const catalog = await getPublishedSaintCatalog({
     era: selectedEra,
     location: selectedLocation,
-    page: requestedPage,
     query,
     tradition: selectedTradition
   });
@@ -92,46 +88,9 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
         {hasActiveCatalogQuery ? <Link href="/saints">Clear search and filters</Link> : null}
       </div>
       {saints.length > 0 ? (
-        <>
-          <div className="card-grid">
-            {saints.map((saint) => <SaintCard key={saint.slug} saint={saint} />)}
-          </div>
-          {catalog.pageCount > 1 ? (
-            <nav className="cluster" aria-label="Saint catalog pagination">
-              {catalog.page > 1 ? (
-                <Button
-                  href={buildPageHref({
-                    era: selectedEra,
-                    location: selectedLocation,
-                    page: catalog.page - 1,
-                    query,
-                    tradition: selectedTradition
-                  })}
-                  variant="secondary"
-                >
-                  Previous
-                </Button>
-              ) : null}
-              <span aria-live="polite">
-                Page {catalog.page} of {catalog.pageCount}
-              </span>
-              {catalog.page < catalog.pageCount ? (
-                <Button
-                  href={buildPageHref({
-                    era: selectedEra,
-                    location: selectedLocation,
-                    page: catalog.page + 1,
-                    query,
-                    tradition: selectedTradition
-                  })}
-                  variant="secondary"
-                >
-                  Next
-                </Button>
-              ) : null}
-            </nav>
-          ) : null}
-        </>
+        <div className="card-grid">
+          {saints.map((saint) => <SaintCard key={saint.slug} saint={saint} />)}
+        </div>
       ) : (
         <div className="empty-state">
           <h2>No published saints found</h2>
@@ -146,11 +105,6 @@ function getSearchParam(value: string | string[] | undefined) {
   return (Array.isArray(value) ? value[0] : value)?.trim() ?? "";
 }
 
-function getPositivePage(value: string | string[] | undefined) {
-  const parsed = Number.parseInt(getSearchParam(value), 10);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
-}
-
 function buildResultLabel(count: number, query: string, activeFilterCount: number) {
   const resultText = `${count} ${count === 1 ? "result" : "results"}`;
   const filterText = activeFilterCount > 0
@@ -161,28 +115,4 @@ function buildResultLabel(count: number, query: string, activeFilterCount: numbe
   if (activeFilterCount > 0) return `${resultText}${filterText}`;
 
   return `${count} published ${count === 1 ? "saint" : "saints"}`;
-}
-
-function buildPageHref({
-  era,
-  location,
-  page,
-  query,
-  tradition
-}: {
-  era: string;
-  location: string;
-  page: number;
-  query: string;
-  tradition: string;
-}) {
-  const params = new URLSearchParams();
-  if (query) params.set("q", query);
-  if (tradition) params.set("tradition", tradition);
-  if (location) params.set("location", location);
-  if (era) params.set("era", era);
-  if (page > 1) params.set("page", String(page));
-
-  const queryString = params.toString();
-  return queryString ? `/saints?${queryString}` : "/saints";
 }
