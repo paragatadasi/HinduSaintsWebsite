@@ -26,7 +26,6 @@ const DEFAULT_DESCRIPTION = "";
 const DEFAULT_LOCATION = "Location in review";
 const DEFAULT_TRADITION = "Tradition in review";
 const DEFAULT_ERA = "Dates in review";
-export const PUBLIC_SAINT_PAGE_SIZE = 24;
 
 async function getPublishedSaintRows(
   where: Prisma.SaintWhereInput = {},
@@ -168,7 +167,6 @@ const getPublishedSaintSummariesByIdsCached = unstable_cache(async (uniqueIds: s
 export type PublicSaintCatalogQuery = {
   era?: string;
   location?: string;
-  page?: number;
   query?: string;
   tradition?: string;
 };
@@ -176,7 +174,6 @@ export type PublicSaintCatalogQuery = {
 export async function getPublishedSaintCatalog({
   era = "",
   location = "",
-  page = 1,
   query = "",
   tradition = ""
 }: PublicSaintCatalogQuery) {
@@ -199,29 +196,19 @@ export async function getPublishedSaintCatalog({
         })
       : [];
     const rankedRows = rankSaintSearchResults(searchRows, term);
-    const total = rankedRows.length;
-    const pageCount = Math.max(1, Math.ceil(total / PUBLIC_SAINT_PAGE_SIZE));
-    const normalizedPage = Math.min(Math.max(1, Math.floor(page)), pageCount);
-    const pageRows = rankedRows.slice(
-      (normalizedPage - 1) * PUBLIC_SAINT_PAGE_SIZE,
-      normalizedPage * PUBLIC_SAINT_PAGE_SIZE
-    );
-    const pageIds = pageRows.map(({ item }) => item.id);
-    const rows = pageIds.length > 0
-      ? await getPublishedSaintRows({ id: { in: pageIds } })
+    const itemIds = rankedRows.map(({ item }) => item.id);
+    const rows = itemIds.length > 0
+      ? await getPublishedSaintRows({ id: { in: itemIds } })
       : [];
     const rowsById = new Map(rows.map((row) => [row.id, row]));
 
     return {
       facets,
-      items: pageIds.flatMap((id) => {
+      items: itemIds.flatMap((id) => {
         const row = rowsById.get(id);
         return row ? [toPublicSaintSummary(row)] : [];
       }),
-      page: normalizedPage,
-      pageCount,
-      pageSize: PUBLIC_SAINT_PAGE_SIZE,
-      total
+      total: rankedRows.length
     };
   }
 
@@ -229,19 +216,11 @@ export async function getPublishedSaintCatalog({
     db.saint.count({ where: { status: "published", ...where } }),
     getPublishedSaintCatalogFacets()
   ]);
-  const pageCount = Math.max(1, Math.ceil(total / PUBLIC_SAINT_PAGE_SIZE));
-  const normalizedPage = Math.min(Math.max(1, Math.floor(page)), pageCount);
-  const rows = await getPublishedSaintRows(where, {
-    skip: (normalizedPage - 1) * PUBLIC_SAINT_PAGE_SIZE,
-    take: PUBLIC_SAINT_PAGE_SIZE
-  });
+  const rows = await getPublishedSaintRows(where);
 
   return {
     facets,
     items: rows.map(toPublicSaintSummary),
-    page: normalizedPage,
-    pageCount,
-    pageSize: PUBLIC_SAINT_PAGE_SIZE,
     total
   };
 }
