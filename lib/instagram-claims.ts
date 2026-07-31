@@ -87,6 +87,13 @@ export async function createDirectInstagramClaimsForSaint(tx: Tx, instagramItemI
       notes: "Piped to saint review from matched Instagram first-page biodata."
     });
   }
+
+  await createInstagramPlaceClaimsForSaint(tx, instagramItemId, saintId, metadata, {
+    autoApplyExactMatches: false,
+    exactMatchNote: "Matched CMS location candidate from matched Instagram first-page biodata.",
+    ambiguousMatchNote: "Multiple exact CMS location matches found in matched Instagram first-page biodata.",
+    unmatchedNote: "No exact CMS location match found in matched Instagram first-page biodata."
+  });
 }
 
 export async function connectInstagramPlacesToSaintDraft(tx: Tx, instagramItemId: string, saintId: string) {
@@ -100,6 +107,28 @@ export async function connectInstagramPlacesToSaintDraft(tx: Tx, instagramItemId
   if (!item) return;
 
   const metadata = getStoredFirstPageMetadata(item.firstPageMetadata, item.firstPageText);
+  await createInstagramPlaceClaimsForSaint(tx, instagramItemId, saintId, metadata, {
+    autoApplyExactMatches: true,
+    exactMatchNote: "Automatically matched while creating a saint draft from Instagram biodata.",
+    ambiguousMatchNote: "Multiple exact place matches found while creating a saint draft.",
+    unmatchedNote: "No exact place match found while creating a saint draft."
+  });
+}
+
+type PlaceClaimOptions = {
+  autoApplyExactMatches: boolean;
+  exactMatchNote: string;
+  ambiguousMatchNote: string;
+  unmatchedNote: string;
+};
+
+async function createInstagramPlaceClaimsForSaint(
+  tx: Tx,
+  instagramItemId: string,
+  saintId: string,
+  metadata: InstagramFirstPageMetadata,
+  options: PlaceClaimOptions
+) {
   const rawPlaces = metadata.keyPlaces?.length ? metadata.keyPlaces : splitKeyPlaces(metadata.keyPlace);
   if (rawPlaces.length === 0) return;
 
@@ -127,10 +156,17 @@ export async function connectInstagramPlacesToSaintDraft(tx: Tx, instagramItemId
         targetEntityType: "Place",
         targetEntityId: place.id,
         confidence: "high",
-        status: "matched",
-        notes: "Automatically matched while creating a saint draft from Instagram biodata."
+        status: options.autoApplyExactMatches ? "matched" : "needs_review",
+        notes: options.exactMatchNote
       });
-      await applyInstagramClaimToSaint(tx, claim, saintId);
+      if (options.autoApplyExactMatches) {
+        await applyInstagramClaimToSaint(tx, claim, saintId);
+      } else {
+        await tx.instagramDerivedClaim.update({
+          where: { id: claim.id },
+          data: { appliedSaintId: saintId }
+        });
+      }
       continue;
     }
 
@@ -142,8 +178,8 @@ export async function connectInstagramPlacesToSaintDraft(tx: Tx, instagramItemId
       confidence: matches.length > 1 ? "medium" : "low",
       status: "needs_review",
       notes: matches.length > 1
-        ? "Multiple exact place matches found while creating a saint draft."
-        : "No exact place match found while creating a saint draft."
+        ? options.ambiguousMatchNote
+        : options.unmatchedNote
     });
     await tx.instagramDerivedClaim.update({
       where: { id: claim.id },

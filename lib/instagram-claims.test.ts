@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { InstagramDerivedClaim, Prisma } from "./generated/prisma/client";
-import { acceptInstagramDerivedClaim, acceptSaintInstagramClaim } from "./instagram-claims";
+import { acceptInstagramDerivedClaim, acceptSaintInstagramClaim, createDirectInstagramClaimsForSaint } from "./instagram-claims";
 
 const now = new Date("2026-07-27T12:00:00.000Z");
 
@@ -64,6 +64,74 @@ test("accepting a place suggestion attaches the place to the matched saint", asy
     routeConfidence: "high",
     notes: "Accepted from Instagram first-page biodata: Rishikesh"
   }]);
+});
+
+test("approving an existing key-place candidate on Instagram attaches it to the saint", async () => {
+  const createdPlaceLinks: unknown[] = [];
+  const claimUpdates: unknown[] = [];
+  const pendingClaim = makeClaim({
+    status: "needs_review",
+    appliedSaintId: "saint-1"
+  });
+  const matchedClaim = makeClaim({
+    status: "matched",
+    appliedSaintId: null
+  });
+  const tx = {
+    instagramDerivedClaim: {
+      findFirst: async () => pendingClaim,
+      update: async (input: unknown) => {
+        claimUpdates.push(input);
+        return matchedClaim;
+      }
+    },
+    instagramItemSaint: {
+      findFirst: async () => ({ saintId: "saint-1" })
+    },
+    saintPlace: {
+      findFirst: async () => null,
+      create: async ({ data }: { data: unknown }) => {
+        createdPlaceLinks.push(data);
+        return data;
+      }
+    }
+  } as unknown as Prisma.TransactionClient;
+
+  await acceptInstagramDerivedClaim(tx, {
+    instagramItemId: "instagram-item-1",
+    claimType: "place",
+    rawValue: "Rishikesh",
+    sourceField: "keyPlace",
+    targetEntityType: "Place",
+    targetEntityId: "place-1",
+    confidence: "high"
+  });
+
+  assert.deepEqual(claimUpdates[0], {
+    where: { id: "claim-1" },
+    data: {
+      rawValue: "Rishikesh",
+      normalizedValue: "rishikesh",
+      sourceField: "keyPlace",
+      targetEntityType: "Place",
+      targetEntityId: "place-1",
+      status: "matched",
+      confidence: "high",
+      appliedSaintId: undefined,
+      notes: undefined
+    }
+  });
+  assert.deepEqual(createdPlaceLinks, [{
+    saintId: "saint-1",
+    placeId: "place-1",
+    placeType: "associated",
+    routeConfidence: "high",
+    notes: "Accepted from Instagram first-page biodata: Rishikesh"
+  }]);
+  assert.equal(claimUpdates.some((input) => (
+    (input as { data?: { appliedSaintId?: string; appliedAt?: Date } }).data?.appliedSaintId === "saint-1"
+    && (input as { data?: { appliedAt?: Date } }).data?.appliedAt instanceof Date
+  )), true);
 });
 
 test("accepting a guru suggestion creates an approved guru connection", async () => {
@@ -320,4 +388,72 @@ test("accepting a conflicting date on the saint review replaces the current date
       }
     }
   );
+});
+
+test("creating direct claims for a matched saint includes key-place candidates", async () => {
+  const createdClaims: Array<Record<string, unknown>> = [];
+  const claimUpdates: unknown[] = [];
+  const tx = {
+    instagramItem: {
+      findUnique: async () => ({
+        firstPageText: null,
+        firstPageMetadata: {
+          displayName: "Sri Rajyalakshmi Devi",
+          keyPlace: "Mysuru"
+        }
+      })
+    },
+    place: {
+      findMany: async () => [{
+        id: "place-1",
+        name: "Mysuru",
+        alternateNames: ["Mysore"],
+        region: "Karnataka",
+        country: "India"
+      }]
+    },
+    instagramDerivedClaim: {
+      findFirst: async () => null,
+      create: async ({ data }: { data: Record<string, unknown> }) => {
+        createdClaims.push(data);
+        return makeClaim({
+          id: `claim-${createdClaims.length}`,
+          claimType: data.claimType as InstagramDerivedClaim["claimType"],
+          rawValue: data.rawValue as string,
+          normalizedValue: data.normalizedValue as string,
+          sourceField: data.sourceField as string,
+          targetEntityType: (data.targetEntityType as string | undefined) ?? null,
+          targetEntityId: (data.targetEntityId as string | undefined) ?? null,
+          confidence: data.confidence as InstagramDerivedClaim["confidence"],
+          status: data.status as InstagramDerivedClaim["status"],
+          notes: (data.notes as string | undefined) ?? null
+        });
+      },
+      update: async (input: unknown) => {
+        claimUpdates.push(input);
+        return input;
+      }
+    }
+  } as unknown as Prisma.TransactionClient;
+
+  await createDirectInstagramClaimsForSaint(tx, "instagram-item-1", "saint-1");
+
+  const placeClaim = createdClaims.find((claim) => claim.claimType === "place");
+  assert.deepEqual(placeClaim, {
+    instagramItemId: "instagram-item-1",
+    claimType: "place",
+    rawValue: "Mysuru",
+    normalizedValue: "mysuru",
+    sourceField: "keyPlace",
+    targetEntityType: "Place",
+    targetEntityId: "place-1",
+    status: "needs_review",
+    confidence: "high",
+    appliedSaintId: undefined,
+    notes: "Matched CMS location candidate from matched Instagram first-page biodata."
+  });
+  assert.equal(claimUpdates.some((input) => (
+    (input as { where?: { id?: string }; data?: { appliedSaintId?: string } }).where?.id === "claim-2"
+    && (input as { data?: { appliedSaintId?: string } }).data?.appliedSaintId === "saint-1"
+  )), true);
 });

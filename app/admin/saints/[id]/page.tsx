@@ -25,6 +25,7 @@ import {
   upsertSaintSource
 } from "../actions";
 import { updateInstagramItemSaintStatus } from "../../instagram/actions";
+import { refreshSaintInstagramClaims } from "./instagram-claim-actions";
 import { InstagramBiographyImporter } from "./instagram-biography-importer";
 import { SaintImageActions } from "./saint-image-actions";
 import { SaintImageCropper } from "./saint-image-cropper";
@@ -282,6 +283,13 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
         eyebrow="Imported claims"
         title="Instagram Claims"
       >
+        <div className="review-actions">
+          <form action={refreshSaintInstagramClaims}>
+            <input name="saintId" type="hidden" value={saint.id} />
+            <button className="admin-form-button admin-form-button--secondary" type="submit">Refresh claims from matched posts</button>
+          </form>
+        </div>
+
         {saint.instagramClaims.length > 0 ? (
           <div className="review-list">
             {saint.instagramClaims.map((claim) => {
