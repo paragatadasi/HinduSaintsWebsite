@@ -24,6 +24,25 @@ test("does not return an unrelated name", () => {
   assert.deepEqual(rankSaintSearchResults(saints, "Zoroaster"), []);
 });
 
+test("does not rank unrelated honorific-sharing names above a substantive name match", () => {
+  const candidates: CorpusSaint[] = [
+    {
+      id: "rajyalakshmi",
+      displayName: "Sadguru Sri Rajyalakshmi Devi",
+      canonicalName: "Sadguru Sri Rajyalakshmi Devi"
+    },
+    {
+      id: "unrelated-sri",
+      displayName: "Sri Srimad Swami Lakshman Ramanuj",
+      canonicalName: "Sri Srimad Swami Lakshman Ramanuj"
+    }
+  ];
+
+  for (const query of ["Sri Rajyalakshmi Devi", "Rajyalakshmi Devi"]) {
+    assert.equal(rankSaintSearchResults(candidates, query)[0]?.item.id, "rajyalakshmi");
+  }
+});
+
 test("builds normalized PostgreSQL candidate terms from one shared query model", () => {
   const terms = getSearchQueryTerms("Śrī Caitanya Mahāprabhu");
 
