@@ -32,6 +32,10 @@ export function rankWeightedTextSearch<T>(
 export function scoreWeightedTextSearch(query: string, fields: WeightedSearchField[]) {
   const queryForms = getQuerySearchForms(query);
   const uniqueQueryForms = Array.from(new Set(queryForms)).filter(Boolean);
+  const substantivePhraseQueryForms = uniqueQueryForms.filter(hasSubstantiveSearchToken);
+  const phraseQueryForms = substantivePhraseQueryForms.length > 0
+    ? substantivePhraseQueryForms
+    : uniqueQueryForms;
   const queryTokens = Array.from(new Set(uniqueQueryForms.flatMap(getSearchTokens)))
     .filter((token) => token.length >= 2 && !SEARCH_HONORIFICS.has(token));
 
@@ -44,7 +48,7 @@ export function scoreWeightedTextSearch(query: string, fields: WeightedSearchFie
     const fieldForms = getSearchForms(field.value);
     let bestPhraseScore = 0;
     for (const fieldForm of fieldForms) {
-      for (const queryForm of uniqueQueryForms) {
+      for (const queryForm of phraseQueryForms) {
         if (fieldForm === queryForm) bestPhraseScore = Math.max(bestPhraseScore, 120);
         else if (fieldForm.startsWith(queryForm)) bestPhraseScore = Math.max(bestPhraseScore, 80);
         else if (fieldForm.includes(queryForm)) bestPhraseScore = Math.max(bestPhraseScore, 55);
@@ -87,11 +91,16 @@ export function normalizeSearchText(value: string) {
 }
 
 export function getSearchQueryTerms(value: string) {
-  return Array.from(new Set(getQuerySearchForms(value)))
+  const queryTerms = Array.from(new Set(getQuerySearchForms(value)))
     .filter((term) => (
       term.length >= 2
-      && getSearchTokens(term).some((token) => !SEARCH_HONORIFICS.has(token))
+      && hasSubstantiveSearchToken(term)
     ));
+
+  if (queryTerms.length > 0) return queryTerms;
+
+  return Array.from(new Set(getSearchForms(value)))
+    .filter((term) => term.length >= 2);
 }
 
 function getSearchForms(value: string) {
@@ -108,6 +117,10 @@ function getSearchForms(value: string) {
 
 function getSearchTokens(value: string) {
   return value.split(" ").filter(Boolean);
+}
+
+function hasSubstantiveSearchToken(value: string) {
+  return getSearchTokens(value).some((token) => !SEARCH_HONORIFICS.has(token));
 }
 
 function getQuerySearchForms(value: string) {
