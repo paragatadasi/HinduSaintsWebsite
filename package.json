@@ -35,7 +35,8 @@
     "media:migrate-object-storage": "tsx scripts/migrate-media-to-object-storage.ts",
     "backfill:instagram-carousels": "tsx scripts/backfill-instagram-carousel-images.ts",
     "reconcile:instagram": "tsx scripts/reconcile-instagram.ts",
-    "create-admin": "tsx scripts/create-admin-user.ts"
+    "create-admin": "tsx scripts/create-admin-user.ts",
+    "worktrees:cleanup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/cleanup-worktrees.ps1"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.0",
