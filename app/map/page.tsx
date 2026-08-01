@@ -17,7 +17,7 @@ export default async function MapIndexPage() {
   const stateNamesBySlug = getStateNamesBySlug();
 
   return (
-    <main className="page-shell section site-grid">
+    <main className="page-shell section site-grid index-page-layout">
       <IndexPageHero {...content} image={heroImages.map} />
       <IndiaSaintsMap
         content={mapContent}

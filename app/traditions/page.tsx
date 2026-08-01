@@ -11,7 +11,7 @@ export default async function TraditionsIndexPage() {
   const [traditions, heroImages] = await Promise.all([getPublicTraditionSummaries(), getPublicIndexHeroImages()]);
 
   return (
-    <main className="page-shell section site-grid">
+    <main className="page-shell section site-grid index-page-layout">
       <IndexPageHero {...content} image={heroImages.traditions} />
       {traditions.length > 0 ? (
         <div className="card-grid">

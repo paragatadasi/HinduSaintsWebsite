@@ -24,9 +24,9 @@ const getPublicIndexHeroImagesCached = unstable_cache(async (): Promise<PublicIn
     include: { saintsHeroImage: true, traditionsHeroImage: true, mapHeroImage: true }
   });
   return {
-    saints: config?.saintsHeroImage ? toPublicImage(config.saintsHeroImage, "Saints archive") : undefined,
-    traditions: config?.traditionsHeroImage ? toPublicImage(config.traditionsHeroImage, "Hindu traditions") : undefined,
-    map: config?.mapHeroImage ? toPublicImage(config.mapHeroImage, "Sacred places across India") : undefined
+    saints: config?.saintsHeroImage ? toPublicImage(config.saintsHeroImage, "Saints archive", { x: config.saintsHeroFocalX, y: config.saintsHeroFocalY }) : undefined,
+    traditions: config?.traditionsHeroImage ? toPublicImage(config.traditionsHeroImage, "Hindu traditions", { x: config.traditionsHeroFocalX, y: config.traditionsHeroFocalY }) : undefined,
+    map: config?.mapHeroImage ? toPublicImage(config.mapHeroImage, "Sacred places across India", { x: config.mapHeroFocalX, y: config.mapHeroFocalY }) : undefined
   };
 }, ["public-index-hero-images"], { revalidate: PUBLIC_DATA_CACHE_SECONDS, tags: [PUBLIC_CACHE_TAGS.site] });
 
@@ -142,7 +142,8 @@ const getPublicAboutPageContentCached = unstable_cache(async (): Promise<PublicA
 
 function toPublicImage(
   image: { url: string; altText: string | null; caption: string | null; credit: string | null; sourceUrl: string | null; width: number | null; height: number | null; variants: unknown; focalX?: number; focalY?: number },
-  fallbackAlt: string
+  fallbackAlt: string,
+  focalPoint?: { x: number; y: number }
 ): PublicImage {
   return {
     url: image.url,
@@ -153,7 +154,7 @@ function toPublicImage(
     sourceUrl: image.sourceUrl ?? undefined,
     width: image.width ?? undefined,
     height: image.height ?? undefined,
-    focalPoint: image.focalX !== undefined && image.focalY !== undefined ? { x: image.focalX, y: image.focalY } : undefined
+    focalPoint: focalPoint ?? (image.focalX !== undefined && image.focalY !== undefined ? { x: image.focalX, y: image.focalY } : undefined)
   };
 }
 

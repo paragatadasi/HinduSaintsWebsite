@@ -40,7 +40,7 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
   const resultLabel = buildResultLabel(catalog.total, query, activeFilterCount);
 
   return (
-    <main className="page-shell section site-grid saints-index">
+    <main className="page-shell section site-grid index-page-layout saints-index">
       <IndexPageHero {...content} image={heroImages.saints}>
         <form className="catalog-controls" action="/saints">
         <div className="index-search">

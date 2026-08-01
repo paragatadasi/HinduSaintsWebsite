@@ -50,11 +50,11 @@ const aboutPageConfigSchema = z
     { message: "Every discovery card must have a title, body, destination, and icon." }
   );
 
-const indexHeroConfigSchema = z.object({ saintsHeroImageId: z.string().cuid().optional(), traditionsHeroImageId: z.string().cuid().optional(), mapHeroImageId: z.string().cuid().optional() });
+const indexHeroConfigSchema = z.object({ saintsHeroImageId: z.string().cuid().optional(), traditionsHeroImageId: z.string().cuid().optional(), mapHeroImageId: z.string().cuid().optional(), saintsHeroFocalX: z.coerce.number().min(0).max(100), saintsHeroFocalY: z.coerce.number().min(0).max(100), traditionsHeroFocalX: z.coerce.number().min(0).max(100), traditionsHeroFocalY: z.coerce.number().min(0).max(100), mapHeroFocalX: z.coerce.number().min(0).max(100), mapHeroFocalY: z.coerce.number().min(0).max(100) });
 
 export async function updateIndexHeroConfig(formData: FormData) {
   const { email } = await requireAdminSession();
-  const parsed = indexHeroConfigSchema.parse({ saintsHeroImageId: emptyToUndefined(formData.get("saintsHeroImageId")), traditionsHeroImageId: emptyToUndefined(formData.get("traditionsHeroImageId")), mapHeroImageId: emptyToUndefined(formData.get("mapHeroImageId")) });
+  const parsed = indexHeroConfigSchema.parse({ saintsHeroImageId: emptyToUndefined(formData.get("saintsHeroImageId")), traditionsHeroImageId: emptyToUndefined(formData.get("traditionsHeroImageId")), mapHeroImageId: emptyToUndefined(formData.get("mapHeroImageId")), saintsHeroFocalX: formData.get("saintsHeroFocalX") ?? 50, saintsHeroFocalY: formData.get("saintsHeroFocalY") ?? 30, traditionsHeroFocalX: formData.get("traditionsHeroFocalX") ?? 50, traditionsHeroFocalY: formData.get("traditionsHeroFocalY") ?? 30, mapHeroFocalX: formData.get("mapHeroFocalX") ?? 50, mapHeroFocalY: formData.get("mapHeroFocalY") ?? 30 });
   const footerDefaults = getFooterContent();
   await db.siteConfig.upsert({ where: { id: SITE_CONFIG_ID }, create: { id: SITE_CONFIG_ID, imprintUrl: footerDefaults.imprint.href, privacyPolicyUrl: footerDefaults.privacyPolicy.href, ...parsed, updatedByEmail: email }, update: { ...parsed, updatedByEmail: email } });
   revalidateTag(PUBLIC_CACHE_TAGS.site);

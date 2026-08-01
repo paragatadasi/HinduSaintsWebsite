@@ -719,10 +719,16 @@ model SiteConfig {
   aboutGuruImage     MediaAsset? @relation("AboutGuruImage", fields: [aboutGuruImageId], references: [id], onDelete: SetNull)
   saintsHeroImageId     String?
   saintsHeroImage       MediaAsset? @relation("SaintsIndexHeroImage", fields: [saintsHeroImageId], references: [id], onDelete: SetNull)
+  saintsHeroFocalX       Float @default(50)
+  saintsHeroFocalY       Float @default(30)
   traditionsHeroImageId String?
   traditionsHeroImage   MediaAsset? @relation("TraditionsIndexHeroImage", fields: [traditionsHeroImageId], references: [id], onDelete: SetNull)
+  traditionsHeroFocalX   Float @default(50)
+  traditionsHeroFocalY   Float @default(30)
   mapHeroImageId         String?
   mapHeroImage           MediaAsset? @relation("MapIndexHeroImage", fields: [mapHeroImageId], references: [id], onDelete: SetNull)
+  mapHeroFocalX           Float @default(50)
+  mapHeroFocalY           Float @default(30)
   updatedByEmail     String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
