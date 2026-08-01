@@ -411,7 +411,7 @@ html[data-route-entering="true"] body > main {
 
 .about-discovery__heading h2 {
   font-family: var(--font-serif);
-  font-size: clamp(1.45rem, 2vw, 2rem);
+  font-size: clamp(1.8rem, 3vw, 2.75rem);
   font-weight: 400;
   line-height: 1.15;
   margin: var(--space-2) 0 0;
