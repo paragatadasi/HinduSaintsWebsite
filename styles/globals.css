@@ -7982,8 +7982,9 @@ html[data-route-entering="true"] body > main {
     padding-bottom: var(--space-3);
   }
 
-  .saints-index .card-grid {
+  .card-grid {
     grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
   }
 
   .saints-index .saint-card__summary-image {
