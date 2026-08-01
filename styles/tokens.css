@@ -93,6 +93,7 @@
   --width-instagram-viewer-thumb-min: 48px;
   --width-instagram-viewer-thumb: 64px;
   --height-map: clamp(520px, 54vw, 640px);
+  --height-index-page-hero: clamp(280px, 34vw, 420px);
   --height-map-mobile-canvas: clamp(260px, 82vw, 420px);
   --height-map-short-landscape-canvas: min(72svh, 340px);
   --space-map-detail-sheet: var(--space-4);

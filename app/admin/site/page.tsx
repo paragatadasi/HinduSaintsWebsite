@@ -9,17 +9,19 @@ import { AboutSectionsEditor } from "./about-sections-editor";
 import { HomepageSettings } from "./homepage-settings";
 import { HomeBannerUploader } from "./home-banner-uploader";
 import { AboutDiscoveryEditor } from "./about-discovery-editor";
+import { IndexHeroSettings } from "./index-hero-settings";
 
 type AdminSitePageProps = {
   searchParams: Promise<{
     about?: string | string[];
     footer?: string | string[];
     homepage?: string | string[];
+    heroes?: string | string[];
   }>;
 };
 
 export default async function AdminSitePage({ searchParams }: AdminSitePageProps) {
-  const [{ about, footer, homepage }, config] = await Promise.all([
+  const [{ about, footer, homepage, heroes }, config] = await Promise.all([
     searchParams,
     db.siteConfig.findUnique({
       where: { id: SITE_CONFIG_ID },
@@ -69,6 +71,8 @@ export default async function AdminSitePage({ searchParams }: AdminSitePageProps
         <p className="admin-notice form-status form-status--success">Homepage settings updated.</p>
       ) : null}
       <HomepageSettings />
+      {getSearchParam(heroes) === "saved" ? <p className="admin-notice form-status form-status--success">Directory hero images updated.</p> : null}
+      <IndexHeroSettings />
 
       {aboutDefaults ? (
         <section className="admin-stack" id="about">

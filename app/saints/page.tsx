@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { SaintCard } from "@/components/saints/saint-card";
+import { IndexPageHero } from "@/components/layout/index-page-hero";
+import { getPublicIndexHeroImages } from "@/lib/site-config";
 import { getPublishedSaintCatalog } from "@/lib/public-saints";
 import { getSaintsIndexContent } from "@/lib/site-content";
 
@@ -24,12 +26,12 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
   const selectedEra = getSearchParam(params?.era);
   const hasActiveFilters = Boolean(selectedTradition || selectedLocation || selectedEra);
   const hasActiveCatalogQuery = Boolean(query || hasActiveFilters);
-  const catalog = await getPublishedSaintCatalog({
+  const [catalog, heroImages] = await Promise.all([getPublishedSaintCatalog({
     era: selectedEra,
     location: selectedLocation,
     query,
     tradition: selectedTradition
-  });
+  }), getPublicIndexHeroImages()]);
   const saints = catalog.items;
   const traditionOptions = catalog.facets.traditions;
   const locationOptions = catalog.facets.locations;
@@ -39,11 +41,7 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
 
   return (
     <main className="page-shell section site-grid saints-index">
-      <div>
-        <div className="eyebrow">{content.eyebrow}</div>
-        <h1 className="page-title">{content.title}</h1>
-        <p className="lede">{content.description}</p>
-      </div>
+      <IndexPageHero {...content} image={heroImages.saints} />
       <form className="catalog-controls" action="/saints">
         <div className="index-search">
           <label className="sr-only" htmlFor="saints-search">Search saints</label>

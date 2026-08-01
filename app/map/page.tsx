@@ -1,4 +1,6 @@
 import { IndiaSaintsMap } from "@/components/places/india-saints-map";
+import { IndexPageHero } from "@/components/layout/index-page-hero";
+import { getPublicIndexHeroImages } from "@/lib/site-config";
 import { PlaceCard } from "@/components/places/place-card";
 import { INDIA_STATE_MAP_SHAPES, type IndiaStateMapShape } from "@/lib/india-state-map-shapes";
 import { getPublicMapPageData } from "@/lib/public-places";
@@ -10,17 +12,13 @@ export const dynamic = "force-dynamic";
 export default async function MapIndexPage() {
   const content = getPlacesIndexContent();
   const mapContent = getPlacesMapContent();
-  const { places, mapData } = await getPublicMapPageData();
+  const [{ places, mapData }, heroImages] = await Promise.all([getPublicMapPageData(), getPublicIndexHeroImages()]);
   const stateSaintCountsBySlug = getStateSaintCountsBySlug(mapData);
   const stateNamesBySlug = getStateNamesBySlug();
 
   return (
     <main className="page-shell section site-grid">
-      <div>
-        <div className="eyebrow">{content.eyebrow}</div>
-        <h1 className="page-title">{content.title}</h1>
-        <p className="lede">{content.description}</p>
-      </div>
+      <IndexPageHero {...content} image={heroImages.map} />
       <IndiaSaintsMap
         content={mapContent}
         mapData={mapData}

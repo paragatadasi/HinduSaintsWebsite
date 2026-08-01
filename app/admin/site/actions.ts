@@ -50,6 +50,18 @@ const aboutPageConfigSchema = z
     { message: "Every discovery card must have a title, body, destination, and icon." }
   );
 
+const indexHeroConfigSchema = z.object({ saintsHeroImageId: z.string().cuid().optional(), traditionsHeroImageId: z.string().cuid().optional(), mapHeroImageId: z.string().cuid().optional() });
+
+export async function updateIndexHeroConfig(formData: FormData) {
+  const { email } = await requireAdminSession();
+  const parsed = indexHeroConfigSchema.parse({ saintsHeroImageId: emptyToUndefined(formData.get("saintsHeroImageId")), traditionsHeroImageId: emptyToUndefined(formData.get("traditionsHeroImageId")), mapHeroImageId: emptyToUndefined(formData.get("mapHeroImageId")) });
+  const footerDefaults = getFooterContent();
+  await db.siteConfig.upsert({ where: { id: SITE_CONFIG_ID }, create: { id: SITE_CONFIG_ID, imprintUrl: footerDefaults.imprint.href, privacyPolicyUrl: footerDefaults.privacyPolicy.href, ...parsed, updatedByEmail: email }, update: { ...parsed, updatedByEmail: email } });
+  revalidateTag(PUBLIC_CACHE_TAGS.site);
+  revalidatePath("/saints"); revalidatePath("/traditions"); revalidatePath("/map"); revalidatePath("/admin/site");
+  redirect("/admin/site?heroes=saved#index-heroes" as Route);
+}
+
 export async function updateFooterConfig(formData: FormData) {
   const { email } = await requireAdminSession();
   const parsed = footerConfigSchema.parse({

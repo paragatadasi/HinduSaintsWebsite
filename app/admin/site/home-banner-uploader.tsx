@@ -4,6 +4,7 @@ import { ImagePlus, Upload } from "lucide-react";
 import { useState } from "react";
 
 type HomeBannerUploaderProps = {
+  allowClear?: boolean;
   defaultBannerImageId?: string;
   fieldName?: string;
   uploadLabel?: string;
@@ -16,6 +17,7 @@ type UploadState = {
 };
 
 export function HomeBannerUploader({
+  allowClear = false,
   defaultBannerImageId = "",
   fieldName = "bannerImageId",
   uploadLabel = "banner image"
@@ -87,6 +89,7 @@ export function HomeBannerUploader({
         <Upload size={16} aria-hidden="true" />
         {isUploading ? "Uploading" : "Upload image"}
       </button>
+      {allowClear && bannerImageId ? <button className="button button--ghost" type="button" onClick={() => setUploadState({ status: "idle", mediaAssetId: "" })}>Remove selected image</button> : null}
       {uploadState.message ? (
         <p className={`admin-notice admin-notice--${uploadState.status === "error" ? "warning" : "success"}`}>
           {uploadState.message}
