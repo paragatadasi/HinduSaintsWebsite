@@ -947,7 +947,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .home-cosmic-hero__banner[data-preserve-area="true"] .home-cosmic-hero__banner-image {
-  object-fit: contain;
+  object-fit: cover;
   position: relative;
   z-index: 1;
 }
