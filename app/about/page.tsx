@@ -26,6 +26,8 @@ export default async function AboutPage() {
   const content = await getPublicAboutPageContent();
   if (!content) notFound();
 
+  const heroImage = content.heroImage ?? defaultHeroImage;
+
   const sectionImages: Array<PublicImage | undefined> = [
     content.visionImage ?? defaultHeroImage,
     content.storyImage,
@@ -36,7 +38,7 @@ export default async function AboutPage() {
     <main className="about-page">
       <div className="page-shell about-page__frame">
         <section className="about-hero">
-          <img className="about-hero__image" src={(content.heroImage ?? defaultHeroImage).url} alt={(content.heroImage ?? defaultHeroImage).alt} />
+          <img className="about-hero__image" src={heroImage.url} alt={heroImage.alt} />
           <div className="about-hero__overlay" />
           <div className="about-hero__content">
             <div className="eyebrow">{content.eyebrow}</div>
@@ -50,23 +52,25 @@ export default async function AboutPage() {
           {content.sections[0] ? <StorySection section={content.sections[0]} image={sectionImages[0]} index={0} /> : null}
 
           <section className="about-discovery">
-            <div className="about-discovery__heading">
-              <div className="eyebrow">What you’ll find here</div>
-              <h2>{content.discovery.title}</h2>
-            </div>
-            <div className="about-discovery__grid">
-              {content.discovery.items.map((item, index) => {
-                const Icon = discoveryIcons[item.icon] ?? Sparkles;
-                return (
-                  <a className="about-discovery-card interactive-surface" href={item.href} key={`${item.title}-${index}`}>
-                    <span className="about-discovery-card__number">0{index + 1}</span>
-                    <Icon size={32} aria-hidden={true} />
-                    <h3>{item.title}</h3>
-                    <p>{item.body}</p>
-                    <span className="about-discovery-card__action">Explore <span aria-hidden="true">{"\u2197"}</span></span>
-                  </a>
-                );
-              })}
+            <img className="about-discovery__backdrop" src={heroImage.url} alt="" aria-hidden="true" />
+            <div className="about-discovery__overlay" />
+            <div className="about-discovery__content">
+              <div className="about-discovery__heading">
+                <div className="eyebrow">{"What you\u2019ll find here"}</div>
+                <h2>{content.discovery.title}</h2>
+              </div>
+              <div className="about-discovery__grid">
+                {content.discovery.items.map((item, index) => {
+                  const Icon = discoveryIcons[item.icon] ?? Sparkles;
+                  return (
+                    <a className="about-discovery-card" href={item.href} key={`${item.title}-${index}`}>
+                      <Icon size={40} aria-hidden={true} />
+                      <h3>{item.title}</h3>
+                      <p>{item.body}</p>
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </section>
 
