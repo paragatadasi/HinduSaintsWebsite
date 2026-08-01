@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { RotateCcw, X } from "lucide-react";
-import { FocalImage } from "@/components/ui/focal-image";
 import type { PublicPlaceMapData, PublicPlaceMapPoint, PublicPlaceMapSaint } from "@/lib/public-contracts";
 import type { PlacesMapContent } from "@/lib/site-content";
 
@@ -43,6 +42,10 @@ type StateMapSummary = {
 const MAP_WIDTH = 720;
 const MAP_HEIGHT = 640;
 const MAP_PADDING = 40;
+const MAP_SAINT_CARD_WIDTH = 148;
+const MAP_SAINT_CARD_HEIGHT = 82;
+const MAP_SAINT_CARD_IMAGE_SIZE = 40;
+const MAP_SAINT_CARD_IMAGE_OVERLAP = 12;
 const PANEL_SAINT_PREVIEW_LIMIT = 4;
 const INDIA_BOUNDS = {
   minLatitude: 6,
@@ -235,34 +238,54 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
               const saints = saintRoutes.cardSaintsByPoint.get(point.slug);
               if (!saints || saints.length === 0) return null;
 
+              const visibleSaints = saints.slice(0, 3);
+              const imagesWidth = MAP_SAINT_CARD_IMAGE_SIZE + (visibleSaints.length - 1) * (MAP_SAINT_CARD_IMAGE_SIZE - MAP_SAINT_CARD_IMAGE_OVERLAP);
+              const cardX = Math.max(4, Math.min(point.x - MAP_SAINT_CARD_WIDTH / 2, MAP_WIDTH - MAP_SAINT_CARD_WIDTH - 4));
+              const cardY = Math.max(4, point.y - MAP_SAINT_CARD_HEIGHT - 16);
+
               return (
-                <foreignObject
+                <g
                   aria-hidden="true"
-                  className="places-map__saint-card-object"
-                  height="82"
+                  className="places-map__saint-card"
                   key={`${point.slug}-saints`}
-                  width="148"
-                  x={Math.max(4, Math.min(point.x - 74, MAP_WIDTH - 152))}
-                  y={Math.max(4, point.y - 98)}
+                  transform={`translate(${cardX} ${cardY})`}
                 >
-                  <div className="places-map__saint-card">
-                    <div className="places-map__saint-card-images">
-                      {saints.slice(0, 3).map((saint) => (
-                        <FocalImage
-                          alt=""
-                          focalPoint={saint.image?.focalPoint}
-                          height={40}
-                          key={saint.slug}
-                          src={saint.image?.url ?? "/images/devotional-archive-placeholder.svg"}
-                          sourceHeight={saint.image?.height}
-                          sourceWidth={saint.image?.width}
-                          width={40}
+                  <line
+                    className="places-map__saint-card-anchor"
+                    x1={MAP_SAINT_CARD_WIDTH / 2}
+                    x2={point.x - cardX}
+                    y1={MAP_SAINT_CARD_HEIGHT}
+                    y2={point.y - cardY}
+                  />
+                  <rect className="places-map__saint-card-surface" height={MAP_SAINT_CARD_HEIGHT} rx="8" width={MAP_SAINT_CARD_WIDTH} />
+                  {visibleSaints.map((saint, index) => {
+                    const imageX = (MAP_SAINT_CARD_WIDTH - imagesWidth) / 2 + index * (MAP_SAINT_CARD_IMAGE_SIZE - MAP_SAINT_CARD_IMAGE_OVERLAP);
+                    const clipId = `map-saint-${point.slug}-${saint.slug}`;
+
+                    return (
+                      <g key={saint.slug}>
+                        <defs>
+                          <clipPath id={clipId}>
+                            <circle cx={imageX + MAP_SAINT_CARD_IMAGE_SIZE / 2} cy="28" r={MAP_SAINT_CARD_IMAGE_SIZE / 2} />
+                          </clipPath>
+                        </defs>
+                        <circle className="places-map__saint-card-image-border" cx={imageX + MAP_SAINT_CARD_IMAGE_SIZE / 2} cy="28" r={MAP_SAINT_CARD_IMAGE_SIZE / 2 + 1} />
+                        <image
+                          clipPath={`url(#${clipId})`}
+                          height={MAP_SAINT_CARD_IMAGE_SIZE}
+                          href={saint.image?.url ?? "/images/devotional-archive-placeholder.svg"}
+                          preserveAspectRatio="xMidYMid slice"
+                          width={MAP_SAINT_CARD_IMAGE_SIZE}
+                          x={imageX}
+                          y="8"
                         />
-                      ))}
-                    </div>
-                    <span>{formatSaintCardLabel(saints)}</span>
-                  </div>
-                </foreignObject>
+                      </g>
+                    );
+                  })}
+                  <text className="places-map__saint-card-label" textAnchor="middle" x={MAP_SAINT_CARD_WIDTH / 2} y="70">
+                    {formatSaintCardLabel(saints)}
+                  </text>
+                </g>
               );
             }) : null}
             {hoveredPoint ? (
