@@ -966,12 +966,6 @@ html[data-route-entering="true"] body > main {
   z-index: 1;
 }
 
-.home-cosmic-hero--with-banner::before {
-  background:
-    linear-gradient(90deg, color-mix(in srgb, var(--color-bg) 82%, transparent) 0 36%, color-mix(in srgb, var(--color-bg) 46%, transparent) 58%, color-mix(in srgb, var(--color-bg) 18%, transparent) 100%),
-    linear-gradient(180deg, color-mix(in srgb, var(--color-bg) 24%, transparent), color-mix(in srgb, var(--color-bg) 46%, transparent));
-}
-
 .home-cosmic-hero::after {
   background:
     radial-gradient(circle at 18% 17%, var(--color-star) 0 1px, transparent 2px),
@@ -985,6 +979,11 @@ html[data-route-entering="true"] body > main {
   pointer-events: none;
   position: absolute;
   z-index: 1;
+}
+
+.home-cosmic-hero--with-banner::before,
+.home-cosmic-hero--with-banner::after {
+  content: none;
 }
 
 .home-cosmic-hero__inner {
