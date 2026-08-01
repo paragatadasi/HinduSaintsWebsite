@@ -1567,8 +1567,8 @@ html[data-route-entering="true"] body > main {
 }
 
 .places-map {
-  background: var(--color-surface);
-  border: 1px solid var(--color-card-border);
+  background: var(--color-bg);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 34%, transparent);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
   display: grid;
@@ -1581,9 +1581,9 @@ html[data-route-entering="true"] body > main {
 
 .places-map__canvas {
   background:
-    radial-gradient(circle at 50% 36%, color-mix(in srgb, var(--color-gold) 14%, transparent), transparent 34%),
-    var(--color-surface-muted);
-  border: 1px solid var(--color-border);
+    radial-gradient(circle at 56% 45%, color-mix(in srgb, var(--color-gold) 18%, transparent), transparent 32%),
+    color-mix(in srgb, var(--color-bg) 76%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 18%, transparent);
   border-radius: var(--radius-md);
   height: 100%;
   min-height: 0;
@@ -1597,15 +1597,15 @@ html[data-route-entering="true"] body > main {
 }
 
 .places-map__states {
-  filter: drop-shadow(0 12px 26px color-mix(in srgb, var(--color-bg) 16%, transparent));
+  filter: drop-shadow(0 12px 26px color-mix(in srgb, var(--color-bg) 42%, transparent));
 }
 
 .places-map__state {
-  fill: color-mix(in srgb, var(--color-gold) 12%, var(--color-surface));
+  fill: color-mix(in srgb, var(--color-surface) 42%, transparent);
   fill-rule: evenodd;
   outline: none;
   pointer-events: none;
-  stroke: color-mix(in srgb, var(--color-gold) 36%, transparent);
+  stroke: color-mix(in srgb, var(--color-gold) 18%, transparent);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1;
@@ -1614,15 +1614,15 @@ html[data-route-entering="true"] body > main {
 
 .places-map__state--active {
   cursor: pointer;
-  fill: color-mix(in srgb, var(--color-green) 20%, var(--color-surface));
+  fill: color-mix(in srgb, var(--color-gold) 13%, var(--color-bg));
   pointer-events: auto;
-  stroke: color-mix(in srgb, var(--color-green) 82%, var(--color-gold));
-  stroke-width: 1.4;
+  stroke: color-mix(in srgb, var(--color-gold) 46%, transparent);
+  stroke-width: 1;
 }
 
 .places-map__state--active:hover,
 .places-map__state--active:focus-visible {
-  fill: color-mix(in srgb, var(--color-green) 30%, var(--color-surface));
+  fill: color-mix(in srgb, var(--color-gold) 22%, var(--color-bg));
   stroke: var(--color-focus);
   stroke-width: 2.4;
 }
@@ -1640,12 +1640,12 @@ html[data-route-entering="true"] body > main {
 
 .places-map__route {
   fill: none;
-  opacity: 0.9;
+  opacity: 0.52;
   pointer-events: none;
-  stroke: var(--color-accent);
-  stroke-dasharray: 4 7;
+  stroke: var(--color-gold);
+  stroke-dasharray: 3 7;
   stroke-linecap: round;
-  stroke-width: 2;
+  stroke-width: 1.5;
 }
 
 .places-map__route--associated {
@@ -1655,9 +1655,9 @@ html[data-route-entering="true"] body > main {
 }
 
 .places-map__marker-ring {
-  fill: color-mix(in srgb, var(--color-accent) 24%, transparent);
-  stroke: var(--color-accent);
-  stroke-width: 2;
+  fill: color-mix(in srgb, var(--color-gold) 18%, transparent);
+  stroke: color-mix(in srgb, var(--color-gold) 62%, transparent);
+  stroke-width: 1.5;
 }
 
 .places-map__marker-hit-area {
@@ -1666,14 +1666,14 @@ html[data-route-entering="true"] body > main {
 }
 
 .places-map__marker--state .places-map__marker-ring {
-  fill: color-mix(in srgb, var(--color-green) 18%, transparent);
-  stroke: var(--color-green);
+  fill: color-mix(in srgb, var(--color-gold) 12%, transparent);
+  stroke: color-mix(in srgb, var(--color-gold) 52%, transparent);
   stroke-dasharray: 5 4;
 }
 
 .places-map__marker--state .places-map__marker-core {
-  fill: var(--color-green);
-  stroke: var(--color-surface);
+  fill: var(--color-gold);
+  stroke: var(--color-bg);
 }
 
 .places-map__marker-ring--selected {
@@ -1683,7 +1683,8 @@ html[data-route-entering="true"] body > main {
 }
 
 .places-map__marker-core {
-  fill: var(--color-cream);
+  fill: var(--color-gold);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-gold) 72%, transparent));
   stroke: var(--color-bg);
   stroke-width: 1.5;
 }

@@ -35,7 +35,18 @@ type SearchableInstagramItem = {
 };
 
 export function getInstagramQueueWhere(status: InstagramQueueStatus): Prisma.InstagramItemWhereInput {
-  return status === "all" ? {} : { status };
+  if (status === "all") return {};
+  if (status === "published") {
+    return {
+      saints: {
+        some: {
+          matchStatus: { in: ["matched", "published"] },
+          saint: { status: "published" }
+        }
+      }
+    };
+  }
+  return { status };
 }
 
 export function rankInstagramQueueItems<T extends SearchableInstagramItem>(items: T[], query: string) {

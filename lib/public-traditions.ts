@@ -38,6 +38,7 @@ async function getTraditionRows(
     where: {
       AND: [
         { status: { in: [...statuses] } },
+        { saints: { some: { saint: { status: "published" } } } },
         where
       ]
     },
@@ -67,11 +68,22 @@ async function getTraditionRows(
 
 async function getPublishedTraditionRowBySlug(slug: string) {
   return db.tradition.findFirst({
-    where: { slug, status: "published" },
+    where: {
+      slug,
+      status: "published",
+      saints: { some: { saint: { status: "published" } } }
+    },
     include: {
-      parentTradition: true,
+      parentTradition: {
+        include: {
+          saints: { select: { saint: { select: { status: true } } } }
+        }
+      },
       childTraditions: {
-        where: { status: "published" },
+        where: {
+          status: "published",
+          saints: { some: { saint: { status: "published" } } }
+        },
         orderBy: { name: "asc" }
       },
       heroImage: true,
@@ -101,7 +113,12 @@ async function getPublishedTraditionRowBySlug(slug: string) {
         orderBy: { sortOrder: "asc" }
       },
       relatedTraditions: {
-        where: { relatedTradition: { status: "published" } },
+        where: {
+          relatedTradition: {
+            status: "published",
+            saints: { some: { saint: { status: "published" } } }
+          }
+        },
         include: { relatedTradition: true },
         orderBy: { sortOrder: "asc" }
       },
@@ -195,7 +212,10 @@ const getPublicTraditionSummariesByIdsCached = unstable_cache(async (
 
 export async function getPublishedTraditionSlugs() {
   return db.tradition.findMany({
-    where: { status: "published" },
+    where: {
+      status: "published",
+      saints: { some: { saint: { status: "published" } } }
+    },
     select: { slug: true },
     orderBy: { slug: "asc" }
   });
@@ -232,7 +252,8 @@ const getPublicBasicTraditionBySlugCached = unstable_cache(async (slug: string) 
   const tradition = await db.tradition.findFirst({
     where: {
       slug,
-      status: { in: [...PUBLIC_TRADITION_STATUSES] }
+      status: { in: [...PUBLIC_TRADITION_STATUSES] },
+      saints: { some: { saint: { status: "published" } } }
     },
     select: {
       name: true,
@@ -320,7 +341,9 @@ function toPublicTraditionDetail(
 
 function getRelatedTraditions(tradition: TraditionDetailRow) {
   const hierarchyLinks = [
-    tradition.parentTradition && tradition.parentTradition.status === "published"
+    tradition.parentTradition
+      && tradition.parentTradition.status === "published"
+      && tradition.parentTradition.saints.some(({ saint }) => saint.status === "published")
       ? toPublicTraditionLink(tradition.parentTradition)
       : null,
     ...tradition.childTraditions.map(toPublicTraditionLink)

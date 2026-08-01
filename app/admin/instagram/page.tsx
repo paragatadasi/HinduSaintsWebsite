@@ -148,11 +148,19 @@ function getActiveStatus(status: string | undefined): StatusFilter {
 }
 
 async function getInstagramItemCounts() {
-  const grouped = await db.instagramItem.groupBy({
-    by: ["status"],
-    _count: { _all: true }
-  });
-  return Object.fromEntries(grouped.map((row) => [row.status, row._count._all])) as Record<string, number>;
+  const [grouped, published] = await Promise.all([
+    db.instagramItem.groupBy({
+      by: ["status"],
+      _count: { _all: true }
+    }),
+    db.instagramItem.count({ where: getInstagramQueueWhere("published") })
+  ]);
+  const counts = Object.fromEntries(grouped.map((row) => [row.status, row._count._all]));
+  return {
+    ...counts,
+    all: Object.values(counts).reduce((total, count) => total + count, 0),
+    published
+  } as Record<string, number>;
 }
 
 async function getInstagramItems(status: StatusFilter, query: string, requestedPage: number) {
@@ -325,9 +333,7 @@ function getInstagramReturnTo(status: StatusFilter, query: string, page = 1) {
 }
 
 function getStatusCount(counts: Record<string, number>, status: StatusFilter) {
-  if (status === "all") {
-    return statuses.reduce((total, item) => total + (counts[item] ?? 0), 0);
-  }
+  if (status === "all") return counts.all ?? 0;
   return counts[status] ?? 0;
 }
 
