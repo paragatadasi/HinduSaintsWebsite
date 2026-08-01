@@ -111,7 +111,6 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
   const selectedPanelSaints = selectedPanelItem?.activeSaints ?? [];
   const visiblePanelSaints = selectedPanelSaints.slice(0, PANEL_SAINT_PREVIEW_LIMIT);
   const hiddenPanelSaintCount = Math.max(0, selectedPanelSaints.length - visiblePanelSaints.length);
-  const visibleSaintCount = new Set(projectedPoints.flatMap((point) => point.activeSaints.map((saint) => saint.slug))).size;
   const enableTimeFilter = () => {
     setHoveredSlug("");
     setTimeFilterEnabled(true);
@@ -180,7 +179,6 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
           <h2 id="places-map-title">{content.title}</h2>
           <p>{content.description}</p>
         </div>
-        <p>{visibleSaintCount} {visibleSaintCount === 1 ? "saint" : "saints"} across {projectedPoints.length} mapped places</p>
       </div>
       <div className={selectedPanelItem ? "places-map places-map--selected" : "places-map"}>
         <div className="places-map__canvas">

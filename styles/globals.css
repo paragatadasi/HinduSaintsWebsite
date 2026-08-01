@@ -1019,7 +1019,7 @@ html[data-route-entering="true"] body > main {
   color: var(--color-cream);
   font-size: clamp(1rem, 1.6vw, 1.18rem);
   margin: 0;
-  max-width: 420px;
+  max-width: 100%;
 }
 
 .home-cosmic-search {
