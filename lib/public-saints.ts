@@ -18,6 +18,7 @@ import { PUBLIC_CACHE_TAGS, PUBLIC_DATA_CACHE_SECONDS } from "@/lib/public-cache
 import { getPublishedSaintSearchCandidateIds } from "@/lib/postgres-saint-search";
 import { getPublicImageVariants } from "@/lib/responsive-images";
 import { rankSaintSearchResults } from "@/lib/saint-search";
+import { compareSaintDisplayNames } from "@/lib/saint-name-sort";
 
 type SaintListRow = Awaited<ReturnType<typeof getPublishedSaintRows>>[number];
 type SaintDetailRow = NonNullable<Awaited<ReturnType<typeof getPublishedSaintRowBySlug>>>;
@@ -220,7 +221,9 @@ export async function getPublishedSaintCatalog({
 
   return {
     facets,
-    items: rows.map(toPublicSaintSummary),
+    items: rows
+      .map(toPublicSaintSummary)
+      .sort((left, right) => compareSaintDisplayNames(left.displayName, right.displayName)),
     total
   };
 }
