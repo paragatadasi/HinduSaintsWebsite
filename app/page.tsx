@@ -195,32 +195,34 @@ function CosmicHomePage({
 
   return (
     <main className="home home--cosmic">
-      <section className={bannerImage ? "home-cosmic-hero home-cosmic-hero--with-banner" : "home-cosmic-hero"}>
-        {bannerImage ? (
-          <HomeHeroImage
-            image={bannerImage}
-            className="home-cosmic-hero__banner"
-            focalArea={bannerFocalArea}
-            preserveFocalArea={shouldPreserveFullBannerArea(bannerFocalArea)}
-          />
-        ) : null}
-        <div className="page-shell home-cosmic-hero__inner">
-          <div className="home-cosmic-hero__content">
-            <h1>{hero.title}</h1>
-            <p>{hero.body}</p>
-            <form className="hero-search home-cosmic-search" action={hero.primaryAction.href}>
-              <label className="sr-only" htmlFor="home-cosmic-search">Search saints</label>
-              <input id="home-cosmic-search" name="q" placeholder={hero.primaryAction.label} />
-              <button type="submit" aria-label="Search saints">
-                <Search size={22} />
-              </button>
-            </form>
+      <div className="page-shell home-cosmic__frame">
+        <section className={bannerImage ? "home-cosmic-hero home-cosmic-hero--with-banner" : "home-cosmic-hero"}>
+          {bannerImage ? (
+            <HomeHeroImage
+              image={bannerImage}
+              className="home-cosmic-hero__banner"
+              focalArea={bannerFocalArea}
+              preserveFocalArea={shouldPreserveFullBannerArea(bannerFocalArea)}
+            />
+          ) : null}
+          <div className="home-cosmic-hero__inner home-cosmic__section-inner">
+            <div className="home-cosmic-hero__content">
+              <div className="eyebrow">{hero.eyebrow}</div>
+              <h1>{hero.title}</h1>
+              <p>{hero.body}</p>
+              <form className="hero-search home-cosmic-search" action={hero.primaryAction.href}>
+                <label className="sr-only" htmlFor="home-cosmic-search">Search saints</label>
+                <input id="home-cosmic-search" name="q" placeholder={hero.primaryAction.label} />
+                <button type="submit" aria-label="Search saints">
+                  <Search size={22} />
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="home-cosmic-panel home-cosmic-panel--split">
-        <div className="page-shell home-cosmic-feature-grid">
+        <section className="home-cosmic-panel home-cosmic-panel--split">
+          <div className="home-cosmic-feature-grid home-cosmic__section-inner">
           <div className="home-cosmic-feature-grid__saints">
             <div className="section-heading home-cosmic-heading">
               <h2>{featuredSaintsSection.title}</h2>
@@ -250,11 +252,11 @@ function CosmicHomePage({
               {mapData.points.length} {mapData.points.length === 1 ? "place" : "places"}.
             </p>
           </aside>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section className="home-cosmic-panel home-cosmic-panel--duo">
-        <div className="page-shell home-cosmic-duo">
+        <section className="home-cosmic-panel home-cosmic-panel--duo">
+          <div className="home-cosmic-duo">
           <aside className="home-quote-card">
             <div className="eyebrow">{quote.eyebrow}</div>
             <blockquote>
@@ -305,11 +307,11 @@ function CosmicHomePage({
               </div>
             </div>
           </article>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section className="home-cosmic-panel home-cosmic-panel--last">
-        <div className="page-shell">
+        <section className="home-cosmic-panel home-cosmic-panel--last">
+          <div className="home-cosmic__section-inner">
           <div className="section-heading home-cosmic-heading">
             <h2>From Instagram</h2>
             <Button href={hero.secondaryAction.href} variant="text" icon={<ArrowRight size={16} />} iconPosition="end">
@@ -321,8 +323,9 @@ function CosmicHomePage({
           ) : (
             <p className="empty-note">Instagram carousel posts will appear here after import.</p>
           )}
-        </div>
-      </section>
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
