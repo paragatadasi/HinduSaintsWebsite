@@ -10,7 +10,7 @@ import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 
 const homePageConfigSchema = z.object({
-  heroEyebrow: z.string().trim().max(24).optional(),
+  heroEyebrow: z.string().trim().optional(),
   heroTitle: z.string().trim().max(160).optional(),
   heroBody: z.string().trim().max(500).optional(),
   heroPrimaryLabel: z.string().trim().max(120).optional(),

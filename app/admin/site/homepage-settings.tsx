@@ -87,7 +87,7 @@ export async function HomepageSettings() {
               <div className="field-grid field-grid--identity-line">
                 <label>
                   Eyebrow
-                  <input name="heroEyebrow" type="text" maxLength={24} defaultValue={config?.heroEyebrow ?? defaultHero.eyebrow} />
+                  <input name="heroEyebrow" type="text" defaultValue={config?.heroEyebrow ?? defaultHero.eyebrow} />
                 </label>
                 <label>
                   Title
