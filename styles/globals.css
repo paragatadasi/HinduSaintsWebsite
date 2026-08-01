@@ -370,7 +370,7 @@ html[data-route-entering="true"] body > main {
   border-top: var(--border-width-default) solid var(--color-border);
   isolation: isolate;
   overflow: hidden;
-  padding: clamp(var(--space-10), 7vw, var(--space-16)) clamp(var(--space-5), 5vw, var(--space-12));
+  padding: clamp(var(--space-8), 4vw, var(--space-12)) clamp(var(--space-5), 5vw, var(--space-12));
   position: relative;
 }
 
@@ -391,24 +391,29 @@ html[data-route-entering="true"] body > main {
 
 .about-discovery__overlay {
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--color-bg) 38%, transparent), color-mix(in srgb, var(--color-bg) 80%, transparent)),
-    linear-gradient(90deg, color-mix(in srgb, var(--color-bg) 62%, transparent), transparent 50%, color-mix(in srgb, var(--color-bg) 62%, transparent));
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg) 52%, transparent), color-mix(in srgb, var(--color-bg) 84%, transparent)),
+    color-mix(in srgb, var(--color-night-soft) 24%, transparent);
   z-index: -1;
 }
 
 .about-discovery__content { position: relative; }
 
 .about-discovery__heading {
-  margin: 0 auto var(--space-10);
-  max-width: 720px;
+  margin: 0 auto var(--space-8);
+  max-width: 860px;
   text-align: center;
+}
+
+.about-discovery__heading .eyebrow {
+  align-items: center;
+  justify-content: center;
 }
 
 .about-discovery__heading h2 {
   font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 3vw, 2.75rem);
+  font-size: clamp(1.45rem, 2vw, 2rem);
   font-weight: 400;
-  line-height: 1.08;
+  line-height: 1.15;
   margin: var(--space-2) 0 0;
 }
 
@@ -422,16 +427,17 @@ html[data-route-entering="true"] body > main {
   color: var(--color-text);
   display: flex;
   flex-direction: column;
-  min-height: 230px;
-  padding: var(--space-5) clamp(var(--space-5), 4vw, var(--space-10));
+  min-height: 210px;
+  min-width: 0;
+  padding: var(--space-4) clamp(var(--space-5), 4vw, var(--space-10));
   position: relative;
   text-align: center;
 }
 
 .about-discovery-card + .about-discovery-card { border-left: var(--border-width-default) solid color-mix(in srgb, var(--color-gold) 28%, transparent); }
-.about-discovery-card > svg { color: var(--color-gold); margin-bottom: var(--space-5); stroke-width: 1.5; }
-.about-discovery-card h3 { font-family: var(--font-serif); font-size: 1.65rem; font-weight: 400; margin: 0 0 var(--space-3); }
-.about-discovery-card p { color: var(--color-muted); font-size: 0.92rem; line-height: 1.65; margin: 0; max-width: 240px; }
+.about-discovery-card > svg { color: var(--color-gold); margin-bottom: var(--space-4); stroke-width: 1.5; }
+.about-discovery-card h3 { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400; margin: 0 0 var(--space-3); }
+.about-discovery-card p { color: var(--color-muted); font-size: 0.88rem; line-height: 1.6; margin: 0; max-width: 230px; }
 .about-discovery-card:hover h3,
 .about-discovery-card:focus-visible h3 { color: var(--color-accent-strong); }
 
