@@ -794,6 +794,13 @@ html[data-route-entering="true"] body > main {
   width: 100%;
 }
 
+.index-page-hero { min-height: var(--height-index-page-hero); overflow: hidden; position: relative; }
+.index-page-hero__image, .index-page-hero__overlay { inset: 0; position: absolute; }
+.index-page-hero__image { filter: var(--image-treatment); height: 100%; object-fit: cover; object-position: var(--image-object-position, center); width: 100%; }
+.index-page-hero__overlay { background: linear-gradient(90deg, var(--color-bg), color-mix(in srgb, var(--color-bg) 82%, transparent) 58%, color-mix(in srgb, var(--color-bg) 30%, transparent)); }
+.index-page-hero__content { max-width: var(--width-prose); padding: var(--space-12) var(--space-8); position: relative; }
+.site-hero-admin-preview { aspect-ratio: 3 / 1; border-radius: var(--radius-card); box-shadow: var(--shadow-image); object-fit: cover; width: 100%; }
+
 .hero-search {
   align-items: center;
   background: var(--color-cream);

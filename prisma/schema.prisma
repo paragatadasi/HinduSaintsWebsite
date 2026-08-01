@@ -653,6 +653,9 @@ model MediaAsset {
   aboutVisionConfigs         SiteConfig[]            @relation("AboutVisionImage")
   aboutStoryConfigs          SiteConfig[]            @relation("AboutStoryImage")
   aboutGuruConfigs           SiteConfig[]            @relation("AboutGuruImage")
+  saintsIndexHeroConfigs     SiteConfig[]            @relation("SaintsIndexHeroImage")
+  traditionsIndexHeroConfigs SiteConfig[]            @relation("TraditionsIndexHeroImage")
+  mapIndexHeroConfigs        SiteConfig[]            @relation("MapIndexHeroImage")
   primaryForSaints           Saint[]                 @relation("PrimarySaintImage")
   heroForTraditions          Tradition[]             @relation("TraditionHeroImage")
   saintGalleryImages         SaintGalleryImage[]
@@ -714,6 +717,12 @@ model SiteConfig {
   aboutStoryImage    MediaAsset? @relation("AboutStoryImage", fields: [aboutStoryImageId], references: [id], onDelete: SetNull)
   aboutGuruImageId   String?
   aboutGuruImage     MediaAsset? @relation("AboutGuruImage", fields: [aboutGuruImageId], references: [id], onDelete: SetNull)
+  saintsHeroImageId     String?
+  saintsHeroImage       MediaAsset? @relation("SaintsIndexHeroImage", fields: [saintsHeroImageId], references: [id], onDelete: SetNull)
+  traditionsHeroImageId String?
+  traditionsHeroImage   MediaAsset? @relation("TraditionsIndexHeroImage", fields: [traditionsHeroImageId], references: [id], onDelete: SetNull)
+  mapHeroImageId         String?
+  mapHeroImage           MediaAsset? @relation("MapIndexHeroImage", fields: [mapHeroImageId], references: [id], onDelete: SetNull)
   updatedByEmail     String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
