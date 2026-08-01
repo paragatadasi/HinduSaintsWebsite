@@ -1976,6 +1976,53 @@ html[data-route-entering="true"] body > main {
   scrollbar-width: none;
 }
 
+.scroll-section[data-can-scroll-next="true"] .scroll-rail {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    black 0,
+    black calc(100% - var(--width-scroll-rail-edge-fade)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    black 0,
+    black calc(100% - var(--width-scroll-rail-edge-fade)),
+    transparent 100%
+  );
+}
+
+.scroll-section[data-can-scroll-previous="true"] .scroll-rail {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black var(--width-scroll-rail-edge-fade),
+    black 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black var(--width-scroll-rail-edge-fade),
+    black 100%
+  );
+}
+
+.scroll-section[data-can-scroll-previous="true"][data-can-scroll-next="true"] .scroll-rail {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black var(--width-scroll-rail-edge-fade),
+    black calc(100% - var(--width-scroll-rail-edge-fade)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black var(--width-scroll-rail-edge-fade),
+    black calc(100% - var(--width-scroll-rail-edge-fade)),
+    transparent 100%
+  );
+}
+
 .scroll-rail::-webkit-scrollbar {
   display: none;
 }
@@ -1995,9 +2042,11 @@ html[data-route-entering="true"] body > main {
 
 .scroll-button {
   align-items: center;
-  background: var(--color-bg);
+  backdrop-filter: blur(8px);
+  background: var(--color-scroll-button-mobile-bg);
   border: var(--border-width-default) solid var(--color-gold);
   border-radius: 50%;
+  box-shadow: var(--shadow-soft);
   color: var(--color-gold);
   display: inline-flex;
   height: var(--size-scroll-button);
@@ -2005,6 +2054,9 @@ html[data-route-entering="true"] body > main {
   position: absolute;
   top: var(--scroll-button-block-position);
   transform: translateY(-50%);
+  transition:
+    opacity var(--motion-interactive-duration) var(--motion-interactive-ease),
+    visibility var(--motion-interactive-duration) var(--motion-interactive-ease);
   width: var(--size-scroll-button);
   z-index: 2;
 }
@@ -2019,7 +2071,9 @@ html[data-route-entering="true"] body > main {
 
 .scroll-button:disabled {
   cursor: default;
-  opacity: 0.38;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .instagram-preview {
@@ -8125,15 +8179,6 @@ html[data-route-entering="true"] body > main {
     width: 100%;
   }
 
-  .scroll-button {
-    backdrop-filter: blur(8px);
-    background: var(--color-scroll-button-mobile-bg);
-    box-shadow: var(--shadow-soft);
-    transition:
-      opacity var(--motion-interactive-duration) var(--motion-interactive-ease),
-      visibility var(--motion-interactive-duration) var(--motion-interactive-ease);
-  }
-
   .scroll-button--previous {
     left: var(--scroll-button-mobile-offset);
   }
@@ -8142,62 +8187,9 @@ html[data-route-entering="true"] body > main {
     right: var(--scroll-button-mobile-offset);
   }
 
-  .scroll-button:disabled {
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-  }
-
   .scroll-rail {
     padding-inline: var(--space-2);
     scroll-padding-inline: var(--space-2);
-  }
-
-  .scroll-section[data-can-scroll-next="true"] .scroll-rail {
-    -webkit-mask-image: linear-gradient(
-      to right,
-      black 0,
-      black calc(100% - var(--width-scroll-rail-edge-fade)),
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to right,
-      black 0,
-      black calc(100% - var(--width-scroll-rail-edge-fade)),
-      transparent 100%
-    );
-  }
-
-  .scroll-section[data-can-scroll-previous="true"] .scroll-rail {
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      black var(--width-scroll-rail-edge-fade),
-      black 100%
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      black var(--width-scroll-rail-edge-fade),
-      black 100%
-    );
-  }
-
-  .scroll-section[data-can-scroll-previous="true"][data-can-scroll-next="true"] .scroll-rail {
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      black var(--width-scroll-rail-edge-fade),
-      black calc(100% - var(--width-scroll-rail-edge-fade)),
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      black var(--width-scroll-rail-edge-fade),
-      black calc(100% - var(--width-scroll-rail-edge-fade)),
-      transparent 100%
-    );
   }
 
   .instagram-carousel-viewer__content {
