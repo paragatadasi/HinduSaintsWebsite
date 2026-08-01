@@ -242,12 +242,11 @@ export const aboutPageContent: AboutPageContent = {
     }
   ],
   discovery: {
-    title: "Four ways into a vast tradition",
+    title: "Three ways into a vast tradition",
     items: [
       { title: "Saints", body: "Explore the lives of realised souls from across traditions.", href: "/saints", icon: "sparkles" },
       { title: "Traditions", body: "Enter living lineages and the teachings they carry.", href: "/traditions", icon: "book" },
-      { title: "Sacred Map", body: "Discover places connected to saints and seekers.", href: "/map", icon: "map" },
-      { title: "Wisdom", body: "Be inspired by timeless teachings and stories.", href: "/saints", icon: "flame" }
+      { title: "Sacred Map", body: "Discover places connected to saints and seekers.", href: "/map", icon: "map" }
     ]
   }
 };

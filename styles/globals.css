@@ -240,12 +240,13 @@ html[data-route-entering="true"] body > main {
 /* About page: contained editorial composition. */
 .about-page {
   background: transparent;
-  padding-block: var(--space-6) var(--space-12);
+  padding-block: 0;
 }
 
 .about-page__frame {
   background: var(--color-bg);
   border: var(--border-width-default) solid var(--color-border);
+  border-block: 0;
   box-shadow: var(--shadow-soft);
   overflow: hidden;
   padding: 0;
@@ -265,6 +266,11 @@ html[data-route-entering="true"] body > main {
   max-width: 680px;
 }
 
+.about-story-section__media,
+.about-story-section--image-first .about-story-section__media {
+  border-inline: 0;
+}
+
 .about-story-section {
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   min-height: 0;
@@ -281,7 +287,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .about-story-section__media {
-  background: var(--color-section-surface);
+  background: var(--color-bg);
   min-height: clamp(400px, 44vw, 580px);
   padding: clamp(var(--space-5), 4vw, var(--space-12));
 }
@@ -373,7 +379,7 @@ html[data-route-entering="true"] body > main {
 
 .about-discovery__grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .about-discovery-card {

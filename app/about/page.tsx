@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import type { Metadata } from "next";
-import { BookOpen, Flame, MapPinned, Sparkles } from "lucide-react";
+import { BookOpen, MapPinned, Sparkles } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Prose } from "@/components/content/prose";
 import type { PublicImage } from "@/lib/public-contracts";
@@ -19,8 +19,7 @@ const defaultHeroImage: PublicImage = {
 const discoveryIcons: Record<string, ComponentType<{ size?: number; "aria-hidden"?: boolean }>> = {
   sparkles: Sparkles,
   book: BookOpen,
-  map: MapPinned,
-  flame: Flame
+  map: MapPinned
 };
 
 export default async function AboutPage() {
@@ -87,7 +86,6 @@ export default async function AboutPage() {
 
 function StorySection({ section, image, index }: { section: { title: string; body: string }; image?: PublicImage; index: number }) {
   const { teaser, remainder } = splitExpandableMarkdown(section.body);
-  const isVision = index === 0;
   return (
     <section className={`about-story-section about-story-section--${index % 2 === 0 ? "text-first" : "image-first"}`}>
       <div className="about-story-section__copy">
@@ -101,7 +99,7 @@ function StorySection({ section, image, index }: { section: { title: string; bod
           </details>
         ) : null}
       </div>
-      <figure className={`about-story-section__media ${isVision ? "about-story-section__media--arch" : "about-story-section__media--plain"}`}>
+      <figure className="about-story-section__media about-story-section__media--arch">
         {image ? (
           <div className="about-story-section__window">
             <img src={image.url} alt={image.alt} />
