@@ -172,14 +172,7 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
   }, [selectedPanelItem]);
 
   return (
-    <section className="places-map-section" aria-labelledby="places-map-title">
-      <div className="section-heading section-heading--text">
-        <div>
-          <div className="eyebrow">{content.eyebrow}</div>
-          <h2 id="places-map-title">{content.title}</h2>
-          <p>{content.description}</p>
-        </div>
-      </div>
+    <section className="places-map-section" aria-label={content.title}>
       <div className={selectedPanelItem ? "places-map places-map--selected" : "places-map"}>
         <div className="places-map__canvas">
           <svg
