@@ -41,8 +41,8 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
 
   return (
     <main className="page-shell section site-grid saints-index">
-      <IndexPageHero {...content} image={heroImages.saints} />
-      <form className="catalog-controls" action="/saints">
+      <IndexPageHero {...content} image={heroImages.saints}>
+        <form className="catalog-controls" action="/saints">
         <div className="index-search">
           <label className="sr-only" htmlFor="saints-search">Search saints</label>
           <input
@@ -80,7 +80,8 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
           </label>
           <button className="filter-submit" type="submit">Apply filters</button>
         </div>
-      </form>
+        </form>
+      </IndexPageHero>
       <div className="results-summary">
         <p>{resultLabel}</p>
         {hasActiveCatalogQuery ? <Link href="/saints">Clear search and filters</Link> : null}
