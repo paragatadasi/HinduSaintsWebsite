@@ -31,6 +31,10 @@
   --font-sans: Arial, Helvetica, sans-serif;
   --font-serif: Georgia, "Times New Roman", serif;
   --font-size-admin-stat-heading: 1.25rem;
+  --font-size-encounter-title: 1.5rem;
+  --font-size-encounter-body: 0.875rem;
+  --font-size-encounter-eyebrow: 0.75rem;
+  --letter-spacing-eyebrow: 0.12em;
   --font-size-definition-tooltip: 0.875rem;
   --font-size-review-field: 0.92rem;
   --font-size-review-hint: 0.78rem;
@@ -55,6 +59,9 @@
   --shadow-interactive:
     0 0 0 1px color-mix(in srgb, var(--color-accent) 16%, transparent),
     0 5px 14px color-mix(in srgb, var(--color-gold) 18%, transparent);
+  --color-encounter-surface: var(--color-surface);
+  --color-encounter-border: var(--color-card-border);
+  --shadow-encounter: var(--shadow-soft);
   --image-treatment: saturate(0.94) contrast(0.98);
   --motion-interactive-duration: 180ms;
   --motion-interactive-ease: ease;
@@ -226,6 +233,12 @@
   --color-star: rgba(241, 181, 69, 0.32);
   --color-glass: rgba(18, 26, 40, 0.7);
   --color-cream: #fff0cf;
+  --color-encounter-surface: rgba(8, 16, 29, 0.88);
+  --color-encounter-border: rgba(255, 199, 102, 0.58);
+  --shadow-encounter:
+    0 0 0 1px rgba(5, 9, 20, 0.62),
+    0 18px 48px rgba(0, 0, 0, 0.38),
+    0 0 28px rgba(241, 181, 69, 0.1);
 }
 
 [data-theme="temple"] {
