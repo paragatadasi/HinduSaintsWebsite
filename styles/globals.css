@@ -2180,6 +2180,25 @@ html[data-route-entering="true"] body > main {
   padding-top: var(--space-4);
 }
 
+.places-map__visible-saints {
+  display: grid;
+  gap: var(--space-4);
+  min-height: 0;
+}
+
+.places-map__visible-saints-scroll {
+  max-height: var(--height-places-map-visible-saints);
+  overflow-y: auto;
+  padding-right: var(--space-2);
+  scrollbar-color: var(--color-interactive-border) transparent;
+  scrollbar-width: thin;
+}
+
+.places-map__load-more {
+  justify-content: center;
+  width: 100%;
+}
+
 .places-map__saint-list {
   display: grid;
   gap: var(--space-3);

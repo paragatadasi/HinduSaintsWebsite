@@ -49,6 +49,7 @@ const MAP_SAINT_CARD_HEIGHT = 82;
 const MAP_SAINT_CARD_IMAGE_SIZE = 40;
 const MAP_SAINT_CARD_IMAGE_OVERLAP = 12;
 const PANEL_SAINT_PREVIEW_LIMIT = 4;
+const TIME_FILTER_SAINT_BATCH_SIZE = 6;
 const INDIA_BOUNDS = {
   minLatitude: 6,
   maxLatitude: 37.6,
@@ -63,6 +64,7 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
   const [selectedSlug, setSelectedSlug] = useState("");
   const [selectedStateSlug, setSelectedStateSlug] = useState("");
   const [hoveredSlug, setHoveredSlug] = useState("");
+  const [visibleTimeFilterSaintCount, setVisibleTimeFilterSaintCount] = useState(TIME_FILTER_SAINT_BATCH_SIZE);
   const panelRef = useRef<HTMLElement>(null);
   const panelHeadingRef = useRef<HTMLHeadingElement>(null);
   const selectionMethodRef = useRef<"keyboard" | "pointer" | null>(null);
@@ -113,6 +115,15 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
   const selectedPanelSaints = selectedPanelItem?.activeSaints ?? [];
   const visiblePanelSaints = selectedPanelSaints.slice(0, PANEL_SAINT_PREVIEW_LIMIT);
   const hiddenPanelSaintCount = Math.max(0, selectedPanelSaints.length - visiblePanelSaints.length);
+  const timeFilterSaints = useMemo(() => {
+    const saintsBySlug = new Map<string, PublicPlaceMapSaint>();
+    projectedPoints.forEach((point) => {
+      point.activeSaints.forEach((saint) => saintsBySlug.set(saint.slug, saint));
+    });
+    return [...saintsBySlug.values()].sort((left, right) => left.displayName.localeCompare(right.displayName));
+  }, [projectedPoints]);
+  const visibleTimeFilterSaints = timeFilterSaints.slice(0, visibleTimeFilterSaintCount);
+  const hiddenTimeFilterSaintCount = Math.max(0, timeFilterSaints.length - visibleTimeFilterSaints.length);
   const enableTimeFilter = () => {
     setHoveredSlug("");
     setTimeFilterEnabled(true);
@@ -172,6 +183,10 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
 
     return () => window.cancelAnimationFrame(animationFrame);
   }, [selectedPanelItem]);
+
+  useEffect(() => {
+    setVisibleTimeFilterSaintCount(TIME_FILTER_SAINT_BATCH_SIZE);
+  }, [selectedYear, timeFilterEnabled]);
 
   return (
     <section className="places-map-section" aria-label={content.title}>
@@ -291,7 +306,7 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
           </svg>
         </div>
         <aside
-          aria-labelledby={selectedPanelItem ? "places-map-selection-title" : "places-map-prompt-title"}
+          aria-labelledby={selectedPanelItem ? "places-map-selection-title" : timeFilterEnabled ? "places-map-visible-title" : "places-map-prompt-title"}
           aria-live="polite"
           className={selectedPanelItem ? "places-map__panel places-map__panel--selected" : "places-map__panel"}
           ref={panelRef}
@@ -308,31 +323,7 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
                   <X size={18} aria-hidden="true" />
                 </button>
               </div>
-              <ul className="places-map__saint-list">
-                {visiblePanelSaints.map((saint) => (
-                  <li key={saint.slug}>
-                    <Link href={`/saints/${saint.slug}`}>
-                      <span aria-hidden="true" className="places-map__saint-list-image">
-                        <FocalImage
-                          alt=""
-                          focalPoint={saint.image?.focalPoint}
-                          height={saint.image?.height}
-                          sizes="44px"
-                          sourceHeight={saint.image?.height}
-                          sourceWidth={saint.image?.width}
-                          src={saint.image?.url ?? "/images/devotional-archive-placeholder.svg"}
-                          variants={saint.image?.variants}
-                          width={saint.image?.width}
-                        />
-                      </span>
-                      <span className="places-map__saint-list-copy">
-                        <strong>{saint.displayName}</strong>
-                        <span>{saint.eraLabel} - {saint.tradition}</span>
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <MapSaintList saints={visiblePanelSaints} />
               {hiddenPanelSaintCount > 0 ? <p className="empty-note">+{hiddenPanelSaintCount} more associated saints</p> : null}
               {selectedPoint ? (
                 <Link className="button button--primary" href={`/places/${selectedPoint.slug}`}>{content.exploreActionLabel}</Link>
@@ -340,6 +331,30 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
                 <Link className="button button--primary" href={`/places/${selectedStateActionPoint.slug}`}>{content.exploreActionLabel}</Link>
               ) : null}
             </>
+          ) : timeFilterEnabled ? (
+            <div className="places-map__visible-saints">
+              <div>
+                <div className="eyebrow">{timeFilterSaints.length} {timeFilterSaints.length === 1 ? "saint" : "saints"}</div>
+                <h3 id="places-map-visible-title">Visible in {selectedYear}</h3>
+                <p>Select a place to narrow these results.</p>
+              </div>
+              {timeFilterSaints.length > 0 ? (
+                <>
+                  <div className="places-map__visible-saints-scroll">
+                    <MapSaintList saints={visibleTimeFilterSaints} />
+                  </div>
+                  {hiddenTimeFilterSaintCount > 0 ? (
+                    <button
+                      className="button button--secondary places-map__load-more"
+                      onClick={() => setVisibleTimeFilterSaintCount((count) => count + TIME_FILTER_SAINT_BATCH_SIZE)}
+                      type="button"
+                    >
+                      Load more ({hiddenTimeFilterSaintCount} remaining)
+                    </button>
+                  ) : null}
+                </>
+              ) : <p className="empty-note">No mapped saints match this year.</p>}
+            </div>
           ) : (
             <div className="places-map__prompt">
               <div className="eyebrow">Explore</div>
@@ -387,6 +402,36 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
         </div>
       ) : null}
     </section>
+  );
+}
+
+function MapSaintList({ saints }: { saints: PublicPlaceMapSaint[] }) {
+  return (
+    <ul className="places-map__saint-list">
+      {saints.map((saint) => (
+        <li key={saint.slug}>
+          <Link href={`/saints/${saint.slug}`}>
+            <span aria-hidden="true" className="places-map__saint-list-image">
+              <FocalImage
+                alt=""
+                focalPoint={saint.image?.focalPoint}
+                height={saint.image?.height}
+                sizes="44px"
+                sourceHeight={saint.image?.height}
+                sourceWidth={saint.image?.width}
+                src={saint.image?.url ?? "/images/devotional-archive-placeholder.svg"}
+                variants={saint.image?.variants}
+                width={saint.image?.width}
+              />
+            </span>
+            <span className="places-map__saint-list-copy">
+              <strong>{saint.displayName}</strong>
+              <span>{saint.eraLabel} - {saint.tradition}</span>
+            </span>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }
 
