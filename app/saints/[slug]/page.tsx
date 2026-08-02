@@ -45,6 +45,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
       <section className="saint-profile-hero">
         <div className="page-shell saint-profile-hero__inner">
           <div className="saint-profile-hero__content">
+            <h1>{saint.displayName}</h1>
             <FactGrid
               className="saint-profile-stats"
               facts={[
@@ -53,7 +54,6 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
                 ...(saint.traditions.length ? [{ label: template.factLabels.tradition, value: <TaxonomyLinkList items={saint.traditions.map((tradition) => ({ href: `/traditions/${tradition.slug}`, label: tradition.name }))} label={`Traditions associated with ${saint.displayName}`} /> }] : [])
               ]}
             />
-            <h1>{saint.displayName}</h1>
             {saint.shortDescription ? <SaintProfileSummary>{saint.shortDescription}</SaintProfileSummary> : null}
             {hasBiography || latestPost ? <SaintProfileActions hasBiography={hasBiography} latestPost={latestPost} saintName={saint.displayName} /> : null}
           </div>
