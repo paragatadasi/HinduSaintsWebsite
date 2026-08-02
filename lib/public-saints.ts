@@ -166,35 +166,34 @@ const getPublishedSaintSummariesByIdsCached = unstable_cache(async (uniqueIds: s
 });
 
 export type PublicSaintCatalogQuery = {
-  era?: string;
+  endYear?: number;
   location?: string;
   query?: string;
+  startYear?: number;
   tradition?: string;
 };
 
 export async function getPublishedSaintCatalog({
-  era = "",
+  endYear,
   location = "",
   query = "",
+  startYear,
   tradition = ""
 }: PublicSaintCatalogQuery) {
   const term = query.trim().slice(0, 120);
+  const candidateIds = term ? await getPublishedSaintSearchCandidateIds(term) : undefined;
   const where = buildSaintCatalogFilterWhere({
-    era: era.trim(),
+    endYear,
     location: location.trim(),
+    startYear,
     tradition: tradition.trim()
   });
+  const searchWhere = candidateIds ? { ...where, id: { in: candidateIds } } : where;
 
   if (term) {
-    const [candidateIds, facets] = await Promise.all([
-      getPublishedSaintSearchCandidateIds(term),
-      getPublishedSaintCatalogFacets()
-    ]);
-    const searchRows = candidateIds.length > 0
-      ? await getPublishedSaintSearchRows({
-          ...where,
-          id: { in: candidateIds }
-        })
+    const facets = await getPublishedSaintCatalogFacets({ candidateIds, endYear, location, startYear, tradition });
+    const searchRows = candidateIds && candidateIds.length > 0
+      ? await getPublishedSaintSearchRows(searchWhere)
       : [];
     const rankedRows = rankSaintSearchResults(searchRows, term);
     const itemIds = rankedRows.map(({ item }) => item.id);
@@ -215,7 +214,7 @@ export async function getPublishedSaintCatalog({
 
   const [total, facets] = await Promise.all([
     db.saint.count({ where: { status: "published", ...where } }),
-    getPublishedSaintCatalogFacets()
+    getPublishedSaintCatalogFacets({ endYear, location, startYear, tradition })
   ]);
   const rows = await getPublishedSaintRows(where);
 
@@ -228,11 +227,26 @@ export async function getPublishedSaintCatalog({
   };
 }
 
-const getPublishedSaintCatalogFacets = unstable_cache(async () => {
+async function getPublishedSaintCatalogFacets({
+  candidateIds,
+  endYear,
+  location = "",
+  startYear,
+  tradition = ""
+}: {
+  candidateIds?: string[];
+  endYear?: number;
+  location?: string;
+  startYear?: number;
+  tradition?: string;
+}) {
   const saints = await db.saint.findMany({
-    where: { status: "published" },
+    where: { status: "published", ...(candidateIds ? { id: { in: candidateIds } } : {}) },
     select: {
-      eraLabel: true,
+      birthYear: true,
+      birthYearEnd: true,
+      samadhiYear: true,
+      samadhiYearEnd: true,
       places: {
         select: { place: { select: { name: true } } }
       },
@@ -242,25 +256,36 @@ const getPublishedSaintCatalogFacets = unstable_cache(async () => {
     }
   });
 
+  const matchesTradition = (saint: typeof saints[number]) => !tradition || (tradition === DEFAULT_TRADITION
+    ? saint.traditions.length === 0
+    : saint.traditions.some(({ tradition: item }) => item.name === tradition));
+  const matchesLocation = (saint: typeof saints[number]) => !location || (location === DEFAULT_LOCATION
+    ? saint.places.length === 0
+    : saint.places.some(({ place }) => place.name === location));
+  const matchesRange = (saint: typeof saints[number]) => saintOverlapsRange(saint, startYear, endYear);
+  const locationSaints = saints.filter((saint) => matchesTradition(saint) && matchesRange(saint));
+  const traditionSaints = saints.filter((saint) => matchesLocation(saint) && matchesRange(saint));
+  const timelineSaints = saints.filter((saint) => matchesTradition(saint) && matchesLocation(saint));
+  const years = timelineSaints.flatMap(getSaintKnownYears);
+  const timeline = {
+    min: years.length > 0 ? Math.min(...years) : 0,
+    max: years.length > 0 ? Math.max(...years) : new Date().getFullYear()
+  };
+
   return {
-    eras: getUniqueSorted(saints.map((saint) => saint.eraLabel
-      ? formatSaintEraLabel(saint.eraLabel)
-      : DEFAULT_ERA)),
     locations: getUniqueSorted(
-      saints.flatMap((saint) => saint.places.length > 0
+      locationSaints.flatMap((saint) => saint.places.length > 0
         ? saint.places.map(({ place }) => place.name)
         : [DEFAULT_LOCATION])
     ),
+    timeline,
     traditions: getUniqueSorted(
-      saints.flatMap((saint) => saint.traditions.length > 0
+      traditionSaints.flatMap((saint) => saint.traditions.length > 0
         ? saint.traditions.map(({ tradition }) => tradition.name)
         : [DEFAULT_TRADITION])
     )
   };
-}, ["published-saint-catalog-facets"], {
-  revalidate: PUBLIC_DATA_CACHE_SECONDS,
-  tags: [PUBLIC_CACHE_TAGS.saints]
-});
+}
 
 export async function getPublishedSaintSlugs() {
   return db.saint.findMany({
@@ -566,12 +591,14 @@ async function getInstagramItemsForSaint(saintId: string): Promise<PublicInstagr
 }
 
 function buildSaintCatalogFilterWhere({
-  era,
+  endYear,
   location,
+  startYear,
   tradition
 }: {
-  era: string;
+  endYear?: number;
   location: string;
+  startYear?: number;
   tradition: string;
 }): Prisma.SaintWhereInput {
   const and: Prisma.SaintWhereInput[] = [];
@@ -588,11 +615,36 @@ function buildSaintCatalogFilterWhere({
       : { places: { some: { place: { name: location } } } });
   }
 
-  if (era) {
-    and.push(era === DEFAULT_ERA ? { eraLabel: null } : { eraLabel: era });
+  if (startYear != null || endYear != null) {
+    const selectedStart = startYear ?? Number.MIN_SAFE_INTEGER;
+    const selectedEnd = endYear ?? Number.MAX_SAFE_INTEGER;
+    and.push({
+      AND: [
+        { OR: [{ birthYear: { lte: selectedEnd } }, { birthYear: null, samadhiYear: { lte: selectedEnd } }] },
+        { OR: [{ samadhiYearEnd: { gte: selectedStart } }, { samadhiYearEnd: null, samadhiYear: { gte: selectedStart } }, { samadhiYear: null, birthYearEnd: { gte: selectedStart } }, { samadhiYear: null, birthYearEnd: null, birthYear: { gte: selectedStart } }] }
+      ]
+    });
   }
 
   return and.length > 0 ? { AND: and } : {};
+}
+
+function saintOverlapsRange(
+  saint: { birthYear: number | null; birthYearEnd: number | null; samadhiYear: number | null; samadhiYearEnd: number | null },
+  startYear?: number,
+  endYear?: number
+) {
+  if (startYear == null && endYear == null) return true;
+  const years = getSaintKnownYears(saint);
+  if (years.length === 0) return false;
+  const saintStart = saint.birthYear ?? saint.samadhiYear ?? years[0];
+  const saintEnd = saint.samadhiYearEnd ?? saint.samadhiYear ?? saint.birthYearEnd ?? saint.birthYear ?? years[years.length - 1];
+  return saintStart <= (endYear ?? Number.MAX_SAFE_INTEGER) && saintEnd >= (startYear ?? Number.MIN_SAFE_INTEGER);
+}
+
+function getSaintKnownYears(saint: { birthYear: number | null; birthYearEnd: number | null; samadhiYear: number | null; samadhiYearEnd: number | null }) {
+  return [saint.birthYear, saint.birthYearEnd, saint.samadhiYear, saint.samadhiYearEnd]
+    .filter((year): year is number => year != null);
 }
 
 function getUniqueSorted(values: string[]) {

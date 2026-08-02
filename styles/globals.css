@@ -605,7 +605,7 @@ html[data-route-entering="true"] body > main {
   align-items: end;
   display: grid;
   gap: var(--space-3);
-  grid-template-columns: repeat(3, minmax(160px, 1fr)) auto;
+  grid-template-columns: repeat(2, minmax(160px, 1fr)) minmax(260px, 1.5fr) auto;
   max-width: min(100%, 980px);
 }
 
@@ -853,6 +853,90 @@ html[data-route-entering="true"] body > main {
 .scroll-button:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 3px;
+}
+
+.era-range {
+  border: 0;
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+.era-range legend {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+.era-range__values,
+.era-range__bounds {
+  display: flex;
+  justify-content: space-between;
+}
+
+.era-range__values {
+  color: var(--color-text);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.era-range__bounds {
+  color: var(--color-muted);
+  font-size: 0.72rem;
+}
+
+.era-range__track {
+  background: linear-gradient(
+    to right,
+    var(--color-border) 0 var(--era-range-start),
+    var(--color-accent) var(--era-range-start) var(--era-range-end),
+    var(--color-border) var(--era-range-end) 100%
+  );
+  border-radius: var(--radius-pill);
+  height: var(--space-1);
+  margin: var(--space-2) 0;
+  position: relative;
+}
+
+.era-range__track input[type="range"] {
+  appearance: none;
+  background: transparent;
+  inset: 50% 0 auto;
+  margin: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.era-range__track input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  background: var(--color-bg);
+  border: 2px solid var(--color-accent-strong);
+  border-radius: 50%;
+  cursor: grab;
+  height: var(--size-icon-md);
+  pointer-events: auto;
+  width: var(--size-icon-md);
+}
+
+.era-range__track input[type="range"]::-moz-range-thumb {
+  background: var(--color-bg);
+  border: 2px solid var(--color-accent-strong);
+  border-radius: 50%;
+  cursor: grab;
+  height: var(--size-icon-md);
+  pointer-events: auto;
+  width: var(--size-icon-md);
+}
+
+.era-range__track input[type="range"]:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: var(--size-focus-offset);
 }
 
 .public-search-field {

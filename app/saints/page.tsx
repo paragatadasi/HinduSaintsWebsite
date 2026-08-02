@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SaintCard } from "@/components/saints/saint-card";
 import { SaintEncounterCard } from "@/components/saints/saint-encounter-card";
+import { SaintEraRange } from "@/components/saints/saint-era-range";
 import { IndexPageHero } from "@/components/layout/index-page-hero";
 import { PublicSearchField } from "@/components/ui/public-search-field";
 import { getPublicIndexHeroImages } from "@/lib/site-config";
@@ -11,9 +12,10 @@ export const dynamic = "force-dynamic";
 
 type SaintsIndexPageProps = {
   searchParams?: Promise<{
-    era?: string | string[];
+    endYear?: string | string[];
     location?: string | string[];
     q?: string | string[];
+    startYear?: string | string[];
     tradition?: string | string[];
   }>;
 };
@@ -24,21 +26,24 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
   const query = getSearchParam(params?.q);
   const selectedTradition = getSearchParam(params?.tradition);
   const selectedLocation = getSearchParam(params?.location);
-  const selectedEra = getSearchParam(params?.era);
-  const hasActiveFilters = Boolean(selectedTradition || selectedLocation || selectedEra);
+  const selectedStartYear = getYearParam(params?.startYear);
+  const selectedEndYear = getYearParam(params?.endYear);
+  const hasActiveFilters = Boolean(selectedTradition || selectedLocation || selectedStartYear != null || selectedEndYear != null);
   const hasActiveCatalogQuery = Boolean(query || hasActiveFilters);
   const [catalog, heroImages] = await Promise.all([getPublishedSaintCatalog({
-    era: selectedEra,
+    endYear: selectedEndYear,
     location: selectedLocation,
     query,
+    startYear: selectedStartYear,
     tradition: selectedTradition
   }), getPublicIndexHeroImages()]);
   const saints = catalog.items;
   const traditionOptions = catalog.facets.traditions;
   const locationOptions = catalog.facets.locations;
-  const eraOptions = catalog.facets.eras;
-  const activeFilterCount = [selectedTradition, selectedLocation, selectedEra].filter(Boolean).length;
+  const activeFilterCount = [selectedTradition, selectedLocation, selectedStartYear != null || selectedEndYear != null].filter(Boolean).length;
   const resultLabel = buildResultLabel(catalog.total, query, activeFilterCount);
+  const timelineStart = clampYear(selectedStartYear ?? catalog.facets.timeline.min, catalog.facets.timeline.min, catalog.facets.timeline.max);
+  const timelineEnd = clampYear(selectedEndYear ?? catalog.facets.timeline.max, timelineStart, catalog.facets.timeline.max);
 
   return (
     <main className="page-shell section site-grid index-page-layout saints-index">
@@ -65,13 +70,12 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
               {locationOptions.map((location) => <option key={location} value={location}>{location}</option>)}
             </select>
           </label>
-          <label>
-            <span>Era</span>
-            <select name="era" defaultValue={selectedEra}>
-              <option value="">All eras</option>
-              {eraOptions.map((era) => <option key={era} value={era}>{era}</option>)}
-            </select>
-          </label>
+          <SaintEraRange
+            end={timelineEnd}
+            max={catalog.facets.timeline.max}
+            min={catalog.facets.timeline.min}
+            start={timelineStart}
+          />
           <button className="filter-submit" type="submit">Apply filters</button>
         </div>
         </form>
@@ -97,6 +101,17 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
 
 function getSearchParam(value: string | string[] | undefined) {
   return (Array.isArray(value) ? value[0] : value)?.trim() ?? "";
+}
+
+function getYearParam(value: string | string[] | undefined) {
+  const raw = getSearchParam(value);
+  if (!raw) return undefined;
+  const parsed = Number(raw);
+  return Number.isInteger(parsed) ? parsed : undefined;
+}
+
+function clampYear(year: number, min: number, max: number) {
+  return Math.min(Math.max(year, min), max);
 }
 
 function buildResultLabel(count: number, query: string, activeFilterCount: number) {
