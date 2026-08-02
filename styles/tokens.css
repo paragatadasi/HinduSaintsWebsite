@@ -66,6 +66,7 @@
   --color-encounter-surface: var(--color-surface);
   --color-encounter-border: var(--color-card-border);
   --shadow-encounter: var(--shadow-soft);
+  --space-public-section: clamp(var(--space-12), 6vw, var(--space-16));
   --color-saint-profile-hero-start: var(--color-surface);
   --color-saint-profile-hero-end: var(--color-bg);
   --color-saint-profile-biography: var(--color-text-inverse);
@@ -226,8 +227,8 @@
   --color-text-inverse: #050914;
   --color-muted: #c4b79f;
   --color-border: rgba(232, 169, 68, 0.22);
-  --color-card-border: rgba(232, 169, 68, 0.34);
-  --color-interactive-border: rgba(255, 199, 102, 0.72);
+  --color-card-border: rgba(247, 234, 211, 0.12);
+  --color-interactive-border: rgba(255, 199, 102, 0.48);
   --color-accent: #e2a23a;
   --color-accent-strong: #ffc766;
   --color-danger: #ff6b6b;
@@ -250,12 +251,11 @@
   --color-star: rgba(241, 181, 69, 0.32);
   --color-glass: rgba(18, 26, 40, 0.7);
   --color-cream: #fff0cf;
-  --color-encounter-surface: rgba(8, 16, 29, 0.88);
-  --color-encounter-border: rgba(255, 199, 102, 0.58);
-  --shadow-encounter:
-    0 0 0 1px rgba(5, 9, 20, 0.62),
-    0 18px 48px rgba(0, 0, 0, 0.38),
-    0 0 28px rgba(241, 181, 69, 0.1);
+  --color-encounter-surface: var(--color-section-surface);
+  --color-encounter-border: var(--color-border);
+  --shadow-encounter: none;
+  --interactive-surface-lift: -1px;
+  --interactive-image-scale: 1.015;
 }
 
 [data-theme="temple"] {

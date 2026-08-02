@@ -22,7 +22,11 @@ export function SaintProfileSummary({ children }: { children: string }) {
       text.textContent = children;
       const overflows = element.scrollHeight > maximumHeight;
       setCanExpand(overflows);
-      if (!overflows) { setCollapsedText(children); return; }
+      if (!overflows) {
+        setCollapsedText(children);
+        return;
+      }
+
       let low = 1;
       let high = words.length;
       let best = words[0] ?? "";
@@ -30,8 +34,12 @@ export function SaintProfileSummary({ children }: { children: string }) {
         const midpoint = Math.floor((low + high) / 2);
         const candidate = `${words.slice(0, midpoint).join(" ")}…`;
         text.textContent = candidate;
-        if (element.scrollHeight <= maximumHeight) { best = candidate; low = midpoint + 1; }
-        else { high = midpoint - 1; }
+        if (element.scrollHeight <= maximumHeight) {
+          best = candidate;
+          low = midpoint + 1;
+        } else {
+          high = midpoint - 1;
+        }
       }
       setCollapsedText(best);
     }
@@ -46,7 +54,20 @@ export function SaintProfileSummary({ children }: { children: string }) {
     <div className="saint-profile-summary">
       <p className="saint-profile-hero__summary" id="saint-profile-summary">
         <span>{expanded ? children : collapsedText}</span>
-        {canExpand ? <>{" "}<button aria-controls="saint-profile-summary" aria-expanded={expanded} className="saint-profile-summary__toggle" onClick={() => setExpanded((current) => !current)} type="button">{expanded ? "less" : "more"}</button></> : null}
+        {canExpand ? (
+          <>
+            {" "}
+            <button
+              aria-controls="saint-profile-summary"
+              aria-expanded={expanded}
+              className="saint-profile-summary__toggle"
+              onClick={() => setExpanded((current) => !current)}
+              type="button"
+            >
+              {expanded ? "less" : "more"}
+            </button>
+          </>
+        ) : null}
       </p>
       <p aria-hidden="true" className="saint-profile-hero__summary saint-profile-summary__measure" ref={measureRef}>
         <span data-summary-text>{children}</span>{" "}<button className="saint-profile-summary__toggle" tabIndex={-1} type="button">more</button>
