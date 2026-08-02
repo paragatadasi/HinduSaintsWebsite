@@ -1,11 +1,12 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
-import { ArrowRight, Instagram, Search, Sparkles } from "lucide-react";
+import { ArrowRight, Instagram, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HomeInstagramRail } from "@/components/instagram/home-instagram-rail";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { FocalImage } from "@/components/ui/focal-image";
 import { SaintCard } from "@/components/saints/saint-card";
+import { SaintEncounterCard } from "@/components/saints/saint-encounter-card";
 import { TraditionCard } from "@/components/traditions/tradition-card";
 import { getPublicHomePageConfig } from "@/lib/home-page-config";
 import { INDIA_STATE_MAP_SHAPES, type IndiaStateMapShape } from "@/lib/india-state-map-shapes";
@@ -218,15 +219,7 @@ function CosmicHomePage({
                 </button>
               </form>
             </div>
-            <aside className="home-encounter-card" aria-labelledby="home-encounter-title">
-              <Sparkles className="home-encounter-card__icon" aria-hidden="true" />
-              <p className="home-encounter-card__eyebrow">A moment of discovery</p>
-              <h2 id="home-encounter-title">Encounter a New Saint</h2>
-              <p>Allow providence to introduce you to a saint you may never have met before.</p>
-              <Button href="/saints/random" icon={<ArrowRight size={16} />} iconPosition="end">
-                Begin the encounter
-              </Button>
-            </aside>
+            <SaintEncounterCard variant="hero" />
           </div>
         </section>
 

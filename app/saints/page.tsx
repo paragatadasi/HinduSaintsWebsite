@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { SaintCard } from "@/components/saints/saint-card";
+import { SaintEncounterCard } from "@/components/saints/saint-encounter-card";
 import { IndexPageHero } from "@/components/layout/index-page-hero";
 import { getPublicIndexHeroImages } from "@/lib/site-config";
 import { getPublishedSaintCatalog } from "@/lib/public-saints";
@@ -88,6 +89,7 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
       </div>
       {saints.length > 0 ? (
         <div className="card-grid">
+          {!hasActiveCatalogQuery ? <SaintEncounterCard variant="catalog" /> : null}
           {saints.map((saint) => <SaintCard key={saint.slug} saint={saint} />)}
         </div>
       ) : (
