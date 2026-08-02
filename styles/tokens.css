@@ -137,7 +137,6 @@
   --space-instagram-viewer-safe-bottom: env(safe-area-inset-bottom, 0px);
   --height-saint-review-image: clamp(16rem, 48vh, 34rem);
   --height-combobox-list: 320px;
-  --height-places-map-visible-saints: 360px;
   --size-instagram-avatar: 38px;
   --size-places-map-saint-thumb: 44px;
   --size-instagram-type-badge: 34px;

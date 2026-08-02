@@ -199,9 +199,9 @@ export const placesMapContent: PlacesMapContent = {
   title: "Saints Across India",
   description:
     "Explore Indian places connected to published saints. Use the time filter to see which saints may have lived during the same period.",
-  promptTitle: "Choose a place on the map",
+  promptTitle: "Choose a place or explore the timeline",
   promptBody:
-    "Click any point to view associated saints, eras, traditions, and a link to the place page.",
+    "Click any point on the map to view associated saints or scroll through the timeline to see where different saints lived over time.",
   exploreActionLabel: "Explore"
 };
 

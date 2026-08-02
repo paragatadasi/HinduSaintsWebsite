@@ -87,10 +87,14 @@ git restore --staged :/ && git add path/to/file-a path/to/file-b && git commit -
 
 Deployment workflow:
 - When explicitly asked to deploy, complete the full release sequence; do not stop after committing or pushing a feature branch.
+- When the user tells an individual feature agent to "prepare for deployment", do not merge to `main` or `deploy`. Instead, finish and commit the branch's deployable code, run the appropriate verification, create the branch-specific handoff file described below, commit that handoff file on the same branch, push the feature branch, and stop with a concise handoff summary.
 - First inspect the working tree, identify all and only the uncommitted changes relevant to the requested deployment, run the appropriate verification, and commit those relevant changes using the scoped commit workflow above.
 - When multiple agents have deployable code ready, use a release-captain workflow. One designated release captain owns integration into `main`, the `main` push, the `main` to `deploy` merge, the `deploy` push, and deployment-status confirmation.
 - Ready agents should report their branch name, commit SHA, summary, verification run, migrations, environment-variable changes, and any shared areas touched before the release captain integrates their work.
+- Ready agents should automate that report by adding one branch-specific handoff file under `docs/release-handoffs/`, using `docs/release-handoffs/TEMPLATE.md`. Replace slashes in the branch name with dashes, for example `codex/example-feature` becomes `docs/release-handoffs/codex-example-feature.md`.
+- Handoff files must be committed on the same feature branch as the deployable code. They are release inputs, not permission to merge directly into `main` or `deploy`.
 - The release captain should integrate ready branches into `main` one at a time, verifying after each merge or after each coherent batch when the risk is low. Order risky/shared changes first: schema and migrations, backend contracts, shared components/styles, then isolated UI/content.
+- The release captain should scan `docs/release-handoffs/` while preparing a release, update or remove handoff files as part of release cleanup, and report final `main`, `deploy`, and production workflow status.
 - Integrate the deployment commit(s) into `main` and push `main` to `origin` before updating `deploy`.
 - Then merge the updated `main` into `deploy` and push `deploy` to `origin`. A push to `deploy` triggers the production deployment workflow.
 - Never merge a feature branch directly into `deploy`, and never let `deploy` move ahead of the corresponding pushed `main` commit.

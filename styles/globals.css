@@ -2104,7 +2104,19 @@ html[data-route-entering="true"] body > main {
 }
 
 .places-map__saint-card {
-  pointer-events: none;
+  pointer-events: visiblePainted;
+}
+
+.places-map__saint-card-action {
+  cursor: pointer;
+  outline: none;
+}
+
+.places-map__saint-card-action:hover .places-map__saint-card-image-border,
+.places-map__saint-card-action:focus-visible .places-map__saint-card-image-border {
+  fill: var(--color-surface);
+  stroke: var(--color-focus);
+  stroke-width: var(--size-focus-ring);
 }
 
 .places-map__saint-card-anchor {
@@ -2223,14 +2235,6 @@ html[data-route-entering="true"] body > main {
   min-height: 0;
 }
 
-.places-map__visible-saints-scroll {
-  max-height: var(--height-places-map-visible-saints);
-  overflow-y: auto;
-  padding-right: var(--space-2);
-  scrollbar-color: var(--color-interactive-border) transparent;
-  scrollbar-width: thin;
-}
-
 .places-map__load-more {
   justify-content: center;
   width: 100%;
@@ -2247,6 +2251,14 @@ html[data-route-entering="true"] body > main {
 .places-map__saint-list li {
   border-top: 1px solid var(--color-border);
   padding-top: var(--space-3);
+}
+
+.places-map__saint-list li.places-map__saint-list-item--selected {
+  background: var(--color-surface-muted);
+  border-color: var(--color-interactive-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-interactive);
+  padding: var(--space-3);
 }
 
 .places-map__saint-list a {
@@ -2297,7 +2309,7 @@ html[data-route-entering="true"] body > main {
   border-radius: var(--radius-card);
   display: grid;
   gap: var(--space-3);
-  grid-template-columns: auto minmax(180px, 1fr) minmax(80px, auto) auto;
+  grid-template-columns: auto minmax(180px, 1fr) minmax(80px, auto);
   padding: var(--space-3) var(--space-4);
 }
 
@@ -2331,28 +2343,9 @@ html[data-route-entering="true"] body > main {
   white-space: nowrap;
 }
 
-.places-timeline button {
-  align-items: center;
-  background: var(--color-surface-muted);
-  border: 1px solid var(--color-border);
-  border-radius: 50%;
-  color: var(--color-accent);
-  cursor: pointer;
-  display: inline-flex;
-  height: 38px;
-  justify-content: center;
-  width: 38px;
-}
-
-.places-timeline button:focus-visible,
 .places-timeline input:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 3px;
-}
-
-.places-timeline button:disabled {
-  cursor: default;
-  opacity: 0.4;
 }
 
 .scroll-section {
@@ -8753,9 +8746,9 @@ html[data-route-entering="true"] body > main {
   .places-timeline {
     align-items: stretch;
     grid-template-areas:
-      "filter value reset"
-      "range range range";
-    grid-template-columns: minmax(0, 1fr) auto auto;
+      "filter value"
+      "range range";
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
   .places-timeline label {
@@ -8769,11 +8762,6 @@ html[data-route-entering="true"] body > main {
   .places-timeline strong {
     align-self: center;
     grid-area: value;
-  }
-
-  .places-timeline button {
-    grid-area: reset;
-    justify-self: end;
   }
 
   .site-links {
@@ -9232,13 +9220,12 @@ html[data-route-entering="true"] body > main {
 
   .places-timeline {
     grid-template-areas: none;
-    grid-template-columns: auto minmax(180px, 1fr) auto auto;
+    grid-template-columns: auto minmax(180px, 1fr) auto;
   }
 
   .places-timeline label,
   .places-timeline input[type="range"],
-  .places-timeline strong,
-  .places-timeline button {
+  .places-timeline strong {
     grid-area: auto;
   }
 }
