@@ -45,6 +45,14 @@ enum Confidence {
 enum RelationshipType {
   guru
   disciple
+  parent
+  child
+  father
+  mother
+  son
+  daughter
+  husband
+  wife
   partner
   incarnation
   family

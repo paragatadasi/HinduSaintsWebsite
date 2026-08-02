@@ -176,6 +176,7 @@ test("accepting a guru suggestion creates an approved guru connection", async ()
     toSaintId: "guru-1",
     relationshipType: "guru",
     status: "published",
+    publicVisible: true,
     confidence: "high",
     notes: "Accepted from Instagram first-page biodata: Swami Sivananda"
   }]);
@@ -200,7 +201,7 @@ test("accepting a guru suggestion approves an existing candidate connection", as
       findFirst: async () => ({ saintId: "saint-1" })
     },
     saintRelationship: {
-      findFirst: async () => ({ id: "relationship-1", status: "needs_review" }),
+      findFirst: async () => ({ id: "relationship-1", status: "needs_review", publicVisible: false }),
       update: async (input: unknown) => {
         relationshipUpdates.push(input);
         return input;
@@ -223,7 +224,53 @@ test("accepting a guru suggestion approves an existing candidate connection", as
 
   assert.deepEqual(relationshipUpdates, [{
     where: { id: "relationship-1" },
-    data: { status: "published" }
+    data: { status: "published", publicVisible: true }
+  }]);
+});
+
+test("accepting a guru suggestion makes an already-published hidden connection public", async () => {
+  const relationshipUpdates: unknown[] = [];
+  const claim = makeClaim({
+    claimType: "guru",
+    rawValue: "Swami Sivananda",
+    normalizedValue: "swami-sivananda",
+    targetEntityType: "Saint",
+    targetEntityId: "guru-1"
+  });
+  const tx = {
+    instagramDerivedClaim: {
+      findFirst: async () => null,
+      create: async () => claim,
+      update: async () => claim
+    },
+    instagramItemSaint: {
+      findFirst: async () => ({ saintId: "saint-1" })
+    },
+    saintRelationship: {
+      findFirst: async () => ({ id: "relationship-1", status: "published", publicVisible: false }),
+      update: async (input: unknown) => {
+        relationshipUpdates.push(input);
+        return input;
+      },
+      create: async () => {
+        throw new Error("An existing guru connection must not be duplicated.");
+      }
+    }
+  } as unknown as Prisma.TransactionClient;
+
+  await acceptInstagramDerivedClaim(tx, {
+    instagramItemId: "instagram-item-1",
+    claimType: "guru",
+    rawValue: "Swami Sivananda",
+    sourceField: "guru",
+    targetEntityType: "Saint",
+    targetEntityId: "guru-1",
+    confidence: "high"
+  });
+
+  assert.deepEqual(relationshipUpdates, [{
+    where: { id: "relationship-1" },
+    data: { status: "published", publicVisible: true }
   }]);
 });
 
