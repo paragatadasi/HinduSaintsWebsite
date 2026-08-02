@@ -7,6 +7,7 @@ import { SaintCard } from "@/components/saints/saint-card";
 import { SaintEncounter } from "@/components/saints/saint-encounter";
 import { SaintHeroGallery } from "@/components/saints/saint-hero-gallery";
 import { SaintProfileActions } from "@/components/saints/saint-profile-actions";
+import { SaintProfileSummary } from "@/components/saints/saint-profile-summary";
 import { Button } from "@/components/ui/button";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
@@ -53,7 +54,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
               ]}
             />
             <h1>{saint.displayName}</h1>
-            {saint.shortDescription ? <p className="saint-profile-hero__summary">{saint.shortDescription}</p> : null}
+            {saint.shortDescription ? <SaintProfileSummary>{saint.shortDescription}</SaintProfileSummary> : null}
             {hasBiography || latestPost ? <SaintProfileActions hasBiography={hasBiography} latestPost={latestPost} saintName={saint.displayName} /> : null}
           </div>
           <SaintHeroGallery images={gallery} saintName={saint.displayName} />
