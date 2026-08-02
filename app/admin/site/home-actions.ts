@@ -22,20 +22,35 @@ const homePageConfigSchema = z.object({
   bannerFocalY: z.coerce.number().min(0).max(100),
   bannerFocalWidth: z.coerce.number().min(10).max(100),
   bannerFocalHeight: z.coerce.number().min(10).max(100),
-  featuredTraditionBannerImageId: z.string().cuid().optional(),
-  featuredTraditionBannerFocalX: z.coerce.number().min(0).max(100),
-  featuredTraditionBannerFocalY: z.coerce.number().min(0).max(100),
-  featuredTraditionBannerFocalWidth: z.coerce.number().min(10).max(100),
-  featuredTraditionBannerFocalHeight: z.coerce.number().min(10).max(100),
   featuredSaintIds: z.array(z.string().cuid()).max(12),
-  featuredTraditionIds: z.array(z.string().cuid()).max(8),
+  featuredTraditionIds: z.array(z.string().cuid()).max(5),
   quoteEyebrow: z.string().trim().max(80).optional(),
   quoteText: z.string().trim().max(500).optional(),
   quoteSaintId: z.string().cuid()
 });
 
+const featuredTraditionPlacementSchema = z.object({
+  traditionId: z.string().cuid(),
+  bannerImageId: z.string().cuid().optional(),
+  focalX: z.coerce.number().min(0).max(100),
+  focalY: z.coerce.number().min(0).max(100),
+  focalWidth: z.coerce.number().min(10).max(100),
+  focalHeight: z.coerce.number().min(10).max(100)
+});
+
 export async function updateHomePageConfig(formData: FormData) {
   await requireAdminSession();
+
+  const featuredTraditionIds = uniqueFormValues(formData.getAll("featuredTraditionId")).slice(0, 5);
+  const featuredTraditionBannerImageIds = formData.getAll("featuredTraditionBannerImageId");
+  const featuredTraditionPlacements = featuredTraditionIds.map((traditionId, index) => featuredTraditionPlacementSchema.parse({
+    traditionId,
+    bannerImageId: emptyToUndefined(featuredTraditionBannerImageIds[index]),
+    focalX: formData.get(`featuredTraditionFocal${index}X`) ?? 50,
+    focalY: formData.get(`featuredTraditionFocal${index}Y`) ?? 50,
+    focalWidth: formData.get(`featuredTraditionFocal${index}Width`) ?? 60,
+    focalHeight: formData.get(`featuredTraditionFocal${index}Height`) ?? 60
+  }));
 
   const parsed = homePageConfigSchema.parse({
     heroEyebrow: emptyToUndefined(formData.get("heroEyebrow")),
@@ -50,13 +65,8 @@ export async function updateHomePageConfig(formData: FormData) {
     bannerFocalY: formData.get("bannerFocalY") ?? 50,
     bannerFocalWidth: formData.get("bannerFocalWidth") ?? 60,
     bannerFocalHeight: formData.get("bannerFocalHeight") ?? 60,
-    featuredTraditionBannerImageId: emptyToUndefined(formData.get("featuredTraditionBannerImageId")),
-    featuredTraditionBannerFocalX: formData.get("featuredTraditionBannerFocalX") ?? 50,
-    featuredTraditionBannerFocalY: formData.get("featuredTraditionBannerFocalY") ?? 50,
-    featuredTraditionBannerFocalWidth: formData.get("featuredTraditionBannerFocalWidth") ?? 60,
-    featuredTraditionBannerFocalHeight: formData.get("featuredTraditionBannerFocalHeight") ?? 60,
     featuredSaintIds: uniqueFormValues(formData.getAll("featuredSaintId")),
-    featuredTraditionIds: uniqueFormValues(formData.getAll("featuredTraditionId")),
+    featuredTraditionIds,
     quoteEyebrow: emptyToUndefined(formData.get("quoteEyebrow")),
     quoteText: emptyToUndefined(formData.get("quoteText")),
     quoteSaintId: emptyToUndefined(formData.get("quoteSaintId"))
@@ -81,13 +91,27 @@ export async function updateHomePageConfig(formData: FormData) {
     quoteAttribution: quoteSaint.displayName
   };
 
-  await db.homePageConfig.upsert({
-    where: { id: HOME_PAGE_CONFIG_ID },
-    create: {
-      id: HOME_PAGE_CONFIG_ID,
-      ...data
-    },
-    update: data
+  await db.$transaction(async (transaction) => {
+    await transaction.homePageConfig.upsert({
+      where: { id: HOME_PAGE_CONFIG_ID },
+      create: {
+        id: HOME_PAGE_CONFIG_ID,
+        ...data
+      },
+      update: data
+    });
+    await transaction.homeFeaturedTraditionPlacement.deleteMany({
+      where: { homePageConfigId: HOME_PAGE_CONFIG_ID }
+    });
+    if (featuredTraditionPlacements.length > 0) {
+      await transaction.homeFeaturedTraditionPlacement.createMany({
+        data: featuredTraditionPlacements.map((placement, sortOrder) => ({
+          homePageConfigId: HOME_PAGE_CONFIG_ID,
+          sortOrder,
+          ...placement
+        }))
+      });
+    }
   });
 
   revalidateTag(PUBLIC_CACHE_TAGS.home);
