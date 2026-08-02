@@ -14,6 +14,7 @@ type SearchableMultiSelectProps = {
   defaultSelectedValues?: string[];
   emptyText?: string;
   label: string;
+  maxSelected?: number;
   name: string;
   onSelectionChange?: (selectedValues: string[]) => void;
   options: SearchableMultiSelectOption[];
@@ -28,6 +29,7 @@ export function SearchableMultiSelect({
   defaultSelectedValues = [],
   emptyText = "No options match this search.",
   label,
+  maxSelected,
   name,
   onSelectionChange,
   options,
@@ -101,6 +103,7 @@ export function SearchableMultiSelect({
             {visibleOptions.length > 0 ? (
               visibleOptions.map((option) => {
                 const isSelected = selectedSet.has(option.value);
+                const isDisabled = !isSelected && maxSelected != null && selectedValues.length >= maxSelected;
 
                 return (
                   <label
@@ -109,9 +112,11 @@ export function SearchableMultiSelect({
                     key={option.value}
                     role="option"
                     onMouseDown={(event) => event.preventDefault()}
-                    onClick={() => toggleOption(option.value)}
+                    onClick={() => {
+                      if (!isDisabled) toggleOption(option.value);
+                    }}
                   >
-                    <input checked={isSelected} readOnly tabIndex={-1} type="checkbox" />
+                    <input checked={isSelected} disabled={isDisabled} readOnly tabIndex={-1} type="checkbox" />
                     <span>
                       <strong>{option.label}</strong>
                       {option.description ? <small>{option.description}</small> : null}
@@ -193,6 +198,7 @@ export function SearchableMultiSelect({
   );
 
   function toggleOption(value: string) {
+    if (!selectedValues.includes(value) && maxSelected != null && selectedValues.length >= maxSelected) return;
     const nextValues = selectedValues.includes(value)
       ? selectedValues.filter((currentValue) => currentValue !== value)
       : [...selectedValues, value];

@@ -8,6 +8,7 @@ import { getHomeHeroContent, getHomeQuoteContent } from "@/lib/site-content";
 import { updateHomePageConfig } from "./home-actions";
 import { HomeBannerFocalPicker } from "./home-banner-focal-picker";
 import { HomeBannerUploader } from "./home-banner-uploader";
+import { FeaturedTraditionPlacementsEditor } from "./featured-tradition-placements-editor";
 
 export async function HomepageSettings() {
   const [config, saints, traditions] = await Promise.all([
@@ -15,7 +16,11 @@ export async function HomepageSettings() {
       where: { id: HOME_PAGE_CONFIG_ID },
       include: {
         bannerImage: true,
-        featuredTraditionBannerImage: true
+        featuredTraditionBannerImage: true,
+        featuredTraditionPlacements: {
+          include: { bannerImage: true },
+          orderBy: { sortOrder: "asc" }
+        }
       }
     }),
     db.saint.findMany({
@@ -66,6 +71,31 @@ export async function HomepageSettings() {
     description: [tradition.status, tradition.founderDisplayName].filter(Boolean).join(" · "),
     keywords: [tradition.status, tradition.founderDisplayName].filter((value): value is string => Boolean(value))
   }));
+  const featuredTraditionPlacements = config?.featuredTraditionPlacements.length
+    ? config.featuredTraditionPlacements.map((placement) => ({
+        traditionId: placement.traditionId,
+        bannerImageId: placement.bannerImageId ?? undefined,
+        bannerImage: placement.bannerImage ? {
+          url: placement.bannerImage.url,
+          altText: placement.bannerImage.altText ?? undefined
+        } : undefined,
+        focalX: placement.focalX,
+        focalY: placement.focalY,
+        focalWidth: placement.focalWidth,
+        focalHeight: placement.focalHeight
+      }))
+    : (config?.featuredTraditionIds ?? []).slice(0, 5).map((traditionId, index) => ({
+        traditionId,
+        bannerImageId: index === 0 ? config?.featuredTraditionBannerImageId ?? undefined : undefined,
+        bannerImage: index === 0 && config?.featuredTraditionBannerImage ? {
+          url: config.featuredTraditionBannerImage.url,
+          altText: config.featuredTraditionBannerImage.altText ?? undefined
+        } : undefined,
+        focalX: index === 0 ? config?.featuredTraditionBannerFocalX ?? 50 : 50,
+        focalY: index === 0 ? config?.featuredTraditionBannerFocalY ?? 50 : 50,
+        focalWidth: index === 0 ? config?.featuredTraditionBannerFocalWidth ?? 60 : 60,
+        focalHeight: index === 0 ? config?.featuredTraditionBannerFocalHeight ?? 60 : 60
+      }));
 
   return (
     <section className="admin-stack" id="homepage">
@@ -158,45 +188,10 @@ export async function HomepageSettings() {
           </ReviewSection>
 
           <ReviewSection title="Featured traditions" icon={<Star size={18} aria-hidden="true" />}>
-            <SearchableMultiSelect
-              defaultSelectedValues={config?.featuredTraditionIds ?? []}
-              label="Traditions"
-              name="featuredTraditionId"
+            <FeaturedTraditionPlacementsEditor
+              initialPlacements={featuredTraditionPlacements}
               options={traditionOptions}
-              placeholder="Search traditions"
-              selectedLabel="Featured traditions"
             />
-          </ReviewSection>
-
-          <ReviewSection title="Featured tradition background" icon={<Image size={18} aria-hidden="true" />}>
-            <div className="home-config-media">
-              {config?.featuredTraditionBannerImage ? (
-                <HomeBannerFocalPicker
-                  altText={config.featuredTraditionBannerImage.altText ?? "Featured tradition background"}
-                  defaultArea={{
-                    x: config.featuredTraditionBannerFocalX,
-                    y: config.featuredTraditionBannerFocalY,
-                    width: config.featuredTraditionBannerFocalWidth,
-                    height: config.featuredTraditionBannerFocalHeight
-                  }}
-                  fieldNamePrefix="featuredTraditionBannerFocal"
-                  imageUrl={config.featuredTraditionBannerImage.url}
-                />
-              ) : (
-                <>
-                  <input name="featuredTraditionBannerFocalX" type="hidden" value={50} />
-                  <input name="featuredTraditionBannerFocalY" type="hidden" value={50} />
-                  <input name="featuredTraditionBannerFocalWidth" type="hidden" value={60} />
-                  <input name="featuredTraditionBannerFocalHeight" type="hidden" value={60} />
-                  <p className="empty-note">No featured tradition background selected.</p>
-                </>
-              )}
-              <HomeBannerUploader
-                defaultBannerImageId={config?.featuredTraditionBannerImageId ?? ""}
-                fieldName="featuredTraditionBannerImageId"
-                uploadLabel="featured tradition background"
-              />
-            </div>
           </ReviewSection>
 
           <ReviewSection title="Quote of the day" icon={<Quote size={18} aria-hidden="true" />}>

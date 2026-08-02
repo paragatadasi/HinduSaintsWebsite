@@ -10,6 +10,7 @@ import { PublicSearchField } from "@/components/ui/public-search-field";
 import { SaintCard } from "@/components/saints/saint-card";
 import { SaintEncounterCard } from "@/components/saints/saint-encounter-card";
 import { TraditionCard } from "@/components/traditions/tradition-card";
+import { FeaturedTraditionCard } from "@/components/traditions/featured-tradition-card";
 import { getPublicHomePageConfig } from "@/lib/home-page-config";
 import { INDIA_STATE_MAP_SHAPES, type IndiaStateMapShape } from "@/lib/india-state-map-shapes";
 import { getRecentInstagramCarouselPreviews } from "@/lib/public-instagram";
@@ -37,6 +38,13 @@ export default async function HomePage() {
   const quote = homeConfig.quote;
   const configuredFeaturedSaints = homeConfig.featuredSaints.length > 0 ? homeConfig.featuredSaints : featuredSaints;
   const configuredTraditions = homeConfig.featuredTraditions.length > 0 ? homeConfig.featuredTraditions : traditions;
+  const configuredTraditionPlacements = homeConfig.featuredTraditionPlacements.length > 0
+    ? homeConfig.featuredTraditionPlacements
+    : configuredTraditions.slice(0, 5).map((tradition) => ({
+        tradition,
+        bannerImage: undefined,
+        focalArea: { x: 50, y: 50, width: 60, height: 60 }
+      }));
   const saints = uniqueSaintsBySlug([
     ...configuredFeaturedSaints,
     ...publishedSaints
@@ -64,6 +72,7 @@ export default async function HomePage() {
         quote={quote}
         saints={saints}
         traditions={configuredTraditions}
+        traditionPlacements={configuredTraditionPlacements}
         instagramPreviews={instagramPreviews}
         mapData={mapData}
         bannerImage={homeConfig.bannerImage}
@@ -169,6 +178,7 @@ type CosmicHomePageProps = {
   quote: HomeQuoteContent;
   saints: Awaited<ReturnType<typeof getPublishedSaintSummaries>>;
   traditions: Awaited<ReturnType<typeof getPublishedTraditionSummaries>>;
+  traditionPlacements: Awaited<ReturnType<typeof getPublicHomePageConfig>>["featuredTraditionPlacements"];
   instagramPreviews: Awaited<ReturnType<typeof getRecentInstagramCarouselPreviews>>;
   mapData: PublicPlaceMapData;
   bannerImage?: PublicImage;
@@ -182,6 +192,7 @@ function CosmicHomePage({
   quote,
   saints,
   traditions,
+  traditionPlacements,
   instagramPreviews,
   mapData,
   bannerImage,
@@ -276,10 +287,15 @@ function CosmicHomePage({
                 </Button>
               ) : null}
             </div>
-            {traditions.length > 0 ? (
+            {traditionPlacements.length > 0 ? (
               <div className="home-tradition-mosaic">
-                {traditions.slice(0, 5).map((tradition) => (
-                  <TraditionCard key={tradition.slug} tradition={tradition} />
+                {traditionPlacements.slice(0, 5).map((placement) => (
+                  <FeaturedTraditionCard
+                    bannerImage={placement.bannerImage}
+                    focalArea={placement.focalArea}
+                    key={placement.tradition.slug}
+                    tradition={placement.tradition}
+                  />
                 ))}
               </div>
             ) : (

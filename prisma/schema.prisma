@@ -344,6 +344,7 @@ model Tradition {
   relatedTraditions        TraditionRelatedTradition[] @relation("RelatedTraditionSource")
   relatedByTraditions      TraditionRelatedTradition[] @relation("RelatedTraditionTarget")
   scripturalBasis          TraditionScripturalBasis[]
+  homeFeaturedPlacements   HomeFeaturedTraditionPlacement[]
   createdAt                DateTime                    @default(now())
   updatedAt                DateTime                    @updatedAt
   publishedAt              DateTime?
@@ -649,6 +650,7 @@ model MediaAsset {
   focalY                     Float                   @default(30)
   homeBannerConfigs          HomePageConfig[]        @relation("HomeBannerImage")
   homeTraditionBannerConfigs HomePageConfig[]        @relation("HomeFeaturedTraditionBannerImage")
+  homeTraditionPlacementBanners HomeFeaturedTraditionPlacement[] @relation("HomeFeaturedTraditionPlacementBanner")
   aboutHeroConfigs           SiteConfig[]            @relation("AboutHeroImage")
   aboutVisionConfigs         SiteConfig[]            @relation("AboutVisionImage")
   aboutStoryConfigs          SiteConfig[]            @relation("AboutStoryImage")
@@ -691,8 +693,31 @@ model HomePageConfig {
   quoteAttribution                   String?
   quoteSaintId                       String?
   quoteSaint                         Saint?      @relation("HomeQuoteSaint", fields: [quoteSaintId], references: [id], onDelete: SetNull)
+  featuredTraditionPlacements        HomeFeaturedTraditionPlacement[]
   createdAt                          DateTime    @default(now())
   updatedAt                          DateTime    @updatedAt
+}
+
+model HomeFeaturedTraditionPlacement {
+  id               String         @id @default(cuid())
+  homePageConfigId String
+  homePageConfig   HomePageConfig @relation(fields: [homePageConfigId], references: [id], onDelete: Cascade)
+  traditionId      String
+  tradition        Tradition      @relation(fields: [traditionId], references: [id], onDelete: Cascade)
+  sortOrder        Int
+  bannerImageId    String?
+  bannerImage      MediaAsset?    @relation("HomeFeaturedTraditionPlacementBanner", fields: [bannerImageId], references: [id], onDelete: SetNull)
+  focalX           Float          @default(50)
+  focalY           Float          @default(50)
+  focalWidth       Float          @default(60)
+  focalHeight      Float          @default(60)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@unique([homePageConfigId, traditionId])
+  @@unique([homePageConfigId, sortOrder])
+  @@index([traditionId])
+  @@index([bannerImageId])
 }
 
 model SiteConfig {

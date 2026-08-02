@@ -24,6 +24,10 @@ const getPublicHomePageConfigCached = unstable_cache(async () => {
     include: {
       bannerImage: true,
       featuredTraditionBannerImage: true,
+      featuredTraditionPlacements: {
+        include: { bannerImage: true },
+        orderBy: { sortOrder: "asc" }
+      },
       quoteSaint: {
         select: {
           displayName: true,
@@ -45,14 +49,42 @@ const getPublicHomePageConfigCached = unstable_cache(async () => {
       featuredTraditionBannerImage: undefined,
       featuredTraditionBannerFocalArea: getDefaultBannerFocalArea(),
       featuredSaints: [],
-      featuredTraditions: []
+      featuredTraditions: [],
+      featuredTraditionPlacements: []
     };
   }
 
-  const [featuredSaints, featuredTraditions] = await Promise.all([
+  const placementRows = config.featuredTraditionPlacements.length > 0
+    ? config.featuredTraditionPlacements
+    : config.featuredTraditionIds.slice(0, 5).map((traditionId, index) => ({
+        traditionId,
+        bannerImage: index === 0 ? config.featuredTraditionBannerImage : null,
+        focalX: index === 0 ? config.featuredTraditionBannerFocalX : 50,
+        focalY: index === 0 ? config.featuredTraditionBannerFocalY : 50,
+        focalWidth: index === 0 ? config.featuredTraditionBannerFocalWidth : 60,
+        focalHeight: index === 0 ? config.featuredTraditionBannerFocalHeight : 60
+      }));
+  const [featuredSaints, placementResults] = await Promise.all([
     getPublishedSaintSummariesByIds(config.featuredSaintIds),
-    getPublicTraditionSummariesByIds(config.featuredTraditionIds)
+    Promise.all(placementRows.map(async (placement) => {
+      const [tradition] = await getPublicTraditionSummariesByIds([placement.traditionId]);
+      if (!tradition) return null;
+      return {
+        tradition,
+        bannerImage: placement.bannerImage
+          ? toPublicImage(placement.bannerImage, `${tradition.name} homepage banner`)
+          : undefined,
+        focalArea: {
+          x: placement.focalX,
+          y: placement.focalY,
+          width: placement.focalWidth,
+          height: placement.focalHeight
+        }
+      };
+    }))
   ]);
+  const featuredTraditionPlacements = placementResults.filter((placement): placement is NonNullable<typeof placement> => Boolean(placement));
+  const featuredTraditions = featuredTraditionPlacements.map((placement) => placement.tradition);
 
   return {
     hero: mergeHeroContent(defaultHero, config),
@@ -74,7 +106,8 @@ const getPublicHomePageConfigCached = unstable_cache(async () => {
       height: config.featuredTraditionBannerFocalHeight
     },
     featuredSaints,
-    featuredTraditions
+    featuredTraditions,
+    featuredTraditionPlacements
   };
 }, ["public-home-page-config"], {
   revalidate: PUBLIC_DATA_CACHE_SECONDS,
