@@ -1281,8 +1281,18 @@ html[data-route-entering="true"] body > main {
   gap: var(--space-4);
 }
 
+.home-cosmic-map-panel {
+  background: var(--color-surface);
+}
+
 .home-cosmic-map-panel .places-map {
+  border: 0;
   height: var(--height-home-map);
+}
+
+.home-cosmic-map-panel .places-timeline {
+  background: var(--color-bg);
+  border: 0;
 }
 
 .home-cosmic-quote-panel {
