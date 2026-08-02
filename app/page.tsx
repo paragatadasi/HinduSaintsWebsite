@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Instagram, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HomeInstagramRail } from "@/components/instagram/home-instagram-rail";
+import { IndiaSaintsMap } from "@/components/places/india-saints-map";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { FocalImage } from "@/components/ui/focal-image";
 import { SaintCard } from "@/components/saints/saint-card";
@@ -15,7 +16,7 @@ import { getIndiaPlaceMapData } from "@/lib/public-places";
 import { getFeaturedSaintSummaries, getPublishedSaintSummaries } from "@/lib/public-saints";
 import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
 import type { PublicImage, PublicPlaceMapData } from "@/lib/public-contracts";
-import { getHomeLayoutVariant, getHomeSectionContent, type HomeHeroContent, type HomeQuoteContent } from "@/lib/site-content";
+import { getHomeLayoutVariant, getHomeSectionContent, getPlacesMapContent, type HomeHeroContent, type HomeQuoteContent } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
 
@@ -66,8 +67,6 @@ export default async function HomePage() {
         mapData={mapData}
         bannerImage={homeConfig.bannerImage}
         bannerFocalArea={homeConfig.bannerFocalArea}
-        featuredTraditionBannerImage={homeConfig.featuredTraditionBannerImage}
-        featuredTraditionBannerFocalArea={homeConfig.featuredTraditionBannerFocalArea}
       />
     );
   }
@@ -173,8 +172,6 @@ type CosmicHomePageProps = {
   mapData: PublicPlaceMapData;
   bannerImage?: PublicImage;
   bannerFocalArea: Awaited<ReturnType<typeof getPublicHomePageConfig>>["bannerFocalArea"];
-  featuredTraditionBannerImage?: PublicImage;
-  featuredTraditionBannerFocalArea: Awaited<ReturnType<typeof getPublicHomePageConfig>>["featuredTraditionBannerFocalArea"];
 };
 
 function CosmicHomePage({
@@ -187,12 +184,10 @@ function CosmicHomePage({
   instagramPreviews,
   mapData,
   bannerImage,
-  bannerFocalArea,
-  featuredTraditionBannerImage,
-  featuredTraditionBannerFocalArea
+  bannerFocalArea
 }: CosmicHomePageProps) {
-  const featuredTradition = traditions[0];
-  const mappedSaintCount = new Set(mapData.points.flatMap((point) => point.saints.map((saint) => saint.slug))).size;
+  const mapContent = getPlacesMapContent();
+  const stateSaintCountsBySlug = getStateSaintCountsBySlug(mapData);
 
   return (
     <main className="home home--cosmic">
@@ -223,9 +218,8 @@ function CosmicHomePage({
           </div>
         </section>
 
-        <section className="home-cosmic-panel home-cosmic-panel--split">
-          <div className="home-cosmic-feature-grid home-cosmic__section-inner">
-          <div className="home-cosmic-feature-grid__saints">
+        <section className="home-cosmic-panel">
+          <div className="home-cosmic__section-inner">
             <div className="section-heading home-cosmic-heading">
               <h2>{featuredSaintsSection.title}</h2>
               {featuredSaintsSection.action ? (
@@ -238,29 +232,28 @@ function CosmicHomePage({
               {saints.map((saint) => <SaintCard key={saint.slug} saint={saint} variant="portrait" />)}
             </ScrollRail>
           </div>
+        </section>
 
-          <aside className="home-map-card">
+        <section className="home-cosmic-panel home-cosmic-map-panel">
+          <div className="home-cosmic__section-inner">
             <div className="section-heading home-cosmic-heading">
               <h2>Explore the Map</h2>
               <Button href="/map" variant="text" icon={<ArrowRight size={16} />} iconPosition="end">
                 Explore map
               </Button>
             </div>
-            <div className="home-map-card__visual" aria-hidden="true">
-              <HomeMapPreview mapData={mapData} />
-            </div>
-            <p>
-              {mappedSaintCount} mapped {mappedSaintCount === 1 ? "saint" : "saints"} across{" "}
-              {mapData.points.length} {mapData.points.length === 1 ? "place" : "places"}.
-            </p>
-          </aside>
+            <IndiaSaintsMap
+              content={mapContent}
+              mapData={mapData}
+              stateLayerMarkup={getIndiaStateLayerMarkup(stateSaintCountsBySlug)}
+              stateNamesBySlug={getStateNamesBySlug()}
+            />
           </div>
         </section>
 
-        <section className="home-cosmic-panel home-cosmic-panel--duo">
-          <div className="home-cosmic-duo">
+        <section className="home-cosmic-panel home-cosmic-quote-panel">
           <aside className="home-quote-card">
-            <div className="eyebrow">{quote.eyebrow}</div>
+            <div className="home-quote-card__label">{quote.eyebrow}</div>
             <blockquote>
               <p>{quote.quote}</p>
               <cite>
@@ -270,46 +263,28 @@ function CosmicHomePage({
               </cite>
             </blockquote>
           </aside>
+        </section>
 
-          <article className={featuredTraditionBannerImage ? "home-tradition-feature home-tradition-feature--with-background" : "home-tradition-feature"}>
-            {featuredTraditionBannerImage ? (
-              <FocalImage
-                alt=""
-                aria-hidden="true"
-                className="home-tradition-feature__background"
-                src={featuredTraditionBannerImage.url}
-                variants={featuredTraditionBannerImage.variants}
-                sizes="(max-width: 760px) 92vw, 760px"
-                style={{
-                  "--featured-tradition-background-position":
-                    `${featuredTraditionBannerFocalArea.x}% ${featuredTraditionBannerFocalArea.y}%`
-                } as CSSProperties}
-              />
-            ) : null}
-            <div className="home-tradition-feature__header">
-              <div className="eyebrow">Featured Tradition</div>
+        <section className="home-cosmic-panel home-cosmic-traditions-panel">
+          <div className="home-cosmic__section-inner">
+            <div className="section-heading home-cosmic-heading">
+              <h2>{traditionsSection.title}</h2>
               {traditionsSection.action ? (
                 <Button href={traditionsSection.action.href} variant="text" icon={<ArrowRight size={16} />} iconPosition="end">
                   {traditionsSection.action.label}
                 </Button>
               ) : null}
             </div>
-            <div className="home-tradition-feature__content">
-              <div>
-                <h2>{featuredTradition?.name ?? "Explore Traditions"}</h2>
-                <p>{featuredTradition?.shortDescription ?? "Published traditions will appear here after editorial review."}</p>
-                <Button
-                  href={featuredTradition ? `/traditions/${featuredTradition.slug}` : "/traditions"}
-                  variant="secondary"
-                  icon={<ArrowRight size={16} />}
-                  iconPosition="end"
-                >
-                  Explore tradition
-                </Button>
+            {traditions.length > 0 ? (
+              <div className="home-tradition-mosaic">
+                {traditions.slice(0, 5).map((tradition) => (
+                  <TraditionCard key={tradition.slug} tradition={tradition} />
+                ))}
               </div>
+            ) : (
+              <p className="empty-note">Published traditions will appear here after editorial review.</p>
+            )}
             </div>
-          </article>
-          </div>
         </section>
 
         <section className="home-cosmic-panel home-cosmic-panel--last">
@@ -332,47 +307,47 @@ function CosmicHomePage({
   );
 }
 
-function HomeMapPreview({ mapData }: { mapData: PublicPlaceMapData }) {
-  const activeStateSlugs = new Set(mapData.points.map((point) => point.stateSlug ?? (point.placeScope === "state" ? point.slug : "")).filter(Boolean));
-  const points = mapData.points
-    .filter((point) => point.placeScope !== "state")
-    .slice(0, 42)
-    .map((point) => ({ ...point, ...projectHomeMapCoordinate(point.latitude, point.longitude) }));
-
-  return (
-    <svg viewBox="0 0 720 640" role="img" aria-label="Map preview of Indian places associated with saints">
-      <g className="home-map-card__states" dangerouslySetInnerHTML={{ __html: getHomeMapStateLayerMarkup(activeStateSlugs) }} />
-      <g className="home-map-card__routes">
-        {points.slice(0, 18).map((point, index) => {
-          const nextPoint = points[(index + 7) % points.length];
-          if (!nextPoint) return null;
-          return <path d={`M ${point.x} ${point.y} Q ${(point.x + nextPoint.x) / 2} ${Math.min(point.y, nextPoint.y) - 28} ${nextPoint.x} ${nextPoint.y}`} key={`${point.slug}-${nextPoint.slug}`} />;
-        })}
-      </g>
-      <g className="home-map-card__points">
-        {points.map((point) => (
-          <circle cx={point.x} cy={point.y} key={point.slug} r={Math.min(7, 3 + Math.sqrt(point.saintCount))} />
-        ))}
-      </g>
-    </svg>
-  );
-}
-
-function getHomeMapStateLayerMarkup(activeStateSlugs: Set<string>) {
+function getIndiaStateLayerMarkup(stateSaintCountsBySlug: Map<string, number>) {
   return INDIA_STATE_MAP_SHAPES.map((state) => {
-    const isActive = Boolean(getActiveStateSlug(state, activeStateSlugs));
+    const activeSlug = getActiveStateSlug(state, stateSaintCountsBySlug);
+    const saintCount = activeSlug ? stateSaintCountsBySlug.get(activeSlug) ?? 0 : 0;
+    const isActive = saintCount > 0;
+    const label = isActive ? `${state.name}, ${saintCount} ${saintCount === 1 ? "saint" : "saints"}` : state.name;
     const attributes = [
-      `class="${isActive ? "home-map-card__state home-map-card__state--active" : "home-map-card__state"}"`,
-      `d="${escapeSvgAttribute(state.path)}"`
-    ].join(" ");
+      `aria-label="${escapeSvgAttribute(label)}"`,
+      `class="${isActive ? "places-map__state places-map__state--active" : "places-map__state"}"`,
+      `d="${escapeSvgAttribute(state.path)}"`,
+      activeSlug ? `data-state-slug="${escapeSvgAttribute(activeSlug)}"` : "",
+      isActive ? `role="button"` : "",
+      isActive ? `tabindex="0"` : ""
+    ].filter(Boolean).join(" ");
 
     return `<path ${attributes}></path>`;
   }).join("");
 }
 
-function getActiveStateSlug(state: IndiaStateMapShape, activeStateSlugs: Set<string>) {
-  if (activeStateSlugs.has(state.slug)) return state.slug;
-  return state.aliases?.find((alias) => activeStateSlugs.has(alias));
+function getStateSaintCountsBySlug(mapData: PublicPlaceMapData) {
+  const saintSlugsByStateSlug = new Map<string, Set<string>>();
+  for (const point of mapData.points) {
+    const stateSlug = point.stateSlug ?? (point.placeScope === "state" ? point.slug : undefined);
+    if (!stateSlug) continue;
+    const saintSlugs = saintSlugsByStateSlug.get(stateSlug) ?? new Set<string>();
+    point.saints.forEach((saint) => saintSlugs.add(saint.slug));
+    saintSlugsByStateSlug.set(stateSlug, saintSlugs);
+  }
+  return new Map(Array.from(saintSlugsByStateSlug.entries()).map(([slug, saintSlugs]) => [slug, saintSlugs.size]));
+}
+
+function getStateNamesBySlug() {
+  return Object.fromEntries(INDIA_STATE_MAP_SHAPES.flatMap((state) => [
+    [state.slug, state.name],
+    ...(state.aliases ?? []).map((alias) => [alias, state.name])
+  ]));
+}
+
+function getActiveStateSlug(state: IndiaStateMapShape, stateSaintCountsBySlug: Map<string, number>) {
+  if (stateSaintCountsBySlug.has(state.slug)) return state.slug;
+  return state.aliases?.find((alias) => stateSaintCountsBySlug.has(alias));
 }
 
 function escapeSvgAttribute(value: string) {
@@ -381,23 +356,6 @@ function escapeSvgAttribute(value: string) {
     .replaceAll("\"", "&quot;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;");
-}
-
-function projectHomeMapCoordinate(latitude: number, longitude: number) {
-  const bounds = {
-    minLatitude: 6,
-    maxLatitude: 37.6,
-    minLongitude: 67.5,
-    maxLongitude: 98
-  };
-  const padding = 48;
-  const width = 720 - padding * 2;
-  const height = 640 - padding * 2;
-
-  return {
-    x: padding + ((longitude - bounds.minLongitude) / (bounds.maxLongitude - bounds.minLongitude)) * width,
-    y: padding + ((bounds.maxLatitude - latitude) / (bounds.maxLatitude - bounds.minLatitude)) * height
-  };
 }
 
 function ArchiveHomePage({ hero, featuredSaintsSection, traditionsSection, saints, traditions, bannerImage }: ArchiveHomePageProps) {

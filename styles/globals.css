@@ -1143,6 +1143,81 @@ html[data-route-entering="true"] body > main {
   min-width: 0;
 }
 
+.home-cosmic-map-panel .places-map-section {
+  gap: var(--space-4);
+}
+
+.home-cosmic-map-panel .places-map {
+  height: var(--height-home-map);
+}
+
+.home-cosmic-quote-panel {
+  padding-block: var(--space-16);
+}
+
+.home-cosmic-quote-panel .home-quote-card {
+  border: 0;
+  justify-items: center;
+  margin-inline: auto;
+  max-width: var(--width-prose);
+  min-height: 0;
+  padding: 0 var(--space-6);
+  text-align: center;
+}
+
+.home-quote-card__label {
+  color: var(--color-cream);
+  font-size: 0.9rem;
+}
+
+.home-cosmic-quote-panel .home-quote-card blockquote::before,
+.home-cosmic-quote-panel .home-quote-card cite::before {
+  content: none;
+}
+
+.home-cosmic-quote-panel .home-quote-card p {
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  letter-spacing: var(--letter-spacing-eyebrow);
+  line-height: 1.3;
+  margin-bottom: var(--space-4);
+  text-transform: uppercase;
+}
+
+.home-cosmic-quote-panel .home-quote-card cite {
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+.home-tradition-mosaic {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  min-height: var(--height-home-tradition-mosaic);
+}
+
+.home-tradition-mosaic > :first-child {
+  grid-row: 1 / -1;
+}
+
+.home-tradition-mosaic .tradition-card,
+.home-tradition-mosaic .tradition-card > a {
+  height: 100%;
+}
+
+.home-tradition-mosaic .tradition-card > a {
+  align-content: center;
+  display: grid;
+}
+
+.home-tradition-mosaic .entity-card__body {
+  display: -webkit-box;
+  line-clamp: 2;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .home-cosmic-rail .scroll-rail {
   padding-bottom: var(--space-4);
 }
@@ -8087,6 +8162,32 @@ html[data-route-entering="true"] body > main {
   .home-cosmic-feature-grid,
   .home-cosmic-duo {
     grid-template-columns: 1fr;
+  }
+
+  .home-cosmic-map-panel .places-map {
+    height: auto;
+  }
+
+  .home-cosmic-quote-panel {
+    padding-block: var(--space-12);
+  }
+
+  .home-cosmic-quote-panel .home-quote-card {
+    padding-inline: var(--space-5);
+  }
+
+  .home-tradition-mosaic {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(260px, auto);
+    min-height: 0;
+  }
+
+  .home-tradition-mosaic > :first-child {
+    grid-row: auto;
+  }
+
+  .home-tradition-mosaic .tradition-card {
+    min-height: 160px;
   }
 
   .home-map-card {
