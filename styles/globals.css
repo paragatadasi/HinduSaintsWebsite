@@ -2369,9 +2369,9 @@ html[data-route-entering="true"] body > main {
   max-width: 100%;
   min-width: 0;
   overflow-x: auto;
-  padding: var(--space-2) var(--space-scroll-rail-gutter) var(--space-3);
+  padding: var(--space-2) var(--space-scroll-rail-trailing) var(--space-3) var(--space-scroll-rail-leading);
   scroll-behavior: smooth;
-  scroll-padding-inline: var(--space-scroll-rail-gutter);
+  scroll-padding-inline: var(--space-scroll-rail-leading) var(--space-scroll-rail-trailing);
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
 }
@@ -8791,8 +8791,8 @@ html[data-route-entering="true"] body > main {
   }
 
   .scroll-rail {
-    padding-inline: var(--space-2);
-    scroll-padding-inline: var(--space-2);
+    padding-inline: var(--space-scroll-rail-leading) var(--space-scroll-rail-mobile-trailing);
+    scroll-padding-inline: var(--space-scroll-rail-leading) var(--space-scroll-rail-mobile-trailing);
   }
 
   .instagram-carousel-viewer__content {

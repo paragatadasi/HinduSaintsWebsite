@@ -166,6 +166,9 @@
   --width-scroll-rail-edge-fade: 54px;
   --space-scroll-rail-control-gap: var(--space-4);
   --space-scroll-rail-gutter: calc(var(--size-scroll-button) + var(--space-scroll-rail-control-gap));
+  --space-scroll-rail-leading: 0px;
+  --space-scroll-rail-trailing: var(--space-scroll-rail-gutter);
+  --space-scroll-rail-mobile-trailing: var(--space-2);
   --scroll-button-offset: 0;
   --scroll-button-block-position: 50%;
   --size-focus-ring: 2px;
