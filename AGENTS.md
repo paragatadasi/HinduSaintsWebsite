@@ -88,8 +88,12 @@ git restore --staged :/ && git add path/to/file-a path/to/file-b && git commit -
 Deployment workflow:
 - When explicitly asked to deploy, complete the full release sequence; do not stop after committing or pushing a feature branch.
 - First inspect the working tree, identify all and only the uncommitted changes relevant to the requested deployment, run the appropriate verification, and commit those relevant changes using the scoped commit workflow above.
+- When multiple agents have deployable code ready, use a release-captain workflow. One designated release captain owns integration into `main`, the `main` push, the `main` to `deploy` merge, the `deploy` push, and deployment-status confirmation.
+- Ready agents should report their branch name, commit SHA, summary, verification run, migrations, environment-variable changes, and any shared areas touched before the release captain integrates their work.
+- The release captain should integrate ready branches into `main` one at a time, verifying after each merge or after each coherent batch when the risk is low. Order risky/shared changes first: schema and migrations, backend contracts, shared components/styles, then isolated UI/content.
 - Integrate the deployment commit(s) into `main` and push `main` to `origin` before updating `deploy`.
 - Then merge the updated `main` into `deploy` and push `deploy` to `origin`. A push to `deploy` triggers the production deployment workflow.
 - Never merge a feature branch directly into `deploy`, and never let `deploy` move ahead of the corresponding pushed `main` commit.
+- Do not allow multiple agents to push or merge `deploy` for the same release. If another agent has already started a release, coordinate through that agent or stop and report the overlap.
 - Do not include unrelated working-tree changes or commits from other agents. If unrelated changes prevent a safe branch switch or merge, preserve them and use a safe worktree or stop and report the blocker rather than discarding them.
 - After pushing `deploy`, confirm that the production deployment workflow was triggered and report its status. If workflow access is unavailable, report that verification limitation explicitly.
