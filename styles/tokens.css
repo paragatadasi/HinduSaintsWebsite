@@ -90,7 +90,7 @@
   --width-admin-stat-card-min: 140px;
   --width-definition-tooltip: 18rem;
   --width-aside: 320px;
-  --width-card-grid-min: 240px;
+  --width-card-grid-min: 220px;
   --width-card-grid: 280px;
   --width-rail-card-max: calc((var(--width-page) - (var(--space-scroll-rail-gutter) * 2) - (var(--space-4) * 3)) / 4);
   --width-rail-card: clamp(210px, 24vw, var(--width-rail-card-max));
