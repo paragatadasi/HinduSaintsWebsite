@@ -10,7 +10,7 @@
   --color-text: #211f1a;
   --color-text-inverse: #ffffff;
   --color-muted: #6f685f;
-  --color-subdued-info: color-mix(in srgb, var(--color-text) 62%, transparent);
+  --color-subdued-info: color-mix(in srgb, var(--color-gold) 58%, transparent);
   --color-border: #ddd5c6;
   --color-card-border: var(--color-border);
   --color-interactive-border: var(--color-accent);
@@ -195,7 +195,7 @@
   --color-text: #211b15;
   --color-text-inverse: #fffaf0;
   --color-muted: #6d6254;
-  --color-subdued-info: color-mix(in srgb, var(--color-text) 62%, transparent);
+  --color-subdued-info: color-mix(in srgb, var(--color-gold) 58%, transparent);
   --color-border: #dcc9a9;
   --color-card-border: var(--color-border);
   --color-interactive-border: var(--color-accent);
@@ -230,7 +230,7 @@
   --color-text: #f7ead3;
   --color-text-inverse: #050914;
   --color-muted: #c4b79f;
-  --color-subdued-info: rgba(255, 255, 255, 0.58);
+  --color-subdued-info: color-mix(in srgb, var(--color-gold) 58%, transparent);
   --color-border: rgba(232, 169, 68, 0.22);
   --color-card-border: rgba(247, 234, 211, 0.12);
   --color-interactive-border: rgba(255, 199, 102, 0.48);
@@ -273,7 +273,7 @@
   --color-text: #f8efe2;
   --color-text-inverse: #101614;
   --color-muted: #d0c4b4;
-  --color-subdued-info: rgba(255, 255, 255, 0.58);
+  --color-subdued-info: color-mix(in srgb, var(--color-gold) 58%, transparent);
   --color-border: #33433d;
   --color-card-border: var(--color-border);
   --color-interactive-border: var(--color-accent-strong);
