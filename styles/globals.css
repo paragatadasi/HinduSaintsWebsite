@@ -351,6 +351,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .about-read-more summary {
+  align-items: center;
   color: var(--color-accent-strong);
   cursor: pointer;
   display: inline-flex;
@@ -364,6 +365,11 @@ html[data-route-entering="true"] body > main {
 
 .about-read-more summary::-webkit-details-marker { display: none; }
 .about-read-more[open] summary { margin-bottom: var(--space-4); }
+.about-read-more__label--open { display: none; }
+.about-read-more[open] .about-read-more__label--closed { display: none; }
+.about-read-more[open] .about-read-more__label--open { display: inline; }
+.about-read-more__arrow { transition: transform var(--motion-route-progress-duration) var(--motion-route-ease); }
+.about-read-more[open] .about-read-more__arrow { transform: rotate(180deg); }
 .about-read-more .prose { animation: route-page-enter var(--motion-route-enter-duration) var(--motion-route-ease) both; }
 
 .about-discovery {

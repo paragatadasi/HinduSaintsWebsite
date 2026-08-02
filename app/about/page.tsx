@@ -98,7 +98,11 @@ function StorySection({ section, image, index }: { section: { title: string; bod
         <Prose markdown={teaser} />
         {remainder ? (
           <details className="about-read-more">
-            <summary>Read more <span aria-hidden="true">{"\u2192"}</span></summary>
+            <summary>
+              <span className="about-read-more__label about-read-more__label--closed">Read more</span>
+              <span className="about-read-more__label about-read-more__label--open">Read less</span>
+              <span className="about-read-more__arrow" aria-hidden="true">{"\u2193"}</span>
+            </summary>
             <Prose markdown={remainder} />
           </details>
         ) : null}
