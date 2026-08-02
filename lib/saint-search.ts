@@ -1,4 +1,5 @@
 import { rankWeightedTextSearch, type WeightedSearchField } from "@/lib/search-text";
+import { compareSaintDisplayNames } from "@/lib/saint-name-sort";
 
 export type SearchableSaint = {
   displayName: string;
@@ -67,7 +68,7 @@ export function rankSaintSearchResults<T extends SearchableSaint>(
     {
       limit: options.limit,
       minimumScore: options.minimumScore,
-      tieBreaker: (left, right) => left.displayName.localeCompare(right.displayName)
+      tieBreaker: (left, right) => compareSaintDisplayNames(left.displayName, right.displayName)
     }
   );
 }

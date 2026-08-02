@@ -43,6 +43,28 @@ test("does not rank unrelated honorific-sharing names above a substantive name m
   }
 });
 
+test("alphabetizes equally relevant results without leading honorifics", () => {
+  const candidates: CorpusSaint[] = [
+    {
+      id: "tukaram",
+      displayName: "Sant Tukaram",
+      canonicalName: "Sant Tukaram",
+      shortDescription: "Bhakti poet"
+    },
+    {
+      id: "anandamayi",
+      displayName: "Sri Anandamayi Ma",
+      canonicalName: "Sri Anandamayi Ma",
+      shortDescription: "Bhakti poet"
+    }
+  ];
+
+  assert.deepEqual(
+    rankSaintSearchResults(candidates, "bhakti poet").map(({ item }) => item.id),
+    ["anandamayi", "tukaram"]
+  );
+});
+
 test("allows an honorific-only admin search", () => {
   const results = rankSaintSearchResults(saints, "sri", { includeAdminFields: true });
 

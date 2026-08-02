@@ -6,6 +6,7 @@ import { RotateCcw, X } from "lucide-react";
 import { FocalImage } from "@/components/ui/focal-image";
 import type { PublicPlaceMapData, PublicPlaceMapPoint, PublicPlaceMapSaint } from "@/lib/public-contracts";
 import type { PlacesMapContent } from "@/lib/site-content";
+import { compareSaintDisplayNames } from "@/lib/saint-name-sort";
 
 type IndiaSaintsMapProps = {
   content: PlacesMapContent;
@@ -448,7 +449,7 @@ function buildSaintRoutes(points: ProjectedPoint[]) {
   }
 
   for (const saints of cardSaintsByPoint.values()) {
-    saints.sort((a, b) => a.displayName.localeCompare(b.displayName));
+    saints.sort((a, b) => compareSaintDisplayNames(a.displayName, b.displayName));
   }
 
   return { cardSaintsByPoint, segments };
@@ -471,7 +472,8 @@ function buildStateSummaries(points: ProjectedPoint[], stateNamesBySlug: Record<
     stateSummariesBySlug.set(stateSlug, {
       slug: stateSlug,
       name: existingState?.name ?? stateNamesBySlug[stateSlug] ?? formatStateSlug(stateSlug),
-      activeSaints: Array.from(saintsBySlug.values()).sort((a, b) => a.displayName.localeCompare(b.displayName)),
+      activeSaints: Array.from(saintsBySlug.values())
+        .sort((a, b) => compareSaintDisplayNames(a.displayName, b.displayName)),
       representativePoint: getRepresentativeStatePoint(existingState?.representativePoint, point),
       detailPoint: existingState?.detailPoint ?? (point.placeScope === "state" ? point : undefined)
     });

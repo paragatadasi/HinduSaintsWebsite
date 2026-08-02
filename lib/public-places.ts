@@ -5,6 +5,7 @@ import { getKnownPlaceScope, getKnownStateSlug } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
 import { PUBLIC_CACHE_TAGS, PUBLIC_DATA_CACHE_SECONDS } from "@/lib/public-cache";
 import { getPublicImageVariants } from "@/lib/responsive-images";
+import { compareSaintDisplayNames } from "@/lib/saint-name-sort";
 import type {
   PublicPlaceDetail,
   PublicPlaceMapData,
@@ -327,11 +328,11 @@ function toPublicPlaceMapSaint(saintPlace: PublishedPlaceSaintLink): PublicPlace
 function getSortedPublishedSaints(place: PublishedPlaceRow | PublishedPlaceDetailRow) {
   return place.saints
     .map(({ saint }) => saint)
-    .sort((a, b) => a.displayName.localeCompare(b.displayName));
+    .sort((a, b) => compareSaintDisplayNames(a.displayName, b.displayName));
 }
 
 function getSortedPublishedSaintLinks(place: PublishedPlaceRow) {
-  return place.saints.sort((a, b) => a.saint.displayName.localeCompare(b.saint.displayName));
+  return place.saints.sort((a, b) => compareSaintDisplayNames(a.saint.displayName, b.saint.displayName));
 }
 
 function hasMinimumPublishedSaints(place: PublishedPlaceRow | PublishedPlaceDetailRow) {
@@ -394,7 +395,8 @@ function aggregateMapPoints(points: PublicPlaceMapPoint[]) {
       saintsBySlug.set(saint.slug, getPreferredMapSaintAssociation(saintsBySlug.get(saint.slug), saint));
     }
 
-    existingPoint.saints = Array.from(saintsBySlug.values()).sort((a, b) => a.displayName.localeCompare(b.displayName));
+    existingPoint.saints = Array.from(saintsBySlug.values())
+      .sort((a, b) => compareSaintDisplayNames(a.displayName, b.displayName));
     existingPoint.saintCount = existingPoint.saints.length;
   }
 

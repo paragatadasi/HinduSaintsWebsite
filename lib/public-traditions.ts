@@ -15,6 +15,7 @@ import type {
 import { getPublishedSaintSummariesByIds } from "@/lib/public-saints";
 import { PUBLIC_CACHE_TAGS, PUBLIC_DATA_CACHE_SECONDS } from "@/lib/public-cache";
 import { getPublicImageVariants } from "@/lib/responsive-images";
+import { compareSaintDisplayNames } from "@/lib/saint-name-sort";
 import {
   getPublicTraditionPresentation,
   PUBLIC_TRADITION_STATUSES
@@ -406,7 +407,7 @@ function toPublicImage(image: TraditionSaintRow["primaryImage"], displayName: st
 function getSortedSaints(tradition: TraditionListRow | TraditionDetailRow) {
   return tradition.saints
     .map(({ saint }) => saint)
-    .sort((a, b) => a.displayName.localeCompare(b.displayName));
+    .sort((a, b) => compareSaintDisplayNames(a.displayName, b.displayName));
 }
 
 function getLineageSaints(tradition: TraditionDetailRow): PublicTraditionLineageSaint[] {
