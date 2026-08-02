@@ -38,12 +38,12 @@ export default async function TraditionsIndexPage({ searchParams }: TraditionsIn
           />
         </form>
       </IndexPageHero>
-      <div className="results-summary">
-        <p>{query
-          ? `${traditions.length} ${traditions.length === 1 ? "result" : "results"} for \"${query}\"`
-          : `${traditions.length} ${traditions.length === 1 ? "tradition" : "traditions"}`}</p>
-        {query ? <Link href="/traditions">Clear search</Link> : null}
-      </div>
+      {query ? (
+        <div className="results-summary">
+          <p>{`${traditions.length} ${traditions.length === 1 ? "result" : "results"} for \"${query}\"`}</p>
+          <Link href="/traditions">Clear search</Link>
+        </div>
+      ) : null}
       {traditions.length > 0 ? (
         <div className="card-grid">
           {traditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} />)}

@@ -81,10 +81,12 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
         </div>
         </form>
       </IndexPageHero>
-      <div className="results-summary">
-        <p>{resultLabel}</p>
-        {hasActiveCatalogQuery ? <Link href="/saints">Clear search and filters</Link> : null}
-      </div>
+      {hasActiveCatalogQuery ? (
+        <div className="results-summary">
+          <p>{resultLabel}</p>
+          <Link href="/saints">Clear search and filters</Link>
+        </div>
+      ) : null}
       {saints.length > 0 ? (
         <div className="card-grid">
           {!hasActiveCatalogQuery ? <SaintEncounterCard variant="catalog" /> : null}
