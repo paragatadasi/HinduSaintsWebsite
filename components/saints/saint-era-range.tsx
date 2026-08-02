@@ -19,11 +19,7 @@ export function SaintEraRange({ end: initialEnd, max, min, start: initialStart }
 
   return (
     <fieldset className="era-range">
-      <legend>Timespan</legend>
-      <div className="era-range__values" aria-live="polite">
-        <span>{formatYear(start)}</span>
-        <span>{formatYear(end)}</span>
-      </div>
+      <legend>Era</legend>
       <div
         className="era-range__track"
         style={{ "--era-range-end": `${endPosition}%`, "--era-range-start": `${startPosition}%` } as CSSProperties}
@@ -47,9 +43,9 @@ export function SaintEraRange({ end: initialEnd, max, min, start: initialStart }
           value={end}
         />
       </div>
-      <div className="era-range__bounds" aria-hidden="true">
-        <span>{formatYear(min)}</span>
-        <span>{formatYear(max)}</span>
+      <div className="era-range__bounds" aria-live="polite">
+        <span>{formatYear(start)}</span>
+        <span>{formatYear(end)}</span>
       </div>
     </fieldset>
   );

@@ -871,21 +871,15 @@ html[data-route-entering="true"] body > main {
   text-transform: uppercase;
 }
 
-.era-range__values,
 .era-range__bounds {
   display: flex;
   justify-content: space-between;
 }
 
-.era-range__values {
-  color: var(--color-text);
-  font-size: 0.86rem;
-  font-weight: 700;
-}
-
 .era-range__bounds {
   color: var(--color-muted);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
 .era-range__track {

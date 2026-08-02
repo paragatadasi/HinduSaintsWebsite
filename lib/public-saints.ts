@@ -19,6 +19,7 @@ import { getPublishedSaintSearchCandidateIds } from "@/lib/postgres-saint-search
 import { getPublicImageVariants } from "@/lib/responsive-images";
 import { rankSaintSearchResults } from "@/lib/saint-search";
 import { compareSaintDisplayNames } from "@/lib/saint-name-sort";
+import { PUBLIC_TRADITION_STATUSES } from "@/lib/public-tradition-visibility";
 
 type SaintListRow = Awaited<ReturnType<typeof getPublishedSaintRows>>[number];
 type SaintDetailRow = NonNullable<Awaited<ReturnType<typeof getPublishedSaintRowBySlug>>>;
@@ -251,6 +252,7 @@ async function getPublishedSaintCatalogFacets({
         select: { place: { select: { name: true } } }
       },
       traditions: {
+        where: { tradition: { status: { in: [...PUBLIC_TRADITION_STATUSES] } } },
         select: { tradition: { select: { name: true } } }
       }
     }
@@ -274,15 +276,11 @@ async function getPublishedSaintCatalogFacets({
 
   return {
     locations: getUniqueSorted(
-      locationSaints.flatMap((saint) => saint.places.length > 0
-        ? saint.places.map(({ place }) => place.name)
-        : [DEFAULT_LOCATION])
+      locationSaints.flatMap((saint) => saint.places.map(({ place }) => place.name))
     ),
     timeline,
     traditions: getUniqueSorted(
-      traditionSaints.flatMap((saint) => saint.traditions.length > 0
-        ? saint.traditions.map(({ tradition }) => tradition.name)
-        : [DEFAULT_TRADITION])
+      traditionSaints.flatMap((saint) => saint.traditions.map(({ tradition }) => tradition.name))
     )
   };
 }
@@ -605,8 +603,8 @@ function buildSaintCatalogFilterWhere({
 
   if (tradition) {
     and.push(tradition === DEFAULT_TRADITION
-      ? { traditions: { none: {} } }
-      : { traditions: { some: { tradition: { name: tradition } } } });
+      ? { traditions: { none: { tradition: { status: { in: [...PUBLIC_TRADITION_STATUSES] } } } } }
+      : { traditions: { some: { tradition: { name: tradition, status: { in: [...PUBLIC_TRADITION_STATUSES] } } } } });
   }
 
   if (location) {
