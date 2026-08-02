@@ -49,6 +49,7 @@ Verification:
 - Prisma client generation is code generation, not database access. Keep it explicit in `dev:check`, `db:generate`, Docker build setup, and `codex:verify`.
 - Use `npm run codex:verify` only as a heavier gate: after dependency/setup changes, before handing off a large route/rendering change, before commits intended for deployment, or when a production-build failure is specifically suspected.
 - Do not run `npm run codex:verify` as the default checker for every small frontend iteration.
+- Individual feature agents preparing a handoff should usually run `npm run prepare:deployment`, which runs `dev:check` and creates the release handoff. The release captain owns `npm run codex:verify` for the integrated release unless the feature branch changed dependencies, Prisma/schema/migrations, build configuration, auth, routing, or another production-sensitive surface.
 - Production database migrations must run in the deployment migrate/release phase, not while building the web image.
 - Do not run database migrations against production from Codex Cloud.
 - Cloud tasks that need database access must use a development PostgreSQL database configured through environment settings.
@@ -87,7 +88,7 @@ git restore --staged :/ && git add path/to/file-a path/to/file-b && git commit -
 
 Deployment workflow:
 - When explicitly asked to deploy, complete the full release sequence; do not stop after committing or pushing a feature branch.
-- When the user tells an individual feature agent to "prepare for deployment", do not merge to `main` or `deploy`. Instead, finish and commit the branch's deployable code, run the appropriate verification, create the branch-specific handoff file described below, commit that handoff file on the same branch, push the feature branch, and stop with a concise handoff summary.
+- When the user tells an individual feature agent to "prepare for deployment", do not merge to `main` or `deploy`. Instead, finish and commit the branch's deployable code, run `npm run prepare:deployment` unless a heavier branch-specific check is required, commit the generated handoff file on the same branch, push the feature branch, and stop with a concise handoff summary.
 - First inspect the working tree, identify all and only the uncommitted changes relevant to the requested deployment, run the appropriate verification, and commit those relevant changes using the scoped commit workflow above.
 - When multiple agents have deployable code ready, use a release-captain workflow. One designated release captain owns integration into `main`, the `main` push, the `main` to `deploy` merge, the `deploy` push, and deployment-status confirmation.
 - Ready agents should report their branch name, commit SHA, summary, verification run, migrations, environment-variable changes, and any shared areas touched before the release captain integrates their work.

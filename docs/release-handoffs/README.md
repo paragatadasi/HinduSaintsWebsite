@@ -11,13 +11,19 @@ Prepare for deployment.
 When an individual feature agent receives that instruction, the agent should:
 
 1. Finish the deployable code on its current feature branch.
-2. Run the appropriate verification.
-3. Commit only the relevant code changes.
-4. Copy `TEMPLATE.md` into a branch-specific handoff file.
-5. Fill in every handoff section.
-6. Commit the handoff file on the same branch.
-7. Push the feature branch.
-8. Stop and report the branch, commit SHA, verification result, and handoff file path.
+2. Commit only the relevant code changes.
+3. Run `npm run prepare:deployment`.
+4. Review the generated handoff file and fill any placeholders.
+5. Commit the handoff file on the same branch.
+6. Push the feature branch.
+7. Stop and report the branch, commit SHA, verification result, and handoff file path.
+
+`npm run prepare:deployment` runs `npm run dev:check` and creates the handoff
+file for the current branch. Feature agents should not run
+`npm run codex:verify` by default; the release captain runs the heavier
+verification on the integrated release unless the branch changed dependencies,
+Prisma/schema/migrations, build configuration, auth, routing, or another
+production-sensitive surface.
 
 That instruction does not authorize the feature agent to merge into `main` or
 `deploy`. Only the release captain should do that.
@@ -49,5 +55,5 @@ Release captain workflow:
 8. Confirm the production deployment workflow status.
 9. Remove or archive handoff files as part of the release cleanup.
 
-Ready agents should copy `TEMPLATE.md` and fill in every section before
-handoff.
+Ready agents can create handoffs manually from `TEMPLATE.md`, but
+`npm run prepare:deployment` is the preferred fast path.
