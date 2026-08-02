@@ -2,7 +2,7 @@
 
 - Status: ready
 - Branch: `codex/catalog-ui-polish`
-- Commit: `ea454c775247aa4b92f4fa5a6ee2cb893ff43d99`
+- Commit: `3fdff984b0bb8e1e7efba2c98219148e1e900197`
 - Owner/agent: `aporu`
 
 ## Summary
@@ -10,6 +10,7 @@
 - Replace repetitive tradition-tile fallback copy with published saint counts.
 - Improve Saints/Traditions index spacing and move the About disclosure control below expanded copy.
 - Use subdued theme-aware styling for secondary saint-count metadata on map, location, and tradition surfaces.
+- Center the saint profile hero gallery within its section.
 - Expose saint relationships in the saint review page with searchable creation, editing, moderation, public visibility, and deletion controls.
 - Derive reciprocal relationship views from one directional record, including guru/disciple, parent/child, family, and spousal relationships.
 - Make all published, publicly visible relationship types eligible for the public Related Saints rail.
