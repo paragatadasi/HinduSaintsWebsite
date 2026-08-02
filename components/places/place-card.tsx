@@ -16,7 +16,7 @@ export function PlaceCard({ place }: PlaceCardProps) {
         </span>
         <h3 className="entity-card__title">{place.name}</h3>
         <p className="entity-card__body">{place.shortDescription}</p>
-        <p className="eyebrow">{place.saintCount} {place.saintCount === 1 ? "saint" : "saints"}</p>
+        <p className="eyebrow subdued-info">{place.saintCount} {place.saintCount === 1 ? "saint" : "saints"}</p>
       </Link>
     </Card>
   );

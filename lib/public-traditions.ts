@@ -297,6 +297,7 @@ function toPublicTraditionSummary(
     shortDescription: status === "published"
       ? tradition.shortDescription ?? DEFAULT_DESCRIPTION
       : BASIC_DESCRIPTION,
+    saintCount: tradition.saints.length,
     founder: status === "published" ? getFounderLabel(tradition, founderNames) : undefined,
     status
   };

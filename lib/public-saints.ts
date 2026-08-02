@@ -308,11 +308,11 @@ const getRelatedPublishedSaintsCached = unstable_cache(async (slug: string) => {
       id: true,
       traditions: { select: { traditionId: true } },
       relationshipsFrom: {
-        where: { publicVisible: true, status: "published", relationshipType: { in: ["guru", "disciple"] } },
+        where: { publicVisible: true, status: "published" },
         select: { toSaintId: true }
       },
       relationshipsTo: {
-        where: { publicVisible: true, status: "published", relationshipType: { in: ["guru", "disciple"] } },
+        where: { publicVisible: true, status: "published" },
         select: { fromSaintId: true }
       }
     }

@@ -46,7 +46,9 @@ export default async function TraditionsIndexPage({ searchParams }: TraditionsIn
       ) : null}
       {traditions.length > 0 ? (
         <div className="card-grid">
-          {traditions.map((tradition) => <TraditionCard key={tradition.slug} tradition={tradition} />)}
+          {traditions.map((tradition) => (
+            <TraditionCard key={tradition.slug} tradition={tradition} showSaintCount />
+          ))}
         </div>
       ) : (
         <div className="empty-state">
