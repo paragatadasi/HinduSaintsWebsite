@@ -342,6 +342,8 @@ html[data-route-entering="true"] body > main {
 }
 
 .about-read-more {
+  display: flex;
+  flex-direction: column;
   margin-top: var(--space-5);
 }
 
@@ -359,7 +361,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .about-read-more summary::-webkit-details-marker { display: none; }
-.about-read-more[open] summary { margin-bottom: var(--space-4); }
+.about-read-more[open] summary { margin-top: var(--space-4); order: 2; }
 .about-read-more__label--open { display: none; }
 .about-read-more[open] .about-read-more__label--closed { display: none; }
 .about-read-more[open] .about-read-more__label--open { display: inline; }
@@ -511,6 +513,10 @@ html[data-route-entering="true"] body > main {
   font-weight: 700;
   letter-spacing: 0;
   text-transform: uppercase;
+}
+
+.subdued-info {
+  color: var(--color-subdued-info);
 }
 
 .site-grid {
@@ -811,6 +817,10 @@ html[data-route-entering="true"] body > main {
 
 .index-page-layout { gap: 0; padding-top: 0; }
 .index-page-layout > :nth-child(n + 3) { margin-top: var(--space-6); }
+.saints-index > .card-grid,
+.saints-index > .empty-state,
+.traditions-index > .card-grid,
+.traditions-index > .empty-state { margin-top: var(--space-6); }
 
 .hero-search {
   align-items: center;
@@ -2165,7 +2175,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .places-map__hover-card-meta {
-  fill: var(--color-muted);
+  fill: var(--color-subdued-info);
   font-size: 0.78rem;
 }
 

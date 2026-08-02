@@ -108,6 +108,7 @@ export type PublicTraditionSummary = {
   slug: string;
   name: string;
   shortDescription: string;
+  saintCount: number;
   founder?: string;
   status: "basic" | "published";
 };
