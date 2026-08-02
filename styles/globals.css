@@ -2028,19 +2028,48 @@ html[data-route-entering="true"] body > main {
 
 .places-map__saint-list li {
   border-top: 1px solid var(--color-border);
-  display: grid;
-  gap: var(--space-1);
   padding-top: var(--space-3);
 }
 
 .places-map__saint-list a {
+  align-items: center;
   color: var(--color-accent);
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: var(--size-places-map-saint-thumb) minmax(0, 1fr);
+}
+
+.places-map__saint-list-copy {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.places-map__saint-list-copy strong {
   font-weight: 700;
 }
 
-.places-map__saint-list span {
+.places-map__saint-list-copy span {
   color: var(--color-muted);
   font-size: 0.9rem;
+}
+
+.places-map__saint-list-image {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-card-border);
+  border-radius: 50%;
+  display: block;
+  height: var(--size-places-map-saint-thumb);
+  overflow: hidden;
+  width: var(--size-places-map-saint-thumb);
+}
+
+.places-map__saint-list-image img {
+  filter: var(--image-treatment);
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--image-object-position, var(--position-saint-image-default));
+  width: 100%;
 }
 
 .places-timeline {

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { RotateCcw, X } from "lucide-react";
+import { FocalImage } from "@/components/ui/focal-image";
 import type { PublicPlaceMapData, PublicPlaceMapPoint, PublicPlaceMapSaint } from "@/lib/public-contracts";
 import type { PlacesMapContent } from "@/lib/site-content";
 
@@ -309,8 +310,25 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
               <ul className="places-map__saint-list">
                 {visiblePanelSaints.map((saint) => (
                   <li key={saint.slug}>
-                    <Link href={`/saints/${saint.slug}`}>{saint.displayName}</Link>
-                    <span>{saint.eraLabel} - {saint.tradition}</span>
+                    <Link href={`/saints/${saint.slug}`}>
+                      <span aria-hidden="true" className="places-map__saint-list-image">
+                        <FocalImage
+                          alt=""
+                          focalPoint={saint.image?.focalPoint}
+                          height={saint.image?.height}
+                          sizes="44px"
+                          sourceHeight={saint.image?.height}
+                          sourceWidth={saint.image?.width}
+                          src={saint.image?.url ?? "/images/devotional-archive-placeholder.svg"}
+                          variants={saint.image?.variants}
+                          width={saint.image?.width}
+                        />
+                      </span>
+                      <span className="places-map__saint-list-copy">
+                        <strong>{saint.displayName}</strong>
+                        <span>{saint.eraLabel} - {saint.tradition}</span>
+                      </span>
+                    </Link>
                   </li>
                 ))}
               </ul>
