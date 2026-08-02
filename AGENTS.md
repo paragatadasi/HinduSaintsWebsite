@@ -60,6 +60,14 @@ Data ingestion and reconciliation:
 - Create reconciliation issues when external content conflicts with reviewed website content.
 - Do not silently overwrite human CMS edits with later Airtable, Instagram, CSV, or script-ingested data.
 
+Worktree and branch hygiene:
+- Treat the repository root as the canonical working tree for `main`. Do not leave `main` checked out in long-lived Codex task worktrees.
+- Treat `deploy` as a release target only. Do not develop directly on `deploy`, and do not leave `deploy` checked out in stale worktrees after a release.
+- Do feature work on short-lived `codex/...` branches. Merge or fast-forward the finished work into `main`, then merge `main` into `deploy` only as part of the deployment workflow.
+- Before switching, merging, or deploying, run `git worktree list` and `git status -sb` to confirm that `main` and `deploy` are not blocked by stale worktrees or dirty release checkouts.
+- After a feature branch has been merged and deployed, remove any temporary worktree for that branch with `git worktree remove <path>` and then run `git worktree prune`.
+- If a stale worktree has uncommitted changes, back them up outside the repository before removal. Do not discard dirty worktrees unless the user explicitly approves the cleanup.
+
 Commit workflow:
 - Multiple agents may work in this repository at the same time, so commits must be intentionally scoped.
 - On this Windows/Codex setup, Git commands that write repository metadata may need to run elevated/outside the sandbox because `.git` can be write-protected for the sandbox user.
