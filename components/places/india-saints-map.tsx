@@ -340,7 +340,7 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
             <>
               <div className="places-map__panel-heading">
                 <div>
-                  <div className="eyebrow">{selectedPanelItem.activeSaints.length} {selectedPanelItem.activeSaints.length === 1 ? "saint" : "saints"}</div>
+                  <div className="eyebrow subdued-info">{selectedPanelItem.activeSaints.length} {selectedPanelItem.activeSaints.length === 1 ? "saint" : "saints"}</div>
                   <h3 id="places-map-selection-title" ref={panelHeadingRef} tabIndex={-1}>{selectedPanelItem.name}</h3>
                   {selectedPoint?.region || selectedPoint?.country ? <p>{[selectedPoint.region, selectedPoint.country].filter(Boolean).join(", ")}</p> : null}
                 </div>
@@ -359,7 +359,7 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
           ) : timeFilterEnabled ? (
             <div className="places-map__visible-saints">
               <div>
-                <div className="eyebrow">{timeFilterSaints.length} {timeFilterSaints.length === 1 ? "saint" : "saints"}</div>
+                <div className="eyebrow subdued-info">{timeFilterSaints.length} {timeFilterSaints.length === 1 ? "saint" : "saints"}</div>
                 <h3 id="places-map-visible-title">Alive in {selectedYear}</h3>
                 <p>Select a place to narrow these results.</p>
               </div>

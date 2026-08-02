@@ -13,10 +13,18 @@ import { parseImportedDate } from "@/lib/import-dates";
 import { acceptSaintInstagramClaim } from "@/lib/instagram-claims";
 import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page-extraction";
 import { toSlug } from "@/lib/slugs";
+import { getReciprocalRelationshipType } from "@/lib/saint-relationships";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 const placeTypeSchema = z.enum(["primary", "birth", "samadhi", "sadhana", "associated", "other"]);
 const sourceTypeSchema = z.enum(["book", "article", "website", "scripture", "oral_tradition", "other"]);
+const relationshipTypeSchema = z.enum([
+  "guru", "disciple", "parent", "child", "father", "mother", "son", "daughter", "husband", "wife",
+  "partner", "incarnation", "family", "influence", "initiator", "patron", "successor",
+  "debate_opponent", "contemporary", "associated", "lineage", "related", "untyped"
+]);
+const relationshipEvidenceStatusSchema = z.enum(["certain", "probable", "traditional", "disputed", "imported", "uncategorized"]);
+const confidenceSchema = z.enum(["low", "medium", "high"]);
 
 const saintBasicsSchema = z.object({
   saintId: z.string().cuid(),
@@ -147,6 +155,29 @@ const saintPlaceCreationSchema = z.object({
   region: z.string().trim().max(120).optional(),
   country: z.string().trim().max(120).optional(),
   routeLabel: z.string().trim().max(120).optional()
+});
+
+const saintRelationshipFieldsSchema = z.object({
+  saintId: z.string().cuid(),
+  relatedSaintId: z.string().cuid(),
+  relationshipType: relationshipTypeSchema,
+  status: contentStatusSchema,
+  evidenceStatus: relationshipEvidenceStatusSchema,
+  confidence: confidenceSchema,
+  publicVisible: z.boolean(),
+  publicNote: z.string().trim().max(500).optional()
+});
+const saintRelationshipSchema = saintRelationshipFieldsSchema.refine((value) => value.saintId !== value.relatedSaintId, {
+  message: "A saint cannot be related to themselves."
+});
+
+const saintRelationshipUpdateSchema = saintRelationshipFieldsSchema.omit({ relatedSaintId: true }).extend({
+  relationshipId: z.string().cuid()
+});
+
+const saintRelationshipDeleteSchema = z.object({
+  saintId: z.string().cuid(),
+  relationshipId: z.string().cuid()
 });
 
 const saintBiographySchema = z.object({
@@ -325,6 +356,119 @@ export async function updateSaintAliases(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
+}
+
+export async function createSaintRelationship(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = saintRelationshipSchema.parse({
+    saintId: formData.get("saintId"),
+    relatedSaintId: formData.get("relatedSaintId"),
+    relationshipType: formData.get("relationshipType"),
+    status: formData.get("status") ?? "needs_review",
+    evidenceStatus: formData.get("evidenceStatus") ?? "uncategorized",
+    confidence: formData.get("confidence") ?? "medium",
+    publicVisible: formData.has("publicVisible"),
+    publicNote: emptyToUndefined(formData.get("publicNote"))
+  });
+  const saints = await db.saint.findMany({
+    where: { id: { in: [parsed.saintId, parsed.relatedSaintId] } },
+    select: { id: true, slug: true }
+  });
+  if (saints.length !== 2) throw new Error("One of the selected saints was not found.");
+
+  const duplicate = await db.saintRelationship.findFirst({
+    where: {
+      OR: [
+        { fromSaintId: parsed.saintId, toSaintId: parsed.relatedSaintId, relationshipType: parsed.relationshipType },
+        {
+          fromSaintId: parsed.relatedSaintId,
+          toSaintId: parsed.saintId,
+          relationshipType: getReciprocalRelationshipType(parsed.relationshipType)
+        }
+      ]
+    },
+    select: { id: true }
+  });
+  if (duplicate) throw new Error("This relationship already exists.");
+
+  await db.saintRelationship.create({
+    data: {
+      fromSaintId: parsed.saintId,
+      toSaintId: parsed.relatedSaintId,
+      relationshipType: parsed.relationshipType,
+      status: parsed.status,
+      evidenceStatus: parsed.evidenceStatus,
+      confidence: parsed.confidence,
+      publicVisible: parsed.publicVisible,
+      publicNote: parsed.publicNote
+    }
+  });
+  saints.forEach((saint) => revalidateSaintPaths(saint.slug));
+}
+
+export async function updateSaintRelationship(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = saintRelationshipUpdateSchema.parse({
+    relationshipId: formData.get("relationshipId"),
+    saintId: formData.get("saintId"),
+    relationshipType: formData.get("relationshipType"),
+    status: formData.get("status"),
+    evidenceStatus: formData.get("evidenceStatus"),
+    confidence: formData.get("confidence"),
+    publicVisible: formData.has("publicVisible"),
+    publicNote: emptyToUndefined(formData.get("publicNote"))
+  });
+  const relationship = await db.saintRelationship.findFirst({
+    where: {
+      id: parsed.relationshipId,
+      OR: [{ fromSaintId: parsed.saintId }, { toSaintId: parsed.saintId }]
+    },
+    include: {
+      fromSaint: { select: { slug: true } },
+      toSaint: { select: { slug: true } }
+    }
+  });
+  if (!relationship) throw new Error("Relationship was not found.");
+
+  await db.saintRelationship.update({
+    where: { id: relationship.id },
+    data: {
+      relationshipType: relationship.fromSaintId === parsed.saintId
+        ? parsed.relationshipType
+        : getReciprocalRelationshipType(parsed.relationshipType),
+      status: parsed.status,
+      evidenceStatus: parsed.evidenceStatus,
+      confidence: parsed.confidence,
+      publicVisible: parsed.publicVisible,
+      publicNote: parsed.publicNote
+    }
+  });
+  [relationship.fromSaint.slug, relationship.toSaint.slug].forEach(revalidateSaintPaths);
+}
+
+export async function deleteSaintRelationship(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = saintRelationshipDeleteSchema.parse({
+    relationshipId: formData.get("relationshipId"),
+    saintId: formData.get("saintId")
+  });
+  const relationship = await db.saintRelationship.findFirst({
+    where: {
+      id: parsed.relationshipId,
+      OR: [{ fromSaintId: parsed.saintId }, { toSaintId: parsed.saintId }]
+    },
+    include: {
+      fromSaint: { select: { slug: true } },
+      toSaint: { select: { slug: true } }
+    }
+  });
+  if (!relationship) throw new Error("Relationship was not found.");
+
+  await db.saintRelationship.delete({ where: { id: relationship.id } });
+  [relationship.fromSaint.slug, relationship.toSaint.slug].forEach(revalidateSaintPaths);
 }
 
 export async function updateSaintTraditions(formData: FormData) {

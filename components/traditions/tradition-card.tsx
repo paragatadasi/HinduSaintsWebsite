@@ -6,9 +6,10 @@ import type { PublicTraditionSummary } from "@/lib/public-contracts";
 type TraditionCardProps = {
   tradition: PublicTraditionSummary;
   variant?: "summary" | "icon";
+  showSaintCount?: boolean;
 };
 
-export function TraditionCard({ tradition, variant = "summary" }: TraditionCardProps) {
+export function TraditionCard({ tradition, variant = "summary", showSaintCount = false }: TraditionCardProps) {
   const Icon = tradition.slug.includes("bhakti") || tradition.slug.includes("gaudiya") || tradition.slug.includes("varkari")
     ? Flower2
     : tradition.slug.includes("advaita")
@@ -33,7 +34,13 @@ export function TraditionCard({ tradition, variant = "summary" }: TraditionCardP
     <Card className="entity-card interactive-surface tradition-card tradition-card--summary">
       <Link href={`/traditions/${tradition.slug}`}>
         <h3 className="entity-card__title">{tradition.name}</h3>
-        <p className="entity-card__body">{tradition.shortDescription}</p>
+        {showSaintCount ? (
+          <p className="eyebrow subdued-info">
+            {tradition.saintCount} {tradition.saintCount === 1 ? "saint" : "saints"}
+          </p>
+        ) : (
+          <p className="entity-card__body">{tradition.shortDescription}</p>
+        )}
         {tradition.founder ? <p className="eyebrow">Founder: {tradition.founder}</p> : null}
       </Link>
     </Card>

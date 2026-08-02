@@ -8,18 +8,23 @@ import { ReviewFactGrid, ReviewSection, ReviewSubsection, ReviewWorkflow } from 
 import { SaintDateField } from "@/components/admin/saint-date-field";
 import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 import { db } from "@/lib/db";
 import { getInstagramLinkProps } from "@/lib/external-links";
 import { parseImportedDate } from "@/lib/import-dates";
 import { getInstagramImageUrls } from "@/lib/instagram";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { toSlug } from "@/lib/slugs";
+import { formatRelationshipType, getReciprocalRelationshipType, relationshipTypeOptions } from "@/lib/saint-relationships";
 import {
+  createSaintRelationship,
+  deleteSaintRelationship,
   removeSaintSource,
   reviewSaintInstagramClaim,
   updateSaintAliases,
   updateSaintOtherPublicFields,
   updateSaintOverview,
+  updateSaintRelationship,
   updateSaintReviewStatus,
   upsertSaintBiography,
   upsertSaintSource
@@ -42,13 +47,18 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
 
   if (!saint) notFound();
 
-  const [externalRecord, allTraditions, allPlaces, sourceLinks] = await Promise.all([
+  const [externalRecord, allTraditions, allPlaces, allSaints, sourceLinks] = await Promise.all([
     db.externalRecord.findFirst({
       where: { sourceType: "airtable", entityType: "Saint", entityId: saint.id },
       select: { externalId: true, lastSeenAt: true }
     }),
     db.tradition.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, alternateNames: true, status: true } }),
     db.place.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, alternateNames: true, region: true, country: true } }),
+    db.saint.findMany({
+      where: { id: { not: saint.id }, status: { not: "archived" } },
+      orderBy: { displayName: "asc" },
+      select: { id: true, displayName: true, canonicalName: true, status: true }
+    }),
     db.contentSource.findMany({
       where: { entityType: "Saint", entityId: saint.id },
       include: { source: true },
@@ -269,6 +279,146 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
             />
           </ReviewSubsection>
         </div>
+      </CollapsibleReviewCard>
+
+      <CollapsibleReviewCard
+        cardId="saint-relationships"
+        defaultOpen
+        description="Review directional links once; the reciprocal relationship appears automatically on the other saint."
+        eyebrow="Saint network"
+        title="Relationships"
+      >
+        <div className="review-list">
+          {[
+            ...saint.relationshipsFrom.map((relationship) => ({
+              ...relationship,
+              relatedSaint: relationship.toSaint,
+              reviewType: relationship.relationshipType
+            })),
+            ...saint.relationshipsTo.map((relationship) => ({
+              ...relationship,
+              relatedSaint: relationship.fromSaint,
+              reviewType: getReciprocalRelationshipType(relationship.relationshipType)
+            }))
+          ].map((relationship) => (
+            <div className="review-row" key={relationship.id}>
+              <div>
+                <div className="review-meta">
+                  <StatusBadge label={formatRelationshipType(relationship.reviewType)} />
+                  <StatusBadge label={formatStatus(relationship.status)} />
+                  <StatusBadge label={relationship.publicVisible ? "public" : "private"} />
+                </div>
+                <h3><Link href={`/admin/saints/${relationship.relatedSaint.slug}`}>{relationship.relatedSaint.displayName}</Link></h3>
+                <p>{relationship.relatedSaint.displayName} is shown as this saint&apos;s {formatRelationshipType(relationship.reviewType).toLowerCase()}.</p>
+              </div>
+              <form action={updateSaintRelationship} className="form-stack">
+                <input name="relationshipId" type="hidden" value={relationship.id} />
+                <input name="saintId" type="hidden" value={saint.id} />
+                <div className="field-grid">
+                  <label>
+                    Relationship
+                    <select name="relationshipType" defaultValue={relationship.reviewType}>
+                      {relationshipTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                    </select>
+                  </label>
+                  <label>
+                    Status
+                    <select name="status" defaultValue={relationship.status}>
+                      {contentStatuses.map((status) => <option key={status} value={status}>{formatStatus(status)}</option>)}
+                    </select>
+                  </label>
+                  <label>
+                    Evidence
+                    <select name="evidenceStatus" defaultValue={relationship.evidenceStatus}>
+                      {relationshipEvidenceStatuses.map((status) => <option key={status} value={status}>{formatStatus(status)}</option>)}
+                    </select>
+                  </label>
+                  <label>
+                    Confidence
+                    <select name="confidence" defaultValue={relationship.confidence}>
+                      {confidenceLevels.map((confidence) => <option key={confidence} value={confidence}>{confidence}</option>)}
+                    </select>
+                  </label>
+                </div>
+                <label>
+                  Public note
+                  <input name="publicNote" defaultValue={relationship.publicNote ?? ""} maxLength={500} />
+                </label>
+                <label className="checkbox-row">
+                  <input name="publicVisible" type="checkbox" defaultChecked={relationship.publicVisible} />
+                  Visible on public saint profiles
+                </label>
+                <div className="review-actions">
+                  <button className="admin-form-button" type="submit">Save relationship</button>
+                  <button
+                    className="admin-form-button admin-form-button--warning"
+                    formAction={deleteSaintRelationship}
+                    type="submit"
+                  >Delete</button>
+                </div>
+              </form>
+            </div>
+          ))}
+        </div>
+
+        <ReviewSubsection
+          description="The selected type describes how the related saint relates to this saint."
+          eyebrow="Add connection"
+          title="New Relationship"
+        >
+          <form action={createSaintRelationship} className="form-stack">
+            <input name="saintId" type="hidden" value={saint.id} />
+            <SearchableSelect
+              label="Related saint"
+              name="relatedSaintId"
+              options={allSaints.map((option) => ({
+                value: option.id,
+                label: option.displayName,
+                description: formatStatus(option.status),
+                keywords: [option.canonicalName]
+              }))}
+              placeholder="Search saints"
+              required
+            />
+            <div className="field-grid">
+              <label>
+                Relationship
+                <select name="relationshipType" defaultValue="related">
+                  {relationshipTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                </select>
+              </label>
+              <label>
+                Status
+                <select name="status" defaultValue="needs_review">
+                  {contentStatuses.map((status) => <option key={status} value={status}>{formatStatus(status)}</option>)}
+                </select>
+              </label>
+              <label>
+                Evidence
+                <select name="evidenceStatus" defaultValue="uncategorized">
+                  {relationshipEvidenceStatuses.map((status) => <option key={status} value={status}>{formatStatus(status)}</option>)}
+                </select>
+              </label>
+              <label>
+                Confidence
+                <select name="confidence" defaultValue="medium">
+                  {confidenceLevels.map((confidence) => <option key={confidence} value={confidence}>{confidence}</option>)}
+                </select>
+              </label>
+            </div>
+            <label>
+              Public note
+              <input name="publicNote" maxLength={500} />
+            </label>
+            <label className="checkbox-row">
+              <input name="publicVisible" type="checkbox" />
+              Visible on public saint profiles
+            </label>
+            <div className="review-actions">
+              <button className="admin-form-button" type="submit">Add relationship</button>
+            </div>
+          </form>
+        </ReviewSubsection>
       </CollapsibleReviewCard>
 
       <CollapsibleReviewCard
@@ -709,6 +859,14 @@ async function getSaint(slugOrId: string) {
         include: { tradition: true },
         orderBy: { isPrimary: "desc" }
       },
+      relationshipsFrom: {
+        include: { toSaint: { select: { id: true, slug: true, displayName: true, status: true } } },
+        orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }]
+      },
+      relationshipsTo: {
+        include: { fromSaint: { select: { id: true, slug: true, displayName: true, status: true } } },
+        orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }]
+      },
       biographies: {
         orderBy: [
           { status: "desc" },
@@ -1019,6 +1177,8 @@ function FormattedCaption({ caption }: { caption?: string | null }) {
 }
 
 const contentStatuses = ["draft", "needs_review", "published", "archived"] as const;
+const relationshipEvidenceStatuses = ["certain", "probable", "traditional", "disputed", "imported", "uncategorized"] as const;
+const confidenceLevels = ["low", "medium", "high"] as const;
 const placeTypes = ["primary", "birth", "samadhi", "sadhana", "associated", "other"] as const;
 const sourceTypes = ["book", "article", "website", "scripture", "oral_tradition", "other"] as const;
 
