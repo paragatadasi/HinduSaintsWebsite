@@ -87,6 +87,7 @@ git restore --staged :/ && git add path/to/file-a path/to/file-b && git commit -
 
 Deployment workflow:
 - When explicitly asked to deploy, complete the full release sequence; do not stop after committing or pushing a feature branch.
+- When the user tells an individual feature agent to "prepare for deployment", do not merge to `main` or `deploy`. Instead, finish and commit the branch's deployable code, run the appropriate verification, create the branch-specific handoff file described below, commit that handoff file on the same branch, push the feature branch, and stop with a concise handoff summary.
 - First inspect the working tree, identify all and only the uncommitted changes relevant to the requested deployment, run the appropriate verification, and commit those relevant changes using the scoped commit workflow above.
 - When multiple agents have deployable code ready, use a release-captain workflow. One designated release captain owns integration into `main`, the `main` push, the `main` to `deploy` merge, the `deploy` push, and deployment-status confirmation.
 - Ready agents should report their branch name, commit SHA, summary, verification run, migrations, environment-variable changes, and any shared areas touched before the release captain integrates their work.

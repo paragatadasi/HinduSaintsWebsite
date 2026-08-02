@@ -2,6 +2,26 @@
 
 Use this folder when an agent has code ready for the release captain.
 
+Shortcut instruction:
+
+```text
+Prepare for deployment.
+```
+
+When an individual feature agent receives that instruction, the agent should:
+
+1. Finish the deployable code on its current feature branch.
+2. Run the appropriate verification.
+3. Commit only the relevant code changes.
+4. Copy `TEMPLATE.md` into a branch-specific handoff file.
+5. Fill in every handoff section.
+6. Commit the handoff file on the same branch.
+7. Push the feature branch.
+8. Stop and report the branch, commit SHA, verification result, and handoff file path.
+
+That instruction does not authorize the feature agent to merge into `main` or
+`deploy`. Only the release captain should do that.
+
 Each ready agent should add one handoff file on their feature branch:
 
 ```text
