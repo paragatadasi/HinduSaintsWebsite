@@ -34,6 +34,8 @@
   --font-size-encounter-title: 1.5rem;
   --font-size-encounter-body: 0.875rem;
   --font-size-encounter-eyebrow: 0.75rem;
+  --font-size-saint-profile-stat: 0.72rem;
+  --font-size-saint-profile-stat-value: 0.9rem;
   --letter-spacing-eyebrow: 0.12em;
   --font-size-definition-tooltip: 0.875rem;
   --font-size-review-field: 0.92rem;
@@ -62,6 +64,13 @@
   --color-encounter-surface: var(--color-surface);
   --color-encounter-border: var(--color-card-border);
   --shadow-encounter: var(--shadow-soft);
+  --color-saint-profile-hero-start: var(--color-surface);
+  --color-saint-profile-hero-end: var(--color-bg);
+  --color-saint-profile-biography: var(--color-text-inverse);
+  --color-saint-profile-biography-text: var(--color-bg);
+  --width-saint-profile-gallery: 28rem;
+  --width-saint-profile-reading: 46rem;
+  --height-saint-profile-gallery: 32rem;
   --image-treatment: saturate(0.94) contrast(0.98);
   --motion-interactive-duration: 180ms;
   --motion-interactive-ease: ease;

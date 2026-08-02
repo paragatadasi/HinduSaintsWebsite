@@ -274,6 +274,51 @@ export async function getPublishedSaintBySlug(slug: string): Promise<PublicSaint
   return getPublishedSaintBySlugCached(slug);
 }
 
+export async function getRelatedPublishedSaints(slug: string): Promise<PublicSaintSummary[]> {
+  return getRelatedPublishedSaintsCached(slug);
+}
+
+const getRelatedPublishedSaintsCached = unstable_cache(async (slug: string) => {
+  const saint = await db.saint.findFirst({
+    where: { slug, status: "published" },
+    select: {
+      id: true,
+      traditions: { select: { traditionId: true } },
+      relationshipsFrom: {
+        where: { publicVisible: true, status: "published", relationshipType: { in: ["guru", "disciple"] } },
+        select: { toSaintId: true }
+      },
+      relationshipsTo: {
+        where: { publicVisible: true, status: "published", relationshipType: { in: ["guru", "disciple"] } },
+        select: { fromSaintId: true }
+      }
+    }
+  });
+  if (!saint) return [];
+
+  const relationshipIds = [
+    ...saint.relationshipsFrom.map(({ toSaintId }) => toSaintId),
+    ...saint.relationshipsTo.map(({ fromSaintId }) => fromSaintId)
+  ];
+  const traditionIds = saint.traditions.map(({ traditionId }) => traditionId);
+  const rows = await getPublishedSaintRows({
+    id: { not: saint.id },
+    OR: [
+      ...(relationshipIds.length > 0 ? [{ id: { in: relationshipIds } }] : []),
+      ...(traditionIds.length > 0 ? [{ traditions: { some: { traditionId: { in: traditionIds } } } }] : [])
+    ]
+  });
+  const relationshipSet = new Set(relationshipIds);
+
+  return rows
+    .sort((left, right) => Number(relationshipSet.has(right.id)) - Number(relationshipSet.has(left.id)))
+    .slice(0, 8)
+    .map(toPublicSaintSummary);
+}, ["related-published-saints"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints]
+});
+
 const getPublishedSaintBySlugCached = unstable_cache(async (
   slug: string
 ): Promise<PublicSaintDetail | null> => {

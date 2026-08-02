@@ -2848,6 +2848,65 @@ html[data-route-entering="true"] body > main {
   padding: var(--space-8) 0 var(--space-12);
 }
 
+.saint-profile-hero {
+  background: linear-gradient(90deg, var(--color-saint-profile-hero-start) 0 57%, var(--color-saint-profile-hero-end) 57%);
+  border-bottom: var(--border-width-default) solid var(--color-border);
+  padding-block: var(--space-12);
+}
+
+.saint-profile-hero__inner {
+  align-items: center;
+  display: grid;
+  gap: var(--space-12);
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, var(--width-saint-profile-gallery));
+}
+
+.saint-profile-hero__content { max-width: var(--width-prose); }
+
+.saint-profile-hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 0.98;
+  margin: var(--space-6) 0 var(--space-4);
+  text-transform: uppercase;
+}
+
+.saint-profile-hero__summary { color: var(--color-muted); line-height: 1.65; }
+
+.saint-profile-stats {
+  gap: var(--space-3) var(--space-5);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.saint-profile-stats .fact { border: 0; padding: 0; }
+.saint-profile-stats .fact strong { font-size: var(--font-size-saint-profile-stat); }
+.saint-profile-stats .fact__value { color: var(--color-muted); font-size: var(--font-size-saint-profile-stat-value); margin-top: var(--space-1); }
+.saint-profile-stats .taxonomy-link { border: 0; font-size: inherit; padding: 0; }
+
+.saint-profile-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+.saint-profile-actions > .button { min-height: var(--height-control); }
+
+.saint-hero-gallery { justify-self: end; max-width: var(--width-saint-profile-gallery); width: 100%; }
+.saint-hero-gallery__stage { background: var(--color-surface); min-height: var(--height-saint-profile-gallery); overflow: hidden; position: relative; }
+.saint-hero-gallery__stage > img { filter: var(--image-treatment); height: var(--height-saint-profile-gallery); object-fit: cover; width: 100%; }
+.saint-hero-gallery__controls { display: flex; inset: 50% var(--space-3) auto; justify-content: space-between; position: absolute; transform: translateY(-50%); }
+.saint-hero-gallery__controls button { background: var(--color-surface); border: var(--border-width-default) solid var(--color-border); border-radius: var(--radius-pill); color: var(--color-text); cursor: pointer; display: grid; padding: var(--space-2); place-items: center; }
+.saint-hero-gallery__dots { display: flex; gap: var(--space-2); justify-content: center; padding-top: var(--space-4); }
+.saint-hero-gallery__dots button { background: var(--color-muted); border: 0; cursor: pointer; height: var(--space-2); opacity: 0.55; padding: 0; width: var(--space-2); }
+.saint-hero-gallery__dots button[aria-current="true"] { background: var(--color-accent); opacity: 1; }
+.saint-hero-gallery--empty { align-items: center; background: var(--color-surface-muted); color: var(--color-muted); display: flex; justify-content: center; min-height: var(--height-saint-profile-gallery); padding: var(--space-6); }
+
+.saint-profile-biography { max-width: var(--width-saint-profile-reading); }
+.saint-profile-biography .saint-detail-main { color: var(--color-text); }
+.saint-profile-related { background: var(--color-surface); }
+.saint-profile-related .section-heading h2 { letter-spacing: 0.12em; text-transform: uppercase; }
+.saint-profile-encounter { display: flex; justify-content: center; }
+.saint-profile-encounter .saint-encounter { max-width: var(--width-prose); width: 100%; }
+.saint-profile-sources { max-width: var(--width-saint-profile-reading); }
+.saint-profile-feedback { display: flex; justify-content: center; }
+
 .saint-detail-hero__inner {
   align-items: center;
   display: grid;
@@ -8085,6 +8144,26 @@ html[data-route-entering="true"] body > main {
 }
 
 @media (max-width: 760px) {
+  .saint-profile-hero {
+    background: var(--color-saint-profile-hero-start);
+    padding-block: var(--space-8);
+  }
+
+  .saint-profile-hero__inner {
+    gap: var(--space-8);
+    grid-template-columns: 1fr;
+  }
+
+  .saint-profile-hero__content { order: 2; }
+  .saint-hero-gallery { justify-self: stretch; order: 1; max-width: none; }
+  .saint-hero-gallery__stage,
+  .saint-hero-gallery__stage > img { height: auto; min-height: 0; }
+  .saint-hero-gallery__stage > img { aspect-ratio: 4 / 5; }
+  .saint-profile-stats { grid-template-columns: 1fr; }
+  .saint-profile-actions { align-items: stretch; flex-direction: column; }
+  .saint-profile-actions .button { justify-content: center; width: 100%; }
+  .saint-profile-related .scroll-rail { padding-inline: var(--space-2); }
+
   .site-nav {
     align-items: stretch;
     gap: var(--space-2);
