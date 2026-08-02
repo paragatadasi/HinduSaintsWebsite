@@ -2,7 +2,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type SaintEncounterCardProps = {
-  variant: "catalog" | "hero";
+  variant: "catalog" | "hero" | "profile";
 };
 
 export function SaintEncounterCard({ variant }: SaintEncounterCardProps) {

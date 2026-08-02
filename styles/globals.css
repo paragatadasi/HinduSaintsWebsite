@@ -1092,6 +1092,42 @@ html[data-route-entering="true"] body > main {
   min-height: 100%;
 }
 
+.saint-encounter-card--profile {
+  display: grid;
+  gap: var(--space-1) var(--space-5);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  justify-self: stretch;
+  padding: var(--space-8);
+  text-align: left;
+  width: 100%;
+}
+
+.saint-encounter-card--profile .saint-encounter-card__icon {
+  grid-column: 1;
+  grid-row: 1 / 4;
+  margin: 0;
+}
+
+.saint-encounter-card--profile .saint-encounter-card__eyebrow,
+.saint-encounter-card--profile h2,
+.saint-encounter-card--profile > p:not(.saint-encounter-card__eyebrow) {
+  grid-column: 2;
+}
+
+.saint-encounter-card--profile h2 { margin-bottom: var(--space-1); }
+
+.saint-encounter-card--profile > p:not(.saint-encounter-card__eyebrow) {
+  margin: 0;
+  max-width: var(--width-prose);
+}
+
+.saint-encounter-card--profile .button {
+  align-self: center;
+  grid-column: 3;
+  grid-row: 1 / 4;
+  width: auto;
+}
+
 .home-cosmic-panel {
   background: var(--color-bg);
   border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 42%, transparent);
@@ -2961,7 +2997,6 @@ html[data-route-entering="true"] body > main {
 .saint-profile-related { background: var(--color-surface); }
 .saint-profile-related .section-heading h2 { letter-spacing: 0.12em; text-transform: uppercase; }
 .saint-profile-encounter { display: flex; justify-content: center; }
-.saint-profile-encounter .saint-encounter { max-width: var(--width-prose); width: 100%; }
 .saint-profile-sources { max-width: var(--width-saint-profile-reading); }
 .saint-profile-feedback { display: flex; justify-content: center; }
 
@@ -8295,6 +8330,27 @@ html[data-route-entering="true"] body > main {
     justify-self: stretch;
     margin-top: var(--space-2);
   }
+
+  .saint-encounter-card--profile {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    padding: var(--space-6);
+    text-align: center;
+  }
+
+  .saint-encounter-card--profile,
+  .saint-encounter-card--profile .saint-encounter-card__icon,
+  .saint-encounter-card--profile .saint-encounter-card__eyebrow,
+  .saint-encounter-card--profile h2,
+  .saint-encounter-card--profile > p:not(.saint-encounter-card__eyebrow),
+  .saint-encounter-card--profile .button {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .saint-encounter-card--profile .saint-encounter-card__icon { margin-bottom: var(--space-2); }
+
+  .saint-encounter-card--profile > p:not(.saint-encounter-card__eyebrow) { margin-bottom: var(--space-4); }
 
   .home-cosmic-feature-grid,
   .home-cosmic-duo {
