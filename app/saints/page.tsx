@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SaintCard } from "@/components/saints/saint-card";
 import { SaintEncounterCard } from "@/components/saints/saint-encounter-card";
 import { SaintEraRange } from "@/components/saints/saint-era-range";
+import { SaintCatalogSelect } from "@/components/saints/saint-catalog-select";
 import { IndexPageHero } from "@/components/layout/index-page-hero";
 import { PublicSearchField } from "@/components/ui/public-search-field";
 import { getPublicIndexHeroImages } from "@/lib/site-config";
@@ -56,20 +57,20 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
             placeholder="Search saints by name, era, location, guru…"
           />
         <div className="catalog-filters" aria-label="Filter saints catalog">
-          <label>
-            <span>Tradition</span>
-            <select name="tradition" defaultValue={selectedTradition}>
-              <option value="">All traditions</option>
-              {traditionOptions.map((tradition) => <option key={tradition} value={tradition}>{tradition}</option>)}
-            </select>
-          </label>
-          <label>
-            <span>Location</span>
-            <select name="location" defaultValue={selectedLocation}>
-              <option value="">All locations</option>
-              {locationOptions.map((location) => <option key={location} value={location}>{location}</option>)}
-            </select>
-          </label>
+          <SaintCatalogSelect
+            allLabel="All traditions"
+            label="Tradition"
+            name="tradition"
+            options={traditionOptions}
+            value={selectedTradition}
+          />
+          <SaintCatalogSelect
+            allLabel="All locations"
+            label="Location"
+            name="location"
+            options={locationOptions}
+            value={selectedLocation}
+          />
           <SaintEraRange
             end={timelineEnd}
             max={catalog.facets.timeline.max}
