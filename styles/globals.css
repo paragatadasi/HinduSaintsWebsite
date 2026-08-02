@@ -479,7 +479,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .page-shell {
-  width: min(100% - 32px, var(--width-page));
+  width: calc(100% - (var(--space-page-gutter) * 2));
   margin: 0 auto;
 }
 
