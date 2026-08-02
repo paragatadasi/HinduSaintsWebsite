@@ -2893,19 +2893,46 @@ html[data-route-entering="true"] body > main {
   grid-template-columns: minmax(0, 1fr) minmax(18rem, var(--width-saint-profile-gallery));
 }
 
-.saint-profile-hero__content { max-width: var(--width-prose); }
+.saint-profile-hero__content { max-width: 100%; min-width: 0; }
 
 .saint-profile-hero h1 {
   font-family: var(--font-serif);
-  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-size: clamp(2.35rem, 4.25vw, 4rem);
   font-weight: 500;
   letter-spacing: 0.08em;
   line-height: 0.98;
   margin: var(--space-6) 0 var(--space-4);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
   text-transform: uppercase;
+  word-break: normal;
 }
 
-.saint-profile-hero__summary { color: var(--color-muted); line-height: 1.65; }
+.saint-profile-summary { max-width: var(--width-prose); }
+.saint-profile-hero__summary {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: var(--color-muted);
+  display: -webkit-box;
+  line-height: 1.65;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+.saint-profile-hero__summary--expanded { -webkit-line-clamp: unset; display: block; overflow: visible; }
+.saint-profile-summary__toggle {
+  background: transparent;
+  border: 0;
+  color: var(--color-accent-strong);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  margin-top: var(--space-2);
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+.saint-profile-summary__toggle:focus-visible { outline: 2px solid var(--color-focus); outline-offset: var(--space-1); }
 
 .saint-profile-stats {
   gap: var(--space-3) var(--space-5);
@@ -2918,7 +2945,6 @@ html[data-route-entering="true"] body > main {
 .saint-profile-stats .taxonomy-link { border: 0; font-size: inherit; padding: 0; }
 
 .saint-profile-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
-.saint-profile-actions > .button { min-height: var(--height-control); }
 
 .saint-hero-gallery { justify-self: end; max-width: var(--width-saint-profile-gallery); width: 100%; }
 .saint-hero-gallery__stage { background: var(--color-surface); min-height: var(--height-saint-profile-gallery); overflow: hidden; position: relative; }
