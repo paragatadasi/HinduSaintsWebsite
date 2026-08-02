@@ -860,6 +860,14 @@ html[data-route-entering="true"] body > main {
   outline-offset: 3px;
 }
 
+.public-search-field {
+  max-width: min(100%, var(--width-prose));
+}
+
+.index-page-hero .public-search-field {
+  margin-top: 0;
+}
+
 .home--archive .hero {
   align-items: center;
   border-bottom: 0;

@@ -6,6 +6,7 @@ import { HomeInstagramRail } from "@/components/instagram/home-instagram-rail";
 import { IndiaSaintsMap } from "@/components/places/india-saints-map";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { FocalImage } from "@/components/ui/focal-image";
+import { PublicSearchField } from "@/components/ui/public-search-field";
 import { SaintCard } from "@/components/saints/saint-card";
 import { SaintEncounterCard } from "@/components/saints/saint-encounter-card";
 import { TraditionCard } from "@/components/traditions/tradition-card";
@@ -79,12 +80,12 @@ export default async function HomePage() {
             <div className="hero__symbol" aria-hidden="true">{hero.eyebrow}</div>
             <h1>{hero.title}</h1>
             <p>{hero.body}</p>
-            <form className="hero-search" action={hero.primaryAction.href}>
-              <label className="sr-only" htmlFor="home-search">Search saints</label>
-              <input id="home-search" name="q" placeholder={hero.primaryAction.label} />
-              <button type="submit" aria-label="Search saints">
-                <Search size={22} />
-              </button>
+            <form action={hero.primaryAction.href}>
+              <PublicSearchField
+                id="home-search"
+                label="Search saints"
+                placeholder={hero.primaryAction.label}
+              />
             </form>
           </div>
           <HomeHeroImage image={homeConfig.bannerImage} className="hero-media" />
@@ -206,12 +207,12 @@ function CosmicHomePage({
               <div className="eyebrow">{hero.eyebrow}</div>
               <h1>{hero.title}</h1>
               <p>{hero.body}</p>
-              <form className="hero-search home-cosmic-search" action={hero.primaryAction.href}>
-                <label className="sr-only" htmlFor="home-cosmic-search">Search saints</label>
-                <input id="home-cosmic-search" name="q" placeholder={hero.primaryAction.label} />
-                <button type="submit" aria-label="Search saints">
-                  <Search size={22} />
-                </button>
+              <form action={hero.primaryAction.href}>
+                <PublicSearchField
+                  id="home-cosmic-search"
+                  label="Search saints"
+                  placeholder={hero.primaryAction.label}
+                />
               </form>
             </div>
             <SaintEncounterCard variant="hero" />

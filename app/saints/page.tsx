@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
 import { SaintCard } from "@/components/saints/saint-card";
 import { SaintEncounterCard } from "@/components/saints/saint-encounter-card";
 import { IndexPageHero } from "@/components/layout/index-page-hero";
+import { PublicSearchField } from "@/components/ui/public-search-field";
 import { getPublicIndexHeroImages } from "@/lib/site-config";
 import { getPublishedSaintCatalog } from "@/lib/public-saints";
 import { getSaintsIndexContent } from "@/lib/site-content";
@@ -44,19 +44,12 @@ export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageP
     <main className="page-shell section site-grid index-page-layout saints-index">
       <IndexPageHero {...content} image={heroImages.saints}>
         <form className="catalog-controls" action="/saints">
-        <div className="index-search">
-          <label className="sr-only" htmlFor="saints-search">Search saints</label>
-          <input
-            id="saints-search"
-            name="q"
-            placeholder="Search by name, era, location, or tradition"
-            type="search"
+          <PublicSearchField
             defaultValue={query}
+            id="saints-search"
+            label="Search saints"
+            placeholder="Search saints by name, era, location, guru…"
           />
-          <button type="submit" aria-label="Search saints">
-            <Search size={20} />
-          </button>
-        </div>
         <div className="catalog-filters" aria-label="Filter saints catalog">
           <label>
             <span>Tradition</span>
