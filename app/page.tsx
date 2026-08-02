@@ -8,7 +8,6 @@ import { ScrollRail } from "@/components/ui/scroll-rail";
 import { FocalImage } from "@/components/ui/focal-image";
 import { PublicSearchField } from "@/components/ui/public-search-field";
 import { SaintCard } from "@/components/saints/saint-card";
-import { SaintEncounterCard } from "@/components/saints/saint-encounter-card";
 import { TraditionCard } from "@/components/traditions/tradition-card";
 import { FeaturedTraditionCard } from "@/components/traditions/featured-tradition-card";
 import { getPublicHomePageConfig } from "@/lib/home-page-config";
@@ -226,7 +225,6 @@ function CosmicHomePage({
                 />
               </form>
             </div>
-            <SaintEncounterCard variant="hero" />
           </div>
         </section>
 
