@@ -93,7 +93,7 @@
   --width-aside: 320px;
   --width-card-grid-min: 220px;
   --width-card-grid: 280px;
-  --columns-saints-catalog: 5;
+  --width-saints-catalog-card-min: 20rem;
   --width-rail-card-max: calc((var(--width-page) - (var(--space-scroll-rail-gutter) * 2) - (var(--space-4) * 3)) / 4);
   --width-rail-card: clamp(210px, 24vw, var(--width-rail-card-max));
   --width-rail-card-featured: clamp(230px, 24vw, var(--width-rail-card-max));
