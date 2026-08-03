@@ -481,7 +481,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .page-shell {
-  width: calc(100% - (var(--space-page-gutter) * 2));
+  width: min(calc(100% - (var(--space-page-gutter) * 2)), var(--width-page-frame));
   margin: 0 auto;
 }
 
