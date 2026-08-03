@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+import { FooterContactDialog } from "@/components/layout/footer-contact-dialog";
 import { getPublicFooterContent } from "@/lib/site-config";
 
 export async function SiteFooter() {
@@ -15,7 +17,7 @@ export async function SiteFooter() {
           <a href={content.privacyPolicy.href} target="_blank" rel="noopener noreferrer">
             {content.privacyPolicy.label}
           </a>
-          .
+          . <FooterContactDialog submissionKey={randomUUID()} />
         </p>
       </div>
     </footer>

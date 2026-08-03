@@ -508,7 +508,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .eyebrow {
-  color: var(--color-accent);
+  color: var(--color-subdued-info);
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0;
@@ -1330,7 +1330,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .home-cosmic-quote-panel .home-quote-card cite {
-  color: var(--color-muted);
+  color: var(--color-accent-strong);
   font-weight: 400;
 }
 
@@ -1547,7 +1547,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .home-quote-card cite {
-  color: var(--color-cream);
+  color: var(--color-accent-strong);
   display: block;
   font-style: normal;
   font-weight: 700;
@@ -1631,7 +1631,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .home-tradition-feature h2 {
-  color: var(--color-gold);
+  color: var(--color-subdued-info);
   font-family: var(--font-serif);
   font-size: clamp(2rem, 3.3vw, 2.85rem);
   font-weight: 500;
@@ -1777,6 +1777,72 @@ html[data-route-entering="true"] body > main {
 .site-footer__legal a:hover {
   color: var(--color-accent-strong);
   text-decoration-color: currentColor;
+}
+
+.site-footer__contact {
+  background: transparent;
+  border: 0;
+  color: var(--color-accent-strong);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-underline-offset: var(--space-1);
+}
+
+.site-footer__contact:hover {
+  color: var(--color-gold);
+}
+
+.site-footer__contact:focus-visible,
+.footer-contact-dialog__close:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus);
+  outline-offset: var(--size-focus-offset);
+}
+
+.footer-contact-dialog {
+  background: var(--color-bg);
+  border: var(--border-width-default) solid var(--color-card-border);
+  color: var(--color-text);
+  max-height: min(90vh, 820px);
+  max-width: min(calc(100% - (var(--space-5) * 2)), var(--width-prose));
+  overflow: auto;
+  padding: 0;
+  width: 100%;
+}
+
+.footer-contact-dialog::backdrop {
+  background: var(--color-modal-scrim);
+}
+
+.footer-contact-dialog__header {
+  align-items: start;
+  border-bottom: var(--border-width-default) solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-5);
+}
+
+.footer-contact-dialog__header h2 {
+  margin: var(--space-1) 0 0;
+}
+
+.footer-contact-dialog__close {
+  align-items: center;
+  background: transparent;
+  border: var(--border-width-default) solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  padding: var(--space-2);
+}
+
+.footer-contact-dialog .contact-form {
+  border: 0;
+  box-shadow: none;
 }
 
 .card {
@@ -3365,7 +3431,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .image-with-credit figcaption small {
-  color: var(--color-accent);
+  color: var(--color-subdued-info);
   font-weight: 700;
 }
 
@@ -3449,7 +3515,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .source-label {
-  color: var(--color-accent);
+  color: var(--color-subdued-info);
   display: inline-block;
   font-size: 0.78rem;
   font-weight: 700;
@@ -4755,7 +4821,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .review-workflow__eyebrow {
-  color: var(--color-gold);
+  color: var(--color-subdued-info);
   display: block;
   font-size: 0.74rem;
   font-weight: 700;
@@ -4910,7 +4976,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .review-collapsible__eyebrow {
-  color: var(--color-gold);
+  color: var(--color-subdued-info);
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -5102,7 +5168,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .first-page-review__eyebrow {
-  color: var(--color-gold);
+  color: var(--color-subdued-info);
   display: block;
   font-size: 0.74rem;
   font-weight: 700;
@@ -8523,6 +8589,11 @@ html[data-route-entering="true"] body > main {
 }
 
 @media (max-width: 760px) {
+  .home-cosmic__frame {
+    border-inline: 0;
+    width: 100%;
+  }
+
   .saint-profile-hero {
     background: var(--color-saint-profile-hero-start);
     padding-block: var(--space-8);
@@ -8624,6 +8695,10 @@ html[data-route-entering="true"] body > main {
     max-width: 100%;
   }
 
+  .home-cosmic-hero__content > p {
+    display: none;
+  }
+
   .saint-encounter-card--hero {
     justify-self: stretch;
     margin-top: var(--space-2);
@@ -8682,11 +8757,7 @@ html[data-route-entering="true"] body > main {
   }
 
   .home-featured-tradition-card {
-    min-height: 160px;
-  }
-
-  .home-tradition-mosaic > :first-child .home-featured-tradition-card {
-    min-height: 260px;
+    min-height: var(--height-home-tradition-card-mobile);
   }
 
   .home-tradition-mosaic > :not(:first-child) p {
