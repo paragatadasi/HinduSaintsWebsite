@@ -4,7 +4,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 
-const scopes = ["all", "state", "locality"] as const;
+const scopes = ["all", "country", "state", "locality"] as const;
 type ScopeFilter = typeof scopes[number];
 
 type AdminPlacesPageProps = {
@@ -31,9 +31,10 @@ export default async function AdminPlacesPage({ searchParams }: AdminPlacesPageP
       </div>
 
       <div className="admin-stat-grid">
+        <Stat label="Countries" value={counts.country} />
         <Stat label="States" value={counts.state} />
         <Stat label="Localities" value={counts.locality} />
-        <Stat label="All places" value={(counts.state ?? 0) + (counts.locality ?? 0)} />
+        <Stat label="All places" value={(counts.country ?? 0) + (counts.state ?? 0) + (counts.locality ?? 0)} />
       </div>
 
       <nav className="admin-tabs" aria-label="Place unit filters">
@@ -137,7 +138,7 @@ function formatPlaceLocation(place: { country: string | null; parentState: { nam
   return [place.parentState?.name, place.country].filter(Boolean).join(", ");
 }
 
-function getEffectivePlaceScope(place: { placeScope: "locality" | "state"; slug: string }) {
+function getEffectivePlaceScope(place: { placeScope: "locality" | "state" | "country"; slug: string }) {
   return getKnownPlaceScope(place.slug) === "state" ? "state" : place.placeScope;
 }
 

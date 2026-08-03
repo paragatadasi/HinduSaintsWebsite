@@ -150,7 +150,7 @@ const saintPlacesSchema = z.object({
 const saintPlaceCreationSchema = z.object({
   saintId: z.string().cuid(),
   name: z.string().trim().min(1).max(200),
-  placeScope: z.enum(["locality", "state"]),
+  placeScope: z.enum(["locality", "state", "country"]),
   placeType: placeTypeSchema,
   region: z.string().trim().max(120).optional(),
   country: z.string().trim().max(120).optional(),
@@ -628,10 +628,10 @@ export async function createAndAttachSaintPlace(formData: FormData) {
         name: parsed.name,
         slug: placeSlug,
         alternateNames: [],
-        placeKind: parsed.placeScope === "state" ? "state" : "locality",
+        placeKind: parsed.placeScope,
         placeScope: parsed.placeScope,
         region: parsed.region ?? null,
-        country: parsed.country ?? null
+        country: parsed.placeScope === "country" ? parsed.name : parsed.country ?? null
       },
       select: { id: true }
     });

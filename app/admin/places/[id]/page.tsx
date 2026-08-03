@@ -291,6 +291,6 @@ function formatLocalities(localities: Array<{ name: string }>) {
   return localities.map((locality) => locality.name).join(", ");
 }
 
-function getEffectivePlaceScope(place: { placeScope: "locality" | "state"; slug: string }) {
+function getEffectivePlaceScope(place: { placeScope: "locality" | "state" | "country"; slug: string }) {
   return getKnownPlaceScope(place.slug) === "state" ? "state" : place.placeScope;
 }

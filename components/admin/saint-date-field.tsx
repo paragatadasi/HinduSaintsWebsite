@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
-import { parseImportedDate } from "@/lib/import-dates";
+import { formatHistoricalYear, parseImportedDate } from "@/lib/import-dates";
 
 type SaintDateFieldProps = {
   defaultValue?: string | null;
@@ -40,7 +40,7 @@ export function SaintDateField({ defaultValue, label, name }: SaintDateFieldProp
             previousValue.current = event.target.value;
             setValue(event.target.value);
           }}
-          placeholder="e.g. 1914 or 1914-1915"
+          placeholder="e.g. 1914, 563 BCE, or 33–70 CE"
           readOnly={isUnknown}
           value={value}
         />
@@ -65,8 +65,10 @@ export function SaintDateField({ defaultValue, label, name }: SaintDateFieldProp
 
 function getDateHint(parsed: ReturnType<typeof parseImportedDate>) {
   if (parsed.precision === "range" && parsed.year != null && parsed.endYear != null) {
-    return `Range: ${parsed.year}–${parsed.endYear}`;
+    return `Range: ${formatHistoricalYear(parsed.year)}–${formatHistoricalYear(parsed.endYear, parsed.year < 0 && parsed.endYear > 0)}`;
   }
+
+  if (parsed.year != null) return `Parsed year: ${formatHistoricalYear(parsed.year, true)}`;
 
   if (parsed.note) return parsed.note;
 

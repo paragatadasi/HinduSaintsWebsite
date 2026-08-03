@@ -120,6 +120,7 @@ enum PlaceType {
 enum PlaceScope {
   locality
   state
+  country
 }
 
 enum PlaceKind {
@@ -696,6 +697,14 @@ model HomePageConfig {
   featuredTraditionBannerFocalHeight Float       @default(60)
   featuredSaintIds                   String[]    @default([])
   featuredTraditionIds               String[]    @default([])
+  featuredSaintsEyebrow              String?
+  featuredSaintsTitle                String?
+  mapEyebrow                         String?
+  mapTitle                           String?
+  traditionsEyebrow                  String?
+  traditionsTitle                    String?
+  instagramEyebrow                   String?
+  instagramTitle                     String?
   quoteEyebrow                       String?
   quoteText                          String?
   quoteAttribution                   String?

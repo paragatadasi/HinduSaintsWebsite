@@ -8,8 +8,10 @@ import { getPublicImageVariants } from "@/lib/responsive-images";
 import {
   getHomeHeroContent,
   getHomeQuoteContent,
+  getHomeSectionContent,
   type HomeHeroContent,
-  type HomeQuoteContent
+  type HomeQuoteContent,
+  type HomeSectionContent
 } from "@/lib/site-content";
 
 export const HOME_PAGE_CONFIG_ID = "home";
@@ -39,11 +41,13 @@ const getPublicHomePageConfigCached = unstable_cache(async () => {
   });
   const defaultHero = getHomeHeroContent();
   const defaultQuote = getHomeQuoteContent();
+  const defaultSections = getDefaultHomeSections();
 
   if (!config) {
     return {
       hero: defaultHero,
       quote: defaultQuote,
+      sections: defaultSections,
       bannerImage: undefined,
       bannerFocalArea: getDefaultBannerFocalArea(),
       featuredTraditionBannerImage: undefined,
@@ -89,6 +93,7 @@ const getPublicHomePageConfigCached = unstable_cache(async () => {
   return {
     hero: mergeHeroContent(defaultHero, config),
     quote: mergeQuoteContent(defaultQuote, config),
+    sections: mergeHomeSections(defaultSections, config),
     bannerImage: config.bannerImage ? toPublicImage(config.bannerImage, config.heroTitle ?? defaultHero.title) : undefined,
     bannerFocalArea: {
       x: config.bannerFocalX,
@@ -124,6 +129,36 @@ export function getDefaultBannerFocalArea() {
     y: 50,
     width: 60,
     height: 60
+  };
+}
+
+function getDefaultHomeSections() {
+  return {
+    featuredSaints: getHomeSectionContent("featuredSaints"),
+    map: getHomeSectionContent("map"),
+    traditions: getHomeSectionContent("traditions"),
+    instagram: getHomeSectionContent("instagram")
+  };
+}
+
+function mergeHomeSections(
+  fallback: Record<HomeSectionContent["key"], HomeSectionContent>,
+  config: {
+    featuredSaintsEyebrow: string | null;
+    featuredSaintsTitle: string | null;
+    mapEyebrow: string | null;
+    mapTitle: string | null;
+    traditionsEyebrow: string | null;
+    traditionsTitle: string | null;
+    instagramEyebrow: string | null;
+    instagramTitle: string | null;
+  }
+) {
+  return {
+    featuredSaints: { ...fallback.featuredSaints, eyebrow: config.featuredSaintsEyebrow || fallback.featuredSaints.eyebrow, title: config.featuredSaintsTitle || fallback.featuredSaints.title },
+    map: { ...fallback.map, eyebrow: config.mapEyebrow || fallback.map.eyebrow, title: config.mapTitle || fallback.map.title },
+    traditions: { ...fallback.traditions, eyebrow: config.traditionsEyebrow || fallback.traditions.eyebrow, title: config.traditionsTitle || fallback.traditions.title },
+    instagram: { ...fallback.instagram, eyebrow: config.instagramEyebrow || fallback.instagram.eyebrow, title: config.instagramTitle || fallback.instagram.title }
   };
 }
 
