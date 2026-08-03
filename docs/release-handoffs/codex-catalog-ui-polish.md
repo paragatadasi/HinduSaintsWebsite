@@ -2,7 +2,7 @@
 
 - Status: ready
 - Branch: `codex/catalog-ui-polish`
-- Commit: `cb104722a9adb72316ed9ddf1f6b75611e4b8b4c`
+- Commit: `30adfcd`
 - Owner/agent: `aporu`
 
 ## Summary
@@ -18,13 +18,14 @@
 - Fill sparse Related Saints rails through published relationship trees before using shared-tradition fallbacks.
 - Rank direct related saints as guru, family, disciple, then other relationships.
 - Show reciprocal-aware uppercase gold relationship tags with compact, readable padding on directly related saint portraits.
+- Apply saved focal positioning to homepage featured-tradition banner images.
 
 ## Verification
 
 - `npm run dev:check`: passed
 - `npm test`: passed (64 tests)
 - `npm run codex:verify`: passed
-- `npm run prepare:deployment`: verification passed; handoff generation was completed manually because unrelated uncommitted stylesheet edits were preserved and this branch already had a handoff
+- `npm run prepare:deployment`: `dev:check` passed; handoff update was completed manually because unrelated uncommitted stylesheet edits were preserved and this branch already had a handoff
 
 ## Deploy Notes
 
@@ -36,7 +37,7 @@
 
 - Shared areas touched: `styles/globals.css`, `styles/tokens.css`, public tradition summary contract and cards, `prisma/schema.prisma`, saint admin actions/review page, and public saint relationship queries
 - Expected conflicts: possible shared-style overlap with concurrent homepage/map work; possible saint admin/schema overlap with other CMS work
-- Rollback notes: revert `cb10472`, `d58d377`, `4d1423f`, `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
+- Rollback notes: revert `30adfcd`, `cb10472`, `d58d377`, `4d1423f`, `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
 
 ## Release Captain Notes
 
