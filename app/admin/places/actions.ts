@@ -16,7 +16,7 @@ import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
 
-const placeScopeSchema = z.enum(["locality", "state"]);
+const placeScopeSchema = z.enum(["locality", "state", "country"]);
 const LEGACY_PARENT_STATE_RELATIONSHIP_NOTE = "Mirrored from legacy parentStateId.";
 const saintPlaceTypeRank = new Map<PlaceType, number>([
   ["birth", 0],
@@ -98,7 +98,7 @@ export async function updatePlace(formData: FormData) {
         placeKind: getPlaceKindForScope(placeScope),
         placeScope,
         parentStateId,
-        country: parsed.country ?? null,
+        country: placeScope === "country" ? parsed.name : parsed.country ?? null,
         overviewMarkdown: parsed.overviewMarkdown ?? null,
         notes: parsed.notes ?? null
       },
@@ -149,7 +149,7 @@ export async function updatePlaceOverview(formData: FormData) {
         placeKind: getPlaceKindForScope(placeScope),
         placeScope,
         parentStateId,
-        country: parsed.country ?? null
+        country: placeScope === "country" ? parsed.name : parsed.country ?? null
       },
       select: { slug: true }
     });
@@ -311,8 +311,8 @@ function getPreferredPlaceType(first: PlaceType, second: PlaceType): PlaceType {
   return secondRank < firstRank ? second : first;
 }
 
-function getPlaceKindForScope(placeScope: "locality" | "state"): PlaceKind {
-  return placeScope === "state" ? "state" : "locality";
+function getPlaceKindForScope(placeScope: "locality" | "state" | "country"): PlaceKind {
+  return placeScope;
 }
 
 async function syncParentStateRelationship(

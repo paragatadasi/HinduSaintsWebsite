@@ -22,7 +22,7 @@ export type HomeHeroContent = {
 };
 
 export type HomeSectionContent = {
-  key: "featuredSaints" | "traditions";
+  key: "featuredSaints" | "map" | "traditions" | "instagram";
   eyebrow: string;
   title: string;
   action?: {
@@ -142,6 +142,15 @@ export const homeSectionContent: Record<HomeSectionContent["key"], HomeSectionCo
       href: "/saints"
     }
   },
+  map: {
+    key: "map",
+    eyebrow: "Map",
+    title: "Explore the Map",
+    action: {
+      label: "Explore map",
+      href: "/map"
+    }
+  },
   traditions: {
     key: "traditions",
     eyebrow: "",
@@ -150,6 +159,11 @@ export const homeSectionContent: Record<HomeSectionContent["key"], HomeSectionCo
       label: "View all traditions",
       href: "/traditions"
     }
+  },
+  instagram: {
+    key: "instagram",
+    eyebrow: "Instagram",
+    title: "From Instagram"
   }
 };
 

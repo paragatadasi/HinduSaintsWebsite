@@ -17,14 +17,12 @@ import { getIndiaPlaceMapData } from "@/lib/public-places";
 import { getFeaturedSaintSummaries, getPublishedSaintSummaries } from "@/lib/public-saints";
 import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
 import type { PublicImage, PublicPlaceMapData } from "@/lib/public-contracts";
-import { getHomeLayoutVariant, getHomeSectionContent, getPlacesMapContent, type HomeHeroContent, type HomeQuoteContent } from "@/lib/site-content";
+import { getHomeLayoutVariant, getPlacesMapContent, type HomeHeroContent, type HomeSectionContent, type HomeQuoteContent } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const layout = getHomeLayoutVariant();
-  const featuredSaintsSection = getHomeSectionContent("featuredSaints");
-  const traditionsSection = getHomeSectionContent("traditions");
   const [homeConfig, featuredSaints, publishedSaints, traditions, instagramPreviews, mapData] = await Promise.all([
     getPublicHomePageConfig(),
     getFeaturedSaintSummaries(),
@@ -35,6 +33,7 @@ export default async function HomePage() {
   ]);
   const hero = homeConfig.hero;
   const quote = homeConfig.quote;
+  const { featuredSaints: featuredSaintsSection, instagram: instagramSection, map: mapSection, traditions: traditionsSection } = homeConfig.sections;
   const configuredFeaturedSaints = homeConfig.featuredSaints.length > 0 ? homeConfig.featuredSaints : featuredSaints;
   const configuredTraditions = homeConfig.featuredTraditions.length > 0 ? homeConfig.featuredTraditions : traditions;
   const configuredTraditionPlacements = homeConfig.featuredTraditionPlacements.length > 0
@@ -55,6 +54,7 @@ export default async function HomePage() {
         hero={hero}
         featuredSaintsSection={featuredSaintsSection}
         traditionsSection={traditionsSection}
+        instagramSection={instagramSection}
         saints={saints}
         traditions={configuredTraditions}
         bannerImage={homeConfig.bannerImage}
@@ -68,6 +68,8 @@ export default async function HomePage() {
         hero={hero}
         featuredSaintsSection={featuredSaintsSection}
         traditionsSection={traditionsSection}
+        instagramSection={instagramSection}
+        mapSection={mapSection}
         quote={quote}
         saints={saints}
         traditions={configuredTraditions}
@@ -145,7 +147,10 @@ export default async function HomePage() {
       <section className="section section--last">
         <div className="page-shell">
           <div className="section-heading">
-            <h2>From Instagram</h2>
+            <div>
+              {instagramSection.eyebrow ? <div className="eyebrow">{instagramSection.eyebrow}</div> : null}
+              <h2>{instagramSection.title}</h2>
+            </div>
             <Button href={hero.secondaryAction.href} variant="text" icon={<ArrowRight size={16} />} iconPosition="end">
               Follow @hindu_saints
             </Button>
@@ -163,8 +168,9 @@ export default async function HomePage() {
 
 type ArchiveHomePageProps = {
   hero: HomeHeroContent;
-  featuredSaintsSection: ReturnType<typeof getHomeSectionContent>;
-  traditionsSection: ReturnType<typeof getHomeSectionContent>;
+  featuredSaintsSection: HomeSectionContent;
+  traditionsSection: HomeSectionContent;
+  instagramSection: HomeSectionContent;
   saints: Awaited<ReturnType<typeof getPublishedSaintSummaries>>;
   traditions: Awaited<ReturnType<typeof getPublishedTraditionSummaries>>;
   bannerImage?: PublicImage;
@@ -172,8 +178,10 @@ type ArchiveHomePageProps = {
 
 type CosmicHomePageProps = {
   hero: HomeHeroContent;
-  featuredSaintsSection: ReturnType<typeof getHomeSectionContent>;
-  traditionsSection: ReturnType<typeof getHomeSectionContent>;
+  featuredSaintsSection: HomeSectionContent;
+  traditionsSection: HomeSectionContent;
+  instagramSection: HomeSectionContent;
+  mapSection: HomeSectionContent;
   quote: HomeQuoteContent;
   saints: Awaited<ReturnType<typeof getPublishedSaintSummaries>>;
   traditions: Awaited<ReturnType<typeof getPublishedTraditionSummaries>>;
@@ -188,6 +196,8 @@ function CosmicHomePage({
   hero,
   featuredSaintsSection,
   traditionsSection,
+  instagramSection,
+  mapSection,
   quote,
   saints,
   traditions,
@@ -231,7 +241,10 @@ function CosmicHomePage({
         <section className="home-cosmic-panel">
           <div className="home-cosmic__section-inner">
             <div className="section-heading home-cosmic-heading">
-              <h2>{featuredSaintsSection.title}</h2>
+              <div>
+                {featuredSaintsSection.eyebrow ? <div className="eyebrow">{featuredSaintsSection.eyebrow}</div> : null}
+                <h2>{featuredSaintsSection.title}</h2>
+              </div>
               {featuredSaintsSection.action ? (
                 <Button href={featuredSaintsSection.action.href} variant="text" icon={<ArrowRight size={16} />} iconPosition="end">
                   {featuredSaintsSection.action.label}
@@ -247,7 +260,10 @@ function CosmicHomePage({
         <section className="home-cosmic-panel home-cosmic-map-panel">
           <div className="home-cosmic__section-inner">
             <div className="section-heading home-cosmic-heading">
-              <h2>Explore the Map</h2>
+              <div>
+                {mapSection.eyebrow ? <div className="eyebrow">{mapSection.eyebrow}</div> : null}
+                <h2>{mapSection.title}</h2>
+              </div>
               <Button href="/map" variant="text" icon={<ArrowRight size={16} />} iconPosition="end">
                 Explore map
               </Button>
@@ -278,7 +294,10 @@ function CosmicHomePage({
         <section className="home-cosmic-panel home-cosmic-traditions-panel">
           <div className="home-cosmic__section-inner">
             <div className="section-heading home-cosmic-heading">
-              <h2>{traditionsSection.title}</h2>
+              <div>
+                {traditionsSection.eyebrow ? <div className="eyebrow">{traditionsSection.eyebrow}</div> : null}
+                <h2>{traditionsSection.title}</h2>
+              </div>
               {traditionsSection.action ? (
                 <Button href={traditionsSection.action.href} variant="text" icon={<ArrowRight size={16} />} iconPosition="end">
                   {traditionsSection.action.label}
@@ -305,7 +324,10 @@ function CosmicHomePage({
         <section className="home-cosmic-panel home-cosmic-panel--last">
           <div className="home-cosmic__section-inner">
           <div className="section-heading home-cosmic-heading">
-            <h2>From Instagram</h2>
+            <div>
+              {instagramSection.eyebrow ? <div className="eyebrow">{instagramSection.eyebrow}</div> : null}
+              <h2>{instagramSection.title}</h2>
+            </div>
             <Button href={hero.secondaryAction.href} variant="text" icon={<ArrowRight size={16} />} iconPosition="end">
               Follow @hindu_saints
             </Button>
@@ -378,7 +400,7 @@ function ArchiveHomePage({ hero, featuredSaintsSection, traditionsSection, saint
     <main className="home home--archive">
       <section className="page-shell hero">
         <div>
-          <div className="eyebrow">Hindu Saints Archive</div>
+          <div className="eyebrow">{hero.eyebrow}</div>
           <h1>{hero.title}</h1>
           <p>{hero.body}</p>
           <div className="cluster hero-actions">

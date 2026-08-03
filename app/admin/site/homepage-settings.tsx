@@ -4,7 +4,7 @@ import { SearchableMultiSelect } from "@/components/ui/searchable-multi-select";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { HOME_PAGE_CONFIG_ID } from "@/lib/home-page-config";
 import { db } from "@/lib/db";
-import { getHomeHeroContent, getHomeQuoteContent } from "@/lib/site-content";
+import { getHomeHeroContent, getHomeQuoteContent, getHomeSectionContent } from "@/lib/site-content";
 import { updateHomePageConfig } from "./home-actions";
 import { HomeBannerFocalPicker } from "./home-banner-focal-picker";
 import { HomeBannerUploader } from "./home-banner-uploader";
@@ -45,6 +45,12 @@ export async function HomepageSettings() {
   ]);
   const defaultHero = getHomeHeroContent();
   const defaultQuote = getHomeQuoteContent();
+  const defaultSections = {
+    featuredSaints: getHomeSectionContent("featuredSaints"),
+    map: getHomeSectionContent("map"),
+    traditions: getHomeSectionContent("traditions"),
+    instagram: getHomeSectionContent("instagram")
+  };
   const defaultQuoteSaintId = config?.quoteSaintId
     ?? saints.find((saint) => saint.status === "published" && (
       saint.displayName === defaultQuote.attribution
@@ -176,7 +182,14 @@ export async function HomepageSettings() {
           </ReviewSection>
 
           <ReviewSection title="Featured saints" icon={<Star size={18} aria-hidden="true" />}>
-            <SearchableMultiSelect
+            <div className="form-stack">
+              <SectionHeadingFields
+                eyebrowName="featuredSaintsEyebrow"
+                eyebrowValue={config?.featuredSaintsEyebrow ?? defaultSections.featuredSaints.eyebrow}
+                titleName="featuredSaintsTitle"
+                titleValue={config?.featuredSaintsTitle ?? defaultSections.featuredSaints.title}
+              />
+              <SearchableMultiSelect
               defaultSelectedValues={config?.featuredSaintIds ?? []}
               label="Saints"
               name="featuredSaintId"
@@ -184,13 +197,40 @@ export async function HomepageSettings() {
               placeholder="Search saints"
               reorderable
               selectedLabel="Featured saints"
+              />
+            </div>
+          </ReviewSection>
+
+          <ReviewSection title="Map" icon={<Star size={18} aria-hidden="true" />}>
+            <SectionHeadingFields
+              eyebrowName="mapEyebrow"
+              eyebrowValue={config?.mapEyebrow ?? defaultSections.map.eyebrow}
+              titleName="mapTitle"
+              titleValue={config?.mapTitle ?? defaultSections.map.title}
             />
           </ReviewSection>
 
           <ReviewSection title="Featured traditions" icon={<Star size={18} aria-hidden="true" />}>
-            <FeaturedTraditionPlacementsEditor
+            <div className="form-stack">
+              <SectionHeadingFields
+                eyebrowName="traditionsEyebrow"
+                eyebrowValue={config?.traditionsEyebrow ?? defaultSections.traditions.eyebrow}
+                titleName="traditionsTitle"
+                titleValue={config?.traditionsTitle ?? defaultSections.traditions.title}
+              />
+              <FeaturedTraditionPlacementsEditor
               initialPlacements={featuredTraditionPlacements}
               options={traditionOptions}
+              />
+            </div>
+          </ReviewSection>
+
+          <ReviewSection title="Instagram" icon={<Star size={18} aria-hidden="true" />}>
+            <SectionHeadingFields
+              eyebrowName="instagramEyebrow"
+              eyebrowValue={config?.instagramEyebrow ?? defaultSections.instagram.eyebrow}
+              titleName="instagramTitle"
+              titleValue={config?.instagramTitle ?? defaultSections.instagram.title}
             />
           </ReviewSection>
 
@@ -225,5 +265,25 @@ export async function HomepageSettings() {
         </div>
       </form>
     </section>
+  );
+}
+
+function SectionHeadingFields({ eyebrowName, eyebrowValue, titleName, titleValue }: {
+  eyebrowName: string;
+  eyebrowValue: string;
+  titleName: string;
+  titleValue: string;
+}) {
+  return (
+    <div className="field-grid field-grid--identity-line">
+      <label>
+        Eyebrow
+        <input name={eyebrowName} type="text" maxLength={80} defaultValue={eyebrowValue} />
+      </label>
+      <label>
+        Section title
+        <input name={titleName} type="text" maxLength={160} defaultValue={titleValue} />
+      </label>
+    </div>
   );
 }

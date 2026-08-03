@@ -120,6 +120,7 @@ export function SaintPlaceRouteEditor({ options, placeTypes, saintId, selectedPl
               <select name="placeScope" defaultValue="locality">
                 <option value="locality">Locality</option>
                 <option value="state">State</option>
+                <option value="country">Country</option>
               </select>
             </label>
           </div>
