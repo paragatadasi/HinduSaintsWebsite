@@ -28,7 +28,7 @@ export function FeaturedTraditionCard({ bannerImage, focalArea, tradition }: Fea
         ) : null}
         <div className="home-featured-tradition-card__content">
           <h3>{tradition.name}</h3>
-          <p>{tradition.shortDescription}</p>
+          {tradition.status === "published" ? <p>{tradition.shortDescription}</p> : null}
         </div>
       </Link>
     </article>

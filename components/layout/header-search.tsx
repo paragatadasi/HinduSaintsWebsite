@@ -16,7 +16,7 @@ export function HeaderSearch() {
   return (
     <form
       action="/saints"
-      className="header-search"
+      className={isExpanded ? "hero-search header-search" : "header-search"}
       data-expanded={isExpanded}
       role="search"
       onKeyDown={(event) => {
@@ -39,7 +39,12 @@ export function HeaderSearch() {
       <button
         aria-expanded={isExpanded}
         aria-label={isExpanded ? "Submit saint search" : "Open saint search"}
-        onClick={isExpanded ? undefined : expandSearch}
+        onClick={(event) => {
+          if (!isExpanded) {
+            event.preventDefault();
+            expandSearch();
+          }
+        }}
         ref={buttonRef}
         type={isExpanded ? "submit" : "button"}
       >
