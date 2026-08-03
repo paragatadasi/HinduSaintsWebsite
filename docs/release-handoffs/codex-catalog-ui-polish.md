@@ -2,7 +2,7 @@
 
 - Status: ready
 - Branch: `codex/catalog-ui-polish`
-- Commit: `d58d377e1f5217c4a6a1d36a4726f35660ff8d1c`
+- Commit: `cb104722a9adb72316ed9ddf1f6b75611e4b8b4c`
 - Owner/agent: `aporu`
 
 ## Summary
@@ -17,7 +17,7 @@
 - Repair previously accepted Instagram guru relationships that were published but left privately hidden.
 - Fill sparse Related Saints rails through published relationship trees before using shared-tradition fallbacks.
 - Rank direct related saints as guru, family, disciple, then other relationships.
-- Show reciprocal-aware gold relationship tags on directly related saint portraits.
+- Show reciprocal-aware uppercase gold relationship tags with compact, readable padding on directly related saint portraits.
 
 ## Verification
 
@@ -36,7 +36,7 @@
 
 - Shared areas touched: `styles/globals.css`, `styles/tokens.css`, public tradition summary contract and cards, `prisma/schema.prisma`, saint admin actions/review page, and public saint relationship queries
 - Expected conflicts: possible shared-style overlap with concurrent homepage/map work; possible saint admin/schema overlap with other CMS work
-- Rollback notes: revert `d58d377`, `4d1423f`, `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
+- Rollback notes: revert `cb10472`, `d58d377`, `4d1423f`, `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
 
 ## Release Captain Notes
 
