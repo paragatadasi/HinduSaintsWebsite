@@ -8527,8 +8527,6 @@ html[data-route-entering="true"] body > main {
   .saint-profile-stats .fact { flex: 0 0 auto; }
   .saint-profile-actions { align-items: stretch; flex-direction: column; }
   .saint-profile-actions .button { justify-content: center; width: 100%; }
-  .saint-profile-related .scroll-rail { padding-inline: var(--space-2); }
-
   .site-nav {
     align-items: stretch;
     gap: var(--space-2);
