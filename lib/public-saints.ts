@@ -288,12 +288,19 @@ async function getPublishedSaintCatalogFacets({
 }
 
 export async function getPublishedSaintSlugs() {
+  return getPublishedSaintSlugsCached();
+}
+
+const getPublishedSaintSlugsCached = unstable_cache(async () => {
   return db.saint.findMany({
     where: { status: "published" },
     select: { slug: true },
     orderBy: { slug: "asc" }
   });
-}
+}, ["published-saint-slugs"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints]
+});
 
 export async function getPublishedSaintBySlug(slug: string): Promise<PublicSaintDetail | null> {
   return getPublishedSaintBySlugCached(slug);

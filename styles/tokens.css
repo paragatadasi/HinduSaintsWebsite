@@ -91,6 +91,7 @@
   --interactive-image-scale: 1.035;
   --opacity-route-pending: 0.72;
   --width-page: 1180px;
+  --width-page-frame: 1920px;
   --space-page-gutter: clamp(var(--space-5), 5vw, 6rem);
   --width-prose: 760px;
   --width-header-search: 15rem;
@@ -99,7 +100,7 @@
   --width-aside: 320px;
   --width-card-grid-min: 220px;
   --width-card-grid: 280px;
-  --columns-saints-catalog: 5;
+  --width-saints-catalog-card-min: 20rem;
   --width-rail-card-max: calc((var(--width-page) - (var(--space-scroll-rail-gutter) * 2) - (var(--space-4) * 3)) / 4);
   --width-rail-card: clamp(210px, 24vw, var(--width-rail-card-max));
   --width-rail-card-featured: clamp(230px, 24vw, var(--width-rail-card-max));
