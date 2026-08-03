@@ -2,7 +2,7 @@
 
 - Status: ready
 - Branch: `codex/catalog-ui-polish`
-- Commit: `18f7df48f12fdf67ee2193d3d23e2408fe66c6d5`
+- Commit: `eebafbc23d8731b93027caf206a78a91cf3f6fbb`
 - Owner/agent: `aporu`
 
 ## Summary
@@ -23,25 +23,28 @@
 - Use subdued gold for static gold labels and full-strength gold for interactive text and quote attribution.
 - Add a footer Contact us action that opens the existing feedback form in a modal dialog.
 - Simplify the mobile homepage with a full-width frame, concise hero, equal-height tradition cards, and no generic tradition fallback descriptions.
+- Make homepage section titles and eyebrow text configurable through the existing Homepage CMS workflow.
+- Parse BC/BCE and early AD/CE saint dates and ranges into sortable structured years while preserving readable historical notation.
+- Add country as a first-class place unit in creation, editing, filtering, and place-kind persistence.
 
 ## Verification
 
 - `npm run dev:check`: passed
-- `npm test`: passed (64 tests)
+- `npm test`: passed (67 tests)
 - `npm run codex:verify`: passed
 - `npm run prepare:deployment`: `dev:check` passed; handoff update was completed manually because unrelated uncommitted stylesheet edits were preserved and this branch already had a handoff
 
 ## Deploy Notes
 
-- Migrations: `20260803120000_publish_accepted_instagram_guru_relationships` repairs accepted guru visibility; `20260803130000_expand_saint_relationship_types` adds parent, child, father, mother, son, daughter, husband, and wife enum values
+- Migrations: `20260803120000_publish_accepted_instagram_guru_relationships` repairs accepted guru visibility; `20260803130000_expand_saint_relationship_types` adds parent, child, father, mother, son, daughter, husband, and wife enum values; `20260803140000_home_section_headings` adds configurable homepage heading fields; `20260803150000_country_place_scope` adds the country place-scope enum value
 - Environment variables: none
 - Data/backfill/release steps: run the normal deployment migration phase; do not execute migrations during the web image build
 
 ## Risk And Conflicts
 
-- Shared areas touched: `styles/globals.css`, `styles/tokens.css`, shared public header, public tradition summary contract and cards, `prisma/schema.prisma`, saint admin actions/review page, and public saint relationship queries
+- Shared areas touched: `styles/globals.css`, `styles/tokens.css`, shared public header and homepage configuration, public tradition summary contract and cards, `prisma/schema.prisma`, saint/place admin actions and review pages, date parsing, and public saint relationship queries
 - Expected conflicts: possible shared-style overlap with concurrent homepage/map work; possible saint admin/schema overlap with other CMS work
-- Rollback notes: revert `18f7df4`, `0d9369c`, `fe55861`, `30adfcd`, `cb10472`, `d58d377`, `4d1423f`, `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
+- Rollback notes: revert `eebafbc`, `18f7df4`, `0d9369c`, `fe55861`, `30adfcd`, `cb10472`, `d58d377`, `4d1423f`, `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
 
 ## Release Captain Notes
 
