@@ -10,7 +10,7 @@ type PlaceOverviewEditorProps = {
   alternateNames: string[];
   country: string;
   countryOptions: string[];
-  effectivePlaceScope: "locality" | "state";
+  effectivePlaceScope: "locality" | "state" | "country";
   localityOptions: SearchableMultiSelectOption[];
   name: string;
   parentStateId: string;
@@ -50,9 +50,10 @@ export function PlaceOverviewEditor({
       <div className="field-grid field-grid--place-overview-hierarchy">
         <label>
           Place unit
-          <select name="placeScope" value={placeScope} onChange={(event) => setPlaceScope(event.target.value as "locality" | "state")}>
+          <select name="placeScope" value={placeScope} onChange={(event) => setPlaceScope(event.target.value as "locality" | "state" | "country")}>
             <option value="locality">Locality</option>
             <option value="state">State</option>
+            <option value="country">Country</option>
           </select>
         </label>
         {placeScope === "locality" ? (
@@ -64,7 +65,7 @@ export function PlaceOverviewEditor({
             options={stateOptions}
             placeholder="Search states or leave blank"
           />
-        ) : (
+        ) : placeScope === "state" ? (
           <>
             <input name="parentStateId" type="hidden" value="" />
             <SearchableMultiSelect
@@ -77,8 +78,13 @@ export function PlaceOverviewEditor({
               selectedLabel="Selected localities"
             />
           </>
+        ) : (
+          <>
+            <input name="parentStateId" type="hidden" value="" />
+            <input name="country" type="hidden" value={name} />
+          </>
         )}
-        <CountryCombobox defaultValue={country} options={countryOptions} />
+        {placeScope !== "country" ? <CountryCombobox defaultValue={country} options={countryOptions} /> : null}
       </div>
       <div className="review-actions">
         <button className="admin-form-button" type="submit">Save overview</button>
