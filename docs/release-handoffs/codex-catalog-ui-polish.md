@@ -2,7 +2,7 @@
 
 - Status: ready
 - Branch: `codex/catalog-ui-polish`
-- Commit: `0d9369c`
+- Commit: `18f7df48f12fdf67ee2193d3d23e2408fe66c6d5`
 - Owner/agent: `aporu`
 
 ## Summary
@@ -20,6 +20,9 @@
 - Show reciprocal-aware uppercase gold relationship tags with compact, readable padding on directly related saint portraits.
 - Apply saved focal positioning to homepage featured-tradition banner images.
 - Expand the header search icon into an accessible, homepage-styled saint search field that remains open for typing and submits to the filtered saints directory.
+- Use subdued gold for static gold labels and full-strength gold for interactive text and quote attribution.
+- Add a footer Contact us action that opens the existing feedback form in a modal dialog.
+- Simplify the mobile homepage with a full-width frame, concise hero, equal-height tradition cards, and no generic tradition fallback descriptions.
 
 ## Verification
 
@@ -38,7 +41,7 @@
 
 - Shared areas touched: `styles/globals.css`, `styles/tokens.css`, shared public header, public tradition summary contract and cards, `prisma/schema.prisma`, saint admin actions/review page, and public saint relationship queries
 - Expected conflicts: possible shared-style overlap with concurrent homepage/map work; possible saint admin/schema overlap with other CMS work
-- Rollback notes: revert `0d9369c`, `fe55861`, `30adfcd`, `cb10472`, `d58d377`, `4d1423f`, `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
+- Rollback notes: revert `18f7df4`, `0d9369c`, `fe55861`, `30adfcd`, `cb10472`, `d58d377`, `4d1423f`, `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
 
 ## Release Captain Notes
 
