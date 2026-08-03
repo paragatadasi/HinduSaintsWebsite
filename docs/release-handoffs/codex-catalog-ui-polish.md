@@ -2,7 +2,7 @@
 
 - Status: ready
 - Branch: `codex/catalog-ui-polish`
-- Commit: `fe55861`
+- Commit: `0d9369c`
 - Owner/agent: `aporu`
 
 ## Summary
@@ -19,7 +19,7 @@
 - Rank direct related saints as guru, family, disciple, then other relationships.
 - Show reciprocal-aware uppercase gold relationship tags with compact, readable padding on directly related saint portraits.
 - Apply saved focal positioning to homepage featured-tradition banner images.
-- Expand the header search icon into an accessible saint search field that submits to the filtered saints directory.
+- Expand the header search icon into an accessible, homepage-styled saint search field that remains open for typing and submits to the filtered saints directory.
 
 ## Verification
 
@@ -38,7 +38,7 @@
 
 - Shared areas touched: `styles/globals.css`, `styles/tokens.css`, shared public header, public tradition summary contract and cards, `prisma/schema.prisma`, saint admin actions/review page, and public saint relationship queries
 - Expected conflicts: possible shared-style overlap with concurrent homepage/map work; possible saint admin/schema overlap with other CMS work
-- Rollback notes: revert `fe55861`, `30adfcd`, `cb10472`, `d58d377`, `4d1423f`, `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
+- Rollback notes: revert `0d9369c`, `fe55861`, `30adfcd`, `cb10472`, `d58d377`, `4d1423f`, `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
 
 ## Release Captain Notes
 
