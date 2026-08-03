@@ -2,7 +2,7 @@
 
 - Status: ready
 - Branch: `codex/catalog-ui-polish`
-- Commit: `bcd36c98c0fb777d4d381203fde990f9787d1371`
+- Commit: `d58d377e1f5217c4a6a1d36a4726f35660ff8d1c`
 - Owner/agent: `aporu`
 
 ## Summary
@@ -15,6 +15,9 @@
 - Derive reciprocal relationship views from one directional record, including guru/disciple, parent/child, family, and spousal relationships.
 - Make all published, publicly visible relationship types eligible for the public Related Saints rail.
 - Repair previously accepted Instagram guru relationships that were published but left privately hidden.
+- Fill sparse Related Saints rails through published relationship trees before using shared-tradition fallbacks.
+- Rank direct related saints as guru, family, disciple, then other relationships.
+- Show reciprocal-aware gold relationship tags on directly related saint portraits.
 
 ## Verification
 
@@ -33,7 +36,7 @@
 
 - Shared areas touched: `styles/globals.css`, `styles/tokens.css`, public tradition summary contract and cards, `prisma/schema.prisma`, saint admin actions/review page, and public saint relationship queries
 - Expected conflicts: possible shared-style overlap with concurrent homepage/map work; possible saint admin/schema overlap with other CMS work
-- Rollback notes: revert `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
+- Rollback notes: revert `d58d377`, `4d1423f`, `ea454c7`, `54e1544`, and any dependent release commits; coordinate database enum rollback rather than removing PostgreSQL enum values directly
 
 ## Release Captain Notes
 
