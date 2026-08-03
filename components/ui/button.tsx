@@ -8,10 +8,11 @@ type ButtonProps = {
   children: ReactNode;
   icon?: ReactNode;
   iconPosition?: "start" | "end";
+  prefetch?: boolean;
   variant?: "primary" | "secondary" | "text";
 };
 
-export function Button({ href, children, icon, iconPosition = "start", variant = "primary" }: ButtonProps) {
+export function Button({ href, children, icon, iconPosition = "start", prefetch, variant = "primary" }: ButtonProps) {
   const className = `button button--${variant}`;
   const content = (
     <>
@@ -33,6 +34,7 @@ export function Button({ href, children, icon, iconPosition = "start", variant =
     <Link
       href={href as Route}
       className={className}
+      prefetch={prefetch}
     >
       {content}
     </Link>
