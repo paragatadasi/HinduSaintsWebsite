@@ -5,10 +5,11 @@ import {
   getPublicInstagramMediaAssetImages,
   getPublicInstagramMediaAssetUrls
 } from "@/lib/public-instagram";
-import type { Prisma } from "@/lib/generated/prisma/client";
+import type { Prisma, RelationshipType } from "@/lib/generated/prisma/client";
 import type {
   PublicImage,
   PublicInstagramItem,
+  PublicRelatedSaintSummary,
   PublicSaintDetail,
   PublicSaintSummary,
   PublicSourceSummary
@@ -19,6 +20,7 @@ import { getPublishedSaintSearchCandidateIds } from "@/lib/postgres-saint-search
 import { getPublicImageVariants } from "@/lib/responsive-images";
 import { rankSaintSearchResults } from "@/lib/saint-search";
 import { compareSaintDisplayNames } from "@/lib/saint-name-sort";
+import { formatRelationshipType, getReciprocalRelationshipType } from "@/lib/saint-relationships";
 import { PUBLIC_TRADITION_STATUSES } from "@/lib/public-tradition-visibility";
 
 type SaintListRow = Awaited<ReturnType<typeof getPublishedSaintRows>>[number];
@@ -297,7 +299,7 @@ export async function getPublishedSaintBySlug(slug: string): Promise<PublicSaint
   return getPublishedSaintBySlugCached(slug);
 }
 
-export async function getRelatedPublishedSaints(slug: string): Promise<PublicSaintSummary[]> {
+export async function getRelatedPublishedSaints(slug: string): Promise<PublicRelatedSaintSummary[]> {
   return getRelatedPublishedSaintsCached(slug);
 }
 
@@ -309,38 +311,137 @@ const getRelatedPublishedSaintsCached = unstable_cache(async (slug: string) => {
       traditions: { select: { traditionId: true } },
       relationshipsFrom: {
         where: { publicVisible: true, status: "published" },
-        select: { toSaintId: true }
+        select: { toSaintId: true, relationshipType: true }
       },
       relationshipsTo: {
         where: { publicVisible: true, status: "published" },
-        select: { fromSaintId: true }
+        select: { fromSaintId: true, relationshipType: true }
       }
     }
   });
   if (!saint) return [];
 
-  const relationshipIds = [
+  const directRelationshipIds = [...new Set([
     ...saint.relationshipsFrom.map(({ toSaintId }) => toSaintId),
     ...saint.relationshipsTo.map(({ fromSaintId }) => fromSaintId)
-  ];
+  ])];
+  const directRelationshipLabels = new Map<string, string>();
+  const directRelationshipPriorities = new Map<string, number>();
+  saint.relationshipsFrom.forEach(({ relationshipType, toSaintId }) => {
+    const priority = getDirectRelationshipPriority(relationshipType);
+    if (priority < (directRelationshipPriorities.get(toSaintId) ?? Number.MAX_SAFE_INTEGER)) {
+      directRelationshipLabels.set(toSaintId, formatRelationshipType(relationshipType));
+      directRelationshipPriorities.set(toSaintId, priority);
+    }
+  });
+  saint.relationshipsTo.forEach(({ fromSaintId, relationshipType }) => {
+    const reciprocalType = getReciprocalRelationshipType(relationshipType);
+    const priority = getDirectRelationshipPriority(reciprocalType);
+    if (priority < (directRelationshipPriorities.get(fromSaintId) ?? Number.MAX_SAFE_INTEGER)) {
+      directRelationshipLabels.set(
+        fromSaintId,
+        formatRelationshipType(reciprocalType)
+      );
+      directRelationshipPriorities.set(fromSaintId, priority);
+    }
+  });
+  const relationshipDepthById = await getPublishedRelationshipTree(
+    saint.id,
+    directRelationshipIds,
+    8
+  );
+  const relationshipIds = [...relationshipDepthById.keys()];
   const traditionIds = saint.traditions.map(({ traditionId }) => traditionId);
   const rows = await getPublishedSaintRows({
     id: { not: saint.id },
     OR: [
       ...(relationshipIds.length > 0 ? [{ id: { in: relationshipIds } }] : []),
-      ...(traditionIds.length > 0 ? [{ traditions: { some: { traditionId: { in: traditionIds } } } }] : [])
+      ...(relationshipIds.length < 8 && traditionIds.length > 0
+        ? [{ traditions: { some: { traditionId: { in: traditionIds } } } }]
+        : [])
     ]
   });
-  const relationshipSet = new Set(relationshipIds);
 
   return rows
-    .sort((left, right) => Number(relationshipSet.has(right.id)) - Number(relationshipSet.has(left.id)))
+    .sort((left, right) => (
+      getRelatedSaintSortRank(left.id, directRelationshipPriorities, relationshipDepthById)
+      - getRelatedSaintSortRank(right.id, directRelationshipPriorities, relationshipDepthById)
+    ))
     .slice(0, 8)
-    .map(toPublicSaintSummary);
+    .map((row) => ({
+      ...toPublicSaintSummary(row),
+      relationshipLabel: directRelationshipLabels.get(row.id)
+    }));
 }, ["related-published-saints"], {
   revalidate: PUBLIC_DATA_CACHE_SECONDS,
   tags: [PUBLIC_CACHE_TAGS.saints]
 });
+
+const familyRelationshipTypes = new Set<RelationshipType>([
+  "family", "parent", "child", "father", "mother", "son", "daughter", "husband", "wife", "partner"
+]);
+
+function getDirectRelationshipPriority(type: RelationshipType) {
+  if (type === "guru") return 0;
+  if (familyRelationshipTypes.has(type)) return 1;
+  if (type === "disciple") return 2;
+  return 3;
+}
+
+function getRelatedSaintSortRank(
+  saintId: string,
+  directPriorities: Map<string, number>,
+  relationshipDepths: Map<string, number>
+) {
+  const directPriority = directPriorities.get(saintId);
+  if (directPriority !== undefined) return directPriority;
+
+  const relationshipDepth = relationshipDepths.get(saintId);
+  if (relationshipDepth !== undefined) return 10 + relationshipDepth;
+  return Number.MAX_SAFE_INTEGER;
+}
+
+async function getPublishedRelationshipTree(
+  rootSaintId: string,
+  directRelationshipIds: string[],
+  targetCount: number
+) {
+  const depthById = new Map<string, number>();
+  let frontier = await getPublishedSaintIds(directRelationshipIds);
+  frontier.forEach((id) => depthById.set(id, 1));
+
+  for (let depth = 2; depth <= 3 && frontier.length > 0 && depthById.size < targetCount; depth += 1) {
+    const edges = await db.saintRelationship.findMany({
+      where: {
+        publicVisible: true,
+        status: "published",
+        OR: [
+          { fromSaintId: { in: frontier } },
+          { toSaintId: { in: frontier } }
+        ]
+      },
+      select: { fromSaintId: true, toSaintId: true }
+    });
+    const candidateIds = [...new Set(edges.flatMap(({ fromSaintId, toSaintId }) => [fromSaintId, toSaintId]))]
+      .filter((id) => id !== rootSaintId && !depthById.has(id));
+    frontier = await getPublishedSaintIds(candidateIds, targetCount - depthById.size);
+    frontier.forEach((id) => depthById.set(id, depth));
+  }
+
+  return depthById;
+}
+
+async function getPublishedSaintIds(ids: string[], take?: number) {
+  if (ids.length === 0) return [];
+
+  const saints = await db.saint.findMany({
+    where: { id: { in: ids }, status: "published" },
+    select: { id: true },
+    orderBy: { displayName: "asc" },
+    ...(take === undefined ? {} : { take })
+  });
+  return saints.map(({ id }) => id);
+}
 
 const getPublishedSaintBySlugCached = unstable_cache(async (
   slug: string

@@ -1884,6 +1884,21 @@ html[data-route-entering="true"] body > main {
   border-bottom: 1px solid var(--color-card-border);
   filter: var(--image-treatment);
   overflow: hidden;
+  position: relative;
+}
+
+.saint-card__image-tag {
+  background: var(--color-relationship-tag);
+  border-radius: var(--radius-pill);
+  bottom: var(--space-3);
+  color: var(--color-relationship-tag-text);
+  font-size: var(--font-size-review-hint);
+  font-weight: 700;
+  left: var(--space-3);
+  line-height: 1;
+  padding: var(--space-2) var(--space-3);
+  position: absolute;
+  z-index: 1;
 }
 
 .saint-card--summary .entity-card__content {

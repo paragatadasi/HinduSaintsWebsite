@@ -5,11 +5,12 @@ import { FocalImage } from "@/components/ui/focal-image";
 import type { PublicImage, PublicSaintSummary } from "@/lib/public-contracts";
 
 type SaintCardProps = {
+  imageTag?: string;
   saint: PublicSaintSummary;
   variant?: "summary" | "portrait";
 };
 
-export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
+export function SaintCard({ imageTag, saint, variant = "summary" }: SaintCardProps) {
   const image: PublicImage = saint.image ?? {
     url: "/images/devotional-archive-placeholder.svg",
     alt: `${saint.displayName} portrait placeholder`
@@ -28,6 +29,7 @@ export function SaintCard({ saint, variant = "summary" }: SaintCardProps) {
               variants={image.variants}
               sizes="(max-width: 720px) 84vw, 320px"
             />
+            {imageTag ? <span className="saint-card__image-tag">{imageTag}</span> : null}
           </div>
           <div className="entity-card__content">
             <div className="eyebrow">{saint.eraLabel}</div>

@@ -80,6 +80,10 @@ export type PublicSaintSummary = {
   status: "published";
 };
 
+export type PublicRelatedSaintSummary = PublicSaintSummary & {
+  relationshipLabel?: string;
+};
+
 export type PublicSaintDetail = PublicSaintSummary & {
   heroImage?: PublicImage;
   gallery?: PublicImage[];
