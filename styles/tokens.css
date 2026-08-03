@@ -23,6 +23,8 @@
   --color-accent-strong: #7d2318;
   --color-danger: #b42318;
   --color-gold: #c28b2c;
+  --color-relationship-tag: var(--color-gold);
+  --color-relationship-tag-text: #17130b;
   --color-green: #366153;
   --color-image-overlay: rgba(33, 31, 26, 0.14);
   --color-image-overlay-strong: rgba(33, 31, 26, 0.28);
