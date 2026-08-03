@@ -1379,6 +1379,7 @@ html[data-route-entering="true"] body > main {
   height: 100%;
   inset: 0;
   object-fit: cover;
+  object-position: var(--image-object-position, center);
   position: absolute;
   width: 100%;
   z-index: -2;
@@ -1896,8 +1897,10 @@ html[data-route-entering="true"] body > main {
   font-weight: 700;
   left: var(--space-3);
   line-height: 1;
-  padding: var(--space-2) var(--space-3);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
   position: absolute;
+  text-transform: uppercase;
   z-index: 1;
 }
 
