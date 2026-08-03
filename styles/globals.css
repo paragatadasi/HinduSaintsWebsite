@@ -1896,8 +1896,10 @@ html[data-route-entering="true"] body > main {
   font-weight: 700;
   left: var(--space-3);
   line-height: 1;
-  padding: var(--space-2) var(--space-3);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-4);
   position: absolute;
+  text-transform: uppercase;
   z-index: 1;
 }
 
