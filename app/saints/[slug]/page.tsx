@@ -77,7 +77,14 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
           <div className="page-shell">
             <div className="section-heading"><h2>Related Saints</h2></div>
             <ScrollRail ariaLabel="related saints" controls="always">
-              {relatedSaints.map((related) => <SaintCard key={related.slug} saint={related} variant="portrait" />)}
+              {relatedSaints.map((related) => (
+                <SaintCard
+                  imageTag={related.relationshipLabel}
+                  key={related.slug}
+                  saint={related}
+                  variant="portrait"
+                />
+              ))}
             </ScrollRail>
           </div>
         </section>
