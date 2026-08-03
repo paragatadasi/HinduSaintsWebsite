@@ -90,9 +90,11 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
         </section>
       ) : null}
 
-      <section className="page-shell section saint-profile-encounter">
-        <SaintEncounter />
-      </section>
+      {relatedSaints.length === 0 ? (
+        <section className="page-shell section saint-profile-encounter">
+          <SaintEncounter />
+        </section>
+      ) : null}
 
       {hasBiography && saint.sources.length > 0 ? (
         <section className="page-shell section saint-profile-sources"><SourceList title="Sources" sources={saint.sources} /></section>
