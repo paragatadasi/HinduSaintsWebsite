@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Search } from "lucide-react";
 import { getInstagramLinkProps } from "@/lib/external-links";
+import { HeaderSearch } from "@/components/layout/header-search";
 
 export function SiteHeader() {
   return (
@@ -26,9 +26,7 @@ export function SiteHeader() {
           <Link href="/map">Map</Link>
           <Link href="/about">About</Link>
           <Link href="https://www.instagram.com/hindu_saints/" {...getInstagramLinkProps("https://www.instagram.com/hindu_saints/")}>Instagram</Link>
-          <Link href="/saints" aria-label="Search saints">
-            <Search size={20} />
-          </Link>
+          <HeaderSearch />
         </div>
       </nav>
     </header>
