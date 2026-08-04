@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { SaintCard } from "@/components/saints/saint-card";
 import { SaintEncounterCard } from "@/components/saints/saint-encounter-card";
 import { SaintEraRange } from "@/components/saints/saint-era-range";
@@ -10,6 +11,35 @@ import { getPublishedSaintCatalog } from "@/lib/public-saints";
 import { getSaintsIndexContent } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
+
+const saintsDescription = "Explore our rich collection of saints from the Hindu tradition and beyond.";
+
+export const metadata: Metadata = {
+  title: "Saints",
+  description: saintsDescription,
+  alternates: { canonical: "/saints" },
+  openGraph: {
+    type: "website",
+    url: "/saints",
+    siteName: "Hindu Saints Archive",
+    title: "Saints | Hindu Saints Archive",
+    description: saintsDescription,
+    images: [
+      {
+        url: "/about-hero.png",
+        width: 1823,
+        height: 863,
+        alt: "A devotee meditating beside a sacred river at night"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Saints | Hindu Saints Archive",
+    description: saintsDescription,
+    images: ["/about-hero.png"]
+  }
+};
 
 type SaintsIndexPageProps = {
   searchParams?: Promise<{
