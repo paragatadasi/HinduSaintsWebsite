@@ -47,6 +47,48 @@ test("parses early AD and CE years", () => {
   assert.equal(parseImportedDate("70 C.E.").year, 70);
 });
 
+test("parses textual day dates with trailing place context", () => {
+  assert.deepEqual(parseImportedDate("8 September 1887, Pattamadai"), {
+    raw: "8 September 1887, Pattamadai",
+    year: 1887,
+    month: 9,
+    day: 8,
+    precision: "day"
+  });
+  assert.deepEqual(parseImportedDate("September 8, 1887, Pattamadai"), {
+    raw: "September 8, 1887, Pattamadai",
+    year: 1887,
+    month: 9,
+    day: 8,
+    precision: "day"
+  });
+});
+
+test("parses textual early CE and BCE dates without treating the day as a year", () => {
+  assert.deepEqual(parseImportedDate("8 September 33 CE, Place"), {
+    raw: "8 September 33 CE, Place",
+    year: 33,
+    month: 9,
+    day: 8,
+    precision: "day"
+  });
+  assert.deepEqual(parseImportedDate("8 September 563 BCE, Place"), {
+    raw: "8 September 563 BCE, Place",
+    year: -563,
+    month: 9,
+    day: 8,
+    precision: "day"
+  });
+});
+
+test("does not promote an unqualified short number in free text to a year", () => {
+  assert.deepEqual(parseImportedDate("8 September, Pattamadai"), {
+    raw: "8 September, Pattamadai",
+    precision: "text",
+    note: "No historical date parts parsed from raw value."
+  });
+});
+
 test("parses same-era and cross-era historical ranges", () => {
   assert.deepEqual(parseImportedDate("563–483 BCE"), {
     raw: "563–483 BCE",

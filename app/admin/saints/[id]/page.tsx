@@ -11,7 +11,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { db } from "@/lib/db";
 import { getInstagramLinkProps } from "@/lib/external-links";
-import { parseImportedDate } from "@/lib/import-dates";
+import { formatHistoricalYear, parseImportedDate } from "@/lib/import-dates";
 import { getInstagramImageUrls } from "@/lib/instagram";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { toSlug } from "@/lib/slugs";
@@ -1345,7 +1345,7 @@ function getInstagramClaimTargetValue(
 function formatDateClaimInterpretation(rawValue: string) {
   const parsed = parseImportedDate(rawValue);
   const parts = [
-    parsed.year ? `year ${parsed.year}` : undefined,
+    parsed.year ? `year ${formatHistoricalYear(parsed.year, parsed.year > 0 && parsed.year < 1000)}` : undefined,
     parsed.month ? `month ${parsed.month}` : undefined,
     parsed.day ? `day ${parsed.day}` : undefined,
     `precision ${parsed.precision}`
