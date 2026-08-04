@@ -9,10 +9,8 @@ import {
   rankInstagramQueueItems,
   type InstagramQueueStatus
 } from "@/lib/instagram-admin-queue";
-import { getIncompleteInstagramItemSummaries, getIncompleteInstagramItemWhere } from "@/lib/instagram-ingestion";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { InstagramBulkReviewList } from "./instagram-bulk-review-list";
-import { InstagramIngestionPanel } from "./instagram-ingestion-panel";
 
 const PAGE_SIZE = 30;
 const statuses = instagramQueueStatuses;
@@ -45,12 +43,9 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
   const query = getSearchParam(q);
   const activeStatus = getActiveStatus(status);
   const requestedPage = getPageParam(page);
-  const [itemCounts, queue, ingestionJobs, incompleteCount, incompleteItems] = await Promise.all([
+  const [itemCounts, queue] = await Promise.all([
     getInstagramItemCounts(),
-    getInstagramItems(activeStatus, query, requestedPage),
-    getInstagramIngestionJobs(),
-    getIncompleteInstagramItemCount(),
-    getIncompleteInstagramItemSummaries()
+    getInstagramItems(activeStatus, query, requestedPage)
   ]);
   const returnTo = getInstagramReturnTo(activeStatus, query, queue.page);
   const reviewRows = queue.items.map(toInstagramReviewRow);
@@ -65,11 +60,6 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
         </div>
       </div>
 
-      <InstagramIngestionPanel
-        incompleteCount={incompleteCount}
-        incompleteItems={incompleteItems}
-        jobs={ingestionJobs}
-      />
 
       <section className="review-panel review-panel--workflow admin-review-queue">
         <div className="review-workflow__header admin-review-queue__header">
@@ -206,39 +196,6 @@ async function getInstagramItems(status: StatusFilter, query: string, requestedP
   };
 }
 
-async function getInstagramIngestionJobs() {
-  const jobs = await db.instagramIngestionJob.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 8
-  });
-
-  return jobs.map((job) => ({
-    id: job.id,
-    mode: job.mode,
-    status: job.status,
-    sourceName: job.sourceName,
-    totalRows: job.totalRows,
-    processedRows: job.processedRows,
-    importedRows: job.importedRows,
-    skippedRows: job.skippedRows,
-    updatedRows: job.updatedRows,
-    failedRows: job.failedRows,
-    mediaCachedRows: job.mediaCachedRows,
-    incompleteRefetchedRows: job.incompleteRefetchedRows,
-    message: job.message,
-    error: job.error,
-    rawSummary: job.rawSummary,
-    startedAt: job.startedAt?.toISOString() ?? null,
-    completedAt: job.completedAt?.toISOString() ?? null,
-    createdAt: job.createdAt.toISOString()
-  }));
-}
-
-async function getIncompleteInstagramItemCount() {
-  return db.instagramItem.count({
-    where: getIncompleteInstagramItemWhere()
-  });
-}
 
 function FilterLink({ active, href, label, value }: { active: boolean; href: string; label: string; value?: number }) {
   return (

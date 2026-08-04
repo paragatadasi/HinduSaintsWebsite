@@ -15,9 +15,12 @@ enum ContentStatus {
 }
 
 enum UserRole {
-  admin
+  site_admin
+  data_admin
   editor
   contributor
+  curator
+  translator
 }
 
 enum InstagramType {
@@ -212,7 +215,8 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
-  role          UserRole  @default(contributor)
+  roles         UserRole[] @default([contributor])
+  active        Boolean    @default(true)
   accounts      Account[]
   sessions      Session[]
   createdAt     DateTime  @default(now())

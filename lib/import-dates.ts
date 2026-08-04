@@ -22,8 +22,11 @@ const RANGE_PATTERN = new RegExp(`^(?:(?:c(?:irca)?|ca)\\.?\\s+)?(\\d{1,4})\\s*(
 const YEAR_PATTERN = new RegExp(`^(\\d{1,4})\\s*(${ERA_PATTERN})?$`, "i");
 const ISO_PATTERN = new RegExp(`^(\\d{1,4})-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])\\s*(${ERA_PATTERN})?$`, "i");
 const DOTTED_PATTERN = new RegExp(`^(0?[1-9]|[12][0-9]|3[01])[./](0?[1-9]|1[0-2])[./](\\d{1,4})\\s*(${ERA_PATTERN})?$`, "i");
-const MONTH_YEAR_PATTERN = new RegExp(`^([A-Za-z]+)\\s+(\\d{1,4})\\s*(${ERA_PATTERN})?$`, "i");
-const EMBEDDED_YEAR_PATTERN = new RegExp(`\\b(\\d{1,4})\\s*(${ERA_PATTERN})?\\b`, "i");
+const DAY_MONTH_YEAR_PATTERN = new RegExp(`^(0?[1-9]|[12][0-9]|3[01])(?:st|nd|rd|th)?\\s+([A-Za-z]+)\\s+(\\d{1,4})\\s*(${ERA_PATTERN})?(?=$|[\\s,;:()])`, "i");
+const MONTH_DAY_YEAR_PATTERN = new RegExp(`^([A-Za-z]+)\\s+(0?[1-9]|[12][0-9]|3[01])(?:st|nd|rd|th)?(?:,)?\\s+(\\d{1,4})\\s*(${ERA_PATTERN})?(?=$|[\\s,;:()])`, "i");
+const MONTH_YEAR_PATTERN = new RegExp(`^([A-Za-z]+)\\s+(\\d{1,4})\\s*(${ERA_PATTERN})?(?=$|[\\s,;:()])`, "i");
+const ERA_QUALIFIED_YEAR_PATTERN = new RegExp(`\\b(\\d{1,4})\\s*(${ERA_PATTERN})\\b`, "i");
+const FOUR_DIGIT_YEAR_PATTERN = /\\b(\\d{4})\\b/;
 
 export function parseImportedDate(value: unknown): ImportedDateParts {
   const raw = String(value ?? "").trim();
@@ -48,6 +51,18 @@ export function parseImportedDate(value: unknown): ImportedDateParts {
   const dotted = raw.match(DOTTED_PATTERN);
   if (dotted) return parsedDay(raw, Number(dotted[3]), Number(dotted[2]), Number(dotted[1]), dotted[4]);
 
+  const dayMonthYear = raw.match(DAY_MONTH_YEAR_PATTERN);
+  if (dayMonthYear) {
+    const month = MONTHS.get(dayMonthYear[2].toLowerCase());
+    if (month) return parsedDay(raw, Number(dayMonthYear[3]), month, Number(dayMonthYear[1]), dayMonthYear[4]);
+  }
+
+  const monthDayYear = raw.match(MONTH_DAY_YEAR_PATTERN);
+  if (monthDayYear) {
+    const month = MONTHS.get(monthDayYear[1].toLowerCase());
+    if (month) return parsedDay(raw, Number(monthDayYear[3]), month, Number(monthDayYear[2]), monthDayYear[4]);
+  }
+
   const monthYear = raw.match(MONTH_YEAR_PATTERN);
   if (monthYear) {
     const month = MONTHS.get(monthYear[1].toLowerCase());
@@ -61,7 +76,7 @@ export function parseImportedDate(value: unknown): ImportedDateParts {
     if (year != null) return { raw, year, precision: "year" };
   }
 
-  const embeddedYear = raw.match(EMBEDDED_YEAR_PATTERN);
+  const embeddedYear = raw.match(ERA_QUALIFIED_YEAR_PATTERN) ?? raw.match(FOUR_DIGIT_YEAR_PATTERN);
   if (embeddedYear) {
     const year = historicalYear(Number(embeddedYear[1]), normalizeEra(embeddedYear[2]));
     if (year != null) return { raw, year, precision: "year", note: "Year parsed from free-text date." };

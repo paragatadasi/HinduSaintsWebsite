@@ -3,8 +3,10 @@ import type { Route } from "next";
 import { AggregateViewsChart, type AggregateViewPoint } from "@/components/admin/aggregate-views-chart";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
+import { requireCapability } from "@/lib/admin-access";
 
 export default async function AdminAnalyticsPage() {
+  await requireCapability("view_analytics");
   const today = getUtcDay();
   const thirtyDaysAgo = new Date(today);
   thirtyDaysAgo.setUTCDate(thirtyDaysAgo.getUTCDate() - 29);

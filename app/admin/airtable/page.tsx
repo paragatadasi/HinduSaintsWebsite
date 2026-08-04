@@ -2,6 +2,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { getBulkDeletePasswordStatus } from "@/lib/admin-secrets";
 import { db } from "@/lib/db";
 import { collectAirtableCmsResetCounts } from "../../../scripts/reset-airtable-cms-import";
+import { requireCapability } from "@/lib/admin-access";
 import {
   dryRunAirtableMirrorAction,
   queueAirtableImportAction,
@@ -14,6 +15,7 @@ type AirtableReingestPageProps = {
 };
 
 export default async function AirtableReingestPage({ searchParams }: AirtableReingestPageProps) {
+  await requireCapability("view_source_data");
   const [params, resetCounts, passwordStatus, recentMirrorBatch, recentJobs] = await Promise.all([
     searchParams,
     collectAirtableCmsResetCounts(),
