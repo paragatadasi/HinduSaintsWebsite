@@ -7,6 +7,7 @@ import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { auth } from "@/lib/auth";
+import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { parseImportedDate } from "@/lib/import-dates";
@@ -1407,6 +1408,7 @@ async function setSaintGalleryImageVisibility(
 }
 
 async function requireAdminSession() {
+  await assertCapability("edit_content");
   const session = await auth();
   if (!session?.user?.email) {
     redirect("/admin");

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import {
   createInstagramIncompleteRepairJob,
@@ -13,6 +14,7 @@ const runningStatuses = ["queued", "running"];
 const incompleteItemLimit = 50;
 
 export async function GET() {
+  await assertCapability("view_source_data");
   const session = await auth();
   if (!session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -26,6 +28,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  await assertCapability("run_imports");
   const session = await auth();
   if (!session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

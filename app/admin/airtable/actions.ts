@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { auth } from "@/lib/auth";
+import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { createAirtableImportJob, runAirtableImportJob, type AirtableImportMode } from "@/lib/airtable-saint-import";
 import { runAirtableMirrorImport } from "../../../scripts/import-airtable";
@@ -20,6 +21,7 @@ const protectedActionSchema = z.object({
 const queueModeSchema = z.enum(["import_missing_drafts", "repair_slug_collisions", "import_airtable_cleanup"]);
 
 export async function dryRunAirtableMirrorAction() {
+  await assertCapability("run_imports");
   await requireAdminSession();
   let target = "/admin/airtable";
   try {
@@ -32,6 +34,7 @@ export async function dryRunAirtableMirrorAction() {
 }
 
 export async function writeAirtableMirrorAction(formData: FormData) {
+  await assertCapability("run_imports");
   let target = "/admin/airtable";
   try {
     await requireProtectedAction(formData);
@@ -45,6 +48,7 @@ export async function writeAirtableMirrorAction(formData: FormData) {
 }
 
 export async function resetAirtableCmsAction(formData: FormData) {
+  await assertCapability("manage_sensitive_actions");
   let target = "/admin/airtable";
   try {
     const parsed = await requireProtectedAction(formData);
@@ -69,6 +73,7 @@ export async function resetAirtableCmsAction(formData: FormData) {
 }
 
 export async function queueAirtableImportAction(formData: FormData) {
+  await assertCapability("run_imports");
   let target = "/admin/airtable";
   try {
     const parsed = await requireProtectedAction(formData);

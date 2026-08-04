@@ -6,6 +6,7 @@ import type { Route } from "next";
 import { z } from "zod";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { auth } from "@/lib/auth";
+import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 
 const workflowSchema = z.object({
@@ -148,6 +149,7 @@ function canApplyIntent(
 }
 
 async function requireAdminSession() {
+  await assertCapability("edit_content");
   const session = await auth();
   const email = session?.user?.email;
   if (!email) redirect("/admin");

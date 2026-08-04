@@ -10,6 +10,7 @@ import { HomepageSettings } from "./homepage-settings";
 import { HomeBannerUploader } from "./home-banner-uploader";
 import { AboutDiscoveryEditor } from "./about-discovery-editor";
 import { IndexHeroSettings } from "./index-hero-settings";
+import { requireCapability } from "@/lib/admin-access";
 
 type AdminSitePageProps = {
   searchParams: Promise<{
@@ -21,6 +22,7 @@ type AdminSitePageProps = {
 };
 
 export default async function AdminSitePage({ searchParams }: AdminSitePageProps) {
+  await requireCapability("manage_site");
   const [{ about, footer, homepage, heroes }, config] = await Promise.all([
     searchParams,
     db.siteConfig.findUnique({
