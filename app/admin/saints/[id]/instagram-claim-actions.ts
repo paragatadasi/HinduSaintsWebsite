@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { createDirectInstagramClaimsForSaint } from "@/lib/instagram-claims";
 
@@ -12,6 +13,7 @@ const refreshClaimsSchema = z.object({
 });
 
 export async function refreshSaintInstagramClaims(formData: FormData) {
+  await assertCapability("edit_content");
   const session = await auth();
   if (!session?.user?.email) redirect("/admin");
 

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { auth } from "@/lib/auth";
+import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
-import { saveUploadedImage, shouldRequireMediaUploadAuth } from "@/lib/media-storage";
+import { saveUploadedImage } from "@/lib/media-storage";
 
 const metadataSchema = z.object({
   altText: z.string().trim().max(240).optional(),
@@ -16,13 +16,7 @@ const metadataSchema = z.object({
 });
 
 export async function GET(request: Request) {
-  if (shouldRequireMediaUploadAuth()) {
-    const session = await auth();
-
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: "Authentication required." }, { status: 401 });
-    }
-  }
+  await assertCapability("view_content");
 
   const sourceUrl = new URL(request.url).searchParams.get("sourceUrl");
   const parsedUrl = parseRemoteImageUrl(sourceUrl);
@@ -53,13 +47,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (shouldRequireMediaUploadAuth()) {
-    const session = await auth();
-
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: "Authentication required." }, { status: 401 });
-    }
-  }
+  await assertCapability("edit_content");
 
   const formData = await request.formData();
   const file = formData.get("file");

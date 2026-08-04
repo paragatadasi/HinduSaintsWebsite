@@ -6,6 +6,7 @@ import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { setBulkDeletePassword } from "@/lib/admin-secrets";
 import { auth } from "@/lib/auth";
+import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 
 const bulkDeletePasswordSchema = z.object({
@@ -17,6 +18,7 @@ const bulkDeletePasswordSchema = z.object({
 });
 
 export async function setBulkDeletePasswordAction(formData: FormData) {
+  await assertCapability("manage_sensitive_actions");
   const { email } = await requireAdminSession();
 
   const parsed = bulkDeletePasswordSchema.parse({

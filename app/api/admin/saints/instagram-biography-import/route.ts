@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page-extraction";
 
@@ -10,6 +11,7 @@ const requestSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  await assertCapability("edit_content");
   const session = await auth();
   if (!session?.user?.email) {
     return NextResponse.json(

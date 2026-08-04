@@ -824,6 +824,7 @@ export async function updateSaintReviewStatus(formData: FormData) {
     saintId: formData.get("saintId"),
     status: formData.get("status")
   });
+  if (parsed.status === "published" || parsed.status === "archived") await assertCapability("publish_content");
   const now = new Date();
   const saint = await db.saint.update({
     where: { id: parsed.saintId },
@@ -846,6 +847,7 @@ export async function bulkUpdateSaintReviewStatus(formData: FormData) {
     status: formData.get("status"),
     returnTo: emptyToUndefined(formData.get("returnTo"))
   });
+  if (parsed.status === "published" || parsed.status === "archived") await assertCapability("publish_content");
   const now = new Date();
   const saints = await db.saint.findMany({
     where: { id: { in: parsed.saintIds } },
@@ -868,6 +870,7 @@ export async function bulkUpdateSaintReviewStatus(formData: FormData) {
 }
 
 export async function bulkDeleteSaints(formData: FormData) {
+  await assertCapability("manage_sensitive_actions");
   const session = await requireAdminSession();
 
   const parsed = bulkSaintDeleteSchema.parse({
