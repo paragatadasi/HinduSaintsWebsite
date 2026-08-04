@@ -217,10 +217,28 @@ model User {
   image         String?
   roles         UserRole[] @default([contributor])
   active        Boolean    @default(true)
+  lastSignedInAt DateTime?
+  accessAudits  AdminAccessAudit[]
   accounts      Account[]
   sessions      Session[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model AdminAccessAudit {
+  id           String     @id @default(cuid())
+  targetUserId String
+  targetUser   User       @relation(fields: [targetUserId], references: [id], onDelete: Cascade)
+  actorEmail   String
+  action       String
+  beforeRoles  UserRole[]
+  afterRoles   UserRole[]
+  beforeActive Boolean
+  afterActive  Boolean
+  createdAt    DateTime   @default(now())
+
+  @@index([targetUserId, createdAt])
+  @@index([createdAt])
 }
 
 model Account {
