@@ -18,7 +18,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Google({
       clientId: googleClientId,
-      clientSecret: googleClientSecret
+      clientSecret: googleClientSecret,
+      // Users & Access intentionally pre-creates approved users by email. Google
+      // verifies that email, so allow Auth.js to attach the OAuth account on the
+      // user's first sign-in instead of rejecting it as OAuthAccountNotLinked.
+      allowDangerousEmailAccountLinking: true
     })
   ],
   callbacks: {
