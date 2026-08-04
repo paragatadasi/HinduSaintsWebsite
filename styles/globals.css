@@ -4408,6 +4408,52 @@ html[data-route-entering="true"] body > main {
   gap: var(--space-2);
 }
 
+.review-task-tabs {
+  display: flex;
+  gap: var(--space-2);
+  max-width: 100%;
+  overflow-x: auto;
+  padding: var(--space-1) 0 var(--space-3);
+  scrollbar-width: thin;
+}
+
+.review-task-tab {
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  color: var(--color-muted);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: var(--font-size-review-tab);
+  font-weight: 700;
+  gap: var(--space-2);
+  min-height: var(--height-review-tab);
+  padding: 0 var(--space-4);
+}
+
+.review-task-tab:hover,
+.review-task-tab:focus-visible,
+.review-task-tab--primary {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+.review-task-tab__count {
+  align-items: center;
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  font-size: var(--font-size-review-tab-count);
+  justify-content: center;
+  min-width: var(--space-5);
+  padding: 0 var(--space-2);
+}
+
+.review-panel--collapsible {
+  scroll-margin-top: var(--space-6);
+}
+
 .admin-tab,
 .status-badge {
   align-items: center;
