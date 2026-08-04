@@ -38,8 +38,8 @@ export async function setBulkDeletePasswordAction(formData: FormData) {
     }
   });
 
-  revalidatePath("/admin");
-  redirect("/admin?bulkDeletePassword=updated");
+  revalidatePath("/admin/users");
+  redirect("/admin/users?sensitiveActionPassword=updated");
 }
 
 async function requireAdminSession() {
