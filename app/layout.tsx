@@ -8,6 +8,7 @@ import { RouteTransition } from "@/components/layout/route-transition";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: {
     default: "Hindu Saints Archive",
     template: "%s | Hindu Saints Archive"

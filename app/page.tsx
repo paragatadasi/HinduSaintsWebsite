@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Instagram, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,33 @@ import type { PublicImage, PublicPlaceMapData } from "@/lib/public-contracts";
 import { getHomeLayoutVariant, getPlacesMapContent, type HomeHeroContent, type HomeSectionContent, type HomeQuoteContent } from "@/lib/site-content";
 
 export const dynamic = "force-dynamic";
+
+const homeDescription = "A devotional archive of Hindu saints, traditions, biographies, sources, and related Instagram posts.";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Hindu Saints Archive",
+    title: "Hindu Saints Archive",
+    description: homeDescription,
+    images: [
+      {
+        url: "/about-hero.png",
+        width: 1823,
+        height: 863,
+        alt: "A devotee meditating beside a sacred river at night"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hindu Saints Archive",
+    description: homeDescription,
+    images: ["/about-hero.png"]
+  }
+};
 
 export default async function HomePage() {
   const layout = getHomeLayoutVariant();
