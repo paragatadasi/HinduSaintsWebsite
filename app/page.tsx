@@ -34,9 +34,10 @@ export const metadata: Metadata = {
     description: homeDescription,
     images: [
       {
-        url: "/about-hero.png",
-        width: 1823,
-        height: 863,
+        url: "/images/hindu-saints-share.jpg",
+        width: 1200,
+        height: 630,
+        type: "image/jpeg",
         alt: "A devotee meditating beside a sacred river at night"
       }
     ]
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Hindu Saints Archive",
     description: homeDescription,
-    images: ["/about-hero.png"]
+    images: ["/images/hindu-saints-share.jpg"]
   }
 };
 
