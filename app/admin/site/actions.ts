@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { SITE_CONFIG_ID } from "@/lib/site-config";
@@ -200,6 +201,7 @@ export async function updateAboutPageConfig(formData: FormData) {
 }
 
 async function requireAdminSession() {
+  await assertCapability("manage_site");
   const session = await auth();
   const email = session?.user?.email;
   if (!email) {

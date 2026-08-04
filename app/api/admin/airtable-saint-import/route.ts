@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { assertCapability } from "@/lib/admin-access";
 import { createAirtableImportJob, runAirtableImportJob } from "@/lib/airtable-saint-import";
 import { serializeAirtableImportJob } from "@/lib/airtable-import-job-view";
 import { db } from "@/lib/db";
@@ -9,6 +10,7 @@ const runningStatuses = ["queued", "running"];
 const airtableImportIntentSchema = z.enum(["check", "import_missing_drafts", "repair_slug_collisions", "import_airtable_cleanup"]);
 
 export async function GET() {
+  await assertCapability("view_source_data");
   const session = await auth();
   if (!session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -17,6 +19,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  await assertCapability("run_imports");
   const session = await auth();
   if (!session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

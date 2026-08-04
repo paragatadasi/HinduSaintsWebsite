@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { HOME_PAGE_CONFIG_ID } from "@/lib/home-page-config";
 import { auth } from "@/lib/auth";
+import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 
@@ -137,6 +138,7 @@ export async function updateHomePageConfig(formData: FormData) {
 }
 
 async function requireAdminSession() {
+  await assertCapability("manage_site");
   const session = await auth();
   if (!session?.user?.email) {
     redirect("/admin");

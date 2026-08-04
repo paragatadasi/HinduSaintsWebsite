@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { auth, isGoogleAuthConfigured, signIn } from "@/lib/auth";
 import { museumFlowZones } from "@/lib/museum-layout-groups";
 import { getMuseumProposalData } from "@/lib/museum-proposals";
+import { requireCapability } from "@/lib/admin-access";
 
 export const dynamic = "force-dynamic";
 
@@ -53,6 +54,8 @@ export default async function MuseumAdminLayout({ children }: { children: React.
       </main>
     );
   }
+
+  await requireCapability("access_museum");
 
   const { sections } = getMuseumProposalData();
   const sectionByName = new Map(sections.map((section) => [section.name, section]));
