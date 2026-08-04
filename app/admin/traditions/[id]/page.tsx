@@ -7,6 +7,7 @@ import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-car
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
@@ -116,6 +117,16 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
         </div>
       </div>
 
+      <ReviewTaskTabs tabs={[
+        { cardId: "tradition-overview", label: "Overview" },
+        { cardId: "tradition-public-fields", label: "Public fields" },
+        { cardId: "tradition-lineage", label: "Lineage", count: tradition.lineageSaints.length },
+        { cardId: "tradition-long-form", label: "Long-form" },
+        { cardId: "tradition-related-links", label: "Related links" },
+        { cardId: "tradition-scriptural-basis", label: "Sources" },
+        { cardId: "tradition-media", label: "Media", count: tradition.galleryImages.length }
+      ]} />
+
       <div className="review-detail-grid review-detail-grid--decision">
         <ReviewWorkflow
           className="review-panel--tradition-readiness"
@@ -153,7 +164,6 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
 
         <CollapsibleReviewCard
           cardId="tradition-merge"
-          defaultOpen
           description="Administrative duplicate handling for imported or overlapping records."
           eyebrow="Technical action"
           title="Merge Duplicate"
@@ -235,7 +245,6 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
 
       <CollapsibleReviewCard
         cardId="tradition-public-fields"
-        defaultOpen
         description="Founder, origin, focus, and SEO fields used by the public tradition page."
         eyebrow="Profile metadata"
         title="Public Fields"

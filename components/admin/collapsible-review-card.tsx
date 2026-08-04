@@ -44,6 +44,18 @@ export function CollapsibleReviewCard({
     if (storedValue === "closed") setIsOpen(false);
   }, [storageKey]);
 
+  useEffect(() => {
+    function openRequestedCard(event: Event) {
+      const requestedCardId = (event as CustomEvent<{ cardId?: string }>).detail?.cardId;
+      if (requestedCardId !== cardId) return;
+      setIsOpen(true);
+      safeSessionStorageSet(storageKey, "open");
+      window.setTimeout(() => document.getElementById(`review-card-${cardId}`)?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+    }
+    window.addEventListener("admin-review-card:open", openRequestedCard);
+    return () => window.removeEventListener("admin-review-card:open", openRequestedCard);
+  }, [cardId, storageKey]);
+
   function toggleOpen() {
     setIsOpen((current) => {
       const next = !current;
@@ -53,7 +65,7 @@ export function CollapsibleReviewCard({
   }
 
   return (
-    <section className={clsx("review-panel review-panel--collapsible", className)} data-open={isOpen ? "true" : "false"}>
+    <section className={clsx("review-panel review-panel--collapsible", className)} data-open={isOpen ? "true" : "false"} id={`review-card-${cardId}`}>
       <button
         aria-expanded={isOpen}
         className="review-collapsible__trigger"

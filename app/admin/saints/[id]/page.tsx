@@ -5,6 +5,7 @@ import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-car
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewFactGrid, ReviewSection, ReviewSubsection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
 import { SaintDateField } from "@/components/admin/saint-date-field";
 import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -113,6 +114,16 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
         ) : null}
       </div>
 
+      <ReviewTaskTabs tabs={[
+        { cardId: "saint-overview", label: "Overview" },
+        { cardId: "saint-public-fields", label: "Public fields" },
+        { cardId: "saint-relationships", label: "Relationships", count: saint.relationshipsFrom.length + saint.relationshipsTo.length },
+        { cardId: "saint-biography", label: "Biography" },
+        { cardId: "saint-images", label: "Media", count: saint.galleryImages.length },
+        { cardId: "saint-sources", label: "Sources", count: sourceLinks.length },
+        { cardId: "saint-review-snapshot", label: "Reference" }
+      ]} />
+
       <ReviewWorkflow
         className="review-panel--saint-readiness"
         description="Check whether the public profile is ready, then choose the review outcome."
@@ -193,7 +204,6 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
 
       <CollapsibleReviewCard
         cardId="saint-public-fields"
-        defaultOpen
         description="Dates, era text, and SEO fields used by the public profile."
         eyebrow="Profile metadata"
         title="Public Fields"
@@ -283,7 +293,6 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
 
       <CollapsibleReviewCard
         cardId="saint-relationships"
-        defaultOpen
         description="Review directional links once; the reciprocal relationship appears automatically on the other saint."
         eyebrow="Saint network"
         title="Relationships"
