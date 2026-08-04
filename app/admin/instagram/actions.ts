@@ -110,6 +110,7 @@ export async function updateInstagramItemStatus(formData: FormData) {
     status: formData.get("status"),
     returnTo: formData.get("returnTo") || undefined
   });
+  if (parsed.status === "published") await assertCapability("publish_content");
 
   const item = await db.instagramItem.update({
     where: { id: parsed.instagramItemId },
@@ -133,6 +134,7 @@ export async function updateInstagramItemSaintStatus(formData: FormData) {
     matchStatus: formData.get("matchStatus"),
     returnTo: formData.get("returnTo") || undefined
   });
+  if (parsed.matchStatus === "published") await assertCapability("publish_content");
   const now = new Date();
 
   const link = await db.$transaction(async (tx) => {
@@ -446,6 +448,7 @@ export async function acceptInstagramClaim(formData: FormData) {
 }
 
 export async function bulkDeleteInstagramItems(formData: FormData) {
+  await assertCapability("manage_sensitive_actions");
   const session = await requireAdminSession();
 
   const parsed = bulkInstagramDeleteSchema.parse({

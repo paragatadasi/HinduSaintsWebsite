@@ -213,6 +213,7 @@ export async function updatePlaceOtherPublicFields(formData: FormData) {
 }
 
 export async function mergePlaces(formData: FormData) {
+  await assertCapability("manage_sensitive_actions");
   await requireAdminSession();
 
   const parsed = mergePlacesSchema.parse({

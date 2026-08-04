@@ -470,6 +470,7 @@ export async function updateTraditionReviewStatus(formData: FormData) {
     traditionId: formData.get("traditionId"),
     status: formData.get("status")
   });
+  if (parsed.status === "published" || parsed.status === "archived") await assertCapability("publish_content");
   const now = new Date();
   const tradition = await db.tradition.update({
     where: { id: parsed.traditionId },
@@ -485,6 +486,7 @@ export async function updateTraditionReviewStatus(formData: FormData) {
 }
 
 export async function mergeTraditions(formData: FormData) {
+  await assertCapability("manage_sensitive_actions");
   await requireAdminSession();
 
   const parsed = mergeTraditionsSchema.parse({
