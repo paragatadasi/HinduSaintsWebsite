@@ -47,6 +47,8 @@
   --font-size-definition-tooltip: 0.875rem;
   --font-size-review-field: 0.92rem;
   --font-size-review-hint: 0.78rem;
+  --font-size-review-tab: 0.85rem;
+  --font-size-review-tab-count: 0.72rem;
   --line-height-definition-tooltip: 1.45;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -113,8 +115,9 @@
   --width-instagram-post-card: 360px;
   --width-instagram-review-card-media: clamp(176px, 16vw, 196px);
   --width-instagram-review-card-media-mobile: clamp(96px, 28vw, 124px);
-  --width-saint-review-image: clamp(18rem, 42vw, 34rem);
+  --width-saint-review-image: clamp(10rem, 18vw, 14rem);
   --height-admin-analytics-chart: 16rem;
+  --height-review-tab: 2.25rem;
   --width-instagram-viewer-panel: min(100%, 1400px);
   --width-instagram-viewer-details: clamp(320px, 25vw, 400px);
   --width-instagram-viewer-details-min: 260px;

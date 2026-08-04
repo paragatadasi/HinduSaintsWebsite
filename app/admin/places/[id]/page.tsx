@@ -7,6 +7,7 @@ import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-car
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
@@ -113,6 +114,12 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
         </div>
       </div>
 
+      <ReviewTaskTabs tabs={[
+        { cardId: "place-overview", label: "Overview" },
+        { cardId: "place-public-fields", label: "Public content" },
+        { cardId: "place-merge", label: "Duplicate tools" }
+      ]} />
+
       <div className="review-detail-grid review-detail-grid--decision">
         <ReviewWorkflow
           description="Confirm whether this place has enough location context for the public map and place page."
@@ -149,7 +156,6 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
 
         <CollapsibleReviewCard
           cardId="place-merge"
-          defaultOpen
           description="Administrative duplicate handling for overlapping place records."
           eyebrow="Technical action"
           title="Merge Duplicate"

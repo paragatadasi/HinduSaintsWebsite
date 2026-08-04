@@ -5,6 +5,7 @@ import { MapPin, UserRound } from "lucide-react";
 import { CollapsibleReviewCard, CollapsibleReviewSection } from "@/components/admin/collapsible-review-card";
 import { ExpandableText } from "@/components/admin/expandable-text";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
 import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
@@ -105,6 +106,11 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
           </div>
         </aside>
       </div>
+
+      <ReviewTaskTabs tabs={[
+        { cardId: "first-page-biodata", label: "Extracted biodata" },
+        { cardId: "source-snapshot", label: "Source snapshot" }
+      ]} />
 
       <ReviewWorkflow
         className="review-panel--saint-resolution"
