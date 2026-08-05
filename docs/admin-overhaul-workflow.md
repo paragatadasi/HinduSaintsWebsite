@@ -31,8 +31,8 @@ branch as every chunk.
 | 2. Detail review simplification | Deployed | Shared task tabs, session-persistent collapsible navigation, calmer default expansion, smaller review imagery |
 | 3. Authorization enforcement | Deployed | Content/preview route gates, API/action capability audit, publish/archive boundary, destructive-action boundary, capability-matrix tests |
 | 4. Users & Access completion | Deployed | User approval by email, additive roles, activation/deactivation, access audit, last sign-in, inline feedback, destructive-action settings relocation, bootstrap-only allowlist confirmation |
-| 5. Source Data and reconciliation | Ready for deployment | Source Data overview, unified reconciliation queue and import history, unresolved badge, preserved context comparison, recorded safe decisions and follow-up queueing |
-| 6. Assignments and dashboards | Pending | Generic cross-content assignments, My Work, Available, Blocked, Completed, authorized Team workload |
+| 5. Source Data and reconciliation | Deployed | Source Data overview, unified reconciliation queue and import history, unresolved badge, preserved context comparison, recorded safe decisions and follow-up queueing |
+| 6. Assignments and dashboards | Ready for deployment | Cross-content assignments, self-claim and lifecycle actions, personalized dashboard/counts, My Work, Available, Blocked, Completed, authorized Team Workload |
 | 7. Conflict protection and presence | Pending | Optimistic version checks and conflict UI first, then expiring viewer/editor presence |
 | 8. Museum hardening | Pending | Curator mutation audit, destructive Site Admin boundary, main-admin return path, future Museum Assistant seam |
 | 9. Final UX/accessibility pass | Pending | Unsaved-change protection, validation summaries, keyboard/narrow-laptop QA, remaining repeated-form consolidation |
@@ -51,6 +51,7 @@ not an authorization boundary.
 | `view_source_data` / `run_imports` / `resolve_reconciliation` | Site Admin, Data Admin |
 | `access_museum` / `manage_museum` | Site Admin, Curator |
 | `manage_site` / `view_analytics` / `manage_users` | Site Admin |
+| `manage_assignments` | Site Admin, Data Admin, Editor |
 | `manage_sensitive_actions` | Site Admin |
 
 Publishing and archiving content require `publish_content`. Drafting, editing,
@@ -126,18 +127,19 @@ For each chunk:
 
 ## Resume point
 
-Current chunk: **5. Source Data and reconciliation — ready for deployment**.
+Current chunk: **6. Assignments and dashboards — ready for deployment**.
 
-Verification: `npm run dev:check` and `npm test` pass (80 tests). Run the
+Verification: `npm run dev:check` and `npm test` pass (81 tests). Run the
 production-sensitive deployment gate before handoff because this chunk changes
 the Prisma schema and protected admin routing. `npm run codex:verify` compiled,
 type-checked, collected page data, and generated all static pages; only the
 known Windows junction `EPERM` during standalone trace copying prevented a zero
 exit in this worktree.
 
-Migration: `20260805140000_reconciliation_decisions` adds reconciliation
-decision metadata, update timestamps, and queue indexes. The deployment
-migrate/release phase must apply it before the new routes serve requests.
+Migration: `20260805180000_content_assignments` adds assignment enums, the
+cross-content assignment table, collaborator relations, and workload indexes.
+The deployment migrate/release phase must apply it before the new routes serve
+requests. No backfill is required.
 
-After the Release Captain confirms production deployment of chunk 5, begin
-**6. Assignments and dashboards** from refreshed `main`.
+After the Release Captain confirms production deployment of chunk 6, begin
+**7. Conflict protection and presence** from refreshed `main`.

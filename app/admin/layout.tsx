@@ -62,6 +62,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     db.reconciliationIssue.count({ where: { status: "open" } })
   ]);
   const roles = adminUser?.active ? adminUser.roles : [];
+  const myWorkCount = adminUser?.active ? await db.contentAssignment.count({ where: { assigneeId: adminUser.id, state: { in: ["assigned", "in_progress", "blocked"] } } }) : 0;
 
   return (
     <main className="admin-shell">
@@ -72,6 +73,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </Link>
           <Link href="/admin">Dashboard</Link>
           <NavGroup label="Operations">
+            {hasCapability(roles, "view_content") ? <Link className="admin-sidebar__link" href={"/admin/work" as Route}><span>My Work</span>{myWorkCount > 0 ? <StatusBadge label={String(myWorkCount)} /> : null}</Link> : null}
             {hasCapability(roles, "view_content") ? <Link className="admin-sidebar__link" href="/admin/feedback"><span>Inbox</span>{newFeedbackCount > 0 ? <StatusBadge label={String(newFeedbackCount)} /> : null}</Link> : null}
             {hasCapability(roles, "manage_site") ? <Link href={"/admin/site" as Route}>Site</Link> : null}
             {hasCapability(roles, "view_analytics") ? <Link href={"/admin/analytics" as Route}>Analytics</Link> : null}

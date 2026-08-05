@@ -12,12 +12,13 @@ export type Capability =
   | "manage_site"
   | "view_analytics"
   | "manage_users"
+  | "manage_assignments"
   | "manage_sensitive_actions";
 
 const roleCapabilities: Record<UserRole, readonly Capability[]> = {
-  site_admin: ["view_content", "edit_content", "publish_content", "view_source_data", "run_imports", "resolve_reconciliation", "access_museum", "manage_museum", "manage_site", "view_analytics", "manage_users", "manage_sensitive_actions"],
-  data_admin: ["view_content", "edit_content", "publish_content", "view_source_data", "run_imports", "resolve_reconciliation"],
-  editor: ["view_content", "edit_content", "publish_content"],
+  site_admin: ["view_content", "edit_content", "publish_content", "view_source_data", "run_imports", "resolve_reconciliation", "access_museum", "manage_museum", "manage_site", "view_analytics", "manage_users", "manage_assignments", "manage_sensitive_actions"],
+  data_admin: ["view_content", "edit_content", "publish_content", "view_source_data", "run_imports", "resolve_reconciliation", "manage_assignments"],
+  editor: ["view_content", "edit_content", "publish_content", "manage_assignments"],
   contributor: ["view_content", "edit_content"],
   curator: ["access_museum", "manage_museum"],
   translator: ["view_content"]
