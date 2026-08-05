@@ -4,6 +4,8 @@ import type { Route } from "next";
 import { CheckCircle2, GitBranch } from "lucide-react";
 import type { ReactNode } from "react";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
+import { AdminPresence } from "@/components/admin/admin-presence";
+import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
@@ -29,6 +31,7 @@ import { TraditionScripturalBasisEditor } from "./tradition-scriptural-basis-edi
 
 type AdminTraditionEditorPageProps = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ conflict?: string }>;
 };
 
 type SelectOption = {
@@ -38,8 +41,9 @@ type SelectOption = {
   keywords?: string[];
 };
 
-export default async function AdminTraditionEditorPage({ params }: AdminTraditionEditorPageProps) {
+export default async function AdminTraditionEditorPage({ params, searchParams }: AdminTraditionEditorPageProps) {
   const { id } = await params;
+  const { conflict } = await searchParams;
   const tradition = await getTradition(id);
 
   if (!tradition) notFound();
@@ -108,6 +112,7 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
             <StatusBadge label={`${tradition.lineageSaints.length} lineage saints`} />
             {tradition.parentTradition ? <StatusBadge label={`parent: ${tradition.parentTradition.name}`} /> : null}
           </div>
+          <AdminPresence entityType="tradition" entityId={tradition.id} />
         </div>
         <div className="review-actions">
           <Link className="button button--secondary" href="/admin/traditions">Back to traditions</Link>
@@ -116,6 +121,7 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
           ) : null}
         </div>
       </div>
+      <EditConflictPanel conflictId={conflict} returnTo={`/admin/traditions/${tradition.slug}`} />
 
       <ReviewTaskTabs tabs={[
         { cardId: "tradition-overview", label: "Overview" },
@@ -155,9 +161,9 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
           >
             <p>Publishing makes reviewed tradition content visible on the public home page, index, and detail routes.</p>
             <div className="review-actions">
-              <StatusForm traditionId={tradition.id} status="published" label="Approve and publish" />
-              <StatusForm traditionId={tradition.id} status="needs_review" label="Return to review" variant="secondary" />
-              <StatusForm traditionId={tradition.id} status="archived" label="Archive" variant="warning" />
+              <StatusForm traditionId={tradition.id} version={tradition.version} status="published" label="Approve and publish" />
+              <StatusForm traditionId={tradition.id} version={tradition.version} status="needs_review" label="Return to review" variant="secondary" />
+              <StatusForm traditionId={tradition.id} version={tradition.version} status="archived" label="Archive" variant="warning" />
             </div>
           </ReviewSection>
         </ReviewWorkflow>
@@ -207,6 +213,7 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
         >
           <form action={updateTraditionOverview} className="form-stack">
             <input name="traditionId" type="hidden" value={tradition.id} />
+            <input name="version" type="hidden" value={tradition.version} />
             <input name="status" type="hidden" value={tradition.status} />
             <div className="field-grid field-grid--identity-line">
               <label>
@@ -267,6 +274,7 @@ export default async function AdminTraditionEditorPage({ params }: AdminTraditio
         >
           <form action={updateTraditionOtherPublicFields} className="form-stack">
             <input name="traditionId" type="hidden" value={tradition.id} />
+            <input name="version" type="hidden" value={tradition.version} />
             <div className="field-grid">
               <SearchableSelect
                 defaultValue={tradition.founderSaintId ?? ""}
@@ -626,11 +634,13 @@ async function getTradition(slugOrId: string) {
 
 function StatusForm({
   traditionId,
+  version,
   status,
   label,
   variant = "primary"
 }: {
   traditionId: string;
+  version: number;
   status: "needs_review" | "published" | "archived";
   label: string;
   variant?: "primary" | "secondary" | "warning";
@@ -644,6 +654,7 @@ function StatusForm({
   return (
     <form action={updateTraditionReviewStatus}>
       <input name="traditionId" type="hidden" value={traditionId} />
+      <input name="version" type="hidden" value={version} />
       <input name="status" type="hidden" value={status} />
       <button className={className} type="submit">{label}</button>
     </form>

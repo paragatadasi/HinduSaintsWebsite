@@ -26,6 +26,7 @@ import {
 import { extractInstagramFirstPageDraft } from "@/lib/instagram-first-page-extraction";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { toSlug } from "@/lib/slugs";
+import { expectedVersion, guardedInstagramUpdate } from "@/lib/admin-conflicts";
 
 const itemStatusSchema = z.object({
   instagramItemId: z.string().cuid(),
@@ -112,9 +113,10 @@ export async function updateInstagramItemStatus(formData: FormData) {
   });
   if (parsed.status === "published") await assertCapability("publish_content");
 
-  const item = await db.instagramItem.update({
+  const conflictReturnTo = parsed.returnTo?.startsWith("/admin/instagram/") ? parsed.returnTo : `/admin/instagram/${parsed.instagramItemId}`;
+  await guardedInstagramUpdate(parsed.instagramItemId, expectedVersion(formData), { status: parsed.status }, { status: parsed.status }, conflictReturnTo);
+  const item = await db.instagramItem.findUniqueOrThrow({
     where: { id: parsed.instagramItemId },
-    data: { status: parsed.status },
     include: {
       saints: {
         include: { saint: { select: { slug: true } } }
