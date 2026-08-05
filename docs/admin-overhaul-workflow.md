@@ -35,7 +35,7 @@ branch as every chunk.
 | 6. Assignments and dashboards | Deployed | Cross-content assignments, self-claim and lifecycle actions, personalized dashboard/counts, My Work, Available, Blocked, Completed, authorized Team Workload |
 | 7. Conflict protection and presence | Deployed | Versioned top-level editorial saves, durable current-versus-attempted conflict UI, preconditioned reapply, expiring advisory viewer/editor presence |
 | 8. Museum hardening | Deployed | Direct-route capability audit, sandboxed private family trees, Curator/Site Admin mutation guard seam, curator-only dashboard and main-admin return path, explicit planning-preview status |
-| 9. Final UX/accessibility pass | Ready for deployment | Shared unsaved-change protection and validation summary, keyboard/focus improvements, sticky primary task navigation, narrow-laptop safeguards |
+| 9. Final UX/accessibility pass | Deployed | Shared unsaved-change protection and validation summary, keyboard/focus improvements, sticky primary task navigation, narrow-laptop safeguards |
 | 10. Translation workflow | Deferred | Language/version model, translation editing/review/publication and fallback behavior |
 
 ## Capability contract
@@ -127,9 +127,15 @@ For each chunk:
 
 ## Resume point
 
-Current chunk: **9. Final UX/accessibility pass — ready for deployment**.
+Current chunk: **Admin overhaul scope complete**.
 
-Verification: `npm run dev:check` and `npm test` pass (84 tests).
+Chunk 9 production deployment is complete. Release commits:
+
+- `main`: `984da06` (`Complete admin UX accessibility pass`)
+- `deploy`: `946e0c6` (`Merge main into deploy`)
+- Production workflow: `30986384687`
+
+Verification: `npm run dev:check` and `npm test` passed (84 tests).
 `npm run codex:verify` compiled, type-checked, collected page data, and generated
 all static pages; only the known Windows junction `EPERM` during standalone
 trace copying prevented a zero exit in this worktree.
@@ -141,6 +147,5 @@ verified through implementation review plus the TypeScript and production builds
 
 Migration: none.
 
-Prepare the Chunk 9 release handoff and pause for production deployment. Once
-deployed, the discussed admin-overhaul scope is complete. Translation workflow
-design remains explicitly deferred and is outside the current overhaul.
+The discussed admin-overhaul scope is complete. Translation workflow design and
+authoring remain explicitly deferred and are outside the current overhaul.
