@@ -5,6 +5,7 @@ import { auth, isGoogleAuthConfigured, signIn } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
 import { getAdminUser } from "@/lib/admin-access";
+import { AdminFormGuard } from "@/components/admin/admin-form-guard";
 
 export const dynamic = "force-dynamic";
 
@@ -94,7 +95,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </NavGroup> : null}
           {hasCapability(roles, "access_museum") ? <Link className="admin-sidebar__primary-link" href="/admin/museum">Museum</Link> : null}
         </aside>
-        <section className="admin-content">{children}</section>
+        <section className="admin-content"><AdminFormGuard>{children}</AdminFormGuard></section>
       </div>
     </main>
   );

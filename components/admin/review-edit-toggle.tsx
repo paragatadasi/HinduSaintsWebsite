@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useId, useRef, useState } from "react";
 
 type ReviewEditToggleProps = {
   summary: ReactNode;
@@ -15,13 +15,27 @@ export function ReviewEditToggle({
   editLabel = "Edit"
 }: ReviewEditToggleProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const editorId = useId();
+  const editButtonRef = useRef<HTMLButtonElement>(null);
+
+  function startEditing() {
+    setIsEditing(true);
+    window.requestAnimationFrame(() => document.getElementById(editorId)?.querySelector<HTMLElement>("input, select, textarea, button")?.focus());
+  }
+
+  function stopEditing(event: React.MouseEvent<HTMLButtonElement>) {
+    const form = event.currentTarget.closest(".review-edit-toggle")?.querySelector("form[data-admin-dirty='true']");
+    if (form && !window.confirm("Discard the unsaved changes in this section?")) return;
+    setIsEditing(false);
+    window.requestAnimationFrame(() => editButtonRef.current?.focus());
+  }
 
   if (!isEditing) {
     return (
       <div className="review-edit-toggle">
         {summary}
         <div className="review-actions">
-          <button className="admin-form-button" type="button" onClick={() => setIsEditing(true)}>
+          <button aria-controls={editorId} aria-expanded="false" className="admin-form-button" ref={editButtonRef} type="button" onClick={startEditing}>
             {editLabel}
           </button>
         </div>
@@ -32,11 +46,11 @@ export function ReviewEditToggle({
   return (
     <div className="review-edit-toggle">
       <div className="review-actions">
-        <button className="admin-form-button admin-form-button--secondary" type="button" onClick={() => setIsEditing(false)}>
+        <button aria-controls={editorId} aria-expanded="true" className="admin-form-button admin-form-button--secondary" type="button" onClick={stopEditing}>
           Cancel
         </button>
       </div>
-      {children}
+      <div id={editorId}>{children}</div>
     </div>
   );
 }

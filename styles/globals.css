@@ -4385,6 +4385,13 @@ html[data-route-entering="true"] body > main {
   min-width: 0;
 }
 
+.admin-form-guard { display: grid; gap: var(--space-4); min-width: 0; }
+.admin-unsaved-status { background: var(--color-surface); border: 1px solid var(--color-accent); border-radius: var(--radius-pill); color: var(--color-text); font-size: var(--font-size-xs); font-weight: 800; justify-self: end; padding: var(--space-2) var(--space-3); position: sticky; top: var(--space-3); z-index: 4; }
+.admin-validation-summary { background: var(--color-surface); border: 1px solid var(--color-danger); border-radius: var(--radius-card); display: grid; gap: var(--space-2); padding: var(--space-4); }
+.admin-validation-summary ul { display: grid; gap: var(--space-1); margin: 0; padding-left: var(--space-5); }
+.admin-validation-summary button { background: transparent; border: 0; color: var(--color-danger); cursor: pointer; font: inherit; padding: 0; text-align: left; text-decoration: underline; }
+.admin-field-error { color: var(--color-danger); font-size: var(--font-size-xs); font-weight: 700; }
+
 .admin-auth {
   display: grid;
   gap: var(--space-4);
@@ -4409,12 +4416,16 @@ html[data-route-entering="true"] body > main {
 }
 
 .review-task-tabs {
+  background: var(--color-surface-muted);
   display: flex;
   gap: var(--space-2);
   max-width: 100%;
   overflow-x: auto;
   padding: var(--space-1) 0 var(--space-3);
   scrollbar-width: thin;
+  position: sticky;
+  top: 0;
+  z-index: 3;
 }
 
 .review-task-tab {
@@ -4438,6 +4449,8 @@ html[data-route-entering="true"] body > main {
   border-color: var(--color-accent);
   color: var(--color-text);
 }
+
+.review-task-tab--primary { background: var(--color-surface); left: 0; position: sticky; z-index: 1; }
 
 .review-task-tab__count {
   align-items: center;
