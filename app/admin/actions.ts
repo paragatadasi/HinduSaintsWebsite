@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import type { Route } from "next";
 import { redirect } from "next/navigation";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
@@ -38,8 +39,8 @@ export async function setBulkDeletePasswordAction(formData: FormData) {
     }
   });
 
-  revalidatePath("/admin");
-  redirect("/admin?bulkDeletePassword=updated");
+  revalidatePath("/admin/users");
+  redirect("/admin/users?sensitiveActionPassword=updated" as Route);
 }
 
 async function requireAdminSession() {

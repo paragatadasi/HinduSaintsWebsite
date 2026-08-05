@@ -50,6 +50,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return Boolean(existing?.active);
     }
   },
+  events: {
+    async signIn({ user }) {
+      if (!user.email) return;
+      await db.user.updateMany({
+        where: { email: user.email.toLowerCase() },
+        data: { lastSignedInAt: new Date() }
+      });
+    }
+  },
   pages: {
     signIn: "/admin"
   }
