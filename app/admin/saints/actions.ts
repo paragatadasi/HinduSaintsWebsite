@@ -15,6 +15,7 @@ import { acceptSaintInstagramClaim } from "@/lib/instagram-claims";
 import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page-extraction";
 import { toSlug } from "@/lib/slugs";
 import { getReciprocalRelationshipType } from "@/lib/saint-relationships";
+import { expectedVersion, guardedSaintUpdate } from "@/lib/admin-conflicts";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 const placeTypeSchema = z.enum(["primary", "birth", "samadhi", "sadhana", "associated", "other"]);
@@ -264,15 +265,12 @@ export async function updateSaintOverview(formData: FormData) {
     canonicalName: formData.get("canonicalName"),
     shortDescription: emptyToUndefined(formData.get("shortDescription"))
   });
-  const saint = await db.saint.update({
-    where: { id: parsed.saintId },
-    data: {
+  const attempted = {
       displayName: parsed.displayName,
       canonicalName: parsed.canonicalName,
       shortDescription: parsed.shortDescription ?? null
-    },
-    select: { slug: true }
-  });
+  };
+  const saint = await guardedSaintUpdate(parsed.saintId, expectedVersion(formData), attempted, attempted, `/admin/saints/${parsed.saintId}`);
 
   revalidateSaintPaths(saint.slug);
 }
@@ -292,9 +290,7 @@ export async function updateSaintOtherPublicFields(formData: FormData) {
   const birthDate = parsed.birthDateRaw ? parseImportedDate(parsed.birthDateRaw) : null;
   const samadhiDate = parsed.samadhiDateRaw ? parseImportedDate(parsed.samadhiDateRaw) : null;
 
-  const saint = await db.saint.update({
-    where: { id: parsed.saintId },
-    data: {
+  const attempted = {
       eraLabel: parsed.eraLabel ?? null,
       birthDateRaw: birthDate?.raw ?? null,
       birthYear: birthDate?.year ?? null,
@@ -311,9 +307,8 @@ export async function updateSaintOtherPublicFields(formData: FormData) {
       dateNotes: parsed.dateNotes ?? null,
       seoTitle: parsed.seoTitle ?? null,
       seoDescription: parsed.seoDescription ?? null
-    },
-    select: { slug: true }
-  });
+  };
+  const saint = await guardedSaintUpdate(parsed.saintId, expectedVersion(formData), attempted, attempted, `/admin/saints/${parsed.saintId}`);
 
   revalidateSaintPaths(saint.slug);
 }
@@ -826,15 +821,12 @@ export async function updateSaintReviewStatus(formData: FormData) {
   });
   if (parsed.status === "published" || parsed.status === "archived") await assertCapability("publish_content");
   const now = new Date();
-  const saint = await db.saint.update({
-    where: { id: parsed.saintId },
-    data: {
+  const attempted = {
       status: parsed.status,
       reviewedAt: parsed.status === "needs_review" ? null : now,
       publishedAt: parsed.status === "published" ? now : null
-    },
-    select: { slug: true }
-  });
+  };
+  const saint = await guardedSaintUpdate(parsed.saintId, expectedVersion(formData), attempted, attempted, `/admin/saints/${parsed.saintId}`);
 
   revalidateSaintPaths(saint.slug);
 }

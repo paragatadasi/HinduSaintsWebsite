@@ -1,0 +1,14 @@
+CREATE TYPE "AdminEntityType" AS ENUM ('saint', 'tradition', 'place', 'instagram_item');
+ALTER TABLE "Saint" ADD COLUMN "version" INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE "Tradition" ADD COLUMN "version" INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE "Place" ADD COLUMN "version" INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE "InstagramItem" ADD COLUMN "version" INTEGER NOT NULL DEFAULT 1;
+CREATE TABLE "AdminEditConflict" ("id" TEXT NOT NULL, "entityType" "AdminEntityType" NOT NULL, "entityId" TEXT NOT NULL, "expectedVersion" INTEGER NOT NULL, "currentVersion" INTEGER NOT NULL, "currentValue" JSONB NOT NULL, "attemptedValue" JSONB NOT NULL, "userId" TEXT NOT NULL, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, CONSTRAINT "AdminEditConflict_pkey" PRIMARY KEY ("id"));
+CREATE INDEX "AdminEditConflict_userId_createdAt_idx" ON "AdminEditConflict"("userId", "createdAt");
+CREATE INDEX "AdminEditConflict_entityType_entityId_createdAt_idx" ON "AdminEditConflict"("entityType", "entityId", "createdAt");
+ALTER TABLE "AdminEditConflict" ADD CONSTRAINT "AdminEditConflict_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+CREATE TABLE "AdminPresence" ("id" TEXT NOT NULL, "entityType" "AdminEntityType" NOT NULL, "entityId" TEXT NOT NULL, "userId" TEXT NOT NULL, "mode" TEXT NOT NULL DEFAULT 'viewing', "expiresAt" TIMESTAMP(3) NOT NULL, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL, CONSTRAINT "AdminPresence_pkey" PRIMARY KEY ("id"));
+CREATE UNIQUE INDEX "AdminPresence_entityType_entityId_userId_key" ON "AdminPresence"("entityType", "entityId", "userId");
+CREATE INDEX "AdminPresence_entityType_entityId_expiresAt_idx" ON "AdminPresence"("entityType", "entityId", "expiresAt");
+CREATE INDEX "AdminPresence_expiresAt_idx" ON "AdminPresence"("expiresAt");
+ALTER TABLE "AdminPresence" ADD CONSTRAINT "AdminPresence_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

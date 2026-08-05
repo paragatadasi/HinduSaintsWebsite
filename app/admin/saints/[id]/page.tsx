@@ -7,6 +7,8 @@ import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewFactGrid, ReviewSection, ReviewSubsection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
 import { SaintDateField } from "@/components/admin/saint-date-field";
+import { AdminPresence } from "@/components/admin/admin-presence";
+import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
 import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchableSelect } from "@/components/ui/searchable-select";
@@ -40,10 +42,12 @@ import { SaintTraditionEditor } from "./saint-tradition-editor";
 
 type AdminSaintEditorPageProps = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ conflict?: string }>;
 };
 
-export default async function AdminSaintEditorPage({ params }: AdminSaintEditorPageProps) {
+export default async function AdminSaintEditorPage({ params, searchParams }: AdminSaintEditorPageProps) {
   const { id } = await params;
+  const { conflict } = await searchParams;
   const saint = await getSaint(id);
 
   if (!saint) notFound();
@@ -108,11 +112,14 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
             {saint.hasInstagramContent ? <StatusBadge label="Instagram content" /> : null}
             {externalRecord ? <StatusBadge label="Airtable linked" /> : null}
           </div>
+          <AdminPresence entityType="saint" entityId={saint.id} />
         </div>
         {saint.status === "published" ? (
           <Link className="button button--secondary" href={`/saints/${saint.slug}`}>View public page</Link>
         ) : null}
       </div>
+
+      <EditConflictPanel conflictId={conflict} returnTo={`/admin/saints/${saint.id}`} />
 
       <ReviewTaskTabs tabs={[
         { cardId: "saint-overview", label: "Overview" },
@@ -151,9 +158,9 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
         >
           <p>Publishing makes this saint eligible for public display. Returning to review removes it from public pages.</p>
           <div className="review-actions">
-            <StatusForm saintId={saint.id} status="published" label="Approve and publish" />
-            <StatusForm saintId={saint.id} status="needs_review" label="Return to review" variant="secondary" />
-            <StatusForm saintId={saint.id} status="archived" label="Archive" variant="warning" />
+            <StatusForm saintId={saint.id} version={saint.version} status="published" label="Approve and publish" />
+            <StatusForm saintId={saint.id} version={saint.version} status="needs_review" label="Return to review" variant="secondary" />
+            <StatusForm saintId={saint.id} version={saint.version} status="archived" label="Archive" variant="warning" />
           </div>
         </ReviewSection>
       </ReviewWorkflow>
@@ -177,6 +184,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
         >
           <form action={updateSaintOverview} className="form-stack">
             <input name="saintId" type="hidden" value={saint.id} />
+            <input name="version" type="hidden" value={saint.version} />
             <div className="field-grid">
               <label>
                 Display name
@@ -223,6 +231,7 @@ export default async function AdminSaintEditorPage({ params }: AdminSaintEditorP
         >
           <form action={updateSaintOtherPublicFields} className="form-stack">
             <input name="saintId" type="hidden" value={saint.id} />
+            <input name="version" type="hidden" value={saint.version} />
             <div className="field-grid">
               <label>
                 Era label
@@ -1198,11 +1207,13 @@ function formatPlaceLocation(place: { region: string | null; country: string | n
 
 function StatusForm({
   saintId,
+  version,
   status,
   label,
   variant = "primary"
 }: {
   saintId: string;
+  version: number;
   status: "needs_review" | "published" | "archived";
   label: string;
   variant?: "primary" | "secondary" | "warning";
@@ -1216,6 +1227,7 @@ function StatusForm({
   return (
     <form action={updateSaintReviewStatus}>
       <input name="saintId" type="hidden" value={saintId} />
+      <input name="version" type="hidden" value={version} />
       <input name="status" type="hidden" value={status} />
       <button className={className} type="submit">{label}</button>
     </form>
