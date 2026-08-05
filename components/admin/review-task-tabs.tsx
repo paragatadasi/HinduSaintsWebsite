@@ -9,8 +9,15 @@ export type ReviewTaskTab = {
 };
 
 export function ReviewTaskTabs({ label = "Review sections", tabs }: { label?: string; tabs: ReviewTaskTab[] }) {
-  function openCard(cardId: string) {
+  function openCard(event: React.MouseEvent<HTMLAnchorElement>, cardId: string) {
+    if (event.defaultPrevented) return;
     window.dispatchEvent(new CustomEvent("admin-review-card:open", { detail: { cardId } }));
+    window.requestAnimationFrame(() => {
+      const card = document.getElementById(`review-card-${cardId}`);
+      if (!card) return;
+      card.tabIndex = -1;
+      card.focus({ preventScroll: true });
+    });
   }
 
   return (
@@ -20,7 +27,7 @@ export function ReviewTaskTabs({ label = "Review sections", tabs }: { label?: st
           className={clsx("review-task-tab", index === 0 && "review-task-tab--primary")}
           href={`#review-card-${tab.cardId}`}
           key={tab.cardId}
-          onClick={() => openCard(tab.cardId)}
+          onClick={(event) => openCard(event, tab.cardId)}
         >
           <span>{tab.label}</span>
           {typeof tab.count === "number" ? <span className="review-task-tab__count">{tab.count}</span> : null}
