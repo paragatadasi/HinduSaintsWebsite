@@ -30,8 +30,8 @@ branch as every chunk.
 | 1. Roles and navigation foundation | Deployed | Additive roles/capabilities, grouped permission-aware navigation, Users & Access baseline, Source Data split, top-level Museum, OAuth account-link hotfix |
 | 2. Detail review simplification | Deployed | Shared task tabs, session-persistent collapsible navigation, calmer default expansion, smaller review imagery |
 | 3. Authorization enforcement | Deployed | Content/preview route gates, API/action capability audit, publish/archive boundary, destructive-action boundary, capability-matrix tests |
-| 4. Users & Access completion | Ready for deployment | User approval by email, additive roles, activation/deactivation, access audit, last sign-in, inline feedback, destructive-action settings relocation, bootstrap-only allowlist confirmation |
-| 5. Source Data and reconciliation | Pending | Unified reconciliation queue, import history, unresolved badges, raw-versus-reviewed comparison and safe resolution |
+| 4. Users & Access completion | Deployed | User approval by email, additive roles, activation/deactivation, access audit, last sign-in, inline feedback, destructive-action settings relocation, bootstrap-only allowlist confirmation |
+| 5. Source Data and reconciliation | Ready for deployment | Source Data overview, unified reconciliation queue and import history, unresolved badge, preserved context comparison, recorded safe decisions and follow-up queueing |
 | 6. Assignments and dashboards | Pending | Generic cross-content assignments, My Work, Available, Blocked, Completed, authorized Team workload |
 | 7. Conflict protection and presence | Pending | Optimistic version checks and conflict UI first, then expiring viewer/editor presence |
 | 8. Museum hardening | Pending | Curator mutation audit, destructive Site Admin boundary, main-admin return path, future Museum Assistant seam |
@@ -126,12 +126,18 @@ For each chunk:
 
 ## Resume point
 
-Current chunk: **4. Users & Access completion — ready for deployment**.
+Current chunk: **5. Source Data and reconciliation — ready for deployment**.
 
-Verification: `npm run dev:check` and `npm test` pass (76 tests).
+Verification: `npm run dev:check` and `npm test` pass (80 tests). Run the
+production-sensitive deployment gate before handoff because this chunk changes
+the Prisma schema and protected admin routing. `npm run codex:verify` compiled,
+type-checked, collected page data, and generated all static pages; only the
+known Windows junction `EPERM` during standalone trace copying prevented a zero
+exit in this worktree.
 
-Migration: `20260805100000_admin_access_audit` adds `User.lastSignedInAt` and
-the access audit table.
+Migration: `20260805140000_reconciliation_decisions` adds reconciliation
+decision metadata, update timestamps, and queue indexes. The deployment
+migrate/release phase must apply it before the new routes serve requests.
 
-After the Release Captain confirms production deployment of chunk 4, begin
-**5. Source Data and reconciliation** from refreshed `main`.
+After the Release Captain confirms production deployment of chunk 5, begin
+**6. Assignments and dashboards** from refreshed `main`.

@@ -1,5 +1,21 @@
 # Import and reconciliation
 
+## Admin Source Data workspace
+
+Data Admins and Site Admins use `/admin/source-data` as the operational entry
+point. `/admin/source-data/history` combines generic `ImportBatch` records with
+Airtable and Instagram jobs, so Airtable, Instagram, CSV, and manual runs can be
+reviewed in one chronological view. `/admin/source-data/reconciliation` combines
+all `ReconciliationIssue` records into a filterable queue and exposes the open
+count in admin navigation.
+
+Reconciliation preserves the source context beside the reviewed CMS context.
+`keep_current` and `ignore` are final decisions. `accept_source`, `merge`, and
+`defer` deliberately remain open follow-up requests: the generic queue records
+the reviewer, action, and note but never applies values to a domain record.
+Applying or merging source data must happen in the relevant domain-specific
+review transaction, where its validation and audit rules are available.
+
 ## Airtable
 
 Airtable is an import/reference source. It is not the live website source of truth.
