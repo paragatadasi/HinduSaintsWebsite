@@ -2,10 +2,14 @@ import Link from "next/link";
 import type { Route } from "next";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
-import { requireCapability } from "@/lib/admin-access";
+import { requireAdminUser } from "@/lib/admin-access";
+import { hasCapability } from "@/lib/permissions";
 
 export default async function AdminDashboardPage() {
-  const user = await requireCapability("view_content");
+  const user = await requireAdminUser();
+  if (!hasCapability(user.roles, "view_content")) {
+    return hasCapability(user.roles, "access_museum") ? <MuseumOnlyDashboard /> : <AccessLimitedDashboard />;
+  }
   const [
     saintCounts,
     instagramNeedsReview,
@@ -51,6 +55,14 @@ export default async function AdminDashboardPage() {
 
     </div>
   );
+}
+
+function MuseumOnlyDashboard() {
+  return <div className="admin-stack"><div><div className="eyebrow">Dashboard</div><h1>Museum workspace</h1><p className="lede">Your current role is focused on Museum planning and curation.</p></div><div className="admin-stat-grid"><Link className="admin-stat admin-stat--link interactive-surface" href="/museumadmin"><StatusBadge label="Curator" /><h2>Open Museum Admin</h2></Link></div></div>;
+}
+
+function AccessLimitedDashboard() {
+  return <div className="admin-stack"><div><div className="eyebrow">Dashboard</div><h1>No workspace assigned</h1><p className="lede">Your account is active, but its current roles do not grant an admin workspace.</p></div></div>;
 }
 function DashboardCard({ href, label, value }: { href: Route; label: string; value: number }) {
   return (

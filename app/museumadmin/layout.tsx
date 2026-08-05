@@ -70,6 +70,10 @@ export default async function MuseumAdminLayout({ children }: { children: React.
             <strong>Museum Admin</strong>
             <span>Section proposals</span>
           </Link>
+          <div className="museum-admin-nav__group-links">
+            <Link href="/admin">Main admin</Link>
+            <Link href="/">Public site</Link>
+          </div>
           <nav aria-label="Museum sections">
             {museumFlowZones.map((zone, index) => (
               <section className="museum-admin-nav__group" key={zone.title}>

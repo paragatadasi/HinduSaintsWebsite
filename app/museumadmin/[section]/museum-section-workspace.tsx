@@ -99,6 +99,7 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
                 <Metric label="Tertiary" value={section.tertiary} />
               </div>
               <p>{section.idea}</p>
+              <p className="museum-filter-note">Planning preview: tier, anchor, and section changes on this screen are temporary and are not saved yet.</p>
             </div>
           </section>
 
