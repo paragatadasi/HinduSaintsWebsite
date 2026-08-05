@@ -39,3 +39,10 @@ test("only Site Admin has sensitive and user-management capabilities", () => {
   assert.equal(hasCapability(["site_admin"], "manage_users"), true);
   assert.equal(hasCapability(["editor", "data_admin", "curator"], "manage_sensitive_actions"), false);
 });
+
+test("editors coordinate content assignments while contributors can only work their own", () => {
+  assert.equal(hasCapability(["editor"], "manage_assignments"), true);
+  assert.equal(hasCapability(["data_admin"], "manage_assignments"), true);
+  assert.equal(hasCapability(["contributor"], "manage_assignments"), false);
+  assert.equal(hasCapability(["translator"], "manage_assignments"), false);
+});
