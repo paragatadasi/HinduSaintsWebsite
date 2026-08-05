@@ -198,6 +198,13 @@ enum AssignmentPriority {
   urgent
 }
 
+enum AdminEntityType {
+  saint
+  tradition
+  place
+  instagram_item
+}
+
 enum FeedbackStatus {
   new
   in_review
@@ -244,6 +251,8 @@ model User {
   assignedContentTasks ContentAssignment[] @relation("AssignmentAssignee")
   createdContentTasks  ContentAssignment[] @relation("AssignmentCreator")
   completedContentTasks ContentAssignment[] @relation("AssignmentCompleter")
+  editConflicts AdminEditConflict[]
+  adminPresence AdminPresence[]
   accounts      Account[]
   sessions      Session[]
   createdAt     DateTime  @default(now())
@@ -272,6 +281,38 @@ model ContentAssignment {
   @@index([assigneeId, state, dueDate])
   @@index([contentType, contentId, state])
   @@index([state, priority, createdAt])
+}
+
+model AdminEditConflict {
+  id              String          @id @default(cuid())
+  entityType      AdminEntityType
+  entityId        String
+  expectedVersion Int
+  currentVersion  Int
+  currentValue    Json
+  attemptedValue  Json
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime        @default(now())
+
+  @@index([userId, createdAt])
+  @@index([entityType, entityId, createdAt])
+}
+
+model AdminPresence {
+  id         String          @id @default(cuid())
+  entityType AdminEntityType
+  entityId   String
+  userId     String
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mode       String          @default("viewing")
+  expiresAt  DateTime
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@unique([entityType, entityId, userId])
+  @@index([entityType, entityId, expiresAt])
+  @@index([expiresAt])
 }
 
 model AdminAccessAudit {
@@ -374,6 +415,7 @@ model Saint {
   updatedAt                DateTime                @updatedAt
   publishedAt              DateTime?
   reviewedAt               DateTime?
+  version                  Int                     @default(1)
 
   @@index([status, featured, displayName])
 }
@@ -427,6 +469,7 @@ model Tradition {
   homeFeaturedPlacements   HomeFeaturedTraditionPlacement[]
   createdAt                DateTime                    @default(now())
   updatedAt                DateTime                    @updatedAt
+  version                  Int                         @default(1)
   publishedAt              DateTime?
 
   @@index([status, name])
@@ -453,6 +496,7 @@ model Place {
   relationshipsTo        PlaceRelationship[]     @relation("PlaceRelationshipTo")
   traditionOrigins       Tradition[]             @relation("TraditionOriginPlace")
   traditionRelatedPlaces TraditionRelatedPlace[]
+  version                Int                     @default(1)
 
   @@index([placeKind])
   @@index([placeScope])
@@ -891,6 +935,7 @@ model InstagramItem {
   derivedClaims       InstagramDerivedClaim[]
   createdAt           DateTime                @default(now())
   updatedAt           DateTime                @updatedAt
+  version             Int                     @default(1)
 
   @@index([type, postedAt, createdAt])
 }

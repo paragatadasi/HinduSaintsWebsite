@@ -16,6 +16,7 @@ import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
+import { expectedVersion, guardedPlaceUpdate } from "@/lib/admin-conflicts";
 
 const placeScopeSchema = z.enum(["locality", "state", "country"]);
 const LEGACY_PARENT_STATE_RELATIONSHIP_NOTE = "Mirrored from legacy parentStateId.";
@@ -89,6 +90,8 @@ export async function updatePlace(formData: FormData) {
   const parentStateId = placeScope === "locality" && parsed.parentStateId !== parsed.placeId
     ? parsed.parentStateId
     : null;
+  const attempted = { name: parsed.name, slug, alternateNames: parsed.alternateNames, placeKind: getPlaceKindForScope(placeScope), placeScope, parentStateId, country: placeScope === "country" ? parsed.name : parsed.country ?? null };
+  await guardedPlaceUpdate(parsed.placeId, expectedVersion(formData), {}, attempted, `/admin/places/${existing.slug}`);
   const place = await db.$transaction(async (tx) => {
     const updatedPlace = await tx.place.update({
       where: { id: parsed.placeId },
@@ -199,14 +202,13 @@ export async function updatePlaceOtherPublicFields(formData: FormData) {
     overviewMarkdown: emptyToUndefined(formData.get("overviewMarkdown")),
     notes: emptyToUndefined(formData.get("notes"))
   });
-  const place = await db.place.update({
-    where: { id: parsed.placeId },
-    data: {
+  const attempted = {
       overviewMarkdown: parsed.overviewMarkdown ?? null,
       notes: parsed.notes ?? null
-    },
-    select: { slug: true }
-  });
+  };
+  const current = await db.place.findUnique({ where: { id: parsed.placeId }, select: { slug: true } });
+  if (!current) redirect("/admin/places");
+  const place = await guardedPlaceUpdate(parsed.placeId, expectedVersion(formData), attempted, attempted, `/admin/places/${current.slug}`);
 
   revalidatePlacePaths(place.slug);
   redirect(`/admin/places/${place.slug}`);

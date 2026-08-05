@@ -17,6 +17,7 @@ type PlaceOverviewEditorProps = {
   placeId: string;
   selectedLocalityIds: string[];
   stateOptions: SearchableSelectOption[];
+  version: number;
 };
 
 export function PlaceOverviewEditor({
@@ -30,13 +31,15 @@ export function PlaceOverviewEditor({
   parentStateId,
   placeId,
   selectedLocalityIds,
-  stateOptions
+  stateOptions,
+  version
 }: PlaceOverviewEditorProps) {
   const [placeScope, setPlaceScope] = useState(effectivePlaceScope);
 
   return (
     <form action={action} className="form-stack">
       <input name="placeId" type="hidden" value={placeId} />
+      <input name="version" type="hidden" value={version} />
       <div className="field-grid field-grid--identity-line">
         <label>
           Name

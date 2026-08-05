@@ -4,6 +4,8 @@ import type { Route } from "next";
 import { CheckCircle2, MapPin } from "lucide-react";
 import type { ReactNode } from "react";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
+import { AdminPresence } from "@/components/admin/admin-presence";
+import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
@@ -17,10 +19,12 @@ import { PlaceOverviewEditor } from "./place-overview-editor";
 
 type AdminPlaceEditorPageProps = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ conflict?: string }>;
 };
 
-export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorPageProps) {
+export default async function AdminPlaceEditorPage({ params, searchParams }: AdminPlaceEditorPageProps) {
   const { id } = await params;
+  const { conflict } = await searchParams;
   const place = await getPlace(id);
 
   if (!place) notFound();
@@ -107,12 +111,14 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
             <StatusBadge label={`${place._count.saints} saints`} />
             {place.parentState ? <StatusBadge label={`state: ${place.parentState.name}`} /> : null}
           </div>
+          <AdminPresence entityType="place" entityId={place.id} />
         </div>
         <div className="review-actions">
           <Link className="button button--secondary" href="/admin/places">Back to places</Link>
           <Link className="button button--secondary" href={`/places/${place.slug}` as Route}>View public page</Link>
         </div>
       </div>
+      <EditConflictPanel conflictId={conflict} returnTo={`/admin/places/${place.slug}`} />
 
       <ReviewTaskTabs tabs={[
         { cardId: "place-overview", label: "Overview" },
@@ -211,6 +217,7 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
             placeId={place.id}
             selectedLocalityIds={place.localities.map((locality) => locality.id)}
             stateOptions={stateOptions}
+            version={place.version}
           />
         </ReviewEditToggle>
       </CollapsibleReviewCard>
@@ -233,6 +240,7 @@ export default async function AdminPlaceEditorPage({ params }: AdminPlaceEditorP
         >
           <form action={updatePlaceOtherPublicFields} className="form-stack">
             <input name="placeId" type="hidden" value={place.id} />
+            <input name="version" type="hidden" value={place.version} />
             <div className="form-stack__field">
               <label htmlFor="place-overview">Page overview</label>
               <MarkdownEditor

@@ -9,6 +9,7 @@ import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { toSlug } from "@/lib/slugs";
+import { expectedVersion, guardedTraditionUpdate } from "@/lib/admin-conflicts";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 
@@ -159,9 +160,7 @@ export async function updateTradition(formData: FormData) {
   if (!existing) redirect("/admin/traditions");
 
   const slug = await getUniqueTraditionSlug(parsed.name, parsed.traditionId);
-  const tradition = await db.tradition.update({
-    where: { id: parsed.traditionId },
-    data: {
+  const attempted = {
       name: parsed.name,
       slug,
       alternateNames: parsed.alternateNames,
@@ -182,9 +181,8 @@ export async function updateTradition(formData: FormData) {
       seoTitle: parsed.seoTitle ?? null,
       seoDescription: parsed.seoDescription ?? null,
       publishedAt: parsed.status === "published" ? now : null
-    },
-    select: { slug: true }
-  });
+  };
+  const tradition = await guardedTraditionUpdate(parsed.traditionId, expectedVersion(formData), attempted, attempted, `/admin/traditions/${existing.slug}`);
 
   revalidateTraditionPaths(existing.slug);
   revalidateTraditionPaths(tradition.slug);
@@ -248,9 +246,7 @@ export async function updateTraditionOtherPublicFields(formData: FormData) {
     seoTitle: emptyToUndefined(formData.get("seoTitle")),
     seoDescription: emptyToUndefined(formData.get("seoDescription"))
   });
-  const tradition = await db.tradition.update({
-    where: { id: parsed.traditionId },
-    data: {
+  const attempted = {
       founderSaintId: parsed.founderSaintId ?? null,
       founderDisplayName: parsed.founderDisplayName ?? null,
       origin: parsed.origin ?? null,
@@ -264,9 +260,10 @@ export async function updateTraditionOtherPublicFields(formData: FormData) {
       keyTeachingsMarkdown: parsed.keyTeachingsMarkdown ?? null,
       seoTitle: parsed.seoTitle ?? null,
       seoDescription: parsed.seoDescription ?? null
-    },
-    select: { slug: true }
-  });
+  };
+  const current = await db.tradition.findUnique({ where: { id: parsed.traditionId }, select: { slug: true } });
+  if (!current) redirect("/admin/traditions");
+  const tradition = await guardedTraditionUpdate(parsed.traditionId, expectedVersion(formData), attempted, attempted, `/admin/traditions/${current.slug}`);
 
   revalidateTraditionPaths(tradition.slug);
   redirect(`/admin/traditions/${tradition.slug}`);
@@ -472,14 +469,13 @@ export async function updateTraditionReviewStatus(formData: FormData) {
   });
   if (parsed.status === "published" || parsed.status === "archived") await assertCapability("publish_content");
   const now = new Date();
-  const tradition = await db.tradition.update({
-    where: { id: parsed.traditionId },
-    data: {
+  const current = await db.tradition.findUnique({ where: { id: parsed.traditionId }, select: { slug: true } });
+  if (!current) redirect("/admin/traditions");
+  const attempted = {
       status: parsed.status,
       publishedAt: parsed.status === "published" ? now : null
-    },
-    select: { slug: true }
-  });
+  };
+  const tradition = await guardedTraditionUpdate(parsed.traditionId, expectedVersion(formData), attempted, attempted, `/admin/traditions/${current.slug}`);
 
   revalidateTraditionPaths(tradition.slug);
   redirect(`/admin/traditions/${tradition.slug}`);

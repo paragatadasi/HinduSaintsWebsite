@@ -32,8 +32,8 @@ branch as every chunk.
 | 3. Authorization enforcement | Deployed | Content/preview route gates, API/action capability audit, publish/archive boundary, destructive-action boundary, capability-matrix tests |
 | 4. Users & Access completion | Deployed | User approval by email, additive roles, activation/deactivation, access audit, last sign-in, inline feedback, destructive-action settings relocation, bootstrap-only allowlist confirmation |
 | 5. Source Data and reconciliation | Deployed | Source Data overview, unified reconciliation queue and import history, unresolved badge, preserved context comparison, recorded safe decisions and follow-up queueing |
-| 6. Assignments and dashboards | Ready for deployment | Cross-content assignments, self-claim and lifecycle actions, personalized dashboard/counts, My Work, Available, Blocked, Completed, authorized Team Workload |
-| 7. Conflict protection and presence | Pending | Optimistic version checks and conflict UI first, then expiring viewer/editor presence |
+| 6. Assignments and dashboards | Deployed | Cross-content assignments, self-claim and lifecycle actions, personalized dashboard/counts, My Work, Available, Blocked, Completed, authorized Team Workload |
+| 7. Conflict protection and presence | Ready for deployment | Versioned top-level editorial saves, durable current-versus-attempted conflict UI, preconditioned reapply, expiring advisory viewer/editor presence |
 | 8. Museum hardening | Pending | Curator mutation audit, destructive Site Admin boundary, main-admin return path, future Museum Assistant seam |
 | 9. Final UX/accessibility pass | Pending | Unsaved-change protection, validation summaries, keyboard/narrow-laptop QA, remaining repeated-form consolidation |
 | 10. Translation workflow | Deferred | Language/version model, translation editing/review/publication and fallback behavior |
@@ -127,19 +127,17 @@ For each chunk:
 
 ## Resume point
 
-Current chunk: **6. Assignments and dashboards — ready for deployment**.
+Current chunk: **7. Conflict protection and presence — ready for deployment**.
 
-Verification: `npm run dev:check` and `npm test` pass (81 tests). Run the
-production-sensitive deployment gate before handoff because this chunk changes
-the Prisma schema and protected admin routing. `npm run codex:verify` compiled,
-type-checked, collected page data, and generated all static pages; only the
-known Windows junction `EPERM` during standalone trace copying prevented a zero
-exit in this worktree.
+Verification: `npm run dev:check` and `npm test` pass (82 tests).
+`npm run codex:verify` compiled, type-checked, collected page data, and generated
+all static pages; only the known Windows junction `EPERM` during standalone
+trace copying prevented a zero exit in this worktree.
 
-Migration: `20260805180000_content_assignments` adds assignment enums, the
-cross-content assignment table, collaborator relations, and workload indexes.
+Migration: `20260805220000_admin_conflicts_presence` adds versions to the four
+top-level editorial records plus conflict snapshots and expiring presence rows.
 The deployment migrate/release phase must apply it before the new routes serve
 requests. No backfill is required.
 
-After the Release Captain confirms production deployment of chunk 6, begin
-**7. Conflict protection and presence** from refreshed `main`.
+After the Release Captain confirms production deployment of chunk 7, begin
+**8. Museum hardening** from refreshed `main`.

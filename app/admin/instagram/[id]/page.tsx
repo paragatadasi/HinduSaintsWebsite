@@ -3,6 +3,8 @@ import type { Route } from "next";
 import { notFound } from "next/navigation";
 import { MapPin, UserRound } from "lucide-react";
 import { CollapsibleReviewCard, CollapsibleReviewSection } from "@/components/admin/collapsible-review-card";
+import { AdminPresence } from "@/components/admin/admin-presence";
+import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
 import { ExpandableText } from "@/components/admin/expandable-text";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
@@ -25,6 +27,7 @@ type AdminInstagramReviewPageProps = {
     firstPageExtraction?: string;
     firstPageExtractionMessage?: string;
     saintQuery?: string | string[];
+    conflict?: string;
   }>;
 };
 
@@ -64,12 +67,14 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
             {item.matchConfidence ? <StatusBadge label={item.matchConfidence} /> : null}
             <StatusBadge label={item.postedAt ? item.postedAt.toLocaleDateString() : "date pending"} />
           </div>
+          <AdminPresence entityType="instagram_item" entityId={item.id} />
         </div>
         <div className="review-actions">
           <Link className="button button--secondary" href="/admin/instagram">Back to queue</Link>
           <a className="button button--secondary" href={item.instagramUrl} {...getInstagramLinkProps(item.instagramUrl)}>View on Instagram</a>
         </div>
       </div>
+      <EditConflictPanel conflictId={reviewParams.conflict} returnTo={`/admin/instagram/${item.id}`} />
 
       <div className="review-detail-grid review-detail-grid--overview">
         <section className="review-panel review-panel--detail-card">
@@ -101,8 +106,8 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
           <h2>Review target</h2>
           <p>Resolve this item by matching it to an existing saint or creating a saint draft. Published saint pages show matched Instagram content automatically.</p>
           <div className="review-actions">
-            <ItemStatusForm instagramItemId={item.id} returnTo={returnTo} status="needs_review" label="Return to review" variant="secondary" />
-            <ItemStatusForm instagramItemId={item.id} returnTo={returnTo} status="ignored" label="Ignore" variant="warning" />
+            <ItemStatusForm instagramItemId={item.id} version={item.version} returnTo={returnTo} status="needs_review" label="Return to review" variant="secondary" />
+            <ItemStatusForm instagramItemId={item.id} version={item.version} returnTo={returnTo} status="ignored" label="Ignore" variant="warning" />
           </div>
         </aside>
       </div>
@@ -637,12 +642,14 @@ function getClaimKey(claimType: string, rawValue: string, targetEntityType?: str
 
 function ItemStatusForm({
   instagramItemId,
+  version,
   returnTo,
   status,
   label,
   variant = "primary"
 }: {
   instagramItemId: string;
+  version: number;
   returnTo: string;
   status: "needs_review" | "suggested" | "matched" | "ignored" | "published";
   label: string;
@@ -651,6 +658,7 @@ function ItemStatusForm({
   return (
     <form action={updateInstagramItemStatus}>
       <input name="instagramItemId" type="hidden" value={instagramItemId} />
+      <input name="version" type="hidden" value={version} />
       <input name="returnTo" type="hidden" value={returnTo} />
       <input name="status" type="hidden" value={status} />
       <button className={getActionButtonClassName(variant)} type="submit">{label}</button>
