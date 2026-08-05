@@ -176,6 +176,28 @@ enum ReconciliationStatus {
   ignored
 }
 
+enum AssignmentContentType {
+  saint
+  tradition
+  place
+  instagram_item
+}
+
+enum AssignmentState {
+  assigned
+  in_progress
+  blocked
+  completed
+  cancelled
+}
+
+enum AssignmentPriority {
+  low
+  normal
+  high
+  urgent
+}
+
 enum FeedbackStatus {
   new
   in_review
@@ -219,10 +241,37 @@ model User {
   active        Boolean    @default(true)
   lastSignedInAt DateTime?
   accessAudits  AdminAccessAudit[]
+  assignedContentTasks ContentAssignment[] @relation("AssignmentAssignee")
+  createdContentTasks  ContentAssignment[] @relation("AssignmentCreator")
+  completedContentTasks ContentAssignment[] @relation("AssignmentCompleter")
   accounts      Account[]
   sessions      Session[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+}
+
+model ContentAssignment {
+  id            String                @id @default(cuid())
+  contentType   AssignmentContentType
+  contentId     String
+  taskType      String
+  assigneeId    String?
+  assignee      User?                 @relation("AssignmentAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  assignedById  String
+  assignedBy    User                  @relation("AssignmentCreator", fields: [assignedById], references: [id], onDelete: Restrict)
+  state         AssignmentState       @default(assigned)
+  priority      AssignmentPriority    @default(normal)
+  dueDate       DateTime?
+  notes         String?
+  completedById String?
+  completedBy   User?                 @relation("AssignmentCompleter", fields: [completedById], references: [id], onDelete: SetNull)
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+  completedAt   DateTime?
+
+  @@index([assigneeId, state, dueDate])
+  @@index([contentType, contentId, state])
+  @@index([state, priority, createdAt])
 }
 
 model AdminAccessAudit {
