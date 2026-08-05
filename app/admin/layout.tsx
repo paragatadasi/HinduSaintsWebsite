@@ -56,9 +56,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     );
   }
 
-  const [newFeedbackCount, adminUser] = await Promise.all([
+  const [newFeedbackCount, adminUser, openReconciliationCount] = await Promise.all([
     db.feedbackSubmission.count({ where: { status: "new" } }),
-    getAdminUser()
+    getAdminUser(),
+    db.reconciliationIssue.count({ where: { status: "open" } })
   ]);
   const roles = adminUser?.active ? adminUser.roles : [];
 
@@ -77,6 +78,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             {hasCapability(roles, "manage_users") ? <Link href={"/admin/users" as Route}>Users &amp; Access</Link> : null}
           </NavGroup>
           {hasCapability(roles, "view_source_data") ? <NavGroup label="Source Data">
+            <Link href={"/admin/source-data" as Route}>Overview</Link>
+            <Link className="admin-sidebar__link" href={"/admin/source-data/reconciliation" as Route}><span>Reconciliation</span>{openReconciliationCount > 0 ? <StatusBadge label={String(openReconciliationCount)} /> : null}</Link>
+            <Link href={"/admin/source-data/history" as Route}>Import History</Link>
             <Link href="/admin/airtable">Airtable Import</Link>
             <Link href={"/admin/source-data/instagram" as Route}>Instagram Import</Link>
           </NavGroup> : null}
