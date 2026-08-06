@@ -124,7 +124,8 @@ models, not become public page contracts directly:
 The detailed recommendations live in
 `docs/airtable-cleanup-site-model-roadmap.md`.
 
-The preferred editor workflow is `/admin/saints` -> `Airtable sync review`.
+The preferred workflow is Source Data -> Airtable (`/admin/airtable`) ->
+`Airtable sync review`.
 Those actions create durable `AirtableImportJob` records for dry-run checks,
 missing draft imports, safe slug-collision repairs, and cleanup graph imports.
 The repair action creates draft saints only for previously skipped rows whose
