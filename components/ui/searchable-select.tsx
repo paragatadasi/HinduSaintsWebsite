@@ -18,6 +18,13 @@ type SearchableSelectProps = {
   options: SearchableSelectOption[];
   placeholder?: string;
   required?: boolean;
+  searchEndpoint?: string;
+  searchMinimumLength?: number;
+};
+
+type RemoteSearch = {
+  options: SearchableSelectOption[];
+  query: string;
 };
 
 export function SearchableSelect({
@@ -27,7 +34,9 @@ export function SearchableSelect({
   name,
   options,
   placeholder = "Search options",
-  required = false
+  required = false,
+  searchEndpoint,
+  searchMinimumLength = 2
 }: SearchableSelectProps) {
   const listboxId = useId();
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -36,13 +45,52 @@ export function SearchableSelect({
   const [selectedValue, setSelectedValue] = useState(defaultOption?.value ?? "");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const visibleOptions = useMemo(() => filterOptions(options, query), [options, query]);
-  const selectedOption = options.find((option) => option.value === selectedValue);
+  const [remoteSearch, setRemoteSearch] = useState<RemoteSearch | null>(null);
+  const [remoteSearchFailed, setRemoteSearchFailed] = useState(false);
+  const normalizedQuery = query.trim();
+  const shouldSearchRemotely = Boolean(searchEndpoint && !selectedValue && normalizedQuery.length >= searchMinimumLength);
+  const hasCurrentRemoteResults = remoteSearch?.query === normalizedQuery;
+  const candidateOptions = shouldSearchRemotely
+    ? (hasCurrentRemoteResults ? remoteSearch.options : [])
+    : options;
+  const visibleOptions = useMemo(() => filterOptions(candidateOptions, query), [candidateOptions, query]);
+  const selectedOption = [...options, ...(remoteSearch?.options ?? [])].find((option) => option.value === selectedValue);
   const activeOption = visibleOptions[activeIndex];
 
   useEffect(() => {
     searchInputRef.current?.setCustomValidity(required && !selectedValue ? `Select ${label}.` : "");
   }, [label, required, selectedValue]);
+
+  useEffect(() => {
+    if (!searchEndpoint || !shouldSearchRemotely) {
+      setRemoteSearchFailed(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    setRemoteSearchFailed(false);
+    const timer = window.setTimeout(async () => {
+      try {
+        const response = await fetch(`${searchEndpoint}?q=${encodeURIComponent(normalizedQuery)}`, {
+          cache: "no-store",
+          signal: controller.signal
+        });
+        if (!response.ok) throw new Error("Search request failed.");
+        const payload = await response.json() as { options?: SearchableSelectOption[] };
+        if (!Array.isArray(payload.options)) throw new Error("Search response was invalid.");
+        setRemoteSearch({ options: payload.options, query: normalizedQuery });
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setRemoteSearchFailed(true);
+        setRemoteSearch({ options: [], query: normalizedQuery });
+      }
+    }, 200);
+
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [normalizedQuery, searchEndpoint, shouldSearchRemotely]);
 
   return (
     <div className="combo-search">
@@ -124,7 +172,13 @@ export function SearchableSelect({
               </button>
             ))
           ) : (
-            <div className="combo-search__empty">{emptyText}</div>
+            <div className="combo-search__empty">
+              {remoteSearchFailed
+                ? "Could not load options. Try again."
+                : shouldSearchRemotely && !hasCurrentRemoteResults
+                  ? "Searching..."
+                  : emptyText}
+            </div>
           )}
         </div>
       ) : null}
