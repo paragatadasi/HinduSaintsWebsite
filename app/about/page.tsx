@@ -5,11 +5,13 @@ import { notFound } from "next/navigation";
 import { Prose } from "@/components/content/prose";
 import type { PublicImage } from "@/lib/public-contracts";
 import { getPublicAboutPageContent } from "@/lib/site-config";
+import { buildPublicMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicMetadata({
   title: "About",
-  description: "Discover the vision and story behind the Hindu Saints devotional archive."
-};
+  description: "Discover the vision and story behind the Hindu Saints devotional archive.",
+  path: "/about"
+});
 
 const defaultHeroImage: PublicImage = {
   url: "/about-hero.png",

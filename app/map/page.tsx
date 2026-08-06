@@ -1,4 +1,5 @@
 import { IndiaSaintsMap } from "@/components/places/india-saints-map";
+import type { Metadata } from "next";
 import { IndexPageHero } from "@/components/layout/index-page-hero";
 import { getPublicIndexHeroImages } from "@/lib/site-config";
 import { PlaceCard } from "@/components/places/place-card";
@@ -6,8 +7,15 @@ import { INDIA_STATE_MAP_SHAPES, type IndiaStateMapShape } from "@/lib/india-sta
 import { getPublicMapPageData } from "@/lib/public-places";
 import type { PublicPlaceMapData } from "@/lib/public-contracts";
 import { getPlacesIndexContent, getPlacesMapContent } from "@/lib/site-content";
+import { buildPublicMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = buildPublicMetadata({
+  title: "Sacred Places",
+  description: "Explore places across India associated with published Hindu saints and their spiritual journeys.",
+  path: "/map"
+});
 
 export default async function MapIndexPage() {
   const content = getPlacesIndexContent();
