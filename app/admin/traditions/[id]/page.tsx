@@ -535,6 +535,7 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
                   {mediaAsset.sourceUrl ? <small>Source preserved</small> : null}
                   <TraditionImageActions
                     imageLabel={mediaAsset.caption ?? mediaAsset.altText ?? "Tradition gallery image"}
+                    imageUrl={mediaAsset.url}
                     mediaAssetId={mediaAsset.id}
                     traditionId={tradition.id}
                     visible
@@ -558,6 +559,7 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
                     <span>{mediaAsset.caption ?? "Hidden tradition image"}</span>
                     <TraditionImageActions
                       imageLabel={mediaAsset.caption ?? mediaAsset.altText ?? "Hidden tradition image"}
+                      imageUrl={mediaAsset.url}
                       mediaAssetId={mediaAsset.id}
                       traditionId={tradition.id}
                       visible={false}

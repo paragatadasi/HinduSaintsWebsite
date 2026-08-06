@@ -3,16 +3,18 @@
 import { Eye, EyeOff, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { AdminImageEditorDialog } from "@/components/admin/admin-image-editor-dialog";
 import { deleteTraditionImage, updateTraditionImageVisibility } from "../actions";
 
 type TraditionImageActionsProps = {
   imageLabel: string;
+  imageUrl: string;
   mediaAssetId: string;
   traditionId: string;
   visible: boolean;
 };
 
-export function TraditionImageActions({ imageLabel, mediaAssetId, traditionId, visible }: TraditionImageActionsProps) {
+export function TraditionImageActions({ imageLabel, imageUrl, mediaAssetId, traditionId, visible }: TraditionImageActionsProps) {
   const [message, setMessage] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -46,6 +48,9 @@ export function TraditionImageActions({ imageLabel, mediaAssetId, traditionId, v
 
   return (
     <div className="saint-image-actions">
+      <AdminImageEditorDialog title={imageLabel} triggerLabel="Inspect full-size image">
+        <img src={imageUrl} alt={imageLabel} />
+      </AdminImageEditorDialog>
       <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isPending} onClick={() => updateVisibility(!visible)}>
         {visible ? <EyeOff size={16} aria-hidden="true" /> : <Eye size={16} aria-hidden="true" />}
         {visible ? "Hide" : "Restore"}

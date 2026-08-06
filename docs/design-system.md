@@ -183,6 +183,12 @@ Implementation direction:
 - Use `ReviewFactGrid` for readable current-value summaries.
 - Use `CollapsibleReviewCard` for secondary cards whose open state should
   persist in `sessionStorage` by route and card ID.
+- Keep configurable admin image and crop previews within the shared compact
+  editor dimensions. Use `AdminImageEditorDialog` for full-size inspection or
+  a larger synchronized editor instead of expanding images to the page width.
+- Pointer-based focal and crop tools must expose equivalent labeled range or
+  keyboard controls. Pointer gestures are an enhancement, not the only way to
+  position an image.
 - Use `ReviewEditToggle` when a card should start in summary mode and reveal
   edit controls only after an explicit edit action.
 - Use the shared admin workspace navigation for route-level horizontal tabs.

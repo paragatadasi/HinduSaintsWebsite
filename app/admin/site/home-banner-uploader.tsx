@@ -58,6 +58,7 @@ export function HomeBannerUploader({
         message: `${capitalize(uploadLabel)} is ready. Save homepage settings to publish the selection.`
       });
       setFile(null);
+      setAltText("");
       setCaption("");
       setCredit("");
     } catch (error) {
@@ -73,22 +74,26 @@ export function HomeBannerUploader({
         <span>{file ? file.name : `Upload ${uploadLabel}`}</span>
         <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => setFile(event.target.files?.[0] ?? null)} />
       </label>
-      <label>
-        Alt text
-        <input value={altText} maxLength={240} onChange={(event) => setAltText(event.target.value)} />
-      </label>
-      <label>
-        Caption
-        <textarea value={caption} maxLength={500} onChange={(event) => setCaption(event.target.value)} />
-      </label>
-      <label>
-        Credit
-        <input value={credit} maxLength={160} onChange={(event) => setCredit(event.target.value)} />
-      </label>
-      <button className="admin-form-button saint-image-cropper__submit" type="button" disabled={!file || isUploading} onClick={handleUpload}>
-        <Upload size={16} aria-hidden="true" />
-        {isUploading ? "Uploading" : "Upload image"}
-      </button>
+      {file ? (
+        <div className="form-stack">
+          <label>
+            Alt text
+            <input value={altText} maxLength={240} onChange={(event) => setAltText(event.target.value)} />
+          </label>
+          <label>
+            Caption
+            <textarea value={caption} maxLength={500} onChange={(event) => setCaption(event.target.value)} />
+          </label>
+          <label>
+            Credit
+            <input value={credit} maxLength={160} onChange={(event) => setCredit(event.target.value)} />
+          </label>
+          <button className="admin-form-button saint-image-cropper__submit" type="button" disabled={isUploading} onClick={handleUpload}>
+            <Upload size={16} aria-hidden="true" />
+            {isUploading ? "Uploading" : "Upload image"}
+          </button>
+        </div>
+      ) : null}
       {allowClear && bannerImageId ? <button className="button button--ghost" type="button" onClick={() => setUploadState({ status: "idle", mediaAssetId: "" })}>Remove selected image</button> : null}
       {uploadState.message ? (
         <p className={`admin-notice admin-notice--${uploadState.status === "error" ? "warning" : "success"}`}>
