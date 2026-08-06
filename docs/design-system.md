@@ -185,6 +185,12 @@ Implementation direction:
   persist in `sessionStorage` by route and card ID.
 - Use `ReviewEditToggle` when a card should start in summary mode and reveal
   edit controls only after an explicit edit action.
+- Use the shared admin workspace navigation for route-level horizontal tabs.
+  Workspace tabs use links with `aria-current="page"`; they are not client-side
+  tab panels and must preserve normal URLs, history, and authorization gates.
+- Use `ReviewSectionNav` for sticky jump navigation among detail-page cards.
+  It opens collapsed cards and marks the current anchor with
+  `aria-current="location"`. Do not present section jump links as ARIA tabs.
 
 Current rollout notes:
 

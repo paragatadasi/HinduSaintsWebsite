@@ -5,7 +5,7 @@ import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-car
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewFactGrid, ReviewSection, ReviewSubsection, ReviewWorkflow } from "@/components/admin/review-ui";
-import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
+import { ReviewSectionNav } from "@/components/admin/review-section-nav";
 import { SaintDateField } from "@/components/admin/saint-date-field";
 import { AdminPresence } from "@/components/admin/admin-presence";
 import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
@@ -129,7 +129,7 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
 
       <EditConflictPanel conflictId={conflict} returnTo={`/admin/saints/${saint.id}`} />
 
-      <ReviewTaskTabs tabs={[
+      <ReviewSectionNav links={[
         { cardId: "saint-overview", label: "Overview" },
         { cardId: "saint-public-fields", label: "Public fields" },
         { cardId: "saint-relationships", label: "Relationships", count: saint.relationshipsFrom.length + saint.relationshipsTo.length },
