@@ -1260,3 +1260,17 @@ model PageViewDaily {
   @@unique([path, date])
   @@index([date])
 }
+
+model TelemetryDaily {
+  id        String   @id @default(cuid())
+  path      String
+  date      DateTime @db.Date
+  event     String   @db.VarChar(64)
+  dimension String   @default("") @db.VarChar(255)
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([path, date, event, dimension])
+  @@index([date, event])
+}

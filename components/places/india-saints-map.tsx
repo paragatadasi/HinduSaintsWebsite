@@ -231,6 +231,7 @@ export function IndiaSaintsMap({ content, mapData, stateLayerMarkup, stateNamesB
               <g
                 aria-label={`${point.name}, ${point.activeSaints.length} ${point.activeSaints.length === 1 ? "saint" : "saints"}`}
                 className={point.placeScope === "state" ? "places-map__marker places-map__marker--state" : "places-map__marker"}
+                data-telemetry-event="map_place_select"
                 key={point.slug}
                 onClick={() => selectPoint(point.slug, "pointer")}
                 onBlur={() => setHoveredSlug("")}
