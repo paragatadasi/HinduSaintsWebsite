@@ -14,6 +14,7 @@ import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
 import { getPublishedSaintBySlug, getRelatedPublishedSaints } from "@/lib/public-saints";
 import { getSaintDetailTemplateContent } from "@/lib/site-content";
 import type { PublicImage, PublicSourceSummary } from "@/lib/public-contracts";
+import { getSocialImage } from "@/lib/social-metadata";
 
 export const dynamic = "force-dynamic";
 
@@ -26,22 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const description = saint.seo?.description ?? saint.shortDescription;
   const canonicalPath = `/saints/${slug}`;
   const socialTitle = `${title} | Hindu Saints Archive`;
-  const heroImageType = saint.heroImage ? getImageContentType(saint.heroImage.url) : undefined;
-  const image = saint.heroImage
-    ? {
-        url: saint.heroImage.url,
-        ...(saint.heroImage.width ? { width: saint.heroImage.width } : {}),
-        ...(saint.heroImage.height ? { height: saint.heroImage.height } : {}),
-        ...(heroImageType ? { type: heroImageType } : {}),
-        alt: saint.heroImage.alt
-      }
-    : {
-        url: "/images/hindu-saints-share.jpg",
-        width: 1200,
-        height: 630,
-        type: "image/jpeg",
-        alt: "A devotee meditating beside a sacred river at night"
-      };
+  const image = getSocialImage(saint.heroImage, { fallbackAlt: saint.displayName });
 
   return {
     title,
@@ -175,13 +161,4 @@ function uniqueImages(images: Array<PublicImage | undefined>) {
     unique.push(image);
   }
   return unique;
-}
-
-function getImageContentType(url: string) {
-  const pathname = url.split("?", 1)[0].toLowerCase();
-  if (pathname.endsWith(".jpg") || pathname.endsWith(".jpeg")) return "image/jpeg" as const;
-  if (pathname.endsWith(".png")) return "image/png" as const;
-  if (pathname.endsWith(".webp")) return "image/webp" as const;
-  if (pathname.endsWith(".gif")) return "image/gif" as const;
-  return undefined;
 }
