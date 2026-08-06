@@ -1,16 +1,31 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { TraditionCard } from "@/components/traditions/tradition-card";
 import { IndexPageHero } from "@/components/layout/index-page-hero";
 import { PublicSearchField } from "@/components/ui/public-search-field";
 import { getPublicIndexHeroImages } from "@/lib/site-config";
 import { getPublicTraditionSummaries } from "@/lib/public-traditions";
 import { getTraditionsIndexContent } from "@/lib/site-content";
+import { buildPublicMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+const traditionsDescription = "Explore Hindu traditions, lineages, teachings, founders, and their associated saints.";
 
 type TraditionsIndexPageProps = {
   searchParams?: Promise<{ q?: string | string[] }>;
 };
+
+export async function generateMetadata({ searchParams }: TraditionsIndexPageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const hasQuery = Boolean((Array.isArray(params?.q) ? params.q[0] : params?.q)?.trim());
+  return buildPublicMetadata({
+    title: "Traditions",
+    description: traditionsDescription,
+    path: "/traditions",
+    noIndex: hasQuery
+  });
+}
 
 export default async function TraditionsIndexPage({ searchParams }: TraditionsIndexPageProps) {
   const content = getTraditionsIndexContent();
