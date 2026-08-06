@@ -67,6 +67,13 @@ export function AdminFormGuard({ children }: { children: React.ReactNode }) {
         invalid[0]?.focus();
         return;
       }
+      // Editorial draft forms clear their dirty state only after the server action
+      // succeeds and the refreshed route replaces the form. A rejected submit must
+      // keep navigation protection active.
+      if (form.dataset.editorialDraft === "true") {
+        setInvalidFields([]);
+        return;
+      }
       dirtyForms.delete(form);
       form.removeAttribute(DIRTY_ATTRIBUTE);
       syncDirtyCount();
@@ -98,12 +105,20 @@ export function AdminFormGuard({ children }: { children: React.ReactNode }) {
       event.preventDefault();
       event.returnValue = "";
     };
+    const handleDraftSaved = (event: Event) => {
+      const form = event.target instanceof HTMLFormElement ? event.target : null;
+      if (!form) return;
+      dirtyForms.delete(form);
+      form.removeAttribute(DIRTY_ATTRIBUTE);
+      syncDirtyCount();
+    };
 
     document.addEventListener("input", markDirty, true);
     document.addEventListener("change", markDirty, true);
     document.addEventListener("submit", handleSubmit, true);
     document.addEventListener("invalid", handleInvalid, true);
     document.addEventListener("click", handleClick, true);
+    document.addEventListener("admin-draft-saved", handleDraftSaved);
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       document.removeEventListener("input", markDirty, true);
@@ -111,6 +126,7 @@ export function AdminFormGuard({ children }: { children: React.ReactNode }) {
       document.removeEventListener("submit", handleSubmit, true);
       document.removeEventListener("invalid", handleInvalid, true);
       document.removeEventListener("click", handleClick, true);
+      document.removeEventListener("admin-draft-saved", handleDraftSaved);
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [pathname]);

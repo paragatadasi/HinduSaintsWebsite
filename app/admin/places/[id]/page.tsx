@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { AdminPresence } from "@/components/admin/admin-presence";
 import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
+import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
@@ -13,6 +14,7 @@ import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
+import { draftString, draftStrings, getEditorialDraftMap } from "@/lib/editorial-drafts";
 import { getKnownPlaceScope, STATE_PLACE_SLUGS } from "@/lib/place-taxonomy";
 import { mergePlaces, updatePlaceOtherPublicFields, updatePlaceOverview } from "../actions";
 import { PlaceOverviewEditor } from "./place-overview-editor";
@@ -30,6 +32,10 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
   if (!place) notFound();
 
   const effectivePlaceScope = getEffectivePlaceScope(place);
+  const editorialDrafts = await getEditorialDraftMap("place", place.id);
+  const overviewDraft = editorialDrafts.get("overview");
+  const publicFieldsDraft = editorialDrafts.get("public_fields");
+  const draftPlaceScope = toPlaceScope(draftString(overviewDraft, "placeScope", effectivePlaceScope));
   const [statePlaces, localityPlaces, countryRecords, mergeOptions] = await Promise.all([
     db.place.findMany({
       where: {
@@ -207,15 +213,16 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
         >
           <PlaceOverviewEditor
             action={updatePlaceOverview}
-            alternateNames={place.alternateNames}
-            country={place.country ?? ""}
+            alternateNames={draftString(overviewDraft, "alternateNames", place.alternateNames.join(", "))}
+            country={draftString(overviewDraft, "country", place.country ?? "")}
             countryOptions={countryOptions}
-            effectivePlaceScope={effectivePlaceScope}
+            effectivePlaceScope={draftPlaceScope}
+            initialDraft={overviewDraft}
             localityOptions={localityOptions}
-            name={place.name}
-            parentStateId={place.parentStateId ?? ""}
+            name={draftString(overviewDraft, "name", place.name)}
+            parentStateId={draftString(overviewDraft, "parentStateId", place.parentStateId ?? "")}
             placeId={place.id}
-            selectedLocalityIds={place.localities.map((locality) => locality.id)}
+            selectedLocalityIds={draftStrings(overviewDraft, "localityIds", place.localities.map((locality) => locality.id))}
             stateOptions={stateOptions}
             version={place.version}
           />
@@ -238,13 +245,13 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
             </div>
           )}
         >
-          <form action={updatePlaceOtherPublicFields} className="form-stack">
+          <EditorialDraftForm action={updatePlaceOtherPublicFields} baseVersion={place.version} className="form-stack" entityId={place.id} entityType="place" initialDraft={publicFieldsDraft} section="public_fields">
             <input name="placeId" type="hidden" value={place.id} />
             <input name="version" type="hidden" value={place.version} />
             <div className="form-stack__field">
               <label htmlFor="place-overview">Page overview</label>
               <MarkdownEditor
-                defaultValue={place.overviewMarkdown ?? ""}
+                defaultValue={draftString(publicFieldsDraft, "overviewMarkdown", place.overviewMarkdown ?? "")}
                 maxLength={20000}
                 name="overviewMarkdown"
                 textareaId="place-overview"
@@ -252,12 +259,12 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
             </div>
             <label>
               Internal notes
-              <textarea name="notes" defaultValue={place.notes ?? ""} maxLength={1000} />
+              <textarea name="notes" defaultValue={draftString(publicFieldsDraft, "notes", place.notes ?? "")} maxLength={1000} />
             </label>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save public fields</button>
             </div>
-          </form>
+          </EditorialDraftForm>
         </ReviewEditToggle>
       </CollapsibleReviewCard>
     </div>
@@ -285,6 +292,10 @@ async function getPlace(slugOrId: string) {
 
 function formatStatus(status: string) {
   return status.replace(/_/g, " ");
+}
+
+function toPlaceScope(value: string): "locality" | "state" | "country" {
+  return value === "state" || value === "country" ? value : "locality";
 }
 
 function ReviewField({ label, value }: { label: string; value?: ReactNode }) {

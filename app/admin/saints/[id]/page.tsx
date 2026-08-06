@@ -9,10 +9,12 @@ import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
 import { SaintDateField } from "@/components/admin/saint-date-field";
 import { AdminPresence } from "@/components/admin/admin-presence";
 import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
+import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { db } from "@/lib/db";
+import { draftString, getEditorialDraftMap } from "@/lib/editorial-drafts";
 import { getInstagramLinkProps } from "@/lib/external-links";
 import { formatHistoricalYear, parseImportedDate } from "@/lib/import-dates";
 import { getInstagramImageUrls } from "@/lib/instagram";
@@ -51,6 +53,12 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
   const saint = await getSaint(id);
 
   if (!saint) notFound();
+
+  const editorialDrafts = await getEditorialDraftMap("saint", saint.id);
+  const overviewDraft = editorialDrafts.get("overview");
+  const publicFieldsDraft = editorialDrafts.get("public_fields");
+  const biographyDraft = editorialDrafts.get("biography");
+  const aliasesDraft = editorialDrafts.get("aliases");
 
   const [externalRecord, allTraditions, allPlaces, allSaints, sourceLinks] = await Promise.all([
     db.externalRecord.findFirst({
@@ -182,31 +190,31 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
             </div>
           )}
         >
-          <form action={updateSaintOverview} className="form-stack">
+          <EditorialDraftForm action={updateSaintOverview} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={overviewDraft} section="overview">
             <input name="saintId" type="hidden" value={saint.id} />
             <input name="version" type="hidden" value={saint.version} />
             <div className="field-grid">
               <label>
                 Display name
-                <input name="displayName" defaultValue={saint.displayName} required maxLength={200} />
+                <input name="displayName" defaultValue={draftString(overviewDraft, "displayName", saint.displayName)} required maxLength={200} />
               </label>
               <label>
                 Canonical name
-                <input name="canonicalName" defaultValue={saint.canonicalName} required maxLength={200} />
+                <input name="canonicalName" defaultValue={draftString(overviewDraft, "canonicalName", saint.canonicalName)} required maxLength={200} />
               </label>
             </div>
             <label>
               Short description
               <SoftLimitTextarea
                 name="shortDescription"
-                defaultValue={saint.shortDescription ?? ""}
+                defaultValue={draftString(overviewDraft, "shortDescription", saint.shortDescription ?? "")}
                 softLimit={500}
               />
             </label>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save overview</button>
             </div>
-          </form>
+          </EditorialDraftForm>
         </ReviewEditToggle>
       </CollapsibleReviewCard>
 
@@ -229,21 +237,21 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
             </div>
           )}
         >
-          <form action={updateSaintOtherPublicFields} className="form-stack">
+          <EditorialDraftForm action={updateSaintOtherPublicFields} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={publicFieldsDraft} section="public_fields">
             <input name="saintId" type="hidden" value={saint.id} />
             <input name="version" type="hidden" value={saint.version} />
             <div className="field-grid">
               <label>
                 Era label
-                <input name="eraLabel" defaultValue={saint.eraLabel ?? ""} maxLength={120} />
+                <input name="eraLabel" defaultValue={draftString(publicFieldsDraft, "eraLabel", saint.eraLabel ?? "")} maxLength={120} />
               </label>
               <SaintDateField
-                defaultValue={saint.birthDateRaw}
+                defaultValue={draftString(publicFieldsDraft, "birthDateRaw", saint.birthDateRaw ?? "")}
                 label="Birth date"
                 name="birthDateRaw"
               />
               <SaintDateField
-                defaultValue={saint.samadhiDateRaw}
+                defaultValue={draftString(publicFieldsDraft, "samadhiDateRaw", saint.samadhiDateRaw ?? "")}
                 label="Samadhi date"
                 name="samadhiDateRaw"
               />
@@ -253,22 +261,22 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
             </p>
             <label>
               Date notes
-              <textarea name="dateNotes" defaultValue={saint.dateNotes ?? ""} maxLength={1000} />
+              <textarea name="dateNotes" defaultValue={draftString(publicFieldsDraft, "dateNotes", saint.dateNotes ?? "")} maxLength={1000} />
             </label>
             <div className="field-grid">
               <label>
                 SEO title
-                <input name="seoTitle" defaultValue={saint.seoTitle ?? ""} maxLength={120} />
+                <input name="seoTitle" defaultValue={draftString(publicFieldsDraft, "seoTitle", saint.seoTitle ?? "")} maxLength={120} />
               </label>
               <label>
                 SEO description
-                <textarea name="seoDescription" defaultValue={saint.seoDescription ?? ""} maxLength={300} />
+                <textarea name="seoDescription" defaultValue={draftString(publicFieldsDraft, "seoDescription", saint.seoDescription ?? "")} maxLength={300} />
               </label>
             </div>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save public fields</button>
             </div>
-          </form>
+          </EditorialDraftForm>
         </ReviewEditToggle>
 
         <div className="review-detail-grid review-detail-grid--paired review-relationship-grid">
@@ -545,16 +553,17 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
             </div>
           )}
         >
-          <form action={upsertSaintBiography} className="form-stack">
+          <EditorialDraftForm action={upsertSaintBiography} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={biographyDraft} section="biography">
               <input name="saintId" type="hidden" value={saint.id} />
+              <input name="version" type="hidden" value={saint.version} />
               {primaryBiography ? <input name="biographyId" type="hidden" value={primaryBiography.id} /> : null}
               <label>
                 Title
-                <input name="title" defaultValue={primaryBiography?.title ?? "The Life of a Saint"} required maxLength={200} />
+                <input name="title" defaultValue={draftString(biographyDraft, "title", primaryBiography?.title ?? "The Life of a Saint")} required maxLength={200} />
               </label>
               <label>
                 Status
-                <select name="status" defaultValue={primaryBiography?.status ?? "draft"}>
+                <select name="status" defaultValue={draftString(biographyDraft, "status", primaryBiography?.status ?? "draft")}>
                   {contentStatuses.map((status) => (
                     <option key={status} value={status}>{formatStatus(status)}</option>
                   ))}
@@ -563,7 +572,7 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
               <div className="form-stack__field">
                 <label htmlFor="biography-body-markdown">Body Markdown</label>
                 <MarkdownEditor
-                  defaultValue={primaryBiography?.bodyMarkdown ?? ""}
+                  defaultValue={draftString(biographyDraft, "bodyMarkdown", primaryBiography?.bodyMarkdown ?? "")}
                   enableDefinitions
                   images={biographyImages}
                   maxLength={20000}
@@ -596,7 +605,7 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
               <div className="review-actions">
                 <button className="admin-form-button" type="submit">Save biography</button>
               </div>
-          </form>
+          </EditorialDraftForm>
         </ReviewEditToggle>
       </CollapsibleReviewCard>
 
@@ -808,16 +817,17 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
             </div>
           )}
         >
-          <form action={updateSaintAliases} className="form-stack">
+          <EditorialDraftForm action={updateSaintAliases} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={aliasesDraft} section="aliases">
             <input name="saintId" type="hidden" value={saint.id} />
+            <input name="version" type="hidden" value={saint.version} />
             <label>
               Aliases
-              <input name="aliases" defaultValue={saint.aliases.map((alias) => alias.alias).join(", ")} maxLength={2000} />
+              <input name="aliases" defaultValue={draftString(aliasesDraft, "aliases", saint.aliases.map((alias) => alias.alias).join(", "))} maxLength={2000} />
             </label>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save aliases</button>
             </div>
-          </form>
+          </EditorialDraftForm>
         </ReviewEditToggle>
       </CollapsibleReviewCard>
 

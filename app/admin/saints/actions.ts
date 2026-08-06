@@ -7,7 +7,7 @@ import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { auth } from "@/lib/auth";
-import { assertCapability } from "@/lib/admin-access";
+import { assertCapability, requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { parseImportedDate } from "@/lib/import-dates";
@@ -15,7 +15,7 @@ import { acceptSaintInstagramClaim } from "@/lib/instagram-claims";
 import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page-extraction";
 import { toSlug } from "@/lib/slugs";
 import { getReciprocalRelationshipType } from "@/lib/saint-relationships";
-import { expectedVersion, guardedSaintUpdate } from "@/lib/admin-conflicts";
+import { expectedVersion, guardedSaintTransaction, guardedSaintUpdate } from "@/lib/admin-conflicts";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 const placeTypeSchema = z.enum(["primary", "birth", "samadhi", "sadhana", "associated", "other"]);
@@ -270,9 +270,14 @@ export async function updateSaintOverview(formData: FormData) {
       canonicalName: parsed.canonicalName,
       shortDescription: parsed.shortDescription ?? null
   };
-  const saint = await guardedSaintUpdate(parsed.saintId, expectedVersion(formData), attempted, attempted, `/admin/saints/${parsed.saintId}`);
+  const saint = await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), attempted, `/admin/saints/${parsed.saintId}`, async (tx) => {
+    const updated = await tx.saint.update({ where: { id: parsed.saintId }, data: attempted, select: { slug: true } });
+    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "saint", entityId: parsed.saintId, section: "overview" } });
+    return updated;
+  });
 
   revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${parsed.saintId}`);
 }
 
 export async function updateSaintOtherPublicFields(formData: FormData) {
@@ -308,9 +313,14 @@ export async function updateSaintOtherPublicFields(formData: FormData) {
       seoTitle: parsed.seoTitle ?? null,
       seoDescription: parsed.seoDescription ?? null
   };
-  const saint = await guardedSaintUpdate(parsed.saintId, expectedVersion(formData), attempted, attempted, `/admin/saints/${parsed.saintId}`);
+  const saint = await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), attempted, `/admin/saints/${parsed.saintId}`, async (tx) => {
+    const updated = await tx.saint.update({ where: { id: parsed.saintId }, data: attempted, select: { slug: true } });
+    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "saint", entityId: parsed.saintId, section: "public_fields" } });
+    return updated;
+  });
 
   revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${parsed.saintId}`);
 }
 
 export async function updateSaintAliases(formData: FormData) {
@@ -333,7 +343,7 @@ export async function updateSaintAliases(formData: FormData) {
   const existingAliasMeta = new Map(saint.aliases.map((alias) => [normalizeListValue(alias.alias), alias]));
   const aliases = uniqueList(parsed.aliases);
 
-  await db.$transaction(async (tx) => {
+  await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), { aliases }, `/admin/saints/${parsed.saintId}`, async (tx) => {
     await tx.saintAlias.deleteMany({ where: { saintId: parsed.saintId } });
 
     if (aliases.length > 0) {
@@ -349,9 +359,11 @@ export async function updateSaintAliases(formData: FormData) {
         })
       });
     }
+    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "saint", entityId: parsed.saintId, section: "aliases" } });
   });
 
   revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${parsed.saintId}`);
 }
 
 export async function createSaintRelationship(formData: FormData) {
@@ -670,7 +682,12 @@ export async function upsertSaintBiography(formData: FormData) {
     ? undefined
     : await getUniqueBiographySlug(parsed.saintId, parsed.title);
 
-  await db.$transaction(async (tx) => {
+  await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), {
+    biographyId: parsed.biographyId ?? null,
+    title: parsed.title,
+    bodyMarkdown: parsed.bodyMarkdown,
+    status: parsed.status
+  }, `/admin/saints/${parsed.saintId}`, async (tx) => {
     if (parsed.biographyId) {
       await tx.biography.update({
         where: { id: parsed.biographyId },
@@ -706,9 +723,11 @@ export async function upsertSaintBiography(formData: FormData) {
         }
       });
     }
+    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "saint", entityId: parsed.saintId, section: "biography" } });
   });
 
   revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${parsed.saintId}`);
 }
 
 export async function upsertSaintSource(formData: FormData) {
@@ -1403,11 +1422,9 @@ async function setSaintGalleryImageVisibility(
 }
 
 async function requireAdminSession() {
-  await assertCapability("edit_content");
+  await requireCapability("edit_content");
   const session = await auth();
-  if (!session?.user?.email) {
-    redirect("/admin");
-  }
+  if (!session?.user?.email) redirect("/admin");
   return session;
 }
 
