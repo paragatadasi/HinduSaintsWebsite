@@ -10,7 +10,7 @@ import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
-import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
+import { ReviewSectionNav } from "@/components/admin/review-section-nav";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
@@ -126,7 +126,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
       </div>
       <EditConflictPanel conflictId={conflict} returnTo={`/admin/places/${place.slug}`} />
 
-      <ReviewTaskTabs tabs={[
+      <ReviewSectionNav links={[
         { cardId: "place-overview", label: "Overview" },
         { cardId: "place-public-fields", label: "Public content" },
         { cardId: "place-merge", label: "Duplicate tools" }

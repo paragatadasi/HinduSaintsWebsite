@@ -7,7 +7,7 @@ import { AdminPresence } from "@/components/admin/admin-presence";
 import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
 import { ExpandableText } from "@/components/admin/expandable-text";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
-import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
+import { ReviewSectionNav } from "@/components/admin/review-section-nav";
 import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
@@ -112,7 +112,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
         </aside>
       </div>
 
-      <ReviewTaskTabs tabs={[
+      <ReviewSectionNav links={[
         { cardId: "first-page-biodata", label: "Extracted biodata" },
         { cardId: "source-snapshot", label: "Source snapshot" }
       ]} />

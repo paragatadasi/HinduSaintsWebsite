@@ -1,11 +1,12 @@
-import type { Metadata, Route } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { StatusBadge } from "@/components/ui/status-badge";
 import { auth, isGoogleAuthConfigured, signIn } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
 import { getAdminUser } from "@/lib/admin-access";
 import { AdminFormGuard } from "@/components/admin/admin-form-guard";
+import { AdminPrimaryNavigation, AdminWorkspaceTabs } from "@/components/admin/admin-navigation";
+import type { AdminNavigationGroup } from "@/lib/admin-navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -64,43 +65,88 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   ]);
   const roles = adminUser?.active ? adminUser.roles : [];
   const myWorkCount = adminUser?.active ? await db.contentAssignment.count({ where: { assigneeId: adminUser.id, state: { in: ["assigned", "in_progress", "blocked"] } } }) : 0;
+  const navigationGroups = buildNavigationGroups({
+    myWorkCount,
+    newFeedbackCount,
+    openReconciliationCount,
+    roles
+  });
 
   return (
     <main className="admin-shell">
       <div className="page-shell admin-layout">
-        <aside className="admin-sidebar">
-          <Link href="/admin">
-            <strong>Admin CMS</strong>
-          </Link>
-          <Link href="/admin">Dashboard</Link>
-          <NavGroup label="Operations">
-            {hasCapability(roles, "view_content") ? <Link className="admin-sidebar__link" href={"/admin/work" as Route}><span>My Work</span>{myWorkCount > 0 ? <StatusBadge label={String(myWorkCount)} /> : null}</Link> : null}
-            {hasCapability(roles, "view_content") ? <Link className="admin-sidebar__link" href="/admin/feedback"><span>Inbox</span>{newFeedbackCount > 0 ? <StatusBadge label={String(newFeedbackCount)} /> : null}</Link> : null}
-            {hasCapability(roles, "manage_site") ? <Link href={"/admin/site" as Route}>Site</Link> : null}
-            {hasCapability(roles, "view_analytics") ? <Link href={"/admin/analytics" as Route}>Analytics</Link> : null}
-            {hasCapability(roles, "manage_users") ? <Link href={"/admin/users" as Route}>Users &amp; Access</Link> : null}
-          </NavGroup>
-          {hasCapability(roles, "view_source_data") ? <NavGroup label="Source Data">
-            <Link href={"/admin/source-data" as Route}>Overview</Link>
-            <Link className="admin-sidebar__link" href={"/admin/source-data/reconciliation" as Route}><span>Reconciliation</span>{openReconciliationCount > 0 ? <StatusBadge label={String(openReconciliationCount)} /> : null}</Link>
-            <Link href={"/admin/source-data/history" as Route}>Import History</Link>
-            <Link href="/admin/airtable">Airtable Import</Link>
-            <Link href={"/admin/source-data/instagram" as Route}>Instagram Import</Link>
-          </NavGroup> : null}
-          {hasCapability(roles, "view_content") ? <NavGroup label="Content">
-            <Link href="/admin/instagram">Instagram Posts</Link>
-            <Link href="/admin/saints">Saints</Link>
-            <Link href="/admin/traditions">Traditions</Link>
-            <Link href="/admin/places">Places</Link>
-          </NavGroup> : null}
-          {hasCapability(roles, "access_museum") ? <Link className="admin-sidebar__primary-link" href="/admin/museum">Museum</Link> : null}
-        </aside>
-        <section className="admin-content"><AdminFormGuard>{children}</AdminFormGuard></section>
+        <AdminPrimaryNavigation groups={navigationGroups} />
+        <section className="admin-content">
+          <AdminWorkspaceTabs groups={navigationGroups} />
+          <AdminFormGuard>{children}</AdminFormGuard>
+        </section>
       </div>
     </main>
   );
 }
 
-function NavGroup({ children, label }: { children: React.ReactNode; label: string }) {
-  return <div className="admin-sidebar__group"><div className="admin-sidebar__heading">{label}</div>{children}</div>;
+function buildNavigationGroups({
+  myWorkCount,
+  newFeedbackCount,
+  openReconciliationCount,
+  roles
+}: {
+  myWorkCount: number;
+  newFeedbackCount: number;
+  openReconciliationCount: number;
+  roles: Parameters<typeof hasCapability>[0];
+}) {
+  const groups: AdminNavigationGroup[] = [];
+  const operationItems: AdminNavigationGroup["items"] = [{ exact: true, href: "/admin", label: "Dashboard" }];
+  if (hasCapability(roles, "view_content")) {
+    operationItems.push(
+      { count: myWorkCount, href: "/admin/work", label: "My Work" },
+      { count: newFeedbackCount, href: "/admin/feedback", label: "Inbox" }
+    );
+  }
+  if (hasCapability(roles, "manage_site")) operationItems.push({ href: "/admin/site", label: "Site" });
+  if (hasCapability(roles, "view_analytics")) operationItems.push({ href: "/admin/analytics", label: "Analytics" });
+  if (hasCapability(roles, "manage_users")) operationItems.push({ href: "/admin/users", label: "Users & Access" });
+  groups.push({ href: "/admin", id: "operations", items: operationItems, label: "Operations" });
+
+  if (hasCapability(roles, "view_source_data")) {
+    groups.push({
+      href: "/admin/source-data",
+      id: "source-data",
+      items: [
+        { exact: true, href: "/admin/source-data", label: "Overview" },
+        { count: openReconciliationCount, href: "/admin/source-data/reconciliation", label: "Reconciliation" },
+        { href: "/admin/source-data/history", label: "Import History" },
+        { href: "/admin/airtable", label: "Airtable" },
+        { href: "/admin/source-data/instagram", label: "Instagram Import" }
+      ],
+      label: "Source Data"
+    });
+  }
+
+  if (hasCapability(roles, "view_content")) {
+    groups.push({
+      href: "/admin/instagram",
+      id: "content",
+      items: [
+        { href: "/admin/instagram", label: "Instagram" },
+        { href: "/admin/saints", label: "Saints" },
+        { href: "/admin/traditions", label: "Traditions" },
+        { href: "/admin/places", label: "Places" }
+      ],
+      label: "Content"
+    });
+  }
+
+  if (hasCapability(roles, "access_museum")) {
+    groups.push({
+      href: "/admin/museum",
+      id: "museum",
+      items: [{ href: "/admin/museum", label: "Museum" }],
+      label: "Museum",
+      standalone: true
+    });
+  }
+
+  return groups;
 }

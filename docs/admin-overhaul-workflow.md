@@ -37,6 +37,8 @@ branch as every chunk.
 | 8. Museum hardening | Deployed | Direct-route capability audit, sandboxed private family trees, Curator/Site Admin mutation guard seam, curator-only dashboard and main-admin return path, explicit planning-preview status |
 | 9. Final UX/accessibility pass | Deployed | Shared unsaved-change protection and validation summary, keyboard/focus improvements, sticky primary task navigation, narrow-laptop safeguards |
 | 10. Translation workflow | Deferred | Language/version model, translation editing/review/publication and fallback behavior |
+| R1. Navigation remediation | Ready for release | Canonical workspace subtabs, compact top-level workspace navigation, active route state, and honest section-jump navigation semantics |
+| R2. Airtable consolidation | Pending deployment of R1 | Move the complete Airtable sync review into Source Data and remove the duplicate Saints surface |
 
 ## Capability contract
 
@@ -127,7 +129,12 @@ For each chunk:
 
 ## Resume point
 
-Current chunk: **Admin overhaul scope complete**.
+Current chunk: **R1 navigation remediation ready for release**.
+
+After R1 is confirmed in production, begin R2 by moving the complete Airtable
+sync review workflow into the Source Data Airtable workspace. Preserve polling,
+check mode, progress, rich job summaries, and affected-record detail links; then
+remove the duplicate panel and Airtable job query from the Saints queue.
 
 Chunk 9 production deployment is complete. Release commits:
 
