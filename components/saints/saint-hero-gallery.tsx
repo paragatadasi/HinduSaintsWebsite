@@ -33,8 +33,8 @@ export function SaintHeroGallery({ images, saintName }: { images: PublicImage[];
         />
         {images.length > 1 ? (
           <div className="saint-hero-gallery__controls">
-            <button aria-label="Previous gallery image" onClick={() => move(-1)} type="button"><ChevronLeft aria-hidden="true" /></button>
-            <button aria-label="Next gallery image" onClick={() => move(1)} type="button"><ChevronRight aria-hidden="true" /></button>
+            <button aria-label="Previous gallery image" data-telemetry-event="saint_gallery_previous" onClick={() => move(-1)} type="button"><ChevronLeft aria-hidden="true" /></button>
+            <button aria-label="Next gallery image" data-telemetry-event="saint_gallery_next" onClick={() => move(1)} type="button"><ChevronRight aria-hidden="true" /></button>
           </div>
         ) : null}
       </div>
@@ -44,6 +44,7 @@ export function SaintHeroGallery({ images, saintName }: { images: PublicImage[];
             <button
               aria-current={index === activeIndex ? "true" : undefined}
               aria-label={`Show image ${index + 1}`}
+              data-telemetry-event="saint_gallery_open"
               key={`${item.url}-${index}`}
               onClick={() => setActiveIndex(index)}
               type="button"

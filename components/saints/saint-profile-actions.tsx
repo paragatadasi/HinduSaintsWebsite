@@ -15,13 +15,13 @@ export function SaintProfileActions({ hasBiography, latestPost, saintName }: { h
     <>
       <div className="saint-profile-actions">
         {viewerState ? (
-          <button className="button button--primary" onClick={() => setViewerOpen(true)} type="button">
+          <button className="button button--primary" data-telemetry-event="saint_instagram_open" onClick={() => setViewerOpen(true)} type="button">
             <Instagram size={18} aria-hidden="true" />
             View the Post
           </button>
         ) : null}
         {hasBiography ? (
-          <Button href="#biography" variant="secondary" icon={<ArrowDown size={18} aria-hidden="true" />} iconPosition="end">
+          <Button href="#biography" telemetryEvent="saint_biography_open" variant="secondary" icon={<ArrowDown size={18} aria-hidden="true" />} iconPosition="end">
             Dive deeper
           </Button>
         ) : null}

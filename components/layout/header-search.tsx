@@ -18,6 +18,7 @@ export function HeaderSearch() {
       action="/saints"
       className={isExpanded ? "hero-search header-search" : "header-search"}
       data-expanded={isExpanded}
+      data-telemetry-submit="header_search_submit"
       role="search"
       onKeyDown={(event) => {
         if (event.key === "Escape") {
@@ -39,6 +40,7 @@ export function HeaderSearch() {
       <button
         aria-expanded={isExpanded}
         aria-label={isExpanded ? "Submit saint search" : "Open saint search"}
+        data-telemetry-event={isExpanded ? undefined : "header_search_open"}
         onClick={(event) => {
           if (!isExpanded) {
             event.preventDefault();

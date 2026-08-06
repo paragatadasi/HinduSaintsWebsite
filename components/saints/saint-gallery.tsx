@@ -143,6 +143,7 @@ export function SaintGallery({ images, saintName }: SaintGalleryProps) {
             <button
               className="saint-gallery__trigger"
               aria-label={`Open image ${index + 1} of ${images.length}: ${image.alt}`}
+              data-telemetry-event="saint_gallery_open"
               onClick={() => setSelectedIndex(index)}
               type="button"
             >
@@ -202,6 +203,7 @@ export function SaintGallery({ images, saintName }: SaintGalleryProps) {
               <button
                 className="saint-gallery-viewer__control"
                 aria-label="Previous image"
+                data-telemetry-event="saint_gallery_previous"
                 disabled={!hasPrevious}
                 onClick={selectPrevious}
                 type="button"
@@ -219,6 +221,7 @@ export function SaintGallery({ images, saintName }: SaintGalleryProps) {
               <button
                 className="saint-gallery-viewer__control"
                 aria-label="Next image"
+                data-telemetry-event="saint_gallery_next"
                 disabled={!hasNext}
                 onClick={selectNext}
                 type="button"

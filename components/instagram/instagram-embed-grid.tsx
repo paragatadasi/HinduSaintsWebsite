@@ -123,6 +123,7 @@ export function InstagramPostCard({
     <article
       aria-label={`Open ${postLabel.toLowerCase()} viewer for ${saintName}`}
       className={["instagram-post-card instagram-post-card--interactive", className].filter(Boolean).join(" ")}
+      data-telemetry-event="instagram_post_open"
       onClick={onOpenPost}
       onKeyDown={handleCardKeyDown}
       role="button"
@@ -170,6 +171,7 @@ export function InstagramPostCard({
           <button
             aria-label={`Open ${postLabel.toLowerCase()} images`}
             className="instagram-post-card__type instagram-post-card__type-button"
+            data-telemetry-event="instagram_post_open"
             onClick={(event) => {
               event.stopPropagation();
               onOpenPost();
