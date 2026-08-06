@@ -10,7 +10,7 @@ import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
-import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
+import { ReviewSectionNav } from "@/components/admin/review-section-nav";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
@@ -131,7 +131,7 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
       </div>
       <EditConflictPanel conflictId={conflict} returnTo={`/admin/traditions/${tradition.slug}`} />
 
-      <ReviewTaskTabs tabs={[
+      <ReviewSectionNav links={[
         { cardId: "tradition-overview", label: "Overview" },
         { cardId: "tradition-public-fields", label: "Public fields" },
         { cardId: "tradition-lineage", label: "Lineage", count: tradition.lineageSaints.length },
