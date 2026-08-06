@@ -73,7 +73,7 @@ Airtable import jobs. It does not clear `AirtableMirrorRecord`, so the refreshed
 mirror remains the source for the next import.
 
 The deployed admin equivalent lives at `/admin/airtable`. It uses the same bulk
-delete password gate as bulk saint and Instagram deletes for mirror writes,
+sensitive-action password gate as bulk saint and Instagram deletes for mirror writes,
 resets, and queued import writes.
 
 Import Airtable mirror saints into the CMS:

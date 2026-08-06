@@ -36,7 +36,7 @@ database remains the source of truth for public pages and editorial state.
   Airtable reingests when there are no CMS edits to preserve.
 - Added `/admin/airtable`, a protected web workflow for mirror refresh,
   Airtable-derived CMS reset, and import job queueing. Write actions require the
-  same bulk delete password used by bulk delete actions.
+  same sensitive-action password used by other destructive admin actions.
 
 ## Modeling principle
 
