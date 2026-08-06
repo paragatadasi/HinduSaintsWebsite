@@ -4392,6 +4392,43 @@ html[data-route-entering="true"] body > main {
 .admin-validation-summary button { background: transparent; border: 0; color: var(--color-danger); cursor: pointer; font: inherit; padding: 0; text-align: left; text-decoration: underline; }
 .admin-field-error { color: var(--color-danger); font-size: var(--font-size-xs); font-weight: 700; }
 
+.editorial-draft-status {
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text-muted);
+  display: flex;
+  font-size: var(--font-size-xs);
+  gap: var(--space-3);
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+}
+
+.editorial-draft-status--saving,
+.editorial-draft-status--recovered {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+.editorial-draft-status--saved {
+  border-color: var(--color-accent);
+}
+
+.editorial-draft-status--error,
+.editorial-draft-status--conflict {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.editorial-draft-status__actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
 .admin-auth {
   display: grid;
   gap: var(--space-4);

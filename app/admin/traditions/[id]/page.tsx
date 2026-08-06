@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { AdminPresence } from "@/components/admin/admin-presence";
 import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
+import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
@@ -13,10 +14,12 @@ import { ReviewTaskTabs } from "@/components/admin/review-task-tabs";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
+import { draftString, getEditorialDraftMap } from "@/lib/editorial-drafts";
 import {
   mergeTraditions,
   updateTraditionHeroImage,
   updateTraditionLineage,
+  updateTraditionLongForm,
   updateTraditionOtherPublicFields,
   updateTraditionOverview,
   updateTraditionRelatedLinks,
@@ -47,6 +50,11 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
   const tradition = await getTradition(id);
 
   if (!tradition) notFound();
+
+  const editorialDrafts = await getEditorialDraftMap("tradition", tradition.id);
+  const overviewDraft = editorialDrafts.get("overview");
+  const publicFieldsDraft = editorialDrafts.get("public_fields");
+  const longFormDraft = editorialDrafts.get("long_form");
 
   const [allTraditions, allSaints, allPlaces, allSources] = await Promise.all([
     db.tradition.findMany({
@@ -211,23 +219,23 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
             </div>
           )}
         >
-          <form action={updateTraditionOverview} className="form-stack">
+          <EditorialDraftForm action={updateTraditionOverview} baseVersion={tradition.version} className="form-stack" entityId={tradition.id} entityType="tradition" initialDraft={overviewDraft} section="overview">
             <input name="traditionId" type="hidden" value={tradition.id} />
             <input name="version" type="hidden" value={tradition.version} />
-            <input name="status" type="hidden" value={tradition.status} />
+            <input name="status" type="hidden" value={draftString(overviewDraft, "status", tradition.status)} />
             <div className="field-grid field-grid--identity-line">
               <label>
                 Name
-                <input name="name" defaultValue={tradition.name} required maxLength={200} />
+                <input name="name" defaultValue={draftString(overviewDraft, "name", tradition.name)} required maxLength={200} />
               </label>
               <label>
                 Alternate names
-                <input name="alternateNames" defaultValue={tradition.alternateNames.join(", ")} maxLength={2000} />
+                <input name="alternateNames" defaultValue={draftString(overviewDraft, "alternateNames", tradition.alternateNames.join(", "))} maxLength={2000} />
               </label>
             </div>
             <div className="field-grid">
               <SearchableSelect
-                defaultValue={tradition.parentTraditionId ?? ""}
+                defaultValue={draftString(overviewDraft, "parentTraditionId", tradition.parentTraditionId ?? "")}
                 emptyText="No traditions match this search."
                 label="Parent tradition"
                 name="parentTraditionId"
@@ -241,12 +249,12 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
             </div>
             <label>
               Short description
-              <textarea name="shortDescription" defaultValue={tradition.shortDescription ?? ""} maxLength={500} />
+              <textarea name="shortDescription" defaultValue={draftString(overviewDraft, "shortDescription", tradition.shortDescription ?? "")} maxLength={500} />
             </label>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save overview</button>
             </div>
-          </form>
+          </EditorialDraftForm>
         </ReviewEditToggle>
       </CollapsibleReviewCard>
 
@@ -272,12 +280,12 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
             </div>
           )}
         >
-          <form action={updateTraditionOtherPublicFields} className="form-stack">
+          <EditorialDraftForm action={updateTraditionOtherPublicFields} baseVersion={tradition.version} className="form-stack" entityId={tradition.id} entityType="tradition" initialDraft={publicFieldsDraft} section="public_fields">
             <input name="traditionId" type="hidden" value={tradition.id} />
             <input name="version" type="hidden" value={tradition.version} />
             <div className="field-grid">
               <SearchableSelect
-                defaultValue={tradition.founderSaintId ?? ""}
+                defaultValue={draftString(publicFieldsDraft, "founderSaintId", tradition.founderSaintId ?? "")}
                 emptyText="No saints match this search."
                 label="Founder saint"
                 name="founderSaintId"
@@ -286,22 +294,22 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
               />
               <label>
                 Founder display override
-                <input name="founderDisplayName" defaultValue={tradition.founderDisplayName ?? ""} maxLength={200} />
+                <input name="founderDisplayName" defaultValue={draftString(publicFieldsDraft, "founderDisplayName", tradition.founderDisplayName ?? "")} maxLength={200} />
               </label>
               <label>
                 Origin
-                <input name="origin" defaultValue={tradition.origin ?? ""} maxLength={200} />
+                <input name="origin" defaultValue={draftString(publicFieldsDraft, "origin", tradition.origin ?? "")} maxLength={200} />
               </label>
               <label>
                 Era label
-                <input name="eraLabel" defaultValue={tradition.eraLabel ?? ""} maxLength={120} />
+                <input name="eraLabel" defaultValue={draftString(publicFieldsDraft, "eraLabel", tradition.eraLabel ?? "")} maxLength={120} />
               </label>
               <label>
                 Focus
-                <input name="focus" defaultValue={tradition.focus ?? ""} maxLength={300} />
+                <input name="focus" defaultValue={draftString(publicFieldsDraft, "focus", tradition.focus ?? "")} maxLength={300} />
               </label>
               <SearchableSelect
-                defaultValue={tradition.originPlaceId ?? ""}
+                defaultValue={draftString(publicFieldsDraft, "originPlaceId", tradition.originPlaceId ?? "")}
                 emptyText="No places match this search."
                 label="Origin place"
                 name="originPlaceId"
@@ -310,24 +318,21 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
               />
               <label>
                 Origin place label override
-                <input name="originPlaceLabel" defaultValue={tradition.originPlaceLabel ?? ""} maxLength={200} />
+                <input name="originPlaceLabel" defaultValue={draftString(publicFieldsDraft, "originPlaceLabel", tradition.originPlaceLabel ?? "")} maxLength={200} />
               </label>
               <label>
                 SEO title
-                <input name="seoTitle" defaultValue={tradition.seoTitle ?? ""} maxLength={120} />
+                <input name="seoTitle" defaultValue={draftString(publicFieldsDraft, "seoTitle", tradition.seoTitle ?? "")} maxLength={120} />
               </label>
               <label>
                 SEO description
-                <textarea name="seoDescription" defaultValue={tradition.seoDescription ?? ""} maxLength={300} />
+                <textarea name="seoDescription" defaultValue={draftString(publicFieldsDraft, "seoDescription", tradition.seoDescription ?? "")} maxLength={300} />
               </label>
             </div>
-            <input name="foundingAcharyaMarkdown" type="hidden" value={tradition.foundingAcharyaMarkdown ?? ""} />
-            <input name="historyMarkdown" type="hidden" value={tradition.historyMarkdown ?? tradition.longIntroductionMarkdown ?? ""} />
-            <input name="keyTeachingsMarkdown" type="hidden" value={tradition.keyTeachingsMarkdown ?? ""} />
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save public fields</button>
             </div>
-          </form>
+          </EditorialDraftForm>
         </ReviewEditToggle>
       </CollapsibleReviewCard>
 
@@ -384,21 +389,13 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
             </div>
           )}
         >
-          <form action={updateTraditionOtherPublicFields} className="form-stack">
+          <EditorialDraftForm action={updateTraditionLongForm} baseVersion={tradition.version} className="form-stack" entityId={tradition.id} entityType="tradition" initialDraft={longFormDraft} section="long_form">
             <input name="traditionId" type="hidden" value={tradition.id} />
-            <input name="founderSaintId" type="hidden" value={tradition.founderSaintId ?? ""} />
-            <input name="founderDisplayName" type="hidden" value={tradition.founderDisplayName ?? ""} />
-            <input name="origin" type="hidden" value={tradition.origin ?? ""} />
-            <input name="eraLabel" type="hidden" value={tradition.eraLabel ?? ""} />
-            <input name="focus" type="hidden" value={tradition.focus ?? ""} />
-            <input name="originPlaceId" type="hidden" value={tradition.originPlaceId ?? ""} />
-            <input name="originPlaceLabel" type="hidden" value={tradition.originPlaceLabel ?? ""} />
-            <input name="seoTitle" type="hidden" value={tradition.seoTitle ?? ""} />
-            <input name="seoDescription" type="hidden" value={tradition.seoDescription ?? ""} />
+            <input name="version" type="hidden" value={tradition.version} />
             <div className="form-stack__field">
               <label htmlFor="tradition-founding-acharya">Founding Acharya</label>
               <MarkdownEditor
-                defaultValue={tradition.foundingAcharyaMarkdown ?? ""}
+                defaultValue={draftString(longFormDraft, "foundingAcharyaMarkdown", tradition.foundingAcharyaMarkdown ?? "")}
                 images={editorImages}
                 maxLength={20000}
                 name="foundingAcharyaMarkdown"
@@ -408,7 +405,7 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
             <div className="form-stack__field">
               <label htmlFor="tradition-history">History</label>
               <MarkdownEditor
-                defaultValue={tradition.historyMarkdown ?? tradition.longIntroductionMarkdown ?? ""}
+                defaultValue={draftString(longFormDraft, "historyMarkdown", tradition.historyMarkdown ?? tradition.longIntroductionMarkdown ?? "")}
                 images={editorImages}
                 maxLength={20000}
                 name="historyMarkdown"
@@ -418,7 +415,7 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
             <div className="form-stack__field">
               <label htmlFor="tradition-key-teachings">Key Teachings</label>
               <MarkdownEditor
-                defaultValue={tradition.keyTeachingsMarkdown ?? ""}
+                defaultValue={draftString(longFormDraft, "keyTeachingsMarkdown", tradition.keyTeachingsMarkdown ?? "")}
                 images={editorImages}
                 maxLength={20000}
                 name="keyTeachingsMarkdown"
@@ -428,7 +425,7 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save tradition sections</button>
             </div>
-          </form>
+          </EditorialDraftForm>
         </ReviewEditToggle>
       </CollapsibleReviewCard>
 

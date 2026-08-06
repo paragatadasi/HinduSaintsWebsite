@@ -5,11 +5,11 @@ import { redirect } from "next/navigation";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
-import { assertCapability } from "@/lib/admin-access";
+import { assertCapability, requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { toSlug } from "@/lib/slugs";
-import { expectedVersion, guardedTraditionUpdate } from "@/lib/admin-conflicts";
+import { expectedVersion, guardedTraditionTransaction, guardedTraditionUpdate } from "@/lib/admin-conflicts";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 
@@ -52,11 +52,15 @@ const traditionOtherPublicFieldsSchema = traditionEditorSchema.pick({
   focus: true,
   originPlaceId: true,
   originPlaceLabel: true,
-  historyMarkdown: true,
-  foundingAcharyaMarkdown: true,
-  keyTeachingsMarkdown: true,
   seoTitle: true,
   seoDescription: true
+});
+
+const traditionLongFormSchema = traditionEditorSchema.pick({
+  traditionId: true,
+  historyMarkdown: true,
+  foundingAcharyaMarkdown: true,
+  keyTeachingsMarkdown: true
 });
 
 const mergeTraditionsSchema = z.object({
@@ -200,7 +204,6 @@ export async function updateTraditionOverview(formData: FormData) {
     shortDescription: emptyToUndefined(formData.get("shortDescription")),
     status: formData.get("status")
   });
-  const now = new Date();
   const existing = await db.tradition.findUnique({
     where: { id: parsed.traditionId },
     select: { slug: true }
@@ -209,18 +212,18 @@ export async function updateTraditionOverview(formData: FormData) {
   if (!existing) redirect("/admin/traditions");
 
   const slug = await getUniqueTraditionSlug(parsed.name, parsed.traditionId);
-  const tradition = await db.tradition.update({
-    where: { id: parsed.traditionId },
-    data: {
+  const attempted = {
       name: parsed.name,
       slug,
       alternateNames: parsed.alternateNames,
       parentTraditionId: parsed.parentTraditionId === parsed.traditionId ? null : parsed.parentTraditionId ?? null,
       shortDescription: parsed.shortDescription ?? null,
-      status: parsed.status,
-      publishedAt: parsed.status === "published" ? now : null
-    },
-    select: { slug: true }
+      status: parsed.status
+  };
+  const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${existing.slug}`, async (tx) => {
+    const updated = await tx.tradition.update({ where: { id: parsed.traditionId }, data: attempted, select: { slug: true } });
+    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "tradition", entityId: parsed.traditionId, section: "overview" } });
+    return updated;
   });
 
   revalidateTraditionPaths(existing.slug);
@@ -240,9 +243,6 @@ export async function updateTraditionOtherPublicFields(formData: FormData) {
     focus: emptyToUndefined(formData.get("focus")),
     originPlaceId: emptyToUndefined(formData.get("originPlaceId")),
     originPlaceLabel: emptyToUndefined(formData.get("originPlaceLabel")),
-    historyMarkdown: emptyToUndefined(formData.get("historyMarkdown")),
-    foundingAcharyaMarkdown: emptyToUndefined(formData.get("foundingAcharyaMarkdown")),
-    keyTeachingsMarkdown: emptyToUndefined(formData.get("keyTeachingsMarkdown")),
     seoTitle: emptyToUndefined(formData.get("seoTitle")),
     seoDescription: emptyToUndefined(formData.get("seoDescription"))
   });
@@ -254,16 +254,43 @@ export async function updateTraditionOtherPublicFields(formData: FormData) {
       focus: parsed.focus ?? null,
       originPlaceId: parsed.originPlaceId ?? null,
       originPlaceLabel: parsed.originPlaceLabel ?? null,
-      historyMarkdown: parsed.historyMarkdown ?? null,
-      longIntroductionMarkdown: parsed.historyMarkdown ?? null,
-      foundingAcharyaMarkdown: parsed.foundingAcharyaMarkdown ?? null,
-      keyTeachingsMarkdown: parsed.keyTeachingsMarkdown ?? null,
       seoTitle: parsed.seoTitle ?? null,
       seoDescription: parsed.seoDescription ?? null
   };
   const current = await db.tradition.findUnique({ where: { id: parsed.traditionId }, select: { slug: true } });
   if (!current) redirect("/admin/traditions");
-  const tradition = await guardedTraditionUpdate(parsed.traditionId, expectedVersion(formData), attempted, attempted, `/admin/traditions/${current.slug}`);
+  const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${current.slug}`, async (tx) => {
+    const updated = await tx.tradition.update({ where: { id: parsed.traditionId }, data: attempted, select: { slug: true } });
+    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "tradition", entityId: parsed.traditionId, section: "public_fields" } });
+    return updated;
+  });
+
+  revalidateTraditionPaths(tradition.slug);
+  redirect(`/admin/traditions/${tradition.slug}`);
+}
+
+export async function updateTraditionLongForm(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = traditionLongFormSchema.parse({
+    traditionId: formData.get("traditionId"),
+    historyMarkdown: emptyToUndefined(formData.get("historyMarkdown")),
+    foundingAcharyaMarkdown: emptyToUndefined(formData.get("foundingAcharyaMarkdown")),
+    keyTeachingsMarkdown: emptyToUndefined(formData.get("keyTeachingsMarkdown"))
+  });
+  const current = await db.tradition.findUnique({ where: { id: parsed.traditionId }, select: { slug: true } });
+  if (!current) redirect("/admin/traditions");
+  const attempted = {
+    historyMarkdown: parsed.historyMarkdown ?? null,
+    longIntroductionMarkdown: parsed.historyMarkdown ?? null,
+    foundingAcharyaMarkdown: parsed.foundingAcharyaMarkdown ?? null,
+    keyTeachingsMarkdown: parsed.keyTeachingsMarkdown ?? null
+  };
+  const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${current.slug}`, async (tx) => {
+    const updated = await tx.tradition.update({ where: { id: parsed.traditionId }, data: attempted, select: { slug: true } });
+    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "tradition", entityId: parsed.traditionId, section: "long_form" } });
+    return updated;
+  });
 
   revalidateTraditionPaths(tradition.slug);
   redirect(`/admin/traditions/${tradition.slug}`);
@@ -776,7 +803,7 @@ async function setTraditionGalleryImageVisibility(
 }
 
 async function requireAdminSession() {
-  await assertCapability("edit_content");
+  await requireCapability("edit_content");
   const session = await auth();
   if (!session?.user?.email) {
     redirect("/admin");

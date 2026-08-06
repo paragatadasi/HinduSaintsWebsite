@@ -2,15 +2,18 @@
 
 import { useMemo, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { SearchableMultiSelect, type SearchableMultiSelectOption } from "@/components/ui/searchable-multi-select";
 import { SearchableSelect, type SearchableSelectOption } from "@/components/ui/searchable-select";
+import type { EditorialDraftSnapshot } from "@/lib/editorial-drafts";
 
 type PlaceOverviewEditorProps = {
   action: (formData: FormData) => void | Promise<void>;
-  alternateNames: string[];
+  alternateNames: string;
   country: string;
   countryOptions: string[];
   effectivePlaceScope: "locality" | "state" | "country";
+  initialDraft?: EditorialDraftSnapshot;
   localityOptions: SearchableMultiSelectOption[];
   name: string;
   parentStateId: string;
@@ -26,6 +29,7 @@ export function PlaceOverviewEditor({
   country,
   countryOptions,
   effectivePlaceScope,
+  initialDraft,
   localityOptions,
   name,
   parentStateId,
@@ -37,7 +41,7 @@ export function PlaceOverviewEditor({
   const [placeScope, setPlaceScope] = useState(effectivePlaceScope);
 
   return (
-    <form action={action} className="form-stack">
+    <EditorialDraftForm action={action} baseVersion={version} className="form-stack" entityId={placeId} entityType="place" initialDraft={initialDraft} section="overview">
       <input name="placeId" type="hidden" value={placeId} />
       <input name="version" type="hidden" value={version} />
       <div className="field-grid field-grid--identity-line">
@@ -47,7 +51,7 @@ export function PlaceOverviewEditor({
         </label>
         <label>
           Alternate names
-          <input name="alternateNames" defaultValue={alternateNames.join(", ")} maxLength={2000} />
+          <input name="alternateNames" defaultValue={alternateNames} maxLength={2000} />
         </label>
       </div>
       <div className="field-grid field-grid--place-overview-hierarchy">
@@ -92,7 +96,7 @@ export function PlaceOverviewEditor({
       <div className="review-actions">
         <button className="admin-form-button" type="submit">Save overview</button>
       </div>
-    </form>
+    </EditorialDraftForm>
   );
 }
 
