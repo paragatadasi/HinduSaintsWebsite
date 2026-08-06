@@ -2,6 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { markNavigationCompleted, markNavigationStarted } from "@/lib/telemetry-client";
 
 type NavigationPhase = "idle" | "loading" | "finishing";
 
@@ -48,7 +49,8 @@ export function RouteTransition() {
   const navigationFallbackRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    function beginNavigation() {
+    function beginNavigation(destinationPath: string) {
+      markNavigationStarted(destinationPath);
       phaseRef.current = "loading";
       setPhase("loading");
       document.documentElement.dataset.routePending = "true";
@@ -76,16 +78,20 @@ export function RouteTransition() {
       const link = target.closest("a");
 
       if (link instanceof HTMLAnchorElement && isInternalNavigation(event, link)) {
-        beginNavigation();
+        beginNavigation(new URL(link.href, window.location.href).pathname);
       }
     }
 
+    function handlePopState() {
+      beginNavigation(window.location.pathname);
+    }
+
     document.addEventListener("click", handleDocumentClick, true);
-    window.addEventListener("popstate", beginNavigation);
+    window.addEventListener("popstate", handlePopState);
 
     return () => {
       document.removeEventListener("click", handleDocumentClick, true);
-      window.removeEventListener("popstate", beginNavigation);
+      window.removeEventListener("popstate", handlePopState);
       delete document.documentElement.dataset.routePending;
       delete document.documentElement.dataset.routeEntering;
 
@@ -106,6 +112,7 @@ export function RouteTransition() {
     }
 
     previousRouteRef.current = routeKey;
+    markNavigationCompleted(pathname);
     phaseRef.current = "finishing";
     setPhase("finishing");
     delete document.documentElement.dataset.routePending;

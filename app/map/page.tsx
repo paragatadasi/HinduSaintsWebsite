@@ -51,6 +51,7 @@ function getIndiaStateLayerMarkup(stateSaintCountsBySlug: Map<string, number>) {
       `class="${isActive ? "places-map__state places-map__state--active" : "places-map__state"}"`,
       `d="${escapeSvgAttribute(state.path)}"`,
       activeSlug ? `data-state-slug="${escapeSvgAttribute(activeSlug)}"` : "",
+      activeSlug ? 'data-telemetry-event="map_place_select"' : "",
       isActive ? `role="button"` : "",
       isActive ? `tabindex="0"` : ""
     ].filter(Boolean).join(" ");

@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Route } from "next";
 import type { ReactNode } from "react";
 import { getInstagramLinkProps } from "@/lib/external-links";
+import type { TelemetryEngagementEventName } from "@/lib/telemetry-contract";
 
 type ButtonProps = {
   href: string;
@@ -9,10 +10,11 @@ type ButtonProps = {
   icon?: ReactNode;
   iconPosition?: "start" | "end";
   prefetch?: boolean;
+  telemetryEvent?: TelemetryEngagementEventName;
   variant?: "primary" | "secondary" | "text";
 };
 
-export function Button({ href, children, icon, iconPosition = "start", prefetch, variant = "primary" }: ButtonProps) {
+export function Button({ href, children, icon, iconPosition = "start", prefetch, telemetryEvent, variant = "primary" }: ButtonProps) {
   const className = `button button--${variant}`;
   const content = (
     <>
@@ -24,7 +26,7 @@ export function Button({ href, children, icon, iconPosition = "start", prefetch,
 
   if (href.startsWith("http")) {
     return (
-      <a href={href} className={className} {...getInstagramLinkProps(href)}>
+      <a href={href} className={className} data-telemetry-event={telemetryEvent} {...getInstagramLinkProps(href)}>
         {content}
       </a>
     );
@@ -34,6 +36,7 @@ export function Button({ href, children, icon, iconPosition = "start", prefetch,
     <Link
       href={href as Route}
       className={className}
+      data-telemetry-event={telemetryEvent}
       prefetch={prefetch}
     >
       {content}

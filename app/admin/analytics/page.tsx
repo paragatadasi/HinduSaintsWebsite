@@ -4,6 +4,7 @@ import { AggregateViewsChart, type AggregateViewPoint } from "@/components/admin
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { requireCapability } from "@/lib/admin-access";
+import { BUCKETED_PERFORMANCE_EVENT_NAMES, ENGAGEMENT_EVENT_NAMES } from "@/lib/telemetry-contract";
 
 export default async function AdminAnalyticsPage() {
   await requireCapability("view_analytics");
@@ -11,7 +12,7 @@ export default async function AdminAnalyticsPage() {
   const thirtyDaysAgo = new Date(today);
   thirtyDaysAgo.setUTCDate(thirtyDaysAgo.getUTCDate() - 29);
 
-  const [allTime, todayTotal, allTimeByPage, lastThirtyDaysByPage, todayByPage, lastThirtyDaysByDay] =
+  const [allTime, todayTotal, allTimeByPage, lastThirtyDaysByPage, todayByPage, lastThirtyDaysByDay, telemetryRows] =
     await Promise.all([
       db.pageViewDaily.aggregate({ _sum: { views: true } }),
       db.pageViewDaily.aggregate({
@@ -36,6 +37,10 @@ export default async function AdminAnalyticsPage() {
         where: { date: { gte: thirtyDaysAgo } },
         _sum: { views: true },
         orderBy: { date: "asc" }
+      }),
+      db.telemetryDaily.findMany({
+        where: { date: { gte: thirtyDaysAgo } },
+        select: { count: true, dimension: true, event: true, path: true }
       })
     ]);
 
@@ -53,14 +58,22 @@ export default async function AdminAnalyticsPage() {
       today: todayCounts.get(row.path) ?? 0
     }))
     .sort((a, b) => b.allTime - a.allTime || a.path.localeCompare(b.path));
+  const navigationStarted = sumTelemetry(telemetryRows, "navigation_started");
+  const navigationCompleted = sumTelemetry(telemetryRows, "navigation_completed");
+  const navigationAbandoned = sumTelemetry(telemetryRows, "navigation_abandoned");
+  const clientErrors = sumTelemetry(telemetryRows, "client_error");
+  const engagementRows = buildTelemetryRows(telemetryRows, new Set<string>(ENGAGEMENT_EVENT_NAMES));
+  const errorRows = buildTelemetryRows(telemetryRows, new Set(["client_error"]));
+  const vitalRows = buildVitalRows(telemetryRows);
+  const engagementTotal = engagementRows.reduce((total, row) => total + row.count, 0);
 
   return (
     <div className="admin-stack">
       <div>
         <div className="eyebrow">Analytics</div>
-        <h1>Anonymous page views</h1>
+        <h1>Anonymous analytics &amp; reliability</h1>
         <p className="lede">
-          Server-recorded public page requests since analytics was enabled.
+          Aggregate public usage, performance, and error signals without identifying visitors.
         </p>
       </div>
 
@@ -71,19 +84,85 @@ export default async function AdminAnalyticsPage() {
         <AnalyticsStat label="Pages viewed" value={pageRows.length} />
       </div>
 
+      <div className="admin-stat-grid">
+        <AnalyticsStat label="Client errors (30 days)" value={clientErrors} />
+        <AnalyticsStat label="Abandoned loads (30 days)" value={navigationAbandoned} />
+        <AnalyticsStat label="Completed navigations" value={navigationCompleted} />
+        <AnalyticsStat label="Engagement actions" value={engagementTotal} />
+      </div>
+
       <section className="review-panel">
         <div>
           <div className="eyebrow">Privacy</div>
           <h2>Aggregate counts only</h2>
         </div>
         <p>
-          Analytics stores only the public page path, UTC day, and view count. It does not store
-          IP addresses, cookies, user agents, referrers, query strings, visitor IDs, or session IDs.
-          Repeat requests and automated traffic are included because visitors are never identified.
+          Analytics stores only allowlisted event names, normalized public paths, UTC days, counts,
+          coarse performance buckets, and sanitized error fingerprints. It does not store IP addresses,
+          cookies, user agents, referrers, query strings, visitor IDs, session IDs, search terms, or form
+          values. Repeat requests and automated traffic may be included because visitors are never identified.
         </p>
       </section>
 
       <AggregateViewsChart points={dailyViews} />
+
+      <section className="review-panel" aria-labelledby="navigation-health-heading">
+        <div className="admin-toolbar">
+          <div>
+            <div className="eyebrow">Loading health</div>
+            <h2 id="navigation-health-heading">Public route transitions</h2>
+            <p>Aggregate outcomes for navigations that began after the site loaded.</p>
+          </div>
+          <StatusBadge label={`${formatPercentage(navigationAbandoned, navigationStarted)} abandoned`} />
+        </div>
+        <div className="review-meta">
+          <StatusBadge label={`${formatNumber(navigationStarted)} started`} />
+          <StatusBadge label={`${formatNumber(navigationCompleted)} completed`} />
+          <StatusBadge label={`${formatNumber(navigationAbandoned)} exited while loading`} />
+        </div>
+      </section>
+
+      <section className="admin-stack" aria-labelledby="performance-heading">
+        <div>
+          <div className="eyebrow">Performance sample</div>
+          <h2 id="performance-heading">Core experience signals</h2>
+          <p>Coarse Web Vital buckets from a 10% sample plus aggregate client-navigation timings.</p>
+        </div>
+        {vitalRows.length > 0 ? (
+          <div className="review-list">
+            {vitalRows.map((row) => (
+              <article className="review-row" key={row.event}>
+                <div>
+                  <h3>{getTelemetryEventLabel(row.event)}</h3>
+                  <p>{formatNumber(row.total)} aggregate measurements in the last 30 days.</p>
+                </div>
+                <div className="review-meta">
+                  <StatusBadge label={`${formatNumber(row.good)} good`} />
+                  <StatusBadge label={`${formatNumber(row.needsImprovement)} needs improvement`} />
+                  <StatusBadge label={`${formatNumber(row.poor)} poor`} />
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p className="empty-note">Performance buckets will appear after sampled public visits.</p>
+        )}
+      </section>
+
+      <TelemetryList
+        empty="Sanitized client error fingerprints will appear here when crashes occur."
+        eyebrow="Reliability"
+        heading="Top client errors"
+        rows={errorRows.slice(0, 20)}
+        showDimension
+      />
+
+      <TelemetryList
+        empty="Selected public interactions will appear here after they are used."
+        eyebrow="Engagement"
+        heading="Most-used interactions"
+        rows={engagementRows.slice(0, 30)}
+      />
 
       <section className="admin-stack" aria-labelledby="page-view-heading">
         <div>
@@ -119,6 +198,119 @@ export default async function AdminAnalyticsPage() {
       </section>
     </div>
   );
+}
+
+type TelemetryRow = {
+  count: number;
+  dimension: string;
+  event: string;
+  path: string;
+};
+
+type AggregateTelemetryRow = TelemetryRow;
+
+function TelemetryList({
+  empty,
+  eyebrow,
+  heading,
+  rows,
+  showDimension = false
+}: {
+  empty: string;
+  eyebrow: string;
+  heading: string;
+  rows: AggregateTelemetryRow[];
+  showDimension?: boolean;
+}) {
+  const headingId = `${eyebrow.toLowerCase()}-telemetry-heading`;
+
+  return (
+    <section className="admin-stack" aria-labelledby={headingId}>
+      <div>
+        <div className="eyebrow">{eyebrow}</div>
+        <h2 id={headingId}>{heading}</h2>
+        <p>Combined daily counts from the last 30 days.</p>
+      </div>
+      {rows.length > 0 ? (
+        <div className="review-list">
+          {rows.map((row) => (
+            <article className="review-row" key={`${row.event}:${row.dimension}:${row.path}`}>
+              <div>
+                <h3>{showDimension ? getErrorLabel(row.dimension) : getTelemetryEventLabel(row.event)}</h3>
+                {showDimension ? <p>{getErrorSource(row.dimension)}</p> : null}
+                <Link className="admin-text-link" href={row.path as Route}>{row.path}</Link>
+              </div>
+              <StatusBadge label={`${formatNumber(row.count)} events`} />
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p className="empty-note">{empty}</p>
+      )}
+    </section>
+  );
+}
+
+function sumTelemetry(rows: TelemetryRow[], event: string) {
+  return rows.reduce((total, row) => total + (row.event === event ? row.count : 0), 0);
+}
+
+function buildTelemetryRows(rows: TelemetryRow[], includedEvents: Set<string>) {
+  const totals = new Map<string, AggregateTelemetryRow>();
+
+  rows.forEach((row) => {
+    if (!includedEvents.has(row.event)) return;
+    const key = `${row.event}\n${row.dimension}\n${row.path}`;
+    const existing = totals.get(key);
+    if (existing) existing.count += row.count;
+    else totals.set(key, { ...row });
+  });
+
+  return [...totals.values()].sort((left, right) => right.count - left.count || left.path.localeCompare(right.path));
+}
+
+function buildVitalRows(rows: TelemetryRow[]) {
+  return BUCKETED_PERFORMANCE_EVENT_NAMES.map((event) => {
+    const eventRows = rows.filter((row) => row.event === event);
+    const good = eventRows.reduce((total, row) => total + (row.dimension === "good" ? row.count : 0), 0);
+    const needsImprovement = eventRows.reduce((total, row) => total + (row.dimension === "needs_improvement" ? row.count : 0), 0);
+    const poor = eventRows.reduce((total, row) => total + (row.dimension === "poor" ? row.count : 0), 0);
+    return { event, good, needsImprovement, poor, total: good + needsImprovement + poor };
+  }).filter((row) => row.total > 0);
+}
+
+function getTelemetryEventLabel(event: string) {
+  const labels: Record<string, string> = {
+    web_vital_lcp: "Largest Contentful Paint (LCP)",
+    web_vital_inp: "Interaction to Next Paint (INP)",
+    web_vital_cls: "Cumulative Layout Shift (CLS)",
+    web_vital_ttfb: "Time to First Byte (TTFB)",
+    navigation_duration: "Client route navigation time",
+    header_search_open: "Header search opened",
+    header_search_submit: "Saint search submitted",
+    saint_biography_open: "Biography opened",
+    saint_instagram_open: "Saint Instagram post opened",
+    saint_gallery_open: "Saint gallery image selected",
+    saint_gallery_previous: "Gallery previous image",
+    saint_gallery_next: "Gallery next image",
+    map_place_select: "Map place selected",
+    instagram_post_open: "Instagram viewer opened"
+  };
+  return labels[event] ?? event.replaceAll("_", " ");
+}
+
+function getErrorLabel(dimension: string) {
+  return dimension.split("|", 1)[0] || "Error";
+}
+
+function getErrorSource(dimension: string) {
+  const separator = dimension.indexOf("|");
+  return separator >= 0 ? dimension.slice(separator + 1) : "unknown";
+}
+
+function formatPercentage(value: number, total: number) {
+  if (total === 0) return "0%";
+  return new Intl.NumberFormat("en", { style: "percent", maximumFractionDigits: 1 }).format(value / total);
 }
 
 type DailyViewRow = {
