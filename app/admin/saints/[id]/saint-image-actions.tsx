@@ -4,6 +4,7 @@ import { Eye, EyeOff, Pencil, Save, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { CSSProperties, MouseEvent } from "react";
 import { useState, useTransition } from "react";
+import { AdminImageEditorDialog } from "@/components/admin/admin-image-editor-dialog";
 import {
   getFocalObjectPosition,
   getSourceFocalPointFromCropClick
@@ -155,6 +156,9 @@ export function SaintImageActions({
 
   return (
     <div className="saint-image-actions">
+      <AdminImageEditorDialog title={imageLabel} triggerLabel="Inspect full-size image">
+        <img src={imageUrl} alt={altText ?? imageLabel} />
+      </AdminImageEditorDialog>
       {isEditingMetadata ? (
         <div className="saint-image-actions__metadata">
           <label>

@@ -811,9 +811,116 @@ html[data-route-entering="true"] body > main {
 .index-page-hero .catalog-controls { margin: 0; max-width: min(100%, 980px); padding: 0; }
 .site-hero-admin-preview { aspect-ratio: 3 / 1; border-radius: var(--radius-card); box-shadow: var(--shadow-image); object-fit: cover; width: 100%; }
 .hero-focal-picker { display: grid; gap: var(--space-2); }
-.hero-focal-picker__stage { aspect-ratio: 3 / 1; cursor: crosshair; overflow: hidden; position: relative; touch-action: none; }
+.hero-focal-picker__stage { aspect-ratio: 3 / 1; background: var(--color-surface-muted); border: 1px solid var(--color-border); border-radius: var(--radius-sm); cursor: crosshair; max-width: var(--width-admin-image-editor); overflow: hidden; padding: 0; position: relative; touch-action: none; width: 100%; }
+.hero-focal-picker__stage--expanded { max-width: none; }
+.hero-focal-picker__stage:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
 .hero-focal-picker__stage img { height: 100%; object-fit: cover; pointer-events: none; user-select: none; width: 100%; }
 .hero-focal-picker__marker { border: 2px solid var(--color-focus); border-radius: 50%; box-shadow: 0 0 0 2px var(--color-bg); height: var(--size-icon-lg); left: var(--focal-x); pointer-events: none; position: absolute; top: var(--focal-y); transform: translate(-50%, -50%); width: var(--size-icon-lg); }
+
+.admin-image-adjustment-controls {
+  border: 0;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  margin: 0;
+  max-width: var(--width-admin-image-editor);
+  padding: 0;
+}
+
+.admin-image-adjustment-controls legend {
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+  padding: 0;
+}
+
+.admin-image-adjustment-controls label {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.admin-image-editor-dialog__trigger {
+  justify-self: start;
+}
+
+.admin-image-editor-dialog {
+  background: transparent;
+  border: 0;
+  color: var(--color-text);
+  max-height: none;
+  max-width: none;
+  padding: 0;
+}
+
+.admin-image-editor-dialog::backdrop {
+  background: var(--color-modal-scrim);
+}
+
+.admin-image-editor-dialog__panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: var(--space-4);
+  max-height: var(--height-admin-image-editor-dialog);
+  overflow: auto;
+  padding: var(--space-4);
+  width: var(--width-admin-image-editor-dialog);
+}
+
+.admin-image-editor-dialog__header {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--space-4);
+  justify-content: space-between;
+}
+
+.admin-image-editor-dialog__header h2,
+.admin-image-editor-dialog__header p {
+  margin: 0;
+}
+
+.admin-image-editor-dialog__header p {
+  color: var(--color-muted);
+}
+
+.admin-image-editor-dialog__close {
+  align-items: center;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  height: var(--size-control);
+  justify-content: center;
+  width: var(--size-control);
+}
+
+.admin-image-editor-dialog__close:focus-visible,
+.admin-image-editor-dialog__trigger:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.admin-image-editor-dialog__body {
+  display: grid;
+  max-height: calc(var(--height-admin-image-editor-dialog) - var(--space-16));
+  place-items: center;
+  width: 100%;
+}
+
+.admin-image-editor-dialog .admin-image-editor-dialog__body > img {
+  aspect-ratio: auto;
+  filter: var(--image-treatment-admin-inspection);
+  height: auto;
+  max-height: calc(var(--height-admin-image-editor-dialog) - var(--space-16));
+  max-width: 100%;
+  object-fit: contain;
+  width: auto;
+}
 
 .index-page-layout { gap: 0; padding-top: 0; }
 .index-page-layout > :nth-child(n + 3) { margin-top: var(--space-6); }
@@ -7570,9 +7677,15 @@ html[data-route-entering="true"] body > main {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   cursor: crosshair;
+  max-width: var(--width-admin-image-editor);
   overflow: hidden;
   position: relative;
   touch-action: none;
+  width: 100%;
+}
+
+.home-focal-picker__stage--expanded {
+  max-width: none;
 }
 
 .home-focal-picker__stage img {
@@ -8439,10 +8552,13 @@ html[data-route-entering="true"] body > main {
   background: var(--color-surface-muted);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
+  justify-self: start;
+  max-width: var(--width-admin-image-crop-editor);
   overflow: hidden;
   position: relative;
   touch-action: none;
   user-select: none;
+  width: 100%;
 }
 
 .saint-image-cropper__stage img {
