@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { ChevronDown, Plus, Trash2 } from "lucide-react";
 import { ABOUT_DISCOVERY_ITEM_LIMIT } from "@/lib/site-content";
 
 type DiscoveryItem = {
@@ -17,32 +17,38 @@ export function AboutDiscoveryEditor({ items: initialItems }: { items: Discovery
 
   return (
     <div className="form-stack">
-      <div className="review-list">
+      <div className="admin-repeatable-editor">
         {items.map((item, index) => (
-          <div className="review-row" key={item.key}>
-            <div className="section-heading">
-              <div className="eyebrow">Discovery card {index + 1}</div>
+          <details className="admin-repeatable-editor__item" key={item.key} open={index === 0 || !item.title || !item.body || !item.href}>
+            <summary>
+              <span>
+                <span className="eyebrow">Discovery card {index + 1}</span>
+                <strong>{item.title || "Untitled discovery card"}</strong>
+              </span>
+              <ChevronDown aria-hidden="true" size={16} />
+            </summary>
+            <div className="admin-repeatable-editor__content">
               {items.length > 1 ? (
-                <button className="admin-form-button admin-form-button--low-priority" type="button" onClick={() => setItems((current) => current.filter((candidate) => candidate.key !== item.key))}>
+                <button aria-label={`Remove discovery card ${index + 1}`} className="admin-form-button admin-form-button--low-priority" type="button" onClick={() => setItems((current) => current.filter((candidate) => candidate.key !== item.key))}>
                   <Trash2 size={16} aria-hidden="true" /> Remove
                 </button>
               ) : null}
+              <div className="field-grid field-grid--identity-line">
+                <label>Title<input name="aboutDiscoveryItemTitle" maxLength={80} required type="text" defaultValue={item.title} /></label>
+                <label>
+                  Icon
+                  <select name="aboutDiscoveryItemIcon" defaultValue={item.icon}>
+                    <option value="sparkles">Sparkles</option>
+                    <option value="book">Book</option>
+                    <option value="map">Map</option>
+                    <option value="flame">Flame</option>
+                  </select>
+                </label>
+              </div>
+              <label>Description<textarea name="aboutDiscoveryItemBody" maxLength={300} required defaultValue={item.body} /></label>
+              <label>Destination<input name="aboutDiscoveryItemHref" maxLength={500} required type="text" defaultValue={item.href} /></label>
             </div>
-            <div className="field-grid field-grid--identity-line">
-              <label>Title<input name="aboutDiscoveryItemTitle" maxLength={80} required type="text" defaultValue={item.title} /></label>
-              <label>
-                Icon
-                <select name="aboutDiscoveryItemIcon" defaultValue={item.icon}>
-                  <option value="sparkles">Sparkles</option>
-                  <option value="book">Book</option>
-                  <option value="map">Map</option>
-                  <option value="flame">Flame</option>
-                </select>
-              </label>
-            </div>
-            <label>Description<textarea name="aboutDiscoveryItemBody" maxLength={300} required defaultValue={item.body} /></label>
-            <label>Destination<input name="aboutDiscoveryItemHref" maxLength={500} required type="text" defaultValue={item.href} /></label>
-          </div>
+          </details>
         ))}
       </div>
       <div className="review-actions">

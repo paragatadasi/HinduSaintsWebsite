@@ -59,8 +59,8 @@ export async function updateIndexHeroConfig(formData: FormData) {
   const footerDefaults = getFooterContent();
   await db.siteConfig.upsert({ where: { id: SITE_CONFIG_ID }, create: { id: SITE_CONFIG_ID, imprintUrl: footerDefaults.imprint.href, privacyPolicyUrl: footerDefaults.privacyPolicy.href, ...parsed, updatedByEmail: email }, update: { ...parsed, updatedByEmail: email } });
   revalidateTag(PUBLIC_CACHE_TAGS.site);
-  revalidatePath("/saints"); revalidatePath("/traditions"); revalidatePath("/map"); revalidatePath("/admin/site");
-  redirect("/admin/site?heroes=saved#index-heroes" as Route);
+  revalidatePath("/saints"); revalidatePath("/traditions"); revalidatePath("/map"); revalidatePath("/admin/site/directory-headers");
+  redirect("/admin/site/directory-headers?heroes=saved" as Route);
 }
 
 export async function updateFooterConfig(formData: FormData) {
@@ -108,8 +108,8 @@ export async function updateFooterConfig(formData: FormData) {
 
   revalidatePath("/", "layout");
   revalidateTag(PUBLIC_CACHE_TAGS.site);
-  revalidatePath("/admin/site");
-  redirect("/admin/site?footer=saved#footer" as Route);
+  revalidatePath("/admin/site/footer");
+  redirect("/admin/site/footer?footer=saved" as Route);
 }
 
 export async function updateAboutPageConfig(formData: FormData) {
@@ -196,8 +196,8 @@ export async function updateAboutPageConfig(formData: FormData) {
 
   revalidatePath("/about");
   revalidateTag(PUBLIC_CACHE_TAGS.site);
-  revalidatePath("/admin/site");
-  redirect("/admin/site?about=saved#about" as Route);
+  revalidatePath("/admin/site/about");
+  redirect("/admin/site/about?about=saved" as Route);
 }
 
 async function requireAdminSession() {
