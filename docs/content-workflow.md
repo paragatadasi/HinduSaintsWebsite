@@ -25,10 +25,10 @@ Current admin review surfaces:
 - `/admin` shows live workflow counts.
 - `/admin/saints` lists saints by status so editors can find imported records,
   published records, and archived records.
-- `/admin/saints` also hosts the Airtable sync review panel. Editors should
-  first check mirrored Airtable rows, then intentionally import missing draft
-  saints, then review or merge obvious draft issues before importing guru
-  relationships.
+- Source Data -> Airtable (`/admin/airtable`) hosts the complete Airtable sync
+  review. Data Admins should first check mirrored Airtable rows, then
+  intentionally import missing draft saints, review or merge obvious draft
+  issues, and only then import the cleanup relationship graph.
 - `/admin/saints/[id]` supports editing core public saint fields, aliases,
   traditions, places, route order, biographies, sources, dates, Airtable
   linkage, Instagram-derived claims, and imported images, then publishing,

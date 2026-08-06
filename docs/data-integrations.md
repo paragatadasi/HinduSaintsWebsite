@@ -17,7 +17,7 @@ The admin saint review workflow now has:
 
 - `/admin` live workflow counts.
 - `/admin/saints` status-filtered review queues.
-- `/admin/saints` Airtable sync review controls that create durable
+- `/admin/airtable` Airtable sync review controls that create durable
   `AirtableImportJob` records for checking mirrored saint rows, importing
   missing draft saints, and importing the Airtable cleanup graph.
 - `/admin/saints/[id]` review detail pages with editable public fields, source context, Instagram-derived claims, images, and publish/review/archive actions.
@@ -55,16 +55,15 @@ Raw external values are preserved for debugging and review:
 
 ## Airtable admin import workflow
 
-The preferred editor workflow for Airtable-to-CMS saint imports is now
-`/admin/saints` -> `Airtable sync review`. The panel operates only against
+The preferred editor workflow for Airtable-to-CMS saint imports is now Source
+Data -> Airtable (`/admin/airtable`) -> `Airtable sync review`. The panel operates only against
 already mirrored `AirtableMirrorRecord` rows in the website database. It does
 not call Airtable from the browser and does not make Airtable the source of
 truth.
 
-For full erase-and-reingest work, use `/admin/airtable`. That page exposes the
-same mirror refresh, reset, and import queue steps used by the CLI runbook. Write
-actions require the bulk delete password configured on `/admin`; dry-run/status
-views require normal admin sign-in.
+The same page keeps full erase-and-reingest maintenance in a secondary collapsed
+card. Mirror refresh and reset actions require the sensitive-action password;
+dry-run and status views require the appropriate Source Data capability.
 
 Available actions:
 

@@ -41,6 +41,7 @@ type AirtableImportJobView = {
 };
 
 type AirtableImportPanelProps = {
+  defaultOpen?: boolean;
   jobs: AirtableImportJobView[];
 };
 
@@ -52,7 +53,7 @@ type AirtableImportIntent = "check" | "import_missing_drafts" | "repair_slug_col
 
 const runningStatuses = new Set(["queued", "running"]);
 
-export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelProps) {
+export function AirtableImportPanel({ defaultOpen = false, jobs: initialJobs }: AirtableImportPanelProps) {
   const router = useRouter();
   const [jobs, setJobs] = useState(initialJobs);
   const [error, setError] = useState<string>();
@@ -109,12 +110,12 @@ export function AirtableImportPanel({ jobs: initialJobs }: AirtableImportPanelPr
 
   return (
     <CollapsibleReviewCard
-      cardId="saints-airtable-sync"
+      cardId="airtable-sync-review"
       className="instagram-ingestion-panel"
-      defaultOpen={Boolean(activeJob)}
+      defaultOpen={defaultOpen || Boolean(activeJob)}
       description={activeJob ? activeJob.message ?? "Airtable import is running." : latestJobStatus}
-      eyebrow="Import tools"
-      title="Airtable sync"
+      eyebrow="Source data"
+      title="Airtable sync review"
     >
       <div className="admin-toolbar">
         <div>

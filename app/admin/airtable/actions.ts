@@ -9,7 +9,6 @@ import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { auth } from "@/lib/auth";
 import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
-import { createAirtableImportJob, runAirtableImportJob, type AirtableImportMode } from "@/lib/airtable-saint-import";
 import { runAirtableMirrorImport } from "../../../scripts/import-airtable";
 import { resetAirtableCmsImport } from "../../../scripts/reset-airtable-cms-import";
 
@@ -17,8 +16,6 @@ const protectedActionSchema = z.object({
   bulkDeletePassword: z.string().min(1),
   returnTo: z.string().startsWith("/admin/airtable").optional()
 });
-
-const queueModeSchema = z.enum(["import_missing_drafts", "repair_slug_collisions", "import_airtable_cleanup"]);
 
 export async function dryRunAirtableMirrorAction() {
   await assertCapability("run_imports");
@@ -72,38 +69,6 @@ export async function resetAirtableCmsAction(formData: FormData) {
   redirect(target as Route);
 }
 
-export async function queueAirtableImportAction(formData: FormData) {
-  await assertCapability("run_imports");
-  let target = "/admin/airtable";
-  try {
-    const parsed = await requireProtectedAction(formData);
-    const mode = queueModeSchema.parse(formData.get("mode"));
-    const activeJob = await db.airtableImportJob.findFirst({
-      where: { status: { in: ["queued", "running"] } },
-      orderBy: { createdAt: "desc" },
-      select: { id: true }
-    });
-    if (activeJob) {
-      target = "/admin/airtable?job=already-running";
-    } else {
-      const job = await createAirtableImportJob({
-        createdByEmail: parsed.email,
-        mode: mode as AirtableImportMode
-      });
-
-      runAirtableImportJob(job.id).catch((error) => {
-        console.error("Airtable reingest job failed", error);
-      });
-
-      revalidatePath("/admin/airtable");
-      target = `/admin/airtable?job=${encodeURIComponent(mode)}`;
-    }
-  } catch (error) {
-    target = errorRedirect("jobError", error);
-  }
-  redirect(target as Route);
-}
-
 async function requireProtectedAction(formData: FormData) {
   const { email } = await requireAdminSession();
   const parsed = protectedActionSchema.parse({
@@ -149,7 +114,7 @@ function formatTableSummary(tables: Record<string, number>) {
   return Object.entries(tables).map(([table, count]) => `${table}: ${count}`).join(", ");
 }
 
-function errorRedirect(key: "mirrorError" | "resetError" | "jobError", error: unknown) {
+function errorRedirect(key: "mirrorError" | "resetError", error: unknown) {
   return `/admin/airtable?${key}=${encodeURIComponent(errorMessage(error))}`;
 }
 

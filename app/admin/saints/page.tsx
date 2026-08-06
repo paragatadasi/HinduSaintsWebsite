@@ -3,10 +3,8 @@ import type { Route } from "next";
 import type { ReactNode } from "react";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
-import { serializeAirtableImportJob } from "@/lib/airtable-import-job-view";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import { rankSaintSearchResults } from "@/lib/saint-search";
-import { AirtableImportPanel } from "./airtable-import-panel";
 import { SaintsBulkReviewList } from "./saints-bulk-review-list";
 
 const reviewStatuses = ["needs_review", "draft", "published", "archived"] as const;
@@ -34,10 +32,9 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
     description: descriptionFilters.includes(description as DescriptionFilter) ? description as DescriptionFilter : "all",
     photo: photoFilters.includes(photo as PhotoFilter) ? photo as PhotoFilter : "all"
   };
-  const [counts, saints, airtableJobs] = await Promise.all([
+  const [counts, saints] = await Promise.all([
     getStatusCounts(activeFilters),
-    getSaints(activeStatus, activeFilters, query),
-    getAirtableImportJobs()
+    getSaints(activeStatus, activeFilters, query)
   ]);
   const returnTo = getSaintsReturnTo(activeStatus, activeFilters, query);
   const reviewRows = saints.map((saint) => ({
@@ -57,8 +54,6 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
           <p className="lede">Review imported CMS records, edit public fields, and manage publication status.</p>
         </div>
       </div>
-
-      <AirtableImportPanel jobs={airtableJobs} />
 
       <section className="review-panel review-panel--workflow admin-review-queue">
         <div className="review-workflow__header admin-review-queue__header">
@@ -164,15 +159,6 @@ async function getSaints(status: StatusFilter, filters: SaintQueueFilters, query
   if (!query) return saints;
   return rankSaintSearchResults(saints, query, { includeAdminFields: true })
     .map(({ item }) => item);
-}
-
-async function getAirtableImportJobs() {
-  const jobs = await db.airtableImportJob.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 8
-  });
-
-  return jobs.map(serializeAirtableImportJob);
 }
 
 function FilterGroup({ label, children }: { label: string; children: ReactNode }) {
