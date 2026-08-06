@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { ChevronDown, Plus, Trash2 } from "lucide-react";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ABOUT_PAGE_SECTION_LIMIT } from "@/lib/site-content";
 
@@ -25,11 +25,17 @@ export function AboutSectionsEditor({ sections: initialSections }: { sections: A
 
   return (
     <div className="form-stack">
-      <div className="review-list">
+      <div className="admin-repeatable-editor">
         {sections.map((section, index) => (
-          <div className="review-row" key={section.key}>
-            <div className="section-heading">
-              <div className="eyebrow">Section {index + 1}</div>
+          <details className="admin-repeatable-editor__item" key={section.key} open={index === 0 || !section.title || !section.body}>
+            <summary>
+              <span>
+                <span className="eyebrow">Section {index + 1}</span>
+                <strong>{section.title || "Untitled section"}</strong>
+              </span>
+              <ChevronDown aria-hidden="true" size={16} />
+            </summary>
+            <div className="admin-repeatable-editor__content">
               {sections.length > 1 ? (
                 <button
                   aria-label={`Remove section ${index + 1}`}
@@ -41,29 +47,23 @@ export function AboutSectionsEditor({ sections: initialSections }: { sections: A
                   Remove
                 </button>
               ) : null}
+              <label>
+                Section title
+                <input defaultValue={section.title} maxLength={160} name="aboutSectionTitle" required type="text" />
+              </label>
+              <div className="form-stack">
+                <label htmlFor={`about-section-body-${section.key}`}>Section body</label>
+                <MarkdownEditor
+                  defaultValue={section.body}
+                  formatting="basic"
+                  maxLength={5000}
+                  name="aboutSectionBody"
+                  required
+                  textareaId={`about-section-body-${section.key}`}
+                />
+              </div>
             </div>
-            <label>
-              Section title
-              <input
-                defaultValue={section.title}
-                maxLength={160}
-                name="aboutSectionTitle"
-                required
-                type="text"
-              />
-            </label>
-            <div className="form-stack">
-              <label htmlFor={`about-section-body-${section.key}`}>Section body</label>
-              <MarkdownEditor
-                defaultValue={section.body}
-                formatting="basic"
-                maxLength={5000}
-                name="aboutSectionBody"
-                required
-                textareaId={`about-section-body-${section.key}`}
-              />
-            </div>
-          </div>
+          </details>
         ))}
       </div>
 

@@ -134,7 +134,7 @@ export async function updateHomePageConfig(formData: FormData) {
   revalidateTag(PUBLIC_CACHE_TAGS.home);
   revalidatePath("/");
   revalidatePath("/admin/site");
-  redirect("/admin/site?homepage=saved#homepage" as Route);
+  redirect("/admin/site?homepage=saved" as Route);
 }
 
 async function requireAdminSession() {
