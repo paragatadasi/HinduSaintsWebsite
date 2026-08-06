@@ -39,8 +39,9 @@ branch as every chunk.
 | 10. Translation workflow | Deferred | Language/version model, translation editing/review/publication and fallback behavior |
 | R1. Navigation remediation | Deployed | Canonical workspace subtabs, compact top-level workspace navigation, active route state, and honest section-jump navigation semantics |
 | R2. Airtable consolidation | Deployed | Complete sync review in Source Data Airtable, preserved polling/progress/detail history, collapsed mirror/reset maintenance, and no duplicate Saints surface |
-| R3. Site configuration decomposition | Ready for release | URL-backed Homepage, About, Directory headers, and Footer subtabs with isolated data loading, forms, save feedback, and authorization |
-| R4. Image tooling compaction | Pending deployment of R3 | Keep image previews compact by default and make full-size inspection accessible on demand |
+| R3. Site configuration decomposition | Deployed | URL-backed Homepage, About, Directory headers, and Footer subtabs with isolated data loading, forms, save feedback, and authorization |
+| R4. Image tooling compaction | Ready for release | Tokenized compact editors, synchronized large-editor dialogs, full-size inspection, and keyboard controls for focal/crop adjustment |
+| R5. Assignment and access simplification | Pending deployment of R4 | Simplify Assignments and Users & Access density, then align remaining admin terminology and runbooks |
 
 ## Capability contract
 
@@ -131,10 +132,22 @@ For each chunk:
 
 ## Resume point
 
-Current chunk: **R3 Site configuration decomposition ready for release**.
+Current chunk: **R4 image tooling compaction ready for release**.
 
-After R3 is confirmed in production, begin R4 by compacting the default image
-preview/crop UI and adding accessible full-size inspection on demand.
+After R4 is confirmed in production, begin R5 by simplifying the Assignments
+and Users & Access surfaces, then align remaining admin terminology and
+runbooks.
+
+R3 Site configuration decomposition is deployed. Release commits:
+
+- `main`: `4714be3` (`Decompose site configuration workspace`)
+- `deploy`: `9520e56f3f63e1b27700d14d508158b214e3c98c`
+- Production workflow: `31117442437`
+
+Verification on the clean integrated R3 release passed `npm run dev:check` and
+the full test suite (100 tests). `npm run codex:verify` compiled, type-checked,
+collected page data, and generated all 15 static pages before the known Windows
+junction `EPERM` during standalone trace copying.
 
 R2 Airtable consolidation is deployed. Release commits:
 
