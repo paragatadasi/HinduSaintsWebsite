@@ -252,6 +252,8 @@ model User {
   createdContentTasks  ContentAssignment[] @relation("AssignmentCreator")
   completedContentTasks ContentAssignment[] @relation("AssignmentCompleter")
   editConflicts AdminEditConflict[]
+  createdEditorialDrafts AdminEditorialDraft[] @relation("EditorialDraftCreator")
+  updatedEditorialDrafts AdminEditorialDraft[] @relation("EditorialDraftUpdater")
   adminPresence AdminPresence[]
   accounts      Account[]
   sessions      Session[]
@@ -297,6 +299,26 @@ model AdminEditConflict {
 
   @@index([userId, createdAt])
   @@index([entityType, entityId, createdAt])
+}
+
+model AdminEditorialDraft {
+  id              String          @id @default(cuid())
+  entityType      AdminEntityType
+  entityId        String
+  section         String
+  payload         Json
+  baseVersion     Int
+  revision        Int             @default(1)
+  createdById     String
+  createdBy       User            @relation("EditorialDraftCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedById     String
+  updatedBy       User            @relation("EditorialDraftUpdater", fields: [updatedById], references: [id], onDelete: Restrict)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@unique([entityType, entityId, section])
+  @@index([entityType, entityId, updatedAt])
+  @@index([updatedById, updatedAt])
 }
 
 model AdminPresence {

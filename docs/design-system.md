@@ -145,12 +145,11 @@ Default anatomy:
 - Secondary collapsible cards: raw imports, technical snapshots, source JSON,
   advanced SEO, historical logs, and other reference material.
 
-Use explicit per-card saving as the first implementation pattern. Cards should
-have local Save actions such as `Save biodata`, `Save overview`, or
-`Save lineage`; this keeps changes clear with the current server-action
-architecture. Design these cards so autosave could replace explicit saves later
-without changing the page structure. Autosave will require additional states for
-`Saving`, `Saved`, validation errors, retry, and conflict handling.
+Keep explicit per-card actions such as `Save biodata`, `Save overview`, or
+`Save lineage`. Core Saint, Tradition, and Place content cards also autosave an
+interim editorial draft without changing the live/public record. Use the shared
+editorial draft form for its `Saving`, `Saved`, browser recovery, retry, discard,
+and conflict/rebase states; do not invent page-specific autosave behavior.
 
 Repeatable data should start small. For lists such as lineage saints, aliases,
 sources, related links, localities, or related places, show existing reviewed

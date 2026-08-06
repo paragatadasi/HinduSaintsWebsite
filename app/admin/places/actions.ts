@@ -11,12 +11,12 @@ import {
 } from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
-import { assertCapability } from "@/lib/admin-access";
+import { assertCapability, requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
-import { expectedVersion, guardedPlaceUpdate } from "@/lib/admin-conflicts";
+import { expectedVersion, guardedPlaceTransaction } from "@/lib/admin-conflicts";
 
 const placeScopeSchema = z.enum(["locality", "state", "country"]);
 const LEGACY_PARENT_STATE_RELATIONSHIP_NOTE = "Mirrored from legacy parentStateId.";
@@ -90,9 +90,18 @@ export async function updatePlace(formData: FormData) {
   const parentStateId = placeScope === "locality" && parsed.parentStateId !== parsed.placeId
     ? parsed.parentStateId
     : null;
-  const attempted = { name: parsed.name, slug, alternateNames: parsed.alternateNames, placeKind: getPlaceKindForScope(placeScope), placeScope, parentStateId, country: placeScope === "country" ? parsed.name : parsed.country ?? null };
-  await guardedPlaceUpdate(parsed.placeId, expectedVersion(formData), {}, attempted, `/admin/places/${existing.slug}`);
-  const place = await db.$transaction(async (tx) => {
+  const attempted = {
+    name: parsed.name,
+    slug,
+    alternateNames: parsed.alternateNames,
+    placeKind: getPlaceKindForScope(placeScope),
+    placeScope,
+    parentStateId,
+    country: placeScope === "country" ? parsed.name : parsed.country ?? null,
+    overviewMarkdown: parsed.overviewMarkdown ?? null,
+    notes: parsed.notes ?? null
+  };
+  const place = await guardedPlaceTransaction(parsed.placeId, expectedVersion(formData), attempted, `/admin/places/${existing.slug}`, async (tx) => {
     const updatedPlace = await tx.place.update({
       where: { id: parsed.placeId },
       data: {
@@ -143,7 +152,17 @@ export async function updatePlaceOverview(formData: FormData) {
   const parentStateId = placeScope === "locality" && parsed.parentStateId !== parsed.placeId
     ? parsed.parentStateId
     : null;
-  const place = await db.$transaction(async (tx) => {
+  const attempted = {
+    name: parsed.name,
+    slug,
+    alternateNames: parsed.alternateNames,
+    placeKind: getPlaceKindForScope(placeScope),
+    placeScope,
+    parentStateId,
+    country: placeScope === "country" ? parsed.name : parsed.country ?? null,
+    localityIds: parsed.localityIds
+  };
+  const place = await guardedPlaceTransaction(parsed.placeId, expectedVersion(formData), attempted, `/admin/places/${existing.slug}`, async (tx) => {
     const updatedPlace = await tx.place.update({
       where: { id: parsed.placeId },
       data: {
@@ -186,6 +205,8 @@ export async function updatePlaceOverview(formData: FormData) {
 
     await syncParentStateRelationship(tx, parsed.placeId, parentStateId);
 
+    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "place", entityId: parsed.placeId, section: "overview" } });
+
     return updatedPlace;
   });
 
@@ -208,7 +229,11 @@ export async function updatePlaceOtherPublicFields(formData: FormData) {
   };
   const current = await db.place.findUnique({ where: { id: parsed.placeId }, select: { slug: true } });
   if (!current) redirect("/admin/places");
-  const place = await guardedPlaceUpdate(parsed.placeId, expectedVersion(formData), attempted, attempted, `/admin/places/${current.slug}`);
+  const place = await guardedPlaceTransaction(parsed.placeId, expectedVersion(formData), attempted, `/admin/places/${current.slug}`, async (tx) => {
+    const updated = await tx.place.update({ where: { id: parsed.placeId }, data: attempted, select: { slug: true } });
+    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "place", entityId: parsed.placeId, section: "public_fields" } });
+    return updated;
+  });
 
   revalidatePlacePaths(place.slug);
   redirect(`/admin/places/${place.slug}`);
@@ -280,7 +305,7 @@ export async function mergePlaces(formData: FormData) {
 }
 
 async function requireAdminSession() {
-  await assertCapability("edit_content");
+  await requireCapability("edit_content");
   const session = await auth();
   if (!session?.user?.email) {
     redirect("/admin");
