@@ -40,8 +40,8 @@ branch as every chunk.
 | R1. Navigation remediation | Deployed | Canonical workspace subtabs, compact top-level workspace navigation, active route state, and honest section-jump navigation semantics |
 | R2. Airtable consolidation | Deployed | Complete sync review in Source Data Airtable, preserved polling/progress/detail history, collapsed mirror/reset maintenance, and no duplicate Saints surface |
 | R3. Site configuration decomposition | Deployed | URL-backed Homepage, About, Directory headers, and Footer subtabs with isolated data loading, forms, save feedback, and authorization |
-| R4. Image tooling compaction | Ready for release | Tokenized compact editors, synchronized large-editor dialogs, full-size inspection, and keyboard controls for focal/crop adjustment |
-| R5. Assignment and access simplification | Pending deployment of R4 | Simplify Assignments and Users & Access density, then align remaining admin terminology and runbooks |
+| R4. Image tooling compaction | Deployed | Tokenized compact editors, synchronized large-editor dialogs, full-size inspection, and keyboard controls for focal/crop adjustment |
+| R5. Assignment and access simplification | Ready for release | URL-backed workload queue tabs, compact assignment creation, summary-first user access cards, and consistent sensitive-action terminology |
 
 ## Capability contract
 
@@ -132,11 +132,23 @@ For each chunk:
 
 ## Resume point
 
-Current chunk: **R4 image tooling compaction ready for release**.
+Current chunk: **R5 assignment and access simplification ready for release**.
 
-After R4 is confirmed in production, begin R5 by simplifying the Assignments
-and Users & Access surfaces, then align remaining admin terminology and
-runbooks.
+After R5 is confirmed in production, the documented admin UX remediation is
+complete. Translation workflow design and authoring remain explicitly deferred.
+
+R4 image tooling compaction is deployed. Release commits:
+
+- `main`: `d3682d2` (`Compact admin image tooling`)
+- `deploy`: `c00c642571d47540e2bb7ed40b326ae7d1dd8cdc`
+- Production workflow: `31119956735`
+
+The first R4 production run failed while GitHub Actions resolved an action
+download because the service returned `Service Unavailable`; the clean retry
+succeeded. Integrated verification passed `npm run dev:check` and the full test
+suite (100 tests). `npm run codex:verify` compiled, type-checked, collected page
+data, and generated all 15 static pages before the known Windows junction
+`EPERM` during standalone trace copying.
 
 R3 Site configuration decomposition is deployed. Release commits:
 

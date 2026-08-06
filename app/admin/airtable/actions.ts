@@ -76,7 +76,7 @@ async function requireProtectedAction(formData: FormData) {
     returnTo: emptyToUndefined(formData.get("returnTo"))
   });
   if (!(await verifyBulkDeletePassword(parsed.bulkDeletePassword))) {
-    throw new Error("The bulk delete password was incorrect.");
+    throw new Error("The sensitive-action password was incorrect.");
   }
   return { email };
 }

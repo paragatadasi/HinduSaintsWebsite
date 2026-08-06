@@ -43,9 +43,9 @@ export function InstagramSlideActions({ instagramMediaAssetId, label, saintId }:
   return (
     <div className="instagram-slide-actions">
       <label>
-        Delete password
+        Sensitive-action password
         <input
-          aria-label={`Delete password for ${label}`}
+          aria-label={`Sensitive-action password for ${label}`}
           autoComplete="off"
           type="password"
           value={password}

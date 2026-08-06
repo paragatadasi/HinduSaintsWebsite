@@ -891,7 +891,7 @@ export async function bulkDeleteSaints(formData: FormData) {
   });
 
   if (!(await verifyBulkDeletePassword(parsed.password))) {
-    throw new Error("The bulk delete password was incorrect.");
+    throw new Error("The sensitive-action password was incorrect.");
   }
 
   const saints = await db.saint.findMany({
@@ -1260,7 +1260,7 @@ export async function deleteAttachedInstagramSlide(input: z.input<typeof instagr
   const parsed = instagramSlideDeleteSchema.parse(input);
 
   if (!(await verifyBulkDeletePassword(parsed.password))) {
-    throw new Error("The bulk delete password was incorrect.");
+    throw new Error("The sensitive-action password was incorrect.");
   }
 
   const slide = await db.instagramMediaAsset.findFirst({

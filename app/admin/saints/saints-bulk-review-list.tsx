@@ -93,7 +93,7 @@ export function SaintsBulkReviewList({ saints, returnTo }: SaintsBulkReviewListP
             <BulkReviewHiddenFields returnTo={returnTo} saintIds={selectedIds} />
             {isDeleteArmed ? (
               <label className="bulk-delete-password">
-                <span>Delete password</span>
+                <span>Sensitive-action password</span>
                 <input
                   autoComplete="off"
                   name="bulkDeletePassword"

@@ -463,7 +463,7 @@ export async function bulkDeleteInstagramItems(formData: FormData) {
   });
 
   if (!(await verifyBulkDeletePassword(parsed.password))) {
-    throw new Error("The bulk delete password was incorrect.");
+    throw new Error("The sensitive-action password was incorrect.");
   }
 
   const requestedItemIds = parsed.selectionMode === "matching"
