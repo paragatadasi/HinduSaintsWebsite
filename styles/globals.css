@@ -4628,6 +4628,58 @@ html[data-route-entering="true"] body > main {
   margin: 0;
 }
 
+.admin-repeatable-editor {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.admin-repeatable-editor__item {
+  background: var(--review-workflow-section-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-card);
+}
+
+.admin-repeatable-editor__item > summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: var(--space-3);
+  justify-content: space-between;
+  list-style: none;
+  padding: var(--space-3);
+}
+
+.admin-repeatable-editor__item > summary::-webkit-details-marker {
+  display: none;
+}
+
+.admin-repeatable-editor__item > summary > span {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.admin-repeatable-editor__item > summary strong {
+  color: var(--color-cream);
+}
+
+.admin-repeatable-editor__item[open] > summary {
+  border-bottom: 1px solid var(--review-workflow-border);
+}
+
+.admin-repeatable-editor__item[open] > summary svg {
+  transform: rotate(180deg);
+}
+
+.admin-repeatable-editor__content {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.admin-repeatable-editor__content > .admin-form-button--low-priority {
+  justify-self: end;
+}
+
 .admin-queue-filters {
   display: grid;
   gap: var(--space-2);

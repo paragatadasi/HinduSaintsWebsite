@@ -38,8 +38,9 @@ branch as every chunk.
 | 9. Final UX/accessibility pass | Deployed | Shared unsaved-change protection and validation summary, keyboard/focus improvements, sticky primary task navigation, narrow-laptop safeguards |
 | 10. Translation workflow | Deferred | Language/version model, translation editing/review/publication and fallback behavior |
 | R1. Navigation remediation | Deployed | Canonical workspace subtabs, compact top-level workspace navigation, active route state, and honest section-jump navigation semantics |
-| R2. Airtable consolidation | Ready for release | Complete sync review in Source Data Airtable, preserved polling/progress/detail history, collapsed mirror/reset maintenance, and no duplicate Saints surface |
-| R3. Site configuration decomposition | Pending deployment of R2 | Split the monolithic Site form into focused subtabs/workflows with compact defaults |
+| R2. Airtable consolidation | Deployed | Complete sync review in Source Data Airtable, preserved polling/progress/detail history, collapsed mirror/reset maintenance, and no duplicate Saints surface |
+| R3. Site configuration decomposition | Ready for release | URL-backed Homepage, About, Directory headers, and Footer subtabs with isolated data loading, forms, save feedback, and authorization |
+| R4. Image tooling compaction | Pending deployment of R3 | Keep image previews compact by default and make full-size inspection accessible on demand |
 
 ## Capability contract
 
@@ -130,12 +131,21 @@ For each chunk:
 
 ## Resume point
 
-Current chunk: **R2 Airtable consolidation ready for release**.
+Current chunk: **R3 Site configuration decomposition ready for release**.
 
-After R2 is confirmed in production, begin R3 by decomposing the Site
-configuration form into focused horizontal subtabs or workflows. Keep the most
-common settings concise and collapse infrequent or sensitive configuration by
-default.
+After R3 is confirmed in production, begin R4 by compacting the default image
+preview/crop UI and adding accessible full-size inspection on demand.
+
+R2 Airtable consolidation is deployed. Release commits:
+
+- `main`: `8ebd208` (`Consolidate Airtable admin workflow`)
+- `deploy`: `829ccd2e05051e8006177a3fa4bd6d608d8a3316`
+- Production workflow: `31116447493`
+
+Verification on the clean integrated R2 release passed `npm run dev:check` and
+the full test suite (100 tests). `npm run codex:verify` compiled, type-checked,
+collected page data, and generated all 15 static pages before the known Windows
+junction `EPERM` during standalone trace copying.
 
 R1 navigation remediation is deployed. Release commits:
 
