@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { randomUUID } from "node:crypto";
 import { resolveFeedbackContext } from "@/lib/feedback-context";
 import { ContactFeedbackForm } from "./contact-feedback-form";
+import { buildPublicMetadata } from "@/lib/seo";
 
 type ContactPageProps = {
   searchParams: Promise<{
@@ -11,10 +12,11 @@ type ContactPageProps = {
   }>;
 };
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPublicMetadata({
   title: "Contact",
-  description: "Send feedback, corrections, and source notes to the Hindu Saints Archive."
-};
+  description: "Send feedback, corrections, and source notes to the Hindu Saints Archive.",
+  path: "/contact"
+});
 
 export default async function ContactPage({ searchParams }: ContactPageProps) {
   const { type, slug, page } = await searchParams;

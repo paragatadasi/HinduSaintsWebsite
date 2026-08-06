@@ -9,38 +9,11 @@ import { PublicSearchField } from "@/components/ui/public-search-field";
 import { getPublicIndexHeroImages } from "@/lib/site-config";
 import { getPublishedSaintCatalog } from "@/lib/public-saints";
 import { getSaintsIndexContent } from "@/lib/site-content";
+import { buildPublicMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
 const saintsDescription = "Explore our rich collection of saints from the Hindu tradition and beyond.";
-
-export const metadata: Metadata = {
-  title: "Saints",
-  description: saintsDescription,
-  alternates: { canonical: "/saints" },
-  openGraph: {
-    type: "website",
-    url: "/saints",
-    siteName: "Hindu Saints Archive",
-    title: "Saints | Hindu Saints Archive",
-    description: saintsDescription,
-    images: [
-      {
-        url: "/images/hindu-saints-share.jpg",
-        width: 1200,
-        height: 630,
-        type: "image/jpeg",
-        alt: "A devotee meditating beside a sacred river at night"
-      }
-    ]
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Saints | Hindu Saints Archive",
-    description: saintsDescription,
-    images: ["/images/hindu-saints-share.jpg"]
-  }
-};
 
 type SaintsIndexPageProps = {
   searchParams?: Promise<{
@@ -51,6 +24,24 @@ type SaintsIndexPageProps = {
     tradition?: string | string[];
   }>;
 };
+
+export async function generateMetadata({ searchParams }: SaintsIndexPageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const hasFilters = Boolean(
+    getSearchParam(params?.q)
+    || getSearchParam(params?.tradition)
+    || getSearchParam(params?.location)
+    || getSearchParam(params?.startYear)
+    || getSearchParam(params?.endYear)
+  );
+
+  return buildPublicMetadata({
+    title: "Saints",
+    description: saintsDescription,
+    path: "/saints",
+    noIndex: hasFilters
+  });
+}
 
 export default async function SaintsIndexPage({ searchParams }: SaintsIndexPageProps) {
   const content = getSaintsIndexContent();
