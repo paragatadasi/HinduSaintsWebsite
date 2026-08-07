@@ -209,6 +209,12 @@ Implementation direction:
 
 Current rollout notes:
 
+- The root admin layout uses the grouped left sidebar for every site-wide
+  destination. It does not render a horizontal workspace rail.
+- Site configuration routes, internal Work queues, and detail-page
+  `ReviewSectionNav` links use the shared explicit tab-strip treatment. Route
+  tabs use `aria-current="page"`; detail jump links use
+  `aria-current="location"` and remain navigation rather than ARIA tab panels.
 - Instagram item detail is the first polished pilot. `Connect this Post` is the
   primary workflow. First Page Biodata starts as a six-field summary, keeps
   first-page source text out of the default summary, and places parse actions at
