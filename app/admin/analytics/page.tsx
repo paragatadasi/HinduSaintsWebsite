@@ -61,9 +61,18 @@ export default async function AdminAnalyticsPage() {
   const navigationStarted = sumTelemetry(telemetryRows, "navigation_started");
   const navigationCompleted = sumTelemetry(telemetryRows, "navigation_completed");
   const navigationAbandoned = sumTelemetry(telemetryRows, "navigation_abandoned");
-  const clientErrors = sumTelemetry(telemetryRows, "client_error");
   const engagementRows = buildTelemetryRows(telemetryRows, new Set<string>(ENGAGEMENT_EVENT_NAMES));
-  const errorRows = buildTelemetryRows(telemetryRows, new Set(["client_error"]));
+  const confirmedErrorRows = buildTelemetryRows(
+    telemetryRows.filter((row) => row.event === "client_error" && !isLegacyOpaqueError(row.dimension)),
+    new Set(["client_error"])
+  );
+  const opaqueErrorRows = buildTelemetryRows(buildOpaqueErrorRows(telemetryRows), new Set(["client_opaque_error"]));
+  const resourceErrorRows = buildTelemetryRows(telemetryRows, new Set(["client_resource_error"]));
+  const suppressedErrorRows = buildTelemetryRows(telemetryRows, new Set(["client_error_suppressed"]));
+  const confirmedErrors = sumRows(confirmedErrorRows);
+  const opaqueErrors = sumRows(opaqueErrorRows);
+  const resourceErrors = sumRows(resourceErrorRows);
+  const suppressedErrors = sumRows(suppressedErrorRows);
   const vitalRows = buildVitalRows(telemetryRows);
   const engagementTotal = engagementRows.reduce((total, row) => total + row.count, 0);
 
@@ -85,7 +94,13 @@ export default async function AdminAnalyticsPage() {
       </div>
 
       <div className="admin-stat-grid">
-        <AnalyticsStat label="Client errors (30 days)" value={clientErrors} />
+        <AnalyticsStat label="Confirmed errors (30 days)" value={confirmedErrors} />
+        <AnalyticsStat label="Opaque signals (30 days)" value={opaqueErrors} />
+        <AnalyticsStat label="Resource failures (30 days)" value={resourceErrors} />
+        <AnalyticsStat label="Suppression notices" value={suppressedErrors} />
+      </div>
+
+      <div className="admin-stat-grid">
         <AnalyticsStat label="Abandoned loads (30 days)" value={navigationAbandoned} />
         <AnalyticsStat label="Completed navigations" value={navigationCompleted} />
         <AnalyticsStat label="Engagement actions" value={engagementTotal} />
@@ -97,10 +112,24 @@ export default async function AdminAnalyticsPage() {
           <h2>Aggregate counts only</h2>
         </div>
         <p>
-          Analytics stores only allowlisted event names, normalized public paths, UTC days, counts,
-          coarse performance buckets, and sanitized error fingerprints. It does not store IP addresses,
-          cookies, user agents, referrers, query strings, visitor IDs, session IDs, search terms, or form
-          values. Repeat requests and automated traffic may be included because visitors are never identified.
+          Analytics stores only allowlisted event names, normalized public paths, UTC days, aggregate counts,
+          coarse performance buckets, diagnostic categories, and fingerprints derived from sanitized first-party
+          bundle frames. Diagnostic events are retained for 30 days. It does not store error messages, raw stacks,
+          full external URLs, IP addresses, cookies, user agents, referrers, query strings, visitor IDs, session IDs,
+          search terms, or form values.
+        </p>
+      </section>
+
+      <section className="review-panel">
+        <div>
+          <div className="eyebrow">Reliability confidence</div>
+          <h2>Separated diagnostic signals</h2>
+        </div>
+        <p>
+          Confirmed errors contain a sanitized same-origin application frame. Opaque signals retain only the error
+          channel, value category, and source scope. Resource failures identify the resource type and scope without
+          retaining external URLs. Repeated diagnostics are capped within each page load so one loop cannot dominate
+          the dashboard.
         </p>
       </section>
 
@@ -150,11 +179,27 @@ export default async function AdminAnalyticsPage() {
       </section>
 
       <TelemetryList
-        empty="Sanitized client error fingerprints will appear here when crashes occur."
+        diagnostic
+        empty="Confirmed first-party error fingerprints will appear here when application code fails."
         eyebrow="Reliability"
-        heading="Top client errors"
-        rows={errorRows.slice(0, 20)}
-        showDimension
+        heading="Confirmed first-party errors"
+        rows={confirmedErrorRows.slice(0, 20)}
+      />
+
+      <TelemetryList
+        diagnostic
+        empty="Opaque browser signals will appear here when details cannot be verified safely."
+        eyebrow="Reliability"
+        heading="Opaque browser signals"
+        rows={opaqueErrorRows.slice(0, 20)}
+      />
+
+      <TelemetryList
+        diagnostic
+        empty="Script, stylesheet, image, and media loading failures will appear here."
+        eyebrow="Reliability"
+        heading="Resource loading failures"
+        rows={resourceErrorRows.slice(0, 20)}
       />
 
       <TelemetryList
@@ -210,19 +255,19 @@ type TelemetryRow = {
 type AggregateTelemetryRow = TelemetryRow;
 
 function TelemetryList({
+  diagnostic = false,
   empty,
   eyebrow,
   heading,
-  rows,
-  showDimension = false
+  rows
 }: {
+  diagnostic?: boolean;
   empty: string;
   eyebrow: string;
   heading: string;
   rows: AggregateTelemetryRow[];
-  showDimension?: boolean;
 }) {
-  const headingId = `${eyebrow.toLowerCase()}-telemetry-heading`;
+  const headingId = `${heading.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-heading`;
 
   return (
     <section className="admin-stack" aria-labelledby={headingId}>
@@ -233,16 +278,19 @@ function TelemetryList({
       </div>
       {rows.length > 0 ? (
         <div className="review-list">
-          {rows.map((row) => (
-            <article className="review-row" key={`${row.event}:${row.dimension}:${row.path}`}>
-              <div>
-                <h3>{showDimension ? getErrorLabel(row.dimension) : getTelemetryEventLabel(row.event)}</h3>
-                {showDimension ? <p>{getErrorSource(row.dimension)}</p> : null}
-                <Link className="admin-text-link" href={row.path as Route}>{row.path}</Link>
-              </div>
-              <StatusBadge label={`${formatNumber(row.count)} events`} />
-            </article>
-          ))}
+          {rows.map((row) => {
+            const presentation = diagnostic ? getDiagnosticPresentation(row) : null;
+            return (
+              <article className="review-row" key={`${row.event}:${row.dimension}:${row.path}`}>
+                <div>
+                  <h3>{presentation?.label ?? getTelemetryEventLabel(row.event)}</h3>
+                  {presentation ? <p>{presentation.detail}</p> : null}
+                  <Link className="admin-text-link" href={row.path as Route}>{row.path}</Link>
+                </div>
+                <StatusBadge label={`${formatNumber(row.count)} events`} />
+              </article>
+            );
+          })}
         </div>
       ) : (
         <p className="empty-note">{empty}</p>
@@ -267,6 +315,26 @@ function buildTelemetryRows(rows: TelemetryRow[], includedEvents: Set<string>) {
   });
 
   return [...totals.values()].sort((left, right) => right.count - left.count || left.path.localeCompare(right.path));
+}
+
+function buildOpaqueErrorRows(rows: TelemetryRow[]) {
+  return rows.flatMap((row) => {
+    if (row.event === "client_opaque_error") return [row];
+    if (row.event === "client_error" && isLegacyOpaqueError(row.dimension)) {
+      const [errorClass] = row.dimension.split("|");
+      return [{ ...row, event: "client_opaque_error", dimension: `legacy|${errorClass}|unavailable` }];
+    }
+    return [];
+  });
+}
+
+function isLegacyOpaqueError(dimension: string) {
+  const parts = dimension.split("|");
+  return parts.length === 2 && parts[1] === "unknown";
+}
+
+function sumRows(rows: AggregateTelemetryRow[]) {
+  return rows.reduce((total, row) => total + row.count, 0);
 }
 
 function buildVitalRows(rows: TelemetryRow[]) {
@@ -299,13 +367,41 @@ function getTelemetryEventLabel(event: string) {
   return labels[event] ?? event.replaceAll("_", " ");
 }
 
-function getErrorLabel(dimension: string) {
-  return dimension.split("|", 1)[0] || "Error";
+function getDiagnosticPresentation(row: AggregateTelemetryRow) {
+  const parts = row.dimension.split("|");
+  if (row.event === "client_error") {
+    if (parts.length === 4) {
+      const [channel, errorClass, source, fingerprint] = parts;
+      return {
+        label: `${errorClass} · ${formatDiagnosticToken(channel)}`,
+        detail: `${source} · fingerprint ${fingerprint}`
+      };
+    }
+    return { label: parts[0] || "Error", detail: parts[1] || "Legacy diagnostic" };
+  }
+  if (row.event === "client_opaque_error") {
+    const [channel, valueType, sourceScope] = parts;
+    return {
+      label: `${formatDiagnosticToken(channel)} · ${formatDiagnosticToken(valueType)}`,
+      detail: `Source: ${formatDiagnosticToken(sourceScope)}`
+    };
+  }
+  if (row.event === "client_resource_error") {
+    const [resourceType, sourceScope, source] = parts;
+    return {
+      label: `${formatDiagnosticToken(resourceType)} resource failure`,
+      detail: source && source !== "unknown"
+        ? `${formatDiagnosticToken(sourceScope)} · ${source}`
+        : `Source: ${formatDiagnosticToken(sourceScope)}`
+    };
+  }
+  return { label: getTelemetryEventLabel(row.event), detail: formatDiagnosticToken(row.dimension) };
 }
 
-function getErrorSource(dimension: string) {
-  const separator = dimension.indexOf("|");
-  return separator >= 0 ? dimension.slice(separator + 1) : "unknown";
+function formatDiagnosticToken(value: string | undefined) {
+  if (!value) return "Unknown";
+  if (value === "legacy") return "Legacy opaque signal";
+  return value.replaceAll("_", " ").replace(/^\w/, (letter) => letter.toUpperCase());
 }
 
 function formatPercentage(value: number, total: number) {

@@ -19,6 +19,11 @@ const payloadSchema = z.object({
 }).strict();
 
 export async function POST(request: Request) {
+  const requestSite = request.headers.get("sec-fetch-site");
+  if (requestSite && requestSite !== "same-origin" && requestSite !== "none") {
+    return NextResponse.json({ error: "Cross-site telemetry is not accepted." }, { status: 403 });
+  }
+
   const contentLength = Number(request.headers.get("content-length") ?? 0);
   if (contentLength > MAX_PAYLOAD_BYTES) {
     return NextResponse.json({ error: "Payload is too large." }, { status: 413 });

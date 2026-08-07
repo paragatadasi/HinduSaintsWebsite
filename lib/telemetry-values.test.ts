@@ -17,8 +17,29 @@ test("sanitizes client error dimensions without retaining messages", () => {
     normalizeTelemetryValue("client_error", "TypeError|/_next/static/chunks/app.js:12:4"),
     "TypeError|/_next/static/chunks/app.js:12:4"
   );
-  assert.equal(normalizeTelemetryValue("client_error", "Error|https://example.com/private?q=secret"), "Error|unknown");
-  assert.equal(normalizeTelemetryValue("client_error", "message containing user data"), "Error|unknown");
+  assert.equal(normalizeTelemetryValue("client_error", "Error|https://example.com/private?q=secret"), null);
+  assert.equal(normalizeTelemetryValue("client_error", "message containing user data"), null);
+  assert.equal(
+    normalizeTelemetryValue("client_error", "window_error|TypeError|/_next/static/chunks/app.js:12:4|d0d03784"),
+    "window_error|TypeError|/_next/static/chunks/app.js:12:4|d0d03784"
+  );
+});
+
+test("accepts only allowlisted privacy-safe diagnostic categories", () => {
+  assert.equal(
+    normalizeTelemetryValue("client_opaque_error", "unhandled_rejection|string|cross_origin"),
+    "unhandled_rejection|string|cross_origin"
+  );
+  assert.equal(normalizeTelemetryValue("client_opaque_error", "unhandled_rejection|private value|cross_origin"), null);
+  assert.equal(
+    normalizeTelemetryValue("client_resource_error", "script|same_origin|/_next/static/chunks/app.js"),
+    "script|same_origin|/_next/static/chunks/app.js"
+  );
+  assert.equal(normalizeTelemetryValue("client_resource_error", "image|cross_origin|https://private.example/a.jpg"), null);
+  assert.equal(
+    normalizeTelemetryValue("client_error_suppressed", "client_opaque_error|repeat_limit"),
+    "client_opaque_error|repeat_limit"
+  );
 });
 
 test("rejects dimensions on aggregate engagement events", () => {

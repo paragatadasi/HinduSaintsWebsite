@@ -5,6 +5,9 @@ export const TELEMETRY_EVENT_NAMES = [
   "navigation_abandoned",
   "navigation_duration",
   "client_error",
+  "client_opaque_error",
+  "client_resource_error",
+  "client_error_suppressed",
   "web_vital_lcp",
   "web_vital_inp",
   "web_vital_cls",
@@ -58,6 +61,15 @@ export const ENGAGEMENT_EVENT_NAMES = [
   "map_place_select",
   "instagram_post_open"
 ] as const satisfies readonly TelemetryEventName[];
+
+export const CLIENT_DIAGNOSTIC_EVENT_NAMES = [
+  "client_error",
+  "client_opaque_error",
+  "client_resource_error",
+  "client_error_suppressed"
+] as const satisfies readonly TelemetryEventName[];
+
+export type ClientDiagnosticEventName = (typeof CLIENT_DIAGNOSTIC_EVENT_NAMES)[number];
 
 export type TelemetryEngagementEventName = (typeof ENGAGEMENT_EVENT_NAMES)[number];
 

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { db } from "@/lib/db";
+import { CLIENT_DIAGNOSTIC_EVENT_NAMES } from "@/lib/telemetry-contract";
 
 export type TelemetryIncrement = {
   count: number;
@@ -39,10 +40,10 @@ export async function pruneTelemetry(referenceDate = new Date()) {
 
   await db.$transaction([
     db.telemetryDaily.deleteMany({
-      where: { event: "client_error", date: { lt: errorCutoff } }
+      where: { event: { in: [...CLIENT_DIAGNOSTIC_EVENT_NAMES] }, date: { lt: errorCutoff } }
     }),
     db.telemetryDaily.deleteMany({
-      where: { event: { not: "client_error" }, date: { lt: aggregateCutoff } }
+      where: { event: { notIn: [...CLIENT_DIAGNOSTIC_EVENT_NAMES] }, date: { lt: aggregateCutoff } }
     })
   ]);
 }

@@ -5,11 +5,19 @@ import {
   type TelemetryEventName,
   type TelemetryValueBucket
 } from "@/lib/telemetry-contract";
+import {
+  buildClientErrorDiagnostic,
+  buildClientResourceDiagnostic,
+  type ClientErrorChannel,
+  type ClientResourceType
+} from "@/lib/telemetry-errors";
 
 const TELEMETRY_ENDPOINT = "/api/telemetry";
 const FLUSH_INTERVAL_MS = 10_000;
 const MAX_QUEUED_EVENTS = 20;
 const PERFORMANCE_SAMPLE_RATE = 0.1;
+const MAX_DIAGNOSTIC_REPORTS_PER_PAGE = 3;
+const MAX_UNIQUE_DIAGNOSTICS_PER_PAGE = 20;
 
 let currentPath = "";
 let performancePath = "";
@@ -18,6 +26,9 @@ let pendingNavigationPath = "";
 let pendingNavigationStartedAt = 0;
 let flushTimer: ReturnType<typeof setTimeout> | undefined;
 const queue: TelemetryEvent[] = [];
+const diagnosticOccurrences = new Map<string, number>();
+const reportedSuppressions = new Set<string>();
+let reportedUniqueDiagnosticLimit = false;
 
 type WebVitalMetric = {
   name: string;
@@ -25,6 +36,7 @@ type WebVitalMetric = {
 };
 
 export function setTelemetryPage(path: string) {
+  if (currentPath && currentPath !== path) resetDiagnosticLimits();
   currentPath = path;
   if (!performancePath) {
     performancePath = path;
@@ -58,10 +70,35 @@ export function markNavigationCompleted(path: string) {
   pendingNavigationStartedAt = 0;
 }
 
-export function recordClientError(error: unknown) {
-  const errorClass = getErrorClass(error);
-  const source = getSameOriginErrorSource(error);
-  recordTelemetry("client_error", getCurrentPath(), `${errorClass}|${source}`);
+export function recordClientError({
+  channel,
+  error,
+  filename
+}: {
+  channel: ClientErrorChannel;
+  error: unknown;
+  filename?: string;
+}) {
+  recordClientDiagnostic(buildClientErrorDiagnostic({
+    channel,
+    error,
+    filename,
+    origin: window.location.origin
+  }));
+}
+
+export function recordReactError(error: unknown) {
+  recordClientError({ channel: "react_error", error });
+}
+
+export function recordClientResourceError(target: EventTarget | null) {
+  const resource = getResourceFailure(target);
+  if (!resource) return false;
+  recordClientDiagnostic(buildClientResourceDiagnostic({
+    ...resource,
+    origin: window.location.origin
+  }));
+  return true;
 }
 
 export function reportWebVital(metric: WebVitalMetric) {
@@ -93,6 +130,56 @@ function recordTelemetry(name: TelemetryEventName, path: string, value?: string)
   } else if (!flushTimer) {
     flushTimer = setTimeout(flushTelemetry, FLUSH_INTERVAL_MS);
   }
+}
+
+function recordClientDiagnostic(diagnostic: { name: "client_error" | "client_opaque_error" | "client_resource_error"; value: string }) {
+  const key = `${diagnostic.name}|${diagnostic.value}`;
+  const currentCount = diagnosticOccurrences.get(key);
+
+  if (currentCount === undefined && diagnosticOccurrences.size >= MAX_UNIQUE_DIAGNOSTICS_PER_PAGE) {
+    if (!reportedUniqueDiagnosticLimit) {
+      reportedUniqueDiagnosticLimit = true;
+      recordTelemetry("client_error_suppressed", getCurrentPath(), `${diagnostic.name}|unique_limit`);
+    }
+    return;
+  }
+
+  const nextCount = (currentCount ?? 0) + 1;
+  diagnosticOccurrences.set(key, nextCount);
+  if (nextCount <= MAX_DIAGNOSTIC_REPORTS_PER_PAGE) {
+    recordTelemetry(diagnostic.name, getCurrentPath(), diagnostic.value);
+    return;
+  }
+
+  if (!reportedSuppressions.has(key)) {
+    reportedSuppressions.add(key);
+    recordTelemetry("client_error_suppressed", getCurrentPath(), `${diagnostic.name}|repeat_limit`);
+  }
+}
+
+function resetDiagnosticLimits() {
+  diagnosticOccurrences.clear();
+  reportedSuppressions.clear();
+  reportedUniqueDiagnosticLimit = false;
+}
+
+function getResourceFailure(target: EventTarget | null): { resourceType: ClientResourceType; sourceUrl?: string } | null {
+  if (target instanceof HTMLScriptElement) {
+    return { resourceType: "script", sourceUrl: target.src };
+  }
+  if (target instanceof HTMLLinkElement && target.rel === "stylesheet") {
+    return { resourceType: "stylesheet", sourceUrl: target.href };
+  }
+  if (target instanceof HTMLImageElement) {
+    return { resourceType: "image", sourceUrl: target.currentSrc || target.src };
+  }
+  if (target instanceof HTMLAudioElement || target instanceof HTMLVideoElement || target instanceof HTMLSourceElement) {
+    return { resourceType: "media", sourceUrl: target instanceof HTMLSourceElement ? target.src : target.currentSrc || target.src };
+  }
+  if (target instanceof Element && target !== document.documentElement && target !== document.body) {
+    return { resourceType: "other" };
+  }
+  return null;
 }
 
 function isClientTrackablePath(path: string) {
@@ -152,25 +239,4 @@ function getBucket(value: number, goodLimit: number, poorLimit: number): Telemet
   if (value <= goodLimit) return "good";
   if (value <= poorLimit) return "needs_improvement";
   return "poor";
-}
-
-function getErrorClass(error: unknown) {
-  const name = error instanceof Error ? error.name : "Error";
-  return /^[A-Za-z][A-Za-z0-9]{0,63}$/.test(name) ? name : "Error";
-}
-
-function getSameOriginErrorSource(error: unknown) {
-  if (!(error instanceof Error) || !error.stack) return "unknown";
-
-  const origin = window.location.origin;
-  for (const line of error.stack.split("\n").slice(1, 8)) {
-    const start = line.indexOf(origin);
-    if (start < 0) continue;
-
-    const source = line.slice(start + origin.length).split(/[?#]/, 1)[0];
-    const match = source.match(/\/_next\/[A-Za-z0-9_./:-]+/);
-    if (match) return match[0].slice(0, 180);
-  }
-
-  return "unknown";
 }
