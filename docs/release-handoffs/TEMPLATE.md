@@ -1,9 +1,10 @@
 # Release Handoff: <branch-name>
 
-- Status: ready
+- Status: `<ready or queued>`
 - Branch: `codex/example-branch`
 - Commit: `<full-or-short-sha>`
 - Owner/agent: `<agent or task name>`
+- Bundle priority: `<immediate release candidate or queue for next major/bundled deployment>`
 
 ## Summary
 
@@ -19,6 +20,7 @@
 - Migrations: `<none or describe>`
 - Environment variables: `<none or describe>`
 - Data/backfill/release steps: `<none or describe>`
+- Queue/deploy trigger: `<ready now, or queued until the next requested/major deployment>`
 
 ## Risk And Conflicts
 

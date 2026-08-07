@@ -8,18 +8,28 @@ Shortcut instruction:
 Prepare for deployment.
 ```
 
+For small, low-priority, or low-dependency work that should wait for the next
+larger release, use:
+
+```text
+Queue for deployment.
+```
+
 When an individual feature agent receives that instruction, the agent should:
 
 1. Finish the deployable code on its current feature branch.
 2. Commit only the relevant code changes.
-3. Run `npm run prepare:deployment`.
+3. Run `npm run prepare:deployment` for an immediate ready handoff, or
+   `npm run queue:deployment` for a queued handoff.
 4. Review the generated handoff file and fill any placeholders.
 5. Commit the handoff file on the same branch.
 6. Push the feature branch.
-7. Stop and report the branch, commit SHA, verification result, and handoff file path.
+7. Stop and report the branch, commit SHA, verification result, handoff status,
+   and handoff file path.
 
-`npm run prepare:deployment` runs `npm run dev:check` and creates the handoff
-file for the current branch. Feature agents should not run
+`npm run prepare:deployment` runs `npm run dev:check` and creates a `ready`
+handoff file for the current branch. `npm run queue:deployment` runs the same
+check and creates a `queued` handoff file. Feature agents should not run
 `npm run codex:verify` by default; the release captain runs the heavier
 verification on the integrated release unless the branch changed dependencies,
 Prisma/schema/migrations, build configuration, auth, routing, or another
@@ -27,6 +37,18 @@ production-sensitive surface.
 
 That instruction does not authorize the feature agent to merge into `main` or
 `deploy`. Only the release captain should do that.
+
+Handoff status:
+
+- `ready`: integrate on the next deployment request unless the release captain
+  finds a blocker.
+- `queued`: prepared and deployable, but intentionally waiting to be bundled
+  with the next major, user-requested, or release-captain-triggered deployment.
+
+Queued handoffs require the same code quality, commit hygiene, verification,
+branch push, handoff file, and release-captain notification as ready handoffs.
+The only difference is urgency: queued work should not trigger a deployment by
+itself.
 
 Each ready agent should add one handoff file on their feature branch:
 
@@ -46,14 +68,22 @@ merge directly into `main` or `deploy`.
 Release captain workflow:
 
 1. Fetch all candidate branches.
-2. Read handoff files from ready branches.
-3. Integrate ready branches into `main` one at a time or in a coherent low-risk batch.
+2. Read handoff files from ready and queued branches.
+3. Integrate ready branches plus compatible queued branches into `main` one at a
+   time or in a coherent low-risk batch.
 4. Run the appropriate verification.
 5. Push `main`.
 6. Merge `main` into `deploy`.
 7. Push `deploy`.
 8. Confirm the production deployment workflow status.
-9. Remove or archive handoff files as part of the release cleanup.
+9. Remove or archive released handoff files as part of the release cleanup, and
+   preserve still-queued handoffs.
 
-Ready agents can create handoffs manually from `TEMPLATE.md`, but
-`npm run prepare:deployment` is the preferred fast path.
+When a deployment is requested, the release captain should consider all queued
+handoffs and include those that are still compatible with the requested release.
+If queued work is intentionally left out, report the branch and reason in the
+release summary.
+
+Ready or queued agents can create handoffs manually from `TEMPLATE.md`, but
+`npm run prepare:deployment` and `npm run queue:deployment` are the preferred
+fast paths.
