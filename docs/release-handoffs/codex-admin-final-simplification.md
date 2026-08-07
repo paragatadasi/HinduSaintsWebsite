@@ -7,9 +7,9 @@
 
 ## Summary
 
-- Replaces the all-at-once workload dashboard with URL-backed My Work,
-  Available, Blocked, Completed, and Team queue tabs that expose one focused
-  queue at a time with `aria-current="page"`.
+- Replaces the all-at-once workload dashboard with an internal URL-backed My
+  Work, Available, Blocked, Completed, and Team queue rail that exposes one
+  focused subsection at a time with `aria-current="page"`.
 - Moves assignment creation into a compact, session-persistent collapsible card
   and adds shared stacked, inline, field-grid, option-toggle, and form-footer
   layout primitives so assignment and access forms do not stretch across the
@@ -23,6 +23,10 @@
   compatibility.
 - Updates the durable admin-overhaul workflow to record R4 as deployed and R5
   as ready for release.
+- Integrates sidebar correction `e09b506`: all site-wide admin destinations
+  remain in the grouped left sidebar, the root admin layout no longer renders
+  horizontal workspace tabs, and horizontal link tabs remain limited to nested
+  workflows such as Site configuration and the internal workload queues.
 
 ## Verification
 
@@ -44,8 +48,8 @@
 ## Risk And Conflicts
 
 - Shared areas touched: `styles/globals.css`, `/admin/work`, `/admin/users`,
-  sensitive-action error/label copy in Airtable, Instagram, and Saints, and
-  admin-overhaul/import runbooks.
+  root/sidebar admin navigation, sensitive-action error/label copy in Airtable,
+  Instagram, and Saints, and admin-overhaul/import/design-system runbooks.
 - Expected conflicts: possible only if another branch edits the same shared
   admin form styles or the same Work/Users page markup. No data contracts,
   authorization checks, server-action behavior, or database schema changed.

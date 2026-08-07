@@ -7,8 +7,10 @@ branch as every chunk.
 
 ## Outcomes and fixed decisions
 
-- Navigation is grouped into Operations, Source Data, and Content, with Museum
-  as its own top-level destination because Museum owns an internal subtab system.
+- Main navigation stays in the left sidebar, grouped into Operations, Source
+  Data, and Content, with Museum as its own top-level destination because Museum
+  owns an internal subtab system. Horizontal tabs are reserved for nested
+  workflows and subsections, not site-wide admin destinations.
 - Roles are additive. Named roles are presets over server-enforced capabilities.
 - Site Admin has unrestricted access, user management, and destructive actions.
 - Data Admin is an Editor plus source-data, import, and reconciliation authority.
@@ -37,11 +39,11 @@ branch as every chunk.
 | 8. Museum hardening | Deployed | Direct-route capability audit, sandboxed private family trees, Curator/Site Admin mutation guard seam, curator-only dashboard and main-admin return path, explicit planning-preview status |
 | 9. Final UX/accessibility pass | Deployed | Shared unsaved-change protection and validation summary, keyboard/focus improvements, sticky primary task navigation, narrow-laptop safeguards |
 | 10. Translation workflow | Deferred | Language/version model, translation editing/review/publication and fallback behavior |
-| R1. Navigation remediation | Deployed | Canonical workspace subtabs, compact top-level workspace navigation, active route state, and honest section-jump navigation semantics |
+| R1. Navigation remediation | Deployed with sidebar correction pending | Grouped left-sidebar destinations, nested workflow subtabs only, active route state, and honest section-jump navigation semantics |
 | R2. Airtable consolidation | Deployed | Complete sync review in Source Data Airtable, preserved polling/progress/detail history, collapsed mirror/reset maintenance, and no duplicate Saints surface |
 | R3. Site configuration decomposition | Deployed | URL-backed Homepage, About, Directory headers, and Footer subtabs with isolated data loading, forms, save feedback, and authorization |
 | R4. Image tooling compaction | Deployed | Tokenized compact editors, synchronized large-editor dialogs, full-size inspection, and keyboard controls for focal/crop adjustment |
-| R5. Assignment and access simplification | Ready for release | URL-backed workload queue tabs, compact assignment creation, summary-first user access cards, and consistent sensitive-action terminology |
+| R5. Assignment and access simplification | Ready for release | Internal URL-backed workload queue rail, compact assignment creation, summary-first user access cards, and consistent sensitive-action terminology |
 
 ## Capability contract
 

@@ -191,12 +191,19 @@ Implementation direction:
   position an image.
 - Use `ReviewEditToggle` when a card should start in summary mode and reveal
   edit controls only after an explicit edit action.
-- Use the shared admin workspace navigation for route-level horizontal tabs.
-  Workspace tabs use links with `aria-current="page"`; they are not client-side
-  tab panels and must preserve normal URLs, history, and authorization gates.
+- Keep main admin destinations in the grouped left sidebar. Dashboard, My Work,
+  Inbox, Site, Analytics, Users & Access, Source Data, Airtable, import tools,
+  and content destinations must not be duplicated in a site-wide horizontal
+  tab bar.
+- Use horizontal link tabs only inside a nested workflow or subsection, such as
+  Site configuration pages or queues within My Work. Nested tabs use links with
+  `aria-current="page"`; they are not client-side tab panels and must preserve
+  normal URLs, history, and authorization gates.
 - Use `ReviewSectionNav` for sticky jump navigation among detail-page cards.
-  It opens collapsed cards and marks the current anchor with
-  `aria-current="location"`. Do not present section jump links as ARIA tabs.
+  Detail review pages may present it as a horizontal section rail so grouped or
+  individual card sets remain directly reachable instead of becoming a long
+  undifferentiated stream. It opens collapsed cards and marks the current anchor
+  with `aria-current="location"`. Do not present section jump links as ARIA tabs.
 
 Current rollout notes:
 

@@ -45,6 +45,7 @@ export function AdminPrimaryNavigation({ groups }: { groups: AdminNavigationGrou
   );
 }
 
+// Nested route navigation only. Main admin destinations belong in the left sidebar.
 export function AdminWorkspaceTabs({ groups }: { groups: AdminNavigationGroup[] }) {
   const pathname = usePathname();
   const activeGroup = getActiveAdminNavigationGroup(pathname, groups);
