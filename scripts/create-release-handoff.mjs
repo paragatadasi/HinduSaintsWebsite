@@ -8,6 +8,7 @@ function git(args) {
 
 function parseArgs(argv) {
   const options = {
+    status: process.env.RELEASE_HANDOFF_STATUS || "ready",
     owner: process.env.USERNAME || process.env.USER || "agent",
     summary: [],
     migrations: "none",
@@ -45,6 +46,9 @@ function parseArgs(argv) {
     } else if (arg === "--verification" && next) {
       options.verification = next;
       index += 1;
+    } else if (arg === "--status" && next) {
+      options.status = next;
+      index += 1;
     } else if (arg === "--help" || arg === "-h") {
       printHelp();
       process.exit(0);
@@ -71,10 +75,15 @@ Options:
   --shared <text>        Shared areas touched. Defaults to none.
   --conflicts <text>     Expected conflicts. Defaults to none.
   --verification <text>  Verification line. Defaults to dev:check passed.
+  --status <ready|queued>
+                        Handoff status. Defaults to ready.
 `);
 }
 
 const options = parseArgs(process.argv.slice(2));
+if (!["ready", "queued"].includes(options.status)) {
+  throw new Error(`Unsupported handoff status: ${options.status}. Use "ready" or "queued".`);
+}
 const branch = git(["branch", "--show-current"]);
 if (!branch) {
   throw new Error("Release handoffs require a named branch, not detached HEAD.");
@@ -100,13 +109,20 @@ mkdirSync(handoffDir, { recursive: true });
 
 const summaries = options.summary.length ? options.summary : ["<describe the deployable change>"];
 const summaryLines = summaries.map((summary) => `- ${summary}`).join("\n");
+const bundlePriority = options.status === "queued"
+  ? "queue for next major/bundled deployment"
+  : "immediate release candidate";
+const queueTrigger = options.status === "queued"
+  ? "queued until the next requested or major deployment"
+  : "ready now";
 
 const content = `# Release Handoff: ${branch}
 
-- Status: ready
+- Status: ${options.status}
 - Branch: \`${branch}\`
 - Commit: \`${commit}\`
 - Owner/agent: \`${options.owner}\`
+- Bundle priority: ${bundlePriority}
 
 ## Summary
 
@@ -121,6 +137,7 @@ ${summaryLines}
 - Migrations: ${options.migrations}
 - Environment variables: ${options.env}
 - Data/backfill/release steps: ${options.data}
+- Queue/deploy trigger: ${queueTrigger}
 
 ## Risk And Conflicts
 

@@ -17,6 +17,7 @@
     "dev:check": "prisma generate && tsc --noEmit",
     "release:handoff": "node scripts/create-release-handoff.mjs",
     "prepare:deployment": "npm run dev:check && npm run release:handoff",
+    "queue:deployment": "npm run dev:check && npm run release:handoff -- --status queued",
     "verify": "npm run db:generate && npm run build",
     "codex:verify": "npm run db:generate && npm run build",
     "db:generate": "prisma generate",
