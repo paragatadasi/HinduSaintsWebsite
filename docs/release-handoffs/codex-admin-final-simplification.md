@@ -27,6 +27,10 @@
   remain in the grouped left sidebar, the root admin layout no longer renders
   horizontal workspace tabs, and horizontal link tabs remain limited to nested
   workflows such as Site configuration and the internal workload queues.
+- Gives nested navigation an explicit tab-strip treatment inspired by the
+  supplied reference: outlined inactive tabs, a selected surface with a strong
+  accent edge, and a connected accent rule. The shared treatment covers Site
+  configuration, detail-page section jumps, and the internal Work queue rail.
 
 ## Verification
 

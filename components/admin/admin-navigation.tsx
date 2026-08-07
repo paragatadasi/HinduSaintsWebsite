@@ -54,13 +54,13 @@ export function AdminWorkspaceTabs({ groups }: { groups: AdminNavigationGroup[] 
   return (
     <nav aria-label={`${activeGroup.label} sections`} className="admin-workspace-tabs">
       <span className="admin-workspace-tabs__label">{activeGroup.label}</span>
-      <div className="admin-workspace-tabs__rail">
+      <div className="admin-workspace-tabs__rail admin-tab-strip">
         {activeGroup.items.map((item) => {
           const active = isAdminNavigationItemActive(pathname, item);
           return (
             <Link
               aria-current={active ? "page" : undefined}
-              className="admin-workspace-tab"
+              className="admin-workspace-tab admin-tab-strip__tab"
               href={item.href as Route}
               key={item.href}
             >

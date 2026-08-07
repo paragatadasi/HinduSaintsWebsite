@@ -198,7 +198,9 @@ Implementation direction:
 - Use horizontal link tabs only inside a nested workflow or subsection, such as
   Site configuration pages or queues within My Work. Nested tabs use links with
   `aria-current="page"`; they are not client-side tab panels and must preserve
-  normal URLs, history, and authorization gates.
+  normal URLs, history, and authorization gates. They should read visually as a
+  connected tab strip: outlined tab-shaped controls, a selected surface, and an
+  accent rule joining the strip to its content. Do not render them as pills.
 - Use `ReviewSectionNav` for sticky jump navigation among detail-page cards.
   Detail review pages may present it as a horizontal section rail so grouped or
   individual card sets remain directly reachable instead of becoming a long
