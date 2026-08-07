@@ -4451,12 +4451,26 @@ html[data-route-entering="true"] body > main {
   padding-bottom: var(--space-3);
 }
 
-.admin-sidebar__workspaces {
+.admin-sidebar__sections,
+.admin-sidebar__group {
   display: grid;
   gap: var(--space-2);
 }
 
-.admin-sidebar__workspace-link {
+.admin-sidebar__group {
+  padding-top: var(--space-2);
+}
+
+.admin-sidebar__heading {
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  letter-spacing: var(--tracking-wide);
+  padding: 0 var(--space-3);
+  text-transform: uppercase;
+}
+
+.admin-sidebar__link {
   align-items: center;
   border-left: var(--border-width-default) solid transparent;
   display: flex;
@@ -4466,9 +4480,9 @@ html[data-route-entering="true"] body > main {
   padding: var(--space-2) var(--space-3);
 }
 
-.admin-sidebar__workspace-link:hover,
-.admin-sidebar__workspace-link:focus-visible,
-.admin-sidebar__workspace-link--active {
+.admin-sidebar__link:hover,
+.admin-sidebar__link:focus-visible,
+.admin-sidebar__link--active {
   background: var(--color-surface);
   border-left-color: var(--color-accent);
   color: var(--color-text);
