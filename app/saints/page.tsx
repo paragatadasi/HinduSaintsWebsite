@@ -10,11 +10,9 @@ import { getPublicIndexHeroImages } from "@/lib/site-config";
 import { getPublishedSaintCatalog } from "@/lib/public-saints";
 import { getSaintsIndexContent } from "@/lib/site-content";
 import { buildPublicMetadata } from "@/lib/seo";
+import { getSocialImage } from "@/lib/social-metadata";
 
 export const dynamic = "force-dynamic";
-
-const saintsDescription = "Explore our rich collection of saints from the Hindu tradition and beyond.";
-
 type SaintsIndexPageProps = {
   searchParams?: Promise<{
     endYear?: string | string[];
@@ -27,6 +25,12 @@ type SaintsIndexPageProps = {
 
 export async function generateMetadata({ searchParams }: SaintsIndexPageProps): Promise<Metadata> {
   const params = await searchParams;
+  const content = getSaintsIndexContent();
+  const heroImages = await getPublicIndexHeroImages();
+  const image = getSocialImage(heroImages.saints, {
+    fallbackAlt: content.title,
+    optimizeManagedImage: true
+  });
   const hasFilters = Boolean(
     getSearchParam(params?.q)
     || getSearchParam(params?.tradition)
@@ -36,9 +40,11 @@ export async function generateMetadata({ searchParams }: SaintsIndexPageProps): 
   );
 
   return buildPublicMetadata({
-    title: "Saints",
-    description: saintsDescription,
+    title: content.title,
+    description: content.description,
     path: "/saints",
+    image: image.url,
+    imageAlt: image.alt,
     noIndex: hasFilters
   });
 }

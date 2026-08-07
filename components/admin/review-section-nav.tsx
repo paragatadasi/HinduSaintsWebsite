@@ -36,11 +36,11 @@ export function ReviewSectionNav({
   }
 
   return (
-    <nav aria-label={label} className="review-section-nav">
+    <nav aria-label={label} className="review-section-nav admin-tab-strip">
       {links.map((link) => (
         <a
           aria-current={activeCardId === link.cardId ? "location" : undefined}
-          className="review-section-link"
+          className="review-section-link admin-tab-strip__tab"
           href={`#review-card-${link.cardId}`}
           key={link.cardId}
           onClick={() => openCard(link.cardId)}

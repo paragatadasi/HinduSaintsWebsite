@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
 import { getAdminUser } from "@/lib/admin-access";
 import { AdminFormGuard } from "@/components/admin/admin-form-guard";
-import { AdminPrimaryNavigation, AdminWorkspaceTabs } from "@/components/admin/admin-navigation";
+import { AdminPrimaryNavigation } from "@/components/admin/admin-navigation";
 import type { AdminNavigationGroup } from "@/lib/admin-navigation";
 
 export const dynamic = "force-dynamic";
@@ -77,7 +77,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <div className="page-shell admin-layout">
         <AdminPrimaryNavigation groups={navigationGroups} />
         <section className="admin-content">
-          <AdminWorkspaceTabs groups={navigationGroups} />
           <AdminFormGuard>{children}</AdminFormGuard>
         </section>
       </div>

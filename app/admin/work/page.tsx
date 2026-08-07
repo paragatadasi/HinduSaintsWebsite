@@ -116,11 +116,11 @@ export default async function WorkDashboard({ searchParams }: Props) {
         </CollapsibleReviewCard>
       ) : null}
 
-      <nav aria-label="Assignment queues" className="admin-queue-filters">
+      <nav aria-label="Assignment queues" className="admin-queue-filters admin-tab-strip">
         {views.map((item) => (
           <Link
             aria-current={view === item.id ? "page" : undefined}
-            className="admin-queue-filter"
+            className="admin-queue-filter admin-tab-strip__tab"
             href={`/admin/work?view=${item.id}` as Route}
             key={item.id}
           >

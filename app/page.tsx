@@ -19,36 +19,37 @@ import { getFeaturedSaintSummaries, getPublishedSaintSummaries } from "@/lib/pub
 import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
 import type { PublicImage, PublicPlaceMapData } from "@/lib/public-contracts";
 import { getHomeLayoutVariant, getPlacesMapContent, type HomeHeroContent, type HomeSectionContent, type HomeQuoteContent } from "@/lib/site-content";
+import { getSocialImage } from "@/lib/social-metadata";
 
 export const dynamic = "force-dynamic";
 
-const homeDescription = "A devotional archive of Hindu saints, traditions, biographies, sources, and related Instagram posts.";
+export async function generateMetadata(): Promise<Metadata> {
+  const { bannerFocalArea, bannerImage, hero } = await getPublicHomePageConfig();
+  const image = getSocialImage(bannerImage, {
+    fallbackAlt: hero.title,
+    focalPoint: bannerFocalArea,
+    optimizeManagedImage: true
+  });
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    url: "/",
-    siteName: "Hindu Saints Archive",
-    title: "Hindu Saints Archive",
-    description: homeDescription,
-    images: [
-      {
-        url: "/images/hindu-saints-share.jpg",
-        width: 1200,
-        height: 630,
-        type: "image/jpeg",
-        alt: "A devotee meditating beside a sacred river at night"
-      }
-    ]
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Hindu Saints Archive",
-    description: homeDescription,
-    images: ["/images/hindu-saints-share.jpg"]
-  }
-};
+  return {
+    description: hero.body,
+    alternates: { canonical: "/" },
+    openGraph: {
+      type: "website",
+      url: "/",
+      siteName: "Hindu Saints Archive",
+      title: hero.title,
+      description: hero.body,
+      images: [image]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: hero.title,
+      description: hero.body,
+      images: [image.url]
+    }
+  };
+}
 
 export default async function HomePage() {
   const layout = getHomeLayoutVariant();
