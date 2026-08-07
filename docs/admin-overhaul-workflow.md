@@ -45,6 +45,18 @@ branch as every chunk.
 | R4. Image tooling compaction | Deployed | Tokenized compact editors, synchronized large-editor dialogs, full-size inspection, and keyboard controls for focal/crop adjustment |
 | R5. Assignment and access simplification | Deployed | Internal URL-backed workload queue rail, compact assignment creation, summary-first user access cards, consistent sensitive-action terminology, and explicit nested-tab styling |
 
+## Current admin refinement phase
+
+This is a new phase after the completed nine-chunk overhaul and R1-R5 UX
+remediation. It does not reopen either completed sequence.
+
+| Chunk | Status | Scope |
+| --- | --- | --- |
+| A1. Detail workspace tabs | Ready for release | URL-backed Saint and Tradition review tabs that render only the active workflow; Saint aliases folded into Overview; Public Fields renamed Key Facts; shallow Instagram and Place detail rails removed |
+| A2. Homepage configuration compaction | Planned | Responsive multi-column configuration layout, smaller adjacent media previews, and advanced image adjustments reserved for the larger editor |
+| A3. Source Data simplification | Planned | Source-specific Airtable and Instagram history, retired combined overview/history navigation, preserved raw import records |
+| A4. Dashboard and workload consolidation | Planned | Team/My Workflow grouping, My Work embedded in Dashboard, and redundant sidebar destinations removed |
+
 ## Capability contract
 
 All access must be enforced server-side. Navigation visibility is a convenience,
@@ -126,8 +138,11 @@ For each chunk:
 
 ### Final review UX
 
-- Primary decision workflow stays visible; secondary/reference material starts collapsed.
-- Task tabs do not hide the primary decision and warn before abandoning dirty edits.
+- Shallow Instagram and Place detail pages keep the primary decision workflow
+  visible and do not show a redundant section rail.
+- Saint and Tradition detail pages use URL-backed tabs for coherent workflows;
+  Publish Readiness owns the primary decision and tab changes warn before
+  abandoning dirty edits.
 - Errors appear beside fields and in a compact card/tab summary.
 - Default images stay compact, with an accessible full-size inspection action.
 - Keyboard, focus, horizontal overflow, and common laptop-width behavior are verified.
@@ -135,9 +150,9 @@ For each chunk:
 ## Completion record
 
 The documented admin UX remediation (R1-R5) is complete and deployed as of
-August 7, 2026. Future admin UX changes should begin as a new scoped chunk from
-current `main`; do not resume the remediation sequence. Translation workflow
-design and authoring remain explicitly deferred.
+August 7, 2026. The current A1-A4 refinement phase is a separate sequence and
+must follow the same per-chunk release cadence. Translation workflow design and
+authoring remain explicitly deferred.
 
 R5 assignment/access simplification and the final navigation correction are
 deployed. Release commits and final release state:

@@ -270,14 +270,14 @@ export async function updateSaintOverview(formData: FormData) {
       canonicalName: parsed.canonicalName,
       shortDescription: parsed.shortDescription ?? null
   };
-  const saint = await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), attempted, `/admin/saints/${parsed.saintId}`, async (tx) => {
+  const saint = await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), attempted, `/admin/saints/${parsed.saintId}/summary`, async (tx) => {
     const updated = await tx.saint.update({ where: { id: parsed.saintId }, data: attempted, select: { slug: true } });
     await tx.adminEditorialDraft.deleteMany({ where: { entityType: "saint", entityId: parsed.saintId, section: "overview" } });
     return updated;
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${parsed.saintId}`);
+  redirect(`/admin/saints/${saint.slug}/summary`);
 }
 
 export async function updateSaintOtherPublicFields(formData: FormData) {
@@ -313,14 +313,14 @@ export async function updateSaintOtherPublicFields(formData: FormData) {
       seoTitle: parsed.seoTitle ?? null,
       seoDescription: parsed.seoDescription ?? null
   };
-  const saint = await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), attempted, `/admin/saints/${parsed.saintId}`, async (tx) => {
+  const saint = await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), attempted, `/admin/saints/${parsed.saintId}/summary`, async (tx) => {
     const updated = await tx.saint.update({ where: { id: parsed.saintId }, data: attempted, select: { slug: true } });
     await tx.adminEditorialDraft.deleteMany({ where: { entityType: "saint", entityId: parsed.saintId, section: "public_fields" } });
     return updated;
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${parsed.saintId}`);
+  redirect(`/admin/saints/${saint.slug}/summary`);
 }
 
 export async function updateSaintAliases(formData: FormData) {
@@ -343,7 +343,7 @@ export async function updateSaintAliases(formData: FormData) {
   const existingAliasMeta = new Map(saint.aliases.map((alias) => [normalizeListValue(alias.alias), alias]));
   const aliases = uniqueList(parsed.aliases);
 
-  await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), { aliases }, `/admin/saints/${parsed.saintId}`, async (tx) => {
+  await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), { aliases }, `/admin/saints/${parsed.saintId}/summary`, async (tx) => {
     await tx.saintAlias.deleteMany({ where: { saintId: parsed.saintId } });
 
     if (aliases.length > 0) {
@@ -363,7 +363,7 @@ export async function updateSaintAliases(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${parsed.saintId}`);
+  redirect(`/admin/saints/${saint.slug}/summary`);
 }
 
 export async function createSaintRelationship(formData: FormData) {
@@ -687,7 +687,7 @@ export async function upsertSaintBiography(formData: FormData) {
     title: parsed.title,
     bodyMarkdown: parsed.bodyMarkdown,
     status: parsed.status
-  }, `/admin/saints/${parsed.saintId}`, async (tx) => {
+  }, `/admin/saints/${parsed.saintId}/biography`, async (tx) => {
     if (parsed.biographyId) {
       await tx.biography.update({
         where: { id: parsed.biographyId },
@@ -727,7 +727,7 @@ export async function upsertSaintBiography(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${parsed.saintId}`);
+  redirect(`/admin/saints/${saint.slug}/biography`);
 }
 
 export async function upsertSaintSource(formData: FormData) {

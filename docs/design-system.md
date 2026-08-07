@@ -128,7 +128,8 @@ Default anatomy:
 - Review header: page title, status chips, source links, and one primary page
   action when available.
 - Primary decision card: open by default and focused on the main resolution
-  task for the page.
+  task for shallow detail pages. On Saint and Tradition detail pages it belongs
+  to the default Publish Readiness tab.
 - Summary-first editable cards: show current values as readable facts, then use
   an Edit action to switch into a per-card form.
 - Keep summary and edit modes spatially consistent. When a card switches from
@@ -196,41 +197,39 @@ Implementation direction:
   and content destinations must not be duplicated in a site-wide horizontal
   tab bar.
 - Use horizontal link tabs only inside a nested workflow or subsection, such as
-  Site configuration pages or queues within My Work. Nested tabs use links with
+  Site configuration pages, queues within My Work, or the coherent workflow
+  groups within Saint and Tradition review. Nested tabs use links with
   `aria-current="page"`; they are not client-side tab panels and must preserve
   normal URLs, history, and authorization gates. They should read visually as a
   connected tab strip: outlined tab-shaped controls, a selected surface, and an
   accent rule joining the strip to its content. Do not render them as pills.
-- Use `ReviewSectionNav` for sticky jump navigation among detail-page cards.
-  Detail review pages may present it as a horizontal section rail so grouped or
-  individual card sets remain directly reachable instead of becoming a long
-  undifferentiated stream. It opens collapsed cards and marks the current anchor
-  with `aria-current="location"`. Do not present section jump links as ARIA tabs.
+- Do not add a horizontal section rail to shallow detail pages. Instagram and
+  Place review keep their primary workflow and supporting cards in one readable
+  stream. Saint and Tradition use normal URL-backed links with
+  `aria-current="page"` and render only the active workflow's cards.
 
 Current rollout notes:
 
 - The root admin layout uses the grouped left sidebar for every site-wide
   destination. It does not render a horizontal workspace rail.
-- Site configuration routes, internal Work queues, and detail-page
-  `ReviewSectionNav` links use the shared explicit tab-strip treatment. Route
-  tabs use `aria-current="page"`; detail jump links use
-  `aria-current="location"` and remain navigation rather than ARIA tab panels.
+- Site configuration routes, internal Work queues, and Saint/Tradition workflow
+  routes use the shared explicit tab-strip treatment and
+  `aria-current="page"`. Instagram and Place detail pages do not show a
+  horizontal rail.
 - Instagram item detail is the first polished pilot. `Connect this Post` is the
   primary workflow. First Page Biodata starts as a six-field summary, keeps
   first-page source text out of the default summary, and places parse actions at
   the start of edit mode with save actions at the bottom.
-- Saint detail is the second pilot. It starts with Public Profile Readiness,
-  uses summary-first editable cards for overview, public fields, traditions,
-  places, biography, and aliases, and places Instagram claims directly below
-  public fields so reviewers can compare imported candidates with current
-  reviewed values.
+- Saint detail is the second pilot. Publish Readiness contains the decision,
+  matched Instagram posts, and review snapshot. Summary contains Overview,
+  Key Facts, relationships, and Instagram claims; aliases are part of Overview.
+  Biography contains the biography and sources, while Media owns images.
 - Images sit near biography because they support the public profile review,
   while sources, snapshots, aliases, and other references remain collapsible.
-- Tradition detail follows the same model. It starts with Public Tradition
-  Readiness, keeps Merge Duplicate near the decision workflow but visually
-  narrower, connects parent and child traditions in Overview, keeps lineage and
-  long-form sections summary-first, and uses an add-more editor for manual
-  related sidebar links.
+- Tradition detail follows the same model. Publish Readiness contains the
+  decision and Merge Duplicate. Summary contains Overview and Key Facts;
+  Content contains lineage, long-form sections, related links, and scriptural
+  basis; Media owns tradition images.
 - Place detail follows the same model without inventing a publish status. It
   starts with Public Place Readiness, keeps Merge Duplicate near the decision
   workflow, connects place unit, parent state, localities, and country in

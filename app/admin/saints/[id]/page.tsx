@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2, UserRound } from "lucide-react";
+import { AdminWorkspaceTabs } from "@/components/admin/admin-navigation";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewFactGrid, ReviewSection, ReviewSubsection, ReviewWorkflow } from "@/components/admin/review-ui";
-import { ReviewSectionNav } from "@/components/admin/review-section-nav";
 import { SaintDateField } from "@/components/admin/saint-date-field";
 import { AdminPresence } from "@/components/admin/admin-presence";
 import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
@@ -42,17 +42,30 @@ import { SaintImageCropper } from "./saint-image-cropper";
 import { SaintPlaceRouteEditor, type SaintPlaceRouteOption } from "./saint-place-route-editor";
 import { SaintTraditionEditor } from "./saint-tradition-editor";
 
-type AdminSaintEditorPageProps = {
+export type AdminSaintEditorPageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ conflict?: string }>;
 };
 
-export default async function AdminSaintEditorPage({ params, searchParams }: AdminSaintEditorPageProps) {
+export type SaintEditorTab = "readiness" | "summary" | "biography" | "media";
+
+export default function AdminSaintReadinessPage(props: AdminSaintEditorPageProps) {
+  return <AdminSaintEditorPage {...props} activeTab="readiness" />;
+}
+
+export async function AdminSaintEditorPage({
+  params,
+  searchParams,
+  activeTab
+}: AdminSaintEditorPageProps & { activeTab: SaintEditorTab }) {
   const { id } = await params;
   const { conflict } = await searchParams;
   const saint = await getSaint(id);
 
   if (!saint) notFound();
+
+  const detailPath = `/admin/saints/${saint.slug}`;
+  const activePath = activeTab === "readiness" ? detailPath : `${detailPath}/${activeTab}`;
 
   const editorialDrafts = await getEditorialDraftMap("saint", saint.id);
   const overviewDraft = editorialDrafts.get("overview");
@@ -127,19 +140,21 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
         ) : null}
       </div>
 
-      <EditConflictPanel conflictId={conflict} returnTo={`/admin/saints/${saint.id}`} />
+      <EditConflictPanel conflictId={conflict} returnTo={activePath} />
 
-      <ReviewSectionNav links={[
-        { cardId: "saint-overview", label: "Overview" },
-        { cardId: "saint-public-fields", label: "Public fields" },
-        { cardId: "saint-relationships", label: "Relationships", count: saint.relationshipsFrom.length + saint.relationshipsTo.length },
-        { cardId: "saint-biography", label: "Biography" },
-        { cardId: "saint-images", label: "Media", count: saint.galleryImages.length },
-        { cardId: "saint-sources", label: "Sources", count: sourceLinks.length },
-        { cardId: "saint-review-snapshot", label: "Reference" }
-      ]} />
+      <AdminWorkspaceTabs groups={[{
+        href: detailPath,
+        id: "saint-review",
+        label: "Saint review",
+        items: [
+          { exact: true, href: detailPath, label: "Publish Readiness" },
+          { href: `${detailPath}/summary`, label: "Summary" },
+          { href: `${detailPath}/biography`, label: "Biography" },
+          { count: saint.galleryImages.length, href: `${detailPath}/media`, label: "Media" }
+        ]
+      }]} />
 
-      <ReviewWorkflow
+      {activeTab === "readiness" ? <ReviewWorkflow
         className="review-panel--saint-readiness"
         description="Check whether the public profile is ready, then choose the review outcome."
         eyebrow="Review decision"
@@ -171,8 +186,9 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
             <StatusForm saintId={saint.id} version={saint.version} status="archived" label="Archive" variant="warning" />
           </div>
         </ReviewSection>
-      </ReviewWorkflow>
+      </ReviewWorkflow> : null}
 
+      {activeTab === "summary" ? <>
       <CollapsibleReviewCard
         cardId="saint-overview"
         defaultOpen
@@ -186,6 +202,7 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
             <div className="field-grid saint-review__summary-grid">
               <ReviewField label="Display name" value={saint.displayName} />
               <ReviewField label="Canonical name" value={saint.canonicalName} />
+              <ReviewField label="Aliases" value={saint.aliases.map((alias) => alias.alias).join(", ")} />
               <ReviewField label="Short description" value={saint.shortDescription} />
             </div>
           )}
@@ -216,16 +233,33 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
             </div>
           </EditorialDraftForm>
         </ReviewEditToggle>
+
+        <ReviewEditToggle
+          editLabel="Edit aliases"
+          summary={<p className="review-hint">Aliases support search, imported-data matching, and editorial context.</p>}
+        >
+          <EditorialDraftForm action={updateSaintAliases} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={aliasesDraft} section="aliases">
+            <input name="saintId" type="hidden" value={saint.id} />
+            <input name="version" type="hidden" value={saint.version} />
+            <label>
+              Aliases
+              <input name="aliases" defaultValue={draftString(aliasesDraft, "aliases", saint.aliases.map((alias) => alias.alias).join(", "))} maxLength={2000} />
+            </label>
+            <div className="review-actions">
+              <button className="admin-form-button" type="submit">Save aliases</button>
+            </div>
+          </EditorialDraftForm>
+        </ReviewEditToggle>
       </CollapsibleReviewCard>
 
       <CollapsibleReviewCard
         cardId="saint-public-fields"
-        description="Dates, era text, and SEO fields used by the public profile."
+        description="Dates, era text, and discoverability fields used by the public profile."
         eyebrow="Profile metadata"
-        title="Public Fields"
+        title="Key Facts"
       >
         <ReviewEditToggle
-          editLabel="Edit public fields"
+          editLabel="Edit key facts"
           summary={(
             <div className="field-grid saint-review__summary-grid">
               <ReviewField label="Era" value={saint.eraLabel} />
@@ -274,7 +308,7 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
               </label>
             </div>
             <div className="review-actions">
-              <button className="admin-form-button" type="submit">Save public fields</button>
+              <button className="admin-form-button" type="submit">Save key facts</button>
             </div>
           </EditorialDraftForm>
         </ReviewEditToggle>
@@ -527,7 +561,9 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
         )}
       </CollapsibleReviewCard>
 
-      <CollapsibleReviewCard
+      </> : null}
+
+      {activeTab === "readiness" ? <CollapsibleReviewCard
         cardId="saint-instagram-posts"
         defaultOpen={saint.instagramItems.some((link) => link.matchStatus === "matched" || link.matchStatus === "published")}
         description="Review posts currently connected to this saint and remove incorrect matches."
@@ -535,9 +571,9 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
         title="Matched Instagram Posts"
       >
         <SaintInstagramMatches saint={saint} />
-      </CollapsibleReviewCard>
+      </CollapsibleReviewCard> : null}
 
-      <CollapsibleReviewCard
+      {activeTab === "biography" ? <CollapsibleReviewCard
         cardId="saint-biography"
         description="Long-form narrative and imported text references."
         eyebrow="Long-form content"
@@ -607,9 +643,9 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
               </div>
           </EditorialDraftForm>
         </ReviewEditToggle>
-      </CollapsibleReviewCard>
+      </CollapsibleReviewCard> : null}
 
-      <CollapsibleReviewCard
+      {activeTab === "media" ? <CollapsibleReviewCard
         cardId="saint-images"
         defaultOpen={!saint.primaryImage && visibleGalleryImages.length === 0}
         description="Public images, hidden staged images, and Instagram image candidates."
@@ -674,9 +710,9 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
             }))}
           />
         </div>
-      </CollapsibleReviewCard>
+      </CollapsibleReviewCard> : null}
 
-      <CollapsibleReviewCard
+      {activeTab === "biography" ? <CollapsibleReviewCard
         cardId="saint-sources"
         description="Reviewed sources and public further reading."
         eyebrow="References"
@@ -783,9 +819,9 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
                 </div>
               </form>
             </div>
-      </CollapsibleReviewCard>
+      </CollapsibleReviewCard> : null}
 
-      <CollapsibleReviewCard
+      {activeTab === "readiness" ? <CollapsibleReviewCard
         cardId="saint-review-snapshot"
         description="Identifiers, imported metadata, and preserved Airtable linkage."
         eyebrow="Technical reference"
@@ -801,35 +837,7 @@ export default async function AdminSaintEditorPage({ params, searchParams }: Adm
           <ReviewField label="SEO description" value={saint.seoDescription} />
           <ReviewField label="Last Airtable mirror seen" value={externalRecord?.lastSeenAt.toLocaleString()} />
         </div>
-      </CollapsibleReviewCard>
-
-      <CollapsibleReviewCard
-        cardId="saint-aliases"
-        description="Alternate names used for search, matching, and editorial context."
-        eyebrow="Identity"
-        title="Aliases"
-      >
-        <ReviewEditToggle
-          editLabel="Edit aliases"
-          summary={(
-            <div className="field-grid saint-review__summary-grid">
-              <ReviewField label="Aliases" value={saint.aliases.map((alias) => alias.alias).join(", ")} />
-            </div>
-          )}
-        >
-          <EditorialDraftForm action={updateSaintAliases} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={aliasesDraft} section="aliases">
-            <input name="saintId" type="hidden" value={saint.id} />
-            <input name="version" type="hidden" value={saint.version} />
-            <label>
-              Aliases
-              <input name="aliases" defaultValue={draftString(aliasesDraft, "aliases", saint.aliases.map((alias) => alias.alias).join(", "))} maxLength={2000} />
-            </label>
-            <div className="review-actions">
-              <button className="admin-form-button" type="submit">Save aliases</button>
-            </div>
-          </EditorialDraftForm>
-        </ReviewEditToggle>
-      </CollapsibleReviewCard>
+      </CollapsibleReviewCard> : null}
 
     </div>
   );

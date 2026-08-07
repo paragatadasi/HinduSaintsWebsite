@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Route } from "next";
 import { CheckCircle2, GitBranch } from "lucide-react";
 import type { ReactNode } from "react";
+import { AdminWorkspaceTabs } from "@/components/admin/admin-navigation";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { AdminPresence } from "@/components/admin/admin-presence";
 import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
@@ -10,7 +11,6 @@ import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
-import { ReviewSectionNav } from "@/components/admin/review-section-nav";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
@@ -32,10 +32,12 @@ import { TraditionLineageEditor } from "./tradition-lineage-editor";
 import { TraditionRelatedLinksEditor } from "./tradition-related-links-editor";
 import { TraditionScripturalBasisEditor } from "./tradition-scriptural-basis-editor";
 
-type AdminTraditionEditorPageProps = {
+export type AdminTraditionEditorPageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ conflict?: string }>;
 };
+
+export type TraditionEditorTab = "readiness" | "summary" | "content" | "media";
 
 type SelectOption = {
   value: string;
@@ -44,12 +46,23 @@ type SelectOption = {
   keywords?: string[];
 };
 
-export default async function AdminTraditionEditorPage({ params, searchParams }: AdminTraditionEditorPageProps) {
+export default function AdminTraditionReadinessPage(props: AdminTraditionEditorPageProps) {
+  return <AdminTraditionEditorPage {...props} activeTab="readiness" />;
+}
+
+export async function AdminTraditionEditorPage({
+  params,
+  searchParams,
+  activeTab
+}: AdminTraditionEditorPageProps & { activeTab: TraditionEditorTab }) {
   const { id } = await params;
   const { conflict } = await searchParams;
   const tradition = await getTradition(id);
 
   if (!tradition) notFound();
+
+  const detailPath = `/admin/traditions/${tradition.slug}`;
+  const activePath = activeTab === "readiness" ? detailPath : `${detailPath}/${activeTab}`;
 
   const editorialDrafts = await getEditorialDraftMap("tradition", tradition.id);
   const overviewDraft = editorialDrafts.get("overview");
@@ -129,19 +142,21 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
           ) : null}
         </div>
       </div>
-      <EditConflictPanel conflictId={conflict} returnTo={`/admin/traditions/${tradition.slug}`} />
+      <EditConflictPanel conflictId={conflict} returnTo={activePath} />
 
-      <ReviewSectionNav links={[
-        { cardId: "tradition-overview", label: "Overview" },
-        { cardId: "tradition-public-fields", label: "Public fields" },
-        { cardId: "tradition-lineage", label: "Lineage", count: tradition.lineageSaints.length },
-        { cardId: "tradition-long-form", label: "Long-form" },
-        { cardId: "tradition-related-links", label: "Related links" },
-        { cardId: "tradition-scriptural-basis", label: "Sources" },
-        { cardId: "tradition-media", label: "Media", count: tradition.galleryImages.length }
-      ]} />
+      <AdminWorkspaceTabs groups={[{
+        href: detailPath,
+        id: "tradition-review",
+        label: "Tradition review",
+        items: [
+          { exact: true, href: detailPath, label: "Publish Readiness" },
+          { href: `${detailPath}/summary`, label: "Summary" },
+          { href: `${detailPath}/content`, label: "Content" },
+          { count: tradition.galleryImages.length, href: `${detailPath}/media`, label: "Media" }
+        ]
+      }]} />
 
-      <div className="review-detail-grid review-detail-grid--decision">
+      {activeTab === "readiness" ? <div className="review-detail-grid review-detail-grid--decision">
         <ReviewWorkflow
           className="review-panel--tradition-readiness"
           description="Confirm whether the tradition page has enough reviewed content, then choose the publication outcome."
@@ -198,8 +213,9 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
             </div>
           </form>
         </CollapsibleReviewCard>
-      </div>
+      </div> : null}
 
+      {activeTab === "summary" ? <>
       <CollapsibleReviewCard
         cardId="tradition-overview"
         defaultOpen
@@ -260,12 +276,12 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
 
       <CollapsibleReviewCard
         cardId="tradition-public-fields"
-        description="Founder, origin, focus, and SEO fields used by the public tradition page."
+        description="Founder, origin, focus, and discoverability fields used by the public tradition page."
         eyebrow="Profile metadata"
-        title="Public Fields"
+        title="Key Facts"
       >
         <ReviewEditToggle
-          editLabel="Edit public fields"
+          editLabel="Edit key facts"
           summary={(
             <div className="field-grid">
               <ReviewField label="Founder saint" value={tradition.founderSaint?.displayName} />
@@ -330,12 +346,15 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
               </label>
             </div>
             <div className="review-actions">
-              <button className="admin-form-button" type="submit">Save public fields</button>
+              <button className="admin-form-button" type="submit">Save key facts</button>
             </div>
           </EditorialDraftForm>
         </ReviewEditToggle>
       </CollapsibleReviewCard>
 
+      </> : null}
+
+      {activeTab === "content" ? <>
       <CollapsibleReviewCard
         cardId="tradition-lineage"
         defaultOpen={tradition.lineageSaints.length === 0}
@@ -493,7 +512,9 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
         </ReviewEditToggle>
       </CollapsibleReviewCard>
 
-      <CollapsibleReviewCard
+      </> : null}
+
+      {activeTab === "media" ? <CollapsibleReviewCard
         cardId="tradition-media"
         defaultOpen={!tradition.heroImage && visibleGalleryImages.length === 0}
         description="Hero image, public gallery images, hidden staged images, and uploads."
@@ -575,7 +596,7 @@ export default async function AdminTraditionEditorPage({ params, searchParams }:
           <h3>Add image</h3>
           <TraditionImageUploader defaultAltText={`${tradition.name} tradition image`} traditionId={tradition.id} />
         </div>
-      </CollapsibleReviewCard>
+      </CollapsibleReviewCard> : null}
     </div>
   );
 }
