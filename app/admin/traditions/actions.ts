@@ -220,7 +220,7 @@ export async function updateTraditionOverview(formData: FormData) {
       shortDescription: parsed.shortDescription ?? null,
       status: parsed.status
   };
-  const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${existing.slug}`, async (tx) => {
+  const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${existing.slug}/summary`, async (tx) => {
     const updated = await tx.tradition.update({ where: { id: parsed.traditionId }, data: attempted, select: { slug: true } });
     await tx.adminEditorialDraft.deleteMany({ where: { entityType: "tradition", entityId: parsed.traditionId, section: "overview" } });
     return updated;
@@ -228,7 +228,7 @@ export async function updateTraditionOverview(formData: FormData) {
 
   revalidateTraditionPaths(existing.slug);
   revalidateTraditionPaths(tradition.slug);
-  redirect(`/admin/traditions/${tradition.slug}`);
+  redirect(`/admin/traditions/${tradition.slug}/summary`);
 }
 
 export async function updateTraditionOtherPublicFields(formData: FormData) {
@@ -259,14 +259,14 @@ export async function updateTraditionOtherPublicFields(formData: FormData) {
   };
   const current = await db.tradition.findUnique({ where: { id: parsed.traditionId }, select: { slug: true } });
   if (!current) redirect("/admin/traditions");
-  const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${current.slug}`, async (tx) => {
+  const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${current.slug}/summary`, async (tx) => {
     const updated = await tx.tradition.update({ where: { id: parsed.traditionId }, data: attempted, select: { slug: true } });
     await tx.adminEditorialDraft.deleteMany({ where: { entityType: "tradition", entityId: parsed.traditionId, section: "public_fields" } });
     return updated;
   });
 
   revalidateTraditionPaths(tradition.slug);
-  redirect(`/admin/traditions/${tradition.slug}`);
+  redirect(`/admin/traditions/${tradition.slug}/summary`);
 }
 
 export async function updateTraditionLongForm(formData: FormData) {
@@ -286,14 +286,14 @@ export async function updateTraditionLongForm(formData: FormData) {
     foundingAcharyaMarkdown: parsed.foundingAcharyaMarkdown ?? null,
     keyTeachingsMarkdown: parsed.keyTeachingsMarkdown ?? null
   };
-  const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${current.slug}`, async (tx) => {
+  const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${current.slug}/content`, async (tx) => {
     const updated = await tx.tradition.update({ where: { id: parsed.traditionId }, data: attempted, select: { slug: true } });
     await tx.adminEditorialDraft.deleteMany({ where: { entityType: "tradition", entityId: parsed.traditionId, section: "long_form" } });
     return updated;
   });
 
   revalidateTraditionPaths(tradition.slug);
-  redirect(`/admin/traditions/${tradition.slug}`);
+  redirect(`/admin/traditions/${tradition.slug}/content`);
 }
 
 export async function updateTraditionLineage(formData: FormData) {
@@ -342,7 +342,7 @@ export async function updateTraditionLineage(formData: FormData) {
   });
 
   revalidateTraditionPaths(tradition.slug);
-  redirect(`/admin/traditions/${tradition.slug}`);
+  redirect(`/admin/traditions/${tradition.slug}/content`);
 }
 
 export async function updateTraditionRelatedLinks(formData: FormData) {
@@ -412,7 +412,7 @@ export async function updateTraditionRelatedLinks(formData: FormData) {
   });
 
   revalidateTraditionPaths(tradition.slug);
-  redirect(`/admin/traditions/${tradition.slug}`);
+  redirect(`/admin/traditions/${tradition.slug}/content`);
 }
 
 export async function updateTraditionScripturalBasis(formData: FormData) {
@@ -484,7 +484,7 @@ export async function updateTraditionScripturalBasis(formData: FormData) {
   });
 
   revalidateTraditionPaths(tradition.slug);
-  redirect(`/admin/traditions/${tradition.slug}`);
+  redirect(`/admin/traditions/${tradition.slug}/content`);
 }
 
 export async function updateTraditionReviewStatus(formData: FormData) {
@@ -683,7 +683,7 @@ export async function updateTraditionHeroImage(formData: FormData) {
   });
 
   revalidateTraditionPaths(tradition.slug);
-  redirect(`/admin/traditions/${tradition.slug}`);
+  redirect(`/admin/traditions/${tradition.slug}/media`);
 }
 
 export async function updateTraditionImageVisibility(input: z.input<typeof traditionImageVisibilitySchema>) {

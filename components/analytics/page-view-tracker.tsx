@@ -6,6 +6,7 @@ import { useReportWebVitals } from "next/web-vitals";
 import {
   flushTelemetryForPageExit,
   recordClientError,
+  recordClientResourceError,
   recordDeclarativeEngagement,
   reportWebVital,
   setTelemetryPage
@@ -54,18 +55,25 @@ export function PageViewTracker() {
       }
     }
 
-    function handleError(event: ErrorEvent) {
-      recordClientError(event.error);
+    function handleError(event: Event) {
+      if (recordClientResourceError(event.target)) return;
+      if (event instanceof ErrorEvent) {
+        recordClientError({
+          channel: "window_error",
+          error: event.error,
+          filename: event.filename
+        });
+      }
     }
 
     function handleUnhandledRejection(event: PromiseRejectionEvent) {
-      recordClientError(event.reason);
+      recordClientError({ channel: "unhandled_rejection", error: event.reason });
     }
 
     document.addEventListener("click", handleClick, true);
     document.addEventListener("keydown", handleKeyDown, true);
     document.addEventListener("submit", handleSubmit, true);
-    window.addEventListener("error", handleError);
+    window.addEventListener("error", handleError, true);
     window.addEventListener("unhandledrejection", handleUnhandledRejection);
     window.addEventListener("pagehide", flushTelemetryForPageExit);
 
@@ -73,7 +81,7 @@ export function PageViewTracker() {
       document.removeEventListener("click", handleClick, true);
       document.removeEventListener("keydown", handleKeyDown, true);
       document.removeEventListener("submit", handleSubmit, true);
-      window.removeEventListener("error", handleError);
+      window.removeEventListener("error", handleError, true);
       window.removeEventListener("unhandledrejection", handleUnhandledRejection);
       window.removeEventListener("pagehide", flushTelemetryForPageExit);
     };

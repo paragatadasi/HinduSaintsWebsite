@@ -39,11 +39,23 @@ branch as every chunk.
 | 8. Museum hardening | Deployed | Direct-route capability audit, sandboxed private family trees, Curator/Site Admin mutation guard seam, curator-only dashboard and main-admin return path, explicit planning-preview status |
 | 9. Final UX/accessibility pass | Deployed | Shared unsaved-change protection and validation summary, keyboard/focus improvements, sticky primary task navigation, narrow-laptop safeguards |
 | 10. Translation workflow | Deferred | Language/version model, translation editing/review/publication and fallback behavior |
-| R1. Navigation remediation | Deployed with sidebar correction pending | Grouped left-sidebar destinations, nested workflow subtabs only, active route state, and honest section-jump navigation semantics |
+| R1. Navigation remediation | Deployed | Grouped left-sidebar destinations, nested workflow subtabs only, active route state, and honest section-jump navigation semantics |
 | R2. Airtable consolidation | Deployed | Complete sync review in Source Data Airtable, preserved polling/progress/detail history, collapsed mirror/reset maintenance, and no duplicate Saints surface |
 | R3. Site configuration decomposition | Deployed | URL-backed Homepage, About, Directory headers, and Footer subtabs with isolated data loading, forms, save feedback, and authorization |
 | R4. Image tooling compaction | Deployed | Tokenized compact editors, synchronized large-editor dialogs, full-size inspection, and keyboard controls for focal/crop adjustment |
-| R5. Assignment and access simplification | Ready for release | Internal URL-backed workload queue rail, compact assignment creation, summary-first user access cards, and consistent sensitive-action terminology |
+| R5. Assignment and access simplification | Deployed | Internal URL-backed workload queue rail, compact assignment creation, summary-first user access cards, consistent sensitive-action terminology, and explicit nested-tab styling |
+
+## Current admin refinement phase
+
+This is a new phase after the completed nine-chunk overhaul and R1-R5 UX
+remediation. It does not reopen either completed sequence.
+
+| Chunk | Status | Scope |
+| --- | --- | --- |
+| A1. Detail workspace tabs | Ready for release | URL-backed Saint and Tradition review tabs that render only the active workflow; Saint aliases folded into Overview; Public Fields renamed Key Facts; shallow Instagram and Place detail rails removed |
+| A2. Homepage configuration compaction | Planned | Responsive multi-column configuration layout, smaller adjacent media previews, and advanced image adjustments reserved for the larger editor |
+| A3. Source Data simplification | Planned | Source-specific Airtable and Instagram history, retired combined overview/history navigation, preserved raw import records |
+| A4. Dashboard and workload consolidation | Planned | Team/My Workflow grouping, My Work embedded in Dashboard, and redundant sidebar destinations removed |
 
 ## Capability contract
 
@@ -86,7 +98,7 @@ For each chunk:
    production deployment completes. Pause further overhaul work until that notice
    arrives, then refresh from `main` and begin the next chunk.
 
-## Detailed remaining acceptance criteria
+## Delivered acceptance criteria
 
 ### Users & Access
 
@@ -94,7 +106,7 @@ For each chunk:
 - Site Admin can activate/deactivate users and inspect last sign-in and access changes.
 - Nobody can demote/deactivate themselves as Site Admin or remove the last active
   Site Admin. All access changes are audited.
-- The destructive-action credential moves under Users & Access with clear naming,
+- The sensitive-action credential lives under Users & Access with clear naming,
   audit metadata, and suitable reauthentication/confirmation behavior.
 - Form errors render in the workflow instead of becoming opaque action failures.
 
@@ -126,18 +138,47 @@ For each chunk:
 
 ### Final review UX
 
-- Primary decision workflow stays visible; secondary/reference material starts collapsed.
-- Task tabs do not hide the primary decision and warn before abandoning dirty edits.
+- Shallow Instagram and Place detail pages keep the primary decision workflow
+  visible and do not show a redundant section rail.
+- Saint and Tradition detail pages use URL-backed tabs for coherent workflows;
+  Publish Readiness owns the primary decision and tab changes warn before
+  abandoning dirty edits.
 - Errors appear beside fields and in a compact card/tab summary.
 - Default images stay compact, with an accessible full-size inspection action.
 - Keyboard, focus, horizontal overflow, and common laptop-width behavior are verified.
 
-## Resume point
+## Completion record
 
-Current chunk: **R5 assignment and access simplification ready for release**.
+The documented admin UX remediation (R1-R5) is complete and deployed as of
+August 7, 2026. The current A1-A4 refinement phase is a separate sequence and
+must follow the same per-chunk release cadence. Translation workflow design and
+authoring remain explicitly deferred.
 
-After R5 is confirmed in production, the documented admin UX remediation is
-complete. Translation workflow design and authoring remain explicitly deferred.
+R5 assignment/access simplification and the final navigation correction are
+deployed. Release commits and final release state:
+
+- Admin release commit on `main`: `474031b` (`Align admin nested tab navigation`)
+- Final `main`: `bb5be24149c86f51d6ca442b8681928b39c60886`
+- Final `deploy`: `6b10e47ec9130012a81b213b8aa0437a74d7da32`
+- Production workflow: `31171724513`
+
+The deployed UI keeps Dashboard, My Work, Inbox, Site, Analytics, Users &
+Access, Source Data, Airtable, import tools, and content destinations in the
+grouped left sidebar. Horizontal navigation is reserved for nested workflows:
+Site configuration routes, internal Work queues, and detail-page section jump
+navigation. These nested controls use the shared explicit tab-strip treatment
+with outlined inactive tabs, a selected surface, an accent edge, and a connected
+accent rule. Detail section jumps retain `aria-current="location"`; route tabs
+use `aria-current="page"`.
+
+R5 also condensed assignment creation, made per-user access editing
+summary-first, and standardized the user-facing term “sensitive-action
+password” across Users & Access, Saints, Instagram, Airtable, errors, and
+runbooks. Integrated verification passed `npm run dev:check` and the full test
+suite (102 tests). `npm run codex:verify` compiled, type-checked, collected page
+data, and generated all 15 static pages before the known Windows junction
+`EPERM` during standalone trace copying. No migrations, environment changes,
+data backfill, or additional release steps were required.
 
 R4 image tooling compaction is deployed. Release commits:
 
@@ -174,7 +215,7 @@ the full test suite (100 tests). `npm run codex:verify` compiled, type-checked,
 collected page data, and generated all 15 static pages before the known Windows
 junction `EPERM` during standalone trace copying.
 
-R1 navigation remediation is deployed. Release commits:
+R1 navigation remediation was initially deployed with release commits:
 
 - `main`: `6d6b392` (`Establish admin workspace navigation`)
 - `deploy`: `f9f55701edbd600b485af02cf172f9412f5da17f`
@@ -184,6 +225,10 @@ Verification on the clean integrated R1 release passed `npm run dev:check` and
 the full test suite (100 tests). `npm run codex:verify` compiled, type-checked,
 collected page data, and generated all 15 static pages before the known Windows
 junction `EPERM` during standalone trace copying.
+
+The site-wide horizontal navigation direction from that initial release was
+superseded by the final left-sidebar correction in R5 (`474031b`). Nested Site,
+Work, and detail-review navigation retains the horizontal tab treatment.
 
 Chunk 9 production deployment is complete. Release commits:
 
