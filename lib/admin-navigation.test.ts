@@ -35,7 +35,7 @@ test("exact admin navigation items do not claim nested workspaces", () => {
   assert.equal(isAdminNavigationItemActive("/admin/saints", groups[0].items[0]), false);
 });
 
-test("workspace items remain active on detail routes", () => {
+test("sidebar items remain active on detail routes", () => {
   assert.equal(isAdminNavigationItemActive("/admin/feedback/example", groups[0].items[2]), true);
 });
 
