@@ -1,0 +1,35 @@
+name: Dispatch Staging Deploy
+
+on:
+  push:
+    branches:
+      - staging
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: hindu-saints-staging-dispatch
+  cancel-in-progress: true
+
+jobs:
+  dispatch:
+    name: Dispatch private staging deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out app repo
+        uses: actions/checkout@v4
+
+      - name: Create deployment and dispatch private workflow
+        env:
+          BMIT_ENG_DEPLOY_DISPATCH_TOKEN: ${{ secrets.BMIT_ENG_DEPLOY_DISPATCH_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+          PRIVATE_REF: main
+          PRIVATE_REPO: Bhakti-Marga/bmit-eng
+          PRIVATE_WORKFLOW: deploy-hindu-saints-staging.yml
+          DEPLOYMENT_ENVIRONMENT: staging
+          DEPLOYMENT_IS_PRODUCTION: "false"
+          DEPLOYMENT_DESCRIPTION: Staging deploy requested from the staging branch
+        run: bash scripts/deploy/dispatch-deploy.sh

@@ -58,6 +58,12 @@ creates a GitHub Deployment record for the pushed commit and dispatches the
 private `bmit-eng` workflow. The private workflow performs the Strato deploy and
 writes the final deployment status back to this repository.
 
+## Staging deployment
+
+Staging is deployed independently at `https://staging.hindusaints.org` from the
+`staging` branch. See [staging.md](staging.md) for the isolation requirements,
+release flow, crawler protection, and private-infrastructure handoff.
+
 ## Backups
 
 The backup service runs `scripts/backup-db.sh` once per day and stores SQL dumps in `backups/`. Restore with:
