@@ -30,6 +30,7 @@ const DEFAULT_DESCRIPTION = "";
 const DEFAULT_LOCATION = "Location in review";
 const DEFAULT_TRADITION = "Tradition in review";
 const DEFAULT_ERA = "Dates in review";
+const HOMEPAGE_FALLBACK_SAINT_COUNT = 12;
 
 async function getPublishedSaintRows(
   where: Prisma.SaintWhereInput = {},
@@ -133,21 +134,30 @@ const getPublishedSaintSummariesCached = unstable_cache(async () => {
   tags: [PUBLIC_CACHE_TAGS.saints]
 });
 
-export async function getFeaturedSaintSummaries() {
-  return getFeaturedSaintSummariesCached();
+export async function getHomepageFallbackSaintSummaries() {
+  return getHomepageFallbackSaintSummariesCached();
 }
 
-const getFeaturedSaintSummariesCached = unstable_cache(async () => {
-  const featuredRows = await getPublishedSaintRows({ featured: true }, { take: 6 });
-  const rows = featuredRows.length > 0
-    ? featuredRows
-    : await getPublishedSaintRows({}, { take: 6 });
+const getHomepageFallbackSaintSummariesCached = unstable_cache(async () => {
+  const rows = shuffle(await getPublishedSaintRows())
+    .slice(0, HOMEPAGE_FALLBACK_SAINT_COUNT);
 
   return rows.map(toPublicSaintSummary);
-}, ["featured-saint-summaries"], {
+}, ["homepage-fallback-saint-summaries"], {
   revalidate: PUBLIC_DATA_CACHE_SECONDS,
   tags: [PUBLIC_CACHE_TAGS.saints]
 });
+
+function shuffle<T>(values: T[]) {
+  const shuffled = [...values];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const targetIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[targetIndex]] = [shuffled[targetIndex], shuffled[index]];
+  }
+
+  return shuffled;
+}
 
 export async function getPublishedSaintSummariesByIds(saintIds: string[]) {
   const uniqueIds = Array.from(new Set(saintIds));

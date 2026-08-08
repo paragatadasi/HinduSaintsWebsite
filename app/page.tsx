@@ -15,7 +15,7 @@ import { getPublicHomePageConfig } from "@/lib/home-page-config";
 import { INDIA_STATE_MAP_SHAPES, type IndiaStateMapShape } from "@/lib/india-state-map-shapes";
 import { getRecentInstagramCarouselPreviews } from "@/lib/public-instagram";
 import { getIndiaPlaceMapData } from "@/lib/public-places";
-import { getFeaturedSaintSummaries, getPublishedSaintSummaries } from "@/lib/public-saints";
+import { getHomepageFallbackSaintSummaries } from "@/lib/public-saints";
 import { getPublishedTraditionSummaries } from "@/lib/public-traditions";
 import type { PublicImage, PublicPlaceMapData } from "@/lib/public-contracts";
 import { getHomeLayoutVariant, getPlacesMapContent, type HomeHeroContent, type HomeSectionContent, type HomeQuoteContent } from "@/lib/site-content";
@@ -53,10 +53,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HomePage() {
   const layout = getHomeLayoutVariant();
-  const [homeConfig, featuredSaints, publishedSaints, traditions, instagramPreviews, mapData] = await Promise.all([
+  const [homeConfig, fallbackSaints, traditions, instagramPreviews, mapData] = await Promise.all([
     getPublicHomePageConfig(),
-    getFeaturedSaintSummaries(),
-    getPublishedSaintSummaries(),
+    getHomepageFallbackSaintSummaries(),
     getPublishedTraditionSummaries(),
     getRecentInstagramCarouselPreviews(),
     getIndiaPlaceMapData()
@@ -64,7 +63,6 @@ export default async function HomePage() {
   const hero = homeConfig.hero;
   const quote = homeConfig.quote;
   const { featuredSaints: featuredSaintsSection, instagram: instagramSection, map: mapSection, traditions: traditionsSection } = homeConfig.sections;
-  const configuredFeaturedSaints = homeConfig.featuredSaints.length > 0 ? homeConfig.featuredSaints : featuredSaints;
   const configuredTraditions = homeConfig.featuredTraditions.length > 0 ? homeConfig.featuredTraditions : traditions;
   const configuredTraditionPlacements = homeConfig.featuredTraditionPlacements.length > 0
     ? homeConfig.featuredTraditionPlacements
@@ -73,10 +71,9 @@ export default async function HomePage() {
         bannerImage: undefined,
         focalArea: { x: 50, y: 50, width: 60, height: 60 }
       }));
-  const saints = uniqueSaintsBySlug([
-    ...configuredFeaturedSaints,
-    ...publishedSaints
-  ]).slice(0, 6);
+  const saints = homeConfig.featuredSaints.length > 0
+    ? homeConfig.featuredSaints
+    : fallbackSaints;
 
   if (layout === "archive") {
     return (
@@ -201,7 +198,7 @@ type ArchiveHomePageProps = {
   featuredSaintsSection: HomeSectionContent;
   traditionsSection: HomeSectionContent;
   instagramSection: HomeSectionContent;
-  saints: Awaited<ReturnType<typeof getPublishedSaintSummaries>>;
+  saints: Awaited<ReturnType<typeof getHomepageFallbackSaintSummaries>>;
   traditions: Awaited<ReturnType<typeof getPublishedTraditionSummaries>>;
   bannerImage?: PublicImage;
 };
@@ -213,7 +210,7 @@ type CosmicHomePageProps = {
   instagramSection: HomeSectionContent;
   mapSection: HomeSectionContent;
   quote: HomeQuoteContent;
-  saints: Awaited<ReturnType<typeof getPublishedSaintSummaries>>;
+  saints: Awaited<ReturnType<typeof getHomepageFallbackSaintSummaries>>;
   traditions: Awaited<ReturnType<typeof getPublishedTraditionSummaries>>;
   traditionPlacements: Awaited<ReturnType<typeof getPublicHomePageConfig>>["featuredTraditionPlacements"];
   instagramPreviews: Awaited<ReturnType<typeof getRecentInstagramCarouselPreviews>>;
@@ -538,8 +535,4 @@ function HomeHeroImage({
 
 function shouldPreserveFullBannerArea(focalArea: { width: number; height: number }) {
   return focalArea.width >= 86 || focalArea.height >= 86;
-}
-
-function uniqueSaintsBySlug(saints: Awaited<ReturnType<typeof getPublishedSaintSummaries>>) {
-  return Array.from(new Map(saints.map((saint) => [saint.slug, saint])).values());
 }

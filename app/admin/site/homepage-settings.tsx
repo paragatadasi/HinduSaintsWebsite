@@ -198,6 +198,7 @@ export async function HomepageSettings() {
               reorderable
               selectedLabel="Featured saints"
               />
+              <p className="admin-notice">Leave this empty to show 12 randomly selected published saints.</p>
             </div>
           </ReviewSection>
 
