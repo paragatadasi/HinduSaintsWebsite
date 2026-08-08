@@ -1,4 +1,5 @@
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
+import { SourceImportBatchHistory } from "@/components/admin/source-import-batch-history";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { requireCapability } from "@/lib/admin-access";
 import { getBulkDeletePasswordStatus } from "@/lib/admin-secrets";
@@ -18,20 +19,21 @@ type AirtablePageProps = {
 
 export default async function AirtablePage({ searchParams }: AirtablePageProps) {
   await requireCapability("view_source_data");
-  const [params, resetCounts, passwordStatus, recentMirrorBatch, recentJobs] = await Promise.all([
+  const [params, resetCounts, passwordStatus, recentMirrorBatches, recentJobs] = await Promise.all([
     searchParams,
     collectAirtableCmsResetCounts(),
     getBulkDeletePasswordStatus(),
-    db.importBatch.findFirst({
+    db.importBatch.findMany({
       where: { sourceType: "airtable" },
       orderBy: { startedAt: "desc" },
-      select: { status: true, startedAt: true, completedAt: true }
+      take: 50
     }),
     db.airtableImportJob.findMany({
       orderBy: { createdAt: "desc" },
       take: 8
     })
   ]);
+  const recentMirrorBatch = recentMirrorBatches[0];
 
   return (
     <div className="admin-stack">
@@ -44,6 +46,8 @@ export default async function AirtablePage({ searchParams }: AirtablePageProps) 
       <StatusMessages params={params} />
 
       <AirtableImportPanel defaultOpen jobs={recentJobs.map(serializeAirtableImportJob)} />
+
+      <SourceImportBatchHistory cardId="airtable-raw-import-history" rows={recentMirrorBatches} sourceLabel="Airtable" />
 
       <CollapsibleReviewCard
         cardId="airtable-mirror-maintenance"
