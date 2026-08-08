@@ -188,8 +188,10 @@ Implementation direction:
   editor dimensions. Use `AdminImageEditorDialog` for full-size inspection or
   a larger synchronized editor instead of expanding images to the page width.
 - Pointer-based focal and crop tools must expose equivalent labeled range or
-  keyboard controls. Pointer gestures are an enhancement, not the only way to
-  position an image.
+  keyboard controls. Compact previews may reserve those controls for an
+  associated larger editor when its trigger is keyboard accessible and both
+  views remain synchronized; pointer gestures must never be the only available
+  way to position an image.
 - Use `ReviewEditToggle` when a card should start in summary mode and reveal
   edit controls only after an explicit edit action.
 - Keep main admin destinations in the grouped left sidebar. Dashboard, My Work,
@@ -224,6 +226,11 @@ Current rollout notes:
   matched Instagram posts, and review snapshot. Summary contains Overview,
   Key Facts, relationships, and Instagram claims; aliases are part of Overview.
   Biography contains the biography and sources, while Media owns images.
+- Homepage configuration uses a responsive two-column workflow on wider
+  screens, with a full-width Featured Traditions section whose placement cards
+  can sit beside one another. Media previews use the compact admin image width;
+  precision sliders live in the synchronized larger editor rather than in the
+  default scrolling form.
 - Images sit near biography because they support the public profile review,
   while sources, snapshots, aliases, and other references remain collapsible.
 - Tradition detail follows the same model. Publish Readiness contains the

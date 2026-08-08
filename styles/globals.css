@@ -5271,6 +5271,10 @@ fieldset.admin-field {
   grid-column: 1 / -1;
 }
 
+.review-workflow__section--wide {
+  grid-column: 1 / -1;
+}
+
 .review-workflow__suggestions {
   grid-column: 1 / -1;
 }
@@ -7696,14 +7700,29 @@ fieldset.admin-field {
   grid-template-columns: minmax(0, 1fr);
 }
 
+.review-panel--homepage-config {
+  --review-panel-gap: var(--space-4);
+  --review-panel-padding: var(--space-5);
+}
+
+.review-workflow__grid--homepage-config {
+  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.review-panel--homepage-config .field-grid--identity-line {
+  grid-template-columns: minmax(0, 0.58fr) minmax(0, 1.42fr);
+}
+
 .home-config-media {
   display: grid;
-  gap: var(--review-panel-gap, var(--space-5));
+  gap: var(--space-4);
 }
 
 .home-featured-placement-list {
   display: grid;
   gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(var(--width-admin-config-placement-min), 1fr));
 }
 
 .home-featured-placement {
@@ -7756,6 +7775,7 @@ fieldset.admin-field {
 .home-focal-picker {
   display: grid;
   gap: var(--space-3);
+  max-width: var(--width-admin-config-media-preview);
 }
 
 .home-focal-picker__stage {
@@ -7764,7 +7784,7 @@ fieldset.admin-field {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   cursor: crosshair;
-  max-width: var(--width-admin-image-editor);
+  max-width: var(--width-admin-config-media-preview);
   overflow: hidden;
   position: relative;
   touch-action: none;
@@ -7772,6 +7792,10 @@ fieldset.admin-field {
 }
 
 .home-focal-picker__stage--expanded {
+  max-width: none;
+}
+
+.admin-image-editor-dialog .home-focal-picker {
   max-width: none;
 }
 
@@ -7876,6 +7900,12 @@ fieldset.admin-field {
   cursor: nesw-resize;
   left: 0;
   transform: translate(-50%, 50%);
+}
+
+@media (max-width: 980px) {
+  .review-workflow__grid--homepage-config {
+    grid-template-columns: 1fr;
+  }
 }
 
 .review-field {
@@ -9728,6 +9758,10 @@ fieldset.admin-field {
     grid-template-columns: 1fr;
   }
 
+  .home-featured-placement-list {
+    grid-template-columns: 1fr;
+  }
+
   .review-workflow__section--draft {
     grid-column: auto;
   }
@@ -9735,6 +9769,10 @@ fieldset.admin-field {
 }
 
 @media (max-width: 520px) {
+  .review-panel--homepage-config .field-grid--identity-line {
+    grid-template-columns: 1fr;
+  }
+
   .first-page-review__metadata-grid {
     grid-template-columns: 1fr;
   }
