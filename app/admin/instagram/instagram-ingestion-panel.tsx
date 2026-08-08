@@ -197,7 +197,7 @@ export function InstagramIngestionPanel({ incompleteCount: initialIncompleteCoun
 
       <details className="instagram-job-history">
         <summary>
-          <span>Recent ingestion jobs</span>
+          <span>Instagram job history</span>
           <ChevronDown aria-hidden="true" size={16} />
         </summary>
         {jobs.length > 0 ? (

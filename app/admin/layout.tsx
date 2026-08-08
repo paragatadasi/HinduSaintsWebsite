@@ -110,14 +110,12 @@ function buildNavigationGroups({
 
   if (hasCapability(roles, "view_source_data")) {
     groups.push({
-      href: "/admin/source-data",
+      href: "/admin/source-data/reconciliation",
       id: "source-data",
       items: [
-        { exact: true, href: "/admin/source-data", label: "Overview" },
-        { count: openReconciliationCount, href: "/admin/source-data/reconciliation", label: "Reconciliation" },
-        { href: "/admin/source-data/history", label: "Import History" },
+        { count: openReconciliationCount, exact: true, href: "/admin/source-data/reconciliation", label: "Reconciliation" },
         { href: "/admin/airtable", label: "Airtable" },
-        { href: "/admin/source-data/instagram", label: "Instagram Import" }
+        { href: "/admin/source-data/instagram", label: "Instagram" }
       ],
       label: "Source Data"
     });

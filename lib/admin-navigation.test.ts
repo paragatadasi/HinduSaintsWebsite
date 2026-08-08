@@ -19,12 +19,11 @@ const groups: AdminNavigationGroup[] = [
     ]
   },
   {
-    href: "/admin/source-data",
+    href: "/admin/source-data/reconciliation",
     id: "source-data",
     label: "Source Data",
     items: [
-      { exact: true, href: "/admin/source-data", label: "Overview" },
-      { href: "/admin/source-data/reconciliation", label: "Reconciliation" },
+      { exact: true, href: "/admin/source-data/reconciliation", label: "Reconciliation" },
       { href: "/admin/airtable", label: "Airtable" }
     ]
   }

@@ -146,7 +146,7 @@ export function AirtableImportPanel({ defaultOpen = false, jobs: initialJobs }: 
 
       <details className="instagram-job-history airtable-job-history">
         <summary>
-          <span>Recent Airtable jobs</span>
+          <span>Airtable job history</span>
           <StatusBadge label={`${jobs.length} jobs`} />
           <ChevronDown aria-hidden="true" size={14} />
         </summary>
