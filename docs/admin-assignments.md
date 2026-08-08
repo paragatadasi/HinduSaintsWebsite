@@ -1,7 +1,8 @@
 # Admin assignments
 
-`/admin/work` is the shared assignment workspace and personal dashboard for
-Saints, Traditions, Places, and Instagram posts.
+`/admin#my-work` is the shared assignment workspace inside the Dashboard for
+Saints, Traditions, Places, and Instagram posts. Legacy `/admin/work` URLs
+redirect to the matching embedded queue.
 
 - Site Admins, Data Admins, and Editors have `manage_assignments`. They can
   create available work, assign or reassign active users, and inspect Team Workload.
@@ -16,6 +17,8 @@ Saints, Traditions, Places, and Instagram posts.
   changes the content record or publishes it. Publication still requires the
   existing `publish_content` capability and domain-specific publishing action.
 
-The dashboard sections are My Work, Available Work, Blocked, Recently
-Completed, and Team Workload for assignment managers. The main admin dashboard
-and navigation show personalized assignment counts.
+The Dashboard separates shared editorial counters under Team Workflow from
+personal assignment counters under My Workflow. Its embedded assignment section
+contains My Work, Available Work, Blocked, Recently Completed, and Team Workload
+for assignment managers. Queue tabs keep normal URLs through the `work` query
+parameter and target the `#my-work` section.

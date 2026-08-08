@@ -9,14 +9,10 @@ import {
 
 const groups: AdminNavigationGroup[] = [
   {
-    href: "/admin",
+    href: "/admin/feedback",
     id: "operations",
     label: "Operations",
-    items: [
-      { exact: true, href: "/admin", label: "Dashboard" },
-      { count: 2, href: "/admin/work", label: "My Work" },
-      { count: 3, href: "/admin/feedback", label: "Inbox" }
-    ]
+    items: [{ count: 3, href: "/admin/feedback", label: "Inbox" }]
   },
   {
     href: "/admin/source-data/reconciliation",
@@ -30,12 +26,12 @@ const groups: AdminNavigationGroup[] = [
 ];
 
 test("exact admin navigation items do not claim nested workspaces", () => {
-  assert.equal(isAdminNavigationItemActive("/admin", groups[0].items[0]), true);
-  assert.equal(isAdminNavigationItemActive("/admin/saints", groups[0].items[0]), false);
+  assert.equal(isAdminNavigationItemActive("/admin/source-data/reconciliation", groups[1].items[0]), true);
+  assert.equal(isAdminNavigationItemActive("/admin/source-data/reconciliation/example", groups[1].items[0]), false);
 });
 
 test("sidebar items remain active on detail routes", () => {
-  assert.equal(isAdminNavigationItemActive("/admin/feedback/example", groups[0].items[2]), true);
+  assert.equal(isAdminNavigationItemActive("/admin/feedback/example", groups[0].items[0]), true);
 });
 
 test("finds the group for routes that live outside the group prefix", () => {
@@ -43,5 +39,5 @@ test("finds the group for routes that live outside the group prefix", () => {
 });
 
 test("adds only visible item counts for a workspace badge", () => {
-  assert.equal(getAdminNavigationGroupCount(groups[0]), 5);
+  assert.equal(getAdminNavigationGroupCount(groups[0]), 3);
 });

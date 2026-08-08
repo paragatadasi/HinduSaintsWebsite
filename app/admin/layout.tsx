@@ -64,9 +64,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     db.reconciliationIssue.count({ where: { status: "open" } })
   ]);
   const roles = adminUser?.active ? adminUser.roles : [];
-  const myWorkCount = adminUser?.active ? await db.contentAssignment.count({ where: { assigneeId: adminUser.id, state: { in: ["assigned", "in_progress", "blocked"] } } }) : 0;
   const navigationGroups = buildNavigationGroups({
-    myWorkCount,
     newFeedbackCount,
     openReconciliationCount,
     roles
@@ -85,28 +83,23 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 }
 
 function buildNavigationGroups({
-  myWorkCount,
   newFeedbackCount,
   openReconciliationCount,
   roles
 }: {
-  myWorkCount: number;
   newFeedbackCount: number;
   openReconciliationCount: number;
   roles: Parameters<typeof hasCapability>[0];
 }) {
   const groups: AdminNavigationGroup[] = [];
-  const operationItems: AdminNavigationGroup["items"] = [{ exact: true, href: "/admin", label: "Dashboard" }];
+  const operationItems: AdminNavigationGroup["items"] = [];
   if (hasCapability(roles, "view_content")) {
-    operationItems.push(
-      { count: myWorkCount, href: "/admin/work", label: "My Work" },
-      { count: newFeedbackCount, href: "/admin/feedback", label: "Inbox" }
-    );
+    operationItems.push({ count: newFeedbackCount, href: "/admin/feedback", label: "Inbox" });
   }
   if (hasCapability(roles, "manage_site")) operationItems.push({ href: "/admin/site", label: "Site" });
   if (hasCapability(roles, "view_analytics")) operationItems.push({ href: "/admin/analytics", label: "Analytics" });
   if (hasCapability(roles, "manage_users")) operationItems.push({ href: "/admin/users", label: "Users & Access" });
-  groups.push({ href: "/admin", id: "operations", items: operationItems, label: "Operations" });
+  if (operationItems.length > 0) groups.push({ href: operationItems[0].href, id: "operations", items: operationItems, label: "Operations" });
 
   if (hasCapability(roles, "view_source_data")) {
     groups.push({
