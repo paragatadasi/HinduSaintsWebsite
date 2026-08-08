@@ -28,12 +28,12 @@ export type PublicInstagramMediaAsset = {
 const INSTAGRAM_CDN_URL_PATTERN = /(^|\.)cdninstagram\.com$/i;
 const INSTAGRAM_URL_EXPIRY_BUFFER_MS = 60 * 60 * 1000;
 
-export async function getRecentInstagramCarouselPreviews(limit = 8): Promise<PublicInstagramCarouselPreview[]> {
+export async function getRecentInstagramCarouselPreviews(limit = 16): Promise<PublicInstagramCarouselPreview[]> {
   return getRecentInstagramCarouselPreviewsCached(limit);
 }
 
 const getRecentInstagramCarouselPreviewsCached = unstable_cache(async (
-  limit = 8
+  limit = 16
 ): Promise<PublicInstagramCarouselPreview[]> => {
   const items = await db.instagramItem.findMany({
     where: {

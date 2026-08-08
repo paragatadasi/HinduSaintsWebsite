@@ -23,7 +23,7 @@ const homePageConfigSchema = z.object({
   bannerFocalY: z.coerce.number().min(0).max(100),
   bannerFocalWidth: z.coerce.number().min(10).max(100),
   bannerFocalHeight: z.coerce.number().min(10).max(100),
-  featuredSaintIds: z.array(z.string().cuid()).max(12),
+  featuredSaintIds: z.array(z.string().cuid()),
   featuredTraditionIds: z.array(z.string().cuid()).max(5),
   featuredSaintsEyebrow: z.string().trim().max(80).optional(),
   featuredSaintsTitle: z.string().trim().max(160).optional(),
