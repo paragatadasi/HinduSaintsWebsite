@@ -52,10 +52,17 @@ remediation. It does not reopen either completed sequence.
 
 | Chunk | Status | Scope |
 | --- | --- | --- |
-| A1. Detail workspace tabs | Ready for release | URL-backed Saint and Tradition review tabs that render only the active workflow; Saint aliases folded into Overview; Public Fields renamed Key Facts; shallow Instagram and Place detail rails removed |
-| A2. Homepage configuration compaction | Planned | Responsive multi-column configuration layout, smaller adjacent media previews, and advanced image adjustments reserved for the larger editor |
+| A1. Detail workspace tabs | Deployed | URL-backed Saint and Tradition review tabs that render only the active workflow; Saint aliases folded into Overview; Public Fields renamed Key Facts; shallow Instagram and Place detail rails removed |
+| A2. Homepage configuration compaction | Ready for release | Responsive two-column configuration layout, compact adjacent media placements, and advanced image adjustments reserved for the larger editor |
 | A3. Source Data simplification | Planned | Source-specific Airtable and Instagram history, retired combined overview/history navigation, preserved raw import records |
 | A4. Dashboard and workload consolidation | Planned | Team/My Workflow grouping, My Work embedded in Dashboard, and redundant sidebar destinations removed |
+
+A2 keeps the existing homepage field and save contracts while reducing the
+default page length. On wider screens, configuration sections share a two-column
+grid, the Featured Traditions workflow spans both columns, and its media
+placements form a responsive card grid. Compact banner editors retain direct
+drag composition; labeled precision controls remain available in the
+synchronized larger editor. Narrow layouts return to one readable column.
 
 ## Capability contract
 

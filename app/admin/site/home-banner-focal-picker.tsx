@@ -46,7 +46,7 @@ export function HomeBannerFocalPicker({
       <input name={`${fieldNamePrefix}Width`} type="hidden" value={formatPercent(area.width)} />
       <input name={`${fieldNamePrefix}Height`} type="hidden" value={formatPercent(area.height)} />
 
-      <p className="review-hint">Drag the frame to compose the banner, or use the keyboard controls below.</p>
+      <p className="review-hint">Drag the frame to compose the banner. Open the larger editor for precise adjustments.</p>
       <FocalStage altText={altText} area={area} imageUrl={imageUrl} setArea={setArea} />
       <AdminImageEditorDialog
         description="Drag the crop frame or use the sliders. Changes stay synchronized with the compact editor."
@@ -57,7 +57,6 @@ export function HomeBannerFocalPicker({
           <FocalControls area={area} setArea={setArea} />
         </div>
       </AdminImageEditorDialog>
-      <FocalControls area={area} setArea={setArea} />
     </div>
   );
 }
@@ -142,7 +141,7 @@ function FocalControls({ area, setArea }: {
 
   return (
     <fieldset className="admin-image-adjustment-controls">
-      <legend>Keyboard adjustments</legend>
+      <legend>Precise adjustments</legend>
       <RangeControl label="Horizontal center" value={area.x} onChange={(value) => updateArea("x", value)} />
       <RangeControl label="Vertical center" value={area.y} onChange={(value) => updateArea("y", value)} />
       <RangeControl label="Frame width" min={minFocalSize} value={area.width} onChange={(value) => updateArea("width", value)} />
