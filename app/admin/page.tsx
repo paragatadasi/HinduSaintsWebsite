@@ -1,15 +1,21 @@
 import Link from "next/link";
 import type { Route } from "next";
+import { AssignmentWorkspace } from "@/components/admin/assignment-workspace";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { requireAdminUser } from "@/lib/admin-access";
 import { hasCapability } from "@/lib/permissions";
 
-export default async function AdminDashboardPage() {
+type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
+
+export default async function AdminDashboardPage({ searchParams }: Props) {
   const user = await requireAdminUser();
   if (!hasCapability(user.roles, "view_content")) {
     return hasCapability(user.roles, "access_museum") ? <MuseumOnlyDashboard /> : <AccessLimitedDashboard />;
   }
+  const params = await searchParams;
+  const canManageAssignments = hasCapability(user.roles, "manage_assignments");
+  const canClaimAssignments = hasCapability(user.roles, "edit_content");
   const [
     saintCounts,
     instagramNeedsReview,
@@ -38,21 +44,45 @@ export default async function AdminDashboardPage() {
       <div>
         <div className="eyebrow">Dashboard</div>
         <h1>Content workflow</h1>
-        <p className="lede">Review imported records, approve public saint pages, and track remaining reconciliation work.</p>
-      </div>
-      <div className="admin-stat-grid">
-        <DashboardCard href={"/admin/work" as Route} label="My active work" value={myWorkCount} />
-        <DashboardCard href={"/admin/work" as Route} label="Available work" value={availableWorkCount} />
-        <DashboardCard href={"/admin/work" as Route} label="My blocked work" value={blockedWorkCount} />
-        <DashboardCard href={"/admin/work" as Route} label="My completed work" value={completedWorkCount} />
-        <DashboardCard href="/admin/feedback?status=new" label="New feedback" value={newFeedbackCount} />
-        <DashboardCard href="/admin/saints?status=needs_review" label="Saints awaiting review" value={counts.needs_review ?? 0} />
-        <DashboardCard href="/admin/saints?status=published" label="Published saints" value={counts.published ?? 0} />
-        <DashboardCard href="/admin/instagram?status=needs_review" label="Instagram items awaiting review" value={instagramNeedsReview} />
-        <DashboardCard href="/admin/traditions" label="Traditions awaiting review" value={traditionsNeedsReview} />
-        <DashboardCard href="/admin/places" label="Place records" value={placeCount} />
+        <p className="lede">Review shared queues, track your own workload, and coordinate assignments from one workspace.</p>
       </div>
 
+      <section className="admin-stack" aria-labelledby="team-workflow-title">
+        <div>
+          <div className="eyebrow">Shared queues</div>
+          <h2 id="team-workflow-title">Team Workflow</h2>
+          <p className="lede">See the editorial queues and published records the whole team is moving forward.</p>
+        </div>
+        <div className="admin-stat-grid">
+          <DashboardCard href="/admin/feedback?status=new" label="New feedback" value={newFeedbackCount} />
+          <DashboardCard href="/admin/saints?status=needs_review" label="Saints awaiting review" value={counts.needs_review ?? 0} />
+          <DashboardCard href="/admin/saints?status=published" label="Published saints" value={counts.published ?? 0} />
+          <DashboardCard href="/admin/instagram?status=needs_review" label="Instagram items awaiting review" value={instagramNeedsReview} />
+          <DashboardCard href="/admin/traditions" label="Traditions awaiting review" value={traditionsNeedsReview} />
+          <DashboardCard href="/admin/places" label="Place records" value={placeCount} />
+        </div>
+      </section>
+
+      <section className="admin-stack" aria-labelledby="personal-workflow-title">
+        <div>
+          <div className="eyebrow">Personal queues</div>
+          <h2 id="personal-workflow-title">My Workflow</h2>
+          <p className="lede">Jump directly to the assignment queue that needs your attention.</p>
+        </div>
+        <div className="admin-stat-grid">
+          <DashboardCard href={"/admin?work=mine#my-work" as Route} label="My active work" value={myWorkCount} />
+          <DashboardCard href={"/admin?work=available#my-work" as Route} label="Available work" value={availableWorkCount} />
+          <DashboardCard href={"/admin?work=blocked#my-work" as Route} label="My blocked work" value={blockedWorkCount} />
+          <DashboardCard href={"/admin?work=completed#my-work" as Route} label="My completed work" value={completedWorkCount} />
+        </div>
+      </section>
+
+      <AssignmentWorkspace
+        canClaim={canClaimAssignments}
+        canManage={canManageAssignments}
+        params={params}
+        userId={user.id}
+      />
     </div>
   );
 }
@@ -68,7 +98,7 @@ function DashboardCard({ href, label, value }: { href: Route; label: string; val
   return (
     <Link className="admin-stat admin-stat--link interactive-surface" href={href}>
       <StatusBadge label={String(value)} />
-      <h2>{label}</h2>
+      <h3>{label}</h3>
     </Link>
   );
 }

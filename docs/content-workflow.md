@@ -22,7 +22,8 @@ private.
 
 Current admin review surfaces:
 
-- `/admin` shows live workflow counts.
+- `/admin` separates live Team Workflow and My Workflow counts and embeds the
+  assignment queues under `#my-work`.
 - `/admin/saints` lists saints by status so editors can find imported records,
   published records, and archived records.
 - Source Data -> Airtable (`/admin/airtable`) hosts the complete Airtable sync

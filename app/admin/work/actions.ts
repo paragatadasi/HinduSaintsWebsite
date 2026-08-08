@@ -86,5 +86,10 @@ async function contentExists(type: typeof contentTypes[number], id: string) {
   return Boolean(await db.instagramItem.findUnique({ where: { id }, select: { id: true } }));
 }
 
-function fail(message: string): never { redirect(`/admin/work?error=${encodeURIComponent(message)}` as Route); }
-function done(value: string): never { revalidatePath("/admin"); revalidatePath("/admin/work"); redirect(`/admin/work?updated=${value}` as Route); }
+function fail(message: string): never { redirect(workDashboardHref("error", message)); }
+function done(value: string): never { revalidatePath("/admin"); redirect(workDashboardHref("updated", value)); }
+
+function workDashboardHref(key: "error" | "updated", value: string) {
+  const params = new URLSearchParams({ work: "mine", [key]: value });
+  return `/admin?${params.toString()}#my-work` as Route;
+}

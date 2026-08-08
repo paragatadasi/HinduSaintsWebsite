@@ -532,7 +532,8 @@ html[data-route-entering="true"] body > main {
   margin-bottom: var(--space-8);
 }
 
-.section-heading h2 {
+.section-heading h2,
+.section-heading h3 {
   color: var(--color-cream);
   font-family: var(--font-serif);
   font-size: clamp(1.75rem, 3vw, 2.25rem);
@@ -6394,6 +6395,7 @@ fieldset.admin-field {
 }
 
 .review-row h2,
+.review-row h4,
 .review-panel h2,
 .review-panel h3 {
   font-family: var(--font-serif);
@@ -6467,7 +6469,8 @@ fieldset.admin-field {
   grid-template-columns: repeat(auto-fit, minmax(var(--width-admin-stat-card-min), 1fr));
 }
 
-.admin-stat h2 {
+.admin-stat h2,
+.admin-stat h3 {
   font-size: var(--font-size-admin-stat-heading);
   line-height: 1.25;
 }
