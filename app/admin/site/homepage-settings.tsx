@@ -113,10 +113,11 @@ export async function HomepageSettings() {
 
       <form action={updateHomePageConfig} className="form-stack">
         <ReviewWorkflow
+          className="review-panel--homepage-config"
           eyebrow="Homepage CMS"
           title="Public homepage configuration"
           description="Blank fields use the current design-system defaults."
-          gridClassName="review-workflow__grid--home-config"
+          gridClassName="review-workflow__grid--homepage-config"
         >
           <ReviewSection title="Hero" icon={<Sparkles size={18} aria-hidden="true" />}>
             <div className="form-stack">
@@ -210,7 +211,7 @@ export async function HomepageSettings() {
             />
           </ReviewSection>
 
-          <ReviewSection title="Featured traditions" icon={<Star size={18} aria-hidden="true" />}>
+          <ReviewSection className="review-workflow__section--wide" title="Featured traditions" icon={<Star size={18} aria-hidden="true" />}>
             <div className="form-stack">
               <SectionHeadingFields
                 eyebrowName="traditionsEyebrow"
