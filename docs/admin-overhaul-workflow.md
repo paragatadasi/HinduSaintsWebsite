@@ -53,8 +53,8 @@ remediation. It does not reopen either completed sequence.
 | Chunk | Status | Scope |
 | --- | --- | --- |
 | A1. Detail workspace tabs | Deployed | URL-backed Saint and Tradition review tabs that render only the active workflow; Saint aliases folded into Overview; Public Fields renamed Key Facts; shallow Instagram and Place detail rails removed |
-| A2. Homepage configuration compaction | Ready for release | Responsive two-column configuration layout, compact adjacent media placements, and advanced image adjustments reserved for the larger editor |
-| A3. Source Data simplification | Planned | Source-specific Airtable and Instagram history, retired combined overview/history navigation, preserved raw import records |
+| A2. Homepage configuration compaction | Deployed | Responsive two-column configuration layout, compact adjacent media placements, and advanced image adjustments reserved for the larger editor |
+| A3. Source Data simplification | Ready for release | Source-specific Airtable and Instagram history, retired combined overview/history navigation, preserved raw import records |
 | A4. Dashboard and workload consolidation | Planned | Team/My Workflow grouping, My Work embedded in Dashboard, and redundant sidebar destinations removed |
 
 A2 keeps the existing homepage field and save contracts while reducing the
@@ -63,6 +63,12 @@ grid, the Featured Traditions workflow spans both columns, and its media
 placements form a responsive card grid. Compact banner editors retain direct
 drag composition; labeled precision controls remain available in the
 synchronized larger editor. Narrow layouts return to one readable column.
+
+A3 removes the redundant Source Data overview and combined Import History
+destinations. Source Data opens on Reconciliation, while Airtable and Instagram
+each retain their operational job history and expose preserved raw import batch
+summaries in their own workspace. Existing Airtable, Instagram, CSV, and manual
+batch records remain unchanged in the shared database model.
 
 ## Capability contract
 
@@ -119,7 +125,9 @@ For each chunk:
 
 ### Source Data and reconciliation
 
-- Airtable, Instagram, CSV, and manual import runs appear in one history model/view.
+- Airtable, Instagram, CSV, and manual import runs remain in the shared history
+  model. Airtable and Instagram operational history appears in the matching
+  source workspace; there is no separate combined-history destination.
 - Unresolved conflicts appear in a unified queue with source/type/status filters.
 - Reviewers compare preserved raw values to current reviewed values and explicitly
   choose keep-current, accept-source, merge, ignore, or defer where applicable.

@@ -218,6 +218,9 @@ Current rollout notes:
   routes use the shared explicit tab-strip treatment and
   `aria-current="page"`. Instagram and Place detail pages do not show a
   horizontal rail.
+- Source Data sidebar navigation contains Reconciliation, Airtable, and
+  Instagram. It has no landing-page overview or combined Import History item;
+  each source workspace owns its operational and preserved raw batch history.
 - Instagram item detail is the first polished pilot. `Connect this Post` is the
   primary workflow. First Page Biodata starts as a six-field summary, keeps
   first-page source text out of the default summary, and places parse actions at

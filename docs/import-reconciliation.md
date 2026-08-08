@@ -2,12 +2,17 @@
 
 ## Admin Source Data workspace
 
-Data Admins and Site Admins use `/admin/source-data` as the operational entry
-point. `/admin/source-data/history` combines generic `ImportBatch` records with
-Airtable and Instagram jobs, so Airtable, Instagram, CSV, and manual runs can be
-reviewed in one chronological view. `/admin/source-data/reconciliation` combines
-all `ReconciliationIssue` records into a filterable queue and exposes the open
-count in admin navigation.
+Data Admins and Site Admins use `/admin/source-data/reconciliation` as the
+operational entry point. The Source Data navigation links directly to
+Reconciliation, Airtable, and Instagram; the former `/admin/source-data`
+overview and `/admin/source-data/history` combined history route redirect to
+Reconciliation. Airtable and Instagram each show their operational job history
+and preserved raw `ImportBatch` summaries in the matching source workspace.
+CSV and manual `ImportBatch` records remain preserved in the shared data model
+even though they do not have dedicated admin source workspaces.
+
+`/admin/source-data/reconciliation` combines all `ReconciliationIssue` records
+into a filterable queue and exposes the open count in admin navigation.
 
 Reconciliation preserves the source context beside the reviewed CMS context.
 `keep_current` and `ignore` are final decisions. `accept_source`, `merge`, and
@@ -135,6 +140,8 @@ resolved and unresolved saint collisions, import errors, unresolved cleanup
 graph links, and self-skipped relationship rows. Detail rows should use Airtable
 saint names where possible, use short messages, and link to
 `/admin/saints/{slug}` when a CMS saint is known.
+The same Airtable workspace also exposes preserved raw Airtable `ImportBatch`
+summaries in a separate collapsed history card.
 
 Find likely duplicate Airtable saint records from the local mirror:
 
@@ -224,6 +231,8 @@ human CMS edits.
 
 The admin review flow is:
 
+- `/admin/source-data/instagram`: ingestion controls, operational job history,
+  incomplete-source repair, and preserved raw Instagram `ImportBatch` summaries.
 - `/admin/instagram`: status-filtered real Instagram queue with clickable status counters and rich media cards.
 - `/admin/instagram?status=published`: view items already published from the queue.
 - `/admin/instagram/[id]`: item detail review screen with media preview, caption, AI-assisted first-page biodata extraction from imported image data, import metadata, raw API payload, saint match list, first-page claim review, manual saint attachment, and item publish/review/ignore actions.
