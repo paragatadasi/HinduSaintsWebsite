@@ -54,8 +54,8 @@ remediation. It does not reopen either completed sequence.
 | --- | --- | --- |
 | A1. Detail workspace tabs | Deployed | URL-backed Saint and Tradition review tabs that render only the active workflow; Saint aliases folded into Overview; Public Fields renamed Key Facts; shallow Instagram and Place detail rails removed |
 | A2. Homepage configuration compaction | Deployed | Responsive two-column configuration layout, compact adjacent media placements, and advanced image adjustments reserved for the larger editor |
-| A3. Source Data simplification | Ready for release | Source-specific Airtable and Instagram history, retired combined overview/history navigation, preserved raw import records |
-| A4. Dashboard and workload consolidation | Planned | Team/My Workflow grouping, My Work embedded in Dashboard, and redundant sidebar destinations removed |
+| A3. Source Data simplification | Deployed | Source-specific Airtable and Instagram history, retired combined overview/history navigation, preserved raw import records |
+| A4. Dashboard and workload consolidation | Ready for release | Team/My Workflow grouping, My Work embedded in Dashboard, and redundant sidebar destinations removed |
 
 A2 keeps the existing homepage field and save contracts while reducing the
 default page length. On wider screens, configuration sections share a two-column
@@ -69,6 +69,12 @@ destinations. Source Data opens on Reconciliation, while Airtable and Instagram
 each retain their operational job history and expose preserved raw import batch
 summaries in their own workspace. Existing Airtable, Instagram, CSV, and manual
 batch records remain unchanged in the shared database model.
+
+A4 makes the sidebar Dashboard brand the single landing-page link and removes
+the duplicate Dashboard and My Work destinations from Operations. The Dashboard
+separates shared editorial counts under Team Workflow from personal assignment
+counts under My Workflow, then embeds the full assignment workspace at the
+bottom. Existing `/admin/work` links redirect to the embedded URL-backed queue.
 
 ## Capability contract
 
@@ -140,8 +146,9 @@ For each chunk:
 - Supported states are assigned, in progress, blocked, completed, and cancelled.
 - Users may self-assign available work; authorized users may assign/reassign others.
 - Multiple collaborators are supported. Publication completion rules are explicit.
-- Dashboard sections are My Work, Available Work, Blocked, Recently Completed,
-  and Team Workload where authorized.
+- Dashboard counters are grouped into Team Workflow and My Workflow. The
+  embedded assignment workspace contains My Work, Available Work, Blocked,
+  Recently Completed, and Team Workload where authorized.
 
 ### Conflict protection and presence
 
@@ -177,10 +184,11 @@ deployed. Release commits and final release state:
 - Final `deploy`: `6b10e47ec9130012a81b213b8aa0437a74d7da32`
 - Production workflow: `31171724513`
 
-The deployed UI keeps Dashboard, My Work, Inbox, Site, Analytics, Users &
-Access, Source Data, Airtable, import tools, and content destinations in the
+The current UI uses the Dashboard sidebar brand as the single landing-page
+link, embeds My Work in the Dashboard, and keeps Inbox, Site, Analytics, Users
+& Access, Source Data, Airtable, import tools, and content destinations in the
 grouped left sidebar. Horizontal navigation is reserved for nested workflows:
-Site configuration routes, internal Work queues, and detail-page section jump
+Site configuration routes, embedded Work queues, and detail-page section jump
 navigation. These nested controls use the shared explicit tab-strip treatment
 with outlined inactive tabs, a selected surface, an accent edge, and a connected
 accent rule. Detail section jumps retain `aria-current="location"`; route tabs

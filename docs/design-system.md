@@ -194,13 +194,14 @@ Implementation direction:
   way to position an image.
 - Use `ReviewEditToggle` when a card should start in summary mode and reveal
   edit controls only after an explicit edit action.
-- Keep main admin destinations in the grouped left sidebar. Dashboard, My Work,
-  Inbox, Site, Analytics, Users & Access, Source Data, Airtable, import tools,
-  and content destinations must not be duplicated in a site-wide horizontal
-  tab bar.
+- Keep main admin destinations in the grouped left sidebar. The Dashboard brand
+  is the single landing-page link and My Work is embedded in that page; Inbox,
+  Site, Analytics, Users & Access, Source Data, Airtable, import tools, and
+  content destinations remain sidebar links. Do not duplicate them in a
+  site-wide horizontal tab bar.
 - Use horizontal link tabs only inside a nested workflow or subsection, such as
-  Site configuration pages, queues within My Work, or the coherent workflow
-  groups within Saint and Tradition review. Nested tabs use links with
+  Site configuration pages, queues within Dashboard's My Work section, or the
+  coherent workflow groups within Saint and Tradition review. Nested tabs use links with
   `aria-current="page"`; they are not client-side tab panels and must preserve
   normal URLs, history, and authorization gates. They should read visually as a
   connected tab strip: outlined tab-shaped controls, a selected surface, and an
@@ -221,6 +222,10 @@ Current rollout notes:
 - Source Data sidebar navigation contains Reconciliation, Airtable, and
   Instagram. It has no landing-page overview or combined Import History item;
   each source workspace owns its operational and preserved raw batch history.
+- The Dashboard sidebar brand owns the `/admin` landing route. Team Workflow and
+  My Workflow counters are separated on that page, the full My Work assignment
+  workspace sits at the bottom, and neither Dashboard nor My Work is repeated
+  as an Operations sidebar item.
 - Instagram item detail is the first polished pilot. `Connect this Post` is the
   primary workflow. First Page Biodata starts as a six-field summary, keeps
   first-page source text out of the default summary, and places parse actions at

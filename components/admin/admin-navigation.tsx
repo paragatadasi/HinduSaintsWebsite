@@ -15,8 +15,8 @@ export function AdminPrimaryNavigation({ groups }: { groups: AdminNavigationGrou
 
   return (
     <aside className="admin-sidebar">
-      <Link className="admin-sidebar__brand" href="/admin">
-        <strong>Admin CMS</strong>
+      <Link aria-current={pathname === "/admin" ? "page" : undefined} className="admin-sidebar__brand" href="/admin">
+        <strong>Dashboard</strong>
       </Link>
       <nav aria-label="Admin navigation" className="admin-sidebar__sections">
         {groups.map((group) => (
