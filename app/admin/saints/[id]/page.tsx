@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { CheckCircle2, FlagTriangleRight, UserRound } from "lucide-react";
 import { AdminWorkspaceTabs } from "@/components/admin/admin-navigation";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
@@ -76,7 +76,14 @@ export async function AdminSaintEditorPage({
   const canManageVisibility = canManageSaintTeamVisibility(user.roles);
   const saint = await getSaint(id, saintScope, canReviewInstagram);
 
-  if (!saint) notFound();
+  if (!saint) {
+    const retired = await db.saintSlugRedirect.findFirst({
+      where: { slug: id, saint: saintCatalogWhere(saintScope) },
+      select: { saint: { select: { slug: true } } }
+    });
+    if (retired) redirect(`/admin/saints/${retired.saint.slug}`);
+    notFound();
+  }
 
   const detailPath = `/admin/saints/${saint.slug}`;
   const activePath = activeTab === "readiness" ? detailPath : `${detailPath}/${activeTab}`;

@@ -316,6 +316,21 @@ export async function getPublishedSaintBySlug(slug: string): Promise<PublicSaint
   return getPublishedSaintBySlugCached(slug);
 }
 
+export async function getPublishedSaintRedirectBySlug(slug: string) {
+  return getPublishedSaintRedirectBySlugCached(slug);
+}
+
+const getPublishedSaintRedirectBySlugCached = unstable_cache(async (slug: string) => {
+  const redirect = await db.saintSlugRedirect.findUnique({
+    where: { slug },
+    select: { saint: { select: { slug: true, status: true } } }
+  });
+  return redirect?.saint.status === "published" ? redirect.saint.slug : null;
+}, ["published-saint-slug-redirect"], {
+  revalidate: PUBLIC_DATA_CACHE_SECONDS,
+  tags: [PUBLIC_CACHE_TAGS.saints]
+});
+
 export async function getRelatedPublishedSaints(slug: string): Promise<PublicRelatedSaintSummary[]> {
   return getRelatedPublishedSaintsCached(slug);
 }

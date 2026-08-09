@@ -76,6 +76,14 @@ Current admin review surfaces:
   dismiss, defer, or reopen a pair. Confirmation does not merge records. Editors
   see only this duplicate queue, while Site and Data Admins may also switch to
   preserved source conflicts.
+- A confirmed Saint pair offers a dedicated merge review at
+  `/admin/source-data/reconciliation/[candidateId]/merge`. The review chooses
+  the canonical record and the source for every differing field before showing
+  the complete relationship-transfer summary. Editors and Data Admins may
+  inspect this plan, but the final password-protected merge requires Site Admin
+  authority. The duplicate is removed only after every transfer succeeds in the
+  same transaction. Its former `/saints/[slug]` and admin detail URLs then
+  redirect to the surviving record.
 
 ## Tradition workflow
 
