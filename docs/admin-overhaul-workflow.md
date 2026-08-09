@@ -85,8 +85,8 @@ editorial progress while keeping every deployed chunk internally coherent.
 | Chunk | Status | Scope |
 | --- | --- | --- |
 | B1. Status and role foundation | Deployed | Additive Team Visibility, Publication Status, and Workflow Status fields; Fact-checker/Writer roles; scoped capability presets; safe legacy-status compatibility and entity backfills |
-| B2. Scoped catalog and unified search | Ready for release | Role-filtered Full Catalog/Public Saint review, workflow cards and orthogonal filters, one authorization-scoped fuzzy Saint search across admin surfaces |
-| B3. Editorial permissions and assignments | Planned | Structured versus long-form action gates, shared readiness assignment card, self-assignment, assignee workflow updates and admin override |
+| B2. Scoped catalog and unified search | Deployed | Role-filtered Full Catalog/Public Saint review, workflow cards and orthogonal filters, one authorization-scoped fuzzy Saint search across admin surfaces |
+| B3. Editorial permissions and assignments | Ready for release | Structured versus long-form action gates, shared readiness assignment card, self-assignment, assignee workflow updates and admin override |
 | B4. Duplicate detection and reconciliation | Planned | Durable manual full-catalog scan, individual flags, evidence-based candidate queue and duplicate-only Editor reconciliation access |
 | B5. Saint merge and hardening | Planned | Conflict-aware transactional merge, relationship transfer, retired-slug redirects, privacy audit and legacy cleanup notes |
 
@@ -123,6 +123,18 @@ server action. B2 also completes the rolling-safe stored Contributor-to-
 Fact-checker migration after the B1 application became production-safe for the
 new enum value.
 
+B3 applies the structured/long-form split to both visible editing controls and
+their server actions. Fact-checkers and legacy Contributors can update summary,
+relationship, reference, and media metadata; Writers can also update biographies
+and other long-form Markdown. Publication-state changes remain limited to Site
+Admins, Data Admins, and Editors. Saint, Tradition, and Place Publish Readiness
+surfaces share one compact assignment and workflow section beside the readiness
+summary. Any internal role can assign a visible record to themselves. An active
+assignee may then move that record through Needs Review, Fact-checked, Populated,
+and Polished; assignment managers can override workflow status without first
+claiming the record. Assignment lifecycle and workflow status remain independent,
+and neither operation publishes content.
+
 ## Capability contract
 
 All access must be enforced server-side. Navigation visibility is a convenience,
@@ -147,8 +159,9 @@ not an authorization boundary.
 | `resolve_duplicate_saints` / `merge_saints` | Site Admin, Data Admin, Editor |
 | `self_assign_content` / `update_assigned_workflow` | All internal roles, limited to visible or assigned content by the action contract |
 
-Publishing and archiving content require `publish_content`. Drafting, editing,
-and returning content to review require `edit_content`. Bulk deletion, merging,
+All publication-state changes, including returning published content to review,
+require `publish_content`. Structured editing requires `edit_structured_content`;
+biography and other long-form editing requires `edit_long_form_content`. Bulk deletion, merging,
 credential changes, final removal, and similarly destructive operations require
 `manage_sensitive_actions`. Museum mutations require `manage_museum`; destructive
 Museum mutations additionally require `manage_sensitive_actions`.
@@ -203,6 +216,10 @@ For each chunk:
   state, priority, due date, notes, and created/completed timestamps.
 - Supported states are assigned, in progress, blocked, completed, and cancelled.
 - Users may self-assign available work; authorized users may assign/reassign others.
+- From Saint, Tradition, and Place Publish Readiness, self-assignment first
+  claims an available assignment or creates a review assignment when none exists.
+- An active assignee may update editorial workflow status. Assignment managers
+  may override it. These updates do not complete an assignment or publish content.
 - Multiple collaborators are supported. Publication completion rules are explicit.
 - Dashboard counters are grouped into Team Workflow and My Workflow. The
   embedded assignment workspace contains My Work, Available Work, Blocked,

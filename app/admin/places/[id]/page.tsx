@@ -9,6 +9,7 @@ import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
 import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
+import { ReadinessAssignmentSection } from "@/components/admin/readiness-assignment-section";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -17,19 +18,23 @@ import { requireAdminUser } from "@/lib/admin-access";
 import { getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { draftString, draftStrings, getEditorialDraftMap } from "@/lib/editorial-drafts";
 import { getKnownPlaceScope, STATE_PLACE_SLUGS } from "@/lib/place-taxonomy";
+import { hasCapability } from "@/lib/permissions";
 import { mergePlaces, updatePlaceOtherPublicFields, updatePlaceOverview } from "../actions";
 import { PlaceOverviewEditor } from "./place-overview-editor";
 
 type AdminPlaceEditorPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ conflict?: string }>;
+  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string }>;
 };
 
 export default async function AdminPlaceEditorPage({ params, searchParams }: AdminPlaceEditorPageProps) {
   const { id } = await params;
-  const { conflict } = await searchParams;
+  const { assignmentError, assignmentUpdated, conflict } = await searchParams;
   const user = await requireAdminUser();
   const saintScope = getAdminSaintCatalogScope(user.roles);
+  const canEditStructured = hasCapability(user.roles, "edit_structured_content");
+  const canEditLongForm = hasCapability(user.roles, "edit_long_form_content");
+  const canMerge = hasCapability(user.roles, "manage_sensitive_actions");
   const place = await getPlace(id, saintScope);
 
   if (!place) notFound();
@@ -133,7 +138,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
         <ReviewWorkflow
           description="Confirm whether this place has enough location context for the public map and place page."
           eyebrow="Review decision"
-          gridClassName="review-workflow__grid--tradition-readiness"
+          gridClassName="review-workflow__grid--readiness-assignment"
           title="Public Place Readiness"
         >
           <ReviewSection
@@ -142,6 +147,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
           >
             <div className="field-grid field-grid--compact-facts">
               <ReviewField label="Place unit" value={formatStatus(effectivePlaceScope)} />
+              <ReviewField label="Workflow" value={formatStatus(place.workflowStatus)} />
               <ReviewField label="Place kind" value={formatStatus(place.placeKind)} />
               <ReviewField label="Parent state" value={place.parentState?.name} />
               <ReviewField label="Localities" value={`${place.localities.length}`} />
@@ -151,7 +157,19 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
             </div>
           </ReviewSection>
 
+          <ReadinessAssignmentSection
+            assignmentError={assignmentError}
+            assignmentUpdated={assignmentUpdated}
+            contentId={place.id}
+            contentType="place"
+            currentUserId={user.id}
+            currentUserRoles={user.roles}
+            returnTo={`/admin/places/${place.slug}`}
+            workflowStatus={place.workflowStatus}
+          />
+
           <ReviewSection
+            className="review-workflow__section--wide"
             icon={<MapPin aria-hidden="true" size={18} />}
             title="Review actions"
           >
@@ -163,7 +181,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
           </ReviewSection>
         </ReviewWorkflow>
 
-        <CollapsibleReviewCard
+        {canMerge ? <CollapsibleReviewCard
           cardId="place-merge"
           description="Administrative duplicate handling for overlapping place records."
           eyebrow="Technical action"
@@ -184,7 +202,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
               <button className="admin-form-button admin-form-button--warning" type="submit">Merge into this place</button>
             </div>
           </form>
-        </CollapsibleReviewCard>
+        </CollapsibleReviewCard> : null}
       </div>
 
       <CollapsibleReviewCard
@@ -195,6 +213,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
         title="Overview"
       >
         <ReviewEditToggle
+          editable={canEditStructured}
           editLabel="Edit overview"
           summary={(
             <div className="field-grid">
@@ -234,6 +253,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
         title="Public Fields"
       >
         <ReviewEditToggle
+          editable={canEditLongForm}
           editLabel="Edit public fields"
           summary={(
             <div className="field-grid">

@@ -13,6 +13,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { assertCapability, requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
+import type { Capability } from "@/lib/permissions";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
@@ -65,7 +66,7 @@ const mergePlacesSchema = z.object({
 });
 
 export async function updatePlace(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession("edit_long_form_content");
 
   const parsed = placeEditorSchema.parse({
     placeId: formData.get("placeId"),
@@ -216,7 +217,7 @@ export async function updatePlaceOverview(formData: FormData) {
 }
 
 export async function updatePlaceOtherPublicFields(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession("edit_long_form_content");
 
   const parsed = placeOtherPublicFieldsSchema.parse({
     placeId: formData.get("placeId"),
@@ -304,8 +305,8 @@ export async function mergePlaces(formData: FormData) {
   redirect(`/admin/places/${target.slug}`);
 }
 
-async function requireAdminSession() {
-  await requireCapability("edit_content");
+async function requireAdminSession(capability: Capability = "edit_structured_content") {
+  await requireCapability(capability);
   const session = await auth();
   if (!session?.user?.email) {
     redirect("/admin");
