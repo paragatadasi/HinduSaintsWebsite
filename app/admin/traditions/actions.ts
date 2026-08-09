@@ -7,6 +7,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { assertCapability, assertSaintsVisibleToUser, requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
+import type { Capability } from "@/lib/permissions";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { toSlug } from "@/lib/slugs";
 import { expectedVersion, guardedTraditionTransaction, guardedTraditionUpdate } from "@/lib/admin-conflicts";
@@ -40,8 +41,7 @@ const traditionOverviewSchema = traditionEditorSchema.pick({
   name: true,
   alternateNames: true,
   parentTraditionId: true,
-  shortDescription: true,
-  status: true
+  shortDescription: true
 });
 
 const traditionOtherPublicFieldsSchema = traditionEditorSchema.pick({
@@ -134,7 +134,8 @@ const traditionImageDeleteSchema = z.object({
 });
 
 export async function updateTradition(formData: FormData) {
-  const user = await requireAdminSession();
+  const user = await requireAdminSession("edit_long_form_content");
+  await assertCapability("publish_content");
 
   const parsed = traditionEditorSchema.parse({
     traditionId: formData.get("traditionId"),
@@ -203,8 +204,7 @@ export async function updateTraditionOverview(formData: FormData) {
     name: formData.get("name"),
     alternateNames: parseList(formData.get("alternateNames")),
     parentTraditionId: emptyToUndefined(formData.get("parentTraditionId")),
-    shortDescription: emptyToUndefined(formData.get("shortDescription")),
-    status: formData.get("status")
+    shortDescription: emptyToUndefined(formData.get("shortDescription"))
   });
   const existing = await db.tradition.findUnique({
     where: { id: parsed.traditionId },
@@ -219,8 +219,7 @@ export async function updateTraditionOverview(formData: FormData) {
       slug,
       alternateNames: parsed.alternateNames,
       parentTraditionId: parsed.parentTraditionId === parsed.traditionId ? null : parsed.parentTraditionId ?? null,
-      shortDescription: parsed.shortDescription ?? null,
-      ...traditionPublicationCompatibilityData(parsed.status)
+      shortDescription: parsed.shortDescription ?? null
   };
   const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${existing.slug}/summary`, async (tx) => {
     const updated = await tx.tradition.update({ where: { id: parsed.traditionId }, data: attempted, select: { slug: true } });
@@ -273,7 +272,7 @@ export async function updateTraditionOtherPublicFields(formData: FormData) {
 }
 
 export async function updateTraditionLongForm(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession("edit_long_form_content");
 
   const parsed = traditionLongFormSchema.parse({
     traditionId: formData.get("traditionId"),
@@ -492,13 +491,12 @@ export async function updateTraditionScripturalBasis(formData: FormData) {
 }
 
 export async function updateTraditionReviewStatus(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession("publish_content");
 
   const parsed = traditionStatusSchema.parse({
     traditionId: formData.get("traditionId"),
     status: formData.get("status")
   });
-  if (parsed.status === "published" || parsed.status === "archived") await assertCapability("publish_content");
   const now = new Date();
   const current = await db.tradition.findUnique({ where: { id: parsed.traditionId }, select: { slug: true } });
   if (!current) redirect("/admin/traditions");
@@ -806,8 +804,8 @@ async function setTraditionGalleryImageVisibility(
   });
 }
 
-async function requireAdminSession() {
-  const user = await requireCapability("edit_content");
+async function requireAdminSession(capability: Capability = "edit_structured_content") {
+  const user = await requireCapability(capability);
   const session = await auth();
   if (!session?.user?.email) {
     redirect("/admin");

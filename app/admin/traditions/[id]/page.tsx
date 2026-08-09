@@ -10,6 +10,7 @@ import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
 import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
+import { ReadinessAssignmentSection } from "@/components/admin/readiness-assignment-section";
 import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -17,6 +18,7 @@ import { db } from "@/lib/db";
 import { requireAdminUser } from "@/lib/admin-access";
 import { getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { draftString, getEditorialDraftMap } from "@/lib/editorial-drafts";
+import { hasCapability } from "@/lib/permissions";
 import {
   mergeTraditions,
   updateTraditionHeroImage,
@@ -36,7 +38,7 @@ import { TraditionScripturalBasisEditor } from "./tradition-scriptural-basis-edi
 
 export type AdminTraditionEditorPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ conflict?: string }>;
+  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string }>;
 };
 
 export type TraditionEditorTab = "readiness" | "summary" | "content" | "media";
@@ -58,9 +60,13 @@ export async function AdminTraditionEditorPage({
   activeTab
 }: AdminTraditionEditorPageProps & { activeTab: TraditionEditorTab }) {
   const { id } = await params;
-  const { conflict } = await searchParams;
+  const { assignmentError, assignmentUpdated, conflict } = await searchParams;
   const user = await requireAdminUser();
   const saintScope = getAdminSaintCatalogScope(user.roles);
+  const canPublish = hasCapability(user.roles, "publish_content");
+  const canEditStructured = hasCapability(user.roles, "edit_structured_content");
+  const canEditLongForm = hasCapability(user.roles, "edit_long_form_content");
+  const canMerge = hasCapability(user.roles, "manage_sensitive_actions");
   const tradition = await getTradition(id, saintScope);
 
   if (!tradition) notFound();
@@ -166,7 +172,7 @@ export async function AdminTraditionEditorPage({
           className="review-panel--tradition-readiness"
           description="Confirm whether the tradition page has enough reviewed content, then choose the publication outcome."
           eyebrow="Review decision"
-          gridClassName="review-workflow__grid--tradition-readiness"
+          gridClassName="review-workflow__grid--readiness-assignment"
           title="Public Tradition Readiness"
         >
           <ReviewSection
@@ -175,6 +181,7 @@ export async function AdminTraditionEditorPage({
           >
             <div className="field-grid field-grid--compact-facts">
               <ReviewField label="Current status" value={formatStatus(tradition.status)} />
+              <ReviewField label="Workflow" value={formatStatus(tradition.workflowStatus)} />
               <ReviewField label="Overview" value={tradition.shortDescription ? "Ready" : "Needs summary"} />
               <ReviewField label="Founder" value={tradition.founderSaint?.displayName ?? tradition.founderDisplayName} />
               <ReviewField label="Origin" value={tradition.originPlace?.name ?? tradition.originPlaceLabel ?? tradition.origin} />
@@ -183,20 +190,32 @@ export async function AdminTraditionEditorPage({
             </div>
           </ReviewSection>
 
+          <ReadinessAssignmentSection
+            assignmentError={assignmentError}
+            assignmentUpdated={assignmentUpdated}
+            contentId={tradition.id}
+            contentType="tradition"
+            currentUserId={user.id}
+            currentUserRoles={user.roles}
+            returnTo={detailPath}
+            workflowStatus={tradition.workflowStatus}
+          />
+
           <ReviewSection
+            className="review-workflow__section--wide"
             icon={<GitBranch aria-hidden="true" size={18} />}
             title="Review actions"
           >
             <p>Publishing makes reviewed tradition content visible on the public home page, index, and detail routes.</p>
             <div className="review-actions">
-              <StatusForm traditionId={tradition.id} version={tradition.version} status="published" label="Approve and publish" />
-              <StatusForm traditionId={tradition.id} version={tradition.version} status="needs_review" label="Return to review" variant="secondary" />
-              <StatusForm traditionId={tradition.id} version={tradition.version} status="archived" label="Archive" variant="warning" />
+              {canPublish ? <StatusForm traditionId={tradition.id} version={tradition.version} status="published" label="Approve and publish" /> : null}
+              {canPublish ? <StatusForm traditionId={tradition.id} version={tradition.version} status="needs_review" label="Return to review" variant="secondary" /> : null}
+              {canPublish ? <StatusForm traditionId={tradition.id} version={tradition.version} status="archived" label="Archive" variant="warning" /> : null}
             </div>
           </ReviewSection>
         </ReviewWorkflow>
 
-        <CollapsibleReviewCard
+        {canMerge ? <CollapsibleReviewCard
           cardId="tradition-merge"
           description="Administrative duplicate handling for imported or overlapping records."
           eyebrow="Technical action"
@@ -217,7 +236,7 @@ export async function AdminTraditionEditorPage({
               <button className="admin-form-button admin-form-button--warning" type="submit">Merge into this tradition</button>
             </div>
           </form>
-        </CollapsibleReviewCard>
+        </CollapsibleReviewCard> : null}
       </div> : null}
 
       {activeTab === "summary" ? <>
@@ -229,6 +248,7 @@ export async function AdminTraditionEditorPage({
         title="Overview"
       >
         <ReviewEditToggle
+          editable={canEditStructured}
           editLabel="Edit overview"
           summary={(
             <div className="field-grid">
@@ -243,7 +263,6 @@ export async function AdminTraditionEditorPage({
           <EditorialDraftForm action={updateTraditionOverview} baseVersion={tradition.version} className="form-stack" entityId={tradition.id} entityType="tradition" initialDraft={overviewDraft} section="overview">
             <input name="traditionId" type="hidden" value={tradition.id} />
             <input name="version" type="hidden" value={tradition.version} />
-            <input name="status" type="hidden" value={draftString(overviewDraft, "status", tradition.status)} />
             <div className="field-grid field-grid--identity-line">
               <label>
                 Name
@@ -286,6 +305,7 @@ export async function AdminTraditionEditorPage({
         title="Key Facts"
       >
         <ReviewEditToggle
+          editable={canEditStructured}
           editLabel="Edit key facts"
           summary={(
             <div className="field-grid">
@@ -368,6 +388,7 @@ export async function AdminTraditionEditorPage({
         title="Lineage Saints"
       >
         <ReviewEditToggle
+          editable={canEditStructured}
           editLabel="Edit lineage"
           summary={(
             tradition.lineageSaints.length > 0 ? (
@@ -404,6 +425,7 @@ export async function AdminTraditionEditorPage({
         title="Tradition Sections"
       >
         <ReviewEditToggle
+          editable={canEditLongForm}
           editLabel="Edit sections"
           summary={(
             <div className="field-grid">
@@ -460,6 +482,7 @@ export async function AdminTraditionEditorPage({
         title="Related Sidebar Links"
       >
         <ReviewEditToggle
+          editable={canEditStructured}
           editLabel="Edit related links"
           summary={(
             <div className="field-grid">
@@ -488,6 +511,7 @@ export async function AdminTraditionEditorPage({
         title="Scriptural Basis"
       >
         <ReviewEditToggle
+          editable={canEditStructured}
           editLabel="Edit scriptural basis"
           summary={(
             tradition.scripturalBasis.length > 0 ? (
@@ -535,7 +559,7 @@ export async function AdminTraditionEditorPage({
             </figcaption>
           </figure>
         ) : null}
-        <form action={updateTraditionHeroImage} className="form-stack">
+        {canEditStructured ? <form action={updateTraditionHeroImage} className="form-stack">
           <input name="traditionId" type="hidden" value={tradition.id} />
           <label>
             Hero image from gallery
@@ -549,7 +573,7 @@ export async function AdminTraditionEditorPage({
           <div className="review-actions">
             <button className="admin-form-button" type="submit">Save hero image</button>
           </div>
-        </form>
+        </form> : null}
 
         {visibleGalleryImages.length > 0 ? (
           <div className="media-grid">
@@ -559,13 +583,13 @@ export async function AdminTraditionEditorPage({
                 <figcaption>
                   <span>{mediaAsset.caption ?? "Tradition gallery image"}</span>
                   {mediaAsset.sourceUrl ? <small>Source preserved</small> : null}
-                  <TraditionImageActions
+                  {canEditStructured ? <TraditionImageActions
                     imageLabel={mediaAsset.caption ?? mediaAsset.altText ?? "Tradition gallery image"}
                     imageUrl={mediaAsset.url}
                     mediaAssetId={mediaAsset.id}
                     traditionId={tradition.id}
                     visible
-                  />
+                  /> : null}
                 </figcaption>
               </figure>
             ))}
@@ -583,13 +607,13 @@ export async function AdminTraditionEditorPage({
                   <img src={mediaAsset.url} alt={mediaAsset.altText ?? tradition.name} width={mediaAsset.width ?? undefined} height={mediaAsset.height ?? undefined} />
                   <figcaption>
                     <span>{mediaAsset.caption ?? "Hidden tradition image"}</span>
-                    <TraditionImageActions
+                    {canEditStructured ? <TraditionImageActions
                       imageLabel={mediaAsset.caption ?? mediaAsset.altText ?? "Hidden tradition image"}
                       imageUrl={mediaAsset.url}
                       mediaAssetId={mediaAsset.id}
                       traditionId={tradition.id}
                       visible={false}
-                    />
+                    /> : null}
                   </figcaption>
                 </figure>
               ))}
@@ -597,10 +621,10 @@ export async function AdminTraditionEditorPage({
           </div>
         ) : null}
 
-        <div className="review-panel__subsection">
+        {canEditStructured ? <div className="review-panel__subsection">
           <h3>Add image</h3>
           <TraditionImageUploader defaultAltText={`${tradition.name} tradition image`} traditionId={tradition.id} />
-        </div>
+        </div> : null}
       </CollapsibleReviewCard> : null}
     </div>
   );

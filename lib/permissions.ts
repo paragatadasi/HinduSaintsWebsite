@@ -84,3 +84,14 @@ export function canPublish(roles: readonly UserRole[]) {
 export function canManageUsers(roles: readonly UserRole[]) {
   return hasCapability(roles, "manage_users");
 }
+
+export function canUpdateAssignedWorkflow(
+  roles: readonly UserRole[],
+  userId: string,
+  activeAssigneeIds: readonly (string | null)[]
+) {
+  return hasCapability(roles, "update_assigned_workflow") && (
+    hasCapability(roles, "manage_assignments")
+    || activeAssigneeIds.includes(userId)
+  );
+}

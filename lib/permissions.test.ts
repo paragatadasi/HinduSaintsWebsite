@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { hasCapability } from "./permissions";
+import { canUpdateAssignedWorkflow, hasCapability } from "./permissions";
 
 test("fact-checkers retain structured editing without publishing authority", () => {
   assert.equal(hasCapability(["fact_checker"], "view_content"), true);
@@ -64,6 +64,12 @@ test("all internal roles can self-assign visible content", () => {
   assert.equal(hasCapability(["writer"], "self_assign_content"), true);
   assert.equal(hasCapability(["curator"], "self_assign_content"), true);
   assert.equal(hasCapability(["translator"], "self_assign_content"), true);
+});
+
+test("workflow updates require an active assignment unless the user manages assignments", () => {
+  assert.equal(canUpdateAssignedWorkflow(["fact_checker"], "reviewer-1", ["reviewer-1"]), true);
+  assert.equal(canUpdateAssignedWorkflow(["writer"], "reviewer-1", ["reviewer-2", null]), false);
+  assert.equal(canUpdateAssignedWorkflow(["editor"], "editor-1", []), true);
 });
 
 test("duplicate and Instagram authority stays with the smaller internal circle", () => {

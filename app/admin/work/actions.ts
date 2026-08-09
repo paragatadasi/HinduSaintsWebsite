@@ -6,12 +6,15 @@ import type { Route } from "next";
 import { z } from "zod";
 import { assertSaintsVisibleToUser, getAdminUser } from "@/lib/admin-access";
 import { db } from "@/lib/db";
-import { hasCapability } from "@/lib/permissions";
+import { canUpdateAssignedWorkflow, hasCapability } from "@/lib/permissions";
 
 const contentTypes = ["saint", "tradition", "place", "instagram_item"] as const;
 const states = ["assigned", "in_progress", "blocked", "completed", "cancelled"] as const;
 const priorities = ["low", "normal", "high", "urgent"] as const;
 const taskTypes = ["review", "edit", "research", "source_check", "publish"] as const;
+const workflowStatuses = ["needs_review", "fact_checked", "populated", "polished"] as const;
+const readinessContentTypes = ["saint", "tradition", "place"] as const;
+const activeAssignmentStates = ["assigned", "in_progress", "blocked"] as const;
 
 const createSchema = z.object({
   target: z.string().min(3),
@@ -77,6 +80,99 @@ export async function updateAssignment(formData: FormData) {
   done("updated");
 }
 
+export async function selfAssignContent(formData: FormData) {
+  const actor = await activeUser();
+  if (!hasCapability(actor.roles, "self_assign_content")) detailFail(formData, "Your role cannot claim this review.");
+  const parsed = z.object({
+    contentType: z.enum(readinessContentTypes),
+    contentId: z.string().cuid(),
+    returnTo: z.string()
+  }).safeParse({
+    contentType: formData.get("contentType"),
+    contentId: formData.get("contentId"),
+    returnTo: formData.get("returnTo")
+  });
+  if (!parsed.success) detailFail(formData, "That review could not be assigned.");
+
+  await assertAssignmentVisible(actor, parsed.data);
+  if (!(await contentExists(parsed.data.contentType, parsed.data.contentId))) detailFail(formData, "That content record no longer exists.");
+
+  const existing = await db.contentAssignment.findFirst({
+    where: {
+      contentType: parsed.data.contentType,
+      contentId: parsed.data.contentId,
+      assigneeId: actor.id,
+      state: { in: [...activeAssignmentStates] }
+    },
+    select: { id: true }
+  });
+  if (!existing) {
+    const available = await db.contentAssignment.findFirst({
+      where: {
+        contentType: parsed.data.contentType,
+        contentId: parsed.data.contentId,
+        assigneeId: null,
+        state: "assigned"
+      },
+      orderBy: [{ priority: "desc" }, { createdAt: "asc" }],
+      select: { id: true }
+    });
+    if (available) {
+      await db.contentAssignment.updateMany({
+        where: { id: available.id, assigneeId: null, state: "assigned" },
+        data: { assigneeId: actor.id }
+      });
+    } else {
+      await db.contentAssignment.create({
+        data: {
+          contentType: parsed.data.contentType,
+          contentId: parsed.data.contentId,
+          taskType: "review",
+          assigneeId: actor.id,
+          assignedById: actor.id
+        }
+      });
+    }
+  }
+  detailDone(parsed.data.returnTo, "assigned");
+}
+
+export async function updateContentWorkflowStatus(formData: FormData) {
+  const actor = await activeUser();
+  if (!hasCapability(actor.roles, "update_assigned_workflow")) detailFail(formData, "Your role cannot update this workflow.");
+  const parsed = z.object({
+    contentType: z.enum(readinessContentTypes),
+    contentId: z.string().cuid(),
+    workflowStatus: z.enum(workflowStatuses),
+    returnTo: z.string()
+  }).safeParse({
+    contentType: formData.get("contentType"),
+    contentId: formData.get("contentId"),
+    workflowStatus: formData.get("workflowStatus"),
+    returnTo: formData.get("returnTo")
+  });
+  if (!parsed.success) detailFail(formData, "Choose a valid workflow status.");
+
+  await assertAssignmentVisible(actor, parsed.data);
+  const activeAssignments = await db.contentAssignment.findMany({
+    where: {
+      contentType: parsed.data.contentType,
+      contentId: parsed.data.contentId,
+      state: { in: [...activeAssignmentStates] }
+    },
+    select: { assigneeId: true }
+  });
+  if (!canUpdateAssignedWorkflow(actor.roles, actor.id, activeAssignments.map((assignment) => assignment.assigneeId))) {
+    detailFail(formData, "Assign this review to yourself before changing its workflow.");
+  }
+
+  const data = { workflowStatus: parsed.data.workflowStatus };
+  if (parsed.data.contentType === "saint") await db.saint.update({ where: { id: parsed.data.contentId }, data });
+  if (parsed.data.contentType === "tradition") await db.tradition.update({ where: { id: parsed.data.contentId }, data });
+  if (parsed.data.contentType === "place") await db.place.update({ where: { id: parsed.data.contentId }, data });
+  detailDone(parsed.data.returnTo, "workflow");
+}
+
 async function activeUser() {
   const user = await getAdminUser();
   if (!user?.active) fail("Sign in with an active admin account.");
@@ -108,6 +204,24 @@ async function assertAssignmentVisible(
 
 function fail(message: string): never { redirect(workDashboardHref("error", message)); }
 function done(value: string): never { revalidatePath("/admin"); redirect(workDashboardHref("updated", value)); }
+
+function detailFail(formData: FormData, message: string): never {
+  redirect(detailHref(formData.get("returnTo"), "assignmentError", message));
+}
+
+function detailDone(returnTo: string, value: string): never {
+  revalidatePath(returnTo);
+  revalidatePath("/admin");
+  redirect(detailHref(returnTo, "assignmentUpdated", value));
+}
+
+function detailHref(value: FormDataEntryValue | null, key: "assignmentError" | "assignmentUpdated", message: string) {
+  const returnTo = typeof value === "string" && /^\/admin\/(saints|traditions|places)\/[a-z0-9-]+$/.test(value)
+    ? value
+    : "/admin";
+  const params = new URLSearchParams({ [key]: message });
+  return `${returnTo}?${params.toString()}` as Route;
+}
 
 function workDashboardHref(key: "error" | "updated", value: string) {
   const params = new URLSearchParams({ work: "mine", [key]: value });
