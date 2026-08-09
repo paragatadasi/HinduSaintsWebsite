@@ -5334,6 +5334,45 @@ fieldset.admin-field {
   border-color: var(--color-danger);
 }
 
+.duplicate-comparison-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.duplicate-comparison-panel {
+  align-content: start;
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.duplicate-comparison-panel + .duplicate-comparison-panel {
+  border-left: 1px solid var(--review-workflow-border-soft);
+  padding-left: var(--space-4);
+}
+
+.duplicate-comparison-panel h3 {
+  margin: 0;
+}
+
+.duplicate-evidence {
+  background: var(--review-workflow-section-bg);
+  border: 1px solid var(--review-workflow-border-soft);
+  border-radius: var(--radius-sm);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+.duplicate-evidence ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+  padding-left: var(--space-5);
+}
+
 .review-workflow__suggestions {
   grid-column: 1 / -1;
 }
@@ -9816,7 +9855,8 @@ fieldset.admin-field {
 
   .review-detail-grid--decision,
   .review-workflow__grid--tradition-readiness,
-  .review-workflow__grid--readiness-assignment {
+  .review-workflow__grid--readiness-assignment,
+  .duplicate-comparison-grid {
     grid-template-columns: 1fr;
   }
 
@@ -9830,6 +9870,13 @@ fieldset.admin-field {
 
   .review-workflow__section--wide {
     grid-column: auto;
+  }
+
+  .duplicate-comparison-panel + .duplicate-comparison-panel {
+    border-left: 0;
+    border-top: 1px solid var(--review-workflow-border-soft);
+    padding-left: 0;
+    padding-top: var(--space-4);
   }
 
 }
