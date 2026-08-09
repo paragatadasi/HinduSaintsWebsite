@@ -109,6 +109,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
                 <SaintCard
                   imageTag={related.relationshipLabel}
                   key={related.slug}
+                  prefetch={false}
                   saint={related}
                   variant="portrait"
                 />

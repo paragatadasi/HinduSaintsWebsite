@@ -6,11 +6,12 @@ import type { PublicImage, PublicSaintSummary } from "@/lib/public-contracts";
 
 type SaintCardProps = {
   imageTag?: string;
+  prefetch?: boolean;
   saint: PublicSaintSummary;
   variant?: "summary" | "portrait";
 };
 
-export function SaintCard({ imageTag, saint, variant = "summary" }: SaintCardProps) {
+export function SaintCard({ imageTag, prefetch, saint, variant = "summary" }: SaintCardProps) {
   const image: PublicImage = saint.image ?? {
     url: "/images/devotional-archive-placeholder.svg",
     alt: `${saint.displayName} portrait placeholder`
@@ -18,7 +19,7 @@ export function SaintCard({ imageTag, saint, variant = "summary" }: SaintCardPro
   if (variant === "portrait") {
     return (
       <Card className="entity-card interactive-surface rail-card rail-card--featured saint-card saint-card--summary">
-        <Link href={`/saints/${saint.slug}`}>
+        <Link href={`/saints/${saint.slug}`} prefetch={prefetch}>
           <div className="saint-card__summary-image">
             <FocalImage
               src={image.url}
@@ -46,7 +47,7 @@ export function SaintCard({ imageTag, saint, variant = "summary" }: SaintCardPro
 
   return (
     <Card className="entity-card interactive-surface saint-card saint-card--summary">
-      <Link href={`/saints/${saint.slug}`}>
+      <Link href={`/saints/${saint.slug}`} prefetch={prefetch}>
         <div className="saint-card__summary-image">
           <FocalImage
             src={image.url}

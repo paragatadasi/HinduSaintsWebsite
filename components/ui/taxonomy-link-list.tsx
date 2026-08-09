@@ -16,7 +16,7 @@ export function TaxonomyLinkList({
   return (
     <span className="taxonomy-link-list" aria-label={label} role="group">
       {items.map((item) => (
-        <Link className="taxonomy-link" href={item.href as Route} key={item.href}>
+        <Link className="taxonomy-link" href={item.href as Route} key={item.href} prefetch={false}>
           {item.label}
         </Link>
       ))}
