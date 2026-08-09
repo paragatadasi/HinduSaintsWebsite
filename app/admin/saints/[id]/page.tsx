@@ -5,6 +5,7 @@ import { AdminWorkspaceTabs } from "@/components/admin/admin-navigation";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
+import { ReadinessAssignmentSection } from "@/components/admin/readiness-assignment-section";
 import { ReviewFactGrid, ReviewSection, ReviewSubsection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { SaintDateField } from "@/components/admin/saint-date-field";
 import { AdminPresence } from "@/components/admin/admin-presence";
@@ -48,7 +49,7 @@ import { SaintTraditionEditor } from "./saint-tradition-editor";
 
 export type AdminSaintEditorPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ conflict?: string }>;
+  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string }>;
 };
 
 export type SaintEditorTab = "readiness" | "summary" | "biography" | "media";
@@ -63,7 +64,7 @@ export async function AdminSaintEditorPage({
   activeTab
 }: AdminSaintEditorPageProps & { activeTab: SaintEditorTab }) {
   const { id } = await params;
-  const { conflict } = await searchParams;
+  const { assignmentError, assignmentUpdated, conflict } = await searchParams;
   const user = await requireSaintCatalogUser();
   const saintScope = getAdminSaintCatalogScope(user.roles);
   const canReviewInstagram = hasCapability(user.roles, "view_instagram_review");
@@ -170,7 +171,7 @@ export async function AdminSaintEditorPage({
         className="review-panel--saint-readiness"
         description="Check whether the public profile is ready, then choose the review outcome."
         eyebrow="Review decision"
-        gridClassName="review-workflow__grid--saint-readiness"
+        gridClassName="review-workflow__grid--readiness-assignment"
         title="Public Profile Readiness"
       >
         <ReviewSection
@@ -179,6 +180,7 @@ export async function AdminSaintEditorPage({
         >
           <div className="field-grid">
             <ReviewField label="Current status" value={formatStatus(saint.status)} />
+            <ReviewField label="Workflow" value={formatStatus(saint.workflowStatus)} />
             <ReviewField label="Team access" value={formatStatus(saint.teamVisibility)} />
             <ReviewField label="Biography" value={primaryBiography ? formatStatus(primaryBiography.status) : "Not started"} />
             <ReviewField label="Traditions" value={`${saint.traditions.length}`} />
@@ -188,14 +190,26 @@ export async function AdminSaintEditorPage({
           </div>
         </ReviewSection>
 
+        <ReadinessAssignmentSection
+          assignmentError={assignmentError}
+          assignmentUpdated={assignmentUpdated}
+          contentId={saint.id}
+          contentType="saint"
+          currentUserId={user.id}
+          currentUserRoles={user.roles}
+          returnTo={detailPath}
+          workflowStatus={saint.workflowStatus}
+        />
+
         <ReviewSection
+          className="review-workflow__section--wide"
           icon={<UserRound aria-hidden="true" size={18} />}
           title="Review actions"
         >
           <p>Publishing makes this saint eligible for public display. Team access determines which editors can work on it before publication.</p>
           <div className="review-actions">
             {canPublish ? <StatusForm saintId={saint.id} version={saint.version} status="published" label="Approve and publish" /> : null}
-            {canEditStructured ? <StatusForm saintId={saint.id} version={saint.version} status="needs_review" label="Return to review" variant="secondary" /> : null}
+            {canPublish ? <StatusForm saintId={saint.id} version={saint.version} status="needs_review" label="Return to review" variant="secondary" /> : null}
             {canPublish ? <StatusForm saintId={saint.id} version={saint.version} status="archived" label="Archive" variant="warning" /> : null}
           </div>
           {canManageVisibility ? <form action={updateSaintTeamVisibility} className="admin-settings-form admin-settings-form--inline">
@@ -262,7 +276,9 @@ export async function AdminSaintEditorPage({
         <ReviewEditToggle
           editable={canEditStructured}
           editLabel="Edit aliases"
-          summary={<p className="review-hint">Aliases support search, imported-data matching, and editorial context.</p>}
+          summary={<ReviewFactGrid facts={[
+            { label: "Aliases", value: saint.aliases.map((alias) => alias.alias).join(", ") }
+          ]} />}
         >
           <EditorialDraftForm action={updateSaintAliases} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={aliasesDraft} section="aliases">
             <input name="saintId" type="hidden" value={saint.id} />
@@ -346,12 +362,15 @@ export async function AdminSaintEditorPage({
             eyebrow="Lineage context"
             title="Traditions"
           >
-            <SaintTraditionEditor
+            {canEditStructured ? <SaintTraditionEditor
               options={traditionOptions}
               primaryTraditionId={primaryTraditionId}
               saintId={saint.id}
               selectedTraditionIds={selectedTraditionIds}
-            />
+            /> : <ReviewFactGrid facts={[
+              { label: "Primary", value: saint.traditions.find((item) => item.isPrimary)?.tradition.name },
+              { label: "Traditions", value: saint.traditions.map((item) => item.tradition.name).join(", ") }
+            ]} />}
           </ReviewSubsection>
 
           <ReviewSubsection
@@ -359,12 +378,15 @@ export async function AdminSaintEditorPage({
             eyebrow="Geography"
             title="Places and Route"
           >
-            <SaintPlaceRouteEditor
+            {canEditStructured ? <SaintPlaceRouteEditor
               options={placeOptions}
               placeTypes={placeTypes}
               saintId={saint.id}
               selectedPlaceIds={selectedPlaceIds}
-            />
+            /> : <ReviewFactGrid facts={[
+              { label: "Places", value: saint.places.map((item) => item.place.name).join(", ") },
+              { label: "Route stops", value: saint.places.filter((item) => item.routeOrder !== null).length.toString() }
+            ]} />}
           </ReviewSubsection>
         </div>
       </CollapsibleReviewCard>
@@ -398,7 +420,7 @@ export async function AdminSaintEditorPage({
                 <h3><Link href={`/admin/saints/${relationship.relatedSaint.slug}`}>{relationship.relatedSaint.displayName}</Link></h3>
                 <p>{relationship.relatedSaint.displayName} is shown as this saint&apos;s {formatRelationshipType(relationship.reviewType).toLowerCase()}.</p>
               </div>
-              <form action={updateSaintRelationship} className="form-stack">
+              {canEditStructured ? <form action={updateSaintRelationship} className="form-stack">
                 <input name="relationshipId" type="hidden" value={relationship.id} />
                 <input name="saintId" type="hidden" value={saint.id} />
                 <div className="field-grid">
@@ -443,12 +465,12 @@ export async function AdminSaintEditorPage({
                     type="submit"
                   >Delete</button>
                 </div>
-              </form>
+              </form> : null}
             </div>
           ))}
         </div>
 
-        <ReviewSubsection
+        {canEditStructured ? <ReviewSubsection
           description="The selected type describes how the related saint relates to this saint."
           eyebrow="Add connection"
           title="New Relationship"
@@ -505,7 +527,7 @@ export async function AdminSaintEditorPage({
               <button className="admin-form-button" type="submit">Add relationship</button>
             </div>
           </form>
-        </ReviewSubsection>
+        </ReviewSubsection> : null}
       </CollapsibleReviewCard>
 
       {canReviewInstagram ? <CollapsibleReviewCard
@@ -696,7 +718,7 @@ export async function AdminSaintEditorPage({
                 <figcaption>
                   <span>{mediaAsset.caption ?? "Imported saint image"}</span>
                   {mediaAsset.sourceUrl ? <small>Source preserved</small> : null}
-                  <SaintImageActions
+                  {canEditStructured ? <SaintImageActions
                     altText={mediaAsset.altText}
                     caption={mediaAsset.caption}
                     credit={mediaAsset.credit}
@@ -710,7 +732,7 @@ export async function AdminSaintEditorPage({
                     placement={placement}
                     saintId={saint.id}
                     visible
-                  />
+                  /> : null}
                 </figcaption>
               </figure>
             ))}
@@ -718,7 +740,7 @@ export async function AdminSaintEditorPage({
         ) : (
           <p className="empty-note">No public saint images have been attached.</p>
         )}
-        <div className="review-panel__subsection">
+        {canEditStructured ? <div className="review-panel__subsection">
           <h3>Add image</h3>
           <SaintImageCropper
             defaultAltText={`${saint.displayName} portrait`}
@@ -737,7 +759,7 @@ export async function AdminSaintEditorPage({
               width: mediaAsset.width
             }))}
           />
-        </div>
+        </div> : null}
       </CollapsibleReviewCard> : null}
 
       {activeTab === "biography" ? <CollapsibleReviewCard
@@ -746,6 +768,15 @@ export async function AdminSaintEditorPage({
         eyebrow="References"
         title="Sources and Further Reading"
       >
+        <ReviewEditToggle
+          editable={canEditStructured}
+          editLabel="Edit sources"
+          summary={sourceLinks.length > 0 ? (
+            <div className="field-grid">
+              {sourceLinks.map((link) => <ReviewField key={link.id} label={formatStatus(link.source.sourceType)} value={link.source.title} />)}
+            </div>
+          ) : <p>No reviewed sources have been attached.</p>}
+        >
             {sourceLinks.length > 0 ? (
               <div className="review-list">
                 {sourceLinks.map((link) => (
@@ -847,6 +878,7 @@ export async function AdminSaintEditorPage({
                 </div>
               </form>
             </div>
+        </ReviewEditToggle>
       </CollapsibleReviewCard> : null}
 
       {activeTab === "readiness" ? <CollapsibleReviewCard

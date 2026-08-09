@@ -8,6 +8,7 @@ import { z } from "zod";
 import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { assertCapability, assertSaintsVisibleToUser, requireAdminUser, requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
+import type { Capability } from "@/lib/permissions";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { parseImportedDate } from "@/lib/import-dates";
 import { acceptSaintInstagramClaim } from "@/lib/instagram-claims";
@@ -675,7 +676,7 @@ export async function createAndAttachSaintPlace(formData: FormData) {
 }
 
 export async function upsertSaintBiography(formData: FormData) {
-  await requireAdminSession(formData);
+  await requireAdminSession(formData, "edit_long_form_content");
 
   const parsed = saintBiographySchema.parse({
     biographyId: emptyToUndefined(formData.get("biographyId")),
@@ -846,13 +847,12 @@ export async function removeSaintSource(formData: FormData) {
 }
 
 export async function updateSaintReviewStatus(formData: FormData) {
-  await requireAdminSession(formData);
+  await requireAdminSession(formData, "publish_content");
 
   const parsed = saintStatusSchema.parse({
     saintId: formData.get("saintId"),
     status: formData.get("status")
   });
-  if (parsed.status === "published" || parsed.status === "archived") await assertCapability("publish_content");
   const now = new Date();
   const attempted = {
       ...saintPublicationCompatibilityData(parsed.status),
@@ -865,14 +865,13 @@ export async function updateSaintReviewStatus(formData: FormData) {
 }
 
 export async function bulkUpdateSaintReviewStatus(formData: FormData) {
-  await requireAdminSession(formData);
+  await requireAdminSession(formData, "publish_content");
 
   const parsed = bulkSaintStatusSchema.parse({
     saintIds: formData.getAll("saintIds"),
     status: formData.get("status"),
     returnTo: emptyToUndefined(formData.get("returnTo"))
   });
-  if (parsed.status === "published" || parsed.status === "archived") await assertCapability("publish_content");
   const now = new Date();
   const saints = await db.saint.findMany({
     where: { id: { in: parsed.saintIds } },
@@ -1056,7 +1055,7 @@ export async function reviewSaintInstagramClaim(formData: FormData) {
 }
 
 export async function importBiographyTextFromInstagramPost(input: z.input<typeof instagramBiographyImportSchema>) {
-  await requireAdminSession(input);
+  await requireAdminSession(input, "edit_long_form_content");
   await assertCapability("view_instagram_review");
 
   const parsed = instagramBiographyImportSchema.parse(input);
@@ -1485,8 +1484,11 @@ async function setSaintGalleryImageVisibility(
   });
 }
 
-async function requireAdminSession(target?: FormData | { saintId?: string; saintIds?: string[] }) {
-  const user = await requireCapability("edit_content");
+async function requireAdminSession(
+  target?: FormData | { saintId?: string; saintIds?: string[] },
+  capability: Capability = "edit_structured_content"
+) {
+  const user = await requireCapability(capability);
   const saintIds = target instanceof FormData
     ? [...target.getAll("saintId"), ...target.getAll("saintIds"), ...target.getAll("relatedSaintId")].filter((value): value is string => typeof value === "string")
     : [target?.saintId, ...(target?.saintIds ?? [])].filter((value): value is string => Boolean(value));

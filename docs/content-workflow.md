@@ -53,7 +53,9 @@ Current admin review surfaces:
 - `/admin/saints/[id]` supports editing core public saint fields, aliases,
   traditions, places, route order, biographies, sources, dates, Airtable
   linkage, Instagram-derived claims, and imported images, then publishing,
-  returning to review, or archiving the saint.
+  returning to review, or archiving the saint. Its Publish Readiness panel shows
+  active reviewers, supports self-assignment, and lets an active assignee update
+  workflow status without granting publication authority.
 - `/admin/instagram` lists real imported Instagram posts/reels/carousels by
   status and is limited to Site Admins, Data Admins, and Editors.
 - `/admin/instagram/[id]` supports reviewing a real Instagram item, previewing
@@ -64,7 +66,8 @@ Current admin review surfaces:
   individual editors live at `/admin/traditions/[id]` and `/admin/places/[id]`.
   Those detail editors own public overview Markdown, parent/child relationships,
   and duplicate merge workflows so relationship-preserving consolidation happens
-  from the canonical record.
+  from the canonical record. They share the same readiness assignment and
+  assignee-controlled workflow pattern as saint review.
 
 ## Tradition workflow
 
