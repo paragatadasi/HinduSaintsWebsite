@@ -45,17 +45,17 @@ branch as every chunk.
 | R4. Image tooling compaction | Deployed | Tokenized compact editors, synchronized large-editor dialogs, full-size inspection, and keyboard controls for focal/crop adjustment |
 | R5. Assignment and access simplification | Deployed | Internal URL-backed workload queue rail, compact assignment creation, summary-first user access cards, consistent sensitive-action terminology, and explicit nested-tab styling |
 
-## Current admin refinement phase
+## Completed admin refinement phase
 
-This is a new phase after the completed nine-chunk overhaul and R1-R5 UX
-remediation. It does not reopen either completed sequence.
+This phase followed the completed nine-chunk overhaul and R1-R5 UX remediation.
+It is complete and deployed, and it does not reopen either earlier sequence.
 
 | Chunk | Status | Scope |
 | --- | --- | --- |
 | A1. Detail workspace tabs | Deployed | URL-backed Saint and Tradition review tabs that render only the active workflow; Saint aliases folded into Overview; Public Fields renamed Key Facts; shallow Instagram and Place detail rails removed |
 | A2. Homepage configuration compaction | Deployed | Responsive two-column configuration layout, compact adjacent media placements, and advanced image adjustments reserved for the larger editor |
 | A3. Source Data simplification | Deployed | Source-specific Airtable and Instagram history, retired combined overview/history navigation, preserved raw import records |
-| A4. Dashboard and workload consolidation | Ready for release | Team/My Workflow grouping, My Work embedded in Dashboard, and redundant sidebar destinations removed |
+| A4. Dashboard and workload consolidation | Deployed | Team/My Workflow grouping, My Work embedded in Dashboard, and redundant sidebar destinations removed |
 
 A2 keeps the existing homepage field and save contracts while reducing the
 default page length. On wider screens, configuration sections share a two-column
@@ -108,14 +108,16 @@ For each chunk:
 4. Run `npm run dev:check`. Use `npm run codex:verify` only when required by
    the project verification rules or the changed surface.
 5. Update this document: mark the chunk status, record what shipped, and identify
-   the exact next chunk and any release dependency.
+   the exact next chunk and any release dependency, or explicitly record that the
+   phase is complete and no follow-on chunk is defined.
 6. Commit the feature. Run `npm run prepare:deployment`, complete and commit the
    branch-specific file in `docs/release-handoffs/`, and push the branch.
 7. Notify the active Release Captain with branch, SHAs, summary, verification,
    migrations, environment changes, shared areas, and deploy notes.
 8. Ask the Release Captain to message the originating admin-overhaul task after
    production deployment completes. Pause further overhaul work until that notice
-   arrives, then refresh from `main` and begin the next chunk.
+   arrives, then refresh from `main` and begin the next defined chunk. If none is
+   defined, stop until the workflow document is updated with approved scope.
 
 ## Delivered acceptance criteria
 
@@ -171,10 +173,27 @@ For each chunk:
 
 ## Completion record
 
-The documented admin UX remediation (R1-R5) is complete and deployed as of
-August 7, 2026. The current A1-A4 refinement phase is a separate sequence and
-must follow the same per-chunk release cadence. Translation workflow design and
-authoring remain explicitly deferred.
+The A1-A4 admin refinement phase is complete and deployed as of August 8, 2026.
+No A5 or subsequent refinement chunk is currently defined. Future overhaul work
+must begin with an approved workflow update rather than extending this phase by
+inference.
+
+| Chunk | Feature commit | Final `main` | Final `deploy` | Production workflow |
+| --- | --- | --- | --- | --- |
+| A1. Detail workspace tabs | `028db22` | `165d8cf` | `fe1efbb` | [31223793080](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/31223793080) |
+| A2. Homepage configuration compaction | `7021ff1` | `17dce9d` | `2a4da8a` | [31271490736](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/31271490736) |
+| A3. Source Data simplification | `f7e6c89` | `4b9a29c` | `5f65e79` | [31272131786](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/31272131786) |
+| A4. Dashboard and workload consolidation | `c9063e5` | `a117cfc` | `4f7620e` | [31272739479](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/31272739479) |
+
+Each release passed `npm run dev:check` and the full 107-test suite. Integrated
+`npm run codex:verify` checks compiled, type-checked, collected page data, and
+generated all 15 static pages; the only remaining worktree-specific issue was
+the known Windows standalone trace-copy `EPERM`. None of A1-A4 required database
+migrations, environment changes, data backfills, or manual release steps.
+
+The documented admin UX remediation (R1-R5) was completed and deployed as of
+August 7, 2026. Translation workflow design and authoring remain explicitly
+deferred.
 
 R5 assignment/access simplification and the final navigation correction are
 deployed. Release commits and final release state:
