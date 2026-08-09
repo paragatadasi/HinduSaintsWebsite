@@ -2,6 +2,8 @@ import Link from "next/link";
 import type { Route } from "next";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
+import { requireAdminUser } from "@/lib/admin-access";
+import { getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 
 const statuses = ["all", "needs_review", "published", "draft", "archived"] as const;
 type StatusFilter = typeof statuses[number];
@@ -11,12 +13,14 @@ type AdminTraditionsPageProps = {
 };
 
 export default async function AdminTraditionsPage({ searchParams }: AdminTraditionsPageProps) {
+  const user = await requireAdminUser();
+  const saintScope = getAdminSaintCatalogScope(user.roles);
   const { q, status } = await searchParams;
   const query = getSearchParam(q);
   const activeStatus = statuses.includes(status as StatusFilter) ? status as StatusFilter : "all";
   const [counts, traditions] = await Promise.all([
     getStatusCounts(),
-    getTraditions(activeStatus, query)
+    getTraditions(activeStatus, query, saintScope)
   ]);
 
   return (
@@ -92,13 +96,13 @@ async function getStatusCounts() {
   return Object.fromEntries(grouped.map((row) => [row.status, row._count._all])) as Record<string, number>;
 }
 
-async function getTraditions(status: StatusFilter, query: string) {
+async function getTraditions(status: StatusFilter, query: string, saintScope: SaintCatalogScope) {
   const traditions = await db.tradition.findMany({
     where: status === "all" ? undefined : { status },
     orderBy: [{ status: "asc" }, { name: "asc" }],
     include: {
       parentTradition: { select: { name: true } },
-      _count: { select: { saints: true, childTraditions: true } }
+      _count: { select: { saints: { where: { saint: saintCatalogWhere(saintScope) } }, childTraditions: true } }
     }
   });
   const term = query.toLowerCase();

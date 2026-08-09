@@ -14,6 +14,8 @@ import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
+import { requireAdminUser } from "@/lib/admin-access";
+import { getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { draftString, getEditorialDraftMap } from "@/lib/editorial-drafts";
 import {
   mergeTraditions,
@@ -57,7 +59,9 @@ export async function AdminTraditionEditorPage({
 }: AdminTraditionEditorPageProps & { activeTab: TraditionEditorTab }) {
   const { id } = await params;
   const { conflict } = await searchParams;
-  const tradition = await getTradition(id);
+  const user = await requireAdminUser();
+  const saintScope = getAdminSaintCatalogScope(user.roles);
+  const tradition = await getTradition(id, saintScope);
 
   if (!tradition) notFound();
 
@@ -78,6 +82,7 @@ export async function AdminTraditionEditorPage({
       }
     }),
     db.saint.findMany({
+      where: saintCatalogWhere(saintScope),
       orderBy: { displayName: "asc" },
       select: { id: true, displayName: true, canonicalName: true, status: true }
     }),
@@ -601,8 +606,8 @@ export async function AdminTraditionEditorPage({
   );
 }
 
-async function getTradition(slugOrId: string) {
-  return db.tradition.findFirst({
+async function getTradition(slugOrId: string, saintScope: SaintCatalogScope) {
+  const tradition = await db.tradition.findFirst({
     where: {
       OR: [
         { slug: slugOrId },
@@ -610,7 +615,7 @@ async function getTradition(slugOrId: string) {
       ]
     },
     include: {
-      founderSaint: { select: { id: true, displayName: true } },
+      founderSaint: { select: { id: true, displayName: true, teamVisibility: true } },
       heroImage: true,
       originPlace: { select: { id: true, name: true, region: true, country: true } },
       parentTradition: { select: { id: true, name: true, slug: true } },
@@ -623,6 +628,10 @@ async function getTradition(slugOrId: string) {
         orderBy: { sortOrder: "asc" }
       },
       lineageSaints: {
+        where: {
+          saint: saintCatalogWhere(saintScope),
+          OR: [{ parentSaintId: null }, { parentSaint: saintCatalogWhere(saintScope) }]
+        },
         include: {
           saint: { select: { id: true, displayName: true } },
           parentSaint: { select: { id: true, displayName: true } }
@@ -647,9 +656,16 @@ async function getTradition(slugOrId: string) {
         },
         orderBy: { sortOrder: "asc" }
       },
-      _count: { select: { saints: true } }
+      _count: { select: { saints: { where: { saint: saintCatalogWhere(saintScope) } } } }
     }
   });
+  if (!tradition) return null;
+  return {
+    ...tradition,
+    founderSaint: saintScope === "full" || tradition.founderSaint?.teamVisibility === "public"
+      ? tradition.founderSaint
+      : null
+  };
 }
 
 function StatusForm({
