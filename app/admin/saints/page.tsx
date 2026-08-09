@@ -5,6 +5,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import { rankSaintSearchResults } from "@/lib/saint-search";
+import { reviewedInstagramMatchWhere } from "@/lib/saint-match-status";
 import { SaintsBulkReviewList } from "./saints-bulk-review-list";
 
 const reviewStatuses = ["needs_review", "draft", "published", "archived"] as const;
@@ -186,10 +187,7 @@ function getSaintQueueWhere(status: StatusFilter, filters: SaintQueueFilters): P
     ...(status !== "all" && status !== "matched" ? { status } : {}),
     ...(status === "matched" ? {
       instagramItems: {
-        some: {
-          matchStatus: { in: ["matched", "published"] },
-          instagramItem: { status: { in: ["matched", "published"] } }
-        }
+        some: reviewedInstagramMatchWhere()
       }
     } : {}),
     ...descriptionWhere,

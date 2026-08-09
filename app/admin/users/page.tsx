@@ -7,7 +7,7 @@ import { userRoleLabels } from "@/lib/permissions";
 import { setBulkDeletePasswordAction } from "../actions";
 import { createAdminUser, updateUserAccess } from "./actions";
 
-const roles = ["site_admin", "data_admin", "editor", "contributor", "curator", "translator"] as const;
+const roles = ["site_admin", "data_admin", "editor", "fact_checker", "writer", "curator", "translator"] as const;
 
 type UsersAccessPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -48,8 +48,8 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
       >
         <form action={createAdminUser} className="admin-settings-form admin-settings-form--stacked">
           <label className="admin-field"><span>Email</span><input autoComplete="email" name="email" required type="email" /></label>
-          <RoleCheckboxes defaults={["contributor"]} />
-          <p className="admin-settings-note">Roles combine additively. Ongoing authorization is database-backed.</p>
+          <RoleCheckboxes defaults={["fact_checker"]} />
+          <p className="admin-settings-note">Roles combine additively. Fact-checkers work with structured summaries; Writers also work with biography and long-form content.</p>
           <div className="review-actions admin-settings-form__actions"><button className="admin-form-button" type="submit">Approve user</button></div>
         </form>
       </CollapsibleReviewCard>
@@ -125,7 +125,7 @@ function RoleCheckboxes({ defaults }: { defaults: readonly string[] }) {
       <div className="admin-option-grid">
         {roles.map((role) => (
           <label className="admin-option-toggle" key={role}>
-            <input defaultChecked={defaults.includes(role)} name="roles" type="checkbox" value={role} />
+            <input defaultChecked={defaults.includes(role) || (role === "fact_checker" && defaults.includes("contributor"))} name="roles" type="checkbox" value={role} />
             <span>{userRoleLabels[role]}</span>
           </label>
         ))}
@@ -147,4 +147,7 @@ function getMessage(params: Record<string, string | string[] | undefined>) {
 function firstParam(value: string | string[] | undefined) { return Array.isArray(value) ? value[0] : value; }
 function formatDate(value: Date) { return value.toLocaleString(); }
 function formatAction(value: string) { return value.replaceAll("_", " "); }
-function formatRoles(values: readonly (keyof typeof userRoleLabels)[]) { return values.length ? values.map((role) => userRoleLabels[role]).join(", ") : "No roles"; }
+function formatRoles(values: readonly (keyof typeof userRoleLabels)[]) {
+  const labels = Array.from(new Set(values.map((role) => userRoleLabels[role === "contributor" ? "fact_checker" : role])));
+  return labels.length ? labels.join(", ") : "No roles";
+}

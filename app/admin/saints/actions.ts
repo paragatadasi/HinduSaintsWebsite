@@ -16,6 +16,7 @@ import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page
 import { toSlug } from "@/lib/slugs";
 import { getReciprocalRelationshipType } from "@/lib/saint-relationships";
 import { expectedVersion, guardedSaintTransaction, guardedSaintUpdate } from "@/lib/admin-conflicts";
+import { saintPublicationCompatibilityData } from "@/lib/admin-workflow";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 const placeTypeSchema = z.enum(["primary", "birth", "samadhi", "sadhana", "associated", "other"]);
@@ -841,7 +842,7 @@ export async function updateSaintReviewStatus(formData: FormData) {
   if (parsed.status === "published" || parsed.status === "archived") await assertCapability("publish_content");
   const now = new Date();
   const attempted = {
-      status: parsed.status,
+      ...saintPublicationCompatibilityData(parsed.status),
       reviewedAt: parsed.status === "needs_review" ? null : now,
       publishedAt: parsed.status === "published" ? now : null
   };
@@ -868,7 +869,7 @@ export async function bulkUpdateSaintReviewStatus(formData: FormData) {
   await db.saint.updateMany({
     where: { id: { in: saints.map((saint) => saint.id) } },
     data: {
-      status: parsed.status,
+      ...saintPublicationCompatibilityData(parsed.status),
       reviewedAt: parsed.status === "needs_review" ? null : now,
       publishedAt: parsed.status === "published" ? now : null
     }

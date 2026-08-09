@@ -19,8 +19,28 @@ enum UserRole {
   data_admin
   editor
   contributor
+  fact_checker
+  writer
   curator
   translator
+}
+
+enum TeamVisibility {
+  private
+  public
+}
+
+enum PublicationStatus {
+  unpublished
+  published
+  archived
+}
+
+enum WorkflowStatus {
+  needs_review
+  fact_checked
+  populated
+  polished
 }
 
 enum InstagramType {
@@ -395,6 +415,9 @@ model Saint {
   shortDescription         String?
   biographySummary         String?
   status                   ContentStatus           @default(draft)
+  teamVisibility           TeamVisibility          @default(private)
+  publicationStatus        PublicationStatus       @default(unpublished)
+  workflowStatus           WorkflowStatus          @default(needs_review)
   featured                 Boolean                 @default(false)
   launchMvp                Boolean                 @default(false)
   hasInstagramContent      Boolean                 @default(false)
@@ -440,6 +463,7 @@ model Saint {
   version                  Int                     @default(1)
 
   @@index([status, featured, displayName])
+  @@index([teamVisibility, publicationStatus, workflowStatus, displayName])
 }
 
 model SaintAlias {
@@ -467,6 +491,9 @@ model Tradition {
   heroImageId              String?
   heroImage                MediaAsset?                 @relation("TraditionHeroImage", fields: [heroImageId], references: [id])
   status                   ContentStatus               @default(draft)
+  teamVisibility           TeamVisibility              @default(private)
+  publicationStatus        PublicationStatus           @default(unpublished)
+  workflowStatus           WorkflowStatus              @default(needs_review)
   founderSaintId           String?
   founderSaint             Saint?                      @relation("TraditionFounder", fields: [founderSaintId], references: [id], onDelete: SetNull)
   founderDisplayName       String?
@@ -495,6 +522,7 @@ model Tradition {
   publishedAt              DateTime?
 
   @@index([status, name])
+  @@index([teamVisibility, publicationStatus, workflowStatus, name])
 }
 
 model Place {
@@ -502,6 +530,9 @@ model Place {
   slug                   String                  @unique
   name                   String
   alternateNames         String[]
+  teamVisibility         TeamVisibility          @default(private)
+  publicationStatus      PublicationStatus       @default(unpublished)
+  workflowStatus         WorkflowStatus          @default(needs_review)
   placeKind              PlaceKind               @default(locality)
   placeScope             PlaceScope              @default(locality)
   parentStateId          String?
@@ -523,6 +554,7 @@ model Place {
   @@index([placeKind])
   @@index([placeScope])
   @@index([parentStateId])
+  @@index([teamVisibility, publicationStatus, workflowStatus, name])
 }
 
 model PlaceRelationship {
