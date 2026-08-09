@@ -14,7 +14,7 @@
 
 ## Verification
 
-- npm run dev:check passed; npm test passed 119/119; npm run codex:verify compiled, type-checked, generated 16/16 static pages, and reached final trace collection before the 60-second command window expired; existing Autoprefixer warnings only
+- `npm run dev:check` passed; `npm test` passed 119/119; `npm run codex:verify` passed, including production compilation, type checking, page-data collection, 16/16 static pages, and build-trace collection
 
 ## Deploy Notes
 
