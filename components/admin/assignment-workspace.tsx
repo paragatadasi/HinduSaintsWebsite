@@ -5,6 +5,7 @@ import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { claimAssignment, createAssignment, updateAssignment } from "@/app/admin/work/actions";
 import { db } from "@/lib/db";
+import { saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 
 type AssignmentRow = Awaited<ReturnType<typeof loadAssignments>>[number];
 type AdminUser = { id: string; name: string | null; email: string };
@@ -14,15 +15,21 @@ type SearchParams = Record<string, string | string[] | undefined>;
 export async function AssignmentWorkspace({
   canClaim,
   canManage,
+  canViewContent,
+  canViewInstagram,
   params,
+  saintScope,
   userId
 }: {
   canClaim: boolean;
   canManage: boolean;
+  canViewContent: boolean;
+  canViewInstagram: boolean;
   params: SearchParams;
+  saintScope: SaintCatalogScope;
   userId: string;
 }) {
-  const [assignments, users, targets] = await Promise.all([
+  const [candidateAssignments, users, targets] = await Promise.all([
     loadAssignments(),
     db.user.findMany({
       where: { active: true },
@@ -31,7 +38,8 @@ export async function AssignmentWorkspace({
     }),
     canManage ? loadTargets() : Promise.resolve([])
   ]);
-  const refs = await loadContentRefs(assignments);
+  const refs = await loadContentRefs(candidateAssignments, { canViewContent, canViewInstagram, saintScope });
+  const assignments = candidateAssignments.filter((row) => refs.has(`${row.contentType}:${row.contentId}`));
   const mine = assignments.filter((row) => row.assigneeId === userId && active(row.state));
   const available = assignments.filter((row) => !row.assigneeId && row.state === "assigned");
   const blocked = assignments.filter((row) => row.state === "blocked" && row.assigneeId === userId);
@@ -260,13 +268,16 @@ async function loadTargets() {
   ];
 }
 
-async function loadContentRefs(rows: AssignmentRow[]) {
+async function loadContentRefs(
+  rows: AssignmentRow[],
+  access: { canViewContent: boolean; canViewInstagram: boolean; saintScope: SaintCatalogScope }
+) {
   const ids = (type: string) => rows.filter((row) => row.contentType === type).map((row) => row.contentId);
   const [saints, traditions, places, posts] = await Promise.all([
-    db.saint.findMany({ where: { id: { in: ids("saint") } }, select: { id: true, displayName: true, slug: true } }),
-    db.tradition.findMany({ where: { id: { in: ids("tradition") } }, select: { id: true, name: true, slug: true } }),
-    db.place.findMany({ where: { id: { in: ids("place") } }, select: { id: true, name: true } }),
-    db.instagramItem.findMany({ where: { id: { in: ids("instagram_item") } }, select: { id: true, extractedSaintName: true, instagramShortcode: true } })
+    db.saint.findMany({ where: { id: { in: ids("saint") }, ...saintCatalogWhere(access.saintScope) }, select: { id: true, displayName: true, slug: true } }),
+    access.canViewContent ? db.tradition.findMany({ where: { id: { in: ids("tradition") } }, select: { id: true, name: true, slug: true } }) : Promise.resolve([]),
+    access.canViewContent ? db.place.findMany({ where: { id: { in: ids("place") } }, select: { id: true, name: true } }) : Promise.resolve([]),
+    access.canViewInstagram ? db.instagramItem.findMany({ where: { id: { in: ids("instagram_item") } }, select: { id: true, extractedSaintName: true, instagramShortcode: true } }) : Promise.resolve([])
   ]);
   const map = new Map<string, { label: string; href: Route }>();
   saints.forEach((row) => map.set(`saint:${row.id}`, { label: row.displayName, href: `/admin/saints/${row.slug}` as Route }));

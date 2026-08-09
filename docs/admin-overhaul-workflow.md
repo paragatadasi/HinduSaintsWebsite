@@ -84,8 +84,8 @@ editorial progress while keeping every deployed chunk internally coherent.
 
 | Chunk | Status | Scope |
 | --- | --- | --- |
-| B1. Status and role foundation | Ready for release | Additive Team Visibility, Publication Status, and Workflow Status fields; Fact-checker/Writer roles; scoped capability presets; safe legacy-status compatibility and entity backfills |
-| B2. Scoped catalog and unified search | Planned | Role-filtered Full Catalog/Public Saint review, workflow cards and orthogonal filters, one authorization-scoped fuzzy Saint search across admin surfaces |
+| B1. Status and role foundation | Deployed | Additive Team Visibility, Publication Status, and Workflow Status fields; Fact-checker/Writer roles; scoped capability presets; safe legacy-status compatibility and entity backfills |
+| B2. Scoped catalog and unified search | Ready for release | Role-filtered Full Catalog/Public Saint review, workflow cards and orthogonal filters, one authorization-scoped fuzzy Saint search across admin surfaces |
 | B3. Editorial permissions and assignments | Planned | Structured versus long-form action gates, shared readiness assignment card, self-assignment, assignee workflow updates and admin override |
 | B4. Duplicate detection and reconciliation | Planned | Durable manual full-catalog scan, individual flags, evidence-based candidate queue and duplicate-only Editor reconciliation access |
 | B5. Saint merge and hardening | Planned | Conflict-aware transactional merge, relationship transfer, retired-slug redirects, privacy audit and legacy cleanup notes |
@@ -102,6 +102,27 @@ production migrations run before application replacement; B1 already presents
 and authorizes legacy Contributors as Fact-checkers without exposing the new
 enum to the old application during rollout.
 
+B2 makes the catalog scope a server-owned value. Site Admins, Data Admins,
+Editors, and Curators default to Full Catalog and may switch to the Public team
+queue. Fact-checkers, Writers, Translators, and legacy Contributors are clamped
+to Public even if a crafted URL or action requests the full catalog. The same
+scope is applied to saint detail routes, relationship pickers, tradition/place
+saint counts, dashboard and assignment counts, and assignment mutations, so
+private saint names and counts are not serialized to an unauthorized browser.
+Instagram navigation, matching filters, claims, references, and actions require
+`view_instagram_review` independently of ordinary content editing.
+
+The Public queue uses the established workflow card, filter-chip, status-badge,
+and responsive review-list patterns. Its four top cards map to Needs Review,
+Fact-checked, Populated, and Polished; Publication and authorized Match filters
+remain orthogonal. Full-catalog users get connected, URL-backed Full Catalog and
+Public tabs. Search uses one weighted name/alias/transliteration/place/tradition/
+date/status ranking path with authorization-scoped PostgreSQL candidate
+selection. Published saints cannot be marked Private in either the UI or the
+server action. B2 also completes the rolling-safe stored Contributor-to-
+Fact-checker migration after the B1 application became production-safe for the
+new enum value.
+
 ## Capability contract
 
 All access must be enforced server-side. Navigation visibility is a convenience,
@@ -109,8 +130,8 @@ not an authorization boundary.
 
 | Capability | Roles by default |
 | --- | --- |
-| `view_content` | Site Admin, Data Admin, Editor, Contributor, Translator |
-| `edit_content` | Site Admin, Data Admin, Editor, Contributor |
+| `view_content` | Site Admin, Data Admin, Editor, Fact-checker, Writer, Translator, legacy Contributor |
+| `edit_content` | Site Admin, Data Admin, Editor, Fact-checker, Writer, legacy Contributor |
 | `publish_content` | Site Admin, Data Admin, Editor |
 | `view_source_data` / `run_imports` / `resolve_reconciliation` | Site Admin, Data Admin |
 | `access_museum` / `manage_museum` | Site Admin, Curator |
@@ -119,7 +140,7 @@ not an authorization boundary.
 | `manage_sensitive_actions` | Site Admin |
 | `view_full_saint_catalog` | Site Admin, Data Admin, Editor, Curator |
 | `view_instagram_review` | Site Admin, Data Admin, Editor |
-| `edit_structured_content` | Site Admin, Data Admin, Editor, Fact-checker, Writer |
+| `edit_structured_content` | Site Admin, Data Admin, Editor, Fact-checker, Writer, legacy Contributor |
 | `edit_long_form_content` | Site Admin, Data Admin, Editor, Writer |
 | `manage_team_visibility` | Site Admin, Data Admin, Editor |
 | `manage_saint_team_visibility` | Site Admin, Data Admin, Editor, Curator |

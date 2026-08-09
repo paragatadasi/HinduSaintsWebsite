@@ -4,6 +4,7 @@ import { auth, isGoogleAuthConfigured, signIn } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
 import { getAdminUser } from "@/lib/admin-access";
+import { canAccessSaintCatalog } from "@/lib/admin-saint-access";
 import { AdminFormGuard } from "@/components/admin/admin-form-guard";
 import { AdminPrimaryNavigation } from "@/components/admin/admin-navigation";
 import type { AdminNavigationGroup } from "@/lib/admin-navigation";
@@ -114,16 +115,18 @@ function buildNavigationGroups({
     });
   }
 
+  const contentItems: AdminNavigationGroup["items"] = [];
+  if (hasCapability(roles, "view_instagram_review")) contentItems.push({ href: "/admin/instagram", label: "Instagram" });
+  if (canAccessSaintCatalog(roles)) contentItems.push({ href: "/admin/saints", label: "Saints" });
   if (hasCapability(roles, "view_content")) {
+    contentItems.push({ href: "/admin/traditions", label: "Traditions" });
+    contentItems.push({ href: "/admin/places", label: "Places" });
+  }
+  if (contentItems.length > 0) {
     groups.push({
-      href: "/admin/instagram",
+      href: contentItems[0].href,
       id: "content",
-      items: [
-        { href: "/admin/instagram", label: "Instagram" },
-        { href: "/admin/saints", label: "Saints" },
-        { href: "/admin/traditions", label: "Traditions" },
-        { href: "/admin/places", label: "Places" }
-      ],
+      items: contentItems,
       label: "Content"
     });
   }

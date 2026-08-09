@@ -13,6 +13,8 @@ import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
+import { requireAdminUser } from "@/lib/admin-access";
+import { getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { draftString, draftStrings, getEditorialDraftMap } from "@/lib/editorial-drafts";
 import { getKnownPlaceScope, STATE_PLACE_SLUGS } from "@/lib/place-taxonomy";
 import { mergePlaces, updatePlaceOtherPublicFields, updatePlaceOverview } from "../actions";
@@ -26,7 +28,9 @@ type AdminPlaceEditorPageProps = {
 export default async function AdminPlaceEditorPage({ params, searchParams }: AdminPlaceEditorPageProps) {
   const { id } = await params;
   const { conflict } = await searchParams;
-  const place = await getPlace(id);
+  const user = await requireAdminUser();
+  const saintScope = getAdminSaintCatalogScope(user.roles);
+  const place = await getPlace(id, saintScope);
 
   if (!place) notFound();
 
@@ -68,7 +72,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
         { name: "asc" }
       ],
       include: {
-        _count: { select: { saints: true, localities: true } }
+        _count: { select: { saints: { where: { saint: saintCatalogWhere(saintScope) } }, localities: true } }
       }
     })
   ]);
@@ -264,7 +268,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
   );
 }
 
-async function getPlace(slugOrId: string) {
+async function getPlace(slugOrId: string, saintScope: SaintCatalogScope) {
   return db.place.findFirst({
     where: {
       OR: [
@@ -278,7 +282,7 @@ async function getPlace(slugOrId: string) {
         orderBy: { name: "asc" },
         select: { id: true, name: true, slug: true }
       },
-      _count: { select: { saints: true } }
+      _count: { select: { saints: { where: { saint: saintCatalogWhere(saintScope) } } } }
     }
   });
 }

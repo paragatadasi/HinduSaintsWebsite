@@ -2,17 +2,32 @@
 
 ## Roles
 
-- Admins manage users, imports, settings, and publishing.
-- Editors review, resolve reconciliation issues, and publish.
-- Contributors create drafts, edit assigned content, preview, and submit for review.
+- Site Admins manage users, settings, publishing, sensitive actions, and every
+  editorial and source-data workflow.
+- Data Admins and Editors coordinate the full saint catalog, assignments,
+  Instagram matching, duplicate resolution, review, and publishing. Data
+  Admins additionally own source-data imports and reconciliation.
+- Fact-checkers edit structured summary fields; Writers edit structured and
+  long-form fields. Neither role publishes.
+- Curators can inspect the full saint catalog and manage Saint team visibility
+  alongside Museum work, but cannot use Instagram matching or duplicate tools.
+- Translators currently have read-only access to team-Public content until the
+  translation model is implemented.
+- The legacy Contributor role is treated as Fact-checker during its staged
+  removal; new users default to Fact-checker.
 
 ## Saint workflow
 
-1. Create or import a saint as `draft`.
+1. Create or import a saint with Private team visibility, Unpublished
+   publication status, and Needs Review workflow status.
 2. Add canonical name, display name, slug, short description, location, era, aliases, tradition, image, sources, and Instagram mappings.
 3. Preview the page from the admin editor.
-4. Submit as `needs_review`.
-5. Editor reviews and publishes.
+4. An authorized catalog coordinator may make the saint Public to the team so
+   assigned collaborators can prepare it.
+5. Move editorial progress independently through Needs Review, Fact-checked,
+   Populated, and Polished.
+6. An Editor or Admin publishes it; publishing always makes it Public to the
+   team, while unpublishing does not silently change team visibility.
 
 Public saint pages must query only `published` content. Traditions are the
 deliberate exception: `draft` and `needs_review` traditions may be publicly
@@ -24,8 +39,13 @@ Current admin review surfaces:
 
 - `/admin` separates live Team Workflow and My Workflow counts and embeds the
   assignment queues under `#my-work`.
-- `/admin/saints` lists saints by status so editors can find imported records,
-  published records, and archived records.
+- `/admin/saints` is a role-scoped review workspace. Catalog coordinators get
+  connected Full Catalog and Public tabs; other internal roles get only the
+  Public team queue without a tab rail. The Public queue begins with four
+  workflow cards and keeps Publication, Workflow, and authorized Match filters
+  orthogonal. Its unified fuzzy search covers names, aliases, transliterations,
+  places, traditions, dates, and workflow labels without widening the user's
+  catalog scope.
 - Source Data -> Airtable (`/admin/airtable`) hosts the complete Airtable sync
   review. Data Admins should first check mirrored Airtable rows, then
   intentionally import missing draft saints, review or merge obvious draft
@@ -35,7 +55,7 @@ Current admin review surfaces:
   linkage, Instagram-derived claims, and imported images, then publishing,
   returning to review, or archiving the saint.
 - `/admin/instagram` lists real imported Instagram posts/reels/carousels by
-  status.
+  status and is limited to Site Admins, Data Admins, and Editors.
 - `/admin/instagram/[id]` supports reviewing a real Instagram item, previewing
   media and caption metadata, attaching an existing saint, creating a new saint
   draft from first-page biodata, inspecting the preserved raw API payload, and

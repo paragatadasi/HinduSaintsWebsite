@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { Route } from "next";
 import { z } from "zod";
-import { getAdminUser } from "@/lib/admin-access";
+import { assertSaintsVisibleToUser, getAdminUser } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
 
@@ -47,9 +47,12 @@ export async function createAssignment(formData: FormData) {
 
 export async function claimAssignment(formData: FormData) {
   const actor = await activeUser();
-  if (!hasCapability(actor.roles, "edit_content")) fail("Your role cannot claim editing work.");
+  if (!hasCapability(actor.roles, "self_assign_content") && !hasCapability(actor.roles, "edit_content")) fail("Your role cannot claim editing work.");
   const id = z.string().cuid().safeParse(formData.get("assignmentId"));
   if (!id.success) fail("Invalid assignment.");
+  const assignment = await db.contentAssignment.findUnique({ where: { id: id.data } });
+  if (!assignment) fail("That assignment is no longer available.");
+  await assertAssignmentVisible(actor, assignment);
   const result = await db.contentAssignment.updateMany({ where: { id: id.data, assigneeId: null, state: "assigned" }, data: { assigneeId: actor.id } });
   if (!result.count) fail("That assignment is no longer available.");
   done("claimed");
@@ -61,6 +64,7 @@ export async function updateAssignment(formData: FormData) {
   if (!parsed.success) fail("Invalid assignment update.");
   const assignment = await db.contentAssignment.findUnique({ where: { id: parsed.data.assignmentId } });
   if (!assignment) fail("That assignment no longer exists.");
+  await assertAssignmentVisible(actor, assignment);
   const manager = hasCapability(actor.roles, "manage_assignments");
   if (!manager && assignment.assigneeId !== actor.id) fail("You can update only your own work.");
   const assigneeId = manager ? parsed.data.assigneeId ?? assignment.assigneeId : assignment.assigneeId;
@@ -84,6 +88,22 @@ async function contentExists(type: typeof contentTypes[number], id: string) {
   if (type === "tradition") return Boolean(await db.tradition.findUnique({ where: { id }, select: { id: true } }));
   if (type === "place") return Boolean(await db.place.findUnique({ where: { id }, select: { id: true } }));
   return Boolean(await db.instagramItem.findUnique({ where: { id }, select: { id: true } }));
+}
+
+async function assertAssignmentVisible(
+  actor: NonNullable<Awaited<ReturnType<typeof getAdminUser>>>,
+  assignment: { contentId: string; contentType: string }
+) {
+  if (assignment.contentType === "saint") {
+    await assertSaintsVisibleToUser(actor, [assignment.contentId]);
+    return;
+  }
+  if (assignment.contentType === "instagram_item" && !hasCapability(actor.roles, "view_instagram_review")) {
+    fail("You do not have access to that assignment.");
+  }
+  if ((assignment.contentType === "tradition" || assignment.contentType === "place") && !hasCapability(actor.roles, "view_content")) {
+    fail("You do not have access to that assignment.");
+  }
 }
 
 function fail(message: string): never { redirect(workDashboardHref("error", message)); }
