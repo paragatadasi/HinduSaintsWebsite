@@ -71,7 +71,8 @@ export function SearchableSelect({
     setRemoteSearchFailed(false);
     const timer = window.setTimeout(async () => {
       try {
-        const response = await fetch(`${searchEndpoint}?q=${encodeURIComponent(normalizedQuery)}`, {
+        const separator = searchEndpoint.includes("?") ? "&" : "?";
+        const response = await fetch(`${searchEndpoint}${separator}q=${encodeURIComponent(normalizedQuery)}`, {
           cache: "no-store",
           signal: controller.signal
         });

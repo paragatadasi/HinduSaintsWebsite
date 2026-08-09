@@ -103,6 +103,10 @@ export function getSearchQueryTerms(value: string) {
     .filter((term) => term.length >= 2);
 }
 
+export function getIdentitySearchForms(value: string) {
+  return getSearchForms(value);
+}
+
 function getSearchForms(value: string) {
   const normalized = normalizeSearchText(value);
   const transliterationFolded = foldTransliterationVariants(normalized);
