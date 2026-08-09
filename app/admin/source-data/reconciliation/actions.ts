@@ -17,7 +17,7 @@ const schema = z.object({
 export async function resolveReconciliationIssue(formData: FormData) {
   const actor = await assertCapability("resolve_reconciliation");
   const parsed = schema.safeParse({ issueId: formData.get("issueId"), decision: formData.get("decision"), note: formData.get("note") || undefined });
-  if (!parsed.success) redirect("/admin/source-data/reconciliation?error=Invalid+reconciliation+decision" as Route);
+  if (!parsed.success) redirect("/admin/source-data/reconciliation?view=source&error=Invalid+reconciliation+decision" as Route);
   const { decision, issueId, note } = parsed.data;
   const outcome = reconciliationDecisionUpdate(decision);
   await db.reconciliationIssue.update({
@@ -32,5 +32,5 @@ export async function resolveReconciliationIssue(formData: FormData) {
     }
   });
   revalidatePath("/admin/source-data/reconciliation");
-  redirect(`/admin/source-data/reconciliation?updated=${decision}` as Route);
+  redirect(`/admin/source-data/reconciliation?view=source&updated=${decision}` as Route);
 }

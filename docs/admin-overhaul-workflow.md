@@ -86,8 +86,8 @@ editorial progress while keeping every deployed chunk internally coherent.
 | --- | --- | --- |
 | B1. Status and role foundation | Deployed | Additive Team Visibility, Publication Status, and Workflow Status fields; Fact-checker/Writer roles; scoped capability presets; safe legacy-status compatibility and entity backfills |
 | B2. Scoped catalog and unified search | Deployed | Role-filtered Full Catalog/Public Saint review, workflow cards and orthogonal filters, one authorization-scoped fuzzy Saint search across admin surfaces |
-| B3. Editorial permissions and assignments | Ready for release | Structured versus long-form action gates, shared readiness assignment card, self-assignment, assignee workflow updates and admin override |
-| B4. Duplicate detection and reconciliation | Planned | Durable manual full-catalog scan, individual flags, evidence-based candidate queue and duplicate-only Editor reconciliation access |
+| B3. Editorial permissions and assignments | Deployed | Structured versus long-form action gates, shared readiness assignment card, self-assignment, assignee workflow updates and admin override |
+| B4. Duplicate detection and reconciliation | Ready for release | Durable manual full-catalog scan, individual flags, evidence-based candidate queue and duplicate-only Editor reconciliation access |
 | B5. Saint merge and hardening | Planned | Conflict-aware transactional merge, relationship transfer, retired-slug redirects, privacy audit and legacy cleanup notes |
 
 B2 and B3 can be implemented in parallel after B1 is deployed. B4 depends on
@@ -134,6 +134,21 @@ assignee may then move that record through Needs Review, Fact-checked, Populated
 and Polished; assignment managers can override workflow status without first
 claiming the record. Assignment lifecycle and workflow status remain independent,
 and neither operation publishes content.
+
+B4 stores every proposed Saint pair in the existing private
+`DuplicateCandidate` model. An authorized catalog coordinator may run a manual
+full-catalog scan from Reconciliation; it reuses the normalized name,
+honorific-removal, and transliteration forms from unified Saint search, then
+adds overlapping dates, shared places, and shared traditions as explicit
+evidence. Existing reviewed candidates are refreshed but never silently
+reopened, and imported/manual evidence is not overwritten by a later scan.
+Individual Saint Publish Readiness also offers a unified full-catalog search for
+manually flagging a pair. Reconciliation presents the two records side by side
+and records Confirm duplicate, Not duplicate, Defer, and Reopen decisions.
+Confirmation only prepares the pair for B5; it does not merge, delete, publish,
+or otherwise mutate either Saint. Site Admins, Data Admins, and Editors receive
+this duplicate workflow. Editor access is restricted to the duplicate queue;
+generic source conflicts remain limited to Site and Data Admins.
 
 ## Capability contract
 

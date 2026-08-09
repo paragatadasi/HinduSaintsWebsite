@@ -212,6 +212,12 @@ They should create `DuplicateCandidate` rows, optionally linked to
 `ReconciliationIssue`, with evidence, confidence, review status, and resolution
 notes.
 
+The admin full-catalog scan and individual Saint flagging both write to this
+same model. Catalog-scan evidence records normalized-name similarity plus any
+overlapping dates, places, or traditions. Resolved means an authorized reviewer
+confirmed the pair for a later merge workflow; ignored means it was reviewed as
+not duplicate. Neither state changes either Saint record by itself.
+
 Public pages should never expose duplicate-review candidates.
 
 ## Museum sections
