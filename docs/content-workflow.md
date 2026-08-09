@@ -56,6 +56,8 @@ Current admin review surfaces:
   returning to review, or archiving the saint. Its Publish Readiness panel shows
   active reviewers, supports self-assignment, and lets an active assignee update
   workflow status without granting publication authority.
+  Site Admins, Data Admins, and Editors can also flag a possible duplicate from
+  Publish Readiness using the same full-catalog search used elsewhere.
 - `/admin/instagram` lists real imported Instagram posts/reels/carousels by
   status and is limited to Site Admins, Data Admins, and Editors.
 - `/admin/instagram/[id]` supports reviewing a real Instagram item, previewing
@@ -68,6 +70,20 @@ Current admin review surfaces:
   and duplicate merge workflows so relationship-preserving consolidation happens
   from the canonical record. They share the same readiness assignment and
   assignee-controlled workflow pattern as saint review.
+- `/admin/source-data/reconciliation` opens on a private Saint duplicate queue
+  for authorized catalog coordinators. The full-catalog scan writes durable,
+  evidence-based candidates; reviewers compare both records and confirm,
+  dismiss, defer, or reopen a pair. Confirmation does not merge records. Editors
+  see only this duplicate queue, while Site and Data Admins may also switch to
+  preserved source conflicts.
+- A confirmed Saint pair offers a dedicated merge review at
+  `/admin/source-data/reconciliation/[candidateId]/merge`. The review chooses
+  the canonical record and the source for every differing field before showing
+  the complete relationship-transfer summary. Editors and Data Admins may
+  inspect this plan, but the final password-protected merge requires Site Admin
+  authority. The duplicate is removed only after every transfer succeeds in the
+  same transaction. Its former `/saints/[slug]` and admin detail URLs then
+  redirect to the surviving record.
 
 ## Tradition workflow
 

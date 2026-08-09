@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { CheckCircle2, UserRound } from "lucide-react";
+import { notFound, redirect } from "next/navigation";
+import { CheckCircle2, FlagTriangleRight, UserRound } from "lucide-react";
 import { AdminWorkspaceTabs } from "@/components/admin/admin-navigation";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
@@ -40,6 +40,7 @@ import {
   upsertSaintSource
 } from "../actions";
 import { updateInstagramItemSaintStatus } from "../../instagram/actions";
+import { flagSaintDuplicate } from "../../source-data/reconciliation/duplicate-actions";
 import { refreshSaintInstagramClaims } from "./instagram-claim-actions";
 import { InstagramBiographyImporter } from "./instagram-biography-importer";
 import { SaintImageActions } from "./saint-image-actions";
@@ -49,7 +50,7 @@ import { SaintTraditionEditor } from "./saint-tradition-editor";
 
 export type AdminSaintEditorPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string }>;
+  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string; duplicateError?: string; duplicateUpdated?: string }>;
 };
 
 export type SaintEditorTab = "readiness" | "summary" | "biography" | "media";
@@ -64,17 +65,25 @@ export async function AdminSaintEditorPage({
   activeTab
 }: AdminSaintEditorPageProps & { activeTab: SaintEditorTab }) {
   const { id } = await params;
-  const { assignmentError, assignmentUpdated, conflict } = await searchParams;
+  const { assignmentError, assignmentUpdated, conflict, duplicateError, duplicateUpdated } = await searchParams;
   const user = await requireSaintCatalogUser();
   const saintScope = getAdminSaintCatalogScope(user.roles);
   const canReviewInstagram = hasCapability(user.roles, "view_instagram_review");
   const canPublish = hasCapability(user.roles, "publish_content");
   const canEditStructured = hasCapability(user.roles, "edit_structured_content");
   const canEditLongForm = hasCapability(user.roles, "edit_long_form_content");
+  const canResolveDuplicates = hasCapability(user.roles, "resolve_duplicate_saints");
   const canManageVisibility = canManageSaintTeamVisibility(user.roles);
   const saint = await getSaint(id, saintScope, canReviewInstagram);
 
-  if (!saint) notFound();
+  if (!saint) {
+    const retired = await db.saintSlugRedirect.findFirst({
+      where: { slug: id, saint: saintCatalogWhere(saintScope) },
+      select: { saint: { select: { slug: true } } }
+    });
+    if (retired) redirect(`/admin/saints/${retired.saint.slug}`);
+    notFound();
+  }
 
   const detailPath = `/admin/saints/${saint.slug}`;
   const activePath = activeTab === "readiness" ? detailPath : `${detailPath}/${activeTab}`;
@@ -85,7 +94,7 @@ export async function AdminSaintEditorPage({
   const biographyDraft = editorialDrafts.get("biography");
   const aliasesDraft = editorialDrafts.get("aliases");
 
-  const [externalRecord, allTraditions, allPlaces, allSaints, sourceLinks] = await Promise.all([
+  const [externalRecord, allTraditions, allPlaces, allSaints, sourceLinks, duplicateCandidates] = await Promise.all([
     db.externalRecord.findFirst({
       where: { sourceType: "airtable", entityType: "Saint", entityId: saint.id },
       select: { externalId: true, lastSeenAt: true }
@@ -101,7 +110,15 @@ export async function AdminSaintEditorPage({
       where: { entityType: "Saint", entityId: saint.id },
       include: { source: true },
       orderBy: { sortOrder: "asc" }
-    })
+    }),
+    canResolveDuplicates ? db.duplicateCandidate.findMany({
+      where: {
+        entityType: "Saint",
+        status: "open",
+        OR: [{ entityId: saint.id }, { candidateEntityId: saint.id }]
+      },
+      select: { id: true }
+    }) : Promise.resolve([])
   ]);
   const instagramImages = canReviewInstagram ? await getInstagramImagesForSaint(saint) : [];
   const visibleGalleryImages = saint.galleryImages.filter((image) => image.publicVisible !== false);
@@ -225,6 +242,45 @@ export async function AdminSaintEditorPage({
           </form> : null}
         </ReviewSection>
       </ReviewWorkflow> : null}
+
+      {activeTab === "readiness" && canResolveDuplicates ? <CollapsibleReviewCard
+        cardId="saint-duplicate-flag"
+        description="Flag a possible overlap for evidence review. This does not merge either record."
+        eyebrow="Data quality"
+        title="Potential Duplicate"
+      >
+        <div className="review-meta">
+          <StatusBadge label={`${duplicateCandidates.length} open candidate${duplicateCandidates.length === 1 ? "" : "s"}`} />
+          <Link className="admin-text-link" href="/admin/source-data/reconciliation?view=duplicates">Open Reconciliation</Link>
+        </div>
+        {duplicateError ? <p className="admin-notice form-status form-status--error">{duplicateError}</p> : null}
+        {duplicateUpdated ? <p className="admin-notice form-status form-status--success">{duplicateUpdated === "confirmed" ? "This pair is already confirmed as duplicate." : "Duplicate candidate flagged for review."}</p> : null}
+        <form action={flagSaintDuplicate} className="form-stack">
+          <input name="saintId" type="hidden" value={saint.id} />
+          <input name="returnTo" type="hidden" value={detailPath} />
+          <SearchableSelect
+            emptyText="No saints match this search."
+            label="Possible duplicate"
+            name="candidateSaintId"
+            options={allSaints.map((option) => ({
+              value: option.id,
+              label: option.displayName,
+              description: formatStatus(option.status),
+              keywords: [option.canonicalName]
+            }))}
+            placeholder="Search the full saint catalog"
+            required
+            searchEndpoint={`/api/admin/saints/search?scope=full&exclude=${saint.id}`}
+          />
+          <label className="admin-field">
+            <span>Why might these records overlap? <small>Optional</small></span>
+            <textarea maxLength={1000} name="note" rows={3} />
+          </label>
+          <div className="review-actions">
+            <button className="admin-form-button admin-form-button--secondary" type="submit"><FlagTriangleRight aria-hidden="true" size={16} /> Flag for review</button>
+          </div>
+        </form>
+      </CollapsibleReviewCard> : null}
 
       {activeTab === "summary" ? <>
       <CollapsibleReviewCard

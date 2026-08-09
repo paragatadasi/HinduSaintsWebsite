@@ -59,14 +59,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     );
   }
 
-  const [newFeedbackCount, adminUser, openReconciliationCount] = await Promise.all([
+  const [newFeedbackCount, adminUser, openReconciliationCount, openDuplicateCount] = await Promise.all([
     db.feedbackSubmission.count({ where: { status: "new" } }),
     getAdminUser(),
-    db.reconciliationIssue.count({ where: { status: "open" } })
+    db.reconciliationIssue.count({ where: { status: "open" } }),
+    db.duplicateCandidate.count({ where: { entityType: "Saint", status: "open" } })
   ]);
   const roles = adminUser?.active ? adminUser.roles : [];
   const navigationGroups = buildNavigationGroups({
     newFeedbackCount,
+    openDuplicateCount,
     openReconciliationCount,
     roles
   });
@@ -85,10 +87,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
 function buildNavigationGroups({
   newFeedbackCount,
+  openDuplicateCount,
   openReconciliationCount,
   roles
 }: {
   newFeedbackCount: number;
+  openDuplicateCount: number;
   openReconciliationCount: number;
   roles: Parameters<typeof hasCapability>[0];
 }) {
@@ -102,16 +106,22 @@ function buildNavigationGroups({
   if (hasCapability(roles, "manage_users")) operationItems.push({ href: "/admin/users", label: "Users & Access" });
   if (operationItems.length > 0) groups.push({ href: operationItems[0].href, id: "operations", items: operationItems, label: "Operations" });
 
-  if (hasCapability(roles, "view_source_data")) {
+  const canViewSourceData = hasCapability(roles, "view_source_data");
+  const canResolveDuplicates = hasCapability(roles, "resolve_duplicate_saints");
+  if (canViewSourceData || canResolveDuplicates) {
+    const reconciliationCount = openDuplicateCount + (canViewSourceData ? openReconciliationCount : 0);
+    const sourceItems: AdminNavigationGroup["items"] = [
+      { count: reconciliationCount, exact: true, href: "/admin/source-data/reconciliation", label: "Reconciliation" }
+    ];
+    if (canViewSourceData) {
+      sourceItems.push({ href: "/admin/airtable", label: "Airtable" });
+      sourceItems.push({ href: "/admin/source-data/instagram", label: "Instagram" });
+    }
     groups.push({
       href: "/admin/source-data/reconciliation",
       id: "source-data",
-      items: [
-        { count: openReconciliationCount, exact: true, href: "/admin/source-data/reconciliation", label: "Reconciliation" },
-        { href: "/admin/airtable", label: "Airtable" },
-        { href: "/admin/source-data/instagram", label: "Instagram" }
-      ],
-      label: "Source Data"
+      items: sourceItems,
+      label: canViewSourceData ? "Source Data" : "Review"
     });
   }
 

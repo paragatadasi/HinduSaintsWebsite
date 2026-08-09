@@ -212,7 +212,30 @@ They should create `DuplicateCandidate` rows, optionally linked to
 `ReconciliationIssue`, with evidence, confidence, review status, and resolution
 notes.
 
+The admin full-catalog scan and individual Saint flagging both write to this
+same model. Catalog-scan evidence records normalized-name similarity plus any
+overlapping dates, places, or traditions. Resolved means an authorized reviewer
+confirmed the pair for a later merge workflow; ignored means it was reviewed as
+not duplicate. Neither state changes either Saint record by itself.
+
 Public pages should never expose duplicate-review candidates.
+
+`SaintSlugRedirect` stores a retired Saint slug and its surviving Saint ID after
+an approved duplicate merge. Redirects follow later merges by moving to the new
+survivor, so a chain of merges still resolves in one lookup. The public route
+uses a redirect only when the surviving Saint is published; private and
+unpublished records are not revealed through redirect lookup. Admin detail
+routes apply the caller's catalog scope before following the same redirect.
+
+Saint merge is relationship-aware and transactional. It preserves or
+deduplicates aliases, biographies, gallery media, places, traditions, lineage,
+Saint relationships and evidence, families, Museum assignments, Instagram
+matches and claims, homepage configuration, content sources, imported record
+links, reconciliation issues, assignments, and feedback references. The
+selected scalar-field sources and per-area transfer counts are stored in the
+`merge_saints` audit event. Ephemeral drafts, edit conflicts, and presence rows
+for both records are intentionally cleared at merge time because their entity
+versions and assumptions are no longer valid.
 
 ## Museum sections
 

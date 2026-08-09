@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ExternalLink, MessageSquare } from "lucide-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -11,7 +11,7 @@ import { SaintProfileSummary } from "@/components/saints/saint-profile-summary";
 import { Button } from "@/components/ui/button";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
-import { getPublishedSaintBySlug, getRelatedPublishedSaints } from "@/lib/public-saints";
+import { getPublishedSaintBySlug, getPublishedSaintRedirectBySlug, getRelatedPublishedSaints } from "@/lib/public-saints";
 import { getSaintDetailTemplateContent } from "@/lib/site-content";
 import type { PublicImage, PublicSourceSummary } from "@/lib/public-contracts";
 import { getSocialImage } from "@/lib/social-metadata";
@@ -53,10 +53,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function SaintDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const template = getSaintDetailTemplateContent();
-  const [saint, relatedSaints] = await Promise.all([
+  const [saint, relatedSaints, redirectSlug] = await Promise.all([
     getPublishedSaintBySlug(slug),
-    getRelatedPublishedSaints(slug)
+    getRelatedPublishedSaints(slug),
+    getPublishedSaintRedirectBySlug(slug)
   ]);
+  if (!saint && redirectSlug) permanentRedirect(`/saints/${redirectSlug}`);
   if (!saint) notFound();
 
   const hasBiography = Boolean(saint.biography?.bodyMarkdown.trim() || saint.biography?.summary?.trim());
