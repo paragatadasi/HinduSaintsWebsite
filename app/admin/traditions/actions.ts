@@ -10,6 +10,7 @@ import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { toSlug } from "@/lib/slugs";
 import { expectedVersion, guardedTraditionTransaction, guardedTraditionUpdate } from "@/lib/admin-conflicts";
+import { traditionPublicationCompatibilityData } from "@/lib/admin-workflow";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 
@@ -181,7 +182,7 @@ export async function updateTradition(formData: FormData) {
       longIntroductionMarkdown: parsed.historyMarkdown ?? null,
       foundingAcharyaMarkdown: parsed.foundingAcharyaMarkdown ?? null,
       keyTeachingsMarkdown: parsed.keyTeachingsMarkdown ?? null,
-      status: parsed.status,
+      ...traditionPublicationCompatibilityData(parsed.status),
       seoTitle: parsed.seoTitle ?? null,
       seoDescription: parsed.seoDescription ?? null,
       publishedAt: parsed.status === "published" ? now : null
@@ -218,7 +219,7 @@ export async function updateTraditionOverview(formData: FormData) {
       alternateNames: parsed.alternateNames,
       parentTraditionId: parsed.parentTraditionId === parsed.traditionId ? null : parsed.parentTraditionId ?? null,
       shortDescription: parsed.shortDescription ?? null,
-      status: parsed.status
+      ...traditionPublicationCompatibilityData(parsed.status)
   };
   const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${existing.slug}/summary`, async (tx) => {
     const updated = await tx.tradition.update({ where: { id: parsed.traditionId }, data: attempted, select: { slug: true } });
@@ -499,7 +500,7 @@ export async function updateTraditionReviewStatus(formData: FormData) {
   const current = await db.tradition.findUnique({ where: { id: parsed.traditionId }, select: { slug: true } });
   if (!current) redirect("/admin/traditions");
   const attempted = {
-      status: parsed.status,
+      ...traditionPublicationCompatibilityData(parsed.status),
       publishedAt: parsed.status === "published" ? now : null
   };
   const tradition = await guardedTraditionUpdate(parsed.traditionId, expectedVersion(formData), attempted, attempted, `/admin/traditions/${current.slug}`);
