@@ -3,6 +3,12 @@
 This audit defines the safety boundary for the B5 Saint duplicate merge. It is
 an implementation contract as well as a cleanup record.
 
+B5 is deployed in production as of August 9, 2026. The final release uses
+`main` revision `9335f57`, `deploy` revision `c4a6115`, production workflow
+`31321311391`, and migration `20260811100000_saint_slug_redirects`. Integrated
+verification passed 129 tests and the complete 16-page production build and
+trace collection.
+
 ## Authorization and confirmation
 
 - Duplicate comparison and merge-plan review require `merge_saints`, currently
