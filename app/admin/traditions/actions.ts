@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
-import { assertCapability, requireCapability } from "@/lib/admin-access";
+import { assertCapability, assertSaintsVisibleToUser, requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { toSlug } from "@/lib/slugs";
@@ -134,7 +134,7 @@ const traditionImageDeleteSchema = z.object({
 });
 
 export async function updateTradition(formData: FormData) {
-  await requireAdminSession();
+  const user = await requireAdminSession();
 
   const parsed = traditionEditorSchema.parse({
     traditionId: formData.get("traditionId"),
@@ -156,6 +156,7 @@ export async function updateTradition(formData: FormData) {
     seoTitle: emptyToUndefined(formData.get("seoTitle")),
     seoDescription: emptyToUndefined(formData.get("seoDescription"))
   });
+  await assertSaintsVisibleToUser(user, parsed.founderSaintId ? [parsed.founderSaintId] : []);
   const now = new Date();
   const existing = await db.tradition.findUnique({
     where: { id: parsed.traditionId },
@@ -233,7 +234,7 @@ export async function updateTraditionOverview(formData: FormData) {
 }
 
 export async function updateTraditionOtherPublicFields(formData: FormData) {
-  await requireAdminSession();
+  const user = await requireAdminSession();
 
   const parsed = traditionOtherPublicFieldsSchema.parse({
     traditionId: formData.get("traditionId"),
@@ -247,6 +248,7 @@ export async function updateTraditionOtherPublicFields(formData: FormData) {
     seoTitle: emptyToUndefined(formData.get("seoTitle")),
     seoDescription: emptyToUndefined(formData.get("seoDescription"))
   });
+  await assertSaintsVisibleToUser(user, parsed.founderSaintId ? [parsed.founderSaintId] : []);
   const attempted = {
       founderSaintId: parsed.founderSaintId ?? null,
       founderDisplayName: parsed.founderDisplayName ?? null,
@@ -298,7 +300,7 @@ export async function updateTraditionLongForm(formData: FormData) {
 }
 
 export async function updateTraditionLineage(formData: FormData) {
-  await requireAdminSession();
+  const user = await requireAdminSession();
 
   const saintIds = formData.getAll("lineageSaintId");
   const roleLabels = formData.getAll("lineageRoleLabel");
@@ -317,6 +319,7 @@ export async function updateTraditionLineage(formData: FormData) {
       }];
     })
   });
+  await assertSaintsVisibleToUser(user, parsed.saints.flatMap((saint) => [saint.saintId, saint.parentSaintId].filter((id): id is string => Boolean(id))));
   const tradition = await getTraditionSlug(parsed.traditionId);
   if (!tradition) redirect("/admin/traditions");
 
@@ -804,11 +807,12 @@ async function setTraditionGalleryImageVisibility(
 }
 
 async function requireAdminSession() {
-  await requireCapability("edit_content");
+  const user = await requireCapability("edit_content");
   const session = await auth();
   if (!session?.user?.email) {
     redirect("/admin");
   }
+  return user;
 }
 
 function emptyToUndefined(value: FormDataEntryValue | null) {

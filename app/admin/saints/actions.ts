@@ -6,8 +6,7 @@ import type { Route } from "next";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
-import { auth } from "@/lib/auth";
-import { assertCapability, requireCapability } from "@/lib/admin-access";
+import { assertCapability, assertSaintsVisibleToUser, requireAdminUser, requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { parseImportedDate } from "@/lib/import-dates";
@@ -17,6 +16,7 @@ import { toSlug } from "@/lib/slugs";
 import { getReciprocalRelationshipType } from "@/lib/saint-relationships";
 import { expectedVersion, guardedSaintTransaction, guardedSaintUpdate } from "@/lib/admin-conflicts";
 import { saintPublicationCompatibilityData } from "@/lib/admin-workflow";
+import { canManageSaintTeamVisibility } from "@/lib/admin-saint-access";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 const placeTypeSchema = z.enum(["primary", "birth", "samadhi", "sadhana", "associated", "other"]);
@@ -68,6 +68,17 @@ const bulkSaintStatusSchema = z.object({
   saintIds: z.array(z.string().cuid()).min(1).max(500),
   status: contentStatusSchema,
   returnTo: z.string().startsWith("/admin/saints").optional()
+});
+
+const bulkSaintVisibilitySchema = z.object({
+  saintIds: z.array(z.string().cuid()).min(1).max(500),
+  teamVisibility: z.enum(["private", "public"]),
+  returnTo: z.string().startsWith("/admin/saints").optional()
+});
+
+const saintVisibilitySchema = z.object({
+  saintId: z.string().cuid(),
+  teamVisibility: z.enum(["private", "public"])
 });
 
 const bulkSaintDeleteSchema = z.object({
@@ -211,7 +222,7 @@ const saintSourceRemovalSchema = z.object({
 });
 
 export async function updateSaintBasics(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintBasicsSchema.parse({
     saintId: formData.get("saintId"),
@@ -258,7 +269,7 @@ export async function updateSaintBasics(formData: FormData) {
 }
 
 export async function updateSaintOverview(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintOverviewSchema.parse({
     saintId: formData.get("saintId"),
@@ -282,7 +293,7 @@ export async function updateSaintOverview(formData: FormData) {
 }
 
 export async function updateSaintOtherPublicFields(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintOtherPublicFieldsSchema.parse({
     saintId: formData.get("saintId"),
@@ -325,7 +336,7 @@ export async function updateSaintOtherPublicFields(formData: FormData) {
 }
 
 export async function updateSaintAliases(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintAliasesSchema.parse({
     saintId: formData.get("saintId"),
@@ -368,7 +379,7 @@ export async function updateSaintAliases(formData: FormData) {
 }
 
 export async function createSaintRelationship(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintRelationshipSchema.parse({
     saintId: formData.get("saintId"),
@@ -417,7 +428,7 @@ export async function createSaintRelationship(formData: FormData) {
 }
 
 export async function updateSaintRelationship(formData: FormData) {
-  await requireAdminSession();
+  const user = await requireAdminSession(formData);
 
   const parsed = saintRelationshipUpdateSchema.parse({
     relationshipId: formData.get("relationshipId"),
@@ -440,6 +451,7 @@ export async function updateSaintRelationship(formData: FormData) {
     }
   });
   if (!relationship) throw new Error("Relationship was not found.");
+  await assertSaintsVisibleToUser(user, [relationship.fromSaintId, relationship.toSaintId]);
 
   await db.saintRelationship.update({
     where: { id: relationship.id },
@@ -458,7 +470,7 @@ export async function updateSaintRelationship(formData: FormData) {
 }
 
 export async function deleteSaintRelationship(formData: FormData) {
-  await requireAdminSession();
+  const user = await requireAdminSession(formData);
 
   const parsed = saintRelationshipDeleteSchema.parse({
     relationshipId: formData.get("relationshipId"),
@@ -475,13 +487,14 @@ export async function deleteSaintRelationship(formData: FormData) {
     }
   });
   if (!relationship) throw new Error("Relationship was not found.");
+  await assertSaintsVisibleToUser(user, [relationship.fromSaintId, relationship.toSaintId]);
 
   await db.saintRelationship.delete({ where: { id: relationship.id } });
   [relationship.fromSaint.slug, relationship.toSaint.slug].forEach(revalidateSaintPaths);
 }
 
 export async function updateSaintTraditions(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintTraditionsSchema.parse({
     saintId: formData.get("saintId"),
@@ -517,7 +530,7 @@ export async function updateSaintTraditions(formData: FormData) {
 }
 
 export async function updateSaintPlaces(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const placeIds = uniqueList(formData.getAll("placeIds").filter(isString));
   const parsed = saintPlacesSchema.parse({
@@ -556,7 +569,7 @@ export async function updateSaintPlaces(formData: FormData) {
 }
 
 export async function createAndAttachSaintTradition(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintTraditionCreationSchema.parse({
     saintId: formData.get("saintId"),
@@ -606,7 +619,7 @@ export async function createAndAttachSaintTradition(formData: FormData) {
 }
 
 export async function createAndAttachSaintPlace(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintPlaceCreationSchema.parse({
     saintId: formData.get("saintId"),
@@ -662,7 +675,7 @@ export async function createAndAttachSaintPlace(formData: FormData) {
 }
 
 export async function upsertSaintBiography(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintBiographySchema.parse({
     biographyId: emptyToUndefined(formData.get("biographyId")),
@@ -732,7 +745,7 @@ export async function upsertSaintBiography(formData: FormData) {
 }
 
 export async function upsertSaintSource(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintSourceSchema.parse({
     contentSourceId: emptyToUndefined(formData.get("contentSourceId")),
@@ -808,7 +821,7 @@ export async function upsertSaintSource(formData: FormData) {
 }
 
 export async function removeSaintSource(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintSourceRemovalSchema.parse({
     contentSourceId: formData.get("contentSourceId"),
@@ -833,7 +846,7 @@ export async function removeSaintSource(formData: FormData) {
 }
 
 export async function updateSaintReviewStatus(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = saintStatusSchema.parse({
     saintId: formData.get("saintId"),
@@ -852,7 +865,7 @@ export async function updateSaintReviewStatus(formData: FormData) {
 }
 
 export async function bulkUpdateSaintReviewStatus(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
 
   const parsed = bulkSaintStatusSchema.parse({
     saintIds: formData.getAll("saintIds"),
@@ -881,9 +894,56 @@ export async function bulkUpdateSaintReviewStatus(formData: FormData) {
   redirect(destination);
 }
 
+export async function bulkUpdateSaintTeamVisibility(formData: FormData) {
+  const user = await requireAdminUser();
+  if (!canManageSaintTeamVisibility(user.roles)) throw new Error("You do not have permission to change Saint team visibility.");
+
+  const parsed = bulkSaintVisibilitySchema.parse({
+    saintIds: formData.getAll("saintIds"),
+    teamVisibility: formData.get("teamVisibility"),
+    returnTo: emptyToUndefined(formData.get("returnTo"))
+  });
+  const saints = await db.saint.findMany({
+    where: { id: { in: parsed.saintIds } },
+    select: { id: true, slug: true, publicationStatus: true }
+  });
+  if (saints.length !== parsed.saintIds.length) throw new Error("One or more selected saints no longer exist.");
+  if (parsed.teamVisibility === "private" && saints.some((saint) => saint.publicationStatus === "published")) {
+    throw new Error("Published saints must remain Public to the team. Unpublish them first.");
+  }
+
+  await db.saint.updateMany({
+    where: { id: { in: parsed.saintIds } },
+    data: { teamVisibility: parsed.teamVisibility }
+  });
+  const destination = (parsed.returnTo ?? "/admin/saints") as Route;
+  saints.forEach((saint) => revalidateSaintPaths(saint.slug));
+  revalidatePath(destination);
+  redirect(destination);
+}
+
+export async function updateSaintTeamVisibility(formData: FormData) {
+  const user = await requireAdminUser();
+  if (!canManageSaintTeamVisibility(user.roles)) throw new Error("You do not have permission to change Saint team visibility.");
+  const parsed = saintVisibilitySchema.parse({
+    saintId: formData.get("saintId"),
+    teamVisibility: formData.get("teamVisibility")
+  });
+  const saint = await db.saint.findUnique({
+    where: { id: parsed.saintId },
+    select: { publicationStatus: true, slug: true }
+  });
+  if (!saint) throw new Error("Saint was not found.");
+  if (parsed.teamVisibility === "private" && saint.publicationStatus === "published") {
+    throw new Error("Published saints must remain Public to the team. Unpublish this saint first.");
+  }
+  await db.saint.update({ where: { id: parsed.saintId }, data: { teamVisibility: parsed.teamVisibility } });
+  revalidateSaintPaths(saint.slug);
+}
+
 export async function bulkDeleteSaints(formData: FormData) {
   await assertCapability("manage_sensitive_actions");
-  const session = await requireAdminSession();
+  const user = await requireAdminSession(formData);
 
   const parsed = bulkSaintDeleteSchema.parse({
     saintIds: formData.getAll("saintIds"),
@@ -942,7 +1002,7 @@ export async function bulkDeleteSaints(formData: FormData) {
 
     await tx.auditEvent.create({
       data: {
-        userId: session.user?.email ?? null,
+        userId: user.email,
         action: "bulk_delete_saints",
         entityType: "Saint",
         entityId: saintIds.join(","),
@@ -965,7 +1025,8 @@ export async function bulkDeleteSaints(formData: FormData) {
 }
 
 export async function reviewSaintInstagramClaim(formData: FormData) {
-  await requireAdminSession();
+  await requireAdminSession(formData);
+  await assertCapability("view_instagram_review");
 
   const parsed = instagramClaimReviewSchema.parse({
     claimId: formData.get("claimId"),
@@ -995,7 +1056,8 @@ export async function reviewSaintInstagramClaim(formData: FormData) {
 }
 
 export async function importBiographyTextFromInstagramPost(input: z.input<typeof instagramBiographyImportSchema>) {
-  await requireAdminSession();
+  await requireAdminSession(input);
+  await assertCapability("view_instagram_review");
 
   const parsed = instagramBiographyImportSchema.parse(input);
   const link = await db.instagramItemSaint.findFirst({
@@ -1074,7 +1136,7 @@ export async function importBiographyTextFromInstagramPost(input: z.input<typeof
 }
 
 export async function attachImageToSaint(input: z.input<typeof saintImageAttachmentSchema>) {
-  await requireAdminSession();
+  await requireAdminSession(input);
 
   const parsed = saintImageAttachmentSchema.parse(input);
   const saint = await db.saint.findUnique({
@@ -1130,7 +1192,7 @@ export async function attachImageToSaint(input: z.input<typeof saintImageAttachm
 }
 
 export async function updateSaintImagePlacement(input: z.input<typeof saintImagePlacementSchema>) {
-  await requireAdminSession();
+  await requireAdminSession(input);
 
   const parsed = saintImagePlacementSchema.parse(input);
   const saint = await db.saint.findUnique({
@@ -1221,7 +1283,7 @@ export async function updateSaintImagePlacement(input: z.input<typeof saintImage
 }
 
 export async function updateSaintImageMetadata(input: z.input<typeof saintImageMetadataSchema>) {
-  await requireAdminSession();
+  await requireAdminSession(input);
   const parsed = saintImageMetadataSchema.parse(input);
 
   const saint = await db.saint.findUnique({
@@ -1257,7 +1319,8 @@ export async function updateSaintImageMetadata(input: z.input<typeof saintImageM
 }
 
 export async function deleteAttachedInstagramSlide(input: z.input<typeof instagramSlideDeleteSchema>) {
-  const session = await requireAdminSession();
+  const user = await requireAdminSession(input);
+  await assertCapability("view_instagram_review");
   const parsed = instagramSlideDeleteSchema.parse(input);
 
   if (!(await verifyBulkDeletePassword(parsed.password))) {
@@ -1292,7 +1355,7 @@ export async function deleteAttachedInstagramSlide(input: z.input<typeof instagr
     await tx.instagramMediaAsset.delete({ where: { id: slide.id } });
     await tx.auditEvent.create({
       data: {
-        userId: session.user?.email ?? null,
+        userId: user.email,
         action: "delete_attached_instagram_slide",
         entityType: "InstagramMediaAsset",
         entityId: slide.id,
@@ -1315,7 +1378,7 @@ export async function deleteAttachedInstagramSlide(input: z.input<typeof instagr
 }
 
 export async function updateSaintImageVisibility(input: z.input<typeof saintImageVisibilitySchema>) {
-  await requireAdminSession();
+  await requireAdminSession(input);
 
   const parsed = saintImageVisibilitySchema.parse(input);
   const saint = await db.saint.findUnique({
@@ -1365,7 +1428,7 @@ export async function updateSaintImageVisibility(input: z.input<typeof saintImag
 }
 
 export async function deleteSaintImage(input: z.input<typeof saintImageDeleteSchema>) {
-  await requireAdminSession();
+  await requireAdminSession(input);
 
   const parsed = saintImageDeleteSchema.parse(input);
   const saint = await db.saint.findUnique({
@@ -1422,11 +1485,13 @@ async function setSaintGalleryImageVisibility(
   });
 }
 
-async function requireAdminSession() {
-  await requireCapability("edit_content");
-  const session = await auth();
-  if (!session?.user?.email) redirect("/admin");
-  return session;
+async function requireAdminSession(target?: FormData | { saintId?: string; saintIds?: string[] }) {
+  const user = await requireCapability("edit_content");
+  const saintIds = target instanceof FormData
+    ? [...target.getAll("saintId"), ...target.getAll("saintIds"), ...target.getAll("relatedSaintId")].filter((value): value is string => typeof value === "string")
+    : [target?.saintId, ...(target?.saintIds ?? [])].filter((value): value is string => Boolean(value));
+  await assertSaintsVisibleToUser(user, saintIds);
+  return user;
 }
 
 function emptyToUndefined(value: FormDataEntryValue | null) {

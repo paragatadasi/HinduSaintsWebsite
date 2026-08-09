@@ -14,6 +14,9 @@ import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { db } from "@/lib/db";
+import { requireSaintCatalogUser } from "@/lib/admin-access";
+import { canManageSaintTeamVisibility, getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
+import { hasCapability } from "@/lib/permissions";
 import { draftString, getEditorialDraftMap } from "@/lib/editorial-drafts";
 import { getInstagramLinkProps } from "@/lib/external-links";
 import { formatHistoricalYear, parseImportedDate } from "@/lib/import-dates";
@@ -31,6 +34,7 @@ import {
   updateSaintOverview,
   updateSaintRelationship,
   updateSaintReviewStatus,
+  updateSaintTeamVisibility,
   upsertSaintBiography,
   upsertSaintSource
 } from "../actions";
@@ -60,7 +64,14 @@ export async function AdminSaintEditorPage({
 }: AdminSaintEditorPageProps & { activeTab: SaintEditorTab }) {
   const { id } = await params;
   const { conflict } = await searchParams;
-  const saint = await getSaint(id);
+  const user = await requireSaintCatalogUser();
+  const saintScope = getAdminSaintCatalogScope(user.roles);
+  const canReviewInstagram = hasCapability(user.roles, "view_instagram_review");
+  const canPublish = hasCapability(user.roles, "publish_content");
+  const canEditStructured = hasCapability(user.roles, "edit_structured_content");
+  const canEditLongForm = hasCapability(user.roles, "edit_long_form_content");
+  const canManageVisibility = canManageSaintTeamVisibility(user.roles);
+  const saint = await getSaint(id, saintScope, canReviewInstagram);
 
   if (!saint) notFound();
 
@@ -81,7 +92,7 @@ export async function AdminSaintEditorPage({
     db.tradition.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, alternateNames: true, status: true } }),
     db.place.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, alternateNames: true, region: true, country: true } }),
     db.saint.findMany({
-      where: { id: { not: saint.id }, status: { not: "archived" } },
+      where: { id: { not: saint.id }, status: { not: "archived" }, ...saintCatalogWhere(saintScope) },
       orderBy: { displayName: "asc" },
       select: { id: true, displayName: true, canonicalName: true, status: true }
     }),
@@ -91,14 +102,14 @@ export async function AdminSaintEditorPage({
       orderBy: { sortOrder: "asc" }
     })
   ]);
-  const instagramImages = await getInstagramImagesForSaint(saint);
+  const instagramImages = canReviewInstagram ? await getInstagramImagesForSaint(saint) : [];
   const visibleGalleryImages = saint.galleryImages.filter((image) => image.publicVisible !== false);
   const hiddenGalleryImages = saint.galleryImages.filter((image) => image.publicVisible === false);
   const publicImages = getPublicSaintImages(saint.primaryImage, visibleGalleryImages);
   const biographyImages = getBiographyEditorImages(saint, visibleGalleryImages);
   const primaryBiography = saint.biographies.find((biography) => biography.status === "published") ?? saint.biographies[0];
   const biographyTextareaId = "biography-body-markdown";
-  const instagramBiographyImportPosts = getInstagramBiographyImportPosts(saint);
+  const instagramBiographyImportPosts = canReviewInstagram ? getInstagramBiographyImportPosts(saint) : [];
   const selectedTraditionIds = saint.traditions.map((item) => item.traditionId);
   const primaryTraditionId = saint.traditions.find((item) => item.isPrimary)?.traditionId ?? selectedTraditionIds[0];
   const traditionOptions = allTraditions.map((tradition) => ({
@@ -130,7 +141,8 @@ export async function AdminSaintEditorPage({
           <h1>{saint.displayName}</h1>
           <div className="review-meta">
             <StatusBadge label={formatStatus(saint.status)} />
-            {saint.hasInstagramContent ? <StatusBadge label="Instagram content" /> : null}
+            <StatusBadge label={`${formatStatus(saint.teamVisibility)} team access`} />
+            {canReviewInstagram && saint.hasInstagramContent ? <StatusBadge label="Instagram content" /> : null}
             {externalRecord ? <StatusBadge label="Airtable linked" /> : null}
           </div>
           <AdminPresence entityType="saint" entityId={saint.id} />
@@ -167,6 +179,7 @@ export async function AdminSaintEditorPage({
         >
           <div className="field-grid">
             <ReviewField label="Current status" value={formatStatus(saint.status)} />
+            <ReviewField label="Team access" value={formatStatus(saint.teamVisibility)} />
             <ReviewField label="Biography" value={primaryBiography ? formatStatus(primaryBiography.status) : "Not started"} />
             <ReviewField label="Traditions" value={`${saint.traditions.length}`} />
             <ReviewField label="Places" value={`${saint.places.length}`} />
@@ -179,12 +192,23 @@ export async function AdminSaintEditorPage({
           icon={<UserRound aria-hidden="true" size={18} />}
           title="Review actions"
         >
-          <p>Publishing makes this saint eligible for public display. Returning to review removes it from public pages.</p>
+          <p>Publishing makes this saint eligible for public display. Team access determines which editors can work on it before publication.</p>
           <div className="review-actions">
-            <StatusForm saintId={saint.id} version={saint.version} status="published" label="Approve and publish" />
-            <StatusForm saintId={saint.id} version={saint.version} status="needs_review" label="Return to review" variant="secondary" />
-            <StatusForm saintId={saint.id} version={saint.version} status="archived" label="Archive" variant="warning" />
+            {canPublish ? <StatusForm saintId={saint.id} version={saint.version} status="published" label="Approve and publish" /> : null}
+            {canEditStructured ? <StatusForm saintId={saint.id} version={saint.version} status="needs_review" label="Return to review" variant="secondary" /> : null}
+            {canPublish ? <StatusForm saintId={saint.id} version={saint.version} status="archived" label="Archive" variant="warning" /> : null}
           </div>
+          {canManageVisibility ? <form action={updateSaintTeamVisibility} className="admin-settings-form admin-settings-form--inline">
+            <input name="saintId" type="hidden" value={saint.id} />
+            <label className="admin-field">
+              <span>Team access</span>
+              <select defaultValue={saint.teamVisibility} name="teamVisibility">
+                <option value="public">Public to the team</option>
+                <option disabled={saint.publicationStatus === "published"} value="private">Private catalog</option>
+              </select>
+            </label>
+            <button className="admin-form-button admin-form-button--secondary" type="submit">Update access</button>
+          </form> : null}
         </ReviewSection>
       </ReviewWorkflow> : null}
 
@@ -197,6 +221,7 @@ export async function AdminSaintEditorPage({
         title="Overview"
       >
         <ReviewEditToggle
+          editable={canEditStructured}
           editLabel="Edit overview"
           summary={(
             <div className="field-grid saint-review__summary-grid">
@@ -235,6 +260,7 @@ export async function AdminSaintEditorPage({
         </ReviewEditToggle>
 
         <ReviewEditToggle
+          editable={canEditStructured}
           editLabel="Edit aliases"
           summary={<p className="review-hint">Aliases support search, imported-data matching, and editorial context.</p>}
         >
@@ -259,6 +285,7 @@ export async function AdminSaintEditorPage({
         title="Key Facts"
       >
         <ReviewEditToggle
+          editable={canEditStructured}
           editLabel="Edit key facts"
           summary={(
             <div className="field-grid saint-review__summary-grid">
@@ -481,7 +508,7 @@ export async function AdminSaintEditorPage({
         </ReviewSubsection>
       </CollapsibleReviewCard>
 
-      <CollapsibleReviewCard
+      {canReviewInstagram ? <CollapsibleReviewCard
         cardId="saint-instagram-claims"
         defaultOpen={saint.instagramClaims.some((claim) => (
           claim.status === "needs_review"
@@ -559,11 +586,11 @@ export async function AdminSaintEditorPage({
         ) : (
           <p>No Instagram claims are available for review.</p>
         )}
-      </CollapsibleReviewCard>
+      </CollapsibleReviewCard> : null}
 
       </> : null}
 
-      {activeTab === "readiness" ? <CollapsibleReviewCard
+      {activeTab === "readiness" && canReviewInstagram ? <CollapsibleReviewCard
         cardId="saint-instagram-posts"
         defaultOpen={saint.instagramItems.some((link) => link.matchStatus === "matched" || link.matchStatus === "published")}
         description="Review posts currently connected to this saint and remove incorrect matches."
@@ -580,6 +607,7 @@ export async function AdminSaintEditorPage({
         title="Biography"
       >
         <ReviewEditToggle
+          editable={canEditLongForm}
           editLabel="Edit biography"
           summary={(
             <div className="field-grid saint-review__summary-grid">
@@ -617,14 +645,14 @@ export async function AdminSaintEditorPage({
                   textareaId={biographyTextareaId}
                 />
               </div>
-              <div className="form-stack__field">
+              {canReviewInstagram ? <div className="form-stack__field">
                 <h4>Import from Instagram slides</h4>
                 <InstagramBiographyImporter
                   posts={instagramBiographyImportPosts}
                   saintId={saint.id}
                   textareaId={biographyTextareaId}
                 />
-              </div>
+              </div> : null}
               <div className="form-stack__field">
                 <label htmlFor="airtable-biography">AirTable biography</label>
                 <textarea
@@ -634,10 +662,10 @@ export async function AdminSaintEditorPage({
                   readOnly
                 />
               </div>
-              <div className="form-stack__field">
+              {canReviewInstagram ? <div className="form-stack__field">
                 <h4>Instagram biography references</h4>
                 <InstagramBiographyReferences saint={saint} />
-              </div>
+              </div> : null}
               <div className="review-actions">
                 <button className="admin-form-button" type="submit">Save biography</button>
               </div>
@@ -648,7 +676,7 @@ export async function AdminSaintEditorPage({
       {activeTab === "media" ? <CollapsibleReviewCard
         cardId="saint-images"
         defaultOpen={!saint.primaryImage && visibleGalleryImages.length === 0}
-        description="Public images, hidden staged images, and Instagram image candidates."
+        description={canReviewInstagram ? "Public images, hidden staged images, and Instagram image candidates." : "Public images and hidden staged images."}
         eyebrow="Media"
         title="Images"
       >
@@ -843,9 +871,10 @@ export async function AdminSaintEditorPage({
   );
 }
 
-async function getSaint(slugOrId: string) {
+async function getSaint(slugOrId: string, scope: SaintCatalogScope, canReviewInstagram: boolean) {
   const saint = await db.saint.findFirst({
     where: {
+      ...saintCatalogWhere(scope),
       OR: [
         { slug: slugOrId },
         { id: slugOrId }
@@ -859,6 +888,7 @@ async function getSaint(slugOrId: string) {
         orderBy: { sortOrder: "asc" }
       },
       instagramItems: {
+        where: canReviewInstagram ? undefined : { id: "__hidden__" },
         include: {
           instagramItem: {
             select: {
@@ -896,10 +926,12 @@ async function getSaint(slugOrId: string) {
         orderBy: { isPrimary: "desc" }
       },
       relationshipsFrom: {
+        where: scope === "full" ? undefined : { toSaint: saintCatalogWhere(scope) },
         include: { toSaint: { select: { id: true, slug: true, displayName: true, status: true } } },
         orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }]
       },
       relationshipsTo: {
+        where: scope === "full" ? undefined : { fromSaint: saintCatalogWhere(scope) },
         include: { fromSaint: { select: { id: true, slug: true, displayName: true, status: true } } },
         orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }]
       },
@@ -914,7 +946,7 @@ async function getSaint(slugOrId: string) {
 
   if (!saint) return null;
 
-  const instagramClaims = await db.instagramDerivedClaim.findMany({
+  const instagramClaims = canReviewInstagram ? await db.instagramDerivedClaim.findMany({
     where: {
       appliedSaintId: saint.id,
       claimType: { in: ["alias", "birth_date", "place", "samadhi_date", "tradition"] },
@@ -933,7 +965,7 @@ async function getSaint(slugOrId: string) {
       { status: "asc" },
       { createdAt: "asc" }
     ]
-  });
+  }) : [];
 
   return { ...saint, instagramClaims };
 }

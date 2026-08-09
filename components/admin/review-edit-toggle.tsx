@@ -7,12 +7,14 @@ type ReviewEditToggleProps = {
   summary: ReactNode;
   children: ReactNode;
   editLabel?: string;
+  editable?: boolean;
 };
 
 export function ReviewEditToggle({
   summary,
   children,
-  editLabel = "Edit"
+  editLabel = "Edit",
+  editable = true
 }: ReviewEditToggleProps) {
   const [isEditing, setIsEditing] = useState(false);
   const editorId = useId();
@@ -29,6 +31,8 @@ export function ReviewEditToggle({
     setIsEditing(false);
     window.requestAnimationFrame(() => editButtonRef.current?.focus());
   }
+
+  if (!editable) return <div className="review-edit-toggle">{summary}</div>;
 
   if (!isEditing) {
     return (

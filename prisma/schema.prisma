@@ -264,7 +264,7 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
-  roles         UserRole[] @default([contributor])
+  roles         UserRole[] @default([fact_checker])
   active        Boolean    @default(true)
   lastSignedInAt DateTime?
   accessAudits  AdminAccessAudit[]

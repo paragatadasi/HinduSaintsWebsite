@@ -13,7 +13,7 @@ const refreshClaimsSchema = z.object({
 });
 
 export async function refreshSaintInstagramClaims(formData: FormData) {
-  await assertCapability("edit_content");
+  await assertCapability("view_instagram_review");
   const session = await auth();
   if (!session?.user?.email) redirect("/admin");
 

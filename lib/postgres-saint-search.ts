@@ -1,10 +1,16 @@
 import { db } from "@/lib/db";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { getSearchQueryTerms } from "@/lib/search-text";
+import type { SaintCatalogScope } from "@/lib/admin-saint-access";
 
 export async function getPublishedSaintSearchCandidateIds(query: string) {
+  return getSaintSearchCandidateIds(query, "published");
+}
+
+export async function getSaintSearchCandidateIds(query: string, scope: SaintCatalogScope) {
   const terms = getSearchQueryTerms(query);
   if (terms.length === 0) return [];
+  const scopeSql = getSaintScopeSql(scope);
 
   const searchTermRows = Prisma.join(
     terms.map((term) => Prisma.sql`(${term})`)
@@ -24,7 +30,7 @@ export async function getPublishedSaintSearchCandidateIds(query: string) {
         OR search_term."term" <% lower(saint."canonicalName")
         OR lower(saint."canonicalName") LIKE '%' || search_term."term" || '%'
       )
-      WHERE saint."status" = 'published'
+      WHERE ${scopeSql}
 
       UNION
 
@@ -36,7 +42,7 @@ export async function getPublishedSaintSearchCandidateIds(query: string) {
         OR search_term."term" <% lower(alias."alias")
         OR lower(alias."alias") LIKE '%' || search_term."term" || '%'
       )
-      WHERE saint."status" = 'published'
+      WHERE ${scopeSql}
 
       UNION
 
@@ -58,7 +64,7 @@ export async function getPublishedSaintSearchCandidateIds(query: string) {
             OR lower(alternate_name) LIKE '%' || search_term."term" || '%'
         )
       )
-      WHERE saint."status" = 'published'
+      WHERE ${scopeSql}
 
       UNION
 
@@ -78,7 +84,7 @@ export async function getPublishedSaintSearchCandidateIds(query: string) {
             OR lower(alternate_name) LIKE '%' || search_term."term" || '%'
         )
       )
-      WHERE saint."status" = 'published'
+      WHERE ${scopeSql}
 
       UNION
 
@@ -89,12 +95,21 @@ export async function getPublishedSaintSearchCandidateIds(query: string) {
         OR lower(coalesce(saint."eraLabel", '')) LIKE '%' || search_term."term" || '%'
         OR lower(coalesce(saint."birthDateRaw", '')) LIKE '%' || search_term."term" || '%'
         OR lower(coalesce(saint."samadhiDateRaw", '')) LIKE '%' || search_term."term" || '%'
+        OR replace(lower(saint."teamVisibility"::text), '_', ' ') LIKE '%' || search_term."term" || '%'
+        OR replace(lower(saint."publicationStatus"::text), '_', ' ') LIKE '%' || search_term."term" || '%'
+        OR replace(lower(saint."workflowStatus"::text), '_', ' ') LIKE '%' || search_term."term" || '%'
       )
-      WHERE saint."status" = 'published'
+      WHERE ${scopeSql}
     )
     SELECT DISTINCT "id"
     FROM candidate_ids
   `);
 
   return candidates.map(({ id }) => id);
+}
+
+function getSaintScopeSql(scope: SaintCatalogScope) {
+  if (scope === "full") return Prisma.sql`TRUE`;
+  if (scope === "public") return Prisma.sql`saint."teamVisibility" = 'public'`;
+  return Prisma.sql`saint."publicationStatus" = 'published'`;
 }

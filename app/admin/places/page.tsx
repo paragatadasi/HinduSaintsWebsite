@@ -3,6 +3,8 @@ import type { Route } from "next";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { getKnownPlaceScope } from "@/lib/place-taxonomy";
+import { requireAdminUser } from "@/lib/admin-access";
+import { getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 
 const scopes = ["all", "country", "state", "locality"] as const;
 type ScopeFilter = typeof scopes[number];
@@ -12,12 +14,14 @@ type AdminPlacesPageProps = {
 };
 
 export default async function AdminPlacesPage({ searchParams }: AdminPlacesPageProps) {
+  const user = await requireAdminUser();
+  const saintScope = getAdminSaintCatalogScope(user.roles);
   const { q, scope } = await searchParams;
   const query = getSearchParam(q);
   const activeScope = scopes.includes(scope as ScopeFilter) ? scope as ScopeFilter : "all";
   const [counts, places] = await Promise.all([
     getScopeCounts(),
-    getPlaces(activeScope, query)
+    getPlaces(activeScope, query, saintScope)
   ]);
 
   return (
@@ -98,7 +102,7 @@ async function getScopeCounts() {
   }, {});
 }
 
-async function getPlaces(scope: ScopeFilter, query: string) {
+async function getPlaces(scope: ScopeFilter, query: string, saintScope: SaintCatalogScope) {
   const places = await db.place.findMany({
     orderBy: [
       { placeScope: "desc" },
@@ -106,7 +110,7 @@ async function getPlaces(scope: ScopeFilter, query: string) {
     ],
     include: {
       parentState: { select: { name: true } },
-      _count: { select: { saints: true, localities: true } }
+      _count: { select: { saints: { where: { saint: saintCatalogWhere(saintScope) } }, localities: true } }
     }
   });
   const term = query.toLowerCase();

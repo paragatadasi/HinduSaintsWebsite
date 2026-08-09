@@ -570,7 +570,7 @@ async function getMatchingInstagramItemIds(status: InstagramQueueStatus, query: 
 }
 
 async function requireAdminSession() {
-  await requireCapability("edit_content");
+  await requireCapability("view_instagram_review");
   const session = await auth();
   if (!session?.user?.email) {
     redirect("/admin");

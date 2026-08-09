@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getAdminUser } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
+import { saintSearchDescription, searchSaintCatalog } from "@/lib/admin-saint-search";
 
 const querySchema = z.string().trim().min(2).max(100);
 const RESULTS_PER_TYPE = 30;
@@ -26,18 +27,8 @@ export async function GET(request: Request) {
   }
 
   const query = parsed.data;
-  const [exactSaints, saints, exactTraditions, traditions, exactPlaces, places, exactPosts, posts] = await Promise.all([
-    db.saint.findMany({
-      where: { displayName: { equals: query, mode: "insensitive" } },
-      take: RESULTS_PER_TYPE,
-      select: { id: true, displayName: true, status: true }
-    }),
-    db.saint.findMany({
-      where: { displayName: { contains: query, mode: "insensitive" } },
-      orderBy: { displayName: "asc" },
-      take: RESULTS_PER_TYPE,
-      select: { id: true, displayName: true, status: true }
-    }),
+  const [saints, exactTraditions, traditions, exactPlaces, places, exactPosts, posts] = await Promise.all([
+    searchSaintCatalog({ query, scope: "full", limit: RESULTS_PER_TYPE }),
     db.tradition.findMany({
       where: { name: { equals: query, mode: "insensitive" } },
       take: RESULTS_PER_TYPE,
@@ -83,7 +74,7 @@ export async function GET(request: Request) {
     })
   ]);
 
-  const saintOptions = [...exactSaints, ...saints].map((row) => ({ value: `saint:${row.id}`, label: row.displayName, description: `Saint · ${row.status}` }));
+  const saintOptions = saints.map((row) => ({ value: `saint:${row.id}`, label: row.displayName, description: `Saint · ${saintSearchDescription(row)}` }));
   const traditionOptions = [...exactTraditions, ...traditions].map((row) => ({ value: `tradition:${row.id}`, label: row.name, description: `Tradition · ${row.status}` }));
   const placeOptions = [...exactPlaces, ...places].map((row) => ({ value: `place:${row.id}`, label: row.name, description: "Place" }));
   const postOptions = [...exactPosts, ...posts].map((row) => ({
