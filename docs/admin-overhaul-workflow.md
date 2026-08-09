@@ -14,10 +14,11 @@ branch as every chunk.
 - Roles are additive. Named roles are presets over server-enforced capabilities.
 - Site Admin has unrestricted access, user management, and destructive actions.
 - Data Admin is an Editor plus source-data, import, and reconciliation authority.
-- Editor can edit and publish content. Contributor can edit and submit content
-  but cannot publish. Curator can fully manage Museum, while destructive Museum
-  actions remain Site Admin-only. Translator is view-only until translation
-  workflows are designed.
+- Editor can edit and publish content. Fact-checker works with structured
+  summaries; Writer also works with biography and long-form content. Neither
+  role can publish. Curator can fully manage Museum and the full Saint catalog,
+  while destructive Museum actions remain Site Admin-only. Translator remains
+  view-only until translation workflows are designed.
 - Existing allowlisted emails are grandfathered as Site Admins during the
   one-time bootstrap. Runtime access is database-backed through Users & Access.
 - Several admins may work on one item. The finished system needs both presence
@@ -55,7 +56,7 @@ remediation. It does not reopen either completed sequence.
 | A1. Detail workspace tabs | Deployed | URL-backed Saint and Tradition review tabs that render only the active workflow; Saint aliases folded into Overview; Public Fields renamed Key Facts; shallow Instagram and Place detail rails removed |
 | A2. Homepage configuration compaction | Deployed | Responsive two-column configuration layout, compact adjacent media placements, and advanced image adjustments reserved for the larger editor |
 | A3. Source Data simplification | Deployed | Source-specific Airtable and Instagram history, retired combined overview/history navigation, preserved raw import records |
-| A4. Dashboard and workload consolidation | Ready for release | Team/My Workflow grouping, My Work embedded in Dashboard, and redundant sidebar destinations removed |
+| A4. Dashboard and workload consolidation | Deployed | Team/My Workflow grouping, My Work embedded in Dashboard, and redundant sidebar destinations removed |
 
 A2 keeps the existing homepage field and save contracts while reducing the
 default page length. On wider screens, configuration sections share a two-column
@@ -76,6 +77,31 @@ separates shared editorial counts under Team Workflow from personal assignment
 counts under My Workflow, then embeds the full assignment workspace at the
 bottom. Existing `/admin/work` links redirect to the embedded URL-backed queue.
 
+## Admin roles and workflow phase
+
+This five-chunk phase separates team visibility, publication, matching, and
+editorial progress while keeping every deployed chunk internally coherent.
+
+| Chunk | Status | Scope |
+| --- | --- | --- |
+| B1. Status and role foundation | Ready for release | Additive Team Visibility, Publication Status, and Workflow Status fields; Fact-checker/Writer roles; scoped capability presets; safe legacy-status compatibility and entity backfills |
+| B2. Scoped catalog and unified search | Planned | Role-filtered Full Catalog/Public Saint review, workflow cards and orthogonal filters, one authorization-scoped fuzzy Saint search across admin surfaces |
+| B3. Editorial permissions and assignments | Planned | Structured versus long-form action gates, shared readiness assignment card, self-assignment, assignee workflow updates and admin override |
+| B4. Duplicate detection and reconciliation | Planned | Durable manual full-catalog scan, individual flags, evidence-based candidate queue and duplicate-only Editor reconciliation access |
+| B5. Saint merge and hardening | Planned | Conflict-aware transactional merge, relationship transfer, retired-slug redirects, privacy audit and legacy cleanup notes |
+
+B2 and B3 can be implemented in parallel after B1 is deployed. B4 depends on
+B2's unified matching/search foundation but not on B3. B5 waits for B3 and B4.
+The Release Captain still integrates and deploys one completed chunk at a time.
+
+B1 deliberately keeps the current status controls in place so no admin screen
+ships with a partially migrated workflow. Publication actions dual-write the
+legacy and new fields, and database constraints enforce Published implies
+Public. The stored Contributor-to-Fact-checker backfill is staged for B2 because
+production migrations run before application replacement; B1 already presents
+and authorizes legacy Contributors as Fact-checkers without exposing the new
+enum to the old application during rollout.
+
 ## Capability contract
 
 All access must be enforced server-side. Navigation visibility is a convenience,
@@ -91,6 +117,14 @@ not an authorization boundary.
 | `manage_site` / `view_analytics` / `manage_users` | Site Admin |
 | `manage_assignments` | Site Admin, Data Admin, Editor |
 | `manage_sensitive_actions` | Site Admin |
+| `view_full_saint_catalog` | Site Admin, Data Admin, Editor, Curator |
+| `view_instagram_review` | Site Admin, Data Admin, Editor |
+| `edit_structured_content` | Site Admin, Data Admin, Editor, Fact-checker, Writer |
+| `edit_long_form_content` | Site Admin, Data Admin, Editor, Writer |
+| `manage_team_visibility` | Site Admin, Data Admin, Editor |
+| `manage_saint_team_visibility` | Site Admin, Data Admin, Editor, Curator |
+| `resolve_duplicate_saints` / `merge_saints` | Site Admin, Data Admin, Editor |
+| `self_assign_content` / `update_assigned_workflow` | All internal roles, limited to visible or assigned content by the action contract |
 
 Publishing and archiving content require `publish_content`. Drafting, editing,
 and returning content to review require `edit_content`. Bulk deletion, merging,
@@ -105,6 +139,9 @@ For each chunk:
 1. Start from current `main` in a short-lived `codex/...` branch/worktree.
 2. Read this document and the relevant design/security documentation.
 3. Implement one coherent, independently deployable slice. Preserve unrelated work.
+   Reuse shared review components and tokens, then inspect every affected screen
+   for hierarchy, density, responsive behavior, focus order, and empty, error,
+   loading, and success states before committing.
 4. Run `npm run dev:check`. Use `npm run codex:verify` only when required by
    the project verification rules or the changed surface.
 5. Update this document: mark the chunk status, record what shipped, and identify
