@@ -46,10 +46,10 @@ branch as every chunk.
 | R4. Image tooling compaction | Deployed | Tokenized compact editors, synchronized large-editor dialogs, full-size inspection, and keyboard controls for focal/crop adjustment |
 | R5. Assignment and access simplification | Deployed | Internal URL-backed workload queue rail, compact assignment creation, summary-first user access cards, consistent sensitive-action terminology, and explicit nested-tab styling |
 
-## Current admin refinement phase
+## Admin refinement phase (complete)
 
-This is a new phase after the completed nine-chunk overhaul and R1-R5 UX
-remediation. It does not reopen either completed sequence.
+This phase followed the completed nine-chunk overhaul and R1-R5 UX remediation.
+All four chunks are deployed; it did not reopen either earlier sequence.
 
 | Chunk | Status | Scope |
 | --- | --- | --- |
@@ -77,10 +77,11 @@ separates shared editorial counts under Team Workflow from personal assignment
 counts under My Workflow, then embeds the full assignment workspace at the
 bottom. Existing `/admin/work` links redirect to the embedded URL-backed queue.
 
-## Admin roles and workflow phase
+## Admin roles and workflow phase (complete)
 
 This five-chunk phase separates team visibility, publication, matching, and
-editorial progress while keeping every deployed chunk internally coherent.
+editorial progress while keeping every deployed chunk internally coherent. All
+five chunks are deployed as of August 9, 2026.
 
 | Chunk | Status | Scope |
 | --- | --- | --- |
@@ -88,19 +89,21 @@ editorial progress while keeping every deployed chunk internally coherent.
 | B2. Scoped catalog and unified search | Deployed | Role-filtered Full Catalog/Public Saint review, workflow cards and orthogonal filters, one authorization-scoped fuzzy Saint search across admin surfaces |
 | B3. Editorial permissions and assignments | Deployed | Structured versus long-form action gates, shared readiness assignment card, self-assignment, assignee workflow updates and admin override |
 | B4. Duplicate detection and reconciliation | Deployed | Durable manual full-catalog scan, individual flags, evidence-based candidate queue and duplicate-only Editor reconciliation access |
-| B5. Saint merge and hardening | Ready for release | Conflict-aware transactional merge, relationship transfer, retired-slug redirects, privacy audit and legacy cleanup notes |
+| B5. Saint merge and hardening | Deployed | Conflict-aware transactional merge, relationship transfer, retired-slug redirects, privacy audit and legacy cleanup notes |
 
-B2 and B3 can be implemented in parallel after B1 is deployed. B4 depends on
-B2's unified matching/search foundation but not on B3. B5 waits for B3 and B4.
-The Release Captain still integrates and deploys one completed chunk at a time.
+The completed implementation sequence allowed B2 and B3 to proceed independently
+after B1. B4 depended on B2's unified matching/search foundation but not on B3;
+B5 followed B3 and B4. The Release Captain integrated and deployed every chunk
+separately, preserving a production confirmation gate between chunks.
 
 B1 deliberately keeps the current status controls in place so no admin screen
 ships with a partially migrated workflow. Publication actions dual-write the
 legacy and new fields, and database constraints enforce Published implies
-Public. The stored Contributor-to-Fact-checker backfill is staged for B2 because
-production migrations run before application replacement; B1 already presents
-and authorizes legacy Contributors as Fact-checkers without exposing the new
-enum to the old application during rollout.
+Public. The stored Contributor-to-Fact-checker backfill was intentionally staged
+for B2 because production migrations run before application replacement; B1
+presented and authorized legacy Contributors as Fact-checkers without exposing
+the new enum to the old application during rollout. B2 then deployed the stored
+role backfill after the B1 application became production-safe for that value.
 
 B2 makes the catalog scope a server-owned value. Site Admins, Data Admins,
 Editors, and Curators default to Full Catalog and may switch to the Public team
@@ -145,10 +148,11 @@ reopened, and imported/manual evidence is not overwritten by a later scan.
 Individual Saint Publish Readiness also offers a unified full-catalog search for
 manually flagging a pair. Reconciliation presents the two records side by side
 and records Confirm duplicate, Not duplicate, Defer, and Reopen decisions.
-Confirmation only prepares the pair for B5; it does not merge, delete, publish,
-or otherwise mutate either Saint. Site Admins, Data Admins, and Editors receive
-this duplicate workflow. Editor access is restricted to the duplicate queue;
-generic source conflicts remain limited to Site and Data Admins.
+Confirmation makes the pair eligible for the dedicated B5 merge review; it does
+not itself merge, delete, publish, or otherwise mutate either Saint. Site Admins,
+Data Admins, and Editors receive this duplicate workflow. Editor access is
+restricted to the duplicate queue; generic source conflicts remain limited to
+Site and Data Admins.
 
 B5 turns a confirmed candidate into a dedicated merge review rather than adding
 destructive controls to the queue card. Authorized catalog coordinators can
@@ -278,10 +282,45 @@ For each chunk:
 
 ## Completion record
 
-The documented admin UX remediation (R1-R5) is complete and deployed as of
-August 7, 2026. The current A1-A4 refinement phase is a separate sequence and
-must follow the same per-chunk release cadence. Translation workflow design and
-authoring remain explicitly deferred.
+The nine-chunk admin overhaul, R1-R5 UX remediation, A1-A4 admin refinement, and
+B1-B5 roles/workflow phase are complete and deployed. Translation workflow
+design and authoring remain explicitly deferred.
+
+### Admin roles and workflow phase (B1-B5)
+
+The five-chunk roles/workflow phase completed production deployment on August 9,
+2026. Its final production state is:
+
+- Final `main`: `9335f57`
+- Final `deploy`: `c4a6115`
+- Final production workflow: `31321311391`
+- Integrated verification: `npm run dev:check`, `npm test` (129/129),
+  `git diff --check`, and `npm run codex:verify` completed end to end with all
+  16 static pages and trace collection; only the existing Autoprefixer warnings
+  remained.
+- Environment changes or manual release steps: none.
+
+Release ledger:
+
+| Chunk | Final `main` | Final `deploy` | Production workflow | Migration |
+| --- | --- | --- | --- | --- |
+| B1 | `d93d8d9` | `d830847` | `31314712073` | `20260809100000_admin_workflow_foundation_schema`; `20260809101000_admin_workflow_foundation_backfill` |
+| B2 | `25ba198` | `19dbc21` | `31316326596` | `20260810100000_backfill_fact_checker_roles` |
+| B3 | `6ad0747` | `4c6d74b` | `31317307383` | None |
+| B4 | `de92b54` | `ee067b1` | `31318989970` | None |
+| B5 | `9335f57` | `c4a6115` | `31321311391` | `20260811100000_saint_slug_redirects` |
+
+The deployed result keeps full-catalog and duplicate tooling inside the smaller
+authorized admin circle; separates team visibility, publication, match, and
+workflow state; splits Fact-checker and Writer permissions; adds shared
+assignment/workflow controls; and provides evidence-based duplicate detection
+plus a transactional, audited, redirect-preserving Saint merge. The detailed B5
+relationship and privacy contract remains in `docs/admin-saint-merge-audit.md`.
+
+### Admin UX remediation (R1-R5)
+
+The documented admin UX remediation is complete and deployed as of August 7,
+2026.
 
 R5 assignment/access simplification and the final navigation correction are
 deployed. Release commits and final release state:
