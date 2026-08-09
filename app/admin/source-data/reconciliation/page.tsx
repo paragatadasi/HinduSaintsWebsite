@@ -19,6 +19,7 @@ export default async function ReconciliationPage({ searchParams }: Props) {
   const params = await searchParams;
   const user = await requireAdminUser();
   const canResolveDuplicates = hasCapability(user.roles, "resolve_duplicate_saints");
+  const canMergeSaints = hasCapability(user.roles, "merge_saints");
   const canResolveSource = hasCapability(user.roles, "resolve_reconciliation");
   if (!canResolveDuplicates && !canResolveSource) redirect("/admin?access=denied");
 
@@ -53,7 +54,7 @@ export default async function ReconciliationPage({ searchParams }: Props) {
       {noticeFromParams(params)}
 
       {view === "duplicates" ? (
-        <DuplicateQueue canRunScan={canResolveDuplicates} params={params} status={status} />
+        <DuplicateQueue canMerge={canMergeSaints} canRunScan={canResolveDuplicates} params={params} status={status} />
       ) : (
         <SourceConflictQueue params={params} status={status} />
       )}
@@ -61,7 +62,7 @@ export default async function ReconciliationPage({ searchParams }: Props) {
   );
 }
 
-async function DuplicateQueue({ canRunScan, params, status }: { canRunScan: boolean; params: Record<string, string | string[] | undefined>; status: QueueStatus }) {
+async function DuplicateQueue({ canMerge, canRunScan, params, status }: { canMerge: boolean; canRunScan: boolean; params: Record<string, string | string[] | undefined>; status: QueueStatus }) {
   const candidates = await db.duplicateCandidate.findMany({
     where: { entityType: "Saint", status },
     orderBy: [{ confidence: "desc" }, { createdAt: "asc" }],
@@ -111,6 +112,7 @@ async function DuplicateQueue({ canRunScan, params, status }: { canRunScan: bool
         const right = candidate.candidateEntityId ? saintById.get(candidate.candidateEntityId) : undefined;
         return (
           <DuplicateCandidateCard
+            canMerge={canMerge}
             candidate={candidate}
             key={candidate.id}
             left={left}
@@ -137,7 +139,7 @@ type SaintComparison = {
   traditions: Array<{ tradition: { name: string } }>;
 };
 
-function DuplicateCandidateCard({ candidate, left, reviewer, right }: { candidate: DuplicateCandidate; left?: SaintComparison; reviewer?: string; right?: SaintComparison }) {
+function DuplicateCandidateCard({ canMerge, candidate, left, reviewer, right }: { canMerge: boolean; candidate: DuplicateCandidate; left?: SaintComparison; reviewer?: string; right?: SaintComparison }) {
   const evidence = evidenceReasons(candidate.evidenceJson);
   return (
     <CollapsibleReviewCard
@@ -155,6 +157,11 @@ function DuplicateCandidateCard({ candidate, left, reviewer, right }: { candidat
         <SaintComparisonFacts label="First record" saint={left} />
         <SaintComparisonFacts label="Possible duplicate" saint={right} />
       </div>
+      {canMerge && candidate.status === "resolved" && left && right ? (
+        <div className="review-actions">
+          <Link className="admin-form-button" href={`/admin/source-data/reconciliation/${candidate.id}/merge`}>Review merge</Link>
+        </div>
+      ) : null}
       {evidence.length > 0 ? (
         <div className="duplicate-evidence">
           <strong>Why this pair was flagged</strong>
@@ -253,6 +260,9 @@ function SourceDecision({ value, label }: { value: string; label: string }) { re
 function noticeFromParams(params: Record<string, string | string[] | undefined>) {
   const error = first(params.error);
   if (error) return <p className="admin-notice form-status form-status--error">{error}</p>;
+  const merged = first(params.merged);
+  const survivor = first(params.survivor);
+  if (merged && survivor) return <p className="admin-notice form-status form-status--success">Merged {merged} into {survivor}. Relationships were transferred and the retired URL now redirects.</p>;
   const updated = first(params.updated);
   if (updated) return <p className="admin-notice form-status form-status--success">Decision recorded: {formatLabel(updated)}.</p>;
   const scanned = first(params.scanned);

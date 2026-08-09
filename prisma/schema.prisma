@@ -454,6 +454,7 @@ model Saint {
   traditionLineageEntries  TraditionLineageSaint[] @relation("TraditionLineageSaint")
   traditionLineageChildren TraditionLineageSaint[] @relation("TraditionLineageParentSaint")
   traditions               SaintTradition[]
+  slugRedirects            SaintSlugRedirect[]
   createdById              String?
   updatedById              String?
   createdAt                DateTime                @default(now())
@@ -464,6 +465,16 @@ model Saint {
 
   @@index([status, featured, displayName])
   @@index([teamVisibility, publicationStatus, workflowStatus, displayName])
+}
+
+model SaintSlugRedirect {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  saintId   String
+  saint     Saint    @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([saintId])
 }
 
 model SaintAlias {
