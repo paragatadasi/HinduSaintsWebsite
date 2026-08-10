@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { canUpdateAssignedWorkflow, hasCapability } from "./permissions";
+import { canReviewEditorialRevisions, canUpdateAssignedWorkflow, hasCapability } from "./permissions";
 
 test("fact-checkers retain structured editing without publishing authority", () => {
   assert.equal(hasCapability(["fact_checker"], "view_content"), true);
@@ -53,6 +53,14 @@ test("only Site Admin has sensitive and user-management capabilities", () => {
   assert.equal(hasCapability(["site_admin"], "manage_sensitive_actions"), true);
   assert.equal(hasCapability(["site_admin"], "manage_users"), true);
   assert.equal(hasCapability(["editor", "data_admin", "curator"], "manage_sensitive_actions"), false);
+});
+
+test("editorial revision queue is reserved for site admins and editors", () => {
+  assert.equal(canReviewEditorialRevisions(["site_admin"]), true);
+  assert.equal(canReviewEditorialRevisions(["editor"]), true);
+  assert.equal(canReviewEditorialRevisions(["editor", "curator"]), true);
+  assert.equal(canReviewEditorialRevisions(["data_admin"]), false);
+  assert.equal(canReviewEditorialRevisions(["writer"]), false);
 });
 
 test("all internal roles can self-assign visible content", () => {

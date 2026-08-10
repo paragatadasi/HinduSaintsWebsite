@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
   Bold,
@@ -10,6 +10,7 @@ import {
   Image,
   Italic,
   Link2,
+  Library,
   List,
   ListOrdered,
   Minus,
@@ -17,7 +18,7 @@ import {
 } from "lucide-react";
 import { FocalImage } from "@/components/ui/focal-image";
 import { IMAGE_CROP_ASPECT } from "@/lib/image-crop-config";
-import { createDefinitionMarkdown } from "@/lib/markdown";
+import { createDefinitionMarkdown, createQuoteMarkdown, createSourceReferenceMarkdown } from "@/lib/markdown";
 import type { PublicImage } from "@/lib/public-contracts";
 
 export type MarkdownEditorImage = {
@@ -31,6 +32,7 @@ export type MarkdownEditorImage = {
 };
 
 type MarkdownEditorProps = {
+  citationChannel?: string;
   defaultValue: string;
   enableDefinitions?: boolean;
   formatting?: "basic" | "full";
@@ -38,12 +40,21 @@ type MarkdownEditorProps = {
   maxLength?: number;
   name: string;
   required?: boolean;
+  sourceOptions?: MarkdownEditorSourceOption[];
   textareaId?: string;
 };
+
+export type MarkdownEditorSourceOption = {
+  key: string;
+  title: string;
+};
+
+export const MARKDOWN_CITATION_SOURCES_EVENT = "markdown-citation-sources";
 
 type InsertionMode = "block" | "linePrefix" | "wrap";
 
 export function MarkdownEditor({
+  citationChannel,
   defaultValue,
   enableDefinitions = false,
   formatting = "full",
@@ -51,9 +62,24 @@ export function MarkdownEditor({
   maxLength,
   name,
   required = false,
+  sourceOptions = [],
   textareaId
 }: MarkdownEditorProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [citationSources, setCitationSources] = useState(sourceOptions);
+  const [selectedCitationKey, setSelectedCitationKey] = useState("");
+
+  useEffect(() => {
+    if (!citationChannel) return;
+    const handleSources = (event: Event) => {
+      const detail = (event as CustomEvent<{ channel: string; sources: MarkdownEditorSourceOption[] }>).detail;
+      if (detail.channel !== citationChannel) return;
+      setCitationSources(detail.sources);
+      setSelectedCitationKey((current) => detail.sources.some((source) => source.key === current) ? current : "");
+    };
+    window.addEventListener(MARKDOWN_CITATION_SOURCES_EVENT, handleSources);
+    return () => window.removeEventListener(MARKDOWN_CITATION_SOURCES_EVENT, handleSources);
+  }, [citationChannel]);
 
   return (
     <div className="markdown-editor">
@@ -84,8 +110,11 @@ export function MarkdownEditor({
         ) : null}
         {formatting === "full" ? (
           <>
-            <ToolbarButton label="Quote" onClick={() => insertMarkdown("> ", "Quoted passage", "linePrefix")}>
+            <ToolbarButton label="Ordinary quote" onClick={() => insertQuote("ordinary")}>
               <Quote size={18} />
+            </ToolbarButton>
+            <ToolbarButton label="Pull quote" onClick={() => insertQuote("pull")}>
+              <Quote size={22} />
             </ToolbarButton>
             <ToolbarButton label="Bullet list" onClick={() => insertMarkdown("- ", "List item", "linePrefix")}>
               <List size={18} />
@@ -97,6 +126,21 @@ export function MarkdownEditor({
               <Minus size={18} />
             </ToolbarButton>
           </>
+        ) : null}
+        {formatting === "full" && citationSources.length > 0 ? (
+          <div className="markdown-editor__citation-tools">
+            <label>
+              <span className="sr-only">Source for quote or attribution</span>
+              <select aria-label="Source for quote or attribution" value={selectedCitationKey} onChange={(event) => setSelectedCitationKey(event.target.value)}>
+                <option value="">No source attribution</option>
+                {citationSources.map((source) => <option key={source.key} value={source.key}>{source.title}</option>)}
+              </select>
+            </label>
+            <button className="markdown-editor__citation-button" disabled={!selectedCitationKey} type="button" onClick={insertSourceAttribution}>
+              <Library aria-hidden="true" size={18} />
+              Add source
+            </button>
+          </div>
         ) : null}
       </div>
       <textarea
@@ -231,6 +275,33 @@ export function MarkdownEditor({
 
     textarea.setRangeText(replacement, start, end, "end");
     textarea.focus();
+  }
+
+  function insertQuote(variant: "ordinary" | "pull") {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = textarea.value.slice(start, end);
+    textarea.setRangeText(createQuoteMarkdown(selected, variant, getSelectedSourceMarkdown()), start, end, "end");
+    textarea.focus();
+  }
+
+  function insertSourceAttribution() {
+    const textarea = textareaRef.current;
+    const citation = getSelectedSourceMarkdown();
+    if (!textarea || !citation) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = textarea.value.slice(start, end);
+    const separator = selected && !/\s$/.test(selected) ? " " : "";
+    textarea.setRangeText(`${selected}${separator}${citation}`, start, end, "end");
+    textarea.focus();
+  }
+
+  function getSelectedSourceMarkdown() {
+    const source = citationSources.find((option) => option.key === selectedCitationKey);
+    return source ? createSourceReferenceMarkdown(source.title, source.key) : "";
   }
 }
 

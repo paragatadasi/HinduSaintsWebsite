@@ -81,6 +81,10 @@ export function canPublish(roles: readonly UserRole[]) {
   return hasCapability(roles, "publish_content");
 }
 
+export function canReviewEditorialRevisions(roles: readonly UserRole[]) {
+  return roles.includes("site_admin") || roles.includes("editor");
+}
+
 export function canManageUsers(roles: readonly UserRole[]) {
   return hasCapability(roles, "manage_users");
 }

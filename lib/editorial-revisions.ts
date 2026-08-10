@@ -3,6 +3,7 @@ import type { Prisma } from "@/lib/generated/prisma/client";
 
 export const sourceRevisionSchema = z.object({
   sourceId: z.string().cuid().optional(),
+  citationKey: z.string().regex(/^[a-zA-Z0-9_-]{1,128}$/).optional(),
   title: z.string().trim().min(1).max(300),
   sourceType: z.enum(["book", "article", "website", "scripture", "oral_tradition", "other"]),
   author: z.string().trim().max(200).optional(),
@@ -17,6 +18,15 @@ export const saintNarrativeRevisionSchema = z.object({
   biographyTitle: z.string().trim().min(1).max(200),
   biographyMarkdown: z.string().trim().min(1).max(20_000),
   sources: z.array(sourceRevisionSchema).max(100)
+}).superRefine((revision, context) => {
+  const configuredKeys = new Set(revision.sources.flatMap((source) => [source.citationKey, source.sourceId].filter((key): key is string => Boolean(key))));
+  const referencedKeys = [...revision.biographyMarkdown.matchAll(/#source-ref-([a-zA-Z0-9_-]{1,128})/g)].map((match) => match[1]);
+  for (const key of referencedKeys) {
+    if (!configuredKeys.has(key)) {
+      context.addIssue({ code: z.ZodIssueCode.custom, message: "Biography citations must use an associated source.", path: ["biographyMarkdown"] });
+      break;
+    }
+  }
 });
 
 export const traditionNarrativeRevisionSchema = z.object({

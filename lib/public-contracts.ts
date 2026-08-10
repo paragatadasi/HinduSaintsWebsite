@@ -20,6 +20,7 @@ export type PublicImage = {
 };
 
 export type PublicSourceSummary = {
+  id?: string;
   title: string;
   sourceType: "book" | "article" | "website" | "scripture" | "oral_tradition" | "other";
   author?: string;

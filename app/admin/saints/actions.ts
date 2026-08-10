@@ -15,6 +15,7 @@ import { acceptSaintInstagramClaim } from "@/lib/instagram-claims";
 import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page-extraction";
 import { toSlug } from "@/lib/slugs";
 import { getReciprocalRelationshipType } from "@/lib/saint-relationships";
+import { replaceSourceReferenceKeys } from "@/lib/markdown";
 import { expectedVersion, guardedSaintTransaction, guardedSaintUpdate } from "@/lib/admin-conflicts";
 import { saintPublicationCompatibilityData } from "@/lib/admin-workflow";
 import { canManageSaintTeamVisibility } from "@/lib/admin-saint-access";
@@ -869,12 +870,22 @@ export async function publishSaintNarrativeRevision(formData: FormData) {
         where: { saintId: parsed.saintId, status: { not: "archived" } },
         data: { status: "archived" }
       });
+      await tx.contentSource.deleteMany({ where: { entityType: "Saint", entityId: parsed.saintId } });
+      const publishedSourceIds = new Map<string, string>();
+      for (const [sortOrder, sourceDraft] of payload.sources.entries()) {
+        const sourceId = await resolvePublishedRevisionSource(tx, sourceDraft);
+        const citationKey = sourceDraft.citationKey ?? sourceDraft.sourceId;
+        if (citationKey) publishedSourceIds.set(citationKey, sourceId);
+        await tx.contentSource.create({
+          data: { entityType: "Saint", entityId: parsed.saintId, sourceId, notes: sourceDraft.note ?? null, sortOrder }
+        });
+      }
       await tx.biography.create({
         data: {
           saintId: parsed.saintId,
           title: payload.biographyTitle,
           slug: `revision-${revision.id}`,
-          bodyMarkdown: payload.biographyMarkdown,
+          bodyMarkdown: replaceSourceReferenceKeys(payload.biographyMarkdown, publishedSourceIds),
           status: "published",
           authorOrEditor: user.name ?? user.email,
           createdById: user.id,
@@ -883,14 +894,6 @@ export async function publishSaintNarrativeRevision(formData: FormData) {
           lastReviewedAt: new Date()
         }
       });
-
-      await tx.contentSource.deleteMany({ where: { entityType: "Saint", entityId: parsed.saintId } });
-      for (const [sortOrder, sourceDraft] of payload.sources.entries()) {
-        const sourceId = await resolvePublishedRevisionSource(tx, sourceDraft);
-        await tx.contentSource.create({
-          data: { entityType: "Saint", entityId: parsed.saintId, sourceId, notes: sourceDraft.note ?? null, sortOrder }
-        });
-      }
 
       await tx.saint.update({
         where: { id: parsed.saintId },

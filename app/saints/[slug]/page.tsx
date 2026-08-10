@@ -2,8 +2,8 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Prose } from "@/components/content/prose";
 import { SaintCard } from "@/components/saints/saint-card";
+import { SaintBiography } from "@/components/saints/saint-biography";
 import { SaintEncounter } from "@/components/saints/saint-encounter";
 import { SaintHeroGallery } from "@/components/saints/saint-hero-gallery";
 import { SaintProfileActions } from "@/components/saints/saint-profile-actions";
@@ -95,14 +95,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
       </section>
 
       {hasBiography && saint.biography ? (
-        <section className="page-shell section saint-profile-biography" id="biography">
-          <article className="saint-detail-main">
-            <div className="eyebrow">{template.biographyEyebrow}</div>
-            <h2>{saint.biography.title}</h2>
-            {saint.biography.summary ? <p className="lede">{saint.biography.summary}</p> : null}
-            <Prose markdown={saint.biography.bodyMarkdown} />
-          </article>
-        </section>
+        <SaintBiography biography={saint.biography} eyebrow={template.biographyEyebrow} sources={saint.sources} />
       ) : null}
 
       {relatedSaints.length > 0 ? (
@@ -142,7 +135,7 @@ function FactGrid({ className, facts }: { className?: string; facts: Array<{ lab
 }
 
 function SourceList({ title, sources }: { title: string; sources: PublicSourceSummary[] }) {
-  return <section className="source-section"><div className="eyebrow">References</div><h2>{title}</h2><ul className="source-list">{sources.map((source) => <li key={`${source.title}-${source.author ?? source.publisher ?? ""}`}><SourceTitle source={source} /><SourceMeta source={source} />{source.note ? <p>{source.note}</p> : null}</li>)}</ul></section>;
+  return <section className="source-section"><div className="eyebrow">References</div><h2>{title}</h2><ul className="source-list">{sources.map((source) => <li id={source.id ? `source-${source.id}` : undefined} key={`${source.id ?? source.title}-${source.author ?? source.publisher ?? ""}`}><SourceTitle source={source} /><SourceMeta source={source} />{source.note ? <p>{source.note}</p> : null}</li>)}</ul></section>;
 }
 
 function SourceTitle({ source }: { source: PublicSourceSummary }) {

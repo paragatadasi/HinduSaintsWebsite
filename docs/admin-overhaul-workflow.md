@@ -24,6 +24,9 @@ branch as every chunk.
 - Several admins may work on one item. The finished system needs both presence
   indicators and optimistic conflict protection; conflict protection comes first.
 - Assignments cover Saints, Traditions, Places, and Instagram posts from launch.
+- Submitted long-form narrative revisions are reviewed from the Dashboard by
+  users with the Site Admin or Editor role. Editorial Reviews is not a separate
+  site-wide sidebar destination.
 - Translation authoring and its language/version model are explicitly deferred.
 
 ## Status
@@ -75,7 +78,10 @@ A4 makes the sidebar Dashboard brand the single landing-page link and removes
 the duplicate Dashboard and My Work destinations from Operations. The Dashboard
 separates shared editorial counts under Team Workflow from personal assignment
 counts under My Workflow, then embeds the full assignment workspace at the
-bottom. Existing `/admin/work` links redirect to the embedded URL-backed queue.
+bottom. Submitted long-form narrative revisions also appear as actionable rows
+on the Dashboard for Site Admin and Editor roles; the legacy `/admin/revisions`
+route redirects to that section. Existing `/admin/work` links redirect to the
+embedded URL-backed queue.
 
 ## Admin roles and workflow phase (complete)
 
@@ -260,6 +266,10 @@ For each chunk:
 - Dashboard counters are grouped into Team Workflow and My Workflow. The
   embedded assignment workspace contains My Work, Available Work, Blocked,
   Recently Completed, and Team Workload where authorized.
+- The Editorial Reviews queue is embedded between Team Workflow and My Workflow
+  for Site Admin and Editor roles. Each row links directly to the relevant
+  Saint biography, Tradition content, or Place review surface. Other roles do
+  not receive the queue or a sidebar link.
 
 ### Conflict protection and presence
 
@@ -333,12 +343,14 @@ deployed. Release commits and final release state:
 The current UI uses the Dashboard sidebar brand as the single landing-page
 link, embeds My Work in the Dashboard, and keeps Inbox, Site, Analytics, Users
 & Access, Source Data, Airtable, import tools, and content destinations in the
-grouped left sidebar. Horizontal navigation is reserved for nested workflows:
-Site configuration routes, embedded Work queues, and detail-page section jump
-navigation. These nested controls use the shared explicit tab-strip treatment
-with outlined inactive tabs, a selected surface, an accent edge, and a connected
-accent rule. Detail section jumps retain `aria-current="location"`; route tabs
-use `aria-current="page"`.
+grouped left sidebar. Editorial Reviews is embedded on the Dashboard for Site
+Admin and Editor roles instead of being duplicated in that sidebar. Horizontal
+navigation is reserved for nested workflows: Site configuration routes,
+embedded Work queues, and detail-page section jump navigation. These nested
+controls use the shared explicit tab-strip treatment with outlined inactive
+tabs, a selected surface, an accent edge, and a connected accent rule. Detail
+section jumps retain `aria-current="location"`; route tabs use
+`aria-current="page"`.
 
 R5 also condensed assignment creation, made per-user access editing
 summary-first, and standardized the user-facing term “sensitive-action

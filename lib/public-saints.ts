@@ -644,6 +644,7 @@ async function getSourcesForSaint(saintId: string): Promise<PublicSourceSummary[
   });
 
   return sourceLinks.map(({ source }) => ({
+    id: source.id,
     title: source.title,
     sourceType: source.sourceType,
     author: source.author ?? undefined,

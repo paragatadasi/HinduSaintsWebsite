@@ -3456,8 +3456,173 @@ html[data-route-entering="true"] body > main {
 .saint-hero-gallery__dots button[aria-current="true"] { background: var(--color-accent); opacity: 1; }
 .saint-hero-gallery--empty { align-items: center; background: var(--color-surface-muted); color: var(--color-muted); display: flex; justify-content: center; min-height: var(--height-saint-profile-gallery); padding: var(--space-6); }
 
-.saint-profile-biography { max-width: var(--width-saint-profile-reading); }
-.saint-profile-biography .saint-detail-main { color: var(--color-text); }
+.saint-profile-biography {
+  background: var(--color-saint-profile-biography);
+  color: var(--color-saint-profile-biography-text);
+}
+
+.saint-profile-biography__layout {
+  align-items: start;
+  display: grid;
+  grid-template-columns: minmax(0, var(--width-saint-profile-biography-toc)) minmax(0, var(--width-saint-profile-reading));
+  justify-content: center;
+  max-width: var(--width-saint-profile-biography-layout);
+  padding-block: var(--space-public-section);
+}
+
+.saint-profile-biography__aside {
+  align-self: stretch;
+  border-right: var(--border-width-default) solid var(--color-saint-profile-biography-border);
+  min-width: 0;
+}
+
+.saint-biography-toc {
+  padding-right: var(--space-6);
+  position: sticky;
+  top: var(--position-saint-profile-biography-toc);
+}
+
+.saint-biography-toc__label {
+  color: var(--color-saint-profile-biography-muted);
+  font-size: var(--font-size-encounter-eyebrow);
+  font-weight: 800;
+  letter-spacing: var(--letter-spacing-eyebrow);
+  padding: 0 var(--space-4) var(--space-3);
+  text-transform: uppercase;
+}
+
+.saint-biography-toc ol {
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.saint-biography-toc a {
+  color: var(--color-saint-profile-biography-text);
+  display: block;
+  font-size: var(--font-size-review-tab);
+  line-height: 1.35;
+  padding: var(--space-3) var(--space-4);
+}
+
+.saint-biography-toc a:hover,
+.saint-biography-toc a:focus-visible,
+.saint-biography-toc a[aria-current="location"] {
+  background: var(--color-saint-profile-biography-nav-active);
+}
+
+.saint-biography-toc a[aria-current="location"] { font-weight: 700; }
+
+.saint-biography-reading {
+  min-width: 0;
+  padding-left: var(--space-12);
+}
+
+.saint-biography-reading__header,
+.saint-biography-reading__prose > h2,
+.saint-biography-reading__prose > h3 {
+  scroll-margin-top: var(--position-saint-profile-biography-toc);
+}
+
+.saint-biography-reading__header h2,
+.saint-biography-reading__prose h2,
+.saint-biography-reading__prose h3 {
+  color: var(--color-saint-profile-biography-text);
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.saint-biography-reading__header h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: var(--space-2) 0 var(--space-4);
+}
+
+.saint-biography-reading__header .eyebrow { color: var(--color-saint-profile-biography-muted); }
+.saint-biography-reading__header .lede { color: var(--color-saint-profile-biography-muted); }
+
+.saint-biography-reading__prose {
+  color: var(--color-saint-profile-biography-text);
+  font-size: var(--font-size-saint-biography-body);
+  line-height: var(--line-height-saint-biography);
+  max-width: none;
+}
+
+.saint-biography-reading__prose > p { margin: 0 0 var(--space-6); }
+
+.saint-biography-reading__prose > h2,
+.saint-biography-reading__prose > h3 {
+  border-top: var(--border-width-default) solid var(--color-saint-profile-biography-border);
+  margin: var(--space-8) 0 var(--space-4);
+  padding-top: var(--space-6);
+}
+
+.saint-biography-reading__prose > h2 { font-size: clamp(1.75rem, 3.5vw, 2.35rem); }
+.saint-biography-reading__prose > h3 { font-size: clamp(1.35rem, 3vw, 1.75rem); }
+
+.saint-biography-reading__prose img {
+  display: block;
+  filter: var(--image-treatment-biography);
+  height: auto;
+  margin: var(--space-5) 0 var(--space-6);
+  max-width: 100%;
+  width: 100%;
+}
+
+.saint-biography-reading__prose blockquote {
+  background: var(--color-saint-profile-biography-quote);
+  border: var(--border-width-default) solid var(--color-saint-profile-biography-border);
+  border-radius: var(--radius-control);
+  font-family: var(--font-serif);
+  margin: var(--space-8) 0;
+  padding: var(--space-5) var(--space-6);
+  position: relative;
+  text-align: center;
+}
+
+.saint-biography-reading__prose blockquote::before {
+  color: var(--color-gold);
+  content: "“";
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--font-size-saint-biography-pullquote);
+  font-weight: 700;
+  line-height: 0.65;
+  text-align: left;
+}
+
+.saint-biography-reading__prose blockquote p { margin: 0; }
+.saint-biography-reading__prose blockquote p + p { margin-top: var(--space-3); }
+
+.saint-biography-reading__prose blockquote > p:last-child:not(:first-child) {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-review-hint);
+}
+
+.saint-biography-reading__prose blockquote.prose-pullquote {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font-size: var(--font-size-saint-biography-pullquote);
+  line-height: 1.2;
+  padding: var(--space-8) 0;
+  text-align: left;
+}
+
+.saint-biography-reading__prose .prose-pullquote::before { font-size: var(--font-size-saint-biography-pullquote); }
+.saint-biography-reading__prose .prose-pullquote > p:last-child:not(:first-child) { text-align: center; }
+
+.prose-source-reference {
+  color: currentColor;
+  font-style: normal;
+  text-decoration-color: var(--color-gold);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--border-width-default);
+  text-underline-offset: var(--space-1);
+}
+
+.prose-source-reference--unlinked { text-decoration-style: dotted; }
 .saint-profile-related { background: var(--color-section-surface); }
 .saint-profile-related .section-heading h2 { letter-spacing: 0.12em; text-transform: uppercase; }
 .saint-profile-encounter { display: flex; justify-content: center; }
@@ -3628,6 +3793,8 @@ html[data-route-entering="true"] body > main {
 .source-list a span {
   min-width: 0;
 }
+
+.source-list li { scroll-margin-top: var(--position-saint-profile-biography-toc); }
 
 .source-list a span {
   overflow-wrap: anywhere;
@@ -6624,6 +6791,7 @@ fieldset.admin-field {
 }
 
 .review-row h2,
+.review-row h3,
 .review-row h4,
 .review-panel h2,
 .review-panel h3 {
@@ -8254,6 +8422,37 @@ fieldset.admin-field {
   gap: var(--space-2);
 }
 
+.markdown-editor__citation-tools {
+  align-items: stretch;
+  display: inline-flex;
+  gap: var(--space-2);
+  min-width: min(100%, var(--width-aside));
+}
+
+.markdown-editor__citation-tools label { flex: 1 1 auto; }
+.markdown-editor__citation-tools select { height: 100%; min-height: var(--size-control); width: 100%; }
+
+.markdown-editor__citation-button {
+  align-items: center;
+  background: var(--color-surface-muted);
+  border: var(--border-width-default) solid var(--color-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: var(--font-size-review-field);
+  font-weight: 700;
+  gap: var(--space-2);
+  min-height: var(--size-control);
+  padding-inline: var(--space-3);
+  white-space: nowrap;
+}
+
+.markdown-editor__citation-button:hover,
+.markdown-editor__citation-button:focus-visible { border-color: var(--color-accent); }
+.markdown-editor__citation-button:disabled { cursor: not-allowed; opacity: 0.5; }
+
 .markdown-editor__tool {
   align-items: center;
   background: var(--color-surface-muted);
@@ -9317,6 +9516,35 @@ fieldset.admin-field {
   .saint-profile-actions { align-items: flex-start; }
   .saint-profile-actions__main { align-items: stretch; flex: 1 1 100%; flex-direction: column; }
   .saint-profile-actions__main .button { justify-content: center; width: 100%; }
+  .saint-profile-biography__layout {
+    display: block;
+    padding-block: var(--space-8);
+  }
+  .saint-profile-biography__aside {
+    border-bottom: var(--border-width-default) solid var(--color-saint-profile-biography-border);
+    border-right: 0;
+    margin-bottom: var(--space-6);
+  }
+  .saint-biography-toc {
+    padding: 0 0 var(--space-3);
+    position: static;
+  }
+  .saint-biography-toc__label { padding-inline: 0; }
+  .saint-biography-toc ol {
+    display: flex;
+    gap: var(--space-2);
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+    scrollbar-width: thin;
+  }
+  .saint-biography-toc li { flex: 0 0 auto; }
+  .saint-biography-toc a {
+    border: var(--border-width-default) solid var(--color-saint-profile-biography-border);
+    border-radius: var(--radius-control);
+    padding: var(--space-2) var(--space-3);
+  }
+  .saint-biography-reading { padding-left: 0; }
+  .saint-biography-reading__prose blockquote.prose-pullquote { padding-block: var(--space-6); }
   .site-nav {
     align-items: stretch;
     gap: var(--space-2);
