@@ -1,5 +1,5 @@
 import { notFound, permanentRedirect } from "next/navigation";
-import { ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { SaintCard } from "@/components/saints/saint-card";
@@ -8,6 +8,7 @@ import { SaintEncounter } from "@/components/saints/saint-encounter";
 import { SaintHeroGallery } from "@/components/saints/saint-hero-gallery";
 import { SaintProfileActions } from "@/components/saints/saint-profile-actions";
 import { SaintProfileSummary } from "@/components/saints/saint-profile-summary";
+import { Button } from "@/components/ui/button";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
 import { getPublishedSaintBySlug, getPublishedSaintRedirectBySlug, getRelatedPublishedSaints } from "@/lib/public-saints";
@@ -101,7 +102,12 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
       {relatedSaints.length > 0 ? (
         <section className={`saint-profile-related section${hasSources ? "" : " section--last"}`}>
           <div className="page-shell">
-            <div className="section-heading"><h2>Related Saints</h2></div>
+            <div className="section-heading">
+              <h2>Related Saints</h2>
+              <Button href="/saints" variant="text" icon={<ArrowRight size={16} />} iconPosition="end">
+                View all saints
+              </Button>
+            </div>
             <ScrollRail ariaLabel="related saints" controls="always">
               {relatedSaints.map((related) => (
                 <SaintCard

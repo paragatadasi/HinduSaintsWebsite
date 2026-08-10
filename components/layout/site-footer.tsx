@@ -17,7 +17,7 @@ export async function SiteFooter() {
           <a href={content.privacyPolicy.href} target="_blank" rel="noopener noreferrer">
             {content.privacyPolicy.label}
           </a>
-          . <FooterContactDialog submissionKey={randomUUID()} />
+          . <FooterContactDialog submissionKey={randomUUID()} />.
         </p>
       </div>
     </footer>

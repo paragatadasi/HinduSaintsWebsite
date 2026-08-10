@@ -1820,6 +1820,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .header-search input {
+  font-weight: 400;
   min-width: 0;
   opacity: 0;
   transition:

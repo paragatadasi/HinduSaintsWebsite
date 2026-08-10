@@ -197,6 +197,7 @@ function getSearchParam(value: string | string[] | undefined) {
 
 function formatCategory(category: string) {
   const labels: Record<string, string> = {
+    comment_testimony: "Comment/testimony",
     correction: "Correction",
     source_citation: "Source or citation",
     name_spelling: "Name or spelling",
