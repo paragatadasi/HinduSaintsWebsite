@@ -281,6 +281,9 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
           >
             <div className="review-meta"><StatusBadge label={formatStatus(narrativeRevisionRow.status)} /></div>
             <ReviewFactGrid facts={[{ label: "Page overview", value: formatMarkdownSummary(narrativeRevision.overviewMarkdown) }]} />
+            {canEditLongForm ? <div className="review-actions">
+              <Link className="admin-form-button admin-form-button--secondary" href={`/admin/preview/revision/${narrativeRevisionRow.id}`} rel="noreferrer" target="_blank">Preview pending page</Link>
+            </div> : null}
             {narrativeRevisionRow.status === "needs_review" ? <>
               {narrativeRevision.overviewMarkdown ? <div className="editorial-revision-preview"><Prose markdown={narrativeRevision.overviewMarkdown} /></div> : null}
               {canPublish ? <div className="review-actions">

@@ -4607,6 +4607,35 @@ html[data-route-entering="true"] body > main {
   padding: var(--space-8) 0;
 }
 
+.admin-preview-workspace {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.admin-preview-toolbar {
+  align-items: start;
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.admin-preview-toolbar > div {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.admin-preview-toolbar h1,
+.admin-preview-toolbar p {
+  margin: 0;
+}
+
+.admin-preview-canvas {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
 .admin-sidebar,
 .admin-stack,
 .review-list,
@@ -10101,6 +10130,7 @@ fieldset.admin-field {
   }
 
   .admin-layout,
+  .admin-preview-toolbar,
   .admin-settings-form,
   .admin-form-grid--assignment,
   .review-detail-grid,

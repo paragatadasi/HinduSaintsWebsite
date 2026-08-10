@@ -1,5 +1,6 @@
 import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
+import type { Prisma } from "@/lib/generated/prisma/client";
 import { getPlaceCoordinate } from "@/lib/place-geocoding";
 import { getKnownPlaceScope, getKnownStateSlug } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
@@ -83,16 +84,9 @@ async function getPublishedPlaceRows() {
   });
 }
 
-async function getPublishedPlaceRowBySlug(slug: string) {
+async function getPlaceDetailRow(where: Prisma.PlaceWhereInput) {
   return db.place.findFirst({
-    where: {
-      slug,
-      saints: {
-        some: {
-          saint: { status: "published" }
-        }
-      }
-    },
+    where,
     include: {
       parentState: true,
       relationshipsFrom: {
@@ -138,6 +132,13 @@ async function getPublishedPlaceRowBySlug(slug: string) {
   });
 }
 
+async function getPublishedPlaceRowBySlug(slug: string) {
+  return getPlaceDetailRow({
+    slug,
+    saints: { some: { saint: { status: "published" } } }
+  });
+}
+
 export async function getPublishedPlaceSummaries(): Promise<PublicPlaceSummary[]> {
   return (await getPublicMapPageData()).places;
 }
@@ -155,6 +156,19 @@ export async function getPublishedPlaceSlugs() {
 
 export async function getPublishedPlaceBySlug(slug: string): Promise<PublicPlaceDetail | null> {
   return getPublishedPlaceBySlugCached(slug);
+}
+
+export async function getPlacePreviewBaseById(id: string): Promise<PublicPlaceDetail | null> {
+  const place = await getPlaceDetailRow({ id });
+  if (!place) return null;
+
+  const saints = getSortedPublishedSaints(place).map(toPublicSaintSummary);
+  return {
+    ...toPublicPlaceSummary(place),
+    saints,
+    traditions: getUniqueSorted(saints.map((saint) => saint.tradition)),
+    eras: getUniqueSorted(saints.map((saint) => saint.eraLabel))
+  };
 }
 
 const getPublishedPlaceBySlugCached = unstable_cache(async (

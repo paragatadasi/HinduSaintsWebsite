@@ -160,4 +160,4 @@ biography fallback and should not overwrite reviewed `Biography` content.
 
 ## Preview
 
-Preview routes live under `/admin/preview/*`, require authentication, and are noindexed.
+Preview routes live under `/admin/preview/*`, require authentication, and are noindexed. Long-form revisions use `/admin/preview/revision/[id]`, where authorized authors and reviewers see the real public page template with the private revision overlaid. Preview loaders are uncached and never feed pending content into public queries.
