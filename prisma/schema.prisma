@@ -234,6 +234,7 @@ enum FeedbackStatus {
 }
 
 enum FeedbackCategory {
+  comment_testimony
   correction
   source_citation
   name_spelling

@@ -52,7 +52,8 @@ export function ContactFeedbackForm({ context, submissionKey }: ContactFeedbackF
 
       <label>
         What is this about?
-        <select name="category" defaultValue="correction" required>
+        <select name="category" defaultValue="comment_testimony" required>
+          <option value="comment_testimony">Comment/testimony</option>
           <option value="correction">Correction</option>
           <option value="source_citation">Source or citation</option>
           <option value="name_spelling">Name or spelling</option>

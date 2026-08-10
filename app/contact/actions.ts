@@ -15,6 +15,7 @@ export type FeedbackFormState = {
 const feedbackSchema = z.object({
   submissionKey: z.string().uuid(),
   category: z.enum([
+    "comment_testimony",
     "correction",
     "source_citation",
     "name_spelling",

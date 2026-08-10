@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Route } from "next";
-import type { ReactNode } from "react";
+import { AdminQueueFilterSelect } from "@/components/admin/admin-queue-filter-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { requireSaintCatalogUser } from "@/lib/admin-access";
 import {
@@ -10,8 +10,9 @@ import {
   type SaintCatalogScope
 } from "@/lib/admin-saint-access";
 import { searchSaintCatalog } from "@/lib/admin-saint-search";
+import { getAdminSaintsQueueUrl } from "@/lib/admin-saint-queue";
 import { db } from "@/lib/db";
-import type { Prisma, PublicationStatus, WorkflowStatus } from "@/lib/generated/prisma/client";
+import type { Prisma, PublicationStatus, TeamVisibility, WorkflowStatus } from "@/lib/generated/prisma/client";
 import { hasCapability } from "@/lib/permissions";
 import { reviewedInstagramMatchWhere } from "@/lib/saint-match-status";
 import { SaintsBulkReviewList } from "./saints-bulk-review-list";
@@ -26,6 +27,8 @@ const descriptionFilters = ["all", "has_short_description", "missing_short_descr
 type DescriptionFilter = typeof descriptionFilters[number];
 const photoFilters = ["all", "has_photo", "missing_photo"] as const;
 type PhotoFilter = typeof photoFilters[number];
+const visibilityFilters = ["all", "public", "private"] as const;
+type VisibilityFilter = typeof visibilityFilters[number];
 
 type SaintQueueFilters = {
   publication: PublicationFilter;
@@ -33,6 +36,7 @@ type SaintQueueFilters = {
   match: MatchFilter;
   description: DescriptionFilter;
   photo: PhotoFilter;
+  visibility: VisibilityFilter;
 };
 
 type AdminSaintsPageProps = {
@@ -43,6 +47,7 @@ type AdminSaintsPageProps = {
     publication?: string;
     q?: string | string[];
     scope?: string;
+    visibility?: string;
     workflow?: string;
   }>;
 };
@@ -56,16 +61,19 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
   const canReviewInstagram = hasCapability(user.roles, "view_instagram_review");
   const filters: SaintQueueFilters = {
     publication: member(publicationFilters, params.publication, "all"),
-    workflow: member(workflowFilters, params.workflow, "all"),
+    workflow: scope === "public" ? member(workflowFilters, params.workflow, "all") : "all",
     match: canReviewInstagram ? member(matchFilters, params.match, "all") : "all",
     description: member(descriptionFilters, params.description, "all"),
-    photo: member(photoFilters, params.photo, "all")
+    photo: member(photoFilters, params.photo, "all"),
+    visibility: scope === "full" ? member(visibilityFilters, params.visibility, "all") : "all"
   };
   const rankedIds = query
     ? (await searchSaintCatalog({ query, scope, limit: 500 })).map((saint) => saint.id)
     : undefined;
   const [workflowCounts, saints] = await Promise.all([
-    getWorkflowCounts(scope, { ...filters, workflow: "all" }, rankedIds),
+    scope === "public"
+      ? getWorkflowCounts(scope, { ...filters, workflow: "all" }, rankedIds)
+      : Promise.resolve({} as Partial<Record<WorkflowStatus, number>>),
     getSaints(scope, filters, rankedIds, canReviewInstagram)
   ]);
   const returnTo = getSaintsReturnTo(scope, filters, query);
@@ -117,61 +125,44 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
           </div>
         ) : null}
 
-        <div className="admin-queue-filter-groups">
+        <form action="/admin/saints" aria-label="Saint queue filters" className="admin-form-grid admin-search--queue">
+          <input name="scope" type="hidden" value={scope} />
+          {query ? <input name="q" type="hidden" value={query} /> : null}
           {scope === "full" ? (
-            <FilterGroup label="Workflow">
-              {workflowFilters.map((workflow) => (
-                <FilterLink
-                  active={filters.workflow === workflow}
-                  href={getSaintsReturnTo(scope, { ...filters, workflow }, query)}
-                  key={workflow}
-                  label={formatWorkflowLabel(workflow)}
-                  value={workflow === "all" ? undefined : workflowCounts[workflow] ?? 0}
-                />
-              ))}
-            </FilterGroup>
+            <AdminQueueFilterSelect
+              label="Team visibility"
+              name="visibility"
+              options={visibilityFilters.map((visibility) => ({ label: formatVisibilityFilterLabel(visibility), value: visibility }))}
+              value={filters.visibility}
+            />
           ) : null}
-          <FilterGroup label="Publication">
-            {publicationFilters.map((publication) => (
-              <FilterLink
-                active={filters.publication === publication}
-                href={getSaintsReturnTo(scope, { ...filters, publication }, query)}
-                key={publication}
-                label={formatLabel(publication)}
-              />
-            ))}
-          </FilterGroup>
-          {canReviewInstagram ? <FilterGroup label="Instagram match">
-            {matchFilters.map((match) => (
-              <FilterLink
-                active={filters.match === match}
-                href={getSaintsReturnTo(scope, { ...filters, match }, query)}
-                key={match}
-                label={formatLabel(match)}
-              />
-            ))}
-          </FilterGroup> : null}
-          <FilterGroup label="Short description">
-            {descriptionFilters.map((description) => (
-              <FilterLink
-                active={filters.description === description}
-                href={getSaintsReturnTo(scope, { ...filters, description }, query)}
-                key={description}
-                label={formatDescriptionFilterLabel(description)}
-              />
-            ))}
-          </FilterGroup>
-          <FilterGroup label="Primary photo">
-            {photoFilters.map((photo) => (
-              <FilterLink
-                active={filters.photo === photo}
-                href={getSaintsReturnTo(scope, { ...filters, photo }, query)}
-                key={photo}
-                label={formatPhotoFilterLabel(photo)}
-              />
-            ))}
-          </FilterGroup>
-        </div>
+          <AdminQueueFilterSelect
+            label="Publication"
+            name="publication"
+            options={publicationFilters.map((publication) => ({ label: formatLabel(publication), value: publication }))}
+            value={filters.publication}
+          />
+          {canReviewInstagram ? (
+            <AdminQueueFilterSelect
+              label="Instagram match"
+              name="match"
+              options={matchFilters.map((match) => ({ label: formatLabel(match), value: match }))}
+              value={filters.match}
+            />
+          ) : null}
+          <AdminQueueFilterSelect
+            label="Short description"
+            name="description"
+            options={descriptionFilters.map((description) => ({ label: formatDescriptionFilterLabel(description), value: description }))}
+            value={filters.description}
+          />
+          <AdminQueueFilterSelect
+            label="Primary photo"
+            name="photo"
+            options={photoFilters.map((photo) => ({ label: formatPhotoFilterLabel(photo), value: photo }))}
+            value={filters.photo}
+          />
+        </form>
 
         <form action="/admin/saints" className="admin-search admin-search--queue" role="search">
           <QueueHiddenFields filters={filters} scope={scope} />
@@ -255,6 +246,7 @@ function getSaintQueueWhere(
   if (filters.description === "missing_short_description") clauses.push({ OR: [{ shortDescription: null }, { shortDescription: "" }] });
   if (filters.photo === "has_photo") clauses.push({ primaryImageId: { not: null } });
   if (filters.photo === "missing_photo") clauses.push({ primaryImageId: null });
+  if (scope === "full" && filters.visibility !== "all") clauses.push({ teamVisibility: filters.visibility as TeamVisibility });
   return { AND: clauses };
 }
 
@@ -287,33 +279,15 @@ function WorkflowCard({ active, count, href, label }: { active: boolean; count: 
   );
 }
 
-function FilterGroup({ label, children }: { label: string; children: ReactNode }) {
-  return <div className="admin-queue-filter-group"><span>{label}</span><div className="admin-queue-filters">{children}</div></div>;
-}
-
-function FilterLink({ active, href, label, value }: { active: boolean; href: string; label: string; value?: number }) {
-  return (
-    <Link aria-current={active ? "page" : undefined} className="admin-queue-filter" href={href as Route}>
-      <span>{label}</span>
-      {typeof value === "number" ? <StatusBadge label={String(value)} /> : null}
-    </Link>
-  );
-}
-
 function QueueHiddenFields({ filters, scope }: { filters: SaintQueueFilters; scope: "full" | "public" }) {
   return <>
-    {scope === "full" ? <input name="scope" type="hidden" value="full" /> : null}
+    <input name="scope" type="hidden" value={scope} />
     {Object.entries(filters).map(([name, value]) => value === "all" ? null : <input key={name} name={name} type="hidden" value={value} />)}
   </>;
 }
 
 function getSaintsReturnTo(scope: "full" | "public", filters: SaintQueueFilters, query: string) {
-  const params = new URLSearchParams();
-  if (scope === "full") params.set("scope", "full");
-  for (const [name, value] of Object.entries(filters)) if (value !== "all") params.set(name, value);
-  if (query) params.set("q", query);
-  const qs = params.toString();
-  return qs ? `/admin/saints?${qs}` : "/admin/saints";
+  return getAdminSaintsQueueUrl(scope, filters, query);
 }
 
 function formatQueueDescription(scope: "full" | "public", query: string, count: number) {
@@ -337,6 +311,12 @@ function formatPhotoFilterLabel(filter: PhotoFilter) {
   if (filter === "has_photo") return "Has photo";
   if (filter === "missing_photo") return "Missing photo";
   return "Any";
+}
+
+function formatVisibilityFilterLabel(filter: VisibilityFilter) {
+  if (filter === "all") return "Any visibility";
+  if (filter === "private") return "Not public";
+  return "Public";
 }
 
 function formatLabel(value: string) {
