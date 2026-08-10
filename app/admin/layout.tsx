@@ -59,17 +59,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     );
   }
 
-  const [newFeedbackCount, adminUser, openReconciliationCount, openDuplicateCount, editorialReviewCount] = await Promise.all([
+  const [newFeedbackCount, adminUser, openReconciliationCount, openDuplicateCount] = await Promise.all([
     db.feedbackSubmission.count({ where: { status: "new" } }),
     getAdminUser(),
     db.reconciliationIssue.count({ where: { status: "open" } }),
-    db.duplicateCandidate.count({ where: { entityType: "Saint", status: "open" } }),
-    db.editorialRevision.count({ where: { status: "needs_review" } })
+    db.duplicateCandidate.count({ where: { entityType: "Saint", status: "open" } })
   ]);
   const roles = adminUser?.active ? adminUser.roles : [];
   const navigationGroups = buildNavigationGroups({
     newFeedbackCount,
-    editorialReviewCount,
     openDuplicateCount,
     openReconciliationCount,
     roles
@@ -88,13 +86,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 }
 
 function buildNavigationGroups({
-  editorialReviewCount,
   newFeedbackCount,
   openDuplicateCount,
   openReconciliationCount,
   roles
 }: {
-  editorialReviewCount: number;
   newFeedbackCount: number;
   openDuplicateCount: number;
   openReconciliationCount: number;
@@ -104,9 +100,6 @@ function buildNavigationGroups({
   const operationItems: AdminNavigationGroup["items"] = [];
   if (hasCapability(roles, "view_content")) {
     operationItems.push({ count: newFeedbackCount, href: "/admin/feedback", label: "Inbox" });
-  }
-  if (hasCapability(roles, "publish_content")) {
-    operationItems.push({ count: editorialReviewCount, href: "/admin/revisions", label: "Editorial Reviews" });
   }
   if (hasCapability(roles, "manage_site")) operationItems.push({ href: "/admin/site", label: "Site" });
   if (hasCapability(roles, "view_analytics")) operationItems.push({ href: "/admin/analytics", label: "Analytics" });

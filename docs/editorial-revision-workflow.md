@@ -23,7 +23,7 @@ Existing Saint biography rows marked `draft` or `needs_review` are shown as the 
 - Writers and other users with `edit_long_form_content` can start, save, and submit revisions.
 - A submitted revision is read-only to writers.
 - Editors and administrators with `publish_content` can publish or return a submitted revision to draft.
-- Submitted revisions appear in the editor-only **Editorial Reviews** sidebar and dashboard queue.
+- Submitted revisions appear directly on the Dashboard for users with the **Site Admin** or **Editor** role. The queue is not duplicated in the main sidebar.
 - Publishing is blocked if the relevant live narrative changed after the revision began. Unrelated entity edits do not block publication because the workflow compares the narrative snapshot rather than only the entity version.
 - Publishing a revision does not publish an unpublished entity. It only promotes that entity's narrative fields so they are ready when the entity itself is public.
 
