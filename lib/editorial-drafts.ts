@@ -4,19 +4,19 @@ import { db } from "@/lib/db";
 
 export const EDITORIAL_DRAFT_SECTIONS = {
   saint: {
-    overview: ["displayName", "canonicalName", "shortDescription"],
+    overview: ["displayName", "canonicalName"],
     public_fields: ["eraLabel", "birthDateRaw", "samadhiDateRaw", "dateNotes", "seoTitle", "seoDescription"],
-    biography: ["biographyId", "title", "status", "bodyMarkdown"],
+    biography: ["biographyTitle", "shortDescription", "biographyMarkdown", "sourcesJson", "intent"],
     aliases: ["aliases"]
   },
   tradition: {
-    overview: ["name", "alternateNames", "parentTraditionId", "shortDescription", "status"],
+    overview: ["name", "alternateNames", "parentTraditionId", "status"],
     public_fields: ["founderSaintId", "founderDisplayName", "origin", "eraLabel", "focus", "originPlaceId", "originPlaceLabel", "seoTitle", "seoDescription"],
-    long_form: ["foundingAcharyaMarkdown", "historyMarkdown", "keyTeachingsMarkdown"]
+    long_form: ["shortDescription", "foundingAcharyaMarkdown", "historyMarkdown", "keyTeachingsMarkdown", "sourcesJson", "intent"]
   },
   place: {
     overview: ["name", "alternateNames", "placeScope", "parentStateId", "localityIds", "country"],
-    public_fields: ["overviewMarkdown", "notes"]
+    public_fields: ["overviewMarkdown", "notes", "intent"]
   },
   instagram_item: {}
 } as const;

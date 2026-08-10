@@ -274,6 +274,10 @@ model User {
   editConflicts AdminEditConflict[]
   createdEditorialDrafts AdminEditorialDraft[] @relation("EditorialDraftCreator")
   updatedEditorialDrafts AdminEditorialDraft[] @relation("EditorialDraftUpdater")
+  createdEditorialRevisions EditorialRevision[] @relation("EditorialRevisionCreator")
+  updatedEditorialRevisions EditorialRevision[] @relation("EditorialRevisionUpdater")
+  reviewedEditorialRevisions EditorialRevision[] @relation("EditorialRevisionReviewer")
+  publishedEditorialRevisions EditorialRevision[] @relation("EditorialRevisionPublisher")
   adminPresence AdminPresence[]
   accounts      Account[]
   sessions      Session[]
@@ -339,6 +343,34 @@ model AdminEditorialDraft {
   @@unique([entityType, entityId, section])
   @@index([entityType, entityId, updatedAt])
   @@index([updatedById, updatedAt])
+}
+
+model EditorialRevision {
+  id            String          @id @default(cuid())
+  entityType    AdminEntityType
+  entityId      String
+  section       String
+  status        ContentStatus   @default(draft)
+  activeKey     String?         @unique
+  payload       Json
+  basePayload   Json
+  baseVersion   Int
+  createdById   String
+  createdBy     User            @relation("EditorialRevisionCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedById   String
+  updatedBy     User            @relation("EditorialRevisionUpdater", fields: [updatedById], references: [id], onDelete: Restrict)
+  reviewedById  String?
+  reviewedBy    User?           @relation("EditorialRevisionReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  publishedById String?
+  publishedBy   User?           @relation("EditorialRevisionPublisher", fields: [publishedById], references: [id], onDelete: SetNull)
+  submittedAt   DateTime?
+  reviewedAt    DateTime?
+  publishedAt   DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([entityType, entityId, section, updatedAt])
+  @@index([status, submittedAt])
 }
 
 model AdminPresence {

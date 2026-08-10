@@ -10,30 +10,40 @@ import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReadinessAssignmentSection } from "@/components/admin/readiness-assignment-section";
-import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { ReviewFactGrid, ReviewSection, ReviewSubsection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { Prose } from "@/components/content/prose";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { requireAdminUser } from "@/lib/admin-access";
 import { getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { draftString, draftStrings, getEditorialDraftMap } from "@/lib/editorial-drafts";
+import { getEditorialRevisionActiveKey, placeNarrativeRevisionSchema } from "@/lib/editorial-revisions";
 import { getKnownPlaceScope, STATE_PLACE_SLUGS } from "@/lib/place-taxonomy";
 import { hasCapability } from "@/lib/permissions";
-import { mergePlaces, updatePlaceOtherPublicFields, updatePlaceOverview } from "../actions";
+import {
+  mergePlaces,
+  publishPlaceNarrativeRevision,
+  returnPlaceNarrativeRevisionToDraft,
+  savePlaceNarrativeRevision,
+  updatePlaceOtherPublicFields,
+  updatePlaceOverview
+} from "../actions";
 import { PlaceOverviewEditor } from "./place-overview-editor";
 
 type AdminPlaceEditorPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string }>;
+  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string; revisionError?: string; revisionUpdated?: string }>;
 };
 
 export default async function AdminPlaceEditorPage({ params, searchParams }: AdminPlaceEditorPageProps) {
   const { id } = await params;
-  const { assignmentError, assignmentUpdated, conflict } = await searchParams;
+  const { assignmentError, assignmentUpdated, conflict, revisionError, revisionUpdated } = await searchParams;
   const user = await requireAdminUser();
   const saintScope = getAdminSaintCatalogScope(user.roles);
   const canEditStructured = hasCapability(user.roles, "edit_structured_content");
   const canEditLongForm = hasCapability(user.roles, "edit_long_form_content");
+  const canPublish = hasCapability(user.roles, "publish_content");
   const canMerge = hasCapability(user.roles, "manage_sensitive_actions");
   const place = await getPlace(id, saintScope);
 
@@ -44,7 +54,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
   const overviewDraft = editorialDrafts.get("overview");
   const publicFieldsDraft = editorialDrafts.get("public_fields");
   const draftPlaceScope = toPlaceScope(draftString(overviewDraft, "placeScope", effectivePlaceScope));
-  const [statePlaces, localityPlaces, countryRecords, mergeOptions] = await Promise.all([
+  const [statePlaces, localityPlaces, countryRecords, mergeOptions, narrativeRevisionRow] = await Promise.all([
     db.place.findMany({
       where: {
         id: { not: place.id },
@@ -79,8 +89,14 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
       include: {
         _count: { select: { saints: { where: { saint: saintCatalogWhere(saintScope) } }, localities: true } }
       }
+    }),
+    db.editorialRevision.findUnique({
+      where: { activeKey: getEditorialRevisionActiveKey("place", place.id) },
+      include: { updatedBy: { select: { name: true, email: true } } }
     })
   ]);
+  const parsedNarrativeRevision = narrativeRevisionRow ? placeNarrativeRevisionSchema.safeParse(narrativeRevisionRow.payload) : null;
+  const narrativeRevision = parsedNarrativeRevision?.success ? parsedNarrativeRevision.data : null;
   const stateOptions = statePlaces.map((state) => ({
     value: state.id,
     label: state.name,
@@ -153,7 +169,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
               <ReviewField label="Localities" value={`${place.localities.length}`} />
               <ReviewField label="Saint links" value={`${place._count.saints}`} />
               <ReviewField label="Country" value={place.country} />
-              <ReviewField label="Page overview" value={formatMarkdownSummary(place.overviewMarkdown)} />
+              <ReviewField label="Page overview" value={narrativeRevisionRow?.status === "needs_review" ? "Revision needs review" : formatMarkdownSummary(place.overviewMarkdown)} />
             </div>
           </ReviewSection>
 
@@ -247,41 +263,68 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
 
       <CollapsibleReviewCard
         cardId="place-public-fields"
-        defaultOpen={!place.overviewMarkdown}
-        description="Public place narrative and internal editorial notes."
-        eyebrow="Public content"
-        title="Public Fields"
+        defaultOpen
+        description="Draft and review the public place narrative without replacing the overview that visitors currently see."
+        eyebrow="Editorial revision"
+        title="Place Narrative Draft and Review"
       >
-        <ReviewEditToggle
-          editable={canEditLongForm}
-          editLabel="Edit public fields"
-          summary={(
-            <div className="field-grid">
-              <ReviewField label="Page overview" value={formatMarkdownSummary(place.overviewMarkdown)} />
-              <ReviewField label="Internal notes" value={place.notes} />
-            </div>
-          )}
+        {revisionUpdated ? <p className="admin-notice form-status form-status--success">{formatNarrativeRevisionUpdate(revisionUpdated)}</p> : null}
+        {revisionError === "published-content-changed" ? <p className="admin-notice form-status form-status--error">The published overview changed after this revision began. Return it to draft and reconcile the changes before publishing.</p> : null}
+        <div className="editorial-revision-comparison">
+          <ReviewSubsection eyebrow="Live public version" title="Published now" description="This overview remains public until a submitted revision is approved.">
+            <ReviewFactGrid facts={[{ label: "Page overview", value: formatMarkdownSummary(place.overviewMarkdown) }]} />
+          </ReviewSubsection>
+          {narrativeRevisionRow && narrativeRevision ? <ReviewSubsection
+            eyebrow="Working version"
+            title={narrativeRevisionRow.status === "needs_review" ? "Submitted for review" : "Draft revision"}
+            description={`Last updated by ${narrativeRevisionRow.updatedBy.name || narrativeRevisionRow.updatedBy.email}.`}
+          >
+            <div className="review-meta"><StatusBadge label={formatStatus(narrativeRevisionRow.status)} /></div>
+            <ReviewFactGrid facts={[{ label: "Page overview", value: formatMarkdownSummary(narrativeRevision.overviewMarkdown) }]} />
+            {narrativeRevisionRow.status === "needs_review" ? <>
+              {narrativeRevision.overviewMarkdown ? <div className="editorial-revision-preview"><Prose markdown={narrativeRevision.overviewMarkdown} /></div> : null}
+              {canPublish ? <div className="review-actions">
+                <form action={publishPlaceNarrativeRevision}><input name="revisionId" type="hidden" value={narrativeRevisionRow.id} /><input name="placeId" type="hidden" value={place.id} /><button className="admin-form-button" type="submit">Publish revision</button></form>
+                <form action={returnPlaceNarrativeRevisionToDraft}><input name="revisionId" type="hidden" value={narrativeRevisionRow.id} /><input name="placeId" type="hidden" value={place.id} /><button className="admin-form-button admin-form-button--secondary" type="submit">Return to draft</button></form>
+              </div> : null}
+            </> : null}
+          </ReviewSubsection> : null}
+        </div>
+        {canEditLongForm && narrativeRevisionRow?.status !== "needs_review" ? <ReviewEditToggle
+          editable
+          editLabel={narrativeRevisionRow ? "Continue editing draft" : "Start a revision"}
+          summary={<p>Saving or submitting this working version will not change the public place page.</p>}
         >
-          <EditorialDraftForm action={updatePlaceOtherPublicFields} baseVersion={place.version} className="form-stack" entityId={place.id} entityType="place" initialDraft={publicFieldsDraft} section="public_fields">
+          <EditorialDraftForm action={savePlaceNarrativeRevision} baseVersion={place.version} className="form-stack" entityId={place.id} entityType="place" initialDraft={publicFieldsDraft} section="public_fields">
             <input name="placeId" type="hidden" value={place.id} />
             <input name="version" type="hidden" value={place.version} />
             <div className="form-stack__field">
               <label htmlFor="place-overview">Page overview</label>
               <MarkdownEditor
-                defaultValue={draftString(publicFieldsDraft, "overviewMarkdown", place.overviewMarkdown ?? "")}
+                defaultValue={draftString(publicFieldsDraft, "overviewMarkdown", narrativeRevision?.overviewMarkdown ?? place.overviewMarkdown ?? "")}
                 maxLength={20000}
                 name="overviewMarkdown"
                 textareaId="place-overview"
               />
             </div>
-            <label>
-              Internal notes
-              <textarea name="notes" defaultValue={draftString(publicFieldsDraft, "notes", place.notes ?? "")} maxLength={1000} />
-            </label>
             <div className="review-actions">
-              <button className="admin-form-button" type="submit">Save public fields</button>
+              <button className="admin-form-button admin-form-button--secondary" name="intent" value="save_draft" type="submit">Save draft</button>
+              <button className="admin-form-button" name="intent" value="submit_review" type="submit">Submit for review</button>
             </div>
           </EditorialDraftForm>
+        </ReviewEditToggle> : null}
+
+        <ReviewEditToggle
+          editable={canEditStructured}
+          editLabel="Edit internal notes"
+          summary={<ReviewFactGrid facts={[{ label: "Internal notes", value: place.notes }]} />}
+        >
+          <form action={updatePlaceOtherPublicFields} className="form-stack">
+            <input name="placeId" type="hidden" value={place.id} />
+            <input name="version" type="hidden" value={place.version} />
+            <label>Internal notes<textarea name="notes" defaultValue={place.notes ?? ""} maxLength={1000} /></label>
+            <div className="review-actions"><button className="admin-form-button admin-form-button--secondary" type="submit">Save internal notes</button></div>
+          </form>
         </ReviewEditToggle>
       </CollapsibleReviewCard>
     </div>
@@ -309,6 +352,13 @@ async function getPlace(slugOrId: string, saintScope: SaintCatalogScope) {
 
 function formatStatus(status: string) {
   return status.replace(/_/g, " ");
+}
+
+function formatNarrativeRevisionUpdate(value: string) {
+  if (value === "submitted") return "Place narrative submitted for review. The public page is unchanged.";
+  if (value === "published") return "Place narrative revision published.";
+  if (value === "returned") return "Place narrative revision returned to draft.";
+  return "Place narrative draft saved. The public page is unchanged.";
 }
 
 function toPlaceScope(value: string): "locality" | "state" | "country" {

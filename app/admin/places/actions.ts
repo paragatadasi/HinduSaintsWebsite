@@ -18,6 +18,13 @@ import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
 import { expectedVersion, guardedPlaceTransaction } from "@/lib/admin-conflicts";
+import {
+  editorialSnapshotsMatch,
+  EditorialRevisionConflictError,
+  getEditorialRevisionActiveKey,
+  placeNarrativeRevisionSchema,
+  type PlaceNarrativeRevision
+} from "@/lib/editorial-revisions";
 
 const placeScopeSchema = z.enum(["locality", "state", "country"]);
 const LEGACY_PARENT_STATE_RELATIONSHIP_NOTE = "Mirrored from legacy parentStateId.";
@@ -56,6 +63,17 @@ const placeOtherPublicFieldsSchema = placeEditorSchema.pick({
   placeId: true,
   overviewMarkdown: true,
   notes: true
+});
+
+const placeNarrativeRevisionActionSchema = z.object({
+  placeId: z.string().cuid(),
+  overviewMarkdown: z.string().trim().max(20_000).optional(),
+  intent: z.enum(["save_draft", "submit_review"])
+});
+
+const placeRevisionIdSchema = z.object({
+  revisionId: z.string().cuid(),
+  placeId: z.string().cuid()
 });
 
 const mergePlacesSchema = z.object({
@@ -217,27 +235,94 @@ export async function updatePlaceOverview(formData: FormData) {
 }
 
 export async function updatePlaceOtherPublicFields(formData: FormData) {
-  await requireAdminSession("edit_long_form_content");
+  await requireAdminSession("edit_structured_content");
 
   const parsed = placeOtherPublicFieldsSchema.parse({
     placeId: formData.get("placeId"),
-    overviewMarkdown: emptyToUndefined(formData.get("overviewMarkdown")),
     notes: emptyToUndefined(formData.get("notes"))
   });
   const attempted = {
-      overviewMarkdown: parsed.overviewMarkdown ?? null,
       notes: parsed.notes ?? null
   };
   const current = await db.place.findUnique({ where: { id: parsed.placeId }, select: { slug: true } });
   if (!current) redirect("/admin/places");
   const place = await guardedPlaceTransaction(parsed.placeId, expectedVersion(formData), attempted, `/admin/places/${current.slug}`, async (tx) => {
     const updated = await tx.place.update({ where: { id: parsed.placeId }, data: attempted, select: { slug: true } });
-    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "place", entityId: parsed.placeId, section: "public_fields" } });
     return updated;
   });
 
   revalidatePlacePaths(place.slug);
   redirect(`/admin/places/${place.slug}`);
+}
+
+export async function savePlaceNarrativeRevision(formData: FormData) {
+  const user = await requireAdminSession("edit_long_form_content");
+  const fields = placeNarrativeRevisionActionSchema.parse({
+    placeId: formData.get("placeId"),
+    overviewMarkdown: emptyToUndefined(formData.get("overviewMarkdown")),
+    intent: formData.get("intent")
+  });
+  const payload = placeNarrativeRevisionSchema.parse(fields);
+  const current = await getPlaceNarrativeSnapshot(db, fields.placeId);
+  if (!current) redirect("/admin/places");
+  const activeKey = getEditorialRevisionActiveKey("place", fields.placeId);
+  await db.$transaction(async (tx) => {
+    const active = await tx.editorialRevision.findUnique({ where: { activeKey } });
+    if (active?.status === "needs_review") throw new Error("This revision is awaiting review and cannot be edited.");
+    const status = fields.intent === "submit_review" ? "needs_review" : "draft";
+    const workflowData = { payload, status, updatedById: user.id, submittedAt: status === "needs_review" ? new Date() : null, reviewedAt: null, reviewedById: null } as const;
+    if (active) await tx.editorialRevision.update({ where: { id: active.id }, data: workflowData });
+    else await tx.editorialRevision.create({
+      data: {
+        activeKey, entityType: "place", entityId: fields.placeId, section: "narrative", payload, basePayload: current.payload,
+        baseVersion: current.version, status, submittedAt: status === "needs_review" ? new Date() : null, createdById: user.id, updatedById: user.id
+      }
+    });
+    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "place", entityId: fields.placeId, section: "public_fields" } });
+  });
+  revalidatePlacePaths(current.slug);
+  redirect(`/admin/places/${current.slug}?revisionUpdated=${fields.intent === "submit_review" ? "submitted" : "saved"}`);
+}
+
+export async function returnPlaceNarrativeRevisionToDraft(formData: FormData) {
+  const user = await requireAdminSession("publish_content");
+  const parsed = placeRevisionIdSchema.parse({ revisionId: formData.get("revisionId"), placeId: formData.get("placeId") });
+  const revision = await db.editorialRevision.findFirst({ where: { id: parsed.revisionId, entityType: "place", entityId: parsed.placeId, section: "narrative", status: "needs_review" } });
+  if (!revision) throw new Error("The submitted place revision was not found.");
+  await db.editorialRevision.update({ where: { id: revision.id }, data: { status: "draft", submittedAt: null, reviewedAt: new Date(), reviewedById: user.id, updatedById: user.id } });
+  const place = await db.place.findUnique({ where: { id: parsed.placeId }, select: { slug: true } });
+  if (!place) redirect("/admin/places");
+  revalidatePlacePaths(place.slug);
+  redirect(`/admin/places/${place.slug}?revisionUpdated=returned`);
+}
+
+export async function publishPlaceNarrativeRevision(formData: FormData) {
+  const user = await requireAdminSession("publish_content");
+  const parsed = placeRevisionIdSchema.parse({ revisionId: formData.get("revisionId"), placeId: formData.get("placeId") });
+  const revision = await db.editorialRevision.findFirst({ where: { id: parsed.revisionId, entityType: "place", entityId: parsed.placeId, section: "narrative", status: "needs_review" } });
+  if (!revision) throw new Error("The submitted place revision was not found.");
+  const payload = placeNarrativeRevisionSchema.parse(revision.payload);
+  const current = await getPlaceNarrativeSnapshot(db, parsed.placeId);
+  if (!current) redirect("/admin/places");
+  if (!editorialSnapshotsMatch(revision.basePayload, current.payload)) redirect(`/admin/places/${current.slug}?revisionError=published-content-changed`);
+  try {
+    await db.$transaction(async (tx) => {
+      const latestSnapshot = await getPlaceNarrativeSnapshot(tx, parsed.placeId);
+      if (!latestSnapshot || !editorialSnapshotsMatch(revision.basePayload, latestSnapshot.payload)) {
+        throw new EditorialRevisionConflictError();
+      }
+      await tx.place.update({ where: { id: parsed.placeId }, data: { overviewMarkdown: payload.overviewMarkdown ?? null, version: { increment: 1 } } });
+      await tx.editorialRevision.update({
+        where: { id: revision.id },
+        data: { activeKey: null, status: "published", reviewedAt: new Date(), reviewedById: user.id, publishedAt: new Date(), publishedById: user.id, updatedById: user.id }
+      });
+    });
+  } catch (error) {
+    if (error instanceof EditorialRevisionConflictError) redirect(`/admin/places/${current.slug}?revisionError=published-content-changed`);
+    throw error;
+  }
+  revalidatePlacePaths(current.slug);
+  redirect(`/admin/places/${current.slug}?revisionUpdated=published`);
 }
 
 export async function mergePlaces(formData: FormData) {
@@ -297,6 +382,10 @@ export async function mergePlaces(formData: FormData) {
       data: { parentStateId: target.id }
     });
     await movePlaceRelationships(tx, source, target.id);
+    await tx.editorialRevision.updateMany({
+      where: { entityType: "place", entityId: source.id, status: { in: ["draft", "needs_review"] } },
+      data: { activeKey: null, status: "archived" }
+    });
     await tx.place.delete({ where: { id: source.id } });
   });
 
@@ -306,11 +395,19 @@ export async function mergePlaces(formData: FormData) {
 }
 
 async function requireAdminSession(capability: Capability = "edit_structured_content") {
-  await requireCapability(capability);
+  const user = await requireCapability(capability);
   const session = await auth();
   if (!session?.user?.email) {
     redirect("/admin");
   }
+  return user;
+}
+
+async function getPlaceNarrativeSnapshot(client: Prisma.TransactionClient | typeof db, placeId: string) {
+  const place = await client.place.findUnique({ where: { id: placeId }, select: { slug: true, version: true, overviewMarkdown: true } });
+  if (!place) return null;
+  const payload: PlaceNarrativeRevision = { overviewMarkdown: place.overviewMarkdown ?? undefined };
+  return { slug: place.slug, version: place.version, payload };
 }
 
 function emptyToUndefined(value: FormDataEntryValue | null) {

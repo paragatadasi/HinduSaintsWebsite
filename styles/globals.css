@@ -4560,6 +4560,40 @@ html[data-route-entering="true"] body > main {
   justify-content: flex-end;
 }
 
+.editorial-revision-comparison {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--width-editorial-revision-card-min)), 1fr));
+}
+
+.editorial-revision-preview {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  max-height: var(--height-editorial-revision-preview);
+  overflow: auto;
+  padding: var(--space-4);
+}
+
+.revision-sources-editor {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.revision-sources-editor__heading {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: space-between;
+}
+
+.revision-sources-editor__heading p {
+  color: var(--color-text-muted);
+  margin: var(--space-1) 0 0;
+  max-width: var(--width-prose);
+}
+
 .admin-auth {
   display: grid;
   gap: var(--space-4);

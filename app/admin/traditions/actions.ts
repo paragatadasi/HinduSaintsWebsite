@@ -12,6 +12,15 @@ import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { toSlug } from "@/lib/slugs";
 import { expectedVersion, guardedTraditionTransaction, guardedTraditionUpdate } from "@/lib/admin-conflicts";
 import { traditionPublicationCompatibilityData } from "@/lib/admin-workflow";
+import {
+  editorialSnapshotsMatch,
+  EditorialRevisionConflictError,
+  getEditorialRevisionActiveKey,
+  parseSourcesJson,
+  resolvePublishedRevisionSource,
+  traditionNarrativeRevisionSchema,
+  type TraditionNarrativeRevision
+} from "@/lib/editorial-revisions";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 
@@ -40,8 +49,7 @@ const traditionOverviewSchema = traditionEditorSchema.pick({
   traditionId: true,
   name: true,
   alternateNames: true,
-  parentTraditionId: true,
-  shortDescription: true
+  parentTraditionId: true
 });
 
 const traditionOtherPublicFieldsSchema = traditionEditorSchema.pick({
@@ -62,6 +70,16 @@ const traditionLongFormSchema = traditionEditorSchema.pick({
   historyMarkdown: true,
   foundingAcharyaMarkdown: true,
   keyTeachingsMarkdown: true
+});
+
+const traditionNarrativeRevisionActionSchema = traditionLongFormSchema.extend({
+  shortDescription: z.string().trim().max(500).optional(),
+  intent: z.enum(["save_draft", "submit_review"])
+});
+
+const traditionRevisionIdSchema = z.object({
+  revisionId: z.string().cuid(),
+  traditionId: z.string().cuid()
 });
 
 const mergeTraditionsSchema = z.object({
@@ -203,8 +221,7 @@ export async function updateTraditionOverview(formData: FormData) {
     traditionId: formData.get("traditionId"),
     name: formData.get("name"),
     alternateNames: parseList(formData.get("alternateNames")),
-    parentTraditionId: emptyToUndefined(formData.get("parentTraditionId")),
-    shortDescription: emptyToUndefined(formData.get("shortDescription"))
+    parentTraditionId: emptyToUndefined(formData.get("parentTraditionId"))
   });
   const existing = await db.tradition.findUnique({
     where: { id: parsed.traditionId },
@@ -218,8 +235,7 @@ export async function updateTraditionOverview(formData: FormData) {
       name: parsed.name,
       slug,
       alternateNames: parsed.alternateNames,
-      parentTraditionId: parsed.parentTraditionId === parsed.traditionId ? null : parsed.parentTraditionId ?? null,
-      shortDescription: parsed.shortDescription ?? null
+      parentTraditionId: parsed.parentTraditionId === parsed.traditionId ? null : parsed.parentTraditionId ?? null
   };
   const tradition = await guardedTraditionTransaction(parsed.traditionId, expectedVersion(formData), attempted, `/admin/traditions/${existing.slug}/summary`, async (tx) => {
     const updated = await tx.tradition.update({ where: { id: parsed.traditionId }, data: attempted, select: { slug: true } });
@@ -296,6 +312,113 @@ export async function updateTraditionLongForm(formData: FormData) {
 
   revalidateTraditionPaths(tradition.slug);
   redirect(`/admin/traditions/${tradition.slug}/content`);
+}
+
+export async function saveTraditionNarrativeRevision(formData: FormData) {
+  const user = await requireAdminSession("edit_long_form_content");
+  const fields = traditionNarrativeRevisionActionSchema.parse({
+    traditionId: formData.get("traditionId"),
+    shortDescription: emptyToUndefined(formData.get("shortDescription")),
+    foundingAcharyaMarkdown: emptyToUndefined(formData.get("foundingAcharyaMarkdown")),
+    historyMarkdown: emptyToUndefined(formData.get("historyMarkdown")),
+    keyTeachingsMarkdown: emptyToUndefined(formData.get("keyTeachingsMarkdown")),
+    intent: formData.get("intent")
+  });
+  const payload = traditionNarrativeRevisionSchema.parse({ ...fields, sources: parseSourcesJson(formData.get("sourcesJson")) });
+  const current = await getTraditionNarrativeSnapshot(db, fields.traditionId);
+  if (!current) redirect("/admin/traditions");
+  const activeKey = getEditorialRevisionActiveKey("tradition", fields.traditionId);
+
+  await db.$transaction(async (tx) => {
+    const active = await tx.editorialRevision.findUnique({ where: { activeKey } });
+    if (active?.status === "needs_review") throw new Error("This revision is awaiting review and cannot be edited.");
+    const status = fields.intent === "submit_review" ? "needs_review" : "draft";
+    const workflowData = {
+      payload,
+      status,
+      updatedById: user.id,
+      submittedAt: status === "needs_review" ? new Date() : null,
+      reviewedAt: null,
+      reviewedById: null
+    } as const;
+    if (active) await tx.editorialRevision.update({ where: { id: active.id }, data: workflowData });
+    else await tx.editorialRevision.create({
+      data: {
+        activeKey,
+        entityType: "tradition",
+        entityId: fields.traditionId,
+        section: "narrative",
+        payload,
+        basePayload: current.payload,
+        baseVersion: current.version,
+        status,
+        submittedAt: status === "needs_review" ? new Date() : null,
+        createdById: user.id,
+        updatedById: user.id
+      }
+    });
+    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "tradition", entityId: fields.traditionId, section: "long_form" } });
+  });
+
+  revalidateTraditionPaths(current.slug);
+  redirect(`/admin/traditions/${current.slug}/content?revisionUpdated=${fields.intent === "submit_review" ? "submitted" : "saved"}`);
+}
+
+export async function returnTraditionNarrativeRevisionToDraft(formData: FormData) {
+  const user = await requireAdminSession("publish_content");
+  const parsed = traditionRevisionIdSchema.parse({ revisionId: formData.get("revisionId"), traditionId: formData.get("traditionId") });
+  const revision = await db.editorialRevision.findFirst({ where: { id: parsed.revisionId, entityType: "tradition", entityId: parsed.traditionId, section: "narrative", status: "needs_review" } });
+  if (!revision) throw new Error("The submitted tradition revision was not found.");
+  await db.editorialRevision.update({ where: { id: revision.id }, data: { status: "draft", submittedAt: null, reviewedAt: new Date(), reviewedById: user.id, updatedById: user.id } });
+  const tradition = await getTraditionSlug(parsed.traditionId);
+  if (!tradition) redirect("/admin/traditions");
+  revalidateTraditionPaths(tradition.slug);
+  redirect(`/admin/traditions/${tradition.slug}/content?revisionUpdated=returned`);
+}
+
+export async function publishTraditionNarrativeRevision(formData: FormData) {
+  const user = await requireAdminSession("publish_content");
+  const parsed = traditionRevisionIdSchema.parse({ revisionId: formData.get("revisionId"), traditionId: formData.get("traditionId") });
+  const revision = await db.editorialRevision.findFirst({ where: { id: parsed.revisionId, entityType: "tradition", entityId: parsed.traditionId, section: "narrative", status: "needs_review" } });
+  if (!revision) throw new Error("The submitted tradition revision was not found.");
+  const payload = traditionNarrativeRevisionSchema.parse(revision.payload);
+  const current = await getTraditionNarrativeSnapshot(db, parsed.traditionId);
+  if (!current) redirect("/admin/traditions");
+  if (!editorialSnapshotsMatch(revision.basePayload, current.payload)) redirect(`/admin/traditions/${current.slug}/content?revisionError=published-content-changed`);
+
+  try {
+    await db.$transaction(async (tx) => {
+      const latestSnapshot = await getTraditionNarrativeSnapshot(tx, parsed.traditionId);
+      if (!latestSnapshot || !editorialSnapshotsMatch(revision.basePayload, latestSnapshot.payload)) {
+        throw new EditorialRevisionConflictError();
+      }
+      await tx.tradition.update({
+        where: { id: parsed.traditionId },
+        data: {
+          shortDescription: payload.shortDescription ?? null,
+          foundingAcharyaMarkdown: payload.foundingAcharyaMarkdown ?? null,
+          historyMarkdown: payload.historyMarkdown ?? null,
+          longIntroductionMarkdown: payload.historyMarkdown ?? null,
+          keyTeachingsMarkdown: payload.keyTeachingsMarkdown ?? null,
+          version: { increment: 1 }
+        }
+      });
+      await tx.contentSource.deleteMany({ where: { entityType: "Tradition", entityId: parsed.traditionId } });
+      for (const [sortOrder, sourceDraft] of payload.sources.entries()) {
+        const sourceId = await resolvePublishedRevisionSource(tx, sourceDraft);
+        await tx.contentSource.create({ data: { entityType: "Tradition", entityId: parsed.traditionId, sourceId, notes: sourceDraft.note ?? null, sortOrder } });
+      }
+      await tx.editorialRevision.update({
+        where: { id: revision.id },
+        data: { activeKey: null, status: "published", reviewedAt: new Date(), reviewedById: user.id, publishedAt: new Date(), publishedById: user.id, updatedById: user.id }
+      });
+    });
+  } catch (error) {
+    if (error instanceof EditorialRevisionConflictError) redirect(`/admin/traditions/${current.slug}/content?revisionError=published-content-changed`);
+    throw error;
+  }
+  revalidateTraditionPaths(current.slug);
+  redirect(`/admin/traditions/${current.slug}/content?revisionUpdated=published`);
 }
 
 export async function updateTraditionLineage(formData: FormData) {
@@ -511,7 +634,7 @@ export async function updateTraditionReviewStatus(formData: FormData) {
 }
 
 export async function mergeTraditions(formData: FormData) {
-  await assertCapability("manage_sensitive_actions");
+  const user = await assertCapability("manage_sensitive_actions");
   await requireAdminSession();
 
   const parsed = mergeTraditionsSchema.parse({
@@ -607,6 +730,10 @@ export async function mergeTraditions(formData: FormData) {
       });
     }
 
+    await tx.editorialRevision.updateMany({
+      where: { entityType: "tradition", entityId: source.id, status: { in: ["draft", "needs_review"] } },
+      data: { activeKey: null, status: "archived", updatedById: user.id }
+    });
     await tx.tradition.delete({ where: { id: source.id } });
   });
 
@@ -811,6 +938,32 @@ async function requireAdminSession(capability: Capability = "edit_structured_con
     redirect("/admin");
   }
   return user;
+}
+
+async function getTraditionNarrativeSnapshot(client: Prisma.TransactionClient | typeof db, traditionId: string) {
+  const tradition = await client.tradition.findUnique({
+    where: { id: traditionId },
+    select: { slug: true, version: true, shortDescription: true, foundingAcharyaMarkdown: true, historyMarkdown: true, longIntroductionMarkdown: true, keyTeachingsMarkdown: true }
+  });
+  if (!tradition) return null;
+  const links = await client.contentSource.findMany({ where: { entityType: "Tradition", entityId: traditionId }, include: { source: true }, orderBy: { sortOrder: "asc" } });
+  const payload: TraditionNarrativeRevision = {
+    shortDescription: tradition.shortDescription ?? undefined,
+    foundingAcharyaMarkdown: tradition.foundingAcharyaMarkdown ?? undefined,
+    historyMarkdown: tradition.historyMarkdown ?? tradition.longIntroductionMarkdown ?? undefined,
+    keyTeachingsMarkdown: tradition.keyTeachingsMarkdown ?? undefined,
+    sources: links.map(({ source, notes }) => ({
+      sourceId: source.id,
+      title: source.title,
+      sourceType: source.sourceType,
+      author: source.author ?? undefined,
+      publisher: source.publisher ?? undefined,
+      publicationYear: source.publicationYear ?? undefined,
+      url: source.url ?? undefined,
+      note: notes ?? source.notes ?? undefined
+    }))
+  };
+  return { slug: tradition.slug, version: tradition.version, payload };
 }
 
 function emptyToUndefined(value: FormDataEntryValue | null) {

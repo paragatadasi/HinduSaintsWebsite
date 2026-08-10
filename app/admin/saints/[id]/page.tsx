@@ -12,6 +12,8 @@ import { AdminPresence } from "@/components/admin/admin-presence";
 import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
 import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
+import { RevisionSourcesEditor } from "@/components/admin/revision-sources-editor";
+import { Prose } from "@/components/content/prose";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { db } from "@/lib/db";
@@ -19,6 +21,7 @@ import { requireSaintCatalogUser } from "@/lib/admin-access";
 import { canManageSaintTeamVisibility, getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { hasCapability } from "@/lib/permissions";
 import { draftString, getEditorialDraftMap } from "@/lib/editorial-drafts";
+import { getEditorialRevisionActiveKey, saintNarrativeRevisionSchema, type SourceRevision } from "@/lib/editorial-revisions";
 import { getInstagramLinkProps } from "@/lib/external-links";
 import { formatHistoricalYear, parseImportedDate } from "@/lib/import-dates";
 import { getInstagramImageUrls } from "@/lib/instagram";
@@ -28,7 +31,6 @@ import { formatRelationshipType, getReciprocalRelationshipType, relationshipType
 import {
   createSaintRelationship,
   deleteSaintRelationship,
-  removeSaintSource,
   reviewSaintInstagramClaim,
   updateSaintAliases,
   updateSaintOtherPublicFields,
@@ -36,8 +38,9 @@ import {
   updateSaintRelationship,
   updateSaintReviewStatus,
   updateSaintTeamVisibility,
-  upsertSaintBiography,
-  upsertSaintSource
+  publishSaintNarrativeRevision,
+  returnSaintNarrativeRevisionToDraft,
+  saveSaintNarrativeRevision
 } from "../actions";
 import { updateInstagramItemSaintStatus } from "../../instagram/actions";
 import { flagSaintDuplicate } from "../../source-data/reconciliation/duplicate-actions";
@@ -50,7 +53,7 @@ import { SaintTraditionEditor } from "./saint-tradition-editor";
 
 export type AdminSaintEditorPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string; duplicateError?: string; duplicateUpdated?: string }>;
+  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string; duplicateError?: string; duplicateUpdated?: string; revisionError?: string; revisionUpdated?: string }>;
 };
 
 export type SaintEditorTab = "readiness" | "summary" | "biography" | "media";
@@ -65,7 +68,7 @@ export async function AdminSaintEditorPage({
   activeTab
 }: AdminSaintEditorPageProps & { activeTab: SaintEditorTab }) {
   const { id } = await params;
-  const { assignmentError, assignmentUpdated, conflict, duplicateError, duplicateUpdated } = await searchParams;
+  const { assignmentError, assignmentUpdated, conflict, duplicateError, duplicateUpdated, revisionError, revisionUpdated } = await searchParams;
   const user = await requireSaintCatalogUser();
   const saintScope = getAdminSaintCatalogScope(user.roles);
   const canReviewInstagram = hasCapability(user.roles, "view_instagram_review");
@@ -94,7 +97,7 @@ export async function AdminSaintEditorPage({
   const biographyDraft = editorialDrafts.get("biography");
   const aliasesDraft = editorialDrafts.get("aliases");
 
-  const [externalRecord, allTraditions, allPlaces, allSaints, sourceLinks, duplicateCandidates] = await Promise.all([
+  const [externalRecord, allTraditions, allPlaces, allSaints, sourceLinks, duplicateCandidates, narrativeRevisionRow] = await Promise.all([
     db.externalRecord.findFirst({
       where: { sourceType: "airtable", entityType: "Saint", entityId: saint.id },
       select: { externalId: true, lastSeenAt: true }
@@ -118,14 +121,35 @@ export async function AdminSaintEditorPage({
         OR: [{ entityId: saint.id }, { candidateEntityId: saint.id }]
       },
       select: { id: true }
-    }) : Promise.resolve([])
+    }) : Promise.resolve([]),
+    db.editorialRevision.findUnique({
+      where: { activeKey: getEditorialRevisionActiveKey("saint", saint.id) },
+      include: {
+        createdBy: { select: { name: true, email: true } },
+        updatedBy: { select: { name: true, email: true } }
+      }
+    })
   ]);
   const instagramImages = canReviewInstagram ? await getInstagramImagesForSaint(saint) : [];
   const visibleGalleryImages = saint.galleryImages.filter((image) => image.publicVisible !== false);
   const hiddenGalleryImages = saint.galleryImages.filter((image) => image.publicVisible === false);
   const publicImages = getPublicSaintImages(saint.primaryImage, visibleGalleryImages);
   const biographyImages = getBiographyEditorImages(saint, visibleGalleryImages);
-  const primaryBiography = saint.biographies.find((biography) => biography.status === "published") ?? saint.biographies[0];
+  const primaryBiography = saint.biographies.find((biography) => biography.status === "published");
+  const legacyBiographyDraft = saint.biographies.find((biography) => biography.status === "draft" || biography.status === "needs_review");
+  const parsedNarrativeRevision = narrativeRevisionRow ? saintNarrativeRevisionSchema.safeParse(narrativeRevisionRow.payload) : null;
+  const narrativeRevision = parsedNarrativeRevision?.success ? parsedNarrativeRevision.data : null;
+  const publishedSources = sourceLinks.map(({ source, notes }) => ({
+    sourceId: source.id,
+    title: source.title,
+    sourceType: source.sourceType,
+    author: source.author ?? undefined,
+    publisher: source.publisher ?? undefined,
+    publicationYear: source.publicationYear ?? undefined,
+    url: source.url ?? undefined,
+    note: notes ?? source.notes ?? undefined
+  } satisfies SourceRevision));
+  const draftSources = parseDraftSources(draftString(biographyDraft, "sourcesJson"), narrativeRevision?.sources ?? publishedSources);
   const biographyTextareaId = "biography-body-markdown";
   const instagramBiographyImportPosts = canReviewInstagram ? getInstagramBiographyImportPosts(saint) : [];
   const selectedTraditionIds = saint.traditions.map((item) => item.traditionId);
@@ -199,7 +223,7 @@ export async function AdminSaintEditorPage({
             <ReviewField label="Current status" value={formatStatus(saint.status)} />
             <ReviewField label="Workflow" value={formatStatus(saint.workflowStatus)} />
             <ReviewField label="Team access" value={formatStatus(saint.teamVisibility)} />
-            <ReviewField label="Biography" value={primaryBiography ? formatStatus(primaryBiography.status) : "Not started"} />
+            <ReviewField label="Biography" value={narrativeRevisionRow?.status === "needs_review" ? "Revision needs review" : primaryBiography ? "Published" : legacyBiographyDraft ? "Legacy draft" : "Not started"} />
             <ReviewField label="Traditions" value={`${saint.traditions.length}`} />
             <ReviewField label="Places" value={`${saint.places.length}`} />
             <ReviewField label="Public images" value={`${visibleGalleryImages.length + (saint.primaryImage ? 1 : 0)}`} />
@@ -315,14 +339,6 @@ export async function AdminSaintEditorPage({
                 <input name="canonicalName" defaultValue={draftString(overviewDraft, "canonicalName", saint.canonicalName)} required maxLength={200} />
               </label>
             </div>
-            <label>
-              Short description
-              <SoftLimitTextarea
-                name="shortDescription"
-                defaultValue={draftString(overviewDraft, "shortDescription", saint.shortDescription ?? "")}
-                softLimit={500}
-              />
-            </label>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save overview</button>
             </div>
@@ -680,45 +696,90 @@ export async function AdminSaintEditorPage({
 
       {activeTab === "biography" ? <CollapsibleReviewCard
         cardId="saint-biography"
-        description="Long-form narrative and imported text references."
-        eyebrow="Long-form content"
-        title="Biography"
+        defaultOpen
+        description="Develop a private revision, submit it for review, and publish the description, biography, and citations together."
+        eyebrow="Editorial revision"
+        title="Narrative Draft and Review"
       >
-        <ReviewEditToggle
-          editable={canEditLongForm}
-          editLabel="Edit biography"
-          summary={(
-            <div className="field-grid saint-review__summary-grid">
-              <ReviewField label="Title" value={primaryBiography?.title} />
-              <ReviewField label="Status" value={primaryBiography ? formatStatus(primaryBiography.status) : "Not started"} />
-              <ReviewField label="Body" value={primaryBiography?.bodyMarkdown ? `${primaryBiography.bodyMarkdown.length.toLocaleString()} characters` : undefined} />
+        {revisionUpdated ? <p className="admin-notice form-status form-status--success">{formatRevisionUpdate(revisionUpdated)}</p> : null}
+        {revisionError === "published-content-changed" ? <p className="admin-notice form-status form-status--error">The published narrative changed after this draft began. Return it to draft and reconcile it with the current public version before publishing.</p> : null}
+
+        <div className="editorial-revision-comparison">
+          <ReviewSubsection eyebrow="Live public version" title="Published now" description="This content remains unchanged while a revision is drafted or reviewed.">
+            <ReviewFactGrid facts={[
+              { label: "Short description", value: saint.shortDescription },
+              { label: "Biography", value: primaryBiography?.title },
+              { label: "Biography length", value: primaryBiography?.bodyMarkdown ? `${primaryBiography.bodyMarkdown.length.toLocaleString()} characters` : undefined },
+              { label: "Sources", value: `${sourceLinks.length}` }
+            ]} />
+          </ReviewSubsection>
+
+          {narrativeRevisionRow && narrativeRevision ? <ReviewSubsection
+            eyebrow="Working version"
+            title={narrativeRevisionRow.status === "needs_review" ? "Submitted for review" : "Draft revision"}
+            description={`Last updated by ${narrativeRevisionRow.updatedBy.name || narrativeRevisionRow.updatedBy.email}.`}
+          >
+            <div className="review-meta">
+              <StatusBadge label={formatStatus(narrativeRevisionRow.status)} />
+              <span>{narrativeRevision.sources.length} source{narrativeRevision.sources.length === 1 ? "" : "s"}</span>
             </div>
-          )}
+            <ReviewFactGrid facts={[
+              { label: "Short description", value: narrativeRevision.shortDescription },
+              { label: "Biography", value: narrativeRevision.biographyTitle },
+              { label: "Biography length", value: `${narrativeRevision.biographyMarkdown.length.toLocaleString()} characters` }
+            ]} />
+            {narrativeRevisionRow.status === "needs_review" ? <>
+              <div className="editorial-revision-preview"><Prose markdown={narrativeRevision.biographyMarkdown} /></div>
+              {narrativeRevision.sources.length > 0 ? <div className="review-list">
+                {narrativeRevision.sources.map((source, index) => <div className="review-row" key={`${source.sourceId ?? source.title}-${index}`}>
+                  <ReviewFactGrid facts={[
+                    { label: "Source", value: source.title },
+                    { label: "Type", value: formatStatus(source.sourceType) },
+                    { label: "Author", value: source.author },
+                    { label: "Note", value: source.note }
+                  ]} />
+                </div>)}
+              </div> : <p className="empty-note">No sources are attached to this revision.</p>}
+              {canPublish ? <div className="review-actions">
+                <form action={publishSaintNarrativeRevision}>
+                  <input name="revisionId" type="hidden" value={narrativeRevisionRow.id} />
+                  <input name="saintId" type="hidden" value={saint.id} />
+                  <button className="admin-form-button" type="submit">Publish revision</button>
+                </form>
+                <form action={returnSaintNarrativeRevisionToDraft}>
+                  <input name="revisionId" type="hidden" value={narrativeRevisionRow.id} />
+                  <input name="saintId" type="hidden" value={saint.id} />
+                  <button className="admin-form-button admin-form-button--secondary" type="submit">Return to draft</button>
+                </form>
+              </div> : null}
+            </> : null}
+          </ReviewSubsection> : null}
+        </div>
+
+        {canEditLongForm && narrativeRevisionRow?.status !== "needs_review" ? <ReviewEditToggle
+          editable
+          editLabel={narrativeRevisionRow ? "Continue editing draft" : "Start a revision"}
+          summary={<p>{narrativeRevisionRow ? "Continue the private working version. Saving it will not change the public page." : legacyBiographyDraft ? "Continue the existing biography draft and convert it into the new review workflow." : "Begin from the current published narrative and source list."}</p>}
         >
-          <EditorialDraftForm action={upsertSaintBiography} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={biographyDraft} section="biography">
+          <EditorialDraftForm action={saveSaintNarrativeRevision} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={biographyDraft} section="biography">
               <input name="saintId" type="hidden" value={saint.id} />
               <input name="version" type="hidden" value={saint.version} />
-              {primaryBiography ? <input name="biographyId" type="hidden" value={primaryBiography.id} /> : null}
               <label>
-                Title
-                <input name="title" defaultValue={draftString(biographyDraft, "title", primaryBiography?.title ?? "The Life of a Saint")} required maxLength={200} />
+                Short description
+                <SoftLimitTextarea name="shortDescription" defaultValue={draftString(biographyDraft, "shortDescription", narrativeRevision?.shortDescription ?? saint.shortDescription ?? "")} softLimit={500} />
               </label>
               <label>
-                Status
-                <select name="status" defaultValue={draftString(biographyDraft, "status", primaryBiography?.status ?? "draft")}>
-                  {contentStatuses.map((status) => (
-                    <option key={status} value={status}>{formatStatus(status)}</option>
-                  ))}
-                </select>
+                Biography title
+                <input name="biographyTitle" defaultValue={draftString(biographyDraft, "biographyTitle", narrativeRevision?.biographyTitle ?? legacyBiographyDraft?.title ?? primaryBiography?.title ?? "The Life of a Saint")} required maxLength={200} />
               </label>
               <div className="form-stack__field">
                 <label htmlFor="biography-body-markdown">Body Markdown</label>
                 <MarkdownEditor
-                  defaultValue={draftString(biographyDraft, "bodyMarkdown", primaryBiography?.bodyMarkdown ?? "")}
+                  defaultValue={draftString(biographyDraft, "biographyMarkdown", narrativeRevision?.biographyMarkdown ?? legacyBiographyDraft?.bodyMarkdown ?? primaryBiography?.bodyMarkdown ?? "")}
                   enableDefinitions
                   images={biographyImages}
                   maxLength={20000}
-                  name="bodyMarkdown"
+                  name="biographyMarkdown"
                   required
                   textareaId={biographyTextareaId}
                 />
@@ -744,11 +805,14 @@ export async function AdminSaintEditorPage({
                 <h4>Instagram biography references</h4>
                 <InstagramBiographyReferences saint={saint} />
               </div> : null}
+              <RevisionSourcesEditor initialSources={draftSources} />
               <div className="review-actions">
-                <button className="admin-form-button" type="submit">Save biography</button>
+                <button className="admin-form-button admin-form-button--secondary" name="intent" value="save_draft" type="submit">Save draft</button>
+                <button className="admin-form-button" name="intent" value="submit_review" type="submit">Submit for review</button>
               </div>
           </EditorialDraftForm>
         </ReviewEditToggle>
+        : null}
       </CollapsibleReviewCard> : null}
 
       {activeTab === "media" ? <CollapsibleReviewCard
@@ -820,121 +884,13 @@ export async function AdminSaintEditorPage({
 
       {activeTab === "biography" ? <CollapsibleReviewCard
         cardId="saint-sources"
-        description="Reviewed sources and public further reading."
+        description="The source list currently shown publicly. Changes are made inside a narrative revision so citations and prose are reviewed together."
         eyebrow="References"
-        title="Sources and Further Reading"
+        title="Published Sources and Further Reading"
       >
-        <ReviewEditToggle
-          editable={canEditStructured}
-          editLabel="Edit sources"
-          summary={sourceLinks.length > 0 ? (
-            <div className="field-grid">
-              {sourceLinks.map((link) => <ReviewField key={link.id} label={formatStatus(link.source.sourceType)} value={link.source.title} />)}
-            </div>
-          ) : <p>No reviewed sources have been attached.</p>}
-        >
-            {sourceLinks.length > 0 ? (
-              <div className="review-list">
-                {sourceLinks.map((link) => (
-                  <form action={upsertSaintSource} className="form-stack review-row" key={link.id}>
-                    <input name="saintId" type="hidden" value={saint.id} />
-                    <input name="contentSourceId" type="hidden" value={link.id} />
-                    <input name="sourceId" type="hidden" value={link.sourceId} />
-                    <label>
-                      Title
-                      <input name="title" defaultValue={link.source.title} required maxLength={300} />
-                    </label>
-                    <label>
-                      Type
-                      <select name="sourceType" defaultValue={link.source.sourceType}>
-                        {sourceTypes.map((sourceType) => (
-                          <option key={sourceType} value={sourceType}>{formatStatus(sourceType)}</option>
-                        ))}
-                      </select>
-                    </label>
-                    <label>
-                      Author
-                      <input name="author" defaultValue={link.source.author ?? ""} maxLength={200} />
-                    </label>
-                    <label>
-                      Publisher
-                      <input name="publisher" defaultValue={link.source.publisher ?? ""} maxLength={200} />
-                    </label>
-                    <label>
-                      Publication year
-                      <input name="publicationYear" type="number" defaultValue={link.source.publicationYear ?? ""} />
-                    </label>
-                    <label>
-                      URL
-                      <input name="url" type="url" defaultValue={link.source.url ?? ""} maxLength={1000} />
-                    </label>
-                    <label>
-                      Note
-                      <textarea name="note" defaultValue={link.notes ?? link.source.notes ?? ""} maxLength={1000} />
-                    </label>
-                    <label>
-                      Sort order
-                      <input name="sortOrder" type="number" defaultValue={link.sortOrder} />
-                    </label>
-                    <div className="review-actions">
-                      <button className="admin-form-button" type="submit">Save source</button>
-                      <button className="admin-form-button admin-form-button--warning" formAction={removeSaintSource} type="submit">
-                        Remove source
-                      </button>
-                    </div>
-                  </form>
-                ))}
-              </div>
-            ) : (
-              <p>No reviewed sources have been attached.</p>
-            )}
-
-            <div className="review-panel__subsection">
-              <h3>Add source</h3>
-              <form action={upsertSaintSource} className="form-stack">
-                <input name="saintId" type="hidden" value={saint.id} />
-                <label>
-                  Title
-                  <input name="title" required maxLength={300} />
-                </label>
-                <label>
-                  Type
-                  <select name="sourceType" defaultValue="website">
-                    {sourceTypes.map((sourceType) => (
-                      <option key={sourceType} value={sourceType}>{formatStatus(sourceType)}</option>
-                    ))}
-                  </select>
-                </label>
-                <label>
-                  Author
-                  <input name="author" maxLength={200} />
-                </label>
-                <label>
-                  Publisher
-                  <input name="publisher" maxLength={200} />
-                </label>
-                <label>
-                  Publication year
-                  <input name="publicationYear" type="number" />
-                </label>
-                <label>
-                  URL
-                  <input name="url" type="url" maxLength={1000} />
-                </label>
-                <label>
-                  Note
-                  <textarea name="note" maxLength={1000} />
-                </label>
-                <label>
-                  Sort order
-                  <input name="sortOrder" type="number" defaultValue={sourceLinks.length} />
-                </label>
-                <div className="review-actions">
-                  <button className="admin-form-button" type="submit">Add source</button>
-                </div>
-              </form>
-            </div>
-        </ReviewEditToggle>
+        {sourceLinks.length > 0 ? <div className="field-grid">
+          {sourceLinks.map((link) => <ReviewField key={link.id} label={formatStatus(link.source.sourceType)} value={link.source.title} />)}
+        </div> : <p>No published sources have been attached.</p>}
       </CollapsibleReviewCard> : null}
 
       {activeTab === "readiness" ? <CollapsibleReviewCard
@@ -1336,7 +1292,6 @@ const contentStatuses = ["draft", "needs_review", "published", "archived"] as co
 const relationshipEvidenceStatuses = ["certain", "probable", "traditional", "disputed", "imported", "uncategorized"] as const;
 const confidenceLevels = ["low", "medium", "high"] as const;
 const placeTypes = ["primary", "birth", "samadhi", "sadhana", "associated", "other"] as const;
-const sourceTypes = ["book", "article", "website", "scripture", "oral_tradition", "other"] as const;
 
 function formatPlaceLocation(place: { region: string | null; country: string | null }) {
   const location = [place.region, place.country].filter(Boolean).join(", ");
@@ -1524,4 +1479,21 @@ function splitCaptionParagraphs(caption?: string | null) {
 
 function formatStatus(status: string) {
   return status.replace(/_/g, " ");
+}
+
+function parseDraftSources(raw: string, fallback: SourceRevision[]) {
+  if (!raw) return fallback;
+  try {
+    const result = saintNarrativeRevisionSchema.shape.sources.safeParse(JSON.parse(raw));
+    return result.success ? result.data : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function formatRevisionUpdate(value: string) {
+  if (value === "submitted") return "Narrative revision submitted for review. The public page is unchanged.";
+  if (value === "published") return "Narrative revision published. The previous biography remains preserved in revision history.";
+  if (value === "returned") return "Narrative revision returned to draft for further work.";
+  return "Narrative draft saved. The public page is unchanged.";
 }

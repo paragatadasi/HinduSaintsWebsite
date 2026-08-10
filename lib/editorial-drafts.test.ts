@@ -18,8 +18,7 @@ test("editorial drafts allow only configured fields for a section", () => {
     injected: "discard me"
   }), {
     displayName: "Draft name",
-    canonicalName: "Canonical",
-    shortDescription: "Interim copy"
+    canonicalName: "Canonical"
   });
 });
 

@@ -9,21 +9,26 @@ import { AdminPresence } from "@/components/admin/admin-presence";
 import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
 import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { MarkdownEditor } from "@/components/admin/markdown-editor";
+import { RevisionSourcesEditor } from "@/components/admin/revision-sources-editor";
 import { ReviewEditToggle } from "@/components/admin/review-edit-toggle";
 import { ReadinessAssignmentSection } from "@/components/admin/readiness-assignment-section";
-import { ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { ReviewFactGrid, ReviewSection, ReviewSubsection, ReviewWorkflow } from "@/components/admin/review-ui";
+import { Prose } from "@/components/content/prose";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { requireAdminUser } from "@/lib/admin-access";
 import { getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { draftString, getEditorialDraftMap } from "@/lib/editorial-drafts";
+import { getEditorialRevisionActiveKey, traditionNarrativeRevisionSchema, type SourceRevision } from "@/lib/editorial-revisions";
 import { hasCapability } from "@/lib/permissions";
 import {
   mergeTraditions,
+  publishTraditionNarrativeRevision,
+  returnTraditionNarrativeRevisionToDraft,
+  saveTraditionNarrativeRevision,
   updateTraditionHeroImage,
   updateTraditionLineage,
-  updateTraditionLongForm,
   updateTraditionOtherPublicFields,
   updateTraditionOverview,
   updateTraditionRelatedLinks,
@@ -38,7 +43,7 @@ import { TraditionScripturalBasisEditor } from "./tradition-scriptural-basis-edi
 
 export type AdminTraditionEditorPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string }>;
+  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string; revisionError?: string; revisionUpdated?: string }>;
 };
 
 export type TraditionEditorTab = "readiness" | "summary" | "content" | "media";
@@ -60,7 +65,7 @@ export async function AdminTraditionEditorPage({
   activeTab
 }: AdminTraditionEditorPageProps & { activeTab: TraditionEditorTab }) {
   const { id } = await params;
-  const { assignmentError, assignmentUpdated, conflict } = await searchParams;
+  const { assignmentError, assignmentUpdated, conflict, revisionError, revisionUpdated } = await searchParams;
   const user = await requireAdminUser();
   const saintScope = getAdminSaintCatalogScope(user.roles);
   const canPublish = hasCapability(user.roles, "publish_content");
@@ -79,7 +84,7 @@ export async function AdminTraditionEditorPage({
   const publicFieldsDraft = editorialDrafts.get("public_fields");
   const longFormDraft = editorialDrafts.get("long_form");
 
-  const [allTraditions, allSaints, allPlaces, allSources] = await Promise.all([
+  const [allTraditions, allSaints, allPlaces, allSources, sourceLinks, narrativeRevisionRow] = await Promise.all([
     db.tradition.findMany({
       where: { id: { not: tradition.id } },
       orderBy: { name: "asc" },
@@ -102,8 +107,26 @@ export async function AdminTraditionEditorPage({
         { title: "asc" }
       ],
       select: { id: true, title: true, sourceType: true, author: true, url: true }
+    }),
+    db.contentSource.findMany({ where: { entityType: "Tradition", entityId: tradition.id }, include: { source: true }, orderBy: { sortOrder: "asc" } }),
+    db.editorialRevision.findUnique({
+      where: { activeKey: getEditorialRevisionActiveKey("tradition", tradition.id) },
+      include: { updatedBy: { select: { name: true, email: true } } }
     })
   ]);
+  const parsedNarrativeRevision = narrativeRevisionRow ? traditionNarrativeRevisionSchema.safeParse(narrativeRevisionRow.payload) : null;
+  const narrativeRevision = parsedNarrativeRevision?.success ? parsedNarrativeRevision.data : null;
+  const publishedSources = sourceLinks.map(({ source, notes }) => ({
+    sourceId: source.id,
+    title: source.title,
+    sourceType: source.sourceType,
+    author: source.author ?? undefined,
+    publisher: source.publisher ?? undefined,
+    publicationYear: source.publicationYear ?? undefined,
+    url: source.url ?? undefined,
+    note: notes ?? source.notes ?? undefined
+  } satisfies SourceRevision));
+  const draftSources = parseTraditionDraftSources(draftString(longFormDraft, "sourcesJson"), narrativeRevision?.sources ?? publishedSources);
   const saintOptions: SelectOption[] = allSaints.map((saint) => ({
     value: saint.id,
     label: saint.displayName,
@@ -182,7 +205,7 @@ export async function AdminTraditionEditorPage({
             <div className="field-grid field-grid--compact-facts">
               <ReviewField label="Current status" value={formatStatus(tradition.status)} />
               <ReviewField label="Workflow" value={formatStatus(tradition.workflowStatus)} />
-              <ReviewField label="Overview" value={tradition.shortDescription ? "Ready" : "Needs summary"} />
+              <ReviewField label="Overview" value={narrativeRevisionRow?.status === "needs_review" ? "Revision needs review" : tradition.shortDescription ? "Published copy ready" : "Needs summary"} />
               <ReviewField label="Founder" value={tradition.founderSaint?.displayName ?? tradition.founderDisplayName} />
               <ReviewField label="Origin" value={tradition.originPlace?.name ?? tradition.originPlaceLabel ?? tradition.origin} />
               <ReviewField label="Long-form sections" value={`${countLongFormSections(tradition)} of 3`} />
@@ -287,10 +310,6 @@ export async function AdminTraditionEditorPage({
                 <span>{tradition.childTraditions.map((child) => child.name).join(", ") || "Not set"}</span>
               </div>
             </div>
-            <label>
-              Short description
-              <textarea name="shortDescription" defaultValue={draftString(overviewDraft, "shortDescription", tradition.shortDescription ?? "")} maxLength={500} />
-            </label>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Save overview</button>
             </div>
@@ -420,28 +439,60 @@ export async function AdminTraditionEditorPage({
 
       <CollapsibleReviewCard
         cardId="tradition-long-form"
-        description="Founding acharya, history, and teachings shown on the public tradition page."
-        eyebrow="Long-form content"
-        title="Tradition Sections"
+        defaultOpen
+        description="Draft and review the public summary, long-form sections, and citations as one private revision."
+        eyebrow="Editorial revision"
+        title="Narrative Draft and Review"
       >
-        <ReviewEditToggle
-          editable={canEditLongForm}
-          editLabel="Edit sections"
-          summary={(
-            <div className="field-grid">
-              <ReviewField label="Founding Acharya" value={formatMarkdownSummary(tradition.foundingAcharyaMarkdown)} />
-              <ReviewField label="History" value={formatMarkdownSummary(tradition.historyMarkdown ?? tradition.longIntroductionMarkdown)} />
-              <ReviewField label="Key Teachings" value={formatMarkdownSummary(tradition.keyTeachingsMarkdown)} />
-            </div>
-          )}
+        {revisionUpdated ? <p className="admin-notice form-status form-status--success">{formatNarrativeRevisionUpdate(revisionUpdated)}</p> : null}
+        {revisionError === "published-content-changed" ? <p className="admin-notice form-status form-status--error">The published narrative changed after this revision began. Return it to draft and reconcile the changes before publishing.</p> : null}
+        <div className="editorial-revision-comparison">
+          <ReviewSubsection eyebrow="Live public version" title="Published now" description="The public page continues to use these values until a revision is approved.">
+            <ReviewFactGrid facts={[
+              { label: "Short description", value: tradition.shortDescription },
+              { label: "Founding Acharya", value: formatMarkdownSummary(tradition.foundingAcharyaMarkdown) },
+              { label: "History", value: formatMarkdownSummary(tradition.historyMarkdown ?? tradition.longIntroductionMarkdown) },
+              { label: "Key Teachings", value: formatMarkdownSummary(tradition.keyTeachingsMarkdown) },
+              { label: "Sources", value: `${sourceLinks.length}` }
+            ]} />
+          </ReviewSubsection>
+          {narrativeRevisionRow && narrativeRevision ? <ReviewSubsection
+            eyebrow="Working version"
+            title={narrativeRevisionRow.status === "needs_review" ? "Submitted for review" : "Draft revision"}
+            description={`Last updated by ${narrativeRevisionRow.updatedBy.name || narrativeRevisionRow.updatedBy.email}.`}
+          >
+            <div className="review-meta"><StatusBadge label={formatStatus(narrativeRevisionRow.status)} /><span>{narrativeRevision.sources.length} sources</span></div>
+            <ReviewFactGrid facts={[
+              { label: "Short description", value: narrativeRevision.shortDescription },
+              { label: "Founding Acharya", value: formatMarkdownSummary(narrativeRevision.foundingAcharyaMarkdown) },
+              { label: "History", value: formatMarkdownSummary(narrativeRevision.historyMarkdown) },
+              { label: "Key Teachings", value: formatMarkdownSummary(narrativeRevision.keyTeachingsMarkdown) }
+            ]} />
+            {narrativeRevisionRow.status === "needs_review" ? <>
+              {narrativeRevision.historyMarkdown ? <div className="editorial-revision-preview"><Prose markdown={narrativeRevision.historyMarkdown} /></div> : null}
+              {canPublish ? <div className="review-actions">
+                <form action={publishTraditionNarrativeRevision}><input name="revisionId" type="hidden" value={narrativeRevisionRow.id} /><input name="traditionId" type="hidden" value={tradition.id} /><button className="admin-form-button" type="submit">Publish revision</button></form>
+                <form action={returnTraditionNarrativeRevisionToDraft}><input name="revisionId" type="hidden" value={narrativeRevisionRow.id} /><input name="traditionId" type="hidden" value={tradition.id} /><button className="admin-form-button admin-form-button--secondary" type="submit">Return to draft</button></form>
+              </div> : null}
+            </> : null}
+          </ReviewSubsection> : null}
+        </div>
+        {canEditLongForm && narrativeRevisionRow?.status !== "needs_review" ? <ReviewEditToggle
+          editable
+          editLabel={narrativeRevisionRow ? "Continue editing draft" : "Start a revision"}
+          summary={<p>Saving or submitting this working version will not change the public tradition page.</p>}
         >
-          <EditorialDraftForm action={updateTraditionLongForm} baseVersion={tradition.version} className="form-stack" entityId={tradition.id} entityType="tradition" initialDraft={longFormDraft} section="long_form">
+          <EditorialDraftForm action={saveTraditionNarrativeRevision} baseVersion={tradition.version} className="form-stack" entityId={tradition.id} entityType="tradition" initialDraft={longFormDraft} section="long_form">
             <input name="traditionId" type="hidden" value={tradition.id} />
             <input name="version" type="hidden" value={tradition.version} />
+            <label>
+              Short description
+              <textarea name="shortDescription" defaultValue={draftString(longFormDraft, "shortDescription", narrativeRevision?.shortDescription ?? tradition.shortDescription ?? "")} maxLength={500} />
+            </label>
             <div className="form-stack__field">
               <label htmlFor="tradition-founding-acharya">Founding Acharya</label>
               <MarkdownEditor
-                defaultValue={draftString(longFormDraft, "foundingAcharyaMarkdown", tradition.foundingAcharyaMarkdown ?? "")}
+                defaultValue={draftString(longFormDraft, "foundingAcharyaMarkdown", narrativeRevision?.foundingAcharyaMarkdown ?? tradition.foundingAcharyaMarkdown ?? "")}
                 images={editorImages}
                 maxLength={20000}
                 name="foundingAcharyaMarkdown"
@@ -451,7 +502,7 @@ export async function AdminTraditionEditorPage({
             <div className="form-stack__field">
               <label htmlFor="tradition-history">History</label>
               <MarkdownEditor
-                defaultValue={draftString(longFormDraft, "historyMarkdown", tradition.historyMarkdown ?? tradition.longIntroductionMarkdown ?? "")}
+                defaultValue={draftString(longFormDraft, "historyMarkdown", narrativeRevision?.historyMarkdown ?? tradition.historyMarkdown ?? tradition.longIntroductionMarkdown ?? "")}
                 images={editorImages}
                 maxLength={20000}
                 name="historyMarkdown"
@@ -461,18 +512,20 @@ export async function AdminTraditionEditorPage({
             <div className="form-stack__field">
               <label htmlFor="tradition-key-teachings">Key Teachings</label>
               <MarkdownEditor
-                defaultValue={draftString(longFormDraft, "keyTeachingsMarkdown", tradition.keyTeachingsMarkdown ?? "")}
+                defaultValue={draftString(longFormDraft, "keyTeachingsMarkdown", narrativeRevision?.keyTeachingsMarkdown ?? tradition.keyTeachingsMarkdown ?? "")}
                 images={editorImages}
                 maxLength={20000}
                 name="keyTeachingsMarkdown"
                 textareaId="tradition-key-teachings"
               />
             </div>
+            <RevisionSourcesEditor initialSources={draftSources} />
             <div className="review-actions">
-              <button className="admin-form-button" type="submit">Save tradition sections</button>
+              <button className="admin-form-button admin-form-button--secondary" name="intent" value="save_draft" type="submit">Save draft</button>
+              <button className="admin-form-button" name="intent" value="submit_review" type="submit">Submit for review</button>
             </div>
           </EditorialDraftForm>
-        </ReviewEditToggle>
+        </ReviewEditToggle> : null}
       </CollapsibleReviewCard>
 
       <CollapsibleReviewCard
@@ -839,4 +892,21 @@ function buildScripturalBasisRows(links: NonNullable<Awaited<ReturnType<typeof g
 
 function formatStatus(status: string) {
   return status.replace(/_/g, " ");
+}
+
+function parseTraditionDraftSources(raw: string, fallback: SourceRevision[]) {
+  if (!raw) return fallback;
+  try {
+    const result = traditionNarrativeRevisionSchema.shape.sources.safeParse(JSON.parse(raw));
+    return result.success ? result.data : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function formatNarrativeRevisionUpdate(value: string) {
+  if (value === "submitted") return "Narrative revision submitted for review. The public page is unchanged.";
+  if (value === "published") return "Narrative revision published.";
+  if (value === "returned") return "Narrative revision returned to draft.";
+  return "Narrative draft saved. The public page is unchanged.";
 }
