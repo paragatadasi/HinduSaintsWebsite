@@ -18,6 +18,15 @@ import { getReciprocalRelationshipType } from "@/lib/saint-relationships";
 import { expectedVersion, guardedSaintTransaction, guardedSaintUpdate } from "@/lib/admin-conflicts";
 import { saintPublicationCompatibilityData } from "@/lib/admin-workflow";
 import { canManageSaintTeamVisibility } from "@/lib/admin-saint-access";
+import {
+  editorialSnapshotsMatch,
+  EditorialRevisionConflictError,
+  getEditorialRevisionActiveKey,
+  parseSourcesJson,
+  resolvePublishedRevisionSource,
+  saintNarrativeRevisionSchema,
+  type SaintNarrativeRevision
+} from "@/lib/editorial-revisions";
 
 const contentStatusSchema = z.enum(["draft", "needs_review", "published", "archived"]);
 const placeTypeSchema = z.enum(["primary", "birth", "samadhi", "sadhana", "associated", "other"]);
@@ -46,8 +55,7 @@ const saintBasicsSchema = z.object({
 const saintOverviewSchema = saintBasicsSchema.pick({
   saintId: true,
   displayName: true,
-  canonicalName: true,
-  shortDescription: true
+  canonicalName: true
 });
 
 const saintOtherPublicFieldsSchema = saintBasicsSchema.pick({
@@ -222,6 +230,19 @@ const saintSourceRemovalSchema = z.object({
   saintId: z.string().cuid()
 });
 
+const saintNarrativeRevisionActionSchema = z.object({
+  saintId: z.string().cuid(),
+  biographyTitle: z.string().trim().min(1).max(200),
+  biographyMarkdown: z.string().trim().min(1).max(20_000),
+  shortDescription: z.string().trim().max(500).optional(),
+  intent: z.enum(["save_draft", "submit_review"])
+});
+
+const editorialRevisionIdSchema = z.object({
+  revisionId: z.string().cuid(),
+  saintId: z.string().cuid()
+});
+
 export async function updateSaintBasics(formData: FormData) {
   await requireAdminSession(formData);
 
@@ -275,13 +296,11 @@ export async function updateSaintOverview(formData: FormData) {
   const parsed = saintOverviewSchema.parse({
     saintId: formData.get("saintId"),
     displayName: formData.get("displayName"),
-    canonicalName: formData.get("canonicalName"),
-    shortDescription: emptyToUndefined(formData.get("shortDescription"))
+    canonicalName: formData.get("canonicalName")
   });
   const attempted = {
       displayName: parsed.displayName,
-      canonicalName: parsed.canonicalName,
-      shortDescription: parsed.shortDescription ?? null
+      canonicalName: parsed.canonicalName
   };
   const saint = await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), attempted, `/admin/saints/${parsed.saintId}/summary`, async (tx) => {
     const updated = await tx.saint.update({ where: { id: parsed.saintId }, data: attempted, select: { slug: true } });
@@ -743,6 +762,162 @@ export async function upsertSaintBiography(formData: FormData) {
 
   revalidateSaintPaths(saint.slug);
   redirect(`/admin/saints/${saint.slug}/biography`);
+}
+
+export async function saveSaintNarrativeRevision(formData: FormData) {
+  const user = await requireAdminSession(formData, "edit_long_form_content");
+  const parsedFields = saintNarrativeRevisionActionSchema.parse({
+    saintId: formData.get("saintId"),
+    biographyTitle: formData.get("biographyTitle"),
+    biographyMarkdown: formData.get("biographyMarkdown"),
+    shortDescription: emptyToUndefined(formData.get("shortDescription")),
+    intent: formData.get("intent")
+  });
+  const payload = saintNarrativeRevisionSchema.parse({
+    ...parsedFields,
+    sources: parseSourcesJson(formData.get("sourcesJson"))
+  });
+  const activeKey = getEditorialRevisionActiveKey("saint", parsedFields.saintId);
+  const currentSnapshot = await getSaintNarrativeSnapshot(db, parsedFields.saintId);
+  if (!currentSnapshot) redirect("/admin/saints");
+
+  await db.$transaction(async (tx) => {
+    const active = await tx.editorialRevision.findUnique({ where: { activeKey } });
+    if (active?.status === "needs_review") {
+      throw new Error("This revision is awaiting review. An editor must return it to draft before it can be changed.");
+    }
+
+    const status = parsedFields.intent === "submit_review" ? "needs_review" : "draft";
+    const workflowData = {
+      payload,
+      status,
+      updatedById: user.id,
+      submittedAt: status === "needs_review" ? new Date() : null,
+      reviewedAt: null,
+      reviewedById: null
+    } as const;
+
+    if (active) {
+      await tx.editorialRevision.update({ where: { id: active.id }, data: workflowData });
+    } else {
+      await tx.editorialRevision.create({
+        data: {
+          activeKey,
+          entityType: "saint",
+          entityId: parsedFields.saintId,
+          section: "narrative",
+          payload,
+          basePayload: currentSnapshot.payload,
+          baseVersion: currentSnapshot.version,
+          status,
+          submittedAt: status === "needs_review" ? new Date() : null,
+          createdById: user.id,
+          updatedById: user.id
+        }
+      });
+    }
+
+    await tx.adminEditorialDraft.deleteMany({
+      where: { entityType: "saint", entityId: parsedFields.saintId, section: "biography" }
+    });
+  });
+
+  revalidateSaintPaths(currentSnapshot.slug);
+  redirect(`/admin/saints/${currentSnapshot.slug}/biography?revisionUpdated=${parsedFields.intent === "submit_review" ? "submitted" : "saved"}`);
+}
+
+export async function returnSaintNarrativeRevisionToDraft(formData: FormData) {
+  const user = await requireAdminSession(formData, "publish_content");
+  const parsed = editorialRevisionIdSchema.parse({ revisionId: formData.get("revisionId"), saintId: formData.get("saintId") });
+  const revision = await db.editorialRevision.findFirst({
+    where: { id: parsed.revisionId, entityType: "saint", entityId: parsed.saintId, section: "narrative", status: "needs_review" },
+    select: { id: true }
+  });
+  if (!revision) throw new Error("The submitted narrative revision was not found.");
+  await db.editorialRevision.update({
+    where: { id: revision.id },
+    data: { status: "draft", submittedAt: null, reviewedAt: new Date(), reviewedById: user.id, updatedById: user.id }
+  });
+  const saint = await db.saint.findUnique({ where: { id: parsed.saintId }, select: { slug: true } });
+  if (!saint) redirect("/admin/saints");
+  revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${saint.slug}/biography?revisionUpdated=returned`);
+}
+
+export async function publishSaintNarrativeRevision(formData: FormData) {
+  const user = await requireAdminSession(formData, "publish_content");
+  const parsed = editorialRevisionIdSchema.parse({ revisionId: formData.get("revisionId"), saintId: formData.get("saintId") });
+  const revision = await db.editorialRevision.findFirst({
+    where: { id: parsed.revisionId, entityType: "saint", entityId: parsed.saintId, section: "narrative", status: "needs_review" }
+  });
+  if (!revision) throw new Error("The submitted narrative revision was not found.");
+
+  const payload = saintNarrativeRevisionSchema.parse(revision.payload);
+  const currentSnapshot = await getSaintNarrativeSnapshot(db, parsed.saintId);
+  if (!currentSnapshot) redirect("/admin/saints");
+  if (!editorialSnapshotsMatch(revision.basePayload, currentSnapshot.payload)) {
+    redirect(`/admin/saints/${currentSnapshot.slug}/biography?revisionError=published-content-changed`);
+  }
+
+  try {
+    await db.$transaction(async (tx) => {
+      const latestSnapshot = await getSaintNarrativeSnapshot(tx, parsed.saintId);
+      if (!latestSnapshot || !editorialSnapshotsMatch(revision.basePayload, latestSnapshot.payload)) {
+        throw new EditorialRevisionConflictError();
+      }
+      await tx.biography.updateMany({
+        where: { saintId: parsed.saintId, status: { not: "archived" } },
+        data: { status: "archived" }
+      });
+      await tx.biography.create({
+        data: {
+          saintId: parsed.saintId,
+          title: payload.biographyTitle,
+          slug: `revision-${revision.id}`,
+          bodyMarkdown: payload.biographyMarkdown,
+          status: "published",
+          authorOrEditor: user.name ?? user.email,
+          createdById: user.id,
+          updatedById: user.id,
+          publishedAt: new Date(),
+          lastReviewedAt: new Date()
+        }
+      });
+
+      await tx.contentSource.deleteMany({ where: { entityType: "Saint", entityId: parsed.saintId } });
+      for (const [sortOrder, sourceDraft] of payload.sources.entries()) {
+        const sourceId = await resolvePublishedRevisionSource(tx, sourceDraft);
+        await tx.contentSource.create({
+          data: { entityType: "Saint", entityId: parsed.saintId, sourceId, notes: sourceDraft.note ?? null, sortOrder }
+        });
+      }
+
+      await tx.saint.update({
+        where: { id: parsed.saintId },
+        data: { shortDescription: payload.shortDescription ?? null, version: { increment: 1 } }
+      });
+      await tx.editorialRevision.update({
+        where: { id: revision.id },
+        data: {
+          activeKey: null,
+          status: "published",
+          reviewedAt: new Date(),
+          reviewedById: user.id,
+          publishedAt: new Date(),
+          publishedById: user.id,
+          updatedById: user.id
+        }
+      });
+    });
+  } catch (error) {
+    if (error instanceof EditorialRevisionConflictError) {
+      redirect(`/admin/saints/${currentSnapshot.slug}/biography?revisionError=published-content-changed`);
+    }
+    throw error;
+  }
+
+  revalidateSaintPaths(currentSnapshot.slug);
+  redirect(`/admin/saints/${currentSnapshot.slug}/biography?revisionUpdated=published`);
 }
 
 export async function upsertSaintSource(formData: FormData) {
@@ -1494,6 +1669,46 @@ async function requireAdminSession(
     : [target?.saintId, ...(target?.saintIds ?? [])].filter((value): value is string => Boolean(value));
   await assertSaintsVisibleToUser(user, saintIds);
   return user;
+}
+
+async function getSaintNarrativeSnapshot(client: Prisma.TransactionClient | typeof db, saintId: string) {
+  const saint = await client.saint.findUnique({
+    where: { id: saintId },
+    select: {
+      slug: true,
+      version: true,
+      shortDescription: true,
+      biographies: {
+        where: { status: "published" },
+        orderBy: { updatedAt: "desc" },
+        take: 1,
+        select: { title: true, bodyMarkdown: true }
+      }
+    }
+  });
+  if (!saint) return null;
+  const links = await client.contentSource.findMany({
+    where: { entityType: "Saint", entityId: saintId },
+    include: { source: true },
+    orderBy: { sortOrder: "asc" }
+  });
+  const biography = saint.biographies[0];
+  const payload: SaintNarrativeRevision = {
+    shortDescription: saint.shortDescription ?? undefined,
+    biographyTitle: biography?.title ?? "The Life of a Saint",
+    biographyMarkdown: biography?.bodyMarkdown ?? "",
+    sources: links.map(({ source, notes }) => ({
+      sourceId: source.id,
+      title: source.title,
+      sourceType: source.sourceType,
+      author: source.author ?? undefined,
+      publisher: source.publisher ?? undefined,
+      publicationYear: source.publicationYear ?? undefined,
+      url: source.url ?? undefined,
+      note: notes ?? source.notes ?? undefined
+    }))
+  };
+  return { slug: saint.slug, version: saint.version, payload };
 }
 
 function emptyToUndefined(value: FormDataEntryValue | null) {

@@ -122,9 +122,11 @@
   --width-admin-image-editor: min(100%, 44rem);
   --width-admin-config-media-preview: min(100%, 20rem);
   --width-admin-config-placement-min: 20rem;
+  --width-editorial-revision-card-min: 22rem;
   --width-admin-image-crop-editor: min(100%, 32rem);
   --width-admin-image-editor-dialog: min(92vw, 88rem);
   --height-admin-analytics-chart: 16rem;
+  --height-editorial-revision-preview: 32rem;
   --height-review-tab: 2.25rem;
   --width-instagram-viewer-panel: min(100%, 1400px);
   --width-instagram-viewer-details: clamp(320px, 25vw, 400px);

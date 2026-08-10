@@ -33,3 +33,11 @@ explicit save or an intentional discard.
 
 Relationship, media, import, and destructive workflows retain explicit saves;
 they are not interim prose/content drafts.
+
+## Autosave versus editorial review
+
+Autosave drafts are recovery copies, not publishable editorial revisions. Long-form
+public copy has a separate durable review layer that preserves the current public
+text while replacement copy is developed. See
+[`editorial-revision-workflow.md`](./editorial-revision-workflow.md) for the
+covered fields, source behavior, and publish transitions.

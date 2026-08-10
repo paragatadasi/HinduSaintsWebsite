@@ -77,6 +77,10 @@ export async function mergeSaintRecords(tx: Transaction, execution: SaintMergeEx
   count("clearedEditorialDrafts", (await tx.adminEditorialDraft.deleteMany({ where: ephemeralWhere })).count);
   count("clearedEditConflicts", (await tx.adminEditConflict.deleteMany({ where: ephemeralWhere })).count);
   count("clearedPresence", (await tx.adminPresence.deleteMany({ where: ephemeralWhere })).count);
+  count("archivedEditorialRevisions", (await tx.editorialRevision.updateMany({
+    where: { entityType: "saint", entityId: source.id, status: { in: ["draft", "needs_review"] } },
+    data: { activeKey: null, status: "archived", updatedById: actorId }
+  })).count);
 
   const mergeNote = `Merged ${source.displayName} (${source.slug}) into ${target.displayName} (${target.slug}).`;
   const relatedCandidates = await tx.duplicateCandidate.findMany({
