@@ -3441,7 +3441,10 @@ html[data-route-entering="true"] body > main {
 .saint-profile-stats .fact__value { color: var(--color-muted); font-size: var(--font-size-saint-profile-stat-value); margin-top: var(--space-1); }
 .saint-profile-stats .taxonomy-link { border: 0; color: var(--color-accent-strong); font-size: inherit; padding: 0; }
 
-.saint-profile-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+.saint-profile-actions,
+.saint-profile-actions__main,
+.saint-profile-actions__utilities { align-items: center; display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.saint-profile-actions { margin-top: var(--space-5); }
 
 .saint-hero-gallery { justify-self: center; max-width: var(--width-saint-profile-gallery); width: 100%; }
 .saint-hero-gallery__stage { background: var(--color-surface); min-height: var(--height-saint-profile-gallery); overflow: hidden; position: relative; }
@@ -3459,7 +3462,6 @@ html[data-route-entering="true"] body > main {
 .saint-profile-related .section-heading h2 { letter-spacing: 0.12em; text-transform: uppercase; }
 .saint-profile-encounter { display: flex; justify-content: center; }
 .saint-profile-sources { max-width: var(--width-saint-profile-reading); }
-.saint-profile-feedback { display: flex; justify-content: center; }
 
 .saint-detail-hero__inner {
   align-items: center;
@@ -4407,6 +4409,12 @@ html[data-route-entering="true"] body > main {
   border-color: transparent;
   color: var(--color-gold);
   min-height: auto;
+  padding: 0;
+}
+
+.button--icon {
+  aspect-ratio: 1;
+  justify-content: center;
   padding: 0;
 }
 
@@ -9272,8 +9280,9 @@ fieldset.admin-field {
   }
   .saint-profile-stats::-webkit-scrollbar { display: none; }
   .saint-profile-stats .fact { flex: 0 0 auto; }
-  .saint-profile-actions { align-items: stretch; flex-direction: column; }
-  .saint-profile-actions .button { justify-content: center; width: 100%; }
+  .saint-profile-actions { align-items: flex-start; }
+  .saint-profile-actions__main { align-items: stretch; flex: 1 1 100%; flex-direction: column; }
+  .saint-profile-actions__main .button { justify-content: center; width: 100%; }
   .site-nav {
     align-items: stretch;
     gap: var(--space-2);
