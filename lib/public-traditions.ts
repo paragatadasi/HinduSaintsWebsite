@@ -67,13 +67,9 @@ async function getTraditionRows(
   });
 }
 
-async function getPublishedTraditionRowBySlug(slug: string) {
+async function getTraditionDetailRow(where: Prisma.TraditionWhereInput) {
   return db.tradition.findFirst({
-    where: {
-      slug,
-      status: "published",
-      saints: { some: { saint: { status: "published" } } }
-    },
+    where,
     include: {
       parentTradition: {
         include: {
@@ -153,6 +149,14 @@ async function getPublishedTraditionRowBySlug(slug: string) {
   });
 }
 
+async function getPublishedTraditionRowBySlug(slug: string) {
+  return getTraditionDetailRow({
+    slug,
+    status: "published",
+    saints: { some: { saint: { status: "published" } } }
+  });
+}
+
 export async function getPublishedTraditionSummaries(): Promise<PublicTraditionSummary[]> {
   return getPublishedTraditionSummariesCached();
 }
@@ -226,6 +230,17 @@ export async function getPublishedTraditionBySlug(
   slug: string
 ): Promise<PublicTraditionDetail | null> {
   return getPublishedTraditionBySlugCached(slug);
+}
+
+export async function getTraditionPreviewBaseById(id: string): Promise<PublicTraditionDetail | null> {
+  const tradition = await getTraditionDetailRow({ id });
+  if (!tradition) return null;
+
+  const [founderNames, sources] = await Promise.all([
+    getFounderNames([tradition.founderSaintId]),
+    getSourcesForTradition(tradition.id)
+  ]);
+  return toPublicTraditionDetail({ ...tradition, status: "published" }, founderNames, sources);
 }
 
 const getPublishedTraditionBySlugCached = unstable_cache(async (

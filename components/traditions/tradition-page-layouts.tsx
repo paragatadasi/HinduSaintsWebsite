@@ -14,6 +14,7 @@ import type {
 } from "@/lib/public-contracts";
 
 type TraditionPageLayoutsProps = {
+  rootElement?: "main" | "div";
   tradition: PublicTraditionDetail;
   template: TraditionDetailTemplateContent;
 };
@@ -24,13 +25,13 @@ const IMAGE_PLACEHOLDER: PublicImage = {
 };
 const SECTION_IN_REVIEW = "Editorial copy for this section is in review.";
 
-export function TraditionPageLayouts({ tradition, template }: TraditionPageLayoutsProps) {
+export function TraditionPageLayouts({ rootElement: Root = "main", tradition, template }: TraditionPageLayoutsProps) {
   const historyMarkdown = tradition.historyMarkdown ?? tradition.introductionMarkdown ?? SECTION_IN_REVIEW;
   const foundingAcharyaMarkdown = tradition.foundingAcharyaMarkdown ?? SECTION_IN_REVIEW;
   const keyTeachingsMarkdown = tradition.keyTeachingsMarkdown ?? SECTION_IN_REVIEW;
 
   return (
-    <main className="tradition-detail">
+    <Root className="tradition-detail">
       <TraditionHero tradition={tradition} />
       <div className="page-shell tradition-detail__divider" />
       <div className="page-shell tradition-detail__content">
@@ -55,7 +56,7 @@ export function TraditionPageLayouts({ tradition, template }: TraditionPageLayou
           <RelatedPlaces places={tradition.relatedPlaces} />
         </aside>
       </div>
-    </main>
+    </Root>
   );
 }
 

@@ -165,6 +165,12 @@ review, and keeps publication actions with the submitted version. Associated
 public citations belong to the same revision package so prose and evidence are
 approved together. See `docs/editorial-revision-workflow.md`.
 
+Pending narrative previews use the same shared public Saint, Tradition, and
+Place page components as live routes. Show them inside the shared private
+preview frame with revision/noindex context and a route back to review; do not
+build simplified page-specific preview approximations or read drafts from a
+public route.
+
 Repeatable data should start small. For lists such as lineage saints, aliases,
 sources, related links, localities, or related places, show existing reviewed
 rows and use an `Add more` action or searchable multi-select instead of

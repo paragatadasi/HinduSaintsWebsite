@@ -95,9 +95,9 @@ async function getPublishedSaintSearchRows(where: Prisma.SaintWhereInput = {}) {
   });
 }
 
-async function getPublishedSaintRowBySlug(slug: string) {
+async function getSaintDetailRow(where: Prisma.SaintWhereInput) {
   return db.saint.findFirst({
-    where: { slug, status: "published" },
+    where,
     include: {
       aliases: { orderBy: { createdAt: "asc" } },
       biographies: {
@@ -120,6 +120,10 @@ async function getPublishedSaintRowBySlug(slug: string) {
       }
     }
   });
+}
+
+async function getPublishedSaintRowBySlug(slug: string) {
+  return getSaintDetailRow({ slug, status: "published" });
 }
 
 export async function getPublishedSaintSummaries() {
@@ -314,6 +318,22 @@ const getPublishedSaintSlugsCached = unstable_cache(async () => {
 
 export async function getPublishedSaintBySlug(slug: string): Promise<PublicSaintDetail | null> {
   return getPublishedSaintBySlugCached(slug);
+}
+
+export async function getSaintPreviewBaseById(id: string): Promise<PublicSaintDetail | null> {
+  const saint = await getSaintDetailRow({ id });
+  if (!saint) return null;
+
+  const [instagramItems, sources] = await Promise.all([
+    getInstagramItemsForSaint(saint.id),
+    getSourcesForSaint(saint.id)
+  ]);
+  return toPublicSaintDetail(
+    saint,
+    instagramItems.map((item) => item.url),
+    instagramItems,
+    sources
+  );
 }
 
 export async function getPublishedSaintRedirectBySlug(slug: string) {
