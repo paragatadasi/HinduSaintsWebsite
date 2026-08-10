@@ -152,6 +152,13 @@ interim editorial draft without changing the live/public record. Use the shared
 editorial draft form for its `Saving`, `Saved`, browser recovery, retry, discard,
 and conflict/rebase states; do not invent page-specific autosave behavior.
 
+Long-form public narratives add a durable editorial-revision layer after
+autosave. Their review UI shows the live public version separately from the
+working version, labels whether the working version is a draft or submitted for
+review, and keeps publication actions with the submitted version. Associated
+public citations belong to the same revision package so prose and evidence are
+approved together. See `docs/editorial-revision-workflow.md`.
+
 Repeatable data should start small. For lists such as lineage saints, aliases,
 sources, related links, localities, or related places, show existing reviewed
 rows and use an `Add more` action or searchable multi-select instead of

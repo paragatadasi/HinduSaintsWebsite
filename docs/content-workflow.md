@@ -143,9 +143,12 @@ records need review.
 ## Biography workflow
 
 Biographies are edited from the saint review screen, not from a separate
-biography queue. The editor stores reviewed biography content in `Biography`
-records and uses the shared admin Markdown editor so the same authoring controls
-can be reused for place and tradition text fields.
+biography queue. Short description, biography Markdown, and associated sources
+are saved together in a private `EditorialRevision`, then submitted for editor
+review. The currently published description, `Biography`, and source links stay
+unchanged until the complete revision is published. Publishing archives the
+superseded biography rather than overwriting it. Tradition narrative sections
+and Place overview Markdown use the same draft/review pattern.
 
 Biographies are written in Markdown, not MDX. Raw HTML and scripts are not
 allowed. Sources should be attached as structured records instead of being

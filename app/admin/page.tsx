@@ -27,6 +27,7 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
     traditionsNeedsReview,
     placeCount,
     newFeedbackCount,
+    editorialReviewCount,
     assignmentRows
   ] = await Promise.all([
     db.saint.groupBy({ by: ["workflowStatus"], where: { teamVisibility: "public" }, _count: { _all: true } }),
@@ -34,6 +35,7 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
     canViewContent ? db.tradition.count({ where: { status: "needs_review" } }) : Promise.resolve(0),
     canViewContent ? db.place.count() : Promise.resolve(0),
     canViewContent ? db.feedbackSubmission.count({ where: { status: "new" } }) : Promise.resolve(0),
+    hasCapability(user.roles, "publish_content") ? db.editorialRevision.count({ where: { status: "needs_review" } }) : Promise.resolve(0),
     db.contentAssignment.findMany({
       where: { OR: [{ assigneeId: user.id }, { assigneeId: null, state: "assigned" }] },
       select: { assigneeId: true, contentId: true, contentType: true, state: true }
@@ -62,6 +64,7 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
         </div>
         <div className="admin-stat-grid">
           {canViewContent ? <DashboardCard href="/admin/feedback?status=new" label="New feedback" value={newFeedbackCount} /> : null}
+          {hasCapability(user.roles, "publish_content") ? <DashboardCard href="/admin/revisions" label="Editorial revisions awaiting review" value={editorialReviewCount} /> : null}
           <DashboardCard href="/admin/saints?scope=public&workflow=needs_review" label="Saints needing review" value={counts.needs_review ?? 0} />
           <DashboardCard href="/admin/saints?scope=public&workflow=fact_checked" label="Fact-checked saints" value={counts.fact_checked ?? 0} />
           <DashboardCard href="/admin/saints?scope=public&workflow=populated" label="Populated saints" value={counts.populated ?? 0} />

@@ -1,5 +1,5 @@
 import { notFound, permanentRedirect } from "next/navigation";
-import { ExternalLink, MessageSquare } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Prose } from "@/components/content/prose";
@@ -8,7 +8,6 @@ import { SaintEncounter } from "@/components/saints/saint-encounter";
 import { SaintHeroGallery } from "@/components/saints/saint-hero-gallery";
 import { SaintProfileActions } from "@/components/saints/saint-profile-actions";
 import { SaintProfileSummary } from "@/components/saints/saint-profile-summary";
-import { Button } from "@/components/ui/button";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
 import { getPublishedSaintBySlug, getPublishedSaintRedirectBySlug, getRelatedPublishedSaints } from "@/lib/public-saints";
@@ -62,6 +61,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
   if (!saint) notFound();
 
   const hasBiography = Boolean(saint.biography?.bodyMarkdown.trim() || saint.biography?.summary?.trim());
+  const hasSources = hasBiography && saint.sources.length > 0;
   const keyFacts = saint.facts.filter(({ label }) => !["primary place", "places", "tradition", "traditions"].includes(label.toLowerCase()));
   const latestPost = [...saint.instagramItems].sort((left, right) =>
     (right.postedAt ? Date.parse(right.postedAt) : 0) - (left.postedAt ? Date.parse(left.postedAt) : 0)
@@ -83,7 +83,12 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
               ]}
             />
             {saint.shortDescription ? <SaintProfileSummary>{saint.shortDescription}</SaintProfileSummary> : null}
-            {hasBiography || latestPost ? <SaintProfileActions hasBiography={hasBiography} latestPost={latestPost} saintName={saint.displayName} /> : null}
+            <SaintProfileActions
+              feedbackHref={`/contact?type=saint&slug=${encodeURIComponent(saint.slug)}`}
+              hasBiography={hasBiography}
+              latestPost={latestPost}
+              saintName={saint.displayName}
+            />
           </div>
           <SaintHeroGallery images={gallery} saintName={saint.displayName} />
         </div>
@@ -101,7 +106,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
       ) : null}
 
       {relatedSaints.length > 0 ? (
-        <section className="saint-profile-related section">
+        <section className={`saint-profile-related section${hasSources ? "" : " section--last"}`}>
           <div className="page-shell">
             <div className="section-heading"><h2>Related Saints</h2></div>
             <ScrollRail ariaLabel="related saints" controls="always">
@@ -109,6 +114,7 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
                 <SaintCard
                   imageTag={related.relationshipLabel}
                   key={related.slug}
+                  prefetch={false}
                   saint={related}
                   variant="portrait"
                 />
@@ -119,19 +125,13 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
       ) : null}
 
       {relatedSaints.length === 0 ? (
-        <section className="page-shell section saint-profile-encounter">
+        <section className={`page-shell section saint-profile-encounter${hasSources ? "" : " section--last"}`}>
           <SaintEncounter />
         </section>
       ) : null}
 
-      {hasBiography && saint.sources.length > 0 ? (
-        <section className="page-shell section saint-profile-sources"><SourceList title="Sources" sources={saint.sources} /></section>
-      ) : null}
-
-      {hasBiography ? (
-        <section className="page-shell section section--last saint-profile-feedback">
-          <Button href={`/contact?type=saint&slug=${encodeURIComponent(saint.slug)}`} variant="secondary" icon={<MessageSquare size={18} aria-hidden="true" />}>Send feedback</Button>
-        </section>
+      {hasSources ? (
+        <section className="page-shell section section--last saint-profile-sources"><SourceList title="Sources" sources={saint.sources} /></section>
       ) : null}
     </main>
   );
