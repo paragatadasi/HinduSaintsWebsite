@@ -26,3 +26,19 @@ test("saint narrative revisions require a biography and validate sources", () =>
   assert.equal(result.success, true);
   assert.equal(saintNarrativeRevisionSchema.safeParse({ biographyTitle: "Life", biographyMarkdown: "", sources: [] }).success, false);
 });
+
+test("saint narrative citations must point to an associated revision source", () => {
+  const valid = saintNarrativeRevisionSchema.safeParse({
+    biographyTitle: "Life",
+    biographyMarkdown: "Remembered teaching [Primary text](#source-ref-draft-primary).",
+    sources: [{ citationKey: "draft-primary", title: "Primary text", sourceType: "book" }]
+  });
+  const invalid = saintNarrativeRevisionSchema.safeParse({
+    biographyTitle: "Life",
+    biographyMarkdown: "Unattached [source](#source-ref-missing).",
+    sources: []
+  });
+
+  assert.equal(valid.success, true);
+  assert.equal(invalid.success, false);
+});

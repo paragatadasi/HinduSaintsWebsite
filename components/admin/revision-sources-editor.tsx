@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { MARKDOWN_CITATION_SOURCES_EVENT } from "@/components/admin/markdown-editor";
 import type { SourceRevision } from "@/lib/editorial-revisions";
 
 const sourceTypes: SourceRevision["sourceType"][] = ["book", "article", "website", "scripture", "oral_tradition", "other"];
 
 type RevisionSourcesEditorProps = {
+  citationChannel?: string;
   initialSources: SourceRevision[];
 };
 
-export function RevisionSourcesEditor({ initialSources }: RevisionSourcesEditorProps) {
+export function RevisionSourcesEditor({ citationChannel, initialSources }: RevisionSourcesEditorProps) {
   const [sources, setSources] = useState<SourceRevision[]>(initialSources);
   const serializedInputRef = useRef<HTMLInputElement>(null);
   const mountedRef = useRef(false);
@@ -21,6 +23,16 @@ export function RevisionSourcesEditor({ initialSources }: RevisionSourcesEditorP
     }
     serializedInputRef.current?.dispatchEvent(new Event("input", { bubbles: true }));
   }, [sources]);
+
+  useEffect(() => {
+    if (!citationChannel) return;
+    window.dispatchEvent(new CustomEvent(MARKDOWN_CITATION_SOURCES_EVENT, {
+      detail: {
+        channel: citationChannel,
+        sources: sources.flatMap((source) => source.citationKey ? [{ key: source.citationKey, title: source.title || "Untitled source" }] : [])
+      }
+    }));
+  }, [citationChannel, sources]);
 
   function updateSource(index: number, patch: Partial<SourceRevision>) {
     setSources((current) => current.map((source, sourceIndex) => sourceIndex === index ? { ...source, ...patch } : source));
@@ -37,7 +49,7 @@ export function RevisionSourcesEditor({ initialSources }: RevisionSourcesEditorP
         <button
           className="admin-form-button admin-form-button--secondary"
           type="button"
-          onClick={() => setSources((current) => [...current, { title: "", sourceType: "website" }])}
+          onClick={() => setSources((current) => [...current, { citationKey: createCitationKey(), title: "", sourceType: "website" }])}
         >
           Add source
         </button>
@@ -107,4 +119,8 @@ function emptyValue(value: string) {
 
 function formatLabel(value: string) {
   return value.replace(/_/g, " ");
+}
+
+function createCitationKey() {
+  return `draft-${crypto.randomUUID()}`;
 }

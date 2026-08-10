@@ -21,7 +21,7 @@ import { requireSaintCatalogUser } from "@/lib/admin-access";
 import { canManageSaintTeamVisibility, getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { hasCapability } from "@/lib/permissions";
 import { draftString, getEditorialDraftMap } from "@/lib/editorial-drafts";
-import { getEditorialRevisionActiveKey, saintNarrativeRevisionSchema, type SourceRevision } from "@/lib/editorial-revisions";
+import { getEditorialRevisionActiveKey, saintNarrativeRevisionSchema, sourceRevisionSchema, type SourceRevision } from "@/lib/editorial-revisions";
 import { getInstagramLinkProps } from "@/lib/external-links";
 import { formatHistoricalYear, parseImportedDate } from "@/lib/import-dates";
 import { getInstagramImageUrls } from "@/lib/instagram";
@@ -149,7 +149,8 @@ export async function AdminSaintEditorPage({
     url: source.url ?? undefined,
     note: notes ?? source.notes ?? undefined
   } satisfies SourceRevision));
-  const draftSources = parseDraftSources(draftString(biographyDraft, "sourcesJson"), narrativeRevision?.sources ?? publishedSources);
+  const draftSources = parseDraftSources(draftString(biographyDraft, "sourcesJson"), narrativeRevision?.sources ?? publishedSources)
+    .map((source, index) => ({ ...source, citationKey: source.citationKey ?? source.sourceId ?? `draft-source-${index + 1}` }));
   const biographyTextareaId = "biography-body-markdown";
   const instagramBiographyImportPosts = canReviewInstagram ? getInstagramBiographyImportPosts(saint) : [];
   const selectedTraditionIds = saint.traditions.map((item) => item.traditionId);
@@ -729,7 +730,13 @@ export async function AdminSaintEditorPage({
               { label: "Biography length", value: `${narrativeRevision.biographyMarkdown.length.toLocaleString()} characters` }
             ]} />
             {narrativeRevisionRow.status === "needs_review" ? <>
-              <div className="editorial-revision-preview"><Prose markdown={narrativeRevision.biographyMarkdown} /></div>
+              <div className="editorial-revision-preview"><Prose
+                markdown={narrativeRevision.biographyMarkdown}
+                sourceReferences={narrativeRevision.sources.flatMap((source) => {
+                  const key = source.citationKey ?? source.sourceId;
+                  return key ? [{ key, title: source.title }] : [];
+                })}
+              /></div>
               {narrativeRevision.sources.length > 0 ? <div className="review-list">
                 {narrativeRevision.sources.map((source, index) => <div className="review-row" key={`${source.sourceId ?? source.title}-${index}`}>
                   <ReviewFactGrid facts={[
@@ -775,12 +782,14 @@ export async function AdminSaintEditorPage({
               <div className="form-stack__field">
                 <label htmlFor="biography-body-markdown">Body Markdown</label>
                 <MarkdownEditor
+                  citationChannel={biographyTextareaId}
                   defaultValue={draftString(biographyDraft, "biographyMarkdown", narrativeRevision?.biographyMarkdown ?? legacyBiographyDraft?.bodyMarkdown ?? primaryBiography?.bodyMarkdown ?? "")}
                   enableDefinitions
                   images={biographyImages}
                   maxLength={20000}
                   name="biographyMarkdown"
                   required
+                  sourceOptions={draftSources.map((source) => ({ key: source.citationKey!, title: source.title }))}
                   textareaId={biographyTextareaId}
                 />
               </div>
@@ -805,7 +814,7 @@ export async function AdminSaintEditorPage({
                 <h4>Instagram biography references</h4>
                 <InstagramBiographyReferences saint={saint} />
               </div> : null}
-              <RevisionSourcesEditor initialSources={draftSources} />
+              <RevisionSourcesEditor citationChannel={biographyTextareaId} initialSources={draftSources} />
               <div className="review-actions">
                 <button className="admin-form-button admin-form-button--secondary" name="intent" value="save_draft" type="submit">Save draft</button>
                 <button className="admin-form-button" name="intent" value="submit_review" type="submit">Submit for review</button>
@@ -1484,7 +1493,7 @@ function formatStatus(status: string) {
 function parseDraftSources(raw: string, fallback: SourceRevision[]) {
   if (!raw) return fallback;
   try {
-    const result = saintNarrativeRevisionSchema.shape.sources.safeParse(JSON.parse(raw));
+    const result = sourceRevisionSchema.array().max(100).safeParse(JSON.parse(raw));
     return result.success ? result.data : fallback;
   } catch {
     return fallback;
