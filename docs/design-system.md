@@ -233,6 +233,9 @@ Current rollout notes:
   My Workflow counters are separated on that page, the full My Work assignment
   workspace sits at the bottom, and neither Dashboard nor My Work is repeated
   as an Operations sidebar item.
+- Submitted long-form editorial revisions are an actionable Dashboard section
+  for Site Admin and Editor roles. They are not duplicated as a site-wide
+  sidebar destination; the legacy queue URL redirects to the Dashboard section.
 - Instagram item detail is the first polished pilot. `Connect this Post` is the
   primary workflow. First Page Biodata starts as a six-field summary, keeps
   first-page source text out of the default summary, and places parse actions at
