@@ -5,8 +5,13 @@ import { db } from "@/lib/db";
 import {
   getInstagramFirstPageMetadata,
   getInstagramQueueWhere,
+  instagramContentTypes,
+  instagramQueueFormats,
   instagramQueueStatuses,
   rankInstagramQueueItems,
+  type InstagramContentFilter,
+  type InstagramQueueFilters,
+  type InstagramQueueFormat,
   type InstagramQueueStatus
 } from "@/lib/instagram-admin-queue";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -18,7 +23,13 @@ type StatusFilter = InstagramQueueStatus;
 const statusFilters = ["all", ...instagramQueueStatuses] as const;
 
 type AdminInstagramPageProps = {
-  searchParams: Promise<{ page?: string | string[]; q?: string | string[]; status?: string }>;
+  searchParams: Promise<{
+    contentType?: string | string[];
+    format?: string | string[];
+    page?: string | string[];
+    q?: string | string[];
+    status?: string | string[];
+  }>;
 };
 
 type InstagramQueueItem = PrismaTypes.InstagramItemGetPayload<{
@@ -39,15 +50,18 @@ type InstagramQueueItem = PrismaTypes.InstagramItemGetPayload<{
 }>;
 
 export default async function AdminInstagramPage({ searchParams }: AdminInstagramPageProps) {
-  const { page, q, status } = await searchParams;
+  const { contentType, format, page, q, status } = await searchParams;
   const query = getSearchParam(q);
-  const activeStatus = getActiveStatus(status);
+  const activeStatus = getActiveStatus(getSearchParam(status));
+  const activeFormat = getActiveFormat(getSearchParam(format));
+  const activeContentType = getActiveContentType(getSearchParam(contentType));
+  const filters = { contentType: activeContentType, format: activeFormat } satisfies InstagramQueueFilters;
   const requestedPage = getPageParam(page);
   const [itemCounts, queue] = await Promise.all([
-    getInstagramItemCounts(),
-    getInstagramItems(activeStatus, query, requestedPage)
+    getInstagramItemCounts(filters),
+    getInstagramItems(activeStatus, query, requestedPage, filters)
   ]);
-  const returnTo = getInstagramReturnTo(activeStatus, query, queue.page);
+  const returnTo = getInstagramReturnTo(activeStatus, query, filters, queue.page);
   const reviewRows = queue.items.map(toInstagramReviewRow);
 
   return (
@@ -74,7 +88,7 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
           {statusFilters.map((status) => (
             <FilterLink
               active={activeStatus === status}
-              href={getInstagramReturnTo(status, query)}
+              href={getInstagramReturnTo(status, query, filters)}
               key={status}
               label={formatQueueTitle(status)}
               value={getStatusCount(itemCounts, status)}
@@ -82,30 +96,51 @@ export default async function AdminInstagramPage({ searchParams }: AdminInstagra
           ))}
         </nav>
 
-        <form action="/admin/instagram" className="admin-search admin-search--queue" role="search">
+        <form action="/admin/instagram" className="admin-search admin-search--queue admin-search--filtered-queue" role="search">
           {activeStatus === "all" ? null : <input name="status" type="hidden" value={activeStatus} />}
-          <label className="sr-only" htmlFor="admin-instagram-search">Search Instagram queue</label>
-          <input
-            id="admin-instagram-search"
-            name="q"
-            placeholder="Search by saint, shortcode, caption, biodata, URL, or status"
-            type="search"
-            defaultValue={query}
-          />
+          <label className="admin-field">
+            <span>Format</span>
+            <select defaultValue={activeFormat} name="format">
+              <option value="all">All formats</option>
+              {instagramQueueFormats.map((value) => <option key={value} value={value}>{toTitleCase(value)}</option>)}
+            </select>
+          </label>
+          <label className="admin-field">
+            <span>Content</span>
+            <select defaultValue={activeContentType} name="contentType">
+              <option value="all">All content</option>
+              <option value="untagged">Untagged</option>
+              {instagramContentTypes.map((value) => <option key={value} value={value}>{toTitleCase(value)}</option>)}
+            </select>
+          </label>
+          <label className="admin-field" htmlFor="admin-instagram-search">
+            <span>Search</span>
+            <input
+              id="admin-instagram-search"
+              name="q"
+              placeholder="Saint, shortcode, caption, biodata, URL, or status"
+              type="search"
+              defaultValue={query}
+            />
+          </label>
           <button className="admin-form-button" type="submit">Search</button>
-          {query ? <Link className="admin-form-button admin-form-button--secondary" href={getInstagramReturnTo(activeStatus, "") as Route}>Clear</Link> : null}
+          {query || activeFormat !== "all" || activeContentType !== "all" ? <Link className="admin-form-button admin-form-button--secondary" href={getInstagramReturnTo(activeStatus, "", {}) as Route}>Clear</Link> : null}
         </form>
         <InstagramBulkReviewList
           activeStatus={activeStatus}
+          contentType={activeContentType}
           emptyMessage={query ? "Try another search or clear the queue search." : "Try another status filter or run `npm run ingest:instagram -- --api --dry-run` to preview a fresh import."}
           items={reviewRows}
           key={returnTo}
+          format={activeFormat}
           query={query}
           returnTo={returnTo}
           totalMatchingCount={queue.totalCount}
         />
         <InstagramQueuePagination
           activeStatus={activeStatus}
+          contentType={activeContentType}
+          format={activeFormat}
           page={queue.page}
           pageCount={queue.pageCount}
           query={query}
@@ -123,6 +158,8 @@ function toInstagramReviewRow(item: InstagramQueueItem) {
 
   return {
     id: item.id,
+    contentType: item.contentType ? formatStatus(item.contentType) : "Untagged",
+    format: formatStatus(item.type),
     instagramUrl: item.instagramUrl,
     previewAlt: item.captionText ? `Instagram preview: ${item.captionText.slice(0, 80)}` : "Instagram media preview",
     previewLabel: formatStatus(item.type),
@@ -137,13 +174,27 @@ function getActiveStatus(status: string | undefined): StatusFilter {
   return statuses.includes(status as typeof statuses[number]) ? status as typeof statuses[number] : "all";
 }
 
-async function getInstagramItemCounts() {
+function getActiveFormat(format: string | undefined): InstagramQueueFormat {
+  return instagramQueueFormats.includes(format as typeof instagramQueueFormats[number])
+    ? format as typeof instagramQueueFormats[number]
+    : "all";
+}
+
+function getActiveContentType(contentType: string | undefined): InstagramContentFilter {
+  if (contentType === "untagged") return "untagged";
+  return instagramContentTypes.includes(contentType as typeof instagramContentTypes[number])
+    ? contentType as typeof instagramContentTypes[number]
+    : "all";
+}
+
+async function getInstagramItemCounts(filters: InstagramQueueFilters) {
   const [grouped, published] = await Promise.all([
     db.instagramItem.groupBy({
       by: ["status"],
+      where: getInstagramQueueWhere("all", filters),
       _count: { _all: true }
     }),
-    db.instagramItem.count({ where: getInstagramQueueWhere("published") })
+    db.instagramItem.count({ where: getInstagramQueueWhere("published", filters) })
   ]);
   const counts = Object.fromEntries(grouped.map((row) => [row.status, row._count._all]));
   return {
@@ -153,8 +204,8 @@ async function getInstagramItemCounts() {
   } as Record<string, number>;
 }
 
-async function getInstagramItems(status: StatusFilter, query: string, requestedPage: number) {
-  const where = getInstagramQueueWhere(status);
+async function getInstagramItems(status: StatusFilter, query: string, requestedPage: number, filters: InstagramQueueFilters) {
+  const where = getInstagramQueueWhere(status, filters);
   const baseQuery = {
     where,
     orderBy: [{ status: "asc" }, { postedAt: "desc" }, { updatedAt: "desc" }],
@@ -208,11 +259,15 @@ function FilterLink({ active, href, label, value }: { active: boolean; href: str
 
 function InstagramQueuePagination({
   activeStatus,
+  contentType,
+  format,
   page,
   pageCount,
   query
 }: {
   activeStatus: StatusFilter;
+  contentType: InstagramContentFilter;
+  format: InstagramQueueFormat;
   page: number;
   pageCount: number;
   query: string;
@@ -224,7 +279,7 @@ function InstagramQueuePagination({
       {page > 1 ? (
         <Link
           className="admin-form-button admin-form-button--secondary"
-          href={getInstagramReturnTo(activeStatus, query, page - 1) as Route}
+          href={getInstagramReturnTo(activeStatus, query, { contentType, format }, page - 1) as Route}
           rel="prev"
         >
           Previous
@@ -236,7 +291,7 @@ function InstagramQueuePagination({
       {page < pageCount ? (
         <Link
           className="admin-form-button admin-form-button--secondary"
-          href={getInstagramReturnTo(activeStatus, query, page + 1) as Route}
+          href={getInstagramReturnTo(activeStatus, query, { contentType, format }, page + 1) as Route}
           rel="next"
         >
           Next
@@ -280,9 +335,11 @@ function getPageParam(value: string | string[] | undefined) {
   return Number.isSafeInteger(page) && page > 0 ? page : 1;
 }
 
-function getInstagramReturnTo(status: StatusFilter, query: string, page = 1) {
+function getInstagramReturnTo(status: StatusFilter, query: string, filters: InstagramQueueFilters = {}, page = 1) {
   const params = new URLSearchParams();
   if (status !== "all") params.set("status", status);
+  if (filters.format && filters.format !== "all") params.set("format", filters.format);
+  if (filters.contentType && filters.contentType !== "all") params.set("contentType", filters.contentType);
   if (query) params.set("q", query);
   if (page > 1) params.set("page", String(page));
   const qs = params.toString();

@@ -24,7 +24,7 @@ The admin saint review workflow now has:
 
 The admin Instagram review workflow now has:
 
-- `/admin/instagram` status-filtered queues for real imported Instagram posts, reels, and carousel records.
+- `/admin/instagram` status-, format-, and content-type-filtered queues for real imported Instagram posts, reels, and carousel records.
 - a `Refresh Queue` admin action that creates a durable ingestion job, imports all
   Instagram posts when the website queue is empty, and otherwise imports only
   new posts from the Instagram API.
@@ -33,6 +33,7 @@ The admin Instagram review workflow now has:
   first-page extraction.
 - clickable status counters so editors can view imported, suggested, matched, review, ignored, and legacy published queues.
 - rich queue cards with media previews, status/type/date badges, caption previews, Instagram links, and review actions.
+- editorial content classification during review with `Biography`, `Theme`, and `Quote` options. Carousels posted before July 29, 2026 default to `Biography`; later imports never overwrite a human-selected classification.
 - `/admin/instagram/[id]` detail review pages with a large preview, AI-assisted first-page biodata extraction from imported image data, caption/import metadata, raw API source snapshot, saint match list, manual saint attachment, saint-draft creation, and review/ignore actions.
 
 Public saint pages render matched Instagram items as Instagram-style post cards.
@@ -208,6 +209,10 @@ Instagram queue refresh requires both:
 - `INSTAGRAM_ACCESS_TOKEN`, to pull media records from the Instagram API.
 - `OPENAI_API_KEY`, to extract first-page biodata before editorial review.
 
+The default API field list includes both `media_type` and `media_product_type`.
+Together with the permalink shape, these fields classify carousel albums and
+reels explicitly while retaining the original API payload for review.
+
 The scheduled production refresh also requires:
 
 - `INSTAGRAM_REFRESH_CRON_SECRET` as an environment variable on the deployed app.
@@ -352,9 +357,12 @@ Public pages query only `status = published`.
 
 Imported Instagram items initially enter the CMS as `needs_review` unless a confident explicit saint-name field exists in the source row. API imports preserve captions and media metadata but do not guess saint matches from captions by default.
 
-Editors can use `/admin/instagram` to filter real Instagram items by status and `/admin/instagram/[id]` to:
+Editors can use `/admin/instagram` to filter real Instagram items by status,
+format (`Carousel` or `Reel`), and editorial content type (`Biography`, `Theme`,
+`Quote`, or `Untagged`). On `/admin/instagram/[id]` they can:
 
 - inspect the media preview, caption, posted date, shortcode, import batch, and raw API payload.
+- assign the editorial content type used by the queue filters.
 - accept first-page biodata claims for aliases, dates, places, gurus, and traditions while preserving the accepted source value.
 - attach a saint and mark the `InstagramItemSaint` link as `matched`.
 - create a new `needs_review` saint draft from first-page biodata and attach the Instagram item immediately.

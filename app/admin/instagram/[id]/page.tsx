@@ -16,7 +16,7 @@ import { compactMetadata, parseInstagramFirstPageMetadata, splitGurus, splitKeyP
 import { rankSaintSearchResults } from "@/lib/saint-search";
 import { searchScoreToConfidence } from "@/lib/search-text";
 import { toSlug } from "@/lib/slugs";
-import { acceptInstagramClaim, createSaintFromInstagramItem, extractInstagramFirstPageFromImage, updateInstagramItemSaintStatus, updateInstagramItemStatus } from "../actions";
+import { acceptInstagramClaim, createSaintFromInstagramItem, extractInstagramFirstPageFromImage, updateInstagramItemContentType, updateInstagramItemSaintStatus, updateInstagramItemStatus } from "../actions";
 import { FirstPageMetadataForm } from "./first-page-metadata-form";
 import { SaintAttachForm } from "./saint-attach-form";
 
@@ -63,6 +63,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
           <div className="review-meta">
             <StatusBadge label={formatStatus(item.status)} />
             <StatusBadge label={formatStatus(item.type)} />
+            {item.contentType ? <StatusBadge label={formatStatus(item.contentType)} /> : null}
             {item.matchConfidence ? <StatusBadge label={item.matchConfidence} /> : null}
             <StatusBadge label={item.postedAt ? item.postedAt.toLocaleDateString() : "date pending"} />
           </div>
@@ -89,6 +90,7 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
             <div className="instagram-detail-preview__content">
               <div className="field-grid">
                 <ReviewField label="Shortcode" value={item.instagramShortcode} />
+                <ReviewField label="Content type" value={item.contentType ? formatStatus(item.contentType) : null} />
                 <ReviewField label="Posted date" value={item.postedAt?.toLocaleString()} />
                 <ReviewField label="Imported" value={item.createdAt.toLocaleString()} />
                 <ReviewField label="Last updated" value={item.updatedAt.toLocaleString()} />
@@ -104,6 +106,12 @@ export default async function AdminInstagramReviewPage({ params, searchParams }:
         <aside className="review-panel review-panel--detail-card">
           <h2>Review target</h2>
           <p>Resolve this item by matching it to an existing saint or creating a saint draft. Published saint pages show matched Instagram content automatically.</p>
+          <ContentTypeForm
+            contentType={item.contentType}
+            instagramItemId={item.id}
+            returnTo={returnTo}
+            version={item.version}
+          />
           <div className="review-actions">
             <ItemStatusForm instagramItemId={item.id} version={item.version} returnTo={returnTo} status="needs_review" label="Return to review" variant="secondary" />
             <ItemStatusForm instagramItemId={item.id} version={item.version} returnTo={returnTo} status="ignored" label="Ignore" variant="warning" />
@@ -656,6 +664,38 @@ function ItemStatusForm({
       <input name="returnTo" type="hidden" value={returnTo} />
       <input name="status" type="hidden" value={status} />
       <button className={getActionButtonClassName(variant)} type="submit">{label}</button>
+    </form>
+  );
+}
+
+function ContentTypeForm({
+  contentType,
+  instagramItemId,
+  returnTo,
+  version
+}: {
+  contentType: "biography" | "theme" | "quote" | null;
+  instagramItemId: string;
+  returnTo: string;
+  version: number;
+}) {
+  return (
+    <form action={updateInstagramItemContentType} className="form-stack">
+      <input name="instagramItemId" type="hidden" value={instagramItemId} />
+      <input name="version" type="hidden" value={version} />
+      <input name="returnTo" type="hidden" value={returnTo} />
+      <label>
+        Content type
+        <select defaultValue={contentType ?? ""} name="contentType" required>
+          <option disabled value="">Choose a content type</option>
+          <option value="biography">Biography</option>
+          <option value="theme">Theme</option>
+          <option value="quote">Quote</option>
+        </select>
+      </label>
+      <div className="review-actions">
+        <button className="admin-form-button" type="submit">Save content type</button>
+      </div>
     </form>
   );
 }

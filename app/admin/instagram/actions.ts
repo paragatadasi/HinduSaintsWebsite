@@ -13,8 +13,12 @@ import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { buildEraLabel, parseImportedDate } from "@/lib/import-dates";
 import {
   getInstagramQueueWhere,
+  instagramContentTypes,
+  instagramQueueFormats,
   instagramQueueStatuses,
   rankInstagramQueueItems,
+  type InstagramContentFilter,
+  type InstagramQueueFormat,
   type InstagramQueueStatus
 } from "@/lib/instagram-admin-queue";
 import {
@@ -31,6 +35,12 @@ import { expectedVersion, guardedInstagramUpdate } from "@/lib/admin-conflicts";
 const itemStatusSchema = z.object({
   instagramItemId: z.string().cuid(),
   status: z.enum(["needs_review", "suggested", "matched", "ignored", "published"]),
+  returnTo: z.string().optional()
+});
+
+const itemContentTypeSchema = z.object({
+  instagramItemId: z.string().cuid(),
+  contentType: z.enum(instagramContentTypes),
   returnTo: z.string().optional()
 });
 
@@ -86,6 +96,8 @@ const bulkInstagramDeleteSchema = z.discriminatedUnion("selectionMode", [
   z.object({
     selectionMode: z.literal("matching"),
     status: z.enum(["all", ...instagramQueueStatuses]),
+    format: z.enum(["all", ...instagramQueueFormats]).default("all"),
+    contentType: z.enum(["all", "untagged", ...instagramContentTypes]).default("all"),
     query: z.string().trim().max(500).optional(),
     password: z.string().min(1),
     returnTo: z.string().startsWith("/admin/instagram").optional()
@@ -126,6 +138,30 @@ export async function updateInstagramItemStatus(formData: FormData) {
 
   revalidateInstagramPaths(item.saints.map((link) => link.saint.slug));
   redirect(getReturnTo(parsed.returnTo) as Route);
+}
+
+export async function updateInstagramItemContentType(formData: FormData) {
+  await requireAdminSession();
+
+  const parsed = itemContentTypeSchema.parse({
+    instagramItemId: formData.get("instagramItemId"),
+    contentType: formData.get("contentType"),
+    returnTo: formData.get("returnTo") || undefined
+  });
+  const returnTo = parsed.returnTo?.startsWith("/admin/instagram/")
+    ? parsed.returnTo
+    : `/admin/instagram/${parsed.instagramItemId}`;
+
+  await guardedInstagramUpdate(
+    parsed.instagramItemId,
+    expectedVersion(formData),
+    { contentType: parsed.contentType },
+    { contentType: parsed.contentType },
+    returnTo
+  );
+  revalidatePath("/admin/instagram");
+  revalidatePath(returnTo);
+  redirect(returnTo as Route);
 }
 
 export async function updateInstagramItemSaintStatus(formData: FormData) {
@@ -457,6 +493,8 @@ export async function bulkDeleteInstagramItems(formData: FormData) {
     selectionMode: formData.get("selectionMode") || "visible",
     instagramItemIds: formData.getAll("instagramItemIds"),
     status: formData.get("status"),
+    format: emptyToUndefined(formData.get("format")),
+    contentType: emptyToUndefined(formData.get("contentType")),
     query: emptyToUndefined(formData.get("query")),
     password: formData.get("bulkDeletePassword"),
     returnTo: emptyToUndefined(formData.get("returnTo"))
@@ -467,7 +505,7 @@ export async function bulkDeleteInstagramItems(formData: FormData) {
   }
 
   const requestedItemIds = parsed.selectionMode === "matching"
-    ? await getMatchingInstagramItemIds(parsed.status, parsed.query ?? "")
+    ? await getMatchingInstagramItemIds(parsed.status, parsed.query ?? "", parsed.format, parsed.contentType)
     : parsed.instagramItemIds;
   const items = await db.instagramItem.findMany({
     where: { id: { in: requestedItemIds } },
@@ -527,8 +565,13 @@ export async function bulkDeleteInstagramItems(formData: FormData) {
   redirect(destination);
 }
 
-async function getMatchingInstagramItemIds(status: InstagramQueueStatus, query: string) {
-  const where = getInstagramQueueWhere(status);
+async function getMatchingInstagramItemIds(
+  status: InstagramQueueStatus,
+  query: string,
+  format: InstagramQueueFormat,
+  contentType: InstagramContentFilter
+) {
+  const where = getInstagramQueueWhere(status, { contentType, format });
   if (!query) {
     const items = await db.instagramItem.findMany({
       where,
@@ -542,6 +585,7 @@ async function getMatchingInstagramItemIds(status: InstagramQueueStatus, query: 
     select: {
       id: true,
       captionText: true,
+      contentType: true,
       extractedSaintName: true,
       firstPageMetadata: true,
       firstPageText: true,

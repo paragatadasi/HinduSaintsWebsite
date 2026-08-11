@@ -50,6 +50,12 @@ enum InstagramType {
   unknown
 }
 
+enum InstagramContentType {
+  biography
+  theme
+  quote
+}
+
 enum MatchStatus {
   imported
   suggested
@@ -1017,6 +1023,7 @@ model InstagramItem {
   instagramUrl        String                  @unique
   instagramShortcode  String?
   type                InstagramType           @default(unknown)
+  contentType         InstagramContentType?
   captionText         String?
   extractedSaintName  String?
   firstPageText       String?
@@ -1036,6 +1043,7 @@ model InstagramItem {
   version             Int                     @default(1)
 
   @@index([type, postedAt, createdAt])
+  @@index([contentType, postedAt, createdAt])
 }
 
 model InstagramMediaAsset {

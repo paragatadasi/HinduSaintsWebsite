@@ -5173,6 +5173,10 @@ fieldset.admin-field {
   border-color: var(--review-workflow-border);
 }
 
+.admin-search--filtered-queue {
+  grid-template-columns: minmax(140px, 0.45fr) minmax(140px, 0.45fr) minmax(240px, 1fr) auto auto;
+}
+
 .admin-pagination {
   align-items: center;
   display: flex;

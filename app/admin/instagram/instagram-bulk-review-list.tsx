@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { getInstagramLinkProps } from "@/lib/external-links";
-import type { InstagramQueueStatus } from "@/lib/instagram-admin-queue";
+import type { InstagramContentFilter, InstagramQueueFormat, InstagramQueueStatus } from "@/lib/instagram-admin-queue";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { bulkDeleteInstagramItems } from "./actions";
 
 type InstagramReviewRow = {
+  contentType: string;
+  format: string;
   id: string;
   instagramUrl: string;
   previewAlt: string;
@@ -18,7 +21,9 @@ type InstagramReviewRow = {
 
 type InstagramBulkReviewListProps = {
   activeStatus: InstagramQueueStatus;
+  contentType: InstagramContentFilter;
   emptyMessage: string;
+  format: InstagramQueueFormat;
   items: InstagramReviewRow[];
   query: string;
   returnTo: string;
@@ -27,7 +32,9 @@ type InstagramBulkReviewListProps = {
 
 export function InstagramBulkReviewList({
   activeStatus,
+  contentType,
   emptyMessage,
+  format,
   items,
   query,
   returnTo,
@@ -130,6 +137,8 @@ export function InstagramBulkReviewList({
             <BulkReviewHiddenFields
               activeStatus={activeStatus}
               allMatchingSelected={allMatchingSelected}
+              contentType={contentType}
+              format={format}
               itemIds={selectedIds}
               query={query}
               returnTo={returnTo}
@@ -200,6 +209,10 @@ function InstagramReviewCard({
       </Link>
       <span className="instagram-review-card__body">
         <Link className="instagram-review-card__link" href={`/admin/instagram/${item.id}`}>
+          <span className="review-meta">
+            <StatusBadge label={item.format} />
+            <StatusBadge label={item.contentType} />
+          </span>
           <span className="instagram-review-card__title">{item.title}</span>
           <span className="instagram-review-card__caption">{item.summary}</span>
         </Link>
@@ -215,12 +228,16 @@ function InstagramReviewCard({
 function BulkReviewHiddenFields({
   activeStatus,
   allMatchingSelected,
+  contentType,
+  format,
   itemIds,
   query,
   returnTo
 }: {
   activeStatus: InstagramQueueStatus;
   allMatchingSelected: boolean;
+  contentType: InstagramContentFilter;
+  format: InstagramQueueFormat;
   itemIds: string[];
   query: string;
   returnTo: string;
@@ -230,6 +247,8 @@ function BulkReviewHiddenFields({
       <input name="returnTo" type="hidden" value={returnTo} />
       <input name="selectionMode" type="hidden" value={allMatchingSelected ? "matching" : "visible"} />
       {allMatchingSelected ? <input name="status" type="hidden" value={activeStatus} /> : null}
+      {allMatchingSelected && format !== "all" ? <input name="format" type="hidden" value={format} /> : null}
+      {allMatchingSelected && contentType !== "all" ? <input name="contentType" type="hidden" value={contentType} /> : null}
       {allMatchingSelected && query ? <input name="query" type="hidden" value={query} /> : null}
       {itemIds.map((itemId) => (
         <input key={itemId} name="instagramItemIds" type="hidden" value={itemId} />
