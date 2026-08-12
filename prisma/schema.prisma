@@ -1313,13 +1313,11 @@ model FeedbackSubmission {
   resolutionNote      String?
   resolvedByEmail     String?
   resolvedAt          DateTime?
-  abuseFingerprint    String?
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 
   @@index([status, createdAt])
   @@index([entityType, entityId])
-  @@index([abuseFingerprint, createdAt])
 }
 
 model AuditEvent {

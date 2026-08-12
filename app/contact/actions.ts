@@ -1,10 +1,10 @@
 "use server";
 
-import { createHmac } from "node:crypto";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { resolveFeedbackContext } from "@/lib/feedback-context";
+import { isFeedbackRateLimited } from "@/lib/feedback-rate-limit";
 
 export type FeedbackFormState = {
   message: string;
@@ -73,21 +73,11 @@ export async function sendFeedback(
   }
 
   const requestHeaders = await headers();
-  const abuseFingerprint = getAbuseFingerprint(requestHeaders);
-  if (abuseFingerprint) {
-    const recentCount = await db.feedbackSubmission.count({
-      where: {
-        abuseFingerprint,
-        createdAt: { gte: new Date(Date.now() - 10 * 60 * 1000) }
-      }
-    });
-
-    if (recentCount >= 5) {
-      return {
-        status: "error",
-        message: "Too many feedback notes were submitted recently. Please try again in a few minutes."
-      };
-    }
+  if (isFeedbackRateLimited(requestHeaders)) {
+    return {
+      status: "error",
+      message: "Too many feedback notes were submitted recently. Please try again in a few minutes."
+    };
   }
 
   const feedback = parsed.data;
@@ -112,8 +102,7 @@ export async function sendFeedback(
         pageTitle: context?.pageTitle,
         entityType: context?.entityType,
         entityId: context?.entityId,
-        entitySlug: context?.entitySlug,
-        abuseFingerprint
+        entitySlug: context?.entitySlug
       },
       select: { id: true }
     });
@@ -136,12 +125,4 @@ function emptyToUndefined(value: FormDataEntryValue | null) {
   if (typeof value !== "string") return undefined;
   const trimmed = value.trim();
   return trimmed ? trimmed : undefined;
-}
-
-function getAbuseFingerprint(requestHeaders: Headers) {
-  const secret = process.env.FEEDBACK_RATE_LIMIT_SECRET ?? process.env.AUTH_SECRET;
-  const forwardedFor = requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim();
-  const clientIp = forwardedFor ?? requestHeaders.get("x-real-ip")?.trim();
-  if (!secret || !clientIp) return undefined;
-  return createHmac("sha256", secret).update(clientIp).digest("hex");
 }
