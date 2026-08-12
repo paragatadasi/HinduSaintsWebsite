@@ -37,9 +37,17 @@
 - Environment variables: none
 - Data/backfill/release steps: run the migration in the normal release/migrate
   phase before starting the new web image. No backfill is required; registered
-  experiences default to `off`. Ensure the production CDN bypasses shared cache
-  whenever an Auth.js session cookie is present before enabling previews on
-  otherwise cacheable public URLs.
+  experiences default to `off`.
+- Deployment safety: the cache-bypass check does **not** block deploying this
+  branch. Because every registered experience defaults to `off`, deployment
+  exposes no work-in-progress content. Keep all experiences `off` immediately
+  after deployment.
+- Post-deployment activation gate: before changing any experience to
+  `admin_preview`, verify on production that a request carrying an Auth.js
+  session-cookie name receives `Cache-Control: private, no-store`,
+  `CDN-Cache-Control: private, no-store`, `Surrogate-Control: no-store`, and no
+  edge-cache hit. If the test fails or cannot be completed, leave every
+  experience `off`; the deployed branch remains safe and inactive.
 - Queue/deploy trigger: queued until the next requested or major deployment
 
 ## Risk And Conflicts
