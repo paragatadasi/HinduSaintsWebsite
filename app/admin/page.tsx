@@ -6,7 +6,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { requireAdminUser } from "@/lib/admin-access";
 import { canReviewEditorialRevisions, hasCapability } from "@/lib/permissions";
-import { canAccessSaintCatalog, getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
+import { canAccessSaintCatalog, getAdminSaintCatalogScope } from "@/lib/admin-saint-access";
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
@@ -23,85 +23,79 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
   const canClaimAssignments = hasCapability(user.roles, "self_assign_content") || hasCapability(user.roles, "edit_content");
   const canReviewRevisions = canReviewEditorialRevisions(user.roles);
   const saintScope = getAdminSaintCatalogScope(user.roles);
-  const [
-    saintCounts,
-    instagramNeedsReview,
-    traditionsNeedsReview,
-    placeCount,
-    newFeedbackCount,
-    assignmentRows
-  ] = await Promise.all([
-    db.saint.groupBy({ by: ["workflowStatus"], where: { teamVisibility: "public" }, _count: { _all: true } }),
-    canViewInstagram ? db.instagramItem.count({ where: { status: "needs_review" } }) : Promise.resolve(0),
-    canViewContent ? db.tradition.count({ where: { status: "needs_review" } }) : Promise.resolve(0),
-    canViewContent ? db.place.count() : Promise.resolve(0),
-    canViewContent ? db.feedbackSubmission.count({ where: { status: "new" } }) : Promise.resolve(0),
-    db.contentAssignment.findMany({
-      where: { OR: [{ assigneeId: user.id }, { assigneeId: null, state: "assigned" }] },
-      select: { assigneeId: true, contentId: true, contentType: true, state: true }
-    })
-  ]);
-  const counts = Object.fromEntries(saintCounts.map((row) => [row.workflowStatus, row._count._all]));
-  const visibleAssignments = await filterVisibleAssignments(assignmentRows, { canViewContent, canViewInstagram, saintScope });
-  const myWorkCount = visibleAssignments.filter((row) => row.assigneeId === user.id && ["assigned", "in_progress", "blocked"].includes(row.state)).length;
-  const availableWorkCount = visibleAssignments.filter((row) => !row.assigneeId && row.state === "assigned").length;
-  const blockedWorkCount = visibleAssignments.filter((row) => row.assigneeId === user.id && row.state === "blocked").length;
-  const completedWorkCount = visibleAssignments.filter((row) => row.assigneeId === user.id && row.state === "completed").length;
+  const teamWorkflow = canManageAssignments
+    ? await loadTeamWorkflow({ canViewContent, canViewInstagram })
+    : null;
 
   return (
     <div className="admin-stack">
-      <div>
-        <div className="eyebrow">Dashboard</div>
-        <h1>Content workflow</h1>
-        <p className="lede">Review shared queues, track your own workload, and coordinate assignments from one workspace.</p>
-      </div>
+      {teamWorkflow ? (
+        <>
+          <div>
+            <div className="eyebrow">Dashboard</div>
+            <h1>Content workflow</h1>
+            <p className="lede">Coordinate shared editorial queues and keep your own assignments moving from one workspace.</p>
+          </div>
 
-      <section className="admin-stack" aria-labelledby="team-workflow-title">
-        <div>
-          <div className="eyebrow">Shared queues</div>
-          <h2 id="team-workflow-title">Team Workflow</h2>
-          <p className="lede">See the editorial queues and published records the whole team is moving forward.</p>
-        </div>
-        <div className="admin-stat-grid">
-          {canViewContent ? <DashboardCard href="/admin/feedback?status=new" label="New feedback" value={newFeedbackCount} /> : null}
-          <DashboardCard href="/admin/saints?scope=public&workflow=needs_review" label="Saints needing review" value={counts.needs_review ?? 0} />
-          <DashboardCard href="/admin/saints?scope=public&workflow=fact_checked" label="Fact-checked saints" value={counts.fact_checked ?? 0} />
-          <DashboardCard href="/admin/saints?scope=public&workflow=populated" label="Populated saints" value={counts.populated ?? 0} />
-          <DashboardCard href="/admin/saints?scope=public&workflow=polished" label="Polished saints" value={counts.polished ?? 0} />
-          {canViewInstagram ? <DashboardCard href="/admin/instagram?status=needs_review" label="Instagram items awaiting review" value={instagramNeedsReview} /> : null}
-          {canViewContent ? <DashboardCard href="/admin/traditions" label="Traditions awaiting review" value={traditionsNeedsReview} /> : null}
-          {canViewContent ? <DashboardCard href="/admin/places" label="Place records" value={placeCount} /> : null}
-          {hasCapability(user.roles, "access_museum") ? <DashboardLink href="/admin/museum" label="Museum workspace" badge="Curator" /> : null}
-        </div>
-      </section>
+          <section className="admin-stack" aria-labelledby="team-workflow-title">
+            <div>
+              <div className="eyebrow">Shared queues</div>
+              <h2 id="team-workflow-title">Team workflow</h2>
+              <p className="lede">See the editorial queues and published records the whole team is moving forward.</p>
+            </div>
+            <div className="admin-stat-grid">
+              {canViewContent ? <DashboardCard href="/admin/feedback?status=new" label="New feedback" value={teamWorkflow.newFeedbackCount} /> : null}
+              <DashboardCard href="/admin/saints?scope=public&workflow=needs_review" label="Saints needing review" value={teamWorkflow.saintCounts.needs_review ?? 0} />
+              <DashboardCard href="/admin/saints?scope=public&workflow=fact_checked" label="Fact-checked saints" value={teamWorkflow.saintCounts.fact_checked ?? 0} />
+              <DashboardCard href="/admin/saints?scope=public&workflow=populated" label="Populated saints" value={teamWorkflow.saintCounts.populated ?? 0} />
+              <DashboardCard href="/admin/saints?scope=public&workflow=polished" label="Polished saints" value={teamWorkflow.saintCounts.polished ?? 0} />
+              {canViewInstagram ? <DashboardCard href="/admin/instagram?status=needs_review" label="Instagram items awaiting review" value={teamWorkflow.instagramNeedsReview} /> : null}
+              {canViewContent ? <DashboardCard href="/admin/traditions" label="Traditions awaiting review" value={teamWorkflow.traditionsNeedsReview} /> : null}
+              {canViewContent ? <DashboardCard href="/admin/places" label="Place records" value={teamWorkflow.placeCount} /> : null}
+              {hasCapability(user.roles, "access_museum") ? <DashboardLink href="/admin/museum" label="Museum workspace" badge="Curator" /> : null}
+            </div>
+          </section>
 
-      {canReviewRevisions ? <EditorialReviewQueue /> : null}
-
-      <section className="admin-stack" aria-labelledby="personal-workflow-title">
-        <div>
-          <div className="eyebrow">Personal queues</div>
-          <h2 id="personal-workflow-title">My Workflow</h2>
-          <p className="lede">Jump directly to the assignment queue that needs your attention.</p>
-        </div>
-        <div className="admin-stat-grid">
-          <DashboardCard href={"/admin?work=mine#my-work" as Route} label="My active work" value={myWorkCount} />
-          <DashboardCard href={"/admin?work=available#my-work" as Route} label="Available work" value={availableWorkCount} />
-          <DashboardCard href={"/admin?work=blocked#my-work" as Route} label="My blocked work" value={blockedWorkCount} />
-          <DashboardCard href={"/admin?work=completed#my-work" as Route} label="My completed work" value={completedWorkCount} />
-        </div>
-      </section>
+          {canReviewRevisions ? <EditorialReviewQueue /> : null}
+        </>
+      ) : null}
 
       <AssignmentWorkspace
         canClaim={canClaimAssignments}
         canManage={canManageAssignments}
         canViewContent={canViewContent}
         canViewInstagram={canViewInstagram}
+        eyebrow={teamWorkflow ? "Personal queue" : "Dashboard"}
+        headingLevel={teamWorkflow ? "h2" : "h1"}
         params={params}
         saintScope={saintScope}
         userId={user.id}
       />
     </div>
   );
+}
+
+async function loadTeamWorkflow({
+  canViewContent,
+  canViewInstagram
+}: {
+  canViewContent: boolean;
+  canViewInstagram: boolean;
+}) {
+  const [saintRows, instagramNeedsReview, traditionsNeedsReview, placeCount, newFeedbackCount] = await Promise.all([
+    db.saint.groupBy({ by: ["workflowStatus"], where: { teamVisibility: "public" }, _count: { _all: true } }),
+    canViewInstagram ? db.instagramItem.count({ where: { status: "needs_review" } }) : Promise.resolve(0),
+    canViewContent ? db.tradition.count({ where: { status: "needs_review" } }) : Promise.resolve(0),
+    canViewContent ? db.place.count() : Promise.resolve(0),
+    canViewContent ? db.feedbackSubmission.count({ where: { status: "new" } }) : Promise.resolve(0)
+  ]);
+  return {
+    instagramNeedsReview,
+    newFeedbackCount,
+    placeCount,
+    saintCounts: Object.fromEntries(saintRows.map((row) => [row.workflowStatus, row._count._all])) as Record<string, number>,
+    traditionsNeedsReview
+  };
 }
 
 function MuseumOnlyDashboard() {
@@ -122,25 +116,5 @@ function DashboardCard({ href, label, value }: { href: Route; label: string; val
 
 function DashboardLink({ href, label, badge }: { href: Route; label: string; badge: string }) {
   return <Link className="admin-stat admin-stat--link interactive-surface" href={href}><StatusBadge label={badge} /><h3>{label}</h3></Link>;
-}
-
-async function filterVisibleAssignments<T extends { contentId: string; contentType: string }>(
-  rows: T[],
-  access: { canViewContent: boolean; canViewInstagram: boolean; saintScope: SaintCatalogScope }
-) {
-  const ids = (type: string) => rows.filter((row) => row.contentType === type).map((row) => row.contentId);
-  const [saints, traditions, places, posts] = await Promise.all([
-    db.saint.findMany({ where: { id: { in: ids("saint") }, ...saintCatalogWhere(access.saintScope) }, select: { id: true } }),
-    access.canViewContent ? db.tradition.findMany({ where: { id: { in: ids("tradition") } }, select: { id: true } }) : Promise.resolve([]),
-    access.canViewContent ? db.place.findMany({ where: { id: { in: ids("place") } }, select: { id: true } }) : Promise.resolve([]),
-    access.canViewInstagram ? db.instagramItem.findMany({ where: { id: { in: ids("instagram_item") } }, select: { id: true } }) : Promise.resolve([])
-  ]);
-  const visible = new Set([
-    ...saints.map((row) => `saint:${row.id}`),
-    ...traditions.map((row) => `tradition:${row.id}`),
-    ...places.map((row) => `place:${row.id}`),
-    ...posts.map((row) => `instagram_item:${row.id}`)
-  ]);
-  return rows.filter((row) => visible.has(`${row.contentType}:${row.contentId}`));
 }
 
