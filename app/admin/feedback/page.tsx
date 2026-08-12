@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Route } from "next";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -19,6 +20,7 @@ type FeedbackInboxPageProps = {
 };
 
 export default async function FeedbackInboxPage({ searchParams }: FeedbackInboxPageProps) {
+  await requireCapability("view_feedback_inbox");
   const { page, q, status } = await searchParams;
   const query = getSearchParam(q);
   const activeStatus = getActiveStatus(status);

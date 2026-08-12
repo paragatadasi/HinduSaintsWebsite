@@ -5,6 +5,7 @@ import type { Route } from "next";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { ReviewFactGrid, ReviewSection, ReviewWorkflow } from "@/components/admin/review-ui";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { updateFeedbackWorkflow } from "../actions";
 
@@ -20,6 +21,7 @@ type FeedbackDetailPageProps = {
 };
 
 export default async function FeedbackDetailPage({ params, searchParams }: FeedbackDetailPageProps) {
+  await requireCapability("view_feedback_inbox");
   const [{ id }, query] = await Promise.all([params, searchParams]);
   const feedback = await db.feedbackSubmission.findUnique({ where: { id } });
   if (!feedback) notFound();

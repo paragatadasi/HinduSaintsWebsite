@@ -149,7 +149,7 @@ function canApplyIntent(
 }
 
 async function requireAdminSession() {
-  await assertCapability("edit_content");
+  await assertCapability("view_feedback_inbox");
   const session = await auth();
   const email = session?.user?.email;
   if (!email) redirect("/admin");

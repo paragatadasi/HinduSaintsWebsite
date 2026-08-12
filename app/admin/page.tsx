@@ -13,6 +13,7 @@ type Props = { searchParams: Promise<Record<string, string | string[] | undefine
 export default async function AdminDashboardPage({ searchParams }: Props) {
   const user = await requireAdminUser();
   const canViewContent = hasCapability(user.roles, "view_content");
+  const canViewFeedbackInbox = hasCapability(user.roles, "view_feedback_inbox");
   const canViewInstagram = hasCapability(user.roles, "view_instagram_review");
   const canViewSaints = canAccessSaintCatalog(user.roles);
   if (!canViewSaints && !canViewContent) {
@@ -24,7 +25,7 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
   const canReviewRevisions = canReviewEditorialRevisions(user.roles);
   const saintScope = getAdminSaintCatalogScope(user.roles);
   const teamWorkflow = canManageAssignments
-    ? await loadTeamWorkflow({ canViewContent, canViewInstagram })
+    ? await loadTeamWorkflow({ canViewContent, canViewFeedbackInbox, canViewInstagram })
     : null;
 
   return (
@@ -44,7 +45,7 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
               <p className="lede">See the editorial queues and published records the whole team is moving forward.</p>
             </div>
             <div className="admin-stat-grid">
-              {canViewContent ? <DashboardCard href="/admin/feedback?status=new" label="New feedback" value={teamWorkflow.newFeedbackCount} /> : null}
+              {canViewFeedbackInbox ? <DashboardCard href="/admin/feedback?status=new" label="New feedback" value={teamWorkflow.newFeedbackCount} /> : null}
               <DashboardCard href="/admin/saints?scope=public&workflow=needs_review" label="Saints needing review" value={teamWorkflow.saintCounts.needs_review ?? 0} />
               <DashboardCard href="/admin/saints?scope=public&workflow=fact_checked" label="Fact-checked saints" value={teamWorkflow.saintCounts.fact_checked ?? 0} />
               <DashboardCard href="/admin/saints?scope=public&workflow=populated" label="Populated saints" value={teamWorkflow.saintCounts.populated ?? 0} />
@@ -77,9 +78,11 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
 
 async function loadTeamWorkflow({
   canViewContent,
+  canViewFeedbackInbox,
   canViewInstagram
 }: {
   canViewContent: boolean;
+  canViewFeedbackInbox: boolean;
   canViewInstagram: boolean;
 }) {
   const [saintRows, instagramNeedsReview, traditionsNeedsReview, placeCount, newFeedbackCount] = await Promise.all([
@@ -87,7 +90,7 @@ async function loadTeamWorkflow({
     canViewInstagram ? db.instagramItem.count({ where: { status: "needs_review" } }) : Promise.resolve(0),
     canViewContent ? db.tradition.count({ where: { status: "needs_review" } }) : Promise.resolve(0),
     canViewContent ? db.place.count() : Promise.resolve(0),
-    canViewContent ? db.feedbackSubmission.count({ where: { status: "new" } }) : Promise.resolve(0)
+    canViewFeedbackInbox ? db.feedbackSubmission.count({ where: { status: "new" } }) : Promise.resolve(0)
   ]);
   return {
     instagramNeedsReview,

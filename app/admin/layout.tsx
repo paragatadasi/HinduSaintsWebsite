@@ -59,13 +59,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     );
   }
 
-  const [newFeedbackCount, adminUser, openReconciliationCount, openDuplicateCount] = await Promise.all([
-    db.feedbackSubmission.count({ where: { status: "new" } }),
-    getAdminUser(),
+  const adminUser = await getAdminUser();
+  const roles = adminUser?.active ? adminUser.roles : [];
+  const [newFeedbackCount, openReconciliationCount, openDuplicateCount] = await Promise.all([
+    hasCapability(roles, "view_feedback_inbox")
+      ? db.feedbackSubmission.count({ where: { status: "new" } })
+      : Promise.resolve(0),
     db.reconciliationIssue.count({ where: { status: "open" } }),
     db.duplicateCandidate.count({ where: { entityType: "Saint", status: "open" } })
   ]);
-  const roles = adminUser?.active ? adminUser.roles : [];
   const navigationGroups = buildNavigationGroups({
     newFeedbackCount,
     openDuplicateCount,
@@ -98,7 +100,7 @@ function buildNavigationGroups({
 }) {
   const groups: AdminNavigationGroup[] = [];
   const operationItems: AdminNavigationGroup["items"] = [];
-  if (hasCapability(roles, "view_content")) {
+  if (hasCapability(roles, "view_feedback_inbox")) {
     operationItems.push({ count: newFeedbackCount, href: "/admin/feedback", label: "Inbox" });
   }
   if (hasCapability(roles, "manage_site")) operationItems.push({ href: "/admin/site", label: "Site" });
