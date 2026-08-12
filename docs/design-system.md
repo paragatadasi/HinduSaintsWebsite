@@ -229,10 +229,12 @@ Current rollout notes:
 - Source Data sidebar navigation contains Reconciliation, Airtable, and
   Instagram. It has no landing-page overview or combined Import History item;
   each source workspace owns its operational and preserved raw batch history.
-- The Dashboard sidebar brand owns the `/admin` landing route. Team Workflow and
-  My Workflow counters are separated on that page, the full My Work assignment
-  workspace sits at the bottom, and neither Dashboard nor My Work is repeated
-  as an Operations sidebar item.
+- The Dashboard sidebar brand owns the `/admin` landing route. Individual
+  workflow participants land on one consolidated My Workflow workspace with
+  URL-backed Active, Available, Blocked, and Completed queues. Shared team
+  metrics and the Team workload queue are reserved for roles that manage
+  assignments. Neither Dashboard nor My Workflow is repeated as an Operations
+  sidebar item.
 - Submitted long-form editorial revisions are an actionable Dashboard section
   for Site Admin and Editor roles. They are not duplicated as a site-wide
   sidebar destination; the legacy queue URL redirects to the Dashboard section.

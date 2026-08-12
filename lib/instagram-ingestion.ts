@@ -173,6 +173,7 @@ export async function loadInstagramApiRows({ limit, stopAtKnown = false }: { lim
     "id",
     "caption",
     "media_type",
+    "media_product_type",
     "media_url",
     "children{media_type,media_url,thumbnail_url}",
     "permalink",
@@ -396,6 +397,7 @@ async function ingestInstagramRows({
           instagramUrl: row.instagramUrl,
           instagramShortcode: row.instagramShortcode,
           type: row.type,
+          contentType: getDefaultInstagramContentType(row.type, row.postedAt),
           captionText: row.captionText,
           extractedSaintName: row.extractedSaintName,
           firstPageText: row.firstPageText,
@@ -526,7 +528,10 @@ async function normalizeRow(raw: RawInstagramRow): Promise<InstagramImportRow | 
     ? { firstPageText: importedFirstPageText, metadata: parseInstagramFirstPageMetadata(importedFirstPageText) }
     : await extractInstagramFirstPageDraft({ rawPayloadJson: raw, captionText, thumbnailUrl });
   const postedAt = parseDate(pickString(raw, ["postedAt", "posted_at", "timestamp", "date", "taken_at"]));
-  const type = normalizeType(pickString(raw, ["type", "mediaType", "media_type", "product_type"]), instagramUrl);
+  const type = normalizeType([
+    pickString(raw, ["mediaProductType", "media_product_type", "product_type"]),
+    pickString(raw, ["type", "mediaType", "media_type"])
+  ].filter((value): value is string => Boolean(value)).join(" "), instagramUrl);
 
   return {
     sourceKey: mediaId ? `media:${mediaId}` : shortcode ? `shortcode:${shortcode}` : `url:${stableHash(instagramUrl)}`,
@@ -589,6 +594,11 @@ function normalizeType(value: string | undefined, instagramUrl: string): Instagr
   if (lower.includes("carousel") || lower.includes("album")) return "carousel";
   if (lower.includes("post") || lower.includes("image") || lower.includes("photo")) return "post";
   return getInstagramTypeFromUrl(instagramUrl);
+}
+
+function getDefaultInstagramContentType(type: InstagramType, postedAt: Date | undefined) {
+  if (type !== "carousel" || !postedAt) return undefined;
+  return postedAt < new Date("2026-07-29T00:00:00.000Z") ? "biography" as const : undefined;
 }
 
 function stableHash(value: string) {

@@ -11,10 +11,21 @@ export const instagramQueueStatuses = [
   "ignored"
 ] as const;
 
+export const instagramQueueFormats = ["carousel", "reel"] as const;
+export const instagramContentTypes = ["biography", "theme", "quote"] as const;
+
 export type InstagramQueueStatus = typeof instagramQueueStatuses[number] | "all";
+export type InstagramQueueFormat = typeof instagramQueueFormats[number] | "all";
+export type InstagramContentFilter = typeof instagramContentTypes[number] | "untagged" | "all";
+
+export type InstagramQueueFilters = {
+  contentType?: InstagramContentFilter;
+  format?: InstagramQueueFormat;
+};
 
 type SearchableInstagramItem = {
   captionText: string | null;
+  contentType: string | null;
   extractedSaintName: string | null;
   firstPageMetadata: unknown;
   firstPageText: string | null;
@@ -34,19 +45,28 @@ type SearchableInstagramItem = {
   }>;
 };
 
-export function getInstagramQueueWhere(status: InstagramQueueStatus): Prisma.InstagramItemWhereInput {
-  if (status === "all") return {};
+export function getInstagramQueueWhere(status: InstagramQueueStatus, filters: InstagramQueueFilters = {}): Prisma.InstagramItemWhereInput {
+  const clauses: Prisma.InstagramItemWhereInput[] = [];
   if (status === "published") {
-    return {
+    clauses.push({
       saints: {
         some: {
           matchStatus: { in: ["matched", "published"] },
           saint: { status: "published" }
         }
       }
-    };
+    });
+  } else if (status !== "all") {
+    clauses.push({ status });
   }
-  return { status };
+
+  if (filters.format && filters.format !== "all") clauses.push({ type: filters.format });
+  if (filters.contentType === "untagged") clauses.push({ contentType: null });
+  else if (filters.contentType && filters.contentType !== "all") clauses.push({ contentType: filters.contentType });
+
+  if (clauses.length === 0) return {};
+  if (clauses.length === 1) return clauses[0];
+  return { AND: clauses };
 }
 
 export function rankInstagramQueueItems<T extends SearchableInstagramItem>(items: T[], query: string) {
@@ -98,6 +118,7 @@ function buildInstagramItemSearchFields(item: SearchableInstagramItem): Weighted
     { value: item.instagramUrl, weight: 1 },
     { value: item.status, weight: 1 },
     { value: item.type, weight: 1 },
+    { value: item.contentType, weight: 1 },
     { value: item.postedAt?.toLocaleDateString(), weight: 0.8 }
   ];
 }
