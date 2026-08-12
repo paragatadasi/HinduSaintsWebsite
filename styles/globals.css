@@ -4607,6 +4607,35 @@ html[data-route-entering="true"] body > main {
   padding: var(--space-8) 0;
 }
 
+.admin-preview-workspace {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.admin-preview-toolbar {
+  align-items: start;
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.admin-preview-toolbar > div {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.admin-preview-toolbar h1,
+.admin-preview-toolbar p {
+  margin: 0;
+}
+
+.admin-preview-canvas {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
 .admin-sidebar,
 .admin-stack,
 .review-list,
@@ -4910,14 +4939,19 @@ fieldset.admin-field {
 .admin-field input,
 .admin-field select,
 .admin-field textarea {
-  background: var(--review-workflow-field-bg);
-  border: 1px solid var(--review-workflow-border);
+  background: var(--review-workflow-field-bg, var(--color-surface));
+  border: 1px solid var(--review-workflow-border, var(--color-border));
   border-radius: var(--radius-sm);
   color: var(--color-text);
   font: inherit;
   min-height: 44px;
   padding: var(--space-3);
   width: 100%;
+}
+
+.admin-field select option {
+  background-color: var(--review-workflow-field-bg, var(--color-surface));
+  color: var(--color-text);
 }
 
 .admin-field input:focus-visible,
@@ -5536,6 +5570,29 @@ fieldset.admin-field {
 .readiness-assignment__workflow-form {
   display: grid;
   gap: var(--space-3);
+}
+
+.readiness-assignment__workflow-fields {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.assignment-status-fields {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.assignment-blocked-reason {
+  border-left: var(--border-width-default) solid var(--color-accent);
+  color: var(--color-muted);
+  margin: 0;
+  padding-left: var(--space-3);
+}
+
+.assignment-blocked-reason strong {
+  color: var(--color-text);
 }
 
 .readiness-assignment__message {
@@ -8073,6 +8130,10 @@ fieldset.admin-field {
   height: 100%;
 }
 
+.review-detail-grid--decision > :only-child {
+  grid-column: 1 / -1;
+}
+
 .review-detail-grid__full {
   grid-column: 1 / -1;
 }
@@ -10101,6 +10162,7 @@ fieldset.admin-field {
   }
 
   .admin-layout,
+  .admin-preview-toolbar,
   .admin-settings-form,
   .admin-form-grid--assignment,
   .review-detail-grid,

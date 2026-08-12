@@ -37,7 +37,10 @@ export async function EditorialReviewQueue() {
                   <h3>{labels.get(`${revision.entityType}:${revision.entityId}`)?.name ?? "Editorial revision"}</h3>
                   <p>Submitted {revision.submittedAt?.toLocaleString() ?? revision.updatedAt.toLocaleString()} by {revision.updatedBy.name || revision.updatedBy.email}.</p>
                 </div>
-                {destination ? <Link className="button button--secondary" href={destination}>Open review</Link> : <span className="empty-note">Content record unavailable</span>}
+                {destination ? <div className="review-actions">
+                  <Link className="button button--secondary" href={`/admin/preview/revision/${revision.id}` as Route} rel="noreferrer" target="_blank">Preview page</Link>
+                  <Link className="button button--secondary" href={destination}>Open review</Link>
+                </div> : <span className="empty-note">Content record unavailable</span>}
               </article>
             );
           })}

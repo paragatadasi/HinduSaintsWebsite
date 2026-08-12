@@ -468,6 +468,9 @@ export async function AdminTraditionEditorPage({
               { label: "History", value: formatMarkdownSummary(narrativeRevision.historyMarkdown) },
               { label: "Key Teachings", value: formatMarkdownSummary(narrativeRevision.keyTeachingsMarkdown) }
             ]} />
+            {canEditLongForm ? <div className="review-actions">
+              <Link className="admin-form-button admin-form-button--secondary" href={`/admin/preview/revision/${narrativeRevisionRow.id}`} rel="noreferrer" target="_blank">Preview pending page</Link>
+            </div> : null}
             {narrativeRevisionRow.status === "needs_review" ? <>
               {narrativeRevision.historyMarkdown ? <div className="editorial-revision-preview"><Prose markdown={narrativeRevision.historyMarkdown} /></div> : null}
               {canPublish ? <div className="review-actions">

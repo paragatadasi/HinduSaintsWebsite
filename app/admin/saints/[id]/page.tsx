@@ -729,6 +729,9 @@ export async function AdminSaintEditorPage({
               { label: "Biography", value: narrativeRevision.biographyTitle },
               { label: "Biography length", value: `${narrativeRevision.biographyMarkdown.length.toLocaleString()} characters` }
             ]} />
+            {canEditLongForm ? <div className="review-actions">
+              <Link className="admin-form-button admin-form-button--secondary" href={`/admin/preview/revision/${narrativeRevisionRow.id}`} rel="noreferrer" target="_blank">Preview pending page</Link>
+            </div> : null}
             {narrativeRevisionRow.status === "needs_review" ? <>
               <div className="editorial-revision-preview"><Prose
                 markdown={narrativeRevision.biographyMarkdown}
