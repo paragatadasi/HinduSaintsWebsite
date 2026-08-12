@@ -1313,6 +1313,9 @@ model FeedbackSubmission {
   resolutionNote      String?
   resolvedByEmail     String?
   resolvedAt          DateTime?
+  // Compatibility-only column. The rollout migration scrubs and null-guards it
+  // while the previous application version may still be serving requests.
+  abuseFingerprint    String?             @ignore
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 
