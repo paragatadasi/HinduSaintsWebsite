@@ -4910,14 +4910,19 @@ fieldset.admin-field {
 .admin-field input,
 .admin-field select,
 .admin-field textarea {
-  background: var(--review-workflow-field-bg);
-  border: 1px solid var(--review-workflow-border);
+  background: var(--review-workflow-field-bg, var(--color-surface));
+  border: 1px solid var(--review-workflow-border, var(--color-border));
   border-radius: var(--radius-sm);
   color: var(--color-text);
   font: inherit;
   min-height: 44px;
   padding: var(--space-3);
   width: 100%;
+}
+
+.admin-field select option {
+  background-color: var(--review-workflow-field-bg, var(--color-surface));
+  color: var(--color-text);
 }
 
 .admin-field input:focus-visible,
@@ -5536,6 +5541,29 @@ fieldset.admin-field {
 .readiness-assignment__workflow-form {
   display: grid;
   gap: var(--space-3);
+}
+
+.readiness-assignment__workflow-fields {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.assignment-status-fields {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.assignment-blocked-reason {
+  border-left: var(--border-width-default) solid var(--color-accent);
+  color: var(--color-muted);
+  margin: 0;
+  padding-left: var(--space-3);
+}
+
+.assignment-blocked-reason strong {
+  color: var(--color-text);
 }
 
 .readiness-assignment__message {
@@ -8071,6 +8099,10 @@ fieldset.admin-field {
 
 .review-detail-grid--decision > * {
   height: 100%;
+}
+
+.review-detail-grid--decision > :only-child {
+  grid-column: 1 / -1;
 }
 
 .review-detail-grid__full {

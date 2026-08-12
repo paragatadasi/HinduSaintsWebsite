@@ -84,6 +84,9 @@ Principles:
 - Start detail pages with one primary decision workflow. A reviewer should
   understand the current state first, then take a clear action such as confirm,
   attach, edit, publish, ignore, merge, or resolve.
+- Call an assignment's operational state its `Task status` in the UI. When a
+  reviewer marks a task Blocked, require and display a separate blocking reason
+  instead of repurposing the assignment's original notes.
 - Use three quiet surface layers: darkest for the workflow container, lighter
   for review sections, and a middle tone for editable controls or suggestion
   chips.
@@ -130,6 +133,9 @@ Default anatomy:
 - Primary decision card: open by default and focused on the main resolution
   task for shallow detail pages. On Saint and Tradition detail pages it belongs
   to the default Publish Readiness tab.
+- Assignment and workflow sections place the current reviewer's Task status
+  beside Editorial progress. The status control applies to the reviewer's own
+  active assignment; editorial progress remains the content-level workflow.
 - Summary-first editable cards: show current values as readable facts, then use
   an Edit action to switch into a per-card form.
 - Keep summary and edit modes spatially consistent. When a card switches from
@@ -256,8 +262,12 @@ Current rollout notes:
 - Tradition detail follows the same model. Publish Readiness contains the
   decision and Merge Duplicate. Summary contains Overview and Key Facts;
   Content contains lineage, long-form sections, related links, and scriptural
-  basis; Media owns tradition images.
+  basis; Media owns tradition images. When merge tools are unavailable, the
+  readiness workflow fills the decision area instead of reserving an empty
+  merge column.
 - Place detail follows the same model without inventing a publish status. It
   starts with Public Place Readiness, keeps Merge Duplicate near the decision
   workflow, connects place unit, parent state, localities, and country in
   Overview, and uses searchable relationship controls for hierarchy editing.
+  Its readiness workflow also fills the decision area when merge tools are
+  unavailable.
