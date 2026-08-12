@@ -7,7 +7,7 @@ import { z } from "zod";
 import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 
-const roles = ["site_admin", "data_admin", "editor", "fact_checker", "writer", "curator", "translator"] as const;
+const roles = ["site_admin", "data_admin", "editor", "tester", "fact_checker", "writer", "curator", "translator"] as const;
 const accessSchema = z.object({ userId: z.string().cuid(), roles: z.array(z.enum(roles)).min(1), active: z.boolean() });
 const createSchema = z.object({
   email: z.string().trim().email().max(320).transform((value) => value.toLowerCase()),

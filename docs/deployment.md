@@ -94,3 +94,9 @@ stale-while-revalidate through `Cache-Control`, `CDN-Cache-Control`, and
 `Surrogate-Control`. Configure the production CDN to respect the header it
 supports, preserve Next.js response variation headers, and include the full
 query string in the cache key.
+
+Authenticated requests and development previews return private, no-store
+responses. Configure the production CDN to bypass its shared cache whenever an
+Auth.js session cookie is present; do not rely on `Vary: Cookie` for this
+boundary because Next.js may replace it on rendered responses. See
+[development-experiences.md](development-experiences.md).

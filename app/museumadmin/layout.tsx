@@ -4,14 +4,12 @@ import { auth, isGoogleAuthConfigured, signIn } from "@/lib/auth";
 import { museumFlowZones } from "@/lib/museum-layout-groups";
 import { getMuseumProposalData } from "@/lib/museum-proposals";
 import { requireCapability } from "@/lib/admin-access";
+import { PRIVATE_ROBOTS } from "@/lib/private-robots";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  robots: {
-    index: false,
-    follow: false
-  }
+  robots: PRIVATE_ROBOTS
 };
 
 export default async function MuseumAdminLayout({ children }: { children: React.ReactNode }) {

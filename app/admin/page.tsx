@@ -15,8 +15,11 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
   const canViewContent = hasCapability(user.roles, "view_content");
   const canViewInstagram = hasCapability(user.roles, "view_instagram_review");
   const canViewSaints = canAccessSaintCatalog(user.roles);
+  const canViewDevelopment = hasCapability(user.roles, "view_development_experiences");
   if (!canViewSaints && !canViewContent) {
-    return hasCapability(user.roles, "access_museum") ? <MuseumOnlyDashboard /> : <AccessLimitedDashboard />;
+    if (hasCapability(user.roles, "access_museum")) return <MuseumOnlyDashboard />;
+    if (canViewDevelopment) return <DevelopmentOnlyDashboard />;
+    return <AccessLimitedDashboard />;
   }
   const params = await searchParams;
   const canManageAssignments = hasCapability(user.roles, "manage_assignments");
@@ -72,6 +75,7 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
           {canViewContent ? <DashboardCard href="/admin/traditions" label="Traditions awaiting review" value={traditionsNeedsReview} /> : null}
           {canViewContent ? <DashboardCard href="/admin/places" label="Place records" value={placeCount} /> : null}
           {hasCapability(user.roles, "access_museum") ? <DashboardLink href="/admin/museum" label="Museum workspace" badge="Curator" /> : null}
+          {canViewDevelopment ? <DashboardLink href="/admin/development" label="Development previews" badge="Preview" /> : null}
         </div>
       </section>
 
@@ -106,6 +110,10 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
 
 function MuseumOnlyDashboard() {
   return <div className="admin-stack"><div><div className="eyebrow">Dashboard</div><h1>Museum workspace</h1><p className="lede">Your current role is focused on Museum planning and curation.</p></div><div className="admin-stat-grid"><Link className="admin-stat admin-stat--link interactive-surface" href="/museumadmin"><StatusBadge label="Curator" /><h2>Open Museum Admin</h2></Link></div></div>;
+}
+
+function DevelopmentOnlyDashboard() {
+  return <div className="admin-stack"><div><div className="eyebrow">Dashboard</div><h1>Development previews</h1><p className="lede">Your Tester role can review enabled work-in-progress pages and features.</p></div><div className="admin-stat-grid"><DashboardLink href="/admin/development" label="Open development previews" badge="Tester" /></div></div>;
 }
 
 function AccessLimitedDashboard() {

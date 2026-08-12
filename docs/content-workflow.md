@@ -13,6 +13,8 @@
   alongside Museum work, but cannot use Instagram matching or duplicate tools.
 - Translators currently have read-only access to team-Public content until the
   translation model is implemented.
+- Testers can view development experiences that an Editor or Site Admin has
+  enabled for admin preview. The role grants no editorial or publishing access.
 - The legacy Contributor role is treated as Fact-checker during its staged
   removal; new users default to Fact-checker.
 
@@ -160,4 +162,7 @@ biography fallback and should not overwrite reviewed `Biography` content.
 
 ## Preview
 
-Preview routes live under `/admin/preview/*`, require authentication, and are noindexed.
+Development previews are listed under `/admin/development` and render through
+dedicated `/preview/*` routes. They return a true 404 unless the corresponding
+experience is enabled and the user has the Site Admin, Editor, or Tester role.
+Admin and preview responses are private, no-store, and noindexed.

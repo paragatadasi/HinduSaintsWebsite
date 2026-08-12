@@ -18,11 +18,18 @@ enum UserRole {
   site_admin
   data_admin
   editor
+  tester
   contributor
   fact_checker
   writer
   curator
   translator
+}
+
+enum DevelopmentExperienceStatus {
+  off
+  admin_preview
+  public
 }
 
 enum TeamVisibility {
@@ -260,30 +267,38 @@ enum InstagramDerivedClaimType {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  roles         UserRole[] @default([fact_checker])
-  active        Boolean    @default(true)
-  lastSignedInAt DateTime?
-  accessAudits  AdminAccessAudit[]
-  assignedContentTasks ContentAssignment[] @relation("AssignmentAssignee")
-  createdContentTasks  ContentAssignment[] @relation("AssignmentCreator")
-  completedContentTasks ContentAssignment[] @relation("AssignmentCompleter")
-  editConflicts AdminEditConflict[]
-  createdEditorialDrafts AdminEditorialDraft[] @relation("EditorialDraftCreator")
-  updatedEditorialDrafts AdminEditorialDraft[] @relation("EditorialDraftUpdater")
-  createdEditorialRevisions EditorialRevision[] @relation("EditorialRevisionCreator")
-  updatedEditorialRevisions EditorialRevision[] @relation("EditorialRevisionUpdater")
-  reviewedEditorialRevisions EditorialRevision[] @relation("EditorialRevisionReviewer")
-  publishedEditorialRevisions EditorialRevision[] @relation("EditorialRevisionPublisher")
-  adminPresence AdminPresence[]
-  accounts      Account[]
-  sessions      Session[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id                          String                @id @default(cuid())
+  name                        String?
+  email                       String                @unique
+  emailVerified               DateTime?
+  image                       String?
+  roles                       UserRole[]            @default([fact_checker])
+  active                      Boolean               @default(true)
+  lastSignedInAt              DateTime?
+  accessAudits                AdminAccessAudit[]
+  assignedContentTasks        ContentAssignment[]   @relation("AssignmentAssignee")
+  createdContentTasks         ContentAssignment[]   @relation("AssignmentCreator")
+  completedContentTasks       ContentAssignment[]   @relation("AssignmentCompleter")
+  editConflicts               AdminEditConflict[]
+  createdEditorialDrafts      AdminEditorialDraft[] @relation("EditorialDraftCreator")
+  updatedEditorialDrafts      AdminEditorialDraft[] @relation("EditorialDraftUpdater")
+  createdEditorialRevisions   EditorialRevision[]   @relation("EditorialRevisionCreator")
+  updatedEditorialRevisions   EditorialRevision[]   @relation("EditorialRevisionUpdater")
+  reviewedEditorialRevisions  EditorialRevision[]   @relation("EditorialRevisionReviewer")
+  publishedEditorialRevisions EditorialRevision[]   @relation("EditorialRevisionPublisher")
+  adminPresence               AdminPresence[]
+  accounts                    Account[]
+  sessions                    Session[]
+  createdAt                   DateTime              @default(now())
+  updatedAt                   DateTime              @updatedAt
+}
+
+model DevelopmentExperience {
+  key            String                      @id
+  status         DevelopmentExperienceStatus @default(off)
+  updatedByEmail String?
+  createdAt      DateTime                    @default(now())
+  updatedAt      DateTime                    @updatedAt
 }
 
 model ContentAssignment {
@@ -327,19 +342,19 @@ model AdminEditConflict {
 }
 
 model AdminEditorialDraft {
-  id              String          @id @default(cuid())
-  entityType      AdminEntityType
-  entityId        String
-  section         String
-  payload         Json
-  baseVersion     Int
-  revision        Int             @default(1)
-  createdById     String
-  createdBy       User            @relation("EditorialDraftCreator", fields: [createdById], references: [id], onDelete: Restrict)
-  updatedById     String
-  updatedBy       User            @relation("EditorialDraftUpdater", fields: [updatedById], references: [id], onDelete: Restrict)
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  id          String          @id @default(cuid())
+  entityType  AdminEntityType
+  entityId    String
+  section     String
+  payload     Json
+  baseVersion Int
+  revision    Int             @default(1)
+  createdById String
+  createdBy   User            @relation("EditorialDraftCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  updatedById String
+  updatedBy   User            @relation("EditorialDraftUpdater", fields: [updatedById], references: [id], onDelete: Restrict)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 
   @@unique([entityType, entityId, section])
   @@index([entityType, entityId, updatedAt])
@@ -523,8 +538,8 @@ model SaintAlias {
 }
 
 model Tradition {
-  id                       String                      @id @default(cuid())
-  slug                     String                      @unique
+  id                       String                           @id @default(cuid())
+  slug                     String                           @unique
   name                     String
   alternateNames           String[]
   shortDescription         String?
@@ -533,36 +548,36 @@ model Tradition {
   foundingAcharyaMarkdown  String?
   keyTeachingsMarkdown     String?
   heroImageId              String?
-  heroImage                MediaAsset?                 @relation("TraditionHeroImage", fields: [heroImageId], references: [id])
-  status                   ContentStatus               @default(draft)
-  teamVisibility           TeamVisibility              @default(private)
-  publicationStatus        PublicationStatus           @default(unpublished)
-  workflowStatus           WorkflowStatus              @default(needs_review)
+  heroImage                MediaAsset?                      @relation("TraditionHeroImage", fields: [heroImageId], references: [id])
+  status                   ContentStatus                    @default(draft)
+  teamVisibility           TeamVisibility                   @default(private)
+  publicationStatus        PublicationStatus                @default(unpublished)
+  workflowStatus           WorkflowStatus                   @default(needs_review)
   founderSaintId           String?
-  founderSaint             Saint?                      @relation("TraditionFounder", fields: [founderSaintId], references: [id], onDelete: SetNull)
+  founderSaint             Saint?                           @relation("TraditionFounder", fields: [founderSaintId], references: [id], onDelete: SetNull)
   founderDisplayName       String?
   origin                   String?
   eraLabel                 String?
   focus                    String?
   originPlaceId            String?
-  originPlace              Place?                      @relation("TraditionOriginPlace", fields: [originPlaceId], references: [id], onDelete: SetNull)
+  originPlace              Place?                           @relation("TraditionOriginPlace", fields: [originPlaceId], references: [id], onDelete: SetNull)
   originPlaceLabel         String?
   parentTraditionId        String?
-  parentTradition          Tradition?                  @relation("TraditionParent", fields: [parentTraditionId], references: [id])
-  childTraditions          Tradition[]                 @relation("TraditionParent")
+  parentTradition          Tradition?                       @relation("TraditionParent", fields: [parentTraditionId], references: [id])
+  childTraditions          Tradition[]                      @relation("TraditionParent")
   seoTitle                 String?
   seoDescription           String?
   saints                   SaintTradition[]
   galleryImages            TraditionGalleryImage[]
   lineageSaints            TraditionLineageSaint[]
   relatedPlaces            TraditionRelatedPlace[]
-  relatedTraditions        TraditionRelatedTradition[] @relation("RelatedTraditionSource")
-  relatedByTraditions      TraditionRelatedTradition[] @relation("RelatedTraditionTarget")
+  relatedTraditions        TraditionRelatedTradition[]      @relation("RelatedTraditionSource")
+  relatedByTraditions      TraditionRelatedTradition[]      @relation("RelatedTraditionTarget")
   scripturalBasis          TraditionScripturalBasis[]
   homeFeaturedPlacements   HomeFeaturedTraditionPlacement[]
-  createdAt                DateTime                    @default(now())
-  updatedAt                DateTime                    @updatedAt
-  version                  Int                         @default(1)
+  createdAt                DateTime                         @default(now())
+  updatedAt                DateTime                         @updatedAt
+  version                  Int                              @default(1)
   publishedAt              DateTime?
 
   @@index([status, name])
@@ -857,38 +872,38 @@ model SaintMuseumSection {
 }
 
 model MediaAsset {
-  id                         String                  @id @default(cuid())
-  url                        String
-  storageKey                 String?
-  altText                    String?
-  caption                    String?
-  credit                     String?
-  sourceUrl                  String?
-  width                      Int?
-  height                     Int?
-  mimeType                   String?
-  variants                   Json?
-  focalX                     Float                   @default(50)
-  focalY                     Float                   @default(30)
-  homeBannerConfigs          HomePageConfig[]        @relation("HomeBannerImage")
-  homeTraditionBannerConfigs HomePageConfig[]        @relation("HomeFeaturedTraditionBannerImage")
+  id                            String                           @id @default(cuid())
+  url                           String
+  storageKey                    String?
+  altText                       String?
+  caption                       String?
+  credit                        String?
+  sourceUrl                     String?
+  width                         Int?
+  height                        Int?
+  mimeType                      String?
+  variants                      Json?
+  focalX                        Float                            @default(50)
+  focalY                        Float                            @default(30)
+  homeBannerConfigs             HomePageConfig[]                 @relation("HomeBannerImage")
+  homeTraditionBannerConfigs    HomePageConfig[]                 @relation("HomeFeaturedTraditionBannerImage")
   homeTraditionPlacementBanners HomeFeaturedTraditionPlacement[] @relation("HomeFeaturedTraditionPlacementBanner")
-  aboutHeroConfigs           SiteConfig[]            @relation("AboutHeroImage")
-  aboutVisionConfigs         SiteConfig[]            @relation("AboutVisionImage")
-  aboutStoryConfigs          SiteConfig[]            @relation("AboutStoryImage")
-  aboutGuruConfigs           SiteConfig[]            @relation("AboutGuruImage")
-  saintsIndexHeroConfigs     SiteConfig[]            @relation("SaintsIndexHeroImage")
-  traditionsIndexHeroConfigs SiteConfig[]            @relation("TraditionsIndexHeroImage")
-  mapIndexHeroConfigs        SiteConfig[]            @relation("MapIndexHeroImage")
-  primaryForSaints           Saint[]                 @relation("PrimarySaintImage")
-  heroForTraditions          Tradition[]             @relation("TraditionHeroImage")
-  saintGalleryImages         SaintGalleryImage[]
-  traditionGalleryImages     TraditionGalleryImage[]
-  createdAt                  DateTime                @default(now())
+  aboutHeroConfigs              SiteConfig[]                     @relation("AboutHeroImage")
+  aboutVisionConfigs            SiteConfig[]                     @relation("AboutVisionImage")
+  aboutStoryConfigs             SiteConfig[]                     @relation("AboutStoryImage")
+  aboutGuruConfigs              SiteConfig[]                     @relation("AboutGuruImage")
+  saintsIndexHeroConfigs        SiteConfig[]                     @relation("SaintsIndexHeroImage")
+  traditionsIndexHeroConfigs    SiteConfig[]                     @relation("TraditionsIndexHeroImage")
+  mapIndexHeroConfigs           SiteConfig[]                     @relation("MapIndexHeroImage")
+  primaryForSaints              Saint[]                          @relation("PrimarySaintImage")
+  heroForTraditions             Tradition[]                      @relation("TraditionHeroImage")
+  saintGalleryImages            SaintGalleryImage[]
+  traditionGalleryImages        TraditionGalleryImage[]
+  createdAt                     DateTime                         @default(now())
 }
 
 model HomePageConfig {
-  id                                 String      @id @default("home")
+  id                                 String                           @id @default("home")
   heroEyebrow                        String?
   heroTitle                          String?
   heroBody                           String?
@@ -897,19 +912,19 @@ model HomePageConfig {
   heroSecondaryLabel                 String?
   heroSecondaryHref                  String?
   bannerImageId                      String?
-  bannerImage                        MediaAsset? @relation("HomeBannerImage", fields: [bannerImageId], references: [id], onDelete: SetNull)
-  bannerFocalX                       Float       @default(50)
-  bannerFocalY                       Float       @default(50)
-  bannerFocalWidth                   Float       @default(60)
-  bannerFocalHeight                  Float       @default(60)
+  bannerImage                        MediaAsset?                      @relation("HomeBannerImage", fields: [bannerImageId], references: [id], onDelete: SetNull)
+  bannerFocalX                       Float                            @default(50)
+  bannerFocalY                       Float                            @default(50)
+  bannerFocalWidth                   Float                            @default(60)
+  bannerFocalHeight                  Float                            @default(60)
   featuredTraditionBannerImageId     String?
-  featuredTraditionBannerImage       MediaAsset? @relation("HomeFeaturedTraditionBannerImage", fields: [featuredTraditionBannerImageId], references: [id], onDelete: SetNull)
-  featuredTraditionBannerFocalX      Float       @default(50)
-  featuredTraditionBannerFocalY      Float       @default(50)
-  featuredTraditionBannerFocalWidth  Float       @default(60)
-  featuredTraditionBannerFocalHeight Float       @default(60)
-  featuredSaintIds                   String[]    @default([])
-  featuredTraditionIds               String[]    @default([])
+  featuredTraditionBannerImage       MediaAsset?                      @relation("HomeFeaturedTraditionBannerImage", fields: [featuredTraditionBannerImageId], references: [id], onDelete: SetNull)
+  featuredTraditionBannerFocalX      Float                            @default(50)
+  featuredTraditionBannerFocalY      Float                            @default(50)
+  featuredTraditionBannerFocalWidth  Float                            @default(60)
+  featuredTraditionBannerFocalHeight Float                            @default(60)
+  featuredSaintIds                   String[]                         @default([])
+  featuredTraditionIds               String[]                         @default([])
   featuredSaintsEyebrow              String?
   featuredSaintsTitle                String?
   mapEyebrow                         String?
@@ -922,10 +937,10 @@ model HomePageConfig {
   quoteText                          String?
   quoteAttribution                   String?
   quoteSaintId                       String?
-  quoteSaint                         Saint?      @relation("HomeQuoteSaint", fields: [quoteSaintId], references: [id], onDelete: SetNull)
+  quoteSaint                         Saint?                           @relation("HomeQuoteSaint", fields: [quoteSaintId], references: [id], onDelete: SetNull)
   featuredTraditionPlacements        HomeFeaturedTraditionPlacement[]
-  createdAt                          DateTime    @default(now())
-  updatedAt                          DateTime    @updatedAt
+  createdAt                          DateTime                         @default(now())
+  updatedAt                          DateTime                         @updatedAt
 }
 
 model HomeFeaturedTraditionPlacement {
@@ -951,42 +966,42 @@ model HomeFeaturedTraditionPlacement {
 }
 
 model SiteConfig {
-  id                 String   @id @default("site")
-  imprintUrl         String
-  privacyPolicyUrl   String
-  aboutEyebrow       String?
-  aboutTitle         String?
-  aboutIntroduction  String?
-  aboutSectionTitles String[] @default([])
-  aboutSectionBodies String[] @default([])
-  aboutDiscoveryTitle String?
-  aboutDiscoveryItemTitles String[] @default([])
-  aboutDiscoveryItemBodies String[] @default([])
-  aboutDiscoveryItemHrefs String[] @default([])
-  aboutDiscoveryItemIcons String[] @default([])
-  aboutHeroImageId   String?
-  aboutHeroImage     MediaAsset? @relation("AboutHeroImage", fields: [aboutHeroImageId], references: [id], onDelete: SetNull)
-  aboutVisionImageId String?
-  aboutVisionImage   MediaAsset? @relation("AboutVisionImage", fields: [aboutVisionImageId], references: [id], onDelete: SetNull)
-  aboutStoryImageId  String?
-  aboutStoryImage    MediaAsset? @relation("AboutStoryImage", fields: [aboutStoryImageId], references: [id], onDelete: SetNull)
-  aboutGuruImageId   String?
-  aboutGuruImage     MediaAsset? @relation("AboutGuruImage", fields: [aboutGuruImageId], references: [id], onDelete: SetNull)
-  saintsHeroImageId     String?
-  saintsHeroImage       MediaAsset? @relation("SaintsIndexHeroImage", fields: [saintsHeroImageId], references: [id], onDelete: SetNull)
-  saintsHeroFocalX       Float @default(50)
-  saintsHeroFocalY       Float @default(30)
-  traditionsHeroImageId String?
-  traditionsHeroImage   MediaAsset? @relation("TraditionsIndexHeroImage", fields: [traditionsHeroImageId], references: [id], onDelete: SetNull)
-  traditionsHeroFocalX   Float @default(50)
-  traditionsHeroFocalY   Float @default(30)
-  mapHeroImageId         String?
-  mapHeroImage           MediaAsset? @relation("MapIndexHeroImage", fields: [mapHeroImageId], references: [id], onDelete: SetNull)
-  mapHeroFocalX           Float @default(50)
-  mapHeroFocalY           Float @default(30)
-  updatedByEmail     String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  id                       String      @id @default("site")
+  imprintUrl               String
+  privacyPolicyUrl         String
+  aboutEyebrow             String?
+  aboutTitle               String?
+  aboutIntroduction        String?
+  aboutSectionTitles       String[]    @default([])
+  aboutSectionBodies       String[]    @default([])
+  aboutDiscoveryTitle      String?
+  aboutDiscoveryItemTitles String[]    @default([])
+  aboutDiscoveryItemBodies String[]    @default([])
+  aboutDiscoveryItemHrefs  String[]    @default([])
+  aboutDiscoveryItemIcons  String[]    @default([])
+  aboutHeroImageId         String?
+  aboutHeroImage           MediaAsset? @relation("AboutHeroImage", fields: [aboutHeroImageId], references: [id], onDelete: SetNull)
+  aboutVisionImageId       String?
+  aboutVisionImage         MediaAsset? @relation("AboutVisionImage", fields: [aboutVisionImageId], references: [id], onDelete: SetNull)
+  aboutStoryImageId        String?
+  aboutStoryImage          MediaAsset? @relation("AboutStoryImage", fields: [aboutStoryImageId], references: [id], onDelete: SetNull)
+  aboutGuruImageId         String?
+  aboutGuruImage           MediaAsset? @relation("AboutGuruImage", fields: [aboutGuruImageId], references: [id], onDelete: SetNull)
+  saintsHeroImageId        String?
+  saintsHeroImage          MediaAsset? @relation("SaintsIndexHeroImage", fields: [saintsHeroImageId], references: [id], onDelete: SetNull)
+  saintsHeroFocalX         Float       @default(50)
+  saintsHeroFocalY         Float       @default(30)
+  traditionsHeroImageId    String?
+  traditionsHeroImage      MediaAsset? @relation("TraditionsIndexHeroImage", fields: [traditionsHeroImageId], references: [id], onDelete: SetNull)
+  traditionsHeroFocalX     Float       @default(50)
+  traditionsHeroFocalY     Float       @default(30)
+  mapHeroImageId           String?
+  mapHeroImage             MediaAsset? @relation("MapIndexHeroImage", fields: [mapHeroImageId], references: [id], onDelete: SetNull)
+  mapHeroFocalX            Float       @default(50)
+  mapHeroFocalY            Float       @default(30)
+  updatedByEmail           String?
+  createdAt                DateTime    @default(now())
+  updatedAt                DateTime    @updatedAt
 }
 
 model SaintGalleryImage {

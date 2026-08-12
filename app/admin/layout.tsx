@@ -8,14 +8,12 @@ import { canAccessSaintCatalog } from "@/lib/admin-saint-access";
 import { AdminFormGuard } from "@/components/admin/admin-form-guard";
 import { AdminPrimaryNavigation } from "@/components/admin/admin-navigation";
 import type { AdminNavigationGroup } from "@/lib/admin-navigation";
+import { PRIVATE_ROBOTS } from "@/lib/private-robots";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  robots: {
-    index: false,
-    follow: false
-  }
+  robots: PRIVATE_ROBOTS
 };
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -102,6 +100,7 @@ function buildNavigationGroups({
     operationItems.push({ count: newFeedbackCount, href: "/admin/feedback", label: "Inbox" });
   }
   if (hasCapability(roles, "manage_site")) operationItems.push({ href: "/admin/site", label: "Site" });
+  if (hasCapability(roles, "view_development_experiences")) operationItems.push({ href: "/admin/development", label: "Development previews" });
   if (hasCapability(roles, "view_analytics")) operationItems.push({ href: "/admin/analytics", label: "Analytics" });
   if (hasCapability(roles, "manage_users")) operationItems.push({ href: "/admin/users", label: "Users & Access" });
   if (operationItems.length > 0) groups.push({ href: operationItems[0].href, id: "operations", items: operationItems, label: "Operations" });

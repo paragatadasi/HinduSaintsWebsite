@@ -192,6 +192,8 @@ not an authorization boundary.
 | `manage_site` / `view_analytics` / `manage_users` | Site Admin |
 | `manage_assignments` | Site Admin, Data Admin, Editor |
 | `manage_sensitive_actions` | Site Admin |
+| `view_development_experiences` | Site Admin, Editor, Tester |
+| `manage_development_experiences` | Site Admin, Editor |
 | `view_full_saint_catalog` | Site Admin, Data Admin, Editor, Curator |
 | `view_instagram_review` | Site Admin, Data Admin, Editor |
 | `edit_structured_content` | Site Admin, Data Admin, Editor, Fact-checker, Writer, legacy Contributor |
@@ -199,7 +201,7 @@ not an authorization boundary.
 | `manage_team_visibility` | Site Admin, Data Admin, Editor |
 | `manage_saint_team_visibility` | Site Admin, Data Admin, Editor, Curator |
 | `resolve_duplicate_saints` / `merge_saints` | Site Admin, Data Admin, Editor |
-| `self_assign_content` / `update_assigned_workflow` | All internal roles, limited to visible or assigned content by the action contract |
+| `self_assign_content` / `update_assigned_workflow` | Site Admin, Data Admin, Editor, Fact-checker, Writer, Curator, Translator, legacy Contributor; limited to visible or assigned content by the action contract |
 
 All publication-state changes, including returning published content to review,
 require `publish_content`. Structured editing requires `edit_structured_content`;

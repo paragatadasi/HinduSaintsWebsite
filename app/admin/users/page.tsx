@@ -7,7 +7,7 @@ import { userRoleLabels } from "@/lib/permissions";
 import { setBulkDeletePasswordAction } from "../actions";
 import { createAdminUser, updateUserAccess } from "./actions";
 
-const roles = ["site_admin", "data_admin", "editor", "fact_checker", "writer", "curator", "translator"] as const;
+const roles = ["site_admin", "data_admin", "editor", "tester", "fact_checker", "writer", "curator", "translator"] as const;
 
 type UsersAccessPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -49,7 +49,7 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
         <form action={createAdminUser} className="admin-settings-form admin-settings-form--stacked">
           <label className="admin-field"><span>Email</span><input autoComplete="email" name="email" required type="email" /></label>
           <RoleCheckboxes defaults={["fact_checker"]} />
-          <p className="admin-settings-note">Roles combine additively. Fact-checkers work with structured summaries; Writers also work with biography and long-form content.</p>
+          <p className="admin-settings-note">Roles combine additively. Testers can view enabled development experiences without gaining editorial access.</p>
           <div className="review-actions admin-settings-form__actions"><button className="admin-form-button" type="submit">Approve user</button></div>
         </form>
       </CollapsibleReviewCard>

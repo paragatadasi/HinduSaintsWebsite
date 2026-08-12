@@ -23,7 +23,9 @@ export type Capability =
   | "resolve_duplicate_saints"
   | "merge_saints"
   | "self_assign_content"
-  | "update_assigned_workflow";
+  | "update_assigned_workflow"
+  | "view_development_experiences"
+  | "manage_development_experiences";
 
 const workflowParticipant: readonly Capability[] = ["self_assign_content", "update_assigned_workflow"];
 const structuredEditor: readonly Capability[] = ["view_content", "edit_content", "edit_structured_content", ...workflowParticipant];
@@ -51,10 +53,13 @@ const roleCapabilities: Record<UserRole, readonly Capability[]> = {
     "manage_site",
     "view_analytics",
     "manage_users",
-    "manage_sensitive_actions"
+    "manage_sensitive_actions",
+    "view_development_experiences",
+    "manage_development_experiences"
   ],
   data_admin: [...catalogCoordinator, "view_source_data", "run_imports", "resolve_reconciliation"],
-  editor: catalogCoordinator,
+  editor: [...catalogCoordinator, "view_development_experiences", "manage_development_experiences"],
+  tester: ["view_development_experiences"],
   contributor: structuredEditor,
   fact_checker: structuredEditor,
   writer: longFormEditor,
@@ -66,6 +71,7 @@ export const userRoleLabels: Record<UserRole, string> = {
   site_admin: "Site Admin",
   data_admin: "Data Admin",
   editor: "Editor",
+  tester: "Tester",
   contributor: "Contributor",
   fact_checker: "Fact-checker",
   writer: "Writer",

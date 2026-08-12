@@ -49,6 +49,18 @@ test("roles combine additively", () => {
   assert.equal(hasCapability(roles, "publish_content"), true);
 });
 
+test("development experiences are limited to site admins, editors, and testers", () => {
+  for (const role of ["site_admin", "editor", "tester"] as const) {
+    assert.equal(hasCapability([role], "view_development_experiences"), true);
+  }
+  for (const role of ["data_admin", "fact_checker", "writer", "curator", "translator"] as const) {
+    assert.equal(hasCapability([role], "view_development_experiences"), false);
+  }
+  assert.equal(hasCapability(["site_admin"], "manage_development_experiences"), true);
+  assert.equal(hasCapability(["editor"], "manage_development_experiences"), true);
+  assert.equal(hasCapability(["tester"], "manage_development_experiences"), false);
+});
+
 test("only Site Admin has sensitive and user-management capabilities", () => {
   assert.equal(hasCapability(["site_admin"], "manage_sensitive_actions"), true);
   assert.equal(hasCapability(["site_admin"], "manage_users"), true);
@@ -63,11 +75,12 @@ test("editorial revision queue is reserved for site admins and editors", () => {
   assert.equal(canReviewEditorialRevisions(["writer"]), false);
 });
 
-test("all internal roles can self-assign visible content", () => {
+test("editorial workflow roles can self-assign visible content", () => {
   assert.equal(hasCapability(["editor"], "manage_assignments"), true);
   assert.equal(hasCapability(["data_admin"], "manage_assignments"), true);
   assert.equal(hasCapability(["fact_checker"], "manage_assignments"), false);
   assert.equal(hasCapability(["translator"], "manage_assignments"), false);
+  assert.equal(hasCapability(["tester"], "self_assign_content"), false);
   assert.equal(hasCapability(["fact_checker"], "self_assign_content"), true);
   assert.equal(hasCapability(["writer"], "self_assign_content"), true);
   assert.equal(hasCapability(["curator"], "self_assign_content"), true);
