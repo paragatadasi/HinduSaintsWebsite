@@ -35,5 +35,15 @@ technical issues without identifying visitors.
   deleted after 366 days.
 - No third-party error-reporting service receives these diagnostics.
 
+## Feedback form abuse protection
+
+The feedback form derives a secret-keyed fingerprint from the proxy-forwarded
+IP address to enforce a limit of five valid submission attempts in a rolling
+ten-minute window. The raw address and fingerprint are not written to the
+application database or attached to feedback submissions. Fingerprints remain
+only in the running server process and are removed after the rate-limit window,
+with cleanup running once per minute. The in-memory limit resets if the server
+restarts.
+
 The site privacy-policy link is configured through `SiteConfig` and currently
 defaults to <https://bhaktimarga.org/privacy-policy>.
