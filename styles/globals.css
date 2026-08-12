@@ -631,23 +631,13 @@ html[data-route-entering="true"] body > main {
 }
 
 .catalog-filters select {
-  appearance: none;
-  background:
-    linear-gradient(45deg, transparent 50%, var(--color-muted) 50%),
-    linear-gradient(135deg, var(--color-muted) 50%, transparent 50%),
-    var(--color-surface);
-  background-position:
-    calc(100% - 18px) 50%,
-    calc(100% - 13px) 50%,
-    0 0;
-  background-repeat: no-repeat;
-  background-size: 5px 5px, 5px 5px, 100% 100%;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text);
   font: inherit;
   min-height: 44px;
-  padding: 0 var(--space-8) 0 var(--space-3);
+  padding: 0 var(--space-3);
   width: 100%;
 }
 
@@ -4524,23 +4514,13 @@ html[data-route-entering="true"] body > main {
 }
 
 .layout-dev-toggle select {
-  appearance: none;
-  background:
-    linear-gradient(45deg, transparent 50%, var(--color-muted) 50%),
-    linear-gradient(135deg, var(--color-muted) 50%, transparent 50%),
-    var(--color-surface);
-  background-position:
-    calc(100% - 18px) 50%,
-    calc(100% - 13px) 50%,
-    0 0;
-  background-repeat: no-repeat;
-  background-size: 5px 5px, 5px 5px, 100% 100%;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text);
   font: inherit;
   min-height: 44px;
-  padding: 0 var(--space-8) 0 var(--space-3);
+  padding: 0 var(--space-3);
 }
 
 .button {
@@ -4939,7 +4919,7 @@ fieldset.admin-field {
 .admin-field input,
 .admin-field select,
 .admin-field textarea {
-  background: var(--review-workflow-field-bg, var(--color-surface));
+  background-color: var(--review-workflow-field-bg, var(--color-surface));
   border: 1px solid var(--review-workflow-border, var(--color-border));
   border-radius: var(--radius-sm);
   color: var(--color-text);
@@ -5407,7 +5387,7 @@ fieldset.admin-field {
 .review-panel--collapsible .form-stack select,
 .review-panel--collapsible .form-stack textarea,
 .review-panel--collapsible .combo-search__toggle {
-  background: var(--review-workflow-field-bg);
+  background-color: var(--review-workflow-field-bg);
   border-color: var(--review-workflow-border);
 }
 
@@ -5945,7 +5925,7 @@ fieldset.admin-field {
 .review-panel--workflow .form-stack select,
 .review-panel--workflow .form-stack textarea,
 .review-panel--workflow .combo-search__toggle {
-  background: var(--review-workflow-field-bg);
+  background-color: var(--review-workflow-field-bg);
   border-color: var(--review-workflow-border);
 }
 
@@ -6834,6 +6814,10 @@ fieldset.admin-field {
   grid-template-columns: 1fr;
   min-width: 0;
   padding: var(--space-4) var(--review-row-padding, var(--space-5)) var(--space-4) 0;
+}
+
+.review-row--compact:not(.review-row--selectable) .review-row__link {
+  padding-left: var(--review-row-padding, var(--space-5));
 }
 
 .review-row--compact .bulk-review-checkbox {
@@ -7854,7 +7838,7 @@ fieldset.admin-field {
 }
 
 .museum-modal__actions select {
-  background: color-mix(in srgb, var(--color-bg) 72%, var(--color-surface));
+  background-color: color-mix(in srgb, var(--color-bg) 72%, var(--color-surface));
   border: 1px solid color-mix(in srgb, var(--color-border) 62%, transparent);
   border-radius: var(--radius-control);
   color: var(--color-text);
@@ -8437,7 +8421,7 @@ fieldset.admin-field {
 .form-stack input,
 .form-stack select,
 .form-stack textarea {
-  background: var(--color-surface);
+  background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   color: var(--color-text);
@@ -8497,6 +8481,28 @@ fieldset.admin-field {
 
 .markdown-editor__citation-tools label { flex: 1 1 auto; }
 .markdown-editor__citation-tools select { height: 100%; min-height: var(--size-control); width: 100%; }
+
+select:not([multiple]) {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--color-muted) 50%),
+    linear-gradient(135deg, var(--color-muted) 50%, transparent 50%);
+  background-position:
+    right calc(var(--space-4) + var(--size-select-chevron-segment)) center,
+    right var(--space-4) center;
+  background-repeat: no-repeat;
+  background-size:
+    var(--size-select-chevron-segment) var(--size-select-chevron-segment),
+    var(--size-select-chevron-segment) var(--size-select-chevron-segment);
+  padding-inline-end: calc(var(--space-8) + var(--size-select-chevron-segment));
+}
+
+@media (forced-colors: active) {
+  select:not([multiple]) {
+    appearance: auto;
+    background-image: none;
+  }
+}
 
 .markdown-editor__citation-button {
   align-items: center;
