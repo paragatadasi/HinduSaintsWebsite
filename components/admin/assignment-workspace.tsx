@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Route } from "next";
+import { AssignmentStatusFields } from "@/components/admin/assignment-status-fields";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -186,6 +187,9 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
                   </div>
                   <h4>{ref ? <Link href={ref.href}>{ref.label}</Link> : "Missing content record"}</h4>
                   <p>{row.notes || "No assignment notes."}</p>
+                  {row.state === "blocked" && row.blockedReason ? (
+                    <p className="assignment-blocked-reason"><strong>Blocking reason:</strong> {row.blockedReason}</p>
+                  ) : null}
                   <small>{row.assignee ? `Assigned to ${row.assignee.name || row.assignee.email}` : "Available to claim"}{row.dueDate ? ` · Due ${row.dueDate.toLocaleDateString()}` : ""}</small>
                 </div>
                 {available ? (
@@ -205,16 +209,7 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
                         </select>
                       </label>
                     ) : null}
-                    <label className="admin-field">
-                      <span>State</span>
-                      <select defaultValue={row.state} name="state">
-                        <option value="assigned">Assigned</option>
-                        <option value="in_progress">In progress</option>
-                        <option value="blocked">Blocked</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
-                      </select>
-                    </label>
+                    <AssignmentStatusFields defaultBlockedReason={row.blockedReason} defaultStatus={row.state} />
                     <button className="admin-form-button admin-form-button--secondary" type="submit">Update</button>
                   </form>
                 ) : null}

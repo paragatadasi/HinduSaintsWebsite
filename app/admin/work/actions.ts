@@ -15,6 +15,16 @@ const taskTypes = ["review", "edit", "research", "source_check", "publish"] as c
 const workflowStatuses = ["needs_review", "fact_checked", "populated", "polished"] as const;
 const readinessContentTypes = ["saint", "tradition", "place"] as const;
 const activeAssignmentStates = ["assigned", "in_progress", "blocked"] as const;
+const blockedReasonSchema = z.string().trim().max(1000).optional();
+
+const assignmentStatusSchema = z.object({
+  taskStatus: z.enum(states),
+  blockedReason: blockedReasonSchema
+}).superRefine((value, context) => {
+  if (value.taskStatus === "blocked" && !value.blockedReason) {
+    context.addIssue({ code: z.ZodIssueCode.custom, message: "Explain what is blocking this task.", path: ["blockedReason"] });
+  }
+});
 
 const createSchema = z.object({
   target: z.string().min(3),
@@ -63,8 +73,16 @@ export async function claimAssignment(formData: FormData) {
 
 export async function updateAssignment(formData: FormData) {
   const actor = await activeUser();
-  const parsed = z.object({ assignmentId: z.string().cuid(), state: z.enum(states), assigneeId: z.string().cuid().optional() }).safeParse({ assignmentId: formData.get("assignmentId"), state: formData.get("state"), assigneeId: formData.get("assigneeId") || undefined });
-  if (!parsed.success) fail("Invalid assignment update.");
+  const parsed = z.object({
+    assignmentId: z.string().cuid(),
+    assigneeId: z.string().cuid().optional()
+  }).and(assignmentStatusSchema).safeParse({
+    assignmentId: formData.get("assignmentId"),
+    assigneeId: formData.get("assigneeId") || undefined,
+    blockedReason: formData.get("blockedReason") || undefined,
+    taskStatus: formData.get("taskStatus")
+  });
+  if (!parsed.success) fail(parsed.error.issues[0]?.message || "Choose a valid task status.");
   const assignment = await db.contentAssignment.findUnique({ where: { id: parsed.data.assignmentId } });
   if (!assignment) fail("That assignment no longer exists.");
   await assertAssignmentVisible(actor, assignment);
@@ -72,10 +90,9 @@ export async function updateAssignment(formData: FormData) {
   if (!manager && assignment.assigneeId !== actor.id) fail("You can update only your own work.");
   const assigneeId = manager ? parsed.data.assigneeId ?? assignment.assigneeId : assignment.assigneeId;
   if (manager && assigneeId && !(await db.user.count({ where: { id: assigneeId, active: true } }))) fail("Choose an active assignee.");
-  const completed = parsed.data.state === "completed";
   await db.contentAssignment.update({ where: { id: assignment.id }, data: {
-    state: parsed.data.state, assigneeId,
-    completedAt: completed ? new Date() : null, completedById: completed ? actor.id : null
+    ...assignmentStatusData(parsed.data.taskStatus, parsed.data.blockedReason, actor.id),
+    assigneeId
   } });
   done("updated");
 }
@@ -144,14 +161,27 @@ export async function updateContentWorkflowStatus(formData: FormData) {
     contentType: z.enum(readinessContentTypes),
     contentId: z.string().cuid(),
     workflowStatus: z.enum(workflowStatuses),
+    assignmentId: z.string().cuid().optional(),
+    taskStatus: z.enum(states).optional(),
+    blockedReason: blockedReasonSchema,
     returnTo: z.string()
+  }).superRefine((value, context) => {
+    if (Boolean(value.assignmentId) !== Boolean(value.taskStatus)) {
+      context.addIssue({ code: z.ZodIssueCode.custom, message: "Choose a valid task status.", path: ["taskStatus"] });
+    }
+    if (value.taskStatus === "blocked" && !value.blockedReason) {
+      context.addIssue({ code: z.ZodIssueCode.custom, message: "Explain what is blocking this task.", path: ["blockedReason"] });
+    }
   }).safeParse({
     contentType: formData.get("contentType"),
     contentId: formData.get("contentId"),
     workflowStatus: formData.get("workflowStatus"),
+    assignmentId: formData.get("assignmentId") || undefined,
+    taskStatus: formData.get("taskStatus") || undefined,
+    blockedReason: formData.get("blockedReason") || undefined,
     returnTo: formData.get("returnTo")
   });
-  if (!parsed.success) detailFail(formData, "Choose a valid workflow status.");
+  if (!parsed.success) detailFail(formData, parsed.error.issues[0]?.message || "Choose valid workflow updates.");
 
   await assertAssignmentVisible(actor, parsed.data);
   const activeAssignments = await db.contentAssignment.findMany({
@@ -160,17 +190,42 @@ export async function updateContentWorkflowStatus(formData: FormData) {
       contentId: parsed.data.contentId,
       state: { in: [...activeAssignmentStates] }
     },
-    select: { assigneeId: true }
+    select: { id: true, assigneeId: true }
   });
   if (!canUpdateAssignedWorkflow(actor.roles, actor.id, activeAssignments.map((assignment) => assignment.assigneeId))) {
     detailFail(formData, "Assign this review to yourself before changing its workflow.");
   }
+  const assignment = parsed.data.assignmentId
+    ? activeAssignments.find((candidate) => candidate.id === parsed.data.assignmentId)
+    : null;
+  if (parsed.data.assignmentId && !assignment) detailFail(formData, "That task is no longer active.");
+  if (assignment && !hasCapability(actor.roles, "manage_assignments") && assignment.assigneeId !== actor.id) {
+    detailFail(formData, "You can update only your own task status.");
+  }
 
   const data = { workflowStatus: parsed.data.workflowStatus };
-  if (parsed.data.contentType === "saint") await db.saint.update({ where: { id: parsed.data.contentId }, data });
-  if (parsed.data.contentType === "tradition") await db.tradition.update({ where: { id: parsed.data.contentId }, data });
-  if (parsed.data.contentType === "place") await db.place.update({ where: { id: parsed.data.contentId }, data });
+  await db.$transaction(async (tx) => {
+    if (parsed.data.contentType === "saint") await tx.saint.update({ where: { id: parsed.data.contentId }, data });
+    if (parsed.data.contentType === "tradition") await tx.tradition.update({ where: { id: parsed.data.contentId }, data });
+    if (parsed.data.contentType === "place") await tx.place.update({ where: { id: parsed.data.contentId }, data });
+    if (assignment && parsed.data.taskStatus) {
+      await tx.contentAssignment.update({
+        where: { id: assignment.id },
+        data: assignmentStatusData(parsed.data.taskStatus, parsed.data.blockedReason, actor.id)
+      });
+    }
+  });
   detailDone(parsed.data.returnTo, "workflow");
+}
+
+function assignmentStatusData(taskStatus: typeof states[number], blockedReason: string | undefined, actorId: string) {
+  const completed = taskStatus === "completed";
+  return {
+    blockedReason: taskStatus === "blocked" ? blockedReason : null,
+    completedAt: completed ? new Date() : null,
+    completedById: completed ? actorId : null,
+    state: taskStatus
+  };
 }
 
 async function activeUser() {

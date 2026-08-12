@@ -2,6 +2,7 @@ import { UserRoundCheck } from "lucide-react";
 import type { UserRole, WorkflowStatus } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
 import { canUpdateAssignedWorkflow, hasCapability } from "@/lib/permissions";
+import { AssignmentStatusFields } from "@/components/admin/assignment-status-fields";
 import { ReviewSection } from "@/components/admin/review-ui";
 import { selfAssignContent, updateContentWorkflowStatus } from "@/app/admin/work/actions";
 
@@ -41,13 +42,17 @@ export async function ReadinessAssignmentSection({
     orderBy: [{ createdAt: "asc" }],
     select: {
       id: true,
+      blockedReason: true,
       state: true,
       taskType: true,
       assigneeId: true,
       assignee: { select: { name: true, email: true } }
     }
   });
-  const assignedToCurrentUser = assignments.some((assignment) => assignment.assigneeId === currentUserId);
+  const currentAssignment = assignments.find((assignment) => (
+    assignment.assigneeId === currentUserId && assignment.taskType === "review"
+  )) ?? assignments.find((assignment) => assignment.assigneeId === currentUserId);
+  const assignedToCurrentUser = Boolean(currentAssignment);
   const canSelfAssign = hasCapability(currentUserRoles, "self_assign_content") && !assignedToCurrentUser;
   const canUpdateWorkflow = canUpdateAssignedWorkflow(
     currentUserRoles,
@@ -59,7 +64,7 @@ export async function ReadinessAssignmentSection({
   const message = assignmentError
     ? { kind: "error" as const, text: assignmentError }
     : assignmentUpdated
-      ? { kind: "success" as const, text: assignmentUpdated === "workflow" ? "Workflow updated." : "This review is now assigned to you." }
+      ? { kind: "success" as const, text: assignmentUpdated === "workflow" ? "Review workflow updated." : "This review is now assigned to you." }
       : null;
 
   return (
@@ -77,6 +82,9 @@ export async function ReadinessAssignmentSection({
               <li key={assignment.id}>
                 <span>{assignment.assignee?.name || assignment.assignee?.email}</span>
                 <small>{formatLabel(assignment.taskType)} · {formatLabel(assignment.state)}</small>
+                {assignment.state === "blocked" && assignment.blockedReason ? (
+                  <p className="assignment-blocked-reason"><strong>Blocking reason:</strong> {assignment.blockedReason}</p>
+                ) : null}
               </li>
             ))}
           </ul>
@@ -100,12 +108,23 @@ export async function ReadinessAssignmentSection({
             <input name="contentType" type="hidden" value={contentType} />
             <input name="contentId" type="hidden" value={contentId} />
             <input name="returnTo" type="hidden" value={returnTo} />
-            <label className="admin-field">
-              <span>Editorial progress</span>
-              <select defaultValue={workflowStatus} name="workflowStatus">
-                {workflowOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-              </select>
-            </label>
+            <div className="readiness-assignment__workflow-fields">
+              <label className="admin-field">
+                <span>Editorial progress</span>
+                <select defaultValue={workflowStatus} name="workflowStatus">
+                  {workflowOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                </select>
+              </label>
+              {currentAssignment ? (
+                <>
+                  <input name="assignmentId" type="hidden" value={currentAssignment.id} />
+                  <AssignmentStatusFields
+                    defaultBlockedReason={currentAssignment.blockedReason}
+                    defaultStatus={currentAssignment.state}
+                  />
+                </>
+              ) : null}
+            </div>
             <button className="admin-form-button" type="submit">Update workflow</button>
           </form>
         ) : (

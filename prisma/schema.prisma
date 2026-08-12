@@ -305,6 +305,7 @@ model ContentAssignment {
   priority      AssignmentPriority    @default(normal)
   dueDate       DateTime?
   notes         String?
+  blockedReason String?
   completedById String?
   completedBy   User?                 @relation("AssignmentCompleter", fields: [completedById], references: [id], onDelete: SetNull)
   createdAt     DateTime              @default(now())
