@@ -92,3 +92,12 @@ test("duplicate and Instagram authority stays with the smaller internal circle",
     assert.equal(hasCapability([role], "merge_saints"), false);
   }
 });
+
+test("feedback inbox access stays with editors and administrators", () => {
+  for (const role of ["site_admin", "data_admin", "editor"] as const) {
+    assert.equal(hasCapability([role], "view_feedback_inbox"), true);
+  }
+  for (const role of ["contributor", "fact_checker", "writer", "curator", "translator"] as const) {
+    assert.equal(hasCapability([role], "view_feedback_inbox"), false);
+  }
+});

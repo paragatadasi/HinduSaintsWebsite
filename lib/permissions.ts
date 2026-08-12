@@ -2,6 +2,7 @@ import type { UserRole } from "@/lib/generated/prisma/client";
 
 export type Capability =
   | "view_content"
+  | "view_feedback_inbox"
   | "edit_content"
   | "publish_content"
   | "view_source_data"
@@ -30,6 +31,7 @@ const structuredEditor: readonly Capability[] = ["view_content", "edit_content",
 const longFormEditor: readonly Capability[] = [...structuredEditor, "edit_long_form_content"];
 const catalogCoordinator: readonly Capability[] = [
   ...longFormEditor,
+  "view_feedback_inbox",
   "publish_content",
   "manage_assignments",
   "view_full_saint_catalog",
