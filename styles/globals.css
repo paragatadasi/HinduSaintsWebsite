@@ -4880,6 +4880,24 @@ html[data-route-entering="true"] body > main {
   padding: 0;
 }
 
+.admin-settings-form--assignment-status {
+  inline-size: min(100%, var(--width-admin-assignment-editor));
+  justify-self: end;
+}
+
+.admin-settings-form--assignment-status > .assignment-status-fields {
+  display: contents;
+}
+
+.admin-settings-form--assignment-status > .admin-form-button {
+  grid-column: -2 / -1;
+  grid-row: 1;
+}
+
+.admin-settings-form--assignment-status .assignment-status-fields__reason {
+  grid-column: 1 / -1;
+}
+
 .admin-form-grid {
   display: grid;
   gap: var(--space-3);
@@ -5562,6 +5580,30 @@ fieldset.admin-field {
   display: grid;
   gap: var(--space-2);
   min-width: 0;
+}
+
+.assignment-status-fields__reason {
+  background: color-mix(in srgb, var(--color-accent) 6%, var(--review-workflow-field-bg));
+  border-left: var(--border-width-default) solid var(--color-accent);
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+
+.assignment-status-fields__reason textarea {
+  min-height: var(--height-admin-blocking-reason);
+  resize: vertical;
+}
+
+.assignment-status-fields__reason .form-field-hint {
+  margin: 0;
+}
+
+.readiness-assignment__workflow-fields > .assignment-status-fields {
+  display: contents;
+}
+
+.readiness-assignment__workflow-fields .assignment-status-fields__reason {
+  grid-column: 1 / -1;
 }
 
 .assignment-blocked-reason {
@@ -10232,6 +10274,16 @@ select:not([multiple]) {
 
   .admin-settings-form__actions {
     justify-content: flex-start;
+  }
+
+  .admin-settings-form--assignment-status > .admin-form-button,
+  .admin-settings-form--assignment-status .assignment-status-fields__reason {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .admin-settings-form--assignment-status > .admin-form-button {
+    width: 100%;
   }
 
   .feedback-inbox-row__aside {
