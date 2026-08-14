@@ -105,7 +105,7 @@ export async function getEditorialRevisionPreview(revisionId: string): Promise<E
 }
 
 export function applySaintNarrativePreview(base: PublicSaintDetail, revision: SaintNarrativeRevision): PublicSaintDetail {
-  const sources = toPreviewSources(revision.sources);
+  const sources = revision.sources ? toPreviewSources(revision.sources) : base.sources;
   return {
     ...base,
     shortDescription: revision.shortDescription ?? "",
