@@ -663,7 +663,7 @@ async function getSourcesForSaint(saintId: string): Promise<PublicSourceSummary[
     include: { source: true }
   });
 
-  return sourceLinks.map(({ source }) => ({
+  return sourceLinks.map(({ description, source }) => ({
     id: source.id,
     title: source.title,
     sourceType: source.sourceType,
@@ -671,7 +671,7 @@ async function getSourcesForSaint(saintId: string): Promise<PublicSourceSummary[
     publisher: source.publisher ?? undefined,
     publicationYear: source.publicationYear ? String(source.publicationYear) : undefined,
     url: source.url ?? undefined,
-    note: source.notes ?? undefined
+    note: description ?? undefined
   }));
 }
 

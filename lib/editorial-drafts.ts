@@ -6,7 +6,7 @@ export const EDITORIAL_DRAFT_SECTIONS = {
   saint: {
     overview: ["displayName", "canonicalName"],
     public_fields: ["eraLabel", "birthDateRaw", "samadhiDateRaw", "dateNotes", "seoTitle", "seoDescription"],
-    biography: ["biographyTitle", "shortDescription", "biographyMarkdown", "sourcesJson", "intent"],
+    biography: ["biographyTitle", "shortDescription", "biographyMarkdown", "intent"],
     aliases: ["aliases"]
   },
   tradition: {

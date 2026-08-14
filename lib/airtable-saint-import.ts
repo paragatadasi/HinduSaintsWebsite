@@ -1,5 +1,6 @@
 import { Prisma, type Confidence, type ContentStatus, type PlaceType, type RelationshipType } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
+import { createImportedSourceTitle } from "@/lib/source-display";
 import { cacheExternalImage } from "@/lib/external-image-cache";
 import { buildAirtableSaintSlugCandidates } from "@/lib/airtable-saint-slugs";
 import { buildEraLabel, parseImportedDate } from "@/lib/import-dates";
@@ -844,7 +845,7 @@ async function findOrCreateSource(url: string) {
 
   return db.source.create({
     data: {
-      title: url,
+      title: createImportedSourceTitle(url),
       url,
       sourceType: "website"
     }
