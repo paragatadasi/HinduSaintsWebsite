@@ -1,4 +1,4 @@
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, BookOpen, ExternalLink } from "lucide-react";
 import type { ReactNode } from "react";
 import { SaintCard } from "@/components/saints/saint-card";
 import { SaintBiography } from "@/components/saints/saint-biography";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
 import type { PublicImage, PublicRelatedSaintSummary, PublicSaintDetail, PublicSourceSummary } from "@/lib/public-contracts";
+import { getSourceDisplayTitle } from "@/lib/source-display";
 import type { SaintDetailTemplateContent } from "@/lib/site-content";
 
 export function SaintDetailPageContent({
@@ -86,7 +87,9 @@ export function SaintDetailPageContent({
       ) : null}
 
       {hasSources ? (
-        <section className="page-shell section section--last saint-profile-sources"><SourceList title="Sources" sources={saint.sources} /></section>
+        <section className="section section--last saint-profile-sources">
+          <div className="page-shell"><SourceList sources={saint.sources} /></div>
+        </section>
       ) : null}
     </Root>
   );
@@ -96,12 +99,14 @@ function FactGrid({ className, facts }: { className?: string; facts: Array<{ lab
   return <div className={["fact-grid", className].filter(Boolean).join(" ")}>{facts.map((fact, index) => <div className="fact" key={`${fact.label}-${index}`}><strong>{fact.label}</strong><div className="fact__value">{fact.value}</div></div>)}</div>;
 }
 
-function SourceList({ title, sources }: { title: string; sources: PublicSourceSummary[] }) {
-  return <section className="source-section"><div className="eyebrow">References</div><h2>{title}</h2><ul className="source-list">{sources.map((source) => <li id={source.id ? `source-${source.id}` : undefined} key={`${source.id ?? source.title}-${source.author ?? source.publisher ?? ""}`}><SourceTitle source={source} /><SourceMeta source={source} />{source.note ? <p>{source.note}</p> : null}</li>)}</ul></section>;
+function SourceList({ sources }: { sources: PublicSourceSummary[] }) {
+  return <section className="source-section"><h2>Sources &amp; Further Reading</h2><ul className="source-list">{sources.map((source) => <SourceItem key={`${source.id ?? source.title}-${source.author ?? source.publisher ?? ""}`} source={source} />)}</ul></section>;
 }
 
-function SourceTitle({ source }: { source: PublicSourceSummary }) {
-  return source.url ? <h3><a href={source.url}><span>{source.title}</span><ExternalLink size={16} aria-hidden="true" /></a></h3> : <h3>{source.title}</h3>;
+function SourceItem({ source }: { source: PublicSourceSummary }) {
+  const title = getSourceDisplayTitle(source);
+  const content = <><BookOpen className="source-list__book" size={30} strokeWidth={1.6} aria-hidden="true" /><div className="source-list__content"><h3>{title}</h3>{source.note ? <p>{source.note}</p> : null}<SourceMeta source={source} /></div>{source.url ? <ExternalLink className="source-list__external" size={24} strokeWidth={1.8} aria-hidden="true" /> : null}</>;
+  return <li id={source.id ? `source-${source.id}` : undefined}>{source.url ? <a className="source-list__link" href={source.url} rel="noreferrer" target="_blank" aria-label={`${title} (opens in a new tab)`}>{content}</a> : <div className="source-list__link">{content}</div>}</li>;
 }
 
 function SourceMeta({ source }: { source: PublicSourceSummary }) {

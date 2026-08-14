@@ -1148,6 +1148,7 @@ model ContentSource {
   entityType String
   entityId   String
   notes      String?
+  description String?
   sortOrder  Int     @default(0)
 
   @@index([entityType, entityId, sortOrder])

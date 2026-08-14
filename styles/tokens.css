@@ -78,6 +78,8 @@
   --space-public-section: clamp(var(--space-12), 6vw, var(--space-16));
   --color-saint-profile-hero-start: var(--color-surface);
   --color-saint-profile-hero-end: var(--color-bg);
+  --color-saint-profile-sources: var(--color-saint-profile-hero-start);
+  --color-saint-profile-source-border: color-mix(in srgb, var(--color-gold) 18%, transparent);
   --color-saint-profile-biography: var(--color-text-inverse);
   --color-saint-profile-biography-text: var(--color-text);
   --color-saint-profile-biography-muted: color-mix(in srgb, var(--color-saint-profile-biography-text) 68%, var(--color-saint-profile-biography));

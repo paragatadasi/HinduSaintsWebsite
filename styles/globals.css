@@ -3617,7 +3617,7 @@ html[data-route-entering="true"] body > main {
 .saint-profile-related { background: var(--color-section-surface); }
 .saint-profile-related .section-heading h2 { letter-spacing: 0.12em; text-transform: uppercase; }
 .saint-profile-encounter { display: flex; justify-content: center; }
-.saint-profile-sources { max-width: var(--width-saint-profile-reading); }
+.saint-profile-sources { background: var(--color-saint-profile-sources); }
 
 .saint-detail-hero__inner {
   align-items: center;
@@ -3663,9 +3663,18 @@ html[data-route-entering="true"] body > main {
   min-width: 0;
 }
 
-.saint-detail-main h2,
-.source-section h2 {
+.saint-detail-main h2 {
   font-size: clamp(1.85rem, 4vw, 2.65rem);
+}
+
+.source-section h2 {
+  color: var(--color-accent);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-eyebrow);
+  margin: 0 0 var(--space-4);
+  text-transform: uppercase;
 }
 
 .saint-detail-aside {
@@ -3747,9 +3756,7 @@ html[data-route-entering="true"] body > main {
   text-align: center;
 }
 
-.context-block,
-.source-section,
-.source-list li {
+.context-block {
   border-top: 1px solid var(--color-border);
   padding-top: var(--space-4);
 }
@@ -3761,15 +3768,14 @@ html[data-route-entering="true"] body > main {
 .context-list,
 .source-list {
   display: grid;
-  gap: var(--space-4);
+  gap: 0;
   list-style: none;
   margin: 0;
   min-width: 0;
   padding: 0;
 }
 
-.context-list a,
-.source-list a {
+.context-list a {
   align-items: center;
   color: var(--color-accent);
   display: inline-flex;
@@ -3779,21 +3785,33 @@ html[data-route-entering="true"] body > main {
   min-width: 0;
 }
 
-.source-list li,
-.source-list h3,
-.source-list a span {
+.source-list li {
+  border-bottom: var(--border-width-default) solid var(--color-saint-profile-source-border);
   min-width: 0;
+  scroll-margin-top: var(--position-saint-profile-biography-toc);
 }
 
-.source-list li { scroll-margin-top: var(--position-saint-profile-biography-toc); }
+.source-list li:last-child { border-bottom: 0; }
 
-.source-list a span {
-  overflow-wrap: anywhere;
+.source-list__link {
+  align-items: center;
+  color: var(--color-text);
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  padding: var(--space-5) 0;
+  text-decoration: none;
 }
 
-.source-list a svg {
-  flex: 0 0 auto;
-}
+.source-list__link:hover h3,
+.source-list__link:focus-visible h3 { color: var(--color-accent-strong); }
+
+.source-list__book,
+.source-list__external { color: var(--color-accent); }
+
+.source-list__book { align-self: start; margin-top: var(--space-1); }
+.source-list__external { flex: 0 0 auto; }
+.source-list__content { min-width: 0; }
 
 .context-list p,
 .source-list p,
@@ -3804,11 +3822,19 @@ html[data-route-entering="true"] body > main {
 }
 
 .source-list h3 {
+  color: var(--color-text);
   font-family: var(--font-serif);
-  font-size: 1.18rem;
-  font-weight: 500;
+  font-size: 1.22rem;
+  font-weight: 600;
   line-height: 1.2;
   margin: 0;
+  overflow-wrap: anywhere;
+  transition: color var(--motion-interactive-duration) var(--motion-interactive-ease);
+}
+
+.source-list .source-meta {
+  color: var(--color-subdued-info);
+  font-size: var(--font-size-review-hint);
 }
 
 .source-label {
@@ -9630,6 +9656,13 @@ select:not([multiple]) {
   .saint-profile-actions { align-items: flex-start; }
   .saint-profile-actions__main { align-items: stretch; flex: 1 1 100%; flex-direction: column; }
   .saint-profile-actions__main .button { justify-content: center; width: 100%; }
+  .source-list__link {
+    align-items: start;
+    gap: var(--space-4);
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+  .source-list__book { width: var(--space-6); }
+  .source-list__external { width: var(--space-5); }
   .saint-profile-biography__layout {
     display: block;
     padding-block: var(--space-8);
