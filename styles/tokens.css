@@ -131,12 +131,14 @@
   --width-instagram-review-card-media-mobile: clamp(96px, 28vw, 124px);
   --width-saint-review-image: clamp(10rem, 18vw, 14rem);
   --width-admin-image-editor: min(100%, 44rem);
+  --width-admin-assignment-editor: 42rem;
   --width-admin-config-media-preview: min(100%, 20rem);
   --width-admin-config-placement-min: 20rem;
   --width-editorial-revision-card-min: 22rem;
   --width-admin-image-crop-editor: min(100%, 32rem);
   --width-admin-image-editor-dialog: min(92vw, 88rem);
   --height-admin-analytics-chart: 16rem;
+  --height-admin-blocking-reason: 7rem;
   --height-editorial-revision-preview: 32rem;
   --height-review-tab: 2.25rem;
   --width-instagram-viewer-panel: min(100%, 1400px);

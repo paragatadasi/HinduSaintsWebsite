@@ -198,7 +198,7 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
                     <button className="admin-form-button" type="submit">Assign to me</button>
                   </form>
                 ) : !readOnly && (canManage || row.assigneeId === userId) ? (
-                  <form action={updateAssignment} className="admin-settings-form admin-settings-form--inline">
+                  <form action={updateAssignment} className="admin-settings-form admin-settings-form--inline admin-settings-form--assignment-status">
                     <input type="hidden" name="assignmentId" value={row.id} />
                     {canManage ? (
                       <label className="admin-field">
