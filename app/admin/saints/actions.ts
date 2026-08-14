@@ -23,8 +23,6 @@ import {
   editorialSnapshotsMatch,
   EditorialRevisionConflictError,
   getEditorialRevisionActiveKey,
-  parseSourcesJson,
-  resolvePublishedRevisionSource,
   saintNarrativeRevisionSchema,
   type SaintNarrativeRevision
 } from "@/lib/editorial-revisions";
@@ -215,14 +213,13 @@ const saintBiographySchema = z.object({
 const saintSourceSchema = z.object({
   contentSourceId: z.string().cuid().optional(),
   saintId: z.string().cuid(),
-  sourceId: z.string().cuid().optional(),
   title: z.string().trim().min(1).max(300),
   sourceType: sourceTypeSchema,
   author: z.string().trim().max(200).optional(),
   publisher: z.string().trim().max(200).optional(),
   publicationYear: z.number().int().min(0).max(3000).optional(),
   url: z.string().trim().url().max(1000).optional(),
-  note: z.string().trim().max(1000).optional(),
+  description: z.string().trim().max(1000).optional(),
   sortOrder: z.number().int().min(0).max(1000).optional()
 });
 
@@ -774,13 +771,25 @@ export async function saveSaintNarrativeRevision(formData: FormData) {
     shortDescription: emptyToUndefined(formData.get("shortDescription")),
     intent: formData.get("intent")
   });
+  const activeKey = getEditorialRevisionActiveKey("saint", parsedFields.saintId);
+  const [currentSnapshot, existingRevision] = await Promise.all([
+    getSaintNarrativeSnapshot(db, parsedFields.saintId),
+    db.editorialRevision.findUnique({ where: { activeKey }, select: { payload: true } })
+  ]);
+  if (!currentSnapshot) redirect("/admin/saints");
+  const existingPayload = existingRevision ? saintNarrativeRevisionSchema.safeParse(existingRevision.payload) : null;
+  const biographyMarkdown = resolveAttachedSourceReferences(
+    parsedFields.biographyMarkdown,
+    existingPayload?.success ? existingPayload.data.sources ?? [] : [],
+    currentSnapshot.sources
+  );
+  if (!biographyMarkdown) {
+    redirect(`/admin/saints/${currentSnapshot.slug}/biography?revisionError=cited-source-missing`);
+  }
   const payload = saintNarrativeRevisionSchema.parse({
     ...parsedFields,
-    sources: parseSourcesJson(formData.get("sourcesJson"))
+    biographyMarkdown
   });
-  const activeKey = getEditorialRevisionActiveKey("saint", parsedFields.saintId);
-  const currentSnapshot = await getSaintNarrativeSnapshot(db, parsedFields.saintId);
-  if (!currentSnapshot) redirect("/admin/saints");
 
   await db.$transaction(async (tx) => {
     const active = await tx.editorialRevision.findUnique({ where: { activeKey } });
@@ -856,36 +865,31 @@ export async function publishSaintNarrativeRevision(formData: FormData) {
   const payload = saintNarrativeRevisionSchema.parse(revision.payload);
   const currentSnapshot = await getSaintNarrativeSnapshot(db, parsed.saintId);
   if (!currentSnapshot) redirect("/admin/saints");
-  if (!editorialSnapshotsMatch(revision.basePayload, currentSnapshot.payload)) {
+  if (!editorialSnapshotsMatch(toNarrativeContent(revision.basePayload), toNarrativeContent(currentSnapshot.payload))) {
     redirect(`/admin/saints/${currentSnapshot.slug}/biography?revisionError=published-content-changed`);
+  }
+
+  const biographyMarkdown = resolveAttachedSourceReferences(payload.biographyMarkdown, payload.sources ?? [], currentSnapshot.sources);
+  if (!biographyMarkdown) {
+    redirect(`/admin/saints/${currentSnapshot.slug}/biography?revisionError=cited-source-missing`);
   }
 
   try {
     await db.$transaction(async (tx) => {
       const latestSnapshot = await getSaintNarrativeSnapshot(tx, parsed.saintId);
-      if (!latestSnapshot || !editorialSnapshotsMatch(revision.basePayload, latestSnapshot.payload)) {
+      if (!latestSnapshot || !editorialSnapshotsMatch(toNarrativeContent(revision.basePayload), toNarrativeContent(latestSnapshot.payload))) {
         throw new EditorialRevisionConflictError();
       }
       await tx.biography.updateMany({
         where: { saintId: parsed.saintId, status: { not: "archived" } },
         data: { status: "archived" }
       });
-      await tx.contentSource.deleteMany({ where: { entityType: "Saint", entityId: parsed.saintId } });
-      const publishedSourceIds = new Map<string, string>();
-      for (const [sortOrder, sourceDraft] of payload.sources.entries()) {
-        const sourceId = await resolvePublishedRevisionSource(tx, sourceDraft);
-        const citationKey = sourceDraft.citationKey ?? sourceDraft.sourceId;
-        if (citationKey) publishedSourceIds.set(citationKey, sourceId);
-        await tx.contentSource.create({
-          data: { entityType: "Saint", entityId: parsed.saintId, sourceId, notes: sourceDraft.note ?? null, sortOrder }
-        });
-      }
       await tx.biography.create({
         data: {
           saintId: parsed.saintId,
           title: payload.biographyTitle,
           slug: `revision-${revision.id}`,
-          bodyMarkdown: replaceSourceReferenceKeys(payload.biographyMarkdown, publishedSourceIds),
+          bodyMarkdown: biographyMarkdown,
           status: "published",
           authorOrEditor: user.name ?? user.email,
           createdById: user.id,
@@ -929,14 +933,13 @@ export async function upsertSaintSource(formData: FormData) {
   const parsed = saintSourceSchema.parse({
     contentSourceId: emptyToUndefined(formData.get("contentSourceId")),
     saintId: formData.get("saintId"),
-    sourceId: emptyToUndefined(formData.get("sourceId")),
     title: formData.get("title"),
     sourceType: formData.get("sourceType"),
     author: emptyToUndefined(formData.get("author")),
     publisher: emptyToUndefined(formData.get("publisher")),
     publicationYear: parseOptionalInteger(formData.get("publicationYear")),
     url: emptyToUndefined(formData.get("url")),
-    note: emptyToUndefined(formData.get("note")),
+    description: emptyToUndefined(formData.get("description")),
     sortOrder: parseOptionalInteger(formData.get("sortOrder"))
   });
   const saint = await db.saint.findUnique({
@@ -947,17 +950,22 @@ export async function upsertSaintSource(formData: FormData) {
   if (!saint) redirect("/admin/saints");
 
   await db.$transaction(async (tx) => {
-    const source = parsed.sourceId
+    const existingLink = parsed.contentSourceId ? await tx.contentSource.findFirst({
+      where: { id: parsed.contentSourceId, entityType: "Saint", entityId: parsed.saintId },
+      select: { sourceId: true }
+    }) : null;
+    if (parsed.contentSourceId && !existingLink) throw new Error("The source is no longer attached to this saint.");
+
+    const source = existingLink
       ? await tx.source.update({
-          where: { id: parsed.sourceId },
+          where: { id: existingLink.sourceId },
           data: {
             title: parsed.title,
             sourceType: parsed.sourceType,
             author: parsed.author ?? null,
             publisher: parsed.publisher ?? null,
             publicationYear: parsed.publicationYear ?? null,
-            url: parsed.url ?? null,
-            notes: parsed.note ?? null
+            url: parsed.url ?? null
           },
           select: { id: true }
         })
@@ -968,8 +976,7 @@ export async function upsertSaintSource(formData: FormData) {
             author: parsed.author ?? null,
             publisher: parsed.publisher ?? null,
             publicationYear: parsed.publicationYear ?? null,
-            url: parsed.url ?? null,
-            notes: parsed.note ?? null
+            url: parsed.url ?? null
           },
           select: { id: true }
         });
@@ -979,7 +986,7 @@ export async function upsertSaintSource(formData: FormData) {
         where: { id: parsed.contentSourceId },
         data: {
           sourceId: source.id,
-          notes: parsed.note ?? null,
+          description: parsed.description ?? null,
           sortOrder: parsed.sortOrder ?? 0
         }
       });
@@ -989,7 +996,7 @@ export async function upsertSaintSource(formData: FormData) {
           entityType: "Saint",
           entityId: parsed.saintId,
           sourceId: source.id,
-          notes: parsed.note ?? null,
+          description: parsed.description ?? null,
           sortOrder: parsed.sortOrder ?? 0
         }
       });
@@ -1699,8 +1706,9 @@ async function getSaintNarrativeSnapshot(client: Prisma.TransactionClient | type
   const payload: SaintNarrativeRevision = {
     shortDescription: saint.shortDescription ?? undefined,
     biographyTitle: biography?.title ?? "The Life of a Saint",
-    biographyMarkdown: biography?.bodyMarkdown ?? "",
-    sources: links.map(({ source, notes }) => ({
+    biographyMarkdown: biography?.bodyMarkdown ?? ""
+  };
+  const sources = links.map(({ description, source }) => ({
       sourceId: source.id,
       title: source.title,
       sourceType: source.sourceType,
@@ -1708,10 +1716,36 @@ async function getSaintNarrativeSnapshot(client: Prisma.TransactionClient | type
       publisher: source.publisher ?? undefined,
       publicationYear: source.publicationYear ?? undefined,
       url: source.url ?? undefined,
-      note: notes ?? source.notes ?? undefined
-    }))
+      note: description ?? undefined
+    }));
+  return { slug: saint.slug, version: saint.version, payload, sources };
+}
+
+function toNarrativeContent(payload: unknown) {
+  const parsed = saintNarrativeRevisionSchema.safeParse(payload);
+  if (!parsed.success) return payload;
+  return {
+    shortDescription: parsed.data.shortDescription,
+    biographyTitle: parsed.data.biographyTitle,
+    biographyMarkdown: parsed.data.biographyMarkdown
   };
-  return { slug: saint.slug, version: saint.version, payload };
+}
+
+function resolveAttachedSourceReferences(
+  biographyMarkdown: string,
+  revisionSources: NonNullable<SaintNarrativeRevision["sources"]>,
+  attachedSources: NonNullable<SaintNarrativeRevision["sources"]>
+) {
+  const attachedIds = new Set(attachedSources.flatMap((source) => source.sourceId ? [source.sourceId] : []));
+  const sourceIdsByRevisionKey = new Map<string, string>();
+  for (const source of revisionSources) {
+    if (!source.sourceId || !attachedIds.has(source.sourceId)) continue;
+    sourceIdsByRevisionKey.set(source.sourceId, source.sourceId);
+    if (source.citationKey) sourceIdsByRevisionKey.set(source.citationKey, source.sourceId);
+  }
+  const resolved = replaceSourceReferenceKeys(biographyMarkdown, sourceIdsByRevisionKey);
+  const referencedIds = [...resolved.matchAll(/#source-ref-([a-zA-Z0-9_-]{1,128})/g)].map((match) => match[1]);
+  return referencedIds.every((sourceId) => attachedIds.has(sourceId)) ? resolved : null;
 }
 
 function emptyToUndefined(value: FormDataEntryValue | null) {
@@ -1806,6 +1840,8 @@ function revalidateSaintPaths(slug: string) {
   revalidatePath("/admin");
   revalidatePath("/admin/saints");
   revalidatePath(`/admin/saints/${slug}`);
+  revalidatePath(`/admin/saints/${slug}/biography`);
+  revalidatePath(`/admin/saints/${slug}/sources`);
 }
 
 function toInputJson(value: unknown): Prisma.InputJsonValue {

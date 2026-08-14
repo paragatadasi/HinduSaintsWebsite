@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useRef, useState } from "react";
 import type { AssignmentState } from "@/lib/generated/prisma/client";
 
 const taskStatusOptions: Array<{ label: string; value: AssignmentState }> = [
@@ -20,6 +20,8 @@ export function AssignmentStatusFields({
 }) {
   const [taskStatus, setTaskStatus] = useState<AssignmentState>(defaultStatus);
   const [blockedReason, setBlockedReason] = useState(defaultBlockedReason ?? "");
+  const blockedReasonHintId = useId();
+  const blockedReasonRef = useRef<HTMLTextAreaElement>(null);
 
   return (
     <div className="assignment-status-fields">
@@ -27,7 +29,13 @@ export function AssignmentStatusFields({
         <span>Task status</span>
         <select
           name="taskStatus"
-          onChange={(event) => setTaskStatus(event.target.value as AssignmentState)}
+          onChange={(event) => {
+            const nextStatus = event.target.value as AssignmentState;
+            setTaskStatus(nextStatus);
+            if (nextStatus === "blocked") {
+              window.requestAnimationFrame(() => blockedReasonRef.current?.focus());
+            }
+          }}
           value={taskStatus}
         >
           {taskStatusOptions.map((option) => (
@@ -40,15 +48,17 @@ export function AssignmentStatusFields({
         <label className="admin-field assignment-status-fields__reason">
           <span>Blocking reason</span>
           <textarea
+            aria-describedby={blockedReasonHintId}
             maxLength={1000}
             name="blockedReason"
             onChange={(event) => setBlockedReason(event.target.value)}
-            placeholder="Describe what is preventing this task from moving forward."
+            placeholder="Summarize what is needed before this task can move forward."
+            ref={blockedReasonRef}
             required
-            rows={2}
+            rows={4}
             value={blockedReason}
           />
-          <small className="form-field-hint">Required while this task is blocked.</small>
+          <small className="form-field-hint" id={blockedReasonHintId}>Required to mark this task as blocked.</small>
         </label>
       ) : null}
     </div>

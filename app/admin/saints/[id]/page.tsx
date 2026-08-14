@@ -12,7 +12,6 @@ import { AdminPresence } from "@/components/admin/admin-presence";
 import { EditConflictPanel } from "@/components/admin/edit-conflict-panel";
 import { EditorialDraftForm } from "@/components/admin/editorial-draft-form";
 import { SoftLimitTextarea } from "@/components/admin/soft-limit-textarea";
-import { RevisionSourcesEditor } from "@/components/admin/revision-sources-editor";
 import { Prose } from "@/components/content/prose";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchableSelect } from "@/components/ui/searchable-select";
@@ -21,7 +20,7 @@ import { requireSaintCatalogUser } from "@/lib/admin-access";
 import { canManageSaintTeamVisibility, getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { hasCapability } from "@/lib/permissions";
 import { draftString, getEditorialDraftMap } from "@/lib/editorial-drafts";
-import { getEditorialRevisionActiveKey, saintNarrativeRevisionSchema, sourceRevisionSchema, type SourceRevision } from "@/lib/editorial-revisions";
+import { getEditorialRevisionActiveKey, saintNarrativeRevisionSchema, type SourceRevision } from "@/lib/editorial-revisions";
 import { getInstagramLinkProps } from "@/lib/external-links";
 import { formatHistoricalYear, parseImportedDate } from "@/lib/import-dates";
 import { getInstagramImageUrls } from "@/lib/instagram";
@@ -50,13 +49,14 @@ import { SaintImageActions } from "./saint-image-actions";
 import { SaintImageCropper } from "./saint-image-cropper";
 import { SaintPlaceRouteEditor, type SaintPlaceRouteOption } from "./saint-place-route-editor";
 import { SaintTraditionEditor } from "./saint-tradition-editor";
+import { SaintSourcesEditor } from "./saint-sources-editor";
 
 export type AdminSaintEditorPageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string; duplicateError?: string; duplicateUpdated?: string; revisionError?: string; revisionUpdated?: string }>;
 };
 
-export type SaintEditorTab = "readiness" | "summary" | "biography" | "media";
+export type SaintEditorTab = "readiness" | "summary" | "biography" | "sources" | "media";
 
 export default function AdminSaintReadinessPage(props: AdminSaintEditorPageProps) {
   return <AdminSaintEditorPage {...props} activeTab="readiness" />;
@@ -139,7 +139,7 @@ export async function AdminSaintEditorPage({
   const legacyBiographyDraft = saint.biographies.find((biography) => biography.status === "draft" || biography.status === "needs_review");
   const parsedNarrativeRevision = narrativeRevisionRow ? saintNarrativeRevisionSchema.safeParse(narrativeRevisionRow.payload) : null;
   const narrativeRevision = parsedNarrativeRevision?.success ? parsedNarrativeRevision.data : null;
-  const publishedSources = sourceLinks.map(({ source, notes }) => ({
+  const publishedSources = sourceLinks.map(({ description, source }) => ({
     sourceId: source.id,
     title: source.title,
     sourceType: source.sourceType,
@@ -147,10 +147,8 @@ export async function AdminSaintEditorPage({
     publisher: source.publisher ?? undefined,
     publicationYear: source.publicationYear ?? undefined,
     url: source.url ?? undefined,
-    note: notes ?? source.notes ?? undefined
+    note: description ?? undefined
   } satisfies SourceRevision));
-  const draftSources = parseDraftSources(draftString(biographyDraft, "sourcesJson"), narrativeRevision?.sources ?? publishedSources)
-    .map((source, index) => ({ ...source, citationKey: source.citationKey ?? source.sourceId ?? `draft-source-${index + 1}` }));
   const biographyTextareaId = "biography-body-markdown";
   const instagramBiographyImportPosts = canReviewInstagram ? getInstagramBiographyImportPosts(saint) : [];
   const selectedTraditionIds = saint.traditions.map((item) => item.traditionId);
@@ -205,6 +203,7 @@ export async function AdminSaintEditorPage({
           { exact: true, href: detailPath, label: "Publish Readiness" },
           { href: `${detailPath}/summary`, label: "Summary" },
           { href: `${detailPath}/biography`, label: "Biography" },
+          { count: sourceLinks.length, href: `${detailPath}/sources`, label: "Sources" },
           { count: saint.galleryImages.length, href: `${detailPath}/media`, label: "Media" }
         ]
       }]} />
@@ -698,20 +697,20 @@ export async function AdminSaintEditorPage({
       {activeTab === "biography" ? <CollapsibleReviewCard
         cardId="saint-biography"
         defaultOpen
-        description="Develop a private revision, submit it for review, and publish the description, biography, and citations together."
+        description="Develop a private narrative revision, submit it for review, and publish it without changing the independently managed source list."
         eyebrow="Editorial revision"
         title="Narrative Draft and Review"
       >
         {revisionUpdated ? <p className="admin-notice form-status form-status--success">{formatRevisionUpdate(revisionUpdated)}</p> : null}
         {revisionError === "published-content-changed" ? <p className="admin-notice form-status form-status--error">The published narrative changed after this draft began. Return it to draft and reconcile it with the current public version before publishing.</p> : null}
+        {revisionError === "cited-source-missing" ? <p className="admin-notice form-status form-status--error">This biography cites a source that is no longer attached. Add it on the Sources tab or update the citation before publishing.</p> : null}
 
         <div className="editorial-revision-comparison">
           <ReviewSubsection eyebrow="Live public version" title="Published now" description="This content remains unchanged while a revision is drafted or reviewed.">
             <ReviewFactGrid facts={[
               { label: "Short description", value: saint.shortDescription },
               { label: "Biography", value: primaryBiography?.title },
-              { label: "Biography length", value: primaryBiography?.bodyMarkdown ? `${primaryBiography.bodyMarkdown.length.toLocaleString()} characters` : undefined },
-              { label: "Sources", value: `${sourceLinks.length}` }
+              { label: "Biography length", value: primaryBiography?.bodyMarkdown ? `${primaryBiography.bodyMarkdown.length.toLocaleString()} characters` : undefined }
             ]} />
           </ReviewSubsection>
 
@@ -720,10 +719,7 @@ export async function AdminSaintEditorPage({
             title={narrativeRevisionRow.status === "needs_review" ? "Submitted for review" : "Draft revision"}
             description={`Last updated by ${narrativeRevisionRow.updatedBy.name || narrativeRevisionRow.updatedBy.email}.`}
           >
-            <div className="review-meta">
-              <StatusBadge label={formatStatus(narrativeRevisionRow.status)} />
-              <span>{narrativeRevision.sources.length} source{narrativeRevision.sources.length === 1 ? "" : "s"}</span>
-            </div>
+            <div className="review-meta"><StatusBadge label={formatStatus(narrativeRevisionRow.status)} /></div>
             <ReviewFactGrid facts={[
               { label: "Short description", value: narrativeRevision.shortDescription },
               { label: "Biography", value: narrativeRevision.biographyTitle },
@@ -735,21 +731,8 @@ export async function AdminSaintEditorPage({
             {narrativeRevisionRow.status === "needs_review" ? <>
               <div className="editorial-revision-preview"><Prose
                 markdown={narrativeRevision.biographyMarkdown}
-                sourceReferences={narrativeRevision.sources.flatMap((source) => {
-                  const key = source.citationKey ?? source.sourceId;
-                  return key ? [{ key, title: source.title }] : [];
-                })}
+                sourceReferences={publishedSources.flatMap((source) => source.sourceId ? [{ key: source.sourceId, title: source.title }] : [])}
               /></div>
-              {narrativeRevision.sources.length > 0 ? <div className="review-list">
-                {narrativeRevision.sources.map((source, index) => <div className="review-row" key={`${source.sourceId ?? source.title}-${index}`}>
-                  <ReviewFactGrid facts={[
-                    { label: "Source", value: source.title },
-                    { label: "Type", value: formatStatus(source.sourceType) },
-                    { label: "Author", value: source.author },
-                    { label: "Note", value: source.note }
-                  ]} />
-                </div>)}
-              </div> : <p className="empty-note">No sources are attached to this revision.</p>}
               {canPublish ? <div className="review-actions">
                 <form action={publishSaintNarrativeRevision}>
                   <input name="revisionId" type="hidden" value={narrativeRevisionRow.id} />
@@ -769,7 +752,7 @@ export async function AdminSaintEditorPage({
         {canEditLongForm && narrativeRevisionRow?.status !== "needs_review" ? <ReviewEditToggle
           editable
           editLabel={narrativeRevisionRow ? "Continue editing draft" : "Start a revision"}
-          summary={<p>{narrativeRevisionRow ? "Continue the private working version. Saving it will not change the public page." : legacyBiographyDraft ? "Continue the existing biography draft and convert it into the new review workflow." : "Begin from the current published narrative and source list."}</p>}
+          summary={<p>{narrativeRevisionRow ? "Continue the private working version. Saving it will not change the public page." : legacyBiographyDraft ? "Continue the existing biography draft and convert it into the new review workflow." : "Begin from the current published narrative."}</p>}
         >
           <EditorialDraftForm action={saveSaintNarrativeRevision} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={biographyDraft} section="biography">
               <input name="saintId" type="hidden" value={saint.id} />
@@ -792,7 +775,7 @@ export async function AdminSaintEditorPage({
                   maxLength={20000}
                   name="biographyMarkdown"
                   required
-                  sourceOptions={draftSources.map((source) => ({ key: source.citationKey!, title: source.title }))}
+                  sourceOptions={publishedSources.flatMap((source) => source.sourceId ? [{ key: source.sourceId, title: source.title }] : [])}
                   textareaId={biographyTextareaId}
                 />
               </div>
@@ -817,7 +800,7 @@ export async function AdminSaintEditorPage({
                 <h4>Instagram biography references</h4>
                 <InstagramBiographyReferences saint={saint} />
               </div> : null}
-              <RevisionSourcesEditor citationChannel={biographyTextareaId} initialSources={draftSources} />
+              <p className="admin-notice">Biography citations use sources from the Sources tab. Add or edit references there, then return here to cite them.</p>
               <div className="review-actions">
                 <button className="admin-form-button admin-form-button--secondary" name="intent" value="save_draft" type="submit">Save draft</button>
                 <button className="admin-form-button" name="intent" value="submit_review" type="submit">Submit for review</button>
@@ -894,15 +877,14 @@ export async function AdminSaintEditorPage({
         </div> : null}
       </CollapsibleReviewCard> : null}
 
-      {activeTab === "biography" ? <CollapsibleReviewCard
+      {activeTab === "sources" ? <CollapsibleReviewCard
         cardId="saint-sources"
-        description="The source list currently shown publicly. Changes are made inside a narrative revision so citations and prose are reviewed together."
+        defaultOpen
+        description="Manage the sources and further reading shown publicly. Saved sources are immediately available to the biography citation tool."
         eyebrow="References"
-        title="Published Sources and Further Reading"
+        title="Sources and Further Reading"
       >
-        {sourceLinks.length > 0 ? <div className="field-grid">
-          {sourceLinks.map((link) => <ReviewField key={link.id} label={formatStatus(link.source.sourceType)} value={link.source.title} />)}
-        </div> : <p>No published sources have been attached.</p>}
+        <SaintSourcesEditor canEdit={canEditStructured} saintId={saint.id} sourceLinks={sourceLinks} />
       </CollapsibleReviewCard> : null}
 
       {activeTab === "readiness" ? <CollapsibleReviewCard
@@ -1491,16 +1473,6 @@ function splitCaptionParagraphs(caption?: string | null) {
 
 function formatStatus(status: string) {
   return status.replace(/_/g, " ");
-}
-
-function parseDraftSources(raw: string, fallback: SourceRevision[]) {
-  if (!raw) return fallback;
-  try {
-    const result = sourceRevisionSchema.array().max(100).safeParse(JSON.parse(raw));
-    return result.success ? result.data : fallback;
-  } catch {
-    return fallback;
-  }
 }
 
 function formatRevisionUpdate(value: string) {

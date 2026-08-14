@@ -17,8 +17,12 @@ export const saintNarrativeRevisionSchema = z.object({
   shortDescription: z.string().trim().max(500).optional(),
   biographyTitle: z.string().trim().min(1).max(200),
   biographyMarkdown: z.string().trim().min(1).max(20_000),
-  sources: z.array(sourceRevisionSchema).max(100)
+  // Legacy revisions may retain a source snapshot so their temporary citation
+  // keys can be resolved. New saint revisions reference independently managed
+  // ContentSource records directly and omit this field.
+  sources: z.array(sourceRevisionSchema).max(100).optional()
 }).superRefine((revision, context) => {
+  if (!revision.sources) return;
   const configuredKeys = new Set(revision.sources.flatMap((source) => [source.citationKey, source.sourceId].filter((key): key is string => Boolean(key))));
   const referencedKeys = [...revision.biographyMarkdown.matchAll(/#source-ref-([a-zA-Z0-9_-]{1,128})/g)].map((match) => match[1]);
   for (const key of referencedKeys) {

@@ -23,6 +23,18 @@ test("saint preview overlays narrative and citation snapshots without mutating t
   assert.deepEqual(preview.sources[0], { id: "book", title: "A Book", sourceType: "book", publicationYear: "2024", author: undefined, publisher: undefined, url: undefined, note: undefined });
 });
 
+test("saint previews retain independently managed sources when the revision has no legacy snapshot", () => {
+  const liveSource = { id: "source-id", title: "Current source", sourceType: "website" } as const;
+  const live = { shortDescription: "Live", biography: { title: "Live life", bodyMarkdown: "Live body" }, sources: [liveSource], furtherReading: [liveSource], seo: {} } as unknown as PublicSaintDetail;
+  const preview = applySaintNarrativePreview(live, {
+    biographyTitle: "Pending life",
+    biographyMarkdown: "Pending body"
+  });
+
+  assert.deepEqual(preview.sources, [liveSource]);
+  assert.deepEqual(preview.biography?.sources, [liveSource]);
+});
+
 test("tradition and place previews replace only revision-owned narrative fields", () => {
   const tradition = { name: "Tradition", shortDescription: "Live", overviewFacts: { focus: "Focus" }, sources: [], furtherReading: [] } as unknown as PublicTraditionDetail;
   const traditionPreview = applyTraditionNarrativePreview(tradition, {

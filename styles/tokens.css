@@ -78,6 +78,8 @@
   --space-public-section: clamp(var(--space-12), 6vw, var(--space-16));
   --color-saint-profile-hero-start: var(--color-surface);
   --color-saint-profile-hero-end: var(--color-bg);
+  --color-saint-profile-sources: var(--color-saint-profile-hero-start);
+  --color-saint-profile-source-border: color-mix(in srgb, var(--color-gold) 18%, transparent);
   --color-saint-profile-biography: var(--color-text-inverse);
   --color-saint-profile-biography-text: var(--color-text);
   --color-saint-profile-biography-muted: color-mix(in srgb, var(--color-saint-profile-biography-text) 68%, var(--color-saint-profile-biography));
@@ -131,12 +133,14 @@
   --width-instagram-review-card-media-mobile: clamp(96px, 28vw, 124px);
   --width-saint-review-image: clamp(10rem, 18vw, 14rem);
   --width-admin-image-editor: min(100%, 44rem);
+  --width-admin-assignment-editor: 42rem;
   --width-admin-config-media-preview: min(100%, 20rem);
   --width-admin-config-placement-min: 20rem;
   --width-editorial-revision-card-min: 22rem;
   --width-admin-image-crop-editor: min(100%, 32rem);
   --width-admin-image-editor-dialog: min(92vw, 88rem);
   --height-admin-analytics-chart: 16rem;
+  --height-admin-blocking-reason: 7rem;
   --height-editorial-revision-preview: 32rem;
   --height-review-tab: 2.25rem;
   --width-instagram-viewer-panel: min(100%, 1400px);

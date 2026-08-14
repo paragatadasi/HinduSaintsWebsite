@@ -22,6 +22,17 @@ test("editorial drafts allow only configured fields for a section", () => {
   });
 });
 
+test("saint biography drafts do not retain independently managed sources", () => {
+  assert.deepEqual(sanitizeEditorialDraftPayload("saint", "biography", {
+    biographyTitle: "A life",
+    biographyMarkdown: "Biography copy",
+    sourcesJson: "[{\"title\":\"Legacy source\"}]"
+  }), {
+    biographyTitle: "A life",
+    biographyMarkdown: "Biography copy"
+  });
+});
+
 test("editorial draft sections are explicit per entity", () => {
   assert.equal(isEditorialDraftSection("tradition", "long_form"), true);
   assert.equal(isEditorialDraftSection("place", "long_form"), false);
