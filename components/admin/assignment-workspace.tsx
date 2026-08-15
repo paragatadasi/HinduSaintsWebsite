@@ -9,6 +9,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { createAssignment, updateAssignment } from "@/app/admin/work/actions";
 import { db } from "@/lib/db";
 import { saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
+import { assignmentTaskTypeLabel } from "@/lib/assignment-task-type";
 
 type AssignmentRow = Awaited<ReturnType<typeof loadAssignments>>[number];
 type AdminUser = { id: string; name: string | null; email: string };
@@ -77,7 +78,7 @@ export async function AssignmentWorkspace({
         <CollapsibleReviewCard
           cardId="create-assignment"
           defaultOpen={Boolean(error)}
-          description="Choose one content record, define the task, and assign it now or leave it available for self-assignment."
+          description="Choose one content record. Its workflow status determines the task; assign it now or leave it available for self-assignment."
           eyebrow="Coordinate"
           title="Create assignment"
         >
@@ -92,16 +93,6 @@ export async function AssignmentWorkspace({
             />
             <div className="admin-form-grid admin-form-grid--assignment">
               <label className="admin-field">
-                <span>Task</span>
-                <select name="taskType" defaultValue="review">
-                  <option value="review">Review</option>
-                  <option value="edit">Edit</option>
-                  <option value="research">Research</option>
-                  <option value="source_check">Source check</option>
-                  <option value="publish">Publish preparation</option>
-                </select>
-              </label>
-              <label className="admin-field">
                 <span>Assignee</span>
                 <select name="assigneeId" defaultValue="">
                   <option value="">Available for self-assignment</option>
@@ -109,23 +100,10 @@ export async function AssignmentWorkspace({
                 </select>
               </label>
               <label className="admin-field">
-                <span>Priority</span>
-                <select name="priority" defaultValue="normal">
-                  <option value="low">Low</option>
-                  <option value="normal">Normal</option>
-                  <option value="high">High</option>
-                  <option value="urgent">Urgent</option>
-                </select>
-              </label>
-              <label className="admin-field">
                 <span>Due date</span>
                 <input type="date" name="dueDate" />
               </label>
             </div>
-            <label className="admin-field">
-              <span>Notes</span>
-              <textarea name="notes" maxLength={2000} rows={3} />
-            </label>
             <div className="review-actions admin-settings-form__actions">
               <button className="admin-form-button" type="submit">Create assignment</button>
             </div>
@@ -141,6 +119,7 @@ export async function AssignmentWorkspace({
             href={`/admin?work=${item.id}#my-work` as Route}
             id={`my-work-tab-${item.id}`}
             key={item.id}
+            target="_self"
           >
             <span>{item.label}</span>
             {item.count !== undefined ? <StatusBadge label={String(item.count)} /> : null}
@@ -177,12 +156,10 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
                 <div className="review-row__content">
                   <div className="review-meta">
                     <StatusBadge label={label(row.contentType)} />
-                    <StatusBadge label={label(row.taskType)} />
-                    <StatusBadge label={row.priority} />
+                    <StatusBadge label={assignmentTaskTypeLabel(row.taskType)} />
                     <StatusBadge label={label(row.state)} />
                   </div>
                   <h4>{ref ? <Link href={ref.href}>{ref.label}</Link> : "Missing content record"}</h4>
-                  <p>{row.notes || "No assignment notes."}</p>
                   {row.state === "blocked" && row.blockedReason ? (
                     <p className="assignment-blocked-reason"><strong>Blocking reason:</strong> {row.blockedReason}</p>
                   ) : null}
@@ -190,7 +167,10 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
                 </div>
                 {!readOnly && (canManage || row.assigneeId === userId) ? (
                   <div className="assignment-workspace__controls">
-                    <form action={updateAssignment} className="admin-settings-form admin-settings-form--inline admin-settings-form--assignment-status">
+                    <form
+                      action={updateAssignment}
+                      className={`admin-settings-form admin-settings-form--inline admin-settings-form--assignment-status${canManage ? " admin-settings-form--assignment-status-managed" : ""}`}
+                    >
                       <input type="hidden" name="assignmentId" value={row.id} />
                       {canManage ? (
                         <label className="admin-field">
@@ -247,22 +227,22 @@ async function loadAssignments(canManage: boolean, userId: string) {
       assignee: { select: { id: true, name: true, email: true } },
       assignedBy: { select: { name: true, email: true } }
     },
-    orderBy: [{ priority: "desc" }, { dueDate: "asc" }, { createdAt: "desc" }],
+    orderBy: [{ dueDate: "asc" }, { createdAt: "desc" }],
     take: 300
   });
 }
 
 async function loadTargets() {
   const [saints, traditions, places, posts] = await Promise.all([
-    db.saint.findMany({ orderBy: { displayName: "asc" }, take: 300, select: { id: true, displayName: true, status: true } }),
-    db.tradition.findMany({ orderBy: { name: "asc" }, take: 300, select: { id: true, name: true, status: true } }),
-    db.place.findMany({ orderBy: { name: "asc" }, take: 300, select: { id: true, name: true } }),
+    db.saint.findMany({ where: { workflowStatus: { not: "polished" } }, orderBy: { displayName: "asc" }, take: 300, select: { id: true, displayName: true, workflowStatus: true } }),
+    db.tradition.findMany({ where: { workflowStatus: { not: "polished" } }, orderBy: { name: "asc" }, take: 300, select: { id: true, name: true, workflowStatus: true } }),
+    db.place.findMany({ where: { workflowStatus: { not: "polished" } }, orderBy: { name: "asc" }, take: 300, select: { id: true, name: true, workflowStatus: true } }),
     db.instagramItem.findMany({ orderBy: { createdAt: "desc" }, take: 300, select: { id: true, extractedSaintName: true, instagramShortcode: true, status: true } })
   ]);
   return [
-    ...saints.map((row) => ({ value: `saint:${row.id}`, label: row.displayName, description: `Saint · ${row.status}` })),
-    ...traditions.map((row) => ({ value: `tradition:${row.id}`, label: row.name, description: `Tradition · ${row.status}` })),
-    ...places.map((row) => ({ value: `place:${row.id}`, label: row.name, description: "Place" })),
+    ...saints.map((row) => ({ value: `saint:${row.id}`, label: row.displayName, description: `Saint · ${label(row.workflowStatus)}` })),
+    ...traditions.map((row) => ({ value: `tradition:${row.id}`, label: row.name, description: `Tradition · ${label(row.workflowStatus)}` })),
+    ...places.map((row) => ({ value: `place:${row.id}`, label: row.name, description: `Place · ${label(row.workflowStatus)}` })),
     ...posts.map((row) => ({ value: `instagram_item:${row.id}`, label: row.extractedSaintName || row.instagramShortcode || "Instagram post", description: `Instagram · ${row.status}` }))
   ];
 }

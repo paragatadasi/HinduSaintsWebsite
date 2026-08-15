@@ -257,13 +257,17 @@ For each chunk:
 ### Assignments and dashboards
 
 - An assignment records content type/id, task type, assignee, assigning user,
-  state, priority, due date, notes, and created/completed timestamps.
+  state, due date, and created/completed timestamps.
+- Task type follows the content's starting workflow status: Needs review maps
+  to Fact-check, Fact-checked maps to Populate, and Populated maps to Polish.
+  Polished is terminal and does not create another workflow assignment.
 - Supported states are assigned, in progress, blocked, and completed.
 - Users may self-assign available work; authorized users may assign/reassign others.
 - Fact-checkers may hold only one assigned or in-progress task at a time; a
   blocked or completed task does not prevent them from claiming another.
 - From Saint, Tradition, and Place Publish Readiness, self-assignment first
-  claims an available assignment or creates a review assignment when none exists.
+  claims an available assignment or creates the next derived workflow assignment
+  when none exists.
 - An active assignee may update editorial workflow status. Assignment managers
   may override it. These updates do not complete an assignment or publish content.
 - Multiple collaborators are supported. Publication completion rules are explicit.

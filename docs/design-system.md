@@ -86,7 +86,7 @@ Principles:
   attach, edit, publish, ignore, merge, or resolve.
 - Call an assignment's operational state its `Task status` in the UI. When a
   reviewer marks a task Blocked, require and display a separate blocking reason
-  instead of repurposing the assignment's original notes.
+  so the next required action remains explicit.
 - Use three quiet surface layers: darkest for the workflow container, lighter
   for review sections, and a middle tone for editable controls or suggestion
   chips.

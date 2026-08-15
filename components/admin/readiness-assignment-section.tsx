@@ -11,6 +11,7 @@ import { AssignmentLeaveControl } from "@/components/admin/assignment-leave-cont
 import { AssignmentStatusFields } from "@/components/admin/assignment-status-fields";
 import { ReviewSection } from "@/components/admin/review-ui";
 import { selfAssignContent, updateContentWorkflowStatus } from "@/app/admin/work/actions";
+import { assignmentTaskTypeForWorkflow, assignmentTaskTypeLabel } from "@/lib/assignment-task-type";
 
 type ReadinessContentType = "saint" | "tradition" | "place";
 
@@ -64,17 +65,17 @@ export async function ReadinessAssignmentSection({
         })
       : Promise.resolve([])
   ]);
-  const currentAssignment = assignments.find((assignment) => (
-    assignment.assigneeId === currentUserId && assignment.taskType === "review"
-  )) ?? assignments.find((assignment) => assignment.assigneeId === currentUserId);
+  const currentAssignment = assignments.find((assignment) => assignment.assigneeId === currentUserId);
   const assignedToCurrentUser = Boolean(currentAssignment);
+  const nextTaskType = assignmentTaskTypeForWorkflow(workflowStatus);
   const claimLimitReached = !canSelfAssignAnotherTask(
     currentUserRoles,
     currentUserAssignments.map((assignment) => assignment.state)
   );
   const canSelfAssign = hasCapability(currentUserRoles, "self_assign_content")
     && !assignedToCurrentUser
-    && !claimLimitReached;
+    && !claimLimitReached
+    && nextTaskType !== null;
   const canUpdateWorkflow = canUpdateAssignedWorkflow(
     currentUserRoles,
     currentUserId,
@@ -109,7 +110,7 @@ export async function ReadinessAssignmentSection({
             {namedAssignments.map((assignment) => (
               <li key={assignment.id}>
                 <span>{assignment.assignee?.name || assignment.assignee?.email}</span>
-                <small>{formatLabel(assignment.taskType)} · {formatLabel(assignment.state)}</small>
+                <small>{assignmentTaskTypeLabel(assignment.taskType)} · {formatLabel(assignment.state)}</small>
                 {assignment.state === "blocked" && assignment.blockedReason ? (
                   <p className="assignment-blocked-reason"><strong>Blocking reason:</strong> {assignment.blockedReason}</p>
                 ) : null}
@@ -127,6 +128,9 @@ export async function ReadinessAssignmentSection({
         {availableCount > 0 ? <small>{availableCount} open assignment{availableCount === 1 ? "" : "s"} available.</small> : null}
         {claimLimitReached && !assignedToCurrentUser ? (
           <small>Finish or block your current task before assigning yourself another.</small>
+        ) : null}
+        {nextTaskType === null && !assignedToCurrentUser ? (
+          <small>Polished content has no next workflow assignment.</small>
         ) : null}
       </div>
 

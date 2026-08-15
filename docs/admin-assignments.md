@@ -14,11 +14,15 @@ redirect to the matching embedded queue.
 - A null assignee with an active state means the task is available for
   self-assignment. Lifecycle states are `assigned`, `in_progress`, `blocked`,
   and `completed`; an available task retains its active state.
+- Assignment type is derived from the content's workflow status when the work
+  starts: `needs_review` creates Fact-check, `fact_checked` creates Populate,
+  and `populated` creates Polish. `polished` is terminal and creates no further
+  workflow assignment. Instagram assignments remain Review tasks.
 - An assignee can leave any active task. Leaving preserves the task and its
-  editorial notes, task status, blocking reason, and content edits. It clears
-  only the assignee and makes the task claimable from its content review page.
-- Separate assignment rows allow several collaborators and task types on the
-  same content record.
+  task status, blocking reason, and content edits. It clears only the assignee
+  and makes the task claimable from its content review page.
+- Separate assignment rows allow several collaborators on the same content
+  record.
 - Completing an assignment records `completedAt` and `completedById`. It never
   changes the content record or publishes it. Publication still requires the
   existing `publish_content` capability and domain-specific publishing action.
