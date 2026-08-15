@@ -32,7 +32,10 @@ export function rankWeightedTextSearch<T>(
 export function scoreWeightedTextSearch(query: string, fields: WeightedSearchField[]) {
   const queryForms = getQuerySearchForms(query);
   const uniqueQueryForms = Array.from(new Set(queryForms)).filter(Boolean);
-  const substantivePhraseQueryForms = uniqueQueryForms.filter(hasSubstantiveSearchToken);
+  const substantivePhraseQueryForms = uniqueQueryForms.filter((queryForm) => (
+    hasSubstantiveSearchToken(queryForm)
+    && hasMinimumPhraseLength(queryForm)
+  ));
   const phraseQueryForms = substantivePhraseQueryForms.length > 0
     ? substantivePhraseQueryForms
     : uniqueQueryForms;
@@ -125,6 +128,10 @@ function getSearchTokens(value: string) {
 
 function hasSubstantiveSearchToken(value: string) {
   return getSearchTokens(value).some((token) => !SEARCH_HONORIFICS.has(token));
+}
+
+function hasMinimumPhraseLength(value: string) {
+  return value.replace(/\s/g, "").length >= 2;
 }
 
 function getQuerySearchForms(value: string) {

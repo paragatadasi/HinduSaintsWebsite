@@ -43,6 +43,38 @@ test("does not rank unrelated honorific-sharing names above a substantive name m
   }
 });
 
+test("ranks spaced initials as a phrase instead of matching each letter everywhere", () => {
+  const candidates: CorpusSaint[] = [
+    {
+      id: "sombari-baba",
+      displayName: "Sri Sombari Baba",
+      canonicalName: "Sri Sombari Baba"
+    },
+    {
+      id: "ramakrishnananda",
+      displayName: "Sri Sri Sri Avatar Digambar Bhagavan Ramakrishnananda",
+      canonicalName: "Sri Sri Sri Avatar Digambar Bhagavan Ramakrishnananda"
+    },
+    {
+      id: "narasimha-saraswati",
+      displayName: "Sri Narasimha Saraswati",
+      canonicalName: "Sri Narasimha Saraswati"
+    },
+    {
+      id: "ramani-mohan-chakrabarti",
+      displayName: "Sri Ramani Mohan Chakrabarti (Bholanath)",
+      canonicalName: "Sri Ramani Mohan Chakrabarti (Bholanath)"
+    },
+    {
+      id: "prabhupada",
+      displayName: "A. C. Bhaktivedanta Swami Prabhupada",
+      canonicalName: "Abhay Charanaravinda Bhaktivedanta Swami Prabhupada"
+    }
+  ];
+
+  assert.equal(rankSaintSearchResults(candidates, "a c")[0]?.item.id, "prabhupada");
+});
+
 test("alphabetizes equally relevant results without leading honorifics", () => {
   const candidates: CorpusSaint[] = [
     {
