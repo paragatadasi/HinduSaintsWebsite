@@ -149,7 +149,7 @@ const instagramSlideDeleteSchema = z.object({
 
 const saintTraditionsSchema = z.object({
   saintId: z.string().cuid(),
-  traditionIds: z.array(z.string().cuid()).max(100),
+  traditionIds: z.array(z.string().cuid()),
   primaryTraditionId: z.string().cuid().optional()
 });
 
