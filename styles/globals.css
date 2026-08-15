@@ -1870,14 +1870,24 @@ html[data-route-entering="true"] body > main {
   margin: 0;
 }
 
-.site-footer__legal a {
+.site-footer__legal a,
+.site-footer__legal-link {
   color: var(--color-cream);
   text-decoration: underline;
   text-decoration-color: var(--color-border);
   text-underline-offset: var(--space-1);
 }
 
-.site-footer__legal a:hover {
+.site-footer__legal-link {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.site-footer__legal a:hover,
+.site-footer__legal-link:hover {
   color: var(--color-accent-strong);
   text-decoration-color: currentColor;
 }
@@ -1899,6 +1909,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .site-footer__contact:focus-visible,
+.site-footer__legal-link:focus-visible,
 .footer-contact-dialog__close:focus-visible {
   outline: var(--size-focus-ring) solid var(--color-focus);
   outline-offset: var(--size-focus-offset);
@@ -5775,6 +5786,21 @@ fieldset.admin-field {
   padding: var(--space-3);
 }
 
+.readiness-assignment__people li {
+  column-gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.readiness-assignment__people li > span,
+.readiness-assignment__people li > small {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.readiness-assignment__people .assignment-blocked-reason {
+  grid-column: 1 / -1;
+}
+
 .readiness-assignment__people small,
 .readiness-assignment__workflow-readonly small,
 .readiness-assignment__empty,
@@ -5784,8 +5810,10 @@ fieldset.admin-field {
 }
 
 .readiness-assignment__people .assignment-leave {
-  justify-content: flex-start;
-  margin-top: var(--space-2);
+  align-self: start;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  justify-content: flex-end;
 }
 
 .readiness-assignment__workflow-form {
@@ -7001,6 +7029,20 @@ fieldset.admin-field {
   display: grid;
   gap: var(--space-2);
   min-width: 0;
+}
+
+.relationship-review-summary__title {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.relationship-review-summary__title span {
+  color: var(--color-muted);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .relationship-review-summary p {
@@ -10676,6 +10718,17 @@ select:not([multiple]) {
   .assignment-workspace__controls .assignment-leave,
   .assignment-workspace__controls .assignment-leave__trigger {
     width: 100%;
+  }
+
+  .readiness-assignment__people li {
+    grid-template-columns: 1fr;
+  }
+
+  .readiness-assignment__people .assignment-leave {
+    grid-column: 1;
+    grid-row: auto;
+    justify-content: flex-start;
+    margin-top: var(--space-2);
   }
 
   .feedback-inbox-row__aside {
