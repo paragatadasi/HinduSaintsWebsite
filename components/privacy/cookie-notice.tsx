@@ -36,10 +36,10 @@ export function CookieNotice({ privacyPolicyHref }: { privacyPolicyHref: string 
       <div className="cookie-notice__content">
         <h2 id="cookie-notice-title">Cookies and privacy</h2>
         <p>
-          This site uses only essential cookies and browser storage: to remember this notice and, for authorised
-          editors, to keep accounts secure and preserve work in progress. We also collect cookie-free, anonymous
-          aggregate data about page use, performance and technical errors. We do not use advertising or cross-site
-          tracking cookies.
+          This site uses only essential cookies and browser storage: to ensure this cookie notice is displayed to new
+          users and, for authorized editors, to keep accounts secure and preserve work in progress. We also collect
+          cookie-free, anonymous aggregate data about page use, performance and technical errors. We do not use
+          advertising or cross-site tracking cookies.
         </p>
         <a href={privacyPolicyHref} target="_blank" rel="noopener noreferrer">
           Read the privacy policy
