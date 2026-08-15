@@ -71,7 +71,9 @@ export function SaintDetailPageContent({
 
       {hasSources ? (
         <section className="section saint-profile-sources">
-          <div className="page-shell saint-profile-sources__layout"><SourceList sources={saint.sources} /></div>
+          <div className={`page-shell saint-profile-sources__layout${hasBiography ? "" : " saint-profile-sources__layout--summary-aligned"}`}>
+            <SourceList sources={saint.sources} />
+          </div>
         </section>
       ) : null}
 
