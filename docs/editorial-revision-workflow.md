@@ -38,7 +38,7 @@ On publication, unchanged source records are reused. A changed source snapshot c
 
 The following text remains outside this workflow:
 
-- Names, aliases, dates, relationships, SEO metadata, and other compact structured fields use the existing explicit-save and conflict workflow.
+- Names, aliases, short descriptions, dates, relationships, SEO metadata, and other compact structured fields use the existing explicit-save and conflict workflow. Summary saves update published profiles immediately; they do not wait for narrative review.
 - Internal Place notes are private and save independently.
 - Site-wide configuration copy (homepage, About, footer, directory headers) is versioned as site configuration and has different release semantics; it should not be mixed into entity narrative revisions.
 - Imported Airtable and Instagram text remains read-only reference material until an editor incorporates it into a revision.

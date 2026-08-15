@@ -11,6 +11,9 @@ redirect to the matching embedded queue.
 - A null assignee with state `assigned` means the task is available for
   self-assignment. Lifecycle states remain `assigned`, `in_progress`, `blocked`,
   `completed`, and `cancelled`.
+- An assignee can leave any active task. Leaving preserves the task and its
+  editorial notes, clears its assignee and blocking/completion metadata, and
+  returns it to the Available Work queue in the `assigned` state.
 - Separate assignment rows allow several collaborators and task types on the
   same content record.
 - Completing an assignment records `completedAt` and `completedById`. It never

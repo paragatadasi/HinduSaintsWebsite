@@ -71,6 +71,41 @@ export async function claimAssignment(formData: FormData) {
   done("claimed");
 }
 
+export async function leaveAssignment(formData: FormData) {
+  const actor = await activeUser();
+  const parsed = z.object({
+    assignmentId: z.string().cuid(),
+    returnTo: z.string().optional()
+  }).safeParse({
+    assignmentId: formData.get("assignmentId"),
+    returnTo: formData.get("returnTo") || undefined
+  });
+  if (!parsed.success) assignmentFail(formData, "That task could not be released.");
+
+  const assignment = await db.contentAssignment.findUnique({ where: { id: parsed.data.assignmentId } });
+  if (!assignment) assignmentFail(formData, "That task no longer exists.");
+  await assertAssignmentVisible(actor, assignment);
+
+  const result = await db.contentAssignment.updateMany({
+    where: {
+      id: assignment.id,
+      assigneeId: actor.id,
+      state: { in: [...activeAssignmentStates] }
+    },
+    data: {
+      assigneeId: null,
+      blockedReason: null,
+      completedAt: null,
+      completedById: null,
+      state: "assigned"
+    }
+  });
+  if (!result.count) assignmentFail(formData, "You are no longer assigned to that active task.");
+
+  if (parsed.data.returnTo) detailDone(parsed.data.returnTo, "released");
+  done("released");
+}
+
 export async function updateAssignment(formData: FormData) {
   const actor = await activeUser();
   const parsed = z.object({
@@ -262,6 +297,11 @@ function done(value: string): never { revalidatePath("/admin"); redirect(workDas
 
 function detailFail(formData: FormData, message: string): never {
   redirect(detailHref(formData.get("returnTo"), "assignmentError", message));
+}
+
+function assignmentFail(formData: FormData, message: string): never {
+  if (formData.get("returnTo")) detailFail(formData, message);
+  fail(message);
 }
 
 function detailDone(returnTo: string, value: string): never {

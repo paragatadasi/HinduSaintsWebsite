@@ -8,13 +8,15 @@ type ReviewEditToggleProps = {
   children: ReactNode;
   editLabel?: string;
   editable?: boolean;
+  summaryActions?: ReactNode;
 };
 
 export function ReviewEditToggle({
   summary,
   children,
   editLabel = "Edit",
-  editable = true
+  editable = true,
+  summaryActions
 }: ReviewEditToggleProps) {
   const [isEditing, setIsEditing] = useState(false);
   const editorId = useId();
@@ -32,7 +34,10 @@ export function ReviewEditToggle({
     window.requestAnimationFrame(() => editButtonRef.current?.focus());
   }
 
-  if (!editable) return <div className="review-edit-toggle">{summary}</div>;
+  if (!editable) return <div className="review-edit-toggle">
+    {summary}
+    {summaryActions ? <div className="review-actions">{summaryActions}</div> : null}
+  </div>;
 
   if (!isEditing) {
     return (
@@ -42,6 +47,7 @@ export function ReviewEditToggle({
           <button aria-controls={editorId} aria-expanded="false" className="admin-form-button" ref={editButtonRef} type="button" onClick={startEditing}>
             {editLabel}
           </button>
+          {summaryActions}
         </div>
       </div>
     );

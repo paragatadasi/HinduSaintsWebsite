@@ -14,7 +14,6 @@ export const sourceRevisionSchema = z.object({
 });
 
 export const saintNarrativeRevisionSchema = z.object({
-  shortDescription: z.string().trim().max(500).optional(),
   biographyTitle: z.string().trim().min(1).max(200),
   biographyMarkdown: z.string().trim().min(1).max(20_000),
   // Legacy revisions may retain a source snapshot so their temporary citation

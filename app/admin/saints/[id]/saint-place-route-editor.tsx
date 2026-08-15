@@ -1,7 +1,8 @@
 "use client";
 
 import { GripVertical, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { TrackedSaveButton } from "@/components/admin/tracked-save-button";
 import type { SearchableMultiSelectOption } from "@/components/ui/searchable-multi-select";
 import { SearchableRelationshipPicker } from "@/components/ui/searchable-relationship-picker";
 import { createAndAttachSaintPlace, updateSaintPlaces } from "../actions";
@@ -25,10 +26,18 @@ export function SaintPlaceRouteEditor({ options, placeTypes, saintId, selectedPl
   const [selectedValues, setSelectedValues] = useState(selectedPlaceIds);
   const [draggedValue, setDraggedValue] = useState<string | null>(null);
   const [createName, setCreateName] = useState<string | null>(null);
+  const [settingsByValue, setSettingsByValue] = useState(() => getPlaceSettings(options));
+  const savedSignature = getSavedSignature(options, selectedPlaceIds);
   const optionsByValue = useMemo(() => new Map(options.map((option) => [option.value, option])), [options]);
   const selectedOptions = selectedValues
     .map((value) => optionsByValue.get(value))
     .filter((option): option is SaintPlaceRouteOption => Boolean(option));
+  const isDirty = getCurrentSignature(selectedValues, settingsByValue) !== savedSignature;
+
+  useEffect(() => {
+    setSelectedValues(selectedPlaceIds);
+    setSettingsByValue(getPlaceSettings(options));
+  }, [savedSignature]);
 
   return (
     <div className="relationship-editor">
@@ -80,7 +89,11 @@ export function SaintPlaceRouteEditor({ options, placeTypes, saintId, selectedPl
                   </button>
                   <label>
                     Type
-                    <select name={`placeType:${place.value}`} defaultValue={place.placeType}>
+                    <select
+                      name={`placeType:${place.value}`}
+                      value={settingsByValue[place.value]?.placeType ?? place.placeType}
+                      onChange={(event) => updatePlaceSettings(place.value, { placeType: event.target.value as PlaceType })}
+                    >
                       {placeTypes.map((placeType) => (
                         <option key={placeType} value={placeType}>{formatStatus(placeType)}</option>
                       ))}
@@ -88,7 +101,11 @@ export function SaintPlaceRouteEditor({ options, placeTypes, saintId, selectedPl
                   </label>
                   <label>
                     Route label
-                    <input name={`routeLabel:${place.value}`} defaultValue={place.routeLabel ?? ""} />
+                    <input
+                      name={`routeLabel:${place.value}`}
+                      value={settingsByValue[place.value]?.routeLabel ?? ""}
+                      onChange={(event) => updatePlaceSettings(place.value, { routeLabel: event.target.value })}
+                    />
                   </label>
                 </div>
               ))
@@ -98,7 +115,7 @@ export function SaintPlaceRouteEditor({ options, placeTypes, saintId, selectedPl
           </div>
         </div>
         <div className="review-actions">
-          <button className="admin-form-button" type="submit">Save places and route</button>
+          <TrackedSaveButton dirty={isDirty} saveLabel="Save places and route" />
         </div>
       </form>
 
@@ -160,6 +177,42 @@ export function SaintPlaceRouteEditor({ options, placeTypes, saintId, selectedPl
       return nextValues;
     });
   }
+
+  function updatePlaceSettings(value: string, updates: Partial<PlaceSettings>) {
+    setSettingsByValue((current) => ({
+      ...current,
+      [value]: {
+        placeType: current[value]?.placeType ?? "associated",
+        routeLabel: current[value]?.routeLabel ?? "",
+        ...updates
+      }
+    }));
+  }
+}
+
+type PlaceSettings = {
+  placeType: PlaceType;
+  routeLabel: string;
+};
+
+function getPlaceSettings(options: SaintPlaceRouteOption[]) {
+  return Object.fromEntries(options.map((option) => [option.value, {
+    placeType: option.placeType,
+    routeLabel: option.routeLabel ?? ""
+  }])) as Record<string, PlaceSettings>;
+}
+
+function getSavedSignature(options: SaintPlaceRouteOption[], selectedValues: string[]) {
+  const settings = getPlaceSettings(options);
+  return getCurrentSignature(selectedValues, settings);
+}
+
+function getCurrentSignature(selectedValues: string[], settings: Record<string, PlaceSettings>) {
+  return JSON.stringify(selectedValues.map((value) => ({
+    placeType: settings[value]?.placeType ?? "associated",
+    routeLabel: settings[value]?.routeLabel ?? "",
+    value
+  })));
 }
 
 function formatStatus(status: string) {

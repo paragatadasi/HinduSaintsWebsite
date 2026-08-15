@@ -1,7 +1,8 @@
 "use client";
 
 import { Star, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { TrackedSaveButton } from "@/components/admin/tracked-save-button";
 import type { SearchableMultiSelectOption } from "@/components/ui/searchable-multi-select";
 import { SearchableRelationshipPicker } from "@/components/ui/searchable-relationship-picker";
 import { createAndAttachSaintTradition, updateSaintTraditions } from "../actions";
@@ -22,10 +23,21 @@ export function SaintTraditionEditor({
   const [selectedValues, setSelectedValues] = useState(selectedTraditionIds);
   const [primaryValue, setPrimaryValue] = useState(primaryTraditionId ?? selectedTraditionIds[0] ?? "");
   const [createName, setCreateName] = useState<string | null>(null);
+  const savedSignature = JSON.stringify({
+    primaryValue: primaryTraditionId ?? selectedTraditionIds[0] ?? "",
+    selectedValues: [...selectedTraditionIds].sort()
+  });
   const optionsByValue = useMemo(() => new Map(options.map((option) => [option.value, option])), [options]);
   const selectedOptions = selectedValues
     .map((value) => optionsByValue.get(value))
     .filter((option): option is SearchableMultiSelectOption => Boolean(option));
+  const isDirty = primaryValue !== (primaryTraditionId ?? selectedTraditionIds[0] ?? "")
+    || !haveSameValues(selectedValues, selectedTraditionIds);
+
+  useEffect(() => {
+    setSelectedValues(selectedTraditionIds);
+    setPrimaryValue(primaryTraditionId ?? selectedTraditionIds[0] ?? "");
+  }, [savedSignature]);
 
   return (
     <div className="relationship-editor">
@@ -89,7 +101,7 @@ export function SaintTraditionEditor({
           )}
         </div>
         <div className="review-actions">
-          <button className="admin-form-button" type="submit">Save traditions</button>
+          <TrackedSaveButton dirty={isDirty} saveLabel="Save traditions" />
         </div>
       </form>
 
@@ -125,4 +137,10 @@ export function SaintTraditionEditor({
     setSelectedValues(nextValues);
     if (primaryValue === value) setPrimaryValue(nextValues[0] ?? "");
   }
+}
+
+function haveSameValues(left: string[], right: string[]) {
+  if (left.length !== right.length) return false;
+  const rightValues = new Set(right);
+  return left.every((value) => rightValues.has(value));
 }

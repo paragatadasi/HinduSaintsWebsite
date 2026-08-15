@@ -3623,6 +3623,7 @@ html[data-route-entering="true"] body > main {
 .saint-profile-related { background: var(--color-section-surface); }
 .saint-profile-related .section-heading h2 { letter-spacing: 0.12em; text-transform: uppercase; }
 .saint-profile-sources { background: var(--color-saint-profile-sources); }
+.saint-profile-sources__layout { max-width: var(--width-saint-profile-biography-layout); }
 
 .saint-detail-hero__inner {
   align-items: center;
@@ -4721,6 +4722,12 @@ html[data-route-entering="true"] body > main {
   padding: 0 var(--space-2);
 }
 
+.admin-navigation-count--secondary {
+  background: var(--color-surface-muted);
+  border: var(--border-width-default) solid var(--color-border);
+  color: var(--color-muted);
+}
+
 .review-panel {
   align-content: start;
 }
@@ -4931,6 +4938,48 @@ html[data-route-entering="true"] body > main {
 
 .admin-settings-form--assignment-status .assignment-status-fields__reason {
   grid-column: 1 / -1;
+}
+
+.assignment-workspace__controls {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: end;
+}
+
+.assignment-leave {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.assignment-leave__trigger {
+  min-height: var(--size-control);
+}
+
+.assignment-leave__dialog-panel {
+  width: min(calc(100vw - var(--space-8)), var(--width-admin-confirmation-dialog));
+}
+
+.assignment-leave__copy {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.assignment-leave__copy h2,
+.assignment-leave__copy p {
+  margin: 0;
+}
+
+.assignment-leave__copy p {
+  color: var(--color-muted);
+}
+
+.assignment-leave__actions {
+  justify-content: flex-end;
+}
+
+.assignment-leave__confirm {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
 }
 
 .admin-form-grid {
@@ -8948,6 +8997,56 @@ select:not([multiple]) {
   min-width: 0;
 }
 
+.source-editor__open-link {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--space-1);
+  min-height: 44px;
+}
+
+.source-editor__add-flow {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.source-editor__reuse-form {
+  border-bottom: var(--border-width-default) solid var(--review-workflow-border);
+  padding-bottom: var(--space-5);
+}
+
+.source-editor__matches {
+  background: var(--review-workflow-field-bg);
+  border: var(--border-width-default) solid var(--review-workflow-border);
+  border-radius: var(--radius-control);
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.source-editor__matches p,
+.source-editor__match small {
+  color: var(--color-muted);
+}
+
+.source-editor__matches p {
+  margin: var(--space-1) 0 0;
+}
+
+.source-editor__match {
+  align-items: center;
+  border-top: var(--border-width-default) solid var(--review-workflow-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: space-between;
+  padding-top: var(--space-3);
+}
+
+.source-editor__match span,
+.source-editor__match small {
+  display: block;
+}
+
 .relationship-editor__selection {
   display: grid;
   gap: var(--space-2);
@@ -9595,6 +9694,11 @@ select:not([multiple]) {
 .admin-form-button:disabled {
   cursor: not-allowed;
   opacity: 0.48;
+}
+
+.admin-form-button:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus);
+  outline-offset: var(--size-focus-offset);
 }
 
 .admin-form-button--secondary {
@@ -10325,6 +10429,17 @@ select:not([multiple]) {
   }
 
   .admin-settings-form--assignment-status > .admin-form-button {
+    width: 100%;
+  }
+
+  .assignment-workspace__controls,
+  .assignment-workspace__controls > .admin-settings-form--assignment-status {
+    justify-items: stretch;
+    width: 100%;
+  }
+
+  .assignment-workspace__controls .assignment-leave,
+  .assignment-workspace__controls .assignment-leave__trigger {
     width: 100%;
   }
 

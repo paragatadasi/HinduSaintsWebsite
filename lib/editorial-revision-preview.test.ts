@@ -11,14 +11,13 @@ import type { PublicPlaceDetail, PublicSaintDetail, PublicTraditionDetail } from
 test("saint preview overlays narrative and citation snapshots without mutating the live model", () => {
   const live = { shortDescription: "Live", biography: { title: "Live life", bodyMarkdown: "Live body" }, sources: [], furtherReading: [], seo: {} } as unknown as PublicSaintDetail;
   const preview = applySaintNarrativePreview(live, {
-    shortDescription: "Pending",
     biographyTitle: "Pending life",
     biographyMarkdown: "Pending body [1](#source-ref-book)",
     sources: [{ citationKey: "book", title: "A Book", sourceType: "book", publicationYear: 2024 }]
   });
 
   assert.equal(live.shortDescription, "Live");
-  assert.equal(preview.shortDescription, "Pending");
+  assert.equal(preview.shortDescription, "Live");
   assert.equal(preview.biography?.bodyMarkdown, "Pending body [1](#source-ref-book)");
   assert.deepEqual(preview.sources[0], { id: "book", title: "A Book", sourceType: "book", publicationYear: "2024", author: undefined, publisher: undefined, url: undefined, note: undefined });
 });
