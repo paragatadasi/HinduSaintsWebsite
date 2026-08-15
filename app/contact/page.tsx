@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { resolveFeedbackContext } from "@/lib/feedback-context";
 import { ContactFeedbackForm } from "./contact-feedback-form";
 import { buildPublicMetadata } from "@/lib/seo";
+import { getPublicFooterContent } from "@/lib/site-config";
 
 type ContactPageProps = {
   searchParams: Promise<{
@@ -20,11 +21,14 @@ export const metadata: Metadata = buildPublicMetadata({
 
 export default async function ContactPage({ searchParams }: ContactPageProps) {
   const { type, slug, page } = await searchParams;
-  const context = await resolveFeedbackContext({
-    entityType: type,
-    entitySlug: slug,
-    pagePath: page
-  });
+  const [context, footerContent] = await Promise.all([
+    resolveFeedbackContext({
+      entityType: type,
+      entitySlug: slug,
+      pagePath: page
+    }),
+    getPublicFooterContent()
+  ]);
 
   return (
     <main className="page-shell section site-grid contact-page">
@@ -36,7 +40,11 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
         </p>
       </div>
 
-      <ContactFeedbackForm context={context} submissionKey={randomUUID()} />
+      <ContactFeedbackForm
+        context={context}
+        privacyPolicyHref={footerContent.privacyPolicy.href}
+        submissionKey={randomUUID()}
+      />
     </main>
   );
 }

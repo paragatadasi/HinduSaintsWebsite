@@ -14,6 +14,7 @@ import { getAdminSaintsQueueUrl } from "@/lib/admin-saint-queue";
 import { db } from "@/lib/db";
 import type { Prisma, PublicationStatus, TeamVisibility, WorkflowStatus } from "@/lib/generated/prisma/client";
 import { hasCapability } from "@/lib/permissions";
+import { getPublicImageVariants } from "@/lib/responsive-images";
 import { reviewedInstagramMatchWhere } from "@/lib/saint-match-status";
 import { SaintsBulkReviewList } from "./saints-bulk-review-list";
 
@@ -86,6 +87,7 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
     teamVisibility: saint.teamVisibility,
     publicationStatus: saint.publicationStatus,
     workflowStatus: saint.workflowStatus,
+    primaryImage: getSaintQueueThumbnail(saint.primaryImage),
     matchStatus: saint.instagramItems.length > 0 ? "matched" as const : "unmatched" as const
   }));
   const canManageVisibility = canManageSaintTeamVisibility(user.roles);
@@ -185,6 +187,7 @@ export default async function AdminSaintsPage({ searchParams }: AdminSaintsPageP
           returnTo={returnTo}
           saints={reviewRows}
           showMatch={canReviewInstagram}
+          showThumbnail={scope === "public"}
           showVisibility={scope === "full"}
         />
       </section>
@@ -219,6 +222,16 @@ async function getSaints(
       teamVisibility: true,
       publicationStatus: true,
       workflowStatus: true,
+      primaryImage: {
+        select: {
+          focalX: true,
+          focalY: true,
+          height: true,
+          url: true,
+          variants: true,
+          width: true
+        }
+      },
       instagramItems: {
         where: canReviewInstagram ? reviewedInstagramMatchWhere() : { id: "__hidden__" },
         select: { id: true },
@@ -229,6 +242,26 @@ async function getSaints(
   if (!rankedIds) return saints;
   const rank = new Map(rankedIds.map((id, index) => [id, index]));
   return saints.sort((left, right) => (rank.get(left.id) ?? Number.MAX_SAFE_INTEGER) - (rank.get(right.id) ?? Number.MAX_SAFE_INTEGER));
+}
+
+function getSaintQueueThumbnail(image: {
+  focalX: number;
+  focalY: number;
+  height: number | null;
+  url: string;
+  variants: Prisma.JsonValue;
+  width: number | null;
+} | null) {
+  if (!image) return null;
+
+  const smallestVariant = getPublicImageVariants(image.variants)?.[0];
+  return {
+    focalX: image.focalX,
+    focalY: image.focalY,
+    height: smallestVariant?.height ?? image.height,
+    url: smallestVariant?.url ?? image.url,
+    width: smallestVariant?.width ?? image.width
+  };
 }
 
 function getSaintQueueWhere(

@@ -33,7 +33,10 @@ const feedbackSchema = z.object({
   pagePath: z.string().trim().max(500).optional(),
   entityType: z.enum(["saint", "tradition", "place"]).optional(),
   entitySlug: z.string().trim().max(200).optional(),
-  company: z.string().max(0).optional()
+  company: z.string().max(0).optional(),
+  privacyPolicyAcknowledged: z.literal("accepted", {
+    errorMap: () => ({ message: "Please acknowledge the Privacy Policy before sending." })
+  })
 });
 
 export async function sendFeedback(
@@ -50,7 +53,8 @@ export async function sendFeedback(
     pagePath: emptyToUndefined(formData.get("page")),
     entityType: emptyToUndefined(formData.get("entityType")),
     entitySlug: emptyToUndefined(formData.get("entitySlug")),
-    company: emptyToUndefined(formData.get("company"))
+    company: emptyToUndefined(formData.get("company")),
+    privacyPolicyAcknowledged: formData.get("privacyPolicyAcknowledged")
   });
 
   if (!parsed.success) {

@@ -7098,6 +7098,32 @@ fieldset.admin-field {
   padding: var(--space-4) var(--review-row-padding, var(--space-5)) var(--space-4) 0;
 }
 
+.review-row--with-thumbnail .review-row__link {
+  align-items: center;
+  grid-template-columns: var(--size-admin-saint-queue-thumbnail) minmax(0, 1fr);
+}
+
+.review-row__thumbnail {
+  aspect-ratio: 1;
+  background: var(--review-card-field-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-sm);
+  display: block;
+  overflow: hidden;
+  width: var(--size-admin-saint-queue-thumbnail);
+}
+
+.review-row__thumbnail img {
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--image-object-position, var(--position-saint-image-default));
+  width: 100%;
+}
+
+.review-row__thumbnail--placeholder img {
+  object-position: center;
+}
+
 .review-row--compact:not(.review-row--selectable) .review-row__link {
   padding-left: var(--review-row-padding, var(--space-5));
 }
@@ -9767,6 +9793,41 @@ select:not([multiple]) {
 
 .contact-form {
   box-shadow: var(--shadow-soft);
+}
+
+.form-stack .contact-privacy-acknowledgement {
+  align-items: start;
+  cursor: pointer;
+  display: grid;
+  font-size: var(--font-size-review-field);
+  font-weight: 400;
+  gap: var(--space-2);
+  grid-template-columns: auto minmax(0, 1fr);
+  line-height: var(--line-height-review-status);
+}
+
+.form-stack .contact-privacy-acknowledgement input[type="checkbox"] {
+  accent-color: var(--color-accent);
+  height: var(--size-icon-sm);
+  margin: var(--space-1) 0 0;
+  min-height: 0;
+  padding: 0;
+  width: var(--size-icon-sm);
+}
+
+.contact-privacy-acknowledgement a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+.contact-privacy-acknowledgement a:hover {
+  color: var(--color-accent-strong);
+}
+
+.contact-privacy-acknowledgement a:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus);
+  outline-offset: var(--size-focus-offset);
 }
 
 .contact-related-page__label {

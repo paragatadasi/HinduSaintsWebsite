@@ -8,12 +8,13 @@ import { sendFeedback, type FeedbackFormState } from "./actions";
 
 type ContactFeedbackFormProps = {
   context: FeedbackContext | null;
+  privacyPolicyHref: string;
   submissionKey: string;
 };
 
 const initialState: FeedbackFormState = { status: "idle", message: "" };
 
-export function ContactFeedbackForm({ context, submissionKey }: ContactFeedbackFormProps) {
+export function ContactFeedbackForm({ context, privacyPolicyHref, submissionKey }: ContactFeedbackFormProps) {
   const [state, formAction, isPending] = useActionState(sendFeedback, initialState);
 
   if (state.status === "success") {
@@ -101,6 +102,16 @@ export function ContactFeedbackForm({ context, submissionKey }: ContactFeedbackF
       <label className="sr-only">
         Company
         <input name="company" tabIndex={-1} autoComplete="off" />
+      </label>
+
+      <label className="contact-privacy-acknowledgement">
+        <input name="privacyPolicyAcknowledged" required type="checkbox" value="accepted" />
+        <span>
+          I acknowledge the{" "}
+          <a href={privacyPolicyHref} target="_blank" rel="noopener noreferrer">
+            Privacy Policy
+          </a>
+        </span>
       </label>
 
       {state.message ? (
