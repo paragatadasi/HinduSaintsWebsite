@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { auth, isGoogleAuthConfigured, signIn } from "@/lib/auth";
+import { auth, isGoogleAuthConfigured, signIn, signOut } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
 import { getAdminUser } from "@/lib/admin-access";
@@ -78,7 +78,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <main className="admin-shell">
       <div className="page-shell admin-layout">
-        <AdminPrimaryNavigation groups={navigationGroups} />
+        <AdminPrimaryNavigation
+          groups={navigationGroups}
+          logoutAction={async () => {
+            "use server";
+            await signOut({ redirectTo: "/" });
+          }}
+        />
         <section className="admin-content">
           <AdminFormGuard>{children}</AdminFormGuard>
         </section>
