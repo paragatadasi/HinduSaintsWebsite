@@ -1870,14 +1870,24 @@ html[data-route-entering="true"] body > main {
   margin: 0;
 }
 
-.site-footer__legal a {
+.site-footer__legal a,
+.site-footer__legal-link {
   color: var(--color-cream);
   text-decoration: underline;
   text-decoration-color: var(--color-border);
   text-underline-offset: var(--space-1);
 }
 
-.site-footer__legal a:hover {
+.site-footer__legal-link {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.site-footer__legal a:hover,
+.site-footer__legal-link:hover {
   color: var(--color-accent-strong);
   text-decoration-color: currentColor;
 }
@@ -1899,6 +1909,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .site-footer__contact:focus-visible,
+.site-footer__legal-link:focus-visible,
 .footer-contact-dialog__close:focus-visible {
   outline: var(--size-focus-ring) solid var(--color-focus);
   outline-offset: var(--size-focus-offset);
