@@ -43,6 +43,9 @@ const getPublicFooterContentCached = unstable_cache(async (): Promise<FooterCont
       privacyPolicyUrl: true
     }
   });
+  const configuredPrivacyPolicyUrl = config?.privacyPolicyUrl === "https://bhaktimarga.org/privacy-policy"
+    ? fallback.privacyPolicy.href
+    : config?.privacyPolicyUrl;
 
   return {
     ...fallback,
@@ -52,7 +55,7 @@ const getPublicFooterContentCached = unstable_cache(async (): Promise<FooterCont
     },
     privacyPolicy: {
       ...fallback.privacyPolicy,
-      href: config?.privacyPolicyUrl || fallback.privacyPolicy.href
+      href: configuredPrivacyPolicyUrl || fallback.privacyPolicy.href
     }
   };
 }, ["public-footer-content"], {

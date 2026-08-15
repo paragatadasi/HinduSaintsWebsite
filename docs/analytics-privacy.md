@@ -23,6 +23,19 @@ technical issues without identifying visitors.
 - Query strings, search terms, form values, or full external URLs.
 - Browser history or cross-site activity.
 
+## Cookies and browser storage
+
+The public site does not use analytics, advertising, or cross-site tracking
+cookies. It stores the current cookie-notice version in `localStorage` after a
+visitor dismisses the notice so the notice does not appear on every page view.
+This value remains in the browser and is not sent with application telemetry.
+
+For authorised editors, Auth.js uses essential authentication cookies to keep
+the admin session secure. The protected CMS also uses `localStorage` to preserve
+work in progress and `sessionStorage` to remember review-interface state. These
+admin-only values are functional and are not used for advertising or visitor
+tracking.
+
 ## Controls and retention
 
 - Confirmed first-party errors, opaque signals, resource failures, and
@@ -46,4 +59,6 @@ with cleanup running once per minute. The in-memory limit resets if the server
 restarts.
 
 The site privacy-policy link is configured through `SiteConfig` and currently
-defaults to <https://bhaktimarga.org/privacy-policy>.
+defaults to <https://bhaktimarga.org/privacy>. The public renderer maps the
+former `/privacy-policy` default to the current policy URL for existing site
+configurations.
