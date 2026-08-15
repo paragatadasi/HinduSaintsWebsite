@@ -7098,6 +7098,32 @@ fieldset.admin-field {
   padding: var(--space-4) var(--review-row-padding, var(--space-5)) var(--space-4) 0;
 }
 
+.review-row--with-thumbnail .review-row__link {
+  align-items: center;
+  grid-template-columns: var(--size-admin-saint-queue-thumbnail) minmax(0, 1fr);
+}
+
+.review-row__thumbnail {
+  aspect-ratio: 1;
+  background: var(--review-card-field-bg);
+  border: 1px solid var(--review-workflow-border);
+  border-radius: var(--radius-sm);
+  display: block;
+  overflow: hidden;
+  width: var(--size-admin-saint-queue-thumbnail);
+}
+
+.review-row__thumbnail img {
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--image-object-position, var(--position-saint-image-default));
+  width: 100%;
+}
+
+.review-row__thumbnail--placeholder img {
+  object-position: center;
+}
+
 .review-row--compact:not(.review-row--selectable) .review-row__link {
   padding-left: var(--review-row-padding, var(--space-5));
 }
