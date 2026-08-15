@@ -10,7 +10,13 @@ import {
   type AdminNavigationGroup
 } from "@/lib/admin-navigation";
 
-export function AdminPrimaryNavigation({ groups }: { groups: AdminNavigationGroup[] }) {
+export function AdminPrimaryNavigation({
+  groups,
+  logoutAction
+}: {
+  groups: AdminNavigationGroup[];
+  logoutAction: () => Promise<void>;
+}) {
   const pathname = usePathname();
 
   return (
@@ -41,6 +47,11 @@ export function AdminPrimaryNavigation({ groups }: { groups: AdminNavigationGrou
           </div>
         ))}
       </nav>
+      <form action={logoutAction} className="admin-sidebar__logout">
+        <button className="admin-sidebar__brand" type="submit">
+          <strong>Log Out</strong>
+        </button>
+      </form>
     </aside>
   );
 }
