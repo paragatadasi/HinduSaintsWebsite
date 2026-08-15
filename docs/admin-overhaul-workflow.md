@@ -40,7 +40,7 @@ branch as every chunk.
 | 3. Authorization enforcement | Deployed | Content/preview route gates, API/action capability audit, publish/archive boundary, destructive-action boundary, capability-matrix tests |
 | 4. Users & Access completion | Deployed | User approval by email, additive roles, activation/deactivation, access audit, last sign-in, inline feedback, destructive-action settings relocation, bootstrap-only allowlist confirmation |
 | 5. Source Data and reconciliation | Deployed | Source Data overview, unified reconciliation queue and import history, unresolved badge, preserved context comparison, recorded safe decisions and follow-up queueing |
-| 6. Assignments and dashboards | Deployed | Cross-content assignments, self-claim and lifecycle actions, personalized dashboard/counts, My Work, Available, Blocked, Completed, authorized Team Workload |
+| 6. Assignments and dashboards | Deployed | Cross-content assignments, content-page self-claim and lifecycle actions, personalized dashboard/counts, Active, Blocked, Completed, authorized Team Workload |
 | 7. Conflict protection and presence | Deployed | Versioned top-level editorial saves, durable current-versus-attempted conflict UI, preconditioned reapply, expiring advisory viewer/editor presence |
 | 8. Museum hardening | Deployed | Direct-route capability audit, sandboxed private family trees, Curator/Site Admin mutation guard seam, curator-only dashboard and main-admin return path, explicit planning-preview status |
 | 9. Final UX/accessibility pass | Deployed | Shared unsaved-change protection and validation summary, keyboard/focus improvements, sticky primary task navigation, narrow-laptop safeguards |
@@ -258,16 +258,18 @@ For each chunk:
 
 - An assignment records content type/id, task type, assignee, assigning user,
   state, priority, due date, notes, and created/completed timestamps.
-- Supported states are assigned, in progress, blocked, completed, and cancelled.
+- Supported states are assigned, in progress, blocked, and completed.
 - Users may self-assign available work; authorized users may assign/reassign others.
+- Fact-checkers may hold only one assigned or in-progress task at a time; a
+  blocked or completed task does not prevent them from claiming another.
 - From Saint, Tradition, and Place Publish Readiness, self-assignment first
   claims an available assignment or creates a review assignment when none exists.
 - An active assignee may update editorial workflow status. Assignment managers
   may override it. These updates do not complete an assignment or publish content.
 - Multiple collaborators are supported. Publication completion rules are explicit.
 - Dashboard counters are grouped into Team Workflow and My Workflow. The
-  embedded assignment workspace contains My Work, Available Work, Blocked,
-  Recently Completed, and Team Workload where authorized.
+  embedded assignment workspace contains Active, Blocked, Completed, and Team
+  Workload where authorized. Available work is claimed from content review pages.
 - The Editorial Reviews queue is embedded between Team Workflow and My Workflow
   for Site Admin and Editor roles. Each row links directly to the relevant
   Saint biography, Tradition content, or Place review surface. Other roles do

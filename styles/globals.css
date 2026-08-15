@@ -4941,9 +4941,24 @@ html[data-route-entering="true"] body > main {
 }
 
 .assignment-workspace__controls {
+  align-self: start;
   display: grid;
   gap: var(--space-3);
   justify-items: end;
+}
+
+.review-row--assignment {
+  align-items: start;
+}
+
+.review-row--assignment .review-row__content {
+  align-content: start;
+  align-self: start;
+  justify-items: start;
+}
+
+.review-row--assignment .review-row__content > * {
+  max-width: 100%;
 }
 
 .assignment-leave {
@@ -5647,6 +5662,11 @@ fieldset.admin-field {
 .readiness-assignment__group > small {
   color: var(--color-muted);
   margin: 0;
+}
+
+.readiness-assignment__people .assignment-leave {
+  justify-content: flex-start;
+  margin-top: var(--space-2);
 }
 
 .readiness-assignment__workflow-form {
