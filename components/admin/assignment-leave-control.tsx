@@ -23,7 +23,7 @@ export function AssignmentLeaveControl({
   return (
     <div className="assignment-leave">
       <button
-        className="admin-form-button admin-form-button--low-priority assignment-leave__trigger"
+        className="admin-form-button admin-form-button--secondary assignment-leave__trigger"
         type="button"
         onClick={() => dialogRef.current?.showModal()}
       >
@@ -45,7 +45,7 @@ export function AssignmentLeaveControl({
               <div className="eyebrow">Assignment</div>
               <h2 id={titleId}>Leave this task?</h2>
               <p id={descriptionId}>
-                {contentLabel} will return to Available Work so another contributor can claim it. Your content edits and the task notes will stay intact.
+                {contentLabel} will become available from its content review page so another contributor can claim it. Its task status, blocking reason, notes, and content edits will stay intact.
               </p>
             </div>
             <button

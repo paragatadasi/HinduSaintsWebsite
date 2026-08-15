@@ -2,20 +2,20 @@ import Link from "next/link";
 import type { Route } from "next";
 import { AssignmentLeaveControl } from "@/components/admin/assignment-leave-control";
 import { AssignmentStatusFields } from "@/components/admin/assignment-status-fields";
+import { AssignmentUpdateButton } from "@/components/admin/assignment-update-button";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { claimAssignment, createAssignment, updateAssignment } from "@/app/admin/work/actions";
+import { createAssignment, updateAssignment } from "@/app/admin/work/actions";
 import { db } from "@/lib/db";
 import { saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 
 type AssignmentRow = Awaited<ReturnType<typeof loadAssignments>>[number];
 type AdminUser = { id: string; name: string | null; email: string };
-type WorkView = "mine" | "available" | "blocked" | "completed" | "team";
+type WorkView = "mine" | "blocked" | "completed" | "team";
 type SearchParams = Record<string, string | string[] | undefined>;
 
 export async function AssignmentWorkspace({
-  canClaim,
   canManage,
   canViewContent,
   canViewInstagram,
@@ -25,7 +25,6 @@ export async function AssignmentWorkspace({
   saintScope,
   userId
 }: {
-  canClaim: boolean;
   canManage: boolean;
   canViewContent: boolean;
   canViewInstagram: boolean;
@@ -47,7 +46,6 @@ export async function AssignmentWorkspace({
   const refs = await loadContentRefs(candidateAssignments, { canViewContent, canViewInstagram, saintScope });
   const assignments = candidateAssignments.filter((row) => refs.has(`${row.contentType}:${row.contentId}`));
   const mine = assignments.filter((row) => row.assigneeId === userId && actionable(row.state));
-  const available = assignments.filter((row) => !row.assigneeId && row.state === "assigned");
   const blocked = assignments.filter((row) => row.state === "blocked" && row.assigneeId === userId);
   const completed = assignments.filter((row) => row.state === "completed" && row.assigneeId === userId).slice(0, 12);
   const requestedView = parseView(first(params.work));
@@ -59,7 +57,6 @@ export async function AssignmentWorkspace({
 
   const views: { id: WorkView; label: string; count?: number }[] = [
     { id: "mine", label: "Active", count: mine.length },
-    { id: "available", label: "Available", count: available.length },
     { id: "blocked", label: "Blocked", count: blocked.length },
     { id: "completed", label: "Completed", count: completed.length },
     ...(canManage ? [{ id: "team" as const, label: "Team", count: teamCount }] : [])
@@ -70,7 +67,7 @@ export async function AssignmentWorkspace({
       <div>
         <div className="eyebrow">{eyebrow}</div>
         <Heading id="my-work-title">My workflow</Heading>
-        <p className="lede">Focus on the assignments that need you now, pick up available work, and revisit blockers or recent progress.</p>
+        <p className="lede">Focus on the assignments that need you now, revisit blockers, and review recent progress.</p>
       </div>
 
       {updated ? <p className="admin-notice form-status form-status--success">Assignment {updated}.</p> : null}
@@ -152,7 +149,6 @@ export async function AssignmentWorkspace({
       </nav>
 
       {view === "mine" ? <AssignmentSection labelledBy="my-work-tab-mine" empty="You have no active assignments." rows={mine} refs={refs} users={users} userId={userId} canManage={canManage} /> : null}
-      {view === "available" ? <AssignmentSection labelledBy="my-work-tab-available" empty="No work is currently available for self-assignment." rows={available} refs={refs} users={users} userId={userId} canManage={canManage} available={canClaim} readOnly={!canClaim} /> : null}
       {view === "blocked" ? <AssignmentSection labelledBy="my-work-tab-blocked" empty="You have no blocked assignments." rows={blocked} refs={refs} users={users} userId={userId} canManage={canManage} /> : null}
       {view === "completed" ? <AssignmentSection labelledBy="my-work-tab-completed" empty="You have no recently completed assignments." rows={completed} refs={refs} users={users} userId={userId} canManage={canManage} readOnly /> : null}
       {view === "team" && canManage ? <TeamWorkload assignments={assignments} labelledBy="my-work-tab-team" users={users} /> : null}
@@ -160,7 +156,7 @@ export async function AssignmentWorkspace({
   );
 }
 
-function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canManage, available = false, readOnly = false }: {
+function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canManage, readOnly = false }: {
   labelledBy: string;
   empty: string;
   rows: AssignmentRow[];
@@ -168,7 +164,6 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
   users: AdminUser[];
   userId: string;
   canManage: boolean;
-  available?: boolean;
   readOnly?: boolean;
 }) {
   return (
@@ -178,7 +173,7 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
           {rows.map((row) => {
             const ref = refs.get(`${row.contentType}:${row.contentId}`);
             return (
-              <article className="review-row" key={row.id}>
+              <article className="review-row review-row--assignment" key={row.id}>
                 <div className="review-row__content">
                   <div className="review-meta">
                     <StatusBadge label={label(row.contentType)} />
@@ -193,12 +188,7 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
                   ) : null}
                   <small>{row.assignee ? `Assigned to ${row.assignee.name || row.assignee.email}` : "Available to claim"}{row.dueDate ? ` · Due ${row.dueDate.toLocaleDateString()}` : ""}</small>
                 </div>
-                {available ? (
-                  <form action={claimAssignment}>
-                    <input type="hidden" name="assignmentId" value={row.id} />
-                    <button className="admin-form-button" type="submit">Assign to me</button>
-                  </form>
-                ) : !readOnly && (canManage || row.assigneeId === userId) ? (
+                {!readOnly && (canManage || row.assigneeId === userId) ? (
                   <div className="assignment-workspace__controls">
                     <form action={updateAssignment} className="admin-settings-form admin-settings-form--inline admin-settings-form--assignment-status">
                       <input type="hidden" name="assignmentId" value={row.id} />
@@ -212,7 +202,11 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
                         </label>
                       ) : null}
                       <AssignmentStatusFields defaultBlockedReason={row.blockedReason} defaultStatus={row.state} />
-                      <button className="admin-form-button admin-form-button--secondary" type="submit">Update</button>
+                      <AssignmentUpdateButton
+                        defaultAssigneeId={row.assigneeId}
+                        defaultBlockedReason={row.blockedReason}
+                        defaultStatus={row.state}
+                      />
                     </form>
                     {row.assigneeId === userId ? <AssignmentLeaveControl assignmentId={row.id} contentLabel={ref?.label} /> : null}
                   </div>
@@ -248,7 +242,7 @@ function TeamWorkload({ assignments, labelledBy, users }: { assignments: Assignm
 
 async function loadAssignments(canManage: boolean, userId: string) {
   return db.contentAssignment.findMany({
-    where: canManage ? undefined : { OR: [{ assigneeId: userId }, { assigneeId: null, state: "assigned" }] },
+    where: canManage ? undefined : { assigneeId: userId },
     include: {
       assignee: { select: { id: true, name: true, email: true } },
       assignedBy: { select: { name: true, email: true } }
@@ -293,7 +287,7 @@ async function loadContentRefs(
 }
 
 function parseView(value: string | undefined): WorkView {
-  return value === "available" || value === "blocked" || value === "completed" || value === "team" ? value : "mine";
+  return value === "blocked" || value === "completed" || value === "team" ? value : "mine";
 }
 
 function actionable(state: string) { return state === "assigned" || state === "in_progress"; }

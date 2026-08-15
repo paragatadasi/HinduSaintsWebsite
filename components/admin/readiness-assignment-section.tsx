@@ -1,7 +1,12 @@
 import { UserRoundCheck } from "lucide-react";
 import type { UserRole, WorkflowStatus } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
-import { canUpdateAssignedWorkflow, hasCapability } from "@/lib/permissions";
+import {
+  canSelfAssignAnotherTask,
+  canUpdateAssignedWorkflow,
+  hasCapability,
+  hasSingleActionableAssignmentLimit
+} from "@/lib/permissions";
 import { AssignmentLeaveControl } from "@/components/admin/assignment-leave-control";
 import { AssignmentStatusFields } from "@/components/admin/assignment-status-fields";
 import { ReviewSection } from "@/components/admin/review-ui";
@@ -38,23 +43,38 @@ export async function ReadinessAssignmentSection({
   assignmentError,
   assignmentUpdated
 }: ReadinessAssignmentSectionProps) {
-  const assignments = await db.contentAssignment.findMany({
-    where: { contentId, contentType, state: { in: [...activeStates] } },
-    orderBy: [{ createdAt: "asc" }],
-    select: {
-      id: true,
-      blockedReason: true,
-      state: true,
-      taskType: true,
-      assigneeId: true,
-      assignee: { select: { name: true, email: true } }
-    }
-  });
+  const singleAssignmentLimit = hasSingleActionableAssignmentLimit(currentUserRoles);
+  const [assignments, currentUserAssignments] = await Promise.all([
+    db.contentAssignment.findMany({
+      where: { contentId, contentType, state: { in: [...activeStates] } },
+      orderBy: [{ createdAt: "asc" }],
+      select: {
+        id: true,
+        blockedReason: true,
+        state: true,
+        taskType: true,
+        assigneeId: true,
+        assignee: { select: { name: true, email: true } }
+      }
+    }),
+    singleAssignmentLimit
+      ? db.contentAssignment.findMany({
+          where: { assigneeId: currentUserId, state: { in: [...activeStates] } },
+          select: { state: true }
+        })
+      : Promise.resolve([])
+  ]);
   const currentAssignment = assignments.find((assignment) => (
     assignment.assigneeId === currentUserId && assignment.taskType === "review"
   )) ?? assignments.find((assignment) => assignment.assigneeId === currentUserId);
   const assignedToCurrentUser = Boolean(currentAssignment);
-  const canSelfAssign = hasCapability(currentUserRoles, "self_assign_content") && !assignedToCurrentUser;
+  const claimLimitReached = !canSelfAssignAnotherTask(
+    currentUserRoles,
+    currentUserAssignments.map((assignment) => assignment.state)
+  );
+  const canSelfAssign = hasCapability(currentUserRoles, "self_assign_content")
+    && !assignedToCurrentUser
+    && !claimLimitReached;
   const canUpdateWorkflow = canUpdateAssignedWorkflow(
     currentUserRoles,
     currentUserId,
@@ -93,11 +113,21 @@ export async function ReadinessAssignmentSection({
                 {assignment.state === "blocked" && assignment.blockedReason ? (
                   <p className="assignment-blocked-reason"><strong>Blocking reason:</strong> {assignment.blockedReason}</p>
                 ) : null}
+                {assignment.assigneeId === currentUserId ? (
+                  <AssignmentLeaveControl
+                    assignmentId={assignment.id}
+                    contentLabel="This review"
+                    returnTo={returnTo}
+                  />
+                ) : null}
               </li>
             ))}
           </ul>
         ) : <p className="readiness-assignment__empty">No reviewer is assigned yet.</p>}
         {availableCount > 0 ? <small>{availableCount} open assignment{availableCount === 1 ? "" : "s"} available.</small> : null}
+        {claimLimitReached && !assignedToCurrentUser ? (
+          <small>Finish or block your current task before assigning yourself another.</small>
+        ) : null}
       </div>
 
       {canSelfAssign ? (
@@ -108,14 +138,6 @@ export async function ReadinessAssignmentSection({
           <button className="admin-form-button admin-form-button--secondary" type="submit">Assign to me</button>
         </form>
       ) : null}
-      {currentAssignment ? (
-        <AssignmentLeaveControl
-          assignmentId={currentAssignment.id}
-          contentLabel="This review"
-          returnTo={returnTo}
-        />
-      ) : null}
-
       <div className="readiness-assignment__group">
         <strong>Workflow</strong>
         {canUpdateWorkflow ? (

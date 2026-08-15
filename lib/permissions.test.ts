@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { canReviewEditorialRevisions, canUpdateAssignedWorkflow, hasCapability } from "./permissions";
+import {
+  canSelfAssignAnotherTask,
+  canReviewEditorialRevisions,
+  canUpdateAssignedWorkflow,
+  hasCapability,
+  hasSingleActionableAssignmentLimit
+} from "./permissions";
 
 test("fact-checkers retain structured editing without publication-state authority", () => {
   assert.equal(hasCapability(["fact_checker"], "view_content"), true);
@@ -72,6 +78,17 @@ test("all internal roles can self-assign visible content", () => {
   assert.equal(hasCapability(["writer"], "self_assign_content"), true);
   assert.equal(hasCapability(["curator"], "self_assign_content"), true);
   assert.equal(hasCapability(["translator"], "self_assign_content"), true);
+});
+
+test("only non-manager fact-checkers are limited to one actionable assignment", () => {
+  assert.equal(hasSingleActionableAssignmentLimit(["fact_checker"]), true);
+  assert.equal(hasSingleActionableAssignmentLimit(["fact_checker", "editor"]), false);
+  assert.equal(hasSingleActionableAssignmentLimit(["writer"]), false);
+  assert.equal(hasSingleActionableAssignmentLimit(["translator"]), false);
+  assert.equal(canSelfAssignAnotherTask(["fact_checker"], ["assigned"]), false);
+  assert.equal(canSelfAssignAnotherTask(["fact_checker"], ["in_progress", "blocked"]), false);
+  assert.equal(canSelfAssignAnotherTask(["fact_checker"], ["blocked", "completed"]), true);
+  assert.equal(canSelfAssignAnotherTask(["writer"], ["assigned"]), true);
 });
 
 test("workflow updates require an active assignment unless the user manages assignments", () => {
