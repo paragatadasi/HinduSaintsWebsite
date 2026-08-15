@@ -108,18 +108,13 @@ export function applySaintNarrativePreview(base: PublicSaintDetail, revision: Sa
   const sources = revision.sources ? toPreviewSources(revision.sources) : base.sources;
   return {
     ...base,
-    shortDescription: revision.shortDescription ?? "",
     biography: {
       title: revision.biographyTitle,
       bodyMarkdown: revision.biographyMarkdown,
       sources
     },
     sources,
-    furtherReading: sources,
-    seo: {
-      ...base.seo,
-      description: revision.shortDescription ?? base.seo?.description
-    }
+    furtherReading: sources
   };
 }
 

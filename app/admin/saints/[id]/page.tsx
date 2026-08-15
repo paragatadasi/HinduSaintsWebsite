@@ -31,7 +31,6 @@ import {
   createSaintRelationship,
   deleteSaintRelationship,
   reviewSaintInstagramClaim,
-  updateSaintAliases,
   updateSaintOtherPublicFields,
   updateSaintOverview,
   updateSaintRelationship,
@@ -53,7 +52,7 @@ import { SaintSourcesEditor } from "./saint-sources-editor";
 
 export type AdminSaintEditorPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string; duplicateError?: string; duplicateUpdated?: string; revisionError?: string; revisionUpdated?: string }>;
+  searchParams: Promise<{ assignmentError?: string; assignmentUpdated?: string; conflict?: string; duplicateError?: string; duplicateUpdated?: string; revisionError?: string; revisionUpdated?: string; sourceUpdated?: string }>;
 };
 
 export type SaintEditorTab = "readiness" | "summary" | "biography" | "sources" | "media";
@@ -68,7 +67,7 @@ export async function AdminSaintEditorPage({
   activeTab
 }: AdminSaintEditorPageProps & { activeTab: SaintEditorTab }) {
   const { id } = await params;
-  const { assignmentError, assignmentUpdated, conflict, duplicateError, duplicateUpdated, revisionError, revisionUpdated } = await searchParams;
+  const { assignmentError, assignmentUpdated, conflict, duplicateError, duplicateUpdated, revisionError, revisionUpdated, sourceUpdated } = await searchParams;
   const user = await requireSaintCatalogUser();
   const saintScope = getAdminSaintCatalogScope(user.roles);
   const canReviewInstagram = hasCapability(user.roles, "view_instagram_review");
@@ -111,7 +110,7 @@ export async function AdminSaintEditorPage({
     }),
     db.contentSource.findMany({
       where: { entityType: "Saint", entityId: saint.id },
-      include: { source: true },
+      include: { source: { include: { _count: { select: { contentSources: true } } } } },
       orderBy: { sortOrder: "asc" }
     }),
     canResolveDuplicates ? db.duplicateCandidate.findMany({
@@ -307,6 +306,9 @@ export async function AdminSaintEditorPage({
       </CollapsibleReviewCard> : null}
 
       {activeTab === "summary" ? <>
+      <p className="admin-notice">
+        On published profiles, saved Summary changes appear on the public page immediately. Unpublished profiles remain private until an editor publishes the profile.
+      </p>
       <CollapsibleReviewCard
         cardId="saint-overview"
         defaultOpen
@@ -339,28 +341,24 @@ export async function AdminSaintEditorPage({
                 <input name="canonicalName" defaultValue={draftString(overviewDraft, "canonicalName", saint.canonicalName)} required maxLength={200} />
               </label>
             </div>
-            <div className="review-actions">
-              <button className="admin-form-button" type="submit">Save overview</button>
-            </div>
-          </EditorialDraftForm>
-        </ReviewEditToggle>
-
-        <ReviewEditToggle
-          editable={canEditStructured}
-          editLabel="Edit aliases"
-          summary={<ReviewFactGrid facts={[
-            { label: "Aliases", value: saint.aliases.map((alias) => alias.alias).join(", ") }
-          ]} />}
-        >
-          <EditorialDraftForm action={updateSaintAliases} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={aliasesDraft} section="aliases">
-            <input name="saintId" type="hidden" value={saint.id} />
-            <input name="version" type="hidden" value={saint.version} />
             <label>
               Aliases
-              <input name="aliases" defaultValue={draftString(aliasesDraft, "aliases", saint.aliases.map((alias) => alias.alias).join(", "))} maxLength={2000} />
+              <input
+                name="aliases"
+                defaultValue={draftString(overviewDraft, "aliases", draftString(aliasesDraft, "aliases", saint.aliases.map((alias) => alias.alias).join(", ")))}
+                maxLength={2000}
+              />
+            </label>
+            <label>
+              Short description
+              <SoftLimitTextarea
+                name="shortDescription"
+                defaultValue={draftString(overviewDraft, "shortDescription", saint.shortDescription ?? "")}
+                softLimit={500}
+              />
             </label>
             <div className="review-actions">
-              <button className="admin-form-button" type="submit">Save aliases</button>
+              <button className="admin-form-button" type="submit">Save overview</button>
             </div>
           </EditorialDraftForm>
         </ReviewEditToggle>
@@ -368,6 +366,7 @@ export async function AdminSaintEditorPage({
 
       <CollapsibleReviewCard
         cardId="saint-public-fields"
+        defaultOpen
         description="Dates, era text, and discoverability fields used by the public profile."
         eyebrow="Profile metadata"
         title="Key Facts"
@@ -525,9 +524,9 @@ export async function AdminSaintEditorPage({
                   Public note
                   <input name="publicNote" defaultValue={relationship.publicNote ?? ""} maxLength={500} />
                 </label>
-                <label className="checkbox-row">
+                <label className="admin-option-toggle">
                   <input name="publicVisible" type="checkbox" defaultChecked={relationship.publicVisible} />
-                  Visible on public saint profiles
+                  <span>Visible on public saint profiles</span>
                 </label>
                 <div className="review-actions">
                   <button className="admin-form-button" type="submit">Save relationship</button>
@@ -591,9 +590,9 @@ export async function AdminSaintEditorPage({
               Public note
               <input name="publicNote" maxLength={500} />
             </label>
-            <label className="checkbox-row">
-              <input name="publicVisible" type="checkbox" />
-              Visible on public saint profiles
+            <label className="admin-option-toggle">
+              <input defaultChecked name="publicVisible" type="checkbox" />
+              <span>Visible on public saint profiles</span>
             </label>
             <div className="review-actions">
               <button className="admin-form-button" type="submit">Add relationship</button>
@@ -706,9 +705,8 @@ export async function AdminSaintEditorPage({
         {revisionError === "cited-source-missing" ? <p className="admin-notice form-status form-status--error">This biography cites a source that is no longer attached. Add it on the Sources tab or update the citation before publishing.</p> : null}
 
         <div className="editorial-revision-comparison">
-          <ReviewSubsection eyebrow="Live public version" title="Published now" description="This content remains unchanged while a revision is drafted or reviewed.">
+          <ReviewSubsection eyebrow="Live public version" title="Published now" description="The biography remains unchanged while a revision is drafted or reviewed.">
             <ReviewFactGrid facts={[
-              { label: "Short description", value: saint.shortDescription },
               { label: "Biography", value: primaryBiography?.title },
               { label: "Biography length", value: primaryBiography?.bodyMarkdown ? `${primaryBiography.bodyMarkdown.length.toLocaleString()} characters` : undefined }
             ]} />
@@ -721,7 +719,6 @@ export async function AdminSaintEditorPage({
           >
             <div className="review-meta"><StatusBadge label={formatStatus(narrativeRevisionRow.status)} /></div>
             <ReviewFactGrid facts={[
-              { label: "Short description", value: narrativeRevision.shortDescription },
               { label: "Biography", value: narrativeRevision.biographyTitle },
               { label: "Biography length", value: `${narrativeRevision.biographyMarkdown.length.toLocaleString()} characters` }
             ]} />
@@ -757,10 +754,6 @@ export async function AdminSaintEditorPage({
           <EditorialDraftForm action={saveSaintNarrativeRevision} baseVersion={saint.version} className="form-stack" entityId={saint.id} entityType="saint" initialDraft={biographyDraft} section="biography">
               <input name="saintId" type="hidden" value={saint.id} />
               <input name="version" type="hidden" value={saint.version} />
-              <label>
-                Short description
-                <SoftLimitTextarea name="shortDescription" defaultValue={draftString(biographyDraft, "shortDescription", narrativeRevision?.shortDescription ?? saint.shortDescription ?? "")} softLimit={500} />
-              </label>
               <label>
                 Biography title
                 <input name="biographyTitle" defaultValue={draftString(biographyDraft, "biographyTitle", narrativeRevision?.biographyTitle ?? legacyBiographyDraft?.title ?? primaryBiography?.title ?? "The Life of a Saint")} required maxLength={200} />
@@ -884,6 +877,7 @@ export async function AdminSaintEditorPage({
         eyebrow="References"
         title="Sources and Further Reading"
       >
+        {sourceUpdated ? <p className="admin-notice form-status form-status--success">{formatSourceUpdate(sourceUpdated)}</p> : null}
         <SaintSourcesEditor canEdit={canEditStructured} saintId={saint.id} sourceLinks={sourceLinks} />
       </CollapsibleReviewCard> : null}
 
@@ -1473,6 +1467,15 @@ function splitCaptionParagraphs(caption?: string | null) {
 
 function formatStatus(status: string) {
   return status.replace(/_/g, " ");
+}
+
+function formatSourceUpdate(status: string) {
+  if (status === "removed") return "Source removed from this saint.";
+  if (status === "attached") return "Existing source attached.";
+  if (status === "reused") return "Existing shared source reused and attached.";
+  if (status === "created") return "New source added.";
+  if (status === "already-attached") return "That source is already attached to this saint.";
+  return "Source saved.";
 }
 
 function formatRevisionUpdate(value: string) {

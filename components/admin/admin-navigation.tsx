@@ -66,7 +66,7 @@ export function AdminWorkspaceTabs({ groups }: { groups: AdminNavigationGroup[] 
             >
               <span>{item.label}</span>
               {typeof item.count === "number" && item.count > 0 ? (
-                <span className="admin-navigation-count">{item.count}</span>
+                <span className="admin-navigation-count admin-navigation-count--secondary">{item.count}</span>
               ) : null}
             </Link>
           );

@@ -13,18 +13,22 @@ test("editorial drafts allow only configured fields for a section", () => {
   assert.deepEqual(sanitizeEditorialDraftPayload("saint", "overview", {
     displayName: "Draft name",
     canonicalName: "Canonical",
+    aliases: "Alternate name, Another name",
     shortDescription: "Interim copy",
     status: "published",
     injected: "discard me"
   }), {
     displayName: "Draft name",
-    canonicalName: "Canonical"
+    canonicalName: "Canonical",
+    aliases: "Alternate name, Another name",
+    shortDescription: "Interim copy"
   });
 });
 
 test("saint biography drafts do not retain independently managed sources", () => {
   assert.deepEqual(sanitizeEditorialDraftPayload("saint", "biography", {
     biographyTitle: "A life",
+    shortDescription: "Now managed by the Summary tab",
     biographyMarkdown: "Biography copy",
     sourcesJson: "[{\"title\":\"Legacy source\"}]"
   }), {

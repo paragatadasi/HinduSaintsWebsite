@@ -4,9 +4,11 @@ import { db } from "@/lib/db";
 
 export const EDITORIAL_DRAFT_SECTIONS = {
   saint: {
-    overview: ["displayName", "canonicalName"],
+    overview: ["displayName", "canonicalName", "aliases", "shortDescription"],
     public_fields: ["eraLabel", "birthDateRaw", "samadhiDateRaw", "dateNotes", "seoTitle", "seoDescription"],
-    biography: ["biographyTitle", "shortDescription", "biographyMarkdown", "intent"],
+    biography: ["biographyTitle", "biographyMarkdown", "intent"],
+    // Kept temporarily so drafts created by the former standalone alias editor
+    // can still be recovered by the combined Overview form.
     aliases: ["aliases"]
   },
   tradition: {
