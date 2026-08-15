@@ -58,7 +58,7 @@ export function CookieNoticeTrigger() {
   }
 
   return (
-    <button className="site-footer__contact" onClick={openNotice} type="button">
+    <button className="site-footer__legal-link" onClick={openNotice} type="button">
       Cookie information
     </button>
   );
