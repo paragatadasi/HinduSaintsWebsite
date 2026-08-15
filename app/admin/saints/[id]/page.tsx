@@ -24,6 +24,7 @@ import { getEditorialRevisionActiveKey, saintNarrativeRevisionSchema, type Sourc
 import { getInstagramLinkProps } from "@/lib/external-links";
 import { formatHistoricalYear, parseImportedDate } from "@/lib/import-dates";
 import { getInstagramImageUrls } from "@/lib/instagram";
+import { getUserDisplayName, userDisplayNameSelect } from "@/lib/user-display-name";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
 import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
@@ -131,8 +132,8 @@ export async function AdminSaintEditorPage({
     db.editorialRevision.findUnique({
       where: { activeKey: getEditorialRevisionActiveKey("saint", saint.id) },
       include: {
-        createdBy: { select: { name: true, email: true } },
-        updatedBy: { select: { name: true, email: true } }
+        createdBy: { select: userDisplayNameSelect },
+        updatedBy: { select: userDisplayNameSelect }
       }
     })
   ]);
@@ -734,7 +735,7 @@ export async function AdminSaintEditorPage({
           {narrativeRevisionRow && narrativeRevision ? <ReviewSubsection
             eyebrow="Working version"
             title={narrativeRevisionRow.status === "needs_review" ? "Submitted for review" : "Draft revision"}
-            description={`Last updated by ${narrativeRevisionRow.updatedBy.name || narrativeRevisionRow.updatedBy.email}.`}
+            description={`Last updated by ${getUserDisplayName(narrativeRevisionRow.updatedBy)}.`}
           >
             <div className="review-meta"><StatusBadge label={formatStatus(narrativeRevisionRow.status)} /></div>
             <ReviewFactGrid facts={[

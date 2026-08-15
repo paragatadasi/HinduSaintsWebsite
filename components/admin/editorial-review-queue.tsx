@@ -2,12 +2,13 @@ import Link from "next/link";
 import type { Route } from "next";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
+import { getUserDisplayName, userDisplayNameSelect } from "@/lib/user-display-name";
 
 export async function EditorialReviewQueue() {
   const revisions = await db.editorialRevision.findMany({
     where: { status: "needs_review" },
     include: {
-      updatedBy: { select: { name: true, email: true } }
+      updatedBy: { select: userDisplayNameSelect }
     },
     orderBy: [{ submittedAt: "asc" }, { updatedAt: "asc" }]
   });
@@ -35,7 +36,7 @@ export async function EditorialReviewQueue() {
                     <StatusBadge label="Needs review" />
                   </div>
                   <h3>{labels.get(`${revision.entityType}:${revision.entityId}`)?.name ?? "Editorial revision"}</h3>
-                  <p>Submitted {revision.submittedAt?.toLocaleString() ?? revision.updatedAt.toLocaleString()} by {revision.updatedBy.name || revision.updatedBy.email}.</p>
+                  <p>Submitted {revision.submittedAt?.toLocaleString() ?? revision.updatedAt.toLocaleString()} by {getUserDisplayName(revision.updatedBy)}.</p>
                 </div>
                 {destination ? <div className="review-actions">
                   <Link className="button button--secondary" href={`/admin/preview/revision/${revision.id}` as Route} rel="noreferrer" target="_blank">Preview page</Link>

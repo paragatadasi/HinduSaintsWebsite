@@ -10,9 +10,10 @@ import { createAssignment, updateAssignment } from "@/app/admin/work/actions";
 import { db } from "@/lib/db";
 import { saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { assignmentTaskTypeLabel } from "@/lib/assignment-task-type";
+import { getUserDisplayName, userDisplayNameSelect, type UserDisplayNameFields } from "@/lib/user-display-name";
 
 type AssignmentRow = Awaited<ReturnType<typeof loadAssignments>>[number];
-type AdminUser = { id: string; name: string | null; email: string };
+type AdminUser = UserDisplayNameFields & { id: string };
 type WorkView = "mine" | "blocked" | "completed" | "team";
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -39,11 +40,12 @@ export async function AssignmentWorkspace({
     loadAssignments(canManage, userId),
     canManage ? db.user.findMany({
       where: { active: true },
-      orderBy: [{ name: "asc" }, { email: "asc" }],
-      select: { id: true, name: true, email: true }
+      orderBy: { email: "asc" },
+      select: { id: true, ...userDisplayNameSelect }
     }) : Promise.resolve([]),
     canManage ? loadTargets() : Promise.resolve([])
   ]);
+  users.sort((left, right) => getUserDisplayName(left).localeCompare(getUserDisplayName(right)));
   const refs = await loadContentRefs(candidateAssignments, { canViewContent, canViewInstagram, saintScope });
   const assignments = candidateAssignments.filter((row) => refs.has(`${row.contentType}:${row.contentId}`));
   const mine = assignments.filter((row) => row.assigneeId === userId && actionable(row.state));
@@ -96,7 +98,7 @@ export async function AssignmentWorkspace({
                 <span>Assignee</span>
                 <select name="assigneeId" defaultValue="">
                   <option value="">Available for self-assignment</option>
-                  {users.map((candidate) => <option key={candidate.id} value={candidate.id}>{candidate.name || candidate.email}</option>)}
+                  {users.map((candidate) => <option key={candidate.id} value={candidate.id}>{getUserDisplayName(candidate)}</option>)}
                 </select>
               </label>
               <label className="admin-field">
@@ -163,7 +165,7 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
                   {row.state === "blocked" && row.blockedReason ? (
                     <p className="assignment-blocked-reason"><strong>Blocking reason:</strong> {row.blockedReason}</p>
                   ) : null}
-                  <small>{row.assignee ? `Assigned to ${row.assignee.name || row.assignee.email}` : "Available to claim"}{row.dueDate ? ` · Due ${row.dueDate.toLocaleDateString()}` : ""}</small>
+                  <small>{row.assignee ? `Assigned to ${getUserDisplayName(row.assignee)}` : "Available to claim"}{row.dueDate ? ` · Due ${row.dueDate.toLocaleDateString()}` : ""}</small>
                 </div>
                 {!readOnly && (canManage || row.assigneeId === userId) ? (
                   <div className="assignment-workspace__controls">
@@ -177,7 +179,7 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
                           <span>Assignee</span>
                           <select defaultValue={row.assigneeId || ""} name="assigneeId">
                             <option value="">Available</option>
-                            {users.map((candidate) => <option key={candidate.id} value={candidate.id}>{candidate.name || candidate.email}</option>)}
+                            {users.map((candidate) => <option key={candidate.id} value={candidate.id}>{getUserDisplayName(candidate)}</option>)}
                           </select>
                         </label>
                       ) : null}
@@ -210,7 +212,7 @@ function TeamWorkload({ assignments, labelledBy, users }: { assignments: Assignm
           const blocked = rows.filter((row) => row.state === "blocked").length;
           return (
             <div className="review-row" key={user.id}>
-              <div><h4>{user.name || user.email}</h4>{user.name ? <p>{user.email}</p> : null}</div>
+              <div><h4>{getUserDisplayName(user)}</h4>{getUserDisplayName(user) !== user.email ? <p>{user.email}</p> : null}</div>
               <div className="review-meta"><StatusBadge label={`${rows.length} active`} />{blocked ? <StatusBadge label={`${blocked} blocked`} /> : null}</div>
             </div>
           );
@@ -224,8 +226,8 @@ async function loadAssignments(canManage: boolean, userId: string) {
   return db.contentAssignment.findMany({
     where: canManage ? undefined : { assigneeId: userId },
     include: {
-      assignee: { select: { id: true, name: true, email: true } },
-      assignedBy: { select: { name: true, email: true } }
+      assignee: { select: { id: true, ...userDisplayNameSelect } },
+      assignedBy: { select: userDisplayNameSelect }
     },
     orderBy: [{ dueDate: "asc" }, { createdAt: "desc" }],
     take: 300

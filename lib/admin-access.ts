@@ -3,12 +3,16 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { hasCapability, type Capability } from "@/lib/permissions";
 import { canAccessSaintCatalog, canViewSaintWithRoles } from "@/lib/admin-saint-access";
+import { userDisplayNameSelect } from "@/lib/user-display-name";
 
 export async function getAdminUser() {
   const session = await auth();
   const email = session?.user?.email?.trim().toLowerCase();
   if (!email) return null;
-  return db.user.findUnique({ where: { email }, select: { id: true, email: true, name: true, roles: true, active: true } });
+  return db.user.findUnique({
+    where: { email },
+    select: { id: true, ...userDisplayNameSelect, roles: true, active: true }
+  });
 }
 
 export async function requireAdminUser() {
