@@ -1,7 +1,8 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import { SaintDetailPageContent } from "@/components/saints/saint-detail-page";
-import { getPublishedSaintBySlug, getPublishedSaintRedirectBySlug, getRelatedPublishedSaints } from "@/lib/public-saints";
+import { getPublicHomePageConfig, resolveHomepageSaints } from "@/lib/home-page-config";
+import { getHomepageFallbackSaintSummaries, getPublishedSaintBySlug, getPublishedSaintRedirectBySlug, getRelatedPublishedSaints } from "@/lib/public-saints";
 import { getSaintDetailTemplateContent } from "@/lib/site-content";
 import { getSocialImage } from "@/lib/social-metadata";
 
@@ -49,6 +50,17 @@ export default async function SaintDetailPage({ params }: { params: Promise<{ sl
   ]);
   if (!saint && redirectSlug) permanentRedirect(`/saints/${redirectSlug}`);
   if (!saint) notFound();
+  const featuredSaints = relatedSaints.length === 0
+    ? await Promise.all([getPublicHomePageConfig(), getHomepageFallbackSaintSummaries()])
+      .then(([homeConfig, fallbackSaints]) => resolveHomepageSaints(homeConfig.featuredSaints, fallbackSaints))
+    : [];
 
-  return <SaintDetailPageContent relatedSaints={relatedSaints} saint={saint} template={template} />;
+  return (
+    <SaintDetailPageContent
+      featuredSaints={featuredSaints}
+      relatedSaints={relatedSaints}
+      saint={saint}
+      template={template}
+    />
+  );
 }
