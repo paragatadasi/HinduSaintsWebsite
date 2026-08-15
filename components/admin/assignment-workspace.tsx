@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Route } from "next";
+import { AssignmentLeaveControl } from "@/components/admin/assignment-leave-control";
 import { AssignmentStatusFields } from "@/components/admin/assignment-status-fields";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { SearchableSelect } from "@/components/ui/searchable-select";
@@ -198,20 +199,23 @@ function AssignmentSection({ labelledBy, empty, rows, refs, users, userId, canMa
                     <button className="admin-form-button" type="submit">Assign to me</button>
                   </form>
                 ) : !readOnly && (canManage || row.assigneeId === userId) ? (
-                  <form action={updateAssignment} className="admin-settings-form admin-settings-form--inline admin-settings-form--assignment-status">
-                    <input type="hidden" name="assignmentId" value={row.id} />
-                    {canManage ? (
-                      <label className="admin-field">
-                        <span>Assignee</span>
-                        <select defaultValue={row.assigneeId || ""} name="assigneeId">
-                          <option value="">Available</option>
-                          {users.map((candidate) => <option key={candidate.id} value={candidate.id}>{candidate.name || candidate.email}</option>)}
-                        </select>
-                      </label>
-                    ) : null}
-                    <AssignmentStatusFields defaultBlockedReason={row.blockedReason} defaultStatus={row.state} />
-                    <button className="admin-form-button admin-form-button--secondary" type="submit">Update</button>
-                  </form>
+                  <div className="assignment-workspace__controls">
+                    <form action={updateAssignment} className="admin-settings-form admin-settings-form--inline admin-settings-form--assignment-status">
+                      <input type="hidden" name="assignmentId" value={row.id} />
+                      {canManage ? (
+                        <label className="admin-field">
+                          <span>Assignee</span>
+                          <select defaultValue={row.assigneeId || ""} name="assigneeId">
+                            <option value="">Available</option>
+                            {users.map((candidate) => <option key={candidate.id} value={candidate.id}>{candidate.name || candidate.email}</option>)}
+                          </select>
+                        </label>
+                      ) : null}
+                      <AssignmentStatusFields defaultBlockedReason={row.blockedReason} defaultStatus={row.state} />
+                      <button className="admin-form-button admin-form-button--secondary" type="submit">Update</button>
+                    </form>
+                    {row.assigneeId === userId ? <AssignmentLeaveControl assignmentId={row.id} contentLabel={ref?.label} /> : null}
+                  </div>
                 ) : null}
               </article>
             );

@@ -4934,6 +4934,48 @@ html[data-route-entering="true"] body > main {
   grid-column: 1 / -1;
 }
 
+.assignment-workspace__controls {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: end;
+}
+
+.assignment-leave {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.assignment-leave__trigger {
+  min-height: var(--size-control);
+}
+
+.assignment-leave__dialog-panel {
+  width: min(calc(100vw - var(--space-8)), var(--width-admin-confirmation-dialog));
+}
+
+.assignment-leave__copy {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.assignment-leave__copy h2,
+.assignment-leave__copy p {
+  margin: 0;
+}
+
+.assignment-leave__copy p {
+  color: var(--color-muted);
+}
+
+.assignment-leave__actions {
+  justify-content: flex-end;
+}
+
+.assignment-leave__confirm {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
 .admin-form-grid {
   display: grid;
   gap: var(--space-3);
@@ -9598,6 +9640,11 @@ select:not([multiple]) {
   opacity: 0.48;
 }
 
+.admin-form-button:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus);
+  outline-offset: var(--size-focus-offset);
+}
+
 .admin-form-button--secondary {
   background: transparent;
   border-color: var(--color-accent);
@@ -10326,6 +10373,17 @@ select:not([multiple]) {
   }
 
   .admin-settings-form--assignment-status > .admin-form-button {
+    width: 100%;
+  }
+
+  .assignment-workspace__controls,
+  .assignment-workspace__controls > .admin-settings-form--assignment-status {
+    justify-items: stretch;
+    width: 100%;
+  }
+
+  .assignment-workspace__controls .assignment-leave,
+  .assignment-workspace__controls .assignment-leave__trigger {
     width: 100%;
   }
 
