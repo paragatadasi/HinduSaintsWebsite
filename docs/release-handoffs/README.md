@@ -27,6 +27,13 @@ When an individual feature agent receives that instruction, the agent should:
 7. Stop and report the branch, commit SHA, verification result, handoff status,
    and handoff file path.
 
+The prepare/queue instruction includes user intent to push the scoped feature
+branch and handoff commit to `origin`; it does not authorize merging to `main`
+or `deploy`. Because a push sends repository history to GitHub, Codex may show
+an external-transfer approval prompt. Use that tool approval flow immediately
+and continue after approval instead of stopping with a separate prose request
+for permission.
+
 `npm run prepare:deployment` runs `npm run dev:check` and creates a `ready`
 handoff file for the current branch. `npm run queue:deployment` runs the same
 check and creates a `queued` handoff file. Feature agents should not run
