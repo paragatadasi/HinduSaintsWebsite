@@ -5,18 +5,44 @@ import { notFound } from "next/navigation";
 import { Prose } from "@/components/content/prose";
 import type { PublicImage } from "@/lib/public-contracts";
 import { getPublicAboutPageContent } from "@/lib/site-config";
-import { buildPublicMetadata } from "@/lib/seo";
+import { SITE_NAME, siteTitle } from "@/lib/seo";
+import { getSocialImage } from "@/lib/social-metadata";
 
-export const metadata: Metadata = buildPublicMetadata({
-  title: "About",
-  description: "Discover the vision and story behind the Hindu Saints devotional archive.",
-  path: "/about"
-});
+const aboutDescription = "Discover the vision and story behind the Hindu Saints devotional archive.";
 
 const defaultHeroImage: PublicImage = {
   url: "/about-hero.png",
   alt: "A devotee meditating beside a sacred river at night"
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getPublicAboutPageContent();
+  const image = getSocialImage(content?.heroImage ?? defaultHeroImage, {
+    fallbackAlt: content?.title ?? "About",
+    optimizeManagedImage: true
+  });
+  const title = siteTitle("About");
+
+  return {
+    title: "About",
+    description: aboutDescription,
+    alternates: { canonical: "/about" },
+    openGraph: {
+      type: "website",
+      url: "/about",
+      siteName: SITE_NAME,
+      title,
+      description: aboutDescription,
+      images: [image]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: aboutDescription,
+      images: [image.url]
+    }
+  };
+}
 
 const discoveryIcons: Record<string, ComponentType<{ size?: number; "aria-hidden"?: boolean }>> = {
   sparkles: Sparkles,
