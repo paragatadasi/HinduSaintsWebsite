@@ -3623,6 +3623,7 @@ html[data-route-entering="true"] body > main {
 .saint-profile-related { background: var(--color-section-surface); }
 .saint-profile-related .section-heading h2 { letter-spacing: 0.12em; text-transform: uppercase; }
 .saint-profile-sources { background: var(--color-saint-profile-sources); }
+.saint-profile-sources__layout { max-width: var(--width-saint-profile-biography-layout); }
 
 .saint-detail-hero__inner {
   align-items: center;
