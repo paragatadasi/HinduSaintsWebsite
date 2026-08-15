@@ -2,6 +2,7 @@ import { UserRoundCheck } from "lucide-react";
 import type { UserRole, WorkflowStatus } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
 import { canUpdateAssignedWorkflow, hasCapability } from "@/lib/permissions";
+import { AssignmentLeaveControl } from "@/components/admin/assignment-leave-control";
 import { AssignmentStatusFields } from "@/components/admin/assignment-status-fields";
 import { ReviewSection } from "@/components/admin/review-ui";
 import { selfAssignContent, updateContentWorkflowStatus } from "@/app/admin/work/actions";
@@ -64,7 +65,14 @@ export async function ReadinessAssignmentSection({
   const message = assignmentError
     ? { kind: "error" as const, text: assignmentError }
     : assignmentUpdated
-      ? { kind: "success" as const, text: assignmentUpdated === "workflow" ? "Review workflow updated." : "This review is now assigned to you." }
+      ? {
+          kind: "success" as const,
+          text: assignmentUpdated === "workflow"
+            ? "Review workflow updated."
+            : assignmentUpdated === "released"
+              ? "You left this task. It is now available for another contributor."
+              : "This review is now assigned to you."
+        }
       : null;
 
   return (
@@ -99,6 +107,13 @@ export async function ReadinessAssignmentSection({
           <input name="returnTo" type="hidden" value={returnTo} />
           <button className="admin-form-button admin-form-button--secondary" type="submit">Assign to me</button>
         </form>
+      ) : null}
+      {currentAssignment ? (
+        <AssignmentLeaveControl
+          assignmentId={currentAssignment.id}
+          contentLabel="This review"
+          returnTo={returnTo}
+        />
       ) : null}
 
       <div className="readiness-assignment__group">

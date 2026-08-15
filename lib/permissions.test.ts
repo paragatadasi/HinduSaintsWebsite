@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { canReviewEditorialRevisions, canUpdateAssignedWorkflow, hasCapability } from "./permissions";
 
-test("fact-checkers retain structured editing without publishing authority", () => {
+test("fact-checkers retain structured editing without publication-state authority", () => {
   assert.equal(hasCapability(["fact_checker"], "view_content"), true);
   assert.equal(hasCapability(["fact_checker"], "edit_structured_content"), true);
   assert.equal(hasCapability(["fact_checker"], "edit_long_form_content"), false);

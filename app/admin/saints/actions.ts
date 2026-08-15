@@ -16,6 +16,7 @@ import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page
 import { toSlug } from "@/lib/slugs";
 import { getReciprocalRelationshipType } from "@/lib/saint-relationships";
 import { replaceSourceReferenceKeys } from "@/lib/markdown";
+import { getSourceMatchKind } from "@/lib/source-display";
 import { expectedVersion, guardedSaintTransaction, guardedSaintUpdate } from "@/lib/admin-conflicts";
 import { saintPublicationCompatibilityData } from "@/lib/admin-workflow";
 import { canManageSaintTeamVisibility } from "@/lib/admin-saint-access";
@@ -42,7 +43,7 @@ const saintBasicsSchema = z.object({
   saintId: z.string().cuid(),
   displayName: z.string().trim().min(1).max(200),
   canonicalName: z.string().trim().min(1).max(200),
-  shortDescription: z.string().trim().optional(),
+  shortDescription: z.string().trim().max(500).optional(),
   eraLabel: z.string().trim().max(120).optional(),
   birthDateRaw: z.string().trim().max(120).optional(),
   samadhiDateRaw: z.string().trim().max(120).optional(),
@@ -54,7 +55,10 @@ const saintBasicsSchema = z.object({
 const saintOverviewSchema = saintBasicsSchema.pick({
   saintId: true,
   displayName: true,
-  canonicalName: true
+  canonicalName: true,
+  shortDescription: true
+}).extend({
+  aliases: z.array(z.string().trim().min(1).max(200)).max(100)
 });
 
 const saintOtherPublicFieldsSchema = saintBasicsSchema.pick({
@@ -141,11 +145,6 @@ const instagramSlideDeleteSchema = z.object({
   password: z.string().min(1)
 });
 
-const saintAliasesSchema = z.object({
-  saintId: z.string().cuid(),
-  aliases: z.array(z.string().trim().min(1).max(200)).max(100)
-});
-
 const saintTraditionsSchema = z.object({
   saintId: z.string().cuid(),
   traditionIds: z.array(z.string().cuid()).max(100),
@@ -228,11 +227,17 @@ const saintSourceRemovalSchema = z.object({
   saintId: z.string().cuid()
 });
 
+const saintSourceAttachmentSchema = z.object({
+  saintId: z.string().cuid(),
+  sourceId: z.string().cuid(),
+  description: z.string().trim().max(1000).optional(),
+  sortOrder: z.number().int().min(0).max(1000).optional()
+});
+
 const saintNarrativeRevisionActionSchema = z.object({
   saintId: z.string().cuid(),
   biographyTitle: z.string().trim().min(1).max(200),
   biographyMarkdown: z.string().trim().min(1).max(20_000),
-  shortDescription: z.string().trim().max(500).optional(),
   intent: z.enum(["save_draft", "submit_review"])
 });
 
@@ -294,15 +299,59 @@ export async function updateSaintOverview(formData: FormData) {
   const parsed = saintOverviewSchema.parse({
     saintId: formData.get("saintId"),
     displayName: formData.get("displayName"),
-    canonicalName: formData.get("canonicalName")
+    canonicalName: formData.get("canonicalName"),
+    shortDescription: emptyToUndefined(formData.get("shortDescription")),
+    aliases: parseList(formData.get("aliases"))
   });
+  const currentSaint = await db.saint.findUnique({
+    where: { id: parsed.saintId },
+    select: {
+      aliases: { select: { alias: true, aliasType: true, source: true } }
+    }
+  });
+
+  if (!currentSaint) redirect("/admin/saints");
+
+  const existingAliasMeta = new Map(currentSaint.aliases.map((alias) => [normalizeListValue(alias.alias), alias]));
+  const aliases = uniqueList(parsed.aliases);
   const attempted = {
-      displayName: parsed.displayName,
-      canonicalName: parsed.canonicalName
+    displayName: parsed.displayName,
+    canonicalName: parsed.canonicalName,
+    shortDescription: parsed.shortDescription ?? null,
+    aliases
   };
   const saint = await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), attempted, `/admin/saints/${parsed.saintId}/summary`, async (tx) => {
-    const updated = await tx.saint.update({ where: { id: parsed.saintId }, data: attempted, select: { slug: true } });
-    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "saint", entityId: parsed.saintId, section: "overview" } });
+    const updated = await tx.saint.update({
+      where: { id: parsed.saintId },
+      data: {
+        displayName: parsed.displayName,
+        canonicalName: parsed.canonicalName,
+        shortDescription: parsed.shortDescription ?? null
+      },
+      select: { slug: true }
+    });
+    await tx.saintAlias.deleteMany({ where: { saintId: parsed.saintId } });
+
+    if (aliases.length > 0) {
+      await tx.saintAlias.createMany({
+        data: aliases.map((alias) => {
+          const existing = existingAliasMeta.get(normalizeListValue(alias));
+          return {
+            saintId: parsed.saintId,
+            alias,
+            aliasType: existing?.aliasType ?? "other",
+            source: existing?.source
+          };
+        })
+      });
+    }
+    await tx.adminEditorialDraft.deleteMany({
+      where: {
+        entityType: "saint",
+        entityId: parsed.saintId,
+        section: { in: ["overview", "aliases"] }
+      }
+    });
     return updated;
   });
 
@@ -347,49 +396,6 @@ export async function updateSaintOtherPublicFields(formData: FormData) {
     const updated = await tx.saint.update({ where: { id: parsed.saintId }, data: attempted, select: { slug: true } });
     await tx.adminEditorialDraft.deleteMany({ where: { entityType: "saint", entityId: parsed.saintId, section: "public_fields" } });
     return updated;
-  });
-
-  revalidateSaintPaths(saint.slug);
-  redirect(`/admin/saints/${saint.slug}/summary`);
-}
-
-export async function updateSaintAliases(formData: FormData) {
-  await requireAdminSession(formData);
-
-  const parsed = saintAliasesSchema.parse({
-    saintId: formData.get("saintId"),
-    aliases: parseList(formData.get("aliases"))
-  });
-  const saint = await db.saint.findUnique({
-    where: { id: parsed.saintId },
-    select: {
-      slug: true,
-      aliases: { select: { alias: true, aliasType: true, source: true } }
-    }
-  });
-
-  if (!saint) redirect("/admin/saints");
-
-  const existingAliasMeta = new Map(saint.aliases.map((alias) => [normalizeListValue(alias.alias), alias]));
-  const aliases = uniqueList(parsed.aliases);
-
-  await guardedSaintTransaction(parsed.saintId, expectedVersion(formData), { aliases }, `/admin/saints/${parsed.saintId}/summary`, async (tx) => {
-    await tx.saintAlias.deleteMany({ where: { saintId: parsed.saintId } });
-
-    if (aliases.length > 0) {
-      await tx.saintAlias.createMany({
-        data: aliases.map((alias) => {
-          const existing = existingAliasMeta.get(normalizeListValue(alias));
-          return {
-            saintId: parsed.saintId,
-            alias,
-            aliasType: existing?.aliasType ?? "other",
-            source: existing?.source
-          };
-        })
-      });
-    }
-    await tx.adminEditorialDraft.deleteMany({ where: { entityType: "saint", entityId: parsed.saintId, section: "aliases" } });
   });
 
   revalidateSaintPaths(saint.slug);
@@ -768,7 +774,6 @@ export async function saveSaintNarrativeRevision(formData: FormData) {
     saintId: formData.get("saintId"),
     biographyTitle: formData.get("biographyTitle"),
     biographyMarkdown: formData.get("biographyMarkdown"),
-    shortDescription: emptyToUndefined(formData.get("shortDescription")),
     intent: formData.get("intent")
   });
   const activeKey = getEditorialRevisionActiveKey("saint", parsedFields.saintId);
@@ -899,10 +904,7 @@ export async function publishSaintNarrativeRevision(formData: FormData) {
         }
       });
 
-      await tx.saint.update({
-        where: { id: parsed.saintId },
-        data: { shortDescription: payload.shortDescription ?? null, version: { increment: 1 } }
-      });
+      await tx.saint.update({ where: { id: parsed.saintId }, data: { version: { increment: 1 } } });
       await tx.editorialRevision.update({
         where: { id: revision.id },
         data: {
@@ -949,13 +951,16 @@ export async function upsertSaintSource(formData: FormData) {
 
   if (!saint) redirect("/admin/saints");
 
-  await db.$transaction(async (tx) => {
+  const result = await db.$transaction(async (tx) => {
     const existingLink = parsed.contentSourceId ? await tx.contentSource.findFirst({
       where: { id: parsed.contentSourceId, entityType: "Saint", entityId: parsed.saintId },
       select: { sourceId: true }
     }) : null;
     if (parsed.contentSourceId && !existingLink) throw new Error("The source is no longer attached to this saint.");
 
+    const reusableSource = !existingLink && parsed.url
+      ? await findExactSourceMatch(tx, parsed)
+      : null;
     const source = existingLink
       ? await tx.source.update({
           where: { id: existingLink.sourceId },
@@ -969,7 +974,7 @@ export async function upsertSaintSource(formData: FormData) {
           },
           select: { id: true }
         })
-      : await tx.source.create({
+      : reusableSource ?? await tx.source.create({
           data: {
             title: parsed.title,
             sourceType: parsed.sourceType,
@@ -990,7 +995,18 @@ export async function upsertSaintSource(formData: FormData) {
           sortOrder: parsed.sortOrder ?? 0
         }
       });
+      return { status: "saved" as const };
     } else {
+      const existingAttachment = await tx.contentSource.findFirst({
+        where: {
+          entityType: "Saint",
+          entityId: parsed.saintId,
+          sourceId: source.id
+        },
+        select: { id: true }
+      });
+      if (existingAttachment) return { status: "already-attached" as const };
+
       await tx.contentSource.create({
         data: {
           entityType: "Saint",
@@ -1000,10 +1016,49 @@ export async function upsertSaintSource(formData: FormData) {
           sortOrder: parsed.sortOrder ?? 0
         }
       });
+      return { status: reusableSource ? "reused" as const : "created" as const };
     }
   });
 
   revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${saint.slug}/sources?sourceUpdated=${result.status}`);
+}
+
+export async function attachExistingSaintSource(formData: FormData) {
+  await requireAdminSession(formData);
+
+  const parsed = saintSourceAttachmentSchema.parse({
+    saintId: formData.get("saintId"),
+    sourceId: formData.get("sourceId"),
+    description: emptyToUndefined(formData.get("description")),
+    sortOrder: parseOptionalInteger(formData.get("sortOrder"))
+  });
+  const saint = await db.saint.findUnique({ where: { id: parsed.saintId }, select: { slug: true } });
+  if (!saint) redirect("/admin/saints");
+
+  const result = await db.$transaction(async (tx) => {
+    const source = await tx.source.findUnique({ where: { id: parsed.sourceId }, select: { id: true } });
+    if (!source) throw new Error("The selected source was not found.");
+    const existing = await tx.contentSource.findFirst({
+      where: { entityType: "Saint", entityId: parsed.saintId, sourceId: source.id },
+      select: { id: true }
+    });
+    if (existing) return "already-attached" as const;
+
+    await tx.contentSource.create({
+      data: {
+        entityType: "Saint",
+        entityId: parsed.saintId,
+        sourceId: source.id,
+        description: parsed.description ?? null,
+        sortOrder: parsed.sortOrder ?? 0
+      }
+    });
+    return "attached" as const;
+  });
+
+  revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${saint.slug}/sources?sourceUpdated=${result}`);
 }
 
 export async function removeSaintSource(formData: FormData) {
@@ -1029,6 +1084,7 @@ export async function removeSaintSource(formData: FormData) {
   });
 
   revalidateSaintPaths(saint.slug);
+  redirect(`/admin/saints/${saint.slug}/sources?sourceUpdated=removed`);
 }
 
 export async function updateSaintReviewStatus(formData: FormData) {
@@ -1687,7 +1743,6 @@ async function getSaintNarrativeSnapshot(client: Prisma.TransactionClient | type
     select: {
       slug: true,
       version: true,
-      shortDescription: true,
       biographies: {
         where: { status: "published" },
         orderBy: { updatedAt: "desc" },
@@ -1704,7 +1759,6 @@ async function getSaintNarrativeSnapshot(client: Prisma.TransactionClient | type
   });
   const biography = saint.biographies[0];
   const payload: SaintNarrativeRevision = {
-    shortDescription: saint.shortDescription ?? undefined,
     biographyTitle: biography?.title ?? "The Life of a Saint",
     biographyMarkdown: biography?.bodyMarkdown ?? ""
   };
@@ -1725,7 +1779,6 @@ function toNarrativeContent(payload: unknown) {
   const parsed = saintNarrativeRevisionSchema.safeParse(payload);
   if (!parsed.success) return payload;
   return {
-    shortDescription: parsed.data.shortDescription,
     biographyTitle: parsed.data.biographyTitle,
     biographyMarkdown: parsed.data.biographyMarkdown
   };
@@ -1788,6 +1841,39 @@ function parseOptionalInteger(value: FormDataEntryValue | null) {
   if (typeof value !== "string" || !value.trim()) return undefined;
   const parsed = Number.parseInt(value, 10);
   return Number.isNaN(parsed) ? undefined : parsed;
+}
+
+async function findExactSourceMatch(
+  tx: Prisma.TransactionClient,
+  source: z.infer<typeof saintSourceSchema>
+) {
+  if (!source.url) return null;
+
+  let hostname = source.url;
+  try {
+    hostname = new URL(source.url).hostname;
+  } catch {
+    // The action schema already validates URLs; retain the full value as a safe fallback.
+  }
+
+  const candidates = await tx.source.findMany({
+    where: {
+      OR: [
+        { url: { contains: hostname, mode: "insensitive" } },
+        { title: { equals: source.title, mode: "insensitive" } }
+      ]
+    },
+    take: 100,
+    select: {
+      id: true,
+      title: true,
+      author: true,
+      publicationYear: true,
+      url: true
+    }
+  });
+
+  return candidates.find((candidate) => getSourceMatchKind(candidate, source) === "exact_url") ?? null;
 }
 
 async function getUniqueBiographySlug(saintId: string, title: string) {

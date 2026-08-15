@@ -15,8 +15,10 @@ branch as every chunk.
 - Site Admin has unrestricted access, user management, and destructive actions.
 - Data Admin is an Editor plus source-data, import, and reconciliation authority.
 - Editor can edit and publish content. Fact-checker works with structured
-  summaries; Writer also works with biography and long-form content. Neither
-  role can publish. Curator can fully manage Museum and the full Saint catalog,
+  summaries, whose saves update published profiles immediately; Writer also
+  works with biography and long-form content. Neither role can change publication
+  state or publish narrative revisions. Curator can fully manage Museum and the
+  full Saint catalog,
   while destructive Museum actions remain Site Admin-only. Translator remains
   view-only until translation workflows are designed.
 - Existing allowlisted emails are grandfathered as Site Admins during the

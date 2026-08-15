@@ -17,13 +17,17 @@ test("active revision keys are stable per entity narrative", () => {
 
 test("saint narrative revisions require a biography and validate sources", () => {
   const result = saintNarrativeRevisionSchema.safeParse({
-    shortDescription: "A concise public description.",
     biographyTitle: "Life",
     biographyMarkdown: "Reviewed biography.",
     sources: [{ title: "Primary text", sourceType: "book" }]
   });
 
   assert.equal(result.success, true);
+  assert.equal("shortDescription" in saintNarrativeRevisionSchema.parse({
+    shortDescription: "Legacy summary copy",
+    biographyTitle: "Life",
+    biographyMarkdown: "Reviewed biography."
+  }), false);
   assert.equal(saintNarrativeRevisionSchema.safeParse({ biographyTitle: "Life", biographyMarkdown: "", sources: [] }).success, false);
 });
 
