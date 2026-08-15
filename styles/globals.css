@@ -5775,6 +5775,21 @@ fieldset.admin-field {
   padding: var(--space-3);
 }
 
+.readiness-assignment__people li {
+  column-gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.readiness-assignment__people li > span,
+.readiness-assignment__people li > small {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.readiness-assignment__people .assignment-blocked-reason {
+  grid-column: 1 / -1;
+}
+
 .readiness-assignment__people small,
 .readiness-assignment__workflow-readonly small,
 .readiness-assignment__empty,
@@ -5784,8 +5799,10 @@ fieldset.admin-field {
 }
 
 .readiness-assignment__people .assignment-leave {
-  justify-content: flex-start;
-  margin-top: var(--space-2);
+  align-self: start;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  justify-content: flex-end;
 }
 
 .readiness-assignment__workflow-form {
@@ -10676,6 +10693,17 @@ select:not([multiple]) {
   .assignment-workspace__controls .assignment-leave,
   .assignment-workspace__controls .assignment-leave__trigger {
     width: 100%;
+  }
+
+  .readiness-assignment__people li {
+    grid-template-columns: 1fr;
+  }
+
+  .readiness-assignment__people .assignment-leave {
+    grid-column: 1;
+    grid-row: auto;
+    justify-content: flex-start;
+    margin-top: var(--space-2);
   }
 
   .feedback-inbox-row__aside {
