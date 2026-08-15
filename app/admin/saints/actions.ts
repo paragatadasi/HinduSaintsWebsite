@@ -20,6 +20,7 @@ import { getSourceMatchKind } from "@/lib/source-display";
 import { expectedVersion, guardedSaintTransaction, guardedSaintUpdate } from "@/lib/admin-conflicts";
 import { saintPublicationCompatibilityData } from "@/lib/admin-workflow";
 import { canManageSaintTeamVisibility } from "@/lib/admin-saint-access";
+import { SHORT_DESCRIPTION_MAX_LENGTH } from "@/lib/content-limits";
 import {
   editorialSnapshotsMatch,
   EditorialRevisionConflictError,
@@ -43,7 +44,7 @@ const saintBasicsSchema = z.object({
   saintId: z.string().cuid(),
   displayName: z.string().trim().min(1).max(200),
   canonicalName: z.string().trim().min(1).max(200),
-  shortDescription: z.string().trim().max(500).optional(),
+  shortDescription: z.string().trim().max(SHORT_DESCRIPTION_MAX_LENGTH).optional(),
   eraLabel: z.string().trim().max(120).optional(),
   birthDateRaw: z.string().trim().max(120).optional(),
   samadhiDateRaw: z.string().trim().max(120).optional(),

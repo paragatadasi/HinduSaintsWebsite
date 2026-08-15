@@ -1,8 +1,9 @@
 "use client";
 
-import { useId, useState, type ChangeEvent, type TextareaHTMLAttributes } from "react";
+import { useId, useState, type InputEvent, type TextareaHTMLAttributes } from "react";
+import { SHORT_DESCRIPTION_MAX_LENGTH } from "@/lib/content-limits";
 
-type SoftLimitTextareaProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "defaultValue" | "maxLength" | "value"> & {
+type SoftLimitTextareaProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "defaultValue" | "value"> & {
   defaultValue?: string;
   softLimit: number;
 };
@@ -11,7 +12,8 @@ export function SoftLimitTextarea({
   "aria-describedby": ariaDescribedBy,
   defaultValue = "",
   id,
-  onChange,
+  maxLength = SHORT_DESCRIPTION_MAX_LENGTH,
+  onInput,
   softLimit,
   ...textareaProps
 }: SoftLimitTextareaProps) {
@@ -21,9 +23,9 @@ export function SoftLimitTextarea({
   const [value, setValue] = useState(defaultValue);
   const overflowCount = Math.max(0, value.length - softLimit);
 
-  function handleChange(event: ChangeEvent<HTMLTextAreaElement>) {
-    setValue(event.target.value);
-    onChange?.(event);
+  function handleInput(event: InputEvent<HTMLTextAreaElement>) {
+    setValue(event.currentTarget.value);
+    onInput?.(event);
   }
 
   return (
@@ -33,7 +35,8 @@ export function SoftLimitTextarea({
         aria-describedby={[ariaDescribedBy, hintId].filter(Boolean).join(" ")}
         defaultValue={defaultValue}
         id={textareaId}
-        onChange={handleChange}
+        maxLength={maxLength}
+        onInput={handleInput}
       />
       <span
         className={overflowCount > 0 ? "soft-limit-textarea__hint soft-limit-textarea__hint--over" : "soft-limit-textarea__hint"}

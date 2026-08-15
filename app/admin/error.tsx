@@ -8,11 +8,13 @@ export default function AdminError({ error, reset }: { error: Error & { digest?:
   }, [error]);
 
   return (
-    <section className="review-panel form-status form-status--error" role="alert">
-      <div className="eyebrow">Admin recovery</div>
-      <h1>This editor could not complete the request</h1>
-      <p>Interim editorial drafts are preserved automatically. Retry the request or reload the editor to restore the latest saved draft.</p>
-      {error.digest ? <p className="form-field-hint">Reference: {error.digest}</p> : null}
+    <section className="review-panel review-panel--workflow admin-recovery" role="alert">
+      <div className="review-workflow__heading">
+        <div className="review-workflow__eyebrow">Admin recovery</div>
+        <h1>This editor could not complete the request</h1>
+        <p>Your latest browser or server draft remains available. Retry the request, or reload the editor if the problem continues.</p>
+      </div>
+      {error.digest ? <p className="admin-recovery__reference"><span>Reference</span> <code>{error.digest}</code></p> : null}
       <div className="review-actions">
         <button className="admin-form-button" type="button" onClick={reset}>Retry</button>
         <button className="admin-form-button admin-form-button--secondary" type="button" onClick={() => window.location.reload()}>Reload editor</button>
