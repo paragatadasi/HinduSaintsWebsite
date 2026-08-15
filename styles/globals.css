@@ -9599,6 +9599,11 @@ select:not([multiple]) {
   width: var(--crop-width);
 }
 
+.saint-image-cropper__crop-box:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus);
+  outline-offset: calc(var(--size-focus-ring) * -1);
+}
+
 .saint-image-cropper__crop-box::before,
 .saint-image-cropper__crop-box::after {
   content: "";
@@ -9699,10 +9704,10 @@ select:not([multiple]) {
 }
 
 .saint-image-actions__placement {
-  align-items: end;
+  align-items: stretch;
   display: grid;
   gap: var(--space-2);
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   width: 100%;
 }
 
@@ -9820,13 +9825,6 @@ select:not([multiple]) {
   display: inline-flex;
   gap: var(--space-2);
   justify-content: center;
-}
-
-@media (max-width: 640px) {
-  .saint-image-actions__placement {
-    align-items: stretch;
-    grid-template-columns: 1fr;
-  }
 }
 
 .contact-page {

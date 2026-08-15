@@ -2,7 +2,7 @@
 
 import { ChevronDown, Crop, ImagePlus, ScanFace, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
-import type { CSSProperties, PointerEvent } from "react";
+import type { CSSProperties, KeyboardEvent, PointerEvent } from "react";
 import { useMemo, useRef, useState, useTransition } from "react";
 import { AdminImageEditorDialog } from "@/components/admin/admin-image-editor-dialog";
 import { FocalImage } from "@/components/ui/focal-image";
@@ -287,6 +287,26 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
     }
   }
 
+  function handleCropKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    const delta = {
+      ArrowLeft: { x: -1, y: 0 },
+      ArrowRight: { x: 1, y: 0 },
+      ArrowUp: { x: 0, y: -1 },
+      ArrowDown: { x: 0, y: 1 }
+    }[event.key];
+
+    if (!delta || isBusy) return;
+    event.preventDefault();
+
+    setCropBox((current) => {
+      if (!event.shiftKey) {
+        return resizeCropBox(current, "move", delta.x, delta.y);
+      }
+
+      return resizeCropBox(current, delta.x === 0 ? "s" : "e", delta.x, delta.y);
+    });
+  }
+
   return (
     <div className="saint-image-cropper">
       <div className="saint-image-cropper__sources">
@@ -391,13 +411,18 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
               }}
             />
             <div
+              aria-describedby="saint-image-cropper-instructions"
+              aria-label={`Crop frame. Horizontal position ${Math.round(cropBox.x)} percent, vertical position ${Math.round(cropBox.y)} percent, width ${Math.round(cropBox.width)} percent, height ${Math.round(cropBox.height)} percent.`}
               className="saint-image-cropper__crop-box"
+              role="group"
               style={{
                 "--crop-x": `${cropBox.x}%`,
                 "--crop-y": `${cropBox.y}%`,
                 "--crop-width": `${cropBox.width}%`,
                 "--crop-height": `${cropBox.height}%`
               } as CSSProperties}
+              tabIndex={0}
+              onKeyDown={handleCropKeyDown}
               onPointerDown={(event) => startCropDrag(event, "move")}
             >
               {cropHandles.map((handle) => (
@@ -414,7 +439,9 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
           <div className="form-stack saint-image-cropper__controls">
             <div>
               <strong>{selected.label}</strong>
-              <p>Faces are detected locally when possible. Drag the crop frame or use the keyboard controls to fine-tune the result.</p>
+              <p id="saint-image-cropper-instructions">
+                Faces are detected locally when possible. Drag the frame to position it and drag a handle to resize. Keyboard: use arrow keys to move and Shift + arrow keys to resize.
+              </p>
             </div>
             <AdminImageEditorDialog title={selected.label} triggerLabel="Inspect full-size source">
               <img src={selected.previewUrl} alt={altText || selected.label} />
@@ -429,25 +456,6 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
               Find faces
             </button>
             {smartCropMessage ? <p className="admin-notice">{smartCropMessage}</p> : null}
-            <fieldset className="admin-image-adjustment-controls">
-              <legend>Crop-frame keyboard adjustments</legend>
-              <label>
-                Horizontal position: {Math.round(cropBox.x)}%
-                <input min={0} max={Math.max(0, 100 - cropBox.width)} step={1} type="range" value={cropBox.x} onChange={(event) => setCropBox((current) => clampCropBox({ ...current, x: Number(event.target.value) }))} />
-              </label>
-              <label>
-                Vertical position: {Math.round(cropBox.y)}%
-                <input min={0} max={Math.max(0, 100 - cropBox.height)} step={1} type="range" value={cropBox.y} onChange={(event) => setCropBox((current) => clampCropBox({ ...current, y: Number(event.target.value) }))} />
-              </label>
-              <label>
-                Crop width: {Math.round(cropBox.width)}%
-                <input min={minCropSize} max={100} step={1} type="range" value={cropBox.width} onChange={(event) => setCropBox((current) => clampCropBox({ ...current, width: Number(event.target.value) }))} />
-              </label>
-              <label>
-                Crop height: {Math.round(cropBox.height)}%
-                <input min={minCropSize} max={100} step={1} type="range" value={cropBox.height} onChange={(event) => setCropBox((current) => clampCropBox({ ...current, height: Number(event.target.value) }))} />
-              </label>
-            </fieldset>
             <label>
               Alt text
               <input value={altText} maxLength={240} onChange={(event) => setAltText(event.target.value)} />
