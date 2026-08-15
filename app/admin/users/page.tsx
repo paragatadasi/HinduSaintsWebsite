@@ -4,6 +4,7 @@ import { requireCapability } from "@/lib/admin-access";
 import { getBulkDeletePasswordStatus } from "@/lib/admin-secrets";
 import { db } from "@/lib/db";
 import { userRoleLabels } from "@/lib/permissions";
+import { getUserDisplayName, userDisplayNameSelect, type UserDisplayNameFields } from "@/lib/user-display-name";
 import { setBulkDeletePasswordAction } from "../actions";
 import { createAdminUser, updateUserAccess } from "./actions";
 
@@ -17,14 +18,18 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
   await requireCapability("manage_users");
   const [params, users, audits, passwordStatus] = await Promise.all([
     searchParams,
-    db.user.findMany({ orderBy: [{ active: "desc" }, { name: "asc" }, { email: "asc" }] }),
+    db.user.findMany({ orderBy: [{ active: "desc" }, { email: "asc" }] }),
     db.adminAccessAudit.findMany({
-      include: { targetUser: { select: { email: true, name: true } } },
+      include: { targetUser: { select: userDisplayNameSelect } },
       orderBy: { createdAt: "desc" },
       take: 30
     }),
     getBulkDeletePasswordStatus()
   ]);
+  users.sort((left, right) => {
+    if (left.active !== right.active) return left.active ? -1 : 1;
+    return getUserDisplayName(left).localeCompare(getUserDisplayName(right));
+  });
   const message = getMessage(params);
   const passwordUpdated = firstParam(params.sensitiveActionPassword) === "updated";
   const updatedEmail = firstParam(params.updated);
@@ -47,6 +52,7 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
         title="Approve a user"
       >
         <form action={createAdminUser} className="admin-settings-form admin-settings-form--stacked">
+          <UserIdentityFields />
           <label className="admin-field"><span>Email</span><input autoComplete="email" name="email" required type="email" /></label>
           <RoleCheckboxes defaults={["fact_checker"]} />
           <p className="admin-settings-note">Roles combine additively. Fact-checkers work with structured summaries; Writers also work with biography and long-form content.</p>
@@ -57,26 +63,28 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
       <section aria-label="Approved users">
         <div className="section-heading"><h2>Approved users</h2><StatusBadge label={String(users.length)} /></div>
         <div className="review-list">
-          {users.map((user) => (
-            <CollapsibleReviewCard
+          {users.map((user) => {
+            const displayName = getUserDisplayName(user);
+            return <CollapsibleReviewCard
               cardId={`user-${user.id}`}
               className="admin-user-access-card"
               defaultOpen={updatedEmail === user.email}
-              description={user.name ? user.email : formatRoles(user.roles)}
+              description={displayName !== user.email ? user.email : formatRoles(user.roles)}
               eyebrow={`${user.active ? "Active" : "Inactive"} · ${user.lastSignedInAt ? `Last sign-in ${formatDate(user.lastSignedInAt)}` : "Never signed in"}`}
               key={user.id}
-              title={user.name || user.email}
+              title={displayName}
             >
               <form action={updateUserAccess} className="admin-settings-form admin-settings-form--stacked">
                 <input name="userId" type="hidden" value={user.id} />
+                <UserIdentityFields user={user} />
                 <RoleCheckboxes defaults={user.roles} />
                 <div className="admin-form-footer">
                   <label className="admin-option-toggle"><input defaultChecked={user.active} name="active" type="checkbox" /><span>Active account</span></label>
-                  <button className="admin-form-button" type="submit">Save access</button>
+                  <button className="admin-form-button" type="submit">Save user</button>
                 </div>
               </form>
-            </CollapsibleReviewCard>
-          ))}
+            </CollapsibleReviewCard>;
+          })}
         </div>
       </section>
 
@@ -105,7 +113,7 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
               <article className="review-row" key={audit.id}>
                 <div>
                   <div className="review-meta"><StatusBadge label={formatAction(audit.action)} /><StatusBadge label={formatDate(audit.createdAt)} /></div>
-                  <h3>{audit.targetUser.name || audit.targetUser.email}</h3>
+                  <h3>{getUserDisplayName(audit.targetUser)}</h3>
                   <p>{formatRoles(audit.beforeRoles)} → {formatRoles(audit.afterRoles)} · {audit.beforeActive ? "active" : "inactive"} → {audit.afterActive ? "active" : "inactive"}</p>
                 </div>
                 <p>Changed by {audit.actorEmail}</p>
@@ -114,6 +122,17 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
           </div>
         ) : <p className="empty-note">No access changes have been recorded yet.</p>}
       </CollapsibleReviewCard>
+    </div>
+  );
+}
+
+function UserIdentityFields({ user }: { user?: UserDisplayNameFields }) {
+  return (
+    <div className="admin-form-grid">
+      <label className="admin-field"><span>Name</span><input autoComplete="name" defaultValue={user?.name ?? ""} maxLength={200} name="name" /></label>
+      <label className="admin-field"><span>Spiritual Name</span><input defaultValue={user?.spiritualName ?? ""} maxLength={200} name="spiritualName" /></label>
+      <label className="admin-field"><span>Telegram ID</span><input autoComplete="off" defaultValue={user?.telegramId ?? ""} maxLength={200} name="telegramId" /></label>
+      <label className="admin-field"><span>Instagram ID</span><input autoComplete="off" defaultValue={user?.instagramId ?? ""} maxLength={200} name="instagramId" /></label>
     </div>
   );
 }

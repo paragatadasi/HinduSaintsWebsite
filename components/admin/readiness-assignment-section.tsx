@@ -12,6 +12,7 @@ import { AssignmentStatusFields } from "@/components/admin/assignment-status-fie
 import { ReviewSection } from "@/components/admin/review-ui";
 import { selfAssignContent, updateContentWorkflowStatus } from "@/app/admin/work/actions";
 import { assignmentTaskTypeForWorkflow, assignmentTaskTypeLabel } from "@/lib/assignment-task-type";
+import { getUserDisplayName, userDisplayNameSelect } from "@/lib/user-display-name";
 
 type ReadinessContentType = "saint" | "tradition" | "place";
 
@@ -55,7 +56,7 @@ export async function ReadinessAssignmentSection({
         state: true,
         taskType: true,
         assigneeId: true,
-        assignee: { select: { name: true, email: true } }
+        assignee: { select: userDisplayNameSelect }
       }
     }),
     singleAssignmentLimit
@@ -109,7 +110,7 @@ export async function ReadinessAssignmentSection({
           <ul className="readiness-assignment__people">
             {namedAssignments.map((assignment) => (
               <li key={assignment.id}>
-                <span>{assignment.assignee?.name || assignment.assignee?.email}</span>
+                <span>{assignment.assignee ? getUserDisplayName(assignment.assignee) : "Unassigned"}</span>
                 <small>{assignmentTaskTypeLabel(assignment.taskType)} · {formatLabel(assignment.state)}</small>
                 {assignment.state === "blocked" && assignment.blockedReason ? (
                   <p className="assignment-blocked-reason"><strong>Blocking reason:</strong> {assignment.blockedReason}</p>

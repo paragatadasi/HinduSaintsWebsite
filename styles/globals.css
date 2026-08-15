@@ -3685,6 +3685,8 @@ html[data-route-entering="true"] body > main {
 .saint-profile-related .section-heading h2 { letter-spacing: 0.12em; text-transform: uppercase; }
 .saint-profile-sources { background: var(--color-saint-profile-sources); }
 .saint-profile-sources__layout { max-width: var(--width-saint-profile-biography-layout); }
+.saint-profile-sources__layout--summary-aligned { max-width: var(--width-page-frame); }
+.saint-profile-sources__layout--summary-aligned .source-section { max-width: var(--width-prose); }
 
 .saint-detail-hero__inner {
   align-items: center;
@@ -9606,6 +9608,11 @@ select:not([multiple]) {
   width: var(--crop-width);
 }
 
+.saint-image-cropper__crop-box:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus);
+  outline-offset: calc(var(--size-focus-ring) * -1);
+}
+
 .saint-image-cropper__crop-box::before,
 .saint-image-cropper__crop-box::after {
   content: "";
@@ -9706,10 +9713,10 @@ select:not([multiple]) {
 }
 
 .saint-image-actions__placement {
-  align-items: end;
+  align-items: stretch;
   display: grid;
   gap: var(--space-2);
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   width: 100%;
 }
 
@@ -9827,13 +9834,6 @@ select:not([multiple]) {
   display: inline-flex;
   gap: var(--space-2);
   justify-content: center;
-}
-
-@media (max-width: 640px) {
-  .saint-image-actions__placement {
-    align-items: stretch;
-    grid-template-columns: 1fr;
-  }
 }
 
 .contact-page {
