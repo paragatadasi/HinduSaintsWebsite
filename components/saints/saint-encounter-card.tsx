@@ -2,7 +2,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type SaintEncounterCardProps = {
-  variant: "catalog" | "hero" | "profile";
+  variant: "catalog" | "hero" | "profile" | "rail";
 };
 
 export function SaintEncounterCard({ variant }: SaintEncounterCardProps) {
@@ -10,12 +10,12 @@ export function SaintEncounterCard({ variant }: SaintEncounterCardProps) {
 
   return (
     <aside
-      className={`saint-encounter-card saint-encounter-card--${variant}`}
+      className={`saint-encounter-card saint-encounter-card--${variant}${variant === "rail" ? " rail-card rail-card--featured" : ""}`}
       aria-labelledby={titleId}
     >
       <Sparkles className="saint-encounter-card__icon" aria-hidden="true" />
       <p className="saint-encounter-card__eyebrow">A moment of discovery</p>
-      {variant === "catalog" ? (
+      {variant === "catalog" || variant === "rail" ? (
         <h3 id={titleId}>Encounter a New Saint</h3>
       ) : (
         <h2 id={titleId}>Encounter a New Saint</h2>

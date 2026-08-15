@@ -11,7 +11,7 @@ import { PublicSearchField } from "@/components/ui/public-search-field";
 import { SaintCard } from "@/components/saints/saint-card";
 import { TraditionCard } from "@/components/traditions/tradition-card";
 import { FeaturedTraditionCard } from "@/components/traditions/featured-tradition-card";
-import { getPublicHomePageConfig } from "@/lib/home-page-config";
+import { getPublicHomePageConfig, resolveHomepageSaints } from "@/lib/home-page-config";
 import { INDIA_STATE_MAP_SHAPES, type IndiaStateMapShape } from "@/lib/india-state-map-shapes";
 import { getRecentInstagramCarouselPreviews } from "@/lib/public-instagram";
 import { getIndiaPlaceMapData } from "@/lib/public-places";
@@ -71,9 +71,7 @@ export default async function HomePage() {
         bannerImage: undefined,
         focalArea: { x: 50, y: 50, width: 60, height: 60 }
       }));
-  const saints = homeConfig.featuredSaints.length > 0
-    ? homeConfig.featuredSaints
-    : fallbackSaints;
+  const saints = resolveHomepageSaints(homeConfig.featuredSaints, fallbackSaints);
 
   if (layout === "archive") {
     return (
