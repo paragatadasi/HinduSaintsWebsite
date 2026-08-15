@@ -509,12 +509,14 @@ export async function AdminSaintEditorPage({
                 summary={(
                   <div className="relationship-review-summary">
                     <div className="review-meta">
-                      <StatusBadge label={formatRelationshipType(relationship.reviewType)} />
                       <StatusBadge label={formatStatus(relationship.status)} />
                       <StatusBadge label={formatStatus(relationship.evidenceStatus)} />
                       <StatusBadge label={relationship.publicVisible ? "public" : "private"} />
                     </div>
-                    <h3><Link href={`/admin/saints/${relationship.relatedSaint.slug}`}>{relationship.relatedSaint.displayName}</Link></h3>
+                    <h3 className="relationship-review-summary__title">
+                      <Link href={`/admin/saints/${relationship.relatedSaint.slug}`}>{relationship.relatedSaint.displayName}</Link>
+                      <span>({formatRelationshipType(relationship.reviewType)})</span>
+                    </h3>
                     {relationship.publicNote ? <p>{relationship.publicNote}</p> : null}
                   </div>
                 )}

@@ -7003,6 +7003,20 @@ fieldset.admin-field {
   min-width: 0;
 }
 
+.relationship-review-summary__title {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.relationship-review-summary__title span {
+  color: var(--color-muted);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
 .relationship-review-summary p {
   color: var(--color-muted);
   margin: 0;
