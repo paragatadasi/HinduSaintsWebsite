@@ -216,11 +216,11 @@ enum AssignmentState {
   completed
 }
 
-enum AssignmentPriority {
-  low
-  normal
-  high
-  urgent
+enum AssignmentTaskType {
+  fact_check
+  populate
+  polish
+  review
 }
 
 enum AdminEntityType {
@@ -295,15 +295,13 @@ model ContentAssignment {
   id            String                @id @default(cuid())
   contentType   AssignmentContentType
   contentId     String
-  taskType      String
+  taskType      AssignmentTaskType
   assigneeId    String?
   assignee      User?                 @relation("AssignmentAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
   assignedById  String
   assignedBy    User                  @relation("AssignmentCreator", fields: [assignedById], references: [id], onDelete: Restrict)
   state         AssignmentState       @default(assigned)
-  priority      AssignmentPriority    @default(normal)
   dueDate       DateTime?
-  notes         String?
   blockedReason String?
   completedById String?
   completedBy   User?                 @relation("AssignmentCompleter", fields: [completedById], references: [id], onDelete: SetNull)
@@ -313,7 +311,7 @@ model ContentAssignment {
 
   @@index([assigneeId, state, dueDate])
   @@index([contentType, contentId, state])
-  @@index([state, priority, createdAt])
+  @@index([state, createdAt])
 }
 
 model AdminEditConflict {

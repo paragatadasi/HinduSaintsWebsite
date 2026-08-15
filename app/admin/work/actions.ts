@@ -7,13 +7,12 @@ import { z } from "zod";
 import type { Prisma, UserRole } from "@/lib/generated/prisma/client";
 import { assertSaintsVisibleToUser, getAdminUser } from "@/lib/admin-access";
 import { acquireAssignmentClaimLock } from "@/lib/assignment-claim-lock";
+import { assignmentTaskTypeForWorkflow, type AssignmentTaskType } from "@/lib/assignment-task-type";
 import { db } from "@/lib/db";
 import { canSelfAssignAnotherTask, canUpdateAssignedWorkflow, hasCapability, hasSingleActionableAssignmentLimit } from "@/lib/permissions";
 
 const contentTypes = ["saint", "tradition", "place", "instagram_item"] as const;
 const states = ["assigned", "in_progress", "blocked", "completed"] as const;
-const priorities = ["low", "normal", "high", "urgent"] as const;
-const taskTypes = ["review", "edit", "research", "source_check", "publish"] as const;
 const workflowStatuses = ["needs_review", "fact_checked", "populated", "polished"] as const;
 const readinessContentTypes = ["saint", "tradition", "place"] as const;
 const activeAssignmentStates = ["assigned", "in_progress", "blocked"] as const;
@@ -30,32 +29,32 @@ const assignmentStatusSchema = z.object({
 
 const createSchema = z.object({
   target: z.string().min(3),
-  taskType: z.enum(taskTypes),
   assigneeId: z.string().cuid().optional(),
-  priority: z.enum(priorities),
-  dueDate: z.string().date().optional(),
-  notes: z.string().trim().max(2000).optional()
+  dueDate: z.string().date().optional()
 });
 
 export async function createAssignment(formData: FormData) {
   const actor = await activeUser();
   if (!hasCapability(actor.roles, "manage_assignments")) fail("You cannot assign work to other users.");
   const parsed = createSchema.safeParse({
-    target: formData.get("target"), taskType: formData.get("taskType"),
-    assigneeId: formData.get("assigneeId") || undefined, priority: formData.get("priority"),
-    dueDate: formData.get("dueDate") || undefined, notes: formData.get("notes") || undefined
+    target: formData.get("target"),
+    assigneeId: formData.get("assigneeId") || undefined,
+    dueDate: formData.get("dueDate") || undefined
   });
   if (!parsed.success) fail("Choose valid content and assignment details.");
   const [rawType, contentId] = parsed.data.target.split(":");
   const contentType = z.enum(contentTypes).safeParse(rawType);
-  if (!contentType.success || !contentId || !(await contentExists(contentType.data, contentId))) fail("That content record no longer exists.");
+  if (!contentType.success || !contentId) fail("That content record no longer exists.");
+  const taskType = await contentAssignmentTaskType(contentType.data, contentId);
+  if (taskType === undefined) fail("That content record no longer exists.");
+  if (taskType === null) fail("Polished content has no next workflow assignment.");
   if (parsed.data.assigneeId && !(await db.user.count({ where: { id: parsed.data.assigneeId, active: true } }))) fail("Choose an active assignee.");
-  const duplicate = await db.contentAssignment.count({ where: { contentType: contentType.data, contentId, taskType: parsed.data.taskType, assigneeId: parsed.data.assigneeId ?? null, state: { in: ["assigned", "in_progress", "blocked"] } } });
+  const duplicate = await db.contentAssignment.count({ where: { contentType: contentType.data, contentId, taskType, assigneeId: parsed.data.assigneeId ?? null, state: { in: ["assigned", "in_progress", "blocked"] } } });
   if (duplicate) fail("That active assignment already exists for this collaborator.");
   await db.contentAssignment.create({ data: {
-    contentType: contentType.data, contentId, taskType: parsed.data.taskType,
-    assigneeId: parsed.data.assigneeId, assignedById: actor.id, priority: parsed.data.priority,
-    dueDate: parsed.data.dueDate ? new Date(`${parsed.data.dueDate}T12:00:00Z`) : null, notes: parsed.data.notes
+    contentType: contentType.data, contentId, taskType,
+    assigneeId: parsed.data.assigneeId, assignedById: actor.id,
+    dueDate: parsed.data.dueDate ? new Date(`${parsed.data.dueDate}T12:00:00Z`) : null
   } });
   done("created");
 }
@@ -130,7 +129,9 @@ export async function selfAssignContent(formData: FormData) {
   if (!parsed.success) detailFail(formData, "That review could not be assigned.");
 
   await assertAssignmentVisible(actor, parsed.data);
-  if (!(await contentExists(parsed.data.contentType, parsed.data.contentId))) detailFail(formData, "That content record no longer exists.");
+  const taskType = await contentAssignmentTaskType(parsed.data.contentType, parsed.data.contentId);
+  if (taskType === undefined) detailFail(formData, "That content record no longer exists.");
+  if (taskType === null) detailFail(formData, "Polished content has no next workflow assignment.");
 
   let result: "assigned" | "existing" | "limit" | "unavailable";
   try {
@@ -146,7 +147,10 @@ export async function selfAssignContent(formData: FormData) {
         },
         select: { id: true }
       });
-      if (existing) return "existing" as const;
+      if (existing) {
+        await tx.contentAssignment.update({ where: { id: existing.id }, data: { taskType } });
+        return "existing" as const;
+      }
 
       const available = await tx.contentAssignment.findFirst({
         where: {
@@ -155,13 +159,13 @@ export async function selfAssignContent(formData: FormData) {
           assigneeId: null,
           state: { in: [...activeAssignmentStates] }
         },
-        orderBy: [{ priority: "desc" }, { createdAt: "asc" }],
+        orderBy: [{ createdAt: "asc" }],
         select: { id: true }
       });
       if (available) {
         const claimed = await tx.contentAssignment.updateMany({
           where: { id: available.id, assigneeId: null, state: { in: [...activeAssignmentStates] } },
-          data: { assigneeId: actor.id }
+          data: { assigneeId: actor.id, taskType }
         });
         return claimed.count ? "assigned" as const : "unavailable" as const;
       } else {
@@ -169,7 +173,7 @@ export async function selfAssignContent(formData: FormData) {
           data: {
             contentType: parsed.data.contentType,
             contentId: parsed.data.contentId,
-            taskType: "review",
+            taskType,
             assigneeId: actor.id,
             assignedById: actor.id
           }
@@ -273,11 +277,21 @@ async function activeUser() {
   return user;
 }
 
-async function contentExists(type: typeof contentTypes[number], id: string) {
-  if (type === "saint") return Boolean(await db.saint.findUnique({ where: { id }, select: { id: true } }));
-  if (type === "tradition") return Boolean(await db.tradition.findUnique({ where: { id }, select: { id: true } }));
-  if (type === "place") return Boolean(await db.place.findUnique({ where: { id }, select: { id: true } }));
-  return Boolean(await db.instagramItem.findUnique({ where: { id }, select: { id: true } }));
+async function contentAssignmentTaskType(
+  type: typeof contentTypes[number],
+  id: string
+): Promise<AssignmentTaskType | null | undefined> {
+  if (type === "instagram_item") {
+    const item = await db.instagramItem.findUnique({ where: { id }, select: { id: true } });
+    return item ? "review" : undefined;
+  }
+
+  const content = type === "saint"
+    ? await db.saint.findUnique({ where: { id }, select: { workflowStatus: true } })
+    : type === "tradition"
+      ? await db.tradition.findUnique({ where: { id }, select: { workflowStatus: true } })
+      : await db.place.findUnique({ where: { id }, select: { workflowStatus: true } });
+  return content ? assignmentTaskTypeForWorkflow(content.workflowStatus) : undefined;
 }
 
 async function assertAssignmentVisible(

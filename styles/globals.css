@@ -5031,8 +5031,13 @@ html[data-route-entering="true"] body > main {
 }
 
 .admin-settings-form--assignment-status {
-  inline-size: min(100%, var(--width-admin-assignment-editor));
+  grid-template-columns: minmax(140px, 1fr) auto;
+  inline-size: auto;
   justify-self: end;
+}
+
+.admin-settings-form--assignment-status-managed {
+  grid-template-columns: repeat(2, minmax(140px, 1fr)) auto;
 }
 
 .admin-settings-form--assignment-status > .assignment-status-fields {
@@ -5049,14 +5054,16 @@ html[data-route-entering="true"] body > main {
 }
 
 .assignment-workspace__controls {
-  align-self: start;
-  display: grid;
+  align-items: flex-end;
+  align-self: flex-end;
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-3);
-  justify-items: end;
+  justify-content: flex-end;
 }
 
 .review-row--assignment {
-  align-items: start;
+  align-items: stretch;
 }
 
 .review-row--assignment .review-row__content {
