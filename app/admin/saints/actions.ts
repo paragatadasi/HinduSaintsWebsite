@@ -8,6 +8,7 @@ import { z } from "zod";
 import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { assertCapability, assertSaintsVisibleToUser, requireAdminUser, requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
+import { getUserDisplayName } from "@/lib/user-display-name";
 import type { Capability } from "@/lib/permissions";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { parseImportedDate } from "@/lib/import-dates";
@@ -934,7 +935,7 @@ export async function publishSaintNarrativeRevision(formData: FormData) {
           slug: `revision-${revision.id}`,
           bodyMarkdown: biographyMarkdown,
           status: "published",
-          authorOrEditor: user.name ?? user.email,
+          authorOrEditor: getUserDisplayName(user),
           createdById: user.id,
           updatedById: user.id,
           publishedAt: new Date(),

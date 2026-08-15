@@ -18,6 +18,7 @@ import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { requireAdminUser } from "@/lib/admin-access";
+import { getUserDisplayName, userDisplayNameSelect } from "@/lib/user-display-name";
 import { getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { draftString, getEditorialDraftMap } from "@/lib/editorial-drafts";
 import { getEditorialRevisionActiveKey, traditionNarrativeRevisionSchema, type SourceRevision } from "@/lib/editorial-revisions";
@@ -111,7 +112,7 @@ export async function AdminTraditionEditorPage({
     db.contentSource.findMany({ where: { entityType: "Tradition", entityId: tradition.id }, include: { source: true }, orderBy: { sortOrder: "asc" } }),
     db.editorialRevision.findUnique({
       where: { activeKey: getEditorialRevisionActiveKey("tradition", tradition.id) },
-      include: { updatedBy: { select: { name: true, email: true } } }
+      include: { updatedBy: { select: userDisplayNameSelect } }
     })
   ]);
   const parsedNarrativeRevision = narrativeRevisionRow ? traditionNarrativeRevisionSchema.safeParse(narrativeRevisionRow.payload) : null;
@@ -459,7 +460,7 @@ export async function AdminTraditionEditorPage({
           {narrativeRevisionRow && narrativeRevision ? <ReviewSubsection
             eyebrow="Working version"
             title={narrativeRevisionRow.status === "needs_review" ? "Submitted for review" : "Draft revision"}
-            description={`Last updated by ${narrativeRevisionRow.updatedBy.name || narrativeRevisionRow.updatedBy.email}.`}
+            description={`Last updated by ${getUserDisplayName(narrativeRevisionRow.updatedBy)}.`}
           >
             <div className="review-meta"><StatusBadge label={formatStatus(narrativeRevisionRow.status)} /><span>{narrativeRevision.sources.length} sources</span></div>
             <ReviewFactGrid facts={[

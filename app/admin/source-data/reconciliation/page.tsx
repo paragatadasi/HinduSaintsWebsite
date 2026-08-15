@@ -10,6 +10,7 @@ import type { DuplicateCandidate, ReconciliationIssue } from "@/lib/generated/pr
 import { hasCapability } from "@/lib/permissions";
 import { resolveReconciliationIssue } from "./actions";
 import { reviewDuplicateCandidate, runSaintDuplicateScan } from "./duplicate-actions";
+import { getUserDisplayName, userDisplayNameSelect } from "@/lib/user-display-name";
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 const statuses = ["open", "resolved", "ignored"] as const;
@@ -88,10 +89,10 @@ async function DuplicateQueue({ canMerge, canRunScan, params, status }: { canMer
         traditions: { include: { tradition: { select: { name: true } } } }
       }
     }),
-    db.user.findMany({ where: { id: { in: reviewerIds } }, select: { id: true, name: true, email: true } })
+    db.user.findMany({ where: { id: { in: reviewerIds } }, select: { id: true, ...userDisplayNameSelect } })
   ]);
   const saintById = new Map(saints.map((saint) => [saint.id, saint]));
-  const reviewerById = new Map(reviewers.map((reviewer) => [reviewer.id, reviewer.name || reviewer.email]));
+  const reviewerById = new Map(reviewers.map((reviewer) => [reviewer.id, getUserDisplayName(reviewer)]));
 
   return (
     <section className="admin-stack">

@@ -1,6 +1,7 @@
 import { Prisma, type AdminEntityType } from "@/lib/generated/prisma/client";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { getUserDisplayName, userDisplayNameSelect, type UserDisplayNameFields } from "@/lib/user-display-name";
 
 export const EDITORIAL_DRAFT_SECTIONS = {
   saint: {
@@ -82,7 +83,7 @@ export function sanitizeEditorialDraftPayload(
 export async function getEditorialDraftMap(entityType: AdminEntityType, entityId: string) {
   const drafts = await db.adminEditorialDraft.findMany({
     where: { entityType, entityId },
-    include: { updatedBy: { select: { name: true, email: true } } },
+    include: { updatedBy: { select: userDisplayNameSelect } },
     orderBy: { updatedAt: "desc" }
   });
 
@@ -103,7 +104,7 @@ export async function saveEditorialDraft(
 
   const existing = await db.adminEditorialDraft.findUnique({
     where: { entityType_entityId_section: { entityType: input.entityType, entityId: input.entityId, section: input.section } },
-    include: { updatedBy: { select: { name: true, email: true } } }
+    include: { updatedBy: { select: userDisplayNameSelect } }
   });
 
   if (existing) {
@@ -142,7 +143,7 @@ export async function saveEditorialDraft(
         createdById: actorId,
         updatedById: actorId
       },
-      include: { updatedBy: { select: { name: true, email: true } } }
+      include: { updatedBy: { select: userDisplayNameSelect } }
     });
     return { status: "saved", draft: toSnapshot(created) };
   } catch (error) {
@@ -177,7 +178,7 @@ export function draftStrings(draft: EditorialDraftSnapshot | undefined, key: str
 async function getEditorialDraft(entityType: AdminEntityType, entityId: string, section: string) {
   const draft = await db.adminEditorialDraft.findUnique({
     where: { entityType_entityId_section: { entityType, entityId, section } },
-    include: { updatedBy: { select: { name: true, email: true } } }
+    include: { updatedBy: { select: userDisplayNameSelect } }
   });
   return draft ? toSnapshot(draft) : null;
 }
@@ -195,7 +196,7 @@ function toSnapshot(draft: {
   revision: number;
   payload: Prisma.JsonValue;
   updatedAt: Date;
-  updatedBy: { name: string | null; email: string };
+  updatedBy: UserDisplayNameFields;
 }): EditorialDraftSnapshot {
   return {
     id: draft.id,
@@ -203,6 +204,6 @@ function toSnapshot(draft: {
     revision: draft.revision,
     payload: draft.payload as EditorialDraftPayload,
     updatedAt: draft.updatedAt.toISOString(),
-    updatedBy: draft.updatedBy.name || draft.updatedBy.email
+    updatedBy: getUserDisplayName(draft.updatedBy)
   };
 }

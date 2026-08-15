@@ -16,6 +16,7 @@ import { SearchableSelect } from "@/components/ui/searchable-select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { db } from "@/lib/db";
 import { requireAdminUser } from "@/lib/admin-access";
+import { getUserDisplayName, userDisplayNameSelect } from "@/lib/user-display-name";
 import { getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { draftString, draftStrings, getEditorialDraftMap } from "@/lib/editorial-drafts";
 import { getEditorialRevisionActiveKey, placeNarrativeRevisionSchema } from "@/lib/editorial-revisions";
@@ -92,7 +93,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
     }),
     db.editorialRevision.findUnique({
       where: { activeKey: getEditorialRevisionActiveKey("place", place.id) },
-      include: { updatedBy: { select: { name: true, email: true } } }
+      include: { updatedBy: { select: userDisplayNameSelect } }
     })
   ]);
   const parsedNarrativeRevision = narrativeRevisionRow ? placeNarrativeRevisionSchema.safeParse(narrativeRevisionRow.payload) : null;
@@ -277,7 +278,7 @@ export default async function AdminPlaceEditorPage({ params, searchParams }: Adm
           {narrativeRevisionRow && narrativeRevision ? <ReviewSubsection
             eyebrow="Working version"
             title={narrativeRevisionRow.status === "needs_review" ? "Submitted for review" : "Draft revision"}
-            description={`Last updated by ${narrativeRevisionRow.updatedBy.name || narrativeRevisionRow.updatedBy.email}.`}
+            description={`Last updated by ${getUserDisplayName(narrativeRevisionRow.updatedBy)}.`}
           >
             <div className="review-meta"><StatusBadge label={formatStatus(narrativeRevisionRow.status)} /></div>
             <ReviewFactGrid facts={[{ label: "Page overview", value: formatMarkdownSummary(narrativeRevision.overviewMarkdown) }]} />

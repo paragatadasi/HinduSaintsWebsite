@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getAdminUser } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
+import { getUserDisplayName, userDisplayNameSelect } from "@/lib/user-display-name";
 
 const schema = z.object({ entityType: z.enum(["saint", "tradition", "place", "instagram_item"]), entityId: z.string().cuid(), mode: z.enum(["viewing", "editing"]).default("viewing") });
 
@@ -11,8 +12,8 @@ export async function GET(request: Request) {
   if (!user?.active || !hasCapability(user.roles, "view_content")) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const url = new URL(request.url); const parsed = schema.omit({ mode: true }).safeParse({ entityType: url.searchParams.get("entityType"), entityId: url.searchParams.get("entityId") });
   if (!parsed.success) return NextResponse.json({ error: "Invalid presence target" }, { status: 400 });
-  const rows = await db.adminPresence.findMany({ where: { ...parsed.data, expiresAt: { gt: new Date() } }, include: { user: { select: { id: true, name: true, email: true } } }, orderBy: { updatedAt: "desc" } });
-  return NextResponse.json({ users: rows.map((row) => ({ id: row.user.id, label: row.user.name || row.user.email, mode: row.mode })) });
+  const rows = await db.adminPresence.findMany({ where: { ...parsed.data, expiresAt: { gt: new Date() } }, include: { user: { select: { id: true, ...userDisplayNameSelect } } }, orderBy: { updatedAt: "desc" } });
+  return NextResponse.json({ users: rows.map((row) => ({ id: row.user.id, label: getUserDisplayName(row.user), mode: row.mode })) });
 }
 
 export async function POST(request: Request) {
