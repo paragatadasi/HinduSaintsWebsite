@@ -6,6 +6,7 @@ import type { Route } from "next";
 import { z } from "zod";
 import type { Prisma, UserRole } from "@/lib/generated/prisma/client";
 import { assertSaintsVisibleToUser, getAdminUser } from "@/lib/admin-access";
+import { acquireAssignmentClaimLock } from "@/lib/assignment-claim-lock";
 import { db } from "@/lib/db";
 import { canSelfAssignAnotherTask, canUpdateAssignedWorkflow, hasCapability, hasSingleActionableAssignmentLimit } from "@/lib/permissions";
 
@@ -131,49 +132,62 @@ export async function selfAssignContent(formData: FormData) {
   await assertAssignmentVisible(actor, parsed.data);
   if (!(await contentExists(parsed.data.contentType, parsed.data.contentId))) detailFail(formData, "That content record no longer exists.");
 
-  const result = await db.$transaction(async (tx) => {
-    if (await factCheckerClaimLimitReached(tx, actor)) return "limit" as const;
+  let result: "assigned" | "existing" | "limit" | "unavailable";
+  try {
+    result = await db.$transaction(async (tx) => {
+      if (await factCheckerClaimLimitReached(tx, actor)) return "limit" as const;
 
-    const existing = await tx.contentAssignment.findFirst({
-      where: {
-        contentType: parsed.data.contentType,
-        contentId: parsed.data.contentId,
-        assigneeId: actor.id,
-        state: { in: [...activeAssignmentStates] }
-      },
-      select: { id: true }
-    });
-    if (existing) return "existing" as const;
-
-    const available = await tx.contentAssignment.findFirst({
-      where: {
-        contentType: parsed.data.contentType,
-        contentId: parsed.data.contentId,
-        assigneeId: null,
-        state: { in: [...activeAssignmentStates] }
-      },
-      orderBy: [{ priority: "desc" }, { createdAt: "asc" }],
-      select: { id: true }
-    });
-    if (available) {
-      const claimed = await tx.contentAssignment.updateMany({
-        where: { id: available.id, assigneeId: null, state: { in: [...activeAssignmentStates] } },
-        data: { assigneeId: actor.id }
-      });
-      return claimed.count ? "assigned" as const : "unavailable" as const;
-    } else {
-      await tx.contentAssignment.create({
-        data: {
+      const existing = await tx.contentAssignment.findFirst({
+        where: {
           contentType: parsed.data.contentType,
           contentId: parsed.data.contentId,
-          taskType: "review",
           assigneeId: actor.id,
-          assignedById: actor.id
-        }
+          state: { in: [...activeAssignmentStates] }
+        },
+        select: { id: true }
       });
-      return "assigned" as const;
-    }
-  });
+      if (existing) return "existing" as const;
+
+      const available = await tx.contentAssignment.findFirst({
+        where: {
+          contentType: parsed.data.contentType,
+          contentId: parsed.data.contentId,
+          assigneeId: null,
+          state: { in: [...activeAssignmentStates] }
+        },
+        orderBy: [{ priority: "desc" }, { createdAt: "asc" }],
+        select: { id: true }
+      });
+      if (available) {
+        const claimed = await tx.contentAssignment.updateMany({
+          where: { id: available.id, assigneeId: null, state: { in: [...activeAssignmentStates] } },
+          data: { assigneeId: actor.id }
+        });
+        return claimed.count ? "assigned" as const : "unavailable" as const;
+      } else {
+        await tx.contentAssignment.create({
+          data: {
+            contentType: parsed.data.contentType,
+            contentId: parsed.data.contentId,
+            taskType: "review",
+            assigneeId: actor.id,
+            assignedById: actor.id
+          }
+        });
+        return "assigned" as const;
+      }
+    });
+  } catch (error) {
+    const eventId = crypto.randomUUID();
+    console.error("Content self-assignment failed", {
+      eventId,
+      userId: actor.id,
+      contentType: parsed.data.contentType,
+      contentId: parsed.data.contentId,
+      error
+    });
+    detailFail(formData, `This review could not be assigned. Reference ${eventId}.`);
+  }
   if (result === "limit") detailFail(formData, "Finish or block your current task before assigning yourself another.");
   if (result === "unavailable") detailFail(formData, "That open assignment was just claimed. Refresh and try again.");
   detailDone(parsed.data.returnTo, "assigned");
@@ -318,7 +332,7 @@ async function factCheckerClaimLimitReached(
   actor: { id: string; roles: readonly UserRole[] }
 ) {
   if (!hasSingleActionableAssignmentLimit(actor.roles)) return false;
-  await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${actor.id}))`;
+  await acquireAssignmentClaimLock(tx, actor.id);
   const currentAssignments = await tx.contentAssignment.findMany({
     where: { assigneeId: actor.id, state: { in: [...activeAssignmentStates] } },
     select: { state: true }
