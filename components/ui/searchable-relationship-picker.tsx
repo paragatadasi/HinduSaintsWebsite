@@ -3,6 +3,7 @@
 import { ChevronDown, Plus } from "lucide-react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { SearchableMultiSelectOption } from "@/components/ui/searchable-multi-select";
+import { filterAndRankSearchOptions, normalizeSearchValue } from "@/lib/search-option-ranking";
 
 type SearchableRelationshipPickerProps = {
   createLabel?: (query: string) => string;
@@ -32,11 +33,11 @@ export function SearchableRelationshipPicker({
   const [activeIndex, setActiveIndex] = useState(0);
   const selectedSet = useMemo(() => new Set(selectedValues), [selectedValues]);
   const visibleOptions = useMemo(
-    () => filterOptions(options, query).filter((option) => !selectedSet.has(option.value)),
+    () => filterAndRankSearchOptions(options, query).filter((option) => !selectedSet.has(option.value)),
     [options, query, selectedSet]
   );
   const trimmedQuery = query.trim();
-  const hasExactMatch = options.some((option) => normalize(option.label) === normalize(trimmedQuery));
+  const hasExactMatch = options.some((option) => normalizeSearchValue(option.label) === normalizeSearchValue(trimmedQuery));
   const canCreate = Boolean(onCreateRequest && trimmedQuery.length >= 2 && !hasExactMatch);
   const resultCount = visibleOptions.length + (canCreate ? 1 : 0);
   const activeOption = activeIndex < visibleOptions.length ? visibleOptions[activeIndex] : undefined;
@@ -175,19 +176,4 @@ export function SearchableRelationshipPicker({
     onCreateRequest(trimmedQuery);
     setIsDropdownOpen(false);
   }
-}
-
-function filterOptions(options: SearchableMultiSelectOption[], query: string) {
-  const term = normalize(query);
-  if (!term) return options;
-
-  return options.filter((option) => normalize([
-    option.label,
-    option.description,
-    ...(option.keywords ?? [])
-  ].filter(Boolean).join(" ")).includes(term));
-}
-
-function normalize(value: string) {
-  return value.trim().toLocaleLowerCase();
 }
