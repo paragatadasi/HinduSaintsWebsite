@@ -19,7 +19,7 @@ export default async function WorkDashboardRedirect({ searchParams }: Props) {
 }
 
 function parseView(value: string | undefined) {
-  return value === "available" || value === "blocked" || value === "completed" || value === "team" ? value : "mine";
+  return value === "blocked" || value === "completed" || value === "team" ? value : "mine";
 }
 
 function first(value: string | string[] | undefined) {

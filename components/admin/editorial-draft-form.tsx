@@ -18,6 +18,14 @@ type EditorialDraftFormProps = {
 
 type DraftState = "idle" | "dirty" | "saving" | "saved" | "error" | "conflict" | "recovered";
 
+type BrowserDraftSnapshot = {
+  draftId?: string | null;
+  payload?: EditorialDraftPayload;
+  pendingApply?: boolean;
+  revision?: number | null;
+  updatedAt?: string;
+};
+
 export function EditorialDraftForm({
   action,
   baseVersion,
@@ -35,10 +43,13 @@ export function EditorialDraftForm({
   const applyingRef = useRef(false);
   const draftIdRef = useRef(initialDraft?.id ?? null);
   const revisionRef = useRef(initialDraft?.revision ?? null);
+  const sharedConflictRef = useRef<EditorialDraftSnapshot | null>(null);
+  const changeSequenceRef = useRef(0);
   const saveQueueRef = useRef<Promise<boolean>>(Promise.resolve(true));
   const draftIsStale = Boolean(initialDraft && initialDraft.baseVersion !== baseVersion);
   const [state, setState] = useState<DraftState>(draftIsStale ? "conflict" : initialDraft ? "saved" : "idle");
   const [canRebase, setCanRebase] = useState(draftIsStale);
+  const [canReplaceSharedDraft, setCanReplaceSharedDraft] = useState(false);
   const [message, setMessage] = useState(draftIsStale
     ? "This interim draft was based on an older live version. Review it, then discard or reapply deliberately."
     : initialDraft
@@ -47,24 +58,36 @@ export function EditorialDraftForm({
   const storageKey = `admin-editorial-draft:${entityType}:${entityId}:${section}`;
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(storageKey);
+    const raw = readBrowserDraft(storageKey);
     if (!raw || !formRef.current) return;
 
     try {
-      const local = JSON.parse(raw) as { payload?: EditorialDraftPayload; updatedAt?: string; pendingApply?: boolean };
-      if (local.pendingApply && !initialDraft) {
-        window.localStorage.removeItem(storageKey);
+      const local = JSON.parse(raw) as BrowserDraftSnapshot;
+      if (!local.payload) return;
+
+      const renderedPayload = serializeForm(formRef.current, entityType);
+      if (payloadsMatch(local.payload, renderedPayload)) {
+        if (local.pendingApply && !initialDraft) removeBrowserDraft(storageKey);
         return;
       }
+
+      const matchesServerDraft = Boolean(
+        initialDraft
+        && local.draftId === initialDraft.id
+        && local.revision === initialDraft.revision
+      );
       const localUpdatedAt = Date.parse(local.updatedAt ?? "");
       const serverUpdatedAt = Date.parse(initialDraft?.updatedAt ?? "");
-      if (!local.payload || !Number.isFinite(localUpdatedAt) || localUpdatedAt <= (Number.isFinite(serverUpdatedAt) ? serverUpdatedAt : 0)) return;
+      const legacyBrowserDraftIsNewer = Number.isFinite(localUpdatedAt)
+        && localUpdatedAt > (Number.isFinite(serverUpdatedAt) ? serverUpdatedAt : 0);
+      if (initialDraft && !local.pendingApply && !matchesServerDraft && !legacyBrowserDraftIsNewer) return;
+
       applyPayload(formRef.current, local.payload);
       setState("recovered");
       setMessage("Recovered newer changes from this browser. Autosaving them now.");
       scheduleAutosave(100);
     } catch {
-      window.localStorage.removeItem(storageKey);
+      removeBrowserDraft(storageKey);
     }
   // The initial snapshot is intentionally read only during this form instance's mount.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,10 +100,18 @@ export function EditorialDraftForm({
   function handleChange() {
     const form = formRef.current;
     if (!form) return;
+    changeSequenceRef.current += 1;
     const payload = serializeForm(form, entityType);
-    window.localStorage.setItem(storageKey, JSON.stringify({ payload, updatedAt: new Date().toISOString() }));
+    const browserCopySaved = writeBrowserDraft(storageKey, {
+      draftId: draftIdRef.current,
+      payload,
+      revision: revisionRef.current,
+      updatedAt: new Date().toISOString()
+    });
     setState("dirty");
-    setMessage("Unsaved changes are protected in this browser.");
+    setMessage(browserCopySaved
+      ? "Unsaved changes are protected in this browser."
+      : "Browser protection is unavailable. Keep this editor open while autosave retries.");
     scheduleAutosave(900);
   }
 
@@ -102,7 +133,13 @@ export function EditorialDraftForm({
     }
 
     const payload = serializeForm(formRef.current, entityType);
-    window.localStorage.setItem(storageKey, JSON.stringify({ payload, updatedAt: new Date().toISOString(), pendingApply: true }));
+    writeBrowserDraft(storageKey, {
+      draftId: draftIdRef.current,
+      payload,
+      pendingApply: true,
+      revision: revisionRef.current,
+      updatedAt: new Date().toISOString()
+    });
     bypassSubmitRef.current = true;
     formRef.current.requestSubmit(submitter ?? undefined);
   }
@@ -124,6 +161,7 @@ export function EditorialDraftForm({
         const form = formRef.current;
         if (!form) return false;
         const payload = serializeForm(form, entityType);
+        const saveSequence = changeSequenceRef.current;
         setState("saving");
         setMessage("Saving interim draft…");
 
@@ -155,9 +193,47 @@ export function EditorialDraftForm({
             return false;
           }
           if (response.status === 409) {
+            if (result.status === "draft_conflict" && result.draft && payloadsMatch(payload, result.draft.payload)) {
+              draftIdRef.current = result.draft.id;
+              revisionRef.current = result.draft.revision;
+              sharedConflictRef.current = null;
+              setCanRebase(false);
+              setCanReplaceSharedDraft(false);
+              if (changeSequenceRef.current === saveSequence) {
+                writeBrowserDraft(storageKey, {
+                  draftId: result.draft.id,
+                  payload,
+                  revision: result.draft.revision,
+                  updatedAt: result.draft.updatedAt
+                });
+                setState("saved");
+                setMessage("Interim draft saved.");
+              } else {
+                writeBrowserDraft(storageKey, {
+                  draftId: result.draft.id,
+                  payload: serializeForm(form, entityType),
+                  revision: result.draft.revision,
+                  updatedAt: new Date().toISOString()
+                });
+                setState("dirty");
+                setMessage("Newer changes are protected in this browser and waiting to autosave.");
+                if (timerRef.current == null) scheduleAutosave(100);
+              }
+              return true;
+            }
+
             setState("conflict");
-            setCanRebase(result.status === "live_conflict");
-            setMessage("A newer live record or shared draft exists. Reload before applying these changes; your browser copy is safe.");
+            if (result.status === "draft_conflict" && result.draft) {
+              sharedConflictRef.current = result.draft;
+              setCanRebase(false);
+              setCanReplaceSharedDraft(true);
+              setMessage("The shared interim draft changed while you were editing. Your browser copy is safe.");
+            } else {
+              sharedConflictRef.current = null;
+              setCanRebase(result.status === "live_conflict");
+              setCanReplaceSharedDraft(false);
+              setMessage("The live record changed while you were editing. Review your browser copy, then rebase it onto the current version.");
+            }
             return false;
           }
           if (!response.ok || result.status !== "saved" || !result.draft) {
@@ -169,10 +245,31 @@ export function EditorialDraftForm({
           draftIdRef.current = result.draft.id;
           revisionRef.current = result.draft.revision;
           setCanRebase(false);
-          window.localStorage.setItem(storageKey, JSON.stringify({ payload, updatedAt: result.draft.updatedAt }));
+          setCanReplaceSharedDraft(false);
+          sharedConflictRef.current = null;
           form.dispatchEvent(new CustomEvent("admin-draft-saved", { bubbles: true }));
-          setState("saved");
-          setMessage("Interim draft saved.");
+
+          if (changeSequenceRef.current === saveSequence) {
+            writeBrowserDraft(storageKey, {
+              draftId: result.draft.id,
+              payload,
+              revision: result.draft.revision,
+              updatedAt: result.draft.updatedAt
+            });
+            setState("saved");
+            setMessage("Interim draft saved.");
+          } else {
+            const latestPayload = serializeForm(form, entityType);
+            writeBrowserDraft(storageKey, {
+              draftId: result.draft.id,
+              payload: latestPayload,
+              revision: result.draft.revision,
+              updatedAt: new Date().toISOString()
+            });
+            setState("dirty");
+            setMessage("Newer changes are protected in this browser and waiting to autosave.");
+            if (timerRef.current == null) scheduleAutosave(100);
+          }
           return true;
         } catch {
           setState("error");
@@ -197,10 +294,20 @@ export function EditorialDraftForm({
       setMessage("The saved draft could not be discarded. Try again.");
       return;
     }
-    window.localStorage.removeItem(storageKey);
+    removeBrowserDraft(storageKey);
     draftIdRef.current = null;
     revisionRef.current = null;
     router.refresh();
+  }
+
+  function replaceSharedDraft() {
+    const sharedDraft = sharedConflictRef.current;
+    if (!sharedDraft) return;
+    draftIdRef.current = sharedDraft.id;
+    revisionRef.current = sharedDraft.revision;
+    sharedConflictRef.current = null;
+    setCanReplaceSharedDraft(false);
+    void persistDraft();
   }
 
   return (
@@ -211,20 +318,65 @@ export function EditorialDraftForm({
       data-editorial-draft="true"
       ref={formRef}
       onChange={handleChange}
-      onInput={handleChange}
       onSubmit={handleSubmit}
     >
       <input name="_draftSection" type="hidden" value={section} />
       {children}
       <div className={`editorial-draft-status editorial-draft-status--${state}`} role={state === "error" || state === "conflict" ? "alert" : "status"} aria-live="polite">
-        <span>{message}</span>
+        <span className="editorial-draft-status__message">
+          {state === "conflict" ? <strong>Draft needs attention</strong> : null}
+          {state === "error" ? <strong>Autosave needs attention</strong> : null}
+          <span>{message}</span>
+        </span>
         <span className="editorial-draft-status__actions">
-          {canRebase ? <button className="admin-text-link" type="button" onClick={() => void persistDraft(true)}>Rebase onto current version</button> : null}
-          {initialDraft || draftIdRef.current ? <button className="admin-text-link" type="button" onClick={discardDraft}>Discard interim draft</button> : null}
+          {canRebase ? <button className="admin-form-button admin-form-button--compact" type="button" onClick={() => void persistDraft(true)}>Rebase onto current version</button> : null}
+          {canReplaceSharedDraft ? <button className="admin-form-button admin-form-button--compact" type="button" onClick={replaceSharedDraft}>Use this browser copy</button> : null}
+          {state === "error" ? <button className="admin-form-button admin-form-button--compact" type="button" onClick={() => void persistDraft()}>Retry autosave</button> : null}
+          {initialDraft || draftIdRef.current ? <button className="admin-form-button admin-form-button--compact admin-form-button--low-priority" type="button" onClick={discardDraft}>Discard interim draft</button> : null}
         </span>
       </div>
     </form>
   );
+}
+function readBrowserDraft(storageKey: string) {
+  try {
+    return window.localStorage.getItem(storageKey);
+  } catch {
+    return null;
+  }
+}
+
+function writeBrowserDraft(storageKey: string, snapshot: BrowserDraftSnapshot) {
+  try {
+    window.localStorage.setItem(storageKey, JSON.stringify(snapshot));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function removeBrowserDraft(storageKey: string) {
+  try {
+    window.localStorage.removeItem(storageKey);
+  } catch {
+    // Storage can be disabled by the browser. There is nothing to remove in that case.
+  }
+}
+
+function payloadsMatch(left: EditorialDraftPayload, right: EditorialDraftPayload) {
+  const keys = new Set([...Object.keys(left), ...Object.keys(right)]);
+  for (const key of keys) {
+    const leftValue = left[key] ?? "";
+    const rightValue = right[key] ?? "";
+    if (Array.isArray(leftValue) || Array.isArray(rightValue)) {
+      const leftValues = Array.isArray(leftValue) ? leftValue : [leftValue];
+      const rightValues = Array.isArray(rightValue) ? rightValue : [rightValue];
+      if (leftValues.length !== rightValues.length || leftValues.some((value, index) => value !== rightValues[index])) return false;
+    } else if (leftValue !== rightValue) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function serializeForm(form: HTMLFormElement, entityType: string): EditorialDraftPayload {

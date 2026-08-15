@@ -21,7 +21,6 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
   }
   const params = await searchParams;
   const canManageAssignments = hasCapability(user.roles, "manage_assignments");
-  const canClaimAssignments = hasCapability(user.roles, "self_assign_content") || hasCapability(user.roles, "edit_content");
   const canReviewRevisions = canReviewEditorialRevisions(user.roles);
   const saintScope = getAdminSaintCatalogScope(user.roles);
   const teamWorkflow = canManageAssignments
@@ -62,7 +61,6 @@ export default async function AdminDashboardPage({ searchParams }: Props) {
       ) : null}
 
       <AssignmentWorkspace
-        canClaim={canClaimAssignments}
         canManage={canManageAssignments}
         canViewContent={canViewContent}
         canViewInstagram={canViewInstagram}

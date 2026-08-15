@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { TrackedSaveButton } from "@/components/admin/tracked-save-button";
 import type { SearchableMultiSelectOption } from "@/components/ui/searchable-multi-select";
 import { SearchableRelationshipPicker } from "@/components/ui/searchable-relationship-picker";
+import { SearchableSelect, type SearchableSelectOption } from "@/components/ui/searchable-select";
 import { createAndAttachSaintPlace, updateSaintPlaces } from "../actions";
 
 type PlaceType = "primary" | "birth" | "samadhi" | "sadhana" | "associated" | "other";
@@ -16,16 +17,19 @@ export type SaintPlaceRouteOption = SearchableMultiSelectOption & {
 };
 
 type SaintPlaceRouteEditorProps = {
+  countryOptions: SearchableSelectOption[];
   options: SaintPlaceRouteOption[];
   placeTypes: readonly PlaceType[];
   saintId: string;
   selectedPlaceIds: string[];
+  stateOptions: SearchableSelectOption[];
 };
 
-export function SaintPlaceRouteEditor({ options, placeTypes, saintId, selectedPlaceIds }: SaintPlaceRouteEditorProps) {
+export function SaintPlaceRouteEditor({ countryOptions, options, placeTypes, saintId, selectedPlaceIds, stateOptions }: SaintPlaceRouteEditorProps) {
   const [selectedValues, setSelectedValues] = useState(selectedPlaceIds);
   const [draggedValue, setDraggedValue] = useState<string | null>(null);
   const [createName, setCreateName] = useState<string | null>(null);
+  const [createPlaceScope, setCreatePlaceScope] = useState<"locality" | "state" | "country">("locality");
   const [settingsByValue, setSettingsByValue] = useState(() => getPlaceSettings(options));
   const savedSignature = getSavedSignature(options, selectedPlaceIds);
   const optionsByValue = useMemo(() => new Map(options.map((option) => [option.value, option])), [options]);
@@ -47,7 +51,10 @@ export function SaintPlaceRouteEditor({ options, placeTypes, saintId, selectedPl
           createLabel={(query) => `Create place “${query}”`}
           emptyText="No more places are available."
           label="Add places"
-          onCreateRequest={setCreateName}
+          onCreateRequest={(name) => {
+            setCreatePlaceScope("locality");
+            setCreateName(name);
+          }}
           onSelectionChange={handleSelectionChange}
           options={options}
           placeholder="Search places"
@@ -134,12 +141,34 @@ export function SaintPlaceRouteEditor({ options, placeTypes, saintId, selectedPl
             </label>
             <label>
               Place unit
-              <select name="placeScope" defaultValue="locality">
+              <select
+                name="placeScope"
+                value={createPlaceScope}
+                onChange={(event) => setCreatePlaceScope(event.target.value as "locality" | "state" | "country")}
+              >
                 <option value="locality">Locality</option>
                 <option value="state">State</option>
                 <option value="country">Country</option>
               </select>
             </label>
+            {createPlaceScope === "locality" ? (
+              <SearchableSelect
+                emptyText="No states match this search."
+                label="State"
+                name="parentStateId"
+                options={stateOptions}
+                placeholder="Search states or leave blank"
+              />
+            ) : null}
+            {createPlaceScope === "state" ? (
+              <SearchableSelect
+                emptyText="No countries match this search."
+                label="Country"
+                name="country"
+                options={countryOptions}
+                placeholder="Search countries or leave blank"
+              />
+            ) : null}
           </div>
           <div className="review-actions">
             <button className="admin-form-button admin-form-button--secondary" type="button" onClick={() => setCreateName(null)}>

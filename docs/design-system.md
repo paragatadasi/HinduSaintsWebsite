@@ -243,7 +243,8 @@ Current rollout notes:
   each source workspace owns its operational and preserved raw batch history.
 - The Dashboard sidebar brand owns the `/admin` landing route. Individual
   workflow participants land on one consolidated My Workflow workspace with
-  URL-backed Active, Available, Blocked, and Completed queues. Shared team
+  URL-backed Active, Blocked, and Completed queues. Available work is claimed
+  from the relevant content review page. Shared team
   metrics and the Team workload queue are reserved for roles that manage
   assignments. Neither Dashboard nor My Workflow is repeated as an Operations
   sidebar item.

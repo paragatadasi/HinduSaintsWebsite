@@ -13,6 +13,7 @@ import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { parseImportedDate } from "@/lib/import-dates";
 import { acceptSaintInstagramClaim } from "@/lib/instagram-claims";
 import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page-extraction";
+import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
 import { getReciprocalRelationshipType } from "@/lib/saint-relationships";
 import { replaceSourceReferenceKeys } from "@/lib/markdown";
@@ -20,6 +21,7 @@ import { getSourceMatchKind } from "@/lib/source-display";
 import { expectedVersion, guardedSaintTransaction, guardedSaintUpdate } from "@/lib/admin-conflicts";
 import { saintPublicationCompatibilityData } from "@/lib/admin-workflow";
 import { canManageSaintTeamVisibility } from "@/lib/admin-saint-access";
+import { SHORT_DESCRIPTION_MAX_LENGTH } from "@/lib/content-limits";
 import {
   editorialSnapshotsMatch,
   EditorialRevisionConflictError,
@@ -37,13 +39,12 @@ const relationshipTypeSchema = z.enum([
   "debate_opponent", "contemporary", "associated", "lineage", "related", "untyped"
 ]);
 const relationshipEvidenceStatusSchema = z.enum(["certain", "probable", "traditional", "disputed", "imported", "uncategorized"]);
-const confidenceSchema = z.enum(["low", "medium", "high"]);
 
 const saintBasicsSchema = z.object({
   saintId: z.string().cuid(),
   displayName: z.string().trim().min(1).max(200),
   canonicalName: z.string().trim().min(1).max(200),
-  shortDescription: z.string().trim().max(500).optional(),
+  shortDescription: z.string().trim().max(SHORT_DESCRIPTION_MAX_LENGTH).optional(),
   eraLabel: z.string().trim().max(120).optional(),
   birthDateRaw: z.string().trim().max(120).optional(),
   samadhiDateRaw: z.string().trim().max(120).optional(),
@@ -173,6 +174,7 @@ const saintPlaceCreationSchema = z.object({
   name: z.string().trim().min(1).max(200),
   placeScope: z.enum(["locality", "state", "country"]),
   placeType: placeTypeSchema,
+  parentStateId: z.string().cuid().optional(),
   region: z.string().trim().max(120).optional(),
   country: z.string().trim().max(120).optional(),
   routeLabel: z.string().trim().max(120).optional()
@@ -184,7 +186,6 @@ const saintRelationshipFieldsSchema = z.object({
   relationshipType: relationshipTypeSchema,
   status: contentStatusSchema,
   evidenceStatus: relationshipEvidenceStatusSchema,
-  confidence: confidenceSchema,
   publicVisible: z.boolean(),
   publicNote: z.string().trim().max(500).optional()
 });
@@ -411,7 +412,6 @@ export async function createSaintRelationship(formData: FormData) {
     relationshipType: formData.get("relationshipType"),
     status: formData.get("status") ?? "needs_review",
     evidenceStatus: formData.get("evidenceStatus") ?? "uncategorized",
-    confidence: formData.get("confidence") ?? "medium",
     publicVisible: formData.has("publicVisible"),
     publicNote: emptyToUndefined(formData.get("publicNote"))
   });
@@ -443,7 +443,6 @@ export async function createSaintRelationship(formData: FormData) {
       relationshipType: parsed.relationshipType,
       status: parsed.status,
       evidenceStatus: parsed.evidenceStatus,
-      confidence: parsed.confidence,
       publicVisible: parsed.publicVisible,
       publicNote: parsed.publicNote
     }
@@ -460,7 +459,6 @@ export async function updateSaintRelationship(formData: FormData) {
     relationshipType: formData.get("relationshipType"),
     status: formData.get("status"),
     evidenceStatus: formData.get("evidenceStatus"),
-    confidence: formData.get("confidence"),
     publicVisible: formData.has("publicVisible"),
     publicNote: emptyToUndefined(formData.get("publicNote"))
   });
@@ -485,7 +483,6 @@ export async function updateSaintRelationship(formData: FormData) {
         : getReciprocalRelationshipType(parsed.relationshipType),
       status: parsed.status,
       evidenceStatus: parsed.evidenceStatus,
-      confidence: parsed.confidence,
       publicVisible: parsed.publicVisible,
       publicNote: parsed.publicNote
     }
@@ -650,11 +647,12 @@ export async function createAndAttachSaintPlace(formData: FormData) {
     name: formData.get("name"),
     placeScope: formData.get("placeScope"),
     placeType: formData.get("placeType"),
+    parentStateId: emptyToUndefined(formData.get("parentStateId")),
     region: emptyToUndefined(formData.get("region")),
     country: emptyToUndefined(formData.get("country")),
     routeLabel: emptyToUndefined(formData.get("routeLabel"))
   });
-  const [saint, routeOrder] = await Promise.all([
+  const [saint, routeOrder, selectedParentState, selectedCountry] = await Promise.all([
     db.saint.findUnique({
       where: { id: parsed.saintId },
       select: { slug: true }
@@ -662,12 +660,39 @@ export async function createAndAttachSaintPlace(formData: FormData) {
     db.saintPlace.aggregate({
       where: { saintId: parsed.saintId },
       _max: { routeOrder: true }
-    })
+    }),
+    parsed.placeScope === "locality" && parsed.parentStateId
+      ? db.place.findUnique({
+          where: { id: parsed.parentStateId },
+          select: { id: true, placeScope: true, slug: true }
+        })
+      : Promise.resolve(null),
+    parsed.placeScope === "state" && parsed.country
+      ? db.place.findFirst({
+          where: { country: { equals: parsed.country, mode: "insensitive" } },
+          select: { country: true }
+        })
+      : Promise.resolve(null)
   ]);
 
   if (!saint) redirect("/admin/saints");
+  if (parsed.placeScope === "locality" && parsed.parentStateId && (
+    !selectedParentState
+    || (selectedParentState.placeScope !== "state" && getKnownPlaceScope(selectedParentState.slug) !== "state")
+  )) {
+    throw new Error("The selected parent state is no longer available.");
+  }
+  if (parsed.placeScope === "state" && parsed.country && !selectedCountry?.country) {
+    throw new Error("The selected country is no longer available.");
+  }
 
   const placeSlug = await getUniquePlaceSlug(parsed.name);
+  const parentStateId = parsed.placeScope === "locality" ? selectedParentState?.id : undefined;
+  const country = parsed.placeScope === "country"
+    ? parsed.name
+    : parsed.placeScope === "state"
+      ? selectedCountry?.country
+      : undefined;
   await db.$transaction(async (tx) => {
     const place = await tx.place.create({
       data: {
@@ -676,11 +701,24 @@ export async function createAndAttachSaintPlace(formData: FormData) {
         alternateNames: [],
         placeKind: parsed.placeScope,
         placeScope: parsed.placeScope,
+        parentStateId,
         region: parsed.region ?? null,
-        country: parsed.placeScope === "country" ? parsed.name : parsed.country ?? null
+        country: country ?? null
       },
       select: { id: true }
     });
+
+    if (parentStateId) {
+      await tx.placeRelationship.create({
+        data: {
+          fromPlaceId: place.id,
+          toPlaceId: parentStateId,
+          relationshipType: "contained_in",
+          confidence: "high",
+          notes: "Mirrored from legacy parentStateId."
+        }
+      });
+    }
 
     await tx.saintPlace.create({
       data: {

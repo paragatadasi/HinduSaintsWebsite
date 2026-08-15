@@ -7,8 +7,7 @@ const taskStatusOptions: Array<{ label: string; value: AssignmentState }> = [
   { label: "Assigned", value: "assigned" },
   { label: "In progress", value: "in_progress" },
   { label: "Blocked", value: "blocked" },
-  { label: "Completed", value: "completed" },
-  { label: "Cancelled", value: "cancelled" }
+  { label: "Completed", value: "completed" }
 ];
 
 export function AssignmentStatusFields({

@@ -1,4 +1,4 @@
-import type { UserRole } from "@/lib/generated/prisma/client";
+import type { AssignmentState, UserRole } from "@/lib/generated/prisma/client";
 
 export type Capability =
   | "view_content"
@@ -89,6 +89,18 @@ export function canReviewEditorialRevisions(roles: readonly UserRole[]) {
 
 export function canManageUsers(roles: readonly UserRole[]) {
   return hasCapability(roles, "manage_users");
+}
+
+export function hasSingleActionableAssignmentLimit(roles: readonly UserRole[]) {
+  return roles.includes("fact_checker") && !hasCapability(roles, "manage_assignments");
+}
+
+export function canSelfAssignAnotherTask(
+  roles: readonly UserRole[],
+  currentStates: readonly AssignmentState[]
+) {
+  return !hasSingleActionableAssignmentLimit(roles)
+    || !currentStates.some((state) => state === "assigned" || state === "in_progress");
 }
 
 export function canUpdateAssignedWorkflow(

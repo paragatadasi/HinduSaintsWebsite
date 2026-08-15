@@ -214,7 +214,6 @@ enum AssignmentState {
   in_progress
   blocked
   completed
-  cancelled
 }
 
 enum AssignmentPriority {

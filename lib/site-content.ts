@@ -273,7 +273,7 @@ export const footerContent: FooterContent = {
   },
   privacyPolicy: {
     label: "Privacy Policy",
-    href: "https://bhaktimarga.org/privacy-policy"
+    href: "https://bhaktimarga.org/privacy"
   }
 };
 
