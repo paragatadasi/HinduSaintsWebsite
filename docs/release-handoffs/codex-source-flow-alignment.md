@@ -2,7 +2,7 @@
 
 - Status: queued
 - Branch: `codex/source-flow-alignment`
-- Commit: `5b591147d990cc961e187b91bbb01d8f906a4652`
+- Commit: `d6067abd29f028f18e2b67d043c40df7acf37344`
 - Owner/agent: `Codex source-flow-alignment task`
 - Bundle priority: queue for next major/bundled deployment
 
@@ -10,10 +10,13 @@
 
 - Aligns the Sources & Further Reading block with the biography table-of-contents column by reusing the shared biography layout width.
 - Preserves the normal responsive page gutter when the biography layout collapses on mobile.
+- Adds a confirmed Leave task flow for current assignees in My Workflow and content review pages.
+- Returns released work to the Available queue while preserving task notes and content edits and clearing stale blocked/completion metadata.
 
 ## Verification
 
 - `npm run dev:check`: passed
+- `npm test`: passed (156 tests)
 
 ## Deploy Notes
 
@@ -24,9 +27,9 @@
 
 ## Risk And Conflicts
 
-- Shared areas touched: `components/saints/saint-detail-page.tsx`, `styles/globals.css`
-- Expected conflicts: potential overlap with concurrent saint-detail or global-style work
-- Rollback notes: revert `5b59114` and any dependent release commits
+- Shared areas touched: `components/saints/saint-detail-page.tsx`, admin assignment actions/components, `styles/globals.css`, `styles/tokens.css`
+- Expected conflicts: potential overlap with concurrent saint-detail, admin assignment, or global-style work
+- Rollback notes: revert `d6067ab` and `5b59114`, plus any dependent release commits
 
 ## Release Captain Notes
 
