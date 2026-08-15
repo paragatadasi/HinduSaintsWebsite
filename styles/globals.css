@@ -9795,6 +9795,41 @@ select:not([multiple]) {
   box-shadow: var(--shadow-soft);
 }
 
+.form-stack .contact-privacy-acknowledgement {
+  align-items: start;
+  cursor: pointer;
+  display: grid;
+  font-size: var(--font-size-review-field);
+  font-weight: 400;
+  gap: var(--space-2);
+  grid-template-columns: auto minmax(0, 1fr);
+  line-height: var(--line-height-review-status);
+}
+
+.form-stack .contact-privacy-acknowledgement input[type="checkbox"] {
+  accent-color: var(--color-accent);
+  height: var(--size-icon-sm);
+  margin: var(--space-1) 0 0;
+  min-height: 0;
+  padding: 0;
+  width: var(--size-icon-sm);
+}
+
+.contact-privacy-acknowledgement a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+.contact-privacy-acknowledgement a:hover {
+  color: var(--color-accent-strong);
+}
+
+.contact-privacy-acknowledgement a:focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-focus);
+  outline-offset: var(--size-focus-offset);
+}
+
 .contact-related-page__label {
   color: var(--color-text);
   font-size: 0.82rem;
