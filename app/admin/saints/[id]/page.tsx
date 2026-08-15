@@ -25,6 +25,7 @@ import { getInstagramLinkProps } from "@/lib/external-links";
 import { formatHistoricalYear, parseImportedDate } from "@/lib/import-dates";
 import { getInstagramImageUrls } from "@/lib/instagram";
 import { compactMetadata, parseInstagramFirstPageMetadata } from "@/lib/instagram-metadata";
+import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
 import { formatRelationshipType, getReciprocalRelationshipType, relationshipTypeOptions } from "@/lib/saint-relationships";
 import {
@@ -96,13 +97,19 @@ export async function AdminSaintEditorPage({
   const biographyDraft = editorialDrafts.get("biography");
   const aliasesDraft = editorialDrafts.get("aliases");
 
-  const [externalRecord, allTraditions, allPlaces, allSaints, sourceLinks, duplicateCandidates, narrativeRevisionRow] = await Promise.all([
+  const [externalRecord, allTraditions, allPlaces, countryRecords, allSaints, sourceLinks, duplicateCandidates, narrativeRevisionRow] = await Promise.all([
     db.externalRecord.findFirst({
       where: { sourceType: "airtable", entityType: "Saint", entityId: saint.id },
       select: { externalId: true, lastSeenAt: true }
     }),
     db.tradition.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, alternateNames: true, status: true } }),
-    db.place.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, alternateNames: true, region: true, country: true } }),
+    db.place.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, slug: true, alternateNames: true, placeScope: true, region: true, country: true } }),
+    db.place.findMany({
+      where: { country: { not: null } },
+      distinct: ["country"],
+      orderBy: { country: "asc" },
+      select: { country: true }
+    }),
     db.saint.findMany({
       where: { id: { not: saint.id }, status: { not: "archived" }, ...saintCatalogWhere(saintScope) },
       orderBy: { displayName: "asc" },
@@ -172,6 +179,18 @@ export async function AdminSaintEditorPage({
       routeOrder: link?.routeOrder
     };
   });
+  const stateOptions = allPlaces
+    .filter((place) => place.placeScope === "state" || getKnownPlaceScope(place.slug) === "state")
+    .map((place) => ({
+      value: place.id,
+      label: place.name,
+      description: place.country ?? undefined,
+      keywords: place.alternateNames
+    }));
+  const countryOptions = countryRecords
+    .map((record) => record.country)
+    .filter((country): country is string => Boolean(country))
+    .map((country) => ({ value: country, label: country }));
 
   return (
     <div className="admin-stack">
@@ -450,10 +469,12 @@ export async function AdminSaintEditorPage({
             title="Places and Route"
           >
             {canEditStructured ? <SaintPlaceRouteEditor
+              countryOptions={countryOptions}
               options={placeOptions}
               placeTypes={placeTypes}
               saintId={saint.id}
               selectedPlaceIds={selectedPlaceIds}
+              stateOptions={stateOptions}
             /> : <ReviewFactGrid facts={[
               { label: "Places", value: saint.places.map((item) => item.place.name).join(", ") },
               { label: "Route stops", value: saint.places.filter((item) => item.routeOrder !== null).length.toString() }
@@ -481,62 +502,64 @@ export async function AdminSaintEditorPage({
               reviewType: getReciprocalRelationshipType(relationship.relationshipType)
             }))
           ].map((relationship) => (
-            <div className="review-row" key={relationship.id}>
-              <div>
-                <div className="review-meta">
-                  <StatusBadge label={formatRelationshipType(relationship.reviewType)} />
-                  <StatusBadge label={formatStatus(relationship.status)} />
-                  <StatusBadge label={relationship.publicVisible ? "public" : "private"} />
-                </div>
-                <h3><Link href={`/admin/saints/${relationship.relatedSaint.slug}`}>{relationship.relatedSaint.displayName}</Link></h3>
-                <p>{relationship.relatedSaint.displayName} is shown as this saint&apos;s {formatRelationshipType(relationship.reviewType).toLowerCase()}.</p>
-              </div>
-              {canEditStructured ? <form action={updateSaintRelationship} className="form-stack">
-                <input name="relationshipId" type="hidden" value={relationship.id} />
-                <input name="saintId" type="hidden" value={saint.id} />
-                <div className="field-grid">
+            <div className="review-row review-row--relationship" key={relationship.id}>
+              <ReviewEditToggle
+                editable={canEditStructured}
+                editLabel="Edit relationship"
+                summary={(
+                  <div className="relationship-review-summary">
+                    <div className="review-meta">
+                      <StatusBadge label={formatRelationshipType(relationship.reviewType)} />
+                      <StatusBadge label={formatStatus(relationship.status)} />
+                      <StatusBadge label={formatStatus(relationship.evidenceStatus)} />
+                      <StatusBadge label={relationship.publicVisible ? "public" : "private"} />
+                    </div>
+                    <h3><Link href={`/admin/saints/${relationship.relatedSaint.slug}`}>{relationship.relatedSaint.displayName}</Link></h3>
+                    {relationship.publicNote ? <p>{relationship.publicNote}</p> : null}
+                  </div>
+                )}
+              >
+                <form action={updateSaintRelationship} className="form-stack">
+                  <input name="relationshipId" type="hidden" value={relationship.id} />
+                  <input name="saintId" type="hidden" value={saint.id} />
+                  <div className="field-grid">
+                    <label>
+                      Relationship
+                      <select name="relationshipType" defaultValue={relationship.reviewType}>
+                        {relationshipTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                      </select>
+                    </label>
+                    <label>
+                      Status
+                      <select name="status" defaultValue={relationship.status}>
+                        {contentStatuses.map((status) => <option key={status} value={status}>{formatStatus(status)}</option>)}
+                      </select>
+                    </label>
+                    <label>
+                      Evidence
+                      <select name="evidenceStatus" defaultValue={relationship.evidenceStatus}>
+                        {relationshipEvidenceStatuses.map((status) => <option key={status} value={status}>{formatStatus(status)}</option>)}
+                      </select>
+                    </label>
+                  </div>
                   <label>
-                    Relationship
-                    <select name="relationshipType" defaultValue={relationship.reviewType}>
-                      {relationshipTypeOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-                    </select>
+                    Public note
+                    <input name="publicNote" defaultValue={relationship.publicNote ?? ""} maxLength={500} />
                   </label>
-                  <label>
-                    Status
-                    <select name="status" defaultValue={relationship.status}>
-                      {contentStatuses.map((status) => <option key={status} value={status}>{formatStatus(status)}</option>)}
-                    </select>
+                  <label className="admin-option-toggle admin-option-toggle--inline">
+                    <input name="publicVisible" type="checkbox" defaultChecked={relationship.publicVisible} />
+                    <span>Visible on public saint profiles</span>
                   </label>
-                  <label>
-                    Evidence
-                    <select name="evidenceStatus" defaultValue={relationship.evidenceStatus}>
-                      {relationshipEvidenceStatuses.map((status) => <option key={status} value={status}>{formatStatus(status)}</option>)}
-                    </select>
-                  </label>
-                  <label>
-                    Confidence
-                    <select name="confidence" defaultValue={relationship.confidence}>
-                      {confidenceLevels.map((confidence) => <option key={confidence} value={confidence}>{confidence}</option>)}
-                    </select>
-                  </label>
-                </div>
-                <label>
-                  Public note
-                  <input name="publicNote" defaultValue={relationship.publicNote ?? ""} maxLength={500} />
-                </label>
-                <label className="admin-option-toggle">
-                  <input name="publicVisible" type="checkbox" defaultChecked={relationship.publicVisible} />
-                  <span>Visible on public saint profiles</span>
-                </label>
-                <div className="review-actions">
-                  <button className="admin-form-button" type="submit">Save relationship</button>
-                  <button
-                    className="admin-form-button admin-form-button--warning"
-                    formAction={deleteSaintRelationship}
-                    type="submit"
-                  >Delete</button>
-                </div>
-              </form> : null}
+                  <div className="review-actions">
+                    <button className="admin-form-button" type="submit">Save relationship</button>
+                    <button
+                      className="admin-form-button admin-form-button--warning"
+                      formAction={deleteSaintRelationship}
+                      type="submit"
+                    >Delete</button>
+                  </div>
+                </form>
+              </ReviewEditToggle>
             </div>
           ))}
         </div>
@@ -579,18 +602,12 @@ export async function AdminSaintEditorPage({
                   {relationshipEvidenceStatuses.map((status) => <option key={status} value={status}>{formatStatus(status)}</option>)}
                 </select>
               </label>
-              <label>
-                Confidence
-                <select name="confidence" defaultValue="medium">
-                  {confidenceLevels.map((confidence) => <option key={confidence} value={confidence}>{confidence}</option>)}
-                </select>
-              </label>
             </div>
             <label>
               Public note
               <input name="publicNote" maxLength={500} />
             </label>
-            <label className="admin-option-toggle">
+            <label className="admin-option-toggle admin-option-toggle--inline">
               <input defaultChecked name="publicVisible" type="checkbox" />
               <span>Visible on public saint profiles</span>
             </label>
@@ -1278,7 +1295,6 @@ function FormattedCaption({ caption }: { caption?: string | null }) {
 
 const contentStatuses = ["draft", "needs_review", "published", "archived"] as const;
 const relationshipEvidenceStatuses = ["certain", "probable", "traditional", "disputed", "imported", "uncategorized"] as const;
-const confidenceLevels = ["low", "medium", "high"] as const;
 const placeTypes = ["primary", "birth", "samadhi", "sadhana", "associated", "other"] as const;
 
 function formatPlaceLocation(place: { region: string | null; country: string | null }) {
