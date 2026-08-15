@@ -1278,8 +1278,14 @@ html[data-route-entering="true"] body > main {
   min-height: 100%;
 }
 
-.saint-encounter-card--catalog .button {
+.saint-encounter-card--catalog .button,
+.saint-encounter-card--rail .button {
   white-space: nowrap;
+}
+
+.saint-encounter-card--rail {
+  justify-content: center;
+  min-height: 100%;
 }
 
 .saint-encounter-card--profile {
@@ -3616,7 +3622,6 @@ html[data-route-entering="true"] body > main {
 .prose-source-reference--unlinked { text-decoration-style: dotted; }
 .saint-profile-related { background: var(--color-section-surface); }
 .saint-profile-related .section-heading h2 { letter-spacing: 0.12em; text-transform: uppercase; }
-.saint-profile-encounter { display: flex; justify-content: center; }
 .saint-profile-sources { background: var(--color-saint-profile-sources); }
 
 .saint-detail-hero__inner {
@@ -3798,7 +3803,7 @@ html[data-route-entering="true"] body > main {
   color: var(--color-text);
   display: grid;
   gap: var(--space-6);
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr);
   padding: var(--space-5) 0;
   text-decoration: none;
 }
@@ -3810,7 +3815,11 @@ html[data-route-entering="true"] body > main {
 .source-list__external { color: var(--color-accent); }
 
 .source-list__book { align-self: start; margin-top: var(--space-1); }
-.source-list__external { flex: 0 0 auto; }
+.source-list__external {
+  display: inline;
+  margin-inline-start: var(--space-2);
+  vertical-align: -0.16em;
+}
 .source-list__content { min-width: 0; }
 
 .context-list p,
@@ -9659,7 +9668,7 @@ select:not([multiple]) {
   .source-list__link {
     align-items: start;
     gap: var(--space-4);
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr);
   }
   .source-list__book { width: var(--space-6); }
   .source-list__external { width: var(--space-5); }

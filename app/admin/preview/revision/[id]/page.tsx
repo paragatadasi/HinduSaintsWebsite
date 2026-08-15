@@ -6,6 +6,8 @@ import { SaintDetailPageContent } from "@/components/saints/saint-detail-page";
 import { TraditionPageLayouts } from "@/components/traditions/tradition-page-layouts";
 import { assertSaintsVisibleToUser, requireCapability } from "@/lib/admin-access";
 import { getEditorialRevisionPreview } from "@/lib/editorial-revision-preview";
+import { getPublicHomePageConfig, resolveHomepageSaints } from "@/lib/home-page-config";
+import { getHomepageFallbackSaintSummaries } from "@/lib/public-saints";
 import { getPlaceDetailTemplateContent, getSaintDetailTemplateContent, getTraditionDetailTemplateContent } from "@/lib/site-content";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
@@ -17,6 +19,10 @@ export default async function EditorialRevisionPreviewPage({ params }: { params:
   const preview = await getEditorialRevisionPreview(id);
   if (!preview) notFound();
   if (preview.entityType === "saint") await assertSaintsVisibleToUser(user, [preview.entityId]);
+  const featuredSaints = preview.entityType === "saint" && preview.relatedSaints.length === 0
+    ? await Promise.all([getPublicHomePageConfig(), getHomepageFallbackSaintSummaries()])
+      .then(([homeConfig, fallbackSaints]) => resolveHomepageSaints(homeConfig.featuredSaints, fallbackSaints))
+    : [];
 
   return (
     <EditorialRevisionPreviewFrame
@@ -26,7 +32,7 @@ export default async function EditorialRevisionPreviewPage({ params }: { params:
       title={preview.title}
     >
       {preview.entityType === "saint" ? (
-        <SaintDetailPageContent relatedSaints={preview.relatedSaints} rootElement="div" saint={preview.content} template={getSaintDetailTemplateContent()} />
+        <SaintDetailPageContent featuredSaints={featuredSaints} relatedSaints={preview.relatedSaints} rootElement="div" saint={preview.content} template={getSaintDetailTemplateContent()} />
       ) : null}
       {preview.entityType === "tradition" ? (
         <TraditionPageLayouts rootElement="div" tradition={preview.content} template={getTraditionDetailTemplateContent()} />

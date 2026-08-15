@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { PUBLIC_CACHE_TAGS, PUBLIC_DATA_CACHE_SECONDS } from "@/lib/public-cache";
-import type { PublicImage } from "@/lib/public-contracts";
+import type { PublicImage, PublicSaintSummary } from "@/lib/public-contracts";
 import { getPublishedSaintSummariesByIds } from "@/lib/public-saints";
 import { getPublicTraditionSummariesByIds } from "@/lib/public-traditions";
 import { getPublicImageVariants } from "@/lib/responsive-images";
@@ -15,6 +15,13 @@ import {
 } from "@/lib/site-content";
 
 export const HOME_PAGE_CONFIG_ID = "home";
+
+export function resolveHomepageSaints(
+  configuredSaints: PublicSaintSummary[],
+  fallbackSaints: PublicSaintSummary[]
+) {
+  return configuredSaints.length > 0 ? configuredSaints : fallbackSaints;
+}
 
 export async function getPublicHomePageConfig() {
   return getPublicHomePageConfigCached();

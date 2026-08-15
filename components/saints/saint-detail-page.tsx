@@ -2,30 +2,37 @@ import { ArrowRight, BookOpen, ExternalLink } from "lucide-react";
 import type { ReactNode } from "react";
 import { SaintCard } from "@/components/saints/saint-card";
 import { SaintBiography } from "@/components/saints/saint-biography";
-import { SaintEncounter } from "@/components/saints/saint-encounter";
+import { SaintEncounterCard } from "@/components/saints/saint-encounter-card";
 import { SaintHeroGallery } from "@/components/saints/saint-hero-gallery";
 import { SaintProfileActions } from "@/components/saints/saint-profile-actions";
 import { SaintProfileSummary } from "@/components/saints/saint-profile-summary";
 import { Button } from "@/components/ui/button";
 import { ScrollRail } from "@/components/ui/scroll-rail";
 import { TaxonomyLinkList } from "@/components/ui/taxonomy-link-list";
-import type { PublicImage, PublicRelatedSaintSummary, PublicSaintDetail, PublicSourceSummary } from "@/lib/public-contracts";
+import type { PublicImage, PublicRelatedSaintSummary, PublicSaintDetail, PublicSaintSummary, PublicSourceSummary } from "@/lib/public-contracts";
 import { getSourceDisplayTitle } from "@/lib/source-display";
 import type { SaintDetailTemplateContent } from "@/lib/site-content";
 
 export function SaintDetailPageContent({
+  featuredSaints,
   relatedSaints,
   rootElement: Root = "main",
   saint,
   template
 }: {
+  featuredSaints: PublicSaintSummary[];
   relatedSaints: PublicRelatedSaintSummary[];
   rootElement?: "main" | "div";
   saint: PublicSaintDetail;
   template: SaintDetailTemplateContent;
 }) {
   const hasBiography = Boolean(saint.biography?.bodyMarkdown.trim() || saint.biography?.summary?.trim());
-  const hasSources = hasBiography && saint.sources.length > 0;
+  const hasSources = saint.sources.length > 0;
+  const hasRelatedSaints = relatedSaints.length > 0;
+  const recommendationSaints = hasRelatedSaints
+    ? relatedSaints
+    : featuredSaints.filter((featuredSaint) => featuredSaint.slug !== saint.slug);
+  const showEncounterCard = !hasRelatedSaints || relatedSaints.length < 3;
   const keyFacts = saint.facts.filter(({ label }) => !["primary place", "places", "tradition", "traditions"].includes(label.toLowerCase()));
   const latestPost = [...saint.instagramItems].sort((left, right) =>
     (right.postedAt ? Date.parse(right.postedAt) : 0) - (left.postedAt ? Date.parse(left.postedAt) : 0)
@@ -62,35 +69,35 @@ export function SaintDetailPageContent({
         <SaintBiography biography={saint.biography} eyebrow={template.biographyEyebrow} sources={saint.sources} />
       ) : null}
 
-      {relatedSaints.length > 0 ? (
-        <section className={`saint-profile-related section${hasSources ? "" : " section--last"}`}>
-          <div className="page-shell">
-            <div className="section-heading">
-              <h2>Related Saints</h2>
-              <Button href="/saints" variant="text" icon={<ArrowRight size={16} />} iconPosition="end">
-                View all saints
-              </Button>
-            </div>
-            <ScrollRail ariaLabel="related saints" controls="always">
-              {relatedSaints.map((related) => (
-                <SaintCard imageTag={related.relationshipLabel} key={related.slug} prefetch={false} saint={related} variant="portrait" />
-              ))}
-            </ScrollRail>
-          </div>
-        </section>
-      ) : null}
-
-      {relatedSaints.length === 0 ? (
-        <section className={`page-shell section saint-profile-encounter${hasSources ? "" : " section--last"}`}>
-          <SaintEncounter />
-        </section>
-      ) : null}
-
       {hasSources ? (
-        <section className="section section--last saint-profile-sources">
+        <section className="section saint-profile-sources">
           <div className="page-shell"><SourceList sources={saint.sources} /></div>
         </section>
       ) : null}
+
+      <section className="saint-profile-related section section--last">
+        <div className="page-shell">
+          <div className="section-heading">
+            <h2>{hasRelatedSaints ? "Related Saints" : "Featured Saints"}</h2>
+            <Button href="/saints" variant="text" icon={<ArrowRight size={16} />} iconPosition="end">
+              View all saints
+            </Button>
+          </div>
+          <ScrollRail ariaLabel={hasRelatedSaints ? "related saints" : "featured saints"} controls="always">
+            {!hasRelatedSaints ? <SaintEncounterCard variant="rail" /> : null}
+            {recommendationSaints.map((recommendedSaint) => (
+              <SaintCard
+                imageTag={getRelationshipLabel(recommendedSaint)}
+                key={recommendedSaint.slug}
+                prefetch={false}
+                saint={recommendedSaint}
+                variant="portrait"
+              />
+            ))}
+            {hasRelatedSaints && showEncounterCard ? <SaintEncounterCard variant="rail" /> : null}
+          </ScrollRail>
+        </div>
+      </section>
     </Root>
   );
 }
@@ -105,13 +112,18 @@ function SourceList({ sources }: { sources: PublicSourceSummary[] }) {
 
 function SourceItem({ source }: { source: PublicSourceSummary }) {
   const title = getSourceDisplayTitle(source);
-  const content = <><BookOpen className="source-list__book" size={30} strokeWidth={1.6} aria-hidden="true" /><div className="source-list__content"><h3>{title}</h3>{source.note ? <p>{source.note}</p> : null}<SourceMeta source={source} /></div>{source.url ? <ExternalLink className="source-list__external" size={24} strokeWidth={1.8} aria-hidden="true" /> : null}</>;
+  const content = <><BookOpen className="source-list__book" size={30} strokeWidth={1.6} aria-hidden="true" /><div className="source-list__content"><h3>{title}{source.url ? <ExternalLink className="source-list__external" size={24} strokeWidth={1.8} aria-hidden="true" /> : null}</h3>{source.note ? <p>{source.note}</p> : null}<SourceMeta source={source} /></div></>;
   return <li id={source.id ? `source-${source.id}` : undefined}>{source.url ? <a className="source-list__link" href={source.url} rel="noreferrer" target="_blank" aria-label={`${title} (opens in a new tab)`}>{content}</a> : <div className="source-list__link">{content}</div>}</li>;
 }
 
 function SourceMeta({ source }: { source: PublicSourceSummary }) {
   const meta = [source.author, source.publisher, source.publicationYear].filter(Boolean).join(" · ");
   return meta ? <p className="source-meta">{meta}</p> : null;
+}
+
+function getRelationshipLabel(saint: PublicSaintSummary) {
+  if (!("relationshipLabel" in saint)) return undefined;
+  return typeof saint.relationshipLabel === "string" ? saint.relationshipLabel : undefined;
 }
 
 function uniqueImages(images: Array<PublicImage | undefined>) {
