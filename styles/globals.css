@@ -5077,6 +5077,26 @@ fieldset.admin-field {
   font-weight: 600;
 }
 
+.form-stack .admin-option-toggle--inline {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  display: inline-flex;
+  gap: var(--space-2);
+  justify-self: start;
+  min-height: 0;
+  padding: 0;
+}
+
+.form-stack .admin-option-toggle--inline input[type="checkbox"] {
+  flex: 0 0 auto;
+  height: 1.1rem;
+  min-height: 0;
+  padding: 0;
+  width: 1.1rem;
+}
+
 .admin-form-footer {
   align-items: center;
   display: flex;
@@ -6850,6 +6870,23 @@ fieldset.admin-field {
   display: grid;
   gap: var(--review-row-gap, var(--space-5));
   grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.review-row--relationship {
+  --review-panel-gap: var(--space-3);
+  --review-panel-padding: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.relationship-review-summary {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.relationship-review-summary p {
+  color: var(--color-muted);
+  margin: 0;
 }
 
 .review-row--media-summary {
