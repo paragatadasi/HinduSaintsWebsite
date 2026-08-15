@@ -30,26 +30,26 @@ export async function GET(request: Request) {
   const [saints, exactTraditions, traditions, exactPlaces, places, exactPosts, posts] = await Promise.all([
     searchSaintCatalog({ query, scope: "full", limit: RESULTS_PER_TYPE }),
     db.tradition.findMany({
-      where: { name: { equals: query, mode: "insensitive" } },
+      where: { name: { equals: query, mode: "insensitive" }, workflowStatus: { not: "polished" } },
       take: RESULTS_PER_TYPE,
-      select: { id: true, name: true, status: true }
+      select: { id: true, name: true, workflowStatus: true }
     }),
     db.tradition.findMany({
-      where: { name: { contains: query, mode: "insensitive" } },
+      where: { name: { contains: query, mode: "insensitive" }, workflowStatus: { not: "polished" } },
       orderBy: { name: "asc" },
       take: RESULTS_PER_TYPE,
-      select: { id: true, name: true, status: true }
+      select: { id: true, name: true, workflowStatus: true }
     }),
     db.place.findMany({
-      where: { name: { equals: query, mode: "insensitive" } },
+      where: { name: { equals: query, mode: "insensitive" }, workflowStatus: { not: "polished" } },
       take: RESULTS_PER_TYPE,
-      select: { id: true, name: true }
+      select: { id: true, name: true, workflowStatus: true }
     }),
     db.place.findMany({
-      where: { name: { contains: query, mode: "insensitive" } },
+      where: { name: { contains: query, mode: "insensitive" }, workflowStatus: { not: "polished" } },
       orderBy: { name: "asc" },
       take: RESULTS_PER_TYPE,
-      select: { id: true, name: true }
+      select: { id: true, name: true, workflowStatus: true }
     }),
     db.instagramItem.findMany({
       where: {
@@ -74,9 +74,11 @@ export async function GET(request: Request) {
     })
   ]);
 
-  const saintOptions = saints.map((row) => ({ value: `saint:${row.id}`, label: row.displayName, description: `Saint · ${saintSearchDescription(row)}` }));
-  const traditionOptions = [...exactTraditions, ...traditions].map((row) => ({ value: `tradition:${row.id}`, label: row.name, description: `Tradition · ${row.status}` }));
-  const placeOptions = [...exactPlaces, ...places].map((row) => ({ value: `place:${row.id}`, label: row.name, description: "Place" }));
+  const saintOptions = saints
+    .filter((row) => row.workflowStatus !== "polished")
+    .map((row) => ({ value: `saint:${row.id}`, label: row.displayName, description: `Saint · ${saintSearchDescription(row)}` }));
+  const traditionOptions = [...exactTraditions, ...traditions].map((row) => ({ value: `tradition:${row.id}`, label: row.name, description: `Tradition · ${workflowLabel(row.workflowStatus)}` }));
+  const placeOptions = [...exactPlaces, ...places].map((row) => ({ value: `place:${row.id}`, label: row.name, description: `Place · ${workflowLabel(row.workflowStatus)}` }));
   const postOptions = [...exactPosts, ...posts].map((row) => ({
     value: `instagram_item:${row.id}`,
     label: row.extractedSaintName || row.instagramShortcode || "Instagram post",
@@ -104,4 +106,8 @@ function matchRank(label: string, term: string) {
   if (normalizedLabel === term) return 0;
   if (normalizedLabel.startsWith(term)) return 1;
   return 2;
+}
+
+function workflowLabel(value: string) {
+  return value.replaceAll("_", " ");
 }

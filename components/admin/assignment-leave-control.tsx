@@ -45,7 +45,7 @@ export function AssignmentLeaveControl({
               <div className="eyebrow">Assignment</div>
               <h2 id={titleId}>Leave this task?</h2>
               <p id={descriptionId}>
-                {contentLabel} will become available from its content review page so another contributor can claim it. Its task status, blocking reason, notes, and content edits will stay intact.
+                {contentLabel} will become available from its content review page so another contributor can claim it. Its task status, blocking reason, and content edits will stay intact.
               </p>
             </div>
             <button
