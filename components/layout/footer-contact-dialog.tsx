@@ -5,10 +5,11 @@ import { X } from "lucide-react";
 import { ContactFeedbackForm } from "@/app/contact/contact-feedback-form";
 
 type FooterContactDialogProps = {
+  privacyPolicyHref: string;
   submissionKey: string;
 };
 
-export function FooterContactDialog({ submissionKey }: FooterContactDialogProps) {
+export function FooterContactDialog({ privacyPolicyHref, submissionKey }: FooterContactDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   return (
@@ -39,7 +40,11 @@ export function FooterContactDialog({ submissionKey }: FooterContactDialogProps)
             <X size={20} aria-hidden="true" />
           </button>
         </div>
-        <ContactFeedbackForm context={null} submissionKey={submissionKey} />
+        <ContactFeedbackForm
+          context={null}
+          privacyPolicyHref={privacyPolicyHref}
+          submissionKey={submissionKey}
+        />
       </dialog>
     </>
   );
