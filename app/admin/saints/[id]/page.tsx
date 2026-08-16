@@ -343,7 +343,7 @@ export async function AdminSaintEditorPage({
               <ReviewField label="Display name" value={saint.displayName} />
               <ReviewField label="Canonical name" value={saint.canonicalName} />
               <ReviewField label="Aliases" value={saint.aliases.map((alias) => alias.alias).join(", ")} />
-              <ReviewField label="Short description" value={saint.shortDescription} />
+              <ReviewField label="Short description" value={saint.shortDescription} wide />
             </div>
           )}
         >
@@ -1110,9 +1110,9 @@ function getBiographyEditorImages(
   return Array.from(images.values());
 }
 
-function ReviewField({ label, value }: { label: string; value?: string | null }) {
+function ReviewField({ label, value, wide = false }: { label: string; value?: string | null; wide?: boolean }) {
   return (
-    <div className="review-field">
+    <div className={wide ? "review-field review-field--wide" : "review-field"}>
       <strong>{label}</strong>
       <span>{value || "Not set"}</span>
     </div>
