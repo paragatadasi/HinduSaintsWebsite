@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { auth, isGoogleAuthConfigured, signIn, signOut } from "@/lib/auth";
+import { auth, isGoogleAuthConfigured, signOut } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
 import { getAdminUser } from "@/lib/admin-access";
 import { canAccessSaintCatalog } from "@/lib/admin-saint-access";
 import { AdminFormGuard } from "@/components/admin/admin-form-guard";
 import { AdminPrimaryNavigation } from "@/components/admin/admin-navigation";
+import { AdminSignIn } from "@/components/admin/admin-sign-in";
 import type { AdminNavigationGroup } from "@/lib/admin-navigation";
 
 export const dynamic = "force-dynamic";
@@ -23,39 +23,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   if (!session?.user?.email) {
     return (
-      <main className="admin-shell">
-        <div className="page-shell admin-auth">
-          <div className="eyebrow">Admin CMS</div>
-          <h1>Sign in required</h1>
-          {isGoogleAuthConfigured ? (
-            <>
-              <p className="lede">Use an allowlisted Google account to review and publish CMS content.</p>
-              <form
-                action={async () => {
-                  "use server";
-                  await signIn("google", { redirectTo: "/admin" });
-                }}
-              >
-                <button className="button button--primary" type="submit">
-                  Sign in with Google
-                </button>
-              </form>
-            </>
-          ) : (
-            <>
-              <p className="lede">
-                Google sign-in needs a client ID and client secret before the admin CMS can authenticate users.
-              </p>
-              <p className="empty-note">
-                Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env, then restart the Next.js dev server.
-              </p>
-              <button className="button button--primary" type="button" disabled>
-                Sign in with Google
-              </button>
-            </>
-          )}
-        </div>
-      </main>
+      <AdminSignIn
+        configured={isGoogleAuthConfigured}
+        configurationDescription="Google sign-in needs a client ID and client secret before the admin CMS can authenticate users."
+        description="Use an allowlisted Google account to review and publish CMS content."
+        redirectTo="/admin"
+        workspaceLabel="Admin CMS"
+        workspaceSubtitle="Editorial workspace"
+      />
     );
   }
 

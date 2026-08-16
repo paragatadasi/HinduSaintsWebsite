@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { auth, isGoogleAuthConfigured, signIn } from "@/lib/auth";
+import { auth, isGoogleAuthConfigured } from "@/lib/auth";
 import { museumFlowZones } from "@/lib/museum-layout-groups";
 import { getMuseumProposalData } from "@/lib/museum-proposals";
 import { requireCapability } from "@/lib/admin-access";
+import { AdminSignIn } from "@/components/admin/admin-sign-in";
 
 export const dynamic = "force-dynamic";
 
@@ -19,39 +20,14 @@ export default async function MuseumAdminLayout({ children }: { children: React.
 
   if (!session?.user?.email) {
     return (
-      <main className="admin-shell">
-        <div className="page-shell admin-auth">
-          <div className="eyebrow">Museum Admin</div>
-          <h1>Sign in required</h1>
-          {isGoogleAuthConfigured ? (
-            <>
-              <p className="lede">Use an allowlisted Google account to review museum section proposals.</p>
-              <form
-                action={async () => {
-                  "use server";
-                  await signIn("google", { redirectTo: "/museumadmin" });
-                }}
-              >
-                <button className="button button--primary" type="submit">
-                  Sign in with Google
-                </button>
-              </form>
-            </>
-          ) : (
-            <>
-              <p className="lede">
-                Google sign-in needs a client ID and client secret before the museum admin can authenticate users.
-              </p>
-              <p className="empty-note">
-                Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env, then restart the Next.js dev server.
-              </p>
-              <button className="button button--primary" type="button" disabled>
-                Sign in with Google
-              </button>
-            </>
-          )}
-        </div>
-      </main>
+      <AdminSignIn
+        configured={isGoogleAuthConfigured}
+        configurationDescription="Google sign-in needs a client ID and client secret before the museum admin can authenticate users."
+        description="Use an allowlisted Google account to review museum section proposals."
+        redirectTo="/museumadmin"
+        workspaceLabel="Museum Admin"
+        workspaceSubtitle="Section proposals"
+      />
     );
   }
 

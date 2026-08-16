@@ -21,6 +21,14 @@ function clearFieldError(control: HTMLInputElement | HTMLSelectElement | HTMLTex
   control.removeAttribute("aria-errormessage");
 }
 
+function getFieldLabel(control: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) {
+  const label = control.labels?.[0];
+  const namedLabel = label?.querySelector(":scope > span")?.textContent?.trim();
+  if (namedLabel) return namedLabel;
+  const textLabel = Array.from(label?.childNodes ?? []).find((node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim())?.textContent?.trim();
+  return textLabel || control.name || "Field";
+}
+
 function showFieldError(control: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) {
   clearFieldError(control);
   const id = control.id || `admin-field-${crypto.randomUUID()}`;
@@ -46,7 +54,11 @@ export function AdminFormGuard({ children }: { children: React.ReactNode }) {
     const markDirty = (event: Event) => {
       const form = guardedForm(event.target);
       if (event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement) {
-        if (event.target.validity.valid) clearFieldError(event.target);
+        if (event.target.validity.valid) {
+          const fieldId = event.target.id;
+          clearFieldError(event.target);
+          if (fieldId) setInvalidFields((current) => current.filter((field) => field.id !== fieldId));
+        }
       }
       if (!form || dirtyForms.has(form)) return;
       dirtyForms.add(form);
@@ -63,7 +75,7 @@ export function AdminFormGuard({ children }: { children: React.ReactNode }) {
       if (invalid.length) {
         event.preventDefault();
         invalid.forEach(showFieldError);
-        setInvalidFields(invalid.map((control) => ({ id: control.id, label: control.labels?.[0]?.textContent?.trim() || control.name || "Field", message: control.validationMessage })));
+        setInvalidFields(invalid.map((control) => ({ id: control.id, label: getFieldLabel(control), message: control.validationMessage })));
         invalid[0]?.focus();
         return;
       }
@@ -89,7 +101,7 @@ export function AdminFormGuard({ children }: { children: React.ReactNode }) {
           (element): element is HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement =>
             (element instanceof HTMLInputElement || element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement) && !element.validity.valid
         );
-        setInvalidFields(invalid.map((control) => ({ id: control.id, label: control.labels?.[0]?.textContent?.trim() || control.name || "Field", message: control.validationMessage })));
+        setInvalidFields(invalid.map((control) => ({ id: control.id, label: getFieldLabel(control), message: control.validationMessage })));
       });
     };
     const handleClick = (event: MouseEvent) => {

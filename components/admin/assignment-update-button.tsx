@@ -31,7 +31,11 @@ export function AssignmentUpdateButton({
         const statusChanged = data.get("taskStatus") !== defaultStatus;
         const reasonChanged = String(data.get("blockedReason") ?? "").trim() !== (defaultBlockedReason ?? "").trim();
         const assigneeChanged = data.has("assigneeId") && data.get("assigneeId") !== (defaultAssigneeId ?? "");
-        setEligible((statusChanged || reasonChanged || assigneeChanged) && form.checkValidity());
+        const controlsAreValid = Array.from(form.elements).every((element) => {
+          if (!(element instanceof HTMLInputElement || element instanceof HTMLSelectElement || element instanceof HTMLTextAreaElement)) return true;
+          return element.validity.valid;
+        });
+        setEligible((statusChanged || reasonChanged || assigneeChanged) && controlsAreValid);
       });
     };
 
