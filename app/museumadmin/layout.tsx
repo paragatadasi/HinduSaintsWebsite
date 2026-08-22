@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { auth, isGoogleAuthConfigured } from "@/lib/auth";
+import { auth, isEmailAuthConfigured, isGoogleAuthConfigured } from "@/lib/auth";
 import { museumFlowZones } from "@/lib/museum-layout-groups";
 import { getMuseumProposalData } from "@/lib/museum-proposals";
 import { requireCapability } from "@/lib/admin-access";
@@ -21,9 +21,10 @@ export default async function MuseumAdminLayout({ children }: { children: React.
   if (!session?.user?.email) {
     return (
       <AdminSignIn
-        configured={isGoogleAuthConfigured}
-        configurationDescription="Google sign-in needs a client ID and client secret before the museum admin can authenticate users."
-        description="Use an allowlisted Google account to review museum section proposals."
+        emailConfigured={isEmailAuthConfigured}
+        googleConfigured={isGoogleAuthConfigured}
+        configurationDescription="Authentication must be configured before the museum admin can sign in approved users."
+        description="Use your approved team email to review museum section proposals."
         redirectTo="/museumadmin"
         workspaceLabel="Museum Admin"
         workspaceSubtitle="Section proposals"

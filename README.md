@@ -73,7 +73,20 @@ npm run build:local
 
 ## Local admin sign-in
 
-The admin CMS at `/admin` uses Google OAuth through Auth.js/NextAuth and then checks the signed-in email against `ADMIN_EMAIL_ALLOWLIST`.
+The admin CMS at `/admin` supports Google OAuth and passwordless email links through Auth.js/NextAuth. Both methods require the signed-in email to belong to an active user created under **Users & Access**. `ADMIN_EMAIL_ALLOWLIST` is retained only for bootstrapping the first Site Admin.
+
+### Passwordless email links
+
+Email links work with Yahoo, Outlook/Hotmail, Gmail, and private-domain addresses. Create a Resend API key, verify the sending domain, and set:
+
+```env
+AUTH_RESEND_KEY="..."
+AUTH_EMAIL_FROM="Hindu Saints <admin@example.com>"
+```
+
+The sender must use a domain verified in Resend. Sign-in links are single-use, expire after 15 minutes, and are limited to three requests per approved address in a 15-minute window. The app shows the same confirmation screen for unknown, inactive, and rate-limited addresses.
+
+### Google OAuth
 
 For local development, create a Google OAuth web client and add:
 

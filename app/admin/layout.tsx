@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { auth, isGoogleAuthConfigured } from "@/lib/auth";
+import { auth, isEmailAuthConfigured, isGoogleAuthConfigured } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
 import { getAdminUser } from "@/lib/admin-access";
@@ -24,9 +24,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!session?.user?.email) {
     return (
       <AdminSignIn
-        configured={isGoogleAuthConfigured}
-        configurationDescription="Google sign-in needs a client ID and client secret before the admin CMS can authenticate users."
-        description="Use an allowlisted Google account to review and publish CMS content."
+        emailConfigured={isEmailAuthConfigured}
+        googleConfigured={isGoogleAuthConfigured}
+        configurationDescription="Authentication must be configured before the admin CMS can sign in approved users."
+        description="Use your approved team email to review and publish CMS content."
         redirectTo="/admin"
         workspaceLabel="Admin CMS"
         workspaceSubtitle="Editorial workspace"

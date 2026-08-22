@@ -5018,7 +5018,36 @@ html[data-route-entering="true"] body > main {
   align-content: start;
   display: grid;
   gap: var(--space-3);
-  justify-items: start;
+}
+
+.admin-auth__email-form {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.admin-auth__divider {
+  align-items: center;
+  color: var(--color-muted);
+  display: flex;
+  font-size: var(--font-size-review-hint);
+  gap: var(--space-3);
+  text-transform: uppercase;
+}
+
+.admin-auth__divider::before,
+.admin-auth__divider::after {
+  border-top: var(--border-width-default) solid color-mix(in srgb, var(--color-border) 68%, transparent);
+  content: "";
+  flex: 1;
+}
+
+.admin-auth__notice-icon {
+  color: var(--color-accent);
+}
+
+.admin-auth__notice-icon svg {
+  height: var(--size-icon-nav);
+  width: var(--size-icon-nav);
 }
 
 .admin-auth__submit svg {

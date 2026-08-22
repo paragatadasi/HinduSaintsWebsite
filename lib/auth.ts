@@ -1,10 +1,16 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
+import Resend from "next-auth/providers/resend";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { isAuthEmailRateLimited } from "@/lib/auth-email-rate-limit";
 import { db } from "@/lib/db";
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID ?? process.env.AUTH_GOOGLE_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET ?? process.env.AUTH_GOOGLE_SECRET;
+const resendApiKey = process.env.AUTH_RESEND_KEY;
+const authEmailFrom = process.env.AUTH_EMAIL_FROM;
+const emailVerificationMaxAgeSeconds = 15 * 60;
+const emailVerificationRequestedPath = "/auth/check-email";
 
 const allowlist = (process.env.ADMIN_EMAIL_ALLOWLIST ?? "")
   .split(",")
@@ -12,18 +18,28 @@ const allowlist = (process.env.ADMIN_EMAIL_ALLOWLIST ?? "")
   .filter(Boolean);
 
 export const isGoogleAuthConfigured = Boolean(googleClientId && googleClientSecret);
+export const isEmailAuthConfigured = Boolean(resendApiKey && authEmailFrom);
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
   providers: [
-    Google({
-      clientId: googleClientId,
-      clientSecret: googleClientSecret,
-      // Users & Access intentionally pre-creates approved users by email. Google
-      // verifies that email, so allow Auth.js to attach the OAuth account on the
-      // user's first sign-in instead of rejecting it as OAuthAccountNotLinked.
-      allowDangerousEmailAccountLinking: true
-    })
+    ...(googleClientId && googleClientSecret
+      ? [Google({
+          clientId: googleClientId,
+          clientSecret: googleClientSecret,
+          // Users & Access intentionally pre-creates approved users by email. Google
+          // verifies that email, so allow Auth.js to attach the OAuth account on the
+          // user's first sign-in instead of rejecting it as OAuthAccountNotLinked.
+          allowDangerousEmailAccountLinking: true
+        })]
+      : []),
+    ...(resendApiKey && authEmailFrom
+      ? [Resend({
+          apiKey: resendApiKey,
+          from: authEmailFrom,
+          maxAge: emailVerificationMaxAgeSeconds
+        })]
+      : [])
   ],
   callbacks: {
     async authorized({ auth: session }) {
@@ -32,7 +48,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const user = await db.user.findUnique({ where: { email }, select: { active: true } });
       return Boolean(user?.active);
     },
-    async signIn({ user }) {
+    async signIn({ user, email: emailContext }) {
       const email = user.email?.toLowerCase();
       if (!email) return false;
 
@@ -43,11 +59,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           create: { email: grandfatheredEmail, roles: ["site_admin"], active: true },
           update: { roles: { push: "site_admin" }, active: true }
         })));
-        return true;
       }
 
       const existing = await db.user.findUnique({ where: { email }, select: { active: true } });
-      return Boolean(existing?.active);
+      if (!existing?.active) {
+        return emailContext?.verificationRequest ? emailVerificationRequestedPath : false;
+      }
+
+      if (emailContext?.verificationRequest && isAuthEmailRateLimited(email)) {
+        return emailVerificationRequestedPath;
+      }
+
+      return true;
     }
   },
   events: {
@@ -60,6 +83,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }
   },
   pages: {
-    signIn: "/admin"
+    signIn: "/admin",
+    verifyRequest: emailVerificationRequestedPath
   }
 });
