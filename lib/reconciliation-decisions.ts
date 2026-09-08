@@ -1,4 +1,4 @@
-export const reconciliationDecisions = ["keep_current", "accept_source", "merge", "ignore", "defer"] as const;
+export const reconciliationDecisions = ["keep_current", "accept_source", "merge", "ignore", "defer", "reopen"] as const;
 
 export type ReconciliationDecision = (typeof reconciliationDecisions)[number];
 

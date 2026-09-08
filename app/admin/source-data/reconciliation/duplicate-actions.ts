@@ -8,10 +8,12 @@ import { z } from "zod";
 import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import { buildSaintDuplicateCandidates, duplicateDecisionUpdate, duplicatePairKey } from "@/lib/saint-duplicates";
+import { decisionError, duplicateQueueFor, parseQueue, reconciliationHref } from "@/lib/reconciliation-workflow";
 
 const candidateDecisionSchema = z.object({
   candidateId: z.string().cuid(),
   decision: z.enum(["confirm", "ignore", "defer", "reopen"]),
+  expectedUpdatedAt: z.string().datetime(),
   note: z.string().trim().max(2000).optional()
 });
 
@@ -138,26 +140,56 @@ export async function flagSaintDuplicate(formData: FormData) {
 
 export async function reviewDuplicateCandidate(formData: FormData) {
   const actor = await assertCapability("resolve_duplicate_saints");
+  const queue = parseQueue("duplicates", String(formData.get("queue") || ""));
+  function fail(error: string): never {
+    redirect(reconciliationHref("duplicates", queue, { error }) as Route);
+  }
   const parsed = candidateDecisionSchema.safeParse({
     candidateId: formData.get("candidateId"),
     decision: formData.get("decision"),
+    expectedUpdatedAt: formData.get("expectedUpdatedAt"),
     note: formData.get("note") || undefined
   });
-  if (!parsed.success) redirect(duplicateQueueHref({ error: "Choose a valid duplicate decision." }));
-  const candidate = await db.duplicateCandidate.findUnique({ where: { id: parsed.data.candidateId }, select: { entityType: true } });
-  if (!candidate || candidate.entityType !== "Saint") redirect(duplicateQueueHref({ error: "That saint duplicate candidate is unavailable." }));
-  const outcome = duplicateDecisionUpdate(parsed.data.decision);
-  await db.duplicateCandidate.update({
-    where: { id: parsed.data.candidateId },
-    data: {
-      status: outcome.status,
-      reviewedById: actor.id,
-      resolvedAt: outcome.finalized ? new Date() : null,
-      resolutionNotes: parsed.data.note
-    }
-  });
+  if (!parsed.success) fail("Invalid duplicate decision. Reload the review and try again.");
+  const { candidateId, decision, note, expectedUpdatedAt } = parsed.data;
+  const outcome = duplicateDecisionUpdate(decision);
+  let error: string | null;
+  try {
+    error = await db.$transaction(async (tx) => {
+      const candidate = await tx.duplicateCandidate.findUnique({ where: { id: candidateId } });
+      if (!candidate || candidate.entityType !== "Saint") return "That saint duplicate candidate is unavailable.";
+      const invalid = decisionError(candidate.status, decision, note, duplicateQueueFor(candidate) === "merged");
+      if (invalid) return invalid;
+      if (decision === "confirm" || decision === "reopen") {
+        const ids = [candidate.entityId, candidate.candidateEntityId].filter((id): id is string => Boolean(id));
+        if (new Set(ids).size !== 2 || await tx.saint.count({ where: { id: { in: ids } } }) !== 2) {
+          return "Both saint records must still exist before this pair can be reviewed.";
+        }
+      }
+      const data = {
+        status: outcome.status, resolutionAction: decision, reviewedById: actor.id,
+        resolvedAt: outcome.finalized ? new Date() : null,
+        resolutionNotes: decision === "reopen" ? null : note ?? null
+      };
+      const updated = await tx.duplicateCandidate.updateMany({
+        where: { id: candidateId, updatedAt: new Date(expectedUpdatedAt) }, data
+      });
+      if (updated.count !== 1) return "This pair changed since you opened it. Reload and review the latest decision.";
+      await tx.auditEvent.create({ data: {
+        userId: actor.id, action: "review_duplicate", entityType: "DuplicateCandidate", entityId: candidateId,
+        beforeJson: { status: candidate.status, action: candidate.resolutionAction, note: candidate.resolutionNotes },
+        afterJson: { status: data.status, action: decision, note: data.resolutionNotes }
+      } });
+      return null;
+    });
+  } catch {
+    fail("The decision could not be saved. Reload the review and try again.");
+  }
+  if (error) fail(error);
   revalidateDuplicatePaths();
-  redirect(duplicateQueueHref({ updated: parsed.data.decision }));
+  redirect(reconciliationHref("duplicates", duplicateQueueFor({ status: outcome.status, resolutionAction: decision }), {
+    updated: decision, candidate: candidateId, anchor: `duplicate-${candidateId}`
+  }) as Route);
 }
 
 function revalidateDuplicatePaths() {

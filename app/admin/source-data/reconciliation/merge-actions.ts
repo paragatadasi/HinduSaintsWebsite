@@ -104,7 +104,7 @@ export async function mergeConfirmedSaints(formData: FormData) {
   }
 
   revalidateMergedSaintPaths(source.slug, target.slug);
-  redirect(`/admin/source-data/reconciliation?view=duplicates&status=resolved&${new URLSearchParams({
+  redirect(`/admin/source-data/reconciliation?view=duplicates&status=merged&${new URLSearchParams({
     merged: source.displayName,
     survivor: target.displayName
   }).toString()}` as Route);
