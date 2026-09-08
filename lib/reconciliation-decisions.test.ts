@@ -8,7 +8,7 @@ describe("reconciliation decisions", () => {
     assert.deepEqual(reconciliationDecisionUpdate("ignore"), { status: "ignored", finalized: true });
   });
 
-  for (const decision of ["accept_source", "merge", "defer"] as const) {
+  for (const decision of ["accept_source", "merge", "defer", "reopen"] as const) {
     it(`keeps ${decision} open for explicit follow-up`, () => {
       assert.deepEqual(reconciliationDecisionUpdate(decision), { status: "open", finalized: false });
     });

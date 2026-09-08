@@ -8,13 +8,17 @@ import { requireAdminUser } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 import type { DuplicateCandidate, ReconciliationIssue } from "@/lib/generated/prisma/client";
 import { hasCapability } from "@/lib/permissions";
+import {
+  duplicateQueueFor, duplicateQueueWhere, duplicateQueues, parseQueue, queueLabel,
+  reconciliationHref, sourceQueueFor, sourceQueueWhere, sourceQueues, sourceSeverityFilters,
+  type ReconciliationQueue, type ReconciliationView
+} from "@/lib/reconciliation-workflow";
 import { resolveReconciliationIssue } from "./actions";
 import { reviewDuplicateCandidate, runSaintDuplicateScan } from "./duplicate-actions";
 import { getUserDisplayName, userDisplayNameSelect } from "@/lib/user-display-name";
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
-const statuses = ["open", "resolved", "ignored"] as const;
-type QueueStatus = typeof statuses[number];
+type QueueStatus = ReconciliationQueue;
 
 export default async function ReconciliationPage({ searchParams }: Props) {
   const params = await searchParams;
@@ -25,8 +29,8 @@ export default async function ReconciliationPage({ searchParams }: Props) {
   if (!canResolveDuplicates && !canResolveSource) redirect("/admin?access=denied");
 
   const requestedView = first(params.view);
-  const view = requestedView === "source" && canResolveSource ? "source" : "duplicates";
-  const status = statuses.includes(first(params.status) as QueueStatus) ? first(params.status) as QueueStatus : "open";
+  const view = canResolveSource && (requestedView === "source" || !canResolveDuplicates) ? "source" : "duplicates";
+  const status = parseQueue(view, first(params.status));
 
   const [openDuplicateCount, openSourceCount] = await Promise.all([
     canResolveDuplicates ? db.duplicateCandidate.count({ where: { entityType: "Saint", status: "open" } }) : Promise.resolve(0),
@@ -38,10 +42,10 @@ export default async function ReconciliationPage({ searchParams }: Props) {
       <header>
         <div className="eyebrow">Editorial review</div>
         <h1>Reconciliation</h1>
-        <p className="lede">Review evidence before confirming that records overlap. Confirming a duplicate never merges or publishes content.</p>
+        <p className="lede">Review duplicate saints and source conflicts, record a decision, and track the work still needed.</p>
         <div className="review-meta">
-          {canResolveDuplicates ? <StatusBadge label={`${openDuplicateCount} duplicate candidates`} /> : null}
-          {canResolveSource ? <StatusBadge label={`${openSourceCount} source conflicts`} /> : null}
+          {canResolveDuplicates ? <StatusBadge label={`${openDuplicateCount} unresolved duplicate reviews`} /> : null}
+          {canResolveSource ? <StatusBadge label={`${openSourceCount} unresolved source conflicts`} /> : null}
         </div>
       </header>
 
@@ -52,7 +56,7 @@ export default async function ReconciliationPage({ searchParams }: Props) {
         </nav>
       ) : null}
 
-      {noticeFromParams(params)}
+      {noticeFromParams(params, canMergeSaints)}
 
       {view === "duplicates" ? (
         <DuplicateQueue canMerge={canMergeSaints} canRunScan={canResolveDuplicates} params={params} status={status} />
@@ -65,7 +69,7 @@ export default async function ReconciliationPage({ searchParams }: Props) {
 
 async function DuplicateQueue({ canMerge, canRunScan, params, status }: { canMerge: boolean; canRunScan: boolean; params: Record<string, string | string[] | undefined>; status: QueueStatus }) {
   const candidates = await db.duplicateCandidate.findMany({
-    where: { entityType: "Saint", status },
+    where: duplicateQueueWhere(status),
     orderBy: [{ confidence: "desc" }, { createdAt: "asc" }],
     take: 200
   });
@@ -115,13 +119,14 @@ async function DuplicateQueue({ canMerge, canRunScan, params, status }: { canMer
           <DuplicateCandidateCard
             canMerge={canMerge}
             candidate={candidate}
+            focus={first(params.candidate) === candidate.id}
             key={candidate.id}
             left={left}
             reviewer={candidate.reviewedById ? reviewerById.get(candidate.reviewedById) : undefined}
             right={right}
           />
         );
-      }) : <p className="empty-note">No {statusLabel(status).toLowerCase()} duplicate candidates.</p>}
+      }) : <p className="empty-note">No duplicate reviews in {queueLabel("duplicates", status).toLowerCase()}.</p>}
     </section>
   );
 }
@@ -140,51 +145,59 @@ type SaintComparison = {
   traditions: Array<{ tradition: { name: string } }>;
 };
 
-function DuplicateCandidateCard({ canMerge, candidate, left, reviewer, right }: { canMerge: boolean; candidate: DuplicateCandidate; left?: SaintComparison; reviewer?: string; right?: SaintComparison }) {
+function DuplicateCandidateCard({ canMerge, candidate, focus, left, reviewer, right }: { canMerge: boolean; candidate: DuplicateCandidate; focus: boolean; left?: SaintComparison; reviewer?: string; right?: SaintComparison }) {
   const evidence = evidenceReasons(candidate.evidenceJson);
+  const queue = duplicateQueueFor(candidate);
+  const merged = queue === "merged";
+  const stateLabel = candidate.resolutionAction === "merged" ? "Merged"
+    : candidate.resolutionAction === "closed_by_merge" ? "Closed by another merge"
+    : queue === "resolved" ? "Confirmed · awaiting merge" : queueLabel("duplicates", queue);
   return (
     <CollapsibleReviewCard
       cardId={`duplicate-${candidate.id}`}
-      defaultOpen={candidate.confidence === "high" && candidate.status === "open"}
+      defaultOpen={focus || (candidate.confidence === "high" && queue === "open")}
       description={candidate.message || "Potentially overlapping saint records."}
       eyebrow={`${formatLabel(candidate.confidence)} confidence · ${formatSource(candidate.sourceType)}`}
-      title={left && right ? `${left.displayName} and ${right.displayName}` : "Unavailable saint pair"}
+      title={left && right ? `${left.displayName} and ${right.displayName}` : merged ? "Completed duplicate review" : "Unavailable saint pair"}
     >
       <div className="review-meta">
-        <StatusBadge label={statusLabel(candidate.status)} />
+        <StatusBadge label={stateLabel} />
         {reviewer ? <StatusBadge label={`reviewed by ${reviewer}`} /> : null}
       </div>
-      <div className="duplicate-comparison-grid">
+      {!merged ? <div className="duplicate-comparison-grid">
         <SaintComparisonFacts label="First record" saint={left} />
         <SaintComparisonFacts label="Possible duplicate" saint={right} />
-      </div>
-      {canMerge && candidate.status === "resolved" && left && right ? (
+      </div> : <p>{candidate.resolutionNotes || "This review was closed when a saint record was merged."}</p>}
+      {canMerge && queue === "resolved" && left && right ? (
         <div className="review-actions">
-          <Link className="admin-form-button" href={`/admin/source-data/reconciliation/${candidate.id}/merge`}>Review merge</Link>
+          <Link className="admin-form-button" href={`/admin/source-data/reconciliation/${candidate.id}/merge`}>Continue to merge review</Link>
         </div>
       ) : null}
+      {queue === "resolved" ? <p className="admin-settings-note">The duplicate is confirmed; the records are still separate. A Site Admin must complete the merge.</p> : null}
       {evidence.length > 0 ? (
         <div className="duplicate-evidence">
           <strong>Why this pair was flagged</strong>
           <ul>{evidence.map((reason) => <li key={reason}>{reason}</li>)}</ul>
         </div>
       ) : null}
-      <form action={reviewDuplicateCandidate} className="admin-settings-form">
+      {!merged ? <form action={reviewDuplicateCandidate} className="admin-settings-form">
         <input name="candidateId" type="hidden" value={candidate.id} />
-        <label className="admin-field">
-          <span>Review note</span>
+        <input name="expectedUpdatedAt" type="hidden" value={candidate.updatedAt.toISOString()} />
+        <input name="queue" type="hidden" value={queue} />
+        {candidate.status === "open" ? <label className="admin-field">
+          <span>Review note (required to defer)</span>
           <textarea defaultValue={candidate.resolutionNotes || ""} maxLength={2000} name="note" rows={3} />
-        </label>
+        </label> : candidate.resolutionNotes ? <p>{candidate.resolutionNotes}</p> : null}
         <div className="review-actions">
           {candidate.status === "open" ? (
             <>
-              <DuplicateDecision label="Confirm duplicate" value="confirm" />
+              {left && right ? <DuplicateDecision label="Confirm duplicate" value="confirm" /> : null}
               <DuplicateDecision label="Not a duplicate" value="ignore" secondary />
               <DuplicateDecision label="Defer" value="defer" secondary />
             </>
-          ) : <DuplicateDecision label="Reopen review" value="reopen" secondary />}
+          ) : left && right ? <DuplicateDecision label="Reopen review" value="reopen" secondary /> : null}
         </div>
-      </form>
+      </form> : null}
       {candidate.resolvedAt ? <p className="admin-settings-note">Reviewed {candidate.resolvedAt.toLocaleString()}.</p> : null}
     </CollapsibleReviewCard>
   );
@@ -211,10 +224,14 @@ function SaintComparisonFacts({ label, saint }: { label: string; saint?: SaintCo
 
 async function SourceConflictQueue({ params, status }: { params: Record<string, string | string[] | undefined>; status: QueueStatus }) {
   const issueType = first(params.type) || "all";
-  const [issues, grouped] = await Promise.all([
-    db.reconciliationIssue.findMany({ where: { status, ...(issueType === "all" ? {} : { issueType }) }, orderBy: [{ severity: "desc" }, { createdAt: "asc" }], take: 200 }),
-    db.reconciliationIssue.groupBy({ by: ["issueType"], where: { status }, _count: { _all: true }, orderBy: { issueType: "asc" } })
+  const [issueBuckets, grouped] = await Promise.all([
+    Promise.all(sourceSeverityFilters.map((severity) => db.reconciliationIssue.findMany({
+      where: { ...sourceQueueWhere(status), ...severity, ...(issueType === "all" ? {} : { issueType }) },
+      orderBy: [{ createdAt: "asc" }, { id: "asc" }], take: 200
+    }))),
+    db.reconciliationIssue.groupBy({ by: ["issueType"], where: sourceQueueWhere(status), _count: { _all: true }, orderBy: { issueType: "asc" } })
   ]);
+  const issues = issueBuckets.flat().slice(0, 200);
   const saintIds = issues.filter((issue) => issue.entityType === "Saint" && issue.entityId).map((issue) => issue.entityId!);
   const saints = await db.saint.findMany({ where: { id: { in: saintIds } }, select: { id: true, displayName: true, slug: true } });
   const saintById = new Map(saints.map((saint) => [saint.id, saint]));
@@ -222,21 +239,28 @@ async function SourceConflictQueue({ params, status }: { params: Record<string, 
   return (
     <section className="admin-stack">
       <div><h2>Source conflicts</h2><p>Compare preserved source context with reviewed CMS context. Generic decisions never overwrite CMS fields automatically.</p></div>
-      <StatusFilters status={status} view="source" />
+      <StatusFilters status={status} type={issueType} view="source" />
       <form action="/admin/source-data/reconciliation" className="admin-search">
         <input name="view" type="hidden" value="source" />
         <input name="status" type="hidden" value={status} />
-        <label><span>Issue type</span><select defaultValue={issueType} name="type"><option value="all">All issue types</option>{grouped.map((row) => <option key={row.issueType} value={row.issueType}>{formatLabel(row.issueType)} ({row._count._all})</option>)}</select></label>
+        <label><span>Issue type</span><select defaultValue={issueType} name="type"><option value="all">All issue types</option>{issueType !== "all" && !grouped.some((row) => row.issueType === issueType) ? <option value={issueType}>{formatLabel(issueType)} (0)</option> : null}{grouped.map((row) => <option key={row.issueType} value={row.issueType}>{formatLabel(row.issueType)} ({row._count._all})</option>)}</select></label>
         <button className="admin-form-button admin-form-button--secondary" type="submit">Filter</button>
       </form>
-      {issues.length > 0 ? issues.map((issue) => <SourceConflictCard issue={issue} key={issue.id} saint={issue.entityId ? saintById.get(issue.entityId) : undefined} />) : <p className="empty-note">No {statusLabel(status).toLowerCase()} source conflicts.</p>}
+      {issues.length > 0 ? issues.map((issue) => <SourceConflictCard issue={issue} issueType={issueType} key={issue.id} saint={issue.entityId ? saintById.get(issue.entityId) : undefined} />) : <p className="empty-note">No source conflicts in {queueLabel("source", status).toLowerCase()}.</p>}
     </section>
   );
 }
 
-function SourceConflictCard({ issue, saint }: { issue: ReconciliationIssue; saint?: { displayName: string; slug: string } }) {
+function SourceConflictCard({ issue, issueType, saint }: { issue: ReconciliationIssue; issueType: string; saint?: { displayName: string; slug: string } }) {
+  const queue = sourceQueueFor(issue);
+  const completed = issue.status !== "open";
   return (
-    <CollapsibleReviewCard cardId={`reconciliation-${issue.id}`} defaultOpen={issue.severity === "high"} description={issue.message} eyebrow={`${formatLabel(issue.issueType)} · ${issue.severity}`} title={saint?.displayName || formatLabel(issue.entityType)}>
+    <CollapsibleReviewCard cardId={`reconciliation-${issue.id}`} defaultOpen={!completed && issue.severity === "high"} description={issue.message} eyebrow={`${formatLabel(issue.issueType)} · ${issue.severity}`} title={saint?.displayName || formatLabel(issue.entityType)}>
+      <div className="review-meta"><StatusBadge label={queueLabel("source", queue)} /></div>
+      {issue.resolutionAction ? <p className="admin-settings-note">{sourceActionLabel(issue.resolutionAction)}{issue.resolvedByEmail ? ` · ${issue.resolvedByEmail}` : ""}{issue.resolvedAt ? ` · ${issue.resolvedAt.toLocaleString()}` : ""}</p> : null}
+      {queue === "follow_up" ? <p>The requested change has not been applied. Complete it in the relevant content review; this conflict remains unresolved until that work is finished.</p> : null}
+      {queue === "deferred" ? <p>Deferred reason: {issue.resolutionNote || "No reason was recorded for this earlier decision."}</p> : null}
+      {completed && issue.resolutionNote ? <p>{issue.resolutionNote}</p> : null}
       <div className="review-fact-grid">
         <div className="review-fact"><strong>Preserved raw/current context</strong><pre className="raw-json-preview">{prettyValue(issue.rawValue)}</pre></div>
         <div className="review-fact"><strong>Suggested/source context</strong><pre className="raw-json-preview">{prettyValue(issue.suggestedValue)}</pre></div>
@@ -244,28 +268,36 @@ function SourceConflictCard({ issue, saint }: { issue: ReconciliationIssue; sain
       {saint ? <p><Link href={`/admin/saints/${saint.slug}`}>Open {saint.displayName} in content review</Link></p> : null}
       <form action={resolveReconciliationIssue} className="admin-settings-form">
         <input name="issueId" type="hidden" value={issue.id} />
-        <label className="admin-field"><span>Decision note</span><textarea defaultValue={issue.resolutionNote || ""} maxLength={2000} name="note" rows={3} /></label>
-        <div className="review-actions"><SourceDecision value="keep_current" label="Keep CMS value" /><SourceDecision value="accept_source" label="Approve source for follow-up" /><SourceDecision value="merge" label="Queue merge follow-up" /><SourceDecision value="ignore" label="Ignore issue" /><SourceDecision value="defer" label="Defer" /></div>
+        <input name="expectedUpdatedAt" type="hidden" value={issue.updatedAt.toISOString()} />
+        <input name="queue" type="hidden" value={queue} />
+        <input name="type" type="hidden" value={issueType} />
+        {!completed ? <>
+          <label className="admin-field"><span>Decision note (required to defer)</span><textarea defaultValue={issue.resolutionNote || ""} maxLength={2000} name="note" rows={3} /></label>
+          <div className="review-actions"><SourceDecision value="keep_current" label="Keep CMS value" /><SourceDecision value="accept_source" label="Request source change" /><SourceDecision value="merge" label="Request merge review" /><SourceDecision value="ignore" label="Ignore issue" /><SourceDecision value="defer" label="Defer" /></div>
+        </> : <div className="review-actions"><SourceDecision value="reopen" label="Reopen review" /></div>}
       </form>
     </CollapsibleReviewCard>
   );
 }
 
-function StatusFilters({ status, view }: { status: QueueStatus; view: "duplicates" | "source" }) {
-  return <nav aria-label={`${view} status`} className="admin-queue-filters">{statuses.map((value) => <Link aria-current={status === value ? "page" : undefined} className="admin-queue-filter" href={`/admin/source-data/reconciliation?view=${view}&status=${value}` as Route} key={value}>{statusLabel(value)}</Link>)}</nav>;
+function StatusFilters({ status, type, view }: { status: QueueStatus; type?: string; view: ReconciliationView }) {
+  const queues = view === "duplicates" ? duplicateQueues : sourceQueues;
+  return <nav aria-label={`${view} status`} className="admin-queue-filters">{queues.map((value) => <Link aria-current={status === value ? "page" : undefined} className="admin-queue-filter" href={reconciliationHref(view, value, { type }) as Route} key={value}>{queueLabel(view, value)}</Link>)}</nav>;
 }
 
 function DuplicateDecision({ value, label, secondary = false }: { value: string; label: string; secondary?: boolean }) { return <button className={secondary ? "admin-form-button admin-form-button--secondary" : "admin-form-button"} name="decision" type="submit" value={value}>{label}</button>; }
 function SourceDecision({ value, label }: { value: string; label: string }) { return <button className={value === "keep_current" ? "admin-form-button" : "admin-form-button admin-form-button--secondary"} name="decision" type="submit" value={value}>{label}</button>; }
 
-function noticeFromParams(params: Record<string, string | string[] | undefined>) {
+function noticeFromParams(params: Record<string, string | string[] | undefined>, canMerge: boolean) {
   const error = first(params.error);
   if (error) return <p className="admin-notice form-status form-status--error">{error}</p>;
   const merged = first(params.merged);
   const survivor = first(params.survivor);
   if (merged && survivor) return <p className="admin-notice form-status form-status--success">Merged {merged} into {survivor}. Relationships were transferred and the retired URL now redirects.</p>;
   const updated = first(params.updated);
-  if (updated) return <p className="admin-notice form-status form-status--success">Decision recorded: {formatLabel(updated)}.</p>;
+  const candidate = first(params.candidate);
+  if (updated === "confirm") return <div className="admin-notice form-status form-status--success"><p>Duplicate confirmed. The records are still separate and awaiting merge.</p>{canMerge && candidate && /^[a-z0-9]+$/.test(candidate) ? <Link className="admin-text-link" href={`/admin/source-data/reconciliation/${candidate}/merge` as Route}>Continue to merge review</Link> : <p>A Site Admin can complete the merge from Awaiting merge.</p>}</div>;
+  if (updated) return <p className="admin-notice form-status form-status--success">{decisionNotice(updated)}</p>;
   const scanned = first(params.scanned);
   if (scanned) return <p className="admin-notice form-status form-status--success">Scanned {scanned} saints. Added {first(params.created) || "0"} candidates and refreshed {first(params.refreshed) || "0"} existing candidates.</p>;
   return null;
@@ -276,11 +308,20 @@ function evidenceReasons(value: unknown) {
   return value.reasons.filter((reason): reason is string => typeof reason === "string");
 }
 
-function statusLabel(value: string) {
-  if (value === "open") return "Needs review";
-  if (value === "resolved") return "Confirmed duplicate";
-  if (value === "ignored") return "Not duplicate";
-  return formatLabel(value);
+function sourceActionLabel(value: string) {
+  const labels: Record<string, string> = { keep_current: "Kept CMS value", accept_source: "Source change requested", merge: "Merge review requested", ignore: "Issue ignored", defer: "Review deferred", reopen: "Review reopened" };
+  return labels[value] || formatLabel(value);
+}
+function decisionNotice(value: string) {
+  const notices: Record<string, string> = {
+    keep_current: "CMS value kept. This conflict is resolved.",
+    accept_source: "Source change requested. This conflict is in Follow-up needed; no CMS values were changed.",
+    merge: "Merge review requested. This conflict is in Follow-up needed; no records were merged.",
+    defer: "Review deferred. Find it in Deferred when you are ready to continue.",
+    reopen: "Review reopened. It is back in Needs review.",
+    ignore: "Decision saved. You can reopen this review from its completed queue."
+  };
+  return notices[value] || "Decision recorded.";
 }
 function formatSource(value: string | null) { return value === "database_scan" ? "catalog scan" : formatLabel(value || "manual review"); }
 function first(value: string | string[] | undefined) { return Array.isArray(value) ? value[0] : value; }
