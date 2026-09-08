@@ -119,6 +119,28 @@ export async function HomepageSettings() {
           description="Blank fields use the current design-system defaults."
           gridClassName="review-workflow__grid--homepage-config"
         >
+          <ReviewSection className="review-workflow__section--wide" title="Quote of the day" icon={<Quote size={18} aria-hidden="true" />}>
+            <div className="form-stack">
+              <label>
+                Eyebrow
+                <input name="quoteEyebrow" type="text" maxLength={80} defaultValue={config?.quoteEyebrow ?? defaultQuote.eyebrow} />
+              </label>
+              <label>
+                Quote
+                <textarea name="quoteText" maxLength={500} defaultValue={config?.quoteText ?? defaultQuote.quote} />
+              </label>
+              <SearchableSelect
+                defaultValue={defaultQuoteSaintId}
+                emptyText="No published saints match this search."
+                label="Attribution"
+                name="quoteSaintId"
+                options={quoteSaintOptions}
+                placeholder="Search published saints"
+                required
+              />
+            </div>
+          </ReviewSection>
+
           <ReviewSection title="Hero" icon={<Sparkles size={18} aria-hidden="true" />}>
             <div className="form-stack">
               <div className="field-grid field-grid--identity-line">
@@ -234,28 +256,6 @@ export async function HomepageSettings() {
               titleName="instagramTitle"
               titleValue={config?.instagramTitle ?? defaultSections.instagram.title}
             />
-          </ReviewSection>
-
-          <ReviewSection title="Quote of the day" icon={<Quote size={18} aria-hidden="true" />}>
-            <div className="form-stack">
-              <label>
-                Eyebrow
-                <input name="quoteEyebrow" type="text" maxLength={80} defaultValue={config?.quoteEyebrow ?? defaultQuote.eyebrow} />
-              </label>
-              <label>
-                Quote
-                <textarea name="quoteText" maxLength={500} defaultValue={config?.quoteText ?? defaultQuote.quote} />
-              </label>
-              <SearchableSelect
-                defaultValue={defaultQuoteSaintId}
-                emptyText="No published saints match this search."
-                label="Attribution"
-                name="quoteSaintId"
-                options={quoteSaintOptions}
-                placeholder="Search published saints"
-                required
-              />
-            </div>
           </ReviewSection>
         </ReviewWorkflow>
 
