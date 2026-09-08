@@ -98,6 +98,7 @@ export async function mergeSaintRecords(tx: Transaction, execution: SaintMergeEx
       where: { id: duplicate.id },
       data: {
         status: "resolved",
+        resolutionAction: duplicate.id === candidateId ? "merged" : "closed_by_merge",
         resolvedAt: new Date(),
         reviewedById: actorId,
         resolutionNotes: combineNotes(duplicate.resolutionNotes, mergeNote)

@@ -21,6 +21,30 @@ the reviewer, action, and note but never applies values to a domain record.
 Applying or merging source data must happen in the relevant domain-specific
 review transaction, where its validation and audit rules are available.
 
+### Reconciliation workflow states
+
+The duplicate queue distinguishes Needs review, Awaiting merge, Deferred,
+Merge history, and Not a duplicate. Confirmation keeps both saint records
+intact and returns the reviewer to Awaiting merge with a direct merge-review
+link. A Site Admin completes the existing protected merge workflow.
+
+Source conflicts use Needs review, Follow-up needed, Deferred, Resolved, and
+Ignored. Source-change and merge requests move to Follow-up needed without
+applying CMS values. Completed issues show their decision and an explicit
+Reopen review action. Deferring either kind of review requires a reason.
+
+These queue states retain the existing database status values. Source issues
+use their existing resolutionAction; duplicate candidates now also preserve a
+resolutionAction. Completed saint merges distinguish the selected merged pair
+from other candidate reviews closed by that merge. The additive migration
+recovers legacy merge outcomes only when a merge audit event proves them.
+Earlier deferrals without an explicit action remain in Needs review.
+
+Each new decision records the actor and an audit event, and checks the record's
+updatedAt value so a stale form cannot overwrite a newer decision. Source issue
+type filters survive status navigation and decisions. Source severity uses an
+explicit high/medium/low order before the queue limit.
+
 ## Airtable
 
 Airtable is an import/reference source. It is not the live website source of truth.

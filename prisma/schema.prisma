@@ -813,6 +813,7 @@ model DuplicateCandidate {
   reconciliationIssueId String?
   reconciliationIssue   ReconciliationIssue? @relation(fields: [reconciliationIssueId], references: [id], onDelete: SetNull)
   reviewedById          String?
+  resolutionAction      String?
   resolvedAt            DateTime?
   resolutionNotes       String?
   createdAt             DateTime             @default(now())
