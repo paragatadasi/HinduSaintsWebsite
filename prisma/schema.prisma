@@ -461,6 +461,7 @@ model Saint {
   featured                 Boolean                 @default(false)
   launchMvp                Boolean                 @default(false)
   hasInstagramContent      Boolean                 @default(false)
+  noPrimaryTradition       Boolean                 @default(false)
   primaryImageId           String?
   primaryImage             MediaAsset?             @relation("PrimarySaintImage", fields: [primaryImageId], references: [id])
   foundedTraditions        Tradition[]             @relation("TraditionFounder")

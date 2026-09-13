@@ -10,6 +10,7 @@ import { createAndAttachSaintTradition, updateSaintTraditions } from "../actions
 type SaintTraditionEditorProps = {
   options: SearchableMultiSelectOption[];
   primaryTraditionId?: string;
+  noPrimaryTradition: boolean;
   saintId: string;
   selectedTraditionIds: string[];
 };
@@ -17,13 +18,16 @@ type SaintTraditionEditorProps = {
 export function SaintTraditionEditor({
   options,
   primaryTraditionId,
+  noPrimaryTradition,
   saintId,
   selectedTraditionIds
 }: SaintTraditionEditorProps) {
   const [selectedValues, setSelectedValues] = useState(selectedTraditionIds);
   const [primaryValue, setPrimaryValue] = useState(primaryTraditionId ?? "");
+  const [noPrimaryValue, setNoPrimaryValue] = useState(noPrimaryTradition);
   const [createName, setCreateName] = useState<string | null>(null);
   const savedSignature = JSON.stringify({
+    noPrimaryTradition,
     primaryValue: primaryTraditionId ?? "",
     selectedValues: [...selectedTraditionIds].sort()
   });
@@ -32,11 +36,13 @@ export function SaintTraditionEditor({
     .map((value) => optionsByValue.get(value))
     .filter((option): option is SearchableMultiSelectOption => Boolean(option));
   const isDirty = primaryValue !== (primaryTraditionId ?? "")
+    || noPrimaryValue !== noPrimaryTradition
     || !haveSameValues(selectedValues, selectedTraditionIds);
 
   useEffect(() => {
     setSelectedValues(selectedTraditionIds);
     setPrimaryValue(primaryTraditionId ?? "");
+    setNoPrimaryValue(noPrimaryTradition);
   }, [savedSignature]);
 
   return (
@@ -45,6 +51,7 @@ export function SaintTraditionEditor({
         <input name="saintId" type="hidden" value={saintId} />
         {selectedValues.map((value) => <input key={value} name="traditionIds" type="hidden" value={value} />)}
         {primaryValue ? <input name="primaryTraditionId" type="hidden" value={primaryValue} /> : null}
+        {noPrimaryValue ? <input name="noPrimaryTradition" type="hidden" value="true" /> : null}
         <SearchableRelationshipPicker
           createLabel={(query) => `Create tradition “${query}”`}
           emptyText="No more traditions are available."
@@ -78,7 +85,10 @@ export function SaintTraditionEditor({
                         className="relationship-selection-row__primary"
                         data-active={isPrimary ? "true" : undefined}
                         type="button"
-                        onClick={() => setPrimaryValue(tradition.value)}
+                        onClick={() => {
+                          setPrimaryValue(tradition.value);
+                          setNoPrimaryValue(false);
+                        }}
                       >
                         <Star aria-hidden="true" fill={isPrimary ? "currentColor" : "none"} size={15} />
                         {isPrimary ? "Primary" : "Make primary"}
@@ -104,10 +114,13 @@ export function SaintTraditionEditor({
           <>
             <div className="review-actions">
               <button
-                aria-pressed={!primaryValue}
+                aria-pressed={noPrimaryValue}
                 className="admin-form-button admin-form-button--secondary"
                 type="button"
-                onClick={() => setPrimaryValue("")}
+                onClick={() => {
+                  setPrimaryValue("");
+                  setNoPrimaryValue(true);
+                }}
               >
                 No primary tradition — affiliated traditions only
               </button>
@@ -148,12 +161,13 @@ export function SaintTraditionEditor({
 
   function handleSelectionChange(nextValues: string[]) {
     setSelectedValues(nextValues);
+    if (!noPrimaryValue && !primaryValue) setPrimaryValue(nextValues[0] ?? "");
   }
 
   function removeTradition(value: string) {
     const nextValues = selectedValues.filter((selectedValue) => selectedValue !== value);
     setSelectedValues(nextValues);
-    if (primaryValue === value) setPrimaryValue("");
+    if (primaryValue === value) setPrimaryValue(nextValues[0] ?? "");
   }
 }
 
