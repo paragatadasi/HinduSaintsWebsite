@@ -151,6 +151,9 @@ const saintTraditionsSchema = z.object({
   saintId: z.string().cuid(),
   traditionIds: z.array(z.string().cuid()),
   primaryTraditionId: z.string().cuid().optional()
+}).refine((value) => !value.primaryTraditionId || value.traditionIds.includes(value.primaryTraditionId), {
+  message: "The primary tradition must be one of the selected traditions.",
+  path: ["primaryTraditionId"]
 });
 
 const saintTraditionCreationSchema = z.object({
@@ -530,9 +533,7 @@ export async function updateSaintTraditions(formData: FormData) {
 
   if (!saint) redirect("/admin/saints");
 
-  const primaryTraditionId = parsed.primaryTraditionId && parsed.traditionIds.includes(parsed.primaryTraditionId)
-    ? parsed.primaryTraditionId
-    : parsed.traditionIds[0];
+  const primaryTraditionId = parsed.primaryTraditionId;
 
   await db.$transaction(async (tx) => {
     await tx.saintTradition.deleteMany({ where: { saintId: parsed.saintId } });

@@ -159,7 +159,7 @@ export async function AdminSaintEditorPage({
   const biographyTextareaId = "biography-body-markdown";
   const instagramBiographyImportPosts = canReviewInstagram ? getInstagramBiographyImportPosts(saint) : [];
   const selectedTraditionIds = saint.traditions.map((item) => item.traditionId);
-  const primaryTraditionId = saint.traditions.find((item) => item.isPrimary)?.traditionId ?? selectedTraditionIds[0];
+  const primaryTraditionId = saint.traditions.find((item) => item.isPrimary)?.traditionId;
   const traditionOptions = allTraditions.map((tradition) => ({
     value: tradition.id,
     label: tradition.name,
