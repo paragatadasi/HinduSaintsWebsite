@@ -122,10 +122,12 @@ export function SaintTraditionEditor({
                   setNoPrimaryValue(true);
                 }}
               >
-                No primary tradition — affiliated traditions only
+                {noPrimaryValue
+                  ? "No primary tradition — affiliated traditions only"
+                  : "Clear primary tradition"}
               </button>
             </div>
-            {!primaryValue ? (
+            {noPrimaryValue && !primaryValue ? (
               <p className="form-field-hint" role="status">
                 No primary tradition is selected; these traditions are affiliations only. If this is an oversight, choose “Make primary” beside a tradition.
               </p>
