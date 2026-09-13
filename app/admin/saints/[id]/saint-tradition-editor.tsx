@@ -21,22 +21,22 @@ export function SaintTraditionEditor({
   selectedTraditionIds
 }: SaintTraditionEditorProps) {
   const [selectedValues, setSelectedValues] = useState(selectedTraditionIds);
-  const [primaryValue, setPrimaryValue] = useState(primaryTraditionId ?? selectedTraditionIds[0] ?? "");
+  const [primaryValue, setPrimaryValue] = useState(primaryTraditionId ?? "");
   const [createName, setCreateName] = useState<string | null>(null);
   const savedSignature = JSON.stringify({
-    primaryValue: primaryTraditionId ?? selectedTraditionIds[0] ?? "",
+    primaryValue: primaryTraditionId ?? "",
     selectedValues: [...selectedTraditionIds].sort()
   });
   const optionsByValue = useMemo(() => new Map(options.map((option) => [option.value, option])), [options]);
   const selectedOptions = selectedValues
     .map((value) => optionsByValue.get(value))
     .filter((option): option is SearchableMultiSelectOption => Boolean(option));
-  const isDirty = primaryValue !== (primaryTraditionId ?? selectedTraditionIds[0] ?? "")
+  const isDirty = primaryValue !== (primaryTraditionId ?? "")
     || !haveSameValues(selectedValues, selectedTraditionIds);
 
   useEffect(() => {
     setSelectedValues(selectedTraditionIds);
-    setPrimaryValue(primaryTraditionId ?? selectedTraditionIds[0] ?? "");
+    setPrimaryValue(primaryTraditionId ?? "");
   }, [savedSignature]);
 
   return (
@@ -100,6 +100,25 @@ export function SaintTraditionEditor({
             <p className="empty-note">No traditions selected.</p>
           )}
         </div>
+        {selectedValues.length > 0 ? (
+          <>
+            <div className="review-actions">
+              <button
+                aria-pressed={!primaryValue}
+                className="admin-form-button admin-form-button--secondary"
+                type="button"
+                onClick={() => setPrimaryValue("")}
+              >
+                No primary tradition — affiliated traditions only
+              </button>
+            </div>
+            {!primaryValue ? (
+              <p className="form-field-hint" role="status">
+                No primary tradition is selected; these traditions are affiliations only. If this is an oversight, choose “Make primary” beside a tradition.
+              </p>
+            ) : null}
+          </>
+        ) : null}
         <div className="review-actions">
           <TrackedSaveButton dirty={isDirty} saveLabel="Save traditions" />
         </div>
@@ -129,13 +148,12 @@ export function SaintTraditionEditor({
 
   function handleSelectionChange(nextValues: string[]) {
     setSelectedValues(nextValues);
-    if (!primaryValue && nextValues[0]) setPrimaryValue(nextValues[0]);
   }
 
   function removeTradition(value: string) {
     const nextValues = selectedValues.filter((selectedValue) => selectedValue !== value);
     setSelectedValues(nextValues);
-    if (primaryValue === value) setPrimaryValue(nextValues[0] ?? "");
+    if (primaryValue === value) setPrimaryValue("");
   }
 }
 
