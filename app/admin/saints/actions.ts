@@ -8,6 +8,7 @@ import { z } from "zod";
 import { verifyBulkDeletePassword } from "@/lib/admin-secrets";
 import { assertCapability, assertSaintsVisibleToUser, requireAdminUser, requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
+import { resolveSaintPrimaryTraditionUpdate } from "@/lib/saint-primary-tradition";
 import { getUserDisplayName } from "@/lib/user-display-name";
 import type { Capability } from "@/lib/permissions";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
@@ -150,9 +151,13 @@ const instagramSlideDeleteSchema = z.object({
 const saintTraditionsSchema = z.object({
   saintId: z.string().cuid(),
   traditionIds: z.array(z.string().cuid()),
+  noPrimaryTradition: z.literal("true").optional(),
   primaryTraditionId: z.string().cuid().optional()
 }).refine((value) => !value.primaryTraditionId || value.traditionIds.includes(value.primaryTraditionId), {
   message: "The primary tradition must be one of the selected traditions.",
+  path: ["primaryTraditionId"]
+}).refine((value) => !(value.noPrimaryTradition && value.primaryTraditionId), {
+  message: "Choose a primary tradition or explicitly leave no primary, not both.",
   path: ["primaryTraditionId"]
 });
 
@@ -524,32 +529,51 @@ export async function updateSaintTraditions(formData: FormData) {
   const parsed = saintTraditionsSchema.parse({
     saintId: formData.get("saintId"),
     traditionIds: uniqueList(formData.getAll("traditionIds").filter(isString)),
+    noPrimaryTradition: emptyToUndefined(formData.get("noPrimaryTradition")),
     primaryTraditionId: emptyToUndefined(formData.get("primaryTraditionId"))
   });
-  const saint = await db.saint.findUnique({
-    where: { id: parsed.saintId },
-    select: { slug: true }
-  });
+  const slug = await db.$transaction(async (tx) => {
+    const saint = await tx.saint.findUnique({
+      where: { id: parsed.saintId },
+      select: {
+        slug: true,
+        noPrimaryTradition: true,
+        traditions: { orderBy: { isPrimary: "desc" }, select: { traditionId: true, isPrimary: true } }
+      }
+    });
+    if (!saint) redirect("/admin/saints");
 
-  if (!saint) redirect("/admin/saints");
-
-  const primaryTraditionId = parsed.primaryTraditionId;
-
-  await db.$transaction(async (tx) => {
-    await tx.saintTradition.deleteMany({ where: { saintId: parsed.saintId } });
-
-    if (parsed.traditionIds.length > 0) {
-      await tx.saintTradition.createMany({
-        data: parsed.traditionIds.map((traditionId) => ({
+    const preference = resolveSaintPrimaryTraditionUpdate({
+      traditions: saint.traditions,
+      selectedIds: parsed.traditionIds,
+      primaryTraditionId: parsed.primaryTraditionId,
+      clearPrimary: parsed.noPrimaryTradition === "true",
+      noPrimaryTradition: saint.noPrimaryTradition
+    });
+    await tx.saint.update({
+      where: { id: parsed.saintId },
+      data: { noPrimaryTradition: preference.noPrimaryTradition }
+    });
+    await tx.saintTradition.deleteMany({
+      where: { saintId: parsed.saintId, traditionId: { notIn: parsed.traditionIds } }
+    });
+    // Preserve retained membership IDs and editorial notes instead of recreating them.
+    for (const traditionId of parsed.traditionIds) {
+      const isPrimary = traditionId === preference.primaryTraditionId;
+      await tx.saintTradition.upsert({
+        where: { saintId_traditionId: { saintId: parsed.saintId, traditionId } },
+        update: { isPrimary },
+        create: {
           saintId: parsed.saintId,
           traditionId,
-          isPrimary: traditionId === primaryTraditionId
-        }))
+          isPrimary
+        }
       });
     }
+    return saint.slug;
   });
 
-  revalidateSaintPaths(saint.slug);
+  revalidateSaintPaths(slug);
 }
 
 export async function updateSaintPlaces(formData: FormData) {
@@ -604,6 +628,7 @@ export async function createAndAttachSaintTradition(formData: FormData) {
     where: { id: parsed.saintId },
     select: {
       slug: true,
+      noPrimaryTradition: true,
       traditions: {
         select: { id: true },
         take: 1
@@ -630,7 +655,7 @@ export async function createAndAttachSaintTradition(formData: FormData) {
       data: {
         saintId: parsed.saintId,
         traditionId: tradition.id,
-        isPrimary: saint.traditions.length === 0
+        isPrimary: !saint.noPrimaryTradition && saint.traditions.length === 0
       }
     });
   });

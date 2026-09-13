@@ -16,6 +16,7 @@ import { Prose } from "@/components/content/prose";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { db } from "@/lib/db";
+import { getSaintPrimaryTraditionId } from "@/lib/saint-primary-tradition";
 import { requireSaintCatalogUser } from "@/lib/admin-access";
 import { canManageSaintTeamVisibility, getAdminSaintCatalogScope, saintCatalogWhere, type SaintCatalogScope } from "@/lib/admin-saint-access";
 import { hasCapability } from "@/lib/permissions";
@@ -159,7 +160,7 @@ export async function AdminSaintEditorPage({
   const biographyTextareaId = "biography-body-markdown";
   const instagramBiographyImportPosts = canReviewInstagram ? getInstagramBiographyImportPosts(saint) : [];
   const selectedTraditionIds = saint.traditions.map((item) => item.traditionId);
-  const primaryTraditionId = saint.traditions.find((item) => item.isPrimary)?.traditionId;
+  const primaryTraditionId = getSaintPrimaryTraditionId(saint.traditions, saint.noPrimaryTradition);
   const traditionOptions = allTraditions.map((tradition) => ({
     value: tradition.id,
     label: tradition.name,
@@ -456,10 +457,11 @@ export async function AdminSaintEditorPage({
             {canEditStructured ? <SaintTraditionEditor
               options={traditionOptions}
               primaryTraditionId={primaryTraditionId}
+              noPrimaryTradition={saint.noPrimaryTradition}
               saintId={saint.id}
               selectedTraditionIds={selectedTraditionIds}
             /> : <ReviewFactGrid facts={[
-              { label: "Primary", value: saint.traditions.find((item) => item.isPrimary)?.tradition.name },
+              { label: "Primary", value: saint.traditions.find((item) => item.traditionId === primaryTraditionId)?.tradition.name },
               { label: "Traditions", value: saint.traditions.map((item) => item.tradition.name).join(", ") }
             ]} />}
           </ReviewSubsection>
