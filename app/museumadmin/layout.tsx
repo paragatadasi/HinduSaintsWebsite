@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { auth, isEmailAuthConfigured, isGoogleAuthConfigured } from "@/lib/auth";
 import { museumFlowZones } from "@/lib/museum-layout-groups";
-import { getMuseumData } from "@/lib/museum-data";
+import { getMuseumProposalData } from "@/lib/museum-proposals";
 import { requireCapability } from "@/lib/admin-access";
 import { AdminSignIn } from "@/components/admin/admin-sign-in";
 
@@ -34,7 +34,7 @@ export default async function MuseumAdminLayout({ children }: { children: React.
 
   await requireCapability("access_museum");
 
-  const { sections } = await getMuseumData();
+  const { sections } = getMuseumProposalData();
   const sectionByName = new Map(sections.map((section) => [section.name, section]));
   const groupedSectionNames = new Set<string>(museumFlowZones.flatMap((zone) => [...zone.sections]));
   const ungroupedSections = sections.filter((section) => !groupedSectionNames.has(section.name));

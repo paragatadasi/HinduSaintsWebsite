@@ -1,6 +1,10 @@
 # Museum data integration
 
-The museum workspace reads canonical CMS saints and private database assignments.
+The original section proposal browser reads the checked-in historical planning export.
+It stays available independently of database placements, with all tier listings and
+family groupings. Its preview controls are temporary and explicitly labeled.
+Placement review and saint decision pages use canonical CMS saints and private
+database assignments; saved decisions do not rewrite the historical proposal.
 Airtable remains an import/reference source. Museum `published` assignments mean
 accepted curatorial decisions, never public website content.
 
@@ -52,9 +56,10 @@ calls these museum proposals.
 
 The checked-in proposal export contains 1,399 distinct record IDs across 23
 sections. These are historical source rows, not a current production coverage
-claim. Database-linked saints are shown in the section browser; unmapped rows,
-missing placements, and competing primary placements remain discoverable in the
-review queue. Static family trees are labeled historical references on saint
+claim. All historical proposal rows remain visible in the section browser, including
+unmapped records. Missing or competing database placements remain discoverable
+in the review queue. Source-candidate counts describe eligible source records,
+not saved placements; preparing proposals does not accept them. Static family trees are labeled historical references on saint
 review pages and do not purport to show the current relationship graph.
 
 ## Source links and permissions

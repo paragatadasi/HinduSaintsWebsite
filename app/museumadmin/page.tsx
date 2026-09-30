@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Route } from "next";
 import { GitBranch, Map, Search } from "lucide-react";
 import { museumBridgeCards, museumFlowZones } from "@/lib/museum-layout-groups";
-import { getMuseumData } from "@/lib/museum-data";
+import { getMuseumProposalData, museumSectionSlug, searchMuseumPlacements } from "@/lib/museum-proposals";
 
 type MuseumAdminPageProps = {
   searchParams: Promise<{ q?: string | string[] }>;
@@ -11,8 +11,8 @@ type MuseumAdminPageProps = {
 export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageProps) {
   const { q } = await searchParams;
   const query = getSearchParam(q);
-  const { sections, placements } = await getMuseumData();
-  const matches = query ? placements.filter(row => [row.name,row.section,...row.normalizedPlaces].some(value => value.toLowerCase().includes(query.toLowerCase()))).slice(0,30) : [];
+  const { sections } = getMuseumProposalData();
+  const matches = query ? searchMuseumPlacements(query, 30) : [];
   const totals = sections.reduce(
     (acc, section) => ({
       saints: acc.saints + section.total,
@@ -28,9 +28,9 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
       <section className="museum-admin-hero museum-admin-hero--index">
         <div>
           <div className="eyebrow">Museum Admin</div>
-          <h1>Museum placements</h1>
+          <h1>Museum section proposals</h1>
           <p>
-            Explore database-linked saints and review their museum placements. Imported placements remain provisional until accepted.
+            Browse the original planning proposals by section, family, and display tier. These reference proposals remain available while database placements are reviewed.
           </p>
         </div>
         <div className="museum-admin-hero__stats" aria-label="Museum proposal totals">
@@ -42,7 +42,7 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
         </div>
       </section>
 
-      <p><Link className="museum-admin-button" href="/museumadmin/review">Review imports and unresolved records</Link></p>
+      <p><Link className="museum-admin-button" href="/museumadmin/review">Review and save database placements</Link></p>
       <section className="museum-admin-panel">
         <div className="museum-admin-section-heading">
           <div>
@@ -69,7 +69,7 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
             <p>{matches.length ? `${matches.length} matching placement${matches.length === 1 ? "" : "s"}` : "No matching placements found."}</p>
             <div className="museum-search-results__grid">
               {matches.map((match) => (
-                <Link className="museum-search-result interactive-surface" href={`/museumadmin/saints/${match.id}` as Route} key={match.id}>
+                <Link className="museum-search-result interactive-surface" href={`/museumadmin/${museumSectionSlug(match.section)}` as Route} key={match.id}>
                   <strong>{match.name}</strong>
                   <span>{match.section}</span>
                   <small>{match.tier} - {match.confidence} confidence</small>
@@ -97,8 +97,8 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
                 <h3>{zone.title}</h3>
                 <p>{zone.summary}</p>
                 <div className="museum-flow-zone__sections">
-                  {zone.sections.filter(name => sections.some(s => s.name === name)).map((section) => (
-                    <Link href={`/museumadmin/${sections.find(s => s.name === section)!.slug}` as Route} key={section}>
+                  {zone.sections.map((section) => (
+                    <Link href={`/museumadmin/${museumSectionSlug(section)}` as Route} key={section}>
                       {section}
                     </Link>
                   ))}
