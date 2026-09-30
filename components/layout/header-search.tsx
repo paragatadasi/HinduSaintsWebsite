@@ -2,6 +2,7 @@
 
 import { Search } from "lucide-react";
 import { useRef, useState } from "react";
+import { flushSync } from "react-dom";
 
 export function HeaderSearch() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -9,8 +10,9 @@ export function HeaderSearch() {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   function expandSearch() {
-    setIsExpanded(true);
-    window.requestAnimationFrame(() => inputRef.current?.focus());
+    // Keep focus in the tap event so mobile browsers can open the keyboard.
+    flushSync(() => setIsExpanded(true));
+    inputRef.current?.focus({ preventScroll: true });
   }
 
   return (
@@ -20,10 +22,13 @@ export function HeaderSearch() {
       data-expanded={isExpanded}
       data-telemetry-submit="header_search_submit"
       role="search"
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setIsExpanded(false);
+      }}
       onKeyDown={(event) => {
         if (event.key === "Escape") {
           setIsExpanded(false);
-          buttonRef.current?.focus();
+          buttonRef.current?.focus({ preventScroll: true });
         }
       }}
     >

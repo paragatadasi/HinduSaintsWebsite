@@ -1797,6 +1797,14 @@ html[data-route-entering="true"] body > main {
   width: 100%;
 }
 
+.site-header-actions {
+  align-items: center;
+  display: flex;
+  gap: var(--space-5);
+  min-height: var(--height-header-search);
+  min-width: 0;
+}
+
 .site-links {
   align-items: center;
   color: var(--color-cream);
@@ -1804,7 +1812,23 @@ html[data-route-entering="true"] body > main {
   font-size: 0.82rem;
   font-weight: 700;
   gap: var(--space-8);
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
   text-transform: uppercase;
+}
+
+.site-links a {
+  flex: 0 0 auto;
+}
+
+.site-links::-webkit-scrollbar {
+  display: none;
+}
+
+.site-header-actions:has(.header-search[data-expanded="true"]) .site-links {
+  justify-content: flex-end;
+  overflow-x: hidden;
 }
 
 .header-search {
@@ -1813,9 +1837,12 @@ html[data-route-entering="true"] body > main {
   flex: 0 0 auto;
   justify-content: flex-end;
   margin: 0;
+  width: var(--size-control);
 }
 
 .header-search input {
+  display: none;
+  font-size: var(--font-size-header-search);
   font-weight: 400;
   min-width: 0;
   opacity: 0;
@@ -1827,12 +1854,15 @@ html[data-route-entering="true"] body > main {
 
 .header-search.hero-search {
   margin: 0;
-  max-width: none;
+  max-width: calc(100% - var(--space-5));
+  min-height: var(--height-header-search);
+  width: min(var(--width-header-search), 100%);
 }
 
 .header-search[data-expanded="true"] input {
+  display: block;
   opacity: 1;
-  width: var(--width-header-search);
+  width: 0;
 }
 
 .header-search button {
@@ -1844,6 +1874,9 @@ html[data-route-entering="true"] body > main {
   display: inline-flex;
   justify-content: center;
   padding: var(--space-2);
+  flex: 0 0 var(--size-control);
+  height: var(--size-control);
+  width: var(--size-control);
 }
 
 .header-search button:focus-visible {
@@ -1855,9 +1888,9 @@ html[data-route-entering="true"] body > main {
   background: var(--color-bg);
   border: 2px solid var(--color-gold);
   color: var(--color-gold);
-  height: 50px;
+  height: var(--size-control);
   padding: 0;
-  width: 50px;
+  width: var(--size-control);
 }
 
 .site-footer {
@@ -10264,8 +10297,8 @@ select:not([multiple]) {
     flex: 0 0 auto;
   }
 
-  .header-search[data-expanded="true"] input {
-    width: min(var(--width-header-search), 56vw);
+  .site-header-actions {
+    width: 100%;
   }
 
   .saints-index {
