@@ -85,13 +85,14 @@ export function ReviewSubsection({
 type ReviewFact = {
   label: string;
   value?: ReactNode;
+  wide?: boolean;
 };
 
 export function ReviewFactGrid({ facts }: { facts: ReviewFact[] }) {
   return (
     <div className="review-fact-grid">
       {facts.map((fact) => (
-        <div className="review-fact" key={fact.label}>
+        <div className={clsx("review-fact", fact.wide && "review-fact--wide")} key={fact.label}>
           <strong>{fact.label}</strong>
           <span>{fact.value || "Not set"}</span>
         </div>

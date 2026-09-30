@@ -47,15 +47,17 @@ That instruction does not authorize the feature agent to merge into `main` or
 
 Handoff status:
 
-- `ready`: integrate on the next deployment request unless the release captain
-  finds a blocker.
+- `ready`: standing authorization for the active release captain to begin an
+  automatic release unless a blocker is found. It does not authorize the
+  feature agent to merge or push `main`/`deploy`.
 - `queued`: prepared and deployable, but intentionally waiting to be bundled
   with the next major, user-requested, or release-captain-triggered deployment.
 
 Queued handoffs require the same code quality, commit hygiene, verification,
 branch push, handoff file, and release-captain notification as ready handoffs.
 The only difference is urgency: queued work should not trigger a deployment by
-itself.
+itself and remains subject to a later explicit deployment request or compatible
+release already in progress.
 
 Each ready agent should add one handoff file on their feature branch:
 
@@ -102,10 +104,13 @@ Prisma CLI, TypeScript, and `tsx`; production-only pruning belongs to the
 deployed runtime image. Also avoid junctioning `node_modules` from another
 checkout, because Windows junctions can break Next.js standalone trace copying.
 
-When a deployment is requested, the release captain should consider all queued
-handoffs and include those that are still compatible with the requested release.
-If queued work is intentionally left out, report the branch and reason in the
-release summary.
+When a ready handoff arrives, the release captain should begin the release
+automatically. The same workflow applies when a deployment is explicitly
+requested: consider all queued handoffs and include those still compatible with
+the release. If queued work is intentionally left out, report the branch and
+reason in the release summary. Automatic release must pause for conflicts,
+failed integrated checks, missing required environment configuration, unsafe
+migration conditions, or another release already in progress.
 
 Ready or queued agents can create handoffs manually from `TEMPLATE.md`, but
 `npm run prepare:deployment` and `npm run queue:deployment` are the preferred
