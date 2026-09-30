@@ -1,5 +1,7 @@
 import { Prisma, type Confidence, type ContentStatus, type PlaceType, type RelationshipType } from "@/lib/generated/prisma/client";
 import { db } from "@/lib/db";
+import { recordMuseumProposal } from "@/lib/museum-import";
+import { museumFields } from "@/lib/museum-domain";
 import { createImportedSourceTitle } from "@/lib/source-display";
 import { cacheExternalImage } from "@/lib/external-image-cache";
 import { buildAirtableSaintSlugCandidates } from "@/lib/airtable-saint-slugs";
@@ -93,18 +95,6 @@ type CleanupDuplicatePlan = {
   candidateName?: string;
   candidateSaint?: ExternalSaintReference;
   sourceExternalId: string;
-};
-
-type CleanupMuseumSectionPlan = {
-  recordId: string;
-  airtableName?: string;
-  saint?: ExternalSaintReference;
-  sectionName: string;
-  assignmentType: "primary" | "alternative";
-  tier: "featured" | "secondary" | "tertiary";
-  confidence: Confidence;
-  rationale?: string;
-  internalPlacementNote?: string;
 };
 
 type CleanupPlacePlan = {
@@ -422,12 +412,30 @@ export async function runAirtableCleanupImport(options: AirtableSaintImportOptio
     }
   }
 
-  for (const plan of buildCleanupMuseumSectionPlans(rows, context)) {
-    try {
-      await applyCleanupMuseumSectionPlan(summary, plan, dryRun);
-    } catch (error) {
-      summary.errors.push(formatImportError(plan.recordId, plan.airtableName, error));
+  // Museum imports propose complete placements; they never append a second primary
+  // or overwrite a curator's accepted decision.
+  for (const row of rows) {
+    const fields = asObject(row.rawFieldsJson);
+    const payload = museumFields(fields);
+    const saint = context.saintByExternalId.get(airtableExternalId(row.baseId, row.recordId));
+    if (!saint) {
+      if (fields["Primary Museum Section"]) addCleanupIssue(summary, {recordId:row.recordId, field:"Primary Museum Section", reason:"unmapped_saint", message:"Museum source is not linked to a CMS saint."});
+      continue;
     }
+    if (!payload && fields["Primary Museum Section"]) {
+      addCleanupIssue(summary, {recordId:row.recordId, field:"Primary Museum Section", reason:"missing_value", message:"Invalid museum planning fields; review source values."});
+      continue;
+    }
+    const previous = await db.museumImportProposal.count({where:{externalRecordId:saint.externalRecordId,sourceKind:"airtable"}});
+    if (!payload && !previous) continue;
+    try {
+      if (dryRun) { summary.museumSectionAssignmentsCreated += 1; continue; }
+      const created = await db.$transaction(async tx => {
+        await tx.$queryRaw(Prisma.sql`SELECT id FROM "ExternalRecord" WHERE id = ${saint.externalRecordId} FOR UPDATE`);
+        return recordMuseumProposal(saint.externalRecordId,"airtable",payload,tx);
+      });
+      if (created) summary.museumSectionAssignmentsCreated++; else summary.museumSectionAssignmentsExisting++;
+    } catch(error) { summary.errors.push(formatImportError(row.recordId, stringField(fields,"Name"),error)); }
   }
 
   return summary;
@@ -1028,28 +1036,6 @@ function buildCleanupDuplicatePlans(rows: AirtableSaintRow[], context: Awaited<R
   return uniqueByNormalized(plans, (plan) => plan.sourceExternalId);
 }
 
-function buildCleanupMuseumSectionPlans(rows: AirtableSaintRow[], context: Awaited<ReturnType<typeof buildCleanupContext>>) {
-  const plans: CleanupMuseumSectionPlan[] = [];
-  for (const row of rows) {
-    const fields = asObject(row.rawFieldsJson);
-    const base = {
-      recordId: row.recordId,
-      airtableName: context.nameByRecordId.get(row.recordId),
-      saint: context.saintByExternalId.get(airtableExternalId(row.baseId, row.recordId)),
-      tier: parseMuseumTier(stringField(fields, "Museum Section Tier")),
-      confidence: parseConfidence(stringField(fields, "Museum Section Confidence")),
-      rationale: stringField(fields, "Museum Section Rationale"),
-      internalPlacementNote: stringField(fields, "Museum Section Internal Placement Note")
-    };
-    const primary = stringField(fields, "Primary Museum Section");
-    if (primary) plans.push({ ...base, sectionName: primary, assignmentType: "primary" });
-    for (const sectionName of listField(fields, "Alternative Museum Sections")) {
-      plans.push({ ...base, sectionName, assignmentType: "alternative" });
-    }
-  }
-  return uniqueByNormalized(plans, (plan) => `${plan.recordId}:${plan.assignmentType}:${plan.sectionName}`);
-}
-
 function buildAirtableNameMap(rows: Awaited<ReturnType<typeof findAirtableSaintRows>>) {
   return new Map(
     rows
@@ -1406,64 +1392,6 @@ async function applyCleanupDuplicatePlan(summary: AirtableCleanupImportSummary, 
   });
 }
 
-async function applyCleanupMuseumSectionPlan(summary: AirtableCleanupImportSummary, plan: CleanupMuseumSectionPlan, dryRun: boolean) {
-  if (!plan.saint) {
-    addCleanupIssue(summary, {
-      recordId: plan.recordId,
-      airtableName: plan.airtableName,
-      field: "Primary Museum Section",
-      reason: "unmapped_saint",
-      message: "Museum section row is not linked to a CMS saint."
-    });
-    return;
-  }
-
-  const slug = toSlug(plan.sectionName);
-  const existingSection = await db.museumSection.findUnique({ where: { slug }, select: { id: true } });
-  const existingAssignment = existingSection
-    ? await db.saintMuseumSection.findUnique({
-        where: {
-          saintId_museumSectionId_assignmentType: {
-            saintId: plan.saint.id,
-            museumSectionId: existingSection.id,
-            assignmentType: plan.assignmentType
-          }
-        },
-        select: { id: true }
-      })
-    : null;
-  if (existingAssignment) {
-    summary.museumSectionAssignmentsExisting += 1;
-    return;
-  }
-  summary.museumSectionAssignmentsCreated += 1;
-  if (dryRun) return;
-
-  const section = await db.museumSection.upsert({
-    where: { slug },
-    create: {
-      slug,
-      name: plan.sectionName,
-      status: "needs_review",
-      publicVisible: false
-    },
-    update: {}
-  });
-  await db.saintMuseumSection.create({
-    data: {
-      saintId: plan.saint.id,
-      museumSectionId: section.id,
-      assignmentType: plan.assignmentType,
-      tier: plan.tier,
-      confidence: plan.confidence,
-      rationale: plan.rationale,
-      internalPlacementNote: plan.internalPlacementNote,
-      status: "needs_review",
-      externalRecordId: plan.saint.externalRecordId
-    }
-  });
-}
-
 function addCleanupIssue(summary: AirtableCleanupImportSummary, issue: AirtableCleanupIssueDetail) {
   summary.relationshipCandidatesUnresolved += issue.field === "Master(s)" || issue.field === "Disciples" || issue.field === "Partner" || issue.field === "Incarnation" ? 1 : 0;
   summary.issues.push(issue);
@@ -1624,7 +1552,7 @@ function getCompletedJobMessage(summary: AirtableSaintImportSummary | AirtableCl
       `${summary.relationshipCandidatesCreated} relationships created`,
       `${summary.familyMembershipsCreated} family memberships`,
       `${summary.duplicateCandidatesCreated} duplicate candidates`,
-      `${summary.museumSectionAssignmentsCreated} museum assignments`,
+      `${summary.museumSectionAssignmentsCreated} museum proposals`,
       `${summary.relationshipCandidatesUnresolved} relationship issues`
     ].join(" ");
   }

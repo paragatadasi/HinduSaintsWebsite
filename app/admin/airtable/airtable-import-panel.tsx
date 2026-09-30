@@ -318,7 +318,7 @@ function schemaCountBadges(job: AirtableImportJobView) {
       `${job.familyGroupsCreated} families`,
       `${job.familyMembershipsCreated} family memberships`,
       `${job.duplicateCandidatesCreated} duplicates`,
-      `${job.museumSectionAssignmentsCreated} museum assignments`,
+      `${job.museumSectionAssignmentsCreated} museum proposals`,
       `${job.relationshipCandidatesUnresolved} relationship issues`,
       `${job.failedRows} failed`
     ];

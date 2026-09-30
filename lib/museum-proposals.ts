@@ -233,7 +233,7 @@ function topCounts(values: string[], max = 6) {
 
 export function getMuseumProposalData() {
   const proposalRows = readCsv(proposalsPath);
-  const summaryRows = readCsv(summaryPath);
+
   const labelRows = readCsv(labelsPath);
   const memberRows = readCsv(membersPath);
   const visualRows = readCsv(visualsPath);
@@ -271,6 +271,11 @@ export function getMuseumProposalData() {
     };
   });
 
+  return buildMuseumView(placements, membersById, familyLabels, treeByFamily, cleanupById);
+}
+
+export function buildMuseumView(placements: MuseumSaintPlacement[], membersById = new Map<string, Record<string,string>>(), familyLabels = new Map<string,string>(), treeByFamily = new Map<string,string>(), cleanupById = new Set<string>()) {
+  const summaryRows: Record<string,string>[] = [];
   const rowsBySection = new Map<string, MuseumSaintPlacement[]>();
   for (const row of placements) {
     if (!rowsBySection.has(row.section)) rowsBySection.set(row.section, []);

@@ -14,6 +14,7 @@ export type SaintMergeExecution = {
 
 export async function mergeSaintRecords(tx: Transaction, execution: SaintMergeExecution) {
   const { actorId, candidateId, fieldChoices, source, target } = execution;
+  await tx.$queryRaw(Prisma.sql`SELECT id FROM "Saint" WHERE id IN (${source.id}, ${target.id}) ORDER BY id FOR UPDATE`);
   const summary: Record<string, number> = {};
   const count = (key: string, amount = 1) => { summary[key] = (summary[key] ?? 0) + amount; };
 
@@ -34,7 +35,7 @@ export async function mergeSaintRecords(tx: Transaction, execution: SaintMergeEx
   count("traditions", await moveTraditions(tx, source.id, target.id));
   count("lineageEntries", await moveLineageEntries(tx, source.id, target.id));
   count("familyMemberships", await moveFamilyMemberships(tx, source.id, target.id));
-  count("museumAssignments", await moveMuseumAssignments(tx, source.id, target.id));
+  count("museumAssignments", await moveMuseumAssignments(tx, source.id, target.id, actorId));
   count("instagramMatches", await moveInstagramMatches(tx, source.id, target.id));
   count("saintRelationships", await moveSaintRelationships(tx, source.id, target.id));
 
@@ -308,25 +309,36 @@ async function moveFamilyMemberships(tx: Transaction, sourceId: string, targetId
   return sourceRows.length;
 }
 
-async function moveMuseumAssignments(tx: Transaction, sourceId: string, targetId: string) {
+export async function moveMuseumAssignments(tx: Transaction, sourceId: string, targetId: string, actorId?: string) {
   const [sourceRows, targetRows] = await Promise.all([
     tx.saintMuseumSection.findMany({ where: { saintId: sourceId } }),
     tx.saintMuseumSection.findMany({ where: { saintId: targetId } })
   ]);
-  const targetByKey = new Map(targetRows.map((row) => [`${row.museumSectionId}:${row.assignmentType}`, row]));
+  // Demote accepted placements before moving IDs; the partial unique index remains valid.
+  if (sourceRows.some(row => row.status !== "archived")) await tx.saintMuseumSection.updateMany({where:{saintId:{in:[sourceId,targetId]},status:"published"},data:{status:"needs_review"}});
+  await tx.museumSaintState.upsert({where:{saintId:targetId},create:{saintId:targetId,version:1},update:{version:{increment:1}}});
+  await tx.museumSaintState.updateMany({where:{saintId:sourceId},data:{version:{increment:1}}});
+  await tx.museumExhibitGroup.updateMany({where:{anchorSaintId:sourceId},data:{anchorSaintId:targetId}});
+  if(sourceRows.length) await tx.auditEvent.create({data:{userId:actorId,action:"museum.saint.merged",entityType:"Saint",entityId:targetId,beforeJson:JSON.parse(JSON.stringify({sourceId,sourceRows,targetRows})),afterJson:{targetId}}});
+  const targetByKey = new Map(targetRows.map((row) => [row.museumSectionId+":"+row.assignmentType, row]));
   for (const row of sourceRows) {
     const existing = targetByKey.get(`${row.museumSectionId}:${row.assignmentType}`);
     if (existing) {
       await tx.saintMuseumSection.update({ where: { id: existing.id }, data: {
         tier: preferredMuseumTier(existing.tier, row.tier),
         confidence: preferredConfidence(existing.confidence, row.confidence),
-        status: preferredContentStatus(existing.status, row.status),
+        status: existing.status === "archived" && row.status === "archived" ? "archived" : "needs_review",
+        exhibitGroupId: existing.exhibitGroupId ?? row.exhibitGroupId,
         rationale: combineNotes(existing.rationale, row.rationale),
         internalPlacementNote: combineNotes(existing.internalPlacementNote, row.internalPlacementNote),
         externalRecordId: existing.externalRecordId ?? row.externalRecordId
       } });
       await tx.saintMuseumSection.delete({ where: { id: row.id } });
     } else await tx.saintMuseumSection.update({ where: { id: row.id }, data: { saintId: targetId } });
+  }
+  if (sourceRows.some(row => row.status !== "archived")) {
+    await tx.saintMuseumSection.updateMany({where:{saintId:targetId,status:{not:"archived"}},data:{status:"needs_review"}});
+    await tx.reconciliationIssue.create({data:{issueType:"museum_merge_review",severity:"warning",entityType:"Saint",entityId:targetId,message:"Saint merge changed museum context. Review placement and exhibit anchors; original assignments are preserved in museum audit history."}});
   }
   return sourceRows.length;
 }

@@ -10,7 +10,7 @@ export async function SiteFooter() {
     <>
       <footer className="site-footer">
         <div className="page-shell">
-          <p className="site-footer__legal">
+          <div className="site-footer__legal">
             {content.copyright}{" "}
             <a href={content.imprint.href} target="_blank" rel="noopener noreferrer">
               {content.imprint.label}
@@ -24,7 +24,7 @@ export async function SiteFooter() {
               privacyPolicyHref={content.privacyPolicy.href}
               submissionKey={randomUUID()}
             />.
-          </p>
+          </div>
         </div>
       </footer>
       <CookieNotice privacyPolicyHref={content.privacyPolicy.href} />

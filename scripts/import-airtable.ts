@@ -154,11 +154,12 @@ function parseAirtableDate(value: string | undefined) {
   return value ? new Date(value) : null;
 }
 
-async function mirrorRecord(options: ImportOptions, table: string, record: AirtableRecord, importBatchId: string) {
+async function mirrorRecord(options: ImportOptions, table: string, record: AirtableRecord, importBatchId: string, tableId?: string) {
   const externalId = `${options.baseId}:${table}:${record.id}`;
   const rawPayload = {
     baseId: options.baseId,
     table,
+    ...(tableId ? { tableId } : {}),
     record
   };
   const now = new Date();
@@ -216,6 +217,19 @@ async function mirrorRecord(options: ImportOptions, table: string, record: Airta
   ]);
 }
 
+// Optional metadata improves source record links; lacking schema-read permission
+// must never prevent an ordinary records-only mirror import.
+async function sourceTableIds(options: ImportOptions) {
+  try {
+    const response = await fetch(AIRTABLE_API_URL + "/meta/bases/" + encodeURIComponent(options.baseId) + "/tables", {
+      headers: { Authorization: "Bearer " + options.token }, signal: AbortSignal.timeout(10000)
+    });
+    if (!response.ok) return new Map<string,string>();
+    const payload = await response.json() as { tables?: Array<{id:string;name:string}> };
+    return new Map((payload.tables || []).flatMap(table => [[table.name,table.id],[table.id,table.id]]));
+  } catch { return new Map<string,string>(); }
+}
+
 export async function runAirtableMirrorImport(options: ImportOptions): Promise<AirtableMirrorImportSummary> {
   const startedAt = new Date();
   const summary: Record<string, number> = {};
@@ -238,6 +252,7 @@ export async function runAirtableMirrorImport(options: ImportOptions): Promise<A
     };
   }
 
+  const tableIds = await sourceTableIds(options);
   const batch = await db.importBatch.create({
     data: {
       sourceType: "airtable",
@@ -253,7 +268,7 @@ export async function runAirtableMirrorImport(options: ImportOptions): Promise<A
       summary[table] = records.length;
 
       for (const record of records) {
-        await mirrorRecord(options, table, record, batch.id);
+        await mirrorRecord(options, table, record, batch.id, tableIds.get(table));
       }
 
       console.log(`${table}: mirrored ${records.length} records`);

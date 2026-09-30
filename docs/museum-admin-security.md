@@ -1,18 +1,24 @@
 # Museum admin security contract
 
-The Museum workspace is intentionally separate because it owns its own section
-navigation. Every page requires `access_museum`; direct family-tree asset routes
-also enforce that capability and return private, no-store, sandboxed SVG responses.
+Every museum page requires `access_museum`. The section browser, saint review,
+and coverage queue read only private, explicitly selected database contracts.
+Family-tree asset routes require the same capability and return private,
+no-store, sandboxed SVG responses.
 
-The current section controls are a planning preview only. Their client-side tier,
-anchor, and section changes are not persisted. When persisted Museum mutations
-are introduced, they must use `assertMuseumMutation()` from `lib/museum-access.ts`:
+All placement saves, proposal preparation, and proposal decisions call
+`assertMuseumMutation()` from `lib/museum-access.ts`. Ordinary writes require
+`manage_museum` (Site Admin or Curator). Irreversible deletion/bulk removal must
+additionally call `assertMuseumMutation(true)` for `manage_sensitive_actions`;
+this integration exposes no irreversible delete action.
 
-- ordinary Museum writes require `manage_museum` (Site Admin or Curator);
-- deletion, irreversible replacement, bulk removal, or similar destructive work
-  calls `assertMuseumMutation(true)`, additionally requiring
-  `manage_sensitive_actions` (Site Admin only).
+Placement changes are validated, version-checked, serialized on the saint row,
+and audited in the same transaction. Accepting a proposal checks its current
+status and source-to-saint mapping while holding the source lock. Source refreshes
+preserve reviewed snapshots, supersede obsolete pending proposals, and never
+silently overwrite human decisions.
 
-This helper is the seam for a possible future Museum Assistant role: that role can
-later receive `access_museum` and a narrower capability without weakening Curator
-or Site Admin boundaries. No Museum or relic data is exposed through public routes.
+Curators can inspect allowlisted museum source values and Airtable references
+inside the museum workflow without acquiring broad Source Data permissions.
+Private relic/museum payloads never enter public page contracts or public APIs.
+Museum assignment `published` means internally accepted and does not publish a
+saint or make museum metadata public. See `museum-data-integration.md` for rollout.
