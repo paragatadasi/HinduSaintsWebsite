@@ -491,6 +491,8 @@ model Saint {
   relationshipsTo          SaintRelationship[]     @relation("RelationshipTo")
   familyMemberships        SaintFamilyMember[]
   museumSectionAssignments SaintMuseumSection[]
+  museumState              MuseumSaintState?
+  museumAnchors            MuseumExhibitGroup[]
   homeQuoteConfigs         HomePageConfig[]        @relation("HomeQuoteSaint")
   traditionLineageEntries  TraditionLineageSaint[] @relation("TraditionLineageSaint")
   traditionLineageChildren TraditionLineageSaint[] @relation("TraditionLineageParentSaint")
@@ -835,13 +837,49 @@ model MuseumSection {
   status              ContentStatus        @default(needs_review)
   publicVisible       Boolean              @default(false)
   assignments         SaintMuseumSection[]
+  exhibitGroups       MuseumExhibitGroup[]
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
 
   @@index([status, publicVisible, sortOrder])
 }
 
+model MuseumSaintState {
+  saintId String @id
+  saint Saint @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  version Int @default(0)
+}
+
+model MuseumExhibitGroup {
+  id String @id @default(cuid())
+  museumSectionId String
+  museumSection MuseumSection @relation(fields: [museumSectionId], references: [id], onDelete: Cascade)
+  key String
+  label String
+  anchorSaintId String?
+  anchorSaint Saint? @relation(fields: [anchorSaintId], references: [id], onDelete: SetNull)
+  assignments SaintMuseumSection[]
+  @@unique([museumSectionId, key])
+}
+
+model MuseumImportProposal {
+  id String @id @default(cuid())
+  externalRecordId String
+  externalRecord ExternalRecord @relation(fields: [externalRecordId], references: [id], onDelete: Cascade)
+  sourceKind String
+  fingerprint String
+  payload Json
+  status String @default("pending")
+  reviewedById String?
+  reviewedAt DateTime?
+  createdAt DateTime @default(now())
+  @@unique([externalRecordId, sourceKind, fingerprint])
+  @@index([status, createdAt])
+}
+
 model SaintMuseumSection {
+  exhibitGroupId String?
+  exhibitGroup MuseumExhibitGroup? @relation(fields: [exhibitGroupId], references: [id], onDelete: SetNull)
   id                    String                      @id @default(cuid())
   saintId               String
   saint                 Saint                       @relation(fields: [saintId], references: [id], onDelete: Cascade)
@@ -1251,6 +1289,7 @@ model ExternalRecord {
   saintRelationshipSources SaintRelationshipSource[]
   saintFamilyMembers       SaintFamilyMember[]
   saintMuseumSections      SaintMuseumSection[]
+  museumProposals          MuseumImportProposal[]
   importedAt               DateTime                  @default(now())
   lastSeenAt               DateTime                  @default(now())
 

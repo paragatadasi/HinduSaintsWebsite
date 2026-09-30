@@ -3,78 +3,40 @@
 import Link from "next/link";
 import type { Route } from "next";
 import { useMemo, useState } from "react";
-import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine, X } from "lucide-react";
-import type { MuseumFamilyGroup, MuseumSaintPlacement, MuseumSection, MuseumTier } from "@/lib/museum-proposals";
+import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine } from "lucide-react";
+import type { MuseumFamilyGroup, MuseumSaintPlacement, MuseumSection } from "@/lib/museum-proposals";
 
 type MemberDetails = Record<string, Record<string, string>>;
 
 type MuseumSectionWorkspaceProps = {
   section: MuseumSection;
   memberDetails: MemberDetails;
-  sectionNames: string[];
 };
 
-type AnchorOption = {
-  id: string;
-  label: string;
-};
-
-const tiers: MuseumTier[] = ["Featured", "Secondary", "Tertiary"];
-
-export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }: MuseumSectionWorkspaceProps) {
-  const [selectedSaintId, setSelectedSaintId] = useState<string | null>(null);
-  const [tierById, setTierById] = useState<Record<string, MuseumTier>>({});
-  const [anchorById, setAnchorById] = useState<Record<string, string>>({});
-  const [primarySectionById, setPrimarySectionById] = useState<Record<string, string>>({});
+export function MuseumSectionWorkspace({ section, memberDetails }: MuseumSectionWorkspaceProps) {
   const [groupMode, setGroupMode] = useState<"saint" | "location">("saint");
   const [tertiaryQuery, setTertiaryQuery] = useState("");
   const [researchOnly, setResearchOnly] = useState(false);
-
-  const rowsById = useMemo(() => new Map(section.rows.map((row) => [row.id, row])), [section.rows]);
   const groupedPrimaryIds = useMemo(
     () => new Set(section.primaryGroups.flatMap((family) => family.featured.map((row) => row.id))),
     [section.primaryGroups]
   );
-  const selectedSaint = selectedSaintId ? rowsById.get(selectedSaintId) ?? null : null;
-
-  const tierFor = (row: MuseumSaintPlacement) => tierById[row.id] || row.tier;
-  const anchorFor = (row: MuseumSaintPlacement) => anchorById[row.id] || "";
-  const primarySectionFor = (row: MuseumSaintPlacement) => primarySectionById[row.id] || row.section;
-  const setTier = (id: string, tier: MuseumTier) => setTierById((current) => ({ ...current, [id]: tier }));
-  const setPrimarySection = (id: string, nextSection: string) => setPrimarySectionById((current) => ({ ...current, [id]: nextSection }));
-  const setAnchor = (id: string, anchor: string) => {
-    setAnchorById((current) => ({ ...current, [id]: anchor }));
-    if (anchor === `saint:${id}`) setTier(id, "Featured");
-    if (anchor && anchor !== `saint:${id}` && (tierById[id] || rowsById.get(id)?.tier) === "Featured") {
-      setTier(id, "Secondary");
-    }
-  };
-
-  const anchorOptions = useMemo<AnchorOption[]>(() => {
-    const familyOptions = section.primaryGroups.map((family) => ({
-      id: family.key,
-      label: family.featured[0]?.name || family.label
-    }));
-    const standaloneOptions = section.rows
-      .filter((row) => tierFor(row) === "Featured" && (!groupedPrimaryIds.has(row.id) || anchorFor(row) === `saint:${row.id}`))
-      .map((row) => ({ id: `saint:${row.id}`, label: row.name }));
-    return [...familyOptions, ...standaloneOptions]
-      .filter((option, index, options) => options.findIndex((candidate) => candidate.id === option.id) === index)
-      .sort((a, b) => a.label.localeCompare(b.label));
-  }, [anchorById, groupedPrimaryIds, section.primaryGroups, section.rows, tierById]);
+  const tierFor = (row: MuseumSaintPlacement) => row.tier;
 
   const standalonePrimaries = section.rows
-    .filter((row) => tierFor(row) === "Featured" && (!groupedPrimaryIds.has(row.id) || anchorFor(row) === `saint:${row.id}`))
+    .filter((row) => tierFor(row) === "Featured" && !groupedPrimaryIds.has(row.id))
     .sort(sortSaints);
   const tertiaryRows = section.rows
     .filter((row) => tierFor(row) === "Tertiary")
-    .filter((row) => !anchorFor(row))
     .filter((row) => matchesTertiaryQuery(row, tertiaryQuery))
     .filter((row) => !researchOnly || row.needsResearch)
     .sort(sortSaints);
   const tertiaryByLocation = groupTertiaryByLocation(tertiaryRows);
   const treeFamilies = [...section.primaryGroups, ...section.secondaryOnlyGroups, ...section.tertiaryGroups]
-    .filter((family, index, families) => family.treeFile && families.findIndex((candidate) => candidate.key === family.key) === index)
+    .filter(
+      (family, index, families) =>
+        family.treeFile && families.findIndex((candidate) => candidate.key === family.key) === index
+    )
     .sort((a, b) => b.rows.length - a.rows.length || a.label.localeCompare(b.label));
   const maxDistribution = Math.max(section.featured, section.secondary, section.tertiary, 1);
 
@@ -99,7 +61,10 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
                 <Metric label="Tertiary" value={section.tertiary} />
               </div>
               <p>{section.idea}</p>
-              <p className="museum-filter-note">Planning preview: tier, anchor, and section changes on this screen are temporary and are not saved yet.</p>
+              <p className="museum-filter-note">
+                Open a saint to review sources and save museum placement. Review signals include imported
+                placements awaiting acceptance.
+              </p>
             </div>
           </section>
 
@@ -113,34 +78,19 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
             <div className="museum-family-grid">
               {section.primaryGroups.map((family) => (
                 <FamilyCard
-                  anchorById={anchorById}
                   family={family}
                   key={family.key}
                   memberDetails={memberDetails}
-                  onSaintClick={setSelectedSaintId}
                   rows={section.rows}
-                  tierById={tierById}
                 />
               ))}
               {standalonePrimaries.map((row) => (
-                <PrimarySaintCard anchorById={anchorById} key={row.id} onSaintClick={setSelectedSaintId} row={row} rows={section.rows} />
+                <PrimarySaintCard key={row.id} row={row} rows={section.rows} />
               ))}
               {section.secondaryOnlyGroups.map((family) => (
-                <SecondaryFamilyCard
-                  anchorById={anchorById}
-                  family={family}
-                  key={family.key}
-                  onSaintClick={setSelectedSaintId}
-                  rows={section.rows}
-                  tierById={tierById}
-                />
+                <SecondaryFamilyCard family={family} key={family.key} rows={section.rows} />
               ))}
-              <SecondaryStandaloneCard
-                anchorById={anchorById}
-                onSaintClick={setSelectedSaintId}
-                rows={section.secondaryUngrouped}
-                tierById={tierById}
-              />
+              <SecondaryStandaloneCard rows={section.secondaryUngrouped} />
             </div>
           </section>
 
@@ -159,7 +109,10 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
                       <span>{family.label}</span>
                       <small>{family.rows.length} saints</small>
                     </summary>
-                    <img alt={`${family.label} relationship tree`} src={`/museumadmin/family-tree/${family.treeFile}`} />
+                    <img
+                      alt={`${family.label} relationship tree`}
+                      src={`/museumadmin/family-tree/${family.treeFile}`}
+                    />
                   </details>
                 ))}
               </div>
@@ -190,12 +143,18 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
                   By location
                 </button>
                 <label className="museum-check-toggle">
-                  <input checked={researchOnly} onChange={(event) => setResearchOnly(event.target.checked)} type="checkbox" />
+                  <input
+                    checked={researchOnly}
+                    onChange={(event) => setResearchOnly(event.target.checked)}
+                    type="checkbox"
+                  />
                   Needs research
                 </label>
               </div>
               <div className="museum-tertiary-search" role="search">
-                <label className="sr-only" htmlFor="tertiary-search">Search tertiary saints</label>
+                <label className="sr-only" htmlFor="tertiary-search">
+                  Search tertiary saints
+                </label>
                 <Search aria-hidden="true" size={16} />
                 <input
                   id="tertiary-search"
@@ -208,33 +167,35 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
             </div>
 
             {tertiaryQuery || researchOnly ? (
-              <p className="museum-filter-note">{tertiaryRows.length} tertiary saints match the current filters.</p>
+              <p className="museum-filter-note">
+                {tertiaryRows.length} tertiary saints match the current filters.
+              </p>
             ) : null}
 
-              {groupMode === "location" ? (
-                <div className="museum-location-groups">
-                  {tertiaryByLocation.map((location) => (
-                    <section className="museum-location-group" key={location.label}>
-                      <h3>{location.label}</h3>
-                      <div className="museum-location-place-groups">
-                        {location.places.map((place) => (
-                          <div className="museum-location-place-group" key={place.label}>
-                            <h4>{place.label}</h4>
-                            <div className="museum-tertiary-grid">
-                              {place.rows.map((row) => (
-                                <TertiaryCard key={row.id} locationMode="specific" onSaintClick={setSelectedSaintId} row={row} />
-                              ))}
-                            </div>
+            {groupMode === "location" ? (
+              <div className="museum-location-groups">
+                {tertiaryByLocation.map((location) => (
+                  <section className="museum-location-group" key={location.label}>
+                    <h3>{location.label}</h3>
+                    <div className="museum-location-place-groups">
+                      {location.places.map((place) => (
+                        <div className="museum-location-place-group" key={place.label}>
+                          <h4>{place.label}</h4>
+                          <div className="museum-tertiary-grid">
+                            {place.rows.map((row) => (
+                              <TertiaryCard key={row.id} locationMode="specific" row={row} />
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </section>
-                  ))}
-                </div>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                ))}
+              </div>
             ) : (
               <div className="museum-tertiary-grid">
                 {tertiaryRows.map((row) => (
-                  <TertiaryCard key={row.id} onSaintClick={setSelectedSaintId} row={row} />
+                  <TertiaryCard key={row.id} row={row} />
                 ))}
               </div>
             )}
@@ -247,8 +208,14 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
             <ul className="museum-health-list">
               {section.health.map((item) => (
                 <li key={item.label}>
-                  {item.tone === "good" ? <CheckCircle2 aria-hidden="true" size={17} /> : <AlertTriangle aria-hidden="true" size={17} />}
-                  <span>{item.count} {item.label}</span>
+                  {item.tone === "good" ? (
+                    <CheckCircle2 aria-hidden="true" size={17} />
+                  ) : (
+                    <AlertTriangle aria-hidden="true" size={17} />
+                  )}
+                  <span>
+                    {item.count} {item.label}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -279,51 +246,26 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
           </section>
         </aside>
       </div>
-
-      {selectedSaint ? (
-        <SaintModal
-          anchorOptions={anchorOptions}
-          anchorValue={anchorFor(selectedSaint)}
-          member={memberDetails[selectedSaint.id]}
-          onAnchorChange={(value) => setAnchor(selectedSaint.id, value)}
-          onClose={() => setSelectedSaintId(null)}
-          onPrimarySectionChange={(value) => setPrimarySection(selectedSaint.id, value)}
-          onTierChange={(tier) => setTier(selectedSaint.id, tier)}
-          primarySectionValue={primarySectionFor(selectedSaint)}
-          row={selectedSaint}
-          sectionNames={sectionNames}
-          tierValue={tierFor(selectedSaint)}
-        />
-      ) : null}
     </div>
   );
 }
 
 function FamilyCard({
-  anchorById,
   family,
   memberDetails,
-  onSaintClick,
-  rows,
-  tierById
+  rows
 }: {
-  anchorById: Record<string, string>;
   family: MuseumFamilyGroup;
   memberDetails: MemberDetails;
-  onSaintClick: (id: string) => void;
   rows: MuseumSaintPlacement[];
-  tierById: Record<string, MuseumTier>;
 }) {
-  const familyRows = family.rows.filter((row) => !anchorById[row.id] || anchorById[row.id] === family.key);
-  const familyIds = new Set(familyRows.map((row) => row.id));
-  const affiliatedRows = rows.filter((row) => anchorById[row.id] === family.key && !familyIds.has(row.id));
-  const cardRows = [...familyRows, ...affiliatedRows];
+  const cardRows = family.rows;
   const featured = cardRows
-    .filter((row) => (tierById[row.id] || row.tier) === "Featured")
-    .sort((a, b) => primaryRank(a, memberDetails) - primaryRank(b, memberDetails) || a.name.localeCompare(b.name));
-  const affiliated = cardRows
-    .filter((row) => (tierById[row.id] || row.tier) !== "Featured")
-    .sort(sortSaints);
+    .filter((row) => row.tier === "Featured")
+    .sort(
+      (a, b) => primaryRank(a, memberDetails) - primaryRank(b, memberDetails) || a.name.localeCompare(b.name)
+    );
+  const affiliated = cardRows.filter((row) => row.tier !== "Featured").sort(sortSaints);
   const [head, ...otherPrimaries] = featured;
   const isPeerGroup = family.key.startsWith("CUR-") && featured.length > 1;
 
@@ -331,75 +273,53 @@ function FamilyCard({
     <article className="museum-family-card">
       <div className="museum-family-card__header">
         <div>
-          <h3>{isPeerGroup ? family.label : head ? <SaintButton row={head} onSaintClick={onSaintClick} /> : family.label}</h3>
-          <p>{cardRows.length} saint{cardRows.length === 1 ? "" : "s"}</p>
+          <h3>{isPeerGroup ? family.label : head ? <SaintButton row={head} /> : family.label}</h3>
+          <p>
+            {cardRows.length} saint{cardRows.length === 1 ? "" : "s"}
+          </p>
         </div>
         <TreePine aria-hidden="true" size={19} />
       </div>
       <ul>
-        {isPeerGroup ? featured.map((row) => (
-          <li className="museum-family-card__primary" key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>
-        )) : otherPrimaries.map((row) => (
-          <li className="museum-family-card__primary" key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>
+        {isPeerGroup
+          ? featured.map((row) => (
+              <li className="museum-family-card__primary" key={row.id}>
+                <SaintButton row={row} />
+              </li>
+            ))
+          : otherPrimaries.map((row) => (
+              <li className="museum-family-card__primary" key={row.id}>
+                <SaintButton row={row} />
+              </li>
+            ))}
+        {affiliated.map((row) => (
+          <li key={row.id}>
+            <SaintButton row={row} />
+          </li>
         ))}
-        {affiliated.map((row) => <li key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>)}
       </ul>
     </article>
   );
 }
 
-function PrimarySaintCard({
-  anchorById,
-  onSaintClick,
-  row,
-  rows
-}: {
-  anchorById: Record<string, string>;
-  onSaintClick: (id: string) => void;
-  row: MuseumSaintPlacement;
-  rows: MuseumSaintPlacement[];
-}) {
-  const cardId = `saint:${row.id}`;
-  if (anchorById[row.id] && anchorById[row.id] !== cardId) return null;
-
-  const affiliated = rows.filter((candidate) => anchorById[candidate.id] === cardId && candidate.id !== row.id).sort(sortSaints);
-
+function PrimarySaintCard({ row, rows }: { row: MuseumSaintPlacement; rows: MuseumSaintPlacement[] }) {
   return (
     <article className="museum-family-card museum-family-card--standalone-primary">
       <div className="museum-family-card__header">
         <div>
-          <h3><SaintButton row={row} onSaintClick={onSaintClick} /></h3>
+          <h3>
+            <SaintButton row={row} />
+          </h3>
           <p>Primary saint</p>
         </div>
         <TreePine aria-hidden="true" size={19} />
       </div>
-      {affiliated.length ? (
-        <ul>
-          {affiliated.map((candidate) => <li key={candidate.id}><SaintButton row={candidate} onSaintClick={onSaintClick} /></li>)}
-        </ul>
-      ) : null}
     </article>
   );
 }
 
-function SecondaryFamilyCard({
-  anchorById,
-  family,
-  onSaintClick,
-  rows,
-  tierById
-}: {
-  anchorById: Record<string, string>;
-  family: MuseumFamilyGroup;
-  onSaintClick: (id: string) => void;
-  rows: MuseumSaintPlacement[];
-  tierById: Record<string, MuseumTier>;
-}) {
-  const familyRows = family.rows.filter((row) => !anchorById[row.id] || anchorById[row.id] === family.key);
-  const familyIds = new Set(familyRows.map((row) => row.id));
-  const cardRows = [...familyRows, ...rows.filter((row) => anchorById[row.id] === family.key && !familyIds.has(row.id))]
-    .filter((row) => (tierById[row.id] || row.tier) !== "Featured")
-    .sort(sortSaints);
+function SecondaryFamilyCard({ family, rows }: { family: MuseumFamilyGroup; rows: MuseumSaintPlacement[] }) {
+  const cardRows = family.rows.filter((row) => row.tier !== "Featured").sort(sortSaints);
   if (!cardRows.length) return null;
 
   return (
@@ -407,31 +327,24 @@ function SecondaryFamilyCard({
       <div className="museum-family-card__header">
         <div>
           <h3>{family.label}</h3>
-          <p>{cardRows.length} affiliated saint{cardRows.length === 1 ? "" : "s"}</p>
+          <p>
+            {cardRows.length} affiliated saint{cardRows.length === 1 ? "" : "s"}
+          </p>
         </div>
       </div>
       <ul>
-        {cardRows.map((row) => <li key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>)}
+        {cardRows.map((row) => (
+          <li key={row.id}>
+            <SaintButton row={row} />
+          </li>
+        ))}
       </ul>
     </article>
   );
 }
 
-function SecondaryStandaloneCard({
-  anchorById,
-  onSaintClick,
-  rows,
-  tierById
-}: {
-  anchorById: Record<string, string>;
-  onSaintClick: (id: string) => void;
-  rows: MuseumSaintPlacement[];
-  tierById: Record<string, MuseumTier>;
-}) {
-  const cardRows = rows
-    .filter((row) => !anchorById[row.id])
-    .filter((row) => (tierById[row.id] || row.tier) === "Secondary")
-    .sort(sortSaints);
+function SecondaryStandaloneCard({ rows }: { rows: MuseumSaintPlacement[] }) {
+  const cardRows = rows.filter((row) => row.tier === "Secondary").sort(sortSaints);
   if (!cardRows.length) return null;
 
   return (
@@ -439,110 +352,19 @@ function SecondaryStandaloneCard({
       <div className="museum-family-card__header">
         <div>
           <h3>Other affiliated saints</h3>
-          <p>{cardRows.length} affiliated saint{cardRows.length === 1 ? "" : "s"}</p>
+          <p>
+            {cardRows.length} affiliated saint{cardRows.length === 1 ? "" : "s"}
+          </p>
         </div>
       </div>
       <ul>
-        {cardRows.map((row) => <li key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>)}
+        {cardRows.map((row) => (
+          <li key={row.id}>
+            <SaintButton row={row} />
+          </li>
+        ))}
       </ul>
     </article>
-  );
-}
-
-function SaintModal({
-  anchorOptions,
-  anchorValue,
-  member,
-  onAnchorChange,
-  onClose,
-  onPrimarySectionChange,
-  onTierChange,
-  primarySectionValue,
-  row,
-  sectionNames,
-  tierValue
-}: {
-  anchorOptions: AnchorOption[];
-  anchorValue: string;
-  member?: Record<string, string>;
-  onAnchorChange: (value: string) => void;
-  onClose: () => void;
-  onPrimarySectionChange: (value: string) => void;
-  onTierChange: (tier: MuseumTier) => void;
-  primarySectionValue: string;
-  row: MuseumSaintPlacement;
-  sectionNames: string[];
-  tierValue: MuseumTier;
-}) {
-  return (
-    <div className="museum-modal-backdrop" role="presentation">
-      <section aria-modal="true" className="museum-modal" role="dialog">
-        <div className="museum-modal__header">
-          <div>
-            <div className="museum-admin-kicker">Saint proposal</div>
-            <h2>{row.name}</h2>
-          </div>
-          <button aria-label="Close saint proposal" className="museum-icon-button" onClick={onClose} type="button">
-            <X aria-hidden="true" size={18} />
-          </button>
-        </div>
-
-        <div className="museum-modal__actions">
-          <label>
-            <span>Status</span>
-            <select onChange={(event) => onTierChange(event.target.value as MuseumTier)} value={tierValue}>
-              {tiers.map((tier) => <option key={tier} value={tier}>{tier === "Featured" ? "Primary" : tier}</option>)}
-            </select>
-          </label>
-          <label>
-            <span>Primary section</span>
-            <select onChange={(event) => onPrimarySectionChange(event.target.value)} value={primarySectionValue}>
-              {sectionNames.map((name) => <option key={name} value={name}>{name}</option>)}
-            </select>
-          </label>
-          <label>
-            <span>Anchor card</span>
-            <select onChange={(event) => onAnchorChange(event.target.value)} value={anchorValue}>
-              <option value="">No explicit anchor</option>
-              <option value={`saint:${row.id}`}>Make a new anchor card with this saint</option>
-              {anchorOptions
-                .filter((option) => option.id !== `saint:${row.id}`)
-                .map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-            </select>
-          </label>
-        </div>
-
-        <dl className="museum-saint-data">
-          <DataItem label="Original primary section" value={row.section} />
-          {primarySectionValue !== row.section ? <DataItem label="Proposed primary section" value={primarySectionValue} /> : null}
-          <DataItem label="Alternate sections" value={row.alternatives.join("; ")} />
-          <DataItem label="Confidence" value={row.confidence} />
-          <DataItem label="Family" value={row.curatorialFamily || row.familyId} />
-          <DataItem label="Family size" value={row.familySize ? String(row.familySize) : ""} />
-          <DataItem label="Sampradaya" value={row.sampradaya} />
-          <DataItem label="Spiritual regions" value={row.spiritualRegions.join("; ")} />
-          <DataItem label="Normalized places" value={row.normalizedPlaces.join("; ")} />
-          <DataItem label="Birth / samadhi" value={[member?.BirthDate, member?.SamadhiDate].filter(Boolean).join(" - ")} />
-          <DataItem label="Masters" value={member?.Masters} />
-          <DataItem label="Disciples" value={member?.Disciples} />
-          <DataItem label="Partner" value={member?.Partner} />
-          <DataItem label="Incarnation" value={member?.Incarnation} />
-          <DataItem label="Rationale" value={row.rationale} wide />
-          <DataItem label="Internal note" value={row.note} wide />
-          <DataItem label="Review signal" value={row.needsResearch ? "Needs more research or cleanup review" : ""} wide />
-        </dl>
-      </section>
-    </div>
-  );
-}
-
-function DataItem({ label, value, wide }: { label: string; value?: string; wide?: boolean }) {
-  if (!value) return null;
-  return (
-    <div className={wide ? "museum-saint-data__wide" : undefined}>
-      <dt>{label}</dt>
-      <dd>{value}</dd>
-    </div>
   );
 }
 
@@ -567,33 +389,34 @@ function DistributionRow({ label, max, value }: { label: string; max: number; va
 
 function TertiaryCard({
   locationMode = "summary",
-  onSaintClick,
   row
 }: {
   locationMode?: "summary" | "specific";
-  onSaintClick: (id: string) => void;
   row: MuseumSaintPlacement;
 }) {
-  const placeLabel = locationMode === "specific"
-    ? specificLocationLabel(row)
-    : row.normalizedPlaces[0]
-      ? museumLocationLabel(row.normalizedPlaces[0])
-      : row.spiritualRegions[0] || "Place pending";
+  const placeLabel =
+    locationMode === "specific"
+      ? specificLocationLabel(row)
+      : row.normalizedPlaces[0]
+        ? museumLocationLabel(row.normalizedPlaces[0])
+        : row.spiritualRegions[0] || "Place pending";
 
   return (
     <article className="museum-tertiary-card">
-      <strong><SaintButton row={row} onSaintClick={onSaintClick} /></strong>
+      <strong>
+        <SaintButton row={row} />
+      </strong>
       <span>{placeLabel}</span>
       {row.needsResearch ? <small>Needs research</small> : null}
     </article>
   );
 }
 
-function SaintButton({ onSaintClick, row }: { onSaintClick: (id: string) => void; row: MuseumSaintPlacement }) {
+function SaintButton({ row }: { row: MuseumSaintPlacement }) {
   return (
-    <button className="museum-saint-link" onClick={() => onSaintClick(row.id)} type="button">
+    <Link className="museum-saint-link" href={`/museumadmin/saints/${row.id}` as Route}>
       {row.name}
-    </button>
+    </Link>
   );
 }
 
@@ -714,16 +537,20 @@ function museumLocationLabel(value: string | undefined, fallback = "Location pen
 function matchesTertiaryQuery(row: MuseumSaintPlacement, query: string) {
   if (!query) return true;
   const q = query.toLowerCase();
-  return row.name.toLowerCase().includes(q) ||
+  return (
+    row.name.toLowerCase().includes(q) ||
     row.normalizedPlaces.some((place) => place.toLowerCase().includes(q)) ||
-    row.spiritualRegions.some((region) => region.toLowerCase().includes(q));
+    row.spiritualRegions.some((region) => region.toLowerCase().includes(q))
+  );
 }
 
 function primaryRank(row: MuseumSaintPlacement, memberDetails: MemberDetails) {
   const member = memberDetails[row.id];
   if (!member) return 999999;
   const hasMaster = Boolean(member.Masters?.trim());
-  const discipleCount = String(member.Disciples || "").split(";").filter(Boolean).length;
+  const discipleCount = String(member.Disciples || "")
+    .split(";")
+    .filter(Boolean).length;
   const year = Number.parseInt(String(member.BirthYear || "9999"), 10) || 9999;
   return (hasMaster ? 100000 : 0) - discipleCount * 100 + year;
 }

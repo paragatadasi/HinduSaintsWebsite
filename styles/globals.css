@@ -1808,6 +1808,7 @@ html[data-route-entering="true"] body > main {
 }
 
 .header-search {
+  position: relative;
   align-items: center;
   display: flex;
   flex: 0 0 auto;
@@ -6238,7 +6239,14 @@ fieldset.admin-field {
   line-height: 1.2;
 }
 
+.review-fact--wide {
+  flex-basis: 100%;
+  border-left: 0;
+  padding-top: var(--space-4);
+}
+
 .review-fact span {
+  overflow-wrap: anywhere;
   color: var(--color-muted);
   font-weight: 400;
   line-height: 1.35;
