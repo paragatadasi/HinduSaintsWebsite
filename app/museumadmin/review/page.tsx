@@ -41,7 +41,7 @@ export default async function MuseumReviewPage({
         s.museumSectionAssignments.length > 1
           ? "Competing primary placements"
           : !s.museumSectionAssignments.length
-            ? "No primary placement"
+            ? pending.has(s.id) ? "Source proposal awaiting review; no saved primary placement" : "No saved primary placement"
             : s.museumSectionAssignments[0].status !== "published"
               ? "Imported placement needs review"
               : pending.has(s.id)
@@ -60,6 +60,7 @@ export default async function MuseumReviewPage({
         Database records are authoritative. Prepare proposals from the existing Airtable mirror and legacy
         exports, then review each saint. This does not contact or write to Airtable.
       </p>
+      <p><Link href="/museumadmin">Browse the original section proposals</Link>. Source candidates are importable source records, not saved placements or unique saints. Preparing proposals does not accept them. A missing saved primary placement does not mean the historical proposal is missing.</p>
       {params.staged ? <p role="status">{params.staged} new proposals prepared.</p> : null}
       <form action={stageMuseumImportsAction}>
         <button className="museum-admin-button" type="submit">
@@ -74,7 +75,7 @@ export default async function MuseumReviewPage({
       <ReviewWorkflow
         eyebrow="Coverage audit"
         title={`${queue.length} saints need placement review`}
-        description={`${audit.candidates} source candidates; ${audit.unresolved.length} unresolved source rows. Search to narrow lists of more than 100 records.`}
+        description={`${audit.candidates} source records eligible for proposal preparation; ${audit.unresolved.length} unresolved source rows. Search to narrow lists of more than 100 records.`}
       >
         <ReviewSection title="Canonical saints">
           <ul>

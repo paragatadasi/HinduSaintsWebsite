@@ -1,7 +1,8 @@
 # Museum admin security contract
 
-Every museum page requires `access_museum`. The section browser, saint review,
-and coverage queue read only private, explicitly selected database contracts.
+Every museum page requires `access_museum`. The section browser reads private
+checked-in planning references; its preview controls do not write data. Saint
+review and the coverage queue read private, explicitly selected database contracts.
 Family-tree asset routes require the same capability and return private,
 no-store, sandboxed SVG responses.
 
