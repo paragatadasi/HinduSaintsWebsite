@@ -315,6 +315,7 @@ export async function AdminSaintEditorPage({
             placeholder="Search the full saint catalog"
             required
             searchEndpoint={`/api/admin/saints/search?scope=full&exclude=${saint.id}`}
+            searchMinimumLength={1}
           />
           <label className="admin-field">
             <span>Why might these records overlap? <small>Optional</small></span>
