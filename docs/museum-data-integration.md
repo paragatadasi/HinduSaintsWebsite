@@ -213,3 +213,23 @@ PostgreSQL-compatible database using `MUSEUM_TEST_DATABASE_URL` (database name
 current-location uniqueness, transfer history, private working-card projection,
 source idempotence/reversions, saint merges and archival. Never run that fixture
 against production or a database containing useful data.
+
+
+### SPN source vitrine display (curator pilot)
+
+Working saint proposal cards show `SPN vitrine (source record)` from the website
+PostgreSQL Airtable mirror. This is a read-only source observation, not an
+approved relic placement. No Airtable request, CSV upload, new saint, merge,
+collection import, or migration is required to display existing mirrored values.
+
+The SPN Website base binding is explicit in `lib/museum-vitrine-source.ts`.
+Only exact base/table/record ExternalRecord links to active saints are eligible.
+All linked SPN rows must exist and agree on one valid vitrine and shelf; blank
+vitrines, malformed values, missing mirror rows, and conflicting locations are
+omitted. An absent shelf is allowed only when all source rows agree it is absent.
+Other museum bases cannot supply SPN locations. Original proposal comparisons
+and unlinked proposals are not annotated. No public saint route uses this data.
+
+The value changes when the existing mirror is refreshed. It does not update
+live from Airtable, and any source change newer than the mirror remains pending.
+Multiple locations and individual relic placement remain a later review phase.

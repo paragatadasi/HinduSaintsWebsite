@@ -473,6 +473,7 @@ function SaintModal({member,onClose,row,moveControl,profile}: {member?: Record<s
         <h3>Museum placement</h3>
         <dl className="museum-saint-data museum-saint-data--flat">
           <DataItem label="Section" value={row.section} />
+          {row.sourceVitrine ? <DataItem label="SPN vitrine (source record)" value={row.sourceVitrine.vitrine + (row.sourceVitrine.shelf ? " / Shelf " + row.sourceVitrine.shelf : "")} /> : null}
           <DataItem label="Placement status" value={row.placementState || "Original proposal"} />
           <DataItem label="Alternate sections" value={row.alternatives.join("; ")} />
           <DataItem label={row.placementState === "Confirmed" ? "Exhibit group" : "Proposed display group"} value={row.groupLabel || row.curatorialFamily || row.familyId} />
