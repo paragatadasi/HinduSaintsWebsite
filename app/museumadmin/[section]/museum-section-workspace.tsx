@@ -3,29 +3,22 @@
 import Link from "next/link";
 import type { Route } from "next";
 import { useMemo, useState } from "react";
-import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine, X } from "lucide-react";
+import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine, Triangle, X } from "lucide-react";
 import type { MuseumFamilyGroup, MuseumSaintPlacement, MuseumSection, MuseumTier } from "@/lib/museum-proposals";
+
+// Reference cards use source grouping; edits are saved in the linked review workflow.
+const anchorById: Record<string, string> = {};
+const tierById: Record<string, MuseumTier> = {};
 
 type MemberDetails = Record<string, Record<string, string>>;
 
 type MuseumSectionWorkspaceProps = {
   section: MuseumSection;
   memberDetails: MemberDetails;
-  sectionNames: string[];
 };
 
-type AnchorOption = {
-  id: string;
-  label: string;
-};
-
-const tiers: MuseumTier[] = ["Featured", "Secondary", "Tertiary"];
-
-export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }: MuseumSectionWorkspaceProps) {
+export function MuseumSectionWorkspace({ section, memberDetails }: MuseumSectionWorkspaceProps) {
   const [selectedSaintId, setSelectedSaintId] = useState<string | null>(null);
-  const [tierById, setTierById] = useState<Record<string, MuseumTier>>({});
-  const [anchorById, setAnchorById] = useState<Record<string, string>>({});
-  const [primarySectionById, setPrimarySectionById] = useState<Record<string, string>>({});
   const [groupMode, setGroupMode] = useState<"saint" | "location">("saint");
   const [tertiaryQuery, setTertiaryQuery] = useState("");
   const [researchOnly, setResearchOnly] = useState(false);
@@ -37,38 +30,11 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
   );
   const selectedSaint = selectedSaintId ? rowsById.get(selectedSaintId) ?? null : null;
 
-  const tierFor = (row: MuseumSaintPlacement) => tierById[row.id] || row.tier;
-  const anchorFor = (row: MuseumSaintPlacement) => anchorById[row.id] || "";
-  const primarySectionFor = (row: MuseumSaintPlacement) => primarySectionById[row.id] || row.section;
-  const setTier = (id: string, tier: MuseumTier) => setTierById((current) => ({ ...current, [id]: tier }));
-  const setPrimarySection = (id: string, nextSection: string) => setPrimarySectionById((current) => ({ ...current, [id]: nextSection }));
-  const setAnchor = (id: string, anchor: string) => {
-    setAnchorById((current) => ({ ...current, [id]: anchor }));
-    if (anchor === `saint:${id}`) setTier(id, "Featured");
-    if (anchor && anchor !== `saint:${id}` && (tierById[id] || rowsById.get(id)?.tier) === "Featured") {
-      setTier(id, "Secondary");
-    }
-  };
-
-  const anchorOptions = useMemo<AnchorOption[]>(() => {
-    const familyOptions = section.primaryGroups.map((family) => ({
-      id: family.key,
-      label: family.featured[0]?.name || family.label
-    }));
-    const standaloneOptions = section.rows
-      .filter((row) => tierFor(row) === "Featured" && (!groupedPrimaryIds.has(row.id) || anchorFor(row) === `saint:${row.id}`))
-      .map((row) => ({ id: `saint:${row.id}`, label: row.name }));
-    return [...familyOptions, ...standaloneOptions]
-      .filter((option, index, options) => options.findIndex((candidate) => candidate.id === option.id) === index)
-      .sort((a, b) => a.label.localeCompare(b.label));
-  }, [anchorById, groupedPrimaryIds, section.primaryGroups, section.rows, tierById]);
-
   const standalonePrimaries = section.rows
-    .filter((row) => tierFor(row) === "Featured" && (!groupedPrimaryIds.has(row.id) || anchorFor(row) === `saint:${row.id}`))
+    .filter((row) => row.tier === "Featured" && !groupedPrimaryIds.has(row.id))
     .sort(sortSaints);
   const tertiaryRows = section.rows
-    .filter((row) => tierFor(row) === "Tertiary")
-    .filter((row) => !anchorFor(row))
+    .filter((row) => row.tier === "Tertiary")
     .filter((row) => matchesTertiaryQuery(row, tertiaryQuery))
     .filter((row) => !researchOnly || row.needsResearch)
     .sort(sortSaints);
@@ -99,7 +65,7 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
                 <Metric label="Tertiary" value={section.tertiary} />
               </div>
               <p>{section.idea}</p>
-              <p className="museum-filter-note">Original planning proposal. Preview changes here are temporary; use Placement review to save database decisions. Saved decisions do not rewrite this historical proposal.</p>
+              <p className="museum-filter-note">These are the existing museum proposals. Open a saint and choose Review and confirm to save its placement or edit the proposal.</p>
             </div>
           </section>
 
@@ -156,7 +122,10 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
                 {treeFamilies.map((family) => (
                   <details className="museum-tree-panel" key={family.key}>
                     <summary>
-                      <span>{family.label}</span>
+                      <span className="museum-tree-panel__title">
+                        {family.label}
+                        <Triangle aria-hidden="true" className="museum-tree-panel__toggle" />
+                      </span>
                       <small>{family.rows.length} saints</small>
                     </summary>
                     <img alt={`${family.label} relationship tree`} src={`/museumadmin/family-tree/${family.treeFile}`} />
@@ -282,17 +251,9 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
 
       {selectedSaint ? (
         <SaintModal
-          anchorOptions={anchorOptions}
-          anchorValue={anchorFor(selectedSaint)}
           member={memberDetails[selectedSaint.id]}
-          onAnchorChange={(value) => setAnchor(selectedSaint.id, value)}
           onClose={() => setSelectedSaintId(null)}
-          onPrimarySectionChange={(value) => setPrimarySection(selectedSaint.id, value)}
-          onTierChange={(tier) => setTier(selectedSaint.id, tier)}
-          primarySectionValue={primarySectionFor(selectedSaint)}
           row={selectedSaint}
-          sectionNames={sectionNames}
-          tierValue={tierFor(selectedSaint)}
         />
       ) : null}
     </div>
@@ -449,31 +410,7 @@ function SecondaryStandaloneCard({
   );
 }
 
-function SaintModal({
-  anchorOptions,
-  anchorValue,
-  member,
-  onAnchorChange,
-  onClose,
-  onPrimarySectionChange,
-  onTierChange,
-  primarySectionValue,
-  row,
-  sectionNames,
-  tierValue
-}: {
-  anchorOptions: AnchorOption[];
-  anchorValue: string;
-  member?: Record<string, string>;
-  onAnchorChange: (value: string) => void;
-  onClose: () => void;
-  onPrimarySectionChange: (value: string) => void;
-  onTierChange: (tier: MuseumTier) => void;
-  primarySectionValue: string;
-  row: MuseumSaintPlacement;
-  sectionNames: string[];
-  tierValue: MuseumTier;
-}) {
+function SaintModal({member,onClose,row}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement}) {
   return (
     <div className="museum-modal-backdrop" role="presentation">
       <section aria-modal="true" className="museum-modal" role="dialog">
@@ -487,36 +424,10 @@ function SaintModal({
           </button>
         </div>
 
-        <p className="museum-filter-note">These are historical proposal details. Preview controls below do not save changes.</p>
-        <p><Link href={`/museumadmin/review?q=${encodeURIComponent(row.name)}`}>Find the saint in placement review</Link></p>
-        <div className="museum-modal__actions">
-          <label>
-            <span>Status</span>
-            <select onChange={(event) => onTierChange(event.target.value as MuseumTier)} value={tierValue}>
-              {tiers.map((tier) => <option key={tier} value={tier}>{tier === "Featured" ? "Primary" : tier}</option>)}
-            </select>
-          </label>
-          <label>
-            <span>Primary section</span>
-            <select onChange={(event) => onPrimarySectionChange(event.target.value)} value={primarySectionValue}>
-              {sectionNames.map((name) => <option key={name} value={name}>{name}</option>)}
-            </select>
-          </label>
-          <label>
-            <span>Anchor card</span>
-            <select onChange={(event) => onAnchorChange(event.target.value)} value={anchorValue}>
-              <option value="">No explicit anchor</option>
-              <option value={`saint:${row.id}`}>Make a new anchor card with this saint</option>
-              {anchorOptions
-                .filter((option) => option.id !== `saint:${row.id}`)
-                .map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-            </select>
-          </label>
-        </div>
+        {row.saintId ? <p><Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>Review and confirm proposal</Link></p> : <p>This proposal is preserved, but its saint link needs reconciliation before it can be confirmed. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.id)}`}>Review source link</Link></p>}
 
         <dl className="museum-saint-data">
           <DataItem label="Original primary section" value={row.section} />
-          {primarySectionValue !== row.section ? <DataItem label="Proposed primary section" value={primarySectionValue} /> : null}
           <DataItem label="Alternate sections" value={row.alternatives.join("; ")} />
           <DataItem label="Confidence" value={row.confidence} />
           <DataItem label="Family" value={row.curatorialFamily || row.familyId} />

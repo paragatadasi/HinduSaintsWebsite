@@ -8138,6 +8138,28 @@ fieldset.admin-field {
   padding: var(--space-3) var(--space-4);
 }
 
+.museum-tree-panel summary::-webkit-details-marker {
+  display: none;
+}
+
+.museum-tree-panel__title {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--space-2);
+}
+
+.museum-tree-panel__toggle {
+  fill: currentColor;
+  flex: 0 0 auto;
+  height: var(--size-icon-xs);
+  transform: rotate(180deg);
+  width: var(--size-icon-xs);
+}
+
+.museum-tree-panel[open] > summary .museum-tree-panel__toggle {
+  transform: rotate(0deg);
+}
+
 .museum-tree-panel summary small {
   color: var(--color-muted);
   font-size: 0.78rem;
