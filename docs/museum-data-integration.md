@@ -6,7 +6,7 @@ including unresolved records, and link matched records directly to their review.
 Curators can confirm a proposal or edit it before confirming. The original source
 snapshot and the decision are saved atomically; simply browsing writes nothing.
 Confirmed placements remain separate from source proposals and are never silently
-overwritten. Section proposal listings continue to show the original proposal.
+overwritten. The working section browser uses canonical saint details and confirmed placements, falling back to existing proposals until confirmation. The original export remains a separate comparison view.
 Airtable remains an import/reference source. Museum `published` assignments mean
 accepted curatorial decisions, never public website content.
 
@@ -57,7 +57,7 @@ calls these museum proposals.
 
 The checked-in proposal export contains 1,399 distinct record IDs across 23
 sections. These are source rows, not a current production coverage
-claim. All existing proposal rows remain visible in the section browser, including
+claim. All existing proposal rows remain accessible in the original comparison, including
 unmapped records. Missing or competing database placements remain discoverable
 in the review queue. Source-candidate counts describe eligible source records,
 not confirmed placements. Static family trees are labeled historical references on saint
@@ -99,3 +99,62 @@ role restrictions, noindex, and exclusion of private museum notes from public
 saint HTML. Two shared layout fixes discovered during these checks correct invalid
 footer nesting (which interrupted hydration) and contain the header search label
 within its scrolling mobile navigation.
+
+## Current cards and mirror coverage
+
+The working browser, sidebar counts, and search use one authenticated,
+request-cached database projection. Current names, aliases, dates, traditions,
+places, spiritual regions, family memberships and relationships come from the
+canonical records. A canonical blank remains blank; it is not filled with an
+older export value. Relationships display their evidence/review state. Museum
+display groups remain separate from canonical family memberships.
+
+Confirmed placements control section and tier. Without a confirmed placement,
+the existing proposal remains visible. Unlinked or ambiguous source identities
+retain their export details with an explicit label. Identical proposals for
+merged saint identities are deduplicated; differing proposals remain labeled for
+review. Moving the last saint out never removes a section. Every original section
+has an Original proposal comparison, including the original reference tree images.
+No read causes an import or confirmation.
+
+Visit /admin/airtable/mirror-audit with view_source_data permission for a read-only
+field inventory: configured tables/view, import dates, per-field populated/missing
+counts, value shapes, and possible collection fields. It returns no raw record
+values. The equivalent command is:
+
+    npx tsx scripts/audit-museum-mirror.ts
+
+Run the command with an approved read-only database connection. It uses a
+read-only transaction and does not call Airtable. The mirror importer preserves
+every returned field, but only reads configured tables and an optional view.
+Old rows remain when later imports omit them. Therefore observed field coverage
+is not proof of a complete or current Airtable base. Linked record IDs do not
+include the referenced table contents unless that table was imported too.
+
+No vitrine/collection model or additional import is introduced by the card work.
+Use the production coverage report to determine whether collection data already
+exists and whether a saint can have multiple items/locations before defining
+that model. Broader collection-field reconciliation depends on that field map;
+existing placement reconciliation remains in the museum review workflow.
+
+## Family proposal moves
+
+The coordinated family-move feature requires
+20261001150000_museum_family_proposal_moves in the deployment migration phase.
+It adds a private, versioned destination override keyed by the original
+curatorial-family key (or original family ID). It changes proposals for every
+original member, including unlinked members and members proposed in other
+sections. Confirmed assignments change only after individual review.
+
+Move family is available on original-family cards and their saint detail dialogs
+to users with manage_museum. Original comparison values never change; its move
+controls act on the working proposals. Confirmed exhibit-group keys do not expose
+a bulk source-family move. The shared working view applies overrides before
+canonical saint details and confirmed placements. Concurrent or stale moves are
+rejected, and decisions remain in audit history.
+
+No environment-variable changes are required. Deploy the migration, move service,
+and working-view adapter together. Browser checks cover submission, destination
+redirect, reload, source-section removal, original comparison, preserved confirmed
+placement, canonical search, mobile containment, mirror-audit permissions, and
+absence of raw mirror values in audit HTML.
