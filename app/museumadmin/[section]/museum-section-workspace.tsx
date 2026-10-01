@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { Route } from "next";
 import { useMemo, useState } from "react";
-import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine, X } from "lucide-react";
+import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine, Triangle, X } from "lucide-react";
 import type { MuseumFamilyGroup, MuseumSaintPlacement, MuseumSection, MuseumTier } from "@/lib/museum-proposals";
 
 type MemberDetails = Record<string, Record<string, string>>;
@@ -156,7 +156,10 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
                 {treeFamilies.map((family) => (
                   <details className="museum-tree-panel" key={family.key}>
                     <summary>
-                      <span>{family.label}</span>
+                      <span className="museum-tree-panel__title">
+                        {family.label}
+                        <Triangle aria-hidden="true" className="museum-tree-panel__toggle" />
+                      </span>
                       <small>{family.rows.length} saints</small>
                     </summary>
                     <img alt={`${family.label} relationship tree`} src={`/museumadmin/family-tree/${family.treeFile}`} />
