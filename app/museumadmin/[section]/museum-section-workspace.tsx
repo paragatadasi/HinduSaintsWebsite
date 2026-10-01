@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import type { Route } from "next";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine, Triangle, X } from "lucide-react";
 import type { MuseumFamilyGroup, MuseumSaintPlacement, MuseumSection, MuseumTier } from "@/lib/museum-proposals";
 
+import { MuseumSaintProfile } from "@/components/admin/museum-saint-profile";
+import type { MuseumSaintProfile as SaintProfile } from "@/lib/museum-saint-profile";
+import { formatSaintDate } from "@/lib/public-date-format";
 import { MuseumFamilyMove } from "@/components/admin/museum-family-move";
 import type { FamilyMoveOption } from "@/lib/museum-family-move-domain";
 
@@ -22,10 +25,11 @@ type MuseumSectionWorkspaceProps = {
   familyMoveOptions?: FamilyMoveOption[];
   sectionNames?: string[];
   canManage?: boolean;
+  saintProfiles?: Record<string, SaintProfile>;
 };
 
 export function MuseumSectionWorkspace({
-  section, memberDetails, originalView = false, familyMoveOptions = [], sectionNames = [], canManage = false
+  section, memberDetails, originalView = false, familyMoveOptions = [], sectionNames = [], canManage = false, saintProfiles = {}
 }: MuseumSectionWorkspaceProps) {
   const moveOptions = new Map(familyMoveOptions.map(f => [f.key, f]));
   function familyMove(key: string, card = false) {
@@ -267,6 +271,8 @@ export function MuseumSectionWorkspace({
 
       {selectedSaint ? (
         <SaintModal
+          key={selectedSaint.id}
+          profile={selectedSaint.saintId ? saintProfiles[selectedSaint.saintId] : undefined}
           member={memberDetails[selectedSaint.id]}
           onClose={() => setSelectedSaintId(null)}
           row={selectedSaint}
@@ -434,48 +440,63 @@ function SecondaryStandaloneCard({
   );
 }
 
-function SaintModal({member,onClose,row,moveControl}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement;moveControl?: ReactNode}) {
+function SaintModal({member,onClose,row,moveControl,profile}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement;moveControl?: ReactNode;profile?: SaintProfile}) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
+  useEffect(() => { dialog.current?.showModal(); }, []);
+  const fallback: SaintProfile = {
+    name: row.name, description: "", images: [],
+    facts: [
+      { label: "Birth date", value: formatSaintDate({ raw: member?.BirthDate }) || "" },
+      { label: "Samadhi date", value: formatSaintDate({ raw: member?.SamadhiDate }) || "" },
+      { label: "Places", value: row.normalizedPlaces.join(" · ") },
+      { label: "Tradition", value: row.sampradaya }
+    ].filter(f => f.value)
+  };
+  const relationships = [
+    ["Families and roles", member?.Families], ["Masters", member?.Masters],
+    ["Disciples", member?.Disciples], ["Partner", member?.Partner],
+    ["Incarnation", member?.Incarnation], ["Other relationships", member?.["Other relationships"]]
+  ].filter((entry): entry is [string, string] => Boolean(entry[1]));
   return (
-    <div className="museum-modal-backdrop" role="presentation">
-      <section aria-modal="true" className="museum-modal" role="dialog">
-        <div className="museum-modal__header">
-          <div>
-            <div className="museum-admin-kicker">Saint proposal</div>
-            <h2>{row.name}</h2>
-          </div>
-          <button aria-label="Close saint proposal" className="museum-icon-button" onClick={onClose} type="button">
-            <X aria-hidden="true" size={18} />
-          </button>
-        </div>
-
-        {row.saintId ? <p><Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>{row.placementState === "Confirmed" ? "Review placement" : "Review and confirm proposal"}</Link></p> : <p>This proposal is preserved, but its saint link needs reconciliation before it can be confirmed. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.sourceRecordId || row.id)}`}>Review source link</Link></p>}
-
-        {moveControl}
-        <dl className="museum-saint-data">
-          <DataItem label="Primary section" value={row.section} />
+    <dialog ref={dialog} className="museum-modal museum-modal--profile" aria-labelledby={titleId} onClose={onClose}>
+      <div className="museum-modal__header">
+        <div className="museum-admin-kicker">Saint overview</div>
+        <button aria-label="Close saint overview" className="museum-icon-button" onClick={() => dialog.current?.close()} type="button"><X aria-hidden="true" size={18} /></button>
+      </div>
+      <MuseumSaintProfile profile={profile || fallback} titleId={titleId} />
+      {relationships.length ? <section className="museum-saint-review-section">
+        <h3>Relationships</h3>
+        <dl className="museum-saint-data museum-saint-data--flat">{relationships.map(([label, value]) => <DataItem key={label} label={label} value={value} />)}</dl>
+      </section> : null}
+      <section className="museum-saint-review-section">
+        <h3>Museum placement</h3>
+        <dl className="museum-saint-data museum-saint-data--flat">
+          <DataItem label="Section" value={row.section} />
           <DataItem label="Placement status" value={row.placementState || "Original proposal"} />
           <DataItem label="Alternate sections" value={row.alternatives.join("; ")} />
-          <DataItem label="Confidence" value={row.confidence} />
           <DataItem label={row.placementState === "Confirmed" ? "Exhibit group" : "Proposed display group"} value={row.groupLabel || row.curatorialFamily || row.familyId} />
-          <DataItem label="Current families and roles" value={member?.Families} />
+          <DataItem label="Confidence" value={row.confidence} />
+        </dl>
+        <div className="review-actions">
+          {row.saintId ? <Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>{row.placementState === "Confirmed" ? "Review placement" : "Review and confirm proposal"}</Link> : <p>This proposal needs a saint link before confirmation. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.sourceRecordId || row.id)}`}>Review source link</Link></p>}
+          {moveControl}
+        </div>
+      </section>
+      <details className="museum-saint-review-section">
+        <summary>Proposal notes and source details</summary>
+        <dl className="museum-saint-data museum-saint-data--flat">
           <DataItem label="Original group size" value={row.familySize ? String(row.familySize) : ""} />
-          <DataItem label="Sampradaya" value={row.sampradaya || "Not recorded"} />
-          <DataItem label="Spiritual regions" value={row.spiritualRegions.join("; ") || "Not recorded"} />
-          <DataItem label="Normalized places" value={row.normalizedPlaces.join("; ") || "Not recorded"} />
-          <DataItem label="Birth" value={member?.BirthDate || "Not recorded"} />
-          <DataItem label="Samadhi" value={member?.SamadhiDate || "Not recorded"} />
-          <DataItem label="Masters" value={member?.Masters} />
-          <DataItem label="Disciples" value={member?.Disciples} />
-          <DataItem label="Partner" value={member?.Partner} />
-          <DataItem label="Incarnation" value={member?.Incarnation} />
-          <DataItem label="Other relationships" value={member?.["Other relationships"]} wide />
+          <DataItem label="Spiritual regions" value={row.spiritualRegions.join("; ")} />
+          <DataItem label="Proposal places" value={row.normalizedPlaces.join("; ")} />
+          <DataItem label="Proposal tradition" value={row.sampradaya} />
           <DataItem label="Source link issue" value={row.linkIssue} wide />
           <DataItem label="Rationale" value={row.rationale} wide />
           <DataItem label="Internal note" value={row.note} wide />
           <DataItem label="Review signal" value={row.needsResearch ? "Needs more research or cleanup review" : ""} wide />
         </dl>
-      </section>
-    </div>
+      </details>
+    </dialog>
   );
 }
 
