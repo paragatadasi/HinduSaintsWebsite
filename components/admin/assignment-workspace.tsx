@@ -92,6 +92,7 @@ export async function AssignmentWorkspace({
               placeholder="Search content"
               required
               searchEndpoint="/api/admin/assignment-targets"
+              searchMinimumLength={1}
             />
             <div className="admin-form-grid admin-form-grid--assignment">
               <label className="admin-field">

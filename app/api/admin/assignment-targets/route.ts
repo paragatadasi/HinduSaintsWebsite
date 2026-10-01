@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
 import { saintSearchDescription, searchSaintCatalog } from "@/lib/admin-saint-search";
 
-const querySchema = z.string().trim().min(2).max(100);
+const querySchema = z.string().trim().min(1).max(100);
 const RESULTS_PER_TYPE = 30;
 const RESULT_LIMIT = 60;
 

@@ -53,7 +53,12 @@ export function SearchableSelect({
   const candidateOptions = shouldSearchRemotely
     ? (hasCurrentRemoteResults ? remoteSearch.options : [])
     : options;
-  const visibleOptions = useMemo(() => filterOptions(candidateOptions, query), [candidateOptions, query]);
+  // Remote results have already been matched and ranked by the domain search.
+  // Filtering again here would discard aliases, transliterations and fuzzy matches.
+  const visibleOptions = useMemo(
+    () => shouldSearchRemotely ? candidateOptions : filterOptions(candidateOptions, query),
+    [candidateOptions, query, shouldSearchRemotely]
+  );
   const selectedOption = [...options, ...(remoteSearch?.options ?? [])].find((option) => option.value === selectedValue);
   const activeOption = visibleOptions[activeIndex];
 
