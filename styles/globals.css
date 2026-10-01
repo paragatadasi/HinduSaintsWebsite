@@ -7998,6 +7998,10 @@ fieldset.admin-field {
 }
 
 .museum-search-result {
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: start;
   display: grid;
   gap: var(--space-1);
   padding: var(--space-3);
@@ -8371,6 +8375,7 @@ fieldset.admin-field {
 }
 
 .museum-saint-data div {
+  min-width: 0;
   background: color-mix(in srgb, var(--color-bg) 72%, var(--color-surface));
   border: 1px solid color-mix(in srgb, var(--color-border) 48%, transparent);
   border-radius: var(--radius-card);
@@ -8392,6 +8397,7 @@ fieldset.admin-field {
 }
 
 .museum-saint-data dd {
+  overflow-wrap: anywhere;
   color: var(--color-text);
   font-size: 0.9rem;
   margin: 0;

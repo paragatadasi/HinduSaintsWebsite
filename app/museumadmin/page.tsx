@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { MuseumSearchResults } from "@/components/admin/museum-search-results";
+import { getMuseumAnchorOptions } from "@/lib/museum-proposal-preview";
 import type { Route } from "next";
 import { GitBranch, Map, Search } from "lucide-react";
 import { museumBridgeCards, museumFlowZones } from "@/lib/museum-layout-groups";
@@ -11,7 +13,7 @@ type MuseumAdminPageProps = {
 export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageProps) {
   const { q } = await searchParams;
   const query = getSearchParam(q);
-  const { sections } = getMuseumProposalData();
+  const { sections, membersById } = getMuseumProposalData();
   const matches = query ? searchMuseumPlacements(query, 30) : [];
   const totals = sections.reduce(
     (acc, section) => ({
@@ -65,18 +67,15 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
         </form>
 
         {query ? (
-          <div className="museum-search-results">
-            <p>{matches.length ? `${matches.length} matching placement${matches.length === 1 ? "" : "s"}` : "No matching placements found."}</p>
-            <div className="museum-search-results__grid">
-              {matches.map((match) => (
-                <Link className="museum-search-result interactive-surface" href={`/museumadmin/${museumSectionSlug(match.section)}` as Route} key={match.id}>
-                  <strong>{match.name}</strong>
-                  <span>{match.section}</span>
-                  <small>{match.tier} - {match.confidence} confidence</small>
-                </Link>
-              ))}
-            </div>
-          </div>
+          <MuseumSearchResults
+            key={query}
+            results={matches.map((row) => ({
+              row,
+              member: membersById.get(row.id),
+              anchorOptions: getMuseumAnchorOptions(sections.find((section) => section.name === row.section)!)
+            }))}
+            sectionNames={sections.map((section) => section.name)}
+          />
         ) : null}
       </section>
 

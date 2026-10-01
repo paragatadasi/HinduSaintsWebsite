@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { MuseumSaintProposalDialog } from "@/components/admin/museum-saint-proposal-dialog";
+import { getMuseumAnchorOptions } from "@/lib/museum-proposal-preview";
 import type { Route } from "next";
 import { useMemo, useState } from "react";
-import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine, X } from "lucide-react";
+import { rankMuseumPlacementSearchResults } from "@/lib/museum-search";
+import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine } from "lucide-react";
 import type { MuseumFamilyGroup, MuseumSaintPlacement, MuseumSection, MuseumTier } from "@/lib/museum-proposals";
 
 type MemberDetails = Record<string, Record<string, string>>;
@@ -14,12 +17,7 @@ type MuseumSectionWorkspaceProps = {
   sectionNames: string[];
 };
 
-type AnchorOption = {
-  id: string;
-  label: string;
-};
 
-const tiers: MuseumTier[] = ["Featured", "Secondary", "Tertiary"];
 
 export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }: MuseumSectionWorkspaceProps) {
   const [selectedSaintId, setSelectedSaintId] = useState<string | null>(null);
@@ -50,28 +48,22 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
     }
   };
 
-  const anchorOptions = useMemo<AnchorOption[]>(() => {
-    const familyOptions = section.primaryGroups.map((family) => ({
-      id: family.key,
-      label: family.featured[0]?.name || family.label
-    }));
-    const standaloneOptions = section.rows
-      .filter((row) => tierFor(row) === "Featured" && (!groupedPrimaryIds.has(row.id) || anchorFor(row) === `saint:${row.id}`))
-      .map((row) => ({ id: `saint:${row.id}`, label: row.name }));
-    return [...familyOptions, ...standaloneOptions]
-      .filter((option, index, options) => options.findIndex((candidate) => candidate.id === option.id) === index)
-      .sort((a, b) => a.label.localeCompare(b.label));
-  }, [anchorById, groupedPrimaryIds, section.primaryGroups, section.rows, tierById]);
+  const anchorOptions = useMemo(
+    () => getMuseumAnchorOptions(section, tierById, anchorById),
+    [section, tierById, anchorById]
+  );
 
   const standalonePrimaries = section.rows
     .filter((row) => tierFor(row) === "Featured" && (!groupedPrimaryIds.has(row.id) || anchorFor(row) === `saint:${row.id}`))
     .sort(sortSaints);
-  const tertiaryRows = section.rows
-    .filter((row) => tierFor(row) === "Tertiary")
-    .filter((row) => !anchorFor(row))
-    .filter((row) => matchesTertiaryQuery(row, tertiaryQuery))
-    .filter((row) => !researchOnly || row.needsResearch)
-    .sort(sortSaints);
+  const tertiaryRows = rankMuseumPlacementSearchResults(
+    section.rows
+      .filter((row) => tierFor(row) === "Tertiary")
+      .filter((row) => !anchorFor(row))
+      .filter((row) => !researchOnly || row.needsResearch)
+      .sort(sortSaints),
+    tertiaryQuery
+  );
   const tertiaryByLocation = groupTertiaryByLocation(tertiaryRows);
   const treeFamilies = [...section.primaryGroups, ...section.secondaryOnlyGroups, ...section.tertiaryGroups]
     .filter((family, index, families) => family.treeFile && families.findIndex((candidate) => candidate.key === family.key) === index)
@@ -281,7 +273,7 @@ export function MuseumSectionWorkspace({ section, memberDetails, sectionNames }:
       </div>
 
       {selectedSaint ? (
-        <SaintModal
+        <MuseumSaintProposalDialog
           anchorOptions={anchorOptions}
           anchorValue={anchorFor(selectedSaint)}
           member={memberDetails[selectedSaint.id]}
@@ -449,105 +441,6 @@ function SecondaryStandaloneCard({
   );
 }
 
-function SaintModal({
-  anchorOptions,
-  anchorValue,
-  member,
-  onAnchorChange,
-  onClose,
-  onPrimarySectionChange,
-  onTierChange,
-  primarySectionValue,
-  row,
-  sectionNames,
-  tierValue
-}: {
-  anchorOptions: AnchorOption[];
-  anchorValue: string;
-  member?: Record<string, string>;
-  onAnchorChange: (value: string) => void;
-  onClose: () => void;
-  onPrimarySectionChange: (value: string) => void;
-  onTierChange: (tier: MuseumTier) => void;
-  primarySectionValue: string;
-  row: MuseumSaintPlacement;
-  sectionNames: string[];
-  tierValue: MuseumTier;
-}) {
-  return (
-    <div className="museum-modal-backdrop" role="presentation">
-      <section aria-modal="true" className="museum-modal" role="dialog">
-        <div className="museum-modal__header">
-          <div>
-            <div className="museum-admin-kicker">Saint proposal</div>
-            <h2>{row.name}</h2>
-          </div>
-          <button aria-label="Close saint proposal" className="museum-icon-button" onClick={onClose} type="button">
-            <X aria-hidden="true" size={18} />
-          </button>
-        </div>
-
-        <p className="museum-filter-note">These are historical proposal details. Preview controls below do not save changes.</p>
-        <p><Link href={`/museumadmin/review?q=${encodeURIComponent(row.name)}`}>Find the saint in placement review</Link></p>
-        <div className="museum-modal__actions">
-          <label>
-            <span>Status</span>
-            <select onChange={(event) => onTierChange(event.target.value as MuseumTier)} value={tierValue}>
-              {tiers.map((tier) => <option key={tier} value={tier}>{tier === "Featured" ? "Primary" : tier}</option>)}
-            </select>
-          </label>
-          <label>
-            <span>Primary section</span>
-            <select onChange={(event) => onPrimarySectionChange(event.target.value)} value={primarySectionValue}>
-              {sectionNames.map((name) => <option key={name} value={name}>{name}</option>)}
-            </select>
-          </label>
-          <label>
-            <span>Anchor card</span>
-            <select onChange={(event) => onAnchorChange(event.target.value)} value={anchorValue}>
-              <option value="">No explicit anchor</option>
-              <option value={`saint:${row.id}`}>Make a new anchor card with this saint</option>
-              {anchorOptions
-                .filter((option) => option.id !== `saint:${row.id}`)
-                .map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}
-            </select>
-          </label>
-        </div>
-
-        <dl className="museum-saint-data">
-          <DataItem label="Original primary section" value={row.section} />
-          {primarySectionValue !== row.section ? <DataItem label="Proposed primary section" value={primarySectionValue} /> : null}
-          <DataItem label="Alternate sections" value={row.alternatives.join("; ")} />
-          <DataItem label="Confidence" value={row.confidence} />
-          <DataItem label="Family" value={row.curatorialFamily || row.familyId} />
-          <DataItem label="Family size" value={row.familySize ? String(row.familySize) : ""} />
-          <DataItem label="Sampradaya" value={row.sampradaya} />
-          <DataItem label="Spiritual regions" value={row.spiritualRegions.join("; ")} />
-          <DataItem label="Normalized places" value={row.normalizedPlaces.join("; ")} />
-          <DataItem label="Birth / samadhi" value={[member?.BirthDate, member?.SamadhiDate].filter(Boolean).join(" - ")} />
-          <DataItem label="Masters" value={member?.Masters} />
-          <DataItem label="Disciples" value={member?.Disciples} />
-          <DataItem label="Partner" value={member?.Partner} />
-          <DataItem label="Incarnation" value={member?.Incarnation} />
-          <DataItem label="Rationale" value={row.rationale} wide />
-          <DataItem label="Internal note" value={row.note} wide />
-          <DataItem label="Review signal" value={row.needsResearch ? "Needs more research or cleanup review" : ""} wide />
-        </dl>
-      </section>
-    </div>
-  );
-}
-
-function DataItem({ label, value, wide }: { label: string; value?: string; wide?: boolean }) {
-  if (!value) return null;
-  return (
-    <div className={wide ? "museum-saint-data__wide" : undefined}>
-      <dt>{label}</dt>
-      <dd>{value}</dd>
-    </div>
-  );
-}
-
 function Metric({ label, value }: { label: string; value: number }) {
   return (
     <div>
@@ -711,14 +604,6 @@ function museumLocationLabel(value: string | undefined, fallback = "Location pen
   if (!parts[0]) return fallback;
   if (indianStateNames.has(parts[0].toLowerCase())) return `${parts[0]}, India`;
   return parts[0];
-}
-
-function matchesTertiaryQuery(row: MuseumSaintPlacement, query: string) {
-  if (!query) return true;
-  const q = query.toLowerCase();
-  return row.name.toLowerCase().includes(q) ||
-    row.normalizedPlaces.some((place) => place.toLowerCase().includes(q)) ||
-    row.spiritualRegions.some((region) => region.toLowerCase().includes(q));
 }
 
 function primaryRank(row: MuseumSaintPlacement, memberDetails: MemberDetails) {

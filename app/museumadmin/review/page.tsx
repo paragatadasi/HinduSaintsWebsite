@@ -2,6 +2,8 @@ import Link from "next/link";
 import type { Route } from "next";
 import { requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
+import { rankSaintSearchResults } from "@/lib/saint-search";
+import { rankWeightedTextSearch } from "@/lib/search-text";
 import { stageMuseumImports } from "@/lib/museum-import";
 import { stageMuseumImportsAction } from "../actions";
 import { ReviewWorkflow, ReviewSection } from "@/components/admin/review-ui";
@@ -21,6 +23,8 @@ export default async function MuseumReviewPage({
       select: {
         id: true,
         displayName: true,
+        canonicalName: true,
+        aliases: { select: { alias: true } },
         museumSectionAssignments: {
           where: { assignmentType: "primary", status: { not: "archived" } },
           select: { id: true, status: true }
@@ -49,10 +53,12 @@ export default async function MuseumReviewPage({
                 : ""
     }))
     .filter((s) => s.reason);
-  const filtered = queue.filter((s) => !q || s.displayName.toLowerCase().includes(q.toLowerCase()));
-  const unresolved = audit.unresolved.filter(
-    (r) => !q || [r.name, r.recordId, r.reason].some((v) => v.toLowerCase().includes(q.toLowerCase()))
-  );
+  const filtered = rankSaintSearchResults(queue, q).map(({ item }) => item);
+  const unresolved = rankWeightedTextSearch(audit.unresolved, q, (row) => [
+    { value: row.name, weight: 6, fuzzy: true },
+    { value: row.recordId, weight: 1 },
+    { value: row.reason, weight: 0.5 }
+  ]).map(({ item }) => item);
   return (
     <div className="museum-admin">
       <h1>Museum placement review</h1>

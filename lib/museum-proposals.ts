@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { rankMuseumPlacementSearchResults } from "@/lib/museum-search";
 
 const root = process.cwd();
 const museumDataDir = path.join(root, "data", "museum");
@@ -361,15 +362,6 @@ export function buildMuseumView(placements: MuseumSaintPlacement[], membersById 
 }
 
 export function searchMuseumPlacements(query: string, limit = 24) {
-  const q = clean(query).toLowerCase();
-  if (!q) return [];
-  return getMuseumProposalData().placements
-    .filter((row) =>
-      row.name.toLowerCase().includes(q) ||
-      row.section.toLowerCase().includes(q) ||
-      row.spiritualRegions.some((region) => region.toLowerCase().includes(q)) ||
-      row.normalizedPlaces.some((place) => place.toLowerCase().includes(q))
-    )
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .slice(0, limit);
+  if (!query.trim()) return [];
+  return rankMuseumPlacementSearchResults(getMuseumProposalData().placements, query, limit);
 }
