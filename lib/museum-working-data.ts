@@ -68,6 +68,7 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
       confidence: a.confidence[0].toUpperCase() + a.confidence.slice(1),
       rationale: a.rationale || "", note: a.internalPlacementNote || "",
       familyId: a.exhibitGroupId ? "exhibit:" + a.exhibitGroupId : "", curatorialFamily: "",
+      isExhibitAnchor: a.exhibitGroup?.anchorSaintId === s.id,
       groupLabel: a.exhibitGroup?.label || "", familySize: 0, spiritualRegions: [],
       sampradaya: "", normalizedPlaces: [], needsResearch: a.confidence === "low"
     }))

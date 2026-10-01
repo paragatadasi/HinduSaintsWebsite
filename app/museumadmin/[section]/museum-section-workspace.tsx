@@ -666,6 +666,7 @@ function matchesTertiaryQuery(row: MuseumSaintPlacement, query: string) {
 }
 
 function primaryRank(row: MuseumSaintPlacement, memberDetails: MemberDetails) {
+  if (row.isExhibitAnchor) return Number.NEGATIVE_INFINITY;
   const member = memberDetails[row.id];
   if (!member) return 999999;
   const hasMaster = Boolean(member.Masters?.trim());

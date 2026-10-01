@@ -7623,8 +7623,16 @@ fieldset.admin-field {
   font-weight: 700;
 }
 
-.museum-admin-content {
+.museum-admin-content,
+.museum-admin,
+.museum-admin-hero,
+.museum-admin-panel,
+.museum-family-card,
+.museum-tertiary-card,
+.museum-family-card__header > div,
+.museum-modal {
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .museum-admin h1,

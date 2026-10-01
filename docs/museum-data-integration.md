@@ -136,3 +136,25 @@ Use the production coverage report to determine whether collection data already
 exists and whether a saint can have multiple items/locations before defining
 that model. Broader collection-field reconciliation depends on that field map;
 existing placement reconciliation remains in the museum review workflow.
+
+## Family proposal moves
+
+The coordinated family-move feature requires
+20261001150000_museum_family_proposal_moves in the deployment migration phase.
+It adds a private, versioned destination override keyed by the original
+curatorial-family key (or original family ID). It changes proposals for every
+original member, including unlinked members and members proposed in other
+sections. Confirmed assignments change only after individual review.
+
+Move family is available on original-family cards and their saint detail dialogs
+to users with manage_museum. Original comparison values never change; its move
+controls act on the working proposals. Confirmed exhibit-group keys do not expose
+a bulk source-family move. The shared working view applies overrides before
+canonical saint details and confirmed placements. Concurrent or stale moves are
+rejected, and decisions remain in audit history.
+
+No environment-variable changes are required. Deploy the migration, move service,
+and working-view adapter together. Browser checks cover submission, destination
+redirect, reload, source-section removal, original comparison, preserved confirmed
+placement, canonical search, mobile containment, mirror-audit permissions, and
+absence of raw mirror values in audit HTML.

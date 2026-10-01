@@ -19,6 +19,7 @@ export type MuseumSaintPlacement = {
   sourceRecordId?: string;
   linkIssue?: string;
   groupLabel?: string;
+  isExhibitAnchor?: boolean;
   searchNames?: string[];
   id: string;
   name: string;
