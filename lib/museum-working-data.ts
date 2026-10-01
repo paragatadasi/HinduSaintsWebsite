@@ -1,3 +1,4 @@
+import { readSaintCollectionItems } from "@/lib/museum-collections";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import { getMuseumProposalData, type MuseumSaintPlacement } from "@/lib/museum-proposals";
@@ -7,7 +8,8 @@ import { buildWorkingMuseumView, museumRelationshipDetails, type CurrentMuseumSa
 
 // Private data reader; route entry points must enforce access_museum before calling.
 export async function readMuseumData(client: Prisma.TransactionClient = db) {
-  const [saints, links, definitions] = await Promise.all([
+  const [collections, saints, links, definitions] = await Promise.all([
+    readSaintCollectionItems(client),
     client.saint.findMany({
       where: { status: { not: "archived" } },
       select: {
@@ -46,6 +48,7 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
     })
   ]);
   const current: CurrentMuseumSaint[] = saints.map(s => ({
+    collectionItems: collections.get(s.id) || [],
     id: s.id, name: s.displayName, aliases: [s.canonicalName, ...s.aliases.map(a => a.alias)],
     sampradaya: s.traditions.map(t => t.tradition.name).join("; "),
     normalizedPlaces: s.places.filter(p => p.place.placeKind !== "spiritual_region")

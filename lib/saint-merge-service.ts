@@ -34,6 +34,15 @@ export async function mergeSaintRecords(tx: Transaction, execution: SaintMergeEx
   count("places", await movePlaces(tx, source.id, target.id));
   count("traditions", await moveTraditions(tx, source.id, target.id));
   count("lineageEntries", await moveLineageEntries(tx, source.id, target.id));
+  const collectionLinks = await tx.museumItemSaint.findMany({ where: { saintId: source.id } });
+  for (const link of collectionLinks) {
+    await tx.museumItemSaint.upsert({
+      where: { itemId_saintId: { itemId: link.itemId, saintId: target.id } },
+      create: { itemId: link.itemId, saintId: target.id }, update: {}
+    });
+  }
+  await tx.museumItemSaint.deleteMany({ where: { saintId: source.id } });
+  count("collectionItemLinks", collectionLinks.length);
   count("familyMemberships", await moveFamilyMemberships(tx, source.id, target.id));
   count("museumAssignments", await moveMuseumAssignments(tx, source.id, target.id, actorId));
   count("instagramMatches", await moveInstagramMatches(tx, source.id, target.id));
