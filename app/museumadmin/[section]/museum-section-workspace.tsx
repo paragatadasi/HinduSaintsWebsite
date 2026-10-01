@@ -2,11 +2,14 @@
 
 import Link from "next/link";
 import type { Route } from "next";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine, Triangle, X } from "lucide-react";
 import type { MuseumFamilyGroup, MuseumSaintPlacement, MuseumSection, MuseumTier } from "@/lib/museum-proposals";
 
-// Reference cards use source grouping; edits are saved in the linked review workflow.
+import { MuseumFamilyMove } from "@/components/admin/museum-family-move";
+import type { FamilyMoveOption } from "@/lib/museum-family-move-domain";
+
+// Placement editing stays in the shared review workflow.
 const anchorById: Record<string, string> = {};
 const tierById: Record<string, MuseumTier> = {};
 
@@ -16,9 +19,19 @@ type MuseumSectionWorkspaceProps = {
   section: MuseumSection;
   memberDetails: MemberDetails;
   originalView?: boolean;
+  familyMoveOptions?: FamilyMoveOption[];
+  sectionNames?: string[];
+  canManage?: boolean;
 };
 
-export function MuseumSectionWorkspace({ section, memberDetails, originalView = false }: MuseumSectionWorkspaceProps) {
+export function MuseumSectionWorkspace({
+  section, memberDetails, originalView = false, familyMoveOptions = [], sectionNames = [], canManage = false
+}: MuseumSectionWorkspaceProps) {
+  const moveOptions = new Map(familyMoveOptions.map(f => [f.key, f]));
+  function familyMove(key: string) {
+    const family = moveOptions.get(key);
+    return canManage && family ? <MuseumFamilyMove family={family} sections={sectionNames} /> : null;
+  }
   const [selectedSaintId, setSelectedSaintId] = useState<string | null>(null);
   const [groupMode, setGroupMode] = useState<"saint" | "location">("saint");
   const [tertiaryQuery, setTertiaryQuery] = useState("");
@@ -66,7 +79,7 @@ export function MuseumSectionWorkspace({ section, memberDetails, originalView = 
                 <Metric label="Tertiary" value={section.tertiary} />
               </div>
               <p>{section.idea}</p>
-              <p className="museum-filter-note">{originalView ? "Original export retained for comparison. Values here do not change when website records are edited." : "Saint details come from the website database. Confirmed placements take precedence; existing proposals remain until reviewed. Unlinked records retain their source details."}</p>
+              <p className="museum-filter-note">{originalView ? "Original export retained for comparison. Values here do not change when website records are edited. Move family updates the working proposals; this comparison remains unchanged." : "Saint details come from the website database. Confirmed placements take precedence; existing proposals remain until reviewed. Unlinked records retain their source details."}</p>
             </div>
           </section>
 
@@ -82,6 +95,7 @@ export function MuseumSectionWorkspace({ section, memberDetails, originalView = 
                 <FamilyCard
                   anchorById={anchorById}
                   family={family}
+                  moveControl={familyMove(family.key)}
                   key={family.key}
                   memberDetails={memberDetails}
                   onSaintClick={setSelectedSaintId}
@@ -96,6 +110,7 @@ export function MuseumSectionWorkspace({ section, memberDetails, originalView = 
                 <SecondaryFamilyCard
                   anchorById={anchorById}
                   family={family}
+                  moveControl={familyMove(family.key)}
                   key={family.key}
                   onSaintClick={setSelectedSaintId}
                   rows={section.rows}
@@ -255,6 +270,7 @@ export function MuseumSectionWorkspace({ section, memberDetails, originalView = 
           member={memberDetails[selectedSaint.id]}
           onClose={() => setSelectedSaintId(null)}
           row={selectedSaint}
+          moveControl={familyMove(selectedSaint.curatorialFamily || selectedSaint.familyId)}
         />
       ) : null}
     </div>
@@ -264,6 +280,7 @@ export function MuseumSectionWorkspace({ section, memberDetails, originalView = 
 function FamilyCard({
   anchorById,
   family,
+  moveControl,
   memberDetails,
   onSaintClick,
   rows,
@@ -271,8 +288,9 @@ function FamilyCard({
 }: {
   anchorById: Record<string, string>;
   family: MuseumFamilyGroup;
+  moveControl?: ReactNode;
   memberDetails: MemberDetails;
-  originalView?: boolean;
+
   onSaintClick: (id: string) => void;
   rows: MuseumSaintPlacement[];
   tierById: Record<string, MuseumTier>;
@@ -307,6 +325,7 @@ function FamilyCard({
         ))}
         {affiliated.map((row) => <li key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>)}
       </ul>
+      {moveControl}
     </article>
   );
 }
@@ -348,12 +367,14 @@ function PrimarySaintCard({
 function SecondaryFamilyCard({
   anchorById,
   family,
+  moveControl,
   onSaintClick,
   rows,
   tierById
 }: {
   anchorById: Record<string, string>;
   family: MuseumFamilyGroup;
+  moveControl?: ReactNode;
   onSaintClick: (id: string) => void;
   rows: MuseumSaintPlacement[];
   tierById: Record<string, MuseumTier>;
@@ -376,6 +397,7 @@ function SecondaryFamilyCard({
       <ul>
         {cardRows.map((row) => <li key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>)}
       </ul>
+      {moveControl}
     </article>
   );
 }
@@ -412,7 +434,7 @@ function SecondaryStandaloneCard({
   );
 }
 
-function SaintModal({member,onClose,row}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement}) {
+function SaintModal({member,onClose,row,moveControl}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement;moveControl?: ReactNode}) {
   return (
     <div className="museum-modal-backdrop" role="presentation">
       <section aria-modal="true" className="museum-modal" role="dialog">
@@ -428,6 +450,7 @@ function SaintModal({member,onClose,row}: {member?: Record<string,string>;onClos
 
         {row.saintId ? <p><Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>{row.placementState === "Confirmed" ? "Review placement" : "Review and confirm proposal"}</Link></p> : <p>This proposal is preserved, but its saint link needs reconciliation before it can be confirmed. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.sourceRecordId || row.id)}`}>Review source link</Link></p>}
 
+        {moveControl}
         <dl className="museum-saint-data">
           <DataItem label="Primary section" value={row.section} />
           <DataItem label="Placement status" value={row.placementState || "Original proposal"} />

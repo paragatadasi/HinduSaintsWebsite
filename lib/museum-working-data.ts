@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import { getMuseumProposalData, type MuseumSaintPlacement } from "@/lib/museum-proposals";
+import { getEditableMuseumProposalData } from "@/lib/museum-family-moves";
 import { resolveSnapshotIdentity } from "@/lib/museum-domain";
 import { buildWorkingMuseumView, museumRelationshipDetails, type CurrentMuseumSaint } from "@/lib/museum-working-view";
 
@@ -72,10 +73,11 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
     }))
   }));
   const original = getMuseumProposalData();
-  const view = buildWorkingMuseumView(original, current, links, definitions);
+  const editable = await getEditableMuseumProposalData(client);
+  const view = buildWorkingMuseumView(editable, current, links, definitions);
   const activeIds = new Set(current.map(s => s.id));
   for (const row of original.placements) {
     row.saintId = resolveSnapshotIdentity(row.id, links, activeIds).record?.entityId || undefined;
   }
-  return { ...view, original };
+  return { ...view, original, familyMoveOptions: editable.familyMoveOptions };
 }

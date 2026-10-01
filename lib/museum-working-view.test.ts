@@ -97,3 +97,16 @@ test("relationship direction, evidence, reciprocal duplicates and archived endpo
   assert.equal(result.Partner, undefined);
   assert.equal(result.Incarnation, undefined);
 });
+
+test("family move overlay changes proposed and unlinked cards while preserving confirmed placement and raw export", async () => {
+  const { applyFamilyProposalMoves } = await import("./museum-family-move-domain");
+  const original = source(row(), row("recB"), row("recC"));
+  const editable = applyFamilyProposalMoves(original, [{ familyKey: "familyA", section: "Moved section", version: 1 }]);
+  const second = saint({ id: "saintB", confirmed: [row("assignmentB", { section: "Confirmed section", familyId: "" })] });
+  const view = buildWorkingMuseumView(editable, [saint(), second], [link(), link("recB", "saintB")], []);
+  assert.equal(view.placements.find(p => p.saintId === "saintA")?.section, "Moved section");
+  assert.equal(view.placements.find(p => p.id === "recC")?.section, "Moved section");
+  assert.equal(view.placements.find(p => p.saintId === "saintB")?.section, "Confirmed section");
+  assert.ok(original.placements.every(p => p.section === "Section A"));
+  assert.ok(view.sectionBySlug.has("section-a"));
+});
