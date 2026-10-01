@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { requireCapability } from "@/lib/admin-access";
 import { hasCapability } from "@/lib/permissions";
 import { getMuseumData } from "@/lib/museum-data";
+import { readMuseumSaintProfiles } from "@/lib/museum-saint-profiles";
 import { MuseumSectionWorkspace } from "./museum-section-workspace";
 
 type MuseumAdminSectionPageProps = {
@@ -19,6 +20,7 @@ export default async function MuseumAdminSectionPage({ params, searchParams }: M
   if (!workingSection) notFound();
   const source = data.original.sections.find(s => s.name === workingSection.name);
   const section = originalView ? source : workingSection;
+  const saintProfiles = await readMuseumSaintProfiles((section?.rows || []).flatMap(row => row.saintId ? [row.saintId] : []));
   return (
     <>
       <nav className="museum-breadcrumb" aria-label="Placement view">
@@ -32,6 +34,7 @@ export default async function MuseumAdminSectionPage({ params, searchParams }: M
         sectionNames={data.sections.map(s => s.name)}
         canManage={hasCapability(user.roles, "manage_museum")}
         memberDetails={Object.fromEntries(originalView ? data.original.membersById : data.membersById)}
+        saintProfiles={saintProfiles}
         section={section}
       /> : <p>This section has no original export proposal. Its current placements are in the working arrangement.</p>}
     </>

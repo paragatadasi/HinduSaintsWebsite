@@ -11205,3 +11205,40 @@ select:not([multiple]) {
   font-family: var(--font-sans);
   font-weight: normal;
 }
+
+/* Compact biography-first museum review, sharing the public profile gallery and summary. */
+.museum-modal--profile {
+  color: var(--color-text);
+  max-width: var(--width-museum-saint-dialog);
+  width: calc(100% - var(--space-6));
+  max-height: calc(100dvh - var(--space-6));
+  margin: auto;
+  overflow: auto;
+}
+.museum-modal--profile:not([open]) { display: none; }
+.museum-modal--profile::backdrop { background: var(--color-modal-scrim); }
+.museum-saint-profile {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, var(--width-museum-saint-photo));
+  gap: var(--space-6);
+  align-items: start;
+}
+.museum-saint-profile__biography { display: grid; gap: var(--space-4); min-width: 0; }
+.museum-saint-profile h2 { color: var(--color-cream); margin: 0; overflow-wrap: anywhere; }
+.museum-saint-profile__facts { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); margin: 0; }
+.museum-saint-profile__facts > div { min-width: 0; }
+.museum-saint-profile__facts dt { color: var(--color-muted); font-size: var(--font-size-saint-profile-stat); font-weight: 700; text-transform: uppercase; }
+.museum-saint-profile__facts dd { color: var(--color-accent-strong); font-size: var(--font-size-saint-profile-stat-value); margin: var(--space-1) 0 0; overflow-wrap: anywhere; }
+.museum-saint-profile .saint-hero-gallery__stage,
+.museum-saint-profile .saint-hero-gallery__stage > img { height: var(--height-museum-saint-photo); min-height: 0; }
+.museum-saint-profile__no-photo { display: grid; place-items: center; min-height: var(--height-museum-saint-photo); background: var(--color-surface-muted); color: var(--color-muted); padding: var(--space-4); }
+.museum-saint-review-section { display: grid; gap: var(--space-4); border-top: var(--border-width-default) solid var(--color-border); padding-top: var(--space-4); }
+.museum-saint-review-section summary { cursor: pointer; color: var(--color-muted); }
+.museum-saint-review-section[open] summary { margin-bottom: var(--space-4); }
+.museum-saint-data--flat > div { background: transparent; border: 0; padding: 0; align-content: start; }
+.museum-saint-data--flat dd { overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .museum-saint-profile { grid-template-columns: minmax(0, 1fr); }
+  .museum-saint-profile .saint-hero-gallery { order: 0; max-width: var(--width-museum-saint-photo); justify-self: start; }
+  .museum-saint-profile__no-photo { min-height: 0; }
+}
