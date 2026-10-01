@@ -1,3 +1,4 @@
+import type { MuseumSourceVitrine } from "./museum-vitrine-source";
 import type { MuseumCollectionCardItem } from "./museum-collection-domain";
 import fs from "node:fs";
 import path from "node:path";
@@ -15,6 +16,7 @@ const cleanupFlagsPath = path.join(museumDataDir, "airtable-museum-section-clean
 export type MuseumTier = "Featured" | "Secondary" | "Tertiary";
 
 export type MuseumSaintPlacement = {
+  sourceVitrine?: MuseumSourceVitrine;
   collectionItems?: MuseumCollectionCardItem[];
   saintId?: string;
   placementState?: "Proposed" | "Confirmed" | "Unlinked" | "Conflicting proposals" | "Conflicting placements";

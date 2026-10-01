@@ -1,8 +1,10 @@
+import type { MuseumSourceVitrine } from "./museum-vitrine-source";
 import type { MuseumCollectionCardItem } from "./museum-collection-domain";
 import { buildMuseumView, museumSectionSlug, type MuseumSaintPlacement } from "./museum-proposals";
 import { resolveSnapshotIdentity } from "./museum-domain";
 
 export type CurrentMuseumSaint = {
+  sourceVitrine?: MuseumSourceVitrine;
   collectionItems?: MuseumCollectionCardItem[];
   id: string;
   name: string;
@@ -103,6 +105,7 @@ function currentDetails(placement: MuseumSaintPlacement, saint: CurrentMuseumSai
   return {
     ...placement, saintId: saint.id, name: saint.name, searchNames: saint.aliases,
     collectionItems: saint.collectionItems || [],
+    sourceVitrine: saint.sourceVitrine,
     sampradaya: saint.sampradaya, normalizedPlaces: saint.normalizedPlaces,
     spiritualRegions: saint.spiritualRegions
   };
