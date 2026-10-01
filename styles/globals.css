@@ -8097,6 +8097,41 @@ fieldset.admin-field {
   padding: var(--space-4);
 }
 
+/* The card action covers the surface; saint controls stay independently clickable. */
+.museum-family-card--movable {
+  position: relative;
+  isolation: isolate;
+}
+
+.museum-family-card__move-trigger {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
+.museum-family-card__move-icon {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  z-index: 2;
+}
+
+.museum-family-card--movable .museum-family-card__header {
+  padding-right: calc(var(--space-8) + var(--space-2));
+}
+
+.museum-family-card--movable .museum-saint-link {
+  position: relative;
+  z-index: 2;
+}
+
 .museum-family-card__header {
   align-items: start;
   display: flex;

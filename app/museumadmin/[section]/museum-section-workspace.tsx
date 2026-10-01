@@ -28,9 +28,9 @@ export function MuseumSectionWorkspace({
   section, memberDetails, originalView = false, familyMoveOptions = [], sectionNames = [], canManage = false
 }: MuseumSectionWorkspaceProps) {
   const moveOptions = new Map(familyMoveOptions.map(f => [f.key, f]));
-  function familyMove(key: string) {
+  function familyMove(key: string, card = false) {
     const family = moveOptions.get(key);
-    return canManage && family ? <MuseumFamilyMove family={family} sections={sectionNames} /> : null;
+    return canManage && family ? <MuseumFamilyMove family={family} sections={sectionNames} card={card} /> : null;
   }
   const [selectedSaintId, setSelectedSaintId] = useState<string | null>(null);
   const [groupMode, setGroupMode] = useState<"saint" | "location">("saint");
@@ -95,7 +95,7 @@ export function MuseumSectionWorkspace({
                 <FamilyCard
                   anchorById={anchorById}
                   family={family}
-                  moveControl={familyMove(family.key)}
+                  moveControl={familyMove(family.key, true)}
                   key={family.key}
                   memberDetails={memberDetails}
                   onSaintClick={setSelectedSaintId}
@@ -110,7 +110,7 @@ export function MuseumSectionWorkspace({
                 <SecondaryFamilyCard
                   anchorById={anchorById}
                   family={family}
-                  moveControl={familyMove(family.key)}
+                  moveControl={familyMove(family.key, true)}
                   key={family.key}
                   onSaintClick={setSelectedSaintId}
                   rows={section.rows}
@@ -309,13 +309,13 @@ function FamilyCard({
   const isPeerGroup = family.key.startsWith("CUR-") && featured.length > 1;
 
   return (
-    <article className="museum-family-card">
+    <article className={`museum-family-card${moveControl ? " museum-family-card--movable interactive-surface" : ""}`}>
       <div className="museum-family-card__header">
         <div>
           <h3>{isPeerGroup ? family.label : head ? <SaintButton row={head} onSaintClick={onSaintClick} /> : family.label}</h3>
           <p>{cardRows.length} saint{cardRows.length === 1 ? "" : "s"}</p>
         </div>
-        <TreePine aria-hidden="true" size={19} />
+        {moveControl ? null : <TreePine aria-hidden="true" size={19} />}
       </div>
       <ul>
         {isPeerGroup ? featured.map((row) => (
@@ -387,7 +387,7 @@ function SecondaryFamilyCard({
   if (!cardRows.length) return null;
 
   return (
-    <article className="museum-family-card museum-family-card--secondary">
+    <article className={`museum-family-card museum-family-card--secondary${moveControl ? " museum-family-card--movable interactive-surface" : ""}`}>
       <div className="museum-family-card__header">
         <div>
           <h3>{family.label}</h3>
