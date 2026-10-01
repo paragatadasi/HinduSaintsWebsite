@@ -158,3 +158,58 @@ and working-view adapter together. Browser checks cover submission, destination
 redirect, reload, source-section removal, original comparison, preserved confirmed
 placement, canonical search, mobile containment, mirror-audit permissions, and
 absence of raw mirror values in audit HTML.
+
+## Multi-museum collection foundation
+
+The collection model separates canonical saints, individual physical items,
+collection catalogues, and physical locations. The migration registers SPN
+(Shree Peetha Nilaya, near Frankfurt) and Vrindavan; it creates no relics or
+vitrine assignments. The existing source is SPN. Vrindavan currently has Excel
+files that have not yet been inspected or imported.
+
+Inventory codes are unique within a catalogue museum; location codes are unique
+within a museum. Codes are strings so leading zeroes survive. One saint can link
+to multiple items in multiple museums, and one item can link to multiple saints.
+An item has at most one current physical placement. Closing a placement and
+opening another preserves location history, including transfers between museums.
+The catalogue museum scopes inventory identity; it does not assert legal ownership
+and need not equal the current physical museum. Unknown location remains null.
+
+The protected working proposal data now includes `collectionItems` per canonical
+saint: item ID, label, inventory code, review status, catalogue museum, and current
+location (museum, code, label, kind, room). It is an array, never a single vitrine
+field on Saint. Archived items/locations are excluded from the applicable view;
+saint merges preserve and deduplicate item links. This payload is private to the
+museum workflow. No public saint query includes collection data. Original proposal
+snapshots remain unchanged. Existing curatorial sections/family moves have not
+been converted into museum-specific proposal catalogues.
+
+`stageCollectionObservation` is an ingestion service, not a live Airtable read.
+It preserves raw and normalized source values with a mapping version and stable
+museum/source identity. Consecutive identical observations are idempotent;
+a later source reversion remains a new observation. Pending observations never
+create inventory or overwrite reviewed items/placements. This foundation does
+not yet implement an approval/reconciliation screen or a source-specific adapter.
+
+Before activating SPN imports, inspect the production mirror audit and identify
+the actual item identity, saint links, location fields and linked tables. A saint
+row with a vitrine number alone must not be treated as proof of a distinct relic.
+Before importing Vrindavan, inspect its Excel sheets and establish stable item
+identifiers. Excel can feed the same staging contract directly. Airtable is
+optional editorial/import tooling; PostgreSQL remains authoritative. Do not
+invent field mappings or turn curatorial sections into physical locations.
+
+Deploy `20261001170000_museum_collections` in the migration phase before this
+reader code. It is additive, with museum seeds, foreign keys, a placement-period
+check and a partial unique index enforcing one current placement per item.
+No environment changes are required. The card UI can consume the contract once
+reviewed inventory exists; this phase does not populate live cards or import the
+SPN/Vrindavan records. No production migration or import has been run.
+
+Verification: `npm run dev:check`, `npm test`, `npm run codex:verify`, plus
+`npx tsx scripts/verify-museum-collections.ts` against a fresh disposable local
+PostgreSQL-compatible database using `MUSEUM_TEST_DATABASE_URL` (database name
+`museum_integration_test`). The integration fixture tests museum-scoped codes,
+current-location uniqueness, transfer history, private working-card projection,
+source idempotence/reversions, saint merges and archival. Never run that fixture
+against production or a database containing useful data.

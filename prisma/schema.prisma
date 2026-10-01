@@ -491,6 +491,7 @@ model Saint {
   relationshipsTo          SaintRelationship[]     @relation("RelationshipTo")
   familyMemberships        SaintFamilyMember[]
   museumSectionAssignments SaintMuseumSection[]
+  museumCollectionItems    MuseumItemSaint[]
   museumState              MuseumSaintState?
   museumAnchors            MuseumExhibitGroup[]
   homeQuoteConfigs         HomePageConfig[]        @relation("HomeQuoteSaint")
@@ -1409,4 +1410,113 @@ model TelemetryDaily {
 
   @@unique([path, date, event, dimension])
   @@index([date, event])
+}
+
+enum MuseumLocationKind {
+  room
+  vitrine
+  shelf
+  storage
+  other
+}
+
+enum CollectionReviewStatus {
+  needs_review
+  verified
+  archived
+}
+
+// Physical museums are independent of the existing curatorial section proposals.
+model Museum {
+  id        String @id @default(cuid())
+  slug      String @unique
+  name      String
+  archivedAt DateTime?
+  locations MuseumLocation[]
+  imports   MuseumCollectionImport[]
+  catalogItems MuseumCollectionItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MuseumLocation {
+  id        String @id @default(cuid())
+  museumId  String
+  museum    Museum @relation(fields: [museumId], references: [id], onDelete: Restrict)
+  code      String
+  label     String
+  kind      MuseumLocationKind
+  room      String?
+  archivedAt DateTime?
+  placements MuseumItemPlacement[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([museumId, code])
+}
+
+// One record per physical object, not per saint or vitrine.
+model MuseumCollectionItem {
+  id          String @id @default(cuid())
+  catalogMuseumId String
+  catalogMuseum Museum @relation(fields: [catalogMuseumId], references: [id], onDelete: Restrict)
+  inventoryCode String?
+  label       String
+  description String?
+  status      CollectionReviewStatus @default(needs_review)
+  version     Int @default(0)
+  saints      MuseumItemSaint[]
+  placements  MuseumItemPlacement[]
+  imports     MuseumCollectionImport[]
+  @@unique([catalogMuseumId, inventoryCode])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MuseumItemSaint {
+  itemId  String
+  item    MuseumCollectionItem @relation(fields: [itemId], references: [id], onDelete: Restrict)
+  saintId String
+  saint   Saint @relation(fields: [saintId], references: [id], onDelete: Restrict)
+
+  @@id([itemId, saintId])
+  @@index([saintId])
+}
+
+// Closing a placement retains history; transfer opens a new placement.
+// The migration enforces at most one current physical location per object.
+model MuseumItemPlacement {
+  id         String @id @default(cuid())
+  itemId     String
+  item       MuseumCollectionItem @relation(fields: [itemId], references: [id], onDelete: Restrict)
+  locationId String
+  location   MuseumLocation @relation(fields: [locationId], references: [id], onDelete: Restrict)
+  startedAt  DateTime @default(now())
+  endedAt    DateTime?
+  note       String?
+  createdAt  DateTime @default(now())
+
+  @@index([itemId, endedAt])
+  @@index([locationId, endedAt])
+}
+
+// Import observations never overwrite reviewed inventory or placements.
+// sourceKey includes base/table/record; a mapping version belongs in normalizedJson.
+model MuseumCollectionImport {
+  id         String @id @default(cuid())
+  museumId   String
+  museum     Museum @relation(fields: [museumId], references: [id], onDelete: Restrict)
+  sourceKey  String
+  fingerprint String
+  rawJson    Json
+  normalizedJson Json
+  itemId     String?
+  item       MuseumCollectionItem? @relation(fields: [itemId], references: [id], onDelete: Restrict)
+  status     String @default("pending")
+  observedAt DateTime @default(now())
+  reviewedAt DateTime?
+  reviewedById String?
+
+  @@unique([museumId, sourceKey, fingerprint])
+  @@index([museumId, status])
 }
