@@ -48,10 +48,15 @@ test("family moves are atomic, durable and reviewable without replacing confirme
     await assert.rejects(moveMuseumFamilyProposal(input), /changed/);
     const fresh = moved.familyMoveOptions.find(f => f.key === key)!;
     await assert.rejects(moveMuseumFamilyProposal({ ...input, revision: fresh.revision, section: "Unknown destination" }), /available/);
+    await db.museumSection.create({ data: { slug: "archived-test", name: "Archived test", status: "archived" } });
+    await assert.rejects(moveMuseumFamilyProposal({ ...input, revision: fresh.revision, section: "Archived test" }), /available/);
+    assert.equal(await db.auditEvent.count({ where: { action: "museum.family.proposal_moved" } }), 1);
     await moveMuseumFamilyProposal({ ...input, revision: fresh.revision, section: rows[0].section });
     const next = (await getDirectMuseumProposals()).proposals.find(p => p.entityId === saint.id && p.sourceKind.startsWith("family-move:"))!;
     assert.notEqual(next.id, proposal.id);
     assert.equal(next.payload?.section, rows[0].section);
     await assert.rejects(reviewMuseumProposal({ saintId: saint.id, version: 1, actorId: actor.id, proposalId: proposal.id, decision: "accept" }), /changed|reviewed/);
+    assert.equal((await db.museumSaintState.findUniqueOrThrow({ where: { saintId: saint.id } })).version, 1);
+    assert.deepEqual((await db.externalRecord.findFirstOrThrow({ where: { entityId: saint.id } })).rawPayloadJson, { original: true });
   } finally { await db.$disconnect(); }
 });
