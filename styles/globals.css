@@ -8116,6 +8116,19 @@ fieldset.admin-field {
   color: var(--color-gold);
 }
 
+.museum-family-move-dialog {
+  background: var(--color-surface);
+  border: var(--border-width-default) solid var(--color-border);
+  border-radius: var(--radius-card);
+  color: var(--color-text);
+  padding: var(--space-6);
+  width: min(calc(100vw - var(--space-8)), var(--width-admin-confirmation-dialog));
+}
+
+.museum-family-move-dialog::backdrop {
+  background: var(--color-modal-scrim);
+}
+
 .museum-tree-grid {
   grid-template-columns: 1fr;
 }
