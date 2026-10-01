@@ -15,6 +15,11 @@ export type MuseumTier = "Featured" | "Secondary" | "Tertiary";
 
 export type MuseumSaintPlacement = {
   saintId?: string;
+  placementState?: "Proposed" | "Confirmed" | "Unlinked" | "Conflicting proposals" | "Conflicting placements";
+  sourceRecordId?: string;
+  linkIssue?: string;
+  groupLabel?: string;
+  searchNames?: string[];
   id: string;
   name: string;
   section: string;

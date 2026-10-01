@@ -11107,3 +11107,12 @@ select:not([multiple]) {
     grid-area: auto;
   }
 }
+
+/* Shared placement-state text for museum cards in every display tier. */
+.museum-placement-status {
+  display: block;
+  color: var(--color-muted);
+  margin-top: var(--space-1);
+  font-family: var(--font-sans);
+  font-weight: normal;
+}

@@ -2,7 +2,9 @@ import Link from "next/link";
 import type { Route } from "next";
 import { GitBranch, Map, Search } from "lucide-react";
 import { museumBridgeCards, museumFlowZones } from "@/lib/museum-layout-groups";
-import { getMuseumProposalData, museumSectionSlug, searchMuseumPlacements } from "@/lib/museum-proposals";
+import { museumSectionSlug } from "@/lib/museum-proposals";
+import { getMuseumData } from "@/lib/museum-data";
+import { searchWorkingMuseumPlacements } from "@/lib/museum-working-view";
 
 type MuseumAdminPageProps = {
   searchParams: Promise<{ q?: string | string[] }>;
@@ -11,8 +13,8 @@ type MuseumAdminPageProps = {
 export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageProps) {
   const { q } = await searchParams;
   const query = getSearchParam(q);
-  const { sections } = getMuseumProposalData();
-  const matches = query ? searchMuseumPlacements(query, 30) : [];
+  const { sections, placements } = await getMuseumData();
+  const matches = query ? searchWorkingMuseumPlacements(placements, query, 30) : [];
   const totals = sections.reduce(
     (acc, section) => ({
       saints: acc.saints + section.total,
@@ -30,7 +32,7 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
           <div className="eyebrow">Museum Admin</div>
           <h1>Museum section proposals</h1>
           <p>
-            Browse the existing museum proposals by section, family, and display tier. Open a saint to review and confirm its proposal.
+            Browse current saint details and confirmed placements, with existing proposals retained wherever placement has not been confirmed. Open a saint to review its placement.
           </p>
         </div>
         <div className="museum-admin-hero__stats" aria-label="Museum proposal totals">
@@ -72,7 +74,7 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
                 <Link className="museum-search-result interactive-surface" href={`/museumadmin/${museumSectionSlug(match.section)}` as Route} key={match.id}>
                   <strong>{match.name}</strong>
                   <span>{match.section}</span>
-                  <small>{match.tier} - {match.confidence} confidence</small>
+                  <small>{match.placementState} · {match.tier} · {match.confidence} confidence</small>
                 </Link>
               ))}
             </div>

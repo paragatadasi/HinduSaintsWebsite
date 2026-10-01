@@ -15,9 +15,10 @@ type MemberDetails = Record<string, Record<string, string>>;
 type MuseumSectionWorkspaceProps = {
   section: MuseumSection;
   memberDetails: MemberDetails;
+  originalView?: boolean;
 };
 
-export function MuseumSectionWorkspace({ section, memberDetails }: MuseumSectionWorkspaceProps) {
+export function MuseumSectionWorkspace({ section, memberDetails, originalView = false }: MuseumSectionWorkspaceProps) {
   const [selectedSaintId, setSelectedSaintId] = useState<string | null>(null);
   const [groupMode, setGroupMode] = useState<"saint" | "location">("saint");
   const [tertiaryQuery, setTertiaryQuery] = useState("");
@@ -65,7 +66,7 @@ export function MuseumSectionWorkspace({ section, memberDetails }: MuseumSection
                 <Metric label="Tertiary" value={section.tertiary} />
               </div>
               <p>{section.idea}</p>
-              <p className="museum-filter-note">These are the existing museum proposals. Open a saint and choose Review and confirm to save its placement or edit the proposal.</p>
+              <p className="museum-filter-note">{originalView ? "Original export retained for comparison. Values here do not change when website records are edited." : "Saint details come from the website database. Confirmed placements take precedence; existing proposals remain until reviewed. Unlinked records retain their source details."}</p>
             </div>
           </section>
 
@@ -115,7 +116,7 @@ export function MuseumSectionWorkspace({ section, memberDetails }: MuseumSection
               <div className="museum-admin-section-heading">
                 <div>
                   <div className="museum-admin-kicker">Family trees</div>
-                  <h2>Relationship trees in this section</h2>
+                  <h2>Original relationship trees in this section</h2><p>These diagrams are reference exports; current relationships appear in saint details.</p>
                 </div>
               </div>
               <div className="museum-tree-grid">
@@ -271,6 +272,7 @@ function FamilyCard({
   anchorById: Record<string, string>;
   family: MuseumFamilyGroup;
   memberDetails: MemberDetails;
+  originalView?: boolean;
   onSaintClick: (id: string) => void;
   rows: MuseumSaintPlacement[];
   tierById: Record<string, MuseumTier>;
@@ -424,22 +426,27 @@ function SaintModal({member,onClose,row}: {member?: Record<string,string>;onClos
           </button>
         </div>
 
-        {row.saintId ? <p><Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>Review and confirm proposal</Link></p> : <p>This proposal is preserved, but its saint link needs reconciliation before it can be confirmed. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.id)}`}>Review source link</Link></p>}
+        {row.saintId ? <p><Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>{row.placementState === "Confirmed" ? "Review placement" : "Review and confirm proposal"}</Link></p> : <p>This proposal is preserved, but its saint link needs reconciliation before it can be confirmed. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.sourceRecordId || row.id)}`}>Review source link</Link></p>}
 
         <dl className="museum-saint-data">
-          <DataItem label="Original primary section" value={row.section} />
+          <DataItem label="Primary section" value={row.section} />
+          <DataItem label="Placement status" value={row.placementState || "Original proposal"} />
           <DataItem label="Alternate sections" value={row.alternatives.join("; ")} />
           <DataItem label="Confidence" value={row.confidence} />
-          <DataItem label="Family" value={row.curatorialFamily || row.familyId} />
-          <DataItem label="Family size" value={row.familySize ? String(row.familySize) : ""} />
-          <DataItem label="Sampradaya" value={row.sampradaya} />
-          <DataItem label="Spiritual regions" value={row.spiritualRegions.join("; ")} />
-          <DataItem label="Normalized places" value={row.normalizedPlaces.join("; ")} />
-          <DataItem label="Birth / samadhi" value={[member?.BirthDate, member?.SamadhiDate].filter(Boolean).join(" - ")} />
+          <DataItem label={row.placementState === "Confirmed" ? "Exhibit group" : "Proposed display group"} value={row.groupLabel || row.curatorialFamily || row.familyId} />
+          <DataItem label="Current families and roles" value={member?.Families} />
+          <DataItem label="Original group size" value={row.familySize ? String(row.familySize) : ""} />
+          <DataItem label="Sampradaya" value={row.sampradaya || "Not recorded"} />
+          <DataItem label="Spiritual regions" value={row.spiritualRegions.join("; ") || "Not recorded"} />
+          <DataItem label="Normalized places" value={row.normalizedPlaces.join("; ") || "Not recorded"} />
+          <DataItem label="Birth" value={member?.BirthDate || "Not recorded"} />
+          <DataItem label="Samadhi" value={member?.SamadhiDate || "Not recorded"} />
           <DataItem label="Masters" value={member?.Masters} />
           <DataItem label="Disciples" value={member?.Disciples} />
           <DataItem label="Partner" value={member?.Partner} />
           <DataItem label="Incarnation" value={member?.Incarnation} />
+          <DataItem label="Other relationships" value={member?.["Other relationships"]} wide />
+          <DataItem label="Source link issue" value={row.linkIssue} wide />
           <DataItem label="Rationale" value={row.rationale} wide />
           <DataItem label="Internal note" value={row.note} wide />
           <DataItem label="Review signal" value={row.needsResearch ? "Needs more research or cleanup review" : ""} wide />
@@ -504,9 +511,12 @@ function TertiaryCard({
 
 function SaintButton({ onSaintClick, row }: { onSaintClick: (id: string) => void; row: MuseumSaintPlacement }) {
   return (
-    <button className="museum-saint-link" onClick={() => onSaintClick(row.id)} type="button">
-      {row.name}
-    </button>
+    <>
+      <button className="museum-saint-link" onClick={() => onSaintClick(row.id)} type="button">
+        {row.name}
+      </button>
+      {row.placementState ? <small className="museum-placement-status">{row.placementState}</small> : null}
+    </>
   );
 }
 
