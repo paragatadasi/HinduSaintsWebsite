@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { Prisma } from "@/lib/generated/prisma/client";
-import { getMuseumProposalData } from "@/lib/museum-proposals";
+import { getMuseumProposalData, museumSectionSlug } from "@/lib/museum-proposals";
 import { applyFamilyProposalMoves, familyMoveRevision, proposalFamilyKey } from "@/lib/museum-family-move-domain";
 import { MuseumConflict } from "@/lib/museum-service";
 import { airtableIdentity } from "@/lib/museum-domain";
@@ -14,14 +14,14 @@ export async function moveMuseumFamilyProposal(args: {
 }) {
   return db.$transaction(async tx => {
     // Serializes even the first move, before a row exists to lock.
-    await tx.$queryRaw(Prisma.sql`SELECT pg_advisory_xact_lock(hashtextextended(${"museum-family:" + args.familyKey}, 0))`);
+    await tx.$queryRaw(Prisma.sql`SELECT true AS locked FROM pg_advisory_xact_lock(hashtextextended(${"museum-family:" + args.familyKey}, 0))`);
     const original = getMuseumProposalData();
     const members = original.placements.filter(row => proposalFamilyKey(row) === args.familyKey);
     if (!members.length) throw new MuseumConflict("This family is no longer available. Reload the section.");
     const before = await tx.museumFamilyProposalMove.findUnique({ where: { familyKey: args.familyKey } });
     if (familyMoveRevision(members, before ?? undefined) !== args.revision)
       throw new MuseumConflict("This family proposal changed. Reload the section before moving it.");
-    const definitions = await tx.museumSection.findMany({ select: { name: true, status: true } });
+    const definitions = await tx.museumSection.findMany({ select: { name: true, slug: true, status: true } });
     if (definitions.some(s => s.name === args.section && s.status === "archived") ||
       ![...original.sections, ...definitions.filter(s => s.status !== "archived")].some(s => s.name === args.section))
       throw new MuseumConflict("Choose an available museum section.");
@@ -42,5 +42,6 @@ export async function moveMuseumFamilyProposal(args: {
       beforeJson: { section: before?.section ?? null, version: before?.version ?? 0, members: members.map(row => ({ id: row.id, section: before?.section ?? row.section })) },
       afterJson: { section: after.section, version: after.version, memberIds: members.map(row => row.id) }
     } });
+    return definitions.find(section => section.name === args.section)?.slug ?? museumSectionSlug(args.section);
   }, { timeout: 30000 });
 }
