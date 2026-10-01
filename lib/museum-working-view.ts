@@ -1,7 +1,9 @@
+import type { MuseumCollectionCardItem } from "./museum-collection-domain";
 import { buildMuseumView, museumSectionSlug, type MuseumSaintPlacement } from "./museum-proposals";
 import { resolveSnapshotIdentity } from "./museum-domain";
 
 export type CurrentMuseumSaint = {
+  collectionItems?: MuseumCollectionCardItem[];
   id: string;
   name: string;
   aliases: string[];
@@ -100,6 +102,7 @@ export function buildWorkingMuseumView(
 function currentDetails(placement: MuseumSaintPlacement, saint: CurrentMuseumSaint): MuseumSaintPlacement {
   return {
     ...placement, saintId: saint.id, name: saint.name, searchNames: saint.aliases,
+    collectionItems: saint.collectionItems || [],
     sampradaya: saint.sampradaya, normalizedPlaces: saint.normalizedPlaces,
     spiritualRegions: saint.spiritualRegions
   };
