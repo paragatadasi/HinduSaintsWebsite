@@ -1,3 +1,4 @@
+import { projectSourceVitrines, SPN_WEBSITE_AIRTABLE_BASE_ID } from "@/lib/museum-vitrine-source";
 import { readSaintCollectionItems } from "@/lib/museum-collections";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/lib/generated/prisma/client";
@@ -8,7 +9,11 @@ import { buildWorkingMuseumView, museumRelationshipDetails, type CurrentMuseumSa
 
 // Private data reader; route entry points must enforce access_museum before calling.
 export async function readMuseumData(client: Prisma.TransactionClient = db) {
-  const [collections, saints, links, definitions] = await Promise.all([
+  const [mirrorLocations, collections, saints, links, definitions] = await Promise.all([
+    client.airtableMirrorRecord.findMany({
+      where: { baseId: SPN_WEBSITE_AIRTABLE_BASE_ID, tableIdOrName: "Saints" },
+      select: { baseId: true, tableIdOrName: true, recordId: true, rawFieldsJson: true }
+    }),
     readSaintCollectionItems(client),
     client.saint.findMany({
       where: { status: { not: "archived" } },
@@ -47,8 +52,10 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }]
     })
   ]);
+  const vitrines = projectSourceVitrines(mirrorLocations, links, new Set(saints.map(s => s.id)));
   const current: CurrentMuseumSaint[] = saints.map(s => ({
     collectionItems: collections.get(s.id) || [],
+    sourceVitrine: vitrines.get(s.id),
     id: s.id, name: s.displayName, aliases: [s.canonicalName, ...s.aliases.map(a => a.alias)],
     sampradaya: s.traditions.map(t => t.tradition.name).join("; "),
     normalizedPlaces: s.places.filter(p => p.place.placeKind !== "spiritual_region")

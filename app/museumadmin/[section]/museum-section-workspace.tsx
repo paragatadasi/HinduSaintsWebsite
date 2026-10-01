@@ -453,6 +453,7 @@ function SaintModal({member,onClose,row,moveControl}: {member?: Record<string,st
         {moveControl}
         <dl className="museum-saint-data">
           <DataItem label="Primary section" value={row.section} />
+          {row.sourceVitrine ? <DataItem label="SPN vitrine (source record)" value={row.sourceVitrine.vitrine + (row.sourceVitrine.shelf ? " / Shelf " + row.sourceVitrine.shelf : "")} /> : null}
           <DataItem label="Placement status" value={row.placementState || "Original proposal"} />
           <DataItem label="Alternate sections" value={row.alternatives.join("; ")} />
           <DataItem label="Confidence" value={row.confidence} />

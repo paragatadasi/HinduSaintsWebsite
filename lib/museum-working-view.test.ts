@@ -110,3 +110,16 @@ test("family move overlay changes proposed and unlinked cards while preserving c
   assert.ok(original.placements.every(p => p.section === "Section A"));
   assert.ok(view.sectionBySlug.has("section-a"));
 });
+
+
+test("source vitrine appears only on resolved working proposals and survives confirmed placement", () => {
+  const sourceVitrine = { museum: "SPN" as const, vitrine: "52", shelf: "C" };
+  const original = source(row());
+  const current = saint({ sourceVitrine });
+  const proposed = buildWorkingMuseumView(original, [current], [link()], []);
+  assert.deepEqual(proposed.placements[0].sourceVitrine, sourceVitrine);
+  const confirmed = buildWorkingMuseumView(original, [{ ...current, confirmed: [row("placement")] }], [link()], []);
+  assert.deepEqual(confirmed.placements[0].sourceVitrine, sourceVitrine);
+  assert.equal(buildWorkingMuseumView(original, [current], [], []).placements[0].sourceVitrine, undefined);
+  assert.equal(original.placements[0].sourceVitrine, undefined);
+});
