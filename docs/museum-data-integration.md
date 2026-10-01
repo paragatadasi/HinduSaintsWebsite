@@ -1,10 +1,12 @@
 # Museum data integration
 
-The original section proposal browser reads the checked-in historical planning export.
-It stays available independently of database placements, with all tier listings and
-family groupings. Its preview controls are temporary and explicitly labeled.
-Placement review and saint decision pages use canonical CMS saints and private
-database assignments; saved decisions do not rewrite the historical proposal.
+Existing section proposals are available directly for each unambiguously linked
+canonical saint. There is no preparation step. Section pages retain all proposals,
+including unresolved records, and link matched records directly to their review.
+Curators can confirm a proposal or edit it before confirming. The original source
+snapshot and the decision are saved atomically; simply browsing writes nothing.
+Confirmed placements remain separate from source proposals and are never silently
+overwritten. Section proposal listings continue to show the original proposal.
 Airtable remains an import/reference source. Museum `published` assignments mean
 accepted curatorial decisions, never public website content.
 
@@ -37,17 +39,16 @@ accepted curatorial decisions, never public website content.
    reports source candidates, unresolved export IDs, missing primary placements,
    and competing primary assignments. Do not substitute fixture coverage for a
    production audit.
-3. In `/museumadmin/review`, choose **Prepare source proposals**. This reads the
-   existing Airtable mirror. It does not call Airtable, import missing saints, or
-   accept decisions. Mirror museum fields take precedence over legacy CSV exports.
-   A mirror without museum fields or earlier museum history may predate planning,
-   so it can fall back to an explicitly labeled historical export proposal. Export
-   rows without an unambiguous full source mapping remain in the unresolved list.
-4. Resolve missing saints and identities through the existing Airtable import and
-   saint reconciliation workflows, then prepare proposals again.
-5. Review each saint at `/museumadmin/saints/[id]`: compare the current decision,
-   source proposal, main saint record, and latest mirror. Accept the proposal,
-   retain the current decision, or edit the placement explicitly.
+3. Open a section proposal or /museumadmin/review. Existing proposals are
+   immediately reviewable; confirm or edit and confirm a saint's proposal.
+4. Resolve ambiguous identities through the existing Airtable import and saint
+   reconciliation workflows. Once a link is unambiguous, its proposal becomes
+   available automatically on the next visit.
+5. The review and reconciliation screen also projects latest Airtable mirror
+   values as suggested updates automatically. Differences are listed beside the
+   confirmed site placement. Keep the site value, accept the source, or edit and
+   confirm a resolution. Recheck source content before saving so stale updates
+   cannot replace newer values. No museum-specific preparation button is required.
 
 The existing Airtable cleanup job now stages museum proposals instead of directly
 creating assignments. Its historical `museumSectionAssignmentsCreated` and
@@ -55,11 +56,11 @@ creating assignments. Its historical `museumSectionAssignmentsCreated` and
 calls these museum proposals.
 
 The checked-in proposal export contains 1,399 distinct record IDs across 23
-sections. These are historical source rows, not a current production coverage
-claim. All historical proposal rows remain visible in the section browser, including
+sections. These are source rows, not a current production coverage
+claim. All existing proposal rows remain visible in the section browser, including
 unmapped records. Missing or competing database placements remain discoverable
 in the review queue. Source-candidate counts describe eligible source records,
-not saved placements; preparing proposals does not accept them. Static family trees are labeled historical references on saint
+not confirmed placements. Static family trees are labeled historical references on saint
 review pages and do not purport to show the current relationship graph.
 
 ## Source links and permissions

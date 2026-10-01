@@ -30,7 +30,7 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
           <div className="eyebrow">Museum Admin</div>
           <h1>Museum section proposals</h1>
           <p>
-            Browse the original planning proposals by section, family, and display tier. These reference proposals remain available while database placements are reviewed.
+            Browse the existing museum proposals by section, family, and display tier. Open a saint to review and confirm its proposal.
           </p>
         </div>
         <div className="museum-admin-hero__stats" aria-label="Museum proposal totals">
@@ -42,7 +42,7 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
         </div>
       </section>
 
-      <p><Link className="museum-admin-button" href="/museumadmin/review">Review and save database placements</Link></p>
+      <p><Link className="museum-admin-button" href="/museumadmin/review">Review and confirm proposals</Link></p>
       <section className="museum-admin-panel">
         <div className="museum-admin-section-heading">
           <div>

@@ -14,6 +14,7 @@ const cleanupFlagsPath = path.join(museumDataDir, "airtable-museum-section-clean
 export type MuseumTier = "Featured" | "Secondary" | "Tertiary";
 
 export type MuseumSaintPlacement = {
+  saintId?: string;
   id: string;
   name: string;
   section: string;
