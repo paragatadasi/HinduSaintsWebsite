@@ -7656,8 +7656,16 @@ fieldset.admin-field {
   font-weight: 700;
 }
 
-.museum-admin-content {
+.museum-admin-content,
+.museum-admin,
+.museum-admin-hero,
+.museum-admin-panel,
+.museum-family-card,
+.museum-tertiary-card,
+.museum-family-card__header > div,
+.museum-modal {
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .museum-admin h1,
@@ -8147,6 +8155,19 @@ fieldset.admin-field {
 
 .museum-family-card--standalone-primary h3 {
   color: var(--color-gold);
+}
+
+.museum-family-move-dialog {
+  background: var(--color-surface);
+  border: var(--border-width-default) solid var(--color-border);
+  border-radius: var(--radius-card);
+  color: var(--color-text);
+  padding: var(--space-6);
+  width: min(calc(100vw - var(--space-8)), var(--width-admin-confirmation-dialog));
+}
+
+.museum-family-move-dialog::backdrop {
+  background: var(--color-modal-scrim);
 }
 
 .museum-tree-grid {
@@ -11139,4 +11160,13 @@ select:not([multiple]) {
   .places-timeline strong {
     grid-area: auto;
   }
+}
+
+/* Shared placement-state text for museum cards in every display tier. */
+.museum-placement-status {
+  display: block;
+  color: var(--color-muted);
+  margin-top: var(--space-1);
+  font-family: var(--font-sans);
+  font-weight: normal;
 }

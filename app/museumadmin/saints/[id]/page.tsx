@@ -141,7 +141,7 @@ export default async function MuseumSaintPage({
     ),
     ...direct.proposals.filter((p) => p.entityId === id),
   ];
-  const existing = pending.filter((p) => p.sourceKind === "legacy-export");
+  const existing = pending.filter((p) => p.sourceKind === "legacy-export" || p.sourceKind.startsWith("family-move:"));
   const baseProposal =
     !current && existing.length === 1
       ? existing[0]
@@ -391,6 +391,7 @@ export default async function MuseumSaintPage({
                 <h4>
                   {p.sourceKind === "legacy-export"
                     ? "Existing museum proposal"
+                    : p.sourceKind.startsWith("family-move:") ? "Family section move proposal"
                     : "Suggested Airtable update"}
                 </h4>
                 <p>
@@ -398,6 +399,7 @@ export default async function MuseumSaintPage({
                   {p.createdAt?.toISOString() ||
                     (p.sourceKind === "legacy-export"
                       ? "Existing section proposal"
+                      : p.sourceKind.startsWith("family-move:") ? "Proposed by a museum editor"
                       : "Latest imported source")}
                 </p>
                 {current && value ? (

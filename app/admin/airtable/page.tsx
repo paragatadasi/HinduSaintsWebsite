@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { SourceImportBatchHistory } from "@/components/admin/source-import-batch-history";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -43,6 +44,7 @@ export default async function AirtablePage({ searchParams }: AirtablePageProps) 
         <p className="lede">Review mirrored Airtable records and intentionally import safe changes into the website CMS.</p>
       </div>
 
+      <p><Link className="admin-form-button admin-form-button--secondary" href={{ pathname: "/admin/airtable/mirror-audit" }}>View mirror field coverage</Link></p>
       <StatusMessages params={params} />
 
       <AirtableImportPanel defaultOpen jobs={recentJobs.map(serializeAirtableImportJob)} />

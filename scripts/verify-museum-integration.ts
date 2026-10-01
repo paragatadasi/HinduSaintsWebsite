@@ -544,6 +544,47 @@ try {
   console.log(
     "PASS saint merge preserves source links and flags placement review",
   );
+
+  const { readMuseumData } = await import("../lib/museum-working-data");
+  const sourceRows = getMuseumProposalData().placements;
+  const workingSource = sourceRows.find(p => p.familyId && !p.curatorialFamily)!;
+  const currentCard = await makeSaint("CanonicalCard");
+  const cardSource = await db.externalRecord.create({ data: {
+    sourceType: "airtable", entityType: "Saint", entityId: currentCard.id,
+    externalId: "appWorkingCards:Saints:" + workingSource.id, rawPayloadJson: {}
+  }});
+  await db.saint.update({ where: { id: currentCard.id }, data: {
+    displayName: "Renamed canonical saint", birthDateRaw: "c. 1850", birthYear: 1850
+  }});
+  let working = await readMuseumData(db);
+  let card = working.placements.find(p => p.saintId === currentCard.id)!;
+  assert.equal(card.name, "Renamed canonical saint");
+  assert.equal(card.placementState, "Proposed");
+  assert.equal(working.membersById.get(card.id)?.BirthDate, "c. 1850");
+  assert.deepEqual(card.normalizedPlaces, []);
+  assert.equal(card.sampradaya, "");
+  await saveMuseumPlacement({
+    saintId: currentCard.id, version: 0, actorId: actor.id,
+    input: museumPlacementSchema.parse({ section: "Current Cards Destination", tier: "secondary", confidence: "high" }),
+    anchor: ""
+  });
+  working = await readMuseumData(db);
+  assert.equal(working.placements.filter(p => p.saintId === currentCard.id).length, 1);
+  card = working.placements.find(p => p.saintId === currentCard.id)!;
+  assert.equal(card.section, "Current Cards Destination");
+  assert.equal(card.placementState, "Confirmed");
+  assert.equal(card.tier, "Secondary");
+  assert.ok(working.sections.some(s => s.name === workingSource.section));
+  assert.equal(working.original.placements.find(p => p.id === workingSource.id)?.section, workingSource.section);
+  await db.saint.update({ where: { id: currentCard.id }, data: { birthYear: null, birthDateRaw: null }});
+  working = await readMuseumData(db);
+  assert.equal(working.membersById.get(card.id)?.BirthDate, "");
+  // A later source reassignment must never leave cached cards attached to the former saint.
+  await db.externalRecord.update({ where: { id: cardSource.id }, data: { entityId: null }});
+  working = await readMuseumData(db);
+  assert.equal(working.placements.find(p => p.id === workingSource.id)?.placementState, "Unlinked");
+  assert.equal(working.placements.find(p => p.saintId === currentCard.id)?.placementState, "Confirmed");
+  console.log("PASS working cards reflect current edits, confirmed moves, cleared fields and source reassignment");
 } finally {
   await db.$disconnect();
 }

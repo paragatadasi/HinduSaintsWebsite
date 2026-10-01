@@ -844,6 +844,14 @@ model MuseumSection {
   @@index([status, publicVisible, sortOrder])
 }
 
+model MuseumFamilyProposalMove {
+  familyKey String @id
+  section String
+  version Int @default(1)
+  updatedById String
+  updatedAt DateTime @updatedAt
+}
+
 model MuseumSaintState {
   saintId String @id
   saint Saint @relation(fields: [saintId], references: [id], onDelete: Cascade)

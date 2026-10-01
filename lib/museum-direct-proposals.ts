@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import { getMuseumProposalData } from "@/lib/museum-proposals";
+import { proposalFamilyKey } from "@/lib/museum-family-move-domain";
 import {
   museumFields,
   museumPlacementSchema,
@@ -24,7 +25,7 @@ type DirectProposal = {
 export async function getDirectMuseumProposals(
   client: Prisma.TransactionClient = db,
 ) {
-  const [records, saints, snapshots, mirrors] = await Promise.all([
+  const [records, saints, snapshots, mirrors, familyMoves] = await Promise.all([
     client.externalRecord.findMany({
       where: { sourceType: "airtable", entityType: "Saint" },
       select: { id: true, externalId: true, entityId: true },
@@ -52,6 +53,7 @@ export async function getDirectMuseumProposals(
         rawFieldsJson: true,
       },
     }),
+    client.museumFamilyProposalMove.findMany(),
   ]);
   const ids = new Set(saints.map((s) => s.id));
   const linkedSaintByRecordId = new Map<string, string>();
@@ -72,6 +74,11 @@ export async function getDirectMuseumProposals(
     }
     const source = resolved.record;
     linkedSaintByRecordId.set(row.id, source.entityId!);
+    if (familyMoves.some(move => move.familyKey === proposalFamilyKey(row))) {
+      for (const snapshot of snapshots) if (snapshot.externalRecordId === source.id && snapshot.sourceKind === "legacy-export" && snapshot.status === "pending")
+        supersededSnapshotIds.add(snapshot.id);
+      continue;
+    }
     const payload = museumPlacementSchema.parse({
       section: row.section,
       alternatives: row.alternatives,
@@ -110,6 +117,32 @@ export async function getDirectMuseumProposals(
       createdAt: null,
       status: "pending",
     });
+  }
+  for (const move of familyMoves) {
+    const prefix = `family-move:${move.familyKey}:`;
+    const sourceKind = prefix + move.version;
+    for (const snapshot of snapshots) {
+      if (snapshot.status === "pending" && snapshot.sourceKind.startsWith(prefix) && snapshot.sourceKind !== sourceKind)
+        supersededSnapshotIds.add(snapshot.id);
+    }
+    for (const row of getMuseumProposalData().placements.filter(row => proposalFamilyKey(row) === move.familyKey)) {
+      const resolved = resolveSnapshotIdentity(row.id, records, ids);
+      if (!resolved.record) continue;
+      const source = resolved.record;
+      const payload = museumPlacementSchema.parse({
+        section: move.section, alternatives: row.alternatives, tier: row.tier.toLowerCase(),
+        confidence: row.confidence.toLowerCase(), rationale: row.rationale, note: row.note,
+        group: row.curatorialFamily
+      });
+      const signature = proposalSignature(payload);
+      if (snapshots.some(p => p.externalRecordId === source.id && p.sourceKind === sourceKind &&
+        proposalSignature(p.payload === null ? null : museumPlacementSchema.parse(p.payload)) === signature)) continue;
+      const id = "source:" + createHash("sha256").update(source.id + ":" + sourceKind + ":" + signature).digest("hex");
+      if (seen.has(id)) continue;
+      seen.add(id);
+      proposals.push({ id, externalRecordId: source.id, externalId: source.externalId,
+        entityId: source.entityId!, sourceKind, payload, createdAt: null, status: "pending" });
+    }
   }
   for (const mirror of mirrors) {
     const externalId = [
