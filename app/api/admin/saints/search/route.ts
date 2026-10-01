@@ -4,7 +4,7 @@ import { requireSaintCatalogUser } from "@/lib/admin-access";
 import { getAdminSaintCatalogScope } from "@/lib/admin-saint-access";
 import { saintSearchDescription, searchSaintCatalog } from "@/lib/admin-saint-search";
 
-const querySchema = z.string().trim().min(2).max(100);
+const querySchema = z.string().trim().min(1).max(100);
 const idSchema = z.string().cuid();
 
 export async function GET(request: Request) {

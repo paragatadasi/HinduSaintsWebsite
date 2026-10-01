@@ -117,6 +117,8 @@
   --space-page-gutter: clamp(var(--space-5), 5vw, 6rem);
   --width-prose: 760px;
   --width-header-search: 15rem;
+  --font-size-header-search: 1rem;
+  --height-header-search: calc(var(--size-control) + var(--space-2) + 2 * var(--border-width-default));
   --width-cookie-notice: 50rem;
   --width-admin-stat-card-min: 140px;
   --width-definition-tooltip: 18rem;

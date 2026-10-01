@@ -13,7 +13,7 @@ export async function searchSaintCatalog({
   scope: SaintCatalogScope;
 }) {
   const normalizedQuery = query.trim();
-  if (normalizedQuery.length < 2) return [];
+  if (!normalizedQuery) return [];
 
   const candidateIds = await getSaintSearchCandidateIds(normalizedQuery, scope);
   if (candidateIds.length === 0) return [];

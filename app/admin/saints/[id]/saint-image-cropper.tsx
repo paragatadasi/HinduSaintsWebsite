@@ -1,10 +1,11 @@
 "use client";
 
-import { ChevronDown, Crop, ImagePlus, ScanFace, Upload } from "lucide-react";
+import { ChevronDown, Crop, ScanFace, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { CSSProperties, KeyboardEvent, PointerEvent } from "react";
 import { useMemo, useRef, useState, useTransition } from "react";
 import { AdminImageEditorDialog } from "@/components/admin/admin-image-editor-dialog";
+import { MediaBatchUploader } from "@/components/admin/media-batch-uploader";
 import { FocalImage } from "@/components/ui/focal-image";
 import { attachImageToSaint } from "../actions";
 import { InstagramSlideActions } from "./instagram-slide-actions";
@@ -98,6 +99,7 @@ const defaultFocusPoint: FocusPoint = { x: 50, y: 30 };
 const cropHandles: DragMode[] = ["nw", "n", "ne", "e", "se", "s", "sw", "w"];
 
 export function SaintImageCropper({ defaultAltText, instagramImages, saintId, stagedImages }: SaintImageCropperProps) {
+  const [batchBusy, setBatchBusy] = useState(false);
   const [selected, setSelected] = useState<SelectedImage | null>(null);
   const [cropBox, setCropBox] = useState<CropBox>(defaultCropBox);
   const [focusPoint, setFocusPoint] = useState<FocusPoint>(defaultFocusPoint);
@@ -121,7 +123,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
     [instagramImages, visibleInstagramSlideCount]
   );
   const remainingInstagramSlideCount = instagramImages.length - sourceOptions.length;
-  const isBusy = isPending || uploadState.status === "uploading";
+  const isBusy = batchBusy || isPending || uploadState.status === "uploading";
   const imageAspect = naturalSize.width / Math.max(1, naturalSize.height);
 
   function selectInstagramImage(image: InstagramImageSource) {
@@ -310,17 +312,19 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
   return (
     <div className="saint-image-cropper">
       <div className="saint-image-cropper__sources">
-        <label className="saint-image-cropper__upload">
-          <ImagePlus size={18} aria-hidden="true" />
-          <span>Upload image</span>
-          <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => selectUploadedFile(event.target.files?.[0])} />
-        </label>
+        <MediaBatchUploader
+          defaultAltText={defaultAltText}
+          disabled={isPending || uploadState.status === "uploading"}
+          onBusyChange={setBatchBusy}
+          onSelectSingle={selectUploadedFile}
+          attach={(mediaAssetId) => attachImageToSaint({ saintId, mediaAssetId, placement: "gallery" })}
+        />
         {stagedImages.length > 0 || sourceOptions.length > 0 ? (
           <>
             <div className="saint-image-cropper__source-grid" aria-label="Image staging sources">
               {stagedImages.map((image) => (
                 <div className="saint-image-cropper__staged-source" key={image.id}>
-                  <button className="saint-image-cropper__source" type="button" onClick={() => selectStagedImage(image)}>
+                  <button className="saint-image-cropper__source" type="button" disabled={isBusy} onClick={() => selectStagedImage(image)}>
                     <FocalImage
                       src={image.url}
                       alt=""
@@ -351,7 +355,7 @@ export function SaintImageCropper({ defaultAltText, instagramImages, saintId, st
               ))}
               {sourceOptions.map((image) => (
                 <div className="saint-image-cropper__staged-source" key={`${image.id}-${image.previewUrl}`}>
-                  <button className="saint-image-cropper__source" type="button" onClick={() => selectInstagramImage(image)}>
+                  <button className="saint-image-cropper__source" type="button" disabled={isBusy} onClick={() => selectInstagramImage(image)}>
                     <img src={image.previewUrl} alt="" loading="lazy" />
                     <span>{image.label}</span>
                   </button>

@@ -40,7 +40,7 @@ export function scoreWeightedTextSearch(query: string, fields: WeightedSearchFie
     ? substantivePhraseQueryForms
     : uniqueQueryForms;
   const queryTokens = Array.from(new Set(uniqueQueryForms.flatMap(getSearchTokens)))
-    .filter((token) => token.length >= 2 && !SEARCH_HONORIFICS.has(token));
+    .filter((token) => token.length >= 2 && !isSearchHonorific(token));
 
   let score = 0;
 
@@ -103,7 +103,7 @@ export function getSearchQueryTerms(value: string) {
   if (queryTerms.length > 0) return queryTerms;
 
   return Array.from(new Set(getSearchForms(value)))
-    .filter((term) => term.length >= 2);
+    .filter(Boolean);
 }
 
 export function getIdentitySearchForms(value: string) {
@@ -127,7 +127,7 @@ function getSearchTokens(value: string) {
 }
 
 function hasSubstantiveSearchToken(value: string) {
-  return getSearchTokens(value).some((token) => !SEARCH_HONORIFICS.has(token));
+  return getSearchTokens(value).some((token) => !isSearchHonorific(token));
 }
 
 function hasMinimumPhraseLength(value: string) {
@@ -144,7 +144,7 @@ function getQuerySearchForms(value: string) {
 
 function removeSearchHonorifics(value: string) {
   return getSearchTokens(value)
-    .filter((token) => !SEARCH_HONORIFICS.has(token))
+    .filter((token) => !isSearchHonorific(token))
     .join(" ");
 }
 
@@ -167,7 +167,7 @@ function foldTransliterationVariants(value: string) {
 
 function scoreFuzzyTokenMatches(queryForms: string[], fieldForms: string[]) {
   const queryTokens = Array.from(new Set(queryForms.flatMap(getSearchTokens)))
-    .filter((token) => token.length >= 4 && !SEARCH_HONORIFICS.has(token));
+    .filter((token) => token.length >= 4 && !isSearchHonorific(token));
   const fieldTokens = Array.from(new Set(fieldForms.flatMap(getSearchTokens)));
   let score = 0;
 
@@ -251,3 +251,11 @@ const SEARCH_HONORIFICS = new Set([
   "sri",
   "swami"
 ]);
+
+// Folded titles (for example baba -> vaba) must still be recognized as titles.
+// Otherwise they displace the original spelling during candidate retrieval.
+const FOLDED_SEARCH_HONORIFICS = new Set([...SEARCH_HONORIFICS].map(foldTransliterationVariants));
+
+function isSearchHonorific(token: string) {
+  return SEARCH_HONORIFICS.has(token) || FOLDED_SEARCH_HONORIFICS.has(token);
+}

@@ -20,12 +20,14 @@ export function SiteHeader() {
           </span>
           <span>Hindu Saints</span>
         </Link>
-        <div className="site-links">
-          <Link href="/saints" prefetch={false}>Saints</Link>
-          <Link href="/traditions" prefetch={false}>Traditions</Link>
-          <Link href="/map" prefetch={false}>Map</Link>
-          <Link href="/about" prefetch={false}>About</Link>
-          <Link href="https://www.instagram.com/hindu_saints/" {...getInstagramLinkProps("https://www.instagram.com/hindu_saints/")}>Instagram</Link>
+        <div className="site-header-actions">
+          <div className="site-links">
+            <Link href="/saints" prefetch={false}>Saints</Link>
+            <Link href="/traditions" prefetch={false}>Traditions</Link>
+            <Link href="/map" prefetch={false}>Map</Link>
+            <Link href="/about" prefetch={false}>About</Link>
+            <Link href="https://www.instagram.com/hindu_saints/" {...getInstagramLinkProps("https://www.instagram.com/hindu_saints/")}>Instagram</Link>
+          </div>
           <HeaderSearch />
         </div>
       </nav>

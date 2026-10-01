@@ -108,6 +108,57 @@ test("keeps an honorific-only PostgreSQL candidate term", () => {
   assert.deepEqual(getSearchQueryTerms("sri"), ["sri"]);
 });
 
+test("keeps original honorifics when transliteration folding changes them", () => {
+  for (const query of ["baba", "babaji", "bhagavan", "shree", "sree", "swami", "devi"]) {
+    assert.ok(getSearchQueryTerms(query).includes(query), `Missing original term: ${query}`);
+  }
+  assert.ok(!getSearchQueryTerms("Baba Ram Dass").includes("vaba"));
+});
+
+test("single letters survive candidate retrieval without splitting spaced initials", () => {
+  assert.deepEqual(getSearchQueryTerms(" G "), ["g"]);
+  assert.deepEqual(getSearchQueryTerms("a c"), ["a c"]);
+  assert.deepEqual(getSearchQueryTerms("  "), []);
+  assert.deepEqual(getSearchQueryTerms("%_!"), []);
+});
+
+test("public and internal ranking agree on single letters, honorifics and aliases", () => {
+  const candidates: CorpusSaint[] = [
+    { id: "g", displayName: "Gajanan Maharaj", canonicalName: "Gajanan Maharaj" },
+    { id: "baba", displayName: "Neem Karoli Baba", canonicalName: "Neem Karoli Baba" },
+    { id: "alias", displayName: "Anand", canonicalName: "Anand", aliases: [{ alias: "Gopal Baba" }] },
+    { id: "unrelated", displayName: "Tukaram", canonicalName: "Tukaram" }
+  ];
+
+  for (const [query, expectedIds] of [["g", ["g", "alias"]], ["baba", ["baba", "alias"]]] as const) {
+    const publicResults = rankSaintSearchResults(candidates, query).map(({ item }) => item.id);
+    const internalResults = rankSaintSearchResults(candidates, query, { includeAdminFields: true })
+      .map(({ item }) => item.id);
+    assert.deepEqual(publicResults, [...expectedIds]);
+    assert.deepEqual(internalResults, publicResults);
+  }
+});
+
+test("folded honorifics do not boost unrelated names in a substantive query", () => {
+  const candidates: CorpusSaint[] = [
+    { id: "baba", displayName: "Neem Karoli Baba", canonicalName: "Neem Karoli Baba" },
+    { id: "ram-dass", displayName: "Ram Dass", canonicalName: "Ram Dass" }
+  ];
+  assert.deepEqual(
+    rankSaintSearchResults(candidates, "Baba Ram Dass"),
+    rankSaintSearchResults(candidates, "Ram Dass")
+  );
+});
+
+test("public ranking excludes internal-only search fields", () => {
+  const candidates: CorpusSaint[] = [{
+    id: "internal", displayName: "Tukaram", canonicalName: "Tukaram",
+    biographySummary: "Editorialneedle", status: "needs_review"
+  }];
+  assert.deepEqual(rankSaintSearchResults(candidates, "Editorialneedle"), []);
+  assert.equal(rankSaintSearchResults(candidates, "Editorialneedle", { includeAdminFields: true })[0]?.item.id, "internal");
+});
+
 test("builds normalized PostgreSQL candidate terms from one shared query model", () => {
   const terms = getSearchQueryTerms("Śrī Caitanya Mahāprabhu");
 

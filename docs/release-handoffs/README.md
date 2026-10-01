@@ -106,11 +106,13 @@ checkout, because Windows junctions can break Next.js standalone trace copying.
 
 When a ready handoff arrives, the release captain should begin the release
 automatically. The same workflow applies when a deployment is explicitly
-requested: consider all queued handoffs and include those still compatible with
-the release. If queued work is intentionally left out, report the branch and
-reason in the release summary. Automatic release must pause for conflicts,
-failed integrated checks, missing required environment configuration, unsafe
-migration conditions, or another release already in progress.
+requested: consider all queued handoffs and include every queued branch that is
+still compatible and sufficiently verified. Queued status alone is not a
+reason to defer work. If queued work is intentionally left out, report the
+branch and concrete conflict, verification gap, or release risk in the release
+summary. Automatic release must pause for conflicts, failed integrated checks,
+missing required environment configuration, unsafe migration conditions, or
+another release already in progress.
 
 Ready or queued agents can create handoffs manually from `TEMPLATE.md`, but
 `npm run prepare:deployment` and `npm run queue:deployment` are the preferred
