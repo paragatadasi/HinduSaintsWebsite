@@ -1449,6 +1449,8 @@ model MuseumLocation {
   room      String?
   archivedAt DateTime?
   placements MuseumItemPlacement[]
+  movePlansFrom MuseumItemMovePlan[] @relation("MovePlanFrom")
+  movePlansTo MuseumItemMovePlan[] @relation("MovePlanTo")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -1468,6 +1470,7 @@ model MuseumCollectionItem {
   saints      MuseumItemSaint[]
   placements  MuseumItemPlacement[]
   imports     MuseumCollectionImport[]
+  movePlans   MuseumItemMovePlan[]
   @@unique([catalogMuseumId, inventoryCode])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -1551,4 +1554,24 @@ model MuseumSourceReview {
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
   @@index([status, updatedAt])
+}
+
+// Planning does not change physical placement. Completion is explicit and version checked.
+model MuseumItemMovePlan {
+  id String @id @default(cuid())
+  itemId String
+  item MuseumCollectionItem @relation(fields: [itemId], references: [id], onDelete: Restrict)
+  fromLocationId String?
+  fromLocation MuseumLocation? @relation("MovePlanFrom", fields: [fromLocationId], references: [id], onDelete: Restrict)
+  targetLocationId String
+  targetLocation MuseumLocation @relation("MovePlanTo", fields: [targetLocationId], references: [id], onDelete: Restrict)
+  expectedItemVersion Int
+  status String @default("planned")
+  reason String
+  createdById String
+  resolvedById String?
+  resolutionNote String?
+  createdAt DateTime @default(now())
+  resolvedAt DateTime?
+  @@index([itemId, createdAt])
 }

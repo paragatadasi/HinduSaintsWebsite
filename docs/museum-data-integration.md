@@ -347,3 +347,38 @@ stale source rejection and movement history. A 1,304-row fixture including 1,300
 new baseline items and repeat import passed. Authenticated local page checks cover
 Site Admin, Data Admin, curator and anonymous access. PGlite does not certify real
 PostgreSQL concurrent-session behavior; that remains an integration limitation.
+
+## Planned vitrine moves
+
+Museum Admin > Relics and planned moves is separate from Source Data imports.
+Curators can browse SPN items and their current locations, propose a new vitrine
+and shelf, cancel a plan, or explicitly confirm that the physical move happened.
+Creating a plan does not alter inventory placement. Completion closes the former
+placement, opens the new placement, increments the item version and records the
+actor and note. Plans and location history remain available on the item page.
+
+There is at most one open plan per item. Both the recorded item version and its
+original location must still match at completion. A source correction or another
+item edit invalidates the old plan; the curator cancels and replans. Archived
+items/locations and moves outside SPN are rejected. This is deliberately not a
+Vrindavan transfer workflow. A curator can both propose and confirm a move; no
+separate two-person approval policy has been introduced.
+
+Pages require access_museum; server mutations require manage_museum. The shared
+museum layout remains authenticated and noindexed. Source Data remains the home
+for import/update operations. Relic links in the private saint modal lead to the
+move workflow. Completed moves survive an unchanged source replay; subsequent
+source differences still require the existing reconciliation decision.
+
+Migration 20261002160000_museum_item_move_plans adds a plan table with item and
+location foreign keys and a partial unique index for one planned move per item.
+Run it in the release phase before serving the new routes. No environment changes
+or production data backfill are required. Rollback can retain plans and audit
+history; do not delete completed placement history.
+
+Verification includes development type generation/check, the full production
+build, 232 unit tests (one guarded skip), and disposable transaction tests for
+plan/cancel/complete, required physical confirmation, repeated submission, stale
+item versions, archived destinations, museum scope, movement history and source
+replay after a curator move. Live physical placement verification remains a
+curator task. New saints and Vrindavan are deferred by user direction.

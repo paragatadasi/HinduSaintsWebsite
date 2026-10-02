@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import type { Route, Metadata } from "next";
 import { auth, isEmailAuthConfigured, isGoogleAuthConfigured } from "@/lib/auth";
 import { museumFlowZones } from "@/lib/museum-layout-groups";
 import { getMuseumData } from "@/lib/museum-data";
@@ -49,6 +49,7 @@ export default async function MuseumAdminLayout({ children }: { children: React.
           </Link>
           <div className="museum-admin-nav__group-links">
             <Link href="/museumadmin/review">Placement review</Link>
+            <Link href={"/museumadmin/collections" as Route}>Relics and planned moves</Link>
             <Link href="/admin">Main admin</Link>
             <Link href="/">Public site</Link>
           </div>
