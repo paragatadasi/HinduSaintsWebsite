@@ -45,15 +45,15 @@ export default async function RelicReview({searchParams}:{searchParams:Promise<R
         <p>Source: {row.sourceKey} &middot; Observed {row.observedAt.toISOString()}</p>
         {unresolved?<p>Resolve source saint links in <Link href="/admin/source-data/museum">Museum updates</Link>, then connect relics again.</p>:null}
         <details><summary>Linked source rows</summary><ul>{evidence.map(e=><li key={e.recordId}>{typeof e.name==="string"?e.name:e.recordId}: vitrine {String(e.vitrine??"unknown")}, shelf {String(e.shelf??"unknown")}</li>)}</ul></details>
-        {canReview?<form action={reviewRelic} className="admin-stack">
+        {canReview?<form action={reviewRelic} className="form-stack">
           <input type="hidden" name="id" value={row.id}/><input type="hidden" name="version" value={`${row.status}:${row.reviewedAt?.toISOString()||""}`}/>
           {item?<input type="hidden" name="item" value={`${item.id}:${item.version}`}/>:<SearchableSelect name="item" label="Same physical item already exists? Select it; otherwise leave blank." options={items.map(i=>({value:`${i.id}:${i.version}`,label:i.label,description:i.inventoryCode||i.id}))}/>}
           {status!=="completed"?<>
             <label>Item name<input name="label" defaultValue={source.label} maxLength={500}/></label>
             <label>Vitrine<input name="vitrine" defaultValue={vitrine} inputMode="numeric" pattern="[1-9][0-9]{0,5}"/></label>
             <label>Shelf<input name="shelf" defaultValue={shelf||""} maxLength={8}/></label>
-            <label><input type="checkbox" name="unknown"/> Confirm location is unknown (leave vitrine and shelf empty)</label>
-            <label><input type="checkbox" name="confirm"/> I confirm this is one physical item, with the listed source saints and this SPN location. Existing item associations are retained.</label>
+            <label className="admin-option-toggle admin-option-toggle--inline"><input type="checkbox" name="unknown"/> Confirm location is unknown (leave vitrine and shelf empty)</label>
+            <label className="admin-option-toggle admin-option-toggle--inline"><input type="checkbox" name="confirm"/> I confirm this is one physical item, with the listed source saints and this SPN location. Existing item associations are retained.</label>
           </>:null}
           <label>Decision note<textarea name="note" required maxLength={2000}/></label>
           <div className="review-actions">{status!=="completed"?<><button name="action" value="accept" disabled={unresolved} className="admin-form-button">Save confirmed item and location</button>{item?<button name="action" value="keep" className="admin-form-button">Keep website item unchanged</button>:null}<button name="action" value="defer" className="admin-form-button">Defer</button></>:<button name="action" value="reopen" className="admin-form-button">Reopen review</button>}</div>

@@ -30,7 +30,7 @@ export default async function MuseumUpdates({searchParams}:{searchParams:Promise
     {reviews.map(review=>{const snapshot=review.snapshot as {vitrine?:unknown;shelf?:unknown;saintId?:string|null};return <ReviewWorkflow key={review.id} eyebrow="Source review" title={review.name} description={review.reason}>
       <ReviewFactGrid facts={[{label:"Source vitrine",value:typeof snapshot.vitrine==="number"||typeof snapshot.vitrine==="string"?String(snapshot.vitrine):"Not supplied"},{label:"Source shelf",value:typeof snapshot.shelf==="string"?snapshot.shelf:"Not supplied"}]}/>
       <p>Source record: {review.recordId}</p>{review.note?<p>Review note: {review.note}</p>:null}
-      {canReview?<form action={reviewMuseumSource} className="admin-stack">
+      {canReview?<form action={reviewMuseumSource} className="form-stack">
         <input type="hidden" name="id" value={review.id}/><input type="hidden" name="version" value={review.updatedAt.toISOString()}/>
         {canLink&&review.reason==="Saint identity needs review"&&status!=="resolved"?<SearchableSelect name="saintId" label="Existing website saint" options={saints.map(s=>({value:s.id,label:s.displayName,description:s.slug}))}/>:null}
         <label>Decision note<textarea name="note" required maxLength={2000}/></label>
