@@ -33,7 +33,8 @@ export default async function MuseumUpdates({searchParams}:{searchParams:Promise
       {canReview?<form action={reviewMuseumSource} className="form-stack">
         <input type="hidden" name="id" value={review.id}/><input type="hidden" name="version" value={review.updatedAt.toISOString()}/>
         {canLink&&review.reason==="Saint identity needs review"&&status!=="resolved"?<SearchableSelect name="saintId" label="Existing website saint" options={saints.map(s=>({value:s.id,label:s.displayName,description:s.slug}))}/>:null}
-        <label>Decision note<textarea name="note" required maxLength={2000}/></label>
+        <label>Decision note (optional when linking)<textarea name="note" maxLength={2000} placeholder="Add context if there is something worth noting."/></label>
+        <p>A note is required when deferring or reopening a review.</p>
         <div className="review-actions">{canLink&&review.reason==="Saint identity needs review"&&status!=="resolved"?<button name="action" value="link" className="admin-form-button">Link to selected saint</button>:null}
         {status!=="deferred"?<button name="action" value="defer" className="admin-form-button">Defer with note</button>:null}{status!=="pending"?<button name="action" value="reopen" className="admin-form-button">Reopen review</button>:null}</div>
       </form>:null}
