@@ -448,6 +448,8 @@ model VerificationToken {
 }
 
 model Saint {
+  visitPlaceProposals VisitPlaceProposal[]
+
   id                       String                  @id @default(cuid())
   slug                     String                  @unique
   canonicalName            String
@@ -1574,4 +1576,33 @@ model MuseumItemMovePlan {
   createdAt DateTime @default(now())
   resolvedAt DateTime?
   @@index([itemId, createdAt])
+}
+
+// Immutable imported evidence, with a separate editable research decision.
+// No public adapters read this staging table.
+model VisitPlaceProposal {
+  id             String   @id @default(cuid())
+  sourceKey      String
+  fingerprint    String
+  sourceName     String
+  sourceSheet    String
+  sourceRow      Int
+  sourceFileHash String
+  saintId        String?
+  saint          Saint?   @relation(fields: [saintId], references: [id], onDelete: SetNull)
+  rawJson        Json
+  normalizedJson Json
+  status         String   @default("pending")
+  catalogDecision String  @default("unreviewed")
+  catalogNote    String?
+  evidence       String?
+  decisionNote   String?
+  reviewedBy     String?
+  reviewedAt     DateTime?
+  version        Int      @default(1)
+  observedAt     DateTime @default(now())
+
+  @@unique([sourceKey, fingerprint])
+  @@index([status, observedAt])
+  @@index([saintId])
 }
