@@ -11242,3 +11242,6 @@ select:not([multiple]) {
   .museum-saint-profile .saint-hero-gallery { order: 0; max-width: var(--width-museum-saint-photo); justify-self: start; }
   .museum-saint-profile__no-photo { min-height: 0; }
 }
+
+/* Search result cards share the same surface for links and dialog buttons. */
+button.museum-search-result { text-align: start; font: inherit; cursor: pointer; width: 100%; }
