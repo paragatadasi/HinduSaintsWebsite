@@ -69,6 +69,8 @@ export function SaintDetailPageContent({
         <SaintBiography biography={saint.biography} eyebrow={template.biographyEyebrow} sources={saint.sources} />
       ) : null}
 
+      {saint.visitPlaces?.length ? <section className="section"><div className="page-shell"><div className="section-heading"><h2>Places to visit</h2></div><p>Destinations connected with this saint, including places of remembrance.</p><div className="fact-grid">{saint.visitPlaces.map((place,index)=><div className="fact" key={`${place.name}-${index}`}><strong>{place.name}</strong><div className="fact__value">{[place.locality,place.region,place.country].filter(Boolean).join(", ")}</div></div>)}</div></div></section>:null}
+
       {hasSources ? (
         <section className="section saint-profile-sources">
           <div className={`page-shell saint-profile-sources__layout${hasBiography ? "" : " saint-profile-sources__layout--summary-aligned"}`}>
