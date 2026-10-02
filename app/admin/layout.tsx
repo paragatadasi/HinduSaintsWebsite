@@ -99,6 +99,7 @@ function buildNavigationGroups({
     ];
     if (canViewSourceData) {
       sourceItems.push({ href: "/admin/airtable", label: "Airtable" });
+      sourceItems.push({ href: "/admin/source-data/museum", label: "Museum updates" });
       sourceItems.push({ href: "/admin/source-data/instagram", label: "Instagram" });
     }
     groups.push({
