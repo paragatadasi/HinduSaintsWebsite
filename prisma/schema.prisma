@@ -1520,3 +1520,35 @@ model MuseumCollectionImport {
   @@unique([museumId, sourceKey, fingerprint])
   @@index([museumId, status])
 }
+
+
+// Private museum refresh jobs and batched source review. No public saint fields.
+model MuseumUpdateJob {
+  id String @id @default(cuid())
+  status String @default("queued")
+  actorId String
+  baseId String
+  leaseUntil DateTime
+  progress String
+  sourceSnapshot Json?
+  summary Json?
+  createdAt DateTime @default(now())
+  completedAt DateTime?
+  @@index([status, leaseUntil])
+}
+
+model MuseumSourceReview {
+  id String @id @default(cuid())
+  sourceKey String @unique
+  recordId String
+  name String
+  reason String
+  sourceHash String
+  snapshot Json
+  status String @default("pending")
+  note String?
+  reviewedById String?
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  @@index([status, updatedAt])
+}

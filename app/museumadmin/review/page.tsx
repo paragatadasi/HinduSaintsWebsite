@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { hasCapability } from "@/lib/permissions";
 import type { Route } from "next";
 import { requireCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
@@ -11,7 +12,7 @@ export default async function MuseumReviewPage({
 }: {
   searchParams: Promise<{ q?: string; staged?: string }>;
 }) {
-  await requireCapability("access_museum");
+  const user = await requireCapability("access_museum");
   const params = await searchParams;
   const q = (params.q || "").trim().slice(0, 200);
   const [audit, saints, proposals, direct] = await Promise.all([
@@ -78,7 +79,7 @@ export default async function MuseumReviewPage({
         Source updates never replace confirmed placements automatically.
       </p>
       <p>
-        <Link href="/museumadmin">Browse section proposals</Link>. Records
+        {hasCapability(user.roles, "view_source_data") ? <><Link href="/admin/source-data/museum">Check for museum updates and review uncertain matches</Link>. </> : null} <Link href="/museumadmin">Browse section proposals</Link>. Records
         without an unambiguous saint link remain visible there and are listed
         below for reconciliation.
       </p>
