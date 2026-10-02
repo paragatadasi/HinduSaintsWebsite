@@ -100,6 +100,7 @@ async function getSaintDetailRow(where: Prisma.SaintWhereInput) {
     where,
     include: {
       aliases: { orderBy: { createdAt: "asc" } },
+      visitPlaces: { orderBy: { acceptedAt: "asc" }, select: {destinationName:true,kind:true,locality:true,region:true,country:true} },
       biographies: {
         where: { status: "published" },
         orderBy: { updatedAt: "desc" },
@@ -557,6 +558,7 @@ function toPublicSaintDetail(
     facts: buildFacts(saint, summary),
     places: getUniquePlaceNames(saint.places),
     placeLinks: getUniquePlaceLinks(saint.places),
+    visitPlaces: saint.visitPlaces.map(v=>({name:v.destinationName,kind:v.kind,locality:v.locality,region:v.region??undefined,country:v.country})),
     biography: biography
       ? {
           title: biography.title,

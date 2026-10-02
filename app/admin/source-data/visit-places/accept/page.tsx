@@ -1,0 +1,26 @@
+import Link from "next/link";
+import type { Route } from "next";
+import { requireCapability } from "@/lib/admin-access";
+import { db } from "@/lib/db";
+import { previewVisitAcceptance } from "@/lib/visit-place-acceptance";
+import { visitPlaceSchema,visitPlaceWarnings } from "@/lib/visit-place-domain";
+import { ReviewWorkflow,ReviewSection,ReviewFactGrid } from "@/components/admin/review-ui";
+import { AcceptanceSelection } from "./selection";
+import { acceptResearch } from "../actions";
+export default async function AcceptancePreview({searchParams}:{searchParams:Promise<Record<string,string|undefined>>}) {
+ await requireCapability("view_source_data");await requireCapability("publish_content");const params=await searchParams;
+ const status=["approved","deferred"].includes(params.status||"")?params.status:"pending";
+ const all=await db.visitPlaceProposal.findMany({distinct:["sourceKey"],orderBy:[{sourceKey:"asc"},{observedAt:"desc"},{id:"desc"}],include:{acceptedVisitPlace:true}});
+ const q=(params.q||"").trim().slice(0,200).toLowerCase();
+ const confidence=["high","medium","low"].includes(params.confidence||"")?params.confidence:"all";
+ const selected=all.filter(row=>(!params.id||row.id===params.id)&&row.status===status&&!row.acceptedVisitPlace&&(!q||JSON.stringify(row.normalizedJson).toLowerCase().includes(q))&&(params.catalog!=="review_needed"||row.catalogDecision==="review_needed")&&(confidence==="all"||visitPlaceSchema.safeParse(row.normalizedJson).data?.location_confidence===confidence));
+ const plans:Awaited<ReturnType<typeof previewVisitAcceptance>>[]=[];for(const row of selected.slice(0,300)) plans.push(await previewVisitAcceptance(row.id));
+ const duplicateSaints=new Set(plans.filter((p,i)=>plans.some((other,j)=>i!==j&&other.row.saintId&&other.row.saintId===p.row.saintId)).map(p=>p.row.saintId));
+ return <div className="admin-stack"><Link href={"/admin/source-data/visit-places" as Route}>Back to research</Link><h1>Accept visit-place proposals</h1>
+ <ReviewWorkflow eyebrow="Website update" title={`${plans.length} proposals · ${confidence} confidence`} description="Choose the proposals to accept. This publishes the visit destination for already published saints; draft saints remain private.">
+ <ReviewSection title="What acceptance changes"><p>By default, the visit-place locality becomes the saint’s primary place. Previous primary places become associated places; birth, samadhi and other associations are preserved. No shared Place is renamed. Unverified coordinates and private research notes are not published.</p><p>For tertiary saints, a recognised locality updates the museum section proposal. Confirmed placements and manually moved families remain protected. Physical relic locations do not change.</p><p>Confidence is the researcher’s assessment, not an independent verification. Review the supplied evidence and warnings before accepting a batch.</p></ReviewSection>
+ <form action={acceptResearch} className="form-stack">
+ <ReviewSection title="Choose proposals"><AcceptanceSelection rows={plans.map(p=>({value:p.selection,label:p.row.saint?.displayName||p.data.name,blocked:p.blocked||p.primaryBlocked|| (duplicateSaints.has(p.row.saintId)?"Multiple proposals for this saint; review separately.":""),detail:<><ReviewFactGrid facts={[{label:"Destination",value:p.data.visit_place_name},{label:"Primary place change",value:`${p.currentPrimary} → ${p.data.locality||"Missing locality"}`},{label:"Geography",value:[p.data.locality,p.data.state_or_region,p.data.country].filter(Boolean).join(", ")},{label:"Locality record",value:p.candidate?`Reuse ${p.candidate.name}`:"Create a locality record with this geography"},{label:"Confidence",value:p.data.location_confidence},{label:"Supplied sources",value:p.data.sources}]}/><details><summary>Research checks ({visitPlaceWarnings(p.data).length})</summary><ul>{visitPlaceWarnings(p.data).map(w=><li key={w}>{w}</li>)}</ul></details><Link href={`/admin/source-data/visit-places/${p.id}` as Route}>Review or edit this proposal</Link></>}))}/></ReviewSection>
+ <ReviewSection title="Apply selected proposals"><label className="admin-option-toggle admin-option-toggle--inline"><input type="checkbox" name="updatePrimary" defaultChecked/> Update each saint’s primary place to the visit locality</label><label>Decision note (optional)<textarea name="note" maxLength={5000}/></label><label className="admin-option-toggle admin-option-toggle--inline"><input type="checkbox" name="confirm" required/> I accept the selected visit destinations and the chosen primary-place changes.</label><button className="admin-form-button">Accept selected proposals</button></ReviewSection>
+ </form></ReviewWorkflow></div>;
+}

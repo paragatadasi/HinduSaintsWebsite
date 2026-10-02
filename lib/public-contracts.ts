@@ -96,6 +96,7 @@ export type PublicSaintDetail = PublicSaintSummary & {
   }>;
   places: string[];
   placeLinks?: PublicPlaceLink[];
+  visitPlaces?: Array<{name:string; kind:string; locality:string; region?:string; country:string}>;
   biography?: PublicBiographySection;
   sources: PublicSourceSummary[];
   furtherReading: PublicFurtherReadingItem[];
