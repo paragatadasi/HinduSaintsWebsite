@@ -247,7 +247,7 @@ museum import interface. Source Data access does not grant public publication.
 `resolve_reconciliation`. Curator-only accounts are not granted general source
 access by this change. Linking an unlinked source to an active saint preserves
 all existing content. Already-linked sources cannot be reassigned here; use the
-existing domain merge workflow. Defer and reopen require a decision note.
+existing domain merge workflow. Matching an existing saint does not require a decision note; optional context is retained. Defer and reopen require a decision note.
 
 The server reads the configured **Website** Airtable base, explicitly restricted
 to the known SPN base, and fetches full Saints and Relics tables without a view.

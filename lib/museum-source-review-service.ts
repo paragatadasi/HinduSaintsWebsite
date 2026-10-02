@@ -2,9 +2,11 @@ import { db } from "./db";
 import { Prisma } from "./generated/prisma/client";
 import { reviewMuseumSources } from "./museum-update-domain";
 import { SPN_WEBSITE_AIRTABLE_BASE_ID as base } from "./museum-vitrine-source";
-export type MuseumReviewDecision = { id:string; version:string; action:"link"|"defer"|"reopen"; saintId?:string; note:string };
+import { museumSourceDecisionSchema, type MuseumReviewDecision } from "./museum-source-review-domain";
+export type { MuseumReviewDecision } from "./museum-source-review-domain";
 // Callers must enforce Source Data and reconciliation capabilities.
 export async function decideMuseumSource(actorId:string, input:MuseumReviewDecision) {
+    input = museumSourceDecisionSchema.parse(input);
     await db.$transaction(async tx=>{
       await tx.$queryRaw`SELECT id FROM "MuseumSourceReview" WHERE id=${input.id} FOR UPDATE`;
       const review=await tx.museumSourceReview.findUniqueOrThrow({where:{id:input.id}});
@@ -27,7 +29,7 @@ export async function decideMuseumSource(actorId:string, input:MuseumReviewDecis
         outcome="resolved";
         await tx.auditEvent.create({data:{userId:actorId,action:"museum.source.linked",entityType:"ExternalRecord",entityId:source.id,beforeJson:{entityType:source.entityType,entityId:null},afterJson:{entityType:"Saint",entityId:target.id,note:input.note}}});
       }
-      await tx.museumSourceReview.update({where:{id:review.id},data:{status:outcome,note:input.note,reviewedById:actorId}});
+      await tx.museumSourceReview.update({where:{id:review.id},data:{status:outcome,note:input.note || null,reviewedById:actorId}});
       await tx.auditEvent.create({data:{userId:actorId,action:"museum.source.reviewed",entityType:"MuseumSourceReview",entityId:review.id,beforeJson:{status:review.status,note:review.note},afterJson:{status:outcome,note:input.note}}});
     },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable});
 }
