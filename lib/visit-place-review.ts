@@ -44,6 +44,7 @@ export async function decideVisitPlaceResearch(actorId:string,input:unknown,edit
   return db.$transaction(async tx => {
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(8496221)`;
     const row=await tx.visitPlaceProposal.findUniqueOrThrow({where:{id:decision.id},include:{saint:true}});
+    if(await tx.saintVisitPlace.findUnique({where:{sourceKey:row.sourceKey}})) throw Error("Accepted destinations require a separate canonical correction review.");
     const latest=await tx.visitPlaceProposal.findFirst({where:{sourceKey:row.sourceKey},orderBy:[{observedAt:"desc"},{id:"desc"}]});
     if(row.version!==decision.version || latest?.id!==row.id || row.status==="superseded") throw Error("Research changed. Reload before reviewing.");
     if(normalized.slug!==normalizeVisitPlace(row.rawJson as Record<string,unknown>).slug) throw Error("The research saint identity cannot be changed.");

@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/lib/generated/prisma/client";
+import { getEditableMuseumProposalData } from "@/lib/museum-family-moves";
 import { getMuseumProposalData } from "@/lib/museum-proposals";
 import { proposalFamilyKey } from "@/lib/museum-family-move-domain";
 import {
@@ -62,7 +63,8 @@ export async function getDirectMuseumProposals(
   const proposals: DirectProposal[] = [];
   const supersededSnapshotIds = new Set<string>();
   const seen = new Set<string>();
-  for (const row of getMuseumProposalData().placements) {
+  const editable=await getEditableMuseumProposalData(client);
+  for (const row of editable.placements) {
     const resolved = resolveSnapshotIdentity(row.id, records, ids);
     if (!resolved.record) {
       unresolved.push({
@@ -89,6 +91,8 @@ export async function getDirectMuseumProposals(
       group: row.curatorialFamily,
     });
     const signature = proposalSignature(payload);
+    // A changed canonical locality invalidates pending historical geography proposals.
+    for(const snapshot of snapshots) if(snapshot.externalRecordId===source.id&&snapshot.sourceKind==="legacy-export"&&snapshot.status==="pending"&&proposalSignature(snapshot.payload===null?null:museumPlacementSchema.parse(snapshot.payload))!==signature) supersededSnapshotIds.add(snapshot.id);
     const id =
       "existing:" +
       createHash("sha256")

@@ -3,10 +3,35 @@ import { Prisma } from "@/lib/generated/prisma/client";
 import { getMuseumProposalData, museumSectionSlug } from "@/lib/museum-proposals";
 import { applyFamilyProposalMoves, familyMoveRevision, proposalFamilyKey } from "@/lib/museum-family-move-domain";
 import { MuseumConflict } from "@/lib/museum-service";
+import { resolveSnapshotIdentity } from "@/lib/museum-domain";
+import { applyAcceptedLocalityProposal } from "@/lib/museum-locality-proposals";
+import { buildMuseumView } from "@/lib/museum-proposals";
 import { airtableIdentity } from "@/lib/museum-domain";
 
 export async function getEditableMuseumProposalData(client: Prisma.TransactionClient = db) {
-  return applyFamilyProposalMoves(getMuseumProposalData(), await client.museumFamilyProposalMove.findMany());
+  const original=getMuseumProposalData();
+  const [moves,saints,links]=await Promise.all([
+   client.museumFamilyProposalMove.findMany(),
+   client.saint.findMany({where:{status:{not:"archived"}},select:{id:true,places:{where:{placeType:"primary"},select:{placeId:true}},visitPlaces:{orderBy:{acceptedAt:"desc"},select:{locality:true,region:true,country:true,localityPlaceId:true}},museumSectionAssignments:{where:{status:"published"},select:{id:true}}}}),
+   client.externalRecord.findMany({where:{sourceType:"airtable",entityType:"Saint"},select:{id:true,externalId:true,entityId:true}})
+  ]);
+  const editable=applyFamilyProposalMoves(original,moves);
+  const bySaint=new Map(saints.map(s=>[s.id,s]));const active=new Set(bySaint.keys());
+  const placements=editable.placements.map(row=>{
+   const resolved=resolveSnapshotIdentity(row.id,links,active);
+   const saint=resolved.record?.entityId?bySaint.get(resolved.record.entityId):null;
+   const visit=saint?.visitPlaces.find(v=>v.localityPlaceId&&saint.places.some(p=>p.placeId===v.localityPlaceId))??null;
+   return applyAcceptedLocalityProposal(row,saint?.museumSectionAssignments.length?null:visit,moves.some(m=>m.familyKey===proposalFamilyKey(row)));
+  });
+  const labels=new Map(editable.sections.flatMap(s=>s.families.map(f=>[f.key,f.label] as const)));
+  const trees=new Map(editable.sections.flatMap(s=>s.families.filter(f=>f.treeFile).map(f=>[f.key,f.treeFile!] as const)));
+  const view=buildMuseumView(placements,editable.membersById,labels,trees,new Set(placements.filter(p=>p.needsResearch).map(p=>p.id)));
+  // Retain section pages even when their last tertiary proposal changes section.
+  for(const section of editable.sections) if(!view.sectionBySlug.has(section.slug)) {
+   const empty={...section,total:0,featured:0,secondary:0,tertiary:0,confidence:{high:0,medium:0,low:0},rows:[],families:[],primaryGroups:[],secondaryOnlyGroups:[],secondaryUngrouped:[],tertiaryGroups:[],tertiaryUngrouped:[],geography:[],health:[]};
+   view.sections.push(empty);view.sectionBySlug.set(empty.slug,empty);
+  }
+  return {...view,familyMoveOptions:editable.familyMoveOptions};
 }
 
 export async function moveMuseumFamilyProposal(args: {

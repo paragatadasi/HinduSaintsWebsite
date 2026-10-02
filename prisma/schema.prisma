@@ -449,6 +449,7 @@ model VerificationToken {
 
 model Saint {
   visitPlaceProposals VisitPlaceProposal[]
+  visitPlaces SaintVisitPlace[]
 
   id                       String                  @id @default(cuid())
   slug                     String                  @unique
@@ -583,6 +584,7 @@ model Tradition {
 }
 
 model Place {
+  acceptedVisitLocalities SaintVisitPlace[]
   id                     String                  @id @default(cuid())
   slug                   String                  @unique
   name                   String
@@ -1581,6 +1583,7 @@ model MuseumItemMovePlan {
 // Immutable imported evidence, with a separate editable research decision.
 // No public adapters read this staging table.
 model VisitPlaceProposal {
+  acceptedVisitPlace SaintVisitPlace?
   id             String   @id @default(cuid())
   sourceKey      String
   fingerprint    String
@@ -1605,4 +1608,24 @@ model VisitPlaceProposal {
   @@unique([sourceKey, fingerprint])
   @@index([status, observedAt])
   @@index([saintId])
+}
+
+// Accepted public destination facts; research evidence remains in the private proposal.
+model SaintVisitPlace {
+  id String @id @default(cuid())
+  saintId String
+  saint Saint @relation(fields: [saintId], references: [id], onDelete: Cascade)
+  proposalId String @unique
+  proposal VisitPlaceProposal @relation(fields: [proposalId], references: [id], onDelete: Restrict)
+  sourceKey String @unique
+  destinationName String
+  kind String
+  locality String
+  region String?
+  country String
+  localityPlaceId String?
+  localityPlace Place? @relation(fields: [localityPlaceId], references: [id], onDelete: SetNull)
+  acceptedById String
+  acceptedAt DateTime @default(now())
+  @@index([saintId, acceptedAt])
 }
