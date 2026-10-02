@@ -233,3 +233,63 @@ and unlinked proposals are not annotated. No public saint route uses this data.
 The value changes when the existing mirror is refreshed. It does not update
 live from Airtable, and any source change newer than the mirror remains pending.
 Multiple locations and individual relic placement remain a later review phase.
+
+
+## Museum update jobs and uncertain matches
+
+The next workflow lives in **Admin > Source Data > Museum updates** at
+`/admin/source-data/museum`. The museum placement review screen links to it only
+for Source Data users. It uses the shared admin review components, not a separate
+museum import interface. Source Data access does not grant public publication.
+
+`view_source_data` controls page/status access. Starting an update also requires
+`run_imports` and the existing sensitive-action password. Decisions require
+`resolve_reconciliation`. Curator-only accounts are not granted general source
+access by this change. Linking an unlinked source to an active saint preserves
+all existing content. Already-linked sources cannot be reassigned here; use the
+existing domain merge workflow. Defer and reopen require a decision note.
+
+The server reads the configured **Website** Airtable base, explicitly restricted
+to the known SPN base, and fetches full Saints and Relics tables without a view.
+It never uses the separate current-museum token. The deployment must already
+supply AIRTABLE_BASE_ID and AIRTABLE_ACCESS_TOKEN (or AIRTABLE_PAT). A nonempty
+AIRTABLE_VIEW blocks this full-base workflow. PUBLIC_SITE_URL or NEXTAUTH_URL
+must describe the real application origin for the same-origin request check.
+No new environment variables are required.
+
+A recorded job runs after the start response. A database advisory lock serializes
+job creation; a conditional claim and expiring lease prevent duplicate execution.
+Progress and safe summaries are polled without exposing raw job snapshots. If the
+process is lost, the expired run can be retried explicitly after twenty minutes;
+this is not an external worker queue or automatic restart scheduler.
+
+Both source tables must finish fetching before a single serializable transaction
+updates the mirror, raw ExternalRecord payloads, review entries, import batch,
+private before/after source snapshot and completion audit. Canonical entity links
+are preserved. A changed mirror during the fetch aborts application. Empty tables,
+missing previously mirrored rows, malformed pagination and source errors fail
+without applying any mirror changes. Removed source records require a separate
+completeness/deletion review; they are not silently deleted.
+
+Clear linked source locations refresh through the existing read-only card
+projection. Unlinked identities, missing vitrines and conflicting locations enter
+one source-keyed review queue. Repeated identical evidence preserves deferrals;
+changed evidence reopens the existing entry and preserves the previous decision
+in audit history. Newly linked sources are checked again on the next update for
+location conflicts. Linking a source does not approve an item placement.
+
+This increment does not create saints or inventory, merge saints, alter accepted
+placements, automatically accept ambiguous locations, publish content, or ingest
+Vrindavan. Scoped draft creation and relic-level acceptance remain later phases.
+The full source snapshot stays server-side; no raw payload is returned by the
+status endpoint or public routes.
+
+Apply migration `20261002120000_museum_update_jobs` in the release migration
+phase. It adds MuseumUpdateJob and MuseumSourceReview only. Verification includes
+`npm run dev:check`, `npm test`, `npm run codex:verify`, and
+`node --import tsx scripts/verify-museum-updates.ts` with a fresh disposable local
+MUSEUM_TEST_DATABASE_URL whose database name is museum_integration_test. The
+fixture replaces Airtable network reads; never run it on useful data. PGlite
+exercises persistence/rollback but does not certify real PostgreSQL concurrent
+session behavior. Production data volume and authenticated visual checks remain
+release smoke-test responsibilities.
