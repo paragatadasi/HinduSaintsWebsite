@@ -6,15 +6,22 @@ import { museumSectionSlug } from "@/lib/museum-proposals";
 import { getMuseumData } from "@/lib/museum-data";
 import { searchWorkingMuseumPlacements } from "@/lib/museum-working-view";
 
+import { requireCapability } from "@/lib/admin-access";
+import { hasCapability } from "@/lib/permissions";
+import { readMuseumSaintProfiles } from "@/lib/museum-saint-profiles";
+import { MuseumSearchResults } from "@/components/admin/museum-search-results";
+
 type MuseumAdminPageProps = {
   searchParams: Promise<{ q?: string | string[] }>;
 };
 
 export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageProps) {
+  const user = await requireCapability("access_museum");
   const { q } = await searchParams;
   const query = getSearchParam(q);
-  const { sections, placements } = await getMuseumData();
+  const { sections, placements, membersById, familyMoveOptions } = await getMuseumData();
   const matches = query ? searchWorkingMuseumPlacements(placements, query, 30) : [];
+  const profiles = await readMuseumSaintProfiles(matches.flatMap(row => row.saintId ? [row.saintId] : []));
   const totals = sections.reduce(
     (acc, section) => ({
       saints: acc.saints + section.total,
@@ -66,20 +73,7 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
           {query ? <Link className="museum-admin-button museum-admin-button--secondary" href="/museumadmin">Clear</Link> : null}
         </form>
 
-        {query ? (
-          <div className="museum-search-results">
-            <p>{matches.length ? `${matches.length} matching placement${matches.length === 1 ? "" : "s"}` : "No matching placements found."}</p>
-            <div className="museum-search-results__grid">
-              {matches.map((match) => (
-                <Link className="museum-search-result interactive-surface" href={`/museumadmin/${museumSectionSlug(match.section)}` as Route} key={match.id}>
-                  <strong>{match.name}</strong>
-                  <span>{match.section}</span>
-                  <small>{match.placementState} · {match.tier} · {match.confidence} confidence</small>
-                </Link>
-              ))}
-            </div>
-          </div>
-        ) : null}
+        {query ? <MuseumSearchResults key={query} matches={matches} profiles={profiles} members={Object.fromEntries(matches.map(row => [row.id, membersById.get(row.id) || {}]))} sections={sections.map(s => ({name:s.name, slug:s.slug}))} familyMoveOptions={familyMoveOptions} canManage={hasCapability(user.roles, "manage_museum")} /> : null}
       </section>
 
       <section className="museum-admin-panel museum-flow-panel" aria-labelledby="museum-flow-title">
