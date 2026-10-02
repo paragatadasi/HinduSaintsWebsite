@@ -293,3 +293,57 @@ fixture replaces Airtable network reads; never run it on useful data. PGlite
 exercises persistence/rollback but does not certify real PostgreSQL concurrent
 session behavior. Production data volume and authenticated visual checks remain
 release smoke-test responsibilities.
+
+## Direct relic baseline and later discrepancies
+
+The user chose to trust the current museum records as the initial state, rather
+than approve every existing relic as a proposal. New saint creation is deferred;
+the existing Airtable missing-draft importer remains the future maintenance path.
+
+Admin > Source Data > Museum updates > Relics provides **Connect relics from
+current mirror**. Refresh the mirror first. The action is scoped to the Website
+SPN base and actual Relics rows; it does not split saint descriptions into objects.
+Each source relic uses only its explicitly linked Saints source rows. Existing
+canonical saint links must resolve for all linked rows. Agreeing valid vitrine /
+shelf evidence supplies the initial item location; conflicting or missing values
+produce an item with unknown location and a review entry. Missing saint identities
+or item names remain unconnected. New saints are never created.
+
+Baseline items, saint associations and locations are applied directly, with
+source identity and audit provenance. Repeating the same evidence is a no-op.
+Changed evidence creates a new immutable observation bound to the same item;
+it does not overwrite the accepted item or placement. Reviewers can keep the
+website state, confirm corrected item/location values, defer, or reopen. Notes
+and prior decisions remain audited. A location correction closes the former
+placement and creates a new one; it does not rewrite history. Existing saint
+associations are retained when accepting additional source associations. Removing
+associations or reassigning an established source-item identity is intentionally
+outside this workflow. Attachment URL rotation does not create false differences;
+full raw payloads remain in the private mirror, with relevant identity/location
+evidence retained in each collection observation.
+
+Reading requires view_source_data; baseline import also requires run_imports and
+manage_museum, and decisions require manage_museum. A curator needs Source Data
+access as well, or a Data Admin needs the curator capability, for these combined
+operations. Site Admin already has all required capabilities. Transactions use a
+shared advisory lock, stale evidence/item checks and serializable isolation.
+There are no schema or environment changes in this checkpoint.
+
+Private proposal cards now show connected item locations, including multiple
+vitrines for one saint. The temporary saint-wide source vitrine is hidden once
+collection items exist. No public reader receives collection data.
+
+This checkpoint does not schedule imports, create saints, delete removed source
+records, or implement proposed future vitrine moves. Future moves belong in a
+separate curator planning workflow. The existing mirror updater stops on source
+removals for completeness review. Vrindavan remains deferred until SPN acceptance.
+The first live baseline and curator sample check remain manual release smoke
+steps; no production data has been imported by feature verification.
+
+Verification: development check, 232 passing unit tests (one guarded database
+skip), full production build, disposable PostgreSQL-compatible transaction tests
+for baseline/replay, two locations per saint, unresolved links, keep decisions,
+stale source rejection and movement history. A 1,304-row fixture including 1,300
+new baseline items and repeat import passed. Authenticated local page checks cover
+Site Admin, Data Admin, curator and anonymous access. PGlite does not certify real
+PostgreSQL concurrent-session behavior; that remains an integration limitation.
