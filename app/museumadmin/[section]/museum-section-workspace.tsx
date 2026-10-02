@@ -481,6 +481,7 @@ function SaintModal({member,onClose,row,moveControl,profile}: {member?: Record<s
           <DataItem label="Confidence" value={row.confidence} />
         </dl>
         <div className="review-actions">
+          {row.collectionItems?.map(item => <Link key={item.id} className="museum-admin-button" href={`/museumadmin/collections/${item.id}` as Route}>Plan move: {item.label}</Link>)}
           {row.saintId ? <Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>{row.placementState === "Confirmed" ? "Review placement" : "Review and confirm proposal"}</Link> : <p>This proposal needs a saint link before confirmation. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.sourceRecordId || row.id)}`}>Review source link</Link></p>}
           {moveControl}
         </div>
