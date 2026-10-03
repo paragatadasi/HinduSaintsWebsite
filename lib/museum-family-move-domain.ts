@@ -4,7 +4,7 @@ import { buildMuseumView, type MuseumSaintPlacement } from "./museum-proposals";
 import { membershipRevision, type DisplayMembershipChange } from "./museum-display-membership-domain";
 
 export type FamilyProposalMove = { familyKey: string; section: string; version: number };
-export type FamilyMoveOption = { key: string; label: string; count: number; revision: string };
+export type FamilyMoveOption = { key: string; label: string; count: number; revision: string; arrangement?: import("./museum-arrangement-domain").FamilyArrangementControl; moveUnavailable?:boolean };
 export function proposalFamilyKey(row: MuseumSaintPlacement) {
   return row.curatorialFamily || row.familyId;
 }

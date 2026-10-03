@@ -28,3 +28,24 @@ Existing proposals are projected read-only until a curator acts. Confirmation
 rechecks identity and content under source/saint locks and captures the source
 snapshot atomically with the audited decision. Ambiguous mappings never resolve
 by name. No schema migration or bulk acceptance is needed for this workflow.
+
+## Curator revamp boundaries
+
+SPN and Vrindavan enter through the shared `MuseumWorkspace` capability gate and
+noindex layout. The Vrindavan section discussion route additionally requires
+`view_full_saint_catalog` and exposes read-only controls; it cannot use source
+observation IDs as physical item IDs. Shared dialog links are museum-specific.
+
+Display-membership, relationship-correction and arrangement actions call
+`assertMuseumMutation`, validate server-side inputs and write audit events.
+Arrangement saves use serializable transactions, family/arrangement locks and
+saint locks; family saves validate the current member/revision set before an
+atomic update. The current mutation services are fixed to SPN server-side;
+client-supplied museum IDs do not select another museum. Future Vrindavan writes
+must validate their museum scope and keep SPN assignments independent.
+
+Physical attestation with incomplete inventory is explicitly allowed. It records
+who confirmed the arrangement and when, with the inventory gap acknowledged;
+it must not invent inventory, end item placements or assert complete coverage.
+Historical correction requests reuse reconciliation and do not grant curators
+public-content editing rights. Identical open requests are deduplicated.

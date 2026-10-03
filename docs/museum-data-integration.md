@@ -1,14 +1,111 @@
 # Museum data integration
 
-Existing section proposals are available directly for each unambiguously linked
-canonical saint. There is no preparation step. Section pages retain all proposals,
-including unresolved records, and link matched records directly to their review.
-Curators can confirm a proposal or edit it before confirming. The original source
-snapshot and the decision are saved atomically; simply browsing writes nothing.
-Confirmed placements remain separate from source proposals and are never silently
-overwritten. The working section browser uses canonical saint details and confirmed placements, falling back to existing proposals until confirmation. The original export remains a separate comparison view.
-Airtable remains an import/reference source. Museum `published` assignments mean
-accepted curatorial decisions, never public website content.
+## Curator UX revamp: current checkpoint (3 October 2026)
+
+The curator workflow starts with recognizing a saint, understanding its proposed
+section and current/source location, then changing the proposal or recording the
+move. Biography and photographs lead; research, provenance, rationale and
+membership controls are expandable. SPN and Vrindavan share UI components while
+keeping museum operations and location evidence separate.
+
+### Implemented phases and release trace
+
+These are code/handoff milestones, not proof of the current production version.
+The release captain owns integration and production workflow confirmation. Check
+the current release handoffs and deployment workflow before telling curators a
+particular capability is live; released handoff files are removed during cleanup.
+
+| Phase | Delivered behavior | Code reference |
+| --- | --- | --- |
+| SPN foundation | Direct SPN navigation, quiet status/research cues, fixed malformed bullets, responsive supporting cards | `0fb45ee` |
+| Location browser | Filter by current vitrine/shelf and working section; distinguish item records, move plans and source-only hints | `6de716c` |
+| Shared museum shell / Vrindavan pilot | Direct museum subtabs, shared shell/filter/dialog/profile/gallery; reviewed-identity inventory cards | `dddbdb7` |
+| Display membership | Detach/restore a display member, exclude from future source-family moves, separate historical correction requests | `56a593f` (with `a54b348`) |
+| Arrangement status | Proposed / Planned / Implemented; vitrine required for Planned; recorded physical attestation with inventory-gap notice | `6c9b81a` |
+| Vrindavan section discussion | Section counts, search/filter/pagination, shared saint cards, reviewed lineage caveats; read-only | `0619bec` |
+| Family arrangement | Shared destination/status for current display members, atomic saves, explicit member list, mixed-state choice and stale-form checks | `8840222` |
+
+### Curator workflow rules
+
+- **Proposed:** a current suggestion, open to change. There is no required
+  separate approve/confirm step before planning or implementing it.
+- **Planned:** requires a destination vitrine; shelf remains optional.
+- **Implemented:** the curator explicitly confirms physical implementation of
+  the latest proposal. Record actor/time and keep incomplete/unverified inventory
+  visible. An incomplete inventory does not prevent this recorded confirmation.
+- Changing a proposal or display membership invalidates the prior arrangement
+  state to Proposed. Existing attestations remain in audit history.
+- A saint/family arrangement is not an item-level location. Record an actual relic
+  move through its collection-item workflow; a single relic may be displayed
+  separately from the rest. Family actions never fabricate inventory or rewrite
+  individual relic placements.
+- Display membership is curatorial grouping, separate from historical lineage.
+  Detach/restore preserves historical relationships. A mistaken relationship has
+  a separate correction request/editor, respecting editorial permissions.
+- Family operations review the effective member set. Removed members stay out;
+  changed membership/status invalidates an open form. Missing identity links or
+  competing placements block a bulk update, without preventing eligible
+  individual updates.
+
+### Architecture and entry points
+
+| Surface / contract | Responsibility |
+| --- | --- |
+| `/museumadmin`, `/museumadmin/[section]` | SPN working section proposals, saint dialogs and family actions |
+| `/museumadmin/locations` | Recorded vitrines/shelves versus working sections and planned destinations |
+| `/museumadmin/collections/[id]` | Actual relic record and individual move workflow |
+| `/vrindavanadmin` | Reviewed-identity source inventory; textual quantities/positions preserved |
+| `/vrindavanadmin/sections` | Read-only inherited section discussion view; links remain within Vrindavan |
+| `MuseumWorkspace`, `MuseumInventoryFilters` | Shared authentication/navigation frame and filters |
+| `MuseumDetailDialog`, `MuseumSaintProfile`, `MuseumSearchResults` | Shared biography/photo presentation, dialog behavior and search cards |
+| `MuseumArrangementEditor` / family editor | Shared status/destination fields and explicit attestation |
+| `readMuseumData` | SPN canonical records plus source proposals, membership overrides and arrangement projection |
+| `readVrindavanMuseumInventory` / section audit | Museum-scoped source evidence and inherited proposal candidates; no writes |
+| `MuseumDisplayMembership` | Private display-removal/restoration overrides, revisions and actor |
+| `MuseumArrangement` | Per-museum proposal fingerprint, destination, status, attestation and revision |
+
+Legacy `SaintMuseumSection.status=published` means internally accepted editorial
+placement; it does not mean physically Implemented or publicly visible. Existing
+accepted placements take precedence over unreviewed source proposals, and imports
+must not silently overwrite curator edits. The old confirmation terminology in
+historical integration notes below describes this storage/reconciliation layer,
+not an extra curator decision status.
+
+### Verification and operational boundaries
+
+Normal iterations use `npm run dev:check`. Route/schema phases above passed
+`npm run codex:verify`; the release captain repeats integrated checks. Focused
+unit coverage includes family revisions, detached membership, mixed statuses,
+vitrine validation, inherited proposals and independent item/saint destinations.
+`verify-museum-display-membership.ts` and `verify-museum-arrangement.ts` exercise
+real transactions against an explicitly guarded disposable local PostgreSQL
+`museum_membership_test` database. They verify stale-save rejection, membership,
+attestations/audit, and preservation of physical/history records. Never point
+these fixture scripts at production. Desktop/mobile visual checks were performed
+for the foundation, location browser, shared pilot and membership dialogs; do not
+claim a new visual pass for later phases solely because shared components build.
+
+Additive migrations `20261003113000_museum_display_membership` and
+`20261003143000_museum_arrangement` run in the release migration phase, never in
+the web build. No new production environment variables are needed for these UX
+phases. Museum routes remain authenticated and noindexed; no museum/relic data
+is added to public saint contracts. See [the security contract](museum-admin-security.md).
+
+### Remaining sequence
+
+1. Add museum-scoped Vrindavan proposal editing, independent of SPN curator
+   assignments; reuse shared cards/forms/status behavior. Preserve reviewed
+   global saint/geography corrections and raw source evidence.
+2. Complete family section-transfer/membership parity, including canonical
+   exhibit groups, with explicit member scope and concurrency protection.
+3. Connect verified Vrindavan item identities to the existing physical-move
+   workflow after inventory-readiness review. Source rows can contain multiple
+   relics and are not automatically individual collection items.
+4. Refine section/location summaries and test representative curator journeys
+   on desktop and mobile, including partial inventory and single-relic exceptions.
+5. Design the interactive vitrine/layout planner as a dedicated final phase.
+   The current destination/status model prepares for it; spatial geometry,
+   capacity and drag/drop planning have not been implemented.
 
 ## Data and review
 
@@ -515,10 +612,9 @@ provenance is expandable. No physical placements or section assignments are
 created by browsing. SPN keeps its section workflow and gains a separate
 vitrine/shelf browser with distinct current, planned and source-only locations.
 
-The broader revamp remains phased. Display-group removal/restoration and
-historical relationship correction are separate next workflows. Proposed,
-optional Planned, and Implemented will replace the separate curator confirmation
-step. The user approved recording physical implementation even with incomplete
+This earlier shell checkpoint preceded the membership and arrangement phases
+now recorded above. The current workflow uses Proposed, optional Planned and
+Implemented without a separate curator confirmation step. The user approved recording physical implementation even with incomplete
 relic inventory, provided the inventory gap is explicit and the curator's
 confirmation is recorded. Such confirmation must not fabricate item records or
 item-level placements. Changing the latest proposal must invalidate its prior
@@ -646,3 +742,14 @@ batch is pending. Missing or competing proposals remain visible. Dialog links
 stay inside Vrindavan, with access to source relic/location details; SPN edit,
 move, membership and status mutations are hidden. No museum assignments, display
 group memberships or physical placements are copied or written by this view.
+
+### Family arrangement actions
+
+SPN family dialogs share the individual arrangement fields and can apply one
+vitrine/status to all effective display members atomically. Included saints and
+sections are reviewable before saving; detached members are excluded. Missing
+identity links or competing placements block the bulk operation, while eligible
+saints remain editable individually. Member/arrangement revisions reject stale
+forms. Mixed family statuses require an explicit selection. Canonical exhibit
+groups also expose planning; their section-transfer workflow remains separate.
+No item inventory, physical placements or historical relationships are modified.

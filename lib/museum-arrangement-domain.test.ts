@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {arrangementControl,arrangementInput} from "./museum-arrangement-domain";
+import {arrangementControl,arrangementInput,familyArrangementControl} from "./museum-arrangement-domain";
 import type {MuseumSaintPlacement} from "./museum-proposals";
 const row={id:"a",saintId:"s",section:"A",tier:"Featured",familyId:"F",curatorialFamily:""} as MuseumSaintPlacement;
 const base={placementId:"a",revision:"a".repeat(64),familyKey:"F",status:"Planned"};
@@ -25,4 +25,14 @@ test("Proposal revisions invalidate implementation; biography changes do not",()
  assert.equal(arrangementControl(row,saved,2).status,"Proposed");
  assert.equal(arrangementControl({...row,name:"Updated spelling"},saved,1).status,"Implemented");
  assert.notEqual(arrangementControl(row,{...saved,version:2},1).revision,arrangementControl(row,saved,1).revision);
+});
+
+test("family summary detects mixed plans and membership/stale arrangement changes",()=>{
+ const a={...row,name:"A",arrangement:arrangementControl(row,undefined,0)};
+ const b={...a,id:"b",name:"B",arrangement:{...a.arrangement,status:"Planned" as const,vitrine:"2",revision:"new"}};
+ const both=familyArrangementControl([a,b]);assert.equal(both.status,"Mixed");assert.equal(both.count,2);assert.equal(both.eligible,true);
+ assert.equal(both.revision,familyArrangementControl([b,a]).revision);
+ assert.notEqual(both.revision,familyArrangementControl([a]).revision);
+ assert.equal(familyArrangementControl([{...a,saintId:undefined}]).eligible,false);
+ assert.equal(familyArrangementControl([]).eligible,false);
 });
