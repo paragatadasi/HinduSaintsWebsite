@@ -278,3 +278,22 @@ Current rollout notes:
   Overview, and uses searchable relationship controls for hierarchy editing.
   Its readiness workflow also fills the decision area when merge tools are
   unavailable.
+
+
+### Shared museum workspaces
+
+SPN and Vrindavan use `MuseumWorkspace` for authentication, museum switching,
+sidebar framing and content layout. Museum-specific navigation is loaded only
+after `access_museum` is checked. Keep new museums on this shared shell instead
+of copying a layout. Main admin exposes SPN and Vrindavan directly under Museum.
+
+Inventory browsing uses `MuseumInventoryFilters` and the shared museum design
+tokens. Biography-first details use `MuseumDetailDialog` and
+`MuseumSaintProfile` in both museums, including shared photo galleries and
+keyboard/focus behavior. Make future visual changes through these components.
+
+Data adapters remain museum-specific. SPN has physical relic records and move
+plans; the initial Vrindavan pilot has reviewed identities with source-reported
+inventory entries. A source row can describe several objects. Do not present it
+as a verified physical item, mark it implemented, or attach an item-move action
+to an observation ID. Source evidence is concise by default and expandable.

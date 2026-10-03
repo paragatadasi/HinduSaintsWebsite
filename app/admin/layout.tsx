@@ -131,7 +131,7 @@ function buildNavigationGroups({
     groups.push({
       href: "/admin/museum",
       id: "museum",
-      items: [{ href: "/admin/museum", label: "SPN" }],
+      items: [{ href: "/admin/museum", label: "SPN" }, { href: "/vrindavanadmin", label: "Vrindavan" }],
       label: "Museum",
       standalone: true
     });

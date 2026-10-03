@@ -502,3 +502,25 @@ Next: UX pilot over this reader, then museum-scoped section proposals for linked
 saints. Object identities/splits and physical placement verification remain a
 separate inventory checkpoint; the 171 uncertain identity rows remain deferred.
 Latest-per-sourceKey observations supersede earlier decisions before projection and counts. A MuseumInventoryUnavailableError distinguishes an unavailable museum from general database failures for the protected UX.
+
+
+## Curator UX rollout: shared SPN and Vrindavan shell
+
+The curator pilot uses direct SPN/Vrindavan main-admin subtabs and a shared
+protected `MuseumWorkspace` shell. `/vrindavanadmin` consumes only the scoped
+Vrindavan source-inventory reader. It offers saint/relic/place search, exact
+textual display/position filters, pagination and biography-first inventory
+cards. Source quantity, packaging, comments and original place remain visible;
+provenance is expandable. No physical placements or section assignments are
+created by browsing. SPN keeps its section workflow and gains a separate
+vitrine/shelf browser with distinct current, planned and source-only locations.
+
+The broader revamp remains phased. Display-group removal/restoration and
+historical relationship correction are separate next workflows. Proposed,
+optional Planned, and Implemented will replace the separate curator confirmation
+step. The user approved recording physical implementation even with incomplete
+relic inventory, provided the inventory gap is explicit and the curator's
+confirmation is recorded. Such confirmation must not fabricate item records or
+item-level placements. Changing the latest proposal must invalidate its prior
+implementation status. Interactive spatial planning remains a later dedicated
+design phase after these basic workflows are piloted.

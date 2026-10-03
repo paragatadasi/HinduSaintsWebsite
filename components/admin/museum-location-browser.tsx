@@ -1,3 +1,4 @@
+import {MuseumInventoryFilters} from "@/components/admin/museum-inventory-filters";
 import Link from "next/link";
 import type { Route } from "next";
 import { filterLocationBrowserRows, type LocationBrowserRow } from "@/lib/museum-location-browser";
@@ -12,13 +13,12 @@ export function MuseumLocationBrowser({rows, sections, filters, pageNumber="1"}:
   const sectionSlug = new Map(sections.map(s=>[s.name,s.slug]));
   return <div className="museum-admin admin-stack">
     <header><div className="eyebrow">SPN Museum</div><h1>Vitrines and shelves</h1><p>See where relics are recorded now and which sections their saints belong to in the working arrangement.</p></header>
-    <form className="museum-location-filters" action="/museumadmin/locations">
-      <label className="admin-field">Vitrine<select name="vitrine" defaultValue={filters.vitrine}><option value="">All vitrines</option>{vitrines.map(v=><option key={v} value={v}>Vitrine {v}</option>)}<option value="unknown">Unknown or other location</option></select></label>
-      <label className="admin-field">Shelf<select name="shelf" defaultValue={filters.shelf}><option value="">All shelves</option>{shelves.map(s=><option key={s} value={s}>{s}</option>)}<option value="unspecified">Shelf not recorded</option></select></label>
-      <label className="admin-field">Destination section<select name="section" defaultValue={filters.section}><option value="">All sections</option>{sections.map(s=><option key={s.slug} value={s.name}>{s.name}</option>)}</select></label>
-      <label className="admin-field">Saint or relic<input name="q" defaultValue={filters.q} type="search"/></label>
-      <div className="review-actions"><button className="museum-admin-button">Show locations</button><Link href={"/museumadmin/locations" as Route}>Clear filters</Link></div>
-    </form>
+    <MuseumInventoryFilters action="/museumadmin/locations" query={filters.q} searchLabel="Saint or relic" submitLabel="Show locations" filters={[
+      {name:"vitrine",label:"Vitrine",value:filters.vitrine,allLabel:"All vitrines",options:[...vitrines.map(v=>({value:v,label:"Vitrine "+v})),{value:"unknown",label:"Unknown or other location"}]},
+      {name:"shelf",label:"Shelf",value:filters.shelf,allLabel:"All shelves",options:[...shelves.map(s=>({value:s,label:s})),{value:"unspecified",label:"Shelf not recorded"}]},
+      {name:"section",label:"Destination section",value:filters.section,allLabel:"All sections",options:sections.map(s=>({value:s.name,label:s.name}))}
+    ]}/>
+
     <p role="status">{matches.filter(r=>!r.sourceOnly).length} relic records · {matches.filter(r=>r.sourceOnly).length} source-only saint locations</p>
     {!matches.length?<p>No locations match these filters.</p>:null}
     <div className="museum-location-list">{visible.map(row=><article key={row.key} className="museum-admin-panel">
