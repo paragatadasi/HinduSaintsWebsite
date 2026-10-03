@@ -33,6 +33,7 @@ export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectio
         <button aria-label="Close saint overview" className="museum-icon-button" onClick={() => dialog.current?.close()} type="button"><X aria-hidden="true" size={18} /></button>
       </div>
       <MuseumSaintProfile profile={profile || fallback} titleId={titleId} />
+      {row.needsResearch ? <p className="museum-research-note">Needs research. Review the proposal notes and source details below before planning this placement.</p> : null}
       {relationships.length ? <section className="museum-saint-review-section">
         <h3>Relationships</h3>
         <dl className="museum-saint-data museum-saint-data--flat">{relationships.map(([label, value]) => <DataItem key={label} label={label} value={value} />)}</dl>
@@ -54,7 +55,7 @@ export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectio
           {moveControl}
         </div>
       </section>
-      <details className="museum-saint-review-section">
+      <details className="museum-saint-review-section" open={row.needsResearch || undefined}>
         <summary>Proposal notes and source details</summary>
         <dl className="museum-saint-data museum-saint-data--flat">
           <DataItem label="Original group size" value={row.familySize ? String(row.familySize) : ""} />
