@@ -21,6 +21,7 @@ export default async function MuseumUpdates({searchParams}:{searchParams:Promise
     <h1>Museum source updates</h1><p><Link href="/museumadmin/review">Placement review</Link> &middot; <Link href="/museumadmin">Section proposals</Link></p>
     <MuseumUpdateControl canRun={hasCapability(user.roles,"run_imports")}/>
     <p><Link href={"/admin/source-data/museum/relics" as Route}>Connect relics and review location changes</Link></p>
+    <p><Link href={"/admin/source-data/museum/vrindavan" as Route}>Vrindavan saint matching</Link></p>
     <h2>Uncertain matches</h2><p>Review source identities and locations in batches. No saint is created or merged automatically. Linking a source does not approve its relic location.</p>
     {params.error?<p role="alert">The record changed or could not be updated. Reload and review its current source and saint link.</p>:null}
     {params.saved?<p role="status">Decision saved. Check for updates again after linking to refresh the location review queue.</p>:null}

@@ -382,3 +382,67 @@ plan/cancel/complete, required physical confirmation, repeated submission, stale
 item versions, archived destinations, museum scope, movement history and source
 replay after a curator move. Live physical placement verification remains a
 curator task. New saints and Vrindavan are deferred by user direction.
+
+## Vrindavan website identity review checkpoint
+
+Vrindavan source rows now match directly to canonical website Saint IDs using
+current display names, canonical names, and aliases. SPN Airtable record IDs are
+not matching targets. Active draft saints may be linked without publication;
+archived saints are excluded. Exact names and names with a location suffix can
+be clear suggestions only when the broader title/alias comparison identifies
+one website record. Multiple candidates, including newly imported duplicate
+drafts, are held for individual review. Title-only guesses are never bulk linked.
+
+Source Data > Museum updates > Vrindavan saint matching accepts a private,
+prepared JSON snapshot of the original workbook (maximum 1 MB). The snapshot
+contract is version 1, museum vrindavan, sourceName, original-file sha256, and
+sheets containing name plus rows with original row numbers and typed cell arrays.
+Supported sheets are Sheet1 and DuplicatesMagenta. Both sheets and original
+headers, section markers, comments, quantities and display labels are preserved.
+No source dataset is committed to the public repository.
+
+The original workbook yields 449 review rows: 447 named inventory entries plus
+two unidentified entries. It contains 437 distinct named labels, which are not
+necessarily 437 unique saints. Section markers and narrative headings are not
+inventory. Secondary-sheet differences remain evidence rather than a second
+inventory or an automatic correction.
+
+Uploading creates an immutable ExternalRecord snapshot and private
+MuseumCollectionImport observations. Identical replay preserves every reviewed
+identity decision. Source keys include the original file hash, sheet and row;
+they identify observations within that snapshot, not permanent physical relics.
+A different file is a separate snapshot and requires cross-snapshot reconciliation
+before physical inventory import. Do not use row numbers or name-plus-vitrine as
+permanent object IDs. MuseumCollectionImport normalized data has mappingVersion
+vrindavan-identity-v1 and is intentionally separate from SPN relic observations.
+
+The review screen reads current website identities on every request. It supports
+snapshot, review-status, confidence and text filters. Clear matches can be
+explicitly selected and confirmed in batches of at most 500 source rows.
+Uncertain rows support a searchable canonical saint picker, multiple identities
+for combined source rows, optional link notes, and deferral with a required note.
+Confirmed identity links are preserved and read-only at this checkpoint.
+
+Preview tokens include canonical identity/alias state and observation decisions.
+Every batch is rechecked server-side in a serializable transaction; changed
+identities, newly archived targets, duplicate candidates and stale decisions
+reject the full batch. Upload requires Source Data, full catalogue and import
+capabilities; decisions require Source Data, full catalogue and reconciliation.
+The main, detail and batch routes are protected, and raw evidence stays private.
+
+This checkpoint creates no saints, MuseumCollectionItem records, locations or
+placements. It does not publish drafts, modify saint-place associations, change
+SPN imports, merge people, split compound descriptions into invented objects, or
+write Airtable. Before the next checkpoint, review movement/photo discrepancies,
+identify individual physical objects, assign stable inventory identities, and
+recheck matches against production after the summer-import duplicate cleanup.
+Saint merges or archival after a decision can invalidate a saved source link;
+these are displayed as unavailable targets and must be reconciled before item
+creation. No confirmed decision is silently rewritten.
+
+Verification: npm run dev:check, npm test, npm run codex:verify; focused pure
+matching tests; scripts/verify-vrindavan-identity-review.ts against a disposable
+local museum_integration_test database, optionally with VRINDAVAN_TEST_BUNDLE
+pointing to the private prepared JSON. No schema, migration, dependency or
+environment-variable changes. Production snapshot upload is a separate admin
+action after deployment, not part of the release or build.
