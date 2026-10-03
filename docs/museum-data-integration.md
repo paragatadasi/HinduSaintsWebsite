@@ -789,3 +789,17 @@ local `scripts/verify-vrindavan-proposals.ts` exercises edit/stale rejection,
 detach/restore, family move/plan, attestation invalidation and confirms SPN
 assignments/item counts/physical placements are unchanged. Domain tests cover
 independent overrides, conflicting inherited proposals and changed coverage.
+
+## Shared section proposal UX
+
+SPN and Vrindavan now compose the same overview and section workspace components.
+Vrindavan retains `/vrindavanadmin/sections?section=<slug>` links, including empty
+sections, and uses the shared family/primary/secondary/tertiary card hierarchy,
+location grouping, research filter, counts and biography-first dialogs. Its own
+proposal and arrangement actions remain museum-scoped. Overview search opens
+saint dialogs; no full inventory list is rendered below the overview by default.
+
+The thematic visitor sequence is a starting suggestion for Vrindavan, not a
+confirmed physical route. SPN bridge examples and static relationship-tree exports
+are not copied as evidence for Vrindavan. Inventory coverage and source caveats
+remain expandable; reviewed identities do not imply verified individual relics.
