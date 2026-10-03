@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Route } from "next";
 import { notFound } from "next/navigation";
 import { requireCapability } from "@/lib/admin-access";
 import { hasCapability } from "@/lib/permissions";
@@ -25,6 +26,7 @@ export default async function MuseumAdminSectionPage({ params, searchParams }: M
     <>
       <nav className="museum-breadcrumb" aria-label="Placement view">
         <Link aria-current={!originalView ? "page" : undefined} href={`/museumadmin/${slug}`}>Working arrangement</Link>
+        {!originalView ? <Link href={`/museumadmin/locations?section=${encodeURIComponent(workingSection.name)}` as Route}>Current vitrines and shelves</Link> : null}
         {source ? <Link aria-current={originalView ? "page" : undefined} href={`/museumadmin/${slug}?view=original`}>Original proposal comparison</Link> : null}
       </nav>
       {section ? <MuseumSectionWorkspace
