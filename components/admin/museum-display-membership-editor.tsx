@@ -4,7 +4,7 @@ import type {Route} from "next";
 import type {MuseumSaintPlacement} from "@/lib/museum-proposals";
 import {MuseumActionForm} from "@/components/admin/museum-action-form";
 import {changeDisplayMembershipAction,requestRelationshipCorrectionAction} from "@/app/museumadmin/membership-actions";
-export function MuseumDisplayMembershipEditor({row,canEditRelationships=false}:{row:MuseumSaintPlacement;canEditRelationships?:boolean}) {
+export function MuseumDisplayMembershipEditor({row,canEditRelationships=false,correctionAction=requestRelationshipCorrectionAction}:{correctionAction?:(form:FormData)=>Promise<{error:string}>;row:MuseumSaintPlacement;canEditRelationships?:boolean}) {
  const membership=row.displayMembership;
  return <>
   {membership?<details className="museum-saint-review-section"><summary>Display group membership</summary>
@@ -15,7 +15,7 @@ export function MuseumDisplayMembershipEditor({row,canEditRelationships=false}:{
   {row.saintId?<details className="museum-saint-review-section"><summary>Correct a historical relationship</summary>
    <p>Use this when the recorded relationship itself is wrong. A relationship correction is separate from museum display membership.</p>
    {canEditRelationships&&row.adminSaintSlug?<p><Link href={`/admin/saints/${row.adminSaintSlug}/summary#saint-relationships` as Route}>Open the relationship editor</Link></p>:null}
-   <MuseumActionForm action={requestRelationshipCorrectionAction}><input type="hidden" name="saintId" value={row.saintId}/><label>What needs correcting?<textarea name="note" required minLength={10} maxLength={2000} placeholder="Describe the mistaken relationship and the evidence or correction."/></label><div className="review-actions"><button className="museum-admin-button" type="submit">Request relationship correction</button></div><p>The editorial team can review this request in the reconciliation queue.</p></MuseumActionForm>
+   <MuseumActionForm action={correctionAction}><input type="hidden" name="saintId" value={row.saintId}/><label>What needs correcting?<textarea name="note" required minLength={10} maxLength={2000} placeholder="Describe the mistaken relationship and the evidence or correction."/></label><div className="review-actions"><button className="museum-admin-button" type="submit">Request relationship correction</button></div><p>The editorial team can review this request in the reconciliation queue.</p></MuseumActionForm>
   </details>:null}
  </>;
 }

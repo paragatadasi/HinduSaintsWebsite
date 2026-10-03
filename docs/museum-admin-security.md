@@ -49,3 +49,16 @@ who confirmed the arrangement and when, with the inventory gap acknowledged;
 it must not invent inventory, end item placements or assert complete coverage.
 Historical correction requests reuse reconciliation and do not grant curators
 public-content editing rights. Identical open requests are deduplicated.
+
+### Vrindavan editing extension
+
+The current Vrindavan editor uses fixed server-side museum scope
+`museum-vrindavan`, `manage_museum` and `view_full_saint_catalog`. Its working
+reader only admits current reviewed inventory saint identities. Every write
+rechecks that scope, available sections/group options and revisions under a
+museum advisory lock in a serializable transaction. The shared arrangement
+writer receives the museum ID from these fixed-scope server services, not from
+form input. SPN editorial assignments and all physical inventory remain untouched.
+The earlier read-only checkpoint above describes the meeting pilot; it is not a
+permission bypass for the later editor. Historical corrections stay global,
+permission-controlled reconciliation requests.

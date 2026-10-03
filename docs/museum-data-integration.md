@@ -93,9 +93,9 @@ is added to public saint contracts. See [the security contract](museum-admin-sec
 
 ### Remaining sequence
 
-1. Add museum-scoped Vrindavan proposal editing, independent of SPN curator
-   assignments; reuse shared cards/forms/status behavior. Preserve reviewed
-   global saint/geography corrections and raw source evidence.
+1. Vrindavan editing is implemented in the current feature branch (release
+   verification pending): museum-scoped proposals, groups and arrangement states
+   reuse shared cards/forms. Preserve global reviewed geography decisions.
 2. Complete family section-transfer/membership parity, including canonical
    exhibit groups, with explicit member scope and concurrency protection.
 3. Connect verified Vrindavan item identities to the existing physical-move
@@ -753,3 +753,34 @@ saints remain editable individually. Member/arrangement revisions reject stale
 forms. Mixed family statuses require an explicit selection. Canonical exhibit
 groups also expose planning; their section-transfer workflow remains separate.
 No item inventory, physical placements or historical relationships are modified.
+
+### Vrindavan curator editing
+
+The working layer (`readVrindavanWorkingData`) combines the private section audit
+with museum-scoped `MuseumCuratorProposal` overrides. Initial display families
+are suggestions adapted from unambiguous SPN groups, represented as private keys
+within Vrindavan, never copied relational/history or physical assignments.
+A saved override freezes the curator's section, tier and display membership;
+later SPN changes cannot silently overwrite it. Removing a display member selects
+No display family; selecting the family again restores it. Historical correction
+requests still use the separate shared reconciliation workflow.
+
+Individual and family section edits, family membership, and arrangement updates
+serialize under the Vrindavan museum lock and validate revisions inside a
+transaction. Family updates apply only to effective current members. Missing or
+competing inherited proposals require an explicit section choice before planning.
+Current confirmed-inventory identity scope is rechecked on each write. Inventory
+coverage/snapshot changes invalidate an old arrangement attestation, while saved
+proposal choices remain independent of SPN. All mutations are audited.
+
+The same arrangement writer, status fields, family dialog, saint profiles and
+search cards serve both museums through explicit action/route adapters. Vrindavan
+source observations remain source evidence; no action uses an observation ID as
+a physical object. Source text, quantities and exact shelf strings remain intact.
+
+Migration `20261003163000_museum_curator_proposal` is additive and runs during
+release migration, with no backfill or new environment variable. The guarded
+local `scripts/verify-vrindavan-proposals.ts` exercises edit/stale rejection,
+detach/restore, family move/plan, attestation invalidation and confirms SPN
+assignments/item counts/physical placements are unchanged. Domain tests cover
+independent overrides, conflicting inherited proposals and changed coverage.
