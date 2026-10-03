@@ -46,6 +46,7 @@ export default async function AirtablePage({ searchParams }: AirtablePageProps) 
 
       <p><Link className="admin-form-button admin-form-button--secondary" href={{ pathname: "/admin/airtable/mirror-audit" }}>View mirror field coverage</Link></p>
       <StatusMessages params={params} />
+      <p><Link className="admin-form-button admin-form-button--secondary" href="/admin/saints/imported">Review imported saint drafts</Link></p>
 
       <AirtableImportPanel defaultOpen jobs={recentJobs.map(serializeAirtableImportJob)} />
 
