@@ -828,3 +828,11 @@ confirmed assignments, idempotent replay preserving later edits), dev:check and
 codex:verify. No schema, migration, environment or dependency changes. Production
 application and exact Excel creation still require authenticated production
 execution/export; no production write is implied by feature deployment.
+The workspace 84-saint Excel was subsequently delivered at the user's request.
+No production write is implied by feature deployment.
+
+## Consolidated status and remaining work
+
+See [museum-data-status.md](museum-data-status.md) for the October 3 checkpoint record, user-approved corrections, production actions still pending, the workspace 84-saint QR shortlist provenance, and the remaining phased backlog. Deployment is tracked by the release captain; code preparation does not imply production data application.
+
+The inventory readiness reader in lib/vrindavan-inventory-readiness.ts is a private, read-only projection over existing confirmed observations. It preserves quantity/location text and supplies explicit object, quantity, identity, location and source-note review reasons. Applied manual geography decisions are included per canonical saint; raw erroneous geography remains intact. The protected JSON export is /admin/source-data/museum/vrindavan/inventory-audit. No schema, environment, object creation, physical verification or production backfill is introduced.
