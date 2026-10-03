@@ -26,7 +26,8 @@ export function MuseumLocationBrowser({rows, sections, filters, pageNumber="1"}:
       <dl className="museum-saint-data museum-saint-data--flat">
         <div><dt>{row.sourceOnly?"Source location · not verified":"Current recorded location"}</dt><dd>{row.locationLabel}</dd></div>
         <div><dt>Working section{row.sections.length>1?"s":""}</dt><dd>{row.sections.length?row.sections.map((section,i)=><span key={section}>{i?" · ":""}<Link href={`/museumadmin/${sectionSlug.get(section)}` as Route}>{section}</Link></span>):"No section proposal recorded"}</dd></div>
-        {row.plannedLocation?<div><dt>Planned destination</dt><dd>{row.plannedLocation}</dd></div>:null}
+        {row.arrangements.length?<div><dt>Saint arrangements · curator recorded</dt><dd>{row.arrangements.join("; ")}</dd></div>:null}
+        {row.plannedLocation?<div><dt>Individual relic move plan</dt><dd>{row.plannedLocation}</dd></div>:null}
       </dl>
       {!row.sourceOnly?<p>{row.saints.map((saint,i)=><span key={saint.id}>{i?" · ":""}<Link href={`/museumadmin?q=${encodeURIComponent(saint.name)}` as Route}>{saint.name}</Link></span>)}{!row.saints.length?"No saint linked":null}</p>:<p>This location comes from the source record. Individual relics have not yet been connected.</p>}
       {row.itemId?<Link href={`/museumadmin/collections/${row.itemId}` as Route}>Open relic and move details</Link>:<Link href={`/museumadmin?q=${encodeURIComponent(row.label)}` as Route}>Open saint search</Link>}

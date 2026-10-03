@@ -1,3 +1,4 @@
+import {arrangementControl} from "@/lib/museum-arrangement-domain";
 import { projectSourceVitrines, SPN_WEBSITE_AIRTABLE_BASE_ID } from "@/lib/museum-vitrine-source";
 import { readSaintCollectionItems } from "@/lib/museum-collections";
 import {membershipRevision} from "@/lib/museum-display-membership-domain";
@@ -10,7 +11,7 @@ import { buildWorkingMuseumView, museumRelationshipDetails, type CurrentMuseumSa
 
 // Private data reader; route entry points must enforce access_museum before calling.
 export async function readMuseumData(client: Prisma.TransactionClient = db) {
-  const [mirrorLocations, collections, saints, links, definitions, membership] = await Promise.all([
+  const [mirrorLocations, collections, saints, links, definitions, membership, arrangements] = await Promise.all([
     client.airtableMirrorRecord.findMany({
       where: { baseId: SPN_WEBSITE_AIRTABLE_BASE_ID, tableIdOrName: "Saints" },
       select: { baseId: true, tableIdOrName: true, recordId: true, rawFieldsJson: true }
@@ -53,7 +54,8 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
       select: { name: true, slug: true, descriptionMarkdown: true },
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }]
     }),
-    client.museumDisplayMembership.findMany({where:{museumId:"museum-spn"}})
+    client.museumDisplayMembership.findMany({where:{museumId:"museum-spn"}}),
+    client.museumArrangement.findMany({where:{museumId:"museum-spn"}})
   ]);
   const vitrines = projectSourceVitrines(mirrorLocations, links, new Set(saints.map(s => s.id)));
   const current: CurrentMuseumSaint[] = saints.map(s => ({
@@ -98,6 +100,14 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
     const state=saints.find(s=>s.id===row.saintId)?.museumState?.version || 0;
     row.displayMembership={familyKey:groupKey,label:row.groupLabel||change?.familyLabel||groupKey,
       detached:!row.familyId,revision:membershipRevision({id:row.id,section:row.section,familyId:row.familyId,state},change)};
+  }
+  for(const row of view.placements) {
+    const familyKey=row.displayMembership?.familyKey || row.curatorialFamily || row.familyId;
+    row.arrangement=arrangementControl(row,arrangements.find(a=>a.placementId===row.id),{
+      saintVersion:saints.find(s=>s.id===row.saintId)?.museumState?.version||0,
+      membership:row.displayMembership?.revision||null,
+      family:editable.familyMoveOptions.find(f=>f.key===familyKey)?.revision||null
+    });
   }
   const activeIds = new Set(current.map(s => s.id));
   for (const row of original.placements) {

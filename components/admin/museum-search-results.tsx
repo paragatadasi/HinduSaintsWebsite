@@ -24,7 +24,7 @@ export function MuseumSearchResults({ matches, profiles, members, sections, fami
     <div className="museum-search-results__grid">
       {matches.map(match => <button type="button" aria-haspopup="dialog" className="museum-search-result interactive-surface" key={match.id} onClick={() => setSelectedId(match.id)}>
         <strong>{match.name}</strong><span>{match.section}</span>
-        <small>{match.placementState} · {match.tier} · {match.confidence} confidence</small>
+        <small>{match.arrangement?.status || "Proposed"} · {match.tier} · {match.confidence} confidence</small>
       </button>)}
     </div>
     {selected && section ? <MuseumSaintDialog canManage={canManage} canEditRelationships={canEditRelationships} key={selected.id} row={selected} sectionSlug={section.slug} member={members[selected.id]} profile={selected.saintId ? profiles[selected.saintId] : undefined} onClose={() => setSelectedId(null)} moveControl={canManage && family ? <MuseumFamilyMove family={family} sections={sections.map(s => s.name)} /> : undefined} /> : null}
