@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { Route } from "next";
 import { useMemo, useState, type ReactNode } from "react";
-import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine, Triangle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, MapPin, Search, CircleAlert, TreePine, Triangle } from "lucide-react";
 import type { MuseumFamilyGroup, MuseumSaintPlacement, MuseumSection, MuseumTier } from "@/lib/museum-proposals";
 
 import { MuseumSaintDialog } from "@/components/admin/museum-saint-dialog";
@@ -356,16 +356,15 @@ function PrimarySaintCard({
     <article className="museum-family-card museum-family-card--standalone-primary">
       <div className="museum-family-card__header">
         <div>
-          <h3><SaintButton row={row} onSaintClick={onSaintClick} /></h3>
-          <p>Primary saint</p>
+          <h3><SaintButton row={row} onSaintClick={onSaintClick} showStatus={false} /></h3>
         </div>
-        <TreePine aria-hidden="true" size={19} />
       </div>
       {affiliated.length ? (
         <ul>
           {affiliated.map((candidate) => <li key={candidate.id}><SaintButton row={candidate} onSaintClick={onSaintClick} /></li>)}
         </ul>
       ) : null}
+      {row.placementState ? <small className="museum-card-status">{row.placementState}</small> : null}
     </article>
   );
 }
@@ -477,21 +476,21 @@ function TertiaryCard({
 
   return (
     <article className="museum-tertiary-card">
-      <strong><SaintButton row={row} onSaintClick={onSaintClick} /></strong>
+      <strong><SaintButton row={row} onSaintClick={onSaintClick} showStatus={false} /></strong>
       <span>{placeLabel}</span>
-      {row.needsResearch ? <small>Needs research</small> : null}
+
+      {row.placementState ? <small className="museum-card-status">{row.placementState}</small> : null}
     </article>
   );
 }
 
-function SaintButton({ onSaintClick, row }: { onSaintClick: (id: string) => void; row: MuseumSaintPlacement }) {
+function SaintButton({ onSaintClick, row, showStatus = true }: { onSaintClick: (id: string) => void; row: MuseumSaintPlacement; showStatus?: boolean }) {
   return (
-    <>
-      <button className="museum-saint-link" onClick={() => onSaintClick(row.id)} type="button">
-        {row.name}
-      </button>
-      {row.placementState ? <small className="museum-placement-status">{row.placementState}</small> : null}
-    </>
+    <span className="museum-saint-summary">
+      <button className="museum-saint-link" onClick={() => onSaintClick(row.id)} type="button">{row.name}</button>
+      {row.needsResearch ? <button type="button" className="museum-research-indicator" aria-label={`Research needed for ${row.name}: open details`} title="Needs research — open details" onClick={() => onSaintClick(row.id)}><CircleAlert aria-hidden="true" size={16} /></button> : null}
+      {showStatus && row.placementState ? <small className="museum-placement-status">{row.placementState}</small> : null}
+    </span>
   );
 }
 
