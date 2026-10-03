@@ -310,3 +310,9 @@ controls and destinations without copying the shared dialog markup.
 
 The implementation ledger, current workflow rules and remaining phases live in
 [museum-data-integration.md](museum-data-integration.md#curator-ux-revamp-current-checkpoint-3-october-2026).
+
+Section proposal overview and detail layouts are shared by SPN and Vrindavan through
+`MuseumProposalOverview` and `MuseumSectionWorkspace`. Keep museum-specific
+readers/actions separate from the shared visual hierarchy. Vrindavan reuses the
+section sequence as a discussion starting point, without claiming SPN bridge
+evidence or reference tree exports describe its own inventory.
