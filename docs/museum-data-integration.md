@@ -564,3 +564,85 @@ arrangement status to Proposed; old attestations remain in the audit history.
 The additive per-museum arrangement model is separate from item move plans and
 is ready for future shared planning UX. The first mutation surface is SPN; the
 Vrindavan source pilot remains read-only until its section proposals are adopted.
+## Vrindavan section inheritance and source-place audit
+
+readVrindavanSectionProposalAudit in lib/vrindavan-section-proposals.ts is a
+private read-only projection over confirmed Vrindavan inventory identities.
+Callers enforce access_museum and view_full_saint_catalog. It returns the shared
+SPN section catalogue and one row per active linked website saint, with canonical
+spiritual regions and current website place associations. SPN section, tier,
+confidence, alternatives and rationale become inherited Proposed candidates;
+SPN confirmed/operational state is evidence only and never makes a Vrindavan
+assignment confirmed. It does not copy exhibit group IDs, physical locations or
+relational membership. Missing/multiple/conflicting SPN proposals remain reviewable.
+
+Source geography is compared to actual website locality names and supplied
+aliases. Comma-separated detail can overlap an existing association without
+being a new region. Missing source text gives no correction. Different or
+unrecognized text creates research evidence, not a replacement of canonical
+places. Existing catalogue localities may suggest geographic sections through
+the shared locality rules; differences are flags only, since lineage, accepted
+visit localities and reviewed curator choices may take precedence. Do not
+conclude that the source describes where a saint lived; collection locations and
+wrong identity matches remain possible. No automatic geography propagation or
+section assignment is performed in either museum.
+
+Authorized users can download the live JSON audit at
+/admin/source-data/museum/vrindavan/section-audit (optional ?snapshot=<hash>).
+It uses current confirmed identities and current website/SPN data, is noindexed
+and not cached, and modifies nothing. A current production report is required
+before approving shared place or section corrections. The workspace configured
+website database's July 25 baseline is older than current production; preliminary
+file comparisons must never be labelled the live 278-row audit.
+
+Preliminary workspace comparison on October 3: 283 clear source-row identity
+matches, 198 source places matching an existing association, 38 overlapping
+associations with added detail, 30 missing source places, 17 different/unrecognized
+texts. These are row counts and include spelling variants/incomplete context;
+17 is not a count of confirmed errors or proposed section moves. The private
+CSV report remains outside Git. Recheck against the production report after the
+summer import and accepted visit-place updates before deciding corrections.
+
+Next decisions: keep inherited Vrindavan proposals as a starting point; research
+remaining source-place discrepancies; approve canonical locality changes only
+with saint-related evidence; regenerate tertiary locality-based proposals for
+both museums while preserving reviewed placements/lineage decisions. Operational
+museum-scoped acceptance and shared UI are separate phases. No migration,
+environment change, Airtable write, saint publication or physical move occurs here.
+### Reviewed geography decisions (user, October 3, 2026)
+
+- Haridas Thakur: multiple associated locations are legitimate. Museum proposal
+  belongs to Gaudiya Vaishnava; locality alone must not reroute it. Preserve the
+  Puri/Vrindavan evidence rather than treating the difference as a false identity.
+- Madhu Pandit Goswami: museum proposal belongs to Gaudiya Vaishnava. Website
+  primary locality correction is Vrindavan, with Vamshi Vat as the specific
+  saint-related place. Jaipur describes where his deity currently resides, not
+  where he lived. Preserve that contextual evidence with an explicit note rather
+  than a primary/life-place claim. Do not invent an accepted visit destination
+  or coordinates from this decision. The old SPN proposal document puts him in
+  a Jaipur/geographic section; both museums' proposed classifications therefore
+  need review for Gaudiya, rather than blindly inheriting the old proposal.
+- Somappar Swami: retain Madurai/Thiruparankundram. User identifies no Mayapur
+  connection. Preserve the workbook's raw Mayapur value as erroneous source
+  evidence; do not promote it into a canonical place or Gaudiya proposal.
+
+These are directly authorized user decisions, not external research assertions.
+They supersede the preliminary discrepancy interpretation for these names.
+Production application is pending current canonical identity/assignment and
+accepted visit-place inspection. Do not overwrite newer reviewed CMS changes
+or museum confirmations by name matching. Implement the Madhu website correction
+through the audited saint-place edit/reconciliation path, reuse unique existing
+locality identities, and record the user decision provenance. Section inheritance
+must distinguish a geographic default from stronger family/lineage evidence.
+
+### Vrindavan section discussion view
+
+`/vrindavanadmin/sections` provides protected, read-only section browsing, saint
+search, pagination and shared biography/photo dialogs for reviewed Vrindavan
+identities. Proposed candidates come from the section audit; source geography
+never automatically changes them. Canonical Haridas and Madhu identities carry
+explicit user-reviewed Gaudiya display corrections while the audited correction
+batch is pending. Missing or competing proposals remain visible. Dialog links
+stay inside Vrindavan, with access to source relic/location details; SPN edit,
+move, membership and status mutations are hidden. No museum assignments, display
+group memberships or physical placements are copied or written by this view.
