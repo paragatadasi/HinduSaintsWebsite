@@ -1,0 +1,40 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+const url=process.env.MUSEUM_TEST_DATABASE_URL;
+if(!url||!["localhost","127.0.0.1"].includes(new URL(url).hostname)||new URL(url).pathname!=="/museum_integration_test")throw Error("Disposable test database required");
+process.env.DATABASE_URL=url;
+const {db}=await import("../lib/db");
+const {stageVrindavanInventory,readVrindavanIdentityReview,confirmClearVrindavanMatches,decideVrindavanIdentity}=await import("../lib/vrindavan-identity-review");
+try{
+ const actor=await db.user.create({data:{email:"vrindavan-fixture@example.invalid",roles:["data_admin"]}});
+ const a=await db.saint.create({data:{slug:"v-test-a",canonicalName:"Sri Example Saint",displayName:"Sri Example Saint",status:"published"}});
+ const b=await db.saint.create({data:{slug:"v-test-b",canonicalName:"Sri Another Saint",displayName:"Sri Another Saint",status:"draft"}});
+ const input={version:1,museum:"vrindavan",sourceName:"Fixture.xlsx",sha256:"a".repeat(64),sheets:[{name:"Sheet1",rows:[{row:1,cells:["SAINT NAME","PLACE","RELIC",null,null,"Display/Vitrine"]},{row:2,cells:["Sri Example Saint","Vrindavan","Cloth",2,"Box",1,1.2]},{row:3,cells:["Sri Another Saint","Puri","Wood",1,"Box",2,2.1]},{row:4,cells:[null,null,"Relic requiring identification",1,"Box",2,2.2]}]}]};
+ assert.equal((await stageVrindavanInventory(actor.id,input)).staged,3);
+ assert.equal((await stageVrindavanInventory(actor.id,input)).unchanged,3);
+ assert.equal(await db.museumCollectionImport.count(),3);
+ let review=await readVrindavanIdentityReview();assert.equal(review.rows.filter(p=>p.identity.category==="clear").length,2);
+ const tokens=review.rows.filter(p=>p.identity.category==="clear").map(p=>`${p.row.id}:${p.version}`);
+ await assert.rejects(confirmClearVrindavanMatches(actor.id,tokens,null));
+ await db.saint.create({data:{slug:"v-test-duplicate",canonicalName:"Sri Example Saint of Vrindavan",displayName:"Sri Example Saint of Vrindavan"}});
+ await assert.rejects(confirmClearVrindavanMatches(actor.id,tokens,"on"));assert.equal(await db.museumCollectionImport.count({where:{status:"identity_linked"}}),0);
+ review=await readVrindavanIdentityReview();assert.equal(review.rows.find(p=>p.data.name==="Sri Example Saint")!.identity.category,"ambiguous");
+ const clear=review.rows.find(p=>p.identity.category==="clear")!;
+ assert.equal((await confirmClearVrindavanMatches(actor.id,[`${clear.row.id}:${clear.version}`],"on")).saved,1);
+ await assert.rejects(confirmClearVrindavanMatches(actor.id,[`${clear.row.id}:${clear.version}`],"on"));
+ const ambiguous=review.rows.find(p=>p.identity.category==="ambiguous")!;
+ await assert.rejects(confirmClearVrindavanMatches(actor.id,[`${ambiguous.row.id}:${ambiguous.version}`],"on"));
+ await decideVrindavanIdentity(actor.id,[{id:ambiguous.row.id,version:ambiguous.version,action:"link",saintIds:[a.id],confirm:true,note:"Reviewed against the original identity"}]);
+ review=await readVrindavanIdentityReview();const unknown=review.rows.find(p=>p.identity.category==="unidentified")!;
+ await assert.rejects(decideVrindavanIdentity(actor.id,[{id:unknown.row.id,version:unknown.version,action:"defer",saintIds:[],confirm:false,note:""}]));
+ await decideVrindavanIdentity(actor.id,[{id:unknown.row.id,version:unknown.version,action:"defer",saintIds:[],confirm:false,note:"Identify the objects before linking"}]);
+ assert.equal((await stageVrindavanInventory(actor.id,input)).unchanged,3);
+ assert.equal(await db.museumCollectionImport.count({where:{status:"identity_linked"}}),2);
+ assert.equal(await db.museumCollectionImport.count({where:{status:"deferred"}}),1);
+ await assert.rejects(stageVrindavanInventory(actor.id,{...input,sourceName:"Changed.xlsx"}));
+ assert.equal(await db.museumCollectionItem.count(),0);assert.equal(await db.museumItemPlacement.count(),0);
+ assert.equal((await db.saint.findUniqueOrThrow({where:{id:b.id}})).status,"draft");
+ console.log("PASS current website identity matching, duplicate blocking, atomic stale rejection, explicit confirmations, preserved decisions, raw snapshots, and no relic/placement/publication changes");
+ const path=process.env.VRINDAVAN_TEST_BUNDLE;
+ if(path){const bundle=JSON.parse(readFileSync(path,"utf8"));const staged=await stageVrindavanInventory(actor.id,bundle);assert.equal(staged.staged,449);assert.equal((await stageVrindavanInventory(actor.id,bundle)).unchanged,449);console.log("PASS real workbook: 449 inventory rows, full two-sheet evidence, identical replay preserved");}
+}finally{await db.$disconnect();}
