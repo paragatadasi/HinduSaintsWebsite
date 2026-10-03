@@ -49,6 +49,7 @@ export default async function MuseumAdminLayout({ children }: { children: React.
           </Link>
           <div className="museum-admin-nav__group-links">
             <Link href="/museumadmin/review">Placement review</Link>
+            <Link href={"/museumadmin/locations" as Route}>Vitrines and shelves</Link>
             <Link href={"/museumadmin/collections" as Route}>Moves and relics</Link>
             <Link href="/admin">Main admin</Link>
             <Link href="/">Public site</Link>
