@@ -62,3 +62,13 @@ form input. SPN editorial assignments and all physical inventory remain untouche
 The earlier read-only checkpoint above describes the meeting pilot; it is not a
 permission bypass for the later editor. Historical corrections stay global,
 permission-controlled reconciliation requests.
+
+### Live relationship-tree preview
+
+The read-only tree POST API requires an active user with both `access_museum` and
+`view_full_saint_catalog` before reading seed saints, relatives, biographies or
+museum evidence. Responses are private/no-store and noindexed, including errors.
+Seed count, museum key, traversal depth, nodes and edges are bounded. The renderer
+uses React SVG text (no injected markup) and preserves provenance/review metadata.
+No public tree route, raw source export, database mutation or permission expansion
+is introduced. Original SVG routes retain their existing capability checks.
