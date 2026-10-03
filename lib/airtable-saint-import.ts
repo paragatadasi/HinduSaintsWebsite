@@ -532,34 +532,11 @@ async function classifyMissingDraftPlan(plan: ImportPlan): Promise<ImportResult>
       };
     }
 
-    if (plan.detailedSlug) {
-      const detailedSlugCollision = await db.saint.findUnique({
-        where: { slug: plan.detailedSlug },
-        select: { id: true, displayName: true, slug: true }
-      });
-      if (!detailedSlugCollision) {
-        return {
-          status: "created",
-          saintId: "",
-          slug: plan.detailedSlug,
-          slugResolution: "detailed",
-          resolvedCollision: saintReference(slugCollision)
-        };
-      }
-
-      return {
-        status: "skipped_collision",
-        saint: saintReference(detailedSlugCollision),
-        reason: "slug_collision",
-        message: "Detailed slug already exists"
-      };
-    }
-
     return {
       status: "skipped_collision",
       saint: saintReference(slugCollision),
       reason: "slug_collision",
-      message: "Slug already exists"
+      message: "Slug matches an existing saint; review identity before creating or linking a draft. A longer slug does not establish a different identity."
     };
   }
 
@@ -567,7 +544,8 @@ async function classifyMissingDraftPlan(plan: ImportPlan): Promise<ImportResult>
     where: {
       OR: [
         { displayName: { equals: plan.displayName, mode: "insensitive" } },
-        { canonicalName: { equals: plan.canonicalName, mode: "insensitive" } }
+        { canonicalName: { equals: plan.canonicalName, mode: "insensitive" } },
+        { aliases: { some: { alias: { in: [plan.displayName, plan.originalName], mode: "insensitive" } } } }
       ]
     },
     select: { id: true, displayName: true, slug: true }

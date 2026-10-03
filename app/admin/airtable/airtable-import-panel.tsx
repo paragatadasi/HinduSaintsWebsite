@@ -119,7 +119,7 @@ export function AirtableImportPanel({ defaultOpen = false, jobs: initialJobs }: 
     >
       <div className="admin-toolbar">
         <div>
-          <p>Check mirrored Airtable saint rows, create missing CMS saints as drafts, repair safe slug collisions with detailed Airtable names, and import the current cleanup graph.</p>
+          <p>Check mirrored Airtable saint rows, create missing CMS saints as drafts, and import the current cleanup graph. Name and slug collisions require identity review; longer names do not prove that saints are distinct.</p>
         </div>
         <div className="review-actions">
           <button className="admin-form-button admin-form-button--secondary" type="button" disabled={isBusy} onClick={() => startJob("check")}>
