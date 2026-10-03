@@ -382,3 +382,145 @@ plan/cancel/complete, required physical confirmation, repeated submission, stale
 item versions, archived destinations, museum scope, movement history and source
 replay after a curator move. Live physical placement verification remains a
 curator task. New saints and Vrindavan are deferred by user direction.
+
+## Vrindavan website identity review checkpoint
+
+Vrindavan source rows now match directly to canonical website Saint IDs using
+current display names, canonical names, and aliases. SPN Airtable record IDs are
+not matching targets. Active draft saints may be linked without publication;
+archived saints are excluded. Exact names and names with a location suffix can
+be clear suggestions only when the broader title/alias comparison identifies
+one website record. Multiple candidates, including newly imported duplicate
+drafts, are held for individual review. Title-only guesses are never bulk linked.
+
+Source Data > Museum updates > Vrindavan saint matching accepts a private,
+prepared JSON snapshot of the original workbook (maximum 1 MB). The snapshot
+contract is version 1, museum vrindavan, sourceName, original-file sha256, and
+sheets containing name plus rows with original row numbers and typed cell arrays.
+Supported sheets are Sheet1 and DuplicatesMagenta. Both sheets and original
+headers, section markers, comments, quantities and display labels are preserved.
+No source dataset is committed to the public repository.
+
+The original workbook yields 449 review rows: 447 named inventory entries plus
+two unidentified entries. It contains 437 distinct named labels, which are not
+necessarily 437 unique saints. Section markers and narrative headings are not
+inventory. Secondary-sheet differences remain evidence rather than a second
+inventory or an automatic correction.
+
+Uploading creates an immutable ExternalRecord snapshot and private
+MuseumCollectionImport observations. Identical replay preserves every reviewed
+identity decision. Source keys include the original file hash, sheet and row;
+they identify observations within that snapshot, not permanent physical relics.
+A different file is a separate snapshot and requires cross-snapshot reconciliation
+before physical inventory import. Do not use row numbers or name-plus-vitrine as
+permanent object IDs. MuseumCollectionImport normalized data has mappingVersion
+vrindavan-identity-v1 and is intentionally separate from SPN relic observations.
+
+The review screen reads current website identities on every request. It supports
+snapshot, review-status, confidence and text filters. Clear matches can be
+explicitly selected and confirmed in batches of at most 500 source rows.
+Uncertain rows support a searchable canonical saint picker, multiple identities
+for combined source rows, optional link notes, and deferral with a required note.
+Confirmed identity links are preserved and read-only at this checkpoint.
+
+Preview tokens include canonical identity/alias state and observation decisions.
+Every batch is rechecked server-side in a serializable transaction; changed
+identities, newly archived targets, duplicate candidates and stale decisions
+reject the full batch. Upload requires Source Data, full catalogue and import
+capabilities; decisions require Source Data, full catalogue and reconciliation.
+The main, detail and batch routes are protected, and raw evidence stays private.
+
+This checkpoint creates no saints, MuseumCollectionItem records, locations or
+placements. It does not publish drafts, modify saint-place associations, change
+SPN imports, merge people, split compound descriptions into invented objects, or
+write Airtable. Before the next checkpoint, review movement/photo discrepancies,
+identify individual physical objects, assign stable inventory identities, and
+recheck matches against production after the summer-import duplicate cleanup.
+Saint merges or archival after a decision can invalidate a saved source link;
+these are displayed as unavailable targets and must be reconciled before item
+creation. No confirmed decision is silently rewritten.
+
+Verification: npm run dev:check, npm test, npm run codex:verify; focused pure
+matching tests; scripts/verify-vrindavan-identity-review.ts against a disposable
+local museum_integration_test database, optionally with VRINDAVAN_TEST_BUNDLE
+pointing to the private prepared JSON. No schema, migration, dependency or
+environment-variable changes. Production snapshot upload is a separate admin
+action after deployment, not part of the release or build.
+
+## Vrindavan confirmed inventory pilot data contract
+
+The data-only pilot reader is readVrindavanMuseumInventory in
+lib/vrindavan-museum-inventory.ts. Server callers must enforce access_museum;
+this private museum/relic information must never enter public saint contracts.
+It reads existing identity_linked Vrindavan workbook observations immediately:
+no second upload, copy, import button, backfill or production mutation is needed.
+The UX workstream owns the separate Vrindavan shell, navigation and pilot screens.
+
+The reader returns museum, snapshotHash, snapshots, entries, saints,
+entriesBySaintId, displays and counts. Default selection is the newest workbook
+snapshot, including when it has no reviewed identities; it does not silently
+fall back to old data or double-count snapshots. An explicit snapshotHash selects
+an older snapshot. Unknown hashes fail rather than displaying another inventory.
+Only confirmed identity rows appear as inventory entries; the uncertain set is
+left untouched. Counts describe source entries, not unique saints or objects.
+
+MuseumSourceInventoryEntry (lib/museum-source-inventory-domain.ts) exposes:
+- observationId, sourceKey, snapshotHash, sourceName, sourceRow, museum;
+- active saintIds and unavailableSaintIds, sourceSaintName, identityConfirmedAt;
+- relicDescription, quantityText, packagingText, sourcePlaceText;
+- displayText, positionText, comments, warnings;
+- physicalItemId, sourceLocation (nullable).
+
+Source location has museumId/name/slug, code, label, kind, room, displayText,
+positionText and evidence=source_reported. This shares museum/location field
+names with the collection-card contract but deliberately has no physical
+MuseumLocation ID. Code encodes the display/position components; e.g. 17/3.4.
+Quantity and position remain strings: ranges, compound amounts and decimal-like
+shelf labels must not be coerced into object counts or numeric coordinates.
+Position without a display produces no location and retains a warning. Source
+place text never modifies the saint's primary place or visit destination.
+
+Each entry represents one original workbook row, which can describe several
+physical objects. observationId is not a MuseumCollectionItem ID. Current pilot
+physicalItemId values are null; no physical item/placement records are fabricated
+and no move controls should be attached to observation IDs. Unavailable or
+archived saint targets remain visible as evidence/warnings but are excluded from
+active saint associations. Existing reviewed links are not rewritten.
+
+The UX can show these entries now grouped by saint or display, including the
+reported vitrine, shelf/position, quantity, packaging, source place and comments.
+Label locations as source-reported; identity confirmation does not verify a
+physical move or resolve contradictory movement evidence. Source-only entries
+must stay separate from implemented object-level placements and SPN inventory.
+
+Verification: ten focused domain/reader tests cover field preservation, museum
+scope, identity gating, missing targets, unknown locations, source key/row
+consistency, location-code collisions, snapshot isolation, draft retention and
+pending-snapshot behavior; npm run dev:check and prepare:deployment passed.
+This checkpoint changes no schema, environment, dependency, public route or UI.
+Next: UX pilot over this reader, then museum-scoped section proposals for linked
+saints. Object identities/splits and physical placement verification remain a
+separate inventory checkpoint; the 171 uncertain identity rows remain deferred.
+Latest-per-sourceKey observations supersede earlier decisions before projection and counts. A MuseumInventoryUnavailableError distinguishes an unavailable museum from general database failures for the protected UX.
+
+
+## Curator UX rollout: shared SPN and Vrindavan shell
+
+The curator pilot uses direct SPN/Vrindavan main-admin subtabs and a shared
+protected `MuseumWorkspace` shell. `/vrindavanadmin` consumes only the scoped
+Vrindavan source-inventory reader. It offers saint/relic/place search, exact
+textual display/position filters, pagination and biography-first inventory
+cards. Source quantity, packaging, comments and original place remain visible;
+provenance is expandable. No physical placements or section assignments are
+created by browsing. SPN keeps its section workflow and gains a separate
+vitrine/shelf browser with distinct current, planned and source-only locations.
+
+The broader revamp remains phased. Display-group removal/restoration and
+historical relationship correction are separate next workflows. Proposed,
+optional Planned, and Implemented will replace the separate curator confirmation
+step. The user approved recording physical implementation even with incomplete
+relic inventory, provided the inventory gap is explicit and the curator's
+confirmation is recorded. Such confirmation must not fabricate item records or
+item-level placements. Changing the latest proposal must invalidate its prior
+implementation status. Interactive spatial planning remains a later dedicated
+design phase after these basic workflows are piloted.
