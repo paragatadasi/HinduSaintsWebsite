@@ -502,3 +502,49 @@ Next: UX pilot over this reader, then museum-scoped section proposals for linked
 saints. Object identities/splits and physical placement verification remain a
 separate inventory checkpoint; the 171 uncertain identity rows remain deferred.
 Latest-per-sourceKey observations supersede earlier decisions before projection and counts. A MuseumInventoryUnavailableError distinguishes an unavailable museum from general database failures for the protected UX.
+
+## Vrindavan section inheritance and source-place audit
+
+readVrindavanSectionProposalAudit in lib/vrindavan-section-proposals.ts is a
+private read-only projection over confirmed Vrindavan inventory identities.
+Callers enforce access_museum and view_full_saint_catalog. It returns the shared
+SPN section catalogue and one row per active linked website saint, with canonical
+spiritual regions and current website place associations. SPN section, tier,
+confidence, alternatives and rationale become inherited Proposed candidates;
+SPN confirmed/operational state is evidence only and never makes a Vrindavan
+assignment confirmed. It does not copy exhibit group IDs, physical locations or
+relational membership. Missing/multiple/conflicting SPN proposals remain reviewable.
+
+Source geography is compared to actual website locality names and supplied
+aliases. Comma-separated detail can overlap an existing association without
+being a new region. Missing source text gives no correction. Different or
+unrecognized text creates research evidence, not a replacement of canonical
+places. Existing catalogue localities may suggest geographic sections through
+the shared locality rules; differences are flags only, since lineage, accepted
+visit localities and reviewed curator choices may take precedence. Do not
+conclude that the source describes where a saint lived; collection locations and
+wrong identity matches remain possible. No automatic geography propagation or
+section assignment is performed in either museum.
+
+Authorized users can download the live JSON audit at
+/admin/source-data/museum/vrindavan/section-audit (optional ?snapshot=<hash>).
+It uses current confirmed identities and current website/SPN data, is noindexed
+and not cached, and modifies nothing. A current production report is required
+before approving shared place or section corrections. The workspace configured
+website database's July 25 baseline is older than current production; preliminary
+file comparisons must never be labelled the live 278-row audit.
+
+Preliminary workspace comparison on October 3: 283 clear source-row identity
+matches, 198 source places matching an existing association, 38 overlapping
+associations with added detail, 30 missing source places, 17 different/unrecognized
+texts. These are row counts and include spelling variants/incomplete context;
+17 is not a count of confirmed errors or proposed section moves. The private
+CSV report remains outside Git. Recheck against the production report after the
+summer import and accepted visit-place updates before deciding corrections.
+
+Next decisions: keep inherited Vrindavan proposals as a starting point; research
+remaining source-place discrepancies; approve canonical locality changes only
+with saint-related evidence; regenerate tertiary locality-based proposals for
+both museums while preserving reviewed placements/lineage decisions. Operational
+museum-scoped acceptance and shared UI are separate phases. No migration,
+environment change, Airtable write, saint publication or physical move occurs here.
