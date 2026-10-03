@@ -1,4 +1,4 @@
-import {arrangementControl} from "@/lib/museum-arrangement-domain";
+import {arrangementControl,familyArrangementControl} from "@/lib/museum-arrangement-domain";
 import { projectSourceVitrines, SPN_WEBSITE_AIRTABLE_BASE_ID } from "@/lib/museum-vitrine-source";
 import { readSaintCollectionItems } from "@/lib/museum-collections";
 import {membershipRevision} from "@/lib/museum-display-membership-domain";
@@ -113,5 +113,11 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
   for (const row of original.placements) {
     row.saintId = resolveSnapshotIdentity(row.id, links, activeIds).record?.entityId || undefined;
   }
-  return { ...view, original, familyMoveOptions: editable.familyMoveOptions };
+  const familyMoveOptions=editable.familyMoveOptions.map(option=>({...option,arrangement:familyArrangementControl(view.placements.filter(row=>(row.curatorialFamily||row.familyId)===option.key))}));
+  const canonicalKeys=[...new Set(view.placements.filter(p=>p.familyId.startsWith("exhibit:")).map(p=>p.familyId))];
+  for(const key of canonicalKeys) {
+    const rows=view.placements.filter(p=>p.familyId===key);
+    familyMoveOptions.push({key,label:rows[0].groupLabel||"Display family",count:rows.length,revision:"",moveUnavailable:true,arrangement:familyArrangementControl(rows)} as typeof familyMoveOptions[number]);
+  }
+  return { ...view, original, familyMoveOptions };
 }

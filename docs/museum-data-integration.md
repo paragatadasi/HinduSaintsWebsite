@@ -646,3 +646,14 @@ batch is pending. Missing or competing proposals remain visible. Dialog links
 stay inside Vrindavan, with access to source relic/location details; SPN edit,
 move, membership and status mutations are hidden. No museum assignments, display
 group memberships or physical placements are copied or written by this view.
+
+### Family arrangement actions
+
+SPN family dialogs share the individual arrangement fields and can apply one
+vitrine/status to all effective display members atomically. Included saints and
+sections are reviewable before saving; detached members are excluded. Missing
+identity links or competing placements block the bulk operation, while eligible
+saints remain editable individually. Member/arrangement revisions reject stale
+forms. Mixed family statuses require an explicit selection. Canonical exhibit
+groups also expose planning; their section-transfer workflow remains separate.
+No item inventory, physical placements or historical relationships are modified.
