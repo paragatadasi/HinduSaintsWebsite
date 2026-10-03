@@ -24,13 +24,14 @@ export default async function VrindavanInventory({searchParams}:{searchParams:Pr
  const pageHref=(next:number)=>`/vrindavanadmin?${new URLSearchParams({...filters,page:String(next)})}` as Route;
  return <div className="museum-admin admin-stack">
   <header><div className="eyebrow">Vrindavan Museum</div><h1>Relics and locations</h1><p>Find a saint or explore the displays. Open a card for photographs, biography, relic details and source notes.</p></header>
+  <p><Link className="museum-admin-button" href={"/vrindavanadmin/sections" as Route}>Explore section proposals</Link></p>
   <MuseumInventoryFilters action="/vrindavanadmin" query={filters.q} searchLabel="Saint, relic or place" submitLabel="Find inventory" filters={[
     {name:"display",label:"Display / vitrine",value:filters.display,allLabel:"All displays",options:[...data.displays.map(display=>({value:display,label:display})),{value:"unrecorded",label:"Not recorded"}]},
     {name:"position",label:"Shelf / position",value:filters.position,allLabel:"All positions",options:[...positions.map(position=>({value:position,label:position})),{value:"unrecorded",label:"Not recorded"}]}
   ]}/>
 
   <p role="status">{matches.length} inventory {matches.length===1?"entry":"entries"}</p>
-  <details><summary>Inventory coverage and source information</summary><p>{data.counts.confirmedEntries} entries have reviewed saint identities, covering {data.counts.linkedSaints} saints. {data.counts.awaitingIdentityReview} entries await identity review.</p><p>Locations and quantities are taken from the source inventory. Each entry may describe more than one relic; it is not a count of verified individual objects. Section proposals and physical move recording will follow separately.</p>{data.counts.unavailableIdentityEntries||data.counts.malformedConfirmedEntries?<p>Some reviewed entries need additional identity or source cleanup.</p>:null}</details>
+  <details><summary>Inventory coverage and source information</summary><p>{data.counts.confirmedEntries} entries have reviewed saint identities, covering {data.counts.linkedSaints} saints. {data.counts.awaitingIdentityReview} entries await identity review.</p><p>Locations and quantities are taken from the source inventory. Each entry may describe more than one relic; it is not a count of verified individual objects. Section proposals are available for discussion; physical move recording will follow separately.</p>{data.counts.unavailableIdentityEntries||data.counts.malformedConfirmedEntries?<p>Some reviewed entries need additional identity or source cleanup.</p>:null}</details>
   {!matches.length?<p>{data.entries.length?"No entries match these filters.":"No reviewed inventory entries are available yet."}</p>:null}
   <MuseumSourceInventoryCards entries={visible} profiles={profiles} names={Object.fromEntries(data.saints.map(s=>[s.id,s.displayName]))}/>
   {matches.length>30?<nav className="review-actions" aria-label="Inventory pages">{page>1?<Link href={pageHref(page-1)}>Previous</Link>:null}<span>Page {page} of {Math.ceil(matches.length/30)}</span>{page*30<matches.length?<Link href={pageHref(page+1)}>Next</Link>:null}</nav>:null}

@@ -634,3 +634,15 @@ or museum confirmations by name matching. Implement the Madhu website correction
 through the audited saint-place edit/reconciliation path, reuse unique existing
 locality identities, and record the user decision provenance. Section inheritance
 must distinguish a geographic default from stronger family/lineage evidence.
+
+### Vrindavan section discussion view
+
+`/vrindavanadmin/sections` provides protected, read-only section browsing, saint
+search, pagination and shared biography/photo dialogs for reviewed Vrindavan
+identities. Proposed candidates come from the section audit; source geography
+never automatically changes them. Canonical Haridas and Madhu identities carry
+explicit user-reviewed Gaudiya display corrections while the audited correction
+batch is pending. Missing or competing proposals remain visible. Dialog links
+stay inside Vrindavan, with access to source relic/location details; SPN edit,
+move, membership and status mutations are hidden. No museum assignments, display
+group memberships or physical placements are copied or written by this view.
