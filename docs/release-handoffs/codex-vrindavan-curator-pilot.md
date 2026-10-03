@@ -2,7 +2,7 @@
 
 - Status: `ready`
 - Branch: `codex/vrindavan-curator-pilot`
-- Commit: `8581cb1525cd8ab0bdedd0ef0df89135d128dd02`
+- Commit: `143c2bc7497b1768a1980feecdde13dc25ddc2e7`
 - Owner/agent: Museum Data Integration
 - Bundle priority: immediate data dependency for the Vrindavan UX pilot
 
@@ -16,7 +16,7 @@
 ## Verification
 
 - npm run dev:check: passed.
-- npx tsx --test lib/museum-source-inventory-domain.test.ts lib/vrindavan-museum-inventory.test.ts: 9 passed (run as two focused commands).
+- npx tsx --test lib/museum-source-inventory-domain.test.ts lib/vrindavan-museum-inventory.test.ts: 10 passed together after latest-observation correction.
 - npm run prepare:deployment: passed.
 - No UI/routes/auth/dependency/schema changes; integrated production build belongs to Release Captain alongside the consuming UX branch.
 
