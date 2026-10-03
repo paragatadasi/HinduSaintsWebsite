@@ -11259,3 +11259,8 @@ button.museum-search-result { text-align: start; font: inherit; cursor: pointer;
 
 .museum-card-status { align-self: end; justify-self: end; margin-top: auto; color: var(--color-muted); font-weight: normal; }
 .museum-tertiary-card .museum-card-status { color: var(--color-muted); font-weight: normal; }
+
+.museum-location-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--width-museum-supporting-card-min)), 1fr)); gap: var(--space-3); }
+.museum-location-filters label { display: grid; gap: var(--space-2); }
+.museum-location-filters .review-actions { grid-column: 1 / -1; }
+.museum-location-list { display: grid; gap: var(--space-4); }
