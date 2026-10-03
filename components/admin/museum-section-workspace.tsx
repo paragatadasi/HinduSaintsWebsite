@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import {MuseumLiveTrees} from "./museum-live-trees";
 import type { Route } from "next";
 import { useMemo, useState, type ReactNode } from "react";
 import { AlertTriangle, CheckCircle2, MapPin, Search, CircleAlert, TreePine, Triangle } from "lucide-react";
@@ -159,6 +160,8 @@ export function MuseumSectionWorkspace({
               </div>
             </section>
           ) : null}
+
+          {!originalView ? <MuseumLiveTrees key={section.slug} section={section} museum={vrindavanEditing?"vrindavan":"spn"}/> : null}
 
           <section className="museum-admin-panel">
             <div className="museum-admin-section-heading">

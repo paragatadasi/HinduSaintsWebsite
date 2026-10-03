@@ -356,3 +356,21 @@
     0 6px 16px color-mix(in srgb, var(--color-gold) 11%, transparent);
   --image-treatment: saturate(0.92) contrast(1.1);
 }
+
+/* Live relationship comparison: stable lineage colors, separate museum evidence. */
+:root {
+ --color-tree-lineage-0: #4083c5;
+ --color-tree-lineage-1: #bd8530;
+ --color-tree-lineage-2: #9471c9;
+ --color-tree-lineage-3: #479778;
+ --color-tree-lineage-4: #cc7654;
+ --color-tree-lineage-5: #489da0;
+ --color-tree-partner: #c77599;
+ --color-tree-incarnation: #479778;
+ --height-museum-tree-viewport: 70vh;
+ --font-size-tree-name: 13px;
+ --font-size-tree-meta: 11px;
+ --width-tree-edge: 2.4px;
+ --width-tree-node: 1.7px;
+ --width-tree-presence: 3px;
+}
