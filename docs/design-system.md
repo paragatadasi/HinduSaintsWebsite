@@ -316,3 +316,11 @@ Section proposal overview and detail layouts are shared by SPN and Vrindavan thr
 readers/actions separate from the shared visual hierarchy. Vrindavan reuses the
 section sequence as a discussion starting point, without claiming SPN bridge
 evidence or reference tree exports describe its own inventory.
+
+Live museum relationship diagrams use shared `MuseumLiveTrees` / `MuseumLiveTreeDiagram`,
+`TREE_GEOMETRY`, and tree color/type tokens. Preserve the original SVG section for
+comparison during preview. Lineage color belongs to edges; museum evidence belongs
+to labeled node outlines/badges. Never reuse a lineage color to imply relic presence.
+Use fit/zoom, an internally scrolling viewport, keyboard-activatable nodes, and an
+alternative text list. Keep evidence and secondary shortcuts inspectable. Layout
+changes must preserve the regression cases in `museum-tree-layout.test.ts`.

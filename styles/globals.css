@@ -11274,3 +11274,30 @@ button.museum-search-result { text-align: start; font: inherit; cursor: pointer;
 .museum-source-note { white-space: pre-wrap; }
 
 .museum-source-inventory-card__heading strong { font-family: var(--font-serif); font-size: var(--font-size-museum-card-title); font-weight: normal; }
+
+.museum-live-tree-panel { margin-top: var(--space-4); }
+.museum-live-tree-panel > summary { cursor: pointer; margin-bottom: var(--space-4); }
+.museum-live-tree-viewport { overflow: auto; max-height: var(--height-museum-tree-viewport); border: 1px solid var(--color-border); background: var(--color-bg); }
+.museum-live-tree { display: block; max-width: none; }
+.museum-tree-lineage-0 { --tree-lineage: var(--color-tree-lineage-0); }
+.museum-tree-lineage-1 { --tree-lineage: var(--color-tree-lineage-1); }
+.museum-tree-lineage-2 { --tree-lineage: var(--color-tree-lineage-2); }
+.museum-tree-lineage-3 { --tree-lineage: var(--color-tree-lineage-3); }
+.museum-tree-lineage-4 { --tree-lineage: var(--color-tree-lineage-4); }
+.museum-tree-lineage-5 { --tree-lineage: var(--color-tree-lineage-5); }
+.museum-live-tree marker path { fill: var(--tree-lineage); }
+.museum-tree-edge { fill: none; stroke: var(--tree-lineage); stroke-width: var(--width-tree-edge); }
+.museum-tree-edge--uncertain { stroke-dasharray: 7 5; }
+.museum-tree-edge--partner { stroke: var(--color-tree-partner); stroke-dasharray: 8 6; }
+.museum-tree-edge--incarnation { stroke: var(--color-tree-incarnation); stroke-dasharray: 3 7; }
+.museum-tree-node { cursor: pointer; }
+.museum-tree-node rect { fill: var(--color-surface); stroke: var(--color-border); stroke-width: var(--width-tree-node); rx: var(--radius-sm); }
+.museum-tree-node--location rect { stroke: var(--color-accent); stroke-width: var(--width-tree-presence); }
+.museum-tree-node--catalogue rect, .museum-tree-node--source rect { stroke: var(--color-accent); }
+.museum-tree-node--source rect { stroke-dasharray: 6 3; }
+.museum-tree-node--none rect { stroke-dasharray: 2 4; }
+.museum-tree-node:focus rect, .museum-tree-node:hover rect { stroke: var(--color-interactive-border); stroke-width: var(--width-tree-presence); }
+.museum-tree-name { fill: var(--color-text); font: var(--font-size-tree-name) var(--font-sans); }
+.museum-tree-meta { fill: var(--color-muted); font: var(--font-size-tree-meta) var(--font-sans); }
+.museum-tree-badge { fill: var(--color-accent); font: var(--font-size-tree-meta) var(--font-sans); }
+.museum-tree-node--none .museum-tree-badge { fill: var(--color-muted); }

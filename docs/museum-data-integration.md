@@ -851,3 +851,48 @@ are not copied as evidence for Vrindavan. Inventory coverage and source caveats
 remain expandable; reviewed identities do not imply verified individual relics.
 
 The remaining Vrindavan identity phase uses read-only current review batches and the protected review-export download. See the Remaining identity reconciliation checkpoint in museum-data-status.md. The exported JSON is research input, never an inventory upload or automatic decision manifest. Existing protected decision/revision checks remain the sole write path.
+
+## Live relationship tree comparison (preview)
+
+Both working section pages now offer a separate **Live relationship trees** panel.
+The original protected SVG exports and their existing section remain unchanged.
+Choose a family or individual seed and explicitly load/refresh its tree. This is
+read-only; changing display membership never changes historical relationships.
+
+The shared renderer uses `SaintRelationship` edges, not family CSV membership as
+proof of a relationship. It normalizes reciprocal guru/disciple and partner claims,
+preserving review/evidence/confidence on each underlying claim. Published edges
+are the default; non-archived pending edges are opt-in. Archived saints/edges are
+excluded. Guru arrows run teacher to disciple (database `guru` points the other
+way). Only guru/disciple, partner/husband/wife and incarnation edges expand this
+first graph; loose associations do not merge families.
+
+Layout follows the recorded principles in
+[the cleanup workstream](airtable-saints-cleanup-workstream.md): hierarchy before
+chronology, adjacent partner pairs with secondary guru links, inspectable transitive
+shortcuts, consistent root colors, parent-ordered branches, outer routes for long
+edges, and date hints for late root disciples. Direction cycles are flagged and
+retained as secondary edges rather than forcing unbounded recursion. Contradictory
+partner/generation constraints preserve the generation path. Node names have full
+accessible labels and an alternative list; click/keyboard opens biography context.
+
+Museum evidence is separate from layout: current recorded location, collection
+catalogue record, linked source inventory, or not recorded here. These labels do
+not assert inventory completeness or actual absence. SPN source vitrines retain
+strict reviewed-identity matching; Vrindavan uses its existing inventory reader.
+The same graph inputs produce the same geometry in either museum.
+
+The protected POST `/api/admin/museum/relationship-tree` requires active museum and
+full-catalogue access, validates at most 60 seed IDs, and returns private/no-store,
+noindexed responses. Each read follows up to five hops, 120 saints and 500 edges;
+truncated views are explicit. No data is fetched until requested. Refresh picks up
+current corrections; this preview uses no persistent graph cache. Broader graphs,
+separate loading of biography media and revision-keyed layout caching can follow
+profiling. Different seed sets in a large bounded graph can produce different
+subgraphs; this is not yet a canonical global family graph browser.
+
+Checks: eight layout invariants, guarded disposable-PostgreSQL integration for
+live corrections/review filters/archive exclusion/read-only behavior, local
+unauthenticated API rejection, and synthetic desktop/mobile diagram interaction.
+The preview fixture is not shipped. Production graph coverage still depends on
+reviewed canonical links; old exports may contain relationships not yet reviewed.
