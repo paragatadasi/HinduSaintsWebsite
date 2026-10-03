@@ -10,7 +10,7 @@ import { MuseumSaintProfile } from "@/components/admin/museum-saint-profile";
 import type { MuseumSaintProfile as SaintProfile } from "@/lib/museum-saint-profile";
 import { formatSaintDate } from "@/lib/public-date-format";
 
-export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectionSlug,canManage=false,canEditRelationships=false}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement;moveControl?: ReactNode;profile?: SaintProfile;sectionSlug: string;canManage?:boolean;canEditRelationships?:boolean}) {
+export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectionSlug,canManage=false,canEditRelationships=false,readOnly=false,sectionHref,inventoryHref}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement;moveControl?: ReactNode;profile?: SaintProfile;sectionSlug: string;canManage?:boolean;canEditRelationships?:boolean;readOnly?:boolean;sectionHref?:string;inventoryHref?:string}) {
   const titleId = useId();
   const fallback: SaintProfile = {
     name: row.name, description: "", images: [],
@@ -37,7 +37,7 @@ export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectio
       <section className="museum-saint-review-section">
         <h3>Museum placement</h3>
         <dl className="museum-saint-data museum-saint-data--flat">
-          <DataItem label="Section" value={<Link href={`/museumadmin/${sectionSlug}` as Route}>{row.section}</Link>} />
+          <DataItem label="Section" value={<Link href={(sectionHref || `/museumadmin/${sectionSlug}`) as Route}>{row.section}</Link>} />
           {row.collectionItems?.map(item => <DataItem key={item.id} label={item.label} value={item.location ? item.location.museumName + ": " + item.location.label : item.catalogMuseum.name + ": location unknown"} />)}
           {row.sourceVitrine && !row.collectionItems?.length ? <DataItem label="SPN vitrine (source record)" value={row.sourceVitrine.vitrine + (row.sourceVitrine.shelf ? " / Shelf " + row.sourceVitrine.shelf : "")} /> : null}
           <DataItem label="Placement status" value={row.arrangement?.status || "Proposed"} />
@@ -48,13 +48,14 @@ export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectio
           <DataItem label="Confidence" value={row.confidence} />
         </dl>
         <div className="review-actions">
-          {row.collectionItems?.map(item => <Link key={item.id} className="museum-admin-button" href={`/museumadmin/collections/${item.id}` as Route}>Plan move: {item.label}</Link>)}
-          {row.saintId ? <Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>{"Edit proposal"}</Link> : <p>This proposal needs a saint link before planning. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.sourceRecordId || row.id)}`}>Review source link</Link></p>}
+          {inventoryHref?<Link className="museum-admin-button" href={inventoryHref as Route}>View relics and source locations</Link>:null}
+          {!readOnly && row.collectionItems?.map(item => <Link key={item.id} className="museum-admin-button" href={`/museumadmin/collections/${item.id}` as Route}>Plan move: {item.label}</Link>)}
+          {!readOnly ? row.saintId ? <Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>{"Edit proposal"}</Link> : <p>This proposal needs a saint link before planning. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.sourceRecordId || row.id)}`}>Review source link</Link></p>:null}
           {moveControl}
         </div>
       </section>
-      {canManage?<MuseumArrangementEditor row={row}/>:null}
-      {canManage?<MuseumDisplayMembershipEditor row={row} canEditRelationships={canEditRelationships}/>:null}
+      {canManage&&!readOnly?<MuseumArrangementEditor row={row}/>:null}
+      {canManage&&!readOnly?<MuseumDisplayMembershipEditor row={row} canEditRelationships={canEditRelationships}/>:null}
       <details className="museum-saint-review-section" open={row.needsResearch || undefined}>
         <summary>Proposal notes and source details</summary>
         <dl className="museum-saint-data museum-saint-data--flat">
