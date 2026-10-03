@@ -44,12 +44,12 @@ export default async function MuseumAdminLayout({ children }: { children: React.
       <div className="museum-admin-layout">
         <aside className="museum-admin-nav">
           <Link className="museum-admin-nav__home" href="/museumadmin">
-            <strong>Museum Admin</strong>
-            <span>Section proposals</span>
+            <strong>SPN Museum</strong>
+            <span>Shree Peetha Nilaya</span>
           </Link>
           <div className="museum-admin-nav__group-links">
             <Link href="/museumadmin/review">Placement review</Link>
-            <Link href={"/museumadmin/collections" as Route}>Relics and planned moves</Link>
+            <Link href={"/museumadmin/collections" as Route}>Moves and relics</Link>
             <Link href="/admin">Main admin</Link>
             <Link href="/">Public site</Link>
           </div>

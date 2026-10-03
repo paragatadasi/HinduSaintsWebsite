@@ -8175,7 +8175,7 @@ fieldset.admin-field {
 
 .museum-family-card li::before {
   color: var(--color-gold);
-  content: "â€¢";
+  content: none;
   line-height: inherit;
 }
 
@@ -8311,7 +8311,7 @@ fieldset.admin-field {
 }
 
 .museum-tertiary-grid {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--width-museum-supporting-card-min)), 1fr));
 }
 
 .museum-location-groups {
@@ -11245,3 +11245,17 @@ select:not([multiple]) {
 
 /* Search result cards share the same surface for links and dialog buttons. */
 button.museum-search-result { text-align: start; font: inherit; cursor: pointer; width: 100%; }
+
+/* Curator card identity and quiet review signals. */
+.museum-family-card li { grid-template-columns: minmax(0, 1fr); }
+.museum-saint-summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2); width: 100%; align-items: start; }
+.museum-saint-summary .museum-placement-status { grid-column: 1 / -1; justify-self: end; color: var(--color-muted); font-weight: normal; }
+.museum-research-indicator { position: relative; z-index: 2; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: 0; color: var(--color-accent); cursor: pointer; padding: var(--space-1); }
+.museum-research-indicator:focus-visible { outline: var(--border-width-default) solid var(--color-accent); outline-offset: var(--space-1); }
+.museum-research-note { color: var(--color-muted); border-left: var(--border-width-default) solid var(--color-accent); padding-left: var(--space-3); }
+.museum-tertiary-card,
+.museum-family-card--standalone-primary { display: flex; flex-direction: column; }
+.museum-family-card--standalone-primary .museum-family-card__header > div { width: 100%; }
+
+.museum-card-status { align-self: end; justify-self: end; margin-top: auto; color: var(--color-muted); font-weight: normal; }
+.museum-tertiary-card .museum-card-status { color: var(--color-muted); font-weight: normal; }

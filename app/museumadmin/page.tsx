@@ -36,8 +36,8 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
     <div className="museum-admin museum-admin--index">
       <section className="museum-admin-hero museum-admin-hero--index">
         <div>
-          <div className="eyebrow">Museum Admin</div>
-          <h1>Museum section proposals</h1>
+          <div className="eyebrow">SPN Museum</div>
+          <h1>Section proposals</h1>
           <p>
             Browse current saint details and confirmed placements, with existing proposals retained wherever placement has not been confirmed. Open a saint to review its placement.
           </p>
