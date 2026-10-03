@@ -493,7 +493,7 @@ Label locations as source-reported; identity confirmation does not verify a
 physical move or resolve contradictory movement evidence. Source-only entries
 must stay separate from implemented object-level placements and SPN inventory.
 
-Verification: nine focused domain/reader tests cover field preservation, museum
+Verification: ten focused domain/reader tests cover field preservation, museum
 scope, identity gating, missing targets, unknown locations, source key/row
 consistency, location-code collisions, snapshot isolation, draft retention and
 pending-snapshot behavior; npm run dev:check and prepare:deployment passed.
@@ -501,3 +501,4 @@ This checkpoint changes no schema, environment, dependency, public route or UI.
 Next: UX pilot over this reader, then museum-scoped section proposals for linked
 saints. Object identities/splits and physical placement verification remain a
 separate inventory checkpoint; the 171 uncertain identity rows remain deferred.
+Latest-per-sourceKey observations supersede earlier decisions before projection and counts. A MuseumInventoryUnavailableError distinguishes an unavailable museum from general database failures for the protected UX.

@@ -2,6 +2,8 @@ import {db} from "@/lib/db";
 import type {Prisma} from "@/lib/generated/prisma/client";
 import {projectVrindavanInventoryEntry} from "./museum-source-inventory-domain";
 
+export class MuseumInventoryUnavailableError extends Error {}
+
 // PRIVATE server reader, never public content. Caller must enforce access_museum.
 // This consumes existing reviewed observations; it creates no inventory or placements.
 export async function readVrindavanMuseumInventory(
@@ -9,11 +11,15 @@ export async function readVrindavanMuseumInventory(
 ) {
   if (options.snapshotHash && !/^[a-f0-9]{64}$/.test(options.snapshotHash)) throw Error("Invalid inventory snapshot");
   const museum = await client.museum.findFirst({where:{id:"museum-vrindavan",archivedAt:null},select:{id:true,name:true,slug:true}});
-  if (!museum) throw Error("Vrindavan museum unavailable");
-  const observations = await client.museumCollectionImport.findMany({
+  if (!museum) throw new MuseumInventoryUnavailableError("Vrindavan museum unavailable");
+  const history = await client.museumCollectionImport.findMany({
     where:{museumId:museum.id,sourceKey:{startsWith:"vrindavan-workbook:"}},
     orderBy:[{observedAt:"desc"},{id:"desc"}]
   });
+  // Query order is newest first; later observations supersede earlier decisions.
+  const latest = new Map<string, (typeof history)[number]>();
+  for (const row of history) if (!latest.has(row.sourceKey)) latest.set(row.sourceKey,row);
+  const observations = [...latest.values()];
   const snapshots = [...new Set(observations.map(row => /^vrindavan-workbook:([a-f0-9]{64}):Sheet1:/.exec(row.sourceKey)?.[1]).filter((hash):hash is string => !!hash))];
   const snapshotHash = options.snapshotHash ?? snapshots[0] ?? null;
   if (options.snapshotHash && !snapshots.includes(options.snapshotHash)) throw Error("Inventory snapshot unavailable");

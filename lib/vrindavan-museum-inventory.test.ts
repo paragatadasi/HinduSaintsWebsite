@@ -25,3 +25,7 @@ test("unknown or invalid snapshots fail rather than showing another inventory",a
  await assert.rejects(readVrindavanMuseumInventory({snapshotHash:"invalid"},client([])));
  await assert.rejects(readVrindavanMuseumInventory({snapshotHash:older},client([observation("new",hash)])));
 });
+test("latest source observation supersedes an earlier confirmed decision",async()=>{
+ const result=await readVrindavanMuseumInventory({},client([observation("new",hash,"deferred"),observation("old",hash)]));
+ assert.equal(result.entries.length,0);assert.equal(result.counts.sourceRows,1);assert.equal(result.counts.awaitingIdentityReview,1);
+});
