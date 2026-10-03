@@ -588,8 +588,8 @@ Verification: three pure override tests, disposable-database correction regressi
 (primary locality, retained deity context, untouched other places, no inventory or
 confirmed assignments, idempotent replay preserving later edits), dev:check and
 codex:verify. No schema, migration, environment or dependency changes. Production
-application and exact Excel creation still require authenticated production
-execution/export; no production write is implied by feature deployment.
+application and an exact production shortlist still require authenticated execution/export. The workspace 84-saint Excel was subsequently delivered at the user's request. No production write is implied by feature deployment.
+
 ## Consolidated status and remaining work
 
 See [museum-data-status.md](museum-data-status.md) for the October 3 checkpoint record, user-approved corrections, production actions still pending, the workspace 84-saint QR shortlist provenance, and the remaining phased backlog. Deployment is tracked by the release captain; code preparation does not imply production data application.
