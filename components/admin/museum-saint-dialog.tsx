@@ -1,17 +1,15 @@
 "use client";
 import Link from "next/link";
 import type { Route } from "next";
-import { useEffect, useId, useRef, type ReactNode } from "react";
-import { X } from "lucide-react";
+import { useId, type ReactNode } from "react";
+import {MuseumDetailDialog} from "@/components/admin/museum-detail-dialog";
 import type { MuseumSaintPlacement } from "@/lib/museum-proposals";
 import { MuseumSaintProfile } from "@/components/admin/museum-saint-profile";
 import type { MuseumSaintProfile as SaintProfile } from "@/lib/museum-saint-profile";
 import { formatSaintDate } from "@/lib/public-date-format";
 
 export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectionSlug}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement;moveControl?: ReactNode;profile?: SaintProfile;sectionSlug: string}) {
-  const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
-  useEffect(() => { dialog.current?.showModal(); }, []);
   const fallback: SaintProfile = {
     name: row.name, description: "", images: [],
     facts: [
@@ -27,11 +25,7 @@ export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectio
     ["Incarnation", member?.Incarnation], ["Other relationships", member?.["Other relationships"]]
   ].filter((entry): entry is [string, string] => Boolean(entry[1]));
   return (
-    <dialog ref={dialog} className="museum-modal museum-modal--profile" aria-labelledby={titleId} onClose={onClose}>
-      <div className="museum-modal__header">
-        <div className="museum-admin-kicker">Saint overview</div>
-        <button aria-label="Close saint overview" className="museum-icon-button" onClick={() => dialog.current?.close()} type="button"><X aria-hidden="true" size={18} /></button>
-      </div>
+    <MuseumDetailDialog titleId={titleId} kicker="Saint overview" closeLabel="Close saint overview" onClose={onClose}>
       <MuseumSaintProfile profile={profile || fallback} titleId={titleId} />
       {row.needsResearch ? <p className="museum-research-note">Needs research. Review the proposal notes and source details below before planning this placement.</p> : null}
       {relationships.length ? <section className="museum-saint-review-section">
@@ -68,7 +62,7 @@ export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectio
           <DataItem label="Review signal" value={row.needsResearch ? "Needs more research or cleanup review" : ""} wide />
         </dl>
       </details>
-    </dialog>
+    </MuseumDetailDialog>
   );
 }
 

@@ -1,52 +1,20 @@
 import Link from "next/link";
-import type { Route, Metadata } from "next";
-import { auth, isEmailAuthConfigured, isGoogleAuthConfigured } from "@/lib/auth";
-import { museumFlowZones } from "@/lib/museum-layout-groups";
-import { getMuseumData } from "@/lib/museum-data";
-import { requireCapability } from "@/lib/admin-access";
-import { AdminSignIn } from "@/components/admin/admin-sign-in";
-
-export const dynamic = "force-dynamic";
-
-export const metadata: Metadata = {
-  robots: {
-    index: false,
-    follow: false
-  }
-};
-
-export default async function MuseumAdminLayout({ children }: { children: React.ReactNode }) {
-  const session = await auth();
-
-  if (!session?.user?.email) {
-    return (
-      <AdminSignIn
-        emailConfigured={isEmailAuthConfigured}
-        googleConfigured={isGoogleAuthConfigured}
-        configurationDescription="Authentication must be configured before the museum admin can sign in approved users."
-        description="Use your approved team email to review museum section proposals."
-        redirectTo="/museumadmin"
-        workspaceLabel="Museum Admin"
-        workspaceSubtitle="Section proposals"
-      />
-    );
-  }
-
-  await requireCapability("access_museum");
-
+import type {Route,Metadata} from "next";
+import {museumFlowZones} from "@/lib/museum-layout-groups";
+import {getMuseumData} from "@/lib/museum-data";
+import {MuseumWorkspace} from "@/components/admin/museum-workspace";
+export const dynamic="force-dynamic";
+export const metadata:Metadata={robots:{index:false,follow:false}};
+export default function MuseumAdminLayout({children}:{children:React.ReactNode}) {
+ return <MuseumWorkspace name="SPN Museum" subtitle="Shree Peetha Nilaya" homeHref="/museumadmin" loadNavigation={navigation}>{children}</MuseumWorkspace>;
+}
+async function navigation() {
   const { sections } = await getMuseumData();
   const sectionByName = new Map(sections.map((section) => [section.name, section]));
   const groupedSectionNames = new Set<string>(museumFlowZones.flatMap((zone) => [...zone.sections]));
   const ungroupedSections = sections.filter((section) => !groupedSectionNames.has(section.name));
 
-  return (
-    <main className="museum-admin-shell" data-theme="nocturne">
-      <div className="museum-admin-layout">
-        <aside className="museum-admin-nav">
-          <Link className="museum-admin-nav__home" href="/museumadmin">
-            <strong>SPN Museum</strong>
-            <span>Shree Peetha Nilaya</span>
-          </Link>
+  return <>
           <div className="museum-admin-nav__group-links">
             <Link href="/museumadmin/review">Placement review</Link>
             <Link href={"/museumadmin/locations" as Route}>Vitrines and shelves</Link>
@@ -99,9 +67,5 @@ export default async function MuseumAdminLayout({ children }: { children: React.
               </section>
             ) : null}
           </nav>
-        </aside>
-        <section className="museum-admin-content">{children}</section>
-      </div>
-    </main>
-  );
+  </>;
 }
