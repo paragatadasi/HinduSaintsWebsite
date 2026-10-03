@@ -17,3 +17,12 @@ export const arrangementInput=z.object({placementId:z.string().min(1).max(200),r
  if(v.shelf&&!v.vitrine)c.addIssue({code:"custom",path:["shelf"],message:"Enter the vitrine for this shelf."});
  if(v.status==="Implemented"&&(v.physicalConfirmation!=="yes"||v.inventoryAcknowledged!=="yes"))c.addIssue({code:"custom",path:["physicalConfirmation"],message:"Confirm the physical arrangement and acknowledge that inventory completeness has not been verified."});
 });
+
+export type FamilyArrangementControl={members:{id:string;name:string;section:string}[];revision:string;count:number;eligible:boolean;status:ArrangementStatus|"Mixed";vitrine:string;shelf:string};
+export function familyArrangementControl(rows:MuseumSaintPlacement[]):FamilyArrangementControl {
+ const sorted=[...rows].sort((a,b)=>a.id.localeCompare(b.id));
+ const same=(field:"status"|"vitrine"|"shelf")=>new Set(sorted.map(r=>r.arrangement?.[field]|| (field==="status"?"Proposed":"")));
+ const statuses=same("status"),vitrines=same("vitrine"),shelves=same("shelf");
+ return {members:sorted.map(r=>({id:r.id,name:r.name,section:r.section})),revision:digest(sorted.map(r=>[r.id,r.arrangement?.revision])),count:rows.length,eligible:rows.length>0&&rows.every(r=>r.saintId&&r.arrangement&&!r.placementState?.startsWith("Conflicting")),
+ status:statuses.size===1?[...statuses][0] as ArrangementStatus:"Mixed",vitrine:vitrines.size===1?[...vitrines][0]:"",shelf:shelves.size===1?[...shelves][0]:""};
+}
