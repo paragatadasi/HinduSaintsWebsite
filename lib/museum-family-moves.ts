@@ -1,3 +1,5 @@
+import {readReviewedMuseumDecisions} from "./reviewed-museum-corrections";
+import {applyReviewedMuseumProposal} from "./reviewed-museum-correction-domain";
 import { db } from "@/lib/db";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { getMuseumProposalData, museumSectionSlug } from "@/lib/museum-proposals";
@@ -10,6 +12,7 @@ import { airtableIdentity } from "@/lib/museum-domain";
 
 export async function getEditableMuseumProposalData(client: Prisma.TransactionClient = db) {
   const original=getMuseumProposalData();
+  const decisions=await readReviewedMuseumDecisions(client);
   const [moves,saints,links,membership]=await Promise.all([
    client.museumFamilyProposalMove.findMany(),
    client.saint.findMany({where:{status:{not:"archived"}},select:{id:true,places:{where:{placeType:"primary"},select:{placeId:true}},visitPlaces:{orderBy:{acceptedAt:"desc"},select:{locality:true,region:true,country:true,localityPlaceId:true}},museumSectionAssignments:{where:{status:"published"},select:{id:true}}}}),
@@ -22,6 +25,8 @@ export async function getEditableMuseumProposalData(client: Prisma.TransactionCl
    const resolved=resolveSnapshotIdentity(row.id,links,active);
    const saint=resolved.record?.entityId?bySaint.get(resolved.record.entityId):null;
    const visit=saint?.visitPlaces.find(v=>v.localityPlaceId&&saint.places.some(p=>p.placeId===v.localityPlaceId))??null;
+   const decision=decisions.find(d=>d.saintId===saint?.id);
+   if(decision?.section)return applyReviewedMuseumProposal(row,decision);
    return applyAcceptedLocalityProposal(row,saint?.museumSectionAssignments.length?null:visit,Boolean(row.displayMembership?.detached) || moves.some(m=>m.familyKey===proposalFamilyKey(row)));
   });
   const labels=new Map(editable.sections.flatMap(s=>s.families.map(f=>[f.key,f.label] as const)));

@@ -550,3 +550,43 @@ requests enter the existing reconciliation queue and are audited. Duplicate
 open requests with identical text are reused. Users with structured editorial
 capability also get a link to the existing relationship editor. Curator access
 does not grant public-content editing rights.
+
+## Apply the October 3 reviewed corrections
+
+The one-time applyReviewedMuseumCorrections operation is explicit and audited;
+no build, render or routine source refresh invokes it. Protected Source Data
+page /admin/source-data/museum/reviewed-corrections applies the approved batch
+with one button, requiring reconciliation, structured editing and full-catalogue
+capabilities. Canonical IDs and slugs must match the three reviewed saints;
+missing/archived/mismatched identities or ambiguous localities abort the entire
+transaction. It is not a bulk name-based correction.
+
+Madhu Pandit's website primary place becomes Vrindavan with Vamshi Vat associated;
+old Jaipur association is retained with deity-context notes. Haridas and Somappar
+website places are unchanged. No coordinates, accepted visit destinations,
+saint publication, historical families or physical placements are invented.
+Manual-review ExternalRecords preserve all three decisions and a batch marker;
+repeat application is a no-op preserving later human edits. Audit records retain
+Madhu's before/after places and direct user-decision provenance.
+
+Reviewed Gaudiya overrides are consumed by SPN editable proposal projection and
+therefore inherited by the Vrindavan proposal reader. They preserve tier and
+actual inventory and do not overwrite confirmed museum assignments. Somappar's
+Mayapur source error is recorded as sourcePlaceError evidence, not erased from
+the workbook or promoted to website geography. Future review UX should expose
+that decision beside the raw source place.
+
+Current authenticated public-profile shortlist export is
+/admin/source-data/museum/vrindavan/qr-shortlist. It selects published canonical
+saints from the current confirmed Vrindavan inventory only, groups their linked
+entries by saint, and includes real biography URLs. This private JSON is the
+input to the requested Excel QR selection workbook; never approximate the live
+278 confirmations with the older local website baseline. No museum metadata is
+exposed publicly by this export.
+
+Verification: three pure override tests, disposable-database correction regression
+(primary locality, retained deity context, untouched other places, no inventory or
+confirmed assignments, idempotent replay preserving later edits), dev:check and
+codex:verify. No schema, migration, environment or dependency changes. Production
+application and exact Excel creation still require authenticated production
+execution/export; no production write is implied by feature deployment.
