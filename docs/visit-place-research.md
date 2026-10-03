@@ -127,3 +127,5 @@ conflict and uncertain evidence in review. Next work includes independently
 reviewed coordinates/directions, association-specific removal of disproved
 catalog links, and later accepted-destination corrections. Vrindavan waits until
 this SPN/public-data checkpoint has been tested.
+
+The acceptance batch includes a Current location filter: No primary place selects linked saints without a primary SaintPlace association; No place associations selects linked saints without any SaintPlace records. Unresolved saint identities are excluded from these missing-location subsets. This combines with confidence/status/search filters before the 300-proposal preview limit, so Select all eligible operates on the displayed subset. Existing revision checks, duplicate-saint blocks and acceptance confirmation remain in force.

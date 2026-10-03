@@ -836,3 +836,16 @@ No production write is implied by feature deployment.
 See [museum-data-status.md](museum-data-status.md) for the October 3 checkpoint record, user-approved corrections, production actions still pending, the workspace 84-saint QR shortlist provenance, and the remaining phased backlog. Deployment is tracked by the release captain; code preparation does not imply production data application.
 
 The inventory readiness reader in lib/vrindavan-inventory-readiness.ts is a private, read-only projection over existing confirmed observations. It preserves quantity/location text and supplies explicit object, quantity, identity, location and source-note review reasons. Applied manual geography decisions are included per canonical saint; raw erroneous geography remains intact. The protected JSON export is /admin/source-data/museum/vrindavan/inventory-audit. No schema, environment, object creation, physical verification or production backfill is introduced.
+## Shared section proposal UX
+
+SPN and Vrindavan now compose the same overview and section workspace components.
+Vrindavan retains `/vrindavanadmin/sections?section=<slug>` links, including empty
+sections, and uses the shared family/primary/secondary/tertiary card hierarchy,
+location grouping, research filter, counts and biography-first dialogs. Its own
+proposal and arrangement actions remain museum-scoped. Overview search opens
+saint dialogs; no full inventory list is rendered below the overview by default.
+
+The thematic visitor sequence is a starting suggestion for Vrindavan, not a
+confirmed physical route. SPN bridge examples and static relationship-tree exports
+are not copied as evidence for Vrindavan. Inventory coverage and source caveats
+remain expandable; reviewed identities do not imply verified individual relics.
