@@ -10,7 +10,7 @@ import { MuseumSaintProfile } from "@/components/admin/museum-saint-profile";
 import type { MuseumSaintProfile as SaintProfile } from "@/lib/museum-saint-profile";
 import { formatSaintDate } from "@/lib/public-date-format";
 
-export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectionSlug,canManage=false,canEditRelationships=false,readOnly=false,sectionHref,inventoryHref}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement;moveControl?: ReactNode;profile?: SaintProfile;sectionSlug: string;canManage?:boolean;canEditRelationships?:boolean;readOnly?:boolean;sectionHref?:string;inventoryHref?:string}) {
+export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectionSlug,canManage=false,canEditRelationships=false,readOnly=false,sectionHref,inventoryHref,extraControls}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement;moveControl?: ReactNode;profile?: SaintProfile;sectionSlug: string;canManage?:boolean;canEditRelationships?:boolean;readOnly?:boolean;sectionHref?:string;inventoryHref?:string;extraControls?:ReactNode}) {
   const titleId = useId();
   const fallback: SaintProfile = {
     name: row.name, description: "", images: [],
@@ -54,6 +54,7 @@ export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectio
           {moveControl}
         </div>
       </section>
+      {extraControls}
       {canManage&&!readOnly?<MuseumArrangementEditor row={row}/>:null}
       {canManage&&!readOnly?<MuseumDisplayMembershipEditor row={row} canEditRelationships={canEditRelationships}/>:null}
       <details className="museum-saint-review-section" open={row.needsResearch || undefined}>
