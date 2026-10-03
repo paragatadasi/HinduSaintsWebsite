@@ -16,9 +16,20 @@ Open Source Data → Airtable → Review imported saint drafts. All imports is t
 default. Choose the affected run to narrow by ExternalRecord.importedAt, then
 compare suspected duplicates with the established profiles. Legacy runs did not
 persist a list of created IDs; overlapping runs can share timestamp candidates.
+Recorded slug-repair entries also identify legacy detailed-slug candidates, even
+when their import timestamps do not fit the run window. Future jobs save explicit
+rawPayloadJson.importJobId attribution on successfully linked imports, selected
+using draftTrackingVersion in the job summary. Failed rows may leave partially
+created drafts without attribution and still require individual inspection.
 The list identifies this importer through preserved rawPayloadJson.importedBy,
 and respects saint catalog visibility. Include reviewed and archived imports
 to inspect prior imports after their status changes.
+
+Each missing-draft or slug-repair job in Airtable job history has a View imported
+drafts link. Authorized reviewers can archive selections; users with sensitive
+action authority can also permanently delete selections using the existing
+password and confirmation controls. Delete clears external linkage and may allow
+recreation on a future import, so archive is the preferred recovery action.
 
 Select only confirmed duplicates and Archive. This is reversible through the
 existing Saint publication controls and keeps raw source values. It is not a

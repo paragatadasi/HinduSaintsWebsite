@@ -163,6 +163,12 @@ export function AirtableImportPanel({ defaultOpen = false, jobs: initialJobs }: 
                   <h3>{job.message ?? formatStatus(job.mode)}</h3>
                   {job.error ? <p className="admin-notice admin-notice--warning">{job.error}</p> : null}
                   <JobCountSummary job={job} />
+                  {job.mode === "import_missing_drafts" || job.mode === "repair_slug_collisions" ? (
+                    <Link className="admin-form-button admin-form-button--secondary"
+                      href={`/admin/saints/imported?job=${encodeURIComponent(job.id)}` as Route}>
+                      View imported drafts
+                    </Link>
+                  ) : null}
                   <AffectedRecordDetails job={job} />
                 </div>
                 <div className="review-meta">

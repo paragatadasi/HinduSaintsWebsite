@@ -24,6 +24,7 @@ type Attachment = {
 };
 
 type ImportPlan = {
+  importJobId?: string;
   recordId: string;
   externalId: string;
   originalName: string;
@@ -170,6 +171,7 @@ export type AirtableCleanupIssueDetail = {
 export type AirtableImportMode = "check" | "import_missing_drafts" | "repair_slug_collisions" | "import_airtable_cleanup";
 
 export type AirtableSaintImportSummary = {
+  draftTrackingVersion?: number;
   mode: "check" | "import_missing_drafts" | "repair_slug_collisions";
   mirrorRowsChecked: number;
   existingCmsSaintsSkipped: number;
@@ -203,6 +205,7 @@ export type AirtableCleanupImportSummary = {
 };
 
 export type AirtableSaintImportOptions = {
+  importJobId?: string;
   dryRun?: boolean;
   limit?: number;
 };
@@ -246,6 +249,7 @@ export async function createAirtableImportJob({
       status: "queued",
       sourceName: "Airtable mirror",
       createdByEmail: createdByEmail ?? undefined,
+      rawSummary: { draftTrackingVersion: 1 },
       message: `Queued ${formatMode(mode)}.`
     }
   });
@@ -270,7 +274,7 @@ export async function runAirtableImportJob(jobId: string) {
     }
 
     if (job.mode === "repair_slug_collisions") {
-      const summary = await runAirtableSlugCollisionRepair({ dryRun: false });
+      const summary = await runAirtableSlugCollisionRepair({ dryRun: false, importJobId: jobId });
       await completeAirtableJob(jobId, summary);
       return;
     }
@@ -280,7 +284,8 @@ export async function runAirtableImportJob(jobId: string) {
     }
 
     const summary = await runAirtableSaintsMissingDraftImport({
-      dryRun: job.mode !== "import_missing_drafts"
+      dryRun: job.mode !== "import_missing_drafts",
+      importJobId: jobId
     });
     await completeAirtableJob(jobId, summary);
   } catch (error) {
@@ -299,8 +304,10 @@ export async function runAirtableSaintsMissingDraftImport(options: AirtableSaint
   const rows = await findAirtableSaintRows(options.limit);
   const plans = rows.map(buildPlan).filter((plan): plan is ImportPlan => Boolean(plan));
   const summary = emptySaintImportSummary(dryRun ? "check" : "import_missing_drafts", rows.length);
+  if (options.importJobId) summary.draftTrackingVersion = 1;
 
   for (const plan of plans) {
+    plan.importJobId = options.importJobId;
     try {
       const result = dryRun ? await classifyMissingDraftPlan(plan) : await importMissingDraftPlan(plan);
       addImportResult(summary, result, plan);
@@ -317,8 +324,10 @@ export async function runAirtableSlugCollisionRepair(options: AirtableSaintImpor
   const rows = await findAirtableSaintRows(options.limit);
   const plans = rows.map(buildPlan).filter((plan): plan is ImportPlan => Boolean(plan));
   const summary = emptySaintImportSummary("repair_slug_collisions", rows.length);
+  if (options.importJobId) summary.draftTrackingVersion = 1;
 
   for (const plan of plans) {
+    plan.importJobId = options.importJobId;
     try {
       const classification = await classifyMissingDraftPlan(plan);
       if (classification.status === "created" && classification.slugResolution === "detailed") {
@@ -652,22 +661,23 @@ async function linkExternalRecordToSaint(plan: ImportPlan, saintId: string) {
       externalId: plan.externalId,
       entityType: "Saint",
       entityId: saintId,
-      rawPayloadJson: externalPayloadForPlan(plan),
+      rawPayloadJson: externalPayloadForPlan(plan, saintId),
       importedAt: new Date(),
       lastSeenAt: new Date()
     },
     update: {
       entityType: "Saint",
       entityId: saintId,
-      rawPayloadJson: externalPayloadForPlan(plan),
+      rawPayloadJson: externalPayloadForPlan(plan, saintId),
       lastSeenAt: new Date()
     }
   });
 }
 
-function externalPayloadForPlan(plan: ImportPlan): Prisma.InputJsonValue {
+function externalPayloadForPlan(plan: ImportPlan, saintId: string): Prisma.InputJsonValue {
   return {
     importedBy: IMPORTER_SOURCE,
+    ...(plan.importJobId ? { importJobId: plan.importJobId, createdSaintId: saintId } : {}),
     recordId: plan.recordId,
     rawFieldsJson: plan.rawFieldsJson as Prisma.InputJsonValue,
     rawPayloadJson: (plan.rawPayloadJson ?? Prisma.JsonNull) as Prisma.InputJsonValue

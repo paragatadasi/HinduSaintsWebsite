@@ -60,7 +60,21 @@ writes the final deployment status back to this repository.
 
 ## Backups
 
-The backup service runs `scripts/backup-db.sh` once per day and stores SQL dumps in `backups/`. Restore with:
+The local Compose backup service runs `scripts/backup-db.sh` once per day and
+stores SQL dumps in `backups/`, with 14-day retention. This does not establish
+that production uses the same schedule or destination. Production backups must
+be located and checked using the private engineering runbook mentioned above.
+
+Before cleanup, identify the newest successful production dump and confirm its
+database and timestamp. A fresh pre-cleanup dump preserves the current state;
+a pre-import dump is useful for comparison but restoring it wholesale would
+also roll back later editorial work. Check backup job logs and the actual file,
+then test a restore into a separate disposable database. Verify the restored
+schema and representative saints/import records before treating it as recoverable.
+Never test recovery by overwriting the live database. Back up local uploads too
+if media is stored on disk.
+
+The local plain-SQL restore command is:
 
 ```powershell
 docker compose -f infra/docker-compose.yml exec -T postgres psql "$env:DATABASE_URL" < backups\saints-YYYYMMDD-HHMMSS.sql
