@@ -16,9 +16,11 @@ const cleanupFlagsPath = path.join(museumDataDir, "airtable-museum-section-clean
 export type MuseumTier = "Featured" | "Secondary" | "Tertiary";
 
 export type MuseumSaintPlacement = {
+  displayMembership?: import("./museum-display-membership-domain").DisplayMembershipControl;
   sourceVitrine?: MuseumSourceVitrine;
   collectionItems?: MuseumCollectionCardItem[];
   saintId?: string;
+  adminSaintSlug?: string;
   placementState?: "Proposed" | "Confirmed" | "Unlinked" | "Conflicting proposals" | "Conflicting placements";
   sourceRecordId?: string;
   linkIssue?: string;

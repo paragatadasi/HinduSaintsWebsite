@@ -524,3 +524,29 @@ confirmation is recorded. Such confirmation must not fabricate item records or
 item-level placements. Changing the latest proposal must invalidate its prior
 implementation status. Interactive spatial planning remains a later dedicated
 design phase after these basic workflows are piloted.
+
+
+### Display membership and relationship corrections
+
+SPN saint dialogs expose separate, expandable display-membership and historical
+relationship workflows. Removing a member preserves its current section, item
+links, physical location/history, and historical relationships. Source-family
+removals are stored as private `MuseumDisplayMembership` overrides; subsequent
+family proposal moves exclude detached members and stale move/membership forms
+are rejected. A changed source export cannot silently reattach a removed saint.
+Restoration follows the family's latest proposal; if the source family itself
+changed, restoration requires proposal review. Original CSV/SVG evidence remains
+available in the original comparison. Edited working groups do not display an
+outdated exported tree as if it represented current display membership.
+
+Canonical exhibit-group removal updates only the primary placement's group,
+uses the existing saint version lock, and clears a removed anchor. Restoration
+can restore the original anchor if another anchor has not replaced it. Neither
+operation changes museum sections or relic placements. Both operations are
+audited. The additive membership migration runs in the release migration phase.
+
+Curators can request historical relationship corrections in a separate form;
+requests enter the existing reconciliation queue and are audited. Duplicate
+open requests with identical text are reused. Users with structured editorial
+capability also get a link to the existing relationship editor. Curator access
+does not grant public-content editing rights.

@@ -10,18 +10,19 @@ import { airtableIdentity } from "@/lib/museum-domain";
 
 export async function getEditableMuseumProposalData(client: Prisma.TransactionClient = db) {
   const original=getMuseumProposalData();
-  const [moves,saints,links]=await Promise.all([
+  const [moves,saints,links,membership]=await Promise.all([
    client.museumFamilyProposalMove.findMany(),
    client.saint.findMany({where:{status:{not:"archived"}},select:{id:true,places:{where:{placeType:"primary"},select:{placeId:true}},visitPlaces:{orderBy:{acceptedAt:"desc"},select:{locality:true,region:true,country:true,localityPlaceId:true}},museumSectionAssignments:{where:{status:"published"},select:{id:true}}}}),
-   client.externalRecord.findMany({where:{sourceType:"airtable",entityType:"Saint"},select:{id:true,externalId:true,entityId:true}})
+   client.externalRecord.findMany({where:{sourceType:"airtable",entityType:"Saint"},select:{id:true,externalId:true,entityId:true}}),
+   client.museumDisplayMembership.findMany({where:{museumId:"museum-spn"}})
   ]);
-  const editable=applyFamilyProposalMoves(original,moves);
+  const editable=applyFamilyProposalMoves(original,moves,membership);
   const bySaint=new Map(saints.map(s=>[s.id,s]));const active=new Set(bySaint.keys());
   const placements=editable.placements.map(row=>{
    const resolved=resolveSnapshotIdentity(row.id,links,active);
    const saint=resolved.record?.entityId?bySaint.get(resolved.record.entityId):null;
    const visit=saint?.visitPlaces.find(v=>v.localityPlaceId&&saint.places.some(p=>p.placeId===v.localityPlaceId))??null;
-   return applyAcceptedLocalityProposal(row,saint?.museumSectionAssignments.length?null:visit,moves.some(m=>m.familyKey===proposalFamilyKey(row)));
+   return applyAcceptedLocalityProposal(row,saint?.museumSectionAssignments.length?null:visit,Boolean(row.displayMembership?.detached) || moves.some(m=>m.familyKey===proposalFamilyKey(row)));
   });
   const labels=new Map(editable.sections.flatMap(s=>s.families.map(f=>[f.key,f.label] as const)));
   const trees=new Map(editable.sections.flatMap(s=>s.families.filter(f=>f.treeFile).map(f=>[f.key,f.treeFile!] as const)));
@@ -41,10 +42,12 @@ export async function moveMuseumFamilyProposal(args: {
     // Serializes even the first move, before a row exists to lock.
     await tx.$queryRaw(Prisma.sql`SELECT true AS locked FROM pg_advisory_xact_lock(hashtextextended(${"museum-family:" + args.familyKey}, 0))`);
     const original = getMuseumProposalData();
-    const members = original.placements.filter(row => proposalFamilyKey(row) === args.familyKey);
+    const allMembership = await tx.museumDisplayMembership.findMany({where:{museumId:"museum-spn"}});
+    const membership = allMembership.filter(change=>change.familyKey===args.familyKey || original.placements.some(row=>row.id===change.placementId && proposalFamilyKey(row)===args.familyKey));
+    const members = original.placements.filter(row => proposalFamilyKey(row) === args.familyKey && !membership.some(change=>change.placementId===row.id&&change.detached));
     if (!members.length) throw new MuseumConflict("This family is no longer available. Reload the section.");
     const before = await tx.museumFamilyProposalMove.findUnique({ where: { familyKey: args.familyKey } });
-    if (familyMoveRevision(members, before ?? undefined) !== args.revision)
+    if (familyMoveRevision(members, before ?? undefined, membership) !== args.revision)
       throw new MuseumConflict("This family proposal changed. Reload the section before moving it.");
     const definitions = await tx.museumSection.findMany({ select: { name: true, slug: true, status: true } });
     if (definitions.some(s => s.name === args.section && s.status === "archived") ||

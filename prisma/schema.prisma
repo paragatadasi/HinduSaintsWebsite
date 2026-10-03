@@ -857,6 +857,22 @@ model MuseumFamilyProposalMove {
   updatedAt DateTime @updatedAt
 }
 
+// Private curator override; source exports and historical relationships remain intact.
+model MuseumDisplayMembership {
+  museumId String
+  placementId String
+  familyKey String
+  familyLabel String
+  section String
+  detached Boolean @default(false)
+  wasAnchor Boolean @default(false)
+  version Int @default(1)
+  updatedById String
+  updatedAt DateTime @updatedAt
+  @@id([museumId, placementId])
+  @@index([museumId, familyKey, detached])
+}
+
 model MuseumSaintState {
   saintId String @id
   saint Saint @relation(fields: [saintId], references: [id], onDelete: Cascade)
