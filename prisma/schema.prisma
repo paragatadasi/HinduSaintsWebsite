@@ -1645,3 +1645,20 @@ model SaintVisitPlace {
   acceptedAt DateTime @default(now())
   @@index([saintId, acceptedAt])
 }
+
+// Curator workflow is separate from editorial acceptance and item-level locations.
+model MuseumArrangement {
+  museumId String
+  placementId String
+  proposalRevision String
+  status String
+  vitrine String?
+  shelf String?
+  confirmedAt DateTime?
+  confirmedById String?
+  inventoryAcknowledged Boolean @default(false)
+  version Int @default(1)
+  updatedById String
+  updatedAt DateTime @updatedAt
+  @@id([museumId, placementId])
+}
