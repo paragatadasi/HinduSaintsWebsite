@@ -160,6 +160,14 @@ Requires `AIRTABLE_ACCESS_TOKEN`, `AIRTABLE_BASE_ID`, and
 See `docs/map-and-places.md` for the public Map page, Places detail routes,
 geocoding fallback, timeline filter, and place data workflow.
 
+## Museum curator experience
+
+See [the curator workflow and implementation ledger](docs/museum-data-integration.md)
+for SPN/Vrindavan architecture, delivered phases, status and inventory semantics,
+verification, release notes and remaining work. Shared UI principles are in
+[the design system](docs/design-system.md); access and mutation boundaries are in
+[the museum security contract](docs/museum-admin-security.md).
+
 ## Development checks
 
 Use the lightweight checker during ordinary frontend and TypeScript work:
