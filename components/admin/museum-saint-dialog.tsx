@@ -1,4 +1,5 @@
 "use client";
+import {MuseumArrangementEditor} from "@/components/admin/museum-arrangement-editor";
 import {MuseumDisplayMembershipEditor} from "@/components/admin/museum-display-membership-editor";
 import Link from "next/link";
 import type { Route } from "next";
@@ -39,17 +40,20 @@ export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectio
           <DataItem label="Section" value={<Link href={`/museumadmin/${sectionSlug}` as Route}>{row.section}</Link>} />
           {row.collectionItems?.map(item => <DataItem key={item.id} label={item.label} value={item.location ? item.location.museumName + ": " + item.location.label : item.catalogMuseum.name + ": location unknown"} />)}
           {row.sourceVitrine && !row.collectionItems?.length ? <DataItem label="SPN vitrine (source record)" value={row.sourceVitrine.vitrine + (row.sourceVitrine.shelf ? " / Shelf " + row.sourceVitrine.shelf : "")} /> : null}
-          <DataItem label="Placement status" value={row.placementState || "Original proposal"} />
+          <DataItem label="Placement status" value={row.arrangement?.status || "Proposed"} />
+          {row.arrangement?.vitrine?<DataItem label={row.arrangement.status==="Implemented"?"Curator-confirmed destination":"Planned destination"} value={"Vitrine "+row.arrangement.vitrine+(row.arrangement.shelf?" / Shelf "+row.arrangement.shelf:"")}/>:null}
+          {row.arrangement?.confirmedAt?<DataItem label="Physically confirmed" value={new Date(row.arrangement.confirmedAt).toLocaleDateString("en-GB",{timeZone:"UTC"})+" · Inventory completeness not verified"}/>:null}
           <DataItem label="Alternate sections" value={row.alternatives.join("; ")} />
           <DataItem label={row.placementState === "Confirmed" ? "Exhibit group" : "Proposed display group"} value={row.groupLabel || row.curatorialFamily || row.familyId} />
           <DataItem label="Confidence" value={row.confidence} />
         </dl>
         <div className="review-actions">
           {row.collectionItems?.map(item => <Link key={item.id} className="museum-admin-button" href={`/museumadmin/collections/${item.id}` as Route}>Plan move: {item.label}</Link>)}
-          {row.saintId ? <Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>{row.placementState === "Confirmed" ? "Review placement" : "Review and confirm proposal"}</Link> : <p>This proposal needs a saint link before confirmation. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.sourceRecordId || row.id)}`}>Review source link</Link></p>}
+          {row.saintId ? <Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>{"Edit proposal"}</Link> : <p>This proposal needs a saint link before planning. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.sourceRecordId || row.id)}`}>Review source link</Link></p>}
           {moveControl}
         </div>
       </section>
+      {canManage?<MuseumArrangementEditor row={row}/>:null}
       {canManage?<MuseumDisplayMembershipEditor row={row} canEditRelationships={canEditRelationships}/>:null}
       <details className="museum-saint-review-section" open={row.needsResearch || undefined}>
         <summary>Proposal notes and source details</summary>

@@ -22,3 +22,9 @@ test("filters intersect location, section and saint or inventory search",()=>{
  assert.equal(filterLocationBrowserRows(rows,{vitrine:"12",shelf:"A",section:"North",q:"SPN-1"}).length,1);
  assert.equal(filterLocationBrowserRows(rows,{q:"two"}).length,1);assert.equal(filterLocationBrowserRows(rows,{shelf:"B"}).length,0);
 });
+
+test("saint destinations remain separate from individual relic exceptions",()=>{
+ const saint=proposal("one","North");saint.arrangement={status:"Planned",vitrine:"21",shelf:"",revision:"a",proposalRevision:"b",familyKey:"",confirmedAt:null,inventoryAcknowledged:false};
+ const row=buildLocationBrowserRows([item],[saint])[0];
+ assert.deepEqual(row.arrangements,["one: Planned · Vitrine 21"]);assert.equal(row.plannedLocation,"Vitrine 15");assert.equal(row.vitrine,"12");
+});

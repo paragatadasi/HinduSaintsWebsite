@@ -10,7 +10,7 @@ export type LocationBrowserRow = {
   key: string; label: string; itemId?: string; inventoryCode?: string | null;
   saints: { id: string; name: string }[];
   locationLabel: string; vitrine: string; shelf: string;
-  sections: string[]; plannedLocation: string | null; sourceOnly: boolean;
+  arrangements: string[]; sections: string[]; plannedLocation: string | null; sourceOnly: boolean;
 };
 
 // Current inventory and unverified source hints stay distinct. One item shared
@@ -21,6 +21,7 @@ export function buildLocationBrowserRows(items: LocationInventoryItem[], placeme
     const sections = destinations.get(row.saintId) || new Set<string>();
     sections.add(row.section); destinations.set(row.saintId, sections);
   }
+  const arrangements = (ids:string[]) => [...new Set(placements.filter(p=>p.saintId&&ids.includes(p.saintId)&&p.arrangement?.vitrine).map(p=>p.name+": "+p.arrangement!.status+" · Vitrine "+p.arrangement!.vitrine+(p.arrangement!.shelf?" / Shelf "+p.arrangement!.shelf:"")))];
   const sectionNames = (ids: string[]) => [...new Set(ids.flatMap(id => [...(destinations.get(id) || [])]))].sort();
   const rows: LocationBrowserRow[] = items.map(item => {
     const code = item.location?.museumId === "museum-spn" ? item.location.code : "";
@@ -29,7 +30,7 @@ export function buildLocationBrowserRows(items: LocationInventoryItem[], placeme
       key: "item:" + item.id, itemId: item.id, label: item.label, inventoryCode: item.inventoryCode,
       saints: item.saints, locationLabel: item.location?.label || "Location unknown",
       vitrine: match?.[1] || "", shelf: match?.[2] || "",
-      sections: sectionNames(item.saints.map(s => s.id)),
+      sections: sectionNames(item.saints.map(s => s.id)), arrangements:arrangements(item.saints.map(s=>s.id)),
       plannedLocation: item.plannedLocation?.label || null, sourceOnly: false
     };
   });
@@ -43,7 +44,7 @@ export function buildLocationBrowserRows(items: LocationInventoryItem[], placeme
     rows.push({ key: "source:" + id, label: placement.name, saints: [{ id, name: placement.name }],
       locationLabel: "Vitrine " + source.vitrine + (source.shelf ? " / Shelf " + source.shelf : ""),
       vitrine: source.vitrine, shelf: source.shelf || "", sections: sectionNames([id]),
-      plannedLocation: null, sourceOnly: true });
+      arrangements:arrangements([id]), plannedLocation: null, sourceOnly: true });
   }
   return rows.sort((a,b) => a.vitrine.localeCompare(b.vitrine, undefined, {numeric:true}) || a.shelf.localeCompare(b.shelf, undefined, {numeric:true}) || a.label.localeCompare(b.label));
 }

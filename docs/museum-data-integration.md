@@ -550,3 +550,17 @@ requests enter the existing reconciliation queue and are audited. Duplicate
 open requests with identical text are reused. Users with structured editorial
 capability also get a link to the existing relationship editor. Curator access
 does not grant public-content editing rights.
+
+### Curator arrangement status
+
+Proposed is the default for every working arrangement, including legacy accepted
+section assignments. Editorial acceptance does not prove physical implementation.
+Planned requires a destination vitrine; shelf is optional. Implemented is an
+explicit, audited physical confirmation of the latest proposal, allowed when
+inventory is incomplete provided the curator acknowledges the visible inventory
+gap. It never fabricates collection items or rewrites individual relic locations.
+Changing a proposal, family revision, or display membership invalidates the prior
+arrangement status to Proposed; old attestations remain in the audit history.
+The additive per-museum arrangement model is separate from item move plans and
+is ready for future shared planning UX. The first mutation surface is SPN; the
+Vrindavan source pilot remains read-only until its section proposals are adopted.

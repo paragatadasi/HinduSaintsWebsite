@@ -83,7 +83,7 @@ export function MuseumSectionWorkspace({
                 <Metric label="Tertiary" value={section.tertiary} />
               </div>
               <p>{section.idea}</p>
-              <p className="museum-filter-note">{originalView ? "Original export retained for comparison. Values here do not change when website records are edited. Move family updates the working proposals; this comparison remains unchanged." : "Saint details come from the website database. Confirmed placements take precedence; existing proposals remain until reviewed. Unlinked records retain their source details."}</p>
+              <p className="museum-filter-note">{originalView ? "Original export retained for comparison. Values here do not change when website records are edited. Move family updates the working proposals; this comparison remains unchanged." : "Open a saint to change its proposal, plan a destination vitrine, or record physical implementation. Unlinked records retain their source details."}</p>
             </div>
           </section>
 
@@ -367,7 +367,7 @@ function PrimarySaintCard({
           {affiliated.map((candidate) => <li key={candidate.id}><SaintButton row={candidate} onSaintClick={onSaintClick} /></li>)}
         </ul>
       ) : null}
-      {row.placementState ? <small className="museum-card-status">{row.placementState}</small> : null}
+      {row.placementState ? <small className="museum-card-status">{row.arrangement?.status || "Proposed"}</small> : null}
     </article>
   );
 }
@@ -482,7 +482,7 @@ function TertiaryCard({
       <strong><SaintButton row={row} onSaintClick={onSaintClick} showStatus={false} /></strong>
       <span>{placeLabel}</span>
 
-      {row.placementState ? <small className="museum-card-status">{row.placementState}</small> : null}
+      {row.placementState ? <small className="museum-card-status">{row.arrangement?.status || "Proposed"}</small> : null}
     </article>
   );
 }
@@ -492,7 +492,7 @@ function SaintButton({ onSaintClick, row, showStatus = true }: { onSaintClick: (
     <span className="museum-saint-summary">
       <button className="museum-saint-link" onClick={() => onSaintClick(row.id)} type="button">{row.name}</button>
       {row.needsResearch ? <button type="button" className="museum-research-indicator" aria-label={`Research needed for ${row.name}: open details`} title="Needs research — open details" onClick={() => onSaintClick(row.id)}><CircleAlert aria-hidden="true" size={16} /></button> : null}
-      {showStatus && row.placementState ? <small className="museum-placement-status">{row.placementState}</small> : null}
+      {showStatus && row.placementState ? <small className="museum-placement-status">{row.arrangement?.status || "Proposed"}</small> : null}
     </span>
   );
 }

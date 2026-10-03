@@ -181,18 +181,18 @@ export default async function MuseumSaintPage({
         </Link>{" "}
         ·{" "}
         {current?.status === "published"
-          ? "Accepted museum placement"
-          : "Museum placement needs review"}
+          ? "Current museum proposal"
+          : "Museum proposal available"}
       </p>
       {result.error ? <p role="alert">{result.error}</p> : null}
-      {result.saved ? <p role="status">Museum decision saved.</p> : null}
+      {result.saved ? <p role="status">Museum proposal saved.</p> : null}
       <ReviewWorkflow
-        eyebrow="Curatorial decision"
+        eyebrow="Section proposal"
         title="Museum placement"
         description="Museum decisions stay private and do not publish or change the saint’s public profile."
       >
         <ReviewSection
-          title={current ? "Confirmed placement" : "Existing proposal"}
+          title={current ? "Current proposal" : "Existing proposal"}
         >
           {primaries.length > 1 ? (
             <p role="alert">
@@ -202,7 +202,7 @@ export default async function MuseumSaintPage({
             </p>
           ) : null}
           <ReviewEditToggle
-            editLabel={current ? "Edit placement" : "Edit and confirm proposal"}
+            editLabel={current ? "Edit placement" : "Edit proposal"}
             summary={
               <ReviewFactGrid
                 facts={[
@@ -335,7 +335,7 @@ export default async function MuseumSaintPage({
                 />
               </label>
               <button className="museum-admin-button" type="submit">
-                Save placement
+                Save proposal
               </button>
             </MuseumActionForm>
           </ReviewEditToggle>
@@ -343,7 +343,7 @@ export default async function MuseumSaintPage({
         <ReviewSection
           title={
             current
-              ? "Reconcile proposals with confirmed placement"
+              ? "Reconcile proposals with current proposal"
               : "Proposals to review"
           }
         >
@@ -405,8 +405,8 @@ export default async function MuseumSaintPage({
                 {current && value ? (
                   <p>
                     {changes.length
-                      ? `Differs from confirmed placement: ${changes.join(", ")}.`
-                      : "Matches the confirmed placement."}
+                      ? `Differs from current proposal: ${changes.join(", ")}.`
+                      : "Matches the current proposal."}
                   </p>
                 ) : null}
                 {value ? (
@@ -443,7 +443,7 @@ export default async function MuseumSaintPage({
                       name="decision"
                       value="accept"
                     >
-                      Accept proposal
+                      Use this proposal
                     </button>
                   ) : null}{" "}
                   <button
@@ -451,7 +451,7 @@ export default async function MuseumSaintPage({
                     name="decision"
                     value="ignore"
                   >
-                    {current ? "Keep confirmed placement" : "Dismiss proposal"}
+                    {current ? "Keep current proposal" : "Dismiss proposal"}
                   </button>
                 </MuseumActionForm>
               </article>

@@ -12,12 +12,12 @@ import { readMuseumSaintProfiles } from "@/lib/museum-saint-profiles";
 import { MuseumSearchResults } from "@/components/admin/museum-search-results";
 
 type MuseumAdminPageProps = {
-  searchParams: Promise<{ q?: string | string[];membershipSaved?:string;correctionRequested?:string }>;
+  searchParams: Promise<{ q?: string | string[];membershipSaved?:string;correctionRequested?:string;arrangementSaved?:string }>;
 };
 
 export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageProps) {
   const user = await requireCapability("access_museum");
-  const { q,membershipSaved,correctionRequested } = await searchParams;
+  const { q,membershipSaved,correctionRequested,arrangementSaved } = await searchParams;
   const query = getSearchParam(q);
   const { sections, placements, membersById, familyMoveOptions } = await getMuseumData();
   const matches = query ? searchWorkingMuseumPlacements(placements, query, 30) : [];
@@ -34,6 +34,7 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
 
   return (
     <div className="museum-admin museum-admin--index">
+      {arrangementSaved?<p role="status">Arrangement updated. Individual relic records remain available for precise location updates.</p>:null}
       {membershipSaved?<p role="status">Display membership updated. Relic locations and historical relationships are unchanged.</p>:null}
       {correctionRequested?<p role="status">Relationship correction requested for editorial review.</p>:null}
       <section className="museum-admin-hero museum-admin-hero--index">
@@ -41,7 +42,7 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
           <div className="eyebrow">SPN Museum</div>
           <h1>Section proposals</h1>
           <p>
-            Browse current saint details and confirmed placements, with existing proposals retained wherever placement has not been confirmed. Open a saint to review its placement.
+            Browse saint proposals, plan destination vitrines, and record completed arrangements. Open a saint to make changes.
           </p>
         </div>
         <div className="museum-admin-hero__stats" aria-label="Museum proposal totals">
@@ -53,7 +54,7 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
         </div>
       </section>
 
-      <p><Link className="museum-admin-button" href="/museumadmin/review">Review and confirm proposals</Link></p>
+      <p><Link className="museum-admin-button" href="/museumadmin/review">Resolve source links</Link></p>
       <section className="museum-admin-panel">
         <div className="museum-admin-section-heading">
           <div>
