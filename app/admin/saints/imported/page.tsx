@@ -4,6 +4,7 @@ import { requireCapability, requireSaintCatalogUser } from "@/lib/admin-access";
 import { getAdminSaintCatalogScope, saintCatalogWhere } from "@/lib/admin-saint-access";
 import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
+import { airtableImportedDraftRecordWhere, getAirtableDraftReviewEvidence, importedDraftSaintId } from "@/lib/airtable-import-draft-review";
 import { SaintsBulkReviewList } from "../saints-bulk-review-list";
 
 export default async function ImportedSaintsPage({ searchParams }: {
@@ -18,20 +19,23 @@ export default async function ImportedSaintsPage({ searchParams }: {
   });
   const job = params.job ? jobs.find(item => item.id === params.job) : undefined;
   const history = params.history === "1";
+  const evidence = getAirtableDraftReviewEvidence(job?.rawSummary);
   // Legacy runs did not store draft IDs. Their time window is a review aid,
   // never proof that a record is safe to delete (runs may overlap).
   const records = await db.externalRecord.findMany({
-    where: {
-      sourceType: "airtable", entityType: "Saint", entityId: { not: null },
-      rawPayloadJson: { path: ["importedBy"], equals: "airtable_saints_cms_import" },
-      ...(job ? { importedAt: { gte: job.startedAt ?? job.createdAt, ...(job.completedAt ? { lte: job.completedAt } : {}) } } : {})
-    },
-    select: { entityId: true }
+    where: airtableImportedDraftRecordWhere(job),
+    select: { entityId: true, rawPayloadJson: true }
   });
   const saints = await db.saint.findMany({
     where: {
       AND: [saintCatalogWhere(getAdminSaintCatalogScope(user.roles)), {
-        id: { in: params.job && !job ? [] : records.flatMap(row => row.entityId ? [row.entityId] : []) },
+        OR: [
+          { id: { in: params.job && !job ? [] : records.flatMap(row => {
+            const id = importedDraftSaintId(row);
+            return id ? [id] : [];
+          }) } },
+          { slug: { in: evidence.repairSlugs } }
+        ],
         ...(!history ? { status: "draft", publicationStatus: "unpublished" as const } : {})
       }]
     },
@@ -55,9 +59,12 @@ export default async function ImportedSaintsPage({ searchParams }: {
       <button className="admin-form-button" type="submit">Filter</button>
     </form>
     {params.job && !job ? <p className="admin-notice">Import run not found.</p> : null}
-    <p className="admin-settings-note">Run filters use the preserved import timestamp; overlapping runs may share records. Archive confirmed duplicates to preserve their source data. Archiving does not undo shared places, traditions, media, or source records created during import. Avoid the full Airtable CMS reset for a single-run cleanup.</p>
+    {job ? <p className="admin-notice">{evidence.tracked
+      ? "This run saved explicit job attribution for successfully linked imports. Failed rows may need separate review."
+      : `Legacy run: candidates use import timestamps and ${evidence.repairSlugs.length} recorded slug repairs. Overlapping runs may share candidates; this is not a complete or definitive list of created IDs.`}</p> : null}
+    <p className="admin-settings-note">Archive confirmed duplicates to preserve source linkage. Permanent deletion requires the sensitive-action password and clears external links, so a later import could recreate the saint. Confirm a recoverable backup before deletion. Neither action undoes shared places, traditions, media, or sources. Avoid the full Airtable CMS reset for a single-run cleanup.</p>
     <SaintsBulkReviewList saints={saints.map(saint => ({ ...saint, primaryImage: null, matchStatus: "unmatched" as const }))}
-      canDelete={false} canManagePublication={hasCapability(user.roles, "publish_content")}
+      canDelete={hasCapability(user.roles, "manage_sensitive_actions")} canManagePublication={hasCapability(user.roles, "publish_content")}
       canManageVisibility={false} returnTo={returnTo} showMatch={false} showThumbnail={false} showVisibility={true} />
   </div>;
 }
