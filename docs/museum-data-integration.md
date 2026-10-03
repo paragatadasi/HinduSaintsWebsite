@@ -548,3 +548,28 @@ with saint-related evidence; regenerate tertiary locality-based proposals for
 both museums while preserving reviewed placements/lineage decisions. Operational
 museum-scoped acceptance and shared UI are separate phases. No migration,
 environment change, Airtable write, saint publication or physical move occurs here.
+### Reviewed geography decisions (user, October 3, 2026)
+
+- Haridas Thakur: multiple associated locations are legitimate. Museum proposal
+  belongs to Gaudiya Vaishnava; locality alone must not reroute it. Preserve the
+  Puri/Vrindavan evidence rather than treating the difference as a false identity.
+- Madhu Pandit Goswami: museum proposal belongs to Gaudiya Vaishnava. Website
+  primary locality correction is Vrindavan, with Vamshi Vat as the specific
+  saint-related place. Jaipur describes where his deity currently resides, not
+  where he lived. Preserve that contextual evidence with an explicit note rather
+  than a primary/life-place claim. Do not invent an accepted visit destination
+  or coordinates from this decision. The old SPN proposal document puts him in
+  a Jaipur/geographic section; both museums' proposed classifications therefore
+  need review for Gaudiya, rather than blindly inheriting the old proposal.
+- Somappar Swami: retain Madurai/Thiruparankundram. User identifies no Mayapur
+  connection. Preserve the workbook's raw Mayapur value as erroneous source
+  evidence; do not promote it into a canonical place or Gaudiya proposal.
+
+These are directly authorized user decisions, not external research assertions.
+They supersede the preliminary discrepancy interpretation for these names.
+Production application is pending current canonical identity/assignment and
+accepted visit-place inspection. Do not overwrite newer reviewed CMS changes
+or museum confirmations by name matching. Implement the Madhu website correction
+through the audited saint-place edit/reconciliation path, reuse unique existing
+locality identities, and record the user decision provenance. Section inheritance
+must distinguish a geographic default from stronger family/lineage evidence.
