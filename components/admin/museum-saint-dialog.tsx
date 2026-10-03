@@ -1,4 +1,5 @@
 "use client";
+import {MuseumDisplayMembershipEditor} from "@/components/admin/museum-display-membership-editor";
 import Link from "next/link";
 import type { Route } from "next";
 import { useId, type ReactNode } from "react";
@@ -8,7 +9,7 @@ import { MuseumSaintProfile } from "@/components/admin/museum-saint-profile";
 import type { MuseumSaintProfile as SaintProfile } from "@/lib/museum-saint-profile";
 import { formatSaintDate } from "@/lib/public-date-format";
 
-export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectionSlug}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement;moveControl?: ReactNode;profile?: SaintProfile;sectionSlug: string}) {
+export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectionSlug,canManage=false,canEditRelationships=false}: {member?: Record<string,string>;onClose:()=>void;row:MuseumSaintPlacement;moveControl?: ReactNode;profile?: SaintProfile;sectionSlug: string;canManage?:boolean;canEditRelationships?:boolean}) {
   const titleId = useId();
   const fallback: SaintProfile = {
     name: row.name, description: "", images: [],
@@ -49,6 +50,7 @@ export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectio
           {moveControl}
         </div>
       </section>
+      {canManage?<MuseumDisplayMembershipEditor row={row} canEditRelationships={canEditRelationships}/>:null}
       <details className="museum-saint-review-section" open={row.needsResearch || undefined}>
         <summary>Proposal notes and source details</summary>
         <dl className="museum-saint-data museum-saint-data--flat">

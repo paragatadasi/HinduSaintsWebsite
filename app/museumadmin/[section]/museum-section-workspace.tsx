@@ -24,11 +24,12 @@ type MuseumSectionWorkspaceProps = {
   familyMoveOptions?: FamilyMoveOption[];
   sectionNames?: string[];
   canManage?: boolean;
+  canEditRelationships?:boolean;
   saintProfiles?: Record<string, SaintProfile>;
 };
 
 export function MuseumSectionWorkspace({
-  section, memberDetails, originalView = false, familyMoveOptions = [], sectionNames = [], canManage = false, saintProfiles = {}
+  section, memberDetails, originalView = false, familyMoveOptions = [], sectionNames = [], canManage = false, canEditRelationships=false, saintProfiles = {}
 }: MuseumSectionWorkspaceProps) {
   const moveOptions = new Map(familyMoveOptions.map(f => [f.key, f]));
   function familyMove(key: string, card = false) {
@@ -270,6 +271,8 @@ export function MuseumSectionWorkspace({
 
       {selectedSaint ? (
         <MuseumSaintDialog
+          canManage={canManage && !originalView}
+          canEditRelationships={canEditRelationships}
           sectionSlug={section.slug}
           key={selectedSaint.id}
           profile={selectedSaint.saintId ? saintProfiles[selectedSaint.saintId] : undefined}
