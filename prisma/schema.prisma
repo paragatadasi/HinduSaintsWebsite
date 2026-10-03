@@ -1662,3 +1662,18 @@ model MuseumArrangement {
   updatedAt DateTime @updatedAt
   @@id([museumId, placementId])
 }
+
+// Museum-scoped curator overrides. Source proposals remain separate evidence.
+model MuseumCuratorProposal {
+  museumId String
+  saintId String
+  section String
+  tier String
+  groupKey String @default("")
+  groupLabel String @default("")
+  version Int @default(1)
+  updatedById String
+  updatedAt DateTime @updatedAt
+  @@id([museumId, saintId])
+  @@index([museumId, groupKey])
+}

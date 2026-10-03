@@ -12,7 +12,7 @@ export function arrangementControl(row:MuseumSaintPlacement,saved:SavedArrangeme
  status:current&&["Planned","Implemented"].includes(saved.status)?saved.status as ArrangementStatus:"Proposed",
  vitrine:current?saved.vitrine||"":"",shelf:current?saved.shelf||"":"",confirmedAt:current?saved.confirmedAt?.toISOString()||null:null,inventoryAcknowledged:current&&saved.inventoryAcknowledged};
 }
-export const arrangementInput=z.object({placementId:z.string().min(1).max(200),revision:z.string().regex(/^[a-f0-9]{64}$/),familyKey:z.string().max(200),status:z.enum(["Proposed","Planned","Implemented"]),vitrine:z.string().trim().max(100).default(""),shelf:z.string().trim().max(100).default(""),physicalConfirmation:z.literal("yes").optional(),inventoryAcknowledged:z.literal("yes").optional()}).superRefine((v,c)=>{
+export const arrangementInput=z.object({placementId:z.string().min(1).max(200),revision:z.string().regex(/^[a-f0-9]{64}$/),familyKey:z.string().max(300),status:z.enum(["Proposed","Planned","Implemented"]),vitrine:z.string().trim().max(100).default(""),shelf:z.string().trim().max(100).default(""),physicalConfirmation:z.literal("yes").optional(),inventoryAcknowledged:z.literal("yes").optional()}).superRefine((v,c)=>{
  if(v.status==="Planned"&&!v.vitrine)c.addIssue({code:"custom",path:["vitrine"],message:"Choose a destination vitrine before marking this arrangement Planned. Shelf is optional."});
  if(v.shelf&&!v.vitrine)c.addIssue({code:"custom",path:["shelf"],message:"Enter the vitrine for this shelf."});
  if(v.status==="Implemented"&&(v.physicalConfirmation!=="yes"||v.inventoryAcknowledged!=="yes"))c.addIssue({code:"custom",path:["physicalConfirmation"],message:"Confirm the physical arrangement and acknowledge that inventory completeness has not been verified."});
@@ -23,6 +23,6 @@ export function familyArrangementControl(rows:MuseumSaintPlacement[]):FamilyArra
  const sorted=[...rows].sort((a,b)=>a.id.localeCompare(b.id));
  const same=(field:"status"|"vitrine"|"shelf")=>new Set(sorted.map(r=>r.arrangement?.[field]|| (field==="status"?"Proposed":"")));
  const statuses=same("status"),vitrines=same("vitrine"),shelves=same("shelf");
- return {members:sorted.map(r=>({id:r.id,name:r.name,section:r.section})),revision:digest(sorted.map(r=>[r.id,r.arrangement?.revision])),count:rows.length,eligible:rows.length>0&&rows.every(r=>r.saintId&&r.arrangement&&!r.placementState?.startsWith("Conflicting")),
+ return {members:sorted.map(r=>({id:r.id,name:r.name,section:r.section})),revision:digest(sorted.map(r=>[r.id,r.arrangement?.revision])),count:rows.length,eligible:rows.length>0&&rows.every(r=>r.saintId&&r.arrangement&&r.section!=="Needs section proposal"&&!r.placementState?.startsWith("Conflicting")),
  status:statuses.size===1?[...statuses][0] as ArrangementStatus:"Mixed",vitrine:vitrines.size===1?[...vitrines][0]:"",shelf:shelves.size===1?[...shelves][0]:""};
 }

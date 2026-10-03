@@ -4,22 +4,22 @@ import type {MuseumSaintPlacement} from "@/lib/museum-proposals";
 import type {ArrangementStatus,FamilyArrangementControl} from "@/lib/museum-arrangement-domain";
 import {MuseumActionForm} from "@/components/admin/museum-action-form";
 import {saveArrangementAction,saveFamilyArrangementAction} from "@/app/museumadmin/arrangement-actions";
-export function MuseumArrangementEditor({row}:{row:MuseumSaintPlacement}) {
+export function MuseumArrangementEditor({row,action=saveArrangementAction}:{row:MuseumSaintPlacement;action?:(form:FormData)=>Promise<{error:string}>}) {
  const current=row.arrangement;
  if(!current||!row.saintId||row.placementState?.startsWith("Conflicting"))return null;
  return <details className="museum-saint-review-section"><summary>Update arrangement</summary>
- <MuseumActionForm action={saveArrangementAction}>
+ <MuseumActionForm action={action}>
   <input type="hidden" name="placementId" value={row.id}/><input type="hidden" name="revision" value={current.revision}/><input type="hidden" name="familyKey" value={current.familyKey}/>
   <ArrangementFields current={current}/>
   <div className="review-actions"><button type="submit" className="museum-admin-button">Save arrangement</button></div>
  </MuseumActionForm></details>;
 }
 
-export function MuseumFamilyArrangementEditor({familyKey,current}:{familyKey:string;current:FamilyArrangementControl}) {
+export function MuseumFamilyArrangementEditor({familyKey,current,action=saveFamilyArrangementAction}:{familyKey:string;current:FamilyArrangementControl;action?:(form:FormData)=>Promise<{error:string}>}) {
  return <details className="museum-saint-review-section"><summary>Plan or record the whole family</summary>
  <p>{current.count} current display members · {current.status}. This applies the same destination and status to every listed member. Use individual saint cards for exceptions.</p>
  <details><summary>Included saints ({current.count})</summary><ul>{current.members.map(member=><li key={member.id}>{member.name} · {member.section}</li>)}</ul></details>
- {!current.eligible?<p>Resolve missing saint links or competing placements before updating the whole family.</p>:<MuseumActionForm action={saveFamilyArrangementAction}>
+ {!current.eligible?<p>Resolve missing section proposals, saint links or competing placements before updating the whole family.</p>:<MuseumActionForm action={action}>
  <input type="hidden" name="familyKey" value={familyKey}/><input type="hidden" name="revision" value={current.revision}/>
  <ArrangementFields current={current}/><div className="review-actions"><button type="submit" className="museum-admin-button">Save family arrangement</button></div>
  </MuseumActionForm>}</details>;

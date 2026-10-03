@@ -24,6 +24,7 @@ particular capability is live; released handoff files are removed during cleanup
 | Arrangement status | Proposed / Planned / Implemented; vitrine required for Planned; recorded physical attestation with inventory-gap notice | `6c9b81a` |
 | Vrindavan section discussion | Section counts, search/filter/pagination, shared saint cards, reviewed lineage caveats; read-only | `0619bec` |
 | Family arrangement | Shared destination/status for current display members, atomic saves, explicit member list, mixed-state choice and stale-form checks | `8840222` |
+| Independent Vrindavan editing | Museum-scoped section/tier/family overrides, shared family moves and arrangement forms, separate relationship corrections | `70b8fc6` |
 
 ### Curator workflow rules
 
@@ -55,7 +56,7 @@ particular capability is live; released handoff files are removed during cleanup
 | `/museumadmin/locations` | Recorded vitrines/shelves versus working sections and planned destinations |
 | `/museumadmin/collections/[id]` | Actual relic record and individual move workflow |
 | `/vrindavanadmin` | Reviewed-identity source inventory; textual quantities/positions preserved |
-| `/vrindavanadmin/sections` | Read-only inherited section discussion view; links remain within Vrindavan |
+| `/vrindavanadmin/sections` | Inherited proposals with independent curator overrides, family and arrangement actions; links remain within Vrindavan |
 | `MuseumWorkspace`, `MuseumInventoryFilters` | Shared authentication/navigation frame and filters |
 | `MuseumDetailDialog`, `MuseumSaintProfile`, `MuseumSearchResults` | Shared biography/photo presentation, dialog behavior and search cards |
 | `MuseumArrangementEditor` / family editor | Shared status/destination fields and explicit attestation |
@@ -63,6 +64,7 @@ particular capability is live; released handoff files are removed during cleanup
 | `readVrindavanMuseumInventory` / section audit | Museum-scoped source evidence and inherited proposal candidates; no writes |
 | `MuseumDisplayMembership` | Private display-removal/restoration overrides, revisions and actor |
 | `MuseumArrangement` | Per-museum proposal fingerprint, destination, status, attestation and revision |
+| `MuseumCuratorProposal` | Independent per-museum section/tier/display-family override and revision |
 
 Legacy `SaintMuseumSection.status=published` means internally accepted editorial
 placement; it does not mean physically Implemented or publicly visible. Existing
@@ -93,9 +95,12 @@ is added to public saint contracts. See [the security contract](museum-admin-sec
 
 ### Remaining sequence
 
-1. Add museum-scoped Vrindavan proposal editing, independent of SPN curator
-   assignments; reuse shared cards/forms/status behavior. Preserve reviewed
-   global saint/geography corrections and raw source evidence.
+1. Release and visually verify independent Vrindavan editing (`70b8fc6`).
+   Production build, 11 focused tests, real-database Vrindavan checks and SPN
+   arrangement regression passed. Browser verification was blocked by browser
+   control timeouts; no new visual pass is claimed. Preserve reviewed geography
+   decisions. Additive migration `20261003163000_museum_curator_proposal` must
+   run in the release migration phase; no new environment variables are required.
 2. Complete family section-transfer/membership parity, including canonical
    exhibit groups, with explicit member scope and concurrency protection.
 3. Connect verified Vrindavan item identities to the existing physical-move
@@ -753,3 +758,34 @@ saints remain editable individually. Member/arrangement revisions reject stale
 forms. Mixed family statuses require an explicit selection. Canonical exhibit
 groups also expose planning; their section-transfer workflow remains separate.
 No item inventory, physical placements or historical relationships are modified.
+
+### Vrindavan curator editing
+
+The working layer (`readVrindavanWorkingData`) combines the private section audit
+with museum-scoped `MuseumCuratorProposal` overrides. Initial display families
+are suggestions adapted from unambiguous SPN groups, represented as private keys
+within Vrindavan, never copied relational/history or physical assignments.
+A saved override freezes the curator's section, tier and display membership;
+later SPN changes cannot silently overwrite it. Removing a display member selects
+No display family; selecting the family again restores it. Historical correction
+requests still use the separate shared reconciliation workflow.
+
+Individual and family section edits, family membership, and arrangement updates
+serialize under the Vrindavan museum lock and validate revisions inside a
+transaction. Family updates apply only to effective current members. Missing or
+competing inherited proposals require an explicit section choice before planning.
+Current confirmed-inventory identity scope is rechecked on each write. Inventory
+coverage/snapshot changes invalidate an old arrangement attestation, while saved
+proposal choices remain independent of SPN. All mutations are audited.
+
+The same arrangement writer, status fields, family dialog, saint profiles and
+search cards serve both museums through explicit action/route adapters. Vrindavan
+source observations remain source evidence; no action uses an observation ID as
+a physical object. Source text, quantities and exact shelf strings remain intact.
+
+Migration `20261003163000_museum_curator_proposal` is additive and runs during
+release migration, with no backfill or new environment variable. The guarded
+local `scripts/verify-vrindavan-proposals.ts` exercises edit/stale rejection,
+detach/restore, family move/plan, attestation invalidation and confirms SPN
+assignments/item counts/physical placements are unchanged. Domain tests cover
+independent overrides, conflicting inherited proposals and changed coverage.
