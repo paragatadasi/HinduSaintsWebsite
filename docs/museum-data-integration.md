@@ -849,3 +849,5 @@ The thematic visitor sequence is a starting suggestion for Vrindavan, not a
 confirmed physical route. SPN bridge examples and static relationship-tree exports
 are not copied as evidence for Vrindavan. Inventory coverage and source caveats
 remain expandable; reviewed identities do not imply verified individual relics.
+
+The remaining Vrindavan identity phase uses read-only current review batches and the protected review-export download. See the Remaining identity reconciliation checkpoint in museum-data-status.md. The exported JSON is research input, never an inventory upload or automatic decision manifest. Existing protected decision/revision checks remain the sole write path.
