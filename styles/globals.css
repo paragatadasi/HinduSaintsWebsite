@@ -11264,3 +11264,13 @@ button.museum-search-result { text-align: start; font: inherit; cursor: pointer;
 .museum-location-filters label { display: grid; gap: var(--space-2); }
 .museum-location-filters .review-actions { grid-column: 1 / -1; }
 .museum-location-list { display: grid; gap: var(--space-4); }
+
+.museum-source-inventory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--width-museum-supporting-card-min)), 1fr)); gap: var(--space-4); }
+.museum-source-inventory-card { font: inherit; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); background: var(--color-surface); color: var(--color-muted); border: var(--border-width-default) solid var(--color-border); text-align: left; cursor: pointer; }
+.museum-source-inventory-card__heading { display: flex; justify-content: space-between; gap: var(--space-2); color: var(--color-cream); }
+.museum-source-inventory-card__heading svg { flex-shrink: 0; color: var(--color-accent); }
+.museum-source-inventory-card__location { color: var(--color-cream); }
+.museum-source-inventory-card .museum-card-status { margin-top: auto; }
+.museum-source-note { white-space: pre-wrap; }
+
+.museum-source-inventory-card__heading strong { font-family: var(--font-serif); font-size: var(--font-size-museum-card-title); font-weight: normal; }
