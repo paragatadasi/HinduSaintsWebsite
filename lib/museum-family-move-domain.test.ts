@@ -59,3 +59,10 @@ test("restoring membership follows latest family proposal and invalidates stale 
  assert.notEqual(before.placements[0].displayMembership?.revision,after.placements[0].displayMembership?.revision);
  assert.notEqual(familyMoveRevision(original.placements,move,[]),familyMoveRevision(original.placements,move,[restored]));
 });
+
+test("later source family edits cannot silently restore a curator's detached member",()=>{
+ const original=buildMuseumView([row("a","New source section","new-family"),row("b","New source section","new-family")],new Map(),new Map([["new-family","New family"]]));
+ const view=applyFamilyProposalMoves(original,[{familyKey:"new-family",section:"Destination",version:1}],[{placementId:"a",familyKey:"family",familyLabel:"Old family",section:"Human section",detached:true,version:1}]);
+ assert.equal(view.placements[0].section,"Human section");assert.equal(view.placements[0].familyId,"");assert.equal(view.familyMoveOptions[0].count,1);
+ assert.equal(view.placements[0].displayMembership?.familyKey,"family");
+});

@@ -6,13 +6,14 @@ import type { FamilyMoveOption } from "@/lib/museum-family-move-domain";
 import { MuseumSaintDialog } from "@/components/admin/museum-saint-dialog";
 import { MuseumFamilyMove } from "@/components/admin/museum-family-move";
 
-export function MuseumSearchResults({ matches, profiles, members, sections, familyMoveOptions, canManage }: {
+export function MuseumSearchResults({ matches, profiles, members, sections, familyMoveOptions, canManage, canEditRelationships=false }: {
   matches: MuseumSaintPlacement[];
   profiles: Record<string, MuseumSaintProfile>;
   members: Record<string, Record<string, string>>;
   sections: Array<{name: string; slug: string}>;
   familyMoveOptions: FamilyMoveOption[];
   canManage: boolean;
+  canEditRelationships?:boolean;
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = matches.find(row => row.id === selectedId);
@@ -26,6 +27,6 @@ export function MuseumSearchResults({ matches, profiles, members, sections, fami
         <small>{match.placementState} · {match.tier} · {match.confidence} confidence</small>
       </button>)}
     </div>
-    {selected && section ? <MuseumSaintDialog key={selected.id} row={selected} sectionSlug={section.slug} member={members[selected.id]} profile={selected.saintId ? profiles[selected.saintId] : undefined} onClose={() => setSelectedId(null)} moveControl={canManage && family ? <MuseumFamilyMove family={family} sections={sections.map(s => s.name)} /> : undefined} /> : null}
+    {selected && section ? <MuseumSaintDialog canManage={canManage} canEditRelationships={canEditRelationships} key={selected.id} row={selected} sectionSlug={section.slug} member={members[selected.id]} profile={selected.saintId ? profiles[selected.saintId] : undefined} onClose={() => setSelectedId(null)} moveControl={canManage && family ? <MuseumFamilyMove family={family} sections={sections.map(s => s.name)} /> : undefined} /> : null}
   </div>;
 }

@@ -1,5 +1,6 @@
 import { projectSourceVitrines, SPN_WEBSITE_AIRTABLE_BASE_ID } from "@/lib/museum-vitrine-source";
 import { readSaintCollectionItems } from "@/lib/museum-collections";
+import {membershipRevision} from "@/lib/museum-display-membership-domain";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import { getMuseumProposalData, type MuseumSaintPlacement } from "@/lib/museum-proposals";
@@ -9,7 +10,7 @@ import { buildWorkingMuseumView, museumRelationshipDetails, type CurrentMuseumSa
 
 // Private data reader; route entry points must enforce access_museum before calling.
 export async function readMuseumData(client: Prisma.TransactionClient = db) {
-  const [mirrorLocations, collections, saints, links, definitions] = await Promise.all([
+  const [mirrorLocations, collections, saints, links, definitions, membership] = await Promise.all([
     client.airtableMirrorRecord.findMany({
       where: { baseId: SPN_WEBSITE_AIRTABLE_BASE_ID, tableIdOrName: "Saints" },
       select: { baseId: true, tableIdOrName: true, recordId: true, rawFieldsJson: true }
@@ -18,7 +19,8 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
     client.saint.findMany({
       where: { status: { not: "archived" } },
       select: {
-        id: true, displayName: true, canonicalName: true, birthYear: true, birthDateRaw: true,
+        id: true, slug: true, displayName: true, canonicalName: true, birthYear: true, birthDateRaw: true,
+        museumState: {select:{version:true}},
         samadhiYear: true, samadhiDateRaw: true,
         aliases: { select: { alias: true } },
         places: { include: { place: true } },
@@ -50,7 +52,8 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
       where: { status: { not: "archived" } },
       select: { name: true, slug: true, descriptionMarkdown: true },
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }]
-    })
+    }),
+    client.museumDisplayMembership.findMany({where:{museumId:"museum-spn"}})
   ]);
   const vitrines = projectSourceVitrines(mirrorLocations, links, new Set(saints.map(s => s.id)));
   const current: CurrentMuseumSaint[] = saints.map(s => ({
@@ -86,6 +89,16 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
   const original = getMuseumProposalData();
   const editable = await getEditableMuseumProposalData(client);
   const view = buildWorkingMuseumView(editable, current, links, definitions);
+  for (const row of view.placements) {
+    row.adminSaintSlug=saints.find(s=>s.id===row.saintId)?.slug;
+    if (!row.saintId || row.sourceRecordId) continue;
+    const change=membership.find(m=>m.placementId===row.id);
+    const groupKey=row.familyId || (change?.detached ? change.familyKey : "");
+    if (!groupKey) continue;
+    const state=saints.find(s=>s.id===row.saintId)?.museumState?.version || 0;
+    row.displayMembership={familyKey:groupKey,label:row.groupLabel||change?.familyLabel||groupKey,
+      detached:!row.familyId,revision:membershipRevision({id:row.id,section:row.section,familyId:row.familyId,state},change)};
+  }
   const activeIds = new Set(current.map(s => s.id));
   for (const row of original.placements) {
     row.saintId = resolveSnapshotIdentity(row.id, links, activeIds).record?.entityId || undefined;

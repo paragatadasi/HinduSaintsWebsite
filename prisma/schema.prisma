@@ -865,6 +865,7 @@ model MuseumDisplayMembership {
   familyLabel String
   section String
   detached Boolean @default(false)
+  wasAnchor Boolean @default(false)
   version Int @default(1)
   updatedById String
   updatedAt DateTime @updatedAt

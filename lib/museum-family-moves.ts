@@ -42,7 +42,8 @@ export async function moveMuseumFamilyProposal(args: {
     // Serializes even the first move, before a row exists to lock.
     await tx.$queryRaw(Prisma.sql`SELECT true AS locked FROM pg_advisory_xact_lock(hashtextextended(${"museum-family:" + args.familyKey}, 0))`);
     const original = getMuseumProposalData();
-    const membership = await tx.museumDisplayMembership.findMany({where:{museumId:"museum-spn",familyKey:args.familyKey}});
+    const allMembership = await tx.museumDisplayMembership.findMany({where:{museumId:"museum-spn"}});
+    const membership = allMembership.filter(change=>change.familyKey===args.familyKey || original.placements.some(row=>row.id===change.placementId && proposalFamilyKey(row)===args.familyKey));
     const members = original.placements.filter(row => proposalFamilyKey(row) === args.familyKey && !membership.some(change=>change.placementId===row.id&&change.detached));
     if (!members.length) throw new MuseumConflict("This family is no longer available. Reload the section.");
     const before = await tx.museumFamilyProposalMove.findUnique({ where: { familyKey: args.familyKey } });

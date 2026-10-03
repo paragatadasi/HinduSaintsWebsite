@@ -34,6 +34,7 @@ export default async function MuseumAdminSectionPage({ params, searchParams }: M
         originalView={originalView}
         familyMoveOptions={data.familyMoveOptions}
         sectionNames={data.sections.map(s => s.name)}
+        canEditRelationships={hasCapability(user.roles,"edit_structured_content")}
         canManage={hasCapability(user.roles, "manage_museum")}
         memberDetails={Object.fromEntries(originalView ? data.original.membersById : data.membersById)}
         saintProfiles={saintProfiles}

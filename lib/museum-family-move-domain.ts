@@ -33,12 +33,12 @@ export function applyFamilyProposalMoves(
     const key = proposalFamilyKey(row);
     const move = byFamily.get(key);
     const change = byPlacement.get(row.id);
-    const matchingChange = change?.familyKey === key ? change : undefined;
-    const detached = matchingChange?.detached || false;
-    const current = detached ? {...row,section:matchingChange!.section,familyId:"",curatorialFamily:"",groupLabel:""}
+    const detached = change?.detached || false;
+    const current = detached ? {...row,section:change!.section,alternatives:row.alternatives.filter(s=>s!==change!.section),familyId:"",curatorialFamily:"",groupLabel:""}
       : move ? {...row,section:move.section,alternatives:row.alternatives.filter(s=>s!==move.section)} : {...row};
-    if (key) current.displayMembership = {familyKey:key,label:labels.get(key)||key,detached,
-      revision:membershipRevision({row,move:move||null},matchingChange)};
+    if (key || detached) current.displayMembership = {familyKey:detached?change!.familyKey:key,label:detached?change!.familyLabel:labels.get(key)||key,detached,
+      revision:membershipRevision({row,move:move||null},change)};
+    if(detached) trees.delete(key);
     return current;
   });
   // Exported SVGs describe the original membership, not the edited display group.
@@ -54,7 +54,7 @@ export function applyFamilyProposalMoves(
     view.sectionBySlug.set(empty.slug, empty);
   }
   const families = [...labels].map(([key, label]): FamilyMoveOption => {
-    const familyChanges = changes.filter(change=>change.familyKey===key);
+    const familyChanges = changes.filter(change=>change.familyKey===key || original.placements.some(row=>row.id===change.placementId && proposalFamilyKey(row)===key));
     const rows = original.placements.filter(row => proposalFamilyKey(row) === key && !familyChanges.some(change=>change.placementId===row.id&&change.detached));
     return { key, label, count: rows.length, revision: familyMoveRevision(rows, byFamily.get(key), familyChanges) };
   });

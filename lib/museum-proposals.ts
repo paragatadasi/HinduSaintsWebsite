@@ -20,6 +20,7 @@ export type MuseumSaintPlacement = {
   sourceVitrine?: MuseumSourceVitrine;
   collectionItems?: MuseumCollectionCardItem[];
   saintId?: string;
+  adminSaintSlug?: string;
   placementState?: "Proposed" | "Confirmed" | "Unlinked" | "Conflicting proposals" | "Conflicting placements";
   sourceRecordId?: string;
   linkIssue?: string;
