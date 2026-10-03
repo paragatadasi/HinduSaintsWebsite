@@ -1,0 +1,55 @@
+# Museum data integration: status and remaining work
+
+Status recorded October 3, 2026. This is the data workstream record; release handoffs and the release captain establish production deployment status. The UX workstream owns the curator screens and museum-specific working proposal editor.
+
+## Completed checkpoints
+
+- Website PostgreSQL/Prisma records remain the canonical saint identities. Airtable is mirrored import/reference evidence, not the public website source of truth.
+- SPN source refresh, clear saint-location matching and uncertain identity review are available through the main admin Source Data workflow. Reviewed identities and physical placements survive later refreshes; conflicting changes go to review.
+- SPN curator pilot was checked by the user: Vishnudas location was correct; the old Visnudas website spelling was reported separately. Other representative cards were as expected. This does not establish that every museum record has been physically verified.
+- Museum-scoped relic/location contracts support multiple museums. SPN and Vrindavan inventory are kept separate from shared saint identity, biography, lineage and geography.
+- Visit-place research proposals have review and acceptance workflows. Acceptance can promote the visit locality to the website primary place, retaining other associations. Confidence filtering and tertiary geographic proposal propagation were prepared in their respective releases. Existing reviewed content is not silently replaced by source refresh.
+- Vrindavan workbook evidence is preserved privately, including quantities, packaging, display, shelf/position, source place and notes. The original inventory has 449 review rows and 437 distinct named labels. Labels are not verified unique people or objects.
+- The user confirmed 278 clear Vrindavan identity links in production. These link source observations to website saints; they do not publish drafts, create objects or verify placements. The remaining 171 rows from that audit are deferred, and current counts may change with website duplicate cleanup.
+- The confirmed-inventory reader supports the Vrindavan pilot without another upload. Each entry represents one source row, potentially several objects; quantity and position remain text. Archived or unavailable targets are preserved as warnings.
+- Read-only Vrindavan section proposals inherit SPN spiritual-region proposals with their provenance. They do not copy accepted SPN museum assignments or physical locations. The UX workstream is extending museum-scoped editing/status/display-group controls separately.
+- An Excel shortlist of 84 published saints and 87 related inventory rows was delivered at the user's explicit request using the workspace database baseline. Its latest saint update was July 25, 2026. It includes biography URLs and highlight/notes columns. It is not asserted to be the exact published subset of the current 278 confirmations. Private workbooks and source data are not committed to Git.
+
+## Approved corrections prepared for production application
+
+Branch `codex/reviewed-museum-corrections`, handoff commit `ebd5e44`, was pushed ready to the release captain. Check its handoff/release status before using the production routes.
+
+| Saint | Approved action |
+| --- | --- |
+| Haridas Thakur | Preserve legitimate multiple places; Gaudiya Vaishnava proposal takes precedence over geographic inference. |
+| Madhu Pandit Goswami | Website primary locality Vrindavan; associate Vamshi Vat. Retain Jaipur with deity-current-residence context, not lived-place interpretation. Use Gaudiya Vaishnava proposal. |
+| Somappar Swami | Preserve Madurai / Thiruparankundram. Record workbook Mayapur as erroneous source geography; preserve its raw value. |
+
+The explicit, audited, repeat-safe apply operation is at `/admin/source-data/museum/reviewed-corrections`. Deployment alone does not apply it. An authenticated editor with reconciliation, structured editing and full-catalogue capabilities clicks Apply approved corrections once. The agent has not confirmed production execution. Canonical identity or ambiguous locality failures abort the entire transaction. Repeat execution preserves later human edits.
+
+No historical relationships, accepted museum assignments, physical objects or placements are changed by this batch. Proposed Gaudiya overrides are persisted as reviewed decisions. The raw Mayapur value remains evidence, not authoritative geography.
+
+## Inventory readiness checkpoint
+
+`readVrindavanInventoryReadiness` supplies a private read-only report over the selected confirmed snapshot. `/admin/source-data/museum/vrindavan/inventory-audit` downloads it; optional `snapshot` is the original SHA-256. Both museum and full-catalogue access are required. Responses are private, uncached and noindexed.
+
+The report preserves every source inventory field and adds review reasons for missing physical object identity, missing description, quantity interpretation, missing source display/position, unavailable or multiple saint associations, and source notes/warnings. A positive integer text quantity does not identify that many individual objects. No numeric coercion of ranges, compound quantities or shelf labels occurs. Every row remains unverified for physical placement by this source-only reader, including rows already linked to an item.
+
+Applied geography decisions appear beside the original place text. Exact normalized erroneous-place matches are excluded separately for each linked saint; another saint in a combined row is not automatically excluded. This does not write website places or museum proposals. Section-audit consumers must also honor the approved geography registry before deriving geographic section candidates; that follow-through remains a separate checkpoint.
+
+## Remaining sequence and ownership
+
+1. Release and apply the approved three-saint correction batch. Release captain deploys; authenticated editor executes the approved one-time operation. Confirm resulting public Madhu locality and the inherited proposals.
+2. UX agent completes independent Vrindavan section/status/display-membership editing with shared components. Data decisions and spiritual regions remain shared; operational proposals and implementation state are museum-scoped. Inventory gaps must stay explicit when curators record implementation.
+3. Release inventory readiness report and connect it to the UX review surface. Consume reviewed geography exclusions in section comparisons so erroneous source values do not produce misleading adjustment suggestions.
+4. Review individual objects behind confirmed inventory rows: decide splits for combined relic descriptions, quantities, packaging and photograph-only evidence; reconcile movement comments; assign stable object identities. Curator decisions are required before object creation. Source row numbers or name-plus-vitrine are not permanent object IDs.
+5. Introduce object-level Vrindavan inventory only after those decisions. Record current placement from verified museum evidence, keep placement history, and retain immutable import provenance. Idempotent updates must preserve curator edits and surface conflicts.
+6. Return to uncertain identity rows in the existing review workflow. Batch clear decisions; review competing candidates, unavailable links and combined-person rows individually. Do not automatically create/merge saints or publish drafts. Re-audit after duplicate-draft cleanup by the other workstream.
+7. Test ongoing maintenance with new saints separately, as deferred by the user. Existing Airtable refresh may create website drafts; museum identity/placement matching remains a distinct review. A new source file requires cross-snapshot reconciliation, not automatic duplicate inventory creation.
+8. Later spatial planning and QR label production follow curator pilot feedback. The delivered shortlist can be marked Yes/Maybe/No; validate final live biography URLs before printing selected codes.
+
+## Deployment discipline
+
+Each checkpoint is a scoped feature branch with tests appropriate to its data contract, `dev:check`, and a committed ready release handoff. New protected routes receive a production build check. No production database migration runs during a web build. The release captain integrates into main/deploy and reports completion directly to this chat. Feature branches do not merge directly into main/deploy.
+
+See [museum-data-integration.md](museum-data-integration.md) for implementation contracts, source review semantics and earlier checkpoints. See branch handoffs under `docs/release-handoffs/` for verification and release inputs.

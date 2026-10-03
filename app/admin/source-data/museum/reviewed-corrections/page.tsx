@@ -1,0 +1,9 @@
+import {requireCapability} from "@/lib/admin-access";
+import {reviewedSaints} from "@/lib/reviewed-museum-correction-domain";
+import {ReviewWorkflow,ReviewSection} from "@/components/admin/review-ui";
+import {applyCorrections} from "./actions";
+export default async function ReviewedCorrections({searchParams}:{searchParams:Promise<{done?:string;error?:string}>}){
+ await requireCapability("resolve_reconciliation");await requireCapability("edit_structured_content");await requireCapability("view_full_saint_catalog");
+ const params=await searchParams;
+ return <div className="admin-stack"><h1>Apply reviewed museum corrections</h1><ReviewWorkflow eyebrow="Approved data corrections" title="October 3 reviewed decisions" description="Apply the decisions already agreed with the site owner in one audited batch."><ReviewSection title="Approved changes"><ul>{reviewedSaints.map(s=><li key={s.id}><strong>{s.name}</strong><p>{s.note}</p></li>)}</ul><p>Existing legitimate place associations and raw workbook evidence are retained. These changes do not publish saints, confirm museum placements, move relics, or create historical family memberships.</p><p>Gaudiya overrides affect proposals; existing confirmed museum assignments remain separate.</p></ReviewSection><ReviewSection title="Apply batch">{params.done?<p role="status">The batch was applied or had already been applied. Repeated application preserves later edits.</p>:null}{params.error?<p role="alert">No batch changes were saved. A canonical saint or locality requires resolution; check identity availability, duplicate localities or unpublished place content.</p>:null}<form action={applyCorrections}><button className="admin-form-button">Apply approved corrections</button></form></ReviewSection></ReviewWorkflow></div>;
+}
