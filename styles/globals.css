@@ -11303,3 +11303,13 @@ button.museum-search-result { text-align: start; font: inherit; cursor: pointer;
 .museum-tree-node--none .museum-tree-badge { fill: var(--color-muted); }
 
 .museum-live-tree-content { padding: var(--space-4); }
+
+/* Shared immersive museum workspace, retaining native dialog focus and Escape. */
+.museum-modal--fullscreen { width: 100%; max-width: none; height: 100dvh; max-height: 100dvh; margin: 0; border-radius: 0; }
+.museum-live-tree-viewport { overscroll-behavior: contain; }
+.museum-tree-toolbar { position: sticky; top: 0; z-index: 1; background: var(--color-surface); padding-block: var(--space-2); }
+
+.museum-modal--fullscreen { display: flex; flex-direction: column; gap: var(--space-3); overflow: hidden; }
+.museum-modal--fullscreen > .museum-live-tree-panel { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: auto; gap: var(--space-3); margin: 0; }
+.museum-modal--fullscreen .museum-live-tree-viewport { flex: 1; min-height: var(--height-museum-tree-min); max-height: none; }
+.museum-live-tree-panel > h3, .museum-live-tree-panel > p { margin-block: 0; }

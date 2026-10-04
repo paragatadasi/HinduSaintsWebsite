@@ -1,5 +1,5 @@
 // Shared layout configuration: SVG coordinates, independent of museum or theme.
-export const TREE_GEOMETRY = {nodeWidth:260,nodeHeight:132,columnGap:100,rowGap:110,margin:70,laneGap:12,maxLanes:20,nameChars:30,nameLines:4} as const;
+export const TREE_GEOMETRY = {nodeWidth:300,nodeHeight:166,columnGap:100,rowGap:110,margin:70,laneGap:12,maxLanes:20,nameChars:30,nameLines:4,compactColumns:3,nameX:14,nameY:27,nameLineHeight:21,metaY:126,badgeY:150} as const;
 export type TreePerson = {id:string;name:string;birthYear:number|null;samadhiYear:number|null;sourceOnly?:boolean;presence?:"location"|"catalogue"|"source"|"none"};
 export type TreeClaim = {id:string;from:string;to:string;kind:"guru"|"partner"|"incarnation";status:string;evidence:string;confidence:string};
 export type TreeEdge = {key:string;from:string;to:string;kind:TreeClaim["kind"];claims:TreeClaim[];secondary?:"shortcut"|"cycle"|"partner pair";lineage:number};
@@ -18,7 +18,7 @@ function pathExists(edges:Pick<TreeEdge,"from"|"to">[],from:string,to:string,ski
  while(queue.length){const id=queue.shift()!;if(id===to)return true;if(seen.has(id))continue;seen.add(id);for(const e of edges)if(e!==skip&&e.from===id)queue.push(e.to);}
  return false;
 }
-export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[]) {
+export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[],options:{compact?:boolean}={}) {
  const cfg=TREE_GEOMETRY,people=[...nodes].sort((a,b)=>a.id.localeCompare(b.id)),ids=new Set(people.map(n=>n.id));
  const map=new Map<string,TreeEdge>();
  for(const claim of claims){if(!ids.has(claim.from)||!ids.has(claim.to))continue;const key=`${claim.kind}:${claim.from}:${claim.to}`;const edge=map.get(key)||{key,from:claim.from,to:claim.to,kind:claim.kind,claims:[],lineage:0};edge.claims.push(claim);map.set(key,edge);}
@@ -56,22 +56,29 @@ export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[]) {
  const positions=new Map<string,{x:number;y:number;row:number}>();
  // Reserve outer lanes for long/secondary edges, outside every node rectangle.
  const offset=cfg.margin+Math.min(edges.length,cfg.maxLanes)*cfg.laneGap;
- let right=offset;
+ let right=offset, rowY=cfg.margin;
  for(const [row,groupIds] of [...rows].sort((a,b)=>a[0]-b[0])){
   const parentX=(id:string)=>{const parents=structural.filter(e=>groupFor(e.to)===id).map(e=>positions.get(e.from)?.x).filter((x):x is number=>x!==undefined);return parents.length?parents.reduce((a,b)=>a+b,0)/parents.length:0;};
   const skipScore=(id:string)=>structural.filter(e=>groupFor(e.from)===id).reduce((n,e)=>n+Math.max(0,depths.get(groupFor(e.to))!-row-1),0);
-  groupIds.sort((a,b)=>(row===0?skipScore(b)-skipScore(a):parentX(a)-parentX(b))||a.localeCompare(b));
-  let x=offset;
-  for(const id of groupIds){x=Math.max(x,parentX(id));for(const n of groups.get(id)!){positions.set(n.id,{x,y:cfg.margin+row*(cfg.nodeHeight+cfg.rowGap),row});x+=cfg.nodeWidth+cfg.columnGap;}right=Math.max(right,x);}
+  const birth=(id:string)=>Math.min(...groups.get(id)!.map(n=>n.birthYear??Infinity));
+  groupIds.sort((a,b)=>(row===0?skipScore(b)-skipScore(a):parentX(a)-parentX(b))||(options.compact?birth(a)-birth(b):0)||a.localeCompare(b));
+  let x=offset, column=0, band=0;
+  for(const id of groupIds){
+   const members=groups.get(id)!;
+   if(options.compact&&column&&column+members.length>cfg.compactColumns){band++;column=0;x=offset;}
+   if(!options.compact)x=Math.max(x,parentX(id));
+   for(const n of members){positions.set(n.id,{x,y:options.compact?rowY+band*(cfg.nodeHeight+cfg.rowGap):cfg.margin+row*(cfg.nodeHeight+cfg.rowGap),row});x+=cfg.nodeWidth+cfg.columnGap;column++;}right=Math.max(right,x);
+  }
+  rowY+=(band+1)*(cfg.nodeHeight+cfg.rowGap);
  }
- const width=right+offset,height=cfg.margin*2+(Math.max(0,...depths.values())+1)*(cfg.nodeHeight+cfg.rowGap);
+ const width=right+offset,height=options.compact?rowY+cfg.margin:cfg.margin*2+(Math.max(0,...depths.values())+1)*(cfg.nodeHeight+cfg.rowGap);
  const routed=edges.map((e,index)=>{
   const a=positions.get(e.from)!,b=positions.get(e.to)!;
-  const same=a.row===b.row,adjacent=same&&Math.abs(a.x-b.x)===cfg.nodeWidth+cfg.columnGap;
+  const same=a.y===b.y,adjacent=same&&Math.abs(a.x-b.x)===cfg.nodeWidth+cfg.columnGap;
   let path:string;
   if(same&&adjacent&&e.kind==="partner")path=`M ${Math.min(a.x,b.x)+cfg.nodeWidth} ${a.y+cfg.nodeHeight/2} H ${Math.max(a.x,b.x)}`;
   else if(adjacent&&e.secondary==="partner pair"){const forward=b.x>a.x;path=`M ${forward?a.x+cfg.nodeWidth:a.x} ${a.y+cfg.nodeHeight*.75} H ${forward?b.x:b.x+cfg.nodeWidth}`;}
-  else if(e.kind==="guru"&&!e.secondary&&b.row===a.row+1)path=`M ${a.x+cfg.nodeWidth/2} ${a.y+cfg.nodeHeight} C ${a.x+cfg.nodeWidth/2} ${a.y+cfg.nodeHeight+cfg.rowGap/2}, ${b.x+cfg.nodeWidth/2} ${b.y-cfg.rowGap/2}, ${b.x+cfg.nodeWidth/2} ${b.y}`;
+  else if(e.kind==="guru"&&!e.secondary&&b.row===a.row+1&&(!options.compact||b.y-a.y===cfg.nodeHeight+cfg.rowGap))path=`M ${a.x+cfg.nodeWidth/2} ${a.y+cfg.nodeHeight} C ${a.x+cfg.nodeWidth/2} ${a.y+cfg.nodeHeight+cfg.rowGap/2}, ${b.x+cfg.nodeWidth/2} ${b.y-cfg.rowGap/2}, ${b.x+cfg.nodeWidth/2} ${b.y}`;
   else {const lane=cfg.margin+(index%cfg.maxLanes)*cfg.laneGap;const fromY=a.y+cfg.nodeHeight,toY=b.y;path=`M ${a.x+cfg.nodeWidth/2} ${fromY} V ${fromY+cfg.rowGap/3} H ${lane} V ${toY-cfg.rowGap/3} H ${b.x+cfg.nodeWidth/2} V ${toY}`;}
   return {...e,path};
  });
