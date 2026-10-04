@@ -17,5 +17,8 @@ try{
  await db.saintRelationship.update({where:{id:first.id},data:{status:"archived"}});
  const refreshed=await readMuseumLiveTree([ids[1]],"spn",false);assert.equal(refreshed.layout.nodes.length,1);assert.equal(refreshed.layout.edges.length,0);
  assert.equal(await db.saintRelationship.count({where:{fromSaintId:{in:ids}}}),before);
- console.log("PASS live canonical edges, direction, review toggle, archived exclusion, refreshed corrections, absent museum evidence and read-only behavior");
+ const comparison=await readMuseumLiveTree([],"spn",true,"FAM-001",true);
+ assert.ok(comparison.layout.edges.length>1);assert.ok(comparison.sourceReferenceClaims>0);assert.ok(comparison.layout.nodes.some(n=>n.row>0));
+ assert.equal(await db.saintRelationship.count({where:{fromSaintId:{in:ids}}}),before);
+ console.log("PASS source comparison and live canonical edges, direction, review toggle, archived exclusion, refreshed corrections, absent museum evidence and read-only behavior");
 }finally{await db.saint.deleteMany({where:{id:{in:ids}}});await db.$disconnect();}

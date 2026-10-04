@@ -324,3 +324,9 @@ to labeled node outlines/badges. Never reuse a lineage color to imply relic pres
 Use fit/zoom, an internally scrolling viewport, keyboard-activatable nodes, and an
 alternative text list. Keep evidence and secondary shortcuts inspectable. Layout
 changes must preserve the regression cases in `museum-tree-layout.test.ts`.
+
+Each live family uses the existing triangle disclosure panel, auto-loading on first
+open and allowing multiple expanded trees. Keep unresolved families visible.
+Label preserved-export connections as reference evidence, distinguish unlinked
+source identities from museum absence, and hide shortcut controls when no shortcut
+exists. Source comparison regressions live in `museum-tree-source.test.ts`.
