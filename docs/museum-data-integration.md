@@ -876,3 +876,19 @@ connection in addition to A-to-B-to-C. Isolated nodes are explicitly reported as
 incomplete relationship coverage. Tests use all four original Gaudiya SVG families;
 the preserved Gaudiya Math fixture produces 16 nodes and 18 distinct connections.
 The exact production import coverage still requires a separate data audit.
+
+### Readable tree workspace refinement
+
+The main live comparison list now mirrors section reference families where present
+(four for Gaudiya). Additional same-section groups and individual seeds remain
+available under a disclosure. The previous long list was built from all section
+families plus ungrouped saints, not from a global family query. An explicit section
+membership intersection guards the option builder.
+
+Trees open at readable size instead of shrinking the entire graph to fit. Compact
+peer rows, optional wide layout, Fit overview, accurate zoom increments from the
+fitted scale, and a full-screen native dialog share the same component in both
+museums. Date ordering remains secondary to lineage; partners stay adjacent and
+wrapping does not move disciples above their teachers. This is a visual layout,
+not a timeline or a change to relationship data. Extended diagram instructions
+are expandable. No schema, API or database changes are required.

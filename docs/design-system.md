@@ -330,3 +330,17 @@ open and allowing multiple expanded trees. Keep unresolved families visible.
 Label preserved-export connections as reference evidence, distinguish unlinked
 source identities from museum absence, and hide shortcut controls when no shortcut
 exists. Source comparison regressions live in `museum-tree-source.test.ts`.
+
+Tree text starts at normal reading size (1rem names, 0.875rem supporting labels),
+with Fit overview as an explicit zoom-out action. Geometry grows with those type
+sizes. Compact mode wraps peer groups into three-card bands, ordering known birth
+dates within parent branches, retaining partner adjacency and keeping subsequent
+lineage generations below the whole preceding band. It is not a chronological
+scale; missing dates are not invented. The original wide arrangement remains
+available by disabling Compact rows. Use the shared full-screen native dialog for
+an immersive workspace; retain Escape, focus restoration and saint detail dialogs.
+
+Where original SVG references exist, show those section families first. Keep other
+same-section families and individual seeds in an additional disclosure. Museums
+without SVG references show multi-member families first. Option construction must
+intersect family rows with the current section's placements.
