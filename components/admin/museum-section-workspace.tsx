@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import {MuseumArrangementIndicator,MuseumArrangementLegend} from "./museum-arrangement-indicator";
 import {MuseumLiveTrees} from "./museum-live-trees";
 import type { Route } from "next";
 import { useMemo, useState, type ReactNode } from "react";
@@ -79,6 +80,7 @@ export function MuseumSectionWorkspace({
             <div>
               <div className="eyebrow">Museum section</div>
               <h1>{section.name}</h1>
+              <MuseumArrangementLegend/>
               <div className="museum-admin-hero__stats" aria-label="Section counts">
                 <Metric label="Saints" value={section.total} />
                 <Metric label="Primary" value={section.featured} />
@@ -351,7 +353,7 @@ function PrimarySaintCard({
           {affiliated.map((candidate) => <li key={candidate.id}><SaintButton row={candidate} onSaintClick={onSaintClick} /></li>)}
         </ul>
       ) : null}
-      {row.placementState ? <small className="museum-card-status">{row.arrangement?.status || "Proposed"}</small> : null}
+      {row.placementState ? <MuseumArrangementIndicator className="museum-card-status" status={row.arrangement?.status} name={row.name} onClick={()=>onSaintClick(row.id)}/> : null}
     </article>
   );
 }
@@ -466,7 +468,7 @@ function TertiaryCard({
       <strong><SaintButton row={row} onSaintClick={onSaintClick} showStatus={false} /></strong>
       <span>{placeLabel}</span>
 
-      {row.placementState ? <small className="museum-card-status">{row.arrangement?.status || "Proposed"}</small> : null}
+      {row.placementState ? <MuseumArrangementIndicator className="museum-card-status" status={row.arrangement?.status} name={row.name} onClick={()=>onSaintClick(row.id)}/> : null}
     </article>
   );
 }
@@ -476,7 +478,7 @@ function SaintButton({ onSaintClick, row, showStatus = true }: { onSaintClick: (
     <span className="museum-saint-summary">
       <button className="museum-saint-link" onClick={() => onSaintClick(row.id)} type="button">{row.name}</button>
       {row.needsResearch ? <button type="button" className="museum-research-indicator" aria-label={`Research needed for ${row.name}: open details`} title="Needs research — open details" onClick={() => onSaintClick(row.id)}><CircleAlert aria-hidden="true" size={16} /></button> : null}
-      {showStatus && row.placementState ? <small className="museum-placement-status">{row.arrangement?.status || "Proposed"}</small> : null}
+      {showStatus && row.placementState ? <MuseumArrangementIndicator className="museum-placement-status" status={row.arrangement?.status} name={row.name} onClick={()=>onSaintClick(row.id)}/> : null}
     </span>
   );
 }

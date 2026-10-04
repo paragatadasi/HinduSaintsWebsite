@@ -981,3 +981,24 @@ page/dialog scrolls as a whole. Full-screen exploration still provides zoom.
 Navigation category headings are larger, subtitles removed, Section overview moved
 under proposals, and Browse sections begins collapsed. The shared design applies
 to both museums. Mobile interaction design follows this MVP release separately.
+
+### Family orientation and placement symbols (5 October 2026)
+
+SPN and Vrindavan share an overview/detail tree explorer. The whole-family map stays
+unwrapped and the focused neighborhood shows explicit direct relationship groups.
+Museum-record presence and selected-saint context remain distinct. Unknown or
+unlinked identities must not be presented as physically absent. Source inventory
+means imported inventory evidence, not a current shelf; this explanation is retained
+in details instead of repeated on every tree card. No claims are imported or approved
+by changing focus, and solid lines do not imply reviewed status.
+
+Family-member and saint placement labels are replaced with accessible clock/list/check
+indicators for Proposed/Planned/Implemented. Tapping an indicator opens the same saint
+overview with its readable placement status. Family cards continue to show per-saint
+status; there is no fabricated aggregate status for a mixed family.
+
+Verification covers direction, reciprocal claims, partner constraints, cycles,
+shortcuts, disconnected nodes, neighborhood grouping, overview generation rows and
+source identity safeguards. Browser checks use a temporary local Gaudiya fixture,
+including narrow viewport selection and full-screen controls. The fixture is removed
+before release; authenticated production data still needs release smoke verification.
