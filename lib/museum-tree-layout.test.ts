@@ -20,3 +20,16 @@ test("museum evidence and input order do not change geometry",()=>{
  const people=nodes("a","b","c","d"),edges=[edge("a","c"),edge("b","d"),edge("c","d","incarnation")];const a=layoutMuseumTree(people,edges),b=layoutMuseumTree([...people].reverse().map(n=>({...n,presence:"source" as const})),[...edges].reverse());assert.deepEqual(a.nodes.map(n=>[n.id,n.x,n.y]),b.nodes.map(n=>[n.id,n.x,n.y]));for(const n of a.nodes)for(const m of a.nodes)if(n.id!==m.id&&n.row===m.row)assert.ok(Math.abs(n.x-m.x)>=TREE_GEOMETRY.nodeWidth);
 });
 test("long unbroken names stay bounded",()=>{const lines=treeNameLines("A".repeat(200));assert.equal(lines.length,4);assert.ok(lines.every(l=>l.length<=30));assert.match(lines[3],/…$/);});
+
+test("compact peers wrap chronologically without flattening lineage or separating partners",()=>{
+ const people=nodes("teacher","z","a","b","c","d","child").map(n=>({...n,birthYear:({z:1800,a:1810,b:1820,c:1830,d:1840} as Record<string,number>)[n.id]??null}));
+ const claims=[...['z','a','b','c','d'].map(id=>edge('teacher',id)),edge('c','d','partner'),edge('a','child')];
+ const compact=layoutMuseumTree(people,claims,{compact:true}),wide=layoutMuseumTree(people,claims);
+ const byId=new Map(compact.nodes.map(n=>[n.id,n]));
+ assert.ok(compact.width<wide.width);
+ assert.ok(byId.get('z')!.x<byId.get('a')!.x);
+ assert.equal(byId.get('c')!.y,byId.get('d')!.y);
+ assert.ok(byId.get('child')!.y>Math.max(...['z','a','b','c','d'].map(id=>byId.get(id)!.y)));
+ for(const n of compact.nodes)for(const m of compact.nodes)if(n.id!==m.id)assert.ok(Math.abs(n.x-m.x)>=TREE_GEOMETRY.nodeWidth||Math.abs(n.y-m.y)>=TREE_GEOMETRY.nodeHeight);
+ assert.deepEqual(compact.nodes.map(n=>[n.id,n.x,n.y]),layoutMuseumTree([...people].reverse(),[...claims].reverse(),{compact:true}).nodes.map(n=>[n.id,n.x,n.y]));
+});

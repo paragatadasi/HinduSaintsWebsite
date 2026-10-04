@@ -368,8 +368,9 @@
  --color-tree-partner: #c77599;
  --color-tree-incarnation: #479778;
  --height-museum-tree-viewport: 70vh;
- --font-size-tree-name: 13px;
- --font-size-tree-meta: 11px;
+ --height-museum-tree-min: 16rem;
+ --font-size-tree-name: 1rem;
+ --font-size-tree-meta: 0.875rem;
  --width-tree-edge: 2.4px;
  --width-tree-node: 1.7px;
  --width-tree-presence: 3px;
