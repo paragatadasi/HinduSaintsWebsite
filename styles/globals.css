@@ -11319,3 +11319,8 @@ button.museum-search-result { text-align: start; font: inherit; cursor: pointer;
 .museum-admin-nav__group-heading > span > svg { width: var(--space-4); height: var(--space-4); }
 .museum-admin-nav__museum-switch { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .museum-admin-nav nav a[aria-current] { background: color-mix(in srgb, var(--color-gold) 12%, var(--color-surface)); border-color: var(--color-interactive-border); color: var(--color-text); }
+
+.museum-admin-nav__group--primary > .museum-admin-nav__group-heading strong { font-size: var(--font-size-museum-nav-heading); }
+.museum-live-tree-viewport--inline { overflow: visible; max-height: none; border: 0; }
+.museum-live-tree-viewport--inline .museum-live-tree { max-width: 100%; height: auto; }
+.museum-tree-node--selected rect { stroke: var(--color-tree-selected); stroke-width: var(--width-tree-presence); stroke-dasharray: none; fill: color-mix(in srgb, var(--color-tree-selected) 20%, var(--color-surface)); }

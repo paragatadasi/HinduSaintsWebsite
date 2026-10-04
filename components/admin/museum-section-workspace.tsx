@@ -4,7 +4,7 @@ import Link from "next/link";
 import {MuseumLiveTrees} from "./museum-live-trees";
 import type { Route } from "next";
 import { useMemo, useState, type ReactNode } from "react";
-import { AlertTriangle, CheckCircle2, MapPin, Search, CircleAlert, TreePine, Triangle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, MapPin, Search, CircleAlert, TreePine } from "lucide-react";
 import type { MuseumFamilyGroup, MuseumSaintPlacement, MuseumSection, MuseumTier } from "@/lib/museum-proposals";
 
 import { MuseumSaintDialog } from "@/components/admin/museum-saint-dialog";
@@ -63,9 +63,6 @@ export function MuseumSectionWorkspace({
     .filter((row) => !researchOnly || row.needsResearch)
     .sort(sortSaints);
   const tertiaryByLocation = groupTertiaryByLocation(tertiaryRows);
-  const treeFamilies = [...section.primaryGroups, ...section.secondaryOnlyGroups, ...section.tertiaryGroups]
-    .filter((family, index, families) => family.treeFile && families.findIndex((candidate) => candidate.key === family.key) === index)
-    .sort((a, b) => b.rows.length - a.rows.length || a.label.localeCompare(b.label));
   const maxDistribution = Math.max(section.featured, section.secondary, section.tertiary, 1);
 
   return (
@@ -135,31 +132,6 @@ export function MuseumSectionWorkspace({
               />
             </div>
           </section>
-
-          {treeFamilies.length ? (
-            <section className="museum-admin-panel">
-              <div className="museum-admin-section-heading">
-                <div>
-                  <div className="museum-admin-kicker">Family trees</div>
-                  <h2>Original relationship trees in this section</h2><p>These diagrams are reference exports; current relationships appear in saint details.</p>
-                </div>
-              </div>
-              <div className="museum-tree-grid">
-                {treeFamilies.map((family) => (
-                  <details className="museum-tree-panel" key={family.key}>
-                    <summary>
-                      <span className="museum-tree-panel__title">
-                        {family.label}
-                        <Triangle aria-hidden="true" className="museum-tree-panel__toggle" />
-                      </span>
-                      <small>{family.rows.length} saints</small>
-                    </summary>
-                    <img alt={`${family.label} relationship tree`} src={`/museumadmin/family-tree/${family.treeFile}`} />
-                  </details>
-                ))}
-              </div>
-            </section>
-          ) : null}
 
           {!originalView ? <MuseumLiveTrees key={section.slug} section={section} museum={vrindavanEditing?"vrindavan":"spn"}/> : null}
 

@@ -958,3 +958,26 @@ omitted without that capability. Vrindavan layout/page share request-local React
 cache deduplication through `getVrindavanWorkspaceData`; there is no persistent
 cache or cross-museum data mixing. Expected unavailable inventory shows a concise
 navigation message. No schema or data mutation is introduced.
+
+### Curator tree MVP (5 October 2026)
+
+The old SVG section is removed from section pages; live relationship trees are now
+the primary model. Family choices require multiple members in the current section;
+ungrouped individuals and singleton groups are omitted. Opening a family with no
+eligible connections reports that absence instead of drawing unconnected boxes.
+Diagrams filter isolated nodes and require a real edge joining distinct saints.
+
+Shared MuseumSaintDialog now loads the protected relationship API on opening and
+places the connected tree between biography and placement. The selected saint is
+highlighted, and unrelated disconnected components are excluded. Canonical saint
+IDs are preferred, with explicit source IDs for unlinked reference identities.
+Both section and overall-search overview cards reuse this integration; failed tree
+loads offer Retry without blocking placement controls. No relationship write or
+source approval is introduced.
+
+Inline trees use tighter compact geometry, width-aware peer bands, proportional
+width fitting and intrinsic full height. Their own scrollbars are removed; the
+page/dialog scrolls as a whole. Full-screen exploration still provides zoom.
+Navigation category headings are larger, subtitles removed, Section overview moved
+under proposals, and Browse sections begins collapsed. The shared design applies
+to both museums. Mobile interaction design follows this MVP release separately.
