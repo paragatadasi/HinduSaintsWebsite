@@ -1,5 +1,7 @@
 // Shared layout configuration: SVG coordinates, independent of museum or theme.
 export const TREE_GEOMETRY = {nodeWidth:300,nodeHeight:166,columnGap:100,rowGap:110,margin:70,laneGap:12,maxLanes:20,nameChars:30,nameLines:4,compactColumns:3,nameX:14,nameY:27,nameLineHeight:21,metaY:126,badgeY:150} as const;
+export const TREE_COMPACT_GEOMETRY={columnGap:30,rowGap:60,margin:20,laneGap:4,maxLanes:12} as const;
+export function treeColumnsForWidth(width:number){const c=TREE_COMPACT_GEOMETRY,g=TREE_GEOMETRY;return Math.max(1,Math.min(g.compactColumns,Math.floor((width-c.margin*2-c.maxLanes*c.laneGap+c.columnGap)/(g.nodeWidth+c.columnGap))));}
 export type TreePerson = {id:string;name:string;birthYear:number|null;samadhiYear:number|null;sourceOnly?:boolean;presence?:"location"|"catalogue"|"source"|"none"};
 export type TreeClaim = {id:string;from:string;to:string;kind:"guru"|"partner"|"incarnation";status:string;evidence:string;confidence:string};
 export type TreeEdge = {key:string;from:string;to:string;kind:TreeClaim["kind"];claims:TreeClaim[];secondary?:"shortcut"|"cycle"|"partner pair";lineage:number};
@@ -18,8 +20,8 @@ function pathExists(edges:Pick<TreeEdge,"from"|"to">[],from:string,to:string,ski
  while(queue.length){const id=queue.shift()!;if(id===to)return true;if(seen.has(id))continue;seen.add(id);for(const e of edges)if(e!==skip&&e.from===id)queue.push(e.to);}
  return false;
 }
-export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[],options:{compact?:boolean}={}) {
- const cfg=TREE_GEOMETRY,people=[...nodes].sort((a,b)=>a.id.localeCompare(b.id)),ids=new Set(people.map(n=>n.id));
+export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[],options:{compact?:boolean;columns?:number}={}) {
+ const cfg=options.compact?{...TREE_GEOMETRY,...TREE_COMPACT_GEOMETRY}:TREE_GEOMETRY,people=[...nodes].sort((a,b)=>a.id.localeCompare(b.id)),ids=new Set(people.map(n=>n.id));
  const map=new Map<string,TreeEdge>();
  for(const claim of claims){if(!ids.has(claim.from)||!ids.has(claim.to))continue;const key=`${claim.kind}:${claim.from}:${claim.to}`;const edge=map.get(key)||{key,from:claim.from,to:claim.to,kind:claim.kind,claims:[],lineage:0};edge.claims.push(claim);map.set(key,edge);}
  const edges=[...map.values()].sort((a,b)=>a.key.localeCompare(b.key));
@@ -65,13 +67,13 @@ export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[],options:{
   let x=offset, column=0, band=0;
   for(const id of groupIds){
    const members=groups.get(id)!;
-   if(options.compact&&column&&column+members.length>cfg.compactColumns){band++;column=0;x=offset;}
+   if(options.compact&&column&&column+members.length>(options.columns??cfg.compactColumns)){band++;column=0;x=offset;}
    if(!options.compact)x=Math.max(x,parentX(id));
    for(const n of members){positions.set(n.id,{x,y:options.compact?rowY+band*(cfg.nodeHeight+cfg.rowGap):cfg.margin+row*(cfg.nodeHeight+cfg.rowGap),row});x+=cfg.nodeWidth+cfg.columnGap;column++;}right=Math.max(right,x);
   }
   rowY+=(band+1)*(cfg.nodeHeight+cfg.rowGap);
  }
- const width=right+offset,height=options.compact?rowY+cfg.margin:cfg.margin*2+(Math.max(0,...depths.values())+1)*(cfg.nodeHeight+cfg.rowGap);
+ const width=options.compact?right-cfg.columnGap+cfg.margin:right+offset,height=options.compact?rowY+cfg.margin:cfg.margin*2+(Math.max(0,...depths.values())+1)*(cfg.nodeHeight+cfg.rowGap);
  const routed=edges.map((e,index)=>{
   const a=positions.get(e.from)!,b=positions.get(e.to)!;
   const same=a.y===b.y,adjacent=same&&Math.abs(a.x-b.x)===cfg.nodeWidth+cfg.columnGap;
@@ -91,4 +93,13 @@ export function treeNameLines(name:string) {
  for(const word of words){if(line&&(line+" "+word).length>TREE_GEOMETRY.nameChars){lines.push(line);line=word;}else line+=(line?" ":"")+word;}
  if(line)lines.push(line);
  return lines.length>TREE_GEOMETRY.nameLines?[...lines.slice(0,TREE_GEOMETRY.nameLines-1),lines[TREE_GEOMETRY.nameLines-1].slice(0,-1)+"…"]:lines;
+}
+
+// Diagrams contain actual connections only; saint cards show that saint's component.
+export function connectedTreeGraph(graph:TreeGraph,focus?:string):TreeGraph {
+ const ids=new Set(graph.nodes.map(n=>n.id));const edges=graph.edges.filter(e=>e.from!==e.to&&ids.has(e.from)&&ids.has(e.to));
+ const connected=new Set<string>();
+ if(focus){const queue=[focus];while(queue.length){const id=queue.shift()!;if(connected.has(id))continue;connected.add(id);for(const e of edges){if(e.from===id)queue.push(e.to);if(e.to===id)queue.push(e.from);}}}else for(const e of edges){connected.add(e.from);connected.add(e.to);}
+ const kept=edges.filter(e=>connected.has(e.from)&&connected.has(e.to));
+ return {nodes:kept.length?graph.nodes.filter(n=>connected.has(n.id)):[],edges:kept};
 }

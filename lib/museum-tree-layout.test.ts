@@ -1,6 +1,6 @@
 import {test} from "node:test";
 import assert from "node:assert/strict";
-import {layoutMuseumTree,normalizeTreeClaims,treeNameLines,TREE_GEOMETRY,type TreePerson,type TreeClaim} from "./museum-tree-layout";
+import {connectedTreeGraph,treeColumnsForWidth,layoutMuseumTree,normalizeTreeClaims,treeNameLines,TREE_GEOMETRY,type TreePerson,type TreeClaim} from "./museum-tree-layout";
 const nodes=(...ids:string[]):TreePerson[]=>ids.map(id=>({id,name:id,birthYear:null,samadhiYear:null}));
 const edge=(from:string,to:string,kind:TreeClaim["kind"]="guru"):TreeClaim=>({id:from+to+kind,from,to,kind,status:"published",evidence:"certain",confidence:"high"});
 test("reciprocal claims share a direction and preserve evidence",()=>{
@@ -32,4 +32,15 @@ test("compact peers wrap chronologically without flattening lineage or separatin
  assert.ok(byId.get('child')!.y>Math.max(...['z','a','b','c','d'].map(id=>byId.get(id)!.y)));
  for(const n of compact.nodes)for(const m of compact.nodes)if(n.id!==m.id)assert.ok(Math.abs(n.x-m.x)>=TREE_GEOMETRY.nodeWidth||Math.abs(n.y-m.y)>=TREE_GEOMETRY.nodeHeight);
  assert.deepEqual(compact.nodes.map(n=>[n.id,n.x,n.y]),layoutMuseumTree([...people].reverse(),[...claims].reverse(),{compact:true}).nodes.map(n=>[n.id,n.x,n.y]));
+});
+
+test("only actual connected saints appear, and saint context stays in its component",()=>{
+ const graph=layoutMuseumTree(nodes('a','b','c','d','alone'),[edge('a','b'),edge('c','d')]);
+ assert.equal(connectedTreeGraph(graph).nodes.length,4);
+ assert.deepEqual(connectedTreeGraph(graph,'a').nodes.map(n=>n.id),['a','b']);
+ assert.equal(connectedTreeGraph(graph,'alone').edges.length,0);
+ assert.equal(connectedTreeGraph(layoutMuseumTree(nodes('a','b'),[])).nodes.length,0);
+});
+test("compact columns fit a desktop card and tighten unused horizontal spacing",()=>{
+ const width=1050, columns=treeColumnsForWidth(width);const graph=layoutMuseumTree(nodes('a','b','c','d'),[edge('a','b'),edge('a','c'),edge('a','d')],{compact:true,columns});assert.ok(graph.width<=width);assert.equal(columns,3);assert.equal(treeColumnsForWidth(750),2);
 });

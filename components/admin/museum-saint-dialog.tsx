@@ -1,4 +1,5 @@
 "use client";
+import {MuseumSaintTree} from "./museum-live-trees";
 import {MuseumArrangementEditor} from "@/components/admin/museum-arrangement-editor";
 import {MuseumDisplayMembershipEditor} from "@/components/admin/museum-display-membership-editor";
 import Link from "next/link";
@@ -29,6 +30,7 @@ export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectio
   return (
     <MuseumDetailDialog titleId={titleId} kicker="Saint overview" closeLabel="Close saint overview" onClose={onClose}>
       <MuseumSaintProfile profile={profile || fallback} titleId={titleId} />
+      <MuseumSaintTree sourceId={row.sourceRecordId||row.id} saintId={row.saintId} familyKey={row.curatorialFamily||row.familyId||undefined} museum={sectionHref?.startsWith("/vrindavanadmin")?"vrindavan":"spn"} name={row.name}/>
       {row.needsResearch ? <p className="museum-research-note">Needs research. Review the proposal notes and source details below before planning this placement.</p> : null}
       {relationships.length ? <section className="museum-saint-review-section">
         <h3>Relationships</h3>
