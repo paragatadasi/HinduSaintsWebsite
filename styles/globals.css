@@ -11324,3 +11324,39 @@ button.museum-search-result { text-align: start; font: inherit; cursor: pointer;
 .museum-live-tree-viewport--inline { overflow: visible; max-height: none; border: 0; }
 .museum-live-tree-viewport--inline .museum-live-tree { max-width: 100%; height: auto; }
 .museum-tree-node--selected rect { stroke: var(--color-tree-selected); stroke-width: var(--width-tree-presence); stroke-dasharray: none; fill: color-mix(in srgb, var(--color-tree-selected) 20%, var(--color-surface)); }
+
+/* Whole-family orientation and a readable neighborhood, shared across museums. */
+.museum-tree-edge--uncertain, .museum-tree-edge--partner, .museum-tree-edge--incarnation { stroke-dasharray: none; }
+.museum-tree-node--source rect, .museum-tree-node--none rect { stroke-dasharray: none; }
+.museum-tree-overview { border: 1px solid var(--color-border); padding: var(--space-3); }
+.museum-tree-map { display: block; width: 100%; height: var(--height-tree-overview); background: var(--color-bg); }
+.museum-tree-map .museum-tree-edge { vector-effect: non-scaling-stroke; }
+.museum-tree-map-node { cursor: pointer; }
+.museum-tree-map-node rect { fill: var(--color-bg); stroke: var(--color-muted); stroke-width: 1px; vector-effect: non-scaling-stroke; rx: var(--radius-sm); }
+.museum-tree-map-node--present rect { fill: color-mix(in srgb, var(--color-accent) 30%, var(--color-bg)); }
+.museum-tree-map-node--visible rect { stroke: var(--color-text); stroke-width: 2px; }
+.museum-tree-map-node--focus rect, .museum-tree-map-node:focus rect { fill: var(--color-accent); stroke: var(--color-text); stroke-width: 3px; }
+.museum-tree-map-node--selected rect { stroke: var(--color-tree-selected); stroke-width: 3px; }
+.museum-tree-people { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,var(--width-tree-person)),1fr)); gap: var(--space-3); }
+.museum-tree-person { display: grid; align-content: start; gap: var(--space-2); padding: var(--space-3); border: 1px solid var(--color-border); background: var(--color-surface); font-size: var(--font-size-tree-name); }
+.museum-tree-person > button { text-align: left; min-height: var(--height-tree-touch); }
+.museum-tree-person > small { color: var(--color-muted); }
+.museum-tree-person--present { border-inline-start: var(--width-tree-presence) solid var(--color-accent); }
+.museum-tree-person--current { border-color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface)); }
+.museum-tree-person__details { font-size: var(--font-size-tree-meta); }
+.museum-tree-neighborhood { display: grid; gap: var(--space-3); }
+.museum-tree-neighborhood h4, .museum-tree-neighborhood h5 { margin-block: var(--space-2); }
+.museum-tree-direction { text-align: center; margin: var(--space-2); color: var(--color-accent); }
+.museum-tree-picker { display: grid; gap: var(--space-2); }
+.museum-tree-picker select { width: 100%; min-width: 0; }
+
+.museum-arrangement-indicator { display: inline-flex; align-items: center; justify-content: center; min-width: var(--size-control); min-height: var(--size-control); padding: var(--space-1); border: 0; background: transparent; color: var(--color-muted); cursor: pointer; }
+.museum-arrangement-indicator svg, .museum-arrangement-legend svg { width: var(--space-4); height: var(--space-4); flex-shrink: 0; }
+.museum-arrangement-indicator:hover, .museum-arrangement-indicator:focus-visible { color: var(--color-accent); }
+.museum-arrangement-legend { display: flex; flex-wrap: wrap; gap: var(--space-4); color: var(--color-muted); font-size: var(--font-size-tree-meta); }
+.museum-arrangement-legend > span { display: inline-flex; align-items: center; gap: var(--space-2); }
+.museum-saint-summary > .museum-arrangement-indicator { grid-column: 3; grid-row: 1; align-self: start; }
+.museum-tree-picker select { min-height: var(--size-control); padding: var(--space-2); color: var(--color-text); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); font: inherit; }
+
+.museum-saint-summary { grid-template-columns: minmax(0, 1fr) auto auto; }
+@media (max-width: 640px) { .museum-tree-map { height: var(--height-tree-overview-mobile); } }

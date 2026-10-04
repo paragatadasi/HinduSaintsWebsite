@@ -1,5 +1,5 @@
 // Shared layout configuration: SVG coordinates, independent of museum or theme.
-export const TREE_GEOMETRY = {nodeWidth:300,nodeHeight:166,columnGap:100,rowGap:110,margin:70,laneGap:12,maxLanes:20,nameChars:30,nameLines:4,compactColumns:3,nameX:14,nameY:27,nameLineHeight:21,metaY:126,badgeY:150} as const;
+export const TREE_GEOMETRY = {nodeWidth:300,nodeHeight:116,columnGap:60,rowGap:70,margin:40,laneGap:12,maxLanes:20,nameChars:30,nameLines:4,compactColumns:3,nameX:14,nameY:22,nameLineHeight:18,metaY:102,badgeY:110} as const;
 export const TREE_COMPACT_GEOMETRY={columnGap:30,rowGap:60,margin:20,laneGap:4,maxLanes:12} as const;
 export function treeColumnsForWidth(width:number){const c=TREE_COMPACT_GEOMETRY,g=TREE_GEOMETRY;return Math.max(1,Math.min(g.compactColumns,Math.floor((width-c.margin*2-c.maxLanes*c.laneGap+c.columnGap)/(g.nodeWidth+c.columnGap))));}
 export type TreePerson = {id:string;name:string;birthYear:number|null;samadhiYear:number|null;sourceOnly?:boolean;presence?:"location"|"catalogue"|"source"|"none"};
@@ -102,4 +102,10 @@ export function connectedTreeGraph(graph:TreeGraph,focus?:string):TreeGraph {
  if(focus){const queue=[focus];while(queue.length){const id=queue.shift()!;if(connected.has(id))continue;connected.add(id);for(const e of edges){if(e.from===id)queue.push(e.to);if(e.to===id)queue.push(e.from);}}}else for(const e of edges){connected.add(e.from);connected.add(e.to);}
  const kept=edges.filter(e=>connected.has(e.from)&&connected.has(e.to));
  return {nodes:kept.length?graph.nodes.filter(n=>connected.has(n.id)):[],edges:kept};
+}
+
+// Direct relationships stay explicit in the readable view; no inferred kinship.
+export function treeNeighborhood(graph:TreeGraph,focus?:string) {
+ const definitions=[{key:"teachers",label:"Teachers",kind:"guru",incoming:true},{key:"disciples",label:"Disciples",kind:"guru",incoming:false},{key:"partners",label:"Partners",kind:"partner",incoming:null},{key:"incarnations",label:"Incarnation connections",kind:"incarnation",incoming:null}] as const;
+ return definitions.map(group=>{const ids=new Set(graph.edges.filter(e=>e.kind===group.kind&&(group.incoming===null?e.from===focus||e.to===focus:group.incoming?e.to===focus:e.from===focus)).map(e=>e.from===focus?e.to:e.from));return {...group,people:graph.nodes.filter(n=>ids.has(n.id)).sort((a,b)=>(a.birthYear??Infinity)-(b.birthYear??Infinity)||a.name.localeCompare(b.name))};}).filter(g=>g.people.length);
 }
