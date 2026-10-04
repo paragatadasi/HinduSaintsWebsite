@@ -1,6 +1,6 @@
 // Shared layout configuration: SVG coordinates, independent of museum or theme.
 export const TREE_GEOMETRY = {nodeWidth:260,nodeHeight:132,columnGap:100,rowGap:110,margin:70,laneGap:12,maxLanes:20,nameChars:30,nameLines:4} as const;
-export type TreePerson = {id:string;name:string;birthYear:number|null;samadhiYear:number|null;presence?:"location"|"catalogue"|"source"|"none"};
+export type TreePerson = {id:string;name:string;birthYear:number|null;samadhiYear:number|null;sourceOnly?:boolean;presence?:"location"|"catalogue"|"source"|"none"};
 export type TreeClaim = {id:string;from:string;to:string;kind:"guru"|"partner"|"incarnation";status:string;evidence:string;confidence:string};
 export type TreeEdge = {key:string;from:string;to:string;kind:TreeClaim["kind"];claims:TreeClaim[];secondary?:"shortcut"|"cycle"|"partner pair";lineage:number};
 export type TreeGraph = {nodes:TreePerson[];edges:TreeEdge[]};

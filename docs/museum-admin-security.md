@@ -72,3 +72,9 @@ Seed count, museum key, traversal depth, nodes and edges are bounded. The render
 uses React SVG text (no injected markup) and preserves provenance/review metadata.
 No public tree route, raw source export, database mutation or permission expansion
 is introduced. Original SVG routes retain their existing capability checks.
+
+The same protected reader may supplement a family with preserved member-snapshot
+relationship IDs as explicitly unreviewed reference claims. These are rendered
+through React text, never imported or approved, and cannot override any existing
+website relationship decision, including archived records. Unresolved identities
+remain labeled source-only nodes; name matching is prohibited.
