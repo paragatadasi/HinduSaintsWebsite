@@ -892,3 +892,19 @@ museums. Date ordering remains secondary to lineage; partners stay adjacent and
 wrapping does not move disciples above their teachers. This is a visual layout,
 not a timeline or a change to relationship data. Extended diagram instructions
 are expandable. No schema, API or database changes are required.
+
+### Shared museum navigation
+
+SPN and Vrindavan now share one sidebar component and grouped navigation model.
+Vrindavan section links use `/vrindavanadmin/sections?section=...` with its own
+working proposal counts, including zero-member destinations and the placement
+review group. Current section highlighting understands both path and query routes.
+Museum selection, curator workflows and secondary links reuse the section menu's
+visual language rather than separate unstyled link blocks.
+
+`MuseumWorkspace` checks museum access before loading navigation, and passes the
+full-catalogue capability to its navigation loader. Section readers and links are
+omitted without that capability. Vrindavan layout/page share request-local React
+cache deduplication through `getVrindavanWorkspaceData`; there is no persistent
+cache or cross-museum data mixing. Expected unavailable inventory shows a concise
+navigation message. No schema or data mutation is introduced.

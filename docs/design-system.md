@@ -344,3 +344,12 @@ Where original SVG references exist, show those section families first. Keep oth
 same-section families and individual seeds in an additional disclosure. Museums
 without SVG references show multi-member families first. Option construction must
 intersect family rows with the current section's placements.
+
+Museum sidebars use shared `MuseumNavigation` groups: Museum, Curator workspace,
+Section proposals, and More. Reuse the numbered section menu's circle/heading,
+quiet link rows, spacing and count treatment for every group. Current museum and
+current destination receive a consistent token-based highlight and aria-current;
+Vrindavan section state includes the section query parameter. Museum switching is
+compact, external workspace links follow the section list, and empty flow zones
+are omitted. Zero-member destinations remain navigable. Both museums share the
+flow-zone configuration, while counts and URLs come from their own readers.
