@@ -78,3 +78,10 @@ relationship IDs as explicitly unreviewed reference claims. These are rendered
 through React text, never imported or approved, and cannot override any existing
 website relationship decision, including archived records. Unresolved identities
 remain labeled source-only nodes; name matching is prohibited.
+
+Shared navigation checks `access_museum` before its loader runs. Section navigation
+additionally requires `view_full_saint_catalog`; restricted users receive no
+section counts or section-reader invocation. Vrindavan working data is deduplicated
+only within the authenticated request, not persistently cached across users.
+Client navigation receives only section names, slugs and counts, not placement or
+inventory payloads. Sidebar links disable speculative route prefetching.

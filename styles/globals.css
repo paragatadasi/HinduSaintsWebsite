@@ -11313,3 +11313,9 @@ button.museum-search-result { text-align: start; font: inherit; cursor: pointer;
 .museum-modal--fullscreen > .museum-live-tree-panel { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: auto; gap: var(--space-3); margin: 0; }
 .museum-modal--fullscreen .museum-live-tree-viewport { flex: 1; min-height: var(--height-museum-tree-min); max-height: none; }
 .museum-live-tree-panel > h3, .museum-live-tree-panel > p { margin-block: 0; }
+
+/* One navigation language for switching museums, curator tasks and section zones. */
+.museum-admin-nav__sections { display: grid; gap: var(--space-4); margin-top: var(--space-3); }
+.museum-admin-nav__group-heading > span > svg { width: var(--space-4); height: var(--space-4); }
+.museum-admin-nav__museum-switch { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.museum-admin-nav nav a[aria-current] { background: color-mix(in srgb, var(--color-gold) 12%, var(--color-surface)); border-color: var(--color-interactive-border); color: var(--color-text); }

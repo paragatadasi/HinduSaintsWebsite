@@ -2,7 +2,7 @@ import Link from "next/link";
 import {notFound} from "next/navigation";
 import {Search} from "lucide-react";
 import {requireCapability} from "@/lib/admin-access";
-import {readVrindavanWorkingData} from "@/lib/vrindavan-working-data";
+import {getVrindavanWorkspaceData as readVrindavanWorkingData} from "@/lib/vrindavan-workspace-data";
 import {hasCapability} from "@/lib/permissions";
 import {MuseumInventoryUnavailableError} from "@/lib/vrindavan-museum-inventory";
 import {readMuseumSaintProfiles} from "@/lib/museum-saint-profiles";
