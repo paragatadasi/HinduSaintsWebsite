@@ -856,13 +856,15 @@ The remaining Vrindavan identity phase uses read-only current review batches and
 
 Both working section pages now offer a separate **Live relationship trees** panel.
 The original protected SVG exports and their existing section remain unchanged.
-Choose a family or individual seed and explicitly load/refresh its tree. This is
+Open a collapsed family panel to automatically load its tree; multiple panels can
+remain open, with independent refresh and evidence controls. This is
 read-only; changing display membership never changes historical relationships.
 
 The shared renderer uses `SaintRelationship` edges, not family CSV membership as
 proof of a relationship. It normalizes reciprocal guru/disciple and partner claims,
 preserving review/evidence/confidence on each underlying claim. Published edges
-are the default; non-archived pending edges are opt-in. Archived saints/edges are
+are always eligible; the curator panels also include non-archived pending edges by
+default, with a checkbox to exclude them. The API itself defaults to published only. Archived saints/edges are
 excluded. Guru arrows run teacher to disciple (database `guru` points the other
 way). Only guru/disciple, partner/husband/wife and incarnation edges expand this
 first graph; loose associations do not merge families.
@@ -896,3 +898,29 @@ live corrections/review filters/archive exclusion/read-only behavior, local
 unauthenticated API rejection, and synthetic desktop/mobile diagram interaction.
 The preview fixture is not shipped. Production graph coverage still depends on
 reviewed canonical links; old exports may contain relationships not yet reviewed.
+
+### October 2026 comparison corrections
+
+All section families remain available, including families without linked website
+identities. Each panel loads only on first expansion; collapsing preserves its
+loaded result. The source comparison toggle defaults on for family panels.
+
+The first deployed reader exposed a coverage gap: SVG exports used preserved
+relationship fields, whereas the live reader queried website relationships only.
+Family membership and a correct saint count do not imply imported relationship
+coverage. Pending-edge controls cannot recover relationships never imported.
+
+The read-only comparison now also parses Masters, Disciples, Partner and Incarnation
+IDs from the preserved family-member snapshot. These connections are explicitly
+unreviewed reference evidence, not new database relationships. Unique existing
+source identity links resolve to website saints; ambiguous/unlinked records remain
+clearly marked source-only nodes with unknown museum presence. Known archived
+identities are omitted. Any existing website relationship decision between a pair,
+including archived or corrected decisions, suppresses the export connection.
+No name matching, automatic approval, imports or production backfills occur.
+
+The lineage-shortcut control appears only when shortcuts exist: a direct A-to-C
+connection in addition to A-to-B-to-C. Isolated nodes are explicitly reported as
+incomplete relationship coverage. Tests use all four original Gaudiya SVG families;
+the preserved Gaudiya Math fixture produces 16 nodes and 18 distinct connections.
+The exact production import coverage still requires a separate data audit.

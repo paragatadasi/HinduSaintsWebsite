@@ -11301,3 +11301,5 @@ button.museum-search-result { text-align: start; font: inherit; cursor: pointer;
 .museum-tree-meta { fill: var(--color-muted); font: var(--font-size-tree-meta) var(--font-sans); }
 .museum-tree-badge { fill: var(--color-accent); font: var(--font-size-tree-meta) var(--font-sans); }
 .museum-tree-node--none .museum-tree-badge { fill: var(--color-muted); }
+
+.museum-live-tree-content { padding: var(--space-4); }
