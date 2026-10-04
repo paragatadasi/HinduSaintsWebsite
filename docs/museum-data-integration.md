@@ -924,3 +924,5 @@ connection in addition to A-to-B-to-C. Isolated nodes are explicitly reported as
 incomplete relationship coverage. Tests use all four original Gaudiya SVG families;
 the preserved Gaudiya Math fixture produces 16 nodes and 18 distinct connections.
 The exact production import coverage still requires a separate data audit.
+
+Preserved family-tree claims can be reconciled into private canonical relationship candidates through `/admin/source-data/museum/family-connections`. See [the status ledger](museum-data-status.md#preserved-family-tree-connection-reconciliation-october-4) for import/evidence/review rules. The reference overlay remains read-only; deploying it does not import or approve a relationship.
