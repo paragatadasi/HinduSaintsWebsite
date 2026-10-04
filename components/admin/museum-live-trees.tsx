@@ -65,6 +65,7 @@ export function MuseumLiveTreeDiagram({data,label,highlightSaintId}:{data:Museum
  if(graph.nodes.length<2||!graph.edges.length)return null;
  return <div className="museum-live-tree-panel museum-tree-explorer admin-stack">
   <h3>{label}</h3>
+  {map.edges.some(e=>e.secondary==="cycle")?<p role="status">Conflicting teacher–disciple directions are recorded in this family. Review the connection evidence before relying on the branch order.</p>:null}
   <details ref={overview} open className="museum-tree-overview"><summary>Whole family · {graph.nodes.length} saints</summary>
    <p className="museum-filter-note">Tap a card to explore, or choose a name below.</p>
    <svg className="museum-tree-map" viewBox={`0 0 ${map.width} ${map.height}`} role="group" aria-label={`${label} whole-family map`}>
