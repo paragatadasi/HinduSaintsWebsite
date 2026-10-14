@@ -1095,6 +1095,8 @@ model InstagramItem {
   type                InstagramType           @default(unknown)
   contentType         InstagramContentType?
   captionText         String?
+  biographySlidesText String?
+  biographySlidesCount Int?
   extractedSaintName  String?
   firstPageText       String?
   firstPageMetadata   Json?
