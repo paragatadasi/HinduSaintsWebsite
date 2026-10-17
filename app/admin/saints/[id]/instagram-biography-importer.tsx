@@ -7,6 +7,7 @@ type InstagramBiographyImportPost = {
   id: string;
   label: string;
   detail?: string;
+  referenceText?: string;
 };
 
 type InstagramBiographyImporterProps = {
@@ -17,6 +18,7 @@ type InstagramBiographyImporterProps = {
 
 export function InstagramBiographyImporter({ posts, saintId, textareaId }: InstagramBiographyImporterProps) {
   const [selectedPostId, setSelectedPostId] = useState(posts[0]?.id ?? "");
+  const [references, setReferences] = useState<Record<string, string>>(() => Object.fromEntries(posts.filter((post) => post.referenceText).map((post) => [post.id, post.referenceText!])));
   const [message, setMessage] = useState<string>();
   const [error, setError] = useState<string>();
   const [isPending, startTransition] = useTransition();
@@ -46,8 +48,9 @@ export function InstagramBiographyImporter({ posts, saintId, textareaId }: Insta
           setError(result.error ?? "Could not import text from this Instagram post.");
           return;
         }
+        if (result.referenceText) setReferences((current) => ({ ...current, [selectedPostId]: result.referenceText! }));
         insertIntoBiographyEditor(textareaId, result.markdown);
-        setMessage(`Imported text from ${result.slideCount} slide${result.slideCount === 1 ? "" : "s"}. Review the draft before saving.`);
+        setMessage(`Imported text from ${result.slideCount} slide${result.slideCount === 1 ? "" : "s"}. Carousel text saved for reference. Review the draft before saving.`);
       } catch (caught) {
         setError(caught instanceof Error ? caught.message : "Could not import text from this Instagram post.");
       }
@@ -73,6 +76,13 @@ export function InstagramBiographyImporter({ posts, saintId, textareaId }: Insta
           Import text from Instagram post
         </button>
       </div>
+      {references[selectedPostId] ? (
+        <div className="form-stack__field">
+          <label htmlFor="instagram-carousel-reference">Saved carousel text</label>
+          <textarea id="instagram-carousel-reference" className="admin-reference-text" value={references[selectedPostId]} readOnly />
+          <p>This reference stays available when you edit the biography.</p>
+        </div>
+      ) : null}
       {message ? <p className="admin-notice admin-notice--success">{message}</p> : null}
       {error ? <p className="admin-notice admin-notice--warning">{error}</p> : null}
     </div>
@@ -84,6 +94,7 @@ async function readImportResponse(response: Response) {
     return await response.json() as {
       error?: string;
       markdown?: string;
+      referenceText?: string;
       slideCount?: number;
     };
   } catch {
@@ -104,5 +115,6 @@ function insertIntoBiographyEditor(textareaId: string, markdown: string) {
   const end = textarea.selectionEnd ?? textarea.value.length;
 
   textarea.setRangeText(insertion, start, end, "end");
+  textarea.dispatchEvent(new Event("input", { bubbles: true }));
   textarea.focus();
 }
