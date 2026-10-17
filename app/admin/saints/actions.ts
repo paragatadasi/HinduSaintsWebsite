@@ -1993,6 +1993,8 @@ function revalidateSaintPaths(slug: string) {
   revalidatePath("/admin");
   revalidatePath("/admin/saints");
   revalidatePath(`/admin/saints/${slug}`);
+  // Summary owns relationships and also accepts saint IDs as route parameters.
+  revalidatePath("/admin/saints/[id]/summary", "page");
   revalidatePath(`/admin/saints/${slug}/biography`);
   revalidatePath(`/admin/saints/${slug}/sources`);
 }

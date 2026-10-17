@@ -525,7 +525,7 @@ export async function AdminSaintEditorPage({
                   </div>
                 )}
               >
-                <form action={updateSaintRelationship} className="form-stack">
+                <form action={updateSaintRelationship} className="form-stack" key={relationship.updatedAt.toISOString()}>
                   <input name="relationshipId" type="hidden" value={relationship.id} />
                   <input name="saintId" type="hidden" value={saint.id} />
                   <div className="field-grid">
