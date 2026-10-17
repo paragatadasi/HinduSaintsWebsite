@@ -174,3 +174,13 @@ test("includes honorific-free and folded spellings in PostgreSQL candidate terms
   assert.ok(terms.includes("ramana"));
   assert.ok(terms.includes("maharshi"));
 });
+
+test("short fuzzy queries do not score when no token is within the allowed distance", () => {
+  const candidates: CorpusSaint[] = [
+    { id: "ramana", displayName: "Ramana Maharshi", canonicalName: "Ramana Maharshi" }
+  ];
+  for (const query of ["zzzz", "zzzzz", "export"]) {
+    assert.deepEqual(rankSaintSearchResults(candidates, query), [], query);
+  }
+  assert.equal(rankSaintSearchResults(candidates, "Ramna")[0]?.item.id, "ramana");
+});

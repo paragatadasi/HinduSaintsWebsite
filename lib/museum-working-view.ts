@@ -1,3 +1,4 @@
+import { rankMuseumPlacementSearchResults } from "./museum-search";
 import type { MuseumSourceVitrine } from "./museum-vitrine-source";
 import type { MuseumCollectionCardItem } from "./museum-collection-domain";
 import { buildMuseumView, museumSectionSlug, type MuseumSaintPlacement } from "./museum-proposals";
@@ -112,13 +113,8 @@ function currentDetails(placement: MuseumSaintPlacement, saint: CurrentMuseumSai
 }
 
 export function searchWorkingMuseumPlacements(placements: MuseumSaintPlacement[], query: string, limit = 30) {
-  const term = query.trim().toLocaleLowerCase();
-  if (!term) return [];
-  return placements.filter(row => [
-    row.name, ...(row.searchNames || []), row.section, row.sampradaya,
-    ...row.spiritualRegions, ...row.normalizedPlaces
-  ].some(value => value.toLocaleLowerCase().includes(term)))
-    .sort((a, b) => a.name.localeCompare(b.name)).slice(0, limit);
+  if (!query.trim()) return [];
+  return rankMuseumPlacementSearchResults(placements, query, limit);
 }
 
 type Relationship = {
