@@ -22,6 +22,7 @@ import { rankSaintSearchResults } from "@/lib/saint-search";
 import { compareSaintDisplayNames } from "@/lib/saint-name-sort";
 import { formatRelationshipType, getReciprocalRelationshipType } from "@/lib/saint-relationships";
 import { PUBLIC_TRADITION_STATUSES } from "@/lib/public-tradition-visibility";
+import { collectRelatedSaintDepths } from "@/lib/related-saint-network";
 
 type SaintListRow = Awaited<ReturnType<typeof getPublishedSaintRows>>[number];
 type SaintDetailRow = NonNullable<Awaited<ReturnType<typeof getPublishedSaintRowBySlug>>>;
@@ -459,12 +460,8 @@ async function getPublishedRelationshipTree(
   directRelationshipIds: string[],
   targetCount: number
 ) {
-  const depthById = new Map<string, number>();
-  let frontier = await getPublishedSaintIds(directRelationshipIds);
-  frontier.forEach((id) => depthById.set(id, 1));
-
-  for (let depth = 2; depth <= 3 && frontier.length > 0 && depthById.size < targetCount; depth += 1) {
-    const edges = await db.saintRelationship.findMany({
+  return collectRelatedSaintDepths(rootSaintId, directRelationshipIds, targetCount, getPublishedSaintIds, (frontier) =>
+    db.saintRelationship.findMany({
       where: {
         publicVisible: true,
         status: "published",
@@ -474,14 +471,8 @@ async function getPublishedRelationshipTree(
         ]
       },
       select: { fromSaintId: true, toSaintId: true }
-    });
-    const candidateIds = [...new Set(edges.flatMap(({ fromSaintId, toSaintId }) => [fromSaintId, toSaintId]))]
-      .filter((id) => id !== rootSaintId && !depthById.has(id));
-    frontier = await getPublishedSaintIds(candidateIds, targetCount - depthById.size);
-    frontier.forEach((id) => depthById.set(id, depth));
-  }
-
-  return depthById;
+    })
+  );
 }
 
 async function getPublishedSaintIds(ids: string[], take?: number) {

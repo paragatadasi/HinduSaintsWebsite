@@ -525,7 +525,7 @@ export async function AdminSaintEditorPage({
                   </div>
                 )}
               >
-                <form action={updateSaintRelationship} className="form-stack">
+                <form action={updateSaintRelationship} className="form-stack" key={relationship.updatedAt.toISOString()}>
                   <input name="relationshipId" type="hidden" value={relationship.id} />
                   <input name="saintId" type="hidden" value={saint.id} />
                   <div className="field-grid">
@@ -951,6 +951,7 @@ async function getSaint(slugOrId: string, scope: SaintCatalogScope, canReviewIns
               instagramShortcode: true,
               instagramUrl: true,
               captionText: true,
+              biographySlidesText: true,
               extractedSaintName: true,
               firstPageMetadata: true,
               firstPageText: true,
@@ -1281,7 +1282,8 @@ function getInstagramBiographyImportPosts(saint: NonNullable<Awaited<ReturnType<
       return {
         id: item.id,
         label,
-        detail: caption ? caption.slice(0, 180) : undefined
+        detail: caption ? caption.slice(0, 180) : undefined,
+        referenceText: item.biographySlidesText ?? undefined
       };
     });
 }

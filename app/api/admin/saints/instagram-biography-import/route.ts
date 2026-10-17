@@ -3,7 +3,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
-import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page-extraction";
+import { getSavedInstagramBiographySlides } from "@/lib/instagram-biography-reference";
 
 const requestSchema = z.object({
   saintId: z.string().cuid(),
@@ -11,7 +11,8 @@ const requestSchema = z.object({
 });
 
 export async function POST(request: Request) {
-  await assertCapability("edit_content");
+  await assertCapability("edit_long_form_content");
+  await assertCapability("view_instagram_review");
   const session = await auth();
   if (!session?.user?.email) {
     return NextResponse.json(
@@ -69,7 +70,8 @@ export async function POST(request: Request) {
     orderBy: { lastSeenAt: "desc" },
     select: { rawPayloadJson: true }
   });
-  const draft = await extractInstagramBiographySlidesDraft({
+  const draft = await getSavedInstagramBiographySlides({
+    instagramItemId: parsed.data.instagramItemId,
     cachedMediaAssets: link.instagramItem.mediaAssets,
     rawPayloadJson: externalRecord?.rawPayloadJson,
     thumbnailUrl: link.instagramItem.thumbnailUrl
@@ -90,6 +92,7 @@ export async function POST(request: Request) {
       "",
       `[Source Instagram post](${link.instagramItem.instagramUrl})`
     ].join("\n"),
-    slideCount: draft.slideCount
+    slideCount: draft.slideCount,
+    referenceText: draft.markdown
   });
 }

@@ -14,7 +14,7 @@ import type { Capability } from "@/lib/permissions";
 import { PUBLIC_CACHE_TAGS } from "@/lib/public-cache";
 import { parseImportedDate } from "@/lib/import-dates";
 import { acceptSaintInstagramClaim } from "@/lib/instagram-claims";
-import { extractInstagramBiographySlidesDraft } from "@/lib/instagram-first-page-extraction";
+import { getSavedInstagramBiographySlides } from "@/lib/instagram-biography-reference";
 import { getKnownPlaceScope } from "@/lib/place-taxonomy";
 import { toSlug } from "@/lib/slugs";
 import { getReciprocalRelationshipType } from "@/lib/saint-relationships";
@@ -1412,7 +1412,8 @@ export async function importBiographyTextFromInstagramPost(input: z.input<typeof
     orderBy: { lastSeenAt: "desc" },
     select: { rawPayloadJson: true }
   });
-  const draft = await extractInstagramBiographySlidesDraft({
+  const draft = await getSavedInstagramBiographySlides({
+    instagramItemId: parsed.instagramItemId,
     cachedMediaAssets: link.instagramItem.mediaAssets,
     rawPayloadJson: externalRecord?.rawPayloadJson,
     thumbnailUrl: link.instagramItem.thumbnailUrl
@@ -1436,7 +1437,8 @@ export async function importBiographyTextFromInstagramPost(input: z.input<typeof
       "",
       `[Source Instagram post](${link.instagramItem.instagramUrl})`
     ].join("\n"),
-    slideCount: draft.slideCount
+    slideCount: draft.slideCount,
+    referenceText: draft.markdown
   };
 }
 
@@ -1991,6 +1993,8 @@ function revalidateSaintPaths(slug: string) {
   revalidatePath("/admin");
   revalidatePath("/admin/saints");
   revalidatePath(`/admin/saints/${slug}`);
+  // Summary owns relationships and also accepts saint IDs as route parameters.
+  revalidatePath("/admin/saints/[id]/summary", "page");
   revalidatePath(`/admin/saints/${slug}/biography`);
   revalidatePath(`/admin/saints/${slug}/sources`);
 }
