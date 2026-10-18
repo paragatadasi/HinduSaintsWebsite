@@ -192,6 +192,7 @@ function scoreFuzzyTokenMatches(queryForms: string[], fieldForms: string[]) {
       );
     }
 
+    if (bestDistance > maximumDistance) continue;
     if (bestDistance === 1) score += 14;
     else if (bestDistance === 2) score += 8;
   }

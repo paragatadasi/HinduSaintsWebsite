@@ -11360,3 +11360,15 @@ button.museum-search-result { text-align: start; font: inherit; cursor: pointer;
 
 .museum-saint-summary { grid-template-columns: minmax(0, 1fr) auto auto; }
 @media (max-width: 640px) { .museum-tree-map { height: var(--height-tree-overview-mobile); } }
+
+/* Labeled tree with a small, unobstructed whole-family map in its upper corner. */
+.museum-tree-context-bar { display: flex; align-items: start; justify-content: space-between; gap: var(--space-3); }
+.museum-tree-selection { flex: 1; min-width: 0; display: grid; gap: var(--space-2); justify-items: start; }
+.museum-tree-selection label { width: 100%; min-width: 0; }
+.museum-tree-selection select { width: 100%; min-width: 0; }
+.museum-tree-corner-map { flex: 0 1 var(--width-tree-minimap); min-width: 0; padding: var(--space-2); border: 1px solid var(--color-border); background: var(--color-bg); }
+.museum-tree-corner-map summary { font-size: var(--font-size-tree-meta); }
+.museum-tree-minimap { display: block; width: 100%; height: var(--height-tree-minimap); }
+.museum-tree-minimap .museum-tree-edge { vector-effect: non-scaling-stroke; }
+.museum-live-tree-viewport--labeled { min-height: var(--height-museum-tree-min); max-width: 100%; }
+@media (max-width: 640px) { .museum-tree-context-bar { flex-wrap: wrap; } .museum-tree-selection { flex-basis: 100%; } .museum-tree-corner-map { margin-inline-start: auto; } }

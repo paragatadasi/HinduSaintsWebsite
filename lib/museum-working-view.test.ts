@@ -41,7 +41,8 @@ test("matched cards use canonical values and intentionally cleared fields, witho
   assert.equal(original.placements[0].name, "Export name");
   assert.equal(original.membersById.get("recA")?.Masters, "Old master");
   assert.equal(searchWorkingMuseumPlacements(view.placements, "alternate").length, 1);
-  assert.equal(searchWorkingMuseumPlacements(view.placements, "export name").length, 0);
+  // Search the obsolete token alone: the shared matcher also matches words independently.
+  assert.equal(searchWorkingMuseumPlacements(view.placements, "export").length, 0);
 });
 
 test("confirmed move appears once in its new section and leaves the original section accessible", () => {
