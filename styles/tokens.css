@@ -381,3 +381,5 @@
 :root { --height-tree-overview: 15rem; --width-tree-person: 13rem; --height-tree-touch: 2.75rem; }
 
 :root { --height-tree-overview-mobile: 8rem; }
+
+:root { --width-tree-minimap: 12rem; --height-tree-minimap: 6rem; }
