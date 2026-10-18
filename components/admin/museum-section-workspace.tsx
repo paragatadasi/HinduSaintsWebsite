@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { rankMuseumPlacementSearchResults } from "@/lib/museum-search";
 import {MuseumArrangementIndicator,MuseumArrangementLegend} from "./museum-arrangement-indicator";
 import {MuseumLiveTrees} from "./museum-live-trees";
 import type { Route } from "next";
@@ -58,11 +59,13 @@ export function MuseumSectionWorkspace({
   const standalonePrimaries = section.rows
     .filter((row) => row.tier === "Featured" && !groupedPrimaryIds.has(row.id))
     .sort(sortSaints);
-  const tertiaryRows = section.rows
-    .filter((row) => row.tier === "Tertiary")
-    .filter((row) => matchesTertiaryQuery(row, tertiaryQuery))
-    .filter((row) => !researchOnly || row.needsResearch)
-    .sort(sortSaints);
+  const tertiaryRows = rankMuseumPlacementSearchResults(
+    section.rows
+      .filter((row) => row.tier === "Tertiary")
+      .filter((row) => !researchOnly || row.needsResearch)
+      .sort(sortSaints),
+    tertiaryQuery
+  );
   const tertiaryByLocation = groupTertiaryByLocation(tertiaryRows);
   const maxDistribution = Math.max(section.featured, section.secondary, section.tertiary, 1);
 
@@ -597,13 +600,6 @@ function museumLocationLabel(value: string | undefined, fallback = "Location pen
   return parts[0];
 }
 
-function matchesTertiaryQuery(row: MuseumSaintPlacement, query: string) {
-  if (!query) return true;
-  const q = query.toLowerCase();
-  return row.name.toLowerCase().includes(q) ||
-    row.normalizedPlaces.some((place) => place.toLowerCase().includes(q)) ||
-    row.spiritualRegions.some((region) => region.toLowerCase().includes(q));
-}
 
 function primaryRank(row: MuseumSaintPlacement, memberDetails: MemberDetails) {
   if (row.isExhibitAnchor) return Number.NEGATIVE_INFINITY;
