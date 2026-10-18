@@ -6,7 +6,7 @@ import {MuseumArrangementIndicator,MuseumArrangementLegend} from "./museum-arran
 import {MuseumLiveTrees} from "./museum-live-trees";
 import type { Route } from "next";
 import { useMemo, useState, type ReactNode } from "react";
-import { AlertTriangle, CheckCircle2, MapPin, Search, CircleAlert, TreePine } from "lucide-react";
+import { AlertTriangle, CheckCircle2, MapPin, Search, TreePine } from "lucide-react";
 import type { MuseumFamilyGroup, MuseumSaintPlacement, MuseumSection, MuseumTier } from "@/lib/museum-proposals";
 
 import { MuseumSaintDialog } from "@/components/admin/museum-saint-dialog";
@@ -16,6 +16,7 @@ import type { FamilyMoveOption } from "@/lib/museum-family-move-domain";
 
 import {VrindavanProposalControls,type VrindavanEditingOptions} from "./vrindavan-proposal-controls";
 import {moveVrindavanFamilyAction,saveVrindavanFamilyArrangementAction} from "@/app/vrindavanadmin/actions";
+import { MuseumSaintSummary } from "./museum-saint-summary";
 
 // Placement editing stays in the shared review workflow.
 const anchorById: Record<string, string> = {};
@@ -310,18 +311,18 @@ function FamilyCard({
     <article className={`museum-family-card${moveControl ? " museum-family-card--movable interactive-surface" : ""}`}>
       <div className="museum-family-card__header">
         <div>
-          <h3>{isPeerGroup ? family.label : head ? <SaintButton row={head} onSaintClick={onSaintClick} /> : family.label}</h3>
+          <h3>{isPeerGroup ? family.label : head ? <MuseumSaintSummary row={head} onSaintClick={onSaintClick} /> : family.label}</h3>
           <p>{cardRows.length} saint{cardRows.length === 1 ? "" : "s"}</p>
         </div>
         {moveControl ? null : <TreePine aria-hidden="true" size={19} />}
       </div>
       <ul>
         {isPeerGroup ? featured.map((row) => (
-          <li className="museum-family-card__primary" key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>
+          <li className="museum-family-card__primary" key={row.id}><MuseumSaintSummary row={row} onSaintClick={onSaintClick} /></li>
         )) : otherPrimaries.map((row) => (
-          <li className="museum-family-card__primary" key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>
+          <li className="museum-family-card__primary" key={row.id}><MuseumSaintSummary row={row} onSaintClick={onSaintClick} /></li>
         ))}
-        {affiliated.map((row) => <li key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>)}
+        {affiliated.map((row) => <li key={row.id}><MuseumSaintSummary row={row} onSaintClick={onSaintClick} /></li>)}
       </ul>
       {moveControl}
     </article>
@@ -348,12 +349,12 @@ function PrimarySaintCard({
     <article className="museum-family-card museum-family-card--standalone-primary">
       <div className="museum-family-card__header">
         <div>
-          <h3><SaintButton row={row} onSaintClick={onSaintClick} showStatus={false} /></h3>
+          <h3><MuseumSaintSummary row={row} onSaintClick={onSaintClick} showStatus={false} /></h3>
         </div>
       </div>
       {affiliated.length ? (
         <ul>
-          {affiliated.map((candidate) => <li key={candidate.id}><SaintButton row={candidate} onSaintClick={onSaintClick} /></li>)}
+          {affiliated.map((candidate) => <li key={candidate.id}><MuseumSaintSummary row={candidate} onSaintClick={onSaintClick} /></li>)}
         </ul>
       ) : null}
       {row.placementState ? <MuseumArrangementIndicator className="museum-card-status" status={row.arrangement?.status} name={row.name} onClick={()=>onSaintClick(row.id)}/> : null}
@@ -392,7 +393,7 @@ function SecondaryFamilyCard({
         </div>
       </div>
       <ul>
-        {cardRows.map((row) => <li key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>)}
+        {cardRows.map((row) => <li key={row.id}><MuseumSaintSummary row={row} onSaintClick={onSaintClick} /></li>)}
       </ul>
       {moveControl}
     </article>
@@ -425,7 +426,7 @@ function SecondaryStandaloneCard({
         </div>
       </div>
       <ul>
-        {cardRows.map((row) => <li key={row.id}><SaintButton row={row} onSaintClick={onSaintClick} /></li>)}
+        {cardRows.map((row) => <li key={row.id}><MuseumSaintSummary row={row} onSaintClick={onSaintClick} /></li>)}
       </ul>
     </article>
   );
@@ -468,21 +469,11 @@ function TertiaryCard({
 
   return (
     <article className="museum-tertiary-card">
-      <strong><SaintButton row={row} onSaintClick={onSaintClick} showStatus={false} /></strong>
+      <strong><MuseumSaintSummary row={row} onSaintClick={onSaintClick} showStatus={false} /></strong>
       <span>{placeLabel}</span>
 
       {row.placementState ? <MuseumArrangementIndicator className="museum-card-status" status={row.arrangement?.status} name={row.name} onClick={()=>onSaintClick(row.id)}/> : null}
     </article>
-  );
-}
-
-function SaintButton({ onSaintClick, row, showStatus = true }: { onSaintClick: (id: string) => void; row: MuseumSaintPlacement; showStatus?: boolean }) {
-  return (
-    <span className="museum-saint-summary">
-      <button className="museum-saint-link" onClick={() => onSaintClick(row.id)} type="button">{row.name}</button>
-      {row.needsResearch ? <button type="button" className="museum-research-indicator" aria-label={`Research needed for ${row.name}: open details`} title="Needs research — open details" onClick={() => onSaintClick(row.id)}><CircleAlert aria-hidden="true" size={16} /></button> : null}
-      {showStatus && row.placementState ? <MuseumArrangementIndicator className="museum-placement-status" status={row.arrangement?.status} name={row.name} onClick={()=>onSaintClick(row.id)}/> : null}
-    </span>
   );
 }
 
