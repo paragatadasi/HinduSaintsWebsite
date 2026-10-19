@@ -1,5 +1,6 @@
 // Shared layout configuration: SVG coordinates, independent of museum or theme.
 export const TREE_GEOMETRY = {nodeWidth:300,nodeHeight:116,columnGap:60,rowGap:70,margin:40,laneGap:12,maxLanes:20,nameChars:30,nameLines:4,compactColumns:3,nameX:14,nameY:22,nameLineHeight:18,metaY:102,badgeY:110} as const;
+export const TREE_MOBILE_GEOMETRY={...TREE_GEOMETRY,nodeWidth:220,nodeHeight:152,nameChars:23,nameLines:6,metaY:138,columnGap:40,rowGap:54} as const;
 export const TREE_COMPACT_GEOMETRY={columnGap:30,rowGap:60,margin:20,laneGap:4,maxLanes:12} as const;
 export function treeColumnsForWidth(width:number){const c=TREE_COMPACT_GEOMETRY,g=TREE_GEOMETRY;return Math.max(1,Math.min(g.compactColumns,Math.floor((width-c.margin*2-c.maxLanes*c.laneGap+c.columnGap)/(g.nodeWidth+c.columnGap))));}
 export type TreePerson = {id:string;name:string;birthYear:number|null;samadhiYear:number|null;sourceOnly?:boolean;presence?:"location"|"catalogue"|"source"|"none"};
@@ -20,8 +21,8 @@ function pathExists(edges:Pick<TreeEdge,"from"|"to">[],from:string,to:string,ski
  while(queue.length){const id=queue.shift()!;if(id===to)return true;if(seen.has(id))continue;seen.add(id);for(const e of edges)if(e!==skip&&e.from===id)queue.push(e.to);}
  return false;
 }
-export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[],options:{compact?:boolean;columns?:number}={}) {
- const cfg=options.compact?{...TREE_GEOMETRY,...TREE_COMPACT_GEOMETRY}:TREE_GEOMETRY,people=[...nodes].sort((a,b)=>a.id.localeCompare(b.id)),ids=new Set(people.map(n=>n.id));
+export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[],options:{compact?:boolean;columns?:number;mobile?:boolean}={}) {
+ const base=options.mobile?TREE_MOBILE_GEOMETRY:TREE_GEOMETRY,cfg=options.compact?{...base,...TREE_COMPACT_GEOMETRY}:base,people=[...nodes].sort((a,b)=>a.id.localeCompare(b.id)),ids=new Set(people.map(n=>n.id));
  const map=new Map<string,TreeEdge>();
  for(const claim of claims){if(!ids.has(claim.from)||!ids.has(claim.to))continue;const key=`${claim.kind}:${claim.from}:${claim.to}`;const edge=map.get(key)||{key,from:claim.from,to:claim.to,kind:claim.kind,claims:[],lineage:0};edge.claims.push(claim);map.set(key,edge);}
  const edges=[...map.values()].sort((a,b)=>a.key.localeCompare(b.key));
@@ -87,12 +88,12 @@ export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[],options:{
  return {nodes:people.map(n=>({...n,...positions.get(n.id)!,lineage:rootIndex.get(n.id)||0,role:roots.some(r=>r.id===n.id)?"Head (inferred)":children(n.id).length?"Branch head":""})),edges:routed,width,height};
 }
 export type MuseumTreeLayout=ReturnType<typeof layoutMuseumTree>;
-export function treeNameLines(name:string) {
+export function treeNameLines(name:string,cfg:{nameChars:number;nameLines:number}=TREE_GEOMETRY) {
  const lines:string[]=[];let line="";
- const words=name.trim().split(/\s+/).flatMap(word=>word.match(new RegExp(`.{1,${TREE_GEOMETRY.nameChars}}`,"gu"))||[]);
- for(const word of words){if(line&&(line+" "+word).length>TREE_GEOMETRY.nameChars){lines.push(line);line=word;}else line+=(line?" ":"")+word;}
+ const words=name.trim().split(/\s+/).flatMap(word=>word.match(new RegExp(`.{1,${cfg.nameChars}}`,"gu"))||[]);
+ for(const word of words){if(line&&(line+" "+word).length>cfg.nameChars){lines.push(line);line=word;}else line+=(line?" ":"")+word;}
  if(line)lines.push(line);
- return lines.length>TREE_GEOMETRY.nameLines?[...lines.slice(0,TREE_GEOMETRY.nameLines-1),lines[TREE_GEOMETRY.nameLines-1].slice(0,-1)+"…"]:lines;
+ return lines.length>cfg.nameLines?[...lines.slice(0,cfg.nameLines-1),lines[cfg.nameLines-1].slice(0,-1)+"…"]:lines;
 }
 
 // Diagrams contain actual connections only; saint cards show that saint's component.
