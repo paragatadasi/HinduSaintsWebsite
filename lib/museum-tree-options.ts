@@ -9,3 +9,14 @@ export function museumTreeOptions(section:MuseumSection) {
  const keys=new Set(main.map(f=>f.key));
  return {main:main.map(option),additional:families.filter(f=>!keys.has(f.key)).map(option)};
 }
+
+export type InventoryTreeContext={familyKey?:string;sourceId?:string};
+// Exact reviewed saint IDs only. Keep distinct proposed families separate.
+export function inventoryTreeContexts(rows:MuseumSection["rows"],saintIds:string[]):Record<string,InventoryTreeContext[]>{
+ return Object.fromEntries([...new Set(saintIds)].map(id=>{
+  const matches=rows.filter(row=>row.saintId===id);
+  const contexts=new Map<string,InventoryTreeContext>();
+  for(const row of matches){const familyKey=row.curatorialFamily||row.familyId||undefined;contexts.set(familyKey||"",{familyKey,sourceId:row.sourceRecordId});}
+  return [id,contexts.size?[...contexts.values()]:[{}]];
+ }));
+}
