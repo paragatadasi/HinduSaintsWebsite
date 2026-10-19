@@ -1030,3 +1030,18 @@ bottom panel without replacing the graph or resetting its camera. Tree settings
 and source controls are collapsed by default. Both museums and saint dialogs use
 the same renderer and gesture helpers; no records or relationship claims change.
 Gesture geometry regression tests live in `museum-tree-camera.test.ts`.
+
+### Tree touch and inventory-card parity correction (19 October 2026)
+
+Vrindavan main inventory cards use `MuseumSourceInventoryCards`, separately from
+proposal search's `MuseumSaintDialog`. Inventory dialogs now mount the same
+`MuseumSaintTree` below each linked saint's biography, using the current workspace's
+exact-ID family context (including preserved source families). Multi-saint entries
+remain separate. No-name matching or records are changed. Loading, empty, and error
+states explain missing trees; full-catalogue capability still gates relationship access.
+
+Touch capture transfers from the original SVG target to the viewport emit a bubbled
+`lostpointercapture`. Ignore child capture-loss events; only the viewport's own capture
+loss ends that gesture. The previous handler dropped the tracked finger after the first
+movement. Sequence regressions cover a continued swipe, actual capture loss, pinch-to-pan,
+and subsequent tap selection (`museum-tree-touch.test.ts`).

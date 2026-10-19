@@ -135,12 +135,13 @@ function MuseumTreeCanvas({data,label,immersive=false,initialZoom=1,initialCompa
  </div>;
 }
 
-export function MuseumSaintTree({saintId,sourceId,familyKey,museum,name}:{saintId?:string;sourceId?:string;familyKey?:string;museum:"spn"|"vrindavan";name:string}) {
+export function MuseumSaintTree({saintId,sourceId,familyKey,museum,name,showStatus=false}:{showStatus?:boolean;saintId?:string;sourceId?:string;familyKey?:string;museum:"spn"|"vrindavan";name:string}) {
  const [data,setData]=useState<MuseumLiveTree|null>(null),[error,setError]=useState(false),[retry,setRetry]=useState(0);
  useEffect(()=>{if(!saintId&&!familyKey)return;const controller=new AbortController();setData(null);setError(false);
  fetch("/api/admin/museum/relationship-tree",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({museum,seeds:saintId?[saintId]:[],familyKey:familyKey||undefined,includeSource:Boolean(familyKey),includeUnreviewed:true}),signal:controller.signal}).then(async response=>{if(!response.ok)throw Error();return response.json();}).then(result=>{if(!controller.signal.aborted)setData(result);}).catch(()=>{if(!controller.signal.aborted)setError(true);});return()=>controller.abort();
  },[saintId,familyKey,museum,retry]);
  if(error)return <p>Relationships could not be loaded. <button type="button" className="museum-saint-link" onClick={()=>setRetry(n=>n+1)}>Retry</button></p>;
- if(!data?.layout.edges.length)return null;
+ if(!data)return showStatus?<p role="status">Loading family relationships…</p>:null;
+ if(!data.layout.edges.length)return showStatus?<p>No connected family relationships are recorded for this saint yet.</p>:null;
  return <section className="museum-saint-review-section"><MuseumLiveTreeDiagram data={data} label={`Relationships · ${name}`} highlightSaintId={saintId||(sourceId?"source:"+sourceId:undefined)}/></section>;
 }
