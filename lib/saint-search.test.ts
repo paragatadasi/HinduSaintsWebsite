@@ -184,3 +184,13 @@ test("short fuzzy queries do not score when no token is within the allowed dista
   }
   assert.equal(rankSaintSearchResults(candidates, "Ramna")[0]?.item.id, "ramana");
 });
+
+
+test("joined and spaced saint names match without changing exact-match priority",()=>{
+ const candidates=[{displayName:"Jagad Bandhu Sundar",canonicalName:"Jagad Bandhu Sundar"},{displayName:"Jagadbandhu",canonicalName:"Jagadbandhu"}];
+ assert.equal(rankSaintSearchResults(candidates,"Jagadbandhu").length,2);
+ assert.equal(rankSaintSearchResults(candidates,"Jagadbandhu")[0].item.displayName,"Jagadbandhu");
+ assert.equal(rankSaintSearchResults([candidates[0]],"jagadbandhu")[0].item,candidates[0]);
+ assert.equal(rankSaintSearchResults([candidates[1]],"jagad bandhu")[0].item,candidates[1]);
+ assert.equal(rankSaintSearchResults([{displayName:"Someone Else",canonicalName:"Someone Else",aliases:[{alias:"Sri Jagad Bandhu Sundar"}]}],"jagadbandhu").length,1);
+});

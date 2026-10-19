@@ -26,9 +26,13 @@ export async function getSaintSearchCandidateIds(query: string, scope: SaintCata
         lower(saint."displayName") % search_term."term"
         OR search_term."term" <% lower(saint."displayName")
         OR lower(saint."displayName") LIKE '%' || search_term."term" || '%'
+        OR (length(replace(search_term."term", ' ', '')) >= 4 AND
+          regexp_replace(lower(saint."displayName"), '[^[:alnum:]]', '', 'g') LIKE '%' || replace(search_term."term", ' ', '') || '%')
         OR lower(saint."canonicalName") % search_term."term"
         OR search_term."term" <% lower(saint."canonicalName")
         OR lower(saint."canonicalName") LIKE '%' || search_term."term" || '%'
+        OR (length(replace(search_term."term", ' ', '')) >= 4 AND
+          regexp_replace(lower(saint."canonicalName"), '[^[:alnum:]]', '', 'g') LIKE '%' || replace(search_term."term", ' ', '') || '%')
       )
       WHERE ${scopeSql}
 
@@ -41,6 +45,8 @@ export async function getSaintSearchCandidateIds(query: string, scope: SaintCata
         lower(alias."alias") % search_term."term"
         OR search_term."term" <% lower(alias."alias")
         OR lower(alias."alias") LIKE '%' || search_term."term" || '%'
+        OR (length(replace(search_term."term", ' ', '')) >= 4 AND
+          regexp_replace(lower(alias."alias"), '[^[:alnum:]]', '', 'g') LIKE '%' || replace(search_term."term", ' ', '') || '%')
       )
       WHERE ${scopeSql}
 
