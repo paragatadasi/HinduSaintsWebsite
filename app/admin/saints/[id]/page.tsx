@@ -598,7 +598,7 @@ export async function AdminSaintEditorPage({
               </label>
               <label>
                 Status
-                <select name="status" defaultValue="needs_review">
+                <select name="status" defaultValue="published">
                   {contentStatuses.map((status) => <option key={status} value={status}>{formatStatus(status)}</option>)}
                 </select>
               </label>

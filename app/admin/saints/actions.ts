@@ -419,7 +419,7 @@ export async function createSaintRelationship(formData: FormData) {
     saintId: formData.get("saintId"),
     relatedSaintId: formData.get("relatedSaintId"),
     relationshipType: formData.get("relationshipType"),
-    status: formData.get("status") ?? "needs_review",
+    status: formData.get("status") ?? "published",
     evidenceStatus: formData.get("evidenceStatus") ?? "uncategorized",
     publicVisible: formData.has("publicVisible"),
     publicNote: emptyToUndefined(formData.get("publicNote"))
