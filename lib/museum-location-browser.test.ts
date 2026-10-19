@@ -28,3 +28,14 @@ test("saint destinations remain separate from individual relic exceptions",()=>{
  const row=buildLocationBrowserRows([item],[saint])[0];
  assert.deepEqual(row.arrangements,["one: Planned · Vitrine 21"]);assert.equal(row.plannedLocation,"Vitrine 15");assert.equal(row.vitrine,"12");
 });
+
+
+test("SPN inventory shares joined-name and alias search within location filters",()=>{
+ const saint=proposal("one","North");saint.name="Sri Jagad Bandhu Sundar";saint.searchNames=["Ramana Maharshi"];
+ const rows=buildLocationBrowserRows([item],[saint]);
+ for(const q of ["Jagadbandhu","Ramana Maharishi"]){
+  assert.equal(filterLocationBrowserRows(rows,{q,vitrine:"12"}).length,1);
+  assert.equal(filterLocationBrowserRows(rows,{q,vitrine:"13"}).length,0);
+ }
+ assert.equal(filterLocationBrowserRows(rows,{q:"Zoroaster"}).length,0);
+});
