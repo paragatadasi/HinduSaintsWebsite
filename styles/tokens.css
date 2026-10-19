@@ -383,3 +383,12 @@
 :root { --height-tree-overview-mobile: 8rem; }
 
 :root { --width-tree-minimap: 12rem; --height-tree-minimap: 6rem; }
+:root {
+ --height-tree-mobile-preview: 18rem;
+ --height-tree-mobile-canvas: 44dvh;
+ --height-tree-mobile-sheet: 38dvh;
+ --width-tree-mobile-minimap: 7rem;
+ --height-tree-mobile-minimap: 4rem;
+}
+
+:root { --font-size-tree-input: 1rem; }
