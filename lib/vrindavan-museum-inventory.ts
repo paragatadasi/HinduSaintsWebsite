@@ -24,7 +24,7 @@ export async function readVrindavanMuseumInventory(
   const snapshotHash = options.snapshotHash ?? snapshots[0] ?? null;
   if (options.snapshotHash && !snapshots.includes(options.snapshotHash)) throw Error("Inventory snapshot unavailable");
   const selected = observations.filter(row => row.sourceKey.startsWith(`vrindavan-workbook:${snapshotHash}:Sheet1:`));
-  const active = await client.saint.findMany({where:{status:{not:"archived"}},select:{id:true,displayName:true,canonicalName:true,slug:true,status:true}});
+  const active = await client.saint.findMany({where:{status:{not:"archived"}},select:{id:true,displayName:true,canonicalName:true,aliases:{select:{alias:true}},slug:true,status:true}});
   const activeIds = new Set(active.map(saint => saint.id));
   const entries = selected.flatMap(row => {
     const entry = projectVrindavanInventoryEntry(row,museum,activeIds);

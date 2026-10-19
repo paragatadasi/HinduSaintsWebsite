@@ -58,6 +58,18 @@ export function scoreWeightedTextSearch(query: string, fields: WeightedSearchFie
       }
     }
 
+    // Names may be written as one word or several. Keep this below ordinary
+    // phrase scores, and restrict it to name-like fields with substantive queries.
+    if (field.fuzzy) {
+      const compactQueries = phraseQueryForms
+        .filter((form) => hasSubstantiveSearchToken(form))
+        .map((form) => form.replace(/\s/g, ""))
+        .filter((form) => form.length >= 4);
+      if (fieldForms.some((form) => compactQueries.some((term) => form.replace(/\s/g, "").includes(term)))) {
+        bestPhraseScore = Math.max(bestPhraseScore, 45);
+      }
+    }
+
     const fieldTokens = Array.from(new Set(fieldForms.flatMap(getSearchTokens)));
     let tokenScore = 0;
     for (const queryToken of queryTokens) {
