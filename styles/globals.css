@@ -11369,3 +11369,40 @@ select:not([multiple]) {
 .museum-tree-minimap .museum-tree-edge { vector-effect: non-scaling-stroke; }
 .museum-live-tree-viewport--labeled { min-height: var(--height-museum-tree-min); max-width: 100%; }
 @media (max-width: 640px) { .museum-tree-context-bar { flex-wrap: wrap; } .museum-tree-selection { flex-basis: 100%; } .museum-tree-corner-map { margin-inline-start: auto; } }
+
+/* Mobile exploration is opt-in so page swipes never get trapped in a preview. */
+.museum-tree-settings > .review-actions { margin-block-start: var(--space-3); }
+.museum-tree-stage { position: relative; min-width: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.museum-tree-context-bar > .museum-tree-corner-map { align-self: start; width: var(--width-tree-minimap); }
+.museum-tree-map-window { fill: none; stroke: var(--color-tree-selected); stroke-width: var(--width-tree-edge); vector-effect: non-scaling-stroke; pointer-events: none; }
+.museum-modal--fullscreen .museum-tree-stage { flex: 1; min-height: 0; }
+.museum-tree-explore { display: none; }
+.museum-tree-mobile-controls { display: flex; justify-content: center; gap: var(--space-2); }
+.museum-tree-bottom-sheet { background: var(--color-surface); border-top: 1px solid var(--color-border); padding: var(--space-3); }
+.museum-tree-bottom-sheet > button { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); text-align: left; min-height: var(--height-tree-touch); }
+.museum-tree-bottom-sheet > button > span:last-child { flex-shrink: 0; font-size: var(--font-size-tree-meta); }
+.museum-tree-bottom-sheet__body { max-height: var(--height-tree-mobile-sheet); overflow-y: auto; overscroll-behavior: contain; padding-block-start: var(--space-3); }
+@media (max-width: 640px) {
+ .museum-tree-explorer--preview > .museum-tree-toolbar,
+ .museum-tree-explorer--preview > .museum-tree-context-bar,
+ .museum-tree-explorer--preview > .museum-tree-stage > .museum-tree-corner-map { display: none; }
+ .museum-tree-explorer--preview > .museum-tree-stage > .museum-live-tree-viewport { height: var(--height-tree-mobile-preview); min-height: 0; max-height: none; overflow: hidden; overscroll-behavior: auto; }
+ .museum-tree-explorer--preview > .museum-tree-stage .museum-live-tree { pointer-events: none; }
+ .museum-tree-explore { display: block; width: 100%; min-height: var(--height-tree-touch); }
+ .museum-tree-explorer--active .museum-tree-toolbar,
+ .museum-tree-explorer--active > .museum-tree-evidence,
+ .museum-tree-explorer--active > .museum-tree-source-note,
+ .museum-tree-explorer--active > .museum-tree-count { display: none; }
+ .museum-modal--fullscreen { padding: var(--space-3); padding-bottom: max(var(--space-3),env(safe-area-inset-bottom)); }
+ .museum-modal--fullscreen > .museum-tree-explorer--active { gap: var(--space-2); }
+ .museum-tree-explorer--active > h3 { font-size: var(--font-size-museum-nav-heading); }
+ .museum-tree-explorer--active .museum-tree-stage { flex: 1 0 var(--height-tree-mobile-canvas); min-height: var(--height-museum-tree-min); }
+ .museum-tree-explorer--active .museum-live-tree-viewport { height: 100%; min-height: var(--height-museum-tree-min); touch-action: none; }
+ .museum-tree-explorer--active .museum-tree-context-bar { flex-wrap: nowrap; align-items: flex-start; }
+ .museum-tree-explorer--active .museum-tree-selection { flex: 1; }
+ .museum-tree-explorer--active .museum-tree-corner-map { flex: 0 0 var(--width-tree-mobile-minimap); width: var(--width-tree-mobile-minimap); padding: var(--space-1); }
+ .museum-tree-explorer--active .museum-tree-minimap { height: var(--height-tree-mobile-minimap); pointer-events: none; }
+ .museum-tree-corner-map > button { font-size: var(--font-size-tree-meta); min-height: var(--height-tree-touch); width: 100%; }
+ .museum-tree-picker select { font-size: var(--font-size-tree-input); min-height: var(--height-tree-touch); }
+ .museum-tree-mobile-controls button { min-height: var(--height-tree-touch); min-width: var(--height-tree-touch); }
+}
