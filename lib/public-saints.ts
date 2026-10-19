@@ -1,3 +1,4 @@
+import {mainLocalities} from "@/lib/key-locality-domain";
 import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { getInstagramCarouselImageUrls } from "@/lib/instagram";
@@ -567,7 +568,8 @@ function toPublicSaintDetail(
 }
 
 function getPrimaryLocation(places: SaintListRow["places"]) {
-  const primary = places.find((place) => place.placeType === "primary") ?? places[0];
+  const shortlisted = mainLocalities(places);
+  const primary = shortlisted.find((place) => place.placeType === "primary") ?? shortlisted[0];
   return primary?.place.name ?? DEFAULT_LOCATION;
 }
 
@@ -575,7 +577,7 @@ function getUniquePlaceNames(places: SaintDetailRow["places"]) {
   const placeNames: string[] = [];
   const seenPlaceIds = new Set<string>();
 
-  for (const { place } of places) {
+  for (const { place } of mainLocalities(places)) {
     if (seenPlaceIds.has(place.id)) continue;
 
     seenPlaceIds.add(place.id);
@@ -589,7 +591,7 @@ function getUniquePlaceLinks(places: SaintDetailRow["places"]) {
   const placeLinks: PublicSaintDetail["placeLinks"] = [];
   const seenPlaceIds = new Set<string>();
 
-  for (const { place } of places) {
+  for (const { place } of mainLocalities(places)) {
     if (seenPlaceIds.has(place.id)) continue;
 
     seenPlaceIds.add(place.id);

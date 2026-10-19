@@ -73,6 +73,8 @@ export async function acceptVisitPlaces(actorId:string,input:unknown) {
      localityId=place.id;
      await tx.auditEvent.create({data:{userId:actorId,entityType:"Place",entityId:place.id,action:"visit_locality_created",afterJson:json(place)}});
     }
+    const previousPrimary=saint.places.filter(p=>p.placeType==="primary");
+    if(previousPrimary.length!==1||previousPrimary[0].placeId!==localityId) await tx.saintPlace.updateMany({where:{saintId:saint.id},data:{keyLocalityOrder:null}});
     await tx.saintPlace.updateMany({where:{saintId:saint.id,placeType:"primary",placeId:{not:localityId}},data:{placeType:"associated"}});
     const attached=await tx.saintPlace.findFirst({where:{saintId:saint.id,placeId:localityId,placeType:"primary"}});
     if(!attached) {

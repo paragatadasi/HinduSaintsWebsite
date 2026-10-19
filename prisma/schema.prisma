@@ -642,10 +642,12 @@ model SaintPlace {
   placeType       PlaceType   @default(associated)
   notes           String?
   routeOrder      Int?
+  keyLocalityOrder Int?
   routeLabel      String?
   routeConfidence Confidence?
 
   @@index([saintId, routeOrder])
+  @@index([saintId, keyLocalityOrder], map: "SaintPlace_saint_key_locality_order")
   @@index([placeId, placeType])
 }
 

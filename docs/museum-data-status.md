@@ -83,3 +83,8 @@ Vrindavan source inventory and SPN relic/location search now adapt their private
 The shared ranker now tolerates joined/spaced names on name-like fields (for example Jagadbandhu / Jagad Bandhu Sundar), with ordinary exact phrase scores remaining stronger. PostgreSQL display/canonical-name and alias candidate retrieval includes the same whitespace-insensitive fallback so public search can retrieve these candidates before ranking; public/private catalogue scope is unchanged. Identity reconciliation normalization and automatic identity decisions are unchanged. No aliases or saint data are created or edited by search.
 
 Verification: existing site search corpus and museum/source/location/option ranking suites, plus regressions for joined names, aliases, transliteration, typo matching, exact-match priority, blank ordering and location constraints. Guarded disposable-local-PostgreSQL verification in scripts/verify-inventory-name-search.ts covers spaced-name/alias retrieval and unpublished exclusions. No schema migration or environment change; authenticated production search smoke remains a release check.
+
+
+## October 19 — researched website key localities (local implementation)
+
+A separate geography branch implements Saarthi’s ordered 1–3 locality shortlist for currently published canonical saints. This is independent of the unpushed six-region Vrindavan proposal branch. Research coverage and unresolved geography are explicit; no production data has been changed. See [researched key localities](researched-key-localities.md) for source, guarded bulk operation, migration and remaining deployment/apply step.
