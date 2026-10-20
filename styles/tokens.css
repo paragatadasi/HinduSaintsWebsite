@@ -409,3 +409,17 @@
  --width-museum-planning-family: 18rem;
  --width-museum-planning-copy: 65ch;
 }
+
+/* Regional identity is categorical; priority connections continue to use gold. */
+:root {
+ --color-museum-region-1:#cb9fae;
+ --color-museum-region-2:#91acbf;
+ --color-museum-region-3:#b4b88a;
+ --color-museum-region-4:#ad9ec7;
+ --color-museum-region-5:#80b5aa;
+ --color-museum-region-6:#ce9c79;
+ --width-museum-web-node:156px;
+ --font-size-museum-section-title:clamp(2.1rem,5vw,4.2rem);
+ --width-museum-section-title:11ch;
+ --width-museum-connection-popup:22rem;
+}
