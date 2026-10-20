@@ -67,6 +67,12 @@ Rules:
 - Saint pages use shared templates.
 - Biographies use the shared `Prose` component.
 - Admin pages can be simpler but should still use shared primitives.
+- Museum planning routes use the shared `MuseumWorkspaceLayout` focused view:
+  navigation starts collapsed to give the map and arrangement workspace the
+  available width. An outlined Show/Hide navigation control stays visible,
+  exposes its expanded state, and restores the existing navigation on demand.
+  Other museum routes retain their normal navigation. Re-entering a planning
+  route resets the focused default; opening navigation does not remount the plan.
 
 ## Admin review UX direction
 
