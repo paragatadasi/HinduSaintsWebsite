@@ -5,11 +5,11 @@ import { GitBranch, Map as MapIcon } from "lucide-react";
 import { museumBridgeCards, museumFlowZones } from "@/lib/museum-layout-groups";
 import type { MuseumSection } from "@/lib/museum-proposals";
 
-export function MuseumProposalOverview({museumName,sections,basePath,queryLinks=false,showBridges=true,children}:{museumName:string;sections:MuseumSection[];basePath:string;queryLinks?:boolean;showBridges?:boolean;children:ReactNode}) {
+export function MuseumProposalOverview({museumName,sections,basePath,queryLinks=false,showBridges=true,flowZones=museumFlowZones,sectionCount,children}:{museumName:string;sections:MuseumSection[];basePath:string;queryLinks?:boolean;showBridges?:boolean;flowZones?:readonly {title:string;summary:string;sections:readonly string[]}[];sectionCount?:number;children:ReactNode}) {
  const totals=sections.reduce((a,s)=>({saints:a.saints+s.total,featured:a.featured+s.featured,secondary:a.secondary+s.secondary,tertiary:a.tertiary+s.tertiary}),{saints:0,featured:0,secondary:0,tertiary:0});
  const byName=new Map(sections.map(s=>[s.name,s]));
  const sectionHref=(name:string)=>(queryLinks?`${basePath}?section=${encodeURIComponent(byName.get(name)!.slug)}`:`${basePath}/${byName.get(name)!.slug}`) as Route;
- const zones=museumFlowZones.map(zone=>({...zone,sections:zone.sections.filter(name=>byName.has(name))})).filter(zone=>zone.sections.length);
+ const zones=flowZones.map(zone=>({...zone,sections:zone.sections.filter(name=>byName.has(name))})).filter(zone=>zone.sections.length);
  const covered=new Set<string>(zones.flatMap(z=>z.sections));
  const remaining=sections.filter(s=>!covered.has(s.name));
  return <>
@@ -23,7 +23,7 @@ export function MuseumProposalOverview({museumName,sections,basePath,queryLinks=
         </div>
         <div className="museum-admin-hero__stats" aria-label="Museum proposal totals">
           <Metric label="Saints" value={totals.saints} />
-          <Metric label="Sections" value={sections.length} />
+          <Metric label="Sections" value={sectionCount??sections.length} />
           <Metric label="Primary" value={totals.featured} />
           <Metric label="Secondary" value={totals.secondary} />
           <Metric label="Tertiary" value={totals.tertiary} />

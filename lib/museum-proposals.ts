@@ -18,6 +18,7 @@ export type MuseumTier = "Featured" | "Secondary" | "Tertiary";
 
 export type MuseumSaintPlacement = {
   curatorProposalRevision?: string;
+  arrangementNeedsReview?: boolean;
   arrangement?: import("./museum-arrangement-domain").ArrangementControl;
   displayMembership?: import("./museum-display-membership-domain").DisplayMembershipControl;
   sourceVitrine?: MuseumSourceVitrine;
