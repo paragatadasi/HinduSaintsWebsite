@@ -2,15 +2,19 @@
 
 - Status: ready
 - Branch: `codex/vrindavan-prior-area-review`
-- Commit: `16de8976ce08a0fecba08f46317624123287e2aa`
+- Commit: `54b2388`
 - Owner/agent: `Citra`
 - Bundle priority: immediate release candidate
 
 ## Summary
 
+- Planner now reads names/slugs/order from canonical Vrindavan working.sections, so forthcoming regional catalogue flows through automatically; editorial summaries only reused by exact matching name.
+
 - Keep earlier section areas visible after catalogue/proposal changes; show affected flexible assignments for review without remapping or changing exact destinations.
 
 ## Verification
+
+- dev:check passed again after canonical catalogue adapter.
 
 - dev:check passed; 10 planner domain tests passed; git diff --check passed. prepare:deployment checks passed but npm stripped handoff arguments; handoff generator rerun directly. Integrated production build owned by release captain.
 
@@ -23,7 +27,7 @@
 
 ## Risk And Conflicts
 
-- Shared areas touched: Museum move planner UI/domain/tests; docs/museum-data-integration.md
+- Shared areas touched: Museum move planner service/UI/domain/tests; docs/museum-data-integration.md
 - Expected conflicts: none
 - Rollback notes: revert `16de897` and any dependent release commits
 
