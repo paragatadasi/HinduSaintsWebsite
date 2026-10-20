@@ -43,3 +43,8 @@ No SPN proposals, saint identities/publication, website geography, raw source ob
 ## Parallel identity research checkpoint
 
 Saarthi owns research and direct clarifying questions for 132 unresolved source rows. They are separate from 39 previously approved straightforward decisions: two saved live and 37 awaiting verified identity form rollout at the last checkpoint. Saarthi additionally relayed Paragata's direct confirmation that source rows 113 and 267 both represent the Braj poet, published Sri Surdasji (`cms0w7dmj01tf07qiin8e9ha3`). These are approved identity recommendations awaiting a protected current-version save; both observations and their objects/locations must remain separate. Research recommendations do not themselves authorize database merges or physical changes.
+
+
+## Visitor display order (20 October 2026)
+
+Saarthi's researched sequence is preserved in `data/museum/vrindavan-visitor-flow-order.json`; its compact client-safe order lives in `lib/vrindavan-visitor-flow.ts`. Shared `vrindavanRegionGroups` orders navigation, overview and planner consumers: Sikh/Udasin, Himalaya/North, Braj/Ganga, East, South, West. Visitor positions and book chapter references are separate metadata. Original region keys, subsection names/slugs/parents, family memberships and saved area plans are unchanged. Gaudiya ends Braj next to Puri at the East entrance; southern Andhra/Datta ends South next to western Datta. Editorial adjacency is not a lineage claim. Unknown future subsections retain their configured parent and follow explicitly ordered subsections; operational review stays outside the visitor circuit. This ordering does not approve any unresolved family/context repair or physical circulation plan.
