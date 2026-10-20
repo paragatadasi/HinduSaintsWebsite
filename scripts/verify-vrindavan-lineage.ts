@@ -20,20 +20,11 @@ const suffix=Date.now(),hash=randomBytes(32).toString("hex");try{
  await saveVrindavanArrangement({placementId:initial.id,familyKey:initial.familyId,revision:initial.arrangement!.revision,status:"Planned",vitrine:"17",shelf:"3.4"},actor.id);
  const before={saints:await db.saint.findMany(),spn:await db.saintMuseumSection.findMany(),sources:await db.museumCollectionImport.findMany(),arrangements:await db.museumArrangement.findMany(),physical:await db.museumItemPlacement.findMany()};
  let review=await readVrindavanLineageReview();assert.equal(review.summary.uniqueConfirmedSaints,3);assert.equal(review.summary.excludedPendingSourceRows,1);assert.equal(review.counts.protected,1);assert.equal(review.counts.changed,2);
- const stale=review.revision;
- await saveVrindavanLineageAnchor(actor.id,{revision:review.revision,familyKey:initial.familyId,ruleGroup:"Kriya family",evidence:"Fixture confirms existing members",confirm:"on"});
- await assert.rejects(applyVrindavanLineage(actor.id,{revision:stale,confirm:"on"}),/changed/);
- review=await readVrindavanLineageReview();assert.equal(review.rows.find(r=>r.saintId===saints[0].id)!.afterSection,"Himalaya & the North");
- await assert.rejects(applyVrindavanLineage(actor.id,{revision:review.revision}),/confirm/);
- assert.equal((await applyVrindavanLineage(actor.id,{revision:review.revision,confirm:"on"})).updated,2);
+ await assert.rejects(applyVrindavanLineage(actor.id,{revision:review.revision,confirm:"on"}),/Region-only section replacement is disabled/);
  working=await readVrindavanWorkingData();const after=working.placements.find(r=>r.saintId===saints[0].id)!;
- assert.equal(after.id,initial.id);assert.equal(after.familyId,initial.familyId);assert.equal(after.tier,initial.tier);assert.equal(after.section,"Himalaya & the North");assert.equal(after.arrangement!.status,"Planned");assert.equal(after.arrangement!.vitrine,"17");assert.equal(after.arrangement!.shelf,"3.4");assert.equal(after.arrangementNeedsReview,true);assert.equal(working.families.find(f=>f.key===initial.familyId)!.count,2);
- assert.equal(working.placements.find(r=>r.saintId===saints[2].id)!.section,section.name);
- review=await readVrindavanLineageReview();assert.equal((await applyVrindavanLineage(actor.id,{revision:review.revision,confirm:"on"})).updated,0);
+ assert.equal(after.section,section.name);assert.equal(after.familyId,initial.familyId);assert.equal(after.arrangement!.status,"Planned");assert.equal(after.arrangement!.vitrine,"17");assert.equal(after.arrangement!.shelf,"3.4");
+ assert.ok(!working.sections.some(s=>s.name==="The South"));
  assert.deepEqual(await db.saint.findMany(),before.saints);assert.deepEqual(await db.saintMuseumSection.findMany(),before.spn);assert.deepEqual(await db.museumCollectionImport.findMany(),before.sources);assert.deepEqual(await db.museumArrangement.findMany(),before.arrangements);assert.deepEqual(await db.museumItemPlacement.findMany(),before.physical);
- await saveVrindavanProposal({saintId:after.saintId,revision:after.curatorProposalRevision,section:"The South",tier:"Secondary",groupKey:""},actor.id);
- working=await readVrindavanWorkingData();assert.equal(working.placements.find(r=>r.saintId===saints[0].id)!.section,"The South");assert.equal(working.families.find(f=>f.key===initial.familyId)!.count,1);
- review=await readVrindavanLineageReview();assert.equal(review.counts.protected,2);assert.equal(review.counts.conflicting,1);assert.equal(review.counts.changed,0);
- assert.equal(await db.externalRecord.count({where:{sourceType:"vrindavan_lineage_proposal"}}),2);
- console.log("PASS lineage apply, stale revisions, exact family anchors, idempotence, late curator edits, unchanged identities/geography/SPN/physical records and retained exact destinations");
+ assert.equal(await db.externalRecord.count({where:{sourceType:"vrindavan_lineage_proposal"}}),0);
+ console.log("PASS obsolete region-only apply blocked; subsections, saved destinations, identities, SPN and physical records unchanged");
 }finally{await db.$disconnect();}

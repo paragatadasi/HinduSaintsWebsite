@@ -11,3 +11,10 @@ test("competing subgroups and unknown identities do not become section assignmen
 test("supplementary context requires confirmed relevant input, never book presence",()=>{const result=buildLineagePreview([saint("a","Bhakti Marga & Mauritius Lineage")]);assert.equal(result.rows[0].afterSection,LINEAGE_SUPPLEMENT.name);assert.equal(result.catalogue.length,8);});
 test("rejects duplicate canonical saints to keep coverage counts honest",()=>assert.throws(()=>buildLineagePreview([saint("a"),saint("a")])));
 test("applied regional proposals are idempotent when source subgroup is preserved",()=>{const row=saint("a");const first=buildLineagePreview([row]);const next=buildLineagePreview([{...row,section:first.rows[0].afterSection}]);assert.equal(next.counts.changed,0);assert.equal(next.counts.unchanged,1);});
+
+import clarifiedPlan from "../data/museum/vrindavan-region-parent-plan.json";
+import {VRINDAVAN_SUBSECTION_PARENTS,assertVrindavanHierarchyApplyReady} from "./vrindavan-lineage-catalogue";
+test("clarified parent mapping preserves all named subsections",()=>{
+ for(const entry of clarifiedPlan.legacy_section_crosswalk){assert.equal(entry.preserve_subsection_identity,true);const root=[...LINEAGE_REGIONS,LINEAGE_SUPPLEMENT].find(r=>r.slug===entry.regional_parent_key);assert.equal(VRINDAVAN_SUBSECTION_PARENTS[entry.legacy_section],root?.name||"");}
+});
+test("old region-only replacement action is unconditionally blocked",()=>assert.throws(()=>assertVrindavanHierarchyApplyReady(),/Region-only section replacement is disabled/));

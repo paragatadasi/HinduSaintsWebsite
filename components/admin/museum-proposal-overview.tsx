@@ -5,7 +5,7 @@ import { GitBranch, Map as MapIcon } from "lucide-react";
 import { museumBridgeCards, museumFlowZones } from "@/lib/museum-layout-groups";
 import type { MuseumSection } from "@/lib/museum-proposals";
 
-export function MuseumProposalOverview({museumName,sections,basePath,queryLinks=false,showBridges=true,flowZones=museumFlowZones,sectionCount,children}:{museumName:string;sections:MuseumSection[];basePath:string;queryLinks?:boolean;showBridges?:boolean;flowZones?:readonly {title:string;summary:string;sections:readonly string[]}[];sectionCount?:number;children:ReactNode}) {
+export function MuseumProposalOverview({museumName,sections,basePath,queryLinks=false,showBridges=true,showRegionTotals=false,flowZones=museumFlowZones,sectionCount,children}:{museumName:string;sections:MuseumSection[];basePath:string;queryLinks?:boolean;showBridges?:boolean;showRegionTotals?:boolean;flowZones?:readonly {title:string;summary:string;sections:readonly string[]}[];sectionCount?:number;children:ReactNode}) {
  const totals=sections.reduce((a,s)=>({saints:a.saints+s.total,featured:a.featured+s.featured,secondary:a.secondary+s.secondary,tertiary:a.tertiary+s.tertiary}),{saints:0,featured:0,secondary:0,tertiary:0});
  const byName=new Map(sections.map(s=>[s.name,s]));
  const sectionHref=(name:string)=>(queryLinks?`${basePath}?section=${encodeURIComponent(byName.get(name)!.slug)}`:`${basePath}/${byName.get(name)!.slug}`) as Route;
@@ -47,7 +47,7 @@ export function MuseumProposalOverview({museumName,sections,basePath,queryLinks=
             <li className="museum-flow-zone" key={zone.title}>
               <div className="museum-flow-zone__index">{String(index + 1).padStart(2, "0")}</div>
               <div className="museum-flow-zone__content">
-                <h3>{zone.title}</h3>
+                <h3>{zone.title}{showRegionTotals?` (${zone.sections.reduce((sum,name)=>sum+(byName.get(name)?.total||0),0)})`:null}</h3>
                 <p>{zone.summary}</p>
                 <div className="museum-flow-zone__sections">
                   {zone.sections.map((section) => (
