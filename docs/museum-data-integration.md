@@ -1045,3 +1045,25 @@ Touch capture transfers from the original SVG target to the viewport emit a bubb
 loss ends that gesture. The previous handler dropped the tracked finger after the first
 movement. Sequence regressions cover a continued swipe, actual capture loss, pinch-to-pan,
 and subsequent tap selection (`museum-tree-touch.test.ts`).
+
+## Vrindavan move planning — 20 October 2026
+
+The first move-planning release lives at `/vrindavanadmin/plan`, linked from the shared Curator workspace navigation. It uses the curator-provided schematic: centre rows 20/5, 21/4, 22/3, 23/2, 24/1; rear 6; right 7–12; left 19–14; front-left 13; temple hall 0; entrance front-right. The map is not to scale and does not imply shelf capacity.
+
+### Planning now
+
+- A compact Photo saints disclosure selects current photo vitrines and previews affected saints. Saving snapshots exact reviewed saint IDs in museum-scoped `MuseumPlanningSetup`. Tags persist through destination edits. Explicitly re-saving setup replaces the snapshot using implemented curator locations where available, otherwise preserved source locations. Missing/unrecognized locations are never guessed. Untagged does not mean a photograph is known to be absent.
+- Section summaries reuse the existing section descriptions and primary-saint tier. Counts are distinct saints, not source rows or physical objects. Curators can assign a whole section, only unplanned saints, or individual subsets to any numbered vitrine; shelf is optional. Multiple sections can share a vitrine.
+- Assignments write the existing `MuseumArrangement` model with Planned status. They do not move relics, modify source inventory, edit historical relationships, or change SPN. Replacing a saved/implemented arrangement requires explicit acknowledgement. Existing proposal-revision semantics continue to invalidate stale arrangements.
+- A shared museum lock, serializable transaction, full planner revision and audited writes prevent stale bulk forms from silently overwriting another curator's work. Reads require museum and full-catalog access; saves also require museum management.
+- Saved move list supports destination or recorded starting-location ordering/filtering, source shelf/quantity/relic descriptions, shared-entry warnings, and printing. Existing saint arrangement controls remain the physical-confirmation path in this first release.
+
+### Next phase: conducting the move
+
+Keep the same saved plan. Add phone-first progress filtering, an explicit review-and-confirm action per saint, shelf refinement at completion, and an expandable biography/tree. Require confirmation that all relevant entries were checked, retain incomplete-inventory acknowledgement, and keep a separate path for a partial relic move or uncertainty. Display curator-confirmed location separately from preserved source evidence; never rewrite source observations as if they were verified individual items. Preserve current confirmed location when a later plan is edited.
+
+### Subsequent refinements
+
+Add per-saint photo corrections, vitrine notes and curator-entered capacity if useful; do not calculate capacity from the sketch. Offer family selection and warnings when splitting a display group. Retain a printable fallback for unreliable connectivity; do not imply offline edits are saved without an explicit synchronization design.
+
+Verification: `museum-move-planner-domain.test.ts` covers numbering, photo identity deduplication, counts and validation. `scripts/verify-museum-move-planner.ts` is restricted to localhost `/museum_planner_test` and checks the additive migration, photo snapshot, partial/whole planning, stale writes, replacement acknowledgement, atomic rejection, auditing, and preservation of source/SPN/physical records. Desktop and 390px phone fixture checks cover the map, partial selection and move list; the temporary preview route is not shipped.
