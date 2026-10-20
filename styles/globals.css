@@ -11520,3 +11520,38 @@ select:not([multiple]) {
 
 .museum-planner__filters label { display:grid; gap:var(--space-2); align-content:start; }
 .museum-planner__filters input,.museum-planner__filters select { width:100%; min-width:0; }
+
+/* Curator planning language shared by section planning and move-day cards. */
+.museum-planner .eyebrow { color:var(--color-gold); font-size:var(--font-size-review-hint); margin:0; }
+.museum-planner .museum-planning-overview { gap:var(--space-3); padding:var(--space-5); }
+.museum-planner .museum-planning-overview h2 { font-family:var(--font-serif); font-size:var(--font-size-museum-planning-title); color:var(--color-cream); line-height:1.1; margin:0; }
+.museum-planner .museum-planning-overview p { margin:0; max-width:var(--width-museum-planning-copy); }
+.museum-planning-stats { display:flex; flex-wrap:wrap; gap:var(--space-4); margin:var(--space-3) 0; }
+.museum-planning-stats > div { display:flex; flex-direction:column-reverse; gap:var(--space-1); border-right:1px solid var(--color-border); padding-right:var(--space-4); }
+.museum-planning-stats > div:last-child { border-right:0; }
+.museum-planning-stats dt { color:var(--color-muted); font-size:var(--font-size-review-hint); font-weight:600; }
+.museum-planning-stats dd { color:var(--color-gold); font-family:var(--font-serif); font-size:var(--font-size-museum-planning-stat); line-height:1; margin:0; }
+.museum-planner .museum-planning-meta { color:var(--color-muted); font-size:var(--font-size-review-hint); }
+.museum-planning-heading { display:grid; gap:var(--space-2); }
+.museum-planner .museum-planning-heading h2,.museum-planner .museum-planning-heading h3 { color:var(--color-cream); font-family:var(--font-serif); font-size:var(--font-size-museum-planning-heading); margin:0; }
+.museum-planner .museum-planning-heading p { margin:0; }
+.museum-planner__section-workspace .museum-planner__family-list { grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--width-museum-planning-family)),1fr)); align-items:start; }
+.museum-planner .museum-planning-card { background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-card); padding:var(--space-4); }
+.museum-planner .museum-planning-card[data-selected="true"] { border-color:var(--color-accent); }
+.museum-planner .museum-planning-card h3,.museum-planner .museum-planning-card h4 { color:var(--color-gold); font-family:var(--font-serif); font-size:var(--font-size-museum-planning-card); font-weight:500; line-height:1.2; }
+.museum-planner__family-heading { align-items:flex-start; flex-wrap:wrap; }
+.museum-planner__family-heading > div { min-width:0; flex:1 1 var(--width-museum-planning-family); }
+.museum-planner .museum-planner__family .museum-admin-button--secondary { color:var(--color-muted); border-color:var(--color-border); font-size:var(--font-size-review-hint); padding:var(--space-2) var(--space-3); }
+.museum-planner .museum-planner__family .museum-admin-button--secondary[aria-pressed="true"],.museum-planner .museum-planner__family .museum-admin-button--secondary:hover { color:var(--color-accent); border-color:var(--color-accent); }
+.museum-planner__family summary { font-size:var(--font-size-review-hint); color:var(--color-muted); padding:var(--space-2) 0; }
+.museum-planner__workspace-nav a { color:var(--color-muted); font-size:var(--font-size-review-field); padding:var(--space-2) 0; text-decoration:none; border-bottom:2px solid transparent; }
+.museum-planner__workspace-nav a:hover,.museum-planner__workspace-nav a:focus-visible { color:var(--color-accent); border-bottom-color:var(--color-accent); }
+.museum-planner__destination-panel { background:var(--color-bg); border:1px solid var(--color-border); }
+.museum-planner__move .museum-planner__route { background:var(--color-surface); border-left:2px solid var(--color-accent); padding:var(--space-3); margin:0; }
+.museum-planner__move .section-heading { margin-bottom:0; }
+@media (max-width:640px) {
+ .museum-planner .museum-planning-overview { padding:var(--space-4); }
+ .museum-planning-stats { gap:var(--space-3); }
+ .museum-planning-stats > div { padding-right:var(--space-3); }
+ .museum-planner .museum-planning-card button,.museum-planner .museum-planning-card summary { min-height:var(--height-tree-touch); }
+}

@@ -1,3 +1,4 @@
+import {VRINDAVAN_VISITOR_SEQUENCE} from "./vrindavan-visitor-flow";
 // Museum-local navigation vocabulary; never rename the shared SPN catalogue.
 export const LINEAGE_VERSION="vrindavan-lineage-first-section-proposal-2026-10-20-v2";
 export const LINEAGE_QUEUE="Needs section proposal";
@@ -39,9 +40,14 @@ export const VRINDAVAN_SUBSECTION_PARENTS:Record<string,string>={
  "Needs Research": ""
 };
 export function vrindavanRegionGroups(sections:{name:string;total?:number;count?:number}[]){
- const groups=LINEAGE_REGIONS.map(r=>({title:r.name,eyebrow:"Region",badge:String(r.order).padStart(2,"0"),summary:"Existing subsections retain their families and saints.",sections:sections.filter(s=>VRINDAVAN_SUBSECTION_PARENTS[s.name]===r.name).map(s=>s.name)}));
- const context=sections.filter(s=>VRINDAVAN_SUBSECTION_PARENTS[s.name]===LINEAGE_SUPPLEMENT.name&&(s.total??s.count??0)>0).map(s=>s.name);
- if(context.length)groups.push({title:LINEAGE_SUPPLEMENT.name,eyebrow:"Supplementary context",badge:"S",summary:"Project and global context outside the six regions.",sections:context});
+ const groups=VRINDAVAN_VISITOR_SEQUENCE.map(sequence=>{
+  const region=LINEAGE_REGIONS.find(r=>r.slug===sequence.regionSlug)!;
+  const ranks=new Map<string,number>(sequence.subsections.map((name,index)=>[name,index]));
+  const names=sections.filter(s=>VRINDAVAN_SUBSECTION_PARENTS[s.name]===region.name).map(s=>s.name).sort((a,b)=>(ranks.get(a)??Number.MAX_SAFE_INTEGER)-(ranks.get(b)??Number.MAX_SAFE_INTEGER)||a.localeCompare(b));
+  return {title:region.name,eyebrow:"Region",badge:String(sequence.visitorOrder).padStart(2,"0"),visitorOrder:Number(sequence.visitorOrder),bookChapterReference:Number(sequence.bookChapterReference),summary:"Existing subsections retain their families and saints.",sections:names};
+ });
+ const context=sections.filter(s=>VRINDAVAN_SUBSECTION_PARENTS[s.name]===LINEAGE_SUPPLEMENT.name&&(s.total??s.count??0)>0).map(s=>s.name).sort((a,b)=>["Bhakti Marga & Mauritius Lineage","Global & Diaspora Lineages"].indexOf(a)-["Bhakti Marga & Mauritius Lineage","Global & Diaspora Lineages"].indexOf(b));
+ if(context.length)groups.push({title:LINEAGE_SUPPLEMENT.name,eyebrow:"Supplementary context",badge:"S",visitorOrder:0,bookChapterReference:0,summary:"Project and global context outside the six regions.",sections:context});
  return groups;
 }
 export function assertVrindavanHierarchyApplyReady():never{throw new Error("Region-only section replacement is disabled. Preserve subsections and review regional-parent exceptions separately.");}

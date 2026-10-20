@@ -4,6 +4,7 @@ import {useRouter} from "next/navigation";
 import {Check,ClipboardList} from "lucide-react";
 import {isFlexible,plannerMoveNeedsAttention,vitrineNumber,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
 import {completeMovePlanAction,loadMoveSaintAction} from "@/app/vrindavanadmin/plan/actions";
+import {MuseumPlanningStats} from "./museum-planning-stats";
 import {MuseumDetailDialog} from "./museum-detail-dialog";
 import {MuseumSaintProfile} from "./museum-saint-profile";
 import {MuseumSaintTree} from "./museum-live-trees";
@@ -17,7 +18,7 @@ export function MuseumMoveList({data,canEdit}:{data:PlannerData;canEdit:boolean}
  const all=data.rows.filter(row=>row.status!=="Proposed"||isFlexible(row));
  const rows=all.filter(row=>(progress==="all"||(progress==="remaining"?plannerMoveNeedsAttention(row):row.status==="Implemented"))&&(!number||(group==="destination"?(isFlexible(row)?row.flexibleVitrines!.includes(number):row.vitrine===number):currentVitrines(row).some(v=>vitrineNumber(v)===number)))&&row.name.toLowerCase().includes(query.toLowerCase()));
  return <section className="admin-stack">
-  <div className="section-heading"><div><h2>Move-day checklist</h2><p>{all.filter(row=>row.status==="Implemented"&&!row.arrangementNeedsReview).length} implemented · {all.filter(row=>row.status!=="Implemented"&&!row.arrangementNeedsReview).length} still to do · {all.filter(row=>row.arrangementNeedsReview).length} destinations to review</p></div><button className="museum-admin-button museum-admin-button--secondary" onClick={()=>window.print()}>Print this list</button></div>
+  <div className="section-heading"><div className="museum-planning-heading"><p className="eyebrow">At the museum</p><h2>Move-day checklist</h2><MuseumPlanningStats items={[{label:"Implemented",value:all.filter(row=>row.status==="Implemented"&&!row.arrangementNeedsReview).length},{label:"Still to do",value:all.filter(row=>row.status!=="Implemented"&&!row.arrangementNeedsReview).length},{label:"To review",value:all.filter(row=>row.arrangementNeedsReview).length}]}/></div><button className="museum-admin-button museum-admin-button--secondary" onClick={()=>window.print()}>Print this list</button></div>
   {notice?<p role="status">{notice}</p>:null}
   <div className="museum-planner__filters">
    <label>Show<select value={progress} onChange={event=>setProgress(event.target.value)}><option value="remaining">Still to do</option><option value="completed">Implemented</option><option value="all">All planned moves</option></select></label>
@@ -40,7 +41,7 @@ function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevi
   setOpen(true);if(detail)return;setLoading(true);setDetailError(false);
   try{setDetail(await loadMoveSaintAction(row.saintId));}catch{setDetailError(true);}finally{setLoading(false);}
  };
- return <article className="museum-planner__move admin-stack">
+ return <article className="museum-planner__move museum-planning-card admin-stack">
   <div className="section-heading"><div><h3>{row.name}</h3><p>{row.section}{row.photo?" · Photo saint":""}</p></div><span>{row.status==="Implemented"?<Check aria-hidden="true"/>:<ClipboardList aria-hidden="true"/>} {flexible?"Area planned":row.status}</span></div>
   <p className="museum-planner__route">{flexible?<strong>Place within vitrines {row.flexibleVitrines!.join(", ")} · choose the actual vitrine when placing</strong>:<strong>{row.status==="Implemented"?"Curator-confirmed":"Destination"}: Vitrine {row.vitrine}{row.shelf?` / ${row.shelf}`:" · Shelf undecided"}</strong>}</p>
   {row.arrangementNeedsReview?<p role="status"><strong>Review this destination.</strong> The section proposal changed after this destination was saved. The saved location is retained. Use Plan destinations to review or replace it before moving relics; a completed arrangement should be physically checked against the latest proposal.</p>:null}
