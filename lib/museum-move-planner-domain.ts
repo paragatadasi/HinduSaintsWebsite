@@ -83,3 +83,20 @@ export function plannerFamilies(rows:PlannerRow[]){
  return [...groups.values()].sort((a,b)=>a.name.localeCompare(b.name));
 }
 export function isFlexible(row:PlannerRow){return row.status==="Proposed"&&!!row.flexibleVitrines?.length;}
+
+// Keep older area decisions discoverable after catalogue or proposal revisions.
+export function plannerAreasNeedingReview(areas:PlannerArea[],rows:PlannerRow[]){
+ const current=new Map(rows.map(row=>[row.id,row]));
+ const sections=new Set(rows.map(row=>row.section));
+ return areas.filter(area=>area.vitrines.length>0).flatMap(area=>{
+  const inactiveSection=!sections.has(area.section);
+  const affected=area.placements.flatMap(member=>{
+   const row=current.get(member.id);
+   // An explicit destination supersedes a flexible allocation intentionally.
+   if(row&&row.status!=="Proposed")return [];
+   if(row&&row.section===area.section&&row.revision===member.revision)return [];
+   return [{id:member.id,name:row?.name??null,currentSection:row?.section??null}];
+  });
+  return inactiveSection||affected.length?[{...area,inactiveSection,affected}]:[];
+ });
+}

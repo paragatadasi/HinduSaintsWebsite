@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import {photoSaintsInVitrines,plannerAssignmentInput,plannerPhotoInput,plannerCompletionInput,plannerConfirmation,vitrineNumber,plannerCounts,plannerAreaInput,flexibleDestinations,plannerFamilies,type PlannerRow} from "./museum-move-planner-domain";
+import {photoSaintsInVitrines,plannerAssignmentInput,plannerPhotoInput,plannerCompletionInput,plannerConfirmation,vitrineNumber,plannerCounts,plannerAreasNeedingReview,plannerAreaInput,flexibleDestinations,plannerFamilies,type PlannerRow} from "./museum-move-planner-domain";
 test("room numbers include temple hall zero without guessing compound locations",()=>{
  assert.equal(vitrineNumber("Vitrine 03"),"3");
  assert.equal(vitrineNumber("#0"),"0");
@@ -51,4 +51,27 @@ test("family grouping uses stable group IDs, keeps same-named groups distinct an
  const groups=plannerFamilies(rows);
  assert.equal(groups.length,3);assert.deepEqual(groups.find(g=>g.key==="a")!.rows.map(r=>r.id),["1","2"]);
  assert.equal(groups.find(g=>g.key==="saint:4")!.rows.length,1);
+});
+
+test("earlier areas remain visible when sections disappear or flexible proposals change",()=>{
+ const area={section:"Old section",vitrines:["6","7"],placements:[{id:"a",revision:"v1"}]};
+ const row={id:"a",name:"Saint A",section:"Old section",status:"Proposed",revision:"v1"} as PlannerRow;
+ assert.deepEqual(plannerAreasNeedingReview([area],[row]),[]);
+ const renamed=plannerAreasNeedingReview([area],[{...row,section:"New section"}]);
+ assert.equal(renamed[0].inactiveSection,true);
+ assert.equal(renamed[0].affected[0].currentSection,"New section");
+ assert.equal(plannerAreasNeedingReview([area],[{...row,revision:"v2"}])[0].affected.length,1);
+ assert.equal(plannerAreasNeedingReview([area],[])[0].affected[0].name,null);
+ assert.equal(plannerAreasNeedingReview([{...area,placements:[]}],[]).length,1);
+ assert.deepEqual(plannerAreasNeedingReview([{...area,vitrines:[]}],[]),[]);
+});
+test("exact destinations supersede earlier flexible assignments without a false warning",()=>{
+ const area={section:"Section",vitrines:["6"],placements:[{id:"a",revision:"v1"}]};
+ for(const status of ["Planned","Implemented"] as const){
+  const row={id:"a",section:"Section",status,revision:"v2"} as PlannerRow;
+  assert.deepEqual(plannerAreasNeedingReview([area],[row]),[]);
+  const moved=plannerAreasNeedingReview([area],[{...row,section:"Other"}]);
+  assert.equal(moved[0].inactiveSection,true);
+  assert.deepEqual(moved[0].affected,[]);
+ }
 });
