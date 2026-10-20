@@ -424,3 +424,7 @@ bottom panel without replacing the graph or resetting its camera. Tree settings
 and source controls are collapsed by default. Both museums and saint dialogs use
 the same renderer and gesture helpers; no records or relationship claims change.
 Gesture geometry regression tests live in `museum-tree-camera.test.ts`.
+
+### Museum move planner
+
+Use `MuseumRoomPlan` for the same numbered schematic in photo setup and destination selection. Real room geometry belongs in the shared map configuration/CSS; the schematic must never imply capacity or scale. Use a compact section chooser, a brief section summary, distinct saint/photo counts, and explicit whole/partial selection. Keep setup and coverage details collapsed after setup. Mobile wraps into one readable column, preserving page scrolling and clear numbered tap targets. Saved move lists lead with saint and destination, then preserved source locations and relic descriptions. All colors, sizes and spacing use shared tokens.

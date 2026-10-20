@@ -11406,3 +11406,65 @@ select:not([multiple]) {
  .museum-tree-picker select { font-size: var(--font-size-tree-input); min-height: var(--height-tree-touch); }
  .museum-tree-mobile-controls button { min-height: var(--height-tree-touch); min-width: var(--height-tree-touch); }
 }
+
+/* Shared museum move planning: room geometry is schematic, never a capacity scale. */
+.museum-planner__workspace { display:grid; grid-template-columns:var(--width-museum-planner-sections) minmax(0,1fr); gap:var(--space-6); align-items:start; }
+.museum-planner__sections { display:grid; gap:var(--space-2); }
+.museum-planner__section { display:grid; gap:var(--space-2); text-align:left; padding:var(--space-4); color:var(--color-text); background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-control); }
+.museum-planner [aria-pressed="true"] { border-color:var(--color-accent); background:var(--color-surface-muted); }
+.museum-planner__section strong { font-size:var(--font-size-review-field); }
+.museum-planner__counts { display:flex; gap:var(--space-2) var(--space-4); flex-wrap:wrap; color:var(--color-muted); font-size:var(--font-size-review-field); }
+.museum-planner__counts span { display:inline-flex; gap:var(--space-1); align-items:center; }
+.museum-planner__counts svg,.museum-planner__setup summary svg,.museum-planner__move svg { width:var(--space-4); height:var(--space-4); display:inline-block; vertical-align:middle; }
+.museum-planner__surface,.museum-planner__setup,.museum-planner__move { padding:var(--space-5); background:var(--color-surface); border:1px solid var(--color-border); }
+.museum-planner__setup-grid,.museum-planner__destination { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:var(--space-5); align-items:start; }
+.museum-planner__setup-grid { margin-top:var(--space-4); }
+.museum-planner__filters { display:flex; gap:var(--space-4); flex-wrap:wrap; }
+.museum-planner__filters label { flex:1; }
+.museum-planner__members { display:grid; gap:var(--space-1); }
+.museum-planner__member { display:flex; align-items:start; gap:var(--space-3); padding:var(--space-3) 0; border-bottom:1px solid var(--color-border); }
+.museum-planner__member span { display:grid; gap:var(--space-1); }
+.museum-planner__member small { color:var(--color-muted); }
+.museum-planner__member input[type="checkbox"] { width:auto; flex:none; margin-top:var(--space-1); }
+.museum-planner__source { border-top:1px solid var(--color-border); padding-top:var(--space-3); }
+.museum-planner__route { color:var(--color-accent); }
+.museum-room { display:grid; width:100%; max-width:var(--width-museum-room); gap:var(--space-1); padding:var(--space-2); border:1px solid var(--color-border); grid-template-columns:1fr .25fr 1fr 1fr .25fr 1fr; grid-template-areas: ". . v6 v6 v6 v7" "v19 . v20 v5 . v8" "v18 . v21 v4 . v9" "v17 . v22 v3 . v10" "v16 . v23 v2 . v11" "v15 . v24 v1 . v12" "v14 . . . . entrance" "v13 v13 v0 v0 . entrance" ". . temple temple . ."; }
+.museum-room__vitrine { min-width:0; min-height:var(--height-museum-room-cell); padding:var(--space-1); display:grid; align-content:center; color:var(--color-text); background:var(--color-bg); border:1px solid var(--color-border); border-radius:var(--radius-sm); }
+.museum-room__vitrine strong { font-size:var(--font-size-museum-nav-heading); }
+.museum-room__vitrine small { font-size:var(--font-size-review-hint); color:var(--color-muted); }
+.museum-room__entrance { grid-area:entrance; align-self:end; font-size:var(--font-size-review-hint); }
+.museum-room__temple { grid-area:temple; text-align:center; font-size:var(--font-size-review-hint); }
+.museum-room__vitrine--0 { grid-area:v0; }
+.museum-room__vitrine--1 { grid-area:v1; }
+.museum-room__vitrine--2 { grid-area:v2; }
+.museum-room__vitrine--3 { grid-area:v3; }
+.museum-room__vitrine--4 { grid-area:v4; }
+.museum-room__vitrine--5 { grid-area:v5; }
+.museum-room__vitrine--6 { grid-area:v6; }
+.museum-room__vitrine--7 { grid-area:v7; }
+.museum-room__vitrine--8 { grid-area:v8; }
+.museum-room__vitrine--9 { grid-area:v9; }
+.museum-room__vitrine--10 { grid-area:v10; }
+.museum-room__vitrine--11 { grid-area:v11; }
+.museum-room__vitrine--12 { grid-area:v12; }
+.museum-room__vitrine--13 { grid-area:v13; }
+.museum-room__vitrine--14 { grid-area:v14; }
+.museum-room__vitrine--15 { grid-area:v15; }
+.museum-room__vitrine--16 { grid-area:v16; }
+.museum-room__vitrine--17 { grid-area:v17; }
+.museum-room__vitrine--18 { grid-area:v18; }
+.museum-room__vitrine--19 { grid-area:v19; }
+.museum-room__vitrine--20 { grid-area:v20; }
+.museum-room__vitrine--21 { grid-area:v21; }
+.museum-room__vitrine--22 { grid-area:v22; }
+.museum-room__vitrine--23 { grid-area:v23; }
+.museum-room__vitrine--24 { grid-area:v24; }
+@media (max-width:1100px) { .museum-planner__workspace { grid-template-columns:minmax(0,1fr); } .museum-planner__sections { grid-template-columns:repeat(auto-fit,minmax(var(--width-museum-planner-sections),1fr)); } }
+@media (max-width:640px) { .museum-planner__setup-grid,.museum-planner__destination { grid-template-columns:minmax(0,1fr); } }
+@media print { body:has(.museum-planner) header,body:has(.museum-planner) aside,.museum-planner__setup,.museum-planner__view-switch,.museum-planner__filters,.museum-planner button,.museum-planner a { display:none!important; } .museum-planner__move { break-inside:avoid; } }
+.museum-planner__workspace { grid-template-columns:minmax(0,1fr); }
+.museum-planner__sections { grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--width-museum-planner-sections)),1fr)); margin-top:var(--space-4); }
+.museum-planner .admin-field .museum-planner__member { display:flex; align-items:flex-start; }
+.museum-planner .admin-field .museum-planner__member span { color:var(--color-text); font-size:var(--font-size-review-field); font-weight:normal; text-transform:none; }
+.museum-planner .admin-field input[type="checkbox"] { width:var(--space-4); height:var(--space-4); min-height:0; padding:0; }
+.museum-planner .admin-field legend { text-transform:none; }

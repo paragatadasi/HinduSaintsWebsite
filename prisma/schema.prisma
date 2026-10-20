@@ -1679,3 +1679,14 @@ model MuseumCuratorProposal {
   @@id([museumId, saintId])
   @@index([museumId, groupKey])
 }
+
+// Photo-space planning snapshot: museum-local and private, never public saint data.
+// IDs stay tagged when arrangements change. Re-saving setup explicitly refreshes them.
+model MuseumPlanningSetup {
+  museumId String @id
+  photoVitrines String[]
+  photoSaintIds String[]
+  version Int @default(1)
+  updatedById String
+  updatedAt DateTime @updatedAt
+}

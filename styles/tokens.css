@@ -38,6 +38,9 @@
   --font-sans: Arial, Helvetica, sans-serif;
   --font-serif: Georgia, "Times New Roman", serif;
   --font-size-museum-nav-heading: 1.2rem;
+  --width-museum-planner-sections: 16rem;
+  --width-museum-room: 26rem;
+  --height-museum-room-cell: 3rem;
   --color-tree-selected: var(--color-accent);
   --font-size-admin-stat-heading: 1.25rem;
   --font-size-admin-auth-heading: clamp(2rem, 4vw, 2.8rem);
