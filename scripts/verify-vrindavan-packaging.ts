@@ -1,0 +1,20 @@
+import assert from "node:assert/strict";
+import {randomBytes} from "node:crypto";
+const url=process.env.MUSEUM_PACKAGING_TEST_DATABASE_URL;if(!url)throw Error("Set disposable test database URL");const target=new URL(url);if(!["localhost","127.0.0.1"].includes(target.hostname)||target.pathname!=="/museum_packaging_test")throw Error("Refusing non-test database");process.env.DATABASE_URL=url;
+const {db}=await import("../lib/db");const {readVrindavanMuseumInventory}=await import("../lib/vrindavan-museum-inventory");const {readVrindavanWorkingData}=await import("../lib/vrindavan-working-data");const {readVrindavanMovePlanner}=await import("../lib/museum-move-planner");const {plannerPackagingCounts}=await import("../lib/museum-move-planner-domain");const {summarizeRelicPackaging}=await import("../lib/museum-relic-packaging");
+const suffix=Date.now(),hash=randomBytes(32).toString("hex");try{
+ await db.museum.upsert({where:{id:"museum-vrindavan"},create:{id:"museum-vrindavan",slug:"vrindavan",name:"Vrindavan"},update:{}});
+ const section=await db.museumSection.create({data:{name:"Gaudiya Vaishnava",slug:`packaging-${suffix}`,status:"published"}});
+ const saints:{id:string;displayName:string}[]=[];
+ for(let i=0;i<3;i++){const saint=await db.saint.create({data:{slug:`packaging-${suffix}-${i}`,displayName:`Packaging fixture ${i}`,canonicalName:`Packaging fixture ${i}`}});saints.push(saint);await db.saintMuseumSection.create({data:{saintId:saint.id,museumSectionId:section.id,tier:"featured",status:"published"}});}
+ for(const [index,packaging] of ["Frame","Box / Frame","Small Frame / Box","Frame"].entries()){
+  const ids=index===0?[saints[0].id,saints[1].id]:index===1?[saints[0].id]:index===2?[saints[2].id]:[];
+  await db.museumCollectionImport.create({data:{museumId:"museum-vrindavan",sourceKey:`vrindavan-workbook:${hash}:Sheet1:${index+2}`,fingerprint:hash+index,status:ids.length?"identity_linked":"pending",reviewedAt:ids.length?new Date():null,rawJson:{cells:["Fixture","Vrindavan","Cloth",3,packaging,17,"3.4"],secondarySheet:{cells:["Fixture","Vrindavan","Cloth",3,index===0?"Box":packaging,17,"3.4"]}},normalizedJson:{mappingVersion:"vrindavan-identity-v1",sourceName:"Fixture.xlsx",sourceRow:index+2,name:"Fixture",place:"Vrindavan",relic:"Cloth",quantity:"3",display:"17",position:"3.4",comments:"",warnings:[],saintIds:ids,note:null}}});
+ }
+ const snapshot=async()=>({saints:await db.saint.findMany(),sources:await db.museumCollectionImport.findMany(),sections:await db.saintMuseumSection.findMany(),overrides:await db.museumCuratorProposal.findMany(),arrangements:await db.museumArrangement.findMany(),physical:await db.museumItemPlacement.findMany(),setup:await db.museumPlanningSetup.findMany(),audit:await db.auditEvent.count()});
+ const before=await snapshot();const inventory=await readVrindavanMuseumInventory();const working=await readVrindavanWorkingData();const planner=await readVrindavanMovePlanner();
+ assert.equal(inventory.entries.length,3);assert.equal(inventory.counts.awaitingIdentityReview,1);assert.equal(inventory.packagingSummary.frameEntries,1);assert.equal(inventory.packagingSummary.mixedFrameEntries,1);assert.equal(inventory.packagingSummary.smallFrameEntries,1);assert.equal(inventory.packagingSummary.discrepancyEntries,1);assert.equal(inventory.entries[0].packaging.preferredSheet,"Sheet1");assert.equal(inventory.entries[0].packaging.type,"frame");assert.equal(inventory.entries[0].quantityText,"3");
+ const fromSections=summarizeRelicPackaging(working.placements.flatMap(row=>row.sourcePackaging??[])),fromPlanner=plannerPackagingCounts(planner.rows);
+ assert.deepEqual(fromSections,inventory.packagingSummary);assert.deepEqual(fromPlanner,inventory.packagingSummary);assert.equal(planner.rows[0].sources[0].packaging?.type,"frame");assert.ok(planner.rows.every(r=>!r.photo));assert.deepEqual(await snapshot(),before);
+ console.log("PASS preserved raw column E reaches inventory, section/family placements and planner; Sheet1 precedence, shared-source deduplication, pending exclusion and read-only records verified");
+}finally{await db.$disconnect();}

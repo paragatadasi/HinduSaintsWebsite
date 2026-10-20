@@ -34,3 +34,8 @@ test("display and position labels cannot collide through delimiter characters",(
  const entry=projectVrindavanInventoryEntry({...row,normalizedJson:{...data,display:"1/2",position:"A/B"}},museum,new Set(["saint1"]))!;
  assert.equal(entry.sourceLocation?.code,"1%2F2/A%2FB");assert.equal(entry.sourceLocation?.displayText,"1/2");
 });
+test("existing preserved column E gains frame evidence without changing identity or source quantities",()=>{
+ const cells=["Saint","Puri","Cloth",3,"Frame",17,"3.4"];
+ const entry=projectVrindavanInventoryEntry({...row,rawJson:{cells,secondarySheet:{cells:["Saint","Puri","Cloth",3,"Box",17,"3.4"]}}},museum,new Set(["saint1"]))!;
+ assert.equal(entry.packagingText,"Frame");assert.equal(entry.packaging.type,"frame");assert.equal(entry.packaging.preferredSheet,"Sheet1");assert.equal(entry.packaging.secondaryDisagrees,true);assert.equal(entry.packaging.secondaryText,"Box");assert.ok(entry.warnings.some(w=>w.includes("Column E")));assert.deepEqual(entry.saintIds,["saint1"]);assert.equal(entry.quantityText,"2 pieces");assert.equal(entry.sourceLocation?.positionText,"3.4");assert.equal(entry.physicalItemId,null);
+});
