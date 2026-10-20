@@ -1112,3 +1112,5 @@ Selected section vitrines expose explicit remove controls as well as map toggles
 ### Region containers preserve subsections (20 October 2026)
 
 The six Vrindavan regions are navigation parents of the existing named subsections, not replacement section assignments. The obsolete region-only apply is disabled server-side; existing subsection URLs, families, tiers and arrangements remain intact. See museum-vrindavan-lineage-reconciliation.md for the superseding v3 clarification and remaining context/family holds. Identity reconciliation independently verified 413 linked source rows / 400 saints, with 36 held and zero link alerts.
+
+The planning palette consumes the shared `vrindavanRegionGroups` visitor sequence: named subsections are grouped under ordered regional headings, with conditional global context and a final Other proposals group for unresolved/unmapped names. Only sections with current planning rows appear. Searching matches region or subsection names. Region headings are not draggable destinations; only existing named subsections can reserve areas.
