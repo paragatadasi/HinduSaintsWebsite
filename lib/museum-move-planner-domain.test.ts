@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import {photoSaintsInVitrines,plannerAssignmentInput,plannerPhotoInput,plannerCompletionInput,plannerConfirmation,vitrineNumber,plannerCounts,plannerAreasNeedingReview,plannerAreaInput,flexibleDestinations,plannerFamilies,type PlannerRow} from "./museum-move-planner-domain";
+import {photoSaintsInVitrines,plannerAssignmentInput,plannerPhotoInput,plannerCompletionInput,plannerConfirmation,vitrineNumber,plannerCounts,plannerMoveNeedsAttention,plannerAreasNeedingReview,plannerAreaInput,flexibleDestinations,plannerFamilies,type PlannerRow} from "./museum-move-planner-domain";
 test("room numbers include temple hall zero without guessing compound locations",()=>{
  assert.equal(vitrineNumber("Vitrine 03"),"3");
  assert.equal(vitrineNumber("#0"),"0");
@@ -74,4 +74,13 @@ test("exact destinations supersede earlier flexible assignments without a false 
   assert.equal(moved[0].inactiveSection,true);
   assert.deepEqual(moved[0].affected,[]);
  }
+});
+
+test("implemented arrangements requiring proposal review stay in the move-day attention list",()=>{
+ const row={status:"Implemented"} as PlannerRow;
+ assert.equal(plannerMoveNeedsAttention(row),false);
+ assert.equal(plannerMoveNeedsAttention({...row,arrangementNeedsReview:true}),true);
+ assert.equal(plannerMoveNeedsAttention({...row,status:"Planned"}),true);
+ assert.equal(plannerMoveNeedsAttention({...row,status:"Proposed"}),false);
+ assert.equal(plannerMoveNeedsAttention({...row,status:"Proposed",flexibleVitrines:["6"]}),true);
 });

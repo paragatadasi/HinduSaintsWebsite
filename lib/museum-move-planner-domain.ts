@@ -55,7 +55,7 @@ export function plannerConfirmation(value:unknown):PlannerConfirmation|null{
 export type PlannerRow={
  id:string;saintId:string;name:string;section:string;family:string;tier:string;needsResearch:boolean;
  photo:boolean;status:"Proposed"|"Planned"|"Implemented";vitrine:string;shelf:string;
- revision:string;lastConfirmed:PlannerConfirmation|null;familyKey?:string;flexibleVitrines?:string[];
+ arrangementNeedsReview?:boolean;revision:string;lastConfirmed:PlannerConfirmation|null;familyKey?:string;flexibleVitrines?:string[];
  sources:{id:string;vitrine:string;shelf:string;relics:string;quantity:string;shared:boolean}[];
 };
 export type PlannerData={
@@ -100,3 +100,5 @@ export function plannerAreasNeedingReview(areas:PlannerArea[],rows:PlannerRow[])
   return inactiveSection||affected.length?[{...area,inactiveSection,affected}]:[];
  });
 }
+
+export function plannerMoveNeedsAttention(row:PlannerRow){return !!row.arrangementNeedsReview||row.status==="Planned"||isFlexible(row);}
