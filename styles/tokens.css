@@ -399,3 +399,13 @@
 :root { --opacity-control-disabled: 0.5; --offset-museum-plan-anchor: 10rem; --height-museum-section-palette: 32rem; --width-museum-section-palette: 20rem; }
 
 :root { --width-museum-assignment-panel: 22rem; }
+
+/* Shared curator planning and move-companion hierarchy. */
+:root {
+ --font-size-museum-planning-title: clamp(2rem, 3.5vw, 3.5rem);
+ --font-size-museum-planning-heading: clamp(1.3rem, 2vw, 1.7rem);
+ --font-size-museum-planning-card: 1.3rem;
+ --font-size-museum-planning-stat: 1.8rem;
+ --width-museum-planning-family: 18rem;
+ --width-museum-planning-copy: 65ch;
+}
