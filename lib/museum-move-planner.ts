@@ -19,7 +19,7 @@ async function context(tx:Prisma.TransactionClient){
  ]);
  const revision=createHash("sha256").update(JSON.stringify({
   arrangements:working.placements.map(p=>[p.id,p.arrangement?.revision]).sort(),
-  inventory:inventory.entries.map(e=>[e.observationId,e.saintIds,e.displayText,e.positionText]),
+  inventory:inventory.entries.map(e=>[e.observationId,e.saintIds,e.displayText,e.positionText,e.packaging]),
   setup:setup?.version??0,areas:spacePlans.map(area=>[area.section,area.version])
  })).digest("hex");
  const confirmations=await tx.auditEvent.findMany({where:{entityType:"MuseumArrangement",action:{in:["museum.arrangement.updated","museum.move.confirmed"]},
@@ -47,7 +47,7 @@ export async function readVrindavanMovePlanner(tx:Prisma.TransactionClient=db):P
    photo:photos.has(p.saintId),status:p.arrangement.status,vitrine:p.arrangement.vitrine,shelf:p.arrangement.shelf,
    revision:p.arrangement.revision,lastConfirmed:lastConfirmed.get(p.id)??null,
    sources:(inventory.entriesBySaintId.get(p.saintId)??[]).map(e=>({id:e.observationId,
-    vitrine:e.displayText,shelf:e.positionText,relics:e.relicDescription,quantity:e.quantityText,shared:e.saintIds.length>1}))
+    vitrine:e.displayText,shelf:e.positionText,relics:e.relicDescription,quantity:e.quantityText,shared:e.saintIds.length>1,packagingText:e.packagingText,packaging:e.packaging}))
   }]:[])};
 }
 async function transaction<T>(work:(tx:Prisma.TransactionClient)=>Promise<T>){
