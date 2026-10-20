@@ -39,7 +39,7 @@ export async function readVrindavanMovePlanner(tx:Prisma.TransactionClient=db):P
   photoUpdatedAt:setup?.updatedAt.toISOString()??null,
   awaitingIdentityReview:inventory.counts.awaitingIdentityReview,
   unmappedLocations:inventory.displays.filter(d=>vitrineNumber(d)===null),
-  sections:view.sections.map(s=>({name:s.name,slug:s.slug,idea:s.idea})),
+  sections:working.sections.map(s=>({name:s.name,slug:s.slug,idea:view.sections.find(summary=>summary.name===s.name)?.idea??""})),
   rows:working.placements.flatMap(p=>p.saintId&&p.arrangement?[{
    id:p.id,saintId:p.saintId,name:p.name,section:p.section,family:p.groupLabel||"",tier:p.tier,needsResearch:p.needsResearch,
    familyKey:p.familyId||undefined,flexibleVitrines:flexibleDestinations({id:p.id,section:p.section,status:p.arrangement.status,revision:p.arrangement.revision},areas),
