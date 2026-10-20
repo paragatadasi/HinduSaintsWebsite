@@ -17,6 +17,7 @@ export default async function VisitResearch({searchParams}:{searchParams:Promise
   const page=Math.max(1,parseInt(params.page||"1")||1); const visible=filtered.slice((page-1)*20,page*20);
   return <div className="admin-stack">
     <h1>Visit-place research</h1>
+    <p><Link href={"/admin/source-data/key-localities" as Route}>Review Saarthi’s key locality updates for published saints</Link></p>
     <p>Review suggested places people can visit to connect with a saint. Historical saint-place associations and museum relic locations are separate decisions.</p>
     <p>This research queue preserves the original workbook. Marking research ready does not apply changes. Use Review acceptance batch to publish accepted visit destinations and optionally update primary localities.</p>
     {hasCapability(user.roles,"run_imports")?<form action={stageResearch} className="form-stack"><label>Research proposals (JSON)<input type="file" name="proposalFile" accept="application/json,.json" required/></label><button className="admin-form-button">Load research proposals</button></form>:null}

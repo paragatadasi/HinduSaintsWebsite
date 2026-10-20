@@ -1,0 +1,37 @@
+import assert from "node:assert/strict";
+const url=process.env.KEY_LOCALITY_TEST_DATABASE_URL;if(!url)throw Error("Set disposable locality test database URL");
+const target=new URL(url);if(!["localhost","127.0.0.1"].includes(target.hostname)||target.pathname!=="/museum_integration_test")throw Error("Refusing non-test database");process.env.DATABASE_URL=url;
+const {db}=await import("../lib/db");const {keyLocalityResearch}=await import("../lib/key-locality-research");
+const {previewKeyLocality,applyKeyLocalityUpdates,readKeyLocalityPreview}=await import("../lib/key-locality-updates");
+const record=keyLocalityResearch.records[0];const suffix=Date.now();
+try{
+ const actor=await db.user.create({data:{email:`localities-${suffix}@example.invalid`,roles:["editor"],active:true}});
+ const saint=await db.saint.create({data:{slug:record.external_id.split(":").at(-1)!,displayName:record.name,canonicalName:record.name,status:"published",publicationStatus:"published",teamVisibility:"public"}});
+ const legacy=await db.place.create({data:{slug:`old-${suffix}`,name:"Collection place",alternateNames:[],country:"India"}});
+ const old=await db.saintPlace.create({data:{saintId:saint.id,placeId:legacy.id,placeType:"primary",routeOrder:4,notes:"Preserve this provenance"}});
+ const existing=await db.place.create({data:{slug:`vrindavan-${suffix}`,name:"Vrindavan",alternateNames:[],country:"IN",teamVisibility:"public",publicationStatus:"published",latitude:27.58,longitude:77.7}});
+ const draft=await db.saint.create({data:{slug:keyLocalityResearch.records[1].external_id.split(":").at(-1)!,displayName:"Draft",canonicalName:"Draft"}});
+ const uncovered=await db.saint.create({data:{slug:`uncovered-${suffix}`,displayName:"Uncovered",canonicalName:"Uncovered",teamVisibility:"public",status:"published",publicationStatus:"published"}});
+ let plan=await previewKeyLocality(record);assert.equal(plan.blocked,"");assert.equal(plan.localities[0].place?.id,existing.id);
+ await db.saint.update({where:{id:saint.id},data:{version:{increment:1}}});
+ await assert.rejects(applyKeyLocalityUpdates(actor.id,{selections:[plan.selection],confirm:"on"}),/changed/);assert.equal(await db.saintPlace.count({where:{saintId:saint.id}}),1);
+ plan=await previewKeyLocality(record);await applyKeyLocalityUpdates(actor.id,{selections:[plan.selection],confirm:"on"});
+ const links=await db.saintPlace.findMany({where:{saintId:saint.id},include:{place:true},orderBy:{keyLocalityOrder:"asc"}});
+ const ranked=links.filter(l=>l.keyLocalityOrder!=null);assert.deepEqual(ranked.map(l=>l.place.name),["Vrindavan","New York","Mayapur"]);assert.equal(ranked[0].placeType,"primary");assert.equal(ranked[0].placeId,existing.id);
+ const previous=links.find(l=>l.id===old.id)!;assert.equal(previous.placeType,"associated");assert.equal(previous.routeOrder,4);assert.equal(previous.notes,old.notes);
+ assert.equal(Number((await db.place.findUniqueOrThrow({where:{id:existing.id}})).latitude),27.58);
+ assert.equal(await db.saintVisitPlace.count(),0);assert.equal(await db.museumItemPlacement.count(),0);
+ const provenance=await db.externalRecord.findFirstOrThrow({where:{sourceType:"reviewed_key_localities",entityId:saint.id}});assert.ok((provenance.rawPayloadJson as {record:unknown}).record);
+ await db.saint.update({where:{id:saint.id},data:{shortDescription:"Later human edit"}});
+ const applied=await previewKeyLocality(record);assert.match(applied.blocked,/already applied/);await assert.rejects(applyKeyLocalityUpdates(actor.id,{selections:[applied.selection],confirm:"on"}));
+ assert.match((await previewKeyLocality(keyLocalityResearch.records[1])).blocked,/not currently published/);
+ const coverage=await readKeyLocalityPreview();assert.ok(coverage.uncovered.some(s=>s.id===uncovered.id));assert.equal(await db.saintPlace.count({where:{saintId:draft.id}}),0);
+ const draftRecord=keyLocalityResearch.records[1];
+ await db.saint.update({where:{id:draft.id},data:{status:"published",publicationStatus:"published",teamVisibility:"public"}});
+ await db.place.create({data:{slug:`unknown-country-${suffix}`,name:draftRecord.recommended_localities[0].locality,alternateNames:[]}});
+ assert.match((await previewKeyLocality(draftRecord)).blocked,/no country/);
+ await db.externalRecord.create({data:{sourceType:"fixture_identity",externalId:draftRecord.external_id,entityType:"Saint",entityId:uncovered.id,rawPayloadJson:{}}});
+ assert.match((await previewKeyLocality(draftRecord)).blocked,/identity/);
+ assert.equal(await db.saintPlace.count({where:{saintId:draft.id}}),0);
+ console.log("PASS: published-only matching, country reuse, ranked shortlist, preserved raw evidence/legacy/route/coordinates, stale rejection, replay protection and coverage gaps");
+}finally{await db.$disconnect();}

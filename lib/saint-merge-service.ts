@@ -233,19 +233,21 @@ async function movePlaces(tx: Transaction, sourceId: string, targetId: string) {
     tx.saintPlace.findMany({ where: { saintId: sourceId } }),
     tx.saintPlace.findMany({ where: { saintId: targetId } })
   ]);
+  const targetHasShortlist = targetRows.some(row=>row.keyLocalityOrder!=null);
   const targetByKey = new Map(targetRows.map((row) => [`${row.placeId}:${row.placeType}`, row]));
   for (const row of sourceRows) {
     const existing = targetByKey.get(`${row.placeId}:${row.placeType}`);
     if (existing) {
       await tx.saintPlace.update({ where: { id: existing.id }, data: {
         notes: combineNotes(existing.notes, row.notes),
+        keyLocalityOrder: targetHasShortlist ? existing.keyLocalityOrder : row.keyLocalityOrder,
         routeOrder: existing.routeOrder ?? row.routeOrder,
         routeLabel: existing.routeLabel ?? row.routeLabel,
         routeConfidence: existing.routeConfidence ?? row.routeConfidence
       } });
       await tx.saintPlace.delete({ where: { id: row.id } });
     } else {
-      await tx.saintPlace.update({ where: { id: row.id }, data: { saintId: targetId } });
+      await tx.saintPlace.update({ where: { id: row.id }, data: { saintId: targetId, keyLocalityOrder: targetHasShortlist ? null : row.keyLocalityOrder } });
       targetByKey.set(`${row.placeId}:${row.placeType}`, row);
     }
   }

@@ -597,6 +597,9 @@ export async function updateSaintPlaces(formData: FormData) {
   if (!saint) redirect("/admin/saints");
 
   await db.$transaction(async (tx) => {
+    const previousPlaces = await tx.saintPlace.findMany({where:{saintId:parsed.saintId}});
+    const primaryIds = (rows: {placeId:string;placeType:string}[]) => rows.filter(p=>p.placeType==="primary").map(p=>p.placeId).sort().join("|");
+    const keepShortlist = primaryIds(previousPlaces) === primaryIds(parsed.places);
     await tx.saintPlace.deleteMany({ where: { saintId: parsed.saintId } });
 
     if (parsed.places.length > 0) {
@@ -606,6 +609,7 @@ export async function updateSaintPlaces(formData: FormData) {
           placeId: place.placeId,
           placeType: place.placeType,
           routeOrder: place.routeOrder,
+          keyLocalityOrder: keepShortlist ? previousPlaces.find(p=>p.placeId===place.placeId&&p.placeType===place.placeType)?.keyLocalityOrder : null,
           routeLabel: place.routeLabel
         }))
       });

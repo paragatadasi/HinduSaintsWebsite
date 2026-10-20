@@ -362,6 +362,7 @@ export async function mergePlaces(formData: FormData) {
           data: {
             placeType: getPreferredPlaceType(targetLink.placeType, sourceLink.placeType),
             notes: combineNotes(targetLink.notes, sourceLink.notes),
+            keyLocalityOrder: targetLink.keyLocalityOrder ?? sourceLink.keyLocalityOrder,
             routeOrder: targetLink.routeOrder ?? sourceLink.routeOrder,
             routeLabel: targetLink.routeLabel ?? sourceLink.routeLabel,
             routeConfidence: targetLink.routeConfidence ?? sourceLink.routeConfidence
