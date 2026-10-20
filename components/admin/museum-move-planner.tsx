@@ -15,6 +15,7 @@ import {MuseumConnectedTraditions,museumRegionIndex} from "./museum-connected-tr
 import {MuseumPackagingSummary} from "./museum-packaging-summary";
 import {MuseumArrangementLegend} from "./museum-arrangement-indicator";
 import {MuseumMoveList} from "./museum-move-list";
+import {MuseumSuggestedPlan} from "./museum-suggested-plan";
 
 function Counts({rows,configured}:{rows:PlannerRow[];configured:boolean}){
  const counts=plannerCounts(rows);
@@ -73,6 +74,7 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
  return <div className="museum-admin admin-stack museum-planner">
   <header className="section-heading"><div><p className="eyebrow">Vrindavan Museum</p><h1>{view==="plan"?"Plan the move":"Move companion"}</h1><p>{view==="plan"?"Reserve space for sections, then arrange families and saints within it.":"Find the starting location, check the relics, and confirm their destination."}</p></div></header>
   {view==="plan"?<Counts rows={data.rows} configured={data.photosConfigured}/>:null}
+  {view==="plan"&&canEdit?<MuseumSuggestedPlan data={data} disabled={Object.entries(areaDrafts).some(([name,values])=>JSON.stringify([...values].sort())!==JSON.stringify([...(data.areas.find(a=>a.section===name)?.vitrines??[])].sort()))}/>:null}
   {error?<p role="alert">{error}</p>:null}{message?<p role="status">{message}</p>:null}
   <div className="review-actions museum-planner__view-switch" role="group" aria-label="Move workspace">
    <button className="museum-admin-button museum-admin-button--secondary" aria-pressed={view==="plan"} onClick={()=>setView("plan")}>Plan destinations</button>

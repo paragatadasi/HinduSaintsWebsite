@@ -466,3 +466,10 @@ entries: Frame, Small frame, Mixed containers, Unframed and Unknown/review. Neve
 multiply source quantities into frame totals or infer a measured size from “Frame”.
 Sheet1 remains authoritative and photo availability remains separate. No saved-plan
 or physical-location mutation is triggered by exploring the companion.
+
+The suggested-plan entry uses the same planner surface, room schematic, review
+actions and detail dialog. Preview separates provisional destinations from the
+explicit load action; clear explains that later edits and implemented moves are
+preserved. Frame/source comparisons remain expanded as relevant fit context,
+while group members and area rationales use native disclosures. See
+`docs/museum-suggested-plan.md` for the planning and provenance rules.

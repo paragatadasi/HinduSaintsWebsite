@@ -56,12 +56,14 @@ export function plannerConfirmation(value:unknown):PlannerConfirmation|null{
  return parsed.success?{vitrine:parsed.data.vitrine,shelf:parsed.data.shelf||"",confirmedAt:parsed.data.confirmedAt,...(parsed.data.note?{note:parsed.data.note}:{})}:null;
 }
 export type PlannerRow={
+ traditionIds?:string[];
  id:string;saintId:string;name:string;section:string;family:string;tier:string;needsResearch:boolean;
  photo:boolean;status:"Proposed"|"Planned"|"Implemented";vitrine:string;shelf:string;
  arrangementNeedsReview?:boolean;revision:string;lastConfirmed:PlannerConfirmation|null;familyKey?:string;flexibleVitrines?:string[];
  sources:{id:string;vitrine:string;shelf:string;relics:string;quantity:string;shared:boolean;sourceShelfPosition?:SourceShelfPosition;packagingText?:string;packaging?:RelicPackagingEvidence}[];
 };
 export type PlannerData={
+ suggestionId?:string|null;
  revision:string;photoVitrines:string[];photosConfigured:boolean;photoUpdatedAt:string|null;
  areas:PlannerArea[];rows:PlannerRow[];sections:{name:string;slug:string;idea:string}[];
  awaitingIdentityReview:number;unmappedLocations:string[];
