@@ -1,8 +1,17 @@
 import {museumFlowZones} from "./museum-layout-groups";
+import {LINEAGE_REGIONS,LINEAGE_SUPPLEMENT} from "./vrindavan-lineage-catalogue";
 export type MuseumNavSection={name:string;slug:string;total:number};
 export type MuseumNavLink={label:string;href:string;count?:number};
 export function museumSectionNavigation(sections:MuseumNavSection[],museum:"spn"|"vrindavan") {
  const link=(s:MuseumNavSection):MuseumNavLink=>({label:s.name,count:s.total,href:museum==="spn"?`/museumadmin/${s.slug}`:`/vrindavanadmin/sections?section=${encodeURIComponent(s.slug)}`});
+ if(museum==="vrindavan"&&LINEAGE_REGIONS.every(r=>sections.some(s=>s.name===r.name))){
+  const roots=LINEAGE_REGIONS.map(r=>({title:r.name,eyebrow:"Region",badge:String(r.order).padStart(2,"0"),links:sections.filter(s=>s.name===r.name).map(link)}));
+  const supplement=sections.filter(s=>s.name===LINEAGE_SUPPLEMENT.name);
+  if(supplement.length)roots.push({title:"Supplementary context",eyebrow:"Context",badge:"S",links:supplement.map(link)});
+  const remaining=sections.filter(s=>!LINEAGE_REGIONS.some(r=>r.name===s.name)&&s.name!==LINEAGE_SUPPLEMENT.name);
+  if(remaining.length)roots.push({title:"Review and earlier proposals",eyebrow:"Review",badge:"R",links:remaining.map(link)});
+  return roots;
+ }
  const grouped=new Set<string>(museumFlowZones.flatMap(z=>[...z.sections]));
  const groups:{title:string;eyebrow:string;badge:string;links:MuseumNavLink[]}[]=museumFlowZones.map((zone,index)=>({title:zone.title,eyebrow:zone.eyebrow,badge:String(index+1).padStart(2,"0"),links:zone.sections.flatMap(name=>{const section=sections.find(s=>s.name===name);return section?[link(section)]:[];})})).filter(g=>g.links.length);
  const others=sections.filter(s=>!grouped.has(s.name));

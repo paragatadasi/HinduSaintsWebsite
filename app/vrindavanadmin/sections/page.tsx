@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {LINEAGE_REGIONS} from "@/lib/vrindavan-lineage-catalogue";
 import {notFound} from "next/navigation";
 import {Search} from "lucide-react";
 import {requireCapability} from "@/lib/admin-access";
@@ -33,7 +34,7 @@ export default async function VrindavanSections({searchParams}:{searchParams:Pro
  if(section)return <>{notices}<MuseumSectionWorkspace key={section.slug} section={section} overviewHref="/vrindavanadmin/sections" memberDetails={{}} saintProfiles={profiles} familyMoveOptions={families} sectionNames={editing.sections} vrindavanEditing={editing} canManage={canManage} canEditRelationships={canEditRelationships}/></>;
  return <div className="museum-admin museum-admin--index">
   {notices}
-  <MuseumProposalOverview museumName="Vrindavan Museum" sections={sections} basePath="/vrindavanadmin/sections" queryLinks showBridges={false}>
+  <MuseumProposalOverview museumName="Vrindavan Museum" sections={sections} basePath="/vrindavanadmin/sections" queryLinks showBridges={false} sectionCount={6} flowZones={LINEAGE_REGIONS.map(r=>({title:r.name,summary:"Lineage-first regional grouping; existing subgroup distinctions are retained.",sections:[r.name]}))}>
    <section className="museum-admin-panel">
     <div className="museum-admin-section-heading"><div><div className="museum-admin-kicker">Find a saint</div><h2>Search section assignment</h2></div></div>
     <form action="/vrindavanadmin/sections" className="museum-admin-search" role="search">

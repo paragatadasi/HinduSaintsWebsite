@@ -1079,3 +1079,8 @@ Verification: planner/arrangement/Vrindavan domain tests, production build, and 
 
 
 Photo-data update: per curator direction, the move planner no longer exposes photo-vitrine setup or its save action. Vrindavan has supplied explicit photo-presence data for Nadi's import; do not infer absence from missing tags. Until that import is connected, absent setup is displayed as “Photo data pending”, and untagged saints are labelled “without photo tag”, not “no photo”. Existing saved photo IDs are retained. The legacy photo snapshot service remains available for existing verification/history, but is no longer callable through the curator page. The import should provide authoritative per-saint photo presence (including unknown coverage) without changing arrangement destinations or original source records.
+
+
+## Vrindavan lineage-first section reconciliation (20 October 2026)
+
+See [the implementation and release/apply workflow](museum-vrindavan-lineage-reconciliation.md) for the six-region policy, preserved subgroup/family data, protected preview and exports, explicit apply, stale-review safeguards, and research handoff. This checkpoint does not claim a production section apply.
