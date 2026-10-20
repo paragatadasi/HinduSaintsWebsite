@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import {photoSaintsInVitrines,plannerAssignmentInput,plannerPhotoInput,plannerCompletionInput,plannerConfirmation,vitrineNumber,plannerCounts,plannerMoveNeedsAttention,plannerAreasNeedingReview,plannerAreaInput,flexibleDestinations,plannerFamilies,type PlannerRow} from "./museum-move-planner-domain";
+import {photoSaintsInVitrines,plannerAssignmentInput,plannerPhotoInput,plannerCompletionInput,plannerConfirmation,vitrineNumber,plannerCounts,plannerRegionGroups,plannerMoveNeedsAttention,plannerAreasNeedingReview,plannerAreaInput,flexibleDestinations,plannerFamilies,type PlannerRow} from "./museum-move-planner-domain";
 test("room numbers include temple hall zero without guessing compound locations",()=>{
  assert.equal(vitrineNumber("Vitrine 03"),"3");
  assert.equal(vitrineNumber("#0"),"0");
@@ -88,4 +88,13 @@ test("implemented arrangements requiring proposal review stay in the move-day at
 test("planning families sort largest first with stable alphabetical ties",()=>{
  const rows=[{id:"1",familyKey:"a",family:"Alpha",name:"One"},{id:"2",familyKey:"z",family:"Zeta",name:"Two"},{id:"3",familyKey:"z",family:"Zeta",name:"Three"},{id:"4",familyKey:"b",family:"Beta",name:"Four"}] as PlannerRow[];
  assert.deepEqual(plannerFamilies(rows).map(group=>group.key),["z","a","b"]);
+});
+
+test("planner regional palette follows shared visitor flow and retains unresolved proposals",()=>{
+ const names=["Jagannath-Puri & Odisha","Gaudiya Vaishnava","Braj & Krishna Bhakti","Needs section proposal","Sikh & Punjab Traditions","Global & Diaspora Lineages"];
+ const rows=names.map(section=>({section}));
+ const groups=plannerRegionGroups([...names,"Empty section"].map(name=>({name})),rows);
+ assert.deepEqual(groups.flatMap(group=>group.sections),["Sikh & Punjab Traditions","Braj & Krishna Bhakti","Gaudiya Vaishnava","Jagannath-Puri & Odisha","Global & Diaspora Lineages","Needs section proposal"]);
+ assert.equal(groups.at(-1)!.title,"Other proposals");
+ assert.equal(groups.filter(group=>group.title==="Braj & the Ganga").length,1);
 });

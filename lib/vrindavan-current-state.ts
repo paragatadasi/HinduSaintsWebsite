@@ -25,7 +25,7 @@ export async function readVrindavanCurrentState(client:Client=db){
   const inherited=working.audit.rows.find(p=>p.saintId===saint.id);
   const override=curator.find(p=>p.saintId===saint.id)??null;
   const inheritedSubgroups=[...new Set(inherited?.proposals.map(p=>p.section)||[])];
-  return {saintId:saint.id,name:saint.displayName,slug:saint.slug,status:saint.status,publicationStatus:saint.publicationStatus,version:saint.version,aliases:saint.aliases.map(a=>a.alias),sourceRows:inherited?.sourceRows||[],
+  return {saintId:saint.id,name:saint.displayName,slug:saint.slug,status:saint.status,publicationStatus:saint.publicationStatus,version:saint.version,aliases:saint.aliases.map(a=>a.alias),sourceRows:inherited?.sourceRows||[],sourcePackaging:current.sourcePackaging??[],
    current:{section:current.section,tier:current.tier,familyKey:current.familyId,familyLabel:current.groupLabel||current.curatorialFamily,proposalRevision:current.curatorProposalRevision,confidence:current.confidence,rationale:current.rationale,note:current.note,alternatives:current.alternatives,needsResearch:current.needsResearch,arrangement:current.arrangement,arrangementNeedsReview:Boolean(current.arrangementNeedsReview)},
    curatorOverride:override,inheritedSubgroups,inheritedProposals:inherited?.proposals||[],
    originalSubgroups:[...new Set(spn.original.placements.filter(p=>p.saintId===saint.id).map(p=>p.section))],

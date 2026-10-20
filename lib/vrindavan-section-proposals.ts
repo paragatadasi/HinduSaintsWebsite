@@ -31,6 +31,7 @@ export async function readVrindavanSectionProposalAudit(options:{snapshotHash?:s
   const primaryPlaces=websitePlaces.filter(p=>p.placeType==="primary"&&p.placeKind!=="spiritual_region").map(p=>({id:p.id,name:p.name,region:p.region,country:p.country}));
   const needsSectionReview=proposals.length!==1||placements.some(p=>p.placementState?.startsWith("Conflicting"));
   return {saintId:saint.id,name:saint.displayName,saintStatus:saint.status,sourceRows:entries.map(e=>e.sourceRow),
+   sourcePackaging:entries.map(e=>({id:e.observationId,sourceRow:e.sourceRow,packagingText:e.packagingText,quantityText:e.quantityText,packaging:e.packaging})),
    spiritualRegions,primaryPlaces,websitePlaces:websitePlaces.map(p=>({id:p.id,name:p.name,placeType:p.placeType,placeKind:p.placeKind,region:p.region,country:p.country})),
    proposals,needsSectionReview,placeComparisons:comparisons,sourceGeographicSectionCandidates:sourceSections,
    geographicSectionDifference:sourceSections.some(section=>!proposals.some(p=>p.section===section)),

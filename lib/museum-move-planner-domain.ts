@@ -1,3 +1,5 @@
+import {vrindavanRegionGroups} from "./vrindavan-lineage-catalogue";
+import {summarizeRelicPackaging,type RelicPackagingEvidence} from "./museum-relic-packaging";
 import {z} from "zod";
 import type {MuseumSourceInventoryEntry} from "./museum-source-inventory-domain";
 
@@ -56,7 +58,7 @@ export type PlannerRow={
  id:string;saintId:string;name:string;section:string;family:string;tier:string;needsResearch:boolean;
  photo:boolean;status:"Proposed"|"Planned"|"Implemented";vitrine:string;shelf:string;
  arrangementNeedsReview?:boolean;revision:string;lastConfirmed:PlannerConfirmation|null;familyKey?:string;flexibleVitrines?:string[];
- sources:{id:string;vitrine:string;shelf:string;relics:string;quantity:string;shared:boolean}[];
+ sources:{id:string;vitrine:string;shelf:string;relics:string;quantity:string;shared:boolean;packagingText?:string;packaging?:RelicPackagingEvidence}[];
 };
 export type PlannerData={
  revision:string;photoVitrines:string[];photosConfigured:boolean;photoUpdatedAt:string|null;
@@ -102,3 +104,16 @@ export function plannerAreasNeedingReview(areas:PlannerArea[],rows:PlannerRow[])
 }
 
 export function plannerMoveNeedsAttention(row:PlannerRow){return !!row.arrangementNeedsReview||row.status==="Planned"||isFlexible(row);}
+
+export function plannerRegionGroups(sections:{name:string}[],rows:Pick<PlannerRow,"section">[]){
+ const counts=new Map<string,number>();for(const row of rows)counts.set(row.section,(counts.get(row.section)??0)+1);
+ const active=sections.filter(section=>counts.has(section.name)).map(section=>({...section,count:counts.get(section.name)!}));
+ const groups=vrindavanRegionGroups(active).map(group=>({title:group.title,badge:group.badge,sections:group.sections})).filter(group=>group.sections.length);
+ const grouped=new Set(groups.flatMap(group=>group.sections));
+ const other=active.filter(section=>!grouped.has(section.name)).map(section=>section.name);
+ if(other.length)groups.push({title:"Other proposals",badge:"",sections:other});
+ return groups;
+}
+
+// Deduplicate shared source observations within each selected section/family.
+export function plannerPackagingCounts(rows:PlannerRow[]){return summarizeRelicPackaging(rows.flatMap(row=>row.sources??[]));}
