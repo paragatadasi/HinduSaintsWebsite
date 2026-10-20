@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import {photoSaintsInVitrines,plannerAssignmentInput,plannerPhotoInput,vitrineNumber,plannerCounts,type PlannerRow} from "./museum-move-planner-domain";
+import {photoSaintsInVitrines,plannerAssignmentInput,plannerPhotoInput,plannerCompletionInput,plannerConfirmation,vitrineNumber,plannerCounts,type PlannerRow} from "./museum-move-planner-domain";
 test("room numbers include temple hall zero without guessing compound locations",()=>{
  assert.equal(vitrineNumber("Vitrine 03"),"3");
  assert.equal(vitrineNumber("#0"),"0");
@@ -24,4 +24,17 @@ test("section counts count saints, not source entries or relic quantities",()=>{
  const a={saintId:"a",photo:true,status:"Planned"} as PlannerRow;
  const b={saintId:"b",photo:false,status:"Proposed"} as PlannerRow;
  assert.deepEqual(plannerCounts([a,a,b]),{total:2,photo:1,untagged:1,unplanned:1,planned:1,implemented:0});
+});
+test("move completion requires physical and inventory acknowledgements",()=>{
+ const input={placementId:"saint",revision:"a".repeat(64),checkedSourceIds:["entry"],physicalConfirmation:true,inventoryAcknowledged:true};
+ assert.equal(plannerCompletionInput.safeParse(input).success,true);
+ assert.equal(plannerCompletionInput.safeParse({...input,physicalConfirmation:false}).success,false);
+ assert.equal(plannerCompletionInput.safeParse({...input,inventoryAcknowledged:false}).success,false);
+});
+test("current-location evidence must be an explicit Vrindavan implementation with a location",()=>{
+ const input={museumId:"museum-vrindavan",status:"Implemented",vitrine:"0",shelf:null,confirmedAt:"2026-10-20T10:00:00.000Z"};
+ assert.deepEqual(plannerConfirmation(input),{vitrine:"0",shelf:"",confirmedAt:input.confirmedAt});
+ assert.equal(plannerConfirmation({...input,museumId:"museum-spn"}),null);
+ assert.equal(plannerConfirmation({...input,vitrine:""}),null);
+ assert.equal(plannerConfirmation({...input,status:"Planned"}),null);
 });
