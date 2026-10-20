@@ -1,3 +1,4 @@
+import {parseSourceShelfPosition,type SourceShelfPosition} from "./museum-source-shelf-position";
 import {classifyRelicPackaging,type RelicPackagingEvidence} from "./museum-relic-packaging";
 import type {MuseumCollectionCardItem} from "./museum-collection-domain";
 import {identityObservationSchema} from "./vrindavan-identity-domain";
@@ -19,6 +20,7 @@ export type MuseumSourceInventoryEntry = {
   sourcePlaceText: string;
   displayText: string;
   positionText: string;
+  sourceShelfPosition?: SourceShelfPosition;
   comments: string;
   warnings: string[];
   identityConfirmedAt: string | null;
@@ -58,7 +60,7 @@ export function projectVrindavanInventoryEntry(
     saintIds: data.saintIds.filter(id => activeSaintIds.has(id)), unavailableSaintIds,
     sourceSaintName: data.name, relicDescription: data.relic, quantityText: data.quantity,
     packagingText: packaging == null ? "" : String(packaging).trim(),packaging:packagingEvidence,
-    sourcePlaceText: data.place, displayText: data.display, positionText: data.position,
+    sourcePlaceText: data.place, displayText: data.display, positionText: data.position,sourceShelfPosition:parseSourceShelfPosition(data.position),
     comments: data.comments, warnings: [...data.warnings,
       ...(packagingEvidence.secondaryDisagrees?["Column E differs between workbook sheets; Sheet1 is used per curator decision."]:[]),
       ...(unavailableSaintIds.length ? ["A confirmed saint is unavailable; reconcile this identity before creating physical inventory."] : []),

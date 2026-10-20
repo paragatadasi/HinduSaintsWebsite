@@ -1,3 +1,4 @@
+import type {SourceShelfPosition} from "./museum-source-shelf-position";
 import {summarizeRelicPackaging,type RelicPackagingEvidence} from "./museum-relic-packaging";
 import {z} from "zod";
 import type {MuseumSourceInventoryEntry} from "./museum-source-inventory-domain";
@@ -57,7 +58,7 @@ export type PlannerRow={
  id:string;saintId:string;name:string;section:string;family:string;tier:string;needsResearch:boolean;
  photo:boolean;status:"Proposed"|"Planned"|"Implemented";vitrine:string;shelf:string;
  arrangementNeedsReview?:boolean;revision:string;lastConfirmed:PlannerConfirmation|null;familyKey?:string;flexibleVitrines?:string[];
- sources:{id:string;vitrine:string;shelf:string;relics:string;quantity:string;shared:boolean;packagingText?:string;packaging?:RelicPackagingEvidence}[];
+ sources:{id:string;vitrine:string;shelf:string;relics:string;quantity:string;shared:boolean;sourceShelfPosition?:SourceShelfPosition;packagingText?:string;packaging?:RelicPackagingEvidence}[];
 };
 export type PlannerData={
  revision:string;photoVitrines:string[];photosConfigured:boolean;photoUpdatedAt:string|null;
