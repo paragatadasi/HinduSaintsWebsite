@@ -1,3 +1,4 @@
+import {mainLocalities} from "@/lib/key-locality-domain";
 import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import type { Prisma } from "@/lib/generated/prisma/client";
@@ -482,7 +483,8 @@ function buildPlaceSummary(place: { region: string | null; country: string | nul
 }
 
 function getPrimaryLocation(places: TraditionSaintRow["places"]) {
-  const primary = places.find((place) => place.placeType === "primary") ?? places[0];
+  const shortlisted = mainLocalities(places);
+  const primary = shortlisted.find((place) => place.placeType === "primary") ?? shortlisted[0];
   return primary?.place.name ?? DEFAULT_LOCATION;
 }
 
