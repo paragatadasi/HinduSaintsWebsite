@@ -4,7 +4,7 @@ import {z} from "zod";
 import {assertCapability} from "@/lib/admin-access";
 import {assertMuseumMutation} from "@/lib/museum-access";
 import {MuseumConflict} from "@/lib/museum-service";
-import {assignVrindavanPlan,completeVrindavanPlan} from "@/lib/museum-move-planner";
+import {assignVrindavanPlan,completeVrindavanPlan,saveVrindavanSectionArea,saveVrindavanFlexiblePlan} from "@/lib/museum-move-planner";
 import {readVrindavanWorkingData} from "@/lib/vrindavan-working-data";
 import {readMuseumSaintProfiles} from "@/lib/museum-saint-profiles";
 
@@ -31,3 +31,6 @@ export async function loadMoveSaintAction(saintId:string){
  if(!row)throw new MuseumConflict("This saint is no longer in the reviewed Vrindavan inventory.");
  return {profile:(await readMuseumSaintProfiles([saintId]))[saintId]??null,familyKey:row.familyId};
 }
+
+export async function saveSectionAreaAction(input:unknown){return save(actorId=>saveVrindavanSectionArea(input,actorId));}
+export async function saveFlexiblePlanAction(input:unknown){return save(actorId=>saveVrindavanFlexiblePlan(input,actorId));}
