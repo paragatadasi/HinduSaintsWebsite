@@ -7533,6 +7533,18 @@ fieldset.admin-field {
   padding: var(--space-5);
 }
 
+.museum-admin-layout.museum-admin-layout--focused {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.museum-admin-layout__controls {
+  grid-column: 1 / -1;
+}
+
+.museum-admin-nav[hidden] {
+  display: none;
+}
+
 .museum-admin-nav {
   align-content: start;
   background: color-mix(in srgb, var(--color-surface) 74%, transparent);
