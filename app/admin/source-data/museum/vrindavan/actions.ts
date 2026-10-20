@@ -1,5 +1,6 @@
 "use server";
 import {redirect} from "next/navigation";
+import {ZodError} from "zod";
 import type {Route} from "next";
 import {revalidatePath} from "next/cache";
 import {assertCapability} from "@/lib/admin-access";
@@ -20,9 +21,15 @@ export async function linkClearVrindavan(form:FormData){
   catch{redirect(`${path}?error=review` as Route);}
   revalidatePath(path);redirect(`${path}?status=linked&saved=${result.saved}` as Route);
 }
-export async function reviewVrindavan(form:FormData){
+export async function reviewVrindavan(decision:"link"|"defer",form:FormData){
   const actor=await authorize("resolve_reconciliation");let result;
-  try{result=await decideVrindavanIdentity(actor.id,[{id:form.get("id"),version:form.get("version"),action:form.get("action"),saintIds:form.getAll("saintIds"),note:form.get("note")||"",confirm:form.get("confirm")==="on"}]);}
-  catch{redirect(`${path}?error=review` as Route);}
+  try{result=await decideVrindavanIdentity(actor.id,[{id:form.get("id"),version:form.get("version"),action:decision,saintIds:form.getAll("saintIds"),note:form.get("note")||"",confirm:form.get("confirm")==="on"}]);}
+  catch(error){
+    const reason=error instanceof ZodError?"input":error instanceof Error&&error.message.startsWith("Review changed")?"stale":error instanceof Error&&error.message==="Saint no longer available"?"identity":"save";
+    // Log only the category/code, never full errors containing source payloads or credentials.
+    const code=error&&typeof error==="object"&&"code" in error&&typeof error.code==="string"?error.code:undefined;
+    console.warn("vrindavan.identity.review_failed",{reason,code});
+    redirect(`${path}?error=${reason}` as Route);
+  }
   revalidatePath(path);redirect(`${path}?saved=${result.saved}` as Route);
 }
