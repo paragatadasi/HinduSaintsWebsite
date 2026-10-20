@@ -4,7 +4,7 @@ import {useRouter} from "next/navigation";
 import Link from "next/link";
 import type {Route} from "next";
 import {Camera,GripVertical,Users} from "lucide-react";
-import {plannerCounts,plannerFamilies,isFlexible,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
+import {plannerCounts,plannerFamilies,plannerAreasNeedingReview,isFlexible,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
 import {assignMovePlanAction,saveSectionAreaAction,saveFlexiblePlanAction} from "@/app/vrindavanadmin/plan/actions";
 import {MuseumSectionDragButton} from "./museum-section-drag-button";
 import {MuseumRoomPlan} from "./museum-room-plan";
@@ -54,6 +54,7 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
   setError("");setMessage("");startTransition(async()=>{try{const result=await action();if(result.error)setError(result.error);else{setMessage(success);setSelected([]);router.refresh();}}catch{setError("The save could not be confirmed. Reload to check the saved plan before trying again.");}});
  };
  const flexibleSave=(members:PlannerRow[],remove=false)=>save(()=>saveFlexiblePlanAction({revision:data.revision,section,placementIds:members.map(row=>row.id),remove}),remove?"Flexible plan removed. These saints need destinations.":`${members.length} saints can be placed within vitrines ${savedArea.join(", ")}. Choose their actual vitrine during the move.`);
+ const earlierAreas=plannerAreasNeedingReview(data.areas,data.rows);
  const familyGroups=plannerFamilies(rows);
  const splitFamilies=familyGroups.filter(group=>group.rows.some(row=>selected.includes(row.id))&&!group.rows.every(row=>selected.includes(row.id))&&group.rows.length>1);
  return <div className="museum-admin admin-stack museum-planner">
@@ -64,6 +65,18 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
    <button className="museum-admin-button museum-admin-button--secondary" aria-pressed={view==="plan"} onClick={()=>setView("plan")}>Plan destinations</button>
    <button className="museum-admin-button museum-admin-button--secondary" aria-pressed={view==="checklist"} onClick={()=>setView("checklist")}>Move-day checklist</button>
   </div>
+  {earlierAreas.length?<details className="museum-planner__surface admin-stack">
+   <summary>Earlier saved areas to review ({earlierAreas.length})</summary>
+   <p>These saved areas predate changes to the section proposals. They remain here for reference. Exact planned or implemented destinations take precedence.</p>
+   <ul>{earlierAreas.map(item=><li key={item.section}>
+    <strong>{item.section}</strong> · Vitrines {item.vitrines.join(", ")}
+    {item.inactiveSection?<p>No saints currently use this section. Choose the appropriate current section in the planner and save its area explicitly.</p>:null}
+    {item.affected.length?<details><summary>{item.affected.length} earlier flexible {item.affected.length===1?"assignment needs":"assignments need"} review</summary>
+     <ul>{item.affected.map(member=><li key={member.id}>{member.name??"Saint no longer in the current proposals"}{member.currentSection&&member.currentSection!==item.section?` · Now in ${member.currentSection}`:""}</li>)}</ul>
+     <p>Review these saints in their current sections and assign destinations again when ready.</p>
+    </details>:null}
+   </li>)}</ul>
+  </details>:null}
   {view==="plan"?<>
    <section className="museum-planner__surface admin-stack" aria-label="Section areas in the room">
     <div><h2>Arrange sections in the room</h2><p>Drag a section onto each of its vitrines, or select a section and tap the vitrines. Save its area when ready.</p></div>
