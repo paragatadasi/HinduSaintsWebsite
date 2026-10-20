@@ -33,6 +33,7 @@ export function MuseumSuggestedPlan({data,disabled=false}:{data:PlannerData;disa
     <p className="muted">Space is an estimate, not a measured capacity. Frame entries need extra allowance; unknown packaging is treated cautiously. Check the fit before moving. Shelf positions remain undecided.</p>
     <p className="muted">Vitrine comparisons use the source inventory reviewed on 20 October 2026. Missing entries do not establish that a vitrine is empty.</p>
     {!data.photosConfigured?<p>Photo tags are still unavailable. Frame evidence is included separately.</p>:null}
+    {data.awaitingIdentityReview?<p>{data.awaitingIdentityReview} source entries still need identity review and are excluded from automatic planning.</p>:null}
     <MuseumRoomPlan selected={selectedVitrine?[selectedVitrine]:[]} onSelect={setSelectedVitrine}
      counts={Object.fromEntries(vitrines.map(v=>[v,preview.assignments.filter(a=>a.vitrine===v).length]))}
      labels={Object.fromEntries(vitrines.map(v=>[v,[...new Set(preview.groups.filter(g=>g.vitrine===v).flatMap(g=>g.sections))]]))}/>

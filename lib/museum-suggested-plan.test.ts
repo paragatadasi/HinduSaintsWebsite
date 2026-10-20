@@ -46,3 +46,8 @@ test("source ordering cannot change the destinations shown by a preview",()=>{
  const rows=[row("a",{familyKey:"f"}),row("b"),row("c",{familyKey:"f"}),row("d")];
  assert.deepEqual(buildSuggestedPlan(data(rows),guide).assignments,buildSuggestedPlan(data([...rows].reverse()),guide).assignments);
 });
+test("new section suggestions do not occupy another section's saved reservation",()=>{
+ const result=buildSuggestedPlan(data([row("a"),row("b",{section:"B"})],{areas:[{section:"B",vitrines:["1"],placements:[]}]}),guide);
+ assert.equal(result.assignments.find(a=>a.id==="a")!.vitrine,"2");
+ assert.equal(result.assignments.find(a=>a.id==="b")!.vitrine,"1");
+});

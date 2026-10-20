@@ -16,7 +16,7 @@ export function buildSuggestedPlan(data:PlannerData,guide:SuggestedPlanGuide):Su
  const available=new Map<string,string[]>();
  for(const section of data.sections){
   const saved=data.areas.find(a=>a.section===section.name&&a.vitrines.length);
-  const vitrines=saved?.vitrines??guide.areas[section.name];
+  const vitrines=saved?.vitrines??guide.areas[section.name]?.filter(v=>!data.areas.some(a=>a.section!==section.name&&a.vitrines.includes(v)));
   if(vitrines?.length){available.set(section.name,vitrines);plan.areas.push({section:section.name,vitrines,preserved:!!saved});}
  }
  // Connected display groups and shared inventory records cannot be split by this assistant.
