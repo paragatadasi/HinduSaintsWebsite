@@ -1,3 +1,4 @@
+import {classifyRelicPackaging,type RelicPackagingEvidence} from "./museum-relic-packaging";
 import type {MuseumCollectionCardItem} from "./museum-collection-domain";
 import {identityObservationSchema} from "./vrindavan-identity-domain";
 
@@ -14,6 +15,7 @@ export type MuseumSourceInventoryEntry = {
   relicDescription: string;
   quantityText: string;
   packagingText: string;
+  packaging: RelicPackagingEvidence;
   sourcePlaceText: string;
   displayText: string;
   positionText: string;
@@ -44,8 +46,10 @@ export function projectVrindavanInventoryEntry(
   if (!key || !parsed.success) return null;
   const data = parsed.data;
   if (Number(key[2]) !== data.sourceRow || !data.saintIds.length || new Set(data.saintIds).size !== data.saintIds.length) return null;
-  const raw = row.rawJson as {cells?: unknown[]} | null;
+  const raw = row.rawJson as {cells?: unknown[];secondarySheet?:{cells?:unknown[]}} | null;
   const packaging = Array.isArray(raw?.cells) ? raw.cells[4] : null;
+  const secondaryPackaging=Array.isArray(raw?.secondarySheet?.cells)?raw.secondarySheet.cells[4]:null;
+  const packagingEvidence=classifyRelicPackaging(packaging,secondaryPackaging);
   const display = data.display.trim(), position = data.position.trim();
   const unavailableSaintIds = data.saintIds.filter(id => !activeSaintIds.has(id));
   return {
@@ -53,9 +57,10 @@ export function projectVrindavanInventoryEntry(
     sourceName: data.sourceName, sourceRow: data.sourceRow, museum,
     saintIds: data.saintIds.filter(id => activeSaintIds.has(id)), unavailableSaintIds,
     sourceSaintName: data.name, relicDescription: data.relic, quantityText: data.quantity,
-    packagingText: packaging == null ? "" : String(packaging).trim(),
+    packagingText: packaging == null ? "" : String(packaging).trim(),packaging:packagingEvidence,
     sourcePlaceText: data.place, displayText: data.display, positionText: data.position,
     comments: data.comments, warnings: [...data.warnings,
+      ...(packagingEvidence.secondaryDisagrees?["Column E differs between workbook sheets; Sheet1 is used per curator decision."]:[]),
       ...(unavailableSaintIds.length ? ["A confirmed saint is unavailable; reconcile this identity before creating physical inventory."] : []),
       ...(!display && position ? ["Position supplied without a display; source location is unresolved."] : [])],
     identityConfirmedAt: row.reviewedAt?.toISOString() ?? null,

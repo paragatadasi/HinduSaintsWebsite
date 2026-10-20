@@ -1,3 +1,4 @@
+import {summarizeRelicPackaging} from "./museum-relic-packaging";
 import {db} from "@/lib/db";
 import type {Prisma} from "@/lib/generated/prisma/client";
 import {projectVrindavanInventoryEntry} from "./museum-source-inventory-domain";
@@ -39,6 +40,7 @@ export async function readVrindavanMuseumInventory(
   const displays = [...new Set(entries.map(entry => entry.displayText.trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
   return {
     museum, snapshotHash, snapshots, entries, saints, entriesBySaintId, displays,
+    packagingSummary:summarizeRelicPackaging(entries.map(e=>({id:e.observationId,packaging:e.packaging}))),
     counts: {
       sourceRows: selected.length, confirmedEntries: entries.length, linkedSaints: saintIds.size,
       awaitingIdentityReview: selected.filter(row => row.status !== "identity_linked").length,

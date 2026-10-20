@@ -17,6 +17,7 @@ const cleanupFlagsPath = path.join(museumDataDir, "airtable-museum-section-clean
 export type MuseumTier = "Featured" | "Secondary" | "Tertiary";
 
 export type MuseumSaintPlacement = {
+  sourcePackaging?: import("./museum-relic-packaging").RelicPackagingSource[];
   curatorProposalRevision?: string;
   arrangementNeedsReview?: boolean;
   arrangement?: import("./museum-arrangement-domain").ArrangementControl;

@@ -1,3 +1,4 @@
+import {summarizeRelicPackaging,type RelicPackagingEvidence} from "./museum-relic-packaging";
 import {z} from "zod";
 import type {MuseumSourceInventoryEntry} from "./museum-source-inventory-domain";
 
@@ -56,7 +57,7 @@ export type PlannerRow={
  id:string;saintId:string;name:string;section:string;family:string;tier:string;needsResearch:boolean;
  photo:boolean;status:"Proposed"|"Planned"|"Implemented";vitrine:string;shelf:string;
  arrangementNeedsReview?:boolean;revision:string;lastConfirmed:PlannerConfirmation|null;familyKey?:string;flexibleVitrines?:string[];
- sources:{id:string;vitrine:string;shelf:string;relics:string;quantity:string;shared:boolean}[];
+ sources:{id:string;vitrine:string;shelf:string;relics:string;quantity:string;shared:boolean;packagingText?:string;packaging?:RelicPackagingEvidence}[];
 };
 export type PlannerData={
  revision:string;photoVitrines:string[];photosConfigured:boolean;photoUpdatedAt:string|null;
@@ -102,3 +103,6 @@ export function plannerAreasNeedingReview(areas:PlannerArea[],rows:PlannerRow[])
 }
 
 export function plannerMoveNeedsAttention(row:PlannerRow){return !!row.arrangementNeedsReview||row.status==="Planned"||isFlexible(row);}
+
+// Deduplicate shared source observations within each selected section/family.
+export function plannerPackagingCounts(rows:PlannerRow[]){return summarizeRelicPackaging(rows.flatMap(row=>row.sources??[]));}

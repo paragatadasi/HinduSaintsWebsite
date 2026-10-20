@@ -4,7 +4,7 @@ import type {Prisma} from "./generated/prisma/client";
 import {readVrindavanMuseumInventory} from "./vrindavan-museum-inventory";
 const hash="a".repeat(64),older="b".repeat(64);
 function observation(id:string,snapshot:string,status="identity_linked") {
- return {id,museumId:"museum-vrindavan",sourceKey:`vrindavan-workbook:${snapshot}:Sheet1:2`,status,itemId:null,reviewedAt:new Date(),rawJson:{cells:[]},normalizedJson:{mappingVersion:"vrindavan-identity-v1",sourceName:"Source.xlsx",sourceRow:2,name:"Example Saint",place:"Vrindavan",relic:"Cloth",quantity:"1",display:"1",position:"A",comments:"",warnings:[],saintIds:["saint1"],note:null}};
+ return {id,museumId:"museum-vrindavan",sourceKey:`vrindavan-workbook:${snapshot}:Sheet1:2`,status,itemId:null,reviewedAt:new Date(),rawJson:{cells:[] as unknown[]},normalizedJson:{mappingVersion:"vrindavan-identity-v1",sourceName:"Source.xlsx",sourceRow:2,name:"Example Saint",place:"Vrindavan",relic:"Cloth",quantity:"1",display:"1",position:"A",comments:"",warnings:[],saintIds:["saint1"],note:null}};
 }
 function client(rows:ReturnType<typeof observation>[]) {
  return {museum:{findFirst:async(args:unknown)=>{assert.deepEqual(args,{where:{id:"museum-vrindavan",archivedAt:null},select:{id:true,name:true,slug:true}});return {id:"museum-vrindavan",name:"Vrindavan",slug:"vrindavan"}}},museumCollectionImport:{findMany:async(args:{where:{museumId:string}})=>{assert.equal(args.where.museumId,"museum-vrindavan");return rows}},saint:{findMany:async()=>[{id:"saint1",displayName:"Example Saint",canonicalName:"Example Saint",slug:"example",status:"draft"}]}} as unknown as Prisma.TransactionClient;
@@ -28,4 +28,9 @@ test("unknown or invalid snapshots fail rather than showing another inventory",a
 test("latest source observation supersedes an earlier confirmed decision",async()=>{
  const result=await readVrindavanMuseumInventory({},client([observation("new",hash,"deferred"),observation("old",hash)]));
  assert.equal(result.entries.length,0);assert.equal(result.counts.sourceRows,1);assert.equal(result.counts.awaitingIdentityReview,1);
+});
+test("raw packaging evidence is available for existing confirmed rows without reimporting or including pending rows",async()=>{
+ const confirmed={...observation("known",hash),rawJson:{cells:["Saint","Puri","Cloth",100,"Frame"]}};
+ const pending={...observation("unreviewed",hash,"pending"),sourceKey:`vrindavan-workbook:${hash}:Sheet1:3`,rawJson:{cells:["Other","Puri","Cloth",1,"Frame"]}};
+ const result=await readVrindavanMuseumInventory({},client([confirmed,pending]));assert.equal(result.entries[0].packaging.type,"frame");assert.equal(result.packagingSummary.frameEntries,1);assert.equal(result.packagingSummary.sourceEntries,1);assert.equal(result.counts.awaitingIdentityReview,1);
 });
