@@ -2,11 +2,13 @@
 
 - Status: ready
 - Branch: `codex/vrindavan-prior-area-review`
-- Commit: `54b2388`
+- Commit: `05c9c59`
 - Owner/agent: `Citra`
 - Bundle priority: immediate release candidate
 
 ## Summary
+
+- Propagate optional arrangementNeedsReview from Nadi overlay, warn on saved destinations, and retain flagged Implemented rows in Still to do. No mutation semantics changed.
 
 - Planner now reads names/slugs/order from canonical Vrindavan working.sections, so forthcoming regional catalogue flows through automatically; editorial summaries only reused by exact matching name.
 
@@ -14,9 +16,11 @@
 
 ## Verification
 
+- dev:check and all 11 domain tests passed after review flag follow-up.
+
 - dev:check passed again after canonical catalogue adapter.
 
-- dev:check passed; 10 planner domain tests passed; git diff --check passed. prepare:deployment checks passed but npm stripped handoff arguments; handoff generator rerun directly. Integrated production build owned by release captain.
+- dev:check passed; 11 planner domain tests passed; git diff --check passed. prepare:deployment checks passed but npm stripped handoff arguments; handoff generator rerun directly. Integrated production build owned by release captain.
 
 ## Deploy Notes
 

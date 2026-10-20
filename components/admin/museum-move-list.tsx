@@ -2,7 +2,7 @@
 import {useId,useState,useTransition} from "react";
 import {useRouter} from "next/navigation";
 import {Check,ClipboardList} from "lucide-react";
-import {isFlexible,vitrineNumber,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
+import {isFlexible,plannerMoveNeedsAttention,vitrineNumber,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
 import {completeMovePlanAction,loadMoveSaintAction} from "@/app/vrindavanadmin/plan/actions";
 import {MuseumDetailDialog} from "./museum-detail-dialog";
 import {MuseumSaintProfile} from "./museum-saint-profile";
@@ -15,9 +15,9 @@ export function MuseumMoveList({data,canEdit}:{data:PlannerData;canEdit:boolean}
  const [progress,setProgress]=useState("remaining");
  const [notice,setNotice]=useState("");
  const all=data.rows.filter(row=>row.status!=="Proposed"||isFlexible(row));
- const rows=all.filter(row=>(progress==="all"||(progress==="remaining"?(row.status==="Planned"||isFlexible(row)):row.status==="Implemented"))&&(!number||(group==="destination"?(isFlexible(row)?row.flexibleVitrines!.includes(number):row.vitrine===number):currentVitrines(row).some(v=>vitrineNumber(v)===number)))&&row.name.toLowerCase().includes(query.toLowerCase()));
+ const rows=all.filter(row=>(progress==="all"||(progress==="remaining"?plannerMoveNeedsAttention(row):row.status==="Implemented"))&&(!number||(group==="destination"?(isFlexible(row)?row.flexibleVitrines!.includes(number):row.vitrine===number):currentVitrines(row).some(v=>vitrineNumber(v)===number)))&&row.name.toLowerCase().includes(query.toLowerCase()));
  return <section className="admin-stack">
-  <div className="section-heading"><div><h2>Move-day checklist</h2><p>{all.filter(row=>row.status==="Implemented").length} implemented · {all.filter(row=>row.status!=="Implemented").length} still to do</p></div><button className="museum-admin-button museum-admin-button--secondary" onClick={()=>window.print()}>Print this list</button></div>
+  <div className="section-heading"><div><h2>Move-day checklist</h2><p>{all.filter(row=>row.status==="Implemented"&&!row.arrangementNeedsReview).length} implemented · {all.filter(row=>row.status!=="Implemented"&&!row.arrangementNeedsReview).length} still to do · {all.filter(row=>row.arrangementNeedsReview).length} destinations to review</p></div><button className="museum-admin-button museum-admin-button--secondary" onClick={()=>window.print()}>Print this list</button></div>
   {notice?<p role="status">{notice}</p>:null}
   <div className="museum-planner__filters">
    <label>Show<select value={progress} onChange={event=>setProgress(event.target.value)}><option value="remaining">Still to do</option><option value="completed">Implemented</option><option value="all">All planned moves</option></select></label>
@@ -43,6 +43,7 @@ function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevi
  return <article className="museum-planner__move admin-stack">
   <div className="section-heading"><div><h3>{row.name}</h3><p>{row.section}{row.photo?" · Photo saint":""}</p></div><span>{row.status==="Implemented"?<Check aria-hidden="true"/>:<ClipboardList aria-hidden="true"/>} {flexible?"Area planned":row.status}</span></div>
   <p className="museum-planner__route">{flexible?<strong>Place within vitrines {row.flexibleVitrines!.join(", ")} · choose the actual vitrine when placing</strong>:<strong>{row.status==="Implemented"?"Curator-confirmed":"Destination"}: Vitrine {row.vitrine}{row.shelf?` / ${row.shelf}`:" · Shelf undecided"}</strong>}</p>
+  {row.arrangementNeedsReview?<p role="status"><strong>Review this destination.</strong> The section proposal changed after this destination was saved. The saved location is retained. Use Plan destinations to review or replace it before moving relics; a completed arrangement should be physically checked against the latest proposal.</p>:null}
   {row.lastConfirmed?<p>Last physically confirmed: Vitrine {row.lastConfirmed.vitrine}{row.lastConfirmed.shelf?` / ${row.lastConfirmed.shelf}`:""} · {new Date(row.lastConfirmed.confirmedAt).toLocaleDateString()}. Original inventory locations below are retained as reference.</p>:<p>Starting locations below are from the source inventory; check them in the museum.</p>}
   {row.lastConfirmed?.note?<p>Move note: {row.lastConfirmed.note}</p>:null}
   <button className="museum-admin-button museum-admin-button--secondary" type="button" onClick={showDetails}>Saint photos, biography and family tree</button>
