@@ -3,10 +3,11 @@ import {useState,useTransition} from "react";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
 import type {Route} from "next";
-import {Camera,Check,ClipboardList} from "lucide-react";
+import {Camera} from "lucide-react";
 import {plannerCounts,vitrineNumber,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
 import {savePhotoVitrinesAction,assignMovePlanAction} from "@/app/vrindavanadmin/plan/actions";
 import {MuseumRoomPlan} from "./museum-room-plan";
+import {MuseumMoveList} from "./museum-move-list";
 
 function Counts({rows,configured}:{rows:PlannerRow[];configured:boolean}){
  const counts=plannerCounts(rows);
@@ -33,7 +34,7 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
   setError("");setMessage("");
   startTransition(async()=>{try{const result=await action();if(result.error)setError(result.error);else{setMessage(success);setSelected([]);router.refresh();}}catch{setError("The save could not be confirmed. Reload to check the saved plan before trying again.");}});
  };
- const previewPhotos=new Set(data.rows.filter(row=>row.status==="Implemented"?photos.includes(vitrineNumber(row.vitrine)??""):row.sources.some(source=>photos.includes(vitrineNumber(source.vitrine)??""))).map(row=>row.saintId));
+ const previewPhotos=new Set(data.rows.filter(row=>row.lastConfirmed?photos.includes(vitrineNumber(row.lastConfirmed.vitrine)??""):row.sources.some(source=>photos.includes(vitrineNumber(source.vitrine)??""))).map(row=>row.saintId));
  return <div className="museum-admin admin-stack museum-planner">
   <header className="section-heading"><div><p className="eyebrow">Vrindavan Museum</p><h1>Plan the move</h1><p>Choose where each section will live, then take the saved plan into the museum.</p></div></header>
   <Counts rows={data.rows} configured={data.photosConfigured}/>
@@ -52,7 +53,7 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
   </details>
   <div className="review-actions museum-planner__view-switch" role="group" aria-label="Move workspace">
    <button className="museum-admin-button museum-admin-button--secondary" aria-pressed={view==="plan"} onClick={()=>setView("plan")}>Plan destinations</button>
-   <button className="museum-admin-button museum-admin-button--secondary" aria-pressed={view==="checklist"} onClick={()=>setView("checklist")}>Saved move list</button>
+   <button className="museum-admin-button museum-admin-button--secondary" aria-pressed={view==="checklist"} onClick={()=>setView("checklist")}>Move-day checklist</button>
   </div>
   {view==="plan"?<div className="museum-planner__workspace">
    <details className="museum-planner__setup" open={sectionMenuOpen} onToggle={event=>setSectionMenuOpen(event.currentTarget.open)}><summary>Choose a section · {section}</summary><div className="museum-planner__sections" aria-label="Sections to arrange">
@@ -89,28 +90,7 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
      </fieldset>
     </form>
    </section>
-  </div>:<MoveList data={data}/>}
+  </div>:<MuseumMoveList data={data} canEdit={canEdit}/>}
   <details className="museum-planner__setup"><summary>Inventory coverage</summary><p>{data.awaitingIdentityReview} source entries still await saint identity review and are not included in these assignments.</p>{data.unmappedLocations.length?<p>Locations outside the numbered map: {data.unmappedLocations.join(", ")}. These remain visible in the move list.</p>:null}<p>The source inventory can group several relics in one entry. Photo tags and counts assist planning; they do not measure available shelf space.</p></details>
  </div>;
-}
-
-function MoveList({data}:{data:PlannerData}){
- const [group,setGroup]=useState<"destination"|"source">("destination");
- const [number,setNumber]=useState("");
- const [query,setQuery]=useState("");
- const rows=data.rows.filter(row=>row.status!=="Proposed"&&(!number||(group==="destination"?row.vitrine===number:row.sources.some(source=>vitrineNumber(source.vitrine)===number)))&&row.name.toLowerCase().includes(query.toLowerCase()));
- return <section className="admin-stack">
-  <div className="section-heading"><div><h2>Saved move list</h2><p>Use starting locations to gather relics, or destinations to arrange a vitrine.</p></div><button className="museum-admin-button museum-admin-button--secondary" onClick={()=>window.print()}>Print this list</button></div>
-  <div className="museum-planner__filters"><label>Organize by<select value={group} onChange={event=>setGroup(event.target.value as typeof group)}><option value="destination">Destination vitrine</option><option value="source">Recorded starting vitrine</option></select></label><label>Vitrine<select value={number} onChange={event=>setNumber(event.target.value)}><option value="">All vitrines</option>{vrindavanVitrines.map(n=><option key={n}>{n}</option>)}</select></label><label>Find a saint<input type="search" value={query} onChange={event=>setQuery(event.target.value)}/></label></div>
-  <p>{rows.length} saints with a saved destination. This list does not mark relics moved; record physical implementation through the saint’s arrangement controls.</p>
-  {!rows.length?<p>No saved destinations match. Assign saints in Plan destinations first.</p>:null}
-  {[...rows].sort((a,b)=>(group==="destination"?a.vitrine:a.sources[0]?.vitrine||"").localeCompare(group==="destination"?b.vitrine:b.sources[0]?.vitrine||"",undefined,{numeric:true})||a.name.localeCompare(b.name)).map(row=><article className="museum-planner__move" key={row.id}>
-   <div className="section-heading"><div><h3>{row.name}</h3><p>{row.section}{row.photo?" · Photo saint":""}</p></div><span>{row.status==="Implemented"?<Check aria-hidden="true"/>:<ClipboardList aria-hidden="true"/>} {row.status}</span></div>
-   <p className="museum-planner__route"><strong>{row.status==="Implemented"?"Curator-confirmed":"Planned destination"}: Vitrine {row.vitrine}{row.shelf?` / ${row.shelf}`:" · Shelf undecided"}</strong></p>
-   <h4>Recorded starting locations and relics</h4>
-   {row.sources.map(source=><div key={source.id} className="museum-planner__source"><strong>{source.vitrine?`Vitrine ${source.vitrine}`:"Location not recorded"}{source.shelf?` / ${source.shelf}`:""}</strong><p>{source.relics||"Relic description not recorded"}{source.quantity?` · Quantity: ${source.quantity}`:""}</p>{source.shared?<p>Shared inventory entry—check the other saints before moving its contents.</p>:null}</div>)}
-   {row.sources.length>1?<p>Check all {row.sources.length} source entries before confirming the saint’s complete arrangement.</p>:null}
-   <Link href={`/vrindavanadmin/sections?q=${encodeURIComponent(row.name)}` as Route}>Open saint and arrangement controls</Link>
-  </article>)}
- </section>;
 }

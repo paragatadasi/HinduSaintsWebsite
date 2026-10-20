@@ -1067,3 +1067,12 @@ Keep the same saved plan. Add phone-first progress filtering, an explicit review
 Add per-saint photo corrections, vitrine notes and curator-entered capacity if useful; do not calculate capacity from the sketch. Offer family selection and warnings when splitting a display group. Retain a printable fallback for unreliable connectivity; do not imply offline edits are saved without an explicit synchronization design.
 
 Verification: `museum-move-planner-domain.test.ts` covers numbering, photo identity deduplication, counts and validation. `scripts/verify-museum-move-planner.ts` is restricted to localhost `/museum_planner_test` and checks the additive migration, photo snapshot, partial/whole planning, stale writes, replacement acknowledgement, atomic rejection, auditing, and preservation of source/SPN/physical records. Desktop and 390px phone fixture checks cover the map, partial selection and move list; the temporary preview route is not shipped.
+
+
+### Vrindavan move-day checklist (2026-10-20)
+
+The saved planner now includes a move-day checklist filtered by starting or destination vitrine, saint, and progress. Each saint exposes the original inventory entries, a lazy-loaded biography/photos/live-tree reference, optional final shelf and move note. Completion requires checking every current source entry, physical confirmation and explicit acknowledgement that complete inventory remains unverified. Partial or uncertain moves remain Planned; this workflow does not claim individual relic verification or overwrite source observations/item placements.
+
+Completion uses the existing museum lock, serializable transaction and arrangement revision. It records the existing arrangement implementation audit plus `museum.move.confirmed` with checked source IDs, museum, destination, note and confirmation time. The planner derives the last explicit physical location from implementation audit history, independently of the current proposal. Replanning therefore does not erase where a saint was last physically confirmed. Photo-setup refresh uses this confirmed location where available, falling back to original inventory. There is no additional schema migration beyond the initial MuseumPlanningSetup table.
+
+Verification: planner/arrangement/Vrindavan domain tests, production build, and the guarded disposable-database script `scripts/verify-museum-move-planner.ts` cover checked-entry validation, replay/stale protection, confirmed locations surviving replanning, photo refresh and preservation of source/SPN/physical records.

@@ -4,7 +4,9 @@ import {z} from "zod";
 import {assertCapability} from "@/lib/admin-access";
 import {assertMuseumMutation} from "@/lib/museum-access";
 import {MuseumConflict} from "@/lib/museum-service";
-import {assignVrindavanPlan,saveVrindavanPhotoSetup} from "@/lib/museum-move-planner";
+import {assignVrindavanPlan,saveVrindavanPhotoSetup,completeVrindavanPlan} from "@/lib/museum-move-planner";
+import {readVrindavanWorkingData} from "@/lib/vrindavan-working-data";
+import {readMuseumSaintProfiles} from "@/lib/museum-saint-profiles";
 
 async function save(work:(actorId:string)=>Promise<unknown>){
  await assertCapability("access_museum");
@@ -22,3 +24,11 @@ async function save(work:(actorId:string)=>Promise<unknown>){
 }
 export async function savePhotoVitrinesAction(input:unknown){return save(actorId=>saveVrindavanPhotoSetup(input,actorId));}
 export async function assignMovePlanAction(input:unknown){return save(actorId=>assignVrindavanPlan(input,actorId));}
+export async function completeMovePlanAction(input:unknown){return save(actorId=>completeVrindavanPlan(input,actorId));}
+export async function loadMoveSaintAction(saintId:string){
+ await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");
+ z.string().min(1).max(200).parse(saintId);
+ const row=(await readVrindavanWorkingData()).placements.find(row=>row.saintId===saintId);
+ if(!row)throw new MuseumConflict("This saint is no longer in the reviewed Vrindavan inventory.");
+ return {profile:(await readMuseumSaintProfiles([saintId]))[saintId]??null,familyKey:row.familyId};
+}
