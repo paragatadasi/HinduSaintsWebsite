@@ -1,5 +1,11 @@
 # Vrindavan lineage-first section reconciliation
 
+**Superseding clarification, 20 October 2026:** Region > existing named subsection > reviewed display family > saints. The v2 replacement writer described below is retired and rejected on the server. Current subsection assignments are not replaced by regional names. Navigation groups existing subsection URLs/counts beneath six regional parents, with optional supplementary context and regional totals. `data/museum/vrindavan-region-parent-plan.json` preserves Saarthi’s v3 clarification. Old region-only snapshots are retained as evidence but no longer projected by the working reader. The preview/export reports `applyEnabled=false`, retains `afterSection=beforeSection` and exposes `proposedRegionalParent` for research. It must not be treated as an approved section-move batch. Existing family anchor review does not approve individual membership or context repairs.
+
+The 133 authorized identity links were separately saved and verified: 413 linked source rows, 400 unique saints, 36 held, zero link alerts. A fresh export verified every saved target and the exact held set. No section batch was applied. Holds include suggested Kriya-family Hanuman Das membership, incorrect inherited Andhra context for Rishikesh Chidananda, and missing inherited context for published Narayan Maharaj/Kuladananda. These require explicit separate review; do not revert correct canonical identities to recover duplicate-draft context.
+
+## Historical v2 implementation (superseded where noted)
+
 Implementation checkpoint: 20 October 2026. This documents deployable code, not a claim that production proposals have already been applied.
 
 ## Policy and preserved data

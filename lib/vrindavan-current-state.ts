@@ -6,7 +6,7 @@ import {readVrindavanWorkingData} from "./vrindavan-working-data";
 import {readVrindavanIdentityReview} from "./vrindavan-identity-review";
 import {buildVrindavanReviewBatches} from "./vrindavan-review-batches";
 import {stableCollectionJson} from "./museum-collection-domain";
-import plan from "../data/museum/vrindavan-lineage-first-plan.json";
+import plan from "../data/museum/vrindavan-region-parent-plan.json";
 type Client=Prisma.TransactionClient;
 // Private read-only export; callers enforce museum access and full-catalogue access.
 // A family record or suggested grouping is not evidence that its membership was reviewed.

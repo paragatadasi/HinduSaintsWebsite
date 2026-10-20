@@ -19,9 +19,8 @@ export async function readBaseVrindavanWorkingData(client:Prisma.TransactionClie
  return {...working,sections,audit};
 }
 
-// Applied regional proposals are museum-local and never rewrite their inherited source.
+// Region containers never replace the existing subsection or arrangement identity.
+// V2 region-only snapshots remain preserved as source evidence but are not projected.
 export async function readVrindavanWorkingData(client:Prisma.TransactionClient=db){
- const base=await readBaseVrindavanWorkingData(client);
- const {overlayVrindavanLineage}=await import("./vrindavan-lineage-overlay");
- return overlayVrindavanLineage(base,client);
+ return readBaseVrindavanWorkingData(client);
 }

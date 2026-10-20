@@ -1107,3 +1107,8 @@ See [the implementation and release/apply workflow](museum-vrindavan-lineage-rec
 The section workspace is one shared surface: overview, primary saints/families (largest current-section groups first, alphabetically for ties), remaining single saints, and a shared destination editor beside the selection list on desktop. Individual tertiary bulk selection excludes family members so families are not inadvertently split. Family members remain selectable within their family and each connected family reference can be opened on demand. On smaller screens the editor follows the list with a selection jump action; the move companion uses two-column filters, touch-sized controls and readable input text.
 
 Selected section vitrines expose explicit remove controls as well as map toggles. Removal is a draft until Save section area, with Discard available. Exact saint destinations are never removed with an area; the overview lists destinations outside the saved area for further review. Clearing the last vitrine continues to remove flexible memberships through the existing server action. No new data contract or migration is required.
+
+
+### Region containers preserve subsections (20 October 2026)
+
+The six Vrindavan regions are navigation parents of the existing named subsections, not replacement section assignments. The obsolete region-only apply is disabled server-side; existing subsection URLs, families, tiers and arrangements remain intact. See museum-vrindavan-lineage-reconciliation.md for the superseding v3 clarification and remaining context/family holds. Identity reconciliation independently verified 413 linked source rows / 400 saints, with 36 held and zero link alerts.
