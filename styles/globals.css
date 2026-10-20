@@ -11495,3 +11495,28 @@ select:not([multiple]) {
 .museum-planner button:disabled { opacity:var(--opacity-control-disabled); cursor:not-allowed; }
 .museum-planner__family[data-selected="true"] { border-bottom-color:var(--color-accent); }
 .museum-planner__family-heading p { margin:var(--space-1) 0 0; font-weight:normal; font-size:var(--font-size-review-hint); }
+
+/* One section workspace: readable groups beside the shared destination editor. */
+.museum-planner__section-workspace { display:grid; gap:var(--space-5); }
+.museum-planner__section-workspace header h2,.museum-planner__section-workspace h3 { margin:0; }
+.museum-planner__workspace-nav { display:flex; flex-wrap:wrap; gap:var(--space-4); padding:var(--space-3) 0; border-block:1px solid var(--color-border); }
+.museum-planner__arrange-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,var(--width-museum-assignment-panel)); gap:var(--space-6); align-items:flex-start; }
+.museum-planner__arrange-grid > * { min-width:0; }
+.museum-planner__destination-panel { position:sticky; top:var(--offset-museum-plan-anchor); padding:var(--space-4); background:var(--color-surface-muted); border-radius:var(--radius-control); }
+.museum-planner__destination-panel .museum-planner__assignment { border:0; padding:0; }
+.museum-planner__individuals { border-top:1px solid var(--color-border); padding-top:var(--space-5); }
+.museum-planner__section-workspace section,.museum-planner__section-workspace header { scroll-margin-top:var(--offset-museum-plan-anchor); }
+.museum-planner .review-actions button svg { width:var(--space-4); height:var(--space-4); }
+@media (min-width:1101px) { .museum-planner__section-workspace .museum-planner__selection-bar { display:none; } }
+@media (max-width:1100px) { .museum-planner__arrange-grid { grid-template-columns:minmax(0,1fr); } .museum-planner__destination-panel { position:static; } }
+@media (max-width:640px) {
+ .museum-planner__move { padding:var(--space-4); }
+ .museum-planner__filters { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-3); }
+ .museum-planner__filters label { min-width:0; }
+ .museum-planner__filters input,.museum-planner__filters select,.museum-planner__completion input,.museum-planner__completion select,.museum-planner__completion textarea { font-size:var(--font-size-tree-input); min-height:var(--height-tree-touch); }
+ .museum-planner__move button,.museum-planner__completion summary { min-height:var(--height-tree-touch); }
+ .museum-planner__view-switch { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+.museum-planner__filters label { display:grid; gap:var(--space-2); align-content:start; }
+.museum-planner__filters input,.museum-planner__filters select { width:100%; min-width:0; }

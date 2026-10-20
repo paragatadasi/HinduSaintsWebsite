@@ -80,7 +80,7 @@ export function plannerFamilies(rows:PlannerRow[]){
   const key=row.familyKey||`saint:${row.id}`;
   const group=groups.get(key)||{key,name:row.family||row.name,rows:[]};group.rows.push(row);groups.set(key,group);
  }
- return [...groups.values()].sort((a,b)=>a.name.localeCompare(b.name));
+ return [...groups.values()].sort((a,b)=>b.rows.length-a.rows.length||a.name.localeCompare(b.name));
 }
 export function isFlexible(row:PlannerRow){return row.status==="Proposed"&&!!row.flexibleVitrines?.length;}
 

@@ -1101,3 +1101,9 @@ The planner propagates optional `arrangementNeedsReview` from the working placem
 ## Vrindavan lineage-first section reconciliation (20 October 2026)
 
 See [the implementation and release/apply workflow](museum-vrindavan-lineage-reconciliation.md) for the six-region policy, preserved subgroup/family data, protected preview and exports, explicit apply, stale-review safeguards, and research handoff. This checkpoint does not claim a production section apply.
+
+### Integrated desktop planning and phone move companion
+
+The section workspace is one shared surface: overview, primary saints/families (largest current-section groups first, alphabetically for ties), remaining single saints, and a shared destination editor beside the selection list on desktop. Individual tertiary bulk selection excludes family members so families are not inadvertently split. Family members remain selectable within their family and each connected family reference can be opened on demand. On smaller screens the editor follows the list with a selection jump action; the move companion uses two-column filters, touch-sized controls and readable input text.
+
+Selected section vitrines expose explicit remove controls as well as map toggles. Removal is a draft until Save section area, with Discard available. Exact saint destinations are never removed with an area; the overview lists destinations outside the saved area for further review. Clearing the last vitrine continues to remove flexible memberships through the existing server action. No new data contract or migration is required.

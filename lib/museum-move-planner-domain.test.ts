@@ -84,3 +84,8 @@ test("implemented arrangements requiring proposal review stay in the move-day at
  assert.equal(plannerMoveNeedsAttention({...row,status:"Proposed"}),false);
  assert.equal(plannerMoveNeedsAttention({...row,status:"Proposed",flexibleVitrines:["6"]}),true);
 });
+
+test("planning families sort largest first with stable alphabetical ties",()=>{
+ const rows=[{id:"1",familyKey:"a",family:"Alpha",name:"One"},{id:"2",familyKey:"z",family:"Zeta",name:"Two"},{id:"3",familyKey:"z",family:"Zeta",name:"Three"},{id:"4",familyKey:"b",family:"Beta",name:"Four"}] as PlannerRow[];
+ assert.deepEqual(plannerFamilies(rows).map(group=>group.key),["z","a","b"]);
+});
