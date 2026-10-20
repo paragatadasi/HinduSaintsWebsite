@@ -5,7 +5,7 @@ import {vrindavanSectionView} from "./vrindavan-section-view";
 import {readMuseumData} from "./museum-working-data";
 import {buildVrindavanWorkingView} from "./vrindavan-working-domain";
 // PRIVATE: caller requires access_museum and view_full_saint_catalog.
-export async function readVrindavanWorkingData(client:Prisma.TransactionClient=db) {
+export async function readBaseVrindavanWorkingData(client:Prisma.TransactionClient=db) {
  const [audit,spn,overrides,arrangements]=await Promise.all([readVrindavanSectionProposalAudit({},client),readMuseumData(client),client.museumCuratorProposal.findMany({where:{museumId:"museum-vrindavan"}}),client.museumArrangement.findMany({where:{museumId:"museum-vrindavan"}})]);
  const initial=vrindavanSectionView(audit);
  const labels=new Map(spn.sections.flatMap(s=>s.families.map(f=>[f.key,f.label] as const)));
@@ -17,4 +17,10 @@ export async function readVrindavanWorkingData(client:Prisma.TransactionClient=d
  const working=buildVrindavanWorkingView(initial.placements,overrides,arrangements,audit.snapshotHash);
  const sections=[...audit.sectionCatalogue,{name:"Needs section proposal",slug:"needs-section-proposal"}].map(s=>({...s,count:working.placements.filter(p=>p.section===s.name).length}));
  return {...working,sections,audit};
+}
+
+// Region containers never replace the existing subsection or arrangement identity.
+// V2 region-only snapshots remain preserved as source evidence but are not projected.
+export async function readVrindavanWorkingData(client:Prisma.TransactionClient=db){
+ return readBaseVrindavanWorkingData(client);
 }

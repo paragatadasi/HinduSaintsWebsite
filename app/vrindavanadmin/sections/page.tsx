@@ -1,5 +1,6 @@
 import Link from "next/link";
-import {notFound} from "next/navigation";
+import {vrindavanRegionGroups,LINEAGE_REGIONS,LINEAGE_SUPPLEMENT} from "@/lib/vrindavan-lineage-catalogue";
+import {notFound,redirect} from "next/navigation";
 import {Search} from "lucide-react";
 import {requireCapability} from "@/lib/admin-access";
 import {getVrindavanWorkspaceData as readVrindavanWorkingData} from "@/lib/vrindavan-workspace-data";
@@ -25,7 +26,7 @@ export default async function VrindavanSections({searchParams}:{searchParams:Pro
  // Keep empty destinations navigable after the final member is moved elsewhere.
  const sections:MuseumSection[]=catalogue.map(item=>({... (view.sections.find(s=>s.name===item.name)||{name:item.name,idea:"Section idea pending curator review.",total:0,featured:0,secondary:0,tertiary:0,confidence:{high:0,medium:0,low:0},rows:[],families:[],primaryGroups:[],secondaryOnlyGroups:[],secondaryUngrouped:[],tertiaryGroups:[],tertiaryUngrouped:[],geography:[],health:[]}),slug:item.slug}));
  const section=sections.find(s=>s.slug===sectionSlug);
- if(sectionSlug&&!section)notFound();
+ if(sectionSlug&&!section){if([...LINEAGE_REGIONS,LINEAGE_SUPPLEMENT].some(r=>r.slug===sectionSlug))redirect("/vrindavanadmin/sections");notFound();}
  const editing={sections:catalogue.filter(s=>s.slug!=="needs-section-proposal").map(s=>s.name),groups:groupOptions};
  const matches=query?searchWorkingMuseumPlacements(placements,query,30):[];
  const profiles=await readMuseumSaintProfiles((section?.rows||matches).flatMap(p=>p.saintId?[p.saintId]:[]));
@@ -33,7 +34,7 @@ export default async function VrindavanSections({searchParams}:{searchParams:Pro
  if(section)return <>{notices}<MuseumSectionWorkspace key={section.slug} section={section} overviewHref="/vrindavanadmin/sections" memberDetails={{}} saintProfiles={profiles} familyMoveOptions={families} sectionNames={editing.sections} vrindavanEditing={editing} canManage={canManage} canEditRelationships={canEditRelationships}/></>;
  return <div className="museum-admin museum-admin--index">
   {notices}
-  <MuseumProposalOverview museumName="Vrindavan Museum" sections={sections} basePath="/vrindavanadmin/sections" queryLinks showBridges={false}>
+  <MuseumProposalOverview museumName="Vrindavan Museum" sections={sections} basePath="/vrindavanadmin/sections" queryLinks showBridges={false} showRegionTotals flowZones={vrindavanRegionGroups(sections)}>
    <section className="museum-admin-panel">
     <div className="museum-admin-section-heading"><div><div className="museum-admin-kicker">Find a saint</div><h2>Search section assignment</h2></div></div>
     <form action="/vrindavanadmin/sections" className="museum-admin-search" role="search">

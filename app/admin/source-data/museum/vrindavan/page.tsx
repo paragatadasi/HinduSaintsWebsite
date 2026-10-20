@@ -24,7 +24,7 @@ export default async function VrindavanReview({searchParams}:{searchParams:Promi
   const pending=current.filter(p=>p.row.status==="pending");
   const clear=pending.filter(p=>p.identity.category==="clear");
   const uniqueNames=new Set(current.filter(p=>p.data.name&&p.identity.category!=="unidentified").map(p=>identityName(p.data.name!))).size;
-  return <div className="admin-stack"><h1>Vrindavan saint matching</h1><p><Link href="/admin/source-data/museum">Museum updates</Link></p>
+  return <div className="admin-stack"><h1>Vrindavan saint matching</h1><p><Link href="/admin/source-data/museum/vrindavan/sections">Review lineage-first section proposals</Link></p><p><Link href="/admin/source-data/museum">Museum updates</Link></p>
     <ReviewWorkflow eyebrow="Inventory review" title="Connect inventory rows to website saints" description="Matches use current website names and aliases, including existing drafts. Airtable is supporting evidence; it is not the matching target.">
       <ReviewSection title="Load source evidence"><p>Upload the prepared inventory JSON. This saves the original workbook evidence for review. An identical upload preserves decisions. A different workbook creates a separate snapshot; row numbers are not permanent relic IDs.</p>
         {hasCapability(user.roles,"run_imports")?<form action={uploadVrindavan} className="form-stack"><label>Prepared Vrindavan inventory<input type="file" name="inventoryFile" accept=".json,application/json" required/></label><button className="admin-form-button">Load inventory for matching</button></form>:null}
