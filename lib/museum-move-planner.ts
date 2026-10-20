@@ -47,7 +47,7 @@ export async function readVrindavanMovePlanner(tx:Prisma.TransactionClient=db):P
    photo:photos.has(p.saintId),status:p.arrangement.status,vitrine:p.arrangement.vitrine,shelf:p.arrangement.shelf,
    revision:p.arrangement.revision,lastConfirmed:lastConfirmed.get(p.id)??null,
    sources:(inventory.entriesBySaintId.get(p.saintId)??[]).map(e=>({id:e.observationId,
-    vitrine:e.displayText,shelf:e.positionText,relics:e.relicDescription,quantity:e.quantityText,shared:e.saintIds.length>1,packagingText:e.packagingText,packaging:e.packaging}))
+    vitrine:e.displayText,shelf:e.positionText,relics:e.relicDescription,quantity:e.quantityText,sourceShelfPosition:e.sourceShelfPosition,shared:e.saintIds.length>1,packagingText:e.packagingText,packaging:e.packaging}))
   }]:[])};
 }
 async function transaction<T>(work:(tx:Prisma.TransactionClient)=>Promise<T>){
