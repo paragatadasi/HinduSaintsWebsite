@@ -1097,3 +1097,7 @@ The move planner retains saved section areas as read-only review references when
 Planner section names, slugs, and ordering follow `readVrindavanWorkingData().sections`, including future regional catalogue changes. Existing editorial summaries are reused only when the section name matches; new sections receive no invented summary. The active palette shows sections with current saint proposals, while earlier saved areas remain in the review panel.
 
 The planner propagates optional `arrangementNeedsReview` from the working placement overlay. Preserved exact destinations show a review warning; even previously Implemented rows remain visible under Still to do when this flag is set, with a separate review count. No status or location is rewritten by this display. Replanning or physical confirmation still uses the current arrangement revision through existing guarded actions.
+
+## Vrindavan lineage-first section reconciliation (20 October 2026)
+
+See [the implementation and release/apply workflow](museum-vrindavan-lineage-reconciliation.md) for the six-region policy, preserved subgroup/family data, protected preview and exports, explicit apply, stale-review safeguards, and research handoff. This checkpoint does not claim a production section apply.

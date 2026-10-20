@@ -23,7 +23,7 @@ export async function saveVrindavanProposal(raw:unknown,actorId:string) {
  const input=vrindavanProposalInput.parse(raw);return transaction(async tx=>{
  const data=await readVrindavanWorkingData(tx);const row=data.placements.find(p=>p.saintId===input.saintId);
  if(!row||row.curatorProposalRevision!==input.revision)throw new MuseumConflict("This saint's proposal or source identity changed. Reload before saving.");
- if(await tx.museumSection.findFirst({where:{name:input.section,status:"archived"}})||!data.sections.some(s=>s.name===input.section&&s.slug!=="needs-section-proposal"))throw new MuseumConflict("Choose an available museum section.");
+ if(!data.sections.some(s=>s.name===input.section&&s.slug!=="needs-section-proposal"))throw new MuseumConflict("Choose an available museum section.");
  const group=input.groupKey?data.groupOptions.find(g=>g.key===input.groupKey):null;if(input.groupKey&&!group)throw new MuseumConflict("This display family is no longer available.");
  await writeProposal(tx,{saintId:input.saintId,section:input.section,tier:input.tier,groupKey:group?.key||"",groupLabel:group?.label||""},actorId);return row.name;
  });
@@ -32,7 +32,7 @@ export async function moveVrindavanFamily(raw:unknown,actorId:string) {
  const input=vrindavanFamilyInput.parse(raw);return transaction(async tx=>{
  const data=await readVrindavanWorkingData(tx);const family=data.families.find(f=>f.key===input.familyKey);
  if(!family||family.revision!==input.revision)throw new MuseumConflict("This family's proposals or membership changed. Reload before moving it.");
- if(await tx.museumSection.findFirst({where:{name:input.section,status:"archived"}})||!data.sections.some(s=>s.name===input.section&&s.slug!=="needs-section-proposal"))throw new MuseumConflict("Choose an available museum section.");
+ if(!data.sections.some(s=>s.name===input.section&&s.slug!=="needs-section-proposal"))throw new MuseumConflict("Choose an available museum section.");
  for(const row of data.placements.filter(p=>p.familyId===family.key))await writeProposal(tx,{saintId:row.saintId!,section:input.section,tier:row.tier,groupKey:family.key,groupLabel:family.label},actorId);
  return data.sections.find(s=>s.name===input.section)!.slug;
  });
