@@ -11485,7 +11485,7 @@ select:not([multiple]) {
 .museum-planner__family-heading h4 { margin:0; }
 .museum-planner__family small { color:var(--color-muted); }
 .museum-planner__assignment { border-top:1px solid var(--color-border); padding-top:var(--space-4); }
-@media (max-width:800px) { .museum-planner__room-workspace { grid-template-columns:minmax(0,1fr); } .museum-planner__family-heading { align-items:flex-start; flex-wrap:wrap; } }
+@media (max-width:800px) { .museum-planner__room-workspace { grid-template-columns:minmax(0,var(--width-museum-section-palette)) minmax(0,1fr); } .museum-planner__family-heading { align-items:flex-start; flex-wrap:wrap; } }
 
 .museum-planner__selection-bar { position:sticky; bottom:var(--space-3); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--space-3); background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-control); padding:var(--space-3); box-shadow:var(--shadow-soft); }
 .museum-planner__assignment { scroll-margin-top:var(--offset-museum-plan-anchor); }
@@ -11559,3 +11559,65 @@ select:not([multiple]) {
 .museum-planner__region { display:grid; gap:var(--space-2); padding-bottom:var(--space-4); }
 .museum-planner__region h4 { color:var(--color-cream); font-family:var(--font-serif); font-size:var(--font-size-museum-nav-heading); margin:var(--space-2) 0; }
 .museum-planner__region h4 span { color:var(--color-gold); }
+
+/* Shared proposal styling for planning, region navigation and connection reference. */
+.museum-admin-hero h1,.museum-planner .museum-planning-overview h2 { font-size:var(--font-size-museum-section-title);max-width:var(--width-museum-section-title); }
+.museum-planner .museum-planning-overview { display:grid;padding:var(--space-6); }
+.museum-planner__section-workspace { background:transparent; }
+.museum-planner__section-workspace .museum-planner__family-list { grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--width-museum-planning-family)),1fr)); }
+.museum-planner__family-heading .museum-packaging { margin-top:var(--space-3); }
+.museum-packaging { color:var(--color-muted);font-size:var(--font-size-review-hint); }
+.museum-packaging dl { display:flex;flex-wrap:wrap;gap:var(--space-3);margin:var(--space-2) 0; }
+.museum-packaging dl > div { display:grid;gap:var(--space-1); }
+.museum-packaging dt { font-size:var(--font-size-review-hint); }
+.museum-packaging dd { margin:0;color:var(--color-gold);font-family:var(--font-serif);font-size:var(--font-size-museum-planning-stat); }
+.museum-packaging details { font-size:var(--font-size-review-hint); }
+[data-region="0"] { --region-color:var(--color-museum-region-1); }
+[data-region="1"] { --region-color:var(--color-museum-region-2); }
+[data-region="2"] { --region-color:var(--color-museum-region-3); }
+[data-region="3"] { --region-color:var(--color-museum-region-4); }
+[data-region="4"] { --region-color:var(--color-museum-region-5); }
+[data-region="5"] { --region-color:var(--color-museum-region-6); }
+.museum-planner__room-workspace { grid-template-columns:minmax(0,var(--width-museum-section-palette)) minmax(0,1fr); }
+.museum-planner__palette { display:grid;grid-template-columns:minmax(0,1fr);max-height:var(--height-museum-section-palette);overflow-y:auto;gap:var(--space-4); }
+.museum-planner__region { --region-color:var(--color-muted);border-left:3px solid var(--region-color);background:color-mix(in srgb,var(--region-color) 6%,var(--color-bg));padding:var(--space-4);align-content:start; }
+.museum-planner__region[data-region="0"] { --region-color:var(--color-museum-region-1); }
+.museum-planner__region[data-region="1"] { --region-color:var(--color-museum-region-2); }
+.museum-planner__region[data-region="2"] { --region-color:var(--color-museum-region-3); }
+.museum-planner__region[data-region="3"] { --region-color:var(--color-museum-region-4); }
+.museum-planner__region[data-region="4"] { --region-color:var(--color-museum-region-5); }
+.museum-planner__region[data-region="5"] { --region-color:var(--color-museum-region-6); }
+.museum-planner__region header { padding-bottom:var(--space-3);border-bottom:1px solid var(--color-border);margin-bottom:var(--space-2); }
+.museum-planner__region header .eyebrow { color:var(--region-color); }
+.museum-planner__region h4 { font-size:var(--font-size-museum-planning-heading); }
+.museum-planner__map-companion { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-5);align-items:start; }
+.museum-connections { min-width:0; }
+.museum-connections h3 { font-family:var(--font-serif);color:var(--color-cream); }
+.museum-web-legend,.museum-web-regions { display:flex;flex-wrap:wrap;gap:var(--space-3);font-size:var(--font-size-review-hint);margin-bottom:var(--space-3);color:var(--color-muted); }
+.museum-web-regions span::before { content:"";display:inline-block;width:var(--space-2);height:var(--space-2);background:var(--region-color);border-radius:50%;margin-right:var(--space-2); }
+.museum-web-priority-key { color:var(--color-gold); }
+.museum-web-stage { position:relative;isolation:isolate;margin:var(--space-3) 0; }
+.museum-web-lines { position:absolute;inset:0;width:100%;height:100%;overflow:hidden; }
+.museum-web-fields { pointer-events:none; }
+.museum-web-fields polygon { fill:var(--region-color);opacity:.13;filter:blur(18px); }
+.museum-web-line { fill:none;stroke:var(--color-muted);stroke-width:1.5; }
+.museum-web-line.curatorial { stroke-dasharray:3 5; }
+.museum-web-line.priority { stroke:var(--color-gold);stroke-width:4; }
+.museum-web-line.selected { stroke:var(--color-cream);stroke-width:3; }
+.museum-web-line.priority.selected { stroke:var(--color-gold);stroke-width:5; }
+.museum-web-hit { fill:none;stroke:transparent;stroke-width:20; }
+.museum-web-edge:focus-visible .museum-web-line { stroke-width:4; }
+.museum-web-node { position:absolute;display:grid;align-content:center;gap:var(--space-1);padding:var(--space-2);background:color-mix(in srgb,var(--region-color) 14%,var(--color-surface));border:1px solid color-mix(in srgb,var(--region-color) 45%,var(--color-border));border-radius:var(--radius-card);color:var(--color-cream);text-align:left;font-size:var(--font-size-review-hint);line-height:1.4;cursor:grab; }
+.museum-web-node small { font-size:var(--font-size-review-hint);color:var(--color-muted); }
+.museum-web-node[aria-pressed="true"] { outline:2px solid var(--color-cream);outline-offset:2px; }
+.museum-web-node[data-muted="true"] { opacity:.65; }
+.museum-web-popup { position:absolute;z-index:5;width:min(var(--width-museum-connection-popup),100%);background:var(--color-surface);color:var(--color-cream);border:1px solid var(--color-border);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:var(--space-4);font-size:var(--font-size-review-hint); }
+.museum-web-popup strong { display:block;padding-right:var(--space-5); }
+.museum-web-close { float:right;background:transparent;color:var(--color-cream);border:0; }
+.museum-web-selection { display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:center;padding:var(--space-3) 0; }
+@media(max-width:1400px){.museum-planner__map-companion{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:800px){.museum-planner__room-workspace{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:640px){.museum-planner__palette{grid-template-columns:minmax(0,1fr)}.museum-web-node{touch-action:pan-y}.museum-planner .museum-planning-overview{padding:var(--space-4)}}
+.museum-planning-overview-layout { display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:var(--space-5);align-items:start; }
+@media(max-width:800px){.museum-planning-overview-layout{grid-template-columns:minmax(0,1fr)}}
+.museum-planning-member-name { color:var(--color-muted);font-weight:400; }

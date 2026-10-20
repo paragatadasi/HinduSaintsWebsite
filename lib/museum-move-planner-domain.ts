@@ -114,6 +114,5 @@ export function plannerRegionGroups(sections:{name:string}[],rows:Pick<PlannerRo
  if(other.length)groups.push({title:"Other proposals",badge:"",sections:other});
  return groups;
 }
-
 // Deduplicate shared source observations within each selected section/family.
 export function plannerPackagingCounts(rows:PlannerRow[]){return summarizeRelicPackaging(rows.flatMap(row=>row.sources??[]));}

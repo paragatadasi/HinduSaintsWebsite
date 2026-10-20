@@ -4,6 +4,7 @@ import {useRouter} from "next/navigation";
 import {Check,ClipboardList} from "lucide-react";
 import {isFlexible,plannerMoveNeedsAttention,vitrineNumber,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
 import {completeMovePlanAction,loadMoveSaintAction} from "@/app/vrindavanadmin/plan/actions";
+import {MuseumPackagingSummary} from "./museum-packaging-summary";
 import {MuseumPlanningStats} from "./museum-planning-stats";
 import {MuseumDetailDialog} from "./museum-detail-dialog";
 import {MuseumSaintProfile} from "./museum-saint-profile";
@@ -48,7 +49,7 @@ function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevi
   {row.lastConfirmed?<p>Last physically confirmed: Vitrine {row.lastConfirmed.vitrine}{row.lastConfirmed.shelf?` / ${row.lastConfirmed.shelf}`:""} · {new Date(row.lastConfirmed.confirmedAt).toLocaleDateString()}. Original inventory locations below are retained as reference.</p>:<p>Starting locations below are from the source inventory; check them in the museum.</p>}
   {row.lastConfirmed?.note?<p>Move note: {row.lastConfirmed.note}</p>:null}
   <button className="museum-admin-button museum-admin-button--secondary" type="button" onClick={showDetails}>Saint photos, biography and family tree</button>
-  <div><h4>Relics to check</h4>{row.sources.map(source=><div key={source.id} className="museum-planner__source"><strong>{source.vitrine?`Source vitrine ${source.vitrine}`:"Source location not recorded"}{source.shelf?` / ${source.shelf}`:""}</strong><p>{source.relics||"Relic description not recorded"}{source.quantity?` · Quantity: ${source.quantity}`:""}</p>{source.shared?<p>Shared entry: check the other saints before moving its contents. This confirmation applies only to {row.name}.</p>:null}</div>)}</div>
+  <MuseumPackagingSummary rows={[row]} compact/><div><h4>Relics to check</h4>{row.sources.map(source=><div key={source.id} className="museum-planner__source"><strong>{source.vitrine?`Source vitrine ${source.vitrine}`:"Source location not recorded"}{source.shelf?` / ${source.shelf}`:""}</strong><p>{source.relics||"Relic description not recorded"}{source.quantity?` · Quantity: ${source.quantity}`:""}</p>{source.packagingText?<p>Container: {source.packagingText}</p>:null}{source.shared?<p>Shared entry: check the other saints before moving its contents. This confirmation applies only to {row.name}.</p>:null}</div>)}</div>
   {(row.status==="Planned"||flexible)&&canEdit?<details className="museum-planner__completion"><summary>Confirm completed arrangement</summary>
    <form onSubmit={event=>{
     event.preventDefault();const form=new FormData(event.currentTarget);setError("");

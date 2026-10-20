@@ -1118,3 +1118,15 @@ The planning palette consumes the shared `vrindavanRegionGroups` visitor sequenc
 ### Relic packaging/frame evidence (20 October 2026)
 
 Column E of the existing Vrindavan workbook is already preserved. The read-only packaging projection distinguishes ordinary, small and mixed frames, unframed entries, unknown labels and conflicting sheet evidence. Shared source IDs are deduplicated within section/family/selection counts; quantities are not physical frame counts. See [relic packaging contract](museum-relic-packaging.md). No reimport or data migration is required.
+
+### Connected planner integration (20 October 2026)
+
+The planner now includes the reviewed connected-traditions reference beside the
+vitrine map, with an expanded view, section focus, draggable exploratory nodes,
+regional fields, and source-bearing connection popups. Its Arrange action selects
+an existing subsection only; it does not reserve or save vitrines. Existing area,
+exact-destination, flexible-placement and completion actions remain unchanged.
+The six regional headings are visible in the section palette and use matching
+categorical colors. Source-reported frame summaries are available on section,
+family, selection, family-tree and mobile move-day views via the shared packaging
+contract. Reference data: `data/museum/vrindavan-connected-traditions.json`.

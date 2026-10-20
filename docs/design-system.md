@@ -441,3 +441,28 @@ Flexible placement means any one vitrine within a saved section area, never simu
 ### Museum planning and move companion
 
 Use one curator visual language across both modes: a cream serif section title, gold eyebrow and summary numbers, muted descriptive text, dark family/move cards, and a quiet destination surface. `MuseumPlanningStats` supplies the shared accessible definition-list summary. Planning uses a wider overview and a responsive family-card grid; the phone companion uses the same typography and numbers with touch-sized controls and a highlighted destination strip. Gold is reserved for hierarchy, selected states and principal actions. Supporting family/tree actions use quieter borders and smaller text. Configure hierarchy through the `museum-planning-*` shared classes and tokens, rather than per-card inline styling. Family order, selection and saved plans are independent of presentation.
+
+### Connected planning companion and frame summaries (20 October 2026)
+
+The protected Vrindavan planner places `MuseumConnectedTraditions` beside the room
+map on wide screens, stacking below it on smaller screens. This is an interpretive
+reference, not a room assignment surface. Its graph is the reviewed Saarthi dataset:
+25 links, six regional parents, and two priority physical adjacencies. Solid lines
+mean named documented connections; dotted lines mean curatorial adjacency, never
+universal genealogy. Gold/heavier lines identify recommended adjacency, not evidence
+strength. Cream selection is separate. Translucent regional fields follow dragged
+nodes and convey category only. Geometry alone uses computed inline coordinates;
+colors, typography and card presentation use shared museum tokens/classes.
+
+Arrange sections shows numbered region headers, region-colored rules and nested
+section cards in the shared visitor sequence. Keep the palette beside the map on
+desktop so drag targets stay nearby. The selected section reuses the proposal hero,
+status key, tier statistics, serif headings and dark family-card hierarchy. Region
+colors are categorical exceptions to the normally restrained gold palette.
+
+`MuseumPackagingSummary` uses Nadi's deduplicating helper for section, family,
+selection, family-tree-dialog and move-day summaries. Labels count source inventory
+entries: Frame, Small frame, Mixed containers, Unframed and Unknown/review. Never
+multiply source quantities into frame totals or infer a measured size from “Frame”.
+Sheet1 remains authoritative and photo availability remains separate. No saved-plan
+or physical-location mutation is triggered by exploring the companion.
