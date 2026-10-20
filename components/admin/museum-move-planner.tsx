@@ -4,14 +4,14 @@ import {useRouter} from "next/navigation";
 import Link from "next/link";
 import type {Route} from "next";
 import {Camera} from "lucide-react";
-import {plannerCounts,vitrineNumber,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
-import {savePhotoVitrinesAction,assignMovePlanAction} from "@/app/vrindavanadmin/plan/actions";
+import {plannerCounts,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
+import {assignMovePlanAction} from "@/app/vrindavanadmin/plan/actions";
 import {MuseumRoomPlan} from "./museum-room-plan";
 import {MuseumMoveList} from "./museum-move-list";
 
 function Counts({rows,configured}:{rows:PlannerRow[];configured:boolean}){
  const counts=plannerCounts(rows);
- return <span className="museum-planner__counts"><span>{counts.total} saints</span>{configured?<><span><Camera aria-hidden="true"/> {counts.photo} photo</span><span>{counts.untagged} without photo tag</span></>:<span>Photo setup pending</span>}<span>{counts.unplanned} to plan</span></span>;
+ return <span className="museum-planner__counts"><span>{counts.total} saints</span>{configured?<><span><Camera aria-hidden="true"/> {counts.photo} photo</span><span>{counts.untagged} without photo tag</span></>:<span>Photo data pending</span>}<span>{counts.unplanned} to plan</span></span>;
 }
 export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boolean}){
  const router=useRouter();
@@ -20,7 +20,6 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
  const [sectionMenuOpen,setSectionMenuOpen]=useState(false);
  const [selected,setSelected]=useState<string[]>([]);
  const [destination,setDestination]=useState("");
- const [photos,setPhotos]=useState(data.photoVitrines);
  const [filter,setFilter]=useState("");
  const [error,setError]=useState(""),[message,setMessage]=useState("");
  const [pending,startTransition]=useTransition();
@@ -34,23 +33,10 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
   setError("");setMessage("");
   startTransition(async()=>{try{const result=await action();if(result.error)setError(result.error);else{setMessage(success);setSelected([]);router.refresh();}}catch{setError("The save could not be confirmed. Reload to check the saved plan before trying again.");}});
  };
- const previewPhotos=new Set(data.rows.filter(row=>row.lastConfirmed?photos.includes(vitrineNumber(row.lastConfirmed.vitrine)??""):row.sources.some(source=>photos.includes(vitrineNumber(source.vitrine)??""))).map(row=>row.saintId));
  return <div className="museum-admin admin-stack museum-planner">
   <header className="section-heading"><div><p className="eyebrow">Vrindavan Museum</p><h1>Plan the move</h1><p>Choose where each section will live, then take the saved plan into the museum.</p></div></header>
   <Counts rows={data.rows} configured={data.photosConfigured}/>
   {error?<p role="alert">{error}</p>:null}{message?<p role="status">{message}</p>:null}
-  <details className="museum-planner__setup" open={!data.photosConfigured||undefined}>
-   <summary><Camera aria-hidden="true"/> Photo saints {data.photosConfigured?`· ${data.rows.filter(row=>row.photo).length} tagged`:"· Set up before planning"}</summary>
-   <p>Select the vitrines that currently contain photographs. Saints recorded there will receive a photo tag to help you allow more display space.</p>
-   <div className="museum-planner__setup-grid">
-    <MuseumRoomPlan multiple selected={photos} disabled={!canEdit||pending} onSelect={number=>setPhotos(current=>current.includes(number)?current.filter(n=>n!==number):[...current,number])}/>
-    <div className="admin-stack"><p><strong>{previewPhotos.size} saints</strong> will have a photo tag.</p><p>Selected vitrines: {photos.length?photos.join(", "):"None"}</p>
-     <p className="muted">Tags stay with the saints after a move. Saving this setup again replaces the tags using the currently recorded locations. Saints without a tag are not proof that no photograph exists.</p>
-     {canEdit?<button type="button" className="museum-admin-button" disabled={pending} onClick={()=>save(()=>savePhotoVitrinesAction({revision:data.revision,vitrines:photos}),"Photo saints saved. Section counts are updated.")}>Save photo saints</button>:null}
-     <details><summary>Who will be tagged?</summary><ul>{data.rows.filter(row=>previewPhotos.has(row.saintId)).map(row=><li key={row.id}>{row.name}</li>)}</ul></details>
-    </div>
-   </div>
-  </details>
   <div className="review-actions museum-planner__view-switch" role="group" aria-label="Move workspace">
    <button className="museum-admin-button museum-admin-button--secondary" aria-pressed={view==="plan"} onClick={()=>setView("plan")}>Plan destinations</button>
    <button className="museum-admin-button museum-admin-button--secondary" aria-pressed={view==="checklist"} onClick={()=>setView("checklist")}>Move-day checklist</button>

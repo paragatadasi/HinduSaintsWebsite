@@ -4,7 +4,7 @@ import {z} from "zod";
 import {assertCapability} from "@/lib/admin-access";
 import {assertMuseumMutation} from "@/lib/museum-access";
 import {MuseumConflict} from "@/lib/museum-service";
-import {assignVrindavanPlan,saveVrindavanPhotoSetup,completeVrindavanPlan} from "@/lib/museum-move-planner";
+import {assignVrindavanPlan,completeVrindavanPlan} from "@/lib/museum-move-planner";
 import {readVrindavanWorkingData} from "@/lib/vrindavan-working-data";
 import {readMuseumSaintProfiles} from "@/lib/museum-saint-profiles";
 
@@ -22,7 +22,6 @@ async function save(work:(actorId:string)=>Promise<unknown>){
   throw error;
  }
 }
-export async function savePhotoVitrinesAction(input:unknown){return save(actorId=>saveVrindavanPhotoSetup(input,actorId));}
 export async function assignMovePlanAction(input:unknown){return save(actorId=>assignVrindavanPlan(input,actorId));}
 export async function completeMovePlanAction(input:unknown){return save(actorId=>completeVrindavanPlan(input,actorId));}
 export async function loadMoveSaintAction(saintId:string){
