@@ -1,0 +1,46 @@
+import assert from "node:assert/strict";
+import {randomBytes} from "node:crypto";
+const url=process.env.MUSEUM_PLANNER_TEST_DATABASE_URL;
+if(!url)throw Error("Set disposable test database URL");
+const target=new URL(url);
+if(!["localhost","127.0.0.1"].includes(target.hostname)||target.pathname!=="/museum_planner_test")throw Error("Refusing non-test database");
+process.env.DATABASE_URL=url;
+const {db}=await import("../lib/db");
+const {readVrindavanMovePlanner,saveVrindavanPhotoSetup,assignVrindavanPlan}=await import("../lib/museum-move-planner");
+const suffix=Date.now(),hash=randomBytes(32).toString("hex");
+try{
+ const actor=await db.user.create({data:{email:`planner-${suffix}@example.invalid`,roles:["curator"],active:true}});
+ await db.museum.upsert({where:{id:"museum-vrindavan"},create:{id:"museum-vrindavan",slug:"vrindavan",name:"Vrindavan"},update:{}});
+ const section=await db.museumSection.create({data:{name:`Planner fixture ${suffix}`,slug:`planner-${suffix}`,status:"published"}});
+ const ids:string[]=[];
+ for(let i=0;i<3;i++){
+  const saint=await db.saint.create({data:{slug:`planner-${suffix}-${i}`,displayName:`Planner saint ${i}`,canonicalName:`Planner saint ${i}`}});ids.push(saint.id);
+  await db.saintMuseumSection.create({data:{saintId:saint.id,museumSectionId:section.id,tier:"featured",status:"published"}});
+  await db.museumCollectionImport.create({data:{museumId:"museum-vrindavan",sourceKey:`vrindavan-workbook:${hash}:Sheet1:${i+2}`,fingerprint:hash+i,status:"identity_linked",reviewedAt:new Date(),rawJson:{cells:[]},normalizedJson:{mappingVersion:"vrindavan-identity-v1",sourceName:"Fixture",sourceRow:i+2,name:saint.displayName,place:"",relic:"Cloth and photograph",quantity:"2",display:i===2?"4":"3",position:"3.4",comments:"",warnings:[],saintIds:[saint.id],note:null}}});
+ }
+ const before=await db.museumCollectionImport.findMany({where:{sourceKey:{startsWith:`vrindavan-workbook:${hash}`}}});
+ const placements=await db.museumItemPlacement.count();
+ let data=await readVrindavanMovePlanner();
+ await saveVrindavanPhotoSetup({revision:data.revision,vitrines:["3"]},actor.id);
+ await assert.rejects(saveVrindavanPhotoSetup({revision:data.revision,vitrines:["4"]},actor.id),/changed/);
+ data=await readVrindavanMovePlanner();
+ assert.equal(data.rows.filter(r=>r.photo).length,2);
+ const first=data.rows.find(r=>r.saintId===ids[0])!;
+ await assignVrindavanPlan({revision:data.revision,placementIds:[first.id],vitrine:"0"},actor.id);
+ await assert.rejects(assignVrindavanPlan({revision:data.revision,placementIds:[first.id],vitrine:"1"},actor.id),/changed/);
+ data=await readVrindavanMovePlanner();
+ assert.equal(data.rows.find(r=>r.id===first.id)!.vitrine,"0");
+ assert.equal(data.rows.filter(r=>r.photo).length,2);
+ await assert.rejects(assignVrindavanPlan({revision:data.revision,placementIds:[first.id],vitrine:"1"},actor.id),/already have/);
+ await assert.rejects(assignVrindavanPlan({revision:data.revision,placementIds:[first.id,"foreign"],vitrine:"2",replaceExisting:true},actor.id),/section proposal/);
+ assert.equal((await readVrindavanMovePlanner()).revision,data.revision);
+ await assignVrindavanPlan({revision:data.revision,placementIds:data.rows.map(r=>r.id),vitrine:"24",shelf:"A",replaceExisting:true},actor.id);
+ data=await readVrindavanMovePlanner();
+ assert.equal(data.rows.every(r=>r.vitrine==="24"&&r.shelf==="A"&&r.status==="Planned"),true);
+ assert.equal(data.rows.filter(r=>r.photo).length,2);
+ assert.deepEqual(await db.museumCollectionImport.findMany({where:{sourceKey:{startsWith:`vrindavan-workbook:${hash}`}}}),before);
+ assert.equal(await db.museumItemPlacement.count(),placements);
+ assert.equal(await db.museumArrangement.count({where:{museumId:"museum-spn",placementId:{in:data.rows.map(r=>r.id)}}}),0);
+ assert.equal(await db.auditEvent.count({where:{action:"museum.planning.photos.saved"}})>0,true);
+ console.log("PASS photo snapshot, partial and whole-section planning, optional shelf/zero, stale/replacement/foreign-ID protection, atomic failure, audits and no source/SPN/physical writes");
+}finally{await db.$disconnect();}
