@@ -7,6 +7,7 @@ import {MuseumConflict} from "@/lib/museum-service";
 import {assignVrindavanPlan,completeVrindavanPlan,saveVrindavanSectionArea,saveVrindavanFlexiblePlan} from "@/lib/museum-move-planner";
 import {readVrindavanWorkingData} from "@/lib/vrindavan-working-data";
 import {readMuseumSaintProfiles} from "@/lib/museum-saint-profiles";
+import {previewVrindavanSuggestedPlan,applyVrindavanSuggestedPlan,clearVrindavanSuggestedPlan} from "@/lib/museum-move-planner";
 
 async function save(work:(actorId:string)=>Promise<unknown>){
  await assertCapability("access_museum");
@@ -34,3 +35,9 @@ export async function loadMoveSaintAction(saintId:string){
 
 export async function saveSectionAreaAction(input:unknown){return save(actorId=>saveVrindavanSectionArea(input,actorId));}
 export async function saveFlexiblePlanAction(input:unknown){return save(actorId=>saveVrindavanFlexiblePlan(input,actorId));}
+export async function previewSuggestedPlanAction(){
+ await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");
+ return previewVrindavanSuggestedPlan();
+}
+export async function applySuggestedPlanAction(input:unknown){return save(actorId=>applyVrindavanSuggestedPlan(input,actorId));}
+export async function clearSuggestedPlanAction(input:unknown){return save(actorId=>clearVrindavanSuggestedPlan(input,actorId));}

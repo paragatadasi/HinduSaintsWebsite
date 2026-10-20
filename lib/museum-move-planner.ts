@@ -1,4 +1,7 @@
 import {createHash} from "node:crypto";
+import {z} from "zod";
+import {buildSuggestedPlan} from "./museum-suggested-plan";
+import suggestionGuide from "../data/museum/vrindavan-suggested-plan.json";
 import {db} from "./db";
 import {Prisma} from "./generated/prisma/client";
 import {readVrindavanWorkingData} from "./vrindavan-working-data";
@@ -10,17 +13,19 @@ import {arrangementInput} from "./museum-arrangement-domain";
 import {photoSaintsInVitrines,plannerPhotoInput,plannerAssignmentInput,plannerCompletionInput,plannerConfirmation,plannerAreaInput,plannerFlexibleInput,flexibleRecords,flexibleDestinations,vitrineNumber,type PlannerData,type PlannerConfirmation} from "./museum-move-planner-domain";
 
 const museumId="museum-vrindavan";
+const activeSuggestionGuide={...suggestionGuide,version:createHash("sha256").update(JSON.stringify(suggestionGuide)).digest("hex")};
 // Read/mutation callers enforce access_museum + full catalog, and manage_museum for writes.
 async function context(tx:Prisma.TransactionClient){
- const [working,inventory,setup,spacePlans]=await Promise.all([
+ const [working,inventory,setup,spacePlans,affiliations]=await Promise.all([
   readVrindavanWorkingData(tx),readVrindavanMuseumInventory({},tx),
   tx.museumPlanningSetup.findUnique({where:{museumId}}),
-  tx.museumSectionSpacePlan.findMany({where:{museumId},orderBy:{section:"asc"}})
+  tx.museumSectionSpacePlan.findMany({where:{museumId},orderBy:{section:"asc"}}),
+  tx.saintTradition.findMany({where:{isPrimary:true,tradition:{status:{not:"archived"}}},select:{saintId:true,traditionId:true},orderBy:{id:"asc"}})
  ]);
  const revision=createHash("sha256").update(JSON.stringify({
   arrangements:working.placements.map(p=>[p.id,p.arrangement?.revision]).sort(),
   inventory:inventory.entries.map(e=>[e.observationId,e.saintIds,e.displayText,e.positionText,e.packaging]),
-  setup:setup?.version??0,areas:spacePlans.map(area=>[area.section,area.version])
+  setup:setup?.version??0,areas:spacePlans.map(area=>[area.section,area.version]),affiliations
  })).digest("hex");
  const confirmations=await tx.auditEvent.findMany({where:{entityType:"MuseumArrangement",action:{in:["museum.arrangement.updated","museum.move.confirmed"]},
   entityId:{in:working.placements.map(p=>p.id)},afterJson:{path:["status"],equals:"Implemented"}},orderBy:[{createdAt:"desc"},{id:"desc"}],select:{entityId:true,afterJson:true}});
@@ -29,19 +34,21 @@ async function context(tx:Prisma.TransactionClient){
   const confirmation=plannerConfirmation(event.afterJson),previous=lastConfirmed.get(event.entityId);
   if(confirmation&&(!previous||confirmation.confirmedAt>previous.confirmedAt||(confirmation.confirmedAt===previous.confirmedAt&&confirmation.note&&!previous.note)))lastConfirmed.set(event.entityId,confirmation);
  }
- return {working,inventory,setup,revision,lastConfirmed,areas:spacePlans.map(area=>({version:area.version,section:area.section,vitrines:area.vitrines,placements:flexibleRecords(area.flexiblePlacements)}))};
+ return {working,inventory,setup,revision,lastConfirmed,affiliations,areas:spacePlans.map(area=>({version:area.version,section:area.section,vitrines:area.vitrines,placements:flexibleRecords(area.flexiblePlacements)}))};
 }
 export async function readVrindavanMovePlanner(tx:Prisma.TransactionClient=db):Promise<PlannerData>{
- const {working,inventory,setup,revision,lastConfirmed,areas}=await context(tx);
+ const {working,inventory,setup,revision,lastConfirmed,areas,affiliations}=await context(tx);
+ const suggestion=await latestSuggestion(tx);
  const photos=new Set(setup?.photoSaintIds??[]);
  const view=buildMuseumView(working.placements);
- return {revision,areas,photoVitrines:setup?.photoVitrines??[],photosConfigured:!!setup,
+ return {revision,areas,suggestionId:suggestion?.action==="museum.plan.suggested"?suggestion.id:null,photoVitrines:setup?.photoVitrines??[],photosConfigured:!!setup,
   photoUpdatedAt:setup?.updatedAt.toISOString()??null,
   awaitingIdentityReview:inventory.counts.awaitingIdentityReview,
   unmappedLocations:inventory.displays.filter(d=>vitrineNumber(d)===null),
   sections:working.sections.map(s=>({name:s.name,slug:s.slug,idea:view.sections.find(summary=>summary.name===s.name)?.idea??""})),
   rows:working.placements.flatMap(p=>p.saintId&&p.arrangement?[{
    id:p.id,saintId:p.saintId,name:p.name,section:p.section,family:p.groupLabel||"",tier:p.tier,needsResearch:p.needsResearch,
+   traditionIds:affiliations.filter(a=>a.saintId===p.saintId).map(a=>a.traditionId),
    arrangementNeedsReview:"arrangementNeedsReview" in p&&p.arrangementNeedsReview===true,
    familyKey:p.familyId||undefined,flexibleVitrines:flexibleDestinations({id:p.id,section:p.section,status:p.arrangement.status,revision:p.arrangement.revision},areas),
    photo:photos.has(p.saintId),status:p.arrangement.status,vitrine:p.arrangement.vitrine,shelf:p.arrangement.shelf,
@@ -133,5 +140,75 @@ export async function saveVrindavanFlexiblePlan(raw:unknown,actorId:string){
   const retained=flexibleRecords(before.flexiblePlacements).filter(p=>!ids.has(p.id));
   const after=await tx.museumSectionSpacePlan.update({where:{museumId_section:{museumId,section:input.section}},data:{flexiblePlacements:[...retained,...(input.remove?[]:rows.map(row=>({id:row.id,revision:row.arrangement!.revision})))],version:{increment:1},updatedById:actorId}});
   await tx.auditEvent.create({data:{userId:actorId,action:"museum.section.flexible.saved",entityType:"MuseumSectionSpacePlan",entityId:input.section,beforeJson:JSON.parse(JSON.stringify(before)),afterJson:JSON.parse(JSON.stringify(after))}});
+ });
+}
+
+function latestSuggestion(tx:Prisma.TransactionClient){
+ return tx.auditEvent.findFirst({where:{entityType:"MuseumSuggestedPlan",entityId:museumId},orderBy:[{createdAt:"desc"},{id:"desc"}]});
+}
+const suggestionInput=z.object({revision:z.string().regex(/^[a-f0-9]{64}$/),version:z.string().max(100)});
+const suggestionUndo=z.object({
+ arrangements:z.array(z.object({id:z.string(),version:z.number().int(),proposalRevision:z.string(),vitrine:z.string()})),
+ areas:z.array(z.object({section:z.string(),version:z.number().int()}))
+});
+export async function previewVrindavanSuggestedPlan(){
+ return buildSuggestedPlan(await readVrindavanMovePlanner(),activeSuggestionGuide);
+}
+export async function applyVrindavanSuggestedPlan(raw:unknown,actorId:string){
+ const input=suggestionInput.parse(raw);
+ return transaction(async tx=>{
+  const data=await readVrindavanMovePlanner(tx);
+  if(input.revision!==data.revision||input.version!==activeSuggestionGuide.version)throw new MuseumConflict("The plan, inventory, or suggestion changed. Open a fresh preview.");
+  if(data.suggestionId)throw new MuseumConflict("A suggested plan is already loaded. Clear its remaining suggestions before creating another.");
+  const plan=buildSuggestedPlan(data,activeSuggestionGuide);
+  if(!plan.assignments.length)throw new MuseumConflict("There are no unplanned groups with a suitable shared destination.");
+  const working=await readVrindavanWorkingData(tx);
+  const arrangements:{id:string;version:number;proposalRevision:string;vitrine:string}[]=[];
+  const areas:{section:string;version:number}[]=[];
+  for(const item of plan.assignments){
+   const row=working.placements.find(p=>p.id===item.id)!;
+   // The generator excludes existing plans and previously confirmed physical placements.
+   await writeMuseumArrangement(tx,museumId,row,arrangementInput.parse({placementId:row.id,revision:row.arrangement!.revision,familyKey:row.familyId||"",status:"Planned",vitrine:item.vitrine}),actorId);
+   const after=await tx.museumArrangement.findUniqueOrThrow({where:{museumId_placementId:{museumId,placementId:row.id}}});
+   arrangements.push({id:row.id,version:after.version,proposalRevision:after.proposalRevision,vitrine:item.vitrine});
+  }
+  for(const area of plan.areas.filter(a=>!a.preserved&&plan.groups.some(g=>g.sections.includes(a.section)))){
+   // Empty existing areas are versioned too; clearing returns them to the empty state.
+   const after=await tx.museumSectionSpacePlan.upsert({where:{museumId_section:{museumId,section:area.section}},
+    create:{museumId,section:area.section,vitrines:area.vitrines,updatedById:actorId},
+    update:{vitrines:area.vitrines,version:{increment:1},updatedById:actorId}});
+   areas.push({section:area.section,version:after.version});
+  }
+  await tx.auditEvent.create({data:{userId:actorId,action:"museum.plan.suggested",entityType:"MuseumSuggestedPlan",entityId:museumId,
+   afterJson:{version:plan.version,guideVersion:suggestionGuide.version,arrangements,areas,upperDisplayPreference:"Primary and secondary saints near the top; shelves remain undecided."}}});
+ });
+}
+export async function clearVrindavanSuggestedPlan(raw:unknown,actorId:string){
+ const input=z.object({revision:z.string().regex(/^[a-f0-9]{64}$/),suggestionId:z.string().min(1).max(200)}).parse(raw);
+ return transaction(async tx=>{
+  const data=await context(tx);
+  if(input.revision!==data.revision)throw new MuseumConflict("The plan changed. Reload before clearing suggestions.");
+  const event=await latestSuggestion(tx);
+  if(event?.id!==input.suggestionId||event.action!=="museum.plan.suggested")throw new MuseumConflict("This suggested plan is no longer active. Reload to see the current plan.");
+  const undo=suggestionUndo.parse(event.afterJson);
+  let cleared=0;
+  for(const item of undo.arrangements){
+   const current=await tx.museumArrangement.findUnique({where:{museumId_placementId:{museumId,placementId:item.id}}});
+   const row=data.working.placements.find(p=>p.id===item.id);
+   // Never undo a later edit, changed proposal, or implementation—even if its location matches.
+   if(!row?.arrangement||current?.version!==item.version||current.status!=="Planned"||row.arrangement.proposalRevision!==item.proposalRevision)continue;
+   await writeMuseumArrangement(tx,museumId,row,arrangementInput.parse({placementId:row.id,revision:row.arrangement.revision,familyKey:row.familyId||"",status:"Proposed"}),actorId);
+   cleared++;
+  }
+  for(const item of undo.areas){
+   const area=await tx.museumSectionSpacePlan.findUnique({where:{museumId_section:{museumId,section:item.section}}});
+   if(area?.version!==item.version)continue;
+   // Keep an area if a curator retained/changed a destination inside it.
+   const ids=data.working.placements.filter(p=>p.section===item.section).map(p=>p.id);
+   const retained=await tx.museumArrangement.count({where:{museumId,placementId:{in:ids},status:{in:["Planned","Implemented"]}}});
+   if(retained)continue;
+   await tx.museumSectionSpacePlan.update({where:{museumId_section:{museumId,section:item.section}},data:{vitrines:[],version:{increment:1},updatedById:actorId}});
+  }
+  await tx.auditEvent.create({data:{userId:actorId,action:"museum.plan.suggestion.cleared",entityType:"MuseumSuggestedPlan",entityId:museumId,afterJson:{suggestionId:event.id,cleared,preserved:undo.arrangements.length-cleared}}});
  });
 }
