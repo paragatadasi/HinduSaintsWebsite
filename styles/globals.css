@@ -11555,3 +11555,7 @@ select:not([multiple]) {
  .museum-planning-stats > div { padding-right:var(--space-3); }
  .museum-planner .museum-planning-card button,.museum-planner .museum-planning-card summary { min-height:var(--height-tree-touch); }
 }
+
+.museum-planner__region { display:grid; gap:var(--space-2); padding-bottom:var(--space-4); }
+.museum-planner__region h4 { color:var(--color-cream); font-family:var(--font-serif); font-size:var(--font-size-museum-nav-heading); margin:var(--space-2) 0; }
+.museum-planner__region h4 span { color:var(--color-gold); }

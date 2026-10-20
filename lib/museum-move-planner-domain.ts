@@ -1,3 +1,4 @@
+import {vrindavanRegionGroups} from "./vrindavan-lineage-catalogue";
 import {z} from "zod";
 import type {MuseumSourceInventoryEntry} from "./museum-source-inventory-domain";
 
@@ -102,3 +103,13 @@ export function plannerAreasNeedingReview(areas:PlannerArea[],rows:PlannerRow[])
 }
 
 export function plannerMoveNeedsAttention(row:PlannerRow){return !!row.arrangementNeedsReview||row.status==="Planned"||isFlexible(row);}
+
+export function plannerRegionGroups(sections:{name:string}[],rows:Pick<PlannerRow,"section">[]){
+ const counts=new Map<string,number>();for(const row of rows)counts.set(row.section,(counts.get(row.section)??0)+1);
+ const active=sections.filter(section=>counts.has(section.name)).map(section=>({...section,count:counts.get(section.name)!}));
+ const groups=vrindavanRegionGroups(active).map(group=>({title:group.title,badge:group.badge,sections:group.sections})).filter(group=>group.sections.length);
+ const grouped=new Set(groups.flatMap(group=>group.sections));
+ const other=active.filter(section=>!grouped.has(section.name)).map(section=>section.name);
+ if(other.length)groups.push({title:"Other proposals",badge:"",sections:other});
+ return groups;
+}

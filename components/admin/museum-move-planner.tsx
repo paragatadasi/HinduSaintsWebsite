@@ -4,7 +4,7 @@ import {useRouter} from "next/navigation";
 import Link from "next/link";
 import type {Route} from "next";
 import {Camera,GripVertical,Users,X} from "lucide-react";
-import {plannerCounts,plannerFamilies,plannerAreasNeedingReview,isFlexible,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
+import {plannerCounts,plannerFamilies,plannerRegionGroups,plannerAreasNeedingReview,isFlexible,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
 import {assignMovePlanAction,saveSectionAreaAction,saveFlexiblePlanAction} from "@/app/vrindavanadmin/plan/actions";
 import {MuseumSectionDragButton} from "./museum-section-drag-button";
 import {MuseumRoomPlan} from "./museum-room-plan";
@@ -26,8 +26,9 @@ function familyDestinationSummary(rows:PlannerRow[]){
 function destinationLabel(row:PlannerRow){return isFlexible(row)?`Within vitrines ${row.flexibleVitrines!.join(", ")} · exact spot flexible`:row.status==="Proposed"?"No destination yet":`${row.status} · Vitrine ${row.vitrine}${row.shelf?` / ${row.shelf}`:""}`;}
 export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boolean}){
  const router=useRouter();
+ const regionGroups=plannerRegionGroups(data.sections,data.rows);
  const [view,setView]=useState<"plan"|"checklist">("plan");
- const [section,setSection]=useState(data.sections.find(s=>data.rows.some(row=>row.section===s.name))?.name||"");
+ const [section,setSection]=useState(regionGroups[0]?.sections[0]||"");
  const [areaDrafts,setAreaDrafts]=useState<Record<string,string[]>>({});
  const [draftVersions,setDraftVersions]=useState<Record<string,number>>({});
  const [tree,setTree]=useState<{key:string;name:string}|null>(null);
@@ -91,13 +92,13 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
     <div><h2>Arrange sections in the room</h2><p>Drag a section onto each of its vitrines, or select a section and tap the vitrines. Save its area when ready.</p></div>
     <div className="museum-planner__room-workspace">
      <div className="admin-stack"><label className="admin-field">Find a section<input type="search" value={sectionFilter} onChange={event=>setSectionFilter(event.target.value)}/></label>
-      <div className="museum-planner__palette" aria-label="Museum sections">{data.sections.filter(item=>item.name.toLowerCase().includes(sectionFilter.toLowerCase())&&data.rows.some(row=>row.section===item.name)).map(item=>{
+      <div className="museum-planner__palette" aria-label="Museum sections in visitor order">{regionGroups.map(group=>({...group,sections:group.sections.filter(name=>`${group.title} ${name}`.toLowerCase().includes(sectionFilter.toLowerCase()))})).filter(group=>group.sections.length).map(group=><section key={group.title} className="museum-planner__region"><h4><span>{group.badge}</span> {group.title}</h4>{group.sections.map(name=>data.sections.find(item=>item.name===name)!).map(item=>{
        const numbers=areaDrafts[item.name]??data.areas.find(a=>a.section===item.name)?.vitrines??[];
        const dirty=JSON.stringify([...numbers].sort())!==JSON.stringify([...(data.areas.find(a=>a.section===item.name)?.vitrines??[])].sort());
        return <MuseumSectionDragButton key={item.name} section={item.name} selected={section===item.name} disabled={pending} canDrag={canEdit&&!pending&&item.name!=="Needs section proposal"} onSelect={()=>chooseSection(item.name)} onDrop={(number,name)=>editArea(number,name,true)} onHover={setDropVitrine}>
         <strong><GripVertical aria-hidden="true"/> {item.name}</strong><span>{data.rows.filter(row=>row.section===item.name).length} {data.rows.filter(row=>row.section===item.name).length===1?"saint":"saints"} · {numbers.length?`Vitrines ${numbers.join(", ")}`:"No area yet"}{dirty?" · Unsaved":""}</span>
        </MuseumSectionDragButton>;
-      })}</div>
+      })}</section>)}</div>
      </div>
      <div className="admin-stack"><h3>{section}</h3><MuseumRoomPlan dropVitrine={dropVitrine} multiple selected={area} labels={labels} counts={counts} disabled={!canEdit||pending} onSelect={number=>editArea(number)} onDropSection={(number,name)=>editArea(number,name,true)}/>
       <p className="muted">Highlighted vitrines form this section’s area. Shared vitrines are allowed. The drawing does not estimate capacity.</p>
