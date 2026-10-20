@@ -1093,3 +1093,5 @@ Move-day confirmation for a flexible saint requires the latest planner revision,
 ### Earlier section areas after catalogue updates
 
 The move planner retains saved section areas as read-only review references when their section no longer has current saints, or a flexible member's proposal revision/section no longer matches. The expandable “Earlier saved areas to review” panel shows the old section and vitrines, with affected current saints where available. It never remaps section names, copies flexible membership into a new proposal, or changes physical locations. Exact Planned/Implemented destinations supersede older flexible memberships and do not trigger member-level warnings. Curators explicitly save areas and destinations against the current catalogue.
+
+Planner section names, slugs, and ordering follow `readVrindavanWorkingData().sections`, including future regional catalogue changes. Existing editorial summaries are reused only when the section name matches; new sections receive no invented summary. The active palette shows sections with current saint proposals, while earlier saved areas remain in the review panel.
