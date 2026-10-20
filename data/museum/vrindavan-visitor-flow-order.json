@@ -1,0 +1,475 @@
+{
+  "version": "vrindavan-visitor-flow-order-2026-10-20-v1",
+  "date": "2026-10-20",
+  "status": "Curatorial sequencing proposal; no data or physical changes applied",
+  "scope": "Region/subsection display order only. All20 existing main subsections retained under unchanged parents. Existing section IDs, family membership, tiers and saved vitrine plans remain unchanged.",
+  "catalogueSource": "C:\\Users\\aporu\\.codex\\worktrees\\museum-update-workflow\\Saints Website\\lib\\vrindavan-lineage-catalogue.ts",
+  "catalogueSha256": "22a23b2905d2a47c6baf586d45572e0783c897115abf0d3c2510328e0f0eb198",
+  "regionOrder": [
+    {
+      "regionName": "Sikh Gurus & Udasin",
+      "regionSlug": "sikh-gurus-and-udasin",
+      "visitorOrder": 1,
+      "bookChapterReference": 2,
+      "subsections": [
+        {
+          "name": "Sikh & Punjab Traditions",
+          "existingSlug": "sikh-and-punjab-traditions",
+          "subsectionOrder": 1,
+          "globalVisitorOrder": 1,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Udasin Saints",
+          "existingSlug": "udasin-saints",
+          "subsectionOrder": 2,
+          "globalVisitorOrder": 2,
+          "retainSectionIdentity": true
+        }
+      ]
+    },
+    {
+      "regionName": "Himalaya & the North",
+      "regionSlug": "himalaya-and-the-north",
+      "visitorOrder": 2,
+      "bookChapterReference": 1,
+      "subsections": [
+        {
+          "name": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+          "existingSlug": "rishikesh-haridwar-and-himalayan-monastic-lineages",
+          "subsectionOrder": 1,
+          "globalVisitorOrder": 3,
+          "retainSectionIdentity": true
+        }
+      ]
+    },
+    {
+      "regionName": "Braj & the Ganga",
+      "regionSlug": "braj-and-the-ganga",
+      "visitorOrder": 3,
+      "bookChapterReference": 3,
+      "subsections": [
+        {
+          "name": "Kashi & Ascetic Lineages",
+          "existingSlug": "kashi-and-ascetic-lineages",
+          "subsectionOrder": 1,
+          "globalVisitorOrder": 4,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Rama & Avadh",
+          "existingSlug": "rama-and-avadh",
+          "subsectionOrder": 2,
+          "globalVisitorOrder": 5,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Ramanandi",
+          "existingSlug": "ramanandi",
+          "subsectionOrder": 3,
+          "globalVisitorOrder": 6,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Braj & Krishna Bhakti",
+          "existingSlug": "braj-and-krishna-bhakti",
+          "subsectionOrder": 4,
+          "globalVisitorOrder": 7,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Gaudiya Vaishnava",
+          "existingSlug": "gaudiya-vaishnava",
+          "subsectionOrder": 5,
+          "globalVisitorOrder": 8,
+          "retainSectionIdentity": true
+        }
+      ]
+    },
+    {
+      "regionName": "Bengal, Odisha & the East",
+      "regionSlug": "bengal-odisha-and-the-east",
+      "visitorOrder": 4,
+      "bookChapterReference": 4,
+      "subsections": [
+        {
+          "name": "Jagannath-Puri & Odisha",
+          "existingSlug": "jagannath-puri-and-odisha",
+          "subsectionOrder": 1,
+          "globalVisitorOrder": 9,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Buddhist Saints",
+          "existingSlug": "buddhist-saints",
+          "subsectionOrder": 2,
+          "globalVisitorOrder": 10,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Bengal Shakta, Baul & Modern Saints",
+          "existingSlug": "bengal-shakta-baul-and-modern-saints",
+          "subsectionOrder": 3,
+          "globalVisitorOrder": 11,
+          "retainSectionIdentity": true
+        }
+      ]
+    },
+    {
+      "regionName": "The South",
+      "regionSlug": "the-south",
+      "visitorOrder": 5,
+      "bookChapterReference": 6,
+      "subsections": [
+        {
+          "name": "Sri Vaishnava & South Indian Vaishnava Traditions",
+          "existingSlug": "sri-vaishnava-and-south-indian-vaishnava-traditions",
+          "subsectionOrder": 1,
+          "globalVisitorOrder": 12,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Shaiva Siddhanta & Tamil Traditions",
+          "existingSlug": "shaiva-siddhanta-and-tamil-traditions",
+          "subsectionOrder": 2,
+          "globalVisitorOrder": 13,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Ramana & Arunachala",
+          "existingSlug": "ramana-and-arunachala",
+          "subsectionOrder": 3,
+          "globalVisitorOrder": 14,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Andhra Avadhuta & Datta-Advaita Lineages",
+          "existingSlug": "andhra-avadhuta-and-datta-advaita-lineages",
+          "subsectionOrder": 4,
+          "globalVisitorOrder": 15,
+          "retainSectionIdentity": true
+        }
+      ]
+    },
+    {
+      "regionName": "Maharashtra & the West",
+      "regionSlug": "maharashtra-and-the-west",
+      "visitorOrder": 6,
+      "bookChapterReference": 5,
+      "subsections": [
+        {
+          "name": "Datta Tradition",
+          "existingSlug": "datta-tradition",
+          "subsectionOrder": 1,
+          "globalVisitorOrder": 16,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Maharashtra Guru Lineages",
+          "existingSlug": "maharashtra-guru-lineages",
+          "subsectionOrder": 2,
+          "globalVisitorOrder": 17,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Varkari",
+          "existingSlug": "varkari",
+          "subsectionOrder": 3,
+          "globalVisitorOrder": 18,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Girnar & Nath Traditions",
+          "existingSlug": "girnar-and-nath-traditions",
+          "subsectionOrder": 4,
+          "globalVisitorOrder": 19,
+          "retainSectionIdentity": true
+        },
+        {
+          "name": "Gujarat & Swaminarayan Traditions",
+          "existingSlug": "gujarat-and-swaminarayan-traditions",
+          "subsectionOrder": 5,
+          "globalVisitorOrder": 20,
+          "retainSectionIdentity": true
+        }
+      ]
+    }
+  ],
+  "adjacencies": [
+    {
+      "fromSubsection": "Sikh & Punjab Traditions",
+      "toSubsection": "Udasin Saints",
+      "evidenceClass": "documented_historical_connection",
+      "rationale": "Sri Chand provides an historical connection; retain separate tradition identities.",
+      "sourceKeys": [
+        "udasi"
+      ]
+    },
+    {
+      "fromSubsection": "Udasin Saints",
+      "toSubsection": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "evidenceClass": "editorial_geography_and_ascetic_comparison",
+      "rationale": "Move from Punjab/Udasin context into Himalayan monastic settings. This is a layout choice, not one common lineage.",
+      "sourceKeys": [
+        "udasi"
+      ]
+    },
+    {
+      "fromSubsection": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "toSubsection": "Kashi & Ascetic Lineages",
+      "evidenceClass": "editorial_sacred_geography",
+      "rationale": "Follow the upper-Ganga to Kashi ascetic corridor; keep Kriya together where reviewed and cross-reference its eastern locations.",
+      "sourceKeys": [
+        "kriya"
+      ]
+    },
+    {
+      "fromSubsection": "Kashi & Ascetic Lineages",
+      "toSubsection": "Rama & Avadh",
+      "evidenceClass": "editorial_devotional_geography",
+      "rationale": "Tulsidas/Kashi and Rama/Avadh provide visitor-facing connections without redrawing family memberships.",
+      "sourceKeys": []
+    },
+    {
+      "fromSubsection": "Rama & Avadh",
+      "toSubsection": "Ramanandi",
+      "evidenceClass": "editorial_tradition_context",
+      "rationale": "Rama devotion leads into the existing Ramanandi subsection; sharing devotion does not establish a genealogical link.",
+      "sourceKeys": []
+    },
+    {
+      "fromSubsection": "Ramanandi",
+      "toSubsection": "Braj & Krishna Bhakti",
+      "evidenceClass": "editorial_bridge_using_existing_proposal",
+      "rationale": "Use already reviewed Ramanandi/Braj bridge displays, including the existing Mira/Ravidas/Kabir curatorial story where present and supported; do not create new relationships.",
+      "sourceKeys": []
+    },
+    {
+      "fromSubsection": "Braj & Krishna Bhakti",
+      "toSubsection": "Gaudiya Vaishnava",
+      "evidenceClass": "documented_shared_sacred_geography",
+      "rationale": "Goswami/Vrindavan anchors move naturally from Braj’s wider devotional landscape into Gaudiya history.",
+      "sourceKeys": [
+        "chaitanya"
+      ]
+    },
+    {
+      "fromSubsection": "Gaudiya Vaishnava",
+      "toSubsection": "Jagannath-Puri & Odisha",
+      "evidenceClass": "documented_biographical_and_traditional_connection",
+      "rationale": "Priority boundary: Chaitanya and the Vrindavan Goswamis connect Braj, Bengal and Puri. Put the Gaudiya subsection at Braj’s exit and the Puri subsection at the East entrance.",
+      "sourceKeys": [
+        "chaitanya",
+        "southtour"
+      ]
+    },
+    {
+      "fromSubsection": "Jagannath-Puri & Odisha",
+      "toSubsection": "Buddhist Saints",
+      "evidenceClass": "editorial_regional_transition",
+      "rationale": "A distinct eastern/Bihar contemplative interval; do not imply Buddhism descends from Jagannath devotion.",
+      "sourceKeys": []
+    },
+    {
+      "fromSubsection": "Buddhist Saints",
+      "toSubsection": "Bengal Shakta, Baul & Modern Saints",
+      "evidenceClass": "editorial_regional_and_comparative_transition",
+      "rationale": "Broaden from Bihar/eastern sacred geography into Bengal’s varied traditions; keep identities explicit.",
+      "sourceKeys": []
+    },
+    {
+      "fromSubsection": "Bengal Shakta, Baul & Modern Saints",
+      "toSubsection": "Sri Vaishnava & South Indian Vaishnava Traditions",
+      "evidenceClass": "editorial_transition_with_cross_references",
+      "rationale": "Weakest boundary: use a concise East–South orientation panel. Puri–Srirangam/Gopala Bhatta and modern Bengal–Puducherry are cross-references to named displays, not a claimed Bengal-Shakta-to-Sri-Vaishnava lineage.",
+      "sourceKeys": [
+        "southtour",
+        "aurobindo",
+        "dilip"
+      ]
+    },
+    {
+      "fromSubsection": "Sri Vaishnava & South Indian Vaishnava Traditions",
+      "toSubsection": "Shaiva Siddhanta & Tamil Traditions",
+      "evidenceClass": "editorial_regional_comparison",
+      "rationale": "Introduce southern Vaishnava and Shaiva sacred landscapes side by side without collapsing their philosophies.",
+      "sourceKeys": []
+    },
+    {
+      "fromSubsection": "Shaiva Siddhanta & Tamil Traditions",
+      "toSubsection": "Ramana & Arunachala",
+      "evidenceClass": "sacred_geography_and_comparative_teaching",
+      "rationale": "Arunachala provides a Tamil/Shaiva sacred-landscape connection; Ramana’s Advaita identity remains distinct.",
+      "sourceKeys": [
+        "ramana"
+      ]
+    },
+    {
+      "fromSubsection": "Ramana & Arunachala",
+      "toSubsection": "Andhra Avadhuta & Datta-Advaita Lineages",
+      "evidenceClass": "editorial_contemplative_and_regional_transition",
+      "rationale": "Move from a named contemplative centre into neighbouring southern avadhuta/Advaita contexts. No universal guru chain is asserted.",
+      "sourceKeys": []
+    },
+    {
+      "fromSubsection": "Andhra Avadhuta & Datta-Advaita Lineages",
+      "toSubsection": "Datta Tradition",
+      "evidenceClass": "documented_traditional_cross_regional_connection",
+      "rationale": "Priority boundary: southern Datta/avadhuta contexts meet western Datta displays. Narasimha Saraswati’s Karnataka/Maharashtra landscape provides a named story. Keep independent families distinct.",
+      "sourceKeys": [
+        "datta",
+        "ganagapur"
+      ]
+    },
+    {
+      "fromSubsection": "Datta Tradition",
+      "toSubsection": "Maharashtra Guru Lineages",
+      "evidenceClass": "editorial_regional_network",
+      "rationale": "Continue into Maharashtra’s connected guru settings; use only reviewed named relationships, not an all-saints Datta umbrella.",
+      "sourceKeys": []
+    },
+    {
+      "fromSubsection": "Maharashtra Guru Lineages",
+      "toSubsection": "Varkari",
+      "evidenceClass": "editorial_regional_devotional_transition",
+      "rationale": "Move from guru-centred networks into Pandharpur/Vitthal devotional communities while retaining their separate groupings.",
+      "sourceKeys": []
+    },
+    {
+      "fromSubsection": "Varkari",
+      "toSubsection": "Girnar & Nath Traditions",
+      "evidenceClass": "documented_traditional_interpretive_bridge",
+      "rationale": "Dnyaneshwar/Nivrittinath’s Nath context offers a specific bridge toward Nath material; no claim that all Varkaris are Nath or directly connected to all Girnar saints.",
+      "sourceKeys": [
+        "nath"
+      ]
+    },
+    {
+      "fromSubsection": "Girnar & Nath Traditions",
+      "toSubsection": "Gujarat & Swaminarayan Traditions",
+      "evidenceClass": "editorial_geographic_transition",
+      "rationale": "Finish the western route in Gujarat’s institutional/devotional landscape. This is geography and visitor flow, not a single lineage.",
+      "sourceKeys": [
+        "gujarat"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "key": "udasi",
+      "title": "The Encyclopaedia of Sikhism: Udasi",
+      "url": "https://www.thesikhencyclopedia.com/udasi/",
+      "kind": "Scholarly reference",
+      "supports": "Sri Chand and the historical Udasi connection to the Sikh setting; adjacency does not equate traditions."
+    },
+    {
+      "key": "kriya",
+      "title": "Self-Realization Fellowship: lineage and leadership",
+      "url": "https://yogananda.org/lineage-and-leadership",
+      "kind": "Lineage institution",
+      "supports": "Babaji–Lahiri–Yukteswar–Yogananda links explain the cross-regional Kriya thread; no new membership certified."
+    },
+    {
+      "key": "chaitanya",
+      "title": "ISKCON News: Gopala Bhatta Goswami’s gifts",
+      "url": "https://iskconnews.org/hi/gopala-bhatta-goswamis-gifts-to-the-vaishnava-community/",
+      "kind": "Lineage institution",
+      "supports": "Gopala Bhatta’s Vrindavan life and Chaitanya/Srirangam/Puri connections support a Vaishnava bridge."
+    },
+    {
+      "key": "southtour",
+      "title": "Sri Chaitanya Mahaprabhu, lineage biography",
+      "url": "https://www.srilapurimaharaja.org/books/Sri_Chaitanya_Mahaprabhu.pdf",
+      "kind": "Lineage account of traditional biography",
+      "supports": "Chaitanya’s Srirangam stay and Gopala Bhatta provide a Puri–South cross-reference. Does not make every southern tradition Gaudiya."
+    },
+    {
+      "key": "aurobindo",
+      "title": "Sri Aurobindo Ashram: The Mother",
+      "url": "https://www.sriaurobindoashram.org/mother/",
+      "kind": "Responsible institution",
+      "supports": "Mother and Sri Aurobindo’s common ashram context; modern eastern/southern mission cross-reference, not a Sri Vaishnava lineage claim."
+    },
+    {
+      "key": "dilip",
+      "title": "Mother India: correspondence with Dilip Kumar Roy",
+      "url": "https://www.sriaurobindoashram.org/journals/motherindia/issues/2022/4._Mother_India_April_2022.pdf",
+      "kind": "Ashram publication of primary correspondence",
+      "supports": "Dilip Kumar Roy’s Sri Aurobindo/Mother context supports the modern East–Puducherry cross-reference; not new display membership."
+    },
+    {
+      "key": "ramana",
+      "title": "Sri Ramanasramam: Life of Sri Ramana",
+      "url": "https://www.archive.arunachala.org/ramana/life/",
+      "kind": "Responsible institution",
+      "supports": "Arunachala and Advaita context; Shaiva/Tamil-to-Arunachala adjacency is comparative/sacred-geographic, not a teacher succession."
+    },
+    {
+      "key": "datta",
+      "title": "Vasudevanand Saraswati biography: householder period",
+      "url": "https://www.shrivasudevanandsaraswati.com/English/Householder.html",
+      "kind": "Lineage biography",
+      "supports": "Narasimha Saraswati and Narsobawadi context supports Datta’s western life-geography connections."
+    },
+    {
+      "key": "ganagapur",
+      "title": "Ganagapur Datta temple: festivals",
+      "url": "https://www.ganagapurdatta.com/festivals-at-ganagapur.html",
+      "kind": "Temple account of tradition",
+      "supports": "Narasimha Saraswati, Ganagapur and Srisailam traditional associations support a Karnataka–Maharashtra Datta bridge; no inferred links for every avadhuta."
+    },
+    {
+      "key": "nath",
+      "title": "Marathi Vishwakosh: Dnyaneshwari",
+      "url": "https://vishwakosh.marathi.gov.in/20299/",
+      "kind": "State scholarly encyclopaedia",
+      "supports": "Nivritti–Dnyaneshwar’s Nath context supports an interpretive Varkari-to-Nath bridge; it does not prove a relation to each Girnar saint."
+    },
+    {
+      "key": "gujarat",
+      "title": "BAPS: Gadhada",
+      "url": "https://www.baps.org/gadhada",
+      "kind": "Responsible institution",
+      "supports": "Gadhada/Gujarat institutional anchor; geographic adjacency to Girnar is editorial, not an initiatory relationship."
+    }
+  ],
+  "parentReassignmentRecommendations": [],
+  "conditionalContext": {
+    "name": "Bhakti Marga & Global Context",
+    "outsideSixRegions": true,
+    "placement": "Optional entrance orientation or exit reflection if confirmed holdings justify it; not a compulsory seventh numbered region.",
+    "subsections": [
+      {
+        "name": "Bhakti Marga & Mauritius Lineage",
+        "existingSlug": "bhakti-marga-and-mauritius-lineage",
+        "order": 1
+      },
+      {
+        "name": "Global & Diaspora Lineages",
+        "existingSlug": "global-and-diaspora-lineages",
+        "order": 2
+      }
+    ]
+  },
+  "operationalQueues": [
+    "Needs Research",
+    "Needs section proposal",
+    "Unresolved identity/family cases"
+  ],
+  "tradeoffs": [
+    "Physical visitor order differs from book chapter order: Sikh before Himalaya, South before West. Preserve book chapter reference separately; do not repurpose stable IDs or present visitor positions as book chapter numbers.",
+    "East-to-South is an editorial hinge, not a direct lineage chain; cross-reference named Puri/Srirangam and modern Puducherry stories.",
+    "Buddhist Saints is kept as a distinct subsection within the East; its neighbours are regional/comparative, not a genealogy.",
+    "Kriya’s Himalayan anchor cannot also place all its eastern contexts directly adjacent in a strict line; use one cross-reference panel without splitting the reviewed family.",
+    "A single line cannot keep Datta simultaneously adjacent to both southern Andhra and Girnar; place it at the South–West boundary and cross-reference Girnar internally.",
+    "If entry/exit location demands it, reverse the complete region and within-region sequence together to preserve every adjacency. No proposed cabinet moves are inferred.",
+    "If book chapter order must remain the physical order, retain it as an alternative but accept weaker East–West and West–South boundary links; the preferred order optimizes the stated Gaudiya and southern-Datta bridges."
+  ],
+  "implementationNotes": [
+    "Use visitorOrder and subsectionOrder as museum-local ordering metadata only. Do not overwrite section identity or regional parent assignments.",
+    "Filter absent/empty subsections for a given museum’s visitor display, preserving catalogue entries and their order for later imports. Confirm zero counts against current inventory.",
+    "Curator navigation can retain empty valid categories when useful; unresolved operational queues remain separately accessible, outside the visitor story.",
+    "Do not infer new family membership, confirm suggested families or change existing vitrine/shelf plans from this ordering file.",
+    "No floor plan or cabinet capacities supplied; this is a content sequence, not a tested physical circulation plan."
+  ]
+}
