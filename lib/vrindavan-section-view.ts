@@ -3,7 +3,13 @@ import type {MuseumSaintPlacement} from "./museum-proposals";
 type Audit=Awaited<ReturnType<typeof readVrindavanSectionProposalAudit>>;
 // Reviewed user decisions, keyed to confirmed canonical identities. Keep explicit
 // until the audited correction batch is applied; never infer a move from source geography.
-const gaudiyaDecisions=new Set(["cmq4hd38u00j6dp045lim8o3r","cmq4hd4fj00rhdp04eehy5l4a"]);
+const gaudiyaDecisions=new Set([
+ "cmq4hd38u00j6dp045lim8o3r","cmq4hd4fj00rhdp04eehy5l4a",
+ // Published canonical records selected during identity reconciliation. Carry the
+ // same reviewed decision forward; no new family membership or history is inferred.
+ "cms0w7dkf01qa07qikm4pbwjx", // Sri Madhu Pandit Goswami
+ "cms0w7edy02th07qi7gwufj69" // Sri Haridas Thakur
+]);
 export function vrindavanSectionView(audit:Pick<Audit,"rows"|"sectionCatalogue">) {
  const sections=[...audit.sectionCatalogue,{name:"Needs section proposal",slug:"needs-section-proposal"}];
  const placements:MuseumSaintPlacement[]=audit.rows.flatMap(saint=>{
