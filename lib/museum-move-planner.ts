@@ -7,7 +7,7 @@ import {buildMuseumView} from "./museum-proposals";
 import {MuseumConflict} from "./museum-service";
 import {writeMuseumArrangement} from "./museum-arrangement";
 import {arrangementInput} from "./museum-arrangement-domain";
-import {photoSaintsInVitrines,plannerPhotoInput,plannerAssignmentInput,vitrineNumber,type PlannerData} from "./museum-move-planner-domain";
+import {photoSaintsInVitrines,plannerPhotoInput,plannerAssignmentInput,plannerCompletionInput,plannerConfirmation,vitrineNumber,type PlannerData,type PlannerConfirmation} from "./museum-move-planner-domain";
 
 const museumId="museum-vrindavan";
 // Read/mutation callers enforce access_museum + full catalog, and manage_museum for writes.
@@ -21,10 +21,17 @@ async function context(tx:Prisma.TransactionClient){
   inventory:inventory.entries.map(e=>[e.observationId,e.saintIds,e.displayText,e.positionText]),
   setup:setup?.version??0
  })).digest("hex");
- return {working,inventory,setup,revision};
+ const confirmations=await tx.auditEvent.findMany({where:{entityType:"MuseumArrangement",action:{in:["museum.arrangement.updated","museum.move.confirmed"]},
+  entityId:{in:working.placements.map(p=>p.id)},afterJson:{path:["status"],equals:"Implemented"}},orderBy:[{createdAt:"desc"},{id:"desc"}],select:{entityId:true,afterJson:true}});
+ const lastConfirmed=new Map<string,PlannerConfirmation>();
+ for(const event of confirmations){
+  const confirmation=plannerConfirmation(event.afterJson),previous=lastConfirmed.get(event.entityId);
+  if(confirmation&&(!previous||confirmation.confirmedAt>previous.confirmedAt||(confirmation.confirmedAt===previous.confirmedAt&&confirmation.note&&!previous.note)))lastConfirmed.set(event.entityId,confirmation);
+ }
+ return {working,inventory,setup,revision,lastConfirmed};
 }
 export async function readVrindavanMovePlanner(tx:Prisma.TransactionClient=db):Promise<PlannerData>{
- const {working,inventory,setup,revision}=await context(tx);
+ const {working,inventory,setup,revision,lastConfirmed}=await context(tx);
  const photos=new Set(setup?.photoSaintIds??[]);
  const view=buildMuseumView(working.placements);
  return {revision,photoVitrines:setup?.photoVitrines??[],photosConfigured:!!setup,
@@ -35,6 +42,7 @@ export async function readVrindavanMovePlanner(tx:Prisma.TransactionClient=db):P
   rows:working.placements.flatMap(p=>p.saintId&&p.arrangement?[{
    id:p.id,saintId:p.saintId,name:p.name,section:p.section,family:p.groupLabel||"",tier:p.tier,needsResearch:p.needsResearch,
    photo:photos.has(p.saintId),status:p.arrangement.status,vitrine:p.arrangement.vitrine,shelf:p.arrangement.shelf,
+   revision:p.arrangement.revision,lastConfirmed:lastConfirmed.get(p.id)??null,
    sources:(inventory.entriesBySaintId.get(p.saintId)??[]).map(e=>({id:e.observationId,
     vitrine:e.displayText,shelf:e.positionText,relics:e.relicDescription,quantity:e.quantityText,shared:e.saintIds.length>1}))
   }]:[])};
@@ -52,7 +60,7 @@ export async function saveVrindavanPhotoSetup(raw:unknown,actorId:string){
   const data=await context(tx);
   if(input.revision!==data.revision)throw new MuseumConflict("The inventory or plan changed. Reload before updating photo saints.");
   // Use current curator-confirmed location where available; otherwise retain source locations.
-  const implemented=new Map(data.working.placements.filter(p=>p.arrangement?.status==="Implemented").map(p=>[p.saintId!,p.arrangement!.vitrine]));
+  const implemented=new Map(data.working.placements.flatMap(p=>{const confirmed=data.lastConfirmed.get(p.id);return confirmed?[[p.saintId!,confirmed.vitrine] as const]:[];}));
   const locations=data.inventory.entries.flatMap(e=>e.saintIds.map(id=>({saintIds:[id],displayText:implemented.has(id)?implemented.get(id)!:e.displayText})));
   const values={photoVitrines:[...new Set(input.vitrines)].sort((a,b)=>Number(a)-Number(b)),photoSaintIds:photoSaintsInVitrines(locations,input.vitrines),updatedById:actorId};
   const after=await tx.museumPlanningSetup.upsert({where:{museumId},create:{museumId,...values},update:{...values,version:{increment:1}}});
@@ -74,5 +82,21 @@ export async function assignVrindavanPlan(raw:unknown,actorId:string){
    await writeMuseumArrangement(tx,museumId,row!,inputRow,actorId);
   }
   return ids.length;
+ });
+}
+export async function completeVrindavanPlan(raw:unknown,actorId:string){
+ const input=plannerCompletionInput.parse(raw);
+ return transaction(async tx=>{
+  const data=await context(tx),row=data.working.placements.find(p=>p.id===input.placementId);
+  if(!row?.saintId||!row.arrangement||row.arrangement.revision!==input.revision||row.arrangement.status!=="Planned"||vitrineNumber(row.arrangement.vitrine)===null)
+   throw new MuseumConflict("This destination or proposal changed. Reload and review the current plan before confirming.");
+  const entries=data.inventory.entriesBySaintId.get(row.saintId)??[];
+  const expected=entries.map(entry=>entry.observationId).sort(),checked=[...new Set(input.checkedSourceIds)].sort();
+  if(JSON.stringify(expected)!==JSON.stringify(checked))throw new MuseumConflict("Check every listed inventory entry before confirming this saint's arrangement.");
+  await writeMuseumArrangement(tx,museumId,row,arrangementInput.parse({placementId:row.id,revision:row.arrangement.revision,familyKey:row.familyId,
+   status:"Implemented",vitrine:row.arrangement.vitrine,shelf:input.shelf,physicalConfirmation:"yes",inventoryAcknowledged:"yes"}),actorId);
+  await tx.auditEvent.create({data:{userId:actorId,action:"museum.move.confirmed",entityType:"MuseumArrangement",entityId:row.id,
+   afterJson:{museumId,status:"Implemented",confirmedAt:new Date().toISOString(),saintId:row.saintId,proposalRevision:row.arrangement.proposalRevision,vitrine:row.arrangement.vitrine,shelf:input.shelf,note:input.note,
+    checkedSourceIds:expected,inventoryCompleteness:"unverified",scope:"saint_arrangement"}}});
  });
 }

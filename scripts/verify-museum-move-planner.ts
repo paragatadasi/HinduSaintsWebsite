@@ -6,7 +6,7 @@ const target=new URL(url);
 if(!["localhost","127.0.0.1"].includes(target.hostname)||target.pathname!=="/museum_planner_test")throw Error("Refusing non-test database");
 process.env.DATABASE_URL=url;
 const {db}=await import("../lib/db");
-const {readVrindavanMovePlanner,saveVrindavanPhotoSetup,assignVrindavanPlan}=await import("../lib/museum-move-planner");
+const {readVrindavanMovePlanner,saveVrindavanPhotoSetup,assignVrindavanPlan,completeVrindavanPlan}=await import("../lib/museum-move-planner");
 const suffix=Date.now(),hash=randomBytes(32).toString("hex");
 try{
  const actor=await db.user.create({data:{email:`planner-${suffix}@example.invalid`,roles:["curator"],active:true}});
@@ -38,9 +38,25 @@ try{
  data=await readVrindavanMovePlanner();
  assert.equal(data.rows.every(r=>r.vitrine==="24"&&r.shelf==="A"&&r.status==="Planned"),true);
  assert.equal(data.rows.filter(r=>r.photo).length,2);
+ const planned=data.rows.find(r=>r.id===first.id)!;
+ const completion={placementId:planned.id,revision:planned.revision,checkedSourceIds:planned.sources.map(s=>s.id),shelf:"B",note:"Checked physical arrangement",physicalConfirmation:true,inventoryAcknowledged:true};
+ await assert.rejects(completeVrindavanPlan({...completion,checkedSourceIds:[]},actor.id),/every listed/);
+ await completeVrindavanPlan(completion,actor.id);
+ await assert.rejects(completeVrindavanPlan(completion,actor.id),/changed/);
+ data=await readVrindavanMovePlanner();
+ assert.equal(data.rows.find(r=>r.id===first.id)!.lastConfirmed!.vitrine,"24");
+ assert.equal(data.rows.find(r=>r.id===first.id)!.lastConfirmed!.shelf,"B");
+ await assignVrindavanPlan({revision:data.revision,placementIds:[first.id],vitrine:"11",replaceExisting:true},actor.id);
+ data=await readVrindavanMovePlanner();
+ assert.equal(data.rows.find(r=>r.id===first.id)!.status,"Planned");
+ assert.equal(data.rows.find(r=>r.id===first.id)!.lastConfirmed!.vitrine,"24");
+ await saveVrindavanPhotoSetup({revision:data.revision,vitrines:["24"]},actor.id);
+ data=await readVrindavanMovePlanner();
+ assert.equal(data.rows.filter(r=>r.photo).length,1);
+ assert.equal(data.rows.find(r=>r.id===first.id)!.photo,true);
  assert.deepEqual(await db.museumCollectionImport.findMany({where:{sourceKey:{startsWith:`vrindavan-workbook:${hash}`}}}),before);
  assert.equal(await db.museumItemPlacement.count(),placements);
  assert.equal(await db.museumArrangement.count({where:{museumId:"museum-spn",placementId:{in:data.rows.map(r=>r.id)}}}),0);
  assert.equal(await db.auditEvent.count({where:{action:"museum.planning.photos.saved"}})>0,true);
- console.log("PASS photo snapshot, partial and whole-section planning, optional shelf/zero, stale/replacement/foreign-ID protection, atomic failure, audits and no source/SPN/physical writes");
+ console.log("PASS photo snapshot, partial/whole planning, completion/replay/entry checks, confirmed location surviving replans, current-location photo setup, stale/foreign/atomic protection, audits and no source/SPN/physical writes");
 }finally{await db.$disconnect();}

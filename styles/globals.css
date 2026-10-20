@@ -11468,3 +11468,5 @@ select:not([multiple]) {
 .museum-planner .admin-field .museum-planner__member span { color:var(--color-text); font-size:var(--font-size-review-field); font-weight:normal; text-transform:none; }
 .museum-planner .admin-field input[type="checkbox"] { width:var(--space-4); height:var(--space-4); min-height:0; padding:0; }
 .museum-planner .admin-field legend { text-transform:none; }
+
+@media print { .museum-planner__completion { display:none!important; } }
