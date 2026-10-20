@@ -1,0 +1,58 @@
+import assert from "node:assert/strict";
+import {randomBytes} from "node:crypto";
+const url=process.env.MUSEUM_PLANNER_TEST_DATABASE_URL;
+if(!url)throw Error("Set disposable test database URL");
+const target=new URL(url);
+if(!["localhost","127.0.0.1"].includes(target.hostname)||target.pathname!=="/museum_planner_test")throw Error("Refusing non-test database");
+process.env.DATABASE_URL=url;
+const {db}=await import("../lib/db");
+const {readVrindavanMovePlanner,saveVrindavanSectionArea,assignVrindavanPlan,completeVrindavanPlan,previewVrindavanSuggestedPlan,applyVrindavanSuggestedPlan,clearVrindavanSuggestedPlan}=await import("../lib/museum-move-planner");
+const suffix=Date.now(),hash=randomBytes(32).toString("hex");
+try{
+ const actor=await db.user.create({data:{email:`suggestion-${suffix}@example.invalid`,roles:["curator"],active:true}});
+ await db.museum.upsert({where:{id:"museum-vrindavan"},create:{id:"museum-vrindavan",slug:"vrindavan",name:"Vrindavan"},update:{}});
+ const section=await db.museumSection.create({data:{name:`Suggestion fixture ${suffix}`,slug:`suggestion-${suffix}`,status:"published"}});
+ const saints:string[]=[];
+ for(let i=0;i<4;i++){
+  const saint=await db.saint.create({data:{slug:`suggestion-${suffix}-${i}`,displayName:`Suggestion ${i}`,canonicalName:`Suggestion ${i}`}});saints.push(saint.id);
+  await db.saintMuseumSection.create({data:{saintId:saint.id,museumSectionId:section.id,tier:"secondary",status:"published"}});
+  await db.museumCollectionImport.create({data:{museumId:"museum-vrindavan",sourceKey:`vrindavan-workbook:${hash}:Sheet1:${i+2}`,fingerprint:hash+i,status:"identity_linked",reviewedAt:new Date(),rawJson:{cells:[]},normalizedJson:{mappingVersion:"vrindavan-identity-v1",sourceName:"Fixture",sourceRow:i+2,name:saint.displayName,place:"",relic:"Cloth",quantity:"1",display:"3",position:"1.2",comments:"",warnings:[],saintIds:[saint.id],note:null}}});
+ }
+ let data=await readVrindavanMovePlanner();
+ const members=data.rows.filter(r=>saints.includes(r.saintId));
+ assert.equal(members.length,4);
+ assert.notEqual(members[0].section,"Needs section proposal");
+ await saveVrindavanSectionArea({revision:data.revision,section:members[0].section,areaVersion:data.areas.find(a=>a.section===members[0].section)?.version??0,vitrines:["6","7"]},actor.id);
+ data=await readVrindavanMovePlanner();
+ await assignVrindavanPlan({revision:data.revision,placementIds:[members[0].id],vitrine:"6"},actor.id);
+ const sourceBefore=await db.museumCollectionImport.findMany({where:{fingerprint:{startsWith:hash}}});
+ const physicalBefore=await db.museumItemPlacement.count();
+ const preview=await previewVrindavanSuggestedPlan();
+ assert.equal(preview.assignments.filter(a=>members.some(m=>m.id===a.id)).length,3);
+ assert.equal((await readVrindavanMovePlanner()).suggestionId,null);
+ await assert.rejects(applyVrindavanSuggestedPlan({revision:"a".repeat(64),version:preview.version},actor.id),/changed/);
+ await applyVrindavanSuggestedPlan({revision:preview.revision,version:preview.version},actor.id);
+ await assert.rejects(applyVrindavanSuggestedPlan({revision:preview.revision,version:preview.version},actor.id),/changed/);
+ data=await readVrindavanMovePlanner();
+ assert.ok(data.suggestionId);
+ const batch=data.suggestionId;
+ assert.equal(data.rows.find(r=>r.id===members[0].id)!.vitrine,"6");
+ await assignVrindavanPlan({revision:data.revision,placementIds:[members[1].id],vitrine:"8",replaceExisting:true},actor.id);
+ data=await readVrindavanMovePlanner();
+ const toComplete=data.rows.find(r=>r.id===members[2].id)!;
+ await completeVrindavanPlan({placementId:toComplete.id,revision:toComplete.revision,checkedSourceIds:toComplete.sources.map(s=>s.id),physicalConfirmation:true,inventoryAcknowledged:true,shelf:"1"},actor.id);
+ await assert.rejects(clearVrindavanSuggestedPlan({revision:data.revision,suggestionId:batch},actor.id),/changed/);
+ data=await readVrindavanMovePlanner();
+ await clearVrindavanSuggestedPlan({revision:data.revision,suggestionId:batch},actor.id);
+ data=await readVrindavanMovePlanner();
+ assert.equal(data.suggestionId,null);
+ assert.equal(data.rows.find(r=>r.id===members[0].id)!.status,"Planned");
+ assert.equal(data.rows.find(r=>r.id===members[1].id)!.vitrine,"8");
+ assert.equal(data.rows.find(r=>r.id===members[2].id)!.status,"Implemented");
+ assert.equal(data.rows.find(r=>r.id===members[3].id)!.status,"Proposed");
+ assert.deepEqual(data.areas.find(a=>a.section===members[0].section)!.vitrines,["6","7"]);
+ await assert.rejects(clearVrindavanSuggestedPlan({revision:data.revision,suggestionId:batch},actor.id),/no longer active/);
+ assert.deepEqual(await db.museumCollectionImport.findMany({where:{fingerprint:{startsWith:hash}}}),sourceBefore);
+ assert.equal(await db.museumItemPlacement.count(),physicalBefore);
+ console.log("PASS preview read-only, server-generated apply, stale/replay guards, pre-existing area/plan preservation, edited and implemented destinations survive clear, unchanged suggestions cleared, source/physical records unchanged.");
+}finally{await db.$disconnect();}

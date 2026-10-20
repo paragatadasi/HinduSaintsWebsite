@@ -1,0 +1,1662 @@
+{
+  "version": "vrindavan-numbered-area-flow-2026-10-20-v1",
+  "status": "Reviewable content plan; no database or physical changes applied",
+  "scope": "Existing canonical-linked Vrindavan saints only. Section area preferences, not capacity-certified placements.",
+  "sourceSnapshot": "C:\\Users\\aporu\\.codex\\visualizations\\2026\\09\\30\\01a0f25f-fc6a-7fd2-a3f8-cd78f289cc5e\\vrindavan-reconciliation-2026-10-20\\verified-current-proposals-and-families-after-413-links.json",
+  "sourceSha256": "6f3f58be6c135759d09f8cfb69e0f2b5e63452ea21b7fc81ed94234445ef68f8",
+  "snapshotSummary": {
+    "uniqueConfirmedSaints": 400,
+    "confirmedSourceRows": 413,
+    "excludedPendingSourceRows": 36,
+    "confirmedIdentityAlerts": 0,
+    "curatorProtectedSaints": 0,
+    "currentDisplayFamilies": 53,
+    "familiesWithReviewedMembers": 0
+  },
+  "liveBaseline": {
+    "source": "C:\\Users\\aporu\\.codex\\visualizations\\2026\\09\\30\\01a0f25f-fc6a-7fd2-a3f8-cd78f289cc5e\\vrindavan-reconciliation-2026-10-20\\live-planner-before-suggestion.txt",
+    "reportedBy": "Nadi: Museum Data Integration",
+    "saints": 400,
+    "unplanned": 400,
+    "photoData": "pending/unknown",
+    "savedSectionAreas": [
+      {
+        "section": "Gaudiya Vaishnava",
+        "vitrines": [
+          "17",
+          "18",
+          "19"
+        ],
+        "preserve": true
+      }
+    ],
+    "measuredCapacities": null
+  },
+  "sectionAreas": [
+    {
+      "section": "Sikh & Punjab Traditions",
+      "sectionSlug": "sikh-and-punjab-traditions",
+      "regionalParent": "Sikh Gurus & Udasin",
+      "snapshotSaintCount": 1,
+      "preferredVitrines": [
+        "6"
+      ],
+      "fallbackVitrines": [],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Share a small, separately labelled Sikh/Udasin area near the northern orientation; shared case does not merge traditions.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 1,
+          "frameEntries": 0,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 1,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 0,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 1,
+          "secondary": 0,
+          "tertiary": 0
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Udasin Saints",
+      "sectionSlug": "udasin-saints",
+      "regionalParent": "Sikh Gurus & Udasin",
+      "snapshotSaintCount": 1,
+      "preferredVitrines": [
+        "6"
+      ],
+      "fallbackVitrines": [],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Keep the retained Udasi subsection distinct beside Sikh material; no universal shared lineage asserted.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 1,
+          "frameEntries": 1,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 0,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 1,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 0,
+          "secondary": 1,
+          "tertiary": 0
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "sectionSlug": "rishikesh-haridwar-and-himalayan-monastic-lineages",
+      "regionalParent": "Himalaya & the North",
+      "snapshotSaintCount": 37,
+      "preferredVitrines": [
+        "4",
+        "3"
+      ],
+      "fallbackVitrines": [],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Island upper-right northern monastic area; keep named Kriya and Sivananda contexts distinct within it.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 38,
+          "frameEntries": 18,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 2,
+          "unframedEntries": 18,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 20,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 6,
+          "secondary": 10,
+          "tertiary": 21
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Kashi & Ascetic Lineages",
+      "sectionSlug": "kashi-and-ascetic-lineages",
+      "regionalParent": "Braj & the Ganga",
+      "snapshotSaintCount": 23,
+      "preferredVitrines": [
+        "5"
+      ],
+      "fallbackVitrines": [],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Upper island-right Kashi hinge toward Himalayan material at 4 and the broader Ganga story; do not force genealogical links.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 25,
+          "frameEntries": 2,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 23,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 2,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 1,
+          "secondary": 3,
+          "tertiary": 19
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Rama & Avadh",
+      "sectionSlug": "rama-and-avadh",
+      "regionalParent": "Braj & the Ganga",
+      "snapshotSaintCount": 10,
+      "preferredVitrines": [
+        "14"
+      ],
+      "fallbackVitrines": [
+        "15"
+      ],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Lower left devotional lead-in to Braj at15; share14 with Ramanandi displays, retaining both section identities.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 10,
+          "frameEntries": 2,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 8,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 2,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 0,
+          "secondary": 0,
+          "tertiary": 10
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Ramanandi",
+      "sectionSlug": "ramanandi",
+      "regionalParent": "Braj & the Ganga",
+      "snapshotSaintCount": 5,
+      "preferredVitrines": [
+        "14"
+      ],
+      "fallbackVitrines": [
+        "15"
+      ],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Same area as Rama/Avadh where appropriate, with separate labels and reviewed family blocks; avoid treating all Rama devotion as Ramanandi.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 5,
+          "frameEntries": 1,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 4,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 1,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 1,
+          "secondary": 2,
+          "tertiary": 2
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Braj & Krishna Bhakti",
+      "sectionSlug": "braj-and-krishna-bhakti",
+      "regionalParent": "Braj & the Ganga",
+      "snapshotSaintCount": 37,
+      "preferredVitrines": [
+        "15",
+        "16"
+      ],
+      "fallbackVitrines": [
+        "14"
+      ],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Left outer Braj lead-in to Gaudiya17; keep Nimbarka and Haridas contexts legible as distinct cohorts.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 41,
+          "frameEntries": 15,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 1,
+          "unframedEntries": 24,
+          "unknownEntries": 1,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 16,
+          "reviewEntries": 1,
+          "discrepancyEntries": 3
+        },
+        "tiers": {
+          "primary": 1,
+          "secondary": 1,
+          "tertiary": 35
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Gaudiya Vaishnava",
+      "sectionSlug": "gaudiya-vaishnava",
+      "regionalParent": "Braj & the Ganga",
+      "snapshotSaintCount": 67,
+      "preferredVitrines": [
+        "19",
+        "18",
+        "17"
+      ],
+      "fallbackVitrines": [],
+      "active": true,
+      "savedAreaPinned": true,
+      "rationale": "Preserve live saved reservation17–19. Put the Puri-facing narrative at19 where compatible with existing family/group placement.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 69,
+          "frameEntries": 15,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 2,
+          "unframedEntries": 50,
+          "unknownEntries": 2,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 17,
+          "reviewEntries": 2,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 8,
+          "secondary": 16,
+          "tertiary": 43
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Jagannath-Puri & Odisha",
+      "sectionSlug": "jagannath-puri-and-odisha",
+      "regionalParent": "Bengal, Odisha & the East",
+      "snapshotSaintCount": 17,
+      "preferredVitrines": [
+        "20"
+      ],
+      "fallbackVitrines": [],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Faces Gaudiya19 across the left aisle: priority Chaitanya/Braj–Puri connection, without merging Gaudiya and all Odisha traditions.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 17,
+          "frameEntries": 5,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 12,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 5,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 2,
+          "secondary": 1,
+          "tertiary": 14
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Buddhist Saints",
+      "sectionSlug": "buddhist-saints",
+      "regionalParent": "Bengal, Odisha & the East",
+      "snapshotSaintCount": 0,
+      "preferredVitrines": [],
+      "fallbackVitrines": [],
+      "active": false,
+      "savedAreaPinned": false,
+      "rationale": "No members in this snapshot. Preserve valid catalogue entry; reserve no vitrine until holdings are confirmed."
+    },
+    {
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "sectionSlug": "bengal-shakta-baul-and-modern-saints",
+      "regionalParent": "Bengal, Odisha & the East",
+      "snapshotSaintCount": 22,
+      "preferredVitrines": [
+        "21",
+        "22"
+      ],
+      "fallbackVitrines": [
+        "20"
+      ],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Eastern continuation beside Puri20. Do not merge Shakta, Baul, Advaita and modern institutional cohorts.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 22,
+          "frameEntries": 7,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 15,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 7,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 1,
+          "secondary": 7,
+          "tertiary": 14
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Sri Vaishnava & South Indian Vaishnava Traditions",
+      "sectionSlug": "sri-vaishnava-and-south-indian-vaishnava-traditions",
+      "regionalParent": "The South",
+      "snapshotSaintCount": 12,
+      "preferredVitrines": [
+        "23"
+      ],
+      "fallbackVitrines": [
+        "24"
+      ],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Lower island-left southern Vaishnava context; retain institution/cohort distinctions, including saints whose lives were outside the South.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 12,
+          "frameEntries": 0,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 1,
+          "unframedEntries": 11,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 1,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 0,
+          "secondary": 0,
+          "tertiary": 12
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Shaiva Siddhanta & Tamil Traditions",
+      "sectionSlug": "shaiva-siddhanta-and-tamil-traditions",
+      "regionalParent": "The South",
+      "snapshotSaintCount": 16,
+      "preferredVitrines": [
+        "24"
+      ],
+      "fallbackVitrines": [
+        "23"
+      ],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Southern Tamil/Shaiva area beside23, with any cross-references around the island end subject to actual walking access.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 16,
+          "frameEntries": 10,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 6,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 10,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 2,
+          "secondary": 0,
+          "tertiary": 14
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Ramana & Arunachala",
+      "sectionSlug": "ramana-and-arunachala",
+      "regionalParent": "The South",
+      "snapshotSaintCount": 0,
+      "preferredVitrines": [],
+      "fallbackVitrines": [],
+      "active": false,
+      "savedAreaPinned": false,
+      "rationale": "No current members. Do not assign a case or transfer unrelated saints to fill it; future candidate near Tamil24 requires curator review."
+    },
+    {
+      "section": "Andhra Avadhuta & Datta-Advaita Lineages",
+      "sectionSlug": "andhra-avadhuta-and-datta-advaita-lineages",
+      "regionalParent": "The South",
+      "snapshotSaintCount": 4,
+      "preferredVitrines": [
+        "2",
+        "1"
+      ],
+      "fallbackVitrines": [],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Lower island-right southern Datta-facing area. Faces western Datta11/12 across the right aisle; exclude wrong-context Chidananda until reviewed.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 4,
+          "frameEntries": 2,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 2,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 2,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 0,
+          "secondary": 2,
+          "tertiary": 2
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Datta Tradition",
+      "sectionSlug": "datta-tradition",
+      "regionalParent": "Maharashtra & the West",
+      "snapshotSaintCount": 21,
+      "preferredVitrines": [
+        "11",
+        "12"
+      ],
+      "fallbackVitrines": [],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Western Datta faces southern Datta2/1, satisfying the second priority boundary while preserving distinct families.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 21,
+          "frameEntries": 7,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 14,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 7,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 3,
+          "secondary": 9,
+          "tertiary": 9
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Maharashtra Guru Lineages",
+      "sectionSlug": "maharashtra-guru-lineages",
+      "regionalParent": "Maharashtra & the West",
+      "snapshotSaintCount": 37,
+      "preferredVitrines": [
+        "10",
+        "9"
+      ],
+      "fallbackVitrines": [
+        "11"
+      ],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Maharashtra guru context between western Datta11 and Varkari9. Use a two-vitrine candidate area for37 people/37 source entries, rather than implying that all fit10. Shared9 requires joint load review.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 37,
+          "frameEntries": 12,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 3,
+          "unframedEntries": 22,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 15,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 9,
+          "secondary": 11,
+          "tertiary": 17
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Varkari",
+      "sectionSlug": "varkari",
+      "regionalParent": "Maharashtra & the West",
+      "snapshotSaintCount": 12,
+      "preferredVitrines": [
+        "9",
+        "8"
+      ],
+      "fallbackVitrines": [
+        "10"
+      ],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Neighbour Maharashtra10 and Nath/Girnar8. Dnyaneshwar’s specific Nath context supports a cross-reference, not a merged Varkari/Nath family. Shared8/9 require joint load review.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 12,
+          "frameEntries": 5,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 7,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 5,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 4,
+          "secondary": 1,
+          "tertiary": 7
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Girnar & Nath Traditions",
+      "sectionSlug": "girnar-and-nath-traditions",
+      "regionalParent": "Maharashtra & the West",
+      "snapshotSaintCount": 21,
+      "preferredVitrines": [
+        "8",
+        "7"
+      ],
+      "fallbackVitrines": [],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Western continuation between Varkari9 and Gujarat7; preserve Nath, Juna Akhara and other contexts as distinct display cohorts. Shared7/8 allow demand balancing without inventing a capacity.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 24,
+          "frameEntries": 5,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 19,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 5,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 1,
+          "secondary": 6,
+          "tertiary": 14
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Gujarat & Swaminarayan Traditions",
+      "sectionSlug": "gujarat-and-swaminarayan-traditions",
+      "regionalParent": "Maharashtra & the West",
+      "snapshotSaintCount": 8,
+      "preferredVitrines": [
+        "7"
+      ],
+      "fallbackVitrines": [
+        "8"
+      ],
+      "active": true,
+      "savedAreaPinned": false,
+      "rationale": "Upper-right western terminus beside Girnar8; geographical adjacency, not a common initiating lineage.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 8,
+          "frameEntries": 3,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 5,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 3,
+          "reviewEntries": 0,
+          "discrepancyEntries": 1
+        },
+        "tiers": {
+          "primary": 1,
+          "secondary": 1,
+          "tertiary": 6
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    },
+    {
+      "section": "Bhakti Marga & Mauritius Lineage",
+      "sectionSlug": "bhakti-marga-and-mauritius-lineage",
+      "regionalParent": "Bhakti Marga & Global Context",
+      "snapshotSaintCount": 0,
+      "preferredVitrines": [],
+      "fallbackVitrines": [],
+      "active": false,
+      "conditionalContext": true,
+      "savedAreaPinned": false,
+      "rationale": "No canonical-linked members in this snapshot. Mata Bindu’s Bhakti Marga role is human-confirmed, but her missing canonical identity must not be created or substituted by this plan."
+    },
+    {
+      "section": "Global & Diaspora Lineages",
+      "sectionSlug": "global-and-diaspora-lineages",
+      "regionalParent": "Bhakti Marga & Global Context",
+      "snapshotSaintCount": 1,
+      "preferredVitrines": [
+        "13"
+      ],
+      "fallbackVitrines": [],
+      "active": true,
+      "conditionalContext": true,
+      "savedAreaPinned": false,
+      "rationale": "Conditional entrance/exit reflection for the one confirmed Ghana-linked holding. If curator does not use it, leave13 uncommitted; do not fill it with anonymous holds.",
+      "observedDemand": {
+        "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+        "packaging": {
+          "sourceEntries": 1,
+          "frameEntries": 1,
+          "smallFrameEntries": 0,
+          "mixedFrameEntries": 0,
+          "unframedEntries": 0,
+          "unknownEntries": 0,
+          "conflictingEntries": 0,
+          "reportedFrameEntries": 1,
+          "reviewEntries": 0,
+          "discrepancyEntries": 0
+        },
+        "tiers": {
+          "primary": 0,
+          "secondary": 0,
+          "tertiary": 1
+        },
+        "note": "Source entries, not verified numbers of frames, objects or required slots. Shared observations must be deduplicated at runtime."
+      }
+    }
+  ],
+  "priorityBoundaries": [
+    {
+      "sections": [
+        "Gaudiya Vaishnava",
+        "Jagannath-Puri & Odisha"
+      ],
+      "facingVitrines": [
+        [
+          "19",
+          "20"
+        ]
+      ],
+      "sourceKeys": [
+        "chaitanya",
+        "southtour"
+      ]
+    },
+    {
+      "sections": [
+        "Andhra Avadhuta & Datta-Advaita Lineages",
+        "Datta Tradition"
+      ],
+      "facingVitrines": [
+        [
+          "2",
+          "11"
+        ],
+        [
+          "1",
+          "12"
+        ]
+      ],
+      "sourceKeys": [
+        "datta",
+        "ganagapur"
+      ]
+    }
+  ],
+  "roomGeometry": {
+    "source": "Existing museum-room CSS schematic from curator sketch; not to scale",
+    "outerReadingOrder": [
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19"
+    ],
+    "islandLeftTopDown": [
+      "20",
+      "21",
+      "22",
+      "23",
+      "24"
+    ],
+    "islandRightTopDown": [
+      "5",
+      "4",
+      "3",
+      "2",
+      "1"
+    ],
+    "leftAisleFacingPairs": [
+      [
+        "19",
+        "20"
+      ],
+      [
+        "18",
+        "21"
+      ],
+      [
+        "17",
+        "22"
+      ],
+      [
+        "16",
+        "23"
+      ],
+      [
+        "15",
+        "24"
+      ]
+    ],
+    "rightAisleFacingPairs": [
+      [
+        "5",
+        "8"
+      ],
+      [
+        "4",
+        "9"
+      ],
+      [
+        "3",
+        "10"
+      ],
+      [
+        "2",
+        "11"
+      ],
+      [
+        "1",
+        "12"
+      ]
+    ],
+    "notAsserted": [
+      "Measured aisle width",
+      "Cabinet capacity",
+      "Access around island bottom",
+      "12-to13 direct walking adjacency",
+      "Top shelf numbers or dimensions"
+    ]
+  },
+  "constraints": [
+    {
+      "strength": "hard",
+      "key": "preserve_saved_and_implemented",
+      "rule": "Preserve all live saved section areas, exact/flexible destinations, implemented placements and curator pins. Gaudiya17–19 is explicitly pinned. Newer live state always supersedes this snapshot."
+    },
+    {
+      "strength": "hard",
+      "key": "exclude_temple",
+      "rule": "Vitrine0 is temple context; never choose it automatically."
+    },
+    {
+      "strength": "hard",
+      "key": "preserve_source_and_identity",
+      "rule": "No identity links, names, section parents, canonical/public traditions or family memberships change. Keep repeated observations and shared objects distinguishable."
+    },
+    {
+      "strength": "hard",
+      "key": "respect_human_review",
+      "rule": "A current human-reviewed must-stay-together or separation decision overrides every suggested group and all spatial/tier preferences. No such reviewed family membership exists in this baseline; do not invent it."
+    },
+    {
+      "strength": "hard",
+      "key": "hold_unresolved",
+      "rule": "Do not auto-place Needs Research, Needs section proposal, unlinked observations, or the explicit context holds. Do not create identities to fill sections."
+    },
+    {
+      "strength": "strong_preference",
+      "key": "keep_related_before_tiers",
+      "rule": "Keep evidence-supported named relationships and provisional display cohorts together where practical; do not scatter a family merely to fill an upper-shelf primary area. Suggested family labels are not genealogical evidence."
+    },
+    {
+      "strength": "strong_preference",
+      "key": "priority_boundaries",
+      "rule": "Prefer Gaudiya19 facing Puri20 and southernDatta2/1 facing westernDatta11/12. These are schematic facing relationships, not measured distances or compulsory cabinet moves."
+    },
+    {
+      "strength": "soft",
+      "key": "tradition_affinity",
+      "rule": "Use precise existing primary-tradition tags as within-section co-location hints. Do not form transitive union groups across display families, sections or broad Vaishnava/Advaita/Avadhuta names."
+    },
+    {
+      "strength": "soft",
+      "key": "upper_display_preference",
+      "rule": "After keeping related units together, prefer physical upper display areas for current Featured/Primary and Secondary saints. This is a note, not a numbered shelf assignment; available upper space and tall/frame fit are unknown."
+    },
+    {
+      "strength": "soft",
+      "key": "load_balance",
+      "rule": "Balance observed frame/box/unknown packaging proxies across a section area after relationship preferences. Counts are demand proxies, never measured capacities. Do not equate photo availability with frames."
+    },
+    {
+      "strength": "hard",
+      "key": "no_auto_completion",
+      "rule": "Suggestion is a reviewable draft; applying an area or destination must not assert physical movement or mark Implemented."
+    },
+    {
+      "strength": "hard",
+      "key": "scoped_clear",
+      "rule": "Clear/undo only the unchanged records created by that suggestion; protect pre-existing, subsequently edited and physically confirmed records. Use provenance plus revisions, not a broad reset."
+    }
+  ],
+  "contextHolds": [
+    {
+      "saintId": "cms0w7g5k052y07qigeldl38i",
+      "name": "Sri Sri Hanuman Das Babaji",
+      "reason": "Suggested Kriya family conflicts with Ramanandi primary affiliation and Vrindavan alias; exclude from automated family/cohort allocation pending curator context review."
+    },
+    {
+      "saintId": "cms0w7cof00mc07qiem08e1er",
+      "name": "Sri Swami Chidananda Saraswati",
+      "reason": "Published identity verified as Sivananda/Rishikesh; current inherited Andhra context is wrong. Keep identity, hold automatic placement pending explicit museum-local context repair.",
+      "sourceKeys": [
+        "dls"
+      ]
+    },
+    {
+      "saintId": "cms0w7ef602v107qiji3vl0qo",
+      "name": "Sri Ganapathi Sachchidananda Swamiji",
+      "reason": "Current Bengal section conflicts with Mysore/Datta institutional context. Review placement context; do not rewrite canonical tradition, family or section from this planning suggestion.",
+      "sourceKeys": [
+        "mysore"
+      ]
+    }
+  ],
+  "affiliationCohorts": [
+    {
+      "section": "Gaudiya Vaishnava",
+      "traditionId": "cmq5kprkz000ce2p3rw2s3997",
+      "traditionName": "Gaudiya Vaishnava",
+      "members": [
+        {
+          "saintId": "cms0w7c5g000n07qi3gj4kw02",
+          "name": "Sri Srimad Bhakti Vaibhav Puri Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7cdh008j07qi1bj66ukn",
+          "name": "Sri Harendranath Mukarji",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7cfj00av07qitjtadoue",
+          "name": "Sri Advaita Babaji Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7cgw00ck07qiyhdhooin",
+          "name": "Sri Sri Nityaleela Prabistha Bhaktivijay Sagar Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7cnn00la07qiw5wujiam",
+          "name": "Sri Srimad Bhakti Vedanta Narayan Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7cuw00up07qim6gz8ray",
+          "name": "Parivrajak Acharyabarya Jagadguru Sri Srimad Bhakti Saura Bhaktisara Goswami",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7cw800w707qip4vr4swx",
+          "name": "Bhaktisiddhanta Sarasvati Thakura Goswami",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7d17011z07qiwewg7t11",
+          "name": "Mahant Sri Bhakticharandas Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7ea902op07qiwwj5suix",
+          "name": "Sri Sri Amaresh Kumar Ganguly",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7ec902ra07qi5mzq7svj",
+          "name": "Sri Sarvabhauma Bhattacharya",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7edy02th07qi7gwufj69",
+          "name": "Sri Haridas Thakur",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7elh033907qiub5841j0",
+          "name": "Sri Bhakti Pradeep Tirtha Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7emr034x07qiktuqh7ve",
+          "name": "Sri Srila Bhaktalok Paramahamsa Dev Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7ew903hq07qist3cfvi3",
+          "name": "Sri Srimat Bhakti Pramod Paryajak Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7f8403xd07qin696rwb5",
+          "name": "Sri Chaitanya Mahaprabhu",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7fnh04gy07qitnrp1c2u",
+          "name": "Sri 108 Sri Sripad Srila Bhakti Dayita Madhav Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7ft404np07qi7drlsnb7",
+          "name": "Sri Srimad Bhakti Bhichar Yayavar Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7fvo04qs07qi5l3znh4c",
+          "name": "Sri Gaura Kishor Das Babaji",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7g5c052m07qid9g47f5p",
+          "name": "Sri Sri 108 Chakradhar Das Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7g6b053x07qi1mlbtbt6",
+          "name": "Sri Bhakti Sri Rupesh Bhagavat Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7gls05n307qi5yfv4cyi",
+          "name": "Sri Sripad Bimala Charandas",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7gn605or07qiqqkmapkt",
+          "name": "Om Vishnupad Tridandi Swami 108 Sri Srimat Bhakti Sravan Tirtha Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7gxy062007qioyp38v29",
+          "name": "Sri Baya Baba (Sri Srimad 108 Sachinandan Das Baba)",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7gyt062z07qirs9cmb3e",
+          "name": "Sri Srimad Bhakti Saranga Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7hah06gi07qil5pafm2a",
+          "name": "Sri Tridandi Swami Srimad Bhakti Pramod Puri Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7hsz072j07qi6mubq683",
+          "name": "Sri Achyutananda Das Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7hx2077907qiql8e3nfe",
+          "name": "Sri Sri 108 Mahant Lakshman Das Ji",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7i0o07bk07qirgyejijk",
+          "name": "Sri Jagannath Das Babaji",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7i5k07gu07qi673y4253",
+          "name": "Sri Balabhadra Das Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7i8807jk07qi6c6frsms",
+          "name": "Sri Srila Srimad Bhakti Kamal Madhusudan Goswami Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7i8r07k607qib72u99nr",
+          "name": "Sri Mahanambrata Brahmachari",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7i8y07kc07qi4j1cuqny",
+          "name": "Sri Srimat Govardhandas Babaji",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7iml07z807qib4t9h1q3",
+          "name": "Sri Chaitanya Charan Das",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7iuf087j07qicygi4d23",
+          "name": "Sri Bhakti Prajnana Keshav Goswami",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7jhv08vg07qiepmx1gni",
+          "name": "Sri Srimad Van Vihari Das Babaji Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7jnz091s07qiven2pcq1",
+          "name": "Sri Sri Nigmanand Goswami",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7jxx09cf07qij6u82qxo",
+          "name": "Sri Aoudolom Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7k1p09g407qirl5stxye",
+          "name": "Sri Jiva Goswami",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7k7209lj07qipmi0fkp4",
+          "name": "Sri Vaishnav Charana Das Babaji Panchatirtha",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7k7b09lr07qiqrj5bzra",
+          "name": "Sri Jiva Krishnadas Babaji",
+          "affiliationRecordStatus": "needs_review"
+        }
+      ],
+      "preference": "soft_same_or_neighbouring_vitrine",
+      "genealogicalClaim": false,
+      "approvalStatus": "Existing affiliation metadata, often draft/needs_review; not a newly reviewed family"
+    },
+    {
+      "section": "Girnar & Nath Traditions",
+      "traditionId": "cms0w7c7p002s07qihs12mdre",
+      "traditionName": "Juna Akhara",
+      "members": [
+        {
+          "saintId": "cms0w7c7l002l07qieffb7lzl",
+          "name": "Sri Panchand Giri",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7i5607gg07qivq1n2dr3",
+          "name": "Sri Sri 108 Sri Bhagat Giri Bacchu Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        }
+      ],
+      "preference": "soft_same_or_neighbouring_vitrine",
+      "genealogicalClaim": false,
+      "approvalStatus": "Existing affiliation metadata, often draft/needs_review; not a newly reviewed family"
+    },
+    {
+      "section": "Sri Vaishnava & South Indian Vaishnava Traditions",
+      "traditionId": "cmq5kpsh000fle2p35shvptk3",
+      "traditionName": "Sri Vaishnava",
+      "members": [
+        {
+          "saintId": "cms0w7ccd007507qill4qszb8",
+          "name": "Sri Sri 1008 Sri Balram Prapannacharya Rajguru",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7dpz01y107qi78iskrvb",
+          "name": "Sri Dasanand Swamiji Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7e3902fj07qiuix4q5ma",
+          "name": "Sri Sri Ranganarayana Jeeyar Swami",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7fqs04l407qi9rnsxgtd",
+          "name": "Sri Ajit Chakraboty",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7g1v04ya07qio6nsqbal",
+          "name": "Sri Srivan Satagopa Sri Veeraraghava Satagopa Yatheendra Mahadesikan",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7ghj05i007qi1uvgovry",
+          "name": "Sri Bhagawanand Raghuvir DasJi (Vanvasi Maharaj)",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7hd006ji07qiimsh3yod",
+          "name": "Sri Ram Bhuvan Prapannachari Tyagi",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7hi406pj07qihtkib91v",
+          "name": "Sri Vamsi Das Babaji",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7j9p08nt07qij7ebbfui",
+          "name": "Sri Sri 1008 Sri Ram Swarupa Das ji Paramahamsa",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7jot092n07qir4z17l80",
+          "name": "Sri Sri Sitaram Charan Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        }
+      ],
+      "preference": "soft_same_or_neighbouring_vitrine",
+      "genealogicalClaim": false,
+      "approvalStatus": "Existing affiliation metadata, often draft/needs_review; not a newly reviewed family"
+    },
+    {
+      "section": "Jagannath-Puri & Odisha",
+      "traditionId": "cmq5kprkz000ce2p3rw2s3997",
+      "traditionName": "Gaudiya Vaishnava",
+      "members": [
+        {
+          "saintId": "cms0w7cdr008r07qim1f6c46u",
+          "name": "Sri Vijay Krishna Goswami",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7i6l07hw07qi6pwtf2er",
+          "name": "Sri Sri Maa Moni",
+          "affiliationRecordStatus": "needs_review"
+        }
+      ],
+      "preference": "soft_same_or_neighbouring_vitrine",
+      "genealogicalClaim": false,
+      "approvalStatus": "Existing affiliation metadata, often draft/needs_review; not a newly reviewed family"
+    },
+    {
+      "section": "Braj & Krishna Bhakti",
+      "traditionId": "cms0w7cv900v307qittjsewcq",
+      "traditionName": "Nimbarka Sampradaya",
+      "members": [
+        {
+          "saintId": "cms0w7cv700uz07qic04ogje9",
+          "name": "Sri Kishori Babaji",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7esv03d907qihdz5iumz",
+          "name": "Pandit Sri Jagannath Das Bhaktmaliji Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7ilj07y307qi887qc5yr",
+          "name": "Sri Bhagawat Sharan Ji Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7k7j09m007qiciig72qd",
+          "name": "Sri Vikash Anand Goswami",
+          "affiliationRecordStatus": "needs_review"
+        }
+      ],
+      "preference": "soft_same_or_neighbouring_vitrine",
+      "genealogicalClaim": false,
+      "approvalStatus": "Existing affiliation metadata, often draft/needs_review; not a newly reviewed family"
+    },
+    {
+      "section": "Ramanandi",
+      "traditionId": "cmq5kpty901f5e2p367qjvhjr",
+      "traditionName": "Ramanandi Sampradaya",
+      "members": [
+        {
+          "saintId": "cms0w7cyt00zd07qir9mt8asy",
+          "name": "Sri Sudama Dasji Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7erf03bb07qicu8oznc6",
+          "name": "Sri Ananta Swami Sri Kanti Sharan Ji",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7htw073m07qiux1zhert",
+          "name": "Sri Goswami Tulsidas ji",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7k4c09iy07qilzqwqiq7",
+          "name": "Sri Awadh Bhushan Das Ji",
+          "affiliationRecordStatus": "needs_review"
+        }
+      ],
+      "preference": "soft_same_or_neighbouring_vitrine",
+      "genealogicalClaim": false,
+      "approvalStatus": "Existing affiliation metadata, often draft/needs_review; not a newly reviewed family"
+    },
+    {
+      "section": "Maharashtra Guru Lineages",
+      "traditionId": "cmsclku53001607t2ym3rs105",
+      "traditionName": "Sai Tradition",
+      "members": [
+        {
+          "saintId": "cms0w7d4t016107qijs960uxr",
+          "name": "Sri Bala Sai Baba",
+          "affiliationRecordStatus": "draft"
+        },
+        {
+          "saintId": "cms0w7dho01mk07qiobliagjd",
+          "name": "Sri Sathya Sai Baba",
+          "affiliationRecordStatus": "draft"
+        },
+        {
+          "saintId": "cms0w7ekk032007qil1n8orbp",
+          "name": "Sri Shirdi Sai Baba",
+          "affiliationRecordStatus": "draft"
+        }
+      ],
+      "preference": "soft_same_or_neighbouring_vitrine",
+      "genealogicalClaim": false,
+      "approvalStatus": "Existing affiliation metadata, often draft/needs_review; not a newly reviewed family"
+    },
+    {
+      "section": "Datta Tradition",
+      "traditionId": "cms0w7d08010x07qidoia4qfi",
+      "traditionName": "Datta Sampradaya",
+      "members": [
+        {
+          "saintId": "cms0w7ddu01ho07qi252m60nx",
+          "name": "Sri Krishna Saraswati Datt Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7do501vq07qifzgeltqf",
+          "name": "Swami Akkalkot Maharaj",
+          "affiliationRecordStatus": "needs_review"
+        }
+      ],
+      "preference": "soft_same_or_neighbouring_vitrine",
+      "genealogicalClaim": false,
+      "approvalStatus": "Existing affiliation metadata, often draft/needs_review; not a newly reviewed family"
+    },
+    {
+      "section": "Varkari",
+      "traditionId": "cms5c6210000007nhzd357yhp",
+      "traditionName": "Varkari",
+      "members": [
+        {
+          "saintId": "cms0w7dfm01jv07qi6o8h7rvx",
+          "name": "Sri Janabai",
+          "affiliationRecordStatus": "draft"
+        },
+        {
+          "saintId": "cms0w7j5y08jw07qibdjr75jv",
+          "name": "Sri Dnyaneshwar",
+          "affiliationRecordStatus": "draft"
+        }
+      ],
+      "preference": "soft_same_or_neighbouring_vitrine",
+      "genealogicalClaim": false,
+      "approvalStatus": "Existing affiliation metadata, often draft/needs_review; not a newly reviewed family"
+    },
+    {
+      "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "traditionId": "cmq5kpth4012xe2p3b1ce68cp",
+      "traditionName": "Kriya Yoga",
+      "members": [
+        {
+          "saintId": "cms0w7dkz01r407qiwpvn2sa1",
+          "name": "Sri Hariharananda Giri",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7fey046507qi4z4gcbti",
+          "name": "Sri Swami SriYukteshwar Giri",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7fnu04hc07qit9nwaudj",
+          "name": "Sri Durga Mata",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7fr004ld07qidykpxgm1",
+          "name": "Sri Paramahamsa Yogananda",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7ils07yc07qi08agtyap",
+          "name": "Sri Daya Mata",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7ir2084007qi1cuzm66g",
+          "name": "Sri Swami Kriyananda",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7jbl08pr07qi8w9i43tn",
+          "name": "Sri Motilal Mukhabadhyay, Mukarji",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7jew08si07qiu6p8lh4q",
+          "name": "Sri Lahiri Mahasaya",
+          "affiliationRecordStatus": "needs_review"
+        }
+      ],
+      "preference": "soft_same_or_neighbouring_vitrine",
+      "genealogicalClaim": false,
+      "approvalStatus": "Existing affiliation metadata, often draft/needs_review; not a newly reviewed family"
+    },
+    {
+      "section": "Gaudiya Vaishnava",
+      "traditionId": "cmq5kpt8y00x2e2p39os8vpcl",
+      "traditionName": "Nityananda Sampradaya",
+      "members": [
+        {
+          "saintId": "cms0w7e8j02me07qi40c6gafw",
+          "name": "Sri Praanagopal Goswami",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7exg03ja07qifulmk878",
+          "name": "Sri Srimad Kishorikishorananda Das Babaji Maharaj Goswami",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7f0103mn07qiabdbm67v",
+          "name": "Sri Lalita Sakhi Dasi",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7i2m07dv07qivwj7sm4k",
+          "name": "Sri Prabhupad Srimad Jay Nitai Das Babaji",
+          "affiliationRecordStatus": "needs_review"
+        },
+        {
+          "saintId": "cms0w7jdp08rb07qirlm1kiez",
+          "name": "Sri Priyanath Goswami",
+          "affiliationRecordStatus": "needs_review"
+        }
+      ],
+      "preference": "soft_same_or_neighbouring_vitrine",
+      "genealogicalClaim": false,
+      "approvalStatus": "Existing affiliation metadata, often draft/needs_review; not a newly reviewed family"
+    }
+  ],
+  "displayFamilies": {
+    "total": 53,
+    "reviewedMembershipFamilies": 0,
+    "status": "All current families are suggestions; preserve metadata and use only provisional display-cohort preference",
+    "specificCautions": [
+      "FAM-004 contains Ramanandi-affiliated Hanuman Das: no automatic Kriya-family union.",
+      "CUR-FAM-AUROBINDO-INTEGRAL-YOGA has Dilip Kumar Roy and Indira Devi only. Sources for Aurobindo/Mother do not independently verify all these member affiliations.",
+      "CUR-FAM-FIVE-PERFECT-MASTERS includes Meher Baba with four named masters and omits Narayan Maharaj. It is a suggested display cohort, not an authoritative five-master roster; do not repair it by automatic membership changes."
+    ]
+  },
+  "sources": [
+    {
+      "key": "udasi",
+      "title": "The Encyclopaedia of Sikhism: Udasi",
+      "url": "https://www.thesikhencyclopedia.com/udasi/",
+      "kind": "Scholarly reference",
+      "supports": "Sri Chand and the historical Udasi connection to the Sikh setting; adjacency does not equate traditions."
+    },
+    {
+      "key": "kriya",
+      "title": "Self-Realization Fellowship: lineage and leadership",
+      "url": "https://yogananda.org/lineage-and-leadership",
+      "kind": "Lineage institution",
+      "supports": "Babaji–Lahiri–Yukteswar–Yogananda links explain the cross-regional Kriya thread; no new membership certified."
+    },
+    {
+      "key": "chaitanya",
+      "title": "ISKCON News: Gopala Bhatta Goswami’s gifts",
+      "url": "https://iskconnews.org/hi/gopala-bhatta-goswamis-gifts-to-the-vaishnava-community/",
+      "kind": "Lineage institution",
+      "supports": "Gopala Bhatta’s Vrindavan life and Chaitanya/Srirangam/Puri connections support a Vaishnava bridge."
+    },
+    {
+      "key": "southtour",
+      "title": "Sri Chaitanya Mahaprabhu, lineage biography",
+      "url": "https://www.srilapurimaharaja.org/books/Sri_Chaitanya_Mahaprabhu.pdf",
+      "kind": "Lineage account of traditional biography",
+      "supports": "Chaitanya’s Srirangam stay and Gopala Bhatta provide a Puri–South cross-reference. Does not make every southern tradition Gaudiya."
+    },
+    {
+      "key": "aurobindo",
+      "title": "Sri Aurobindo Ashram: The Mother",
+      "url": "https://www.sriaurobindoashram.org/mother/",
+      "kind": "Responsible institution",
+      "supports": "Mother and Sri Aurobindo’s common ashram context; modern eastern/southern mission cross-reference, not a Sri Vaishnava lineage claim."
+    },
+    {
+      "key": "dilip",
+      "title": "Mother India: correspondence with Dilip Kumar Roy",
+      "url": "https://www.sriaurobindoashram.org/journals/motherindia/issues/2022/4._Mother_India_April_2022.pdf",
+      "kind": "Ashram publication of primary correspondence",
+      "supports": "Dilip Kumar Roy’s Sri Aurobindo/Mother context supports the modern East–Puducherry cross-reference; not new display membership."
+    },
+    {
+      "key": "ramana",
+      "title": "Sri Ramanasramam: Life of Sri Ramana",
+      "url": "https://www.archive.arunachala.org/ramana/life/",
+      "kind": "Responsible institution",
+      "supports": "Arunachala and Advaita context; Shaiva/Tamil-to-Arunachala adjacency is comparative/sacred-geographic, not a teacher succession."
+    },
+    {
+      "key": "datta",
+      "title": "Vasudevanand Saraswati biography: householder period",
+      "url": "https://www.shrivasudevanandsaraswati.com/English/Householder.html",
+      "kind": "Lineage biography",
+      "supports": "Narasimha Saraswati and Narsobawadi context supports Datta’s western life-geography connections."
+    },
+    {
+      "key": "ganagapur",
+      "title": "Ganagapur Datta temple: festivals",
+      "url": "https://www.ganagapurdatta.com/festivals-at-ganagapur.html",
+      "kind": "Temple account of tradition",
+      "supports": "Narasimha Saraswati, Ganagapur and Srisailam traditional associations support a Karnataka–Maharashtra Datta bridge; no inferred links for every avadhuta."
+    },
+    {
+      "key": "nath",
+      "title": "Marathi Vishwakosh: Dnyaneshwari",
+      "url": "https://vishwakosh.marathi.gov.in/20299/",
+      "kind": "State scholarly encyclopaedia",
+      "supports": "Nivritti–Dnyaneshwar’s Nath context supports an interpretive Varkari-to-Nath bridge; it does not prove a relation to each Girnar saint."
+    },
+    {
+      "key": "gujarat",
+      "title": "BAPS: Gadhada",
+      "url": "https://www.baps.org/gadhada",
+      "kind": "Responsible institution",
+      "supports": "Gadhada/Gujarat institutional anchor; geographic adjacency to Girnar is editorial, not an initiatory relationship."
+    },
+    {
+      "key": "dls",
+      "title": "Divine Life Society: This Monk From India",
+      "url": "https://www.dlshq.org/download/this-monk-from-india/",
+      "supports": "Named Chidananda–Sivananda institutional connection; not every suggested family member."
+    },
+    {
+      "key": "mysore",
+      "title": "Avadhoota Datta Peetham: Mysore temple and ashrama",
+      "url": "https://www.dattapeetham.org/ashrams/sri-datta-venkateswara-temple-mysore",
+      "supports": "Ganapathy Sachchidananda Mysore/Datta institutional context."
+    },
+    {
+      "key": "meher",
+      "title": "Meher Spiritual Center: Life and Work",
+      "url": "https://www.mehercenter.org/meher-baba/life-and-work/",
+      "supports": "Named Meher Baba–Babajan–Upasani biographical connections, not a certified five-master roster or a common initiation family."
+    }
+  ],
+  "openChecks": [
+    "Nadi packaging fixture received and incorporated as demand evidence; measured case/shelf/frame dimensions remain unknown.",
+    "Curator confirms upper-area fit, cabinet dimensions, safe handling, mounting and passage around island end.",
+    "Current live state and all pins must be read again before preview/apply.",
+    "Area13 remains optional; do not assign anonymous holds or infer currently absent Bhakti Marga holdings."
+  ],
+  "observedLoadEvidence": {
+    "path": "C:\\Users\\aporu\\.codex\\visualizations\\2026\\09\\30\\01a0f25f-fc6a-7fd2-a3f8-cd78f289cc5e\\vrindavan-reconciliation-2026-10-20\\vrindavan-observed-planning-baseline-v2.json",
+    "sha256": "5bb96f515d75b90549a343b6a6e6479857ad9cb87259c2b40bacd985b29494e5",
+    "summary": {
+      "sourceRows": 449,
+      "linkedRows": 413,
+      "unlinkedRows": 36,
+      "uniqueConfirmedSaints": 400,
+      "packaging": {
+        "sourceEntries": 449,
+        "frameEntries": 132,
+        "smallFrameEntries": 2,
+        "mixedFrameEntries": 13,
+        "unframedEntries": 297,
+        "unknownEntries": 5,
+        "conflictingEntries": 0,
+        "reportedFrameEntries": 147,
+        "reviewEntries": 5,
+        "discrepancyEntries": 4
+      },
+      "confirmedPackaging": {
+        "sourceEntries": 413,
+        "frameEntries": 125,
+        "smallFrameEntries": 2,
+        "mixedFrameEntries": 13,
+        "unframedEntries": 270,
+        "unknownEntries": 3,
+        "conflictingEntries": 0,
+        "reportedFrameEntries": 140,
+        "reviewEntries": 3,
+        "discrepancyEntries": 4
+      },
+      "families": 53,
+      "reviewedFamilies": 0,
+      "saintsWithoutRecordedTradition": 283
+    },
+    "unit": "source_inventory_entry_not_verified_physical_relic_or_frame",
+    "idKind": "source_key_not_physical_item_id",
+    "measuredCapacities": null,
+    "photoStatus": "pending_configuration",
+    "warnings": [
+      "Gaudiya69 linked source entries include17 reported-frame entries across saved17–19. Raw current source17 has no reported frames; that does not establish frame suitability or photo absence in17–19.",
+      "Himalayan38 source entries include20 reported-frame entries;3–4 is a two-vitrine candidate area requiring mounting/height review.",
+      "Maharashtra37 source entries include15 reported-frame entries; prefer10 and9 jointly, with Varkari and Girnar neighbouring shared areas, rather than claiming one vitrine suffices.",
+      "Kashi25 source entries include2 reported-frame entries; unframed density may differ from framed density. No certified fit at5.",
+      "Tamil16 source entries include10 reported-frame entries;24 alone needs a fit check, with23 as a reviewed shared-area fallback.",
+      "Vitrines18–22 have no source observations in the workbook. This is missing evidence, not proof of empty cabinets, unused space or capacity.",
+      "283 current saints have no recorded tradition: missing metadata is not absence of affiliation.",
+      "Photo configuration is pending. Frame labels refer to relic packaging; do not derive photo presence/absence from them.",
+      "Five rows per vitrine is a curator working assumption, editable, not measured capacity. Number1 is physical row from top downward; Number2, when present, is position along that row.",
+      "Dense source vitrines16/17 contain74/121 entries, many row-only labels; these do not imply repeated exact slots or a frame-capacity benchmark.",
+      "Only two non-frame-labelled source vitrines17/23 have very different counts. Do not derive a numeric non-frame capacity range."
+    ]
+  },
+  "rowConfiguration": {
+    "rowsPerVitrine": 5,
+    "authority": "Paragata working assumption on20October2026",
+    "editable": true,
+    "positionNotation": "row.position",
+    "rowOrder": "top_to_bottom",
+    "positionCapacity": null,
+    "largeFrameDimensions": null
+  },
+  "rowPlanningGuidance": {
+    "notation": "row.position",
+    "rowOrder": "top_to_bottom",
+    "planningRowCount": 5,
+    "editable": true,
+    "authority": "Paragata working assumption relayed by Nadi on20October2026",
+    "upperPreference": "After co-location, prefer earlier physical rows for current Primary/Featured and Secondary saints; keep as editable preference, not guaranteed fit.",
+    "noInferredSlots": "A row-only label such as3 is row3 with unknown position, not slot3.1 or a repeated occupied slot.",
+    "positionCapacity": null,
+    "measuredDimensions": null
+  }
+}

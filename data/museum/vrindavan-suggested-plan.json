@@ -1,0 +1,543 @@
+{
+  "version": "vrindavan-numbered-area-flow-2026-10-20-v1",
+  "areas": {
+    "Sikh & Punjab Traditions": [
+      "6"
+    ],
+    "Udasin Saints": [
+      "6"
+    ],
+    "Rishikesh-Haridwar & Himalayan Monastic Lineages": [
+      "4",
+      "3"
+    ],
+    "Kashi & Ascetic Lineages": [
+      "5"
+    ],
+    "Rama & Avadh": [
+      "14"
+    ],
+    "Ramanandi": [
+      "14"
+    ],
+    "Braj & Krishna Bhakti": [
+      "15",
+      "16"
+    ],
+    "Gaudiya Vaishnava": [
+      "19",
+      "18",
+      "17"
+    ],
+    "Jagannath-Puri & Odisha": [
+      "20"
+    ],
+    "Bengal Shakta, Baul & Modern Saints": [
+      "21",
+      "22"
+    ],
+    "Sri Vaishnava & South Indian Vaishnava Traditions": [
+      "23"
+    ],
+    "Shaiva Siddhanta & Tamil Traditions": [
+      "24"
+    ],
+    "Andhra Avadhuta & Datta-Advaita Lineages": [
+      "2",
+      "1"
+    ],
+    "Datta Tradition": [
+      "11",
+      "12"
+    ],
+    "Maharashtra Guru Lineages": [
+      "10",
+      "9"
+    ],
+    "Varkari": [
+      "9",
+      "8"
+    ],
+    "Girnar & Nath Traditions": [
+      "8",
+      "7"
+    ],
+    "Gujarat & Swaminarayan Traditions": [
+      "7"
+    ],
+    "Global & Diaspora Lineages": [
+      "13"
+    ]
+  },
+  "holds": [
+    {
+      "reason": "Do not force the Vrindavan/Ramanandi Hanuman Das into Kriya from suggested family label.",
+      "saintId": "cms0w7g5k052y07qigeldl38i"
+    },
+    {
+      "reason": "Verified Rishikesh/Sivananda biography conflicts with inherited Andhra subsection; review proposal context before automatic placement.",
+      "saintId": "cms0w7cof00mc07qiem08e1er"
+    },
+    {
+      "reason": "Inherited Bengal subgroup conflicts with institutional Mysore/Datta context; exclude from automatic placement pending museum-local context review.",
+      "saintId": "cms0w7ef602v107qiji3vl0qo"
+    },
+    {
+      "reason": "Retain correct published identity; hold unresolved subsection context rather than use a duplicate draft or automatic tradition assignment.",
+      "saintId": "cms3d4ktl000007ozc8967glx"
+    },
+    {
+      "reason": "Retain correct published identity; hold unresolved subsection context rather than use a duplicate draft or automatic tradition assignment.",
+      "saintId": "cms4z68wh000707qk1e69zfia"
+    },
+    {
+      "saintId": "cms0w7dkf01qa07qikm4pbwjx",
+      "reason": "Reviewed Gaudiya context is not yet reflected in this section proposal. Keep unchanged until the context correction is available.",
+      "section": "Gujarat & Swaminarayan Traditions"
+    }
+  ],
+  "affinities": [
+    {
+      "section": "Gaudiya Vaishnava",
+      "traditionId": "cmq5kprkz000ce2p3rw2s3997"
+    },
+    {
+      "section": "Girnar & Nath Traditions",
+      "traditionId": "cms0w7c7p002s07qihs12mdre"
+    },
+    {
+      "section": "Sri Vaishnava & South Indian Vaishnava Traditions",
+      "traditionId": "cmq5kpsh000fle2p35shvptk3"
+    },
+    {
+      "section": "Jagannath-Puri & Odisha",
+      "traditionId": "cmq5kprkz000ce2p3rw2s3997"
+    },
+    {
+      "section": "Braj & Krishna Bhakti",
+      "traditionId": "cms0w7cv900v307qittjsewcq"
+    },
+    {
+      "section": "Ramanandi",
+      "traditionId": "cmq5kpty901f5e2p367qjvhjr"
+    },
+    {
+      "section": "Maharashtra Guru Lineages",
+      "traditionId": "cmsclku53001607t2ym3rs105"
+    },
+    {
+      "section": "Datta Tradition",
+      "traditionId": "cms0w7d08010x07qidoia4qfi"
+    },
+    {
+      "section": "Varkari",
+      "traditionId": "cms5c6210000007nhzd357yhp"
+    },
+    {
+      "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "traditionId": "cmq5kpth4012xe2p3b1ce68cp"
+    },
+    {
+      "section": "Gaudiya Vaishnava",
+      "traditionId": "cmq5kpt8y00x2e2p39os8vpcl"
+    }
+  ],
+  "rationales": [
+    {
+      "section": "Sikh & Punjab Traditions",
+      "rationale": "Share a small, separately labelled Sikh/Udasin area near the northern orientation; shared case does not merge traditions."
+    },
+    {
+      "section": "Udasin Saints",
+      "rationale": "Keep the retained Udasi subsection distinct beside Sikh material; no universal shared lineage asserted."
+    },
+    {
+      "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "rationale": "Island upper-right northern monastic area; keep named Kriya and Sivananda contexts distinct within it."
+    },
+    {
+      "section": "Kashi & Ascetic Lineages",
+      "rationale": "Upper island-right Kashi hinge toward Himalayan material at 4 and the broader Ganga story; do not force genealogical links."
+    },
+    {
+      "section": "Rama & Avadh",
+      "rationale": "Lower left devotional lead-in to Braj at15; share14 with Ramanandi displays, retaining both section identities."
+    },
+    {
+      "section": "Ramanandi",
+      "rationale": "Same area as Rama/Avadh where appropriate, with separate labels and reviewed family blocks; avoid treating all Rama devotion as Ramanandi."
+    },
+    {
+      "section": "Braj & Krishna Bhakti",
+      "rationale": "Left outer Braj lead-in to Gaudiya17; keep Nimbarka and Haridas contexts legible as distinct cohorts."
+    },
+    {
+      "section": "Gaudiya Vaishnava",
+      "rationale": "Preserve live saved reservation17–19. Put the Puri-facing narrative at19 where compatible with existing family/group placement."
+    },
+    {
+      "section": "Jagannath-Puri & Odisha",
+      "rationale": "Faces Gaudiya19 across the left aisle: priority Chaitanya/Braj–Puri connection, without merging Gaudiya and all Odisha traditions."
+    },
+    {
+      "section": "Buddhist Saints",
+      "rationale": "No members in this snapshot. Preserve valid catalogue entry; reserve no vitrine until holdings are confirmed."
+    },
+    {
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "rationale": "Eastern continuation beside Puri20. Do not merge Shakta, Baul, Advaita and modern institutional cohorts."
+    },
+    {
+      "section": "Sri Vaishnava & South Indian Vaishnava Traditions",
+      "rationale": "Lower island-left southern Vaishnava context; retain institution/cohort distinctions, including saints whose lives were outside the South."
+    },
+    {
+      "section": "Shaiva Siddhanta & Tamil Traditions",
+      "rationale": "Southern Tamil/Shaiva area beside23, with any cross-references around the island end subject to actual walking access."
+    },
+    {
+      "section": "Ramana & Arunachala",
+      "rationale": "No current members. Do not assign a case or transfer unrelated saints to fill it; future candidate near Tamil24 requires curator review."
+    },
+    {
+      "section": "Andhra Avadhuta & Datta-Advaita Lineages",
+      "rationale": "Lower island-right southern Datta-facing area. Faces western Datta11/12 across the right aisle; exclude wrong-context Chidananda until reviewed."
+    },
+    {
+      "section": "Datta Tradition",
+      "rationale": "Western Datta faces southern Datta2/1, satisfying the second priority boundary while preserving distinct families."
+    },
+    {
+      "section": "Maharashtra Guru Lineages",
+      "rationale": "Maharashtra guru context between western Datta11 and Varkari9. Use a two-vitrine candidate area for37 people/37 source entries, rather than implying that all fit10. Shared9 requires joint load review."
+    },
+    {
+      "section": "Varkari",
+      "rationale": "Neighbour Maharashtra10 and Nath/Girnar8. Dnyaneshwar’s specific Nath context supports a cross-reference, not a merged Varkari/Nath family. Shared8/9 require joint load review."
+    },
+    {
+      "section": "Girnar & Nath Traditions",
+      "rationale": "Western continuation between Varkari9 and Gujarat7; preserve Nath, Juna Akhara and other contexts as distinct display cohorts. Shared7/8 allow demand balancing without inventing a capacity."
+    },
+    {
+      "section": "Gujarat & Swaminarayan Traditions",
+      "rationale": "Upper-right western terminus beside Girnar8; geographical adjacency, not a common initiating lineage."
+    },
+    {
+      "section": "Bhakti Marga & Mauritius Lineage",
+      "rationale": "No canonical-linked members in this snapshot. Mata Bindu’s Bhakti Marga role is human-confirmed, but her missing canonical identity must not be created or substituted by this plan."
+    },
+    {
+      "section": "Global & Diaspora Lineages",
+      "rationale": "Conditional entrance/exit reflection for the one confirmed Ghana-linked holding. If curator does not use it, leave13 uncommitted; do not fill it with anonymous holds."
+    }
+  ],
+  "observedAt": "2026-10-20T11:35:10.126Z",
+  "observedVitrines": [
+    {
+      "unknown": 0,
+      "frames": 0,
+      "entries": 0,
+      "observedRows": [],
+      "vitrine": "0",
+      "note": "no_source_evidence"
+    },
+    {
+      "unknown": 0,
+      "frames": 6,
+      "entries": 15,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "1",
+      "note": "middle_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 10,
+      "entries": 15,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "2",
+      "note": "middle_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 8,
+      "entries": 15,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "3",
+      "note": "middle_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 3,
+      "entries": 15,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "4",
+      "note": "middle_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 5,
+      "entries": 15,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "5",
+      "note": "middle_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 9,
+      "entries": 16,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "vitrine": "6",
+      "note": "middle_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 14,
+      "entries": 20,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "vitrine": "7",
+      "note": "higher_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 11,
+      "entries": 16,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "vitrine": "8",
+      "note": "middle_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 12,
+      "entries": 16,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "vitrine": "9",
+      "note": "middle_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 11,
+      "entries": 15,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "10",
+      "note": "middle_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 2,
+      "entries": 9,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "vitrine": "11",
+      "note": "lower_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 10,
+      "entries": 20,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "12",
+      "note": "higher_observed_load"
+    },
+    {
+      "unknown": 1,
+      "frames": 13,
+      "entries": 15,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "13",
+      "note": "middle_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 14,
+      "entries": 17,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "14",
+      "note": "higher_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 11,
+      "entries": 16,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "15",
+      "note": "middle_observed_load"
+    },
+    {
+      "unknown": 2,
+      "frames": 2,
+      "entries": 74,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "16",
+      "note": "higher_observed_load"
+    },
+    {
+      "unknown": 0,
+      "frames": 0,
+      "entries": 121,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "vitrine": "17",
+      "note": "observed_load_not_capacity"
+    },
+    {
+      "unknown": 0,
+      "frames": 0,
+      "entries": 0,
+      "observedRows": [],
+      "vitrine": "18",
+      "note": "no_source_evidence"
+    },
+    {
+      "unknown": 0,
+      "frames": 0,
+      "entries": 0,
+      "observedRows": [],
+      "vitrine": "19",
+      "note": "no_source_evidence"
+    },
+    {
+      "unknown": 0,
+      "frames": 0,
+      "entries": 0,
+      "observedRows": [],
+      "vitrine": "20",
+      "note": "no_source_evidence"
+    },
+    {
+      "unknown": 0,
+      "frames": 0,
+      "entries": 0,
+      "observedRows": [],
+      "vitrine": "21",
+      "note": "no_source_evidence"
+    },
+    {
+      "unknown": 0,
+      "frames": 0,
+      "entries": 0,
+      "observedRows": [],
+      "vitrine": "22",
+      "note": "no_source_evidence"
+    },
+    {
+      "unknown": 1,
+      "frames": 0,
+      "entries": 4,
+      "observedRows": [
+        2,
+        3
+      ],
+      "vitrine": "23",
+      "note": "sparse_source_evidence"
+    },
+    {
+      "unknown": 0,
+      "frames": 6,
+      "entries": 12,
+      "observedRows": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "vitrine": "24",
+      "note": "lower_observed_load"
+    }
+  ]
+}
