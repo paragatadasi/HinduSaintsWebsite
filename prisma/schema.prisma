@@ -1692,3 +1692,15 @@ model MuseumPlanningSetup {
   updatedById String
   updatedAt DateTime @updatedAt
 }
+
+// Reserved section areas are planning choices, never physical placement claims.
+model MuseumSectionSpacePlan {
+  museumId String
+  section String
+  vitrines String[]
+  flexiblePlacements Json @default("[]")
+  version Int @default(1)
+  updatedById String
+  updatedAt DateTime @updatedAt
+  @@id([museumId, section])
+}

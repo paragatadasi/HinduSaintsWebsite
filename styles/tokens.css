@@ -395,3 +395,5 @@
 }
 
 :root { --font-size-tree-input: 1rem; }
+
+:root { --opacity-control-disabled: 0.5; --offset-museum-plan-anchor: 10rem; --height-museum-section-palette: 32rem; --width-museum-section-palette: 20rem; }

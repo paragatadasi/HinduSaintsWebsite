@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import {photoSaintsInVitrines,plannerAssignmentInput,plannerPhotoInput,plannerCompletionInput,plannerConfirmation,vitrineNumber,plannerCounts,type PlannerRow} from "./museum-move-planner-domain";
+import {photoSaintsInVitrines,plannerAssignmentInput,plannerPhotoInput,plannerCompletionInput,plannerConfirmation,vitrineNumber,plannerCounts,plannerAreaInput,flexibleDestinations,plannerFamilies,type PlannerRow} from "./museum-move-planner-domain";
 test("room numbers include temple hall zero without guessing compound locations",()=>{
  assert.equal(vitrineNumber("Vitrine 03"),"3");
  assert.equal(vitrineNumber("#0"),"0");
@@ -37,4 +37,18 @@ test("current-location evidence must be an explicit Vrindavan implementation wit
  assert.equal(plannerConfirmation({...input,museumId:"museum-spn"}),null);
  assert.equal(plannerConfirmation({...input,vitrine:""}),null);
  assert.equal(plannerConfirmation({...input,status:"Planned"}),null);
+});
+
+test("flexible areas only apply to matching current proposals, never exact or implemented placements",()=>{
+ const row={id:"a",section:"Gaudiya",status:"Proposed",revision:"v1"};
+ const areas=[{section:"Gaudiya",vitrines:["6","7","8"],placements:[{id:"a",revision:"v1"}]}];
+ assert.deepEqual(flexibleDestinations(row,areas),["6","7","8"]);
+ for(const changed of [{status:"Implemented"},{status:"Planned"},{revision:"v2"},{section:"Other"}])assert.deepEqual(flexibleDestinations({...row,...changed},areas),[]);
+ assert.equal(plannerAreaInput.safeParse({revision:"a".repeat(64),section:"Gaudiya",areaVersion:0,vitrines:["25"]}).success,false);
+});
+test("family grouping uses stable group IDs, keeps same-named groups distinct and leaves unaffiliated saints separate",()=>{
+ const rows=[{id:"1",familyKey:"a",family:"Shared name",name:"One"},{id:"2",familyKey:"a",family:"Shared name",name:"Two"},{id:"3",familyKey:"b",family:"Shared name",name:"Three"},{id:"4",family:"",name:"Four"}] as PlannerRow[];
+ const groups=plannerFamilies(rows);
+ assert.equal(groups.length,3);assert.deepEqual(groups.find(g=>g.key==="a")!.rows.map(r=>r.id),["1","2"]);
+ assert.equal(groups.find(g=>g.key==="saint:4")!.rows.length,1);
 });

@@ -6,7 +6,7 @@ const target=new URL(url);
 if(!["localhost","127.0.0.1"].includes(target.hostname)||target.pathname!=="/museum_planner_test")throw Error("Refusing non-test database");
 process.env.DATABASE_URL=url;
 const {db}=await import("../lib/db");
-const {readVrindavanMovePlanner,saveVrindavanPhotoSetup,assignVrindavanPlan,completeVrindavanPlan}=await import("../lib/museum-move-planner");
+const {readVrindavanMovePlanner,saveVrindavanPhotoSetup,assignVrindavanPlan,completeVrindavanPlan,saveVrindavanSectionArea,saveVrindavanFlexiblePlan}=await import("../lib/museum-move-planner");
 const suffix=Date.now(),hash=randomBytes(32).toString("hex");
 try{
  const actor=await db.user.create({data:{email:`planner-${suffix}@example.invalid`,roles:["curator"],active:true}});
@@ -54,9 +54,43 @@ try{
  data=await readVrindavanMovePlanner();
  assert.equal(data.rows.filter(r=>r.photo).length,1);
  assert.equal(data.rows.find(r=>r.id===first.id)!.photo,true);
+
+ // Flexible planning stays separate from exact assignments and requires a final vitrine.
+ const members=data.rows.filter(r=>r.saintId!==ids[0]);
+ for(const member of members)await db.museumArrangement.update({where:{museumId_placementId:{museumId:"museum-vrindavan",placementId:member.id}},data:{status:"Proposed",version:{increment:1}}});
+ data=await readVrindavanMovePlanner();const sectionName=data.rows.find(r=>r.id===first.id)!.section;
+ await saveVrindavanSectionArea({revision:data.revision,section:sectionName,areaVersion:data.areas.find(a=>a.section===sectionName)?.version??0,vitrines:["6","7","8"]},actor.id);
+ await assert.rejects(saveVrindavanSectionArea({revision:data.revision,section:sectionName,areaVersion:data.areas.find(a=>a.section===sectionName)?.version??0,vitrines:["9"]},actor.id),/changed/);
+ data=await readVrindavanMovePlanner();
+ await assert.rejects(saveVrindavanSectionArea({revision:data.revision,section:sectionName,areaVersion:0,vitrines:["9"]},actor.id),/since you began/);
+ await assert.rejects(saveVrindavanFlexiblePlan({revision:data.revision,section:sectionName,placementIds:[first.id]},actor.id),/unassigned/);
+ await assert.rejects(saveVrindavanFlexiblePlan({revision:data.revision,section:sectionName,placementIds:[members[0].id,"foreign"]},actor.id),/unassigned/);
+ await saveVrindavanFlexiblePlan({revision:data.revision,section:sectionName,placementIds:members.map(r=>r.id)},actor.id);
+ data=await readVrindavanMovePlanner();
+ assert.deepEqual(data.rows.find(r=>r.id===first.id)!.flexibleVitrines,[]);
+ const flexible=data.rows.find(r=>r.id===members[0].id)!;
+ assert.deepEqual(flexible.flexibleVitrines,["6","7","8"]);
+ const flexibleCompletion={placementId:flexible.id,revision:flexible.revision,planRevision:data.revision,checkedSourceIds:flexible.sources.map(s=>s.id),physicalConfirmation:true,inventoryAcknowledged:true};
+ await assert.rejects(completeVrindavanPlan({...flexibleCompletion,vitrine:"9"},actor.id),/current destination/);
+ await assert.rejects(completeVrindavanPlan(flexibleCompletion,actor.id),/current destination/);
+ await saveVrindavanSectionArea({revision:data.revision,section:sectionName,areaVersion:data.areas.find(a=>a.section===sectionName)?.version??0,vitrines:["6","7"]},actor.id);
+ await assert.rejects(completeVrindavanPlan({...flexibleCompletion,vitrine:"7"},actor.id),/current destination/);
+ data=await readVrindavanMovePlanner();
+ await completeVrindavanPlan({...flexibleCompletion,planRevision:data.revision,vitrine:"7",shelf:"Lower"},actor.id);
+ data=await readVrindavanMovePlanner();
+ assert.equal(data.rows.find(r=>r.id===flexible.id)!.status,"Implemented");
+ assert.equal(data.rows.find(r=>r.id===flexible.id)!.lastConfirmed!.vitrine,"7");
+ assert.deepEqual(data.rows.find(r=>r.id===flexible.id)!.flexibleVitrines,[]);
+ await db.museumArrangement.update({where:{museumId_placementId:{museumId:"museum-vrindavan",placementId:members[1].id}},data:{version:{increment:1}}});
+ data=await readVrindavanMovePlanner();assert.deepEqual(data.rows.find(r=>r.id===members[1].id)!.flexibleVitrines,[]);
+ await saveVrindavanFlexiblePlan({revision:data.revision,section:sectionName,placementIds:[members[1].id]},actor.id);
+ data=await readVrindavanMovePlanner();
+ await saveVrindavanSectionArea({revision:data.revision,section:sectionName,areaVersion:data.areas.find(a=>a.section===sectionName)?.version??0,vitrines:[]},actor.id);
+ data=await readVrindavanMovePlanner();assert.deepEqual(data.rows.find(r=>r.id===members[1].id)!.flexibleVitrines,[]);
+ assert.equal(data.rows.find(r=>r.id===first.id)!.vitrine,"11");
  assert.deepEqual(await db.museumCollectionImport.findMany({where:{sourceKey:{startsWith:`vrindavan-workbook:${hash}`}}}),before);
  assert.equal(await db.museumItemPlacement.count(),placements);
  assert.equal(await db.museumArrangement.count({where:{museumId:"museum-spn",placementId:{in:data.rows.map(r=>r.id)}}}),0);
  assert.equal(await db.auditEvent.count({where:{action:"museum.planning.photos.saved"}})>0,true);
- console.log("PASS photo snapshot, partial/whole planning, completion/replay/entry checks, confirmed location surviving replans, current-location photo setup, stale/foreign/atomic protection, audits and no source/SPN/physical writes");
+ console.log("PASS section areas, flexible completion/exact precedence/stale guard/invalidation/removal, photo snapshot, partial/whole planning, completion/replay/entry checks, confirmed location surviving replans, current-location photo setup, stale/foreign/atomic protection, audits and no source/SPN/physical writes");
 }finally{await db.$disconnect();}
