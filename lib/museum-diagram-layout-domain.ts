@@ -2,7 +2,7 @@ import {z} from "zod";
 import graph from "../data/museum/vrindavan-connected-traditions.json";
 
 import {VRINDAVAN_APPROVED_SUBSECTIONS} from "./vrindavan-approved-subsections";
-export const DIAGRAM_GRAPH_VERSION=graph.version+"-approved-subsections-v1";
+export const DIAGRAM_GRAPH_VERSION=graph.version+"-approved-subsections-v2";
 export const DIAGRAM_NODE_IDS=[...new Set([...graph.regions.flatMap(region=>region.subsections.map(section=>section.existingSlug)),...VRINDAVAN_APPROVED_SUBSECTIONS.map(section=>section.slug)])];
 const knownNodes=new Set(DIAGRAM_NODE_IDS);
 export const diagramPositions=z.array(z.object({nodeId:z.string().min(1).max(180).refine(id=>knownNodes.has(id),"This diagram section is no longer available."),x:z.number().finite().min(0).max(1),y:z.number().finite().min(0).max(1)}).strict()).min(1).max(200).refine(rows=>new Set(rows.map(row=>row.nodeId)).size===rows.length,"A diagram section can only appear once.");
