@@ -124,3 +124,10 @@ test("SPN family moves and restored memberships are explicit curator decisions, 
   assert.equal(after.tier,"Tertiary");assert.equal(after.familyId,"old");assert.equal(after.proposalReviewed,true);
  }
 });
+
+
+test("a nearer Primary without a display family holds the case instead of skipping to a distant family",()=>{
+ const ungrouped=row("ungrouped",{tier:"Featured",familyId:""});
+ const result=reconcileMuseumFamilies([primary,ungrouped,row("member")],[edge("e","ungrouped","member"),edge("f","primary","ungrouped")])[2];
+ assert.equal(result.tier,"Tertiary");assert.equal(result.familyId,"old");assert.equal(result.familyReconciliation?.state,"held");assert.match(result.familyReconciliation!.reason,/no display family/);
+});

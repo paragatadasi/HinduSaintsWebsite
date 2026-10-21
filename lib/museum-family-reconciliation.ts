@@ -18,7 +18,7 @@ export function reconcileMuseumFamilies(rows:MuseumSaintPlacement[], relationshi
  const edges=[...new Map(relationships.filter(r=>r.status==="published"&&!["disputed","imported"].includes(r.evidenceStatus)&&r.confidence!=="low"&&r.fromSaintId!==r.toSaintId&&(MUSEUM_TREE_RELATIONSHIP_KINDS as readonly string[]).includes(r.relationshipType)).map(r=>[r.id,r])).values()].sort((a,b)=>a.id.localeCompare(b.id));
  const adjacency=new Map<string,MuseumFamilyRelationship[]>();
  for(const edge of edges)for(const id of [edge.fromSaintId,edge.toSaintId])adjacency.set(id,[...(adjacency.get(id)||[]),edge]);
- const anchors=rows.filter(r=>eligible(r)&&r.tier==="Featured"&&key(r));
+ const anchors=rows.filter(r=>eligible(r)&&r.tier==="Featured");
  const anchorsById=new Map<string,MuseumSaintPlacement[]>();
  for(const anchor of anchors)anchorsById.set(anchor.saintId!,[...(anchorsById.get(anchor.saintId!)||[]),anchor]);
  return rows.map(row=>{
@@ -44,8 +44,8 @@ export function reconcileMuseumFamilies(rows:MuseumSaintPlacement[], relationshi
   const choices=new Set(matches.map(m=>JSON.stringify([m.anchor.section,key(m.anchor)])));
   const sameSection=matches.every(m=>m.anchor.section===row.section);
   const familyKey=key(matches[0].anchor);
-  const applied=choices.size===1&&sameSection;
-  const evidence:MuseumFamilyReconciliation={state:applied?"applied":"held",reason:applied?"Published family-tree connections to a Primary saint.":!sameSection?"Primary family belongs to another section; curator review required.":"Competing Primary families; curator review required.",anchorIds:[...new Set(matches.map(m=>m.anchor.saintId!))].sort(),relationshipIds:[...new Set(matches.flatMap(m=>m.path))].sort(),...(applied?{familyKey,previousFamilyKey:key(row),previousTier:row.tier,previousRationale:row.rationale}:{})};
+  const applied=choices.size===1&&sameSection&&Boolean(familyKey);
+  const evidence:MuseumFamilyReconciliation={state:applied?"applied":"held",reason:applied?"Published family-tree connections to a Primary saint.":!familyKey?"Primary anchor has no display family; curator review required.":!sameSection?"Primary family belongs to another section; curator review required.":"Competing Primary families; curator review required.",anchorIds:[...new Set(matches.map(m=>m.anchor.saintId!))].sort(),relationshipIds:[...new Set(matches.flatMap(m=>m.path))].sort(),...(applied?{familyKey,previousFamilyKey:key(row),previousTier:row.tier,previousRationale:row.rationale}:{})};
   if(!applied)return {...row,familyReconciliation:evidence,note:row.note+" Family reconciliation held: "+evidence.reason};
   const anchor=matches[0].anchor;
   const changed=row.tier!=="Secondary"||key(row)!==familyKey;
