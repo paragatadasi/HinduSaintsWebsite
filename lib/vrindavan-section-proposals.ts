@@ -10,7 +10,7 @@ import {museumSectionForLocality} from "./museum-locality-proposals";
 export async function readVrindavanSectionProposalAudit(options:{snapshotHash?:string}={},client:Prisma.TransactionClient=db) {
  const inventory=await readVrindavanMuseumInventory(options,client);
  const [spn,saints,catalogue]=await Promise.all([
-  readMuseumData(client),
+  readMuseumData(client,{reconcileFamilies:false}),
   client.saint.findMany({where:{id:{in:inventory.saints.map(s=>s.id)},status:{not:"archived"}},select:{id:true,places:{include:{place:true}}}}),
   client.place.findMany({select:{id:true,name:true,alternateNames:true,region:true,country:true,placeKind:true}})
  ]);

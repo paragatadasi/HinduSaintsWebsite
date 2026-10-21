@@ -1,3 +1,5 @@
+import {reconcileMuseumFamilies} from "./museum-family-reconciliation";
+import {buildMuseumView} from "./museum-proposals";
 import {arrangementControl,familyArrangementControl} from "@/lib/museum-arrangement-domain";
 import { projectSourceVitrines, SPN_WEBSITE_AIRTABLE_BASE_ID } from "@/lib/museum-vitrine-source";
 import { readSaintCollectionItems } from "@/lib/museum-collections";
@@ -10,7 +12,7 @@ import { resolveSnapshotIdentity } from "@/lib/museum-domain";
 import { buildWorkingMuseumView, museumRelationshipDetails, type CurrentMuseumSaint } from "@/lib/museum-working-view";
 
 // Private data reader; route entry points must enforce access_museum before calling.
-export async function readMuseumData(client: Prisma.TransactionClient = db) {
+export async function readMuseumData(client: Prisma.TransactionClient = db, options: {reconcileFamilies?:boolean} = {}) {
   const [mirrorLocations, collections, saints, links, definitions, membership, arrangements] = await Promise.all([
     client.airtableMirrorRecord.findMany({
       where: { baseId: SPN_WEBSITE_AIRTABLE_BASE_ID, tableIdOrName: "Saints" },
@@ -90,7 +92,7 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
   }));
   const original = getMuseumProposalData();
   const editable = await getEditableMuseumProposalData(client);
-  const view = buildWorkingMuseumView(editable, current, links, definitions);
+  let view = buildWorkingMuseumView(editable, current, links, definitions);
   for (const row of view.placements) {
     row.adminSaintSlug=saints.find(s=>s.id===row.saintId)?.slug;
     if (!row.saintId || row.sourceRecordId) continue;
@@ -109,15 +111,29 @@ export async function readMuseumData(client: Prisma.TransactionClient = db) {
       family:editable.familyMoveOptions.find(f=>f.key===familyKey)?.revision||null
     });
   }
+  if(options.reconcileFamilies!==false){
+    const placements=reconcileMuseumFamilies(view.placements,saints.flatMap(s=>s.relationshipsFrom));
+    const labels=new Map(view.sections.flatMap(s=>s.families.map(f=>[f.key,f.label] as const)));
+    const trees=new Map(view.sections.flatMap(s=>s.families.filter(f=>f.treeFile).map(f=>[f.key,f.treeFile!] as const)));
+    const rebuilt=buildMuseumView(placements,view.membersById,labels,trees,new Set(placements.filter(p=>p.needsResearch).map(p=>p.id)));
+    for(const section of view.sections){
+      const next=rebuilt.sections.find(s=>s.name===section.name);
+      if(next){next.slug=section.slug;next.idea=section.idea;}
+      else rebuilt.sections.push(section);
+    }
+    rebuilt.sectionBySlug=new Map(rebuilt.sections.map(s=>[s.slug,s]));
+    view=rebuilt;
+  }
   const activeIds = new Set(current.map(s => s.id));
   for (const row of original.placements) {
     row.saintId = resolveSnapshotIdentity(row.id, links, activeIds).record?.entityId || undefined;
   }
-  const familyMoveOptions=editable.familyMoveOptions.map(option=>({...option,arrangement:familyArrangementControl(view.placements.filter(row=>(row.curatorialFamily||row.familyId)===option.key))}));
+  const familyMoveOptions=editable.familyMoveOptions.map(option=>({...option,moveUnavailable:view.placements.some(row=>row.familyReconciliation?.state==="applied"&&[(row.curatorialFamily||row.familyId),row.familyReconciliation.previousFamilyKey].includes(option.key)),arrangement:familyArrangementControl(view.placements.filter(row=>(row.curatorialFamily||row.familyId)===option.key))}));
   const canonicalKeys=[...new Set(view.placements.filter(p=>p.familyId.startsWith("exhibit:")).map(p=>p.familyId))];
   for(const key of canonicalKeys) {
     const rows=view.placements.filter(p=>p.familyId===key);
     familyMoveOptions.push({key,label:rows[0].groupLabel||"Display family",count:rows.length,revision:"",moveUnavailable:true,arrangement:familyArrangementControl(rows)} as typeof familyMoveOptions[number]);
   }
+  for(const option of familyMoveOptions)option.count=view.placements.filter(row=>(row.curatorialFamily||row.familyId)===option.key).length;
   return { ...view, original, familyMoveOptions };
 }

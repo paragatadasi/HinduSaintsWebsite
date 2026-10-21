@@ -36,6 +36,7 @@ export function applyFamilyProposalMoves(
     const detached = change?.detached || false;
     const current = detached ? {...row,section:change!.section,alternatives:row.alternatives.filter(s=>s!==change!.section),familyId:"",curatorialFamily:"",groupLabel:""}
       : move ? {...row,section:move.section,alternatives:row.alternatives.filter(s=>s!==move.section)} : {...row};
+    if (move || change) current.proposalReviewed = true;
     if (key || detached) current.displayMembership = {familyKey:detached?change!.familyKey:key,label:detached?change!.familyLabel:labels.get(key)||key,detached,
       revision:membershipRevision({row,move:move||null},change)};
     if(detached) trees.delete(key);

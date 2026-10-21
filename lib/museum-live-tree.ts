@@ -1,3 +1,4 @@
+import {MUSEUM_TREE_RELATIONSHIP_KINDS} from "./museum-family-reconciliation";
 import {buildSikhContext,sikhContextSeeds} from "./museum-sikh-context";
 import {getMuseumProposalData} from "./museum-proposals";
 import {sourceTreeReference} from "./museum-tree-source";
@@ -9,7 +10,7 @@ import {projectSourceVitrines,SPN_WEBSITE_AIRTABLE_BASE_ID} from "./museum-vitri
 import {readMuseumSaintProfiles} from "./museum-saint-profiles";
 
 // Private read-only API. Caller must check access_museum AND view_full_saint_catalog.
-const relationshipKinds=["guru","disciple","partner","husband","wife","incarnation","successor"] as const;
+const relationshipKinds=MUSEUM_TREE_RELATIONSHIP_KINDS;
 const NODE_LIMIT=120,EDGE_LIMIT=500,HOPS=10,GENERAL_HOPS=5;
 export async function readMuseumLiveTree(seeds:string[],museum:"spn"|"vrindavan",includeUnreviewed:boolean,familyKey?:string,includeSource=false) {
  const sikhContext=museum==="vrindavan"&&familyKey==="context:sikh-guru-succession";

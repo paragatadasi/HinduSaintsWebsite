@@ -6,7 +6,7 @@ import {readMuseumData} from "./museum-working-data";
 import {buildVrindavanWorkingView} from "./vrindavan-working-domain";
 // PRIVATE: caller requires access_museum and view_full_saint_catalog.
 export async function readBaseVrindavanWorkingData(client:Prisma.TransactionClient=db) {
- const [audit,spn,overrides,arrangements]=await Promise.all([readVrindavanSectionProposalAudit({},client),readMuseumData(client),client.museumCuratorProposal.findMany({where:{museumId:"museum-vrindavan"}}),client.museumArrangement.findMany({where:{museumId:"museum-vrindavan"}})]);
+ const [audit,spn,overrides,arrangements,relationships]=await Promise.all([readVrindavanSectionProposalAudit({},client),readMuseumData(client,{reconcileFamilies:false}),client.museumCuratorProposal.findMany({where:{museumId:"museum-vrindavan"}}),client.museumArrangement.findMany({where:{museumId:"museum-vrindavan"}}),client.saintRelationship.findMany({where:{status:"published",fromSaint:{status:{not:"archived"}},toSaint:{status:{not:"archived"}}},select:{id:true,fromSaintId:true,toSaintId:true,relationshipType:true,status:true,evidenceStatus:true,confidence:true}})]);
  const initial=vrindavanSectionView(audit);
  const labels=new Map(spn.sections.flatMap(s=>s.families.map(f=>[f.key,f.label] as const)));
  for(const row of initial.placements) {
@@ -14,7 +14,7 @@ export async function readBaseVrindavanWorkingData(client:Prisma.TransactionClie
   if(groups.length===1){row.familyId="suggested:"+groups[0];row.groupLabel=labels.get(groups[0])||candidates.find(p=>(p.curatorialFamily||p.familyId)===groups[0])?.groupLabel||candidates.find(p=>(p.curatorialFamily||p.familyId)===groups[0])?.curatorialFamily||groups[0];}
   row.adminSaintSlug=candidates.find(p=>p.adminSaintSlug)?.adminSaintSlug;
  }
- const working=buildVrindavanWorkingView(initial.placements,overrides,arrangements,audit.snapshotHash);
+ const working=buildVrindavanWorkingView(initial.placements,overrides,arrangements,audit.snapshotHash,relationships);
  const sections=[...audit.sectionCatalogue,{name:"Needs section proposal",slug:"needs-section-proposal"}].map(s=>({...s,count:working.placements.filter(p=>p.section===s.name).length}));
  return {...working,sections,audit};
 }
