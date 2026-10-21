@@ -22,7 +22,7 @@ for(const c of museumCuratorReviewManifest.cases)if(new Set(c.options.map(o=>o.o
 // enable the precise museum-local effect reviewed in this manifest.
 export function museumCuratorOptionBlockedReason(c:MuseumCuratorManifestCase,o:MuseumCuratorManifestOption):string|undefined {
  if(o.readiness!=="ready_after_confirmation"||o.additionalConditions.length)return "This choice needs further evidence or a reviewed family decision before it can update the museum proposal.";
- if(o.proposedChanges.some(v=>v.field!=="museumProposal.section"))return "Review the source identity link separately before updating this museum proposal.";
+ if(o.proposedChanges.some(v=>v.field!=="museumProposal.section"))return "Resolve the source identity in reconciliation first. This review only updates an already-linked saint’s subsection.";
  if(!c.saintId||o.targetSaintIds.length!==1||o.targetSaintIds[0]!==c.saintId)return "The exact website saint must be resolved before this choice can update the proposal.";
  if(o.proposedChanges.length!==1||o.proposedChanges[0].field!=="museumProposal.section"||o.proposedChanges[0].fromValue!==c.currentStatePreconditions.currentSection||o.proposedChanges[0].toValue!==o.proposedSection)return "The reviewed change does not match the exact current subsection and proposed destination; refresh this research case.";
  if(!o.proposedSection||!o.sources.length||o.sources.some(url=>!safeMuseumReviewUrl(url)))return "The proposed subsection or supporting source needs review.";
@@ -46,12 +46,12 @@ export function buildCuratorReviewCase(c:MuseumCuratorManifestCase,state:MuseumC
  const options=c.options.map(o=>{
   const unavailableReason=issues[0]||museumCuratorOptionBlockedReason(c,o);
   if(!unavailableReason)allowedPlans[o.optionId]={saintId:c.saintId!,section:o.proposedSection!};
-  return {id:o.optionId,label:o.label,description:o.evidenceScope,requiresIdentityLink:o.proposedChanges.some(v=>v.field==="sourceIdentity"),changes:o.proposedChanges.map(v=>({field:v.field,before:String(v.fromValue??"Not assigned"),after:String(v.toValue??o.proposedSection??"Requires review")})),...(unavailableReason?{unavailableReason}:{})};
+  return {id:o.optionId,label:o.label,description:o.evidenceScope,requiresIdentityLink:o.proposedChanges.some(v=>v.field==="sourceIdentity"),changes:o.proposedChanges.map(v=>({field:v.field==="museumProposal.section"?"Museum subsection":v.field,before:String(v.fromValue??"Not assigned"),after:String(v.toValue??o.proposedSection??"Requires review")})),...(unavailableReason?{unavailableReason}:{})};
  });
  const evidence=[...new Set(c.options.flatMap(o=>o.sources))].flatMap(url=>{const safe=safeMuseumReviewUrl(url);return safe?[{label:new URL(safe,"https://hindusaints.org").hostname,url:safe}]:[];});
  const revision=createHash("sha256").update(stableCollectionJson(JSON.parse(JSON.stringify({manifestId:museumCuratorReviewManifest.manifestId,manifestVersion:museumCuratorReviewManifest.manifestVersion,case:c,state})))).digest("hex");
  const resolved=state.latestReview?.decision==="confirm_supported";
  const decision=state.latestReview?.decision;
  const status=resolved?"resolved":decision==="different"||decision==="unsure"?decision:(!Object.keys(allowedPlans).length?"blocked":"pending");
- return {reviewCase:{caseId:c.caseId,revision,title:c.displayName,question:c.question,status,note:state.latestReview?.note,blockedReason:!resolved&&!Object.keys(allowedPlans).length?(issues[0]||options.find(o=>o.unavailableReason)?.unavailableReason):undefined,sourceLabel:"Source inventory rows: "+c.sourceRows.join(", "),locationLabel:"Source inventory location (not verified current placement): "+[c.sourceDisplay.vitrine&&"Vitrine "+c.sourceDisplay.vitrine,c.sourceDisplay.position&&"Position "+c.sourceDisplay.position].filter(Boolean).join(" / "),evidence,options,...(c.saintId?{saintId:c.saintId,portraitContext:"website_candidate" as const}:{})},allowedPlans};
+ return {reviewCase:{caseId:c.caseId,revision,title:c.displayName,question:c.question,uncertainty:c.uncertainty,sourceDetails:{name:c.sourceDisplay.rawName,place:c.sourceDisplay.rawPlace,relic:c.sourceDisplay.relic},status,note:state.latestReview?.note,blockedReason:!resolved&&!Object.keys(allowedPlans).length?(issues[0]||options.find(o=>o.unavailableReason)?.unavailableReason):undefined,sourceLabel:"Source inventory rows: "+c.sourceRows.join(", "),locationLabel:"Source inventory location (not verified current placement): "+[c.sourceDisplay.vitrine&&"Vitrine "+c.sourceDisplay.vitrine,c.sourceDisplay.position&&"Position "+c.sourceDisplay.position].filter(Boolean).join(" / "),evidence,options,...(c.saintId?{saintId:c.saintId,portraitContext:"website_candidate" as const}:{})},allowedPlans};
 }
