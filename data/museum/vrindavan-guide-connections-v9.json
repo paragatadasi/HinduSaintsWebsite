@@ -195,12 +195,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7do501vq07qifzgeltqf",
-        "label": "Swami Akkalkot Maharaj"
+        "label": "Swami Akkalkot Maharaj",
+        "guideVitrine": "1"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7isv086007qi2qits4uh",
-        "label": "Sri Balappa Maharaj"
+        "label": "Sri Balappa Maharaj",
+        "guideVitrine": "1"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -230,12 +232,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7do501vq07qifzgeltqf",
-        "label": "Swami Akkalkot Maharaj"
+        "label": "Swami Akkalkot Maharaj",
+        "guideVitrine": "1"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7ddu01ho07qi252m60nx",
-        "label": "Sri Krishna Saraswati Datt Maharaj"
+        "label": "Sri Krishna Saraswati Datt Maharaj",
+        "guideVitrine": "1"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -265,7 +269,8 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7cj000fe07qizeo87gkm",
-        "label": "Dattatreya"
+        "label": "Dattatreya",
+        "guideVitrine": "1"
       },
       "to": {
         "kind": "context",
@@ -300,12 +305,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7cj000fe07qizeo87gkm",
-        "label": "Dattatreya"
+        "label": "Dattatreya",
+        "guideVitrine": "1"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7cwu00ww07qil9k17gm8",
-        "label": "Sri Narasimha Saraswati"
+        "label": "Sri Narasimha Saraswati",
+        "guideVitrine": "1"
       },
       "type": "traditional_incarnation",
       "label": "Traditional incarnation",
@@ -335,12 +342,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7cj000fe07qizeo87gkm",
-        "label": "Dattatreya"
+        "label": "Dattatreya",
+        "guideVitrine": "1"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7do501vq07qifzgeltqf",
-        "label": "Swami Akkalkot Maharaj"
+        "label": "Swami Akkalkot Maharaj",
+        "guideVitrine": "1"
       },
       "type": "traditional_incarnation",
       "label": "Traditional incarnation",
@@ -370,12 +379,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7dvj025c07qid5p1koit",
-        "label": "Sri Hazrat Babajan"
+        "label": "Sri Hazrat Babajan",
+        "guideVitrine": "2"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7f8x03ye07qi9g4vumc5",
-        "label": "Sri Meher Baba"
+        "label": "Sri Meher Baba",
+        "guideVitrine": "2"
       },
       "type": "spiritual_formation_as_reported_by_Meher_Baba",
       "label": "Spiritual formation, as reported by Meher Baba",
@@ -405,12 +416,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7ekk032007qil1n8orbp",
-        "label": "Sri Shirdi Sai Baba"
+        "label": "Sri Shirdi Sai Baba",
+        "guideVitrine": "2"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7f8x03ye07qi9g4vumc5",
-        "label": "Sri Meher Baba"
+        "label": "Sri Meher Baba",
+        "guideVitrine": "2"
       },
       "type": "spiritual_formation_as_reported_by_Meher_Baba",
       "label": "Spiritual formation, as reported by Meher Baba",
@@ -440,12 +453,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7ivh088m07qi2bl8sj8b",
-        "label": "Sri Upasani Maharaj"
+        "label": "Sri Upasani Maharaj",
+        "guideVitrine": "2"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7f8x03ye07qi9g4vumc5",
-        "label": "Sri Meher Baba"
+        "label": "Sri Meher Baba",
+        "guideVitrine": "2"
       },
       "type": "spiritual_formation_as_reported_by_Meher_Baba",
       "label": "Spiritual formation, as reported by Meher Baba",
@@ -475,12 +490,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7ka509op07qiy3vg3gg1",
-        "label": "Hazrat Tajuddin Baba of Nagpur"
+        "label": "Hazrat Tajuddin Baba of Nagpur",
+        "guideVitrine": "2"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7f8x03ye07qi9g4vumc5",
-        "label": "Sri Meher Baba"
+        "label": "Sri Meher Baba",
+        "guideVitrine": "2"
       },
       "type": "spiritual_formation_as_reported_by_Meher_Baba",
       "label": "Spiritual formation, as reported by Meher Baba",
@@ -510,12 +527,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7ivh088m07qi2bl8sj8b",
-        "label": "Sri Upasani Maharaj"
+        "label": "Sri Upasani Maharaj",
+        "guideVitrine": "2"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7fz904v607qijuaa118u",
-        "label": "Sri Godavari Mata"
+        "label": "Sri Godavari Mata",
+        "guideVitrine": "2"
       },
       "type": "guru_disciple_and_institutional_successor",
       "label": "Disciple and institutional successor",
@@ -545,12 +564,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7f0l03nb07qik1abxafl",
-        "label": "Sri Samarth Ramdas"
+        "label": "Sri Samarth Ramdas",
+        "guideVitrine": "9"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7e7h02ky07qi6rjds61j",
-        "label": "Sri Vena Bai Swami"
+        "label": "Sri Vena Bai Swami",
+        "guideVitrine": "9"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -575,12 +596,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7h4g069i07qiutly2tdw",
-        "label": "Sri Gajanan Maharaj"
+        "label": "Sri Gajanan Maharaj",
+        "guideVitrine": "9"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7fe9045b07qiv7h2wlsy",
-        "label": "Sri Bhaskar Maharaj"
+        "label": "Sri Bhaskar Maharaj",
+        "guideVitrine": "9"
       },
       "type": "devotee_who_accompanied_gajanan",
       "label": "Devotee and companion",
@@ -602,12 +625,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7hr3070707qik220ydwi",
-        "label": "Sri Bhagavan Nityananda"
+        "label": "Sri Bhagavan Nityananda",
+        "guideVitrine": "10"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7eld033407qi9zmuya1v",
-        "label": "Sri Saligram Swami"
+        "label": "Sri Saligram Swami",
+        "guideVitrine": "10"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -636,12 +661,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7hr3070707qik220ydwi",
-        "label": "Sri Bhagavan Nityananda"
+        "label": "Sri Bhagavan Nityananda",
+        "guideVitrine": "10"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7hfv06mv07qi3vq90u1a",
-        "label": "Balyogi Sri Sadanand Maharaj"
+        "label": "Balyogi Sri Sadanand Maharaj",
+        "guideVitrine": "10"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -670,12 +697,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7dg301kf07qinm0alnxb",
-        "label": "Sri Swami Shivananda Saraswati"
+        "label": "Sri Swami Shivananda Saraswati",
+        "guideVitrine": "3"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7gbj05aa07qij87q96dm",
-        "label": "Sri Swami Chinmayananda"
+        "label": "Sri Swami Chinmayananda",
+        "guideVitrine": "3"
       },
       "type": "sannyasa_guru_disciple",
       "label": "Sannyasa teacher–disciple",
@@ -702,7 +731,8 @@
       "to": {
         "kind": "saint",
         "saintId": "cms0w7gbj05aa07qij87q96dm",
-        "label": "Sri Swami Chinmayananda"
+        "label": "Sri Swami Chinmayananda",
+        "guideVitrine": "3"
       },
       "type": "vedanta_teacher_pupil",
       "label": "Vedanta teacher–pupil",
@@ -724,12 +754,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7gqz05ta07qipfnp378d",
-        "label": "Sri Mahendra Das Baba"
+        "label": "Sri Mahendra Das Baba",
+        "guideVitrine": "3"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7gh905ho07qiaw52hpsm",
-        "label": "Sri Haidakhan Babaji"
+        "label": "Sri Haidakhan Babaji",
+        "guideVitrine": "3"
       },
       "type": "devotional_association_and_foretelling_not_direct_disciple",
       "label": "Devotional association and foretelling",
@@ -751,12 +783,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7jew08si07qiu6p8lh4q",
-        "label": "Sri Lahiri Mahasaya"
+        "label": "Sri Lahiri Mahasaya",
+        "guideVitrine": "4"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7fey046507qi4z4gcbti",
-        "label": "Sri Swami SriYukteshwar Giri"
+        "label": "Sri Swami SriYukteshwar Giri",
+        "guideVitrine": "4"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -798,12 +832,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7fey046507qi4z4gcbti",
-        "label": "Sri Swami SriYukteshwar Giri"
+        "label": "Sri Swami SriYukteshwar Giri",
+        "guideVitrine": "4"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7fr004ld07qidykpxgm1",
-        "label": "Sri Paramahamsa Yogananda"
+        "label": "Sri Paramahamsa Yogananda",
+        "guideVitrine": "4"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -845,12 +881,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7jew08si07qiu6p8lh4q",
-        "label": "Sri Lahiri Mahasaya"
+        "label": "Sri Lahiri Mahasaya",
+        "guideVitrine": "4"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7j0q08ea07qietvxb3jk",
-        "label": "Sri Trailanga Swami"
+        "label": "Sri Trailanga Swami",
+        "guideVitrine": "5"
       },
       "type": "friendship_reported_in_autobiography",
       "label": "Friendship, reported in Autobiography of a Yogi",
@@ -892,12 +930,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7fr004ld07qidykpxgm1",
-        "label": "Sri Paramahamsa Yogananda"
+        "label": "Sri Paramahamsa Yogananda",
+        "guideVitrine": "4"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7ils07yc07qi08agtyap",
-        "label": "Sri Daya Mata"
+        "label": "Sri Daya Mata",
+        "guideVitrine": "4"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -939,12 +979,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7fr004ld07qidykpxgm1",
-        "label": "Sri Paramahamsa Yogananda"
+        "label": "Sri Paramahamsa Yogananda",
+        "guideVitrine": "4"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7fnu04hc07qit9nwaudj",
-        "label": "Sri Durga Mata"
+        "label": "Sri Durga Mata",
+        "guideVitrine": "4"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -986,12 +1028,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7fr004ld07qidykpxgm1",
-        "label": "Sri Paramahamsa Yogananda"
+        "label": "Sri Paramahamsa Yogananda",
+        "guideVitrine": "4"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7ir2084007qi1cuzm66g",
-        "label": "Sri Swami Kriyananda"
+        "label": "Sri Swami Kriyananda",
+        "guideVitrine": "4"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -1033,12 +1077,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7fey046507qi4z4gcbti",
-        "label": "Sri Swami SriYukteshwar Giri"
+        "label": "Sri Swami SriYukteshwar Giri",
+        "guideVitrine": "4"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7dkz01r407qiwpvn2sa1",
-        "label": "Sri Hariharananda Giri"
+        "label": "Sri Hariharananda Giri",
+        "guideVitrine": "4"
       },
       "type": "kriya_guru_disciple_as_reported_by_Karar_Ashram",
       "label": "Kriya teacher–disciple, Karar Ashram account",
@@ -1080,12 +1126,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7fey046507qi4z4gcbti",
-        "label": "Sri Swami SriYukteshwar Giri"
+        "label": "Sri Swami SriYukteshwar Giri",
+        "guideVitrine": "4"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7jbl08pr07qi8w9i43tn",
-        "label": "Sri Motilal Mukhabadhyay, Mukarji"
+        "label": "Sri Motilal Mukhabadhyay, Mukarji",
+        "guideVitrine": "4"
       },
       "type": "guru_disciple_as_reported_by_Karar_Ashram",
       "label": "Teacher–disciple, Karar Ashram account",
@@ -1127,7 +1175,8 @@
       "from": {
         "kind": "saint",
         "saintId": "cmstxdltu001907of10lp0ura",
-        "label": "Guru Nanak Dev Ji"
+        "label": "Guru Nanak Dev Ji",
+        "guideVitrine": "11"
       },
       "to": {
         "kind": "context",
@@ -1159,7 +1208,8 @@
       "to": {
         "kind": "saint",
         "saintId": "cmus3rx2x005407o5sorws3t3",
-        "label": "Sri Guru Amar Das Ji, Amritsar"
+        "label": "Sri Guru Amar Das Ji, Amritsar",
+        "guideVitrine": "11"
       },
       "type": "succession_of_guruship_not_necessarily_biological",
       "label": "Succession of Guruship",
@@ -1181,7 +1231,8 @@
       "from": {
         "kind": "saint",
         "saintId": "cmus3rx2x005407o5sorws3t3",
-        "label": "Sri Guru Amar Das Ji, Amritsar"
+        "label": "Sri Guru Amar Das Ji, Amritsar",
+        "guideVitrine": "11"
       },
       "to": {
         "kind": "context",
@@ -1213,7 +1264,8 @@
       "to": {
         "kind": "saint",
         "saintId": "cms0w7gu205x207qi5n5dmt5g",
-        "label": "Sri Guru Arjan Dev Ji"
+        "label": "Sri Guru Arjan Dev Ji",
+        "guideVitrine": "11"
       },
       "type": "succession_of_guruship_not_necessarily_biological",
       "label": "Succession of Guruship",
@@ -1235,12 +1287,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7gu205x207qi5n5dmt5g",
-        "label": "Sri Guru Arjan Dev Ji"
+        "label": "Sri Guru Arjan Dev Ji",
+        "guideVitrine": "11"
       },
       "to": {
         "kind": "saint",
         "saintId": "cmus3rwpg002907o5vur47sj4",
-        "label": "Sri Guru Hargobind Ji"
+        "label": "Sri Guru Hargobind Ji",
+        "guideVitrine": "11"
       },
       "type": "succession_of_guruship_not_necessarily_biological",
       "label": "Succession of Guruship",
@@ -1262,7 +1316,8 @@
       "from": {
         "kind": "saint",
         "saintId": "cmus3rwpg002907o5vur47sj4",
-        "label": "Sri Guru Hargobind Ji"
+        "label": "Sri Guru Hargobind Ji",
+        "guideVitrine": "11"
       },
       "to": {
         "kind": "context",
@@ -1348,7 +1403,8 @@
       "to": {
         "kind": "saint",
         "saintId": "cmus3rwy1004007o58ua7nzz4",
-        "label": "Sri Guru Gobind Singh Ji"
+        "label": "Sri Guru Gobind Singh Ji",
+        "guideVitrine": "11"
       },
       "type": "succession_of_guruship_not_necessarily_biological",
       "label": "Succession of Guruship",
@@ -1370,12 +1426,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7eyj03kp07qiwtmla1pm",
-        "label": "Namdev (13th century)"
+        "label": "Namdev (13th century)",
+        "guideVitrine": "8"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7dfm01jv07qi6o8h7rvx",
-        "label": "Sri Janabai"
+        "label": "Sri Janabai",
+        "guideVitrine": "8"
       },
       "type": "household_devotional_association",
       "label": "Household devotional association",
@@ -1397,12 +1455,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7f8403xd07qin696rwb5",
-        "label": "Sri Chaitanya Mahaprabhu"
+        "label": "Sri Chaitanya Mahaprabhu",
+        "guideVitrine": "19"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7jbr08px07qiml4wmfuh",
-        "label": "Sri Vishnupriya Devi"
+        "label": "Sri Vishnupriya Devi",
+        "guideVitrine": "19"
       },
       "type": "wife",
       "label": "Wife",
@@ -1446,12 +1506,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7f8403xd07qin696rwb5",
-        "label": "Sri Chaitanya Mahaprabhu"
+        "label": "Sri Chaitanya Mahaprabhu",
+        "guideVitrine": "19"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7edy02th07qi7gwufj69",
-        "label": "Sri Haridas Thakur"
+        "label": "Sri Haridas Thakur",
+        "guideVitrine": "19"
       },
       "type": "close devotional associate",
       "label": "close devotional associate",
@@ -1495,12 +1557,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7f8403xd07qin696rwb5",
-        "label": "Sri Chaitanya Mahaprabhu"
+        "label": "Sri Chaitanya Mahaprabhu",
+        "guideVitrine": "19"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7ec902ra07qi5mzq7svj",
-        "label": "Sri Sarvabhauma Bhattacharya"
+        "label": "Sri Sarvabhauma Bhattacharya",
+        "guideVitrine": "19"
       },
       "type": "Puri scholar who became a devotee",
       "label": "Puri scholar who became a devotee",
@@ -1544,12 +1608,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7f8403xd07qin696rwb5",
-        "label": "Sri Chaitanya Mahaprabhu"
+        "label": "Sri Chaitanya Mahaprabhu",
+        "guideVitrine": "19"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7diw01o807qiqpmiltvz",
-        "label": "Sri Chand Kazi"
+        "label": "Sri Chand Kazi",
+        "guideVitrine": "18"
       },
       "type": "dialogue and reconciliation in Navadwip",
       "label": "dialogue and reconciliation in Navadwip",
@@ -1794,7 +1860,8 @@
       "to": {
         "kind": "saint",
         "saintId": "cms0w7d8i01ah07qi4kulwfzd",
-        "label": "Sri Gopala Bhatta Goswami"
+        "label": "Sri Gopala Bhatta Goswami",
+        "guideVitrine": "19"
       },
       "type": "group_membership_not_guru_disciple",
       "label": "Group membership",
@@ -1843,7 +1910,8 @@
       "to": {
         "kind": "saint",
         "saintId": "cms0w7k1p09g407qirl5stxye",
-        "label": "Sri Jiva Goswami"
+        "label": "Sri Jiva Goswami",
+        "guideVitrine": "19"
       },
       "type": "group_membership_not_guru_disciple",
       "label": "Group membership",
@@ -1892,7 +1960,8 @@
       "to": {
         "kind": "saint",
         "saintId": "cms0w7f8403xd07qin696rwb5",
-        "label": "Sri Chaitanya Mahaprabhu"
+        "label": "Sri Chaitanya Mahaprabhu",
+        "guideVitrine": "19"
       },
       "type": "devotional_group_membership",
       "label": "Devotional group membership",
@@ -2132,12 +2201,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7fvo04qs07qi5l3znh4c",
-        "label": "Sri Gaura Kishor Das Babaji"
+        "label": "Sri Gaura Kishor Das Babaji",
+        "guideVitrine": "17"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7cw800w707qip4vr4swx",
-        "label": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+        "label": "Bhaktisiddhanta Sarasvati Thakura Goswami",
+        "guideVitrine": "17"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -2175,12 +2246,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7cw800w707qip4vr4swx",
-        "label": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+        "label": "Bhaktisiddhanta Sarasvati Thakura Goswami",
+        "guideVitrine": "17"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7en7035g07qiz6rl1u9d",
-        "label": "A. C. Bhaktivedanta Swami Prabhupada"
+        "label": "A. C. Bhaktivedanta Swami Prabhupada",
+        "guideVitrine": "17"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -2218,12 +2291,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7cw800w707qip4vr4swx",
-        "label": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+        "label": "Bhaktisiddhanta Sarasvati Thakura Goswami",
+        "guideVitrine": "17"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7hah06gi07qil5pafm2a",
-        "label": "Sri Tridandi Swami Srimad Bhakti Pramod Puri Goswami Maharaj"
+        "label": "Sri Tridandi Swami Srimad Bhakti Pramod Puri Goswami Maharaj",
+        "guideVitrine": "17"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -2261,12 +2336,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7cw800w707qip4vr4swx",
-        "label": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+        "label": "Bhaktisiddhanta Sarasvati Thakura Goswami",
+        "guideVitrine": "17"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7iuf087j07qicygi4d23",
-        "label": "Sri Bhakti Prajnana Keshav Goswami"
+        "label": "Sri Bhakti Prajnana Keshav Goswami",
+        "guideVitrine": "17"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -2304,12 +2381,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7h3c068907qi1ajzanag",
-        "label": "Sri Radha Raman Charan Das"
+        "label": "Sri Radha Raman Charan Das",
+        "guideVitrine": "18"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7f0103mn07qiabdbm67v",
-        "label": "Sri Lalita Sakhi Dasi"
+        "label": "Sri Lalita Sakhi Dasi",
+        "guideVitrine": "18"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -2352,7 +2431,8 @@
       "to": {
         "kind": "saint",
         "saintId": "cms0w7i8r07k607qib72u99nr",
-        "label": "Sri Mahanambrata Brahmachari"
+        "label": "Sri Mahanambrata Brahmachari",
+        "guideVitrine": "18"
       },
       "type": "initiating_guru_disciple",
       "label": "Initiating guru–disciple",
@@ -2383,7 +2463,8 @@
       "to": {
         "kind": "saint",
         "saintId": "cms0w7g60053j07qijiw8qh3j",
-        "label": "Sri Jagad Bandhu Sundar"
+        "label": "Sri Jagad Bandhu Sundar",
+        "guideVitrine": "18"
       },
       "type": "devotional_focus_not_initiation",
       "label": "Devotional focus",
@@ -2409,12 +2490,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7cdr008r07qim1f6c46u",
-        "label": "Sri Vijay Krishna Goswami"
+        "label": "Sri Vijay Krishna Goswami",
+        "guideVitrine": "20"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms3d4ktl000007ozc8967glx",
-        "label": "Sri Kuladananda Brahmachari"
+        "label": "Sri Kuladananda Brahmachari",
+        "guideVitrine": "20"
       },
       "type": "guru_disciple_and_attendant",
       "label": "Disciple and attendant",
@@ -2436,12 +2519,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7cb8006207qix8q1aash",
-        "label": "Sri Mokshada Sundari Devi"
+        "label": "Sri Mokshada Sundari Devi",
+        "guideVitrine": "21"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7e2q02f407qie0yjy7xe",
-        "label": "Sri Anandamayi Ma"
+        "label": "Sri Anandamayi Ma",
+        "guideVitrine": "21"
       },
       "type": "biological_mother_daughter",
       "label": "Mother–daughter",
@@ -2463,12 +2548,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7c6e001h07qi248w64am",
-        "label": "Sri Bamakhepa Baba"
+        "label": "Sri Bamakhepa Baba",
+        "guideVitrine": "21"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7cl800i707qi368teg2q",
-        "label": "Paramahamsa Sri Swami Nigammananda ji Saraswati Deva"
+        "label": "Paramahamsa Sri Swami Nigammananda ji Saraswati Deva",
+        "guideVitrine": "21"
       },
       "type": "tantra_teacher_pupil",
       "label": "Tantric teacher–pupil",
@@ -2497,7 +2584,8 @@
       "to": {
         "kind": "saint",
         "saintId": "cms0w7cl800i707qi368teg2q",
-        "label": "Paramahamsa Sri Swami Nigammananda ji Saraswati Deva"
+        "label": "Paramahamsa Sri Swami Nigammananda ji Saraswati Deva",
+        "guideVitrine": "21"
       },
       "type": "sannyasa_guru_disciple",
       "label": "Sannyasa teacher–disciple",
@@ -2526,7 +2614,8 @@
       "to": {
         "kind": "saint",
         "saintId": "cms0w7joi092a07qiqkyvnm8m",
-        "label": "Sri Dadaji Dilip Kumar Roy"
+        "label": "Sri Dadaji Dilip Kumar Roy",
+        "guideVitrine": "22"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -2552,12 +2641,14 @@
       "from": {
         "kind": "saint",
         "saintId": "cms0w7joi092a07qiqkyvnm8m",
-        "label": "Sri Dadaji Dilip Kumar Roy"
+        "label": "Sri Dadaji Dilip Kumar Roy",
+        "guideVitrine": "22"
       },
       "to": {
         "kind": "saint",
         "saintId": "cms0w7jp4092z07qit35r6mx3",
-        "label": "Sri Indira Devi"
+        "label": "Sri Indira Devi",
+        "guideVitrine": "22"
       },
       "type": "guru_disciple",
       "label": "Guru–disciple",
@@ -2584,5 +2675,7 @@
       "currentVitrine": "19",
       "reason": "Museum record dates 1804–1904 conflict with the twentieth-century disciple of Keshav. No move or relationship claim; curator must verify portrait/full label."
     }
-  ]
+  ],
+  "proposalSnapshotRevision": "c44c64b804d586bd774dbf7db4d6a51522076e034cc0ef2064a1a1fd239f62d9",
+  "proposalSnapshotGeneratedAt": "2026-10-21T03:32:25.639Z"
 }

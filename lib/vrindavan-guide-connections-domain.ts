@@ -1,5 +1,5 @@
 import manifest from "../data/museum/vrindavan-guide-connections-v9.json";
-export type GuideEndpoint={kind:"saint";saintId:string;label:string}|{kind:"context";key:string;label:string};
+export type GuideEndpoint={kind:"saint";saintId:string;label:string;guideVitrine?:string}|{kind:"context";key:string;label:string};
 export type GuideKind="teaching"|"succession"|"biological_family"|"partner"|"association"|"incarnation"|"group_membership";
 // Direction follows the research statement, never alphabetical ID ordering:
 // teaching: teacher -> pupil; succession: predecessor -> successor;
@@ -10,7 +10,7 @@ export type GuideKind="teaching"|"succession"|"biological_family"|"partner"|"ass
 export type GuideConnection={id:string;sectionId:string;from:GuideEndpoint;to:GuideEndpoint;type:string;label:string;kind:GuideKind;structural:boolean;evidence:"research_review"|"traditional_account"|"provisional_archive";confidence:"high"|"medium";sources:{title:string;url:string}[];notes:string[]};
 export const guideConnections=manifest.connections as GuideConnection[];
 export const guideSections=manifest.sections;
-export const guideMetadata={version:manifest.version,guideVersion:manifest.guideVersion,guideSha256:manifest.guideSha256,museum:manifest.museum,policy:manifest.policy,heldCases:manifest.heldCases};
+export const guideMetadata={version:manifest.version,guideVersion:manifest.guideVersion,guideSha256:manifest.guideSha256,museum:manifest.museum,proposalSnapshotRevision:manifest.proposalSnapshotRevision,proposalSnapshotGeneratedAt:manifest.proposalSnapshotGeneratedAt,policy:manifest.policy,heldCases:manifest.heldCases};
 export type GuidePerson={id:string;name:string;slug:string;status:string;birthYear:number|null;samadhiYear:number|null};
 export type GuidePlacement={saintId:string;section:string;tier:string;familyKey:string;familyLabel:string;proposalRevision:string;arrangement:{status:string;vitrine:string;shelf:string}|null};
 export type GuideCanonicalClaim={id:string;fromSaintId:string;toSaintId:string;relationshipType:string;status:string;evidenceStatus:string;confidence:string;notes?:string|null};
@@ -35,7 +35,8 @@ export function projectGuideConnections(people:GuidePerson[],claims:GuideCanonic
   const matches=pair.filter(e=>expectedTypes(c).includes(e.relationshipType)&&directionMatches(c,e));
   const reviewed=matches.filter(e=>e.status==="published"&&["certain","probable","traditional"].includes(e.evidenceStatus)&&["high","medium"].includes(e.confidence));
   const canonicalState:GuideCanonicalState=!from.available||!to.available?"unavailable_identity":from.contextOnly||to.contextOnly?"context_only":reviewed.length?"reviewed_match":matches.length?"unreviewed_match":pair.length?"type_conflict":"missing";
-  return {...c,from,to,canonicalState,canonicalClaims:pair,matchingClaimIds:matches.map(e=>e.id),reviewedClaimIds:reviewed.map(e=>e.id),displayOnly:true as const,planningEffects:"none" as const};
+  const planningSnapshotChanged=[from,to].some(ep=>ep.kind==="saint"&&ep.guideVitrine!==undefined&&(!ep.placement||ep.placement.arrangement?.vitrine!==ep.guideVitrine));
+  return {...c,from,to,planningSnapshotChanged,canonicalState,canonicalClaims:pair,matchingClaimIds:matches.map(e=>e.id),reviewedClaimIds:reviewed.map(e=>e.id),displayOnly:true as const,planningEffects:"none" as const};
  });
 }
 export type ResolvedGuideConnection=ReturnType<typeof projectGuideConnections>[number];
