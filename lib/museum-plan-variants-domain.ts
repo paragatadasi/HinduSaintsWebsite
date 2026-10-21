@@ -24,7 +24,7 @@ export function compareVariant(variant:MuseumPlanVariant,current:VariantCurrentR
  return {changed:changes.length,unchanged:current.length-changes.length-preservedImplemented.length,preservedImplemented:preservedImplemented.length,replannedImplemented:replannedImplemented.length,changes};
 }
 
-/** Conservative capacity rule for the short move: no new frame saint without an outgoing frame saint. */
+/** Relic-housing balance only; source packaging does not establish portrait presence or picture-space capacity. */
 export function validateTargetedMoveCapacity(rows:PlannerRow[],entries:{saintId:string;vitrine:string}[]){
  const selected=new Map(entries.map(entry=>[entry.saintId,entry]));const frameBalance=new Map<string,{incoming:number;outgoing:number}>();
  const balance=(vitrine:string)=>{const value=frameBalance.get(vitrine)??{incoming:0,outgoing:0};frameBalance.set(vitrine,value);return value;};
@@ -34,11 +34,11 @@ export function validateTargetedMoveCapacity(rows:PlannerRow[],entries:{saintId:
   if(locations.has(null)||locations.size!==1)throw new Error("A saint with unknown or multiple source vitrines needs a separately reviewed item-level plan.");
   for(const source of row.sources){if(source.shared){const owners=rows.filter(candidate=>candidate.sources.some(item=>item.id===source.id));if(owners.length<2||owners.some(owner=>selected.get(owner.saintId)?.vitrine!==entry.vitrine))throw new Error("Shared source entries must move together to one destination; partial shared-entry moves need review.");}}
   const packaging=row.sources.map(source=>source.packaging??classifyRelicPackaging(source.packagingText));
-  if(packaging.some(evidence=>evidence.reviewRequired||["unknown","conflicting"].includes(evidence.type)))throw new Error("Unknown or conflicting frame evidence needs review before a targeted move can be loaded.");
+  if(packaging.some(evidence=>evidence.reviewRequired||["unknown","conflicting"].includes(evidence.type)))throw new Error("Unknown or conflicting relic-housing evidence needs review before a targeted move can be loaded.");
   const from=row.lastConfirmed?vitrineNumber(row.lastConfirmed.vitrine):[...locations][0];if(!from)throw new Error("The confirmed starting vitrine needs review.");
   if(from===entry.vitrine)continue;
   if(packaging.some(evidence=>["frame","small_frame","mixed_frame"].includes(evidence.type))){balance(from).outgoing++;balance(entry.vitrine).incoming++;}
  }
- for(const [vitrine,value] of frameBalance)if(value.incoming>value.outgoing)throw new Error(`Vitrine ${vitrine} receives ${value.incoming} frame saints but only ${value.outgoing} leave. Pair each incoming frame saint with an outgoing frame saint.`);
+ for(const [vitrine,value] of frameBalance)if(value.incoming>value.outgoing)throw new Error(`Vitrine ${vitrine} receives ${value.incoming} frame-housed relic entries but only ${value.outgoing} leave. Pair each incoming frame-housed relic entry with an outgoing frame-housed relic entry.`);
  return [...frameBalance].map(([vitrine,value])=>({vitrine,...value}));
 }
