@@ -6,7 +6,7 @@ import {buildVrindavanWorkingView} from "./vrindavan-working-domain";
 import {buildMuseumView,type MuseumSaintPlacement as Row} from "./museum-proposals";
 import {applyFamilyProposalMoves} from "./museum-family-move-domain";
 import {museumTreeOptions} from "./museum-tree-options";
-import {normalizeTreeClaims,treeNeighborhood} from "./museum-tree-layout";
+import {layoutMuseumTree,normalizeTreeClaims,treeNeighborhood} from "./museum-tree-layout";
 const row=(id:string,extra:Partial<Row>={}):Row=>({id,saintId:id,name:id,section:"Gaudiya Vaishnava",tier:"Tertiary",familyId:"old",curatorialFamily:"",alternatives:[],confidence:"Medium",rationale:"Imported rationale",note:"Raw source",familySize:0,spiritualRegions:[],sampradaya:"",normalizedPlaces:[],needsResearch:false,placementState:"Proposed",...extra});
 const primary=row("primary",{tier:"Featured",familyId:"chaitanya",groupLabel:"Chaitanya family"});
 const edge=(id:string,from:string,to:string,type="disciple",extra:Partial<Edge>={}):Edge=>({id,fromSaintId:from,toSaintId:to,relationshipType:type,status:"published",evidenceStatus:"uncategorized",confidence:"medium",...extra});
@@ -113,7 +113,7 @@ test("biological family edges remain distinct from guru arrows in the tree",()=>
  const claims=normalizeTreeClaims([edge("f","parent","child","father"),edge("p","parent","spouse","wife"),edge("s","child","next","successor")]);
  assert.equal(claims[0].kind,"family");assert.equal(claims[1].kind,"partner");assert.equal(claims[2].kind,"successor");
  const graph={nodes:["parent","child"].map(id=>({id,name:id,birthYear:null,samadhiYear:null})),edges:claims};
- assert.deepEqual(treeNeighborhood(graph,"parent").find(g=>g.key==="family")?.people.map(p=>p.id),["child"]);
+ assert.deepEqual(treeNeighborhood(layoutMuseumTree(graph.nodes,claims),"parent").find(g=>g.key==="family")?.people.map(p=>p.id),["child"]);
 });
 
 
