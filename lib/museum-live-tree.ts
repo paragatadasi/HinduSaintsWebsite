@@ -1,3 +1,5 @@
+import {readVrindavanGuideConnections} from "./vrindavan-guide-connections";
+import {guideTreeOverlay} from "./museum-guide-tree";
 import {MUSEUM_TREE_RELATIONSHIP_KINDS} from "./museum-family-reconciliation";
 import {buildSikhContext,sikhContextSeeds} from "./museum-sikh-context";
 import {getMuseumProposalData} from "./museum-proposals";
@@ -59,7 +61,9 @@ export async function readMuseumLiveTree(seeds:string[],museum:"spn"|"vrindavan"
  const claims=[...normalizeTreeClaims([...records.values()]),...sourceClaims];
  if(claims.length>EDGE_LIMIT)truncated=true;
  const contextTree=sikhContext?buildSikhContext(nodes,normalizeTreeClaims([...records.values()])):null;
- return {researchContext:contextTree?.researchContext??null,layout:layoutMuseumTree(contextTree?.nodes??[...combined.values()],contextTree?.claims??claims.slice(0,EDGE_LIMIT)),sourceReferenceClaims:sourceClaims.length,unlinkedSourcePeople:reference.nodes.filter(n=>n.sourceOnly).length,profiles,truncated,limits:{nodes:NODE_LIMIT,hops:HOPS},retrievedAt:new Date().toISOString()};
+ const guide=museum==="vrindavan"?await readVrindavanGuideConnections():null;
+ const overlay=guideTreeOverlay(contextTree?.nodes??[...combined.values()],contextTree?.claims??claims.slice(0,EDGE_LIMIT),guide?.connections??[]);
+ return {guideConnections:overlay.guideConnections,researchContext:contextTree?.researchContext??null,layout:overlay.layout,sourceReferenceClaims:sourceClaims.length,unlinkedSourcePeople:reference.nodes.filter(n=>n.sourceOnly).length,profiles,truncated,limits:{nodes:Math.max(NODE_LIMIT,overlay.layout.nodes.length),hops:HOPS},retrievedAt:new Date().toISOString()};
 }
 export type MuseumLiveTree=Awaited<ReturnType<typeof readMuseumLiveTree>>;
 

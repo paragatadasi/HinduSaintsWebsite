@@ -8,7 +8,7 @@ import {plannerDestination,plannerCounts,plannerFamilies,plannerRegionGroups,pla
 import {assignMovePlanAction,saveSectionAreaAction,saveFlexiblePlanAction} from "@/app/vrindavanadmin/plan/actions";
 import {MuseumSectionDragButton} from "./museum-section-drag-button";
 import {MuseumRoomPlan} from "./museum-room-plan";
-import {MuseumSaintTree} from "./museum-live-trees";
+import {MuseumSaintTree,MuseumGuideConnections} from "./museum-live-trees";
 import {MuseumDetailDialog} from "./museum-detail-dialog";
 import {MuseumPlanningStats} from "./museum-planning-stats";
 import {MuseumConnectedTraditions,museumRegionIndex} from "./museum-connected-traditions";
@@ -143,6 +143,7 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
     {!savedArea.length?<p>You can browse everyone below. Reserve a section area when you are ready to assign destinations.</p>:null}
     {savedArea.length===1?<div className="review-actions"><p>This section has one destination: Vitrine {savedArea[0]}. Shelf and position are optional.</p><button type="button" className="museum-admin-button" disabled={!canEdit||pending||areaDirty||!unassigned.length||!!requiredVitrine&&savedArea[0]!==requiredVitrine} onClick={()=>save(()=>assignMovePlanAction({revision:data.revision,placementIds:unassigned.map(row=>row.id),vitrine:savedArea[0],shelf:"",replaceExisting:false}),`${unassigned.length} saints assigned to Vitrine ${savedArea[0]}.`)}>Assign all {unassigned.length} unassigned saints to Vitrine {savedArea[0]}</button></div>:null}
     <>
+     <MuseumGuideConnections key={`${section}:${data.revision}`} section={section}/>
      <nav className="museum-planner__workspace-nav" aria-label="Section workspace"><a href="#museum-plan-overview">Overview</a><a href="#museum-plan-families">Primary saints & families</a><a href="#museum-plan-individuals">Individual saints</a></nav>
      <form onSubmit={event=>{event.preventDefault();const form=new FormData(event.currentTarget);save(()=>assignMovePlanAction({revision:data.revision,placementIds:selected,vitrine:activeDestination,shelf:String(form.get("shelf")||""),replaceExisting:form.get("replaceExisting")==="on"}),`${selected.length} saints assigned to vitrine ${activeDestination}.`);}}>
       <fieldset disabled={!canEdit||pending||areaDirty} className="admin-field form-stack">
