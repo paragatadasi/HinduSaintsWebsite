@@ -2,34 +2,43 @@
 import {useId,useState,useTransition} from "react";
 import {useRouter} from "next/navigation";
 import {Check,ClipboardList} from "lucide-react";
-import {isFlexible,plannerMoveNeedsAttention,vitrineNumber,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
+import {filterMoveRows,startingVitrines,destinationVitrines,moveRegion,type MoveFilters} from "@/lib/museum-move-companion";
+import {isFlexible,vitrineNumber,vrindavanVitrines,type PlannerData,type PlannerRow} from "@/lib/museum-move-planner-domain";
 import {completeMovePlanAction,loadMoveSaintAction} from "@/app/vrindavanadmin/plan/actions";
-import {MuseumPackagingSummary} from "./museum-packaging-summary";
+import {MuseumPackagingComponents} from "./museum-packaging-components";
 import {MuseumPlanningStats} from "./museum-planning-stats";
 import {MuseumDetailDialog} from "./museum-detail-dialog";
 import {MuseumSaintProfile} from "./museum-saint-profile";
 import {MuseumSaintTree} from "./museum-live-trees";
 
-function currentVitrines(row:PlannerRow){return row.lastConfirmed?[row.lastConfirmed.vitrine]:row.sources.map(source=>source.vitrine);}
 export function MuseumMoveList({data,canEdit}:{data:PlannerData;canEdit:boolean}){
- const [group,setGroup]=useState<"destination"|"source">("destination");
- const [number,setNumber]=useState(""),[query,setQuery]=useState("");
- const [progress,setProgress]=useState("remaining");
- const [notice,setNotice]=useState("");
- const all=data.rows.filter(row=>row.status!=="Proposed"||isFlexible(row));
- const rows=all.filter(row=>(progress==="all"||(progress==="remaining"?plannerMoveNeedsAttention(row):row.status==="Implemented"))&&(!number||(group==="destination"?(isFlexible(row)?row.flexibleVitrines!.includes(number):row.vitrine===number):currentVitrines(row).some(v=>vitrineNumber(v)===number)))&&row.name.toLowerCase().includes(query.toLowerCase()));
+ const initial:MoveFilters={query:"",source:"",destination:"",region:"",section:"",status:"remaining",sort:"destination"};
+ const [filters,setFilters]=useState<MoveFilters>(initial),[notice,setNotice]=useState("");
+ const update=(key:keyof MoveFilters,value:string)=>setFilters(current=>({...current,[key]:value,...(key==="region"?{section:""}:{})}));
+ const all=data.rows,rows=filterMoveRows(all,filters);
+ const regions=[...new Set(all.map(row=>moveRegion(row.section)))].sort();
+ const sections=[...new Set(all.filter(row=>!filters.region||moveRegion(row.section)===filters.region).map(row=>row.section))].sort();
+ const sourceOptions=[...new Set(all.flatMap(startingVitrines).map(v=>vitrineNumber(v)||v))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
  return <section className="admin-stack">
   <div className="section-heading"><div className="museum-planning-heading"><p className="eyebrow">At the museum</p><h2>Move-day checklist</h2><MuseumPlanningStats items={[{label:"Implemented",value:all.filter(row=>row.status==="Implemented"&&!row.arrangementNeedsReview).length},{label:"Still to do",value:all.filter(row=>row.status!=="Implemented"&&!row.arrangementNeedsReview).length},{label:"To review",value:all.filter(row=>row.arrangementNeedsReview).length}]}/></div><button className="museum-admin-button museum-admin-button--secondary" onClick={()=>window.print()}>Print this list</button></div>
   {notice?<p role="status">{notice}</p>:null}
-  <div className="museum-planner__filters">
-   <label>Show<select value={progress} onChange={event=>setProgress(event.target.value)}><option value="remaining">Still to do</option><option value="completed">Implemented</option><option value="all">All planned moves</option></select></label>
-   <label>Organize by<select value={group} onChange={event=>setGroup(event.target.value as typeof group)}><option value="destination">Destination vitrine</option><option value="source">Starting vitrine</option></select></label>
-   <label>Vitrine<select value={number} onChange={event=>setNumber(event.target.value)}><option value="">All vitrines</option>{vrindavanVitrines.map(n=><option key={n}>{n}</option>)}</select></label>
-   <label>Find a saint<input type="search" value={query} onChange={event=>setQuery(event.target.value)}/></label>
-  </div>
+  <section className="museum-admin-panel museum-move-controls admin-stack" aria-label="Search, sort and filter moves">
+   <div className="museum-move-controls__top">
+    <label className="admin-field">Find a saint<input type="search" value={filters.query} onChange={event=>update("query",event.target.value)}/></label>
+    <label className="admin-field">Sort by<select value={filters.sort} onChange={event=>update("sort",event.target.value)}><option value="destination">Destination vitrine</option><option value="source">Starting vitrine</option><option value="name">Saint name</option><option value="section">Section</option></select></label>
+   </div>
+   <fieldset className="museum-move-controls__filters"><legend>Filter moves</legend>
+    <label className="admin-field">Starting vitrine<select value={filters.source} onChange={event=>update("source",event.target.value)}><option value="">All</option>{sourceOptions.map(n=><option key={n} value={n}>{n}</option>)}<option value="unknown">Not recorded</option></select></label>
+    <label className="admin-field">Destination vitrine<select value={filters.destination} onChange={event=>update("destination",event.target.value)}><option value="">All</option>{vrindavanVitrines.map(n=><option key={n} value={n}>{n}</option>)}<option value="unknown">Not assigned</option></select></label>
+    <label className="admin-field">Region<select value={filters.region} onChange={event=>update("region",event.target.value)}><option value="">All regions</option>{regions.map(n=><option key={n}>{n}</option>)}</select></label>
+    <label className="admin-field">Section<select value={filters.section} onChange={event=>update("section",event.target.value)}><option value="">All sections</option>{sections.map(n=><option key={n}>{n}</option>)}</select></label>
+    <label className="admin-field">Status<select value={filters.status} onChange={event=>update("status",event.target.value)}><option value="remaining">Still to do</option><option value="implemented">Implemented</option><option value="planned">Exact destination planned</option><option value="flexible">Flexible area planned</option><option value="unassigned">No destination yet</option><option value="review">Needs destination review</option><option value="all">All saints</option></select></label>
+   </fieldset>
+   <div className="review-actions"><button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>setFilters({...initial,query:filters.query,sort:filters.sort,status:"all"})}>Clear filters</button></div>
+  </section>
   <p>{rows.length} {rows.length===1?"saint":"saints"} shown. Check the listed relics, place them at the destination, then confirm the saint’s arrangement. Leave a partial or uncertain move planned.</p>
   {!rows.length?<p>No moves match these filters. You can assign destinations in Plan destinations or choose another progress filter.</p>:null}
-  {[...rows].sort((a,b)=>(group==="destination"?a.vitrine:currentVitrines(a)[0]||"").localeCompare(group==="destination"?b.vitrine:currentVitrines(b)[0]||"",undefined,{numeric:true})||a.name.localeCompare(b.name)).map(row=><MoveCard key={`${row.id}:${row.revision}:${row.flexibleVitrines?.join(",")||""}`} row={row} planRevision={data.revision} canEdit={canEdit} onComplete={()=>setNotice(`${row.name}: arrangement recorded as implemented.`)}/>)}
+  {rows.map(row=><MoveCard key={`${row.id}:${row.revision}:${row.flexibleVitrines?.join(",")||""}`} row={row} planRevision={data.revision} canEdit={canEdit} onComplete={()=>setNotice(`${row.name}: arrangement recorded as implemented.`)}/>)}
  </section>;
 }
 function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevision:string;canEdit:boolean;onComplete:()=>void}){
@@ -43,14 +52,17 @@ function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevi
   try{setDetail(await loadMoveSaintAction(row.saintId));}catch{setDetailError(true);}finally{setLoading(false);}
  };
  return <article className="museum-planner__move museum-planning-card admin-stack">
-  <div className="section-heading"><div><h3>{row.name}</h3><p>{row.section}{row.photo?" · Photo saint":""}</p></div><span>{row.status==="Implemented"?<Check aria-hidden="true"/>:<ClipboardList aria-hidden="true"/>} {flexible?"Area planned":row.status}</span></div>
+  <details className="museum-move-entry">
+   <summary><span className="museum-move-entry__identity"><strong>{row.name}</strong><span>{row.section}</span><small>{moveRegion(row.section)}</small></span><span className="museum-move-entry__route"><span><small>Starting vitrine</small>{startingVitrines(row).join(", ")||"Not recorded"}</span><span><small>Destination vitrine</small>{destinationVitrines(row).join(", ")||"Not assigned"}{flexible?" · Flexible":""}</span></span></summary>
+   <div className="admin-stack museum-move-entry__details">
+   <p>{row.status==="Implemented"?<Check aria-hidden="true"/>:<ClipboardList aria-hidden="true"/>} {flexible?"Area planned":row.status}{row.photo?" · Photo saint":""}</p>
   {row.status!=="Implemented"&&!row.shelf&&(row.tier==="Featured"||row.tier==="Secondary")?<p className="muted">{row.tier==="Featured"?"Primary":"Secondary"} saint: prefer an upper row where space allows, keeping related saints together.</p>:null}
-  <p className="museum-planner__route">{flexible?<strong>Place within vitrines {row.flexibleVitrines!.join(", ")} · choose the actual vitrine when placing</strong>:<strong>{row.status==="Implemented"?"Curator-confirmed":"Destination"}: Vitrine {row.vitrine}{row.shelf?` / ${row.shelf}`:" · Shelf undecided"}</strong>}</p>
+  <p className="museum-planner__route">{flexible?<strong>Place within vitrines {row.flexibleVitrines!.join(", ")} · choose the actual vitrine when placing</strong>:<strong>{row.vitrine?`${row.status==="Implemented"?"Curator-confirmed":"Destination"}: Vitrine ${row.vitrine}${row.shelf?` / ${row.shelf}`:" · Shelf undecided"}`:"No destination assigned yet. Choose one in Plan destinations."}</strong>}</p>
   {row.arrangementNeedsReview?<p role="status"><strong>Review this destination.</strong> The section proposal changed after this destination was saved. The saved location is retained. Use Plan destinations to review or replace it before moving relics; a completed arrangement should be physically checked against the latest proposal.</p>:null}
   {row.lastConfirmed?<p>Last physically confirmed: Vitrine {row.lastConfirmed.vitrine}{row.lastConfirmed.shelf?` / ${row.lastConfirmed.shelf}`:""} · {new Date(row.lastConfirmed.confirmedAt).toLocaleDateString()}. Original inventory locations below are retained as reference.</p>:<p>Starting locations below are from the source inventory; check them in the museum.</p>}
   {row.lastConfirmed?.note?<p>Move note: {row.lastConfirmed.note}</p>:null}
   <button className="museum-admin-button museum-admin-button--secondary" type="button" onClick={showDetails}>Saint photos, biography and family tree</button>
-  <MuseumPackagingSummary rows={[row]} compact/><div><h4>Relics to check</h4>{row.sources.map(source=><div key={source.id} className="museum-planner__source"><strong>{source.vitrine?`Source vitrine ${source.vitrine}`:"Source location not recorded"}{source.shelf?` / ${source.shelf}`:""}</strong><p>{source.relics||"Relic description not recorded"}{source.quantity?` · Quantity: ${source.quantity}`:""}</p>{source.packagingText?<p>Container: {source.packagingText}</p>:null}{source.shared?<p>Shared entry: check the other saints before moving its contents. This confirmation applies only to {row.name}.</p>:null}</div>)}</div>
+  <MuseumPackagingComponents rows={[row]}/><div><h4>Relics to check</h4>{row.sources.map(source=><div key={source.id} className="museum-planner__source"><strong>{source.vitrine?`Source vitrine ${source.vitrine}`:"Source location not recorded"}{source.shelf?` / ${source.shelf}`:""}</strong><p>{source.relics||"Relic description not recorded"}{source.quantity?` · Quantity: ${source.quantity}`:""}</p>{source.packagingText?<p>Container: {source.packagingText}</p>:null}{source.shared?<p>Shared entry: check the other saints before moving its contents. This confirmation applies only to {row.name}.</p>:null}</div>)}</div>
   {(row.status==="Planned"||flexible)&&canEdit?<details className="museum-planner__completion"><summary>Confirm completed arrangement</summary>
    <form onSubmit={event=>{
     event.preventDefault();const form=new FormData(event.currentTarget);setError("");
@@ -72,6 +84,8 @@ function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevi
     </fieldset>
    </form>
   </details>:null}
+   </div>
+  </details>
   {open?<MuseumDetailDialog titleId={titleId} kicker="Saint reference" closeLabel="Close saint reference" onClose={()=>setOpen(false)}>
    <h2 id={titleId}>{row.name}</h2>{loading?<p role="status">Loading saint reference…</p>:null}
    {detailError?<p role="alert">Could not load the reference. <button type="button" onClick={showDetails}>Retry</button></p>:null}
