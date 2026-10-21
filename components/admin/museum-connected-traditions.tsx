@@ -60,7 +60,8 @@ function ConnectionGraph({section,onChoose,available,positions,proposal,pack,are
   const layout=()=>{frame=0;const width=el.clientWidth;if(width<1||Math.abs(width-previous)<1)return;previous=width;
    // Geometry derives from the shared card-width token and actual label height.
    const desired=parseFloat(getComputedStyle(el).getPropertyValue("--width-museum-web-node"));
-   const w=proposal?Math.min(desired,width/4-16):Math.min(desired,Math.max(120,width*.28));
+   const gap=parseFloat(getComputedStyle(el).columnGap);
+   const w=proposal?Math.max(1,Math.min(desired,width/4-gap)):Math.min(desired,Math.max(120,width*.28));
    const next=diagramNodes.map(n=>({...n,w,h:Math.max(132,(Math.ceil(n.name.length/(w/7))+Math.ceil(graph.regions[n.regionIndex].regionName.length/(w/7)))*18+64),x:0,y:0,vx:0,vy:0}));
    const height=Math.max(720,(Math.ceil(next.length/Math.max(1,Math.floor(width/(w+12))))+2)*(Math.max(...next.map(n=>n.h))+20));
    solveWebLayout(next,graph.edges,width,height);setSize({width,height});setNodes(next);
