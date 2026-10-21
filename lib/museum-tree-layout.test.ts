@@ -3,6 +3,29 @@ import assert from "node:assert/strict";
 import {treeNeighborhood,connectedTreeGraph,treeColumnsForWidth,layoutMuseumTree,normalizeTreeClaims,treeNameLines,TREE_GEOMETRY,type TreePerson,type TreeClaim} from "./museum-tree-layout";
 const nodes=(...ids:string[]):TreePerson[]=>ids.map(id=>({id,name:id,birthYear:null,samadhiYear:null}));
 const edge=(from:string,to:string,kind:TreeClaim["kind"]="guru"):TreeClaim=>({id:from+to+kind,from,to,kind,status:"published",evidence:"certain",confidence:"high"});
+
+test("succession preserves predecessor-to-successor direction and stays distinct from discipleship",()=>{
+ const claims=normalizeTreeClaims([{id:"s",fromSaintId:"z-predecessor",toSaintId:"a-successor",relationshipType:"successor",status:"published",evidenceStatus:"certain",confidence:"high"}]);
+ assert.equal(claims[0].from,"z-predecessor");assert.equal(claims[0].to,"a-successor");assert.equal(claims[0].kind,"successor");
+ const graph=layoutMuseumTree(nodes("z-predecessor","a-successor","disciple"),[...claims,edge("a-successor","disciple")]);
+ assert.ok(graph.nodes.find(n=>n.id==="z-predecessor")!.row<graph.nodes.find(n=>n.id==="a-successor")!.row);
+ const groups=treeNeighborhood(graph,"a-successor");
+ assert.deepEqual(groups.find(g=>g.key==="predecessors")!.people.map(n=>n.id),["z-predecessor"]);
+ assert.deepEqual(groups.find(g=>g.key==="disciples")!.people.map(n=>n.id),["disciple"]);
+ assert.equal(groups.find(g=>g.key==="teachers"),undefined);
+});
+test("parallel teacher and succession evidence does not hide both structural edges",()=>{
+ const graph=layoutMuseumTree(nodes("a","b","c"),[edge("a","b"),edge("a","b","successor"),edge("b","c","successor")]);
+ assert.equal(graph.nodes.find(n=>n.id==="c")!.row,2);
+ assert.ok(graph.edges.every(e=>!e.secondary));
+});
+test("ten successors retain all intermediate generations with spouse and disciple context",()=>{
+ const ids=Array.from({length:10},(_,i)=>`guru-${i}`);
+ const graph=layoutMuseumTree(nodes(...ids,"spouse","disciple"),[...ids.slice(1).map((id,i)=>edge(ids[i],id,"successor")),edge(ids[9],"spouse","partner"),edge(ids[9],"disciple")]);
+ assert.deepEqual(ids.map(id=>graph.nodes.find(n=>n.id===id)!.row),Array.from({length:10},(_,i)=>i));
+ assert.equal(graph.nodes.find(n=>n.id==="spouse")!.row,9);
+ assert.equal(graph.nodes.find(n=>n.id==="disciple")!.row,10);
+});
 test("reciprocal claims share a direction and preserve evidence",()=>{
  const raw=(id:string,fromSaintId:string,toSaintId:string,relationshipType:string)=>({id,fromSaintId,toSaintId,relationshipType,status:"published",evidenceStatus:"certain",confidence:"high"});
  const r=layoutMuseumTree(nodes("teacher","student"),normalizeTreeClaims([raw("1","student","teacher","guru"),raw("2","teacher","student","disciple")]));assert.equal(r.edges.length,1);assert.equal(r.edges[0].claims.length,2);assert.ok(r.nodes.find(n=>n.id==="teacher")!.row<r.nodes.find(n=>n.id==="student")!.row);
