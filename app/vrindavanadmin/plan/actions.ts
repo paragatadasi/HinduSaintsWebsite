@@ -9,6 +9,7 @@ import {readVrindavanWorkingData} from "@/lib/vrindavan-working-data";
 import {readMuseumSaintProfiles} from "@/lib/museum-saint-profiles";
 import {saveVrindavanProposal} from "@/lib/vrindavan-proposal-service";
 import {hasCapability} from "@/lib/permissions";
+import {readMuseumDiagramLayouts,saveMuseumDiagramLayout,deleteMuseumDiagramLayout} from "@/lib/museum-diagram-layouts";
 import {readMuseumCuratorReview,saveMuseumCuratorReview} from "@/lib/museum-curator-review";
 import {previewVrindavanSuggestedPlan,applyVrindavanSuggestedPlan,clearVrindavanSuggestedPlan} from "@/lib/museum-move-planner";
 
@@ -36,6 +37,14 @@ export async function loadMoveSaintAction(saintId:string){
  return {profile:(await readMuseumSaintProfiles([saintId]))[saintId]??null,familyKey:row.familyId};
 }
 
+export async function loadPlanSaintOverviewAction(saintId:string){
+ await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");
+ z.string().min(1).max(200).parse(saintId);
+ const data=await readVrindavanWorkingData();const row=data.placements.find(item=>item.saintId===saintId);
+ if(!row)throw new MuseumConflict("This saint is no longer in the reviewed inventory. Reload the plan.");
+ return {row,profile:(await readMuseumSaintProfiles([saintId]))[saintId]??null,sectionSlug:data.sections.find(section=>section.name===row.section)?.slug||""};
+}
+
 export async function saveSectionAreaAction(input:unknown){return save(actorId=>saveVrindavanSectionArea(input,actorId));}
 export async function loadMoveProposalAction(saintId:string){
  const user=await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");
@@ -52,6 +61,18 @@ export async function previewSuggestedPlanAction(){
 }
 export async function applySuggestedPlanAction(input:unknown){return save(actorId=>applyVrindavanSuggestedPlan(input,actorId));}
 export async function clearSuggestedPlanAction(input:unknown){return save(actorId=>clearVrindavanSuggestedPlan(input,actorId));}
+
+export async function loadDiagramLayoutsAction(){
+ const user=await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");
+ return readMuseumDiagramLayouts("museum-vrindavan",user.id);
+}
+async function changeDiagram(input:unknown,remove:boolean){
+ await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");const user=await assertMuseumMutation();
+ try{return {data:await (remove?deleteMuseumDiagramLayout:saveMuseumDiagramLayout)(input,user.id),error:""};}
+ catch(error){if(error instanceof MuseumConflict)return {data:null,error:error.message};if(error instanceof z.ZodError)return {data:null,error:error.issues[0]?.message||"Check this diagram view."};throw error;}
+}
+export async function saveDiagramLayoutAction(input:unknown){return changeDiagram(input,false);}
+export async function deleteDiagramLayoutAction(input:unknown){return changeDiagram(input,true);}
 
 export async function loadCuratorReviewAction(){
  const user=await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");
