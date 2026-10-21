@@ -34,3 +34,24 @@ export function moveDiagramGroup(nodes:WebNode[],ids:ReadonlySet<string>,dx:numb
  const y=Math.max(Math.max(...moving.map(n=>n.h/2-n.y)),Math.min(Math.min(...moving.map(n=>height-n.h/2-n.y)),dy));
  return nodes.map(n=>ids.has(n.id)?{...n,x:n.x+x,y:n.y+y}:n);
 }
+
+// Keep each section in its nearest physical room column; collisions only move it down.
+export function packProposalColumns(nodes:WebNode[],positions:DiagramPosition[],width:number,rowHeight:number){
+ const lanes=Array.from({length:4},()=>[] as WebNode[]),unassigned:WebNode[]=[];
+ const anchors=new Map(positions.map(p=>[p.nodeId,p]));
+ for(const n of nodes){const p=anchors.get(n.id);if(!p||p.y>=.9){unassigned.push({...n});continue;}
+  const lane=Math.min(3,Math.max(0,Math.floor(p.x*4)));lanes[lane].push({...n});
+ }
+ const rows=Math.max(2,...lanes.map(l=>l.length))+1,roomBottom=rows*rowHeight;
+ const placed:WebNode[]=[];
+ lanes.forEach((lane,column)=>{
+  lane.sort((a,b)=>anchors.get(a.id)!.y-anchors.get(b.id)!.y||a.id.localeCompare(b.id));
+  let previous=-1;
+  lane.forEach((n,index)=>{const desired=Math.round(anchors.get(n.id)!.y/.82*(rows-1));
+   const row=Math.max(previous+1,Math.min(desired,rows-(lane.length-index)));previous=row;
+   placed.push({...n,x:(column+.5)*width/4,y:(row+.5)*rowHeight});
+  });
+ });
+ unassigned.sort((a,b)=>a.id.localeCompare(b.id)).forEach((n,i)=>placed.push({...n,x:(i%4+.5)*width/4,y:roomBottom+(Math.floor(i/4)+.5)*rowHeight}));
+ return {nodes:placed,roomBottom,height:roomBottom+Math.ceil(unassigned.length/4)*rowHeight};
+}
