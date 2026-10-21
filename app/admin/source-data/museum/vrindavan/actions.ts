@@ -5,6 +5,7 @@ import type {Route} from "next";
 import {revalidatePath} from "next/cache";
 import {assertCapability} from "@/lib/admin-access";
 import {stageVrindavanInventory,decideVrindavanIdentity,confirmClearVrindavanMatches} from "@/lib/vrindavan-identity-review";
+import {createBinduPrivateMuseumRecord} from "@/lib/bindu-private-museum-record";
 const path="/admin/source-data/museum/vrindavan";
 async function authorize(capability:"run_imports"|"resolve_reconciliation"){
   await assertCapability("view_source_data");await assertCapability("view_full_saint_catalog");return assertCapability(capability);
@@ -32,4 +33,18 @@ export async function reviewVrindavan(decision:"link"|"defer",form:FormData){
     redirect(`${path}?error=${reason}` as Route);
   }
   revalidatePath(path);redirect(`${path}?saved=${result.saved}` as Route);
+}
+
+export async function createBinduRecord(form:FormData){
+  const actor=await authorize("resolve_reconciliation");
+  await assertCapability("edit_structured_content");await assertCapability("access_museum");await assertCapability("manage_museum");
+  const sourceId=String(form.get("sourceId")||"");
+  const detail=`${path}/${encodeURIComponent(sourceId)}`;
+  try{
+    await createBinduPrivateMuseumRecord({sourceId,sourceVersion:form.get("sourceVersion"),revision:form.get("revision"),confirm:form.get("confirm")==="on"},actor.id);
+  }catch{
+    redirect(`${detail}?error=create` as Route);
+  }
+  revalidatePath(path);revalidatePath(detail);revalidatePath("/vrindavanadmin","layout");revalidatePath("/admin/saints");
+  redirect(`${detail}?created=1` as Route);
 }
