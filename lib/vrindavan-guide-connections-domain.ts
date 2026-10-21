@@ -1,4 +1,4 @@
-import manifest from "../data/museum/vrindavan-guide-connections-v9.json";
+import manifest from "../data/museum/vrindavan-guide-connections-v10.json";
 export type GuideEndpoint={kind:"saint";saintId:string;label:string;guideVitrine?:string}|{kind:"context";key:string;label:string};
 export type GuideKind="teaching"|"succession"|"biological_family"|"partner"|"association"|"incarnation"|"group_membership";
 // Direction follows the research statement, never alphabetical ID ordering:
@@ -35,7 +35,7 @@ export function projectGuideConnections(people:GuidePerson[],claims:GuideCanonic
   const matches=pair.filter(e=>expectedTypes(c).includes(e.relationshipType)&&directionMatches(c,e));
   const reviewed=matches.filter(e=>e.status==="published"&&["certain","probable","traditional"].includes(e.evidenceStatus)&&["high","medium"].includes(e.confidence));
   const canonicalState:GuideCanonicalState=!from.available||!to.available?"unavailable_identity":from.contextOnly||to.contextOnly?"context_only":reviewed.length?"reviewed_match":matches.length?"unreviewed_match":pair.length?"type_conflict":"missing";
-  const planningSnapshotChanged=[from,to].some(ep=>ep.kind==="saint"&&ep.guideVitrine!==undefined&&(!ep.placement||ep.placement.arrangement?.vitrine!==ep.guideVitrine));
+  const planningSnapshotChanged=[from,to].some(ep=>ep.kind==="saint"&&ep.guideVitrine!==undefined&&(!ep.placement||(ep.placement.arrangement?.vitrine??"")!==ep.guideVitrine));
   return {...c,from,to,planningSnapshotChanged,canonicalState,canonicalClaims:pair,matchingClaimIds:matches.map(e=>e.id),reviewedClaimIds:reviewed.map(e=>e.id),displayOnly:true as const,planningEffects:"none" as const};
  });
 }

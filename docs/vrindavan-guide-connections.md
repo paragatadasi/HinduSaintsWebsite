@@ -1,6 +1,6 @@
 # Vrindavan guide connections and planning alignment
 
-The curator requested the 63 labelled connections in Saarthi's placement guide v9 to appear in museum planning trees and section proposals. The private manifest preserves the original 17 guide sections, stable per-connection case IDs, exact canonical IDs for actual holdings, typed research labels, source URLs and research caveats. Context-only endpoints remain context even if a similarly named website saint exists.
+The curator approved the final expansion to 71 labelled connections across 20 sections in Saarthi's placement guide v10. The private manifest preserves all 63 original v9 case IDs and adds eight final-expansion IDs, stable per-connection case IDs, exact canonical IDs for actual holdings, typed research labels, source URLs and research caveats. Context-only endpoints remain context even if a similarly named website saint exists.
 
 ## Data contract
 
@@ -22,7 +22,7 @@ Retain Venabai's inconsistent date fields for investigation. Nityananda archive 
 
 ## Verification and remaining checkpoints
 
-Domain tests cover stable IDs, all 63 connections, context and group semantics, canonical guru direction, reciprocal claims, missing/archived identities, biological direction and preservation of an implemented curator arrangement. After paired UI deployment, download the production alignment report and save a durable result matrix keyed by connection ID. Compare actual canonical dispositions, verify typed labels and context-only styling in family/section views, and record any unresolved identity or canonical conflicts. The guide is research evidence, not proof that a canonical database write has occurred.
+Domain tests cover stable IDs, all 71 connections, context and group semantics, canonical guru direction, reciprocal claims, missing/archived identities, biological direction and preservation of an implemented curator arrangement. After paired UI deployment, download the production alignment report and save a durable result matrix keyed by connection ID. Compare actual canonical dispositions, verify typed labels and context-only styling in family/section views, and record any unresolved identity or canonical conflicts. The guide is research evidence, not proof that a canonical database write has occurred.
 
 Neutral regional vocabulary, locality placements, section-area reservations and the Bindu record workflow are separate checkpoints and are not completed by this feature.
 
@@ -32,6 +32,14 @@ The guide retains its baseline revision/time and each actual endpoint's `guideVi
 
 Vrindavan family and saint trees retain canonical/source claims and add a display-only guide overlay. Teaching and succession retain endpoint direction; association, incarnation, biological-family and group-membership references do not establish teacher generations. Stable case IDs, exact role labels, sources, confidence and website comparison remain available in the research evidence disclosure. Context-only cards explicitly do not count as museum holdings.
 
-Both the planner section workspace and section proposal tree panel offer collapsible guide groups, selected by exact current placement section. Related context within a selected research group remains visible; groups render their diagrams only after opening. Unavailable identities stay in review evidence rather than producing fabricated graph nodes. The protected download provides all 63 dispositions. Browser components import DTO types only; the research manifest is loaded by the authenticated server, never bundled as client data.
+Both the planner section workspace and section proposal tree panel offer collapsible guide groups, selected by exact current placement section. Related context within a selected research group remains visible; groups render their diagrams only after opening. Unavailable identities stay in review evidence rather than producing fabricated graph nodes. The protected download provides all 71 dispositions. Browser components import DTO types only; the research manifest is loaded by the authenticated server, never bundled as client data.
 
 Snapshot-drift warnings and current destinations are displayed with the evidence. Static guide placement suggestions are not rendered as current instructions. This layer does not write canonical relationships, identities, tiers, families, locations or destinations. Historical research overlays do not replace canonical relationship review.
+
+## Final approved expansion (guide v10)
+
+The active manifest is `data/museum/vrindavan-guide-connections-v10.json`; v9 is retained as an immutable compatibility baseline. Existing endpoint identity, type, label, confidence, evidence and caveats are unchanged. Sources and dated guide destinations reflect the supplied v10 alignment matrix. The guide revision and timestamp identify the intermediate snapshot, not a guarantee of current destination accuracy; current saved placement is loaded independently and drift remains visible.
+
+The eight additions cover Pant Maharaj's contextual teacher Balavadhoot, four named Bhaktisiddhanta pupils, the Sai traditional-manifestation connection, Omkarnath and Parankush, and Papa Ramdas's mantra initiation of Yogi Ramsuratkumar. Balavadhoot is not identified with Akkalkot's Balappa; Papa Ramdas is not identified with source row 145. Sai manifestations remain traditional incarnation context, never a direct teacher link. Vilas, Ramaiah, Narayan source rows 431/462 and Ramdas145 identity holds are retained; no identity or source-date repair is implied. Nadi's destination reconciliation and final live verification remain separate from this read-only release.
+
+An empty dated destination and an unassigned current arrangement now compare equally, avoiding a false drift warning for the newly included unassigned record. Missing placements still trigger review.
