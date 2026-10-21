@@ -12,8 +12,10 @@ import {flexibleRecords} from "./museum-move-planner-domain";
 const museumId="museum-vrindavan";
 const json=(value:unknown):Prisma.InputJsonValue=>JSON.parse(JSON.stringify(value));
 export async function sectionDestinationContext(tx:Prisma.TransactionClient){
- const [working,areas,inventory]=await Promise.all([readVrindavanWorkingData(tx),tx.museumSectionSpacePlan.findMany({where:{museumId},orderBy:{section:"asc"}}),readVrindavanMuseumInventory({},tx)]);
- return {working,areas,shared:inventory.entries.filter(entry=>entry.saintIds.length>1).map(entry=>({id:entry.observationId,saintIds:entry.saintIds})),snapshotHash:inventory.snapshotHash};
+ const [working,savedAreas,inventory]=await Promise.all([readVrindavanWorkingData(tx),tx.museumSectionSpacePlan.findMany({where:{museumId},orderBy:{section:"asc"}}),readVrindavanMuseumInventory({},tx)]);
+ const areas=savedAreas.map(area=>({...area,needsReview:flexibleRecords(area.flexiblePlacements).some(member=>{const row=working.placements.find(row=>row.id===member.id);return !row||row.arrangement?.status==="Proposed"&&(row.section!==area.section||row.arrangement.revision!==member.revision);})}));
+ const placements=working.placements.map(row=>({...row,flexibleVitrines:areas.filter(area=>!area.needsReview&&area.section===row.section&&flexibleRecords(area.flexiblePlacements).some(member=>member.id===row.id&&member.revision===row.arrangement?.revision)).flatMap(area=>area.vitrines)}));
+ return {working:{...working,placements},areas,shared:inventory.entries.filter(entry=>entry.saintIds.length>1).map(entry=>({id:entry.observationId,saintIds:entry.saintIds})),snapshotHash:inventory.snapshotHash};
 }
 export type SectionDestinationContext=Awaited<ReturnType<typeof sectionDestinationContext>>;
 export function previewSectionDestinations(context:SectionDestinationContext,moving:DestinationRow[],section:string,groupKey?:string){
