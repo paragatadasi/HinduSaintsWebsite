@@ -6,9 +6,10 @@ import {MuseumConflict} from "./museum-service";
 import {arrangementInput,familyArrangementControl} from "./museum-arrangement-domain";
 import {writeMuseumArrangement} from "./museum-arrangement";
 import {retainPlannedDestination} from "./museum-proposal-edit-domain";
+import {sectionDestinationContext,previewSectionDestinations,synchronizeSectionDestinations} from "./vrindavan-section-destination";
 const museumId="museum-vrindavan";
-export const vrindavanProposalInput=z.object({saintId:z.string().min(1).max(200),revision:z.string().regex(/^[a-f0-9]{64}$/),section:z.string().trim().min(1).max(200),tier:z.enum(["Featured","Secondary","Tertiary"]),groupKey:z.string().max(300).default("")});
-export const vrindavanFamilyInput=z.object({familyKey:z.string().min(1).max(300),revision:z.string().regex(/^[a-f0-9]{64}$/),section:z.string().min(1).max(200)});
+export const vrindavanProposalInput=z.object({saintId:z.string().min(1).max(200),revision:z.string().regex(/^[a-f0-9]{64}$/),section:z.string().trim().min(1).max(200),tier:z.enum(["Featured","Secondary","Tertiary"]),groupKey:z.string().max(300).default(""),destinationRevision:z.string().regex(/^[a-f0-9]{64}$/).optional()});
+export const vrindavanFamilyInput=z.object({familyKey:z.string().min(1).max(300),revision:z.string().regex(/^[a-f0-9]{64}$/),section:z.string().min(1).max(200),destinationRevision:z.string().regex(/^[a-f0-9]{64}$/).optional()});
 // One museum-wide edit lock covers family membership, individual edits and bulk
 // planning. Other museums and physical inventory remain independent.
 async function transaction<T>(work:(tx:Prisma.TransactionClient)=>Promise<T>) {
@@ -27,8 +28,11 @@ export async function saveVrindavanProposal(raw:unknown,actorId:string,preserveP
  if(!data.sections.some(s=>s.name===input.section&&s.slug!=="needs-section-proposal"))throw new MuseumConflict("Choose an available museum section.");
  const group=input.groupKey?data.groupOptions.find(g=>g.key===input.groupKey):null;if(input.groupKey&&!group)throw new MuseumConflict("This display family is no longer available.");
  if(row.section===input.section&&row.tier===input.tier&&(row.familyId||"")===input.groupKey)return row.name;
+ const destinationContext=row.section!==input.section?await sectionDestinationContext(tx):null;
+ if(destinationContext){const preview=previewSectionDestinations(destinationContext,[row],input.section,input.groupKey);if(preview.blockedReason)throw new MuseumConflict(preview.blockedReason);if(input.destinationRevision!==preview.revision)throw new MuseumConflict("Review the new destination before saving; the section area or proposal may have changed.");}
  await writeProposal(tx,{saintId:input.saintId,section:input.section,tier:input.tier,groupKey:group?.key||"",groupLabel:group?.label||""},actorId);
- if(preservePlanned&&retainPlannedDestination(row.arrangement?.status,row.section,input.section)){
+ if(destinationContext)await synchronizeSectionDestinations(tx,[row],input.section,actorId,destinationContext);
+ else if(preservePlanned&&retainPlannedDestination(row.arrangement?.status,row.section,input.section)){
   const refreshed=(await readVrindavanWorkingData(tx)).placements.find(p=>p.saintId===input.saintId)!;
   await writeMuseumArrangement(tx,museumId,refreshed,arrangementInput.parse({placementId:refreshed.id,revision:refreshed.arrangement!.revision,familyKey:refreshed.familyId||"",status:"Planned",vitrine:row.arrangement!.vitrine,shelf:row.arrangement!.shelf}),actorId);
  }
@@ -40,7 +44,11 @@ export async function moveVrindavanFamily(raw:unknown,actorId:string) {
  const data=await readVrindavanWorkingData(tx);const family=data.families.find(f=>f.key===input.familyKey);
  if(!family||family.revision!==input.revision)throw new MuseumConflict("This family's proposals or membership changed. Reload before moving it.");
  if(!data.sections.some(s=>s.name===input.section&&s.slug!=="needs-section-proposal"))throw new MuseumConflict("Choose an available museum section.");
- for(const row of data.placements.filter(p=>p.familyId===family.key))await writeProposal(tx,{saintId:row.saintId!,section:input.section,tier:row.tier,groupKey:family.key,groupLabel:family.label},actorId);
+ const members=data.placements.filter(p=>p.familyId===family.key);
+ const destinationContext=members.some(row=>row.section!==input.section)?await sectionDestinationContext(tx):null;
+ if(destinationContext){const preview=previewSectionDestinations(destinationContext,members,input.section);if(preview.blockedReason)throw new MuseumConflict(preview.blockedReason);if(input.destinationRevision!==preview.revision)throw new MuseumConflict("Review the family destination before saving; its section area or membership may have changed.");}
+ for(const row of members.filter(row=>row.section!==input.section))await writeProposal(tx,{saintId:row.saintId!,section:input.section,tier:row.tier,groupKey:family.key,groupLabel:family.label},actorId);
+ if(destinationContext)await synchronizeSectionDestinations(tx,members,input.section,actorId,destinationContext);
  return data.sections.find(s=>s.name===input.section)!.slug;
  });
 }

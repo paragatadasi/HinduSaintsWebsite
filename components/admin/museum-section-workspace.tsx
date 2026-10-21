@@ -43,7 +43,7 @@ export function MuseumSectionWorkspace({
   const moveOptions = new Map(familyMoveOptions.map(f => [f.key, f]));
   function familyMove(key: string, card = false) {
     const family = moveOptions.get(key);
-    return canManage && family ? <MuseumFamilyMove family={family} sections={sectionNames} card={card} moveAction={vrindavanEditing?moveVrindavanFamilyAction:undefined} arrangementAction={vrindavanEditing?saveVrindavanFamilyArrangementAction:undefined} scopeNote={vrindavanEditing?"Changes apply to Vrindavan. Historical relationships and individual relic locations stay unchanged.":undefined} /> : null;
+    return canManage && family ? <MuseumFamilyMove previewDestination={!!vrindavanEditing} family={family} sections={sectionNames} card={card} moveAction={vrindavanEditing?moveVrindavanFamilyAction:undefined} arrangementAction={vrindavanEditing?saveVrindavanFamilyArrangementAction:undefined} scopeNote={vrindavanEditing?"Changes apply to Vrindavan. Historical relationships and individual relic locations stay unchanged.":undefined} /> : null;
   }
   const [selectedSaintId, setSelectedSaintId] = useState<string | null>(null);
   const [groupMode, setGroupMode] = useState<"saint" | "location">("saint");
