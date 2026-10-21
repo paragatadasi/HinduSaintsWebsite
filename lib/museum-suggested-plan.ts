@@ -1,5 +1,6 @@
 import {isFlexible,type PlannerData,type PlannerRow} from "./museum-move-planner-domain";
 import {summarizeRelicPackaging} from "./museum-relic-packaging";
+import {planningVitrineAllowed} from "./museum-planning-constraints";
 
 // Candidate areas are curatorial recommendations, not measured capacities.
 export type SuggestedPlanGuide={version:string;areas:Record<string,string[]>;holds?:{saintId:string;reason:string;section?:string;familyKey?:string}[];affinities?:{section:string;traditionId:string}[]};
@@ -17,7 +18,8 @@ export function buildSuggestedPlan(data:PlannerData,guide:SuggestedPlanGuide):Su
  for(const section of data.sections){
   const saved=data.areas.find(a=>a.section===section.name&&a.vitrines.length);
   const vitrines=saved?.vitrines??guide.areas[section.name]?.filter(v=>!data.areas.some(a=>a.section!==section.name&&a.vitrines.includes(v)));
-  if(vitrines?.length){available.set(section.name,vitrines);plan.areas.push({section:section.name,vitrines,preserved:!!saved});}
+  // A conflicting saved area remains untouched, but cannot generate new moves.
+  if(vitrines?.length){available.set(section.name,vitrines.filter(v=>planningVitrineAllowed("museum-vrindavan",section.name,v)));plan.areas.push({section:section.name,vitrines,preserved:!!saved});}
  }
  // Connected display groups and shared inventory records cannot be split by this assistant.
  const holds=new Map(guide.holds?.filter(hold=>data.rows.some(row=>row.saintId===hold.saintId&&(!hold.section||row.section===hold.section)&&(!hold.familyKey||row.familyKey===hold.familyKey))).map(hold=>[hold.saintId,hold.reason])??[]);

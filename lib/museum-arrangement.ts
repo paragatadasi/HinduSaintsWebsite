@@ -1,4 +1,5 @@
 import {db} from "@/lib/db";
+import {planningVitrineAllowed} from "./museum-planning-constraints";
 import {Prisma} from "@/lib/generated/prisma/client";
 import {arrangementInput,familyArrangementControl} from "@/lib/museum-arrangement-domain";
 import {readMuseumData} from "@/lib/museum-working-data";
@@ -20,6 +21,7 @@ export async function saveMuseumArrangement(raw:unknown,actorId:string) {
 }
 
 export async function writeMuseumArrangement(tx:Prisma.TransactionClient,museumId:string,row:MuseumSaintPlacement,input:ReturnType<typeof arrangementInput.parse>,actorId:string) {
+  if(input.status === "Planned" && !planningVitrineAllowed(museumId,row.section,input.vitrine || ""))throw new MuseumConflict("The Sikh section must remain in Vitrine 11 because a relic is permanently fixed there.");
   const before=await tx.museumArrangement.findUnique({where:{museumId_placementId:{museumId,placementId:row.id}}});
   const values={proposalRevision:row.arrangement!.proposalRevision,status:input.status,vitrine:input.status==="Proposed"?null:input.vitrine||null,shelf:input.status==="Proposed"?null:input.shelf||null,
    confirmedAt:input.status==="Implemented"?new Date():null,confirmedById:input.status==="Implemented"?actorId:null,inventoryAcknowledged:input.status==="Implemented",updatedById:actorId};
