@@ -419,7 +419,7 @@
  --color-museum-region-5:#80b5aa;
  --color-museum-region-6:#ce9c79;
  --width-museum-web-node:156px;
- --width-museum-proposal-columns:640px;
+ --font-size-museum-web-min:.6rem;
  --font-size-museum-section-title:clamp(2.1rem,5vw,4.2rem);
  --width-museum-section-title:11ch;
  --width-museum-connection-popup:22rem;
