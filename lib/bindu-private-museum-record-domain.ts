@@ -9,6 +9,6 @@ export const binduPrivateRecordInput=z.object({sourceId:z.literal(BINDU_SOURCE_I
 export type BinduDuplicate={id:string;displayName:string;canonicalName:string;slug:string;status:string;aliases:{alias:string}[]};
 export function possibleBinduDuplicates(saints:BinduDuplicate[]){
  const compact=(value:string)=>value.normalize("NFKD").toLowerCase().replace(/[^a-z0-9]/g,"");
- return saints.filter(saint=>saint.slug===BINDU_DRAFT.slug||[saint.displayName,saint.canonicalName,...saint.aliases.map(alias=>alias.alias)].some(name=>{const n=compact(name);return /bindu|bindoo|bindou/.test(n)||["gurujismother","gurujimother","motherofguruji","motherofswamivishwananda"].includes(n);}));
+ return saints.filter(saint=>saint.slug===BINDU_DRAFT.slug||[saint.displayName,saint.canonicalName,...saint.aliases.map(alias=>alias.alias)].some(name=>{const n=compact(name);return /bindu|bindoo|bindou/.test(n)||["gurujismother","gurujimother","motherofguruji","motherofswamivishwananda"].some(label=>n.includes(label));}));
 }
 export type BinduPrivateMuseumPlan={sourceId:string;sourceVersion:string;revision:string;canCreate:boolean;blockedReason?:string;existingSaints:{id:string;name:string;slug:string;status:string}[];draft:typeof BINDU_DRAFT;proposal:{section:string;tier:"Secondary";destination:{mode:"exact"|"flexible"|"unassigned";vitrines:string[];message:string}};linkedSaintIds:string[]};
