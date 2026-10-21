@@ -1,0 +1,7 @@
+# Source-reported packaging components
+
+The original packaging-entry classification remains unchanged. The additive summarizePackagingComponents helper in lib/museum-packaging-components.ts counts each distinct listed component once per unique source observation. Small Frame / Box contributes one small frame and one box while remaining one source entry. Frame, small frame, box, bag, urn and paduka remain distinct categories.
+
+These are provisional source-reported component counts, not verified physical item counts. Relic quantity does not multiply packaging. Duplicate source IDs across shared saints count once; distinct source rows remain distinct. Unknown or conflicting entries contribute no inferred components and are shown separately for review. Repeated conflicting IDs remain held even if later duplicates repeat only one label. Sheet1 remains authoritative when the comparison worksheet differs, with disagreement retained separately. The helper never rewrites source data or physical inventory.
+
+Citra owns presentation in the expanded move-companion details. Existing entry-level summaries can continue using summarizeRelicPackaging; their category counts must not be silently relabelled as components. Component totals may exceed source-entry totals because a mixed entry contributes multiple components.
