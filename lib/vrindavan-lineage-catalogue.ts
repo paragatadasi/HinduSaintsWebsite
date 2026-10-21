@@ -1,3 +1,4 @@
+import {VRINDAVAN_APPROVED_SUBSECTIONS} from "./vrindavan-approved-subsections";
 import {VRINDAVAN_VISITOR_SEQUENCE} from "./vrindavan-visitor-flow";
 // Museum-local navigation vocabulary; never rename the shared SPN catalogue.
 export const LINEAGE_VERSION="vrindavan-lineage-first-section-proposal-2026-10-20-v2";
@@ -15,6 +16,7 @@ export const isLineageTarget=(name:string)=>LINEAGE_REGIONS.some(s=>s.name===nam
 
 // Regions are navigation parents; these names remain real subsection identities.
 export const VRINDAVAN_SUBSECTION_PARENTS:Record<string,string>={
+ ...Object.fromEntries(VRINDAVAN_APPROVED_SUBSECTIONS.map(s=>[s.name,s.region])),
  "Gaudiya Vaishnava": "Braj & the Ganga",
  "Varkari": "Maharashtra & the West",
  "Datta Tradition": "Maharashtra & the West",
