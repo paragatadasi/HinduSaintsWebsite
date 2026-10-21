@@ -8,8 +8,8 @@ import {projectSourceVitrines,SPN_WEBSITE_AIRTABLE_BASE_ID} from "./museum-vitri
 import {readMuseumSaintProfiles} from "./museum-saint-profiles";
 
 // Private read-only API. Caller must check access_museum AND view_full_saint_catalog.
-const relationshipKinds=["guru","disciple","partner","husband","wife","incarnation"] as const;
-const NODE_LIMIT=120,EDGE_LIMIT=500,HOPS=5;
+const relationshipKinds=["guru","disciple","partner","husband","wife","incarnation","successor"] as const;
+const NODE_LIMIT=120,EDGE_LIMIT=500,HOPS=10,GENERAL_HOPS=5;
 export async function readMuseumLiveTree(seeds:string[],museum:"spn"|"vrindavan",includeUnreviewed:boolean,familyKey?:string,includeSource=false) {
  const select={id:true,displayName:true,birthYear:true,samadhiYear:true} as const;
  const original=familyKey&&includeSource?getMuseumProposalData():null;
@@ -24,7 +24,7 @@ export async function readMuseumLiveTree(seeds:string[],museum:"spn"|"vrindavan"
  let frontier=initial.map(n=>n.id),truncated=sourceRows.length>NODE_LIMIT;
  const records=new Map<string,Parameters<typeof normalizeTreeClaims>[0][number]>();
  for(let hop=0;hop<HOPS&&frontier.length;hop++){
-  const found=await db.saintRelationship.findMany({where:{relationshipType:{in:[...relationshipKinds]},status:includeUnreviewed?{not:"archived"}:"published",fromSaint:{status:{not:"archived"}},toSaint:{status:{not:"archived"}},OR:[{fromSaintId:{in:frontier}},{toSaintId:{in:frontier}}]},select:{id:true,fromSaintId:true,toSaintId:true,relationshipType:true,status:true,evidenceStatus:true,confidence:true},orderBy:{id:"asc"},take:EDGE_LIMIT+1});
+  const found=await db.saintRelationship.findMany({where:{relationshipType:{in:hop<GENERAL_HOPS?[...relationshipKinds]:["successor"]},status:includeUnreviewed?{not:"archived"}:"published",fromSaint:{status:{not:"archived"}},toSaint:{status:{not:"archived"}},OR:[{fromSaintId:{in:frontier}},{toSaintId:{in:frontier}}]},select:{id:true,fromSaintId:true,toSaintId:true,relationshipType:true,status:true,evidenceStatus:true,confidence:true},orderBy:{id:"asc"},take:EDGE_LIMIT+1});
   if(found.length>EDGE_LIMIT)truncated=true;
   const unknown=[...new Set(found.slice(0,EDGE_LIMIT).flatMap(e=>[e.fromSaintId,e.toSaintId]))].filter(id=>!people.has(id)).sort();
   const room=NODE_LIMIT-people.size;if(unknown.length>room)truncated=true;
