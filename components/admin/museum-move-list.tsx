@@ -45,6 +45,7 @@ function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevi
  const router=useRouter(),titleId=useId();
  const flexible=isFlexible(row);
  const [pending,startTransition]=useTransition(),[error,setError]=useState("");
+ const [treeOpen,setTreeOpen]=useState(false);
  const [open,setOpen]=useState(false),[loading,setLoading]=useState(false),[detailError,setDetailError]=useState(false);
  const [detail,setDetail]=useState<Awaited<ReturnType<typeof loadMoveSaintAction>>|null>(null);
  const showDetails=async()=>{
@@ -53,7 +54,7 @@ function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevi
  };
  return <article className="museum-planner__move museum-planning-card admin-stack">
   <details className="museum-move-entry">
-   <summary><span className="museum-move-entry__identity"><strong>{row.name}</strong><span>{row.section}</span><small>{moveRegion(row.section)}</small></span><span className="museum-move-entry__route"><span><small>Starting vitrine</small>{startingVitrines(row).join(", ")||"Not recorded"}</span><span><small>Destination vitrine</small>{destinationVitrines(row).join(", ")||"Not assigned"}{flexible?" · Flexible":""}</span></span></summary>
+   <summary><span className="museum-move-entry__identity"><strong>{row.name}</strong><small>{row.tier==="Featured"?"Primary":row.tier} saint</small><span>{row.section}</span><small>{moveRegion(row.section)}</small></span><span className="museum-move-entry__route"><span><small>Starting vitrine</small>{startingVitrines(row).join(", ")||"Not recorded"}</span><span><small>Destination vitrine</small>{destinationVitrines(row).join(", ")||"Not assigned"}{flexible?" · Flexible":""}</span></span></summary>
    <div className="admin-stack museum-move-entry__details">
    <p>{row.status==="Implemented"?<Check aria-hidden="true"/>:<ClipboardList aria-hidden="true"/>} {flexible?"Area planned":row.status}{row.photo?" · Photo saint":""}</p>
   {row.status!=="Implemented"&&!row.shelf&&(row.tier==="Featured"||row.tier==="Secondary")?<p className="muted">{row.tier==="Featured"?"Primary":"Secondary"} saint: prefer an upper row where space allows, keeping related saints together.</p>:null}
@@ -86,6 +87,8 @@ function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevi
   </details>:null}
    </div>
   </details>
+  <div className="review-actions"><button type="button" className="museum-admin-button museum-admin-button--secondary" aria-haspopup="dialog" onClick={()=>setTreeOpen(true)}>View family tree</button></div>
+  {treeOpen?<MuseumDetailDialog titleId={`${titleId}-tree`} kicker="Family tree" closeLabel="Close family tree" onClose={()=>setTreeOpen(false)}><h2 id={`${titleId}-tree`}>{row.name}</h2><MuseumSaintTree saintId={row.saintId} familyKey={row.familyKey} name={row.name} museum="vrindavan" showStatus/></MuseumDetailDialog>:null}
   {open?<MuseumDetailDialog titleId={titleId} kicker="Saint reference" closeLabel="Close saint reference" onClose={()=>setOpen(false)}>
    <h2 id={titleId}>{row.name}</h2>{loading?<p role="status">Loading saint reference…</p>:null}
    {detailError?<p role="alert">Could not load the reference. <button type="button" onClick={showDetails}>Retry</button></p>:null}
