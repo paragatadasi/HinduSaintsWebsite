@@ -12,6 +12,7 @@ export type SearchableSelectOption = {
 
 type SearchableSelectProps = {
   defaultValue?: string;
+  onValueChange?: (value: string) => void;
   emptyText?: string;
   label: string;
   name: string;
@@ -29,6 +30,7 @@ type RemoteSearch = {
 
 export function SearchableSelect({
   defaultValue = "",
+  onValueChange,
   emptyText = "No options match this search.",
   label,
   name,
@@ -122,6 +124,7 @@ export function SearchableSelect({
           onChange={(event) => {
             setQuery(event.target.value);
             setSelectedValue("");
+            onValueChange?.("");
             setActiveIndex(0);
             setIsDropdownOpen(true);
           }}
@@ -195,6 +198,7 @@ export function SearchableSelect({
   function selectOption(option: SearchableSelectOption) {
     setQuery(option.label);
     setSelectedValue(option.value);
+    onValueChange?.(option.value);
     setIsDropdownOpen(false);
   }
 }

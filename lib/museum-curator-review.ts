@@ -11,6 +11,7 @@ import {writeMuseumArrangement} from "./museum-arrangement";
 import {arrangementInput} from "./museum-arrangement-domain";
 import {stableCollectionJson} from "./museum-collection-domain";
 
+import {sectionDestinationContext,previewSectionDestinations,synchronizeSectionDestinations} from "./vrindavan-section-destination";
 const museumId="museum-vrindavan";
 const entityType="MuseumCuratorReview";
 const json=(value:unknown):Prisma.InputJsonValue=>JSON.parse(JSON.stringify(value));
@@ -19,6 +20,7 @@ const object=(value:unknown):Record<string,unknown>=>value&&typeof value==="obje
 
 // Private projection. Route callers enforce museum and full catalogue access.
 async function context(tx:Prisma.TransactionClient){
+ const destinations=await sectionDestinationContext(tx);
  const cases=museumCuratorReviewManifest.cases;
  const ids=cases.flatMap(c=>c.saintId?[c.saintId]:[]);
  const [working,saints,observations,overrides,arrangements,reviews]=await Promise.all([
@@ -53,7 +55,7 @@ async function context(tx:Prisma.TransactionClient){
   const state={baseline:row&&saint&&saint.status!=="archived"&&sourceValid?{
    saintId:saint.id,saintVersion:saint.version,section:row.section,familyKey:row.familyId||"",
    sourceSnapshotHash:working.audit.snapshotHash,sourceRows:c.sourceRows,hasCuratorOverride:!!override
-  }:null,revisionInput:{sources,saint,override,arrangement,proposalRevision:row?.curatorProposalRevision,audit},latestReview};
+  }:null,revisionInput:{sources,saint,override,arrangement,proposalRevision:row?.curatorProposalRevision,audit,destinationAreas:destinations.areas,destinationShared:destinations.shared,destinationRows:destinations.working.placements.map(p=>[p.id,p.section,p.familyId,p.arrangement?.revision])},latestReview};
   const projection=buildCuratorReviewCase(c,state);
   for(const [optionId,plan] of Object.entries(projection.allowedPlans)){
    if(!working.sections.some(s=>s.name===plan.section&&s.slug!=="needs-section-proposal")){
@@ -62,13 +64,14 @@ async function context(tx:Prisma.TransactionClient){
     option.unavailableReason="This subsection is not available yet. Keep this case for review.";
    }
   }
+  for(const [optionId,plan] of Object.entries(projection.allowedPlans)){if(!row||row.section===plan.section)continue;const preview=previewSectionDestinations(destinations,[row],plan.section);const option=projection.reviewCase.options.find(o=>o.id===optionId)!;if(preview.blockedReason){delete projection.allowedPlans[optionId];option.unavailableReason=preview.blockedReason;}else option.changes.push({field:"Planned destination",before:row.arrangement?.vitrine?"Vitrine "+row.arrangement.vitrine:"Unassigned",after:preview.rows[0]?.message||"Unchanged"});}
   if(!resolved&&!Object.keys(projection.allowedPlans).length){
    if(projection.reviewCase.status==="pending")projection.reviewCase.status="blocked";
    projection.reviewCase.blockedReason??="This case needs further record review before its proposal can change.";
   }
   return {manifest:c,...projection,row,override,evidenceHash};
  });
- return {working,projected};
+ return {working,projected,destinations};
 }
 
 export async function readMuseumCuratorReview(id:typeof museumId):Promise<CuratorReviewQueue>{
@@ -84,7 +87,7 @@ export async function saveMuseumCuratorReview(raw:unknown,actorId:string){
   await tx.$queryRaw(Prisma.sql`SELECT true FROM pg_advisory_xact_lock(hashtextextended(${"museum-curator:"+museumId},0))`);
   const actor=await tx.user.findUnique({where:{id:actorId},select:{active:true,roles:true}});
   if(!actor?.active||!["access_museum","manage_museum","view_full_saint_catalog"].every(cap=>hasCapability(actor.roles,cap as "access_museum"|"manage_museum"|"view_full_saint_catalog")))throw new MuseumConflict("Museum editing permission is required.");
-  const {projected}=await context(tx);
+  const {projected,destinations}=await context(tx);
   const item=projected.find(p=>p.reviewCase.caseId===input.caseId);
   if(!item||item.reviewCase.revision!==input.revision)throw new MuseumConflict("This research case or museum record changed. Reload before deciding.");
   if(item.reviewCase.status==="resolved")throw new MuseumConflict("This case has already been confirmed. Reload the review list.");
@@ -92,14 +95,15 @@ export async function saveMuseumCuratorReview(raw:unknown,actorId:string){
   if(input.decision==="confirm_supported"){
    const plan=Object.hasOwn(item.allowedPlans,input.explicitChoiceId!)?item.allowedPlans[input.explicitChoiceId!]:undefined;
    if(!plan||!item.row)throw new MuseumConflict("This choice needs further review before the proposal can change.");
-   // MVP effects are section-only for an already linked identity. Source linking
-   // stays in the dedicated reconciliation workflow, even for administrators.
+   // Confirmation updates the museum section and its previewed destination plan.
+   // Source identity linking remains in the dedicated reconciliation workflow.
    const before=item.override;
    const values={section:plan.section,tier:item.row.tier,groupKey:item.row.familyId||"",groupLabel:item.row.groupLabel||"",updatedById:actorId};
    const after=await tx.museumCuratorProposal.upsert({where:{museumId_saintId:{museumId,saintId:plan.saintId}},create:{museumId,saintId:plan.saintId,...values},update:{...values,version:{increment:1}}});
    resultingProposalHash=hash(after);
    await tx.auditEvent.create({data:{userId:actorId,action:"museum.curator_proposal.saved",entityType:"MuseumCuratorProposal",entityId:museumId+":"+plan.saintId,beforeJson:before?json(before):Prisma.JsonNull,afterJson:json(after)}});
-   if(item.row.section===plan.section&&item.row.arrangement?.status==="Planned"){
+   if(item.row.section!==plan.section)await synchronizeSectionDestinations(tx,[item.row],plan.section,actorId,destinations);
+   else if(item.row.arrangement?.status==="Planned"){
     const refreshed=(await readVrindavanWorkingData(tx)).placements.find(p=>p.id===item.row!.id)!;
     await writeMuseumArrangement(tx,museumId,refreshed,arrangementInput.parse({placementId:refreshed.id,revision:refreshed.arrangement!.revision,familyKey:refreshed.familyId,status:"Planned",vitrine:item.row.arrangement.vitrine,shelf:item.row.arrangement.shelf}),actorId);
    }
