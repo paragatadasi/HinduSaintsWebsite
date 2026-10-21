@@ -51,6 +51,15 @@
   --font-size-encounter-eyebrow: 0.75rem;
   --font-size-saint-profile-stat: 0.72rem;
   --font-size-saint-profile-stat-value: 0.9rem;
+  --font-size-saint-profile-title: clamp(2.125rem, 4.9vw, 3.5rem);
+  --font-size-saint-profile-title-mobile: clamp(1.875rem, 8.8vw, 2.625rem);
+  --font-size-saint-profile-overview: 1rem;
+  --font-size-saint-profile-toggle: 0.875rem;
+  --line-height-saint-profile-title: 1.08;
+  --line-height-saint-profile-overview: 1.75;
+  --letter-spacing-saint-profile-title: 0.065em;
+  --width-saint-profile-overview: 58ch;
+  --aspect-ratio-saint-profile-gallery: 4 / 5;
   --letter-spacing-eyebrow: 0.12em;
   --font-size-definition-tooltip: 0.875rem;
   --font-size-review-field: 0.92rem;
