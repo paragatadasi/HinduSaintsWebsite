@@ -4,7 +4,7 @@ export const TREE_MOBILE_GEOMETRY={...TREE_GEOMETRY,nodeWidth:220,nodeHeight:152
 export const TREE_COMPACT_GEOMETRY={columnGap:30,rowGap:60,margin:20,laneGap:4,maxLanes:12} as const;
 export function treeColumnsForWidth(width:number){const c=TREE_COMPACT_GEOMETRY,g=TREE_GEOMETRY;return Math.max(1,Math.min(g.compactColumns,Math.floor((width-c.margin*2-c.maxLanes*c.laneGap+c.columnGap)/(g.nodeWidth+c.columnGap))));}
 export type TreePerson = {id:string;name:string;birthYear:number|null;samadhiYear:number|null;sourceOnly?:boolean;contextOnly?:boolean;presence?:"location"|"catalogue"|"source"|"none"};
-export type TreeClaim = {id:string;from:string;to:string;kind:"guru"|"successor"|"partner"|"incarnation"|"family";status:string;evidence:string;confidence:string};
+export type TreeClaim = {id:string;from:string;to:string;kind:"guru"|"successor"|"partner"|"incarnation"|"family"|"association"|"group_membership";status:string;evidence:string;confidence:string;label?:string;structural?:boolean};
 export type TreeEdge = {key:string;from:string;to:string;kind:TreeClaim["kind"];claims:TreeClaim[];secondary?:"shortcut"|"cycle"|"partner pair";lineage:number};
 export type TreeGraph = {nodes:TreePerson[];edges:TreeEdge[]};
 export function normalizeTreeClaims(rows:{id:string;fromSaintId:string;toSaintId:string;relationshipType:string;status:string;evidenceStatus:string;confidence:string}[]):TreeClaim[] {
@@ -26,7 +26,7 @@ export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[],options:{
  const map=new Map<string,TreeEdge>();
  for(const claim of claims){if(!ids.has(claim.from)||!ids.has(claim.to))continue;const key=`${claim.kind}:${claim.from}:${claim.to}`;const edge=map.get(key)||{key,from:claim.from,to:claim.to,kind:claim.kind,claims:[],lineage:0};edge.claims.push(claim);map.set(key,edge);}
  const edges=[...map.values()].sort((a,b)=>a.key.localeCompare(b.key));
- const gurus=edges.filter(e=>e.kind==="guru"||e.kind==="successor"),partners=edges.filter(e=>e.kind==="partner");
+ const gurus=edges.filter(e=>(e.kind==="guru"||e.kind==="successor")&&e.claims.some(c=>c.structural!==false)),partners=edges.filter(e=>e.kind==="partner");
  // Pair only actual partners; do not let a chain of spouses flatten other disciples.
  const pair=new Map<string,string>();
  for(const p of partners){

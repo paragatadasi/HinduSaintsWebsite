@@ -27,3 +27,11 @@ Domain tests cover stable IDs, all 63 connections, context and group semantics, 
 Neutral regional vocabulary, locality placements, section-area reservations and the Bindu record workflow are separate checkpoints and are not completed by this feature.
 
 The guide retains its baseline revision/time and each actual endpoint's `guideVitrine`. `planningSnapshotChanged` flags any divergence from the current saved destination. Treat placement suggestions as dated research context, never as an instruction to overwrite later curator plans.
+
+## Private UI integration
+
+Vrindavan family and saint trees retain canonical/source claims and add a display-only guide overlay. Teaching and succession retain endpoint direction; association, incarnation, biological-family and group-membership references do not establish teacher generations. Stable case IDs, exact role labels, sources, confidence and website comparison remain available in the research evidence disclosure. Context-only cards explicitly do not count as museum holdings.
+
+Both the planner section workspace and section proposal tree panel offer collapsible guide groups, selected by exact current placement section. Related context within a selected research group remains visible; groups render their diagrams only after opening. Unavailable identities stay in review evidence rather than producing fabricated graph nodes. The protected download provides all 63 dispositions. Browser components import DTO types only; the research manifest is loaded by the authenticated server, never bundled as client data.
+
+Snapshot-drift warnings and current destinations are displayed with the evidence. Static guide placement suggestions are not rendered as current instructions. This layer does not write canonical relationships, identities, tiers, families, locations or destinations. Historical research overlays do not replace canonical relationship review.
