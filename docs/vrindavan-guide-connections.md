@@ -25,3 +25,5 @@ Retain Venabai's inconsistent date fields for investigation. Nityananda archive 
 Domain tests cover stable IDs, all 63 connections, context and group semantics, canonical guru direction, reciprocal claims, missing/archived identities, biological direction and preservation of an implemented curator arrangement. After paired UI deployment, download the production alignment report and save a durable result matrix keyed by connection ID. Compare actual canonical dispositions, verify typed labels and context-only styling in family/section views, and record any unresolved identity or canonical conflicts. The guide is research evidence, not proof that a canonical database write has occurred.
 
 Neutral regional vocabulary, locality placements, section-area reservations and the Bindu record workflow are separate checkpoints and are not completed by this feature.
+
+The guide retains its baseline revision/time and each actual endpoint's `guideVitrine`. `planningSnapshotChanged` flags any divergence from the current saved destination. Treat placement suggestions as dated research context, never as an instruction to overwrite later curator plans.
