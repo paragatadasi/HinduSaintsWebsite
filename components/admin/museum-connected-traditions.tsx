@@ -22,7 +22,7 @@ const diagramNodes=graph.regions.flatMap((r,i)=>[...r.subsections.map(s=>({id:s.
 type CompanionProps={section:string;onChoose:(name:string)=>void;available:string[];areas:{section:string;vitrines:string[]}[];areaRevision:string;canEdit:boolean;staleAreas:string[]};
 export function MuseumConnectedTraditions({section,onChoose,available,areas,areaRevision,canEdit,staleAreas}:CompanionProps){
  const [expanded,setExpanded]=useState(false),title=useId();
- const [layouts,setLayouts]=useState<DiagramLayouts|null>(null),[preset,setPreset]=useState("original"),[draft,setDraft]=useState<DiagramPosition[]|null>(null);
+ const [layouts,setLayouts]=useState<DiagramLayouts|null>(null),[preset,setPreset]=useState("proposal"),[draft,setDraft]=useState<DiagramPosition[]|null>(null);
  const [name,setName]=useState(""),[error,setError]=useState(""),[message,setMessage]=useState(""),[busy,setBusy]=useState(false),[confirmSwitch,setConfirmSwitch]=useState<string|null>(null),[deleting,setDeleting]=useState(false),[needsReload,setNeedsReload]=useState(false);
  const [group,setGroup]=useState<string[]>([]),[multi,setMulti]=useState(false);
  const proposal=useMemo(()=>proposalDiagramPositions(diagramNodes,areas),[areas]);
