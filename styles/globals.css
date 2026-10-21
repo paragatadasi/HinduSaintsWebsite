@@ -11686,3 +11686,9 @@ select:not([multiple]) {
 .museum-move-entry__details { border-top:1px solid var(--color-border);padding-top:var(--space-4);margin-top:var(--space-4); }
 @media(max-width:600px){.museum-move-controls__top{grid-template-columns:minmax(0,1fr)}.museum-move-controls__filters label:nth-last-child(-n+3){grid-column:1/-1}}
 @media print {.museum-move-controls,.museum-planner .admin-tab-strip{display:none!important}.museum-move-entry::details-content{display:block!important}.museum-move-entry > .museum-move-entry__details{display:block!important}}
+
+/* Four physical room columns stay readable in narrow planning panels. */
+.museum-web-viewport { overflow-x:auto; }
+.museum-web-viewport[data-proposal="true"] .museum-web-stage { min-width:var(--width-museum-proposal-columns); }
+
+.museum-web-column-headings { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));min-width:var(--width-museum-proposal-columns);gap:var(--space-2);text-align:center;color:var(--color-muted);font-size:var(--font-size-review-hint);padding-block:var(--space-2);border-bottom:1px solid var(--color-border); }
