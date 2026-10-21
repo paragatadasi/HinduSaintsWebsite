@@ -1,4 +1,7 @@
 "use server";
+import {readMuseumPlanVariants,importMuseumPlanTemplate,saveMuseumPlanVariant,previewMuseumPlanVariant,activateMuseumPlanVariant} from "@/lib/museum-plan-variants";
+import minimalMovePlan from "@/data/museum/vrindavan-minimal-move-plan.json";
+import {readVrindavanMovePlanner} from "@/lib/museum-move-planner";
 import {revalidatePath} from "next/cache";
 import {z} from "zod";
 import {assertCapability} from "@/lib/admin-access";
@@ -99,4 +102,27 @@ export async function saveCuratorReviewAction(input:unknown){
   }
   await saveMuseumCuratorReview(input,actorId);
  });
+}
+
+export async function saveMoveVariantAction(input:unknown){return save(actorId=>saveMuseumPlanVariant(input,actorId));}
+export async function activateMoveVariantAction(input:unknown){return save(actorId=>activateMuseumPlanVariant(input,actorId));}
+export async function previewMoveVariantAction(input:unknown){
+ const user=await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");
+ return previewMuseumPlanVariant(input,user.id);
+}
+
+export async function prepareMinimalMoveVariantAction(input:{revision:string;planRevision:string}){
+ await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");const user=await assertMuseumMutation();
+ try{
+  const id=await importMuseumPlanTemplate(minimalMovePlan,input,user.id);
+  const [registry,data]=await Promise.all([readMuseumPlanVariants(user.id),readVrindavanMovePlanner()]);
+  const control={revision:registry.revision,planRevision:data.revision};
+  const preview=await previewMuseumPlanVariant({...control,id},user.id);
+  revalidatePath("/vrindavanadmin/plan");
+  return {error:"",data:{preview,control,description:minimalMovePlan.description}};
+ }catch(error){
+  if(error instanceof MuseumConflict)return {error:error.message,data:null};
+  if(error instanceof z.ZodError)return {error:error.issues[0]?.message||"Check this proposal.",data:null};
+  throw error;
+ }
 }

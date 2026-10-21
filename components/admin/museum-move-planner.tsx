@@ -1,4 +1,5 @@
 "use client";
+import {MuseumPlanVariants,type PlanVariantsSummary} from "./museum-plan-variants";
 import {useState,useTransition} from "react";
 import {useRouter} from "next/navigation";
 import Link from "next/link";
@@ -34,7 +35,7 @@ function familyDestinationSummary(rows:PlannerRow[]){
  return `${rows.length-exact.length-flexible.length} unassigned · ${exact.length} exact destinations · ${flexible.length} flexible`;
 }
 function destinationLabel(row:PlannerRow){return isFlexible(row)?`Within vitrines ${row.flexibleVitrines!.join(", ")} · exact spot flexible`:row.status==="Proposed"?"No destination yet":`${row.status} · Vitrine ${row.vitrine}${row.shelf?` / ${row.shelf}`:""}`;}
-export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boolean}){
+export function MuseumMovePlanner({data,canEdit,variants}:{data:PlannerData;canEdit:boolean;variants?:PlanVariantsSummary}){
  const router=useRouter();
  const regionGroups=plannerRegionGroups(data.sections,data.rows);
  const [view,setView]=useState<"plan"|"checklist">("plan");
@@ -51,6 +52,9 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
  const [filter,setFilter]=useState("");
  const [error,setError]=useState(""),[message,setMessage]=useState("");
  const [pending,startTransition]=useTransition();
+ const activeVariant=variants?.variants.find(v=>v.id===variants.activeId);
+ const targeted=activeVariant?.scope==="targeted";
+ const hasUnsavedAreas=Object.keys(areaDrafts).some(name=>JSON.stringify([...areaDrafts[name]].sort())!==JSON.stringify([...(data.areas.find(a=>a.section===name)?.vitrines??[])].sort()));
  const rows=data.rows.filter(row=>row.section===section),chosen=rows.filter(row=>selected.includes(row.id));
  const savedArea=data.areas.find(area=>area.section===section)?.vitrines||[];
  const requiredVitrine=requiredPlanningVitrine("museum-vrindavan",section);
@@ -88,7 +92,8 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
  return <div className="museum-admin admin-stack museum-planner">
   <AdminViewTabs label="Move workspace" value={view} onChange={setView} options={[{value:"plan",label:"Plan destinations"},{value:"checklist",label:"Move companion"}]}/>
   <header className="section-heading"><div><p className="eyebrow">Vrindavan Museum</p><h1>{view==="plan"?"Plan the move":"Move companion"}</h1><p>{view==="plan"?"Reserve space for sections, then arrange families and saints within it.":"Find the starting location, check the relics, and confirm their destination."}</p></div></header>
-  {view==="plan"?<Counts rows={data.rows} configured={data.photosConfigured}/>:null}
+  {variants?<MuseumPlanVariants key={`${variants.revision}:${data.revision}`} registry={variants} planRevision={data.revision} canEdit={canEdit} disabled={hasUnsavedAreas}/>:null}
+  {view==="plan"?<Counts rows={targeted?data.rows.filter(row=>activeVariant.taskSaintIds.includes(row.saintId)||row.status==="Planned"):data.rows} configured={data.photosConfigured}/>:null}
 
   {error?<p role="alert">{error}</p>:null}{message?<p role="status">{message}</p>:null}
   {earlierAreas.length?<details className="museum-planner__surface admin-stack">
@@ -105,8 +110,8 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
   </details>:null}
   {view==="plan"?<>
    <div className="museum-planning-tools">
-  {canEdit?<MuseumSuggestedPlan data={data} disabled={Object.entries(areaDrafts).some(([name,values])=>JSON.stringify([...values].sort())!==JSON.stringify([...(data.areas.find(a=>a.section===name)?.vitrines??[])].sort()))}/>:null}
-   <MuseumPlanSearch data={data} onVitrine={setInspectVitrine} onSection={name=>{chooseSection(name);requestAnimationFrame(()=>document.getElementById("museum-plan-overview")?.scrollIntoView({block:"start"}));}}/>
+  {targeted?<section className="museum-planner__surface admin-stack"><div className="museum-planning-heading"><p className="eyebrow">A focused visit</p><h2>Targeted changes</h2><p>{activeVariant.description}</p></div><button className="museum-admin-button" type="button" onClick={()=>setView("checklist")}>Open the short move checklist</button><p className="muted">The full proposal is saved separately. Only destinations for these targeted tasks are loaded; other saints stay where they are.</p></section>:canEdit?<MuseumSuggestedPlan data={data} disabled={hasUnsavedAreas}/>:null}
+   <MuseumPlanSearch stayInPlace={targeted} data={data} onVitrine={setInspectVitrine} onSection={name=>{chooseSection(name);requestAnimationFrame(()=>document.getElementById("museum-plan-overview")?.scrollIntoView({block:"start"}));}}/>
    </div>
    <MuseumCuratorReview canEdit={canEdit} disabled={Object.entries(areaDrafts).some(([name,values])=>JSON.stringify([...values].sort())!==JSON.stringify([...(data.areas.find(a=>a.section===name)?.vitrines??[])].sort()))}/>
 
@@ -122,7 +127,7 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
        </MuseumSectionDragButton>;
       })}</section>)}</div>
      </section>
-     <div className="museum-planner__map-companion"><div className="admin-stack museum-admin-panel"><div className="museum-planning-heading"><p className="eyebrow">Plan the space</p><h3>Museum layout</h3><p>{section||"Explore the room"}</p></div><div className="review-actions">{section?<button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>chooseSection("")}>Clear section selection</button>:null}{section&&section!=="Needs section proposal"&&canEdit?<button type="button" className="museum-admin-button museum-admin-button--secondary" aria-pressed={editMap} onClick={()=>setEditMap(value=>!value)}>{editMap?"Done editing area":"Edit section area"}</button>:null}</div><MuseumRoomPlan mode={editMap?"assign":"browse"} dropVitrine={dropVitrine} multiple selected={area} labels={labels} counts={counts} disabled={pending} onSelect={number=>editMap?editArea(number):setInspectVitrine(number)} onDropSection={canEdit?(number,name)=>editArea(number,name,true):undefined}/>
+     <div className="museum-planner__map-companion"><div className="admin-stack museum-admin-panel"><div className="museum-planning-heading"><p className="eyebrow">Plan the space</p><h3>Museum layout</h3><p>{section||"Explore the room"}</p>{targeted?<p className="muted">Only targeted destinations are counted here. Other saints remain in place; a blank vitrine is not empty.</p>:null}</div><div className="review-actions">{section?<button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>chooseSection("")}>Clear section selection</button>:null}{section&&section!=="Needs section proposal"&&canEdit?<button type="button" className="museum-admin-button museum-admin-button--secondary" aria-pressed={editMap} onClick={()=>setEditMap(value=>!value)}>{editMap?"Done editing area":"Edit section area"}</button>:null}</div><MuseumRoomPlan countLabel={targeted?"in move plan":"assigned"} mode={editMap?"assign":"browse"} dropVitrine={dropVitrine} multiple selected={area} labels={labels} counts={counts} disabled={pending} onSelect={number=>editMap?editArea(number):setInspectVitrine(number)} onDropSection={canEdit?(number,name)=>editArea(number,name,true):undefined}/>
       <p className="muted">Highlighted vitrines show the selected section’s area. Clicking only opens the contents unless Edit section area is active. The drawing does not estimate capacity.</p>
       {section?<><div className="review-actions" aria-label="Selected section vitrines">{area.map(number=><button key={number} type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!canEdit||pending||number===requiredVitrine} onClick={()=>editArea(number)} aria-label={`Remove ${section} from vitrine ${number}`}>Vitrine {number} <X aria-hidden="true"/></button>)}</div>
       <p>{area.length?"Remove a vitrine with ×, or use Edit section area.":"Select one or more vitrines"}{areaDirty?" · Unsaved changes":""}</p>
@@ -188,7 +193,7 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
      </form>
     </>
    </section>:<p>Select a section to explore its saints, or click any vitrine to browse its planned contents.</p>}
-  </>:<MuseumMoveList data={data} canEdit={canEdit}/>}
+  </>:<MuseumMoveList key={variants?.activeId??"current"} data={data} canEdit={canEdit} proposal={activeVariant}/>}
   {editSaint?<MuseumPlannerProposalEditor key={editSaint.saintId} saintId={editSaint.saintId} name={editSaint.name} onClose={()=>setEditSaint(null)}/>:null}
   {inspectVitrine!==null?<MuseumVitrineContents data={data} number={inspectVitrine} onClose={()=>setInspectVitrine(null)}/>:null}
   {tree?<MuseumDetailDialog titleId="museum-plan-tree-title" kicker="Family reference" closeLabel="Close family tree" onClose={()=>setTree(null)}><h2 id="museum-plan-tree-title">{tree.name}</h2><MuseumPackagingSummary rows={data.rows.filter(row=>row.familyKey===tree.key)}/><MuseumSaintTree familyKey={tree.key} museum="vrindavan" name={tree.name} showStatus/></MuseumDetailDialog>:null}
