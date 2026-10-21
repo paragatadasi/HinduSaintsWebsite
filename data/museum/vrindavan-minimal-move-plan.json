@@ -1,0 +1,285 @@
+{
+  "id": "vrindavan-minimal-moves-2026-10-21",
+  "name": "Before the visit · five targeted moves",
+  "description": "Five box-only moves across Vitrines 3, 4 and 5 bring four existing family groups together. Samarth Ramdas gains a top-row position; Akkalkot and Satyendranath remain on row two. No frames move. Everyone else stays in place, including the fixed Sikh display in Vitrine 11. Check the fit of each complete cycle before starting; duration has not been measured.",
+  "entries": [
+    {
+      "saintId": "cms0w7f0l03nb07qik1abxafl",
+      "vitrine": "5",
+      "shelf": "1.1",
+      "order": 2,
+      "note": "Join Vena Bai in Vitrine 5 and place Samarth Ramdas on row one."
+    },
+    {
+      "saintId": "cms0w7do501vq07qifzgeltqf",
+      "vitrine": "4",
+      "shelf": "2.1",
+      "order": 3,
+      "note": "Join Krishna Saraswati and Balappa in Vitrine 4; row two keeps this exchange small."
+    },
+    {
+      "saintId": "cmus3rxye009v07o5yg9lxs1r",
+      "vitrine": "3",
+      "shelf": "4.2",
+      "order": 4,
+      "note": "Use the box slot vacated by Akkalkot. This is a space-balancing move, not a new family or lineage claim."
+    },
+    {
+      "saintId": "cms0w7cuo00uf07qiwe3ka0r7",
+      "vitrine": "5",
+      "shelf": "2.1",
+      "order": 6,
+      "note": "Join the existing Balabai display family in Vitrine 5; row two. No new initiation claim is implied."
+    },
+    {
+      "saintId": "cms0w7fe9045b07qiv7h2wlsy",
+      "vitrine": "4",
+      "shelf": "4.2",
+      "order": 7,
+      "note": "Join Gajanan in Vitrine 4 without changing tier or canonical relationships."
+    }
+  ],
+  "steps": [
+    {
+      "order": 1,
+      "title": "Open the first slot",
+      "saintIds": [
+        "cmus3rxye009v07o5yg9lxs1r"
+      ],
+      "instruction": "Cycle 1: check all three boxes and destination slots before beginning. Label a safe temporary tray “Siddheshwar · inventory row 67 · Vitrine 5, row 1, position 1”. Place his complete box assembly on it. Do not mark this staging step as implemented.",
+      "operation": "stage"
+    },
+    {
+      "order": 2,
+      "title": "Bring Ramdas beside Vena Bai",
+      "saintIds": [
+        "cms0w7f0l03nb07qik1abxafl"
+      ],
+      "instruction": "Move Samarth Ramdas (inventory row 54) from Vitrine 4, row 2, position 1 to the vacated Vitrine 5, row 1, position 1. This joins Vena Bai in the same vitrine and gives Ramdas a top-row position.",
+      "operation": "place"
+    },
+    {
+      "order": 3,
+      "title": "Bring Akkalkot beside Krishna and Balappa",
+      "saintIds": [
+        "cms0w7do501vq07qifzgeltqf"
+      ],
+      "instruction": "Move Akkalkot Maharaj (inventory row 45) from Vitrine 3, row 4, position 2 to the vacated Vitrine 4, row 2, position 1. This joins Krishna Saraswati and Balappa. He remains on row two.",
+      "operation": "place"
+    },
+    {
+      "order": 4,
+      "title": "Complete the first cycle",
+      "saintIds": [
+        "cmus3rxye009v07o5yg9lxs1r"
+      ],
+      "instruction": "Place Siddheshwar’s staged box in the vacated Vitrine 3, row 4, position 2. Check all three assemblies and labels are in their final places and the tray is empty before beginning Cycle 2.",
+      "operation": "place"
+    },
+    {
+      "order": 5,
+      "title": "Open the second exchange",
+      "saintIds": [
+        "cms0w7fe9045b07qiv7h2wlsy"
+      ],
+      "instruction": "Cycle 2: check both boxes and destination slots first. Label the safe temporary tray “Bhaskar · inventory row 70 · Vitrine 5, row 2, position 1”. Stage his complete box assembly. Do not mark staging as implemented.",
+      "operation": "stage"
+    },
+    {
+      "order": 6,
+      "title": "Bring Satyendranath beside Balabai",
+      "saintIds": [
+        "cms0w7cuo00uf07qiwe3ka0r7"
+      ],
+      "instruction": "Move Satyendranath (inventory row 61) from Vitrine 4, row 4, position 2 to the vacated Vitrine 5, row 2, position 1, joining the existing Balabai family grouping. He remains on row two.",
+      "operation": "place"
+    },
+    {
+      "order": 7,
+      "title": "Complete the second exchange",
+      "saintIds": [
+        "cms0w7fe9045b07qiv7h2wlsy"
+      ],
+      "instruction": "Place Bhaskar’s staged box in the vacated Vitrine 4, row 4, position 2, joining Gajanan in the same vitrine. Check both assemblies and labels are in place and the tray is empty. Confirm only final destinations in the checklist.",
+      "operation": "place"
+    }
+  ],
+  "expectedSources": [
+    {
+      "saintId": "cms0w7f0l03nb07qik1abxafl",
+      "lastConfirmed": null,
+      "sources": [
+        {
+          "id": "cmus5tirj049t07p7f4g1a95n",
+          "vitrine": "4",
+          "shelf": "2.1",
+          "packagingText": "Box"
+        }
+      ],
+      "tier": "Featured",
+      "familyKey": "suggested:FAM-012"
+    },
+    {
+      "saintId": "cms0w7do501vq07qifzgeltqf",
+      "lastConfirmed": null,
+      "sources": [
+        {
+          "id": "cmus5tire049l07p7wum1mzrd",
+          "vitrine": "3",
+          "shelf": "4.2",
+          "packagingText": "Box"
+        }
+      ],
+      "tier": "Featured",
+      "familyKey": "suggested:FAM-003"
+    },
+    {
+      "saintId": "cmus3rxye009v07o5yg9lxs1r",
+      "lastConfirmed": null,
+      "sources": [
+        {
+          "id": "cmus5tirr04a507p785z3mvu6",
+          "vitrine": "5",
+          "shelf": "1.1",
+          "packagingText": "Box"
+        }
+      ],
+      "tier": "Tertiary",
+      "familyKey": ""
+    },
+    {
+      "saintId": "cms0w7cuo00uf07qiwe3ka0r7",
+      "lastConfirmed": null,
+      "sources": [
+        {
+          "id": "cmus5tiro04a007p7buxwx31b",
+          "vitrine": "4",
+          "shelf": "4.2",
+          "packagingText": "Box"
+        }
+      ],
+      "tier": "Featured",
+      "familyKey": "suggested:FAM-039"
+    },
+    {
+      "saintId": "cms0w7fe9045b07qiv7h2wlsy",
+      "lastConfirmed": null,
+      "sources": [
+        {
+          "id": "cmus5tirt04a807p7whzro2nl",
+          "vitrine": "5",
+          "shelf": "2.1",
+          "packagingText": "Box"
+        }
+      ],
+      "tier": "Secondary",
+      "familyKey": "suggested:FAM-021"
+    }
+  ],
+  "evidence": {
+    "reviewedAt": "2026-10-21",
+    "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+    "websiteRevision": "88dac8acae48333d980967d08d42fc14db6bc2576de2ffdab428278cc32001ad",
+    "status": "Source entries checked by Nadi; family priorities reviewed by Saarthi. Physical fit must be checked in the museum.",
+    "sourceRows": [
+      {
+        "saintId": "cms0w7f0l03nb07qik1abxafl",
+        "name": "Sri Samarth Ramdas",
+        "sourceRow": 54,
+        "tier": "Featured",
+        "familyKey": "suggested:FAM-012"
+      },
+      {
+        "saintId": "cms0w7do501vq07qifzgeltqf",
+        "name": "Swami Akkalkot Maharaj",
+        "sourceRow": 45,
+        "tier": "Featured",
+        "familyKey": "suggested:FAM-003"
+      },
+      {
+        "saintId": "cmus3rxye009v07o5yg9lxs1r",
+        "name": "Sri Siddheshwar Maharaj",
+        "sourceRow": 67,
+        "tier": "Tertiary",
+        "familyKey": ""
+      },
+      {
+        "saintId": "cms0w7cuo00uf07qiwe3ka0r7",
+        "name": "Sri Satyendranath Swami",
+        "sourceRow": 61,
+        "tier": "Featured",
+        "familyKey": "suggested:FAM-039"
+      },
+      {
+        "saintId": "cms0w7fe9045b07qiv7h2wlsy",
+        "name": "Sri Bhaskar Maharaj",
+        "sourceRow": 70,
+        "tier": "Secondary",
+        "familyKey": "suggested:FAM-021"
+      }
+    ],
+    "frameExchangeAudit": [
+      {
+        "vitrine": "3",
+        "incomingEntries": 1,
+        "outgoingEntries": 1,
+        "incomingComponents": {
+          "box": 1
+        },
+        "outgoingComponents": {
+          "box": 1
+        },
+        "incomingFrameSaintIds": [],
+        "outgoingFrameSaintIds": [],
+        "frameConstraintPass": true,
+        "componentCountBalancePass": true,
+        "fitStillRequiresOnsiteCheck": true
+      },
+      {
+        "vitrine": "4",
+        "incomingEntries": 2,
+        "outgoingEntries": 2,
+        "incomingComponents": {
+          "box": 2
+        },
+        "outgoingComponents": {
+          "box": 2
+        },
+        "incomingFrameSaintIds": [],
+        "outgoingFrameSaintIds": [],
+        "frameConstraintPass": true,
+        "componentCountBalancePass": true,
+        "fitStillRequiresOnsiteCheck": true
+      },
+      {
+        "vitrine": "5",
+        "incomingEntries": 2,
+        "outgoingEntries": 2,
+        "incomingComponents": {
+          "box": 2
+        },
+        "outgoingComponents": {
+          "box": 2
+        },
+        "incomingFrameSaintIds": [],
+        "outgoingFrameSaintIds": [],
+        "frameConstraintPass": true,
+        "componentCountBalancePass": true,
+        "fitStillRequiresOnsiteCheck": true
+      }
+    ],
+    "summary": {
+      "uniqueSaints": 5,
+      "sourceEntries": 5,
+      "crossVitrineMoves": 5,
+      "withinVitrineFinalMoves": 0,
+      "frameSaintMoves": 0,
+      "smallFrameSaintMoves": 0,
+      "familyGroupsReunited": 4,
+      "primariesPromotedToTop": 1,
+      "handlingStepsIncludingStaging": 7,
+      "estimatedMinutes": null,
+      "timePolicy": "Designed as a small optional core within the curator1–2hour session; duration has not been measured."
+    }
+  }
+}
