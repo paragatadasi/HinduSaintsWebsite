@@ -20,6 +20,7 @@ import {MuseumVitrineContents} from "./museum-vitrine-contents";
 import {MuseumPlannerProposalEditor} from "./museum-planner-proposal-editor";
 import {MuseumPlanSearch} from "./museum-plan-search";
 import {MuseumSuggestedPlan} from "./museum-suggested-plan";
+import {MuseumCuratorReview} from "./museum-curator-review";
 
 function Counts({rows,configured}:{rows:PlannerRow[];configured:boolean}){
  const counts=plannerCounts(rows);
@@ -105,6 +106,7 @@ export function MuseumMovePlanner({data,canEdit}:{data:PlannerData;canEdit:boole
    </li>)}</ul>
   </details>:null}
   {view==="plan"?<>
+   <MuseumCuratorReview canEdit={canEdit} disabled={Object.entries(areaDrafts).some(([name,values])=>JSON.stringify([...values].sort())!==JSON.stringify([...(data.areas.find(a=>a.section===name)?.vitrines??[])].sort()))}/>
    <MuseumPlanSearch data={data} onVitrine={setInspectVitrine} onSection={name=>{chooseSection(name);requestAnimationFrame(()=>document.getElementById("museum-plan-overview")?.scrollIntoView({block:"start"}));}}/>
    <section className="museum-planner__surface admin-stack" aria-label="Section areas in the room">
     <div><h2>Arrange sections in the room</h2><p>Click a vitrine to see its planned saints. To reserve space, drag a section onto the map or choose Edit section area.</p></div>

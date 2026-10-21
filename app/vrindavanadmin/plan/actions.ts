@@ -9,6 +9,7 @@ import {readVrindavanWorkingData} from "@/lib/vrindavan-working-data";
 import {readMuseumSaintProfiles} from "@/lib/museum-saint-profiles";
 import {saveVrindavanProposal} from "@/lib/vrindavan-proposal-service";
 import {hasCapability} from "@/lib/permissions";
+import {readMuseumCuratorReview,saveMuseumCuratorReview} from "@/lib/museum-curator-review";
 import {previewVrindavanSuggestedPlan,applyVrindavanSuggestedPlan,clearVrindavanSuggestedPlan} from "@/lib/museum-move-planner";
 
 async function save(work:(actorId:string)=>Promise<unknown>){
@@ -51,3 +52,30 @@ export async function previewSuggestedPlanAction(){
 }
 export async function applySuggestedPlanAction(input:unknown){return save(actorId=>applyVrindavanSuggestedPlan(input,actorId));}
 export async function clearSuggestedPlanAction(input:unknown){return save(actorId=>clearVrindavanSuggestedPlan(input,actorId));}
+
+export async function loadCuratorReviewAction(){
+ const user=await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");
+ const queue=await readMuseumCuratorReview("museum-vrindavan");
+ return {...queue,cases:queue.cases.map(item=>({...item,options:item.options.map(option=>({...option,
+  ...(!hasCapability(user.roles,"resolve_reconciliation")&&option.requiresIdentityLink?{unavailableReason:"An identity reviewer must approve this source-link change."}:{})
+ }))}))};
+}
+export async function loadCuratorReviewProfileAction(caseId:string,revision:string){
+ await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");
+ z.string().min(1).max(200).parse(caseId);z.string().min(1).max(200).parse(revision);
+ const item=(await readMuseumCuratorReview("museum-vrindavan")).cases.find(item=>item.caseId===caseId);
+ if(!item||item.revision!==revision)throw new MuseumConflict("This case changed. Reload the review list.");
+ return item.saintId?(await readMuseumSaintProfiles([item.saintId]))[item.saintId]??null:null;
+}
+export async function saveCuratorReviewAction(input:unknown){
+ return save(async actorId=>{
+  // Resolve permissions from the server-owned choice, never from a client flag.
+  const selection=z.object({caseId:z.string().min(1).max(200),decision:z.enum(["confirm_supported","different","unsure"]),explicitChoiceId:z.string().max(200).optional()}).parse(input);
+  if(selection.decision==="confirm_supported"){
+   const queue=await readMuseumCuratorReview("museum-vrindavan");
+   const option=queue.cases.find(item=>item.caseId===selection.caseId)?.options.find(value=>value.id===selection.explicitChoiceId);
+   if(option?.requiresIdentityLink)await assertCapability("resolve_reconciliation");
+  }
+  await saveMuseumCuratorReview(input,actorId);
+ });
+}
