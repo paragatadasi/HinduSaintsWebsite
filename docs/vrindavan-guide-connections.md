@@ -1,6 +1,6 @@
 # Vrindavan guide connections and planning alignment
 
-The current catalogue contains 73 labelled connections across 21 sections in Saarthi's guide v13, incorporating the approved expansion and subsequent direct Ramaiah and Bhakti Vilas confirmations. The private manifest preserves all 63 original v9 case IDs and adds eight final-expansion IDs, stable per-connection case IDs, exact canonical IDs for actual holdings, typed research labels, source URLs and research caveats. Context-only endpoints remain context even if a similarly named website saint exists.
+The current catalogue contains 73 labelled connections across 21 sections in Saarthi's guide v14, incorporating the approved expansion and subsequent direct Ramaiah and Bhakti Vilas confirmations. The private manifest preserves all 63 original v9 case IDs and adds eight final-expansion IDs, stable per-connection case IDs, exact canonical IDs for actual holdings, typed research labels, source URLs and research caveats. Context-only endpoints remain context even if a similarly named website saint exists.
 
 ## Data contract
 
@@ -52,4 +52,8 @@ Bhakti Vilas source row 188 has separately confirmed broad Gaudiya affiliation. 
 
 ## Subsequent explicit discipleship confirmation (guide v13)
 
-The current manifest is `vrindavan-guide-connections-v13.json`: 73 connections in 21 groups. Paragata Dasi subsequently confirmed Bhakti Vilas row188 specifically as Bhaktisiddhanta's disciple, superseding the earlier affiliation-only hold above. The new stable case `bhakti-vilas-tirtha-disciple-001` retains that provenance and the institutional source. Only the Ramaiah and Vilas holds are cleared; Narayan462, Narayan431 and Ramdas145 remain held. All previous72 meanings are regression checked. No destination, canonical relationship or physical movement is written by this update.
+The confirmation manifest was `vrindavan-guide-connections-v13.json`: 73 connections in 21 groups. Paragata Dasi subsequently confirmed Bhakti Vilas row188 specifically as Bhaktisiddhanta's disciple, superseding the earlier affiliation-only hold above. The new stable case `bhakti-vilas-tirtha-disciple-001` retains that provenance and the institutional source. Only the Ramaiah and Vilas holds are cleared; Narayan462, Narayan431 and Ramdas145 remain held. All previous72 meanings are regression checked. No destination, canonical relationship or physical movement is written by this update.
+
+## Final saved-plan baseline (guide v14)
+
+The active `vrindavan-guide-connections-v14.json` retains all73 connections and21 groups, with identical relationship semantics, sources and identity holds. Endpoint destination references were checked against Nadi's final saved v3 snapshot, revision `88dac8acae48333d980967d08d42fc14db6bc2576de2ffdab428278cc32001ad`, generated `2026-10-21T05:03:44.672Z`. Section placement notes now reflect that snapshot. This refresh only changes reference data; current saved placements remain authoritative and later changes still trigger drift warnings. No database or physical-move writes occur.
