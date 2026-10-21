@@ -17,7 +17,7 @@ export function MuseumSuggestedPlan({data,disabled=false}:{data:PlannerData;disa
  function run(work:()=>Promise<void>){setError("");start(async()=>{try{await work();}catch{setError("This action could not be confirmed. Reload to check the saved plan before trying again.");}});}
  const vitrines=preview?[...new Set(preview.assignments.map(a=>a.vitrine))].sort((a,b)=>Number(a)-Number(b)):[];
  return <section className="museum-planner__surface admin-stack">
-  <div className="section-heading"><div><p className="eyebrow">A starting arrangement</p><h2>Let us help with the plan</h2><p>Keep related saints together, with room for frames and upper display space for primary and secondary saints.</p></div></div>
+  <div className="museum-planning-heading"><div><p className="eyebrow">A starting arrangement</p><h2>Plan assistance</h2><p>Keep related saints together, with room for frames and upper display space for primary and secondary saints.</p></div></div>
   <div className="review-actions">
    <button type="button" className="museum-admin-button" disabled={pending||disabled||!!data.suggestionId} onClick={()=>run(async()=>setPreview(await previewSuggestedPlanAction()))}>{pending?"Preparing…":"Suggest a Plan for Me"}</button>
    {data.suggestionId?<button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={pending||disabled} onClick={()=>setClear(true)}>Clear suggested plan</button>:null}
