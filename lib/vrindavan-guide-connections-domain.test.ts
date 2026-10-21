@@ -1,3 +1,4 @@
+import confirmedGuide from "../data/museum/vrindavan-guide-connections-v13.json";
 import ramaiahGuide from "../data/museum/vrindavan-guide-connections-v11.json";
 import previousGuide from "../data/museum/vrindavan-guide-connections-v10.json";
 import originalGuide from "../data/museum/vrindavan-guide-connections-v9.json";
@@ -27,3 +28,5 @@ test("confirmed Ramaiah adds one contextual lineage without changing the previou
 test("only the two explicitly confirmed identity holds are cleared",()=>{assert.equal(guideMetadata.heldCases.some(h=>h.name.includes("Ramaiah")),false);assert.equal(guideMetadata.heldCases.some(h=>h.name.includes("Vilas")),false);assert.ok(guideMetadata.heldCases.some(h=>h.name.includes("462")));assert.ok(guideMetadata.heldCases.some(h=>h.name.includes("431")));assert.ok(guideMetadata.heldCases.some(h=>h.name.includes("145")));});
 
 test("explicit Vilas discipleship confirmation preserves all previous 72 meanings",()=>{for(const old of ramaiahGuide.connections){const current=guideConnections.find(c=>c.id===old.id)!;assert.ok(current);for(const field of ["type","kind","label","structural","evidence","confidence","notes"] as const)assert.deepEqual(current[field],old[field]);}const c=guideConnections.find(c=>c.id==="bhakti-vilas-tirtha-disciple-001")!;assert.equal(c.type,"guru_disciple");assert.equal(c.kind,"teaching");assert.equal(c.from.kind,"saint");assert.equal(c.to.kind,"saint");assert.ok(c.notes.some(n=>n.includes("Paragata Dasi")));});
+
+test("final saved-plan baseline changes no relationship semantics or holds",()=>{assert.equal(guideMetadata.guideVersion,14);assert.equal(guideMetadata.proposalSnapshotRevision,"88dac8acae48333d980967d08d42fc14db6bc2576de2ffdab428278cc32001ad");assert.deepEqual(guideMetadata.heldCases,confirmedGuide.heldCases);for(const old of confirmedGuide.connections){const current=guideConnections.find(c=>c.id===old.id)!;const clean=(c:typeof old|typeof current)=>({...c,from:{...c.from,guideVitrine:undefined},to:{...c.to,guideVitrine:undefined}});assert.deepEqual(clean(current),clean(old));}});
