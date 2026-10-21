@@ -14,6 +14,7 @@ const presenceLabels={location:"Recorded location",catalogue:"Collection record"
 type TreeOption=MuseumTreeOption;
 export function MuseumLiveTrees({section,museum}:{section:MuseumSection;museum:"spn"|"vrindavan"}) {
  const {main,additional}=museumTreeOptions(section);
+ if(museum==="vrindavan"&&section.name==="Sikh & Punjab Traditions")main.unshift({key:"context:sikh-guru-succession",familyKey:"context:sikh-guru-succession",label:"Sikh Guru succession",seeds:[],count:10,contextLabel:"10 Gurus + related context"});
  return <section className="museum-admin-panel">
   <div className="museum-admin-kicker">Family trees</div><h2>Relationship trees in this section</h2>
   <p>Open a family to explore its relationships. Reference connections remain labeled where website records are incomplete.</p>
@@ -24,7 +25,7 @@ export function MuseumLiveTrees({section,museum}:{section:MuseumSection;museum:"
 }
 export function MuseumLiveTreePanel({option,museum}:{option:TreeOption;museum:"spn"|"vrindavan"}) {
  const [data,setData]=useState<MuseumLiveTree|null>(null),[error,setError]=useState(""),[loading,setLoading]=useState(false);
- const [unreviewed,setUnreviewed]=useState(true),[source,setSource]=useState(Boolean(option.familyKey));
+ const [unreviewed,setUnreviewed]=useState(true),[source,setSource]=useState(Boolean(option.familyKey)&&!option.contextLabel);
  const controller=useRef<AbortController|null>(null),started=useRef(false);
  useEffect(()=>()=>controller.current?.abort(),[]);
  async function load(pending=unreviewed,reference=source){
@@ -33,12 +34,12 @@ export function MuseumLiveTreePanel({option,museum}:{option:TreeOption;museum:"s
   catch(e){if(!request.signal.aborted)setError(e instanceof Error?e.message:"Unable to load tree.");}finally{if(!request.signal.aborted)setLoading(false);}
  }
  return <details className="museum-tree-panel" onToggle={event=>{if(event.currentTarget.open&&!started.current)void load();}}>
-  <summary><span className="museum-tree-panel__title">{option.label}<Triangle aria-hidden="true" className="museum-tree-panel__toggle"/></span><small>{option.count} saints</small></summary>
+  <summary><span className="museum-tree-panel__title">{option.label}<Triangle aria-hidden="true" className="museum-tree-panel__toggle"/></span><small>{option.contextLabel||`${option.count} saints`}</small></summary>
   <div className="museum-live-tree-content admin-stack">
    <details className="museum-tree-settings"><summary>Tree options and sources</summary><div className="review-actions">
     <button className="museum-admin-button museum-admin-button--secondary" disabled={loading} type="button" onClick={()=>void load()}>Refresh tree</button>
     <label><input type="checkbox" checked={unreviewed} onChange={e=>{setUnreviewed(e.target.checked);void load(e.target.checked,source);}}/> Include website relationships awaiting review</label>
-    {option.familyKey?<label><input type="checkbox" checked={source} onChange={e=>{setSource(e.target.checked);void load(unreviewed,e.target.checked);}}/> Show preserved export relationships</label>:null}
+    {option.familyKey&&!option.contextLabel?<label><input type="checkbox" checked={source} onChange={e=>{setSource(e.target.checked);void load(unreviewed,e.target.checked);}}/> Show preserved export relationships</label>:null}
    </div></details>
    {option.seeds.length>60?<p>Starting from the first 60 linked members; the graph may be a partial family view.</p>:null}
    {loading?<p role="status">Generating tree…</p>:null}{error?<p role="alert">{error}</p>:null}
@@ -80,11 +81,13 @@ function MuseumTreeCanvas({data,label,immersive=false,initialZoom=1,initialCompa
  const person=layout.nodes.find(n=>n.id===selected),byId=new Map(layout.nodes.map(n=>[n.id,n]));
  const shortcuts=layout.edges.filter(e=>e.secondary==="shortcut").length;
  const isolated=layout.nodes.filter(n=>!layout.edges.some(e=>e.from===n.id||e.to===n.id)).length;
- const badge=(n:typeof layout.nodes[number])=>n.sourceOnly?"Identity not linked":presenceLabels[n.presence||"none"];
+ const badge=(n:typeof layout.nodes[number])=>n.contextOnly?"Historical context - no website profile or holding inferred":n.sourceOnly?"Identity not linked":presenceLabels[n.presence||"none"];
  const relationshipText=(edge:typeof layout.edges[number])=>`${byId.get(edge.from)?.name} ${["guru","successor"].includes(edge.kind)?"→":"—"} ${byId.get(edge.to)?.name}: ${edge.kind==="guru"?"guru to disciple":edge.kind==="successor"?"succession (predecessor to successor)":edge.kind}${edge.secondary?` (${edge.secondary})`:""}. ${edge.claims.map(c=>`${c.status.replaceAll("_"," ")}, ${c.evidence}, ${c.confidence} confidence`).join("; ")}`;
  if(layout.nodes.length<2||!layout.edges.length)return null;
  return <div className={`museum-live-tree-panel admin-stack${immersive?" museum-tree-explorer--active":" museum-tree-explorer--preview"}`}>
-  <h3 id={headingId||diagramTitleId}>{label}</h3>{highlightSaintId?<p className="museum-filter-note">The highlighted card is the selected saint.</p>:null}<p className="museum-tree-count">{layout.nodes.length} saints{immersive?null:<> · Loaded {new Date(data.retrievedAt).toLocaleTimeString()}</>}</p>
+  <h3 id={headingId||diagramTitleId}>{label}</h3>{highlightSaintId?<p className="museum-filter-note">The highlighted card is the selected saint.</p>:null}<p className="museum-tree-count">{layout.nodes.length} {data.researchContext?"people in diagram":"saints"}{immersive?null:<> · Loaded {new Date(data.retrievedAt).toLocaleTimeString()}</>}</p>
+  {data.researchContext?<p className="museum-tree-source-note">Historical context is included; diagram totals are not museum inventory counts.</p>:null}
+  {data.researchContext?<details className="museum-tree-evidence"><summary>Reviewed historical context and sources</summary><p>{data.researchContext.contextCount} context-only Guru cards provide succession context. They are not additional museum holdings. Reviewed {data.researchContext.reviewedAt}. Website relationship decisions take precedence.</p>{data.researchContext.affiliations.map(a=><p key={a.name}><strong>{a.name}</strong>: {a.label}. {a.notes}</p>)}<ul>{data.researchContext.sources.map(source=><li key={source.key}><a href={source.url} target="_blank" rel="noreferrer">{source.title}</a> - {source.supports}</li>)}</ul></details>:null}
   {data.sourceReferenceClaims?<details className="museum-tree-evidence"><summary>Includes unreviewed export references</summary><p>{data.sourceReferenceClaims} preserved export claims are shown as unreviewed reference evidence. Website decisions take precedence; this does not import or approve relationships.</p></details>:null}
   {data.unlinkedSourcePeople?<p className="museum-tree-source-note">{data.unlinkedSourcePeople} source saints still need a website identity link. Their museum presence is unknown.</p>:null}
   {isolated&&layout.edges.length?<p>{isolated} saints have no connections recorded in this view; the graph is incomplete.</p>:null}
@@ -115,7 +118,7 @@ function MuseumTreeCanvas({data,label,immersive=false,initialZoom=1,initialCompa
     {layout.nodes.map(n=><g key={n.id} transform={`translate(${n.x},${n.y})`} className={`museum-tree-node museum-tree-node--${n.presence||"none"}${n.id===focus?" museum-tree-node--selected":""}`} role="button" aria-current={n.id===focus?"true":undefined} tabIndex={mobile&&!immersive?-1:0} aria-label={`${n.name}: ${badge(n)}. Select in tree`} onClick={()=>setFocus(n.id)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();setFocus(n.id);}}}>
      <title>{n.name+(n.id===focus?" — Selected saint":"")}</title><rect width={cfg.nodeWidth} height={cfg.nodeHeight}/>
      {treeNameLines(n.name,cfg).map((line,i)=><text key={i} x={cfg.nameX} y={cfg.nameY+i*cfg.nameLineHeight} className="museum-tree-name">{line}</text>)}
-     <text x={cfg.nameX} y={cfg.metaY} className="museum-tree-meta">{[n.birthYear,n.samadhiYear].filter(y=>y!==null).join("–")}</text>
+     <text x={cfg.nameX} y={cfg.metaY} className="museum-tree-meta">{n.contextOnly?"Historical context": [n.birthYear,n.samadhiYear].filter(y=>y!==null).join("–")}</text>
 
     </g>)}
    </svg>
