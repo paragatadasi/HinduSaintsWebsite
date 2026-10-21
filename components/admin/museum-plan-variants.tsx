@@ -1,0 +1,31 @@
+"use client";
+import {useState,useTransition} from "react";
+import {useRouter} from "next/navigation";
+import type {MuseumPlanVariant,MuseumPlanVariants} from "@/lib/museum-plan-variants-domain";
+import {prepareMinimalMoveVariantAction,previewMoveVariantAction,activateMoveVariantAction,saveMoveVariantAction} from "@/app/vrindavanadmin/plan/actions";
+import {MuseumDetailDialog} from "./museum-detail-dialog";
+export type PlanVariantSummary=Omit<MuseumPlanVariant,"rows"|"areas"|"sourceFingerprint">;
+export type PlanVariantsSummary=Pick<MuseumPlanVariants,"revision"|"activeId"|"initialized">&{variants:PlanVariantSummary[]};
+export function MuseumPlanVariants({registry,planRevision,canEdit,disabled=false}:{registry:PlanVariantsSummary;planRevision:string;canEdit:boolean;disabled?:boolean}){
+ const router=useRouter(),[pending,start]=useTransition();
+ const [selected,setSelected]=useState(registry.activeId),[name,setName]=useState("");
+ const [error,setError]=useState(""),[message,setMessage]=useState("");
+ const [preview,setPreview]=useState<Awaited<ReturnType<typeof previewMoveVariantAction>>|null>(null);
+ const [previewControl,setPreviewControl]=useState<{revision:string;planRevision:string}|null>(null);
+ const [previewDescription,setPreviewDescription]=useState("");
+ const active=registry.variants.find(v=>v.id===registry.activeId);
+ const run=(work:()=>Promise<void>)=>{setError("");start(async()=>{try{await work();}catch(e){setError(e instanceof Error?e.message:"Could not confirm the proposal change. Reload before trying again.");}});};
+ const control={revision:registry.revision,planRevision};
+ const closePreview=()=>{setPreview(null);setPreviewControl(null);setPreviewDescription("");router.refresh();};
+ return <section className="museum-admin-panel admin-stack" aria-label="Saved move proposals">
+  <div className="museum-planning-heading"><p className="eyebrow">Choose your scope</p><h2>Move proposals</h2><p><strong>Active: {active?.name??"Current proposal"}</strong></p></div>
+  <p>{active?.scope==="targeted"?"Only the listed tasks are part of this proposal. Everyone else stays in their current location.":"The full reorganization remains available for when there is time to complete it."}</p>
+  <div className="review-actions"><label className="admin-field">Saved proposal<select value={selected} onChange={e=>{setSelected(e.target.value);setPreview(null);}}>{registry.variants.map(v=><option key={v.id} value={v.id}>{v.name}{v.id===registry.activeId?" · Active":""}</option>)}</select></label><button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={pending||disabled||selected===registry.activeId} onClick={()=>run(async()=>setPreview(await previewMoveVariantAction({...control,id:selected})))}>Preview proposal</button></div>
+  {canEdit&&!registry.variants.some(v=>v.id==="vrindavan-minimal-moves-2026-10-21")?<div className="admin-stack"><p>For this visit: five box-only moves, four family groupings brought together, and one primary saint moved to the top row. No frames move.</p><div><button type="button" className="museum-admin-button" disabled={pending||disabled} onClick={()=>run(async()=>{const result=await prepareMinimalMoveVariantAction(control);if(result.error||!result.data){setError(result.error);return;}setPreview(result.data.preview);setPreviewControl(result.data.control);setPreviewDescription(result.data.description);})}>{pending?"Preparing…":"Preview the minimal-move proposal"}</button></div></div>:null}
+  <p className="muted">Switching saves the current proposal first. Recorded physical placements remain available as starting locations. Choosing a different destination creates a new planned move.</p>
+  {canEdit?<details><summary>Save another version</summary><form className="admin-stack" onSubmit={e=>{e.preventDefault();run(async()=>{const result=await saveMoveVariantAction({...control,name});if(result.error){setError(result.error);return;}setName("");setMessage("A separate copy has been saved.");router.refresh();});}}><label className="admin-field">Proposal name<input value={name} maxLength={100} required onChange={e=>setName(e.target.value)}/></label><div><button className="museum-admin-button museum-admin-button--secondary" disabled={pending||disabled||!name.trim()}>Save current proposal as a copy</button></div></form></details>:null}
+  {disabled?<p>Save or discard your section-area changes before switching proposals.</p>:null}
+  {error?<p role="alert">{error}</p>:null}{message?<p role="status">{message}</p>:null}
+  {preview?<MuseumDetailDialog titleId="move-proposal-preview" kicker="Choose a proposal" closeLabel="Close proposal preview" onClose={closePreview}><div className="admin-stack"><h2 id="move-proposal-preview">{preview.name}</h2>{preview.scope==="targeted"?<p><strong>{preview.taskCount} saints in the short move plan.</strong> Everyone else stays in place. The saved future destinations are deferred, not discarded.</p>:null}<p>{preview.changed} planning differences from the active proposal · {preview.preservedImplemented} completed arrangements need no new move.</p>{(preview.description||previewDescription||registry.variants.find(v=>v.id===preview.id)?.description)?<p>{preview.description||previewDescription||registry.variants.find(v=>v.id===preview.id)?.description}</p>:null}{preview.warnings.map((warning,i)=><p key={i} role="note">{warning}</p>)}<details><summary>Review saved planning differences</summary><ul>{preview.changes.map(c=><li key={c.id}><strong>{c.name}</strong><p>{c.from} → {c.to}</p></li>)}</ul></details><p>Your current proposal and its latest edits will remain in the saved list. This changes planned destinations only; it does not confirm a physical move.</p>{error?<p role="alert">{error}</p>:null}<div className="review-actions">{canEdit?<button className="museum-admin-button" disabled={pending||disabled} onClick={()=>run(async()=>{const result=await activateMoveVariantAction({...control,...previewControl,id:preview.id});if(result.error){setError(result.error);return;}setPreview(null);router.refresh();})}>{pending?"Switching…":"Use this proposal"}</button>:null}<button className="museum-admin-button museum-admin-button--secondary" disabled={pending} onClick={closePreview}>Keep current proposal</button></div></div></MuseumDetailDialog>:null}
+ </section>;
+}
