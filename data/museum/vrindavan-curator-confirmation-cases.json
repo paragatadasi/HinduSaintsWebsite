@@ -1,0 +1,1824 @@
+{
+  "schemaVersion": 1,
+  "manifestId": "vrindavan-curator-confirmation-cases-2026-10-21-v3",
+  "manifestVersion": 3,
+  "museumId": "museum-vrindavan",
+  "preparedDate": "2026-10-21",
+  "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+  "sourceGeneratedAt": "2026-10-21T00:54:02.782Z",
+  "freshness": "Source-identity queue last verified 414 confirmed /35 pending by Nadi during 21Oct application. The pending snapshot is 20Oct36 minus confirmed Hargobind174. This is a review manifest, not live state; recheck every source observation and current proposal before displaying/saving. Section-application batch is in progress and must be reconciled before release.",
+  "policy": {
+    "explicitConfirmationRequired": true,
+    "clientMaySupplyArbitraryTargets": false,
+    "preserveRawInventory": true,
+    "writePublicTraditionOrDates": false,
+    "confirmPhysicalMove": false,
+    "mergeCanonicalRecords": false,
+    "createSaints": false,
+    "unknownIsValid": true,
+    "sourcesAreNotUserInstructions": true
+  },
+  "integrationContract": {
+    "serverOwnedAllowlist": "Use stable caseId/version+optionId; backend resolves whitelisted target/changes, not client-supplied IDs or section names.",
+    "readiness": "Only ready_after_confirmation may be considered for activation after Nadi validates the full current record and evidence. Other readiness values require additional human/backend review. No option is activated merely because it appears here.",
+    "twoStageSave": "Preview exact identity-link and museum-proposal changes. For unlinked observations save the approved identity link and matching subsection together where supported. If atomic save unavailable, record partial state honestly and never mark case resolved prematurely.",
+    "staleState": "Re-read per-case current saint/proposal/source versions; conflicts must refresh/review, not silently overwrite. Global snapshot revision here is provenance, not a substitute for current guards.",
+    "familyChanges": "No family or tier changes by default. Any necessary removal of unreviewed family must be an explicit reviewed per-case change with existing override protections.",
+    "audit": "Store curator identity confirmation, evidence note, reviewed option version and resulting proposal revisions; support existing correction/undo workflow.",
+    "refresh": "Resolved cases leave the active queue only after successful persisted confirmation, with counts refreshed; different identity/unsure retain the case and note."
+  },
+  "summary": {
+    "focusedCases": 17,
+    "readyOptionsRequiringImplementationValidation": 8,
+    "additionalEvidenceOrCanonicalGates": 10,
+    "administrativeCases": 7,
+    "moreInformationCases": 38
+  },
+  "resolvedDoNotAskAgain": [
+    {
+      "sourceRows": [
+        225
+      ],
+      "name": "Swami Bon Maharaj",
+      "resolution": "Curator confirms Bhakti Hridaya Bon; museum correction approved. Stored2018date requires separate data correction review, not another portrait question."
+    },
+    {
+      "sourceRows": [
+        179
+      ],
+      "name": "Mata Bindu",
+      "resolution": "Paragata confirms Guruji’s mother; Bhakti Marga. Canonical gap remains technical."
+    },
+    {
+      "sourceRows": [
+        190
+      ],
+      "name": "Haridasa Shastri",
+      "resolution": "Nadi accepted stronger alias+Jiva institutional identity evidence and submitted Gaudiya save; final verification pending. Do not ask again unless save/current-record verification fails."
+    },
+    {
+      "sourceRows": [
+        368
+      ],
+      "name": "Prabhupadacharya Phanilal Goswami",
+      "resolution": "Nadi reports direct Paragata confirmation to assign Gaudiya; section application pending final verification. Removed from active identity questions."
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "vri-vamsidas-151",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": "cms0w7hi406pj07qihtkib91v",
+      "sourceRows": [
+        151
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Vamsi Das Babaji",
+      "sourceDisplay": {
+        "vitrine": "9",
+        "position": "4.2",
+        "rawName": "Sri Vamsi Das Babaji",
+        "rawPlace": "Navadwip, West Bengal",
+        "relic": "White cotton type fibre",
+        "packaging": "Box"
+      },
+      "question": "Does the portrait/label identify the well-known Vamsidas Babaji of Navadwip, rather than a different Sri Vaishnava saint?",
+      "options": [
+        {
+          "optionId": "navadwip-vamsidas",
+          "label": "Vamsidas Babaji of Navadwip",
+          "proposedSection": "Gaudiya Vaishnava",
+          "targetSaintIds": [
+            "cms0w7hi406pj07qihtkib91v"
+          ],
+          "sources": [
+            "https://ebooks.iskcondesiretree.com/pdf/Sri_Krishna_Kathamrita_Bindu/Sri_Krishna_Kathamrita_-_Bindu084.pdf"
+          ],
+          "readiness": "ready_after_confirmation",
+          "additionalConditions": [],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Sri Vaishnava & South Indian Vaishnava Traditions",
+              "toValue": "Gaudiya Vaishnava"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Paragata answered Unknown—send to the curator. Existing Sri Vaishnava label remains unchanged pending separate public-data review. Old planned V23 destination must be flagged for review if the section changes.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Sri Vaishnava & South Indian Vaishnava Traditions",
+        "proposalRevision": "a45425c5178c43d24699e7d689c443ca64358593afc5dbe9b90e6b1dca5741e1",
+        "saintVersion": 1,
+        "existingFamilyKey": "",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-hanuman-119",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": "cms0w7g5k052y07qigeldl38i",
+      "sourceRows": [
+        119
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Sri Hanuman Das Babaji",
+      "sourceDisplay": {
+        "vitrine": "7",
+        "position": "4.5",
+        "rawName": "Sri Sri Hanuman Dasji",
+        "rawPlace": "Vrindavan",
+        "relic": "Brown Beanie/yellow fabric/brown and cream stripped cloth",
+        "packaging": "Bag / Frame"
+      },
+      "question": "Is this the Vrindavan Hanuman Das Babaji described as Ramanandi? Is there any collection evidence that he is instead a member of the Mahavatar/Kriya Babaji lineage?",
+      "options": [
+        {
+          "optionId": "vrindavan-ramanandi",
+          "label": "Vrindavan Hanuman Das, Ramanandi context",
+          "proposedSection": "Ramanandi",
+          "targetSaintIds": [
+            "cms0w7g5k052y07qigeldl38i"
+          ],
+          "sources": [
+            "https://hindusaints.org/saints/sri-sri-hanuman-das-babaji"
+          ],
+          "readiness": "requires_family_context_review",
+          "additionalConditions": [
+            "Confirm source119 identity; museum reviewer must explicitly review detaching the inherited unreviewed Kriya display-family association. Do not alter canonical relationships."
+          ],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+              "toValue": "Ramanandi"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "The archive is the record under review, not independent proof. Distinct from Haridwar Hanuman Das, source236. Citra reversed the temporary V4 assignment; it is not a reviewed Kriya decision.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "proposalRevision": "f1f8b4ea6cd33b020fe119ec125de448ec47373605ef54dc14b115765cb3e65e",
+        "saintVersion": 1,
+        "existingFamilyKey": "suggested:FAM-004",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-vittal-094",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": "cmt3ei7nm05mw07qsl441uvky",
+      "sourceRows": [
+        94
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Vitthalananda Saraswati",
+      "sourceDisplay": {
+        "vitrine": "6",
+        "position": "3.4",
+        "rawName": "Sri Sri Sri Vitthalananda Saraswati (Vitthala Babaji)",
+        "rawPlace": "Pandharpur / Kurvapur",
+        "relic": "Dark brown knitted cloth",
+        "packaging": "Frame"
+      },
+      "question": "Does this relic/portrait represent Vittal Babaji, Sri Vittalananda Saraswati of the Datta Peetham at Vallabhapuram near Kuruvapur?",
+      "options": [
+        {
+          "optionId": "vallabhapuram-vittal",
+          "label": "Vittal Babaji of Vallabhapuram/Kuruvapur",
+          "proposedSection": "Datta Tradition",
+          "targetSaintIds": [
+            "cmt3ei7nm05mw07qsl441uvky"
+          ],
+          "sources": [
+            "https://mohanjichronicles.com/vittal-babaji/sri-sri-sri-vittalananda-saraswati-vittal-babaji/"
+          ],
+          "readiness": "ready_after_confirmation",
+          "additionalConditions": [],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Needs section proposal",
+              "toValue": "Datta Tradition"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Confirm against full portrait/biography. Do not merge the other catalogue record with a similar Vitthalananda name.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Needs section proposal",
+        "proposalRevision": "97bf25c38edf4e243b376af70beb98fe382e6f4701417f2b8ee799741396dcc4",
+        "saintVersion": 2,
+        "existingFamilyKey": "",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-kanupriya-394",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": "cms0w7e1502de07qi0w6okekl",
+      "sourceRows": [
+        394
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Sri Viyyasanjo Prabhupad Kanupriya Goswami Maharaj",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "2",
+        "rawName": "Sri Sri Viyyasanjo Prabhupad Kanupriya Goswami Maharaj",
+        "rawPlace": "Navadwip",
+        "relic": "White cloth",
+        "packaging": "Box / no picture"
+      },
+      "question": "Does the original label/portrait identify the Bengali Gaudiya teacher Kanupriya Goswami associated with the teachings recorded in Namamrita-sindhu-bindu? Please confirm the complete name and ashram.",
+      "options": [
+        {
+          "optionId": "gaudiya-kanupriya",
+          "label": "Kanupriya Goswami, Gaudiya teacher",
+          "proposedSection": "Gaudiya Vaishnava",
+          "targetSaintIds": [
+            "cms0w7e1502de07qi0w6okekl"
+          ],
+          "sources": [
+            "https://blazing-sapphire-press.com/namamrta/sindhu-bindu-sample.pdf"
+          ],
+          "readiness": "ready_after_confirmation",
+          "additionalConditions": [],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Needs Research",
+              "toValue": "Gaudiya Vaishnava"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Candidate hypothesis, not a verified transcription of “Viyyasanjo.” No specific Nityananda branch or guru edge is proposed.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Needs Research",
+        "proposalRevision": "6aee7c3ff759afb16c597bb62e8f56a56d88327244cde22acee351aaf090668a",
+        "saintVersion": 1,
+        "existingFamilyKey": "",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-ram-mangal-454",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": "cms0w7dcf01fv07qidu50w8dy",
+      "sourceRows": [
+        454
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Ram Mangal Dasji Maharaj",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "4",
+        "rawName": "Sri Ram Mangal Dasji Maharaj",
+        "rawPlace": "",
+        "relic": "White cloth",
+        "packaging": "Box / no picture"
+      },
+      "question": "Is this Paramahansa Ram Mangal Das of Gokul Bhawan, Ayodhya? Please confirm with portrait, full title or the ashram name.",
+      "options": [
+        {
+          "optionId": "gokul-bhawan",
+          "label": "Ram Mangal Das of Gokul Bhawan, Ayodhya",
+          "proposedSection": "Rama & Avadh",
+          "targetSaintIds": [
+            "cms0w7dcf01fv07qidu50w8dy"
+          ],
+          "sources": [
+            "https://elegalix.allahabadhighcourt.in/elegalix/ayodhyafiles/honsaj-vol-2.pdf"
+          ],
+          "readiness": "ready_after_confirmation",
+          "additionalConditions": [],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Needs Research",
+              "toValue": "Rama & Avadh"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "The judicial record supplies an institutional/name reference, not a full spiritual biography. Proposed regional placement does not assert a specific initiation lineage.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Needs Research",
+        "proposalRevision": "0bea209ac7d8a8b5d3e48a11f9aee6f5f740a636e234b7ac2424846deb3c4c9c",
+        "saintVersion": 1,
+        "existingFamilyKey": "",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-palani-461",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": "cms0w7jzx09ei07qi4vwp5mnj",
+      "sourceRows": [
+        461
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Palani Swami",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "4",
+        "rawName": "Sri Palani Swami",
+        "rawPlace": "Palani",
+        "relic": "Green fabric",
+        "packaging": "Box / no picture"
+      },
+      "question": "Which Palani Swami is shown? In particular, is it Ramana Maharshi’s early attendant Palaniswami, or a different saint based at Palani? Please identify from portrait/full label.",
+      "options": [
+        {
+          "optionId": "ramana-attendant",
+          "label": "Palaniswami, Ramana Maharshi’s early attendant",
+          "proposedSection": "Ramana & Arunachala",
+          "targetSaintIds": [
+            "cms0w7jzx09ei07qi4vwp5mnj"
+          ],
+          "sources": [
+            "https://sriramana.org/ramanafiles/mountainpath/1975%20IV%20Oct.pdf"
+          ],
+          "readiness": "ready_after_confirmation",
+          "additionalConditions": [],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Needs Research",
+              "toValue": "Ramana & Arunachala"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Palani in the current record does not establish this candidate. If it is a different Palani saint, record the full name/ashram and return for research; do not choose the offered option just because the names resemble.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Needs Research",
+        "proposalRevision": "487a32f93e0459852c085d4086bc3b101f497cc47692e17581c9b55af6ea3459",
+        "saintVersion": 1,
+        "existingFamilyKey": "",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-hariharananda-276",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": null,
+      "sourceRows": [
+        276
+      ],
+      "sourceObservationIds": [
+        "cmus5tiw104fl07p7uuz0sqwh"
+      ],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Swami Hariharananda Giri (Hindi)",
+      "sourceDisplay": {
+        "vitrine": "16",
+        "position": "5.3",
+        "rawName": "Swami Hariharananda Giri (Hindi)",
+        "rawPlace": "",
+        "relic": "",
+        "packaging": ""
+      },
+      "question": "Does the portrait identify Paramahamsa Hariharananda Giri of Karar Ashram/Puri in the Sri Yukteswar Kriya lineage? “Hindi” in the inventory is not identifying evidence.",
+      "options": [
+        {
+          "optionId": "karar-hariharananda",
+          "label": "Paramahamsa Hariharananda Giri, Karar Ashram",
+          "proposedSection": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+          "targetSaintIds": [
+            "cms0w7dkz01r407qiwpvn2sa1"
+          ],
+          "sources": [
+            "https://kararashram.org/gurus.html",
+            "https://portland.kriya.org/guru/paramahamsa-hariharananda/en"
+          ],
+          "readiness": "ready_after_confirmation",
+          "additionalConditions": [],
+          "proposedChanges": [
+            {
+              "field": "sourceIdentity",
+              "fromValue": "pending",
+              "toValue": [
+                "cms0w7dkz01r407qiwpvn2sa1"
+              ]
+            },
+            {
+              "field": "museumProposal.section",
+              "fromValue": null,
+              "toValue": "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Unlinked observation. Confirm identity before linking to the existing saint; do not confuse Hariharananda Giri with other Hariharanandas.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": null,
+        "proposalRevision": null,
+        "saintVersion": null,
+        "existingFamilyKey": null,
+        "sourceStatus": "pending",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-jagadananda-445",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": null,
+      "sourceRows": [
+        445
+      ],
+      "sourceObservationIds": [
+        "cmus5tiz504k207p7unvx1hvc"
+      ],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Jagadananda Prabhu",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "4",
+        "rawName": "Jagadananda Prabhu",
+        "rawPlace": "",
+        "relic": "Lotus seed",
+        "packaging": "Box / no picture"
+      },
+      "question": "Does this label refer to Jagadananda Pandit, the historical associate of Chaitanya Mahaprabhu, or to a later saint named Jagadananda?",
+      "options": [
+        {
+          "optionId": "chaitanya-associate",
+          "label": "Jagadananda Pandit of Chaitanya’s circle",
+          "proposedSection": "Gaudiya Vaishnava",
+          "targetSaintIds": [
+            "cms0w7fk204cp07qil7w0xdsk"
+          ],
+          "sources": [],
+          "readiness": "requires_candidate_record_check",
+          "additionalConditions": [
+            "Verify the candidate’s full canonical biography and identity before enabling Confirm."
+          ],
+          "proposedChanges": [
+            {
+              "field": "sourceIdentity",
+              "fromValue": "pending",
+              "toValue": [
+                "cms0w7fk204cp07qil7w0xdsk"
+              ]
+            },
+            {
+              "field": "museumProposal.section",
+              "fromValue": null,
+              "toValue": "Gaudiya Vaishnava"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Candidate from prior catalogue comparison; a lotus-seed relic does not identify the historical person. This option is not yet enabled for automatic save.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": null,
+        "proposalRevision": null,
+        "saintVersion": null,
+        "existingFamilyKey": null,
+        "sourceStatus": "pending",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-kumud-santa-460",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": null,
+      "sourceRows": [
+        460
+      ],
+      "sourceObservationIds": [
+        "cmus5tizf04kh07p74w64hatd"
+      ],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Srimad Bhakti Murrud Santa Goswami Maharaj",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "4",
+        "rawName": "Sri Srimad Bhakti Murrud Santa Goswami Maharaj",
+        "rawPlace": "Mayapur",
+        "relic": "Light orange cloth",
+        "packaging": "Box / no picture"
+      },
+      "question": "Does the original portrait/label read Bhakti Kumud Santa Goswami Maharaj of the Gaudiya Math tradition? The workbook says “Bhakti Murrud Santa.”",
+      "options": [
+        {
+          "optionId": "kumud-santa",
+          "label": "Bhakti Kumud Santa Goswami Maharaj",
+          "proposedSection": "Gaudiya Vaishnava",
+          "targetSaintIds": [
+            "cms0w7jpj093e07qim8arbl3j"
+          ],
+          "sources": [
+            "https://www.vrindavan.org/English/Books/GM/GMII.html"
+          ],
+          "readiness": "ready_after_confirmation",
+          "additionalConditions": [],
+          "proposedChanges": [
+            {
+              "field": "sourceIdentity",
+              "fromValue": "pending",
+              "toValue": [
+                "cms0w7jpj093e07qim8arbl3j"
+              ]
+            },
+            {
+              "field": "museumProposal.section",
+              "fromValue": null,
+              "toValue": "Gaudiya Vaishnava"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Substantial transcription hypothesis; Mayapur helps but is not proof. Do not silently normalize Murrud to Kumud.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": null,
+        "proposalRevision": null,
+        "saintVersion": null,
+        "existingFamilyKey": null,
+        "sourceStatus": "pending",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-baya-376",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": null,
+      "sourceRows": [
+        376
+      ],
+      "sourceObservationIds": [
+        "cmus5tixu04i707p7yjrxjhxp"
+      ],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Baya Baba",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "2",
+        "rawName": "Sri Baya Baba",
+        "rawPlace": "Cuttack, Orissa",
+        "relic": "Off white knitted cloth",
+        "packaging": "Box / no picture"
+      },
+      "question": "Which Baya Baba is shown: Sachinandan Das Baba, or Vishwaguru Baya Baba of Sailanga/Cuttack? Please read the full name/ashram from the portrait or label.",
+      "options": [
+        {
+          "optionId": "sachinandan",
+          "label": "Sachinandan Das Baba",
+          "proposedSection": "Gaudiya Vaishnava",
+          "targetSaintIds": [
+            "cms0w7gxy062007qioyp38v29"
+          ],
+          "sources": [],
+          "readiness": "requires_candidate_record_check",
+          "additionalConditions": [
+            "Independently check full canonical biography and supported affiliation before enabling Confirm."
+          ],
+          "proposedChanges": [
+            {
+              "field": "sourceIdentity",
+              "fromValue": "pending",
+              "toValue": [
+                "cms0w7gxy062007qioyp38v29"
+              ]
+            },
+            {
+              "field": "museumProposal.section",
+              "fromValue": null,
+              "toValue": "Gaudiya Vaishnava"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        },
+        {
+          "optionId": "sailanga-vishwaguru",
+          "label": "Vishwaguru Baya Baba, Sailanga/Cuttack",
+          "proposedSection": "Jagannath-Puri & Odisha",
+          "targetSaintIds": [
+            "cms0w7cmc00jk07qi1r7no4of"
+          ],
+          "sources": [],
+          "readiness": "requires_candidate_record_check",
+          "additionalConditions": [
+            "Check the actual Cuttack institution/biography; regional context is not proof of guru lineage."
+          ],
+          "proposedChanges": [
+            {
+              "field": "sourceIdentity",
+              "fromValue": "pending",
+              "toValue": [
+                "cms0w7cmc00jk07qi1r7no4of"
+              ]
+            },
+            {
+              "field": "museumProposal.section",
+              "fromValue": null,
+              "toValue": "Jagannath-Puri & Odisha"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Candidates from prior catalogue comparison, not fresh verified identities. Source Cuttack must not force the choice. Both options require record/evidence completion before automatic save.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": null,
+        "proposalRevision": null,
+        "saintVersion": null,
+        "existingFamilyKey": null,
+        "sourceStatus": "pending",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-ramdas-148",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": null,
+      "sourceRows": [
+        148
+      ],
+      "sourceObservationIds": [
+        "cmus5titt04ca07p7eyof2xy1"
+      ],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Ramdas Babaji Maharaj",
+      "sourceDisplay": {
+        "vitrine": "9",
+        "position": "3.3",
+        "rawName": "Sri Ramdas Babaji Maharaj",
+        "rawPlace": "",
+        "relic": "Off-white Cloth, threads",
+        "packaging": "Frame"
+      },
+      "question": "Which Ramdas Babaji is pictured? Please identify the ashram, full title or guru—especially whether it is the Bengal/Pathbari saint rather than a Braj or other Ramdas.",
+      "options": [
+        {
+          "optionId": "bengal-pathbari",
+          "label": "Ramdas Babaji of Bengal/Pathbari",
+          "proposedSection": "Gaudiya Vaishnava",
+          "targetSaintIds": [
+            "cms0w7hnd06vp07qig7l3diim",
+            "cmt3f84j505q307qstae8w98q",
+            "cmus3rxr2008t07o51gvefkgd"
+          ],
+          "sources": [
+            "https://nitaibadi.org/HolyLives/Radharaman/RadharamanCharanDas.php"
+          ],
+          "readiness": "requires_canonical_resolution",
+          "additionalConditions": [
+            "These are possible duplicate records, not three saints to link. Backend reviewer must select one canonical target after duplicate review before automatic save."
+          ],
+          "proposedChanges": [
+            {
+              "field": "sourceIdentity",
+              "fromValue": "pending",
+              "toValue": [
+                "cms0w7hnd06vp07qig7l3diim",
+                "cmt3f84j505q307qstae8w98q",
+                "cmus3rxr2008t07o51gvefkgd"
+              ]
+            },
+            {
+              "field": "museumProposal.section",
+              "fromValue": null,
+              "toValue": "Gaudiya Vaishnava"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Curator confirms the person, not which duplicate database ID to use. No source object is to be split or duplicate people merged by this confirmation.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": null,
+        "proposalRevision": null,
+        "saintVersion": null,
+        "existingFamilyKey": null,
+        "sourceStatus": "pending",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-bawra-141",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_confirmation",
+      "saintId": "cms0w7it1086707qiqjgv4921",
+      "sourceRows": [
+        141
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Brahmrishi Sri Vishwatma Bawra Ji Maharaj",
+      "sourceDisplay": {
+        "vitrine": "9",
+        "position": "1.4",
+        "rawName": "Brahmrishi Sri Vishwatma Bawra Ji Maharaj",
+        "rawPlace": "Chandigarh",
+        "relic": "Orange Cloth",
+        "packaging": "Frame"
+      },
+      "question": "Does the portrait identify Brahmrishi Vishwatma Bawra, founder of the Brahmrishi Mission (1934–2002)? The current record instead says1891–1975 and BornRajpur; please resolve the portrait identity before accepting the northern-section proposal.",
+      "options": [
+        {
+          "optionId": "mission-founder",
+          "label": "Brahmrishi Vishwatma Bawra, Mission founder",
+          "proposedSection": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+          "targetSaintIds": [
+            "cms0w7it1086707qiqjgv4921"
+          ],
+          "sources": [
+            "https://www.brahmrishimission.com/about",
+            "https://shivatempleorlando.org/brahmrishi-mission-centres-india-and-abroad/"
+          ],
+          "readiness": "ready_after_confirmation",
+          "additionalConditions": [],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Needs Research",
+              "toValue": "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Added after current-record checks. Stored dates conflict with the candidate’s institutional biography. No save attempted. Paragata answered Unknown—send to the curator. Preserve dates and other public fields, and do not assume a namesake is the same saint.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Needs Research",
+        "proposalRevision": "3d2e0ff576be1f3d6495b67d7d3c5713f84303a953c80879795f79dfce18bdc0",
+        "saintVersion": 1,
+        "existingFamilyKey": "",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-sakerei-223",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_and_life_context",
+      "saintId": "cms0w7ej4030207qifhgtk0ra",
+      "sourceRows": [
+        223
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Sakerei Siddhar",
+      "sourceDisplay": {
+        "vitrine": "14",
+        "position": "2.2",
+        "rawName": "Sri Sakerei Siddhar",
+        "rawPlace": "Palani",
+        "relic": "⚠️Looks like potential hair/relic missing /unidentifiable",
+        "packaging": "Box"
+      },
+      "question": "Please confirm the full Tamil name and portrait. Is this a Palani Siddhar, and is Palani a place where the saint lived/practiced rather than simply where the relic was collected?",
+      "options": [
+        {
+          "optionId": "confirmed-life-base",
+          "label": "Identity and stated life base confirmed",
+          "proposedSection": "Shaiva Siddhanta & Tamil Traditions",
+          "targetSaintIds": [
+            "cms0w7ej4030207qifhgtk0ra"
+          ],
+          "sources": [],
+          "readiness": "requires_context_evidence_review",
+          "additionalConditions": [
+            "Record the confirmed full identity, ashram and guru if known. Museum reviewer must verify that no stronger established lineage grouping should take precedence."
+          ],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Needs Research",
+              "toValue": "Shaiva Siddhanta & Tamil Traditions"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Source locality alone is insufficient. These conditional regional options must not be enabled for automatic save before the curator supplies the requested context and a museum reviewer accepts it. No formal subtradition is inferred.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Needs Research",
+        "proposalRevision": "71389ecc0890a20fe155fe2a0fe50e755a9b394c54a4b7fbc0b114b6e8c5a05f",
+        "saintVersion": 1,
+        "existingFamilyKey": "",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-girijanand-102",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_and_life_context",
+      "saintId": "cms0w7h7c06cq07qiek3n107t",
+      "sourceRows": [
+        102
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Girijanand Ji Maharaj",
+      "sourceDisplay": {
+        "vitrine": "7",
+        "position": "1.3",
+        "rawName": "Sri Swami Girijanand Ji Maharaj",
+        "rawPlace": "Guptakashi",
+        "relic": "Big Rudraksha Bead / orange cloth",
+        "packaging": "Box / Frame"
+      },
+      "question": "Please identify Girijanand’s ashram/guru and confirm whether Guptakashi was his actual life/teaching base. Is the label about the saint or only the relic-collection site?",
+      "options": [
+        {
+          "optionId": "confirmed-life-base",
+          "label": "Identity and stated life base confirmed",
+          "proposedSection": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+          "targetSaintIds": [
+            "cms0w7h7c06cq07qiek3n107t"
+          ],
+          "sources": [],
+          "readiness": "requires_context_evidence_review",
+          "additionalConditions": [
+            "Record the confirmed full identity, ashram and guru if known. Museum reviewer must verify that no stronger established lineage grouping should take precedence."
+          ],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Needs Research",
+              "toValue": "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Source locality alone is insufficient. These conditional regional options must not be enabled for automatic save before the curator supplies the requested context and a museum reviewer accepts it. No formal subtradition is inferred.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Needs Research",
+        "proposalRevision": "cae958e7b858a732fbbc2d98dc028f05db50495a7fb905f21163dfbe493657b7",
+        "saintVersion": 1,
+        "existingFamilyKey": "",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-khir-baba-164",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_and_life_context",
+      "saintId": "cms0w7hdh06k407qi8nr6s3oi",
+      "sourceRows": [
+        164
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Vishudhanand Ji Saraswati (Khir Baba)",
+      "sourceDisplay": {
+        "vitrine": "10",
+        "position": "4.1",
+        "rawName": "Sri Vishudhanand Ji Saraswati",
+        "rawPlace": "Kangra, Himachal",
+        "relic": "Red towel",
+        "packaging": "Box"
+      },
+      "question": "Please confirm the portrait and ashram of Vishudhanand Saraswati/Khir Baba. Was his own ashram/life base at Bir near Kangra?",
+      "options": [
+        {
+          "optionId": "confirmed-life-base",
+          "label": "Identity and stated life base confirmed",
+          "proposedSection": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+          "targetSaintIds": [
+            "cms0w7hdh06k407qi8nr6s3oi"
+          ],
+          "sources": [],
+          "readiness": "requires_context_evidence_review",
+          "additionalConditions": [
+            "Record the confirmed full identity, ashram and guru if known. Museum reviewer must verify that no stronger established lineage grouping should take precedence."
+          ],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Needs Research",
+              "toValue": "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Source locality alone is insufficient. These conditional regional options must not be enabled for automatic save before the curator supplies the requested context and a museum reviewer accepts it. No formal subtradition is inferred.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Needs Research",
+        "proposalRevision": "7e50f639f10005aba9a69d9b67e139e8f06a192cf43d184008875473f835e890",
+        "saintVersion": 1,
+        "existingFamilyKey": "suggested:FAM-036",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-lal-baba-093",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_and_life_context",
+      "saintId": "cms0w7ii707ug07qiu6r5icsx",
+      "sourceRows": [
+        93
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Aditya Sabrup (Lal Baba)",
+      "sourceDisplay": {
+        "vitrine": "6",
+        "position": "3.3",
+        "rawName": "Sri Aditya Sabrup (Lal Baba)",
+        "rawPlace": "Tara Mandir, Kangra",
+        "relic": "Red cloth",
+        "packaging": "Frame"
+      },
+      "question": "Please confirm the complete name of Aditya Sabrup/Lal Baba and whether Tara Mandir, Kangra was his own residence/teaching/practice base.",
+      "options": [
+        {
+          "optionId": "confirmed-life-base",
+          "label": "Identity and stated life base confirmed",
+          "proposedSection": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+          "targetSaintIds": [
+            "cms0w7ii707ug07qiu6r5icsx"
+          ],
+          "sources": [],
+          "readiness": "requires_context_evidence_review",
+          "additionalConditions": [
+            "Record the confirmed full identity, ashram and guru if known. Museum reviewer must verify that no stronger established lineage grouping should take precedence."
+          ],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Needs Research",
+              "toValue": "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Source locality alone is insufficient. These conditional regional options must not be enabled for automatic save before the curator supplies the requested context and a museum reviewer accepts it. No formal subtradition is inferred.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Needs Research",
+        "proposalRevision": "c879554d57413dfb05b19cb8d4d361c08c19d8f75c16faf567fe98ec75e4c253",
+        "saintVersion": 1,
+        "existingFamilyKey": "suggested:FAM-036",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    },
+    {
+      "caseId": "vri-nityananda-159",
+      "caseVersion": 1,
+      "reviewStatus": "pending_curator_confirmation",
+      "kind": "identity_and_life_context",
+      "saintId": "cms0w7ert03bu07qilf6jhoci",
+      "sourceRows": [
+        159
+      ],
+      "sourceObservationIds": [],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "displayName": "Sri Swami Nityananda",
+      "sourceDisplay": {
+        "vitrine": "10",
+        "position": "2.2",
+        "rawName": "Sri Swami Nityananda",
+        "rawPlace": "Pentalpha near Katra (Vaishno Devi Place)",
+        "relic": "Off-white threads, beige cloth",
+        "packaging": "Box / Frame"
+      },
+      "question": "Please confirm this is the Nityananda associated with Pental/Pantal near Katra, and that this was his life/ashram base. Do not confuse him with Ganeshpuri’s Bhagavan Nityananda or Bengal’s Nityananda Prabhu.",
+      "options": [
+        {
+          "optionId": "confirmed-life-base",
+          "label": "Identity and stated life base confirmed",
+          "proposedSection": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+          "targetSaintIds": [
+            "cms0w7ert03bu07qilf6jhoci"
+          ],
+          "sources": [],
+          "readiness": "requires_context_evidence_review",
+          "additionalConditions": [
+            "Record the confirmed full identity, ashram and guru if known. Museum reviewer must verify that no stronger established lineage grouping should take precedence."
+          ],
+          "proposedChanges": [
+            {
+              "field": "museumProposal.section",
+              "fromValue": "Needs Research",
+              "toValue": "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+            }
+          ],
+          "confidence": "conditional_on_curator_identity_confirmation",
+          "evidenceScope": "Evidence supports the candidate and proposed display context, not the identity of this object until the curator confirms it."
+        }
+      ],
+      "curatorInstruction": "Compare the actual portrait, full label, ashram/guru information or collection notes. Choose Unsure if the evidence does not identify the person; a familiar name alone is not confirmation.",
+      "uncertainty": "Source locality alone is insufficient. These conditional regional options must not be enabled for automatic save before the curator supplies the requested context and a museum reviewer accepts it. No formal subtradition is inferred.",
+      "currentStatePreconditions": {
+        "museumId": "museum-vrindavan",
+        "currentSection": "Needs Research",
+        "proposalRevision": "0d90665acccd77d72e8ff40fa56ea16cb188761100d9e4ff6c9ae84406d700cc",
+        "saintVersion": 1,
+        "existingFamilyKey": "",
+        "sourceStatus": "confirmed",
+        "requireFreshServerRead": true
+      },
+      "permittedOutcomes": [
+        "confirm_reviewed_option",
+        "different_identity_with_note",
+        "unsure_with_note"
+      ],
+      "implementationGate": "Server must validate this reviewed case/option against current records and revisions; this manifest is not permission to infer identity, merge saints, create saints, or accept arbitrary client-selected sections."
+    }
+  ],
+  "administrativeQueue": [
+    {
+      "sourceRow": 142,
+      "sourceObservationId": "cmus5titj04c407p7gaewfl6m",
+      "name": "Sri Shridhar Swami",
+      "reason": "Source already identifies Varadpur Shridhar; choosing between duplicate canonical records is a data-review task, not a curator choosing an ID.",
+      "sourceDisplay": {
+        "vitrine": "9",
+        "position": "2.1"
+      }
+    },
+    {
+      "sourceRow": 285,
+      "sourceObservationId": "cmus5tiw604ft07p760ofizjv",
+      "name": "Sri Ram Thakur Maharaj",
+      "reason": "Two Ram Thakur/Burdwan canonical records need comparison; curator identity help only if biographies/photos turn out different.",
+      "sourceDisplay": {
+        "vitrine": "16",
+        "position": "2"
+      }
+    },
+    {
+      "sourceRow": 341,
+      "sourceObservationId": "cmus5tix604hb07p7p7a8imas",
+      "name": "Sri Gauranga Das Babaji",
+      "reason": "Two Gauranga Das/Vrindavan records need canonical comparison before an automatic action can be enabled.",
+      "sourceDisplay": {
+        "vitrine": "16",
+        "position": "4"
+      }
+    },
+    {
+      "sourceRow": 472,
+      "sourceObservationId": "cmus5tizm04ks07p7mzu2jgy3",
+      "name": "Sri Nirmal Narayana Maharaj",
+      "reason": "Two Nirmal Narayana/Teliarganj records need canonical comparison; Narayani Ashram qualifier should be checked.",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "5"
+      }
+    },
+    {
+      "sourceRow": 291,
+      "sourceObservationId": "cmus5tiw904fz07p7xmd22yv4",
+      "name": "Sri Guru Ram Das Ji & Guru Arjan Devji",
+      "reason": "Two separately named Sikh Gurus in one observation; needs correct two-person canonical representation, not a one-person confirmation.",
+      "sourceDisplay": {
+        "vitrine": "16",
+        "position": "2"
+      }
+    },
+    {
+      "sourceRow": 179,
+      "sourceObservationId": "cmus5tiuc04d307p7ff5stscn",
+      "name": "Mata Bindu (Guruji’s Mother)",
+      "reason": "Paragata already confirmed Mata Bindu is Guruji’s mother. Bhakti Marga placement is known; missing canonical record is an implementation gap, not another identity question.",
+      "sourceDisplay": {
+        "vitrine": "11",
+        "position": "4.1"
+      }
+    },
+    {
+      "sourceRow": 7,
+      "sourceObservationId": "cmus5tiqn048l07p7y4ov8gkx",
+      "name": "Sri Valmiki",
+      "reason": "Stone from Valmiki Ashram: site-object provenance question, not a saint identity-to-subsection action.",
+      "sourceDisplay": {
+        "vitrine": "1",
+        "position": "2.2"
+      }
+    }
+  ],
+  "moreInformationQueue": [
+    {
+      "saintId": "cms0w7cf900ah07qi5snh6k15",
+      "sourceRows": [
+        424
+      ],
+      "name": "Sri Radha Govind Dasji (Mauni Baba)",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7dzc02au07qi4i6bh8dm",
+      "sourceRows": [
+        69
+      ],
+      "name": "Sri Shrimat Sacchidanand Swami Maharaj",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7e9x02o907qigkq5s1tg",
+      "sourceRows": [
+        249
+      ],
+      "name": "Sri Swami Manuvaraya ji Maharaj",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7eut03fs07qi1qqlrejh",
+      "sourceRows": [
+        434
+      ],
+      "name": "Sri Asaram Bapu",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7ffl047007qi6utbpsko",
+      "sourceRows": [
+        208
+      ],
+      "name": "Sri Swami D.R. Paravatikar Veena Maharaj",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7ftv04ok07qije4e0vfo",
+      "sourceRows": [
+        129
+      ],
+      "name": "Sri Hihtdasji Maharaj",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7fut04ps07qiwu2g0zcf",
+      "sourceRows": [
+        228
+      ],
+      "name": "Sri Yellaling Maharaj",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7guo05xv07qi3w1kksu9",
+      "sourceRows": [
+        326
+      ],
+      "name": "Sri Sri 108 Sri Pardeshi Das",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7gwn060b07qi1m0jp2n2",
+      "sourceRows": [
+        216
+      ],
+      "name": "Sri Sri Indi Swami Kashi Ashram ji Maharaj",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7hnl06vy07qiexxmzj8w",
+      "sourceRows": [
+        345
+      ],
+      "name": "Sri Vishwatmanand Giriji Maharaj",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7ho506wk07qivo8fx4z1",
+      "sourceRows": [
+        329
+      ],
+      "name": "Sri Sri 108 Sri Trilokidas",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7hr0070507qiicx68pb3",
+      "sourceRows": [
+        92
+      ],
+      "name": "Sri Swami Ganesh Dasji Maharaj",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7ifv07ry07qirtw90qba",
+      "sourceRows": [
+        283
+      ],
+      "name": "Sri Parampujya Appaji",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7jx409bk07qi4je964gv",
+      "sourceRows": [
+        59
+      ],
+      "name": "Sri Yedehalli Ajji",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": "cms0w7k5v09ke07qiwqfgjfqj",
+      "sourceRows": [
+        379
+      ],
+      "name": "Sri Sri Swami Atamram Nand Puriji Maharaj",
+      "question": "Please supply the full name, clear portrait/label, ashram, guru or donor/collection information. This case does not yet have a sufficiently supported automatic subsection option.",
+      "reason": "More identifying information or research needed; do not offer a guessed one-click assignment."
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        127
+      ],
+      "sourceObservationIds": [
+        "cmus5tit304bq07p72smsgzt1"
+      ],
+      "name": "Sri Krishna Dasji Maharaj",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "8",
+        "position": "2.3",
+        "rawPlace": "Govardhan"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        367
+      ],
+      "sourceObservationIds": [
+        "cmus5tixo04hz07p7gfbv35st"
+      ],
+      "name": "Sri Kalyan Das Maharaj",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "1",
+        "rawPlace": "Jaipur"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        246
+      ],
+      "sourceObservationIds": [
+        "cmus5tivj04eu07p7mnsgdlmg"
+      ],
+      "name": "Sri Gajanan Maharaj",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "15",
+        "position": "4.2",
+        "rawPlace": "Shivpuri"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        456
+      ],
+      "sourceObservationIds": [
+        "cmus5tizc04kd07p71d0kx92z"
+      ],
+      "name": "Baba Haridas",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "4",
+        "rawPlace": "Chitrakoot"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        378
+      ],
+      "sourceObservationIds": [
+        "cmus5tixv04i907p7yb2drq9u"
+      ],
+      "name": "Swami Bhidyanand Ji Maharaj & Sri Gopalji",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "2",
+        "rawPlace": ""
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        25
+      ],
+      "sourceObservationIds": [
+        "cmus5tir0049207p7eiesnzhp"
+      ],
+      "name": "Sri Tota Puri Baba",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "2",
+        "position": "3.1",
+        "rawPlace": ""
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        31
+      ],
+      "sourceObservationIds": [
+        "cmus5tir5049807p7kqapyze1"
+      ],
+      "name": "Sri Atta Narayana Guru",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "2",
+        "position": "5.1",
+        "rawPlace": "Kanyakumari"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        135
+      ],
+      "sourceObservationIds": [
+        "cmus5tite04by07p7etvrbemz"
+      ],
+      "name": "Sita Devi Ji",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "8",
+        "position": "4.3",
+        "rawPlace": "Vrindavan"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        165
+      ],
+      "sourceObservationIds": [
+        "cmus5tiu404cq07p7b0xk3hxj"
+      ],
+      "name": "Sri Sarvesharananand Bhakti",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "10",
+        "position": "4.2",
+        "rawPlace": "Manala, Himachal"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        253
+      ],
+      "sourceObservationIds": [
+        "cmus5tivn04f007p7aage8k6d"
+      ],
+      "name": "Sri Gopal Dasji (Maharaj)",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "24",
+        "position": "1.1",
+        "rawPlace": "Chitrakoot"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        269
+      ],
+      "sourceObservationIds": [
+        "cmus5tivx04ff07p7brcrw5tr"
+      ],
+      "name": "Radha Mata (no picture)",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "23",
+        "position": "3",
+        "rawPlace": ""
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        289
+      ],
+      "sourceObservationIds": [
+        "cmus5tiw804fx07p799pbergk"
+      ],
+      "name": "Sri Swami Didishananda Saraswati",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "16",
+        "position": "2",
+        "rawPlace": "Puri, Orissa"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        305
+      ],
+      "sourceObservationIds": [
+        "cmus5tiwi04gc07p74eldiyfv"
+      ],
+      "name": "Sri Narotamananji Maharaj",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "16",
+        "position": "3",
+        "rawPlace": ""
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        310
+      ],
+      "sourceObservationIds": [
+        "cmus5tiwl04gh07p7xou818t9"
+      ],
+      "name": "Sri Santos Puri Maharaj",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "16",
+        "position": "3",
+        "rawPlace": ""
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        331
+      ],
+      "sourceObservationIds": [
+        "cmus5tiwz04h107p79stmb2j4"
+      ],
+      "name": "Sri Vishwaguru Avadhuth Pagal Baba",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "16",
+        "position": "4",
+        "rawPlace": "Puri, Orissa"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        383
+      ],
+      "sourceObservationIds": [
+        "cmus5tixy04ie07p7scxxz4ga"
+      ],
+      "name": "Sri Ramcharan Dasji",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "2",
+        "rawPlace": "Chitrakoot"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        387
+      ],
+      "sourceObservationIds": [
+        "cmus5tiy104ii07p7dotls9zz"
+      ],
+      "name": "Sri Haridasji Maharaj",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "2",
+        "rawPlace": "Chitrakoot"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        390
+      ],
+      "sourceObservationIds": [
+        "cmus5tiy304il07p7b99bz3z5"
+      ],
+      "name": "Sri Tyagi Rameshwardas Maharaj",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "2",
+        "rawPlace": ""
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        418
+      ],
+      "sourceObservationIds": [
+        "cmus5tiyn04jc07p7col4dsk2"
+      ],
+      "name": "Sri Ram Lyaare Dasji Maharaj",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "3",
+        "rawPlace": "Chitrakoot"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        463
+      ],
+      "sourceObservationIds": [
+        "cmus5tizh04kk07p7hty8leq5"
+      ],
+      "name": "Govardhandas Babaji",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "4",
+        "rawPlace": "Navadwip"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        467
+      ],
+      "sourceObservationIds": [
+        "cmus5tizj04kn07p78h5w1jiy"
+      ],
+      "name": "Sri Bhagawanand Naharaj",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "17",
+        "position": "5",
+        "rawPlace": "Chitrakoot"
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        10
+      ],
+      "sourceObservationIds": [
+        "cmus5tiqp048o07p7gohhr86u"
+      ],
+      "name": "Unlabelled entry",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "1",
+        "position": "3.2",
+        "rawPlace": ""
+      }
+    },
+    {
+      "saintId": null,
+      "sourceRows": [
+        275
+      ],
+      "sourceObservationIds": [
+        "cmus5tiw004fk07p733axh30o"
+      ],
+      "name": "Frame Pic no name",
+      "question": "Please identify the actual person(s) from the original label/portrait or collection notes and confirm the institution/guru if known.",
+      "reason": "No reviewed automatic identity-to-section option yet.",
+      "sourceDisplay": {
+        "vitrine": "16",
+        "position": "5.2",
+        "rawPlace": ""
+      }
+    }
+  ]
+}
