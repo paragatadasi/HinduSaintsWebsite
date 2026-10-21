@@ -3,7 +3,7 @@ export const TREE_GEOMETRY = {nodeWidth:300,nodeHeight:116,columnGap:60,rowGap:7
 export const TREE_MOBILE_GEOMETRY={...TREE_GEOMETRY,nodeWidth:220,nodeHeight:152,nameChars:23,nameLines:6,metaY:138,columnGap:40,rowGap:54} as const;
 export const TREE_COMPACT_GEOMETRY={columnGap:30,rowGap:60,margin:20,laneGap:4,maxLanes:12} as const;
 export function treeColumnsForWidth(width:number){const c=TREE_COMPACT_GEOMETRY,g=TREE_GEOMETRY;return Math.max(1,Math.min(g.compactColumns,Math.floor((width-c.margin*2-c.maxLanes*c.laneGap+c.columnGap)/(g.nodeWidth+c.columnGap))));}
-export type TreePerson = {id:string;name:string;birthYear:number|null;samadhiYear:number|null;sourceOnly?:boolean;presence?:"location"|"catalogue"|"source"|"none"};
+export type TreePerson = {id:string;name:string;birthYear:number|null;samadhiYear:number|null;sourceOnly?:boolean;contextOnly?:boolean;presence?:"location"|"catalogue"|"source"|"none"};
 export type TreeClaim = {id:string;from:string;to:string;kind:"guru"|"successor"|"partner"|"incarnation";status:string;evidence:string;confidence:string};
 export type TreeEdge = {key:string;from:string;to:string;kind:TreeClaim["kind"];claims:TreeClaim[];secondary?:"shortcut"|"cycle"|"partner pair";lineage:number};
 export type TreeGraph = {nodes:TreePerson[];edges:TreeEdge[]};
