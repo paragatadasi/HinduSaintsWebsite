@@ -4,15 +4,15 @@ export const TREE_MOBILE_GEOMETRY={...TREE_GEOMETRY,nodeWidth:220,nodeHeight:152
 export const TREE_COMPACT_GEOMETRY={columnGap:30,rowGap:60,margin:20,laneGap:4,maxLanes:12} as const;
 export function treeColumnsForWidth(width:number){const c=TREE_COMPACT_GEOMETRY,g=TREE_GEOMETRY;return Math.max(1,Math.min(g.compactColumns,Math.floor((width-c.margin*2-c.maxLanes*c.laneGap+c.columnGap)/(g.nodeWidth+c.columnGap))));}
 export type TreePerson = {id:string;name:string;birthYear:number|null;samadhiYear:number|null;sourceOnly?:boolean;presence?:"location"|"catalogue"|"source"|"none"};
-export type TreeClaim = {id:string;from:string;to:string;kind:"guru"|"partner"|"incarnation";status:string;evidence:string;confidence:string};
+export type TreeClaim = {id:string;from:string;to:string;kind:"guru"|"successor"|"partner"|"incarnation";status:string;evidence:string;confidence:string};
 export type TreeEdge = {key:string;from:string;to:string;kind:TreeClaim["kind"];claims:TreeClaim[];secondary?:"shortcut"|"cycle"|"partner pair";lineage:number};
 export type TreeGraph = {nodes:TreePerson[];edges:TreeEdge[]};
 export function normalizeTreeClaims(rows:{id:string;fromSaintId:string;toSaintId:string;relationshipType:string;status:string;evidenceStatus:string;confidence:string}[]):TreeClaim[] {
  return rows.flatMap(r=>{
-  const kind=["guru","disciple"].includes(r.relationshipType)?"guru":["partner","husband","wife"].includes(r.relationshipType)?"partner":r.relationshipType==="incarnation"?"incarnation":null;
+  const kind=["guru","disciple"].includes(r.relationshipType)?"guru":["partner","husband","wife"].includes(r.relationshipType)?"partner":r.relationshipType==="incarnation"?"incarnation":r.relationshipType==="successor"?"successor":null;
   if(!kind||r.fromSaintId===r.toSaintId||r.status==="archived")return [];
   let from=r.relationshipType==="guru"?r.toSaintId:r.fromSaintId,to=r.relationshipType==="guru"?r.fromSaintId:r.toSaintId;
-  if(kind!=="guru"&&from>to)[from,to]=[to,from];
+  if(kind!=="guru"&&kind!=="successor"&&from>to)[from,to]=[to,from];
   return [{id:r.id,from,to,kind:kind as TreeClaim["kind"],status:r.status,evidence:r.evidenceStatus,confidence:r.confidence}];
  });
 }
@@ -26,7 +26,7 @@ export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[],options:{
  const map=new Map<string,TreeEdge>();
  for(const claim of claims){if(!ids.has(claim.from)||!ids.has(claim.to))continue;const key=`${claim.kind}:${claim.from}:${claim.to}`;const edge=map.get(key)||{key,from:claim.from,to:claim.to,kind:claim.kind,claims:[],lineage:0};edge.claims.push(claim);map.set(key,edge);}
  const edges=[...map.values()].sort((a,b)=>a.key.localeCompare(b.key));
- const gurus=edges.filter(e=>e.kind==="guru"),partners=edges.filter(e=>e.kind==="partner");
+ const gurus=edges.filter(e=>e.kind==="guru"||e.kind==="successor"),partners=edges.filter(e=>e.kind==="partner");
  // Pair only actual partners; do not let a chain of spouses flatten other disciples.
  const pair=new Map<string,string>();
  for(const p of partners){
@@ -42,7 +42,7 @@ export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[],options:{
   const grouped=dag.map(x=>({from:groupFor(x.from),to:groupFor(x.to)}));
   if(pathExists(grouped,groupFor(e.to),groupFor(e.from))){e.secondary="cycle";continue;}dag.push(e);
  }
- const structural=dag.filter(e=>{if(pathExists(dag,e.from,e.to,e)){e.secondary="shortcut";return false;}return true;});
+ const structural=dag.filter(e=>{if(pathExists(dag.filter(other=>other.from!==e.from||other.to!==e.to),e.from,e.to)){e.secondary="shortcut";return false;}return true;});
  const groups=new Map<string,TreePerson[]>();for(const n of people){const key=groupFor(n.id);groups.set(key,[...(groups.get(key)||[]),n]);}
  const depths=new Map([...groups.keys()].map(id=>[id,0]));
  for(let i=0;i<groups.size;i++)for(const e of structural){const a=groupFor(e.from),b=groupFor(e.to);depths.set(b,Math.max(depths.get(b)!,depths.get(a)!+1));}
@@ -81,7 +81,7 @@ export function layoutMuseumTree(nodes:TreePerson[],claims:TreeClaim[],options:{
   let path:string;
   if(same&&adjacent&&e.kind==="partner")path=`M ${Math.min(a.x,b.x)+cfg.nodeWidth} ${a.y+cfg.nodeHeight/2} H ${Math.max(a.x,b.x)}`;
   else if(adjacent&&e.secondary==="partner pair"){const forward=b.x>a.x;path=`M ${forward?a.x+cfg.nodeWidth:a.x} ${a.y+cfg.nodeHeight*.75} H ${forward?b.x:b.x+cfg.nodeWidth}`;}
-  else if(e.kind==="guru"&&!e.secondary&&b.row===a.row+1&&(!options.compact||b.y-a.y===cfg.nodeHeight+cfg.rowGap))path=`M ${a.x+cfg.nodeWidth/2} ${a.y+cfg.nodeHeight} C ${a.x+cfg.nodeWidth/2} ${a.y+cfg.nodeHeight+cfg.rowGap/2}, ${b.x+cfg.nodeWidth/2} ${b.y-cfg.rowGap/2}, ${b.x+cfg.nodeWidth/2} ${b.y}`;
+  else if((e.kind==="guru"||e.kind==="successor")&&!e.secondary&&b.row===a.row+1&&(!options.compact||b.y-a.y===cfg.nodeHeight+cfg.rowGap))path=`M ${a.x+cfg.nodeWidth/2} ${a.y+cfg.nodeHeight} C ${a.x+cfg.nodeWidth/2} ${a.y+cfg.nodeHeight+cfg.rowGap/2}, ${b.x+cfg.nodeWidth/2} ${b.y-cfg.rowGap/2}, ${b.x+cfg.nodeWidth/2} ${b.y}`;
   else {const lane=cfg.margin+(index%cfg.maxLanes)*cfg.laneGap;const fromY=a.y+cfg.nodeHeight,toY=b.y;path=`M ${a.x+cfg.nodeWidth/2} ${fromY} V ${fromY+cfg.rowGap/3} H ${lane} V ${toY-cfg.rowGap/3} H ${b.x+cfg.nodeWidth/2} V ${toY}`;}
   return {...e,path};
  });
@@ -107,6 +107,6 @@ export function connectedTreeGraph(graph:TreeGraph,focus?:string):TreeGraph {
 
 // Direct relationships stay explicit in the readable view; no inferred kinship.
 export function treeNeighborhood(graph:TreeGraph,focus?:string) {
- const definitions=[{key:"teachers",label:"Teachers",kind:"guru",incoming:true},{key:"disciples",label:"Disciples",kind:"guru",incoming:false},{key:"partners",label:"Partners",kind:"partner",incoming:null},{key:"incarnations",label:"Incarnation connections",kind:"incarnation",incoming:null}] as const;
+ const definitions=[{key:"predecessors",label:"Predecessors",kind:"successor",incoming:true},{key:"successors",label:"Successors",kind:"successor",incoming:false},{key:"teachers",label:"Teachers",kind:"guru",incoming:true},{key:"disciples",label:"Disciples",kind:"guru",incoming:false},{key:"partners",label:"Partners",kind:"partner",incoming:null},{key:"incarnations",label:"Incarnation connections",kind:"incarnation",incoming:null}] as const;
  return definitions.map(group=>{const ids=new Set(graph.edges.filter(e=>e.kind===group.kind&&(group.incoming===null?e.from===focus||e.to===focus:group.incoming?e.to===focus:e.from===focus)).map(e=>e.from===focus?e.to:e.from));return {...group,people:graph.nodes.filter(n=>ids.has(n.id)).sort((a,b)=>(a.birthYear??Infinity)-(b.birthYear??Infinity)||a.name.localeCompare(b.name))};}).filter(g=>g.people.length);
 }

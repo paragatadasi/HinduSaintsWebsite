@@ -11296,6 +11296,7 @@ select:not([multiple]) {
 .museum-tree-lineage-5 { --tree-lineage: var(--color-tree-lineage-5); }
 .museum-live-tree marker path { fill: var(--tree-lineage); }
 .museum-tree-edge { fill: none; stroke: var(--tree-lineage); stroke-width: var(--width-tree-edge); }
+.museum-live-tree marker.museum-tree-successor-arrow path { fill: none; stroke: var(--tree-lineage); stroke-width: var(--width-tree-edge); }
 .museum-tree-edge--uncertain { stroke-dasharray: 7 5; }
 .museum-tree-edge--partner { stroke: var(--color-tree-partner); stroke-dasharray: 8 6; }
 .museum-tree-edge--incarnation { stroke: var(--color-tree-incarnation); stroke-dasharray: 3 7; }
