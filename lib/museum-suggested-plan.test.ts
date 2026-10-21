@@ -6,6 +6,18 @@ import type {PlannerData,PlannerRow} from "./museum-move-planner-domain";
 const row=(id:string,extra:Partial<PlannerRow>={}):PlannerRow=>({id,saintId:id,name:id,section:"A",family:"",tier:"Tertiary",needsResearch:false,photo:false,status:"Proposed",vitrine:"",shelf:"",revision:id,lastConfirmed:null,sources:[],...extra});
 const data=(rows:PlannerRow[],extra:Partial<PlannerData>={}):PlannerData=>({rows,revision:"r",areas:[],sections:[{name:"A",slug:"a",idea:""},{name:"B",slug:"b",idea:""}],photoVitrines:[],photosConfigured:false,photoUpdatedAt:null,awaitingIdentityReview:0,unmappedLocations:[],...extra});
 const guide={version:"v",areas:{A:["1","2"],B:["3"]}};
+
+test("fixed Sikh location overrides candidate eligibility without rewriting a conflicting saved area",()=>{
+ const section="Sikh & Punjab Traditions";
+ const source=data([row("sikh",{section})],{sections:[{name:section,slug:"sikh",idea:""}]});
+ const result=buildSuggestedPlan(source,{version:"v",areas:{[section]:["1","11"]}});
+ assert.deepEqual(result.assignments,[{id:"sikh",vitrine:"11"}]);
+ const saved={...source,areas:[{section,vitrines:["6"],placements:[]}]};
+ const held=buildSuggestedPlan(saved,{version:"v",areas:{[section]:["11"]}});
+ assert.deepEqual(held.assignments,[]);
+ assert.deepEqual(held.areas[0].vitrines,["6"]);
+ assert.equal(held.held.length,1);
+});
 test("keeps display groups together while balancing whole groups",()=>{
  const result=buildSuggestedPlan(data([row("a",{familyKey:"f"}),row("b",{familyKey:"f"}),row("c")]),guide);
  assert.equal(result.assignments[0].vitrine,result.assignments[1].vitrine);

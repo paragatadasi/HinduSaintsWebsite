@@ -1,5 +1,21 @@
 # Vrindavan suggested move plan
 
+## Fixed Sikh display constraint (21 October 2026)
+
+The curator reports a permanently fixed Sikh relic in Vitrine 11. Vrindavan's
+Sikh & Punjab Traditions section must therefore be planned in 11. The shared
+constraint module validates Planned arrangement writes (including individual and
+family editors), section-area saves, flexible allocations and solver candidates.
+SPN and the separately labelled Udasi section are unaffected. Actual physical
+confirmation remains a curator observation, not a solver inference.
+
+An older saved area in 6 is retained until explicitly corrected; it cannot produce
+new conflicting Sikh destinations. The runtime suggestion guide now uses 11.
+Neither this code change nor browsing the map rewrites the accepted plan.
+Saarthi's proposed entrance adjustments and Nadi's reviewed data changes are
+separate, audited curator actions. The original research below records the earlier
+draft rather than the new physical constraint.
+
 The planner offers **Suggest a Plan for Me**, followed by a preview and **Load
 this plan**. **Clear suggested plan** removes only unchanged suggestions from
 the active batch. Earlier plans, later edits, and physical confirmations remain.
