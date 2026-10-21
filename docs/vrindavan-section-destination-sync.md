@@ -20,3 +20,17 @@ The shared transaction helper removes obsolete flexible memberships, writes exac
 Shared source peers require the same complete set of feasible destinations, not merely an overlapping vitrine. Shared Implemented peers require explicit joint review. Target areas with stale flexible memberships block the section save; a deliberately reserved empty area remains usable. Existing explicit exact destinations supersede their old flexible memberships. Legacy Ananta/Bon stale plans remain pending separate reconciliation; deployment performs no hidden backfill.
 
 Verification: 12 destination/working-view domain tests and dev:check passed. Run node scripts/verify-vrindavan-section-destinations.cjs for the actual bundled service entrypoints with an in-memory transactional adapter: individual exact/flexible/unassigned, family, curator confirmation, stale-area revisions, curator DB permission, audit failure rollback and physical-history retention. This is not real PostgreSQL concurrency verification. Citra owns preview UI browser checks and integrated release verification.
+## Curator interface
+
+Vrindavan individual and family forms show **Destination after section change**
+when a different section is selected. **Save proposal** or **Move family proposals**
+is disabled while the preview loads, fails, or reports a blocked change.
+**Refresh destination preview** reloads the latest area and revision after a conflict.
+The preview is invalidated immediately when the selected section or display family
+changes; late responses cannot authorize another selection. SPN forms retain their
+existing behavior. The curator-review confirmation table shows the destination
+change alongside the section change.
+
+UI verification used synthetic fixtures: pending preview disables save, successful
+preview supplies its revision, flexible destination text, blocked shared-entry
+warning, and failed preview/retry controls. No production records were changed.

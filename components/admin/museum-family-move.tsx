@@ -1,17 +1,20 @@
 "use client";
 
+import {SectionDestinationPreview,useSectionDestinationPreview} from "./section-destination-preview";
 import {MuseumFamilyArrangementEditor} from "@/components/admin/museum-arrangement-editor";
-import { useId, useRef } from "react";
+import { useId, useRef, useState } from "react";
 import { ArrowRightLeft, X } from "lucide-react";
 import type { FamilyMoveOption } from "@/lib/museum-family-move-domain";
 import { MuseumActionForm } from "@/components/admin/museum-action-form";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { moveFamilyProposalAction } from "@/app/museumadmin/family-move-action";
 
-export function MuseumFamilyMove({ family, sections, card = false,moveAction=moveFamilyProposalAction,arrangementAction,scopeNote }: { scopeNote?:string; moveAction?:(form:FormData)=>Promise<{error:string}>;arrangementAction?:(form:FormData)=>Promise<{error:string}>; family: FamilyMoveOption; sections: string[]; card?: boolean }) {
+export function MuseumFamilyMove({ family, sections, card = false,moveAction=moveFamilyProposalAction,arrangementAction,scopeNote,previewDestination=false }: { previewDestination?:boolean;scopeNote?:string; moveAction?:(form:FormData)=>Promise<{error:string}>;arrangementAction?:(form:FormData)=>Promise<{error:string}>; family: FamilyMoveOption; sections: string[]; card?: boolean }) {
   const actionLabel=family.moveUnavailable?"Plan family":"Move family";
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
+  const [section,setSection]=useState("");
+  const preview=useSectionDestinationPreview(previewDestination&&section?{familyKey:family.key,section}:null);
   return <>
     <button type="button" className={card ? "museum-family-card__move-trigger" : "museum-admin-button"} aria-hidden={card || undefined} tabIndex={card ? -1 : undefined} aria-haspopup="dialog" onClick={() => dialog.current?.showModal()} aria-label={`${actionLabel}: ${family.label}`}>
       {card ? <span className="sr-only">{actionLabel}: {family.label}</span> : <><ArrowRightLeft aria-hidden="true" size={16} /> {actionLabel}</>}
@@ -26,12 +29,13 @@ export function MuseumFamilyMove({ family, sections, card = false,moveAction=mov
           <button type="button" className="museum-admin-button" aria-label="Close family planning" onClick={() => dialog.current?.close()}><X aria-hidden="true" size={16} /></button>
         </div>
         {!family.moveUnavailable?<><p>Update the proposed section for all {family.count} family members, including members currently proposed in other sections. {scopeNote||"Existing individually edited SPN placements remain separate from source proposals."}</p>
-        <MuseumActionForm action={moveAction}>
+        <MuseumActionForm action={async form=>preview.ready?moveAction(form):{error:"Review the destination preview before saving."}}>
           <input type="hidden" name="familyKey" value={family.key} />
           <input type="hidden" name="revision" value={family.revision} />
-          <SearchableSelect label="Destination section" name="section" options={sections.map(value => ({ value, label: value }))} placeholder="Find a museum section" required />
+          <SearchableSelect onValueChange={setSection} label="Destination section" name="section" options={sections.map(value => ({ value, label: value }))} placeholder="Find a museum section" required />
+          <SectionDestinationPreview preview={preview}/>
           <div className="review-actions">
-            <button className="museum-admin-button" type="submit">Move family proposals</button>
+            <button className="museum-admin-button" type="submit" disabled={!preview.ready}>Move family proposals</button>
             <button className="museum-admin-button" type="button" onClick={() => dialog.current?.close()}>Cancel</button>
           </div>
         </MuseumActionForm></>:null}

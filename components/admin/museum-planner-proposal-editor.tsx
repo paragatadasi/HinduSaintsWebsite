@@ -15,7 +15,7 @@ export function MuseumPlannerProposalEditor({saintId,name,onClose}:{saintId:stri
   <h2 id="museum-quick-proposal">{name}</h2>
   <p>Choose Primary, Secondary or Tertiary, then select an existing display family. Family membership groups the display; it does not create historical relationship lines in a tree.</p>
   {error?<p role="alert">{error}</p>:!data?<p role="status">Loading current proposal…</p>:<>
-   <p>{data.row.arrangement?.status==="Planned"?"Your planned destination is retained when the section stays the same. Changing the section requires a new destination review.":data.row.arrangement?.status==="Implemented"?"Changing this proposal reopens its arrangement for review; it does not record a physical move.":"Choose a destination after saving the proposal."}</p>
+   <p>Changing the section updates the planned destination using that section’s saved vitrines. Review the destination preview before saving. Physical moves are confirmed separately in Move companion.</p>
    <VrindavanProposalEditor row={data.row} options={data.options} action={save}/>
    <MuseumDisplayMembershipEditor row={data.row} canEditRelationships={data.canEditRelationships} correctionAction={requestVrindavanRelationshipCorrectionAction}/>
   </>}

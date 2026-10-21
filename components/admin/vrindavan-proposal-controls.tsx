@@ -1,4 +1,6 @@
 "use client";
+import {useState} from "react";
+import {SectionDestinationPreview,useSectionDestinationPreview} from "./section-destination-preview";
 import type {MuseumSaintPlacement} from "@/lib/museum-proposals";
 import {MuseumActionForm} from "./museum-action-form";
 import {MuseumArrangementEditor} from "./museum-arrangement-editor";
@@ -16,13 +18,17 @@ export function VrindavanProposalControls({row,options,canEditRelationships=fals
 }
 
 export function VrindavanProposalEditor({row,options,action=saveVrindavanProposalAction}:{row:MuseumSaintPlacement;options:VrindavanEditingOptions;action?:(form:FormData)=>Promise<{error:string}>}) {
+ const [section,setSection]=useState(row.section==="Needs section proposal"?"":row.section);
+ const [groupKey,setGroupKey]=useState(row.familyId||"");
+ const preview=useSectionDestinationPreview(section&&section!==row.section?{saintId:row.saintId,section,groupKey}:null);
  return <>
- <MuseumActionForm action={action}>
+ <MuseumActionForm action={async form=>preview.ready?action(form):{error:"Review the destination preview before saving."}}>
  <input type="hidden" name="saintId" value={row.saintId}/><input type="hidden" name="revision" value={row.curatorProposalRevision}/>
  <label>Display tier<select name="tier" defaultValue={row.tier}><option value="Featured">Primary</option><option>Secondary</option><option>Tertiary</option></select></label>
- <SearchableSelect name="groupKey" label="Display family" defaultValue={row.familyId} options={[{value:"",label:"No display family"},...options.groups.map(g=>({value:g.key,label:g.label}))]}/>
- <SearchableSelect name="section" label="Section" required defaultValue={row.section==="Needs section proposal"?"":row.section} options={options.sections.map(value=>({value,label:value}))}/>
- <div className="review-actions"><button className="museum-admin-button" type="submit">Save proposal</button></div>
+ <SearchableSelect name="groupKey" onValueChange={setGroupKey} label="Display family" defaultValue={row.familyId} options={[{value:"",label:"No display family"},...options.groups.map(g=>({value:g.key,label:g.label}))]}/>
+ <SearchableSelect name="section" onValueChange={setSection} label="Section" required defaultValue={row.section==="Needs section proposal"?"":row.section} options={options.sections.map(value=>({value,label:value}))}/>
+ <SectionDestinationPreview preview={preview}/>
+ <div className="review-actions"><button className="museum-admin-button" type="submit" disabled={!preview.ready}>Save proposal</button></div>
  </MuseumActionForm>
  </>;
 }
