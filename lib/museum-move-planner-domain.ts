@@ -89,6 +89,17 @@ export function plannerFamilies(rows:PlannerRow[]){
 }
 export function isFlexible(row:PlannerRow){return row.status==="Proposed"&&!!row.flexibleVitrines?.length;}
 
+export function plannerDestination(area:string[],selected:string){
+ return area.includes(selected)?selected:area.length===1?area[0]:"";
+}
+export function plannerVitrineContents(data:Pick<PlannerData,"rows"|"areas">,number:string){
+ const sections=data.areas.filter(area=>area.vitrines.includes(number)).map(area=>area.section);
+ return {sections,
+  exact:data.rows.filter(row=>row.status!=="Proposed"&&row.vitrine===number),
+  flexible:data.rows.filter(row=>isFlexible(row)&&row.flexibleVitrines!.includes(number)),
+  reserved:data.rows.filter(row=>sections.includes(row.section)&&row.status==="Proposed"&&!isFlexible(row))};
+}
+
 // Keep older area decisions discoverable after catalogue or proposal revisions.
 export function plannerAreasNeedingReview(areas:PlannerArea[],rows:PlannerRow[]){
  const current=new Map(rows.map(row=>[row.id,row]));

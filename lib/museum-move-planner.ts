@@ -1,4 +1,5 @@
 import {createHash} from "node:crypto";
+import {planningVitrineAllowed,requiredPlanningVitrine} from "./museum-planning-constraints";
 import {z} from "zod";
 import {buildSuggestedPlan} from "./museum-suggested-plan";
 import suggestionGuide from "../data/museum/vrindavan-suggested-plan.json";
@@ -117,6 +118,8 @@ export async function completeVrindavanPlan(raw:unknown,actorId:string){
 
 export async function saveVrindavanSectionArea(raw:unknown,actorId:string){
  const input=plannerAreaInput.parse(raw);
+ const required=requiredPlanningVitrine(museumId,input.section);
+ if(required && (input.vitrines.length!==1 || input.vitrines[0]!==required))throw new MuseumConflict("The Sikh section must keep Vitrine 11 as its area because a relic is permanently fixed there.");
  return transaction(async tx=>{
   const data=await context(tx);
   if(input.revision!==data.revision)throw new MuseumConflict("The plan changed. Reload before changing a section area.");
@@ -135,6 +138,7 @@ export async function saveVrindavanFlexiblePlan(raw:unknown,actorId:string){
   if(input.revision!==data.revision)throw new MuseumConflict("The plan changed. Reload before updating flexible placements.");
   const before=await tx.museumSectionSpacePlan.findUnique({where:{museumId_section:{museumId,section:input.section}}});
   if(!before?.vitrines.length)throw new MuseumConflict("Save at least one vitrine for this section first.");
+  if(before.vitrines.some(v=>!planningVitrineAllowed(museumId,input.section,v)))throw new MuseumConflict("Update this section's area to the fixed Vitrine 11 before assigning saints.");
   const ids=new Set(input.placementIds),rows=data.working.placements.filter(row=>ids.has(row.id));
   if(rows.length!==ids.size||rows.some(row=>row.section!==input.section||!row.saintId||!row.arrangement||(!input.remove&&row.arrangement.status!=="Proposed")))throw new MuseumConflict("Choose unassigned saints from this section. Existing individual destinations are kept.");
   const retained=flexibleRecords(before.flexiblePlacements).filter(p=>!ids.has(p.id));
