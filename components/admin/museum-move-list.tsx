@@ -62,7 +62,7 @@ function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevi
   {row.arrangementNeedsReview?<p role="status"><strong>Review this destination.</strong> The section proposal changed after this destination was saved. The saved location is retained. Use Plan destinations to review or replace it before moving relics; a completed arrangement should be physically checked against the latest proposal.</p>:null}
   {row.lastConfirmed?<p>Last physically confirmed: Vitrine {row.lastConfirmed.vitrine}{row.lastConfirmed.shelf?` / ${row.lastConfirmed.shelf}`:""} · {new Date(row.lastConfirmed.confirmedAt).toLocaleDateString()}. Original inventory locations below are retained as reference.</p>:<p>Starting locations below are from the source inventory; check them in the museum.</p>}
   {row.lastConfirmed?.note?<p>Move note: {row.lastConfirmed.note}</p>:null}
-  <button className="museum-admin-button museum-admin-button--secondary" type="button" onClick={showDetails}>Saint photos, biography and family tree</button>
+  <button className="museum-admin-button museum-admin-button--secondary" type="button" onClick={showDetails}>{row.hasTree?"Saint photos, biography and family tree":"Saint photos and biography"}</button>
   <MuseumPackagingComponents rows={[row]}/><div><h4>Relics to check</h4>{row.sources.map(source=><div key={source.id} className="museum-planner__source"><strong>{source.vitrine?`Source vitrine ${source.vitrine}`:"Source location not recorded"}{source.shelf?` / ${source.shelf}`:""}</strong><p>{source.relics||"Relic description not recorded"}{source.quantity?` · Quantity: ${source.quantity}`:""}</p>{source.packagingText?<p>Container: {source.packagingText}</p>:null}{source.shared?<p>Shared entry: check the other saints before moving its contents. This confirmation applies only to {row.name}.</p>:null}</div>)}</div>
   {(row.status==="Planned"||flexible)&&canEdit?<details className="museum-planner__completion"><summary>Confirm completed arrangement</summary>
    <form onSubmit={event=>{
@@ -87,12 +87,12 @@ function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevi
   </details>:null}
    </div>
   </details>
-  <div className="review-actions"><button type="button" className="museum-admin-button museum-admin-button--secondary" aria-haspopup="dialog" onClick={()=>setTreeOpen(true)}>View family tree</button></div>
+  {row.hasTree?<div className="review-actions"><button type="button" className="museum-admin-button museum-admin-button--secondary" aria-haspopup="dialog" onClick={()=>setTreeOpen(true)}>View family tree</button></div>:null}
   {treeOpen?<MuseumDetailDialog titleId={`${titleId}-tree`} kicker="Family tree" closeLabel="Close family tree" onClose={()=>setTreeOpen(false)}><h2 id={`${titleId}-tree`}>{row.name}</h2><MuseumSaintTree saintId={row.saintId} familyKey={row.familyKey} name={row.name} museum="vrindavan" showStatus/></MuseumDetailDialog>:null}
   {open?<MuseumDetailDialog titleId={titleId} kicker="Saint reference" closeLabel="Close saint reference" onClose={()=>setOpen(false)}>
    <h2 id={titleId}>{row.name}</h2>{loading?<p role="status">Loading saint reference…</p>:null}
    {detailError?<p role="alert">Could not load the reference. <button type="button" onClick={showDetails}>Retry</button></p>:null}
-   {detail?<>{detail.profile?<MuseumSaintProfile profile={detail.profile} titleId={`${titleId}-profile`}/>:<p>No biography is recorded yet.</p>}<MuseumSaintTree saintId={row.saintId} name={row.name} familyKey={detail.familyKey} museum="vrindavan" showStatus/></>:null}
+   {detail?<>{detail.profile?<MuseumSaintProfile profile={detail.profile} titleId={`${titleId}-profile`}/>:<p>No biography is recorded yet.</p>}{row.hasTree?<MuseumSaintTree saintId={row.saintId} name={row.name} familyKey={detail.familyKey} museum="vrindavan" showStatus/>:null}</>:null}
   </MuseumDetailDialog>:null}
  </article>;
 }
