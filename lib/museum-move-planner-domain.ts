@@ -56,7 +56,7 @@ export function plannerConfirmation(value:unknown):PlannerConfirmation|null{
  return parsed.success?{vitrine:parsed.data.vitrine,shelf:parsed.data.shelf||"",confirmedAt:parsed.data.confirmedAt,...(parsed.data.note?{note:parsed.data.note}:{})}:null;
 }
 export type PlannerRow={
- traditionIds?:string[];
+ traditionIds?:string[];hasTree?:boolean;
  id:string;saintId:string;name:string;section:string;family:string;tier:string;needsResearch:boolean;
  photo:boolean;status:"Proposed"|"Planned"|"Implemented";vitrine:string;shelf:string;
  arrangementNeedsReview?:boolean;revision:string;lastConfirmed:PlannerConfirmation|null;familyKey?:string;flexibleVitrines?:string[];

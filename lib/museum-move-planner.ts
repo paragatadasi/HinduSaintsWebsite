@@ -1,3 +1,4 @@
+import {readVrindavanTreeAvailability} from "./museum-tree-availability-service";
 import {createHash} from "node:crypto";
 import {planningVitrineAllowed,requiredPlanningVitrine} from "./museum-planning-constraints";
 import {z} from "zod";
@@ -42,13 +43,14 @@ export async function readVrindavanMovePlanner(tx:Prisma.TransactionClient=db):P
  const suggestion=await latestSuggestion(tx);
  const photos=new Set(setup?.photoSaintIds??[]);
  const view=buildMuseumView(working.placements);
+ const hasTree=await readVrindavanTreeAvailability(working.placements.flatMap(p=>p.familyId?[p.familyId]:[]),tx);
  return {revision,areas,suggestionId:suggestion?.action==="museum.plan.suggested"?suggestion.id:null,photoVitrines:setup?.photoVitrines??[],photosConfigured:!!setup,
   photoUpdatedAt:setup?.updatedAt.toISOString()??null,
   awaitingIdentityReview:inventory.counts.awaitingIdentityReview,
   unmappedLocations:inventory.displays.filter(d=>vitrineNumber(d)===null),
   sections:working.sections.map(s=>({name:s.name,slug:s.slug,idea:view.sections.find(summary=>summary.name===s.name)?.idea??""})),
   rows:working.placements.flatMap(p=>p.saintId&&p.arrangement?[{
-   id:p.id,saintId:p.saintId,name:p.name,section:p.section,family:p.groupLabel||"",tier:p.tier,needsResearch:p.needsResearch,
+   hasTree:hasTree(p.saintId,p.familyId),id:p.id,saintId:p.saintId,name:p.name,section:p.section,family:p.groupLabel||"",tier:p.tier,needsResearch:p.needsResearch,
    traditionIds:affiliations.filter(a=>a.saintId===p.saintId).map(a=>a.traditionId),
    arrangementNeedsReview:"arrangementNeedsReview" in p&&p.arrangementNeedsReview===true,
    familyKey:p.familyId||undefined,flexibleVitrines:flexibleDestinations({id:p.id,section:p.section,status:p.arrangement.status,revision:p.arrangement.revision},areas),
