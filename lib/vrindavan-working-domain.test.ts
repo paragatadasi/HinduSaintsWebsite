@@ -2,7 +2,28 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {buildVrindavanWorkingView} from "./vrindavan-working-domain";
 import type {MuseumSaintPlacement} from "./museum-proposals";
+import {vrindavanDisplayFamilyCatalogue} from "./vrindavan-display-family-catalogue";
 const base={id:"source",saintId:"s",name:"Saint",section:"A",tier:"Featured",familyId:"suggested:f",groupLabel:"Family",curatorialFamily:"",note:"Source row 2",alternatives:[],needsResearch:false} as unknown as MuseumSaintPlacement;
+test("configured family is selectable without assigning saints or invalidating their plans",()=>{
+ const first=buildVrindavanWorkingView([base],[],[],"snapshot").placements[0];
+ const saved={placementId:first.id,proposalRevision:first.arrangement!.proposalRevision,status:"Planned",version:1,vitrine:"17",shelf:"",confirmedAt:null,inventoryAcknowledged:false};
+ const result=buildVrindavanWorkingView([base],[],[saved],"snapshot");
+ assert.ok(result.groupOptions.some(g=>g.key==="curator:tinkodi-baba-family"&&g.label==="Tinkodi Baba Family"));
+ assert.equal(result.placements[0].familyId,base.familyId);
+ assert.equal(result.placements[0].arrangement!.status,"Planned");
+ assert.equal(result.placements[0].arrangement!.vitrine,"17");
+ assert.equal(result.placements[0].curatorProposalRevision,first.curatorProposalRevision);
+ assert.ok(!result.families.some(g=>g.key==="curator:tinkodi-baba-family"));
+});
+test("explicit curator overrides form the configured family without changing tiers or sections",()=>{
+ const group=vrindavanDisplayFamilyCatalogue[0];
+ const rows=[{...base,saintId:"teacher",tier:"Featured" as const},{...base,id:"other",saintId:"disciple",tier:"Secondary" as const,familyId:""}];
+ const overrides=rows.map(row=>({saintId:row.saintId!,section:row.section,tier:row.tier,groupKey:group.key,groupLabel:group.label,version:1}));
+ const result=buildVrindavanWorkingView(rows,overrides,[],"snapshot");
+ assert.equal(result.families.find(g=>g.key===group.key)?.count,2);
+ assert.deepEqual(result.placements.map(p=>[p.tier,p.section,p.familyId]),[["Featured","A",group.key],["Secondary","A",group.key]]);
+ assert.equal(rows[0].familyId,"suggested:f");
+});
 test("museum override survives later SPN proposal changes and remains independent",()=>{
  const override={saintId:"s",section:"B",tier:"Secondary",groupKey:"",groupLabel:"",version:1};
  const first=buildVrindavanWorkingView([base],[override],[],"snapshot");
