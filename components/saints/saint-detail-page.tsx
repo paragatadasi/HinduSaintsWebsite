@@ -53,7 +53,7 @@ export function SaintDetailPageContent({
                 ...(saint.traditions.length ? [{ label: template.factLabels.tradition, value: <TaxonomyLinkList items={saint.traditions.map((tradition) => ({ href: `/traditions/${tradition.slug}`, label: tradition.name }))} label={`Traditions associated with ${saint.displayName}`} /> }] : [])
               ]}
             />
-            {saint.shortDescription ? <SaintProfileSummary>{saint.shortDescription}</SaintProfileSummary> : null}
+            {saint.shortDescription ? <SaintProfileSummary variant="editorial">{saint.shortDescription}</SaintProfileSummary> : null}
             <SaintProfileActions
               feedbackHref={`/contact?type=saint&slug=${encodeURIComponent(saint.slug)}`}
               hasBiography={hasBiography}

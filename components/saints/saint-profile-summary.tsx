@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
-export function SaintProfileSummary({ children }: { children: string }) {
+export function SaintProfileSummary({ children, variant = "compact" }: { children: string; variant?: "compact" | "editorial" }) {
+  const summaryId = useId();
   const measureRef = useRef<HTMLParagraphElement>(null);
   const [expanded, setExpanded] = useState(false);
   const [canExpand, setCanExpand] = useState(false);
@@ -48,17 +50,34 @@ export function SaintProfileSummary({ children }: { children: string }) {
     const observer = new ResizeObserver(measure);
     observer.observe(measurementElement);
     return () => observer.disconnect();
-  }, [children]);
+  }, [children, variant]);
+
+  if (variant === "editorial") {
+    return (
+      <div className="saint-profile-summary saint-profile-summary--editorial">
+        <div className="saint-profile-hero__summary" id={summaryId}>
+          {expanded ? children.split(/\n\s*\n/).filter((paragraph) => paragraph.trim()).map((paragraph, index) => <p key={index}>{paragraph}</p>) : <p>{collapsedText}</p>}
+        </div>
+        {canExpand ? (
+          <button aria-controls={summaryId} aria-expanded={expanded} className="saint-profile-summary__toggle" onClick={() => setExpanded((current) => !current)} type="button">
+            {expanded ? "Read less" : "Read more"}
+            {expanded ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
+          </button>
+        ) : null}
+        <p aria-hidden="true" className="saint-profile-hero__summary saint-profile-summary__measure" ref={measureRef}><span data-summary-text>{children}</span></p>
+      </div>
+    );
+  }
 
   return (
     <div className="saint-profile-summary">
-      <p className="saint-profile-hero__summary" id="saint-profile-summary">
+      <p className="saint-profile-hero__summary" id={summaryId}>
         <span>{expanded ? children : collapsedText}</span>
         {canExpand ? (
           <>
             {" "}
             <button
-              aria-controls="saint-profile-summary"
+              aria-controls={summaryId}
               aria-expanded={expanded}
               className="saint-profile-summary__toggle"
               onClick={() => setExpanded((current) => !current)}
