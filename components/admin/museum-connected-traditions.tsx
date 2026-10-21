@@ -4,7 +4,7 @@ import {Maximize2,X} from "lucide-react";
 import graph from "@/data/museum/vrindavan-connected-traditions.json";
 import {solveWebLayout,type WebNode} from "@/lib/museum-connected-layout";
 import {VRINDAVAN_APPROVED_SUBSECTIONS} from "@/lib/vrindavan-approved-subsections";
-import {moveDiagramGroup,proposalDiagramPositions,vitrineCenter,type DiagramPosition} from "@/lib/museum-diagram-geometry";
+import {packProposalColumns,moveDiagramGroup,proposalDiagramPositions,vitrineCenter,type DiagramPosition} from "@/lib/museum-diagram-geometry";
 import type {DiagramLayouts} from "@/lib/museum-diagram-layout-domain";
 import {loadDiagramLayoutsAction,saveDiagramLayoutAction,deleteDiagramLayoutAction} from "@/app/vrindavanadmin/plan/actions";
 import {MuseumDetailDialog} from "./museum-detail-dialog";
@@ -60,41 +60,34 @@ function ConnectionGraph({section,onChoose,available,positions,proposal,pack,are
   const layout=()=>{frame=0;const width=el.clientWidth;if(width<1||Math.abs(width-previous)<1)return;previous=width;
    // Geometry derives from the shared card-width token and actual label height.
    const desired=parseFloat(getComputedStyle(el).getPropertyValue("--width-museum-web-node"));
-   const w=Math.min(desired,Math.max(120,width*.28));
+   const w=proposal?Math.min(desired,width/4-16):Math.min(desired,Math.max(120,width*.28));
    const next=diagramNodes.map(n=>({...n,w,h:Math.max(132,(Math.ceil(n.name.length/(w/7))+Math.ceil(graph.regions[n.regionIndex].regionName.length/(w/7)))*18+64),x:0,y:0,vx:0,vy:0}));
    const height=Math.max(720,(Math.ceil(next.length/Math.max(1,Math.floor(width/(w+12))))+2)*(Math.max(...next.map(n=>n.h))+20));
    solveWebLayout(next,graph.edges,width,height);setSize({width,height});setNodes(next);
   };
   const observer=new ResizeObserver(()=>{if(!frame)frame=requestAnimationFrame(layout);});observer.observe(el);layout();
   return()=>{observer.disconnect();cancelAnimationFrame(frame);};
- },[]);
+ },[proposal]);
+ const rowHeight=Math.max(96,...nodes.map(n=>n.h))+20;
+ const isAssigned=(name:string)=>!!areas.find(a=>a.section===name)?.vitrines.some(v=>vitrineCenter(v));
+ const packed=useMemo(()=>packProposalColumns(nodes,proposalDiagramPositions(diagramNodes,areas),size.width,rowHeight),[nodes,areas,size.width,rowHeight]);
+ const roomBottom=packed.roomBottom;
+ const canvasHeight=proposal?packed.height:size.height;
  useEffect(()=>{
   if(!edge||!popup.current||!stage.current)return;
   const box=stage.current.getBoundingClientRect(),panel=popup.current.getBoundingClientRect();
-  const x=Math.max(0,Math.min(edge.x,size.width-panel.width)),top=Math.max(0,-box.top),bottom=Math.min(size.height,window.innerHeight-box.top);
+  const x=Math.max(0,Math.min(edge.x,size.width-panel.width)),top=Math.max(0,-box.top),bottom=Math.min(canvasHeight,window.innerHeight-box.top);
   const y=Math.max(top,Math.min(edge.y,Math.max(top,bottom-panel.height)));
   if(x!==edge.x||y!==edge.y)setEdge({...edge,x,y});
- },[edge,size.width,size.height]);
- const columns=Math.max(1,Math.floor(size.width/((nodes[0]?.w||120)+12))),rowHeight=Math.max(96,...nodes.map(n=>n.h))+20;
- const isAssigned=(name:string)=>!!areas.find(a=>a.section===name)?.vitrines.some(v=>vitrineCenter(v));
- const roomBottom=(Math.ceil(nodes.filter(n=>isAssigned(n.name)).length/columns)+1)*rowHeight;
+ },[edge,size.width,canvasHeight]);
  const shared=(name:string)=>[...new Set(areas.find(a=>a.section===name)?.vitrines??[])].filter(v=>areas.filter(a=>a.vitrines.includes(v)).length>1);
  const displayed=useMemo(()=>{
   if(!positions)return nodes;
-  const placed=nodes.map(n=>{const p=positions.find(p=>p.nodeId===n.id);return p?{...n,x:Math.max(n.w/2,Math.min(size.width-n.w/2,p.x*size.width)),y:Math.max(n.h/2,Math.min(size.height-n.h/2,p.y*size.height))}:n;});
-  if(pack){
-   const assigned=placed.filter(n=>isAssigned(n.name)),unassigned=placed.filter(n=>!isAssigned(n.name));
-   const roomSlots=Array.from({length:columns*(Math.ceil(assigned.length/columns)+1)},(_,i)=>({x:(i%columns+.5)*size.width/columns,y:(Math.floor(i/columns)+.5)*rowHeight}));
-   for(const n of assigned.sort((a,b)=>a.y-b.y||a.id.localeCompare(b.id))){
-    const anchor=positions.find(p=>p.nodeId===n.id)!;const ay=anchor.y/.82*roomBottom;
-    let best=0;for(let i=1;i<roomSlots.length;i++)if(Math.hypot(roomSlots[i].x-n.x,roomSlots[i].y-ay)<Math.hypot(roomSlots[best].x-n.x,roomSlots[best].y-ay))best=i;
-    const slot=roomSlots.splice(best,1)[0];if(slot){n.x=slot.x;n.y=slot.y;}
-   }
-   unassigned.sort((a,b)=>a.id.localeCompare(b.id)).forEach((n,i)=>{n.x=(i%columns+.5)*size.width/columns;n.y=roomBottom+(Math.floor(i/columns)+.5)*rowHeight;});
-  }
+  const placed=nodes.map(n=>{const p=positions.find(p=>p.nodeId===n.id);return p?{...n,x:Math.max(n.w/2,Math.min(size.width-n.w/2,p.x*size.width)),y:Math.max(n.h/2,Math.min(canvasHeight-n.h/2,p.y*canvasHeight))}:n;});
+  if(pack)return packed.nodes;
   return placed;
- },[nodes,positions,pack,size]);
- const normalized=(values:WebNode[])=>values.map(n=>({nodeId:n.id,x:n.x/size.width,y:n.y/size.height}));
+ },[nodes,positions,pack,size,packed,canvasHeight]);
+ const normalized=(values:WebNode[])=>values.map(n=>({nodeId:n.id,x:n.x/size.width,y:n.y/canvasHeight}));
  useEffect(()=>{if(size.width&&displayed.length)onLayout(normalized(displayed));});
  const byName=new Map(displayed.map(n=>[n.name,n]));
  const neighbours=new Set(graph.edges.filter(e=>e.source===selected||e.target===selected).flatMap(e=>[e.source,e.target]));
@@ -102,24 +95,25 @@ function ConnectionGraph({section,onChoose,available,positions,proposal,pack,are
  return <div className="museum-connected-graph" onKeyDown={event=>{if(event.key==="Escape"&&edge){event.preventDefault();event.stopPropagation();dismiss(true);}}} onPointerDown={event=>{if(edge&&!popup.current?.contains(event.target as Node)&&!(event.target as Element).closest(".museum-web-edge"))dismiss();}}>
   <div className="museum-web-legend"><span>Solid: documented connection</span><span>Dotted: curatorial adjacency</span><span className="museum-web-priority-key">Heavy gold: recommended adjacency</span></div>
   <div className="museum-web-regions">{graph.regions.map((r,i)=><span key={r.regionSlug} data-region={i}>{r.regionName}</span>)}</div>
-  {proposal?<p className="muted">Schematic of saved section areas. Thin guides connect displaced labels to their room positions. Shared and multiple vitrines are listed on each box; unassigned sections sit below the room. Positions do not measure capacity.</p>:null}
+  {proposal?<p className="muted">Four columns follow the room from left to right: left wall, centre-left, centre-right and right wall. Sections spanning columns use their area centre. Thin guides connect displaced labels to their room positions. Shared and multiple vitrines are listed on each box; unassigned sections sit below the room. Positions do not measure capacity.</p>:null}
   <label className="museum-check-toggle"><input type="checkbox" checked={focus} onChange={e=>{setFocus(e.target.checked);dismiss();}}/> Focus on selected section</label>
-  <div className="museum-web-stage" data-group-mode={multi||group.length>0} ref={stage} style={{height:size.height||undefined}}>
-   <svg className="museum-web-lines" viewBox={`0 0 ${size.width||1} ${size.height||1}`} aria-label="Connections between museum sections">
+  <div className="museum-web-viewport" data-proposal={proposal}>{proposal?<div className="museum-web-column-headings"><span>Left wall</span><span>Centre-left</span><span>Centre-right</span><span>Right wall</span></div>:null}<div className="museum-web-stage" data-group-mode={multi||group.length>0} ref={stage} style={{height:canvasHeight||undefined}}>
+   <svg className="museum-web-lines" viewBox={`0 0 ${size.width||1} ${canvasHeight||1}`} aria-label="Connections between museum sections">
     <g aria-hidden="true" className="museum-web-fields">{graph.regions.map((r,i)=><polygon key={r.regionSlug} data-region={i} points={hull(displayed.filter(n=>n.region===r.regionSlug).flatMap(n=>[[n.x-n.w/2-18,n.y-n.h/2-18],[n.x+n.w/2+18,n.y-n.h/2-18],[n.x+n.w/2+18,n.y+n.h/2+18],[n.x-n.w/2-18,n.y+n.h/2+18]]))}/>)}</g>
     {graph.edges.map((e,i)=>{const a=byName.get(e.source),b=byName.get(e.target);if(!a||!b||(focus&&!neighbours.has(e.source))||(focus&&e.source!==selected&&e.target!==selected))return null;const p=endpoint(a,b),q=endpoint(b,a),d=`M${p.x},${p.y} L${q.x},${q.y}`;
      return <a key={i} href="#connection" className="museum-web-edge" aria-label={`${e.priorityBoundary?"Priority adjacency: ":""}${e.source} to ${e.target}: ${e.kind}`} onClick={event=>{event.preventDefault();lastLink.current=event.currentTarget;const rect=stage.current!.getBoundingClientRect();setEdge({index:i,x:event.detail?event.clientX-rect.left:(p.x+q.x)/2,y:event.detail?event.clientY-rect.top:(p.y+q.y)/2});if(!event.detail)requestAnimationFrame(()=>close.current?.focus({preventScroll:true}));}}><path d={d} className={`museum-web-line ${e.kind}${e.priorityBoundary?" priority":""}${edge?.index===i?" selected":""}`}/><path d={d} className="museum-web-hit"/></a>;
     })}
    </svg>
-   {proposal?<svg className="museum-web-lines museum-web-guides" aria-hidden="true" viewBox={`0 0 ${size.width||1} ${size.height||1}`}>{displayed.map(n=>{const p=proposalDiagramPositions(diagramNodes,areas).find(p=>p.nodeId===n.id);return p&&isAssigned(n.name)?<line className="museum-web-anchor" key={n.id} x1={p.x*size.width} y1={p.y/.82*roomBottom} x2={n.x} y2={n.y}/>:null;})}</svg>:null}
+   {proposal?<svg className="museum-web-lines museum-web-guides" aria-hidden="true" viewBox={`0 0 ${size.width||1} ${canvasHeight||1}`}>{displayed.map(n=>{const p=proposalDiagramPositions(diagramNodes,areas).find(p=>p.nodeId===n.id);return p&&isAssigned(n.name)?<line className="museum-web-anchor" key={n.id} x1={p.x*size.width} y1={p.y/.82*roomBottom} x2={n.x} y2={n.y}/>:null;})}</svg>:null}
    {proposal&&pack?<div className="museum-web-unassigned-label" style={{top:roomBottom}}>No saved museum area / area unavailable</div>:null}
    {displayed.map(n=><button type="button" key={n.id} className="museum-web-node" data-region={n.regionIndex} data-muted={focus&&!neighbours.has(n.name)} data-group-selected={group.includes(n.id)} aria-pressed={multi?group.includes(n.id):n.name===selected} style={{left:n.x-n.w/2,top:n.y-n.h/2,width:n.w,minHeight:n.h} as CSSProperties} onClick={e=>{if(suppress.current){suppress.current=false;return;}if(multi||e.shiftKey)onGroup(group.includes(n.id)?group.filter(id=>id!==n.id):[...group,n.id]);else{setSelected(n.name);onGroup([]);}dismiss();}}
-    onKeyDown={e=>{if(locked)return;const delta=e.shiftKey?20:8,offset=e.key==="ArrowLeft"?[-delta,0]:e.key==="ArrowRight"?[delta,0]:e.key==="ArrowUp"?[0,-delta]:e.key==="ArrowDown"?[0,delta]:null;if(!offset)return;e.preventDefault();const ids=new Set(group.includes(n.id)?group:[n.id]);onPositions(normalized(moveDiagramGroup(displayed,ids,offset[0],offset[1],size.width,size.height)));}}
+    onKeyDown={e=>{if(locked)return;const delta=e.shiftKey?20:8,offset=e.key==="ArrowLeft"?[-delta,0]:e.key==="ArrowRight"?[delta,0]:e.key==="ArrowUp"?[0,-delta]:e.key==="ArrowDown"?[0,delta]:null;if(!offset)return;e.preventDefault();const ids=new Set(group.includes(n.id)?group:[n.id]);onPositions(normalized(moveDiagramGroup(displayed,ids,offset[0],offset[1],size.width,canvasHeight)));}}
     onPointerDown={e=>{if(locked||e.button!==0)return;drag.current={id:n.id,x:e.clientX,y:e.clientY,nodes:displayed,ids:new Set(group.includes(n.id)?group:[n.id]),moved:false};}}
-    onPointerMove={e=>{const current=drag.current;if(!current||current.id!==n.id)return;const dx=e.clientX-current.x,dy=e.clientY-current.y;if(!current.moved&&Math.hypot(dx,dy)>6){current.moved=true;e.currentTarget.setPointerCapture(e.pointerId);}if(!current.moved)return;onPositions(normalized(moveDiagramGroup(current.nodes,current.ids,dx,dy,size.width,size.height)));}}
+    onPointerMove={e=>{const current=drag.current;if(!current||current.id!==n.id)return;const dx=e.clientX-current.x,dy=e.clientY-current.y;if(!current.moved&&Math.hypot(dx,dy)>6){current.moved=true;e.currentTarget.setPointerCapture(e.pointerId);}if(!current.moved)return;onPositions(normalized(moveDiagramGroup(current.nodes,current.ids,dx,dy,size.width,canvasHeight)));}}
     onPointerUp={e=>{suppress.current=!!drag.current?.moved;drag.current=null;if(e.currentTarget.hasPointerCapture(e.pointerId))e.currentTarget.releasePointerCapture(e.pointerId);}}
     onPointerCancel={()=>{drag.current=null;suppress.current=false;}}><small>{graph.regions[n.regionIndex].regionName}</small>{n.name}{proposal?<small>{isAssigned(n.name)?`Vitrines ${[...new Set(areas.find(a=>a.section===n.name)!.vitrines)].join(", ")}`:areas.find(a=>a.section===n.name)?.vitrines.length?"Area geometry unavailable":"No saved museum area"}{shared(n.name).length?` · Shared: ${shared(n.name).join(", ")}`:""}</small>:null}</button>)}
    {edge?<div ref={popup} className="museum-web-popup" role="dialog" aria-label="Connection details" style={{left:edge.x,top:edge.y}}><button ref={close} type="button" className="museum-web-close" onClick={()=>dismiss(true)} aria-label="Close connection details"><X aria-hidden="true"/></button><strong>{graph.edges[edge.index].source} ↔ {graph.edges[edge.index].target}</strong>{graph.edges[edge.index].priorityBoundary?<p className="eyebrow">Recommended physical adjacency</p>:null}<p>{graph.edges[edge.index].kind==="documented"?"Documented historical, biographical or traditional connection":"Proposed curatorial adjacency · not genealogy"}</p><p>{graph.edges[edge.index].rationale}</p><details onToggle={()=>setEdge(current=>current?{...current}:null)}><summary>Sources</summary>{graph.edges[edge.index].sourceKeys.map(key=>{const source=graph.sources.find(s=>s.key===key)!;return <p key={key}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a></p>;})}{!graph.edges[edge.index].sourceKeys.length?<p>Curatorial proposal.</p>:null}</details></div>:null}
+  </div>
   </div>
   {available.some(name=>!diagramNodes.some(n=>n.name===name))?<details><summary>Sections without a connections diagram</summary><p>{available.filter(name=>!diagramNodes.some(n=>n.name===name)).join(" · ")}</p><p>These sections remain available in the section navigator.</p></details>:null}
   <div className="museum-web-selection" aria-live="polite"><strong>{selected}</strong>{available.includes(selected)?<button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>onChoose(selected)}>Arrange this section</button>:<span>No current planning entries</span>}</div>
