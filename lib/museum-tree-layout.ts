@@ -4,12 +4,12 @@ export const TREE_MOBILE_GEOMETRY={...TREE_GEOMETRY,nodeWidth:220,nodeHeight:152
 export const TREE_COMPACT_GEOMETRY={columnGap:30,rowGap:60,margin:20,laneGap:4,maxLanes:12} as const;
 export function treeColumnsForWidth(width:number){const c=TREE_COMPACT_GEOMETRY,g=TREE_GEOMETRY;return Math.max(1,Math.min(g.compactColumns,Math.floor((width-c.margin*2-c.maxLanes*c.laneGap+c.columnGap)/(g.nodeWidth+c.columnGap))));}
 export type TreePerson = {id:string;name:string;birthYear:number|null;samadhiYear:number|null;sourceOnly?:boolean;contextOnly?:boolean;presence?:"location"|"catalogue"|"source"|"none"};
-export type TreeClaim = {id:string;from:string;to:string;kind:"guru"|"successor"|"partner"|"incarnation";status:string;evidence:string;confidence:string};
+export type TreeClaim = {id:string;from:string;to:string;kind:"guru"|"successor"|"partner"|"incarnation"|"family";status:string;evidence:string;confidence:string};
 export type TreeEdge = {key:string;from:string;to:string;kind:TreeClaim["kind"];claims:TreeClaim[];secondary?:"shortcut"|"cycle"|"partner pair";lineage:number};
 export type TreeGraph = {nodes:TreePerson[];edges:TreeEdge[]};
 export function normalizeTreeClaims(rows:{id:string;fromSaintId:string;toSaintId:string;relationshipType:string;status:string;evidenceStatus:string;confidence:string}[]):TreeClaim[] {
  return rows.flatMap(r=>{
-  const kind=["guru","disciple"].includes(r.relationshipType)?"guru":["partner","husband","wife"].includes(r.relationshipType)?"partner":r.relationshipType==="incarnation"?"incarnation":r.relationshipType==="successor"?"successor":null;
+  const kind=["guru","disciple"].includes(r.relationshipType)?"guru":["partner","husband","wife"].includes(r.relationshipType)?"partner":r.relationshipType==="incarnation"?"incarnation":r.relationshipType==="successor"?"successor":["parent","child","father","mother","son","daughter","family","lineage"].includes(r.relationshipType)?"family":null;
   if(!kind||r.fromSaintId===r.toSaintId||r.status==="archived")return [];
   let from=r.relationshipType==="guru"?r.toSaintId:r.fromSaintId,to=r.relationshipType==="guru"?r.fromSaintId:r.toSaintId;
   if(kind!=="guru"&&kind!=="successor"&&from>to)[from,to]=[to,from];
@@ -107,6 +107,6 @@ export function connectedTreeGraph(graph:TreeGraph,focus?:string):TreeGraph {
 
 // Direct relationships stay explicit in the readable view; no inferred kinship.
 export function treeNeighborhood(graph:TreeGraph,focus?:string) {
- const definitions=[{key:"predecessors",label:"Predecessors",kind:"successor",incoming:true},{key:"successors",label:"Successors",kind:"successor",incoming:false},{key:"teachers",label:"Teachers",kind:"guru",incoming:true},{key:"disciples",label:"Disciples",kind:"guru",incoming:false},{key:"partners",label:"Partners",kind:"partner",incoming:null},{key:"incarnations",label:"Incarnation connections",kind:"incarnation",incoming:null}] as const;
+ const definitions=[{key:"predecessors",label:"Predecessors",kind:"successor",incoming:true},{key:"successors",label:"Successors",kind:"successor",incoming:false},{key:"teachers",label:"Teachers",kind:"guru",incoming:true},{key:"disciples",label:"Disciples",kind:"guru",incoming:false},{key:"partners",label:"Partners",kind:"partner",incoming:null},{key:"incarnations",label:"Incarnation connections",kind:"incarnation",incoming:null},{key:"family",label:"Family connections",kind:"family",incoming:null}] as const;
  return definitions.map(group=>{const ids=new Set(graph.edges.filter(e=>e.kind===group.kind&&(group.incoming===null?e.from===focus||e.to===focus:group.incoming?e.to===focus:e.from===focus)).map(e=>e.from===focus?e.to:e.from));return {...group,people:graph.nodes.filter(n=>ids.has(n.id)).sort((a,b)=>(a.birthYear??Infinity)-(b.birthYear??Infinity)||a.name.localeCompare(b.name))};}).filter(g=>g.people.length);
 }
