@@ -95,8 +95,8 @@ export async function saveMuseumCuratorReview(raw:unknown,actorId:string){
   if(input.decision==="confirm_supported"){
    const plan=Object.hasOwn(item.allowedPlans,input.explicitChoiceId!)?item.allowedPlans[input.explicitChoiceId!]:undefined;
    if(!plan||!item.row)throw new MuseumConflict("This choice needs further review before the proposal can change.");
-   // MVP effects are section-only for an already linked identity. Source linking
-   // stays in the dedicated reconciliation workflow, even for administrators.
+   // Confirmation updates the museum section and its previewed destination plan.
+   // Source identity linking remains in the dedicated reconciliation workflow.
    const before=item.override;
    const values={section:plan.section,tier:item.row.tier,groupKey:item.row.familyId||"",groupLabel:item.row.groupLabel||"",updatedById:actorId};
    const after=await tx.museumCuratorProposal.upsert({where:{museumId_saintId:{museumId,saintId:plan.saintId}},create:{museumId,saintId:plan.saintId,...values},update:{...values,version:{increment:1}}});
