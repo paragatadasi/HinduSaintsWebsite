@@ -1,0 +1,478 @@
+{
+  "version": 1,
+  "key": "vrindavan-sikh-guru-succession-v1",
+  "museumId": "museum-vrindavan",
+  "section": "Sikh & Punjab Traditions",
+  "sectionSlug": "sikh-and-punjab-traditions",
+  "title": "Sikh Guru succession",
+  "visibility": "private_museum_only",
+  "reviewedAt": "2026-10-21",
+  "reviewedBy": [
+    "Saarthi (research)",
+    "Nadi (current website identity and data verification)"
+  ],
+  "authority": "Paragata Dasi requested the succession context and explicitly approved the supported canonical links. Research/context nodes are not approval to create canonical identities.",
+  "nodes": [
+    {
+      "id": "museum-context:vrindavan:sikh:guru:nanak",
+      "kind": "person",
+      "name": "Guru Nanak Dev Ji",
+      "order": 1,
+      "role": "Sikh Guru",
+      "canonicalSaintId": "cmstxdltu001907of10lp0ura",
+      "contextOnly": false,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Reviewed succession context by Saarthi and Nadi; user requested correct immediate succession without skipping intermediates. No biological kinship or initiation asserted by this role.",
+      "verifiedSourceRows": [
+        171
+      ],
+      "pendingSourceRows": []
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:angad",
+      "kind": "person",
+      "name": "Guru Angad Dev Ji",
+      "order": 2,
+      "role": "Sikh Guru",
+      "canonicalSaintId": null,
+      "contextOnly": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Reviewed succession context by Saarthi and Nadi; user requested correct immediate succession without skipping intermediates. No biological kinship or initiation asserted by this role. No individual canonical identity verified; context only, no public profile or museum holding inferred.",
+      "verifiedSourceRows": [],
+      "pendingSourceRows": []
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:amar-das",
+      "kind": "person",
+      "name": "Guru Amar Das Ji",
+      "order": 3,
+      "role": "Sikh Guru",
+      "canonicalSaintId": "cmus3rx2x005407o5sorws3t3",
+      "contextOnly": false,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Reviewed succession context by Saarthi and Nadi; user requested correct immediate succession without skipping intermediates. No biological kinship or initiation asserted by this role.",
+      "verifiedSourceRows": [
+        172
+      ],
+      "pendingSourceRows": []
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:ram-das",
+      "kind": "person",
+      "name": "Guru Ram Das Ji",
+      "order": 4,
+      "role": "Sikh Guru",
+      "canonicalSaintId": null,
+      "contextOnly": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Reviewed succession context by Saarthi and Nadi; user requested correct immediate succession without skipping intermediates. No biological kinship or initiation asserted by this role. No individual canonical identity verified; context only, no public profile or museum holding inferred.",
+      "verifiedSourceRows": [],
+      "pendingSourceRows": [
+        291
+      ]
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:arjan",
+      "kind": "person",
+      "name": "Guru Arjan Dev Ji",
+      "order": 5,
+      "role": "Sikh Guru",
+      "canonicalSaintId": "cms0w7gu205x207qi5n5dmt5g",
+      "contextOnly": false,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Reviewed succession context by Saarthi and Nadi; user requested correct immediate succession without skipping intermediates. No biological kinship or initiation asserted by this role.",
+      "verifiedSourceRows": [
+        173
+      ],
+      "pendingSourceRows": [
+        291
+      ]
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:hargobind",
+      "kind": "person",
+      "name": "Guru Hargobind Ji",
+      "order": 6,
+      "role": "Sikh Guru",
+      "canonicalSaintId": "cmus3rwpg002907o5vur47sj4",
+      "contextOnly": false,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Reviewed succession context by Saarthi and Nadi; user requested correct immediate succession without skipping intermediates. No biological kinship or initiation asserted by this role. Existing published canonical identity and source174 link verified live on 21 October 2026.",
+      "verifiedSourceRows": [
+        174
+      ],
+      "pendingSourceRows": []
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:har-rai",
+      "kind": "person",
+      "name": "Guru Har Rai Ji",
+      "order": 7,
+      "role": "Sikh Guru",
+      "canonicalSaintId": null,
+      "contextOnly": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Reviewed succession context by Saarthi and Nadi; user requested correct immediate succession without skipping intermediates. No biological kinship or initiation asserted by this role. No individual canonical identity verified; context only, no public profile or museum holding inferred.",
+      "verifiedSourceRows": [],
+      "pendingSourceRows": []
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:har-krishan",
+      "kind": "person",
+      "name": "Guru Har Krishan Ji",
+      "order": 8,
+      "role": "Sikh Guru",
+      "canonicalSaintId": null,
+      "contextOnly": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Reviewed succession context by Saarthi and Nadi; user requested correct immediate succession without skipping intermediates. No biological kinship or initiation asserted by this role. No individual canonical identity verified; context only, no public profile or museum holding inferred.",
+      "verifiedSourceRows": [],
+      "pendingSourceRows": []
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:tegh-bahadur",
+      "kind": "person",
+      "name": "Guru Tegh Bahadur Ji",
+      "order": 9,
+      "role": "Sikh Guru",
+      "canonicalSaintId": null,
+      "contextOnly": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Reviewed succession context by Saarthi and Nadi; user requested correct immediate succession without skipping intermediates. No biological kinship or initiation asserted by this role. No individual canonical identity verified; context only, no public profile or museum holding inferred.",
+      "verifiedSourceRows": [],
+      "pendingSourceRows": []
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:gobind-singh",
+      "kind": "person",
+      "name": "Guru Gobind Singh Ji",
+      "order": 10,
+      "role": "Sikh Guru",
+      "canonicalSaintId": "cmus3rwy1004007o58ua7nzz4",
+      "contextOnly": false,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Reviewed succession context by Saarthi and Nadi; user requested correct immediate succession without skipping intermediates. No biological kinship or initiation asserted by this role.",
+      "verifiedSourceRows": [
+        175
+      ],
+      "pendingSourceRows": []
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:person:mata-sahib-kaur",
+      "kind": "person",
+      "name": "Mata Sahib Kaur Ji",
+      "canonicalSaintId": "cmvc7u7ls020d07qptiac3ixn",
+      "contextOnly": false,
+      "sources": [
+        "spouse",
+        "spouse_sgpc"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Spouse of Guru Gobind Singh; distinct from Mai Desan.",
+      "verifiedSourceRows": [
+        176
+      ],
+      "pendingSourceRows": []
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:person:mai-desan",
+      "kind": "person",
+      "name": "Sri Mai Desan Ji",
+      "canonicalSaintId": "cmus3rx2n005207o523unlm5h",
+      "contextOnly": false,
+      "sources": [
+        "mai"
+      ],
+      "evidence": "traditional",
+      "reviewNotes": "Disciple/devotee in the traditional Chak Fateh Singh Wala account; no formal initiation date claimed.",
+      "verifiedSourceRows": [
+        177
+      ],
+      "pendingSourceRows": []
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:person:piara-singh",
+      "kind": "person",
+      "name": "Sri Piara Singh, Lahore",
+      "canonicalSaintId": "cmus3rwxr003u07o51q4pyf6h",
+      "contextOnly": false,
+      "sources": [
+        "piara"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Later Sikh seva/Pingalwara context only. No personal disciple, spouse, family or succession link to a historical Sikh Guru.",
+      "verifiedSourceRows": [
+        178
+      ],
+      "pendingSourceRows": []
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:affiliation:pingalwara",
+      "kind": "affiliation",
+      "name": "Later Sikh seva / Pingalwara context",
+      "canonicalSaintId": null,
+      "contextOnly": true,
+      "sources": [
+        "piara"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "An affiliation label, not a person, Guru, museum holding or canonical tradition ID. Do not count as a saint or create a profile."
+    }
+  ],
+  "edges": [
+    {
+      "id": "museum-context:vrindavan:sikh:guru:nanak->museum-context:vrindavan:sikh:guru:angad:successor",
+      "from": "museum-context:vrindavan:sikh:guru:nanak",
+      "to": "museum-context:vrindavan:sikh:guru:angad",
+      "type": "successor",
+      "label": "Immediate Guru successor",
+      "direction": "predecessor_to_immediate_successor",
+      "directed": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Immediate succession in the complete ten-Guru order; never collapse gaps into a new direct succession edge.",
+      "canonicalRelationshipSaved": false
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:angad->museum-context:vrindavan:sikh:guru:amar-das:successor",
+      "from": "museum-context:vrindavan:sikh:guru:angad",
+      "to": "museum-context:vrindavan:sikh:guru:amar-das",
+      "type": "successor",
+      "label": "Immediate Guru successor",
+      "direction": "predecessor_to_immediate_successor",
+      "directed": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Immediate succession in the complete ten-Guru order; never collapse gaps into a new direct succession edge.",
+      "canonicalRelationshipSaved": false
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:amar-das->museum-context:vrindavan:sikh:guru:ram-das:successor",
+      "from": "museum-context:vrindavan:sikh:guru:amar-das",
+      "to": "museum-context:vrindavan:sikh:guru:ram-das",
+      "type": "successor",
+      "label": "Immediate Guru successor",
+      "direction": "predecessor_to_immediate_successor",
+      "directed": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Immediate succession in the complete ten-Guru order; never collapse gaps into a new direct succession edge.",
+      "canonicalRelationshipSaved": false
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:ram-das->museum-context:vrindavan:sikh:guru:arjan:successor",
+      "from": "museum-context:vrindavan:sikh:guru:ram-das",
+      "to": "museum-context:vrindavan:sikh:guru:arjan",
+      "type": "successor",
+      "label": "Immediate Guru successor",
+      "direction": "predecessor_to_immediate_successor",
+      "directed": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Immediate succession in the complete ten-Guru order; never collapse gaps into a new direct succession edge.",
+      "canonicalRelationshipSaved": false
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:arjan->museum-context:vrindavan:sikh:guru:hargobind:successor",
+      "from": "museum-context:vrindavan:sikh:guru:arjan",
+      "to": "museum-context:vrindavan:sikh:guru:hargobind",
+      "type": "successor",
+      "label": "Immediate Guru successor",
+      "direction": "predecessor_to_immediate_successor",
+      "directed": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Immediate succession in the complete ten-Guru order; never collapse gaps into a new direct succession edge.",
+      "canonicalRelationshipSaved": true
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:hargobind->museum-context:vrindavan:sikh:guru:har-rai:successor",
+      "from": "museum-context:vrindavan:sikh:guru:hargobind",
+      "to": "museum-context:vrindavan:sikh:guru:har-rai",
+      "type": "successor",
+      "label": "Immediate Guru successor",
+      "direction": "predecessor_to_immediate_successor",
+      "directed": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Immediate succession in the complete ten-Guru order; never collapse gaps into a new direct succession edge.",
+      "canonicalRelationshipSaved": false
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:har-rai->museum-context:vrindavan:sikh:guru:har-krishan:successor",
+      "from": "museum-context:vrindavan:sikh:guru:har-rai",
+      "to": "museum-context:vrindavan:sikh:guru:har-krishan",
+      "type": "successor",
+      "label": "Immediate Guru successor",
+      "direction": "predecessor_to_immediate_successor",
+      "directed": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Immediate succession in the complete ten-Guru order; never collapse gaps into a new direct succession edge.",
+      "canonicalRelationshipSaved": false
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:har-krishan->museum-context:vrindavan:sikh:guru:tegh-bahadur:successor",
+      "from": "museum-context:vrindavan:sikh:guru:har-krishan",
+      "to": "museum-context:vrindavan:sikh:guru:tegh-bahadur",
+      "type": "successor",
+      "label": "Immediate Guru successor",
+      "direction": "predecessor_to_immediate_successor",
+      "directed": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Immediate succession in the complete ten-Guru order; never collapse gaps into a new direct succession edge.",
+      "canonicalRelationshipSaved": false
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:guru:tegh-bahadur->museum-context:vrindavan:sikh:guru:gobind-singh:successor",
+      "from": "museum-context:vrindavan:sikh:guru:tegh-bahadur",
+      "to": "museum-context:vrindavan:sikh:guru:gobind-singh",
+      "type": "successor",
+      "label": "Immediate Guru successor",
+      "direction": "predecessor_to_immediate_successor",
+      "directed": true,
+      "sources": [
+        "succession"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Immediate succession in the complete ten-Guru order; never collapse gaps into a new direct succession edge.",
+      "canonicalRelationshipSaved": false
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:edge:gobind-mata-spouse",
+      "from": "museum-context:vrindavan:sikh:guru:gobind-singh",
+      "to": "museum-context:vrindavan:sikh:person:mata-sahib-kaur",
+      "type": "partner",
+      "label": "Wife / spouse",
+      "direction": "symmetric_spouse",
+      "directed": false,
+      "sources": [
+        "spouse",
+        "spouse_sgpc"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Canonical Gobind->Mata relationship saved as wife; render as spouse, not guru, successor or parent. No marriage date asserted.",
+      "canonicalRelationshipSaved": true
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:edge:gobind-mai-disciple",
+      "from": "museum-context:vrindavan:sikh:guru:gobind-singh",
+      "to": "museum-context:vrindavan:sikh:person:mai-desan",
+      "type": "guru",
+      "label": "Disciple / devotee (traditional account)",
+      "direction": "teacher_to_devotee_disciple",
+      "directed": true,
+      "sources": [
+        "mai"
+      ],
+      "evidence": "traditional",
+      "reviewNotes": "Canonical Gobind->Mai relationship saved as disciple, traditional. No formal initiation date inferred.",
+      "canonicalRelationshipSaved": true
+    },
+    {
+      "id": "museum-context:vrindavan:sikh:edge:piara-affiliation",
+      "from": "museum-context:vrindavan:sikh:person:piara-singh",
+      "to": "museum-context:vrindavan:sikh:affiliation:pingalwara",
+      "type": "affiliation",
+      "label": "Later Sikh seva / Pingalwara context",
+      "direction": "person_to_affiliation_context",
+      "directed": true,
+      "sources": [
+        "piara"
+      ],
+      "evidence": "certain",
+      "reviewNotes": "Context affiliation only. Never turn this into a Piara->Gobind disciple, succession or family edge.",
+      "canonicalRelationshipSaved": false
+    }
+  ],
+  "sources": [
+    {
+      "key": "succession",
+      "title": "Sikh Missionary Society: ordered ten Sikh Gurus",
+      "url": "https://www.sikhmissionarysociety.org/sms/smspublications/thegurusway/chapter15/",
+      "supports": "Full succession order, including intermediates absent from current confirmed inventory."
+    },
+    {
+      "key": "spouse",
+      "title": "Sikh Dharma International: Mata Sahib Devan",
+      "url": "https://www.sikhdharma.org/mata-sahib-devan-mother-of-the-sikhs/",
+      "supports": "Explicitly identifies Mata Sahib Kaur as Guru Gobind Singh’s wife. Use spouse, not successor or parent."
+    },
+    {
+      "key": "spouse_sgpc",
+      "title": "SGPC Gurdwara Gazette, January2018",
+      "url": "https://sgpc.net/gazette/2018/January/January-English.pdf",
+      "supports": "Institutional Sikh account explicitly calls Mata Sahib Kaur the Guru’s wife; no marriage-date claim added."
+    },
+    {
+      "key": "mai",
+      "title": "World Gurudwaras: Chak Fateh Singh Wala",
+      "url": "https://www.worldgurudwaras.com/gurudwara-sri-guru-gobind-singh-chak-fateh-singh-wala/",
+      "supports": "Mai Deesan described as Guru Gobind Singh’s disciple, with the Bathinda/Chak Fateh Singh context matching the saved biography; no formal initiation date inferred."
+    },
+    {
+      "key": "piara",
+      "title": "Pingalwara: A Flame in Darkness",
+      "url": "https://pingalwara.org/pingalwara-a-flame-in-darkness/",
+      "supports": "Piara’s care by Bhagat Puran Singh and the foundation of Pingalwara. Later Sikh seva context, not a disciple of a seventeenth-century Guru."
+    }
+  ],
+  "renderingPolicy": {
+    "availability": "Section level, independent of display-family membership.",
+    "holdings": "Derive current confirmed holdings from live canonical identity links; this reference JSON never creates or increments inventory counts.",
+    "missingIdentities": "Five missing individual Guru identities are context-only, no nonexistent profile links.",
+    "identityChanges": "Reconcile optional canonicalSaintId against current website state; do not fuzzy-match or substitute the composite Ram Das/Arjan record.",
+    "canonicalDeduplication": "Merge saved canonical edges by exact endpoints and semantic type; do not display duplicate Arjan-Hargobind, spouse or disciple edges.",
+    "succession": "Keep all nine immediate successor edges; filtered/missing context must not produce false direct edges.",
+    "source291": "Combined Ram Das/Arjan source row remains unresolved and is not a second confirmed Arjan holding.",
+    "piara": "Affiliation edge terminates at non-person context node, never a historical Guru.",
+    "planning": "No effect on sections, tiers, areas, destinations, family membership or physical inventory."
+  }
+}
