@@ -22,7 +22,7 @@ for(const c of museumCuratorReviewManifest.cases)if(new Set(c.options.map(o=>o.o
 // enable the precise museum-local effect reviewed in this manifest.
 export function museumCuratorOptionBlockedReason(c:MuseumCuratorManifestCase,o:MuseumCuratorManifestOption):string|undefined {
  if(o.readiness!=="ready_after_confirmation"||o.additionalConditions.length)return "This choice needs further evidence or a reviewed family decision before it can update the museum proposal.";
- if(o.proposedChanges.some(v=>v.field!=="museumProposal.section"))return "Resolve the source identity in reconciliation first. This review only updates an already-linked saint’s subsection.";
+ if(o.proposedChanges.some(v=>v.field!=="museumProposal.section"))return "Resolve the source identity in reconciliation first. This review only updates an already-linked saintâ€™s subsection.";
  if(!c.saintId||o.targetSaintIds.length!==1||o.targetSaintIds[0]!==c.saintId)return "The exact website saint must be resolved before this choice can update the proposal.";
  if(o.proposedChanges.length!==1||o.proposedChanges[0].field!=="museumProposal.section"||o.proposedChanges[0].fromValue!==c.currentStatePreconditions.currentSection||o.proposedChanges[0].toValue!==o.proposedSection)return "The reviewed change does not match the exact current subsection and proposed destination; refresh this research case.";
  if(!o.proposedSection||!o.sources.length||o.sources.some(url=>!safeMuseumReviewUrl(url)))return "The proposed subsection or supporting source needs review.";
