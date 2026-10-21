@@ -2,6 +2,10 @@
 
 The visual identity may change, so styling must be centralized.
 
+Reusable designer role instructions live in [Designer roles](design/designer-roles.md):
+Admin / Workflow Designer and Public Experience Designer, with explicit Editorial
+and Creative modes for public work. Use these alongside this design system.
+
 Token files:
 
 - `styles/tokens.css`
