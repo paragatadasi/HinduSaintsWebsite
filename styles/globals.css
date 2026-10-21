@@ -11634,3 +11634,20 @@ select:not([multiple]) {
 .museum-planning-overview-layout { display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:var(--space-5);align-items:start; }
 @media(max-width:800px){.museum-planning-overview-layout{grid-template-columns:minmax(0,1fr)}}
 .museum-planning-member-name { color:var(--color-muted);font-weight:400; }
+
+/* Shared museum decision workspace: quiet list, one focused review, explicit effects. */
+.museum-curator-review { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:var(--space-5);align-items:start; }
+.museum-curator-review__list { display:grid;gap:var(--space-2); }
+.museum-curator-review__case { display:grid;gap:var(--space-1);padding:var(--space-3);text-align:left;background:var(--color-bg);color:var(--color-muted);border:1px solid var(--color-border);border-radius:var(--radius-card); }
+.museum-curator-review__case strong { color:var(--color-cream); }
+.museum-curator-review__case[aria-current="true"] { border-color:var(--color-accent); }
+.museum-curator-review__case:focus-visible { outline:2px solid var(--color-accent);outline-offset:var(--space-1); }
+.museum-curator-review__option { display:flex;gap:var(--space-3);align-items:flex-start; }
+.museum-curator-review fieldset { border:0;padding:0;margin:0;min-width:0; }
+.museum-curator-review legend { font-weight:600;margin-bottom:var(--space-2); }
+.museum-curator-review__option > span { display:grid;gap:var(--space-1); }
+.museum-curator-review__changes { overflow-x:auto; }
+.museum-curator-review__changes table { width:100%;border-collapse:collapse; }
+.museum-curator-review__changes th,.museum-curator-review__changes td { text-align:left;vertical-align:top;padding:var(--space-2);border-bottom:1px solid var(--color-border); }
+.museum-curator-review__changes td { color:var(--color-muted); }
+@media(max-width:800px){.museum-curator-review{grid-template-columns:minmax(0,1fr)}}

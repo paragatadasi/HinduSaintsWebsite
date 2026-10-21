@@ -14,7 +14,9 @@ export function buildVrindavanWorkingView(base:MuseumSaintPlacement[],overrides:
    ...(override?{section:override.section,tier:override.tier as MuseumSaintPlacement["tier"],familyId:override.groupKey,curatorialFamily:"",groupLabel:override.groupLabel,note:"Curator-edited Vrindavan proposal. "+inherited.note}:{}),
   };
   row.curatorProposalRevision=hash({saintId,snapshot,overrideVersion:override?.version||0,inventoryEvidence:candidates.map(p=>p.note),base:override?null:candidates.map(p=>[p.section,p.tier,p.familyId,p.groupLabel])});
-  row.arrangement=arrangementControl(row,saved.find(p=>p.placementId===row.id),row.curatorProposalRevision);
+  const stored=saved.find(p=>p.placementId===row.id);
+  row.arrangement=arrangementControl(row,stored,row.curatorProposalRevision);
+  row.arrangementNeedsReview=Boolean(stored&&["Planned","Implemented"].includes(stored.status)&&stored.proposalRevision!==row.arrangement.proposalRevision);
   return row;
  });
  const placements=reconcileMuseumFamilies(baseline,relationships,new Set(overrides.map(o=>`vrindavan:${o.saintId}`)));

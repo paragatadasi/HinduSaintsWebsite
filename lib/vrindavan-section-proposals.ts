@@ -1,3 +1,4 @@
+import {vrindavanSubsectionCatalogue} from "./vrindavan-approved-subsections";
 import {db} from "@/lib/db";
 import type {Prisma} from "@/lib/generated/prisma/client";
 import {readVrindavanMuseumInventory} from "./vrindavan-museum-inventory";
@@ -38,7 +39,7 @@ export async function readVrindavanSectionProposalAudit(options:{snapshotHash?:s
    guidance:"Inherit SPN as a Vrindavan proposal only. Source geography requires research before changing shared saint places or either museum's section proposal; lineage and reviewed curator decisions may take precedence."};
  });
  return {museum:inventory.museum,snapshotHash:inventory.snapshotHash,generatedAt:new Date().toISOString(),
-  sectionCatalogue:spn.sections.map(s=>({name:s.name,slug:s.slug})),rows,
+  sectionCatalogue:vrindavanSubsectionCatalogue(spn.sections),rows,
   summary:{confirmedEntries:inventory.counts.confirmedEntries,saints:rows.length,
    singleInheritedProposal:rows.filter(r=>r.proposals.length===1&&!r.needsSectionReview).length,
    needsSectionReview:rows.filter(r=>r.needsSectionReview).length,

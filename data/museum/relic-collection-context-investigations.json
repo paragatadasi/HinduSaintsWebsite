@@ -1,0 +1,88 @@
+{
+  "version": "relic-collection-context-investigations-2026-10-21-v1",
+  "preparedDate": "2026-10-21",
+  "timing": "After the museum reorganisation",
+  "policy": "Private research backlog only. No canonical date edits, new saint merges, source identity relinks, physical moves or collector outreach are authorized by this register. Museum section choices and provenance investigation are separate decisions.",
+  "cases": [
+    {
+      "caseId": "bon-225-date-provenance",
+      "saintId": "cms0w7dkk01qi07qi3aqn1oj2",
+      "name": "Sri Swami Bon Maharaj",
+      "sourceRows": [
+        225
+      ],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "status": "open_after_reorganisation",
+      "websiteValuesObserved": {
+        "samadhiDate": "2018-11-15",
+        "alias": "Sri Swami Bon Maharaj of Vrindavan"
+      },
+      "contrastingEvidence": {
+        "identity": "Bhakti Hridaya Bon",
+        "samadhiYear": 1982,
+        "identityDecision": "Curator confirmed the portrait depicts the well-known Bon Maharaj; Paragata relayed this confirmation in Saarthi chat. The 2018 source/date origin remains unknown."
+      },
+      "museumDecision": "Gaudiya subsection approved. The date discrepancy must not silently change that reviewed identity decision or overwrite the source date.",
+      "collectorName": null,
+      "donorName": null,
+      "collectionDate": null,
+      "evidenceToLocate": [
+        "Original museum entry and its date column meaning",
+        "Original portrait selection and relic label",
+        "Collector or donor note identifying Bon Maharaj"
+      ],
+      "questions": [
+        "Identify the collector, donor and museum contact who supplied this relic.",
+        "Find the original collection date, donor note, receipt, correspondence, box label and original inventory entry.",
+        "Compare photographs of the relic, its label and the saint portrait with the current website portrait.",
+        "Ask whether dates describe the saint, a collection event, a donor or another person with a similar name.",
+        "Record the answer with its source and confidence; preserve original values. Apply any correction only after separate review."
+      ],
+      "sources": [
+        "https://www.vrindavan.org/English/Books/GM/GMII.html",
+        "https://www.gopinathgaudiyamath.com/the-actual-meaning-of-prabhupada/"
+      ]
+    },
+    {
+      "caseId": "bawra-141-identity-dates",
+      "saintId": "cms0w7it1086707qiqjgv4921",
+      "name": "Brahmrishi Sri Vishwatma Bawra Ji Maharaj",
+      "sourceRows": [
+        141
+      ],
+      "sourceSnapshotHash": "89c0c02dcab10d81b439943be6667c981e1995448f098abcdcaf4f3c39c28c62",
+      "status": "held_for_curator_identity_confirmation",
+      "websiteValuesObserved": {
+        "birthYear": 1891,
+        "samadhiYear": 1975,
+        "note": "born in Rajpur",
+        "place": "Chandigarh"
+      },
+      "contrastingEvidence": {
+        "institutionalDates": "1934-2002",
+        "institution": "Brahmrishi Mission",
+        "identityDecision": "No identity confirmation yet; retain the museum assignment hold. Determine whether the dates are erroneous or the relic/portrait/name identifies someone else."
+      },
+      "museumDecision": "Proposed Himalayan assignment held because the current-record date check failed. No date or identity correction applied.",
+      "collectorName": null,
+      "donorName": null,
+      "collectionDate": null,
+      "evidenceToLocate": [
+        "Original inventory portrait and name label",
+        "Collector or donor connection to Chandigarh/Brahmrishi Mission",
+        "Origin of the 1891/1975 dates and Rajpur note"
+      ],
+      "questions": [
+        "Identify the collector, donor and museum contact who supplied this relic.",
+        "Find the original collection date, donor note, receipt, correspondence, box label and original inventory entry.",
+        "Compare photographs of the relic, its label and the saint portrait with the current website portrait.",
+        "Ask whether dates describe the saint, a collection event, a donor or another person with a similar name.",
+        "Record the answer with its source and confidence; preserve original values. Apply any correction only after separate review."
+      ],
+      "sources": [
+        "https://www.brahmrishimission.com/about",
+        "https://shivatempleorlando.org/brahmrishi-mission-centres-india-and-abroad/"
+      ]
+    }
+  ]
+}
