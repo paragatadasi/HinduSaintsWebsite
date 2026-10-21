@@ -1,4 +1,5 @@
 import {MUSEUM_TREE_RELATIONSHIP_KINDS} from "./museum-family-reconciliation";
+import {buildSikhContext,sikhContextSeeds} from "./museum-sikh-context";
 import {getMuseumProposalData} from "./museum-proposals";
 import {sourceTreeReference} from "./museum-tree-source";
 import {db} from "@/lib/db";
@@ -12,6 +13,8 @@ import {readMuseumSaintProfiles} from "./museum-saint-profiles";
 const relationshipKinds=MUSEUM_TREE_RELATIONSHIP_KINDS;
 const NODE_LIMIT=120,EDGE_LIMIT=500,HOPS=10,GENERAL_HOPS=5;
 export async function readMuseumLiveTree(seeds:string[],museum:"spn"|"vrindavan",includeUnreviewed:boolean,familyKey?:string,includeSource=false) {
+ const sikhContext=museum==="vrindavan"&&familyKey==="context:sikh-guru-succession";
+ if(sikhContext)seeds=sikhContextSeeds();
  const select={id:true,displayName:true,birthYear:true,samadhiYear:true} as const;
  const original=familyKey&&includeSource?getMuseumProposalData():null;
  const key=familyKey?.replace(/^suggested:/,"");
@@ -55,7 +58,8 @@ export async function readMuseumLiveTree(seeds:string[],museum:"spn"|"vrindavan"
  const sourceClaims=reference.claims.filter(c=>combined.has(c.from)&&combined.has(c.to));
  const claims=[...normalizeTreeClaims([...records.values()]),...sourceClaims];
  if(claims.length>EDGE_LIMIT)truncated=true;
- return {layout:layoutMuseumTree([...combined.values()],claims.slice(0,EDGE_LIMIT)),sourceReferenceClaims:sourceClaims.length,unlinkedSourcePeople:reference.nodes.filter(n=>n.sourceOnly).length,profiles,truncated,limits:{nodes:NODE_LIMIT,hops:HOPS},retrievedAt:new Date().toISOString()};
+ const contextTree=sikhContext?buildSikhContext(nodes,normalizeTreeClaims([...records.values()])):null;
+ return {researchContext:contextTree?.researchContext??null,layout:layoutMuseumTree(contextTree?.nodes??[...combined.values()],contextTree?.claims??claims.slice(0,EDGE_LIMIT)),sourceReferenceClaims:sourceClaims.length,unlinkedSourcePeople:reference.nodes.filter(n=>n.sourceOnly).length,profiles,truncated,limits:{nodes:NODE_LIMIT,hops:HOPS},retrievedAt:new Date().toISOString()};
 }
 export type MuseumLiveTree=Awaited<ReturnType<typeof readMuseumLiveTree>>;
 

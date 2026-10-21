@@ -492,3 +492,11 @@ while group members and area rationales use native disclosures. See
 ### Succession in museum relationship trees (21 October 2026)
 
 Succession is a directed predecessor-to-successor relationship, distinct from guru-to-disciple teaching. Both establish ordered rows, but succession uses an open arrowhead and explicit Predecessors / Successors context labels. Preserve parallel teaching and succession evidence for the same pair. Partners retain their paired placement; affiliation alone does not invent a lineage edge. The private reader follows general relationships for five hops and succession for up to ten, within the existing 120-person / 500-connection bounds, so a ten-Guru sequence can be read from either end. These are relationship rows, not a timeline.
+
+### Reviewed Sikh succession context
+
+The private Vrindavan Sikh section offers a succession diagram independently of display-family membership. Its server-only reviewed reference preserves all immediate Guru succession steps and explicitly labels five context-only people without inventing website identities or museum holdings. Live canonical relationships take precedence: removed or archived saved claims must not reappear from the research snapshot. Piara Singh remains explanatory affiliation context, not a fabricated personal lineage. Source links and review date are available inside the diagram. No plan, family, inventory, or public-page data is changed by this view.
+
+### Planner tier and family quick editing
+
+Each planning member exposes a quiet Edit tier / family action outside its selection label. Open the shared proposal form in a dialog without navigating away or selecting the saint for a move. Tier choices read Primary, Secondary and Tertiary; Primary retains the existing Featured data value. Display-family membership and historical relationship lines remain separate. Supported tree connections use the existing permission-controlled relationship editor or review request. A quick edit preserves a current Planned destination only when the section is unchanged, in the same audited transaction; section changes and Implemented proposals still require arrangement review. Stale proposal revisions must be rejected.

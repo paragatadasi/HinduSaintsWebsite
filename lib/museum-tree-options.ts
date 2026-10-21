@@ -1,5 +1,5 @@
 import type {MuseumSection} from "./museum-proposals";
-export type MuseumTreeOption={key:string;label:string;seeds:string[];count:number;familyKey?:string};
+export type MuseumTreeOption={key:string;label:string;seeds:string[];count:number;familyKey?:string;contextLabel?:string};
 export function museumTreeOptions(section:MuseumSection) {
  const sectionIds=new Set(section.rows.filter(r=>r.section===section.name).map(r=>r.id));
  const families=section.families.map(f=>({...f,rows:f.rows.filter(r=>sectionIds.has(r.id))})).filter(f=>f.rows.length>1);
