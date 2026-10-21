@@ -1,4 +1,4 @@
-import manifest from "../data/museum/vrindavan-guide-connections-v10.json";
+import manifest from "../data/museum/vrindavan-guide-connections-v13.json";
 export type GuideEndpoint={kind:"saint";saintId:string;label:string;guideVitrine?:string}|{kind:"context";key:string;label:string};
 export type GuideKind="teaching"|"succession"|"biological_family"|"partner"|"association"|"incarnation"|"group_membership";
 // Direction follows the research statement, never alphabetical ID ordering:
