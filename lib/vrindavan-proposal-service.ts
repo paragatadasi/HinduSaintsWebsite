@@ -5,6 +5,7 @@ import {readVrindavanWorkingData} from "./vrindavan-working-data";
 import {MuseumConflict} from "./museum-service";
 import {arrangementInput,familyArrangementControl} from "./museum-arrangement-domain";
 import {writeMuseumArrangement} from "./museum-arrangement";
+import {retainPlannedDestination} from "./museum-proposal-edit-domain";
 const museumId="museum-vrindavan";
 export const vrindavanProposalInput=z.object({saintId:z.string().min(1).max(200),revision:z.string().regex(/^[a-f0-9]{64}$/),section:z.string().trim().min(1).max(200),tier:z.enum(["Featured","Secondary","Tertiary"]),groupKey:z.string().max(300).default("")});
 export const vrindavanFamilyInput=z.object({familyKey:z.string().min(1).max(300),revision:z.string().regex(/^[a-f0-9]{64}$/),section:z.string().min(1).max(200)});
@@ -19,13 +20,19 @@ async function writeProposal(tx:Prisma.TransactionClient,input:{saintId:string;s
  const after=await tx.museumCuratorProposal.upsert({where:{museumId_saintId:key},create:{...key,...input,updatedById:actorId},update:{...input,version:{increment:1},updatedById:actorId}});
  await tx.auditEvent.create({data:{userId:actorId,action:"museum.curator_proposal.saved",entityType:"MuseumCuratorProposal",entityId:museumId+":"+input.saintId,beforeJson:before?JSON.parse(JSON.stringify(before)):Prisma.JsonNull,afterJson:JSON.parse(JSON.stringify(after))}});
 }
-export async function saveVrindavanProposal(raw:unknown,actorId:string) {
+export async function saveVrindavanProposal(raw:unknown,actorId:string,preservePlanned=false) {
  const input=vrindavanProposalInput.parse(raw);return transaction(async tx=>{
  const data=await readVrindavanWorkingData(tx);const row=data.placements.find(p=>p.saintId===input.saintId);
  if(!row||row.curatorProposalRevision!==input.revision)throw new MuseumConflict("This saint's proposal or source identity changed. Reload before saving.");
  if(!data.sections.some(s=>s.name===input.section&&s.slug!=="needs-section-proposal"))throw new MuseumConflict("Choose an available museum section.");
  const group=input.groupKey?data.groupOptions.find(g=>g.key===input.groupKey):null;if(input.groupKey&&!group)throw new MuseumConflict("This display family is no longer available.");
- await writeProposal(tx,{saintId:input.saintId,section:input.section,tier:input.tier,groupKey:group?.key||"",groupLabel:group?.label||""},actorId);return row.name;
+ if(row.section===input.section&&row.tier===input.tier&&(row.familyId||"")===input.groupKey)return row.name;
+ await writeProposal(tx,{saintId:input.saintId,section:input.section,tier:input.tier,groupKey:group?.key||"",groupLabel:group?.label||""},actorId);
+ if(preservePlanned&&retainPlannedDestination(row.arrangement?.status,row.section,input.section)){
+  const refreshed=(await readVrindavanWorkingData(tx)).placements.find(p=>p.saintId===input.saintId)!;
+  await writeMuseumArrangement(tx,museumId,refreshed,arrangementInput.parse({placementId:refreshed.id,revision:refreshed.arrangement!.revision,familyKey:refreshed.familyId||"",status:"Planned",vitrine:row.arrangement!.vitrine,shelf:row.arrangement!.shelf}),actorId);
+ }
+ return row.name;
  });
 }
 export async function moveVrindavanFamily(raw:unknown,actorId:string) {
