@@ -555,3 +555,9 @@ Connected traditions keeps Original connections and Current museum proposal as b
 The room sketch is shared geometry configuration in museum-diagram-geometry.ts. Inline coordinates are justified for the interactive drawing and room grid; visual styling remains token based. Proposal anchors use unique saved vitrines, with shared/multiple destinations labeled and stale areas excluded. Sections without usable areas sit below the room. This schematic does not imply display capacity or a new historical connection.
 
 Plan search shows destination actions first, followed by secondary section and Saint details buttons. Saint details loads the shared MuseumSaintDialog in place, with biography, family tree and museum placement; it does not navigate away from the plan.
+
+### Shared museum room schematics
+
+`MuseumRoomPlan` accepts a versioned `MuseumRoomLayout` configuration for irregular museum rooms. Geometry (grid coordinates and spans) is data, so numeric inline grid placement is intentional; colors, typography, spacing and responsive behavior remain in shared tokens and classes. Existing Vrindavan rendering remains the default when no layout is supplied.
+
+Use `museum-room--schematic`, `museum-layout-workspace`, `museum-layout-list` and `museum-layout-legend` for room inspection. New spaces use the theme-derived new-space token; future spaces have dashed outlines and explicit text; walking-stick restrictions have both a label and accent outline. Selection is independently outlined. At narrow widths the detail panel stacks, the schematic can scroll horizontally, and a list alternative preserves readable access. Do not infer measured capacity from schematic cell size.

@@ -11493,6 +11493,22 @@ select:not([multiple]) {
 .museum-planner__palette svg,.museum-planner__family-heading svg { width:var(--space-4); height:var(--space-4); vertical-align:middle; }
 .museum-room__label { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:100%; }
 .museum-room__vitrine--drop { outline:var(--space-1) solid var(--color-accent); outline-offset:var(--space-1); }
+.museum-room-scroll { max-width:100%; overflow-x:auto; }
+.museum-room--schematic { max-width:none; min-width:var(--width-museum-schematic-min); }
+.museum-room--schematic .museum-room__vitrine { min-height:0; gap:0; line-height:1; padding:0; }
+.museum-room--schematic .museum-room__vitrine strong { font-size:var(--font-size-museum-schematic-number); }
+.museum-room--schematic .museum-room__vitrine small { font-size:var(--font-size-museum-schematic-note); line-height:1; }
+.museum-room--schematic [data-availability="new"] { background:var(--color-museum-new-space); border-color:var(--color-green); }
+.museum-room--schematic [data-availability="future"] { border-style:dashed; color:var(--color-muted); background:var(--color-surface-muted); }
+.museum-room--schematic [data-restriction="walking_sticks"] { border-color:var(--color-gold); }
+.museum-room--schematic [aria-pressed="true"] { outline:2px solid var(--color-accent); outline-offset:0; background:var(--color-surface-elevated); }
+.museum-room__landmark { font-size:var(--font-size-review-hint); color:var(--color-muted); align-self:center; text-align:center; }
+.museum-layout-workspace { display:grid;grid-template-columns:minmax(0,1fr) var(--width-museum-layout-detail);gap:var(--space-5);align-items:start; }
+.museum-layout-workspace > * { min-width:0; }
+.museum-layout-legend { display:flex;flex-wrap:wrap;gap:var(--space-3);font-size:var(--font-size-review-hint);color:var(--color-muted); }
+.museum-layout-list { display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--width-museum-layout-detail)),1fr));gap:var(--space-2); }
+.museum-layout-list button { text-align:left; }
+@media(max-width:75rem) { .museum-layout-workspace { grid-template-columns:minmax(0,1fr); } }
 .museum-planner__family-list { display:grid; gap:var(--space-4); }
 .museum-planner__family { border-bottom:1px solid var(--color-border); padding-bottom:var(--space-4); }
 .museum-planner__family-heading { display:flex; justify-content:space-between; align-items:center; gap:var(--space-4); margin-bottom:var(--space-3); }

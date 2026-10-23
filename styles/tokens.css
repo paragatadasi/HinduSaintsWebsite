@@ -41,6 +41,12 @@
   --width-museum-planner-sections: 16rem;
   --width-museum-room: 26rem;
   --height-museum-room-cell: 3rem;
+  --width-museum-schematic-min: 40rem;
+  --height-museum-schematic-unit: 1.05rem;
+  --width-museum-layout-detail: 22rem;
+  --font-size-museum-schematic-number: 1rem;
+  --font-size-museum-schematic-note: .65rem;
+  --color-museum-new-space: color-mix(in srgb,var(--color-green) 14%,var(--color-bg));
   --color-tree-selected: var(--color-accent);
   --font-size-admin-stat-heading: 1.25rem;
   --font-size-admin-auth-heading: clamp(2rem, 4vw, 2.8rem);
