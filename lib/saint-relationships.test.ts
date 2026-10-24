@@ -13,6 +13,8 @@ test("maps directional saint relationships to their reciprocal view", () => {
 
 test("keeps symmetric saint relationships unchanged", () => {
   assert.equal(getReciprocalRelationshipType("partner"), "partner");
+  assert.equal(getReciprocalRelationshipType("household"), "household");
+  assert.equal(getReciprocalRelationshipType("encountered"), "encountered");
   assert.equal(getReciprocalRelationshipType("contemporary"), "contemporary");
   assert.equal(getReciprocalRelationshipType("related"), "related");
 });

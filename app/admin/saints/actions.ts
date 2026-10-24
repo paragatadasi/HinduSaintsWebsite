@@ -37,7 +37,7 @@ const placeTypeSchema = z.enum(["primary", "birth", "samadhi", "sadhana", "assoc
 const sourceTypeSchema = z.enum(["book", "article", "website", "scripture", "oral_tradition", "other"]);
 const relationshipTypeSchema = z.enum([
   "guru", "disciple", "parent", "child", "father", "mother", "son", "daughter", "husband", "wife",
-  "partner", "incarnation", "family", "influence", "initiator", "patron", "successor",
+  "partner", "incarnation", "family", "household", "encountered", "influence", "initiator", "patron", "successor",
   "debate_opponent", "contemporary", "associated", "lineage", "related", "untyped"
 ]);
 const relationshipEvidenceStatusSchema = z.enum(["certain", "probable", "traditional", "disputed", "imported", "uncategorized"]);
