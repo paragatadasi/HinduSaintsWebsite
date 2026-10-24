@@ -10,4 +10,25 @@ Keep lower-review records distinct from the main regional display. Never inherit
 
 The immutable v15 baseline is packaged with source IDs, provenance hashes, and the current-record comparison baseline. Read current museum data on every authorized page request. Preserve current names, tiers, region overrides and saved destinations; flag changed identity/section/family/proposal state. Loading this view performs no database writes and does not apply physical moves. Future proposals can reuse the explorer with a separately versioned baseline.
 
-The selection preview below the map is shared by pointer and keyboard focus; the inspector contains equivalent information for touch. All vitrines are keyboard selectable, including future spaces so their exclusion is explainable.
+The floating hover preview is shared by pointer and keyboard focus; the inspector contains equivalent information for touch. All vitrines are keyboard selectable, including future spaces so their exclusion is explainable.
+
+## Approved visual implementation
+
+The Room explorer follows the reviewed prototype directly: the proposal picker,
+search, Sections / Primary saints / Connections tabs, paired turn controls,
+regional legend, hover card and right-hand vitrine inspector retain the same
+layout. Its scoped shared stylesheet is styles/spn-room-explorer.css; it uses
+existing theme tokens and does not restyle unrelated admin screens.
+
+Saints use one vertical column of portrait rows, with published profile portraits,
+stable image dimensions, quiet placeholders and an integrated disclosure chevron.
+Keep exact vitrine placements separate from other primary saints in the area.
+Show only a rationale involving the selected display in the vitrine inspector.
+General display policies and routes merely passing a vitrine belong to the
+proposal-level Connections view.
+
+The current v15 and earlier design study can be compared without applying either.
+Browser-local shortlist and view orientation are convenience preferences, not
+saved curator move plans. The hover card is a pointer/focus preview; touch users
+can select the same vitrine for the full inspector. Deployment remains paused
+pending the user's release instruction.
