@@ -582,3 +582,11 @@ outline. Statistics use tabular numerals. Scope wrapping rules to action rows an
 identity/destination text so long names cannot widen the page. On phones, move
 search and sort stack; dialogs retain safe-area padding and native focus/Escape
 behavior. Keep the approved map palette and semantic regional/lineage colors.
+
+## Shared museum navigation — selected 24 October 2026
+
+Use the editorial navigation across SPN and Vrindavan: serif Museum, Workspace and Section proposals headings with long, restrained gold bottom rules. Museum selection is a labeled native dropdown with short names; do not repeat museum identity above or below it. Utility links remain a quiet footer.
+
+Subsection links use the shared 0.8125rem (13px at default root) token, with 44px minimum targets. Regional groups have a compact space-1 gap, integrated chevrons and persistent per-museum/per-region disclosure state. Initial direct section visits reveal the active group unless the user previously closed it. Regional numbering and names accompany every color; gold remains the active-page cue. SPN hues follow the approved prototype; Vrindavan reuses its established six-region colors. Supplement/review groups use neutral cues. Existing permissions, URLs, section ordering and counts remain authoritative.
+
+Chosen from the local navigation prototypes: long underlines and color cues. Rejected short rules and tinted group panels. Prototype variants are not imported into production. See docs/museum-navigation-editorial.md for verification and decision history.
