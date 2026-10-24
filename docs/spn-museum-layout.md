@@ -39,3 +39,21 @@ Use this layout as the SPN destination catalogue after confirming provisional op
 ## Verification
 
 Layout tests cover all numbers, non-overlapping geometry, the confirmed central island, future spaces, entrance-room row order, eligibility and provisional-code collisions. Browser checks use the actual client component with empty inventory fixtures; authenticated live inventory still needs release smoke testing.
+
+## Approved whole-room presentation (24 October 2026)
+
+The curator selected Map first after comparing whole-room polish variants. The
+production browser keeps the entire room geometry together, uses a compact
+header and horizontal navigation, and shows selected-vitrine contents alongside
+the map on wide screens. Narrow screens stack the details and retain the list
+alternative and horizontal map scrolling.
+
+Available vitrines have a lighter surface. Future spaces use the dark background,
+a dashed boundary and a Future label. New spaces retain their label and subtle
+tint; walking-stick restrictions remain explicit. Selection uses a gold outline
+without changing the availability fill. The legend says “Provisional Number”.
+
+The layout remains an inspection screen. Search, map selection and view switching
+do not assign or move relics. Existing inventory/source distinctions, empty-record
+cautions, provisional-number collisions and outside-layout records are retained.
+The implementation contains no prototype picker or alternative production layout.
