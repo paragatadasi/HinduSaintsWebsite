@@ -561,3 +561,24 @@ Plan search shows destination actions first, followed by secondary section and S
 `MuseumRoomPlan` accepts a versioned `MuseumRoomLayout` configuration for irregular museum rooms. Geometry (grid coordinates and spans) is data, so numeric inline grid placement is intentional; colors, typography, spacing and responsive behavior remain in shared tokens and classes. Existing Vrindavan rendering remains the default when no layout is supplied.
 
 Use `museum-room--schematic`, `museum-layout-workspace`, `museum-layout-list` and `museum-layout-legend` for room inspection. New spaces use the theme-derived new-space token; future spaces have dashed outlines and explicit text; walking-stick restrictions have both a label and accent outline. Selection is independently outlined. At narrow widths the detail panel stacks, the schematic can scroll horizontally, and a list alternative preserves readable access. Do not infer measured capacity from schematic cell size.
+
+
+### Museum Admin control polish
+
+Museum controls use `--size-museum-control` (the shared 44px control target),
+including primary/secondary actions, icon buttons, navigation rows and review
+summaries. Allow multiline action labels to wrap and grow; do not impose a fixed
+button height. Disabled actions use the shared disabled opacity and a disabled
+cursor across all museum screens, not just the planner.
+
+Use `museum-action-form` for museum mutation forms. Keep field labels in sentence
+case and confirmation text at the review field scale; avoid inheriting uppercase
+metadata styling into acknowledgements. Checkbox labels form a full touch row,
+while the checkbox itself remains compact. Text inputs and selects use the 1rem
+museum input token. Required controls and validation behavior remain unchanged.
+
+Within the museum shell and dialogs, keyboard focus has a neutral token-based
+outline. Statistics use tabular numerals. Scope wrapping rules to action rows and
+identity/destination text so long names cannot widen the page. On phones, move
+search and sort stack; dialogs retain safe-area padding and native focus/Escape
+behavior. Keep the approved map palette and semantic regional/lineage colors.
