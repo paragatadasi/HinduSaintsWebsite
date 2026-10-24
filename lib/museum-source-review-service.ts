@@ -14,20 +14,28 @@ export async function decideMuseumSource(actorId:string, input:MuseumReviewDecis
       if(review.updatedAt.toISOString()!==input.version)throw Error("stale");
       let outcome=input.action==="defer"?"deferred":"pending";
       if(input.action==="link") {
+        if(review.reason!=="Saint identity needs review" || review.status==="resolved")throw Error("Identity review is no longer pending");
         if(!input.saintId)throw Error("Choose a saint");
         const target=await tx.saint.findFirst({where:{id:input.saintId,status:{not:"archived"}},select:{id:true}});
         if(!target)throw Error("Invalid saint");
         const source=await tx.externalRecord.findUnique({where:{sourceType_externalId:{sourceType:"airtable",externalId:review.sourceKey}}});
         // Never reassign an existing canonical link or replace another entity type.
-        if(!source || source.entityId || source.entityType!=="airtable:Saints")throw Error("Existing link changed; use domain merge review");
-        const mirror=await tx.airtableMirrorRecord.findMany({where:{baseId:base,tableIdOrName:"Saints"},select:{recordId:true,rawFieldsJson:true}});
+        if(source && (source.entityId || source.entityType!=="airtable:Saints"))throw Error("Existing link changed; use domain merge review");
+        const mirror=await tx.airtableMirrorRecord.findMany({where:{baseId:base,tableIdOrName:"Saints"},select:{recordId:true,rawFieldsJson:true,rawPayloadJson:true,importedAt:true,lastSeenAt:true}});
         const links=await tx.externalRecord.findMany({where:{sourceType:"airtable",externalId:{startsWith:base+":Saints:"}},select:{externalId:true,entityType:true,entityId:true}});
         const saints=await tx.saint.findMany({where:{status:{not:"archived"}},select:{id:true}});
         const current=reviewMuseumSources(mirror.map(r=>({id:r.recordId,fields:r.rawFieldsJson as Record<string,unknown>})),links,new Set(saints.map(s=>s.id)));
         if(current.reviews.find(r=>r.sourceKey===review.sourceKey)?.sourceHash!==review.sourceHash)throw Error("stale source");
-        await tx.externalRecord.update({where:{id:source.id},data:{entityType:"Saint",entityId:target.id}});
+        const evidence=mirror.find(r=>r.recordId===review.recordId);
+        if(!evidence)throw Error("Source mirror is unavailable");
+        const linked=source
+          ? await tx.externalRecord.update({where:{id:source.id},data:{entityType:"Saint",entityId:target.id}})
+          : await tx.externalRecord.create({data:{sourceType:"airtable",externalId:review.sourceKey,entityType:"Saint",entityId:target.id,
+            rawPayloadJson:evidence.rawPayloadJson as Prisma.InputJsonValue,importedAt:evidence.importedAt,lastSeenAt:evidence.lastSeenAt}});
         outcome="resolved";
-        await tx.auditEvent.create({data:{userId:actorId,action:"museum.source.linked",entityType:"ExternalRecord",entityId:source.id,beforeJson:{entityType:source.entityType,entityId:null},afterJson:{entityType:"Saint",entityId:target.id,note:input.note}}});
+        await tx.auditEvent.create({data:{userId:actorId,action:"museum.source.linked",entityType:"ExternalRecord",entityId:linked.id,
+          beforeJson:source?{entityType:source.entityType,entityId:null}:Prisma.JsonNull,
+          afterJson:{entityType:"Saint",entityId:target.id,sourceKey:review.sourceKey,sourceHash:review.sourceHash,restoredFromMirror:!source,note:input.note}}});
       }
       await tx.museumSourceReview.update({where:{id:review.id},data:{status:outcome,note:input.note || null,reviewedById:actorId}});
       await tx.auditEvent.create({data:{userId:actorId,action:"museum.source.reviewed",entityType:"MuseumSourceReview",entityId:review.id,beforeJson:{status:review.status,note:review.note},afterJson:{status:outcome,note:input.note}}});
