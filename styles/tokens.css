@@ -439,3 +439,8 @@
  --width-museum-section-title:11ch;
  --width-museum-connection-popup:22rem;
 }
+
+:root {
+ --museum-layout-side:18rem; --museum-layout-title:2rem; --museum-layout-gap:var(--space-4); --museum-layout-note:.875rem; --museum-layout-target:2.75rem;
+ --font-size-museum-layout-detail:1.75rem; --font-size-museum-layout-subheading:1.125rem; --font-size-museum-layout-stat:1.5rem; --width-museum-layout-search:20rem; --height-museum-layout-cell:1.2rem; --width-museum-layout-map:40rem;
+}
