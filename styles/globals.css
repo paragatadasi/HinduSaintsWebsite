@@ -11849,3 +11849,14 @@ select:not([multiple]) {
     padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
   }
 }
+
+/* SPN gives its whole-room map the full content width beside the workspace nav. */
+.museum-layout-room .museum-layout-workspace { grid-template-columns:minmax(0,1fr); }
+.museum-layout-room .museum-layout-detail { position:static; border-left:0; border-top:var(--border-width-default) solid var(--color-border); }
+.museum-layout-room .museum-room--schematic { gap:var(--gap-museum-layout-vitrines); }
+.museum-layout-room .museum-room--schematic [aria-pressed=true] { outline-offset:var(--offset-museum-layout-selection); }
+.museum-layout-room .museum-room--schematic .museum-room__vitrine:focus-visible { outline-color:var(--color-museum-focus); outline-offset:var(--offset-museum-layout-selection); }
+.museum-nav-disclosure > summary { display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); list-style:none; cursor:pointer; }
+.museum-nav-disclosure > summary::-webkit-details-marker { display:none; }
+.museum-nav-disclosure > summary svg { width:var(--space-4); height:var(--space-4); flex-shrink:0; }
+.museum-nav-disclosure[open] > summary svg { transform:rotate(180deg); }

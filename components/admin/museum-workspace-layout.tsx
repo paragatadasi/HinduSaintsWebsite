@@ -7,12 +7,12 @@ import {PanelLeftClose, PanelLeftOpen} from "lucide-react";
 /** Keep the authenticated server navigation, while giving planners more room. */
 export function MuseumWorkspaceLayout({navigation, children}: {navigation: ReactNode; children: ReactNode}) {
  const pathname = usePathname();
- return <WorkspaceLayout key={pathname} pathname={pathname} navigation={navigation}>{children}</WorkspaceLayout>;
+ return <WorkspaceLayout pathname={pathname} navigation={navigation}>{children}</WorkspaceLayout>;
 }
 
 function WorkspaceLayout({pathname, navigation, children}: {pathname: string; navigation: ReactNode; children: ReactNode}) {
  const navigationId = useId();
- const planning = /^\/(?:museumadmin|vrindavanadmin)\/plan(?:\/|$)/.test(pathname);
+ const planning = /^\/vrindavanadmin\/plan(?:\/|$)/.test(pathname);
  const [opened, setOpened] = useState(false);
  const expanded = !planning || opened;
  const Icon = expanded ? PanelLeftClose : PanelLeftOpen;
