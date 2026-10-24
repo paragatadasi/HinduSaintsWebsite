@@ -464,3 +464,22 @@
   --height-museum-contents-portrait: 5rem;
   --width-museum-contents-panel: 20rem;
 }
+
+/* Shared editorial museum navigation. Region colors identify groups, not status. */
+:root {
+ --font-size-museum-navigation-heading:1.3rem;
+ --font-size-museum-navigation-link:1rem;
+ --font-size-museum-navigation-region:.9375rem;
+ --font-size-museum-navigation-subsection:.8125rem;
+ --line-height-museum-navigation:1.45;
+ --color-museum-navigation-rule:color-mix(in oklch,var(--color-gold) 65%,transparent);
+ --color-museum-navigation-active:color-mix(in oklch,var(--color-gold) 9%,var(--color-surface));
+ --width-museum-navigation-active:3px;
+ --width-museum-navigation-guide:2px;
+ --color-museum-navigation-spn-1:oklch(.78 .075 75);
+ --color-museum-navigation-spn-2:oklch(.78 .065 145);
+ --color-museum-navigation-spn-3:oklch(.78 .075 40);
+ --color-museum-navigation-spn-4:oklch(.78 .055 235);
+ --color-museum-navigation-spn-5:oklch(.78 .065 320);
+ --color-museum-navigation-spn-6:oklch(.78 .065 185);
+}

@@ -1,24 +1,23 @@
 "use client";
 import Link from "next/link";
 import type {Route} from "next";
-import {usePathname,useSearchParams} from "next/navigation";
-import {Landmark,ClipboardList,Layers,ArrowUpRight} from "lucide-react";
-import type {ReactNode} from "react";
+import {usePathname,useSearchParams,useRouter} from "next/navigation";
+import {ChevronDown} from "lucide-react";
+import {useId} from "react";
 import {MuseumNavigationDisclosure} from "./museum-navigation-disclosure";
 import {museumSectionNavigation,museumNavIsActive,type MuseumNavSection,type MuseumNavLink} from "@/lib/museum-navigation";
-function Group({title,eyebrow,badge,children,primary=false,count}:{title:string;eyebrow?:string;badge:ReactNode;children:ReactNode;primary?:boolean;count?:number}) {
- return <section className={`museum-admin-nav__group${primary?" museum-admin-nav__group--primary":""}`}><div className="museum-admin-nav__group-heading"><span aria-hidden="true">{badge}</span><div><strong>{title}{count!==undefined?` (${count})`:null}</strong>{eyebrow?<small>{eyebrow}</small>:null}</div></div>{children}</section>;
-}
+const museums = [{id:"spn", label:"SPN", href:"/museumadmin"}, {id:"vrindavan", label:"Vrindavan", href:"/vrindavanadmin"}] as const;
 export function MuseumNavigation({museum,sections,canViewSections,sectionsUnavailable=false}:{museum:"spn"|"vrindavan";sections:MuseumNavSection[];canViewSections:boolean;sectionsUnavailable?:boolean}) {
+ const router=useRouter(), selectorId=useId();
  const pathname=usePathname(),params=useSearchParams(),section=params.get("section");
  const groups=museumSectionNavigation(sections,museum);
  const overview=museum==="spn"?"/museumadmin":"/vrindavanadmin/sections";
  const workflows:MuseumNavLink[]=[...(museum==="spn"?[...(canViewSections?[{label:"Plan the move",href:"/museumadmin/plan"}]:[]),{label:"Placement review",href:"/museumadmin/review"},{label:"Vitrines and shelves",href:"/museumadmin/locations"},{label:"Moves and relics",href:"/museumadmin/collections"}]:[...(canViewSections?[{label:"Plan the move",href:"/vrindavanadmin/plan"}]:[]),{label:"Relics and locations",href:"/vrindavanadmin"}])];
  const links=(items:MuseumNavLink[])=><div className="museum-admin-nav__group-links">{items.map(item=><Link key={item.href} href={item.href as Route} prefetch={false} aria-current={museumNavIsActive(item.href,pathname,section)?"page":undefined}><span>{item.label}</span>{item.count!==undefined?<small aria-label={`${item.count} saints`}>{item.count}</small>:null}</Link>)}</div>;
- return <nav aria-label="Museum workspace">
-  <Group primary title="Choose Museum" badge={<Landmark/>}><div className="museum-admin-nav__group-links museum-admin-nav__museum-switch"><Link href="/museumadmin" prefetch={false} aria-current={museum==="spn"?"true":undefined}><span>SPN</span></Link><Link href={"/vrindavanadmin" as Route} prefetch={false} aria-current={museum==="vrindavan"?"true":undefined}><span>Vrindavan</span></Link></div></Group>
-  <Group primary title="Curator workspace" badge={<ClipboardList/>}>{links(workflows)}</Group>
-  {canViewSections?<Group primary title="Section proposals" badge={<Layers/>}>{links([{label:"Section overview",href:overview}])}<MuseumNavigationDisclosure museum={museum}><div className="museum-admin-nav__sections">{groups.map(group=><Group key={group.title} title={group.title} eyebrow={group.eyebrow} badge={group.badge} count={group.total}>{links(group.links)}</Group>)}{sectionsUnavailable?<p className="museum-filter-note">Section navigation is temporarily unavailable.</p>:null}</div></MuseumNavigationDisclosure></Group>:null}
-  <Group primary title="More" badge={<ArrowUpRight/>}>{links([{label:"Main admin",href:"/admin"},{label:"Public site",href:"/"}])}</Group>
+ return <nav aria-label="Museum workspace" className="museum-navigation" data-museum={museum}>
+  <section className="museum-navigation__group"><label className="museum-navigation__heading" htmlFor={selectorId}>Museum</label><div className="museum-navigation__selector"><select id={selectorId} value={museum} onChange={event => {const selected=museums.find(item=>item.id===event.target.value); if(selected) router.push(selected.href as Route);}}>{museums.map(item=><option key={item.id} value={item.id}>{item.label}</option>)}</select><ChevronDown aria-hidden="true"/></div></section>
+  <section className="museum-navigation__group"><h2 className="museum-navigation__heading">Workspace</h2>{links(workflows)}</section>
+  {canViewSections?<section className="museum-navigation__group"><h2 className="museum-navigation__heading">Section proposals</h2>{links([{label:"Section overview",href:overview}])}<MuseumNavigationDisclosure museum={museum} defaultOpen={groups.some(group=>group.links.some(link=>museumNavIsActive(link.href,pathname,section)))}><div className="museum-navigation__regions">{groups.map(group=><MuseumNavigationDisclosure key={group.title} museum={museum} scope={"region:"+group.title} className="museum-navigation__region" tone={group.badge} defaultOpen={group.links.some(link=>museumNavIsActive(link.href,pathname,section))} title={<span className="museum-navigation__region-title"><small>{group.badge}</small><span>{group.title}</span></span>}>{links(group.links)}</MuseumNavigationDisclosure>)}{sectionsUnavailable?<p className="museum-filter-note">Section navigation is temporarily unavailable.</p>:null}</div></MuseumNavigationDisclosure></section>:null}
+  <div className="museum-navigation__utilities">{links([{label:"Main admin",href:"/admin"},{label:"Public site",href:"/"}])}</div>
  </nav>;
 }

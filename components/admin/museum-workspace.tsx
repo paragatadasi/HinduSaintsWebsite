@@ -1,5 +1,3 @@
-import Link from "next/link";
-import type {Route} from "next";
 import type {ReactNode} from "react";
 import {auth,isEmailAuthConfigured,isGoogleAuthConfigured} from "@/lib/auth";
 import {requireCapability} from "@/lib/admin-access";
@@ -13,7 +11,7 @@ export async function MuseumWorkspace({name,subtitle,homeHref,loadNavigation,chi
  if(!session?.user?.email) return <AdminSignIn emailConfigured={isEmailAuthConfigured} googleConfigured={isGoogleAuthConfigured} configurationDescription="Authentication must be configured before the museum admin can sign in approved users." description="Use your approved team email to access the museum workspace." redirectTo={homeHref} workspaceLabel={name} workspaceSubtitle={subtitle}/>;
  const user=await requireCapability("access_museum");
  const navigation=await loadNavigation(hasCapability(user.roles,"view_full_saint_catalog"));
- return <main className="museum-admin-shell" data-theme="nocturne"><MuseumWorkspaceLayout navigation={<><Link className="museum-admin-nav__home" href={homeHref as Route}><strong>{name}</strong><span>{subtitle}</span></Link>{navigation}</>}>
+ return <main className="museum-admin-shell" data-theme="nocturne"><MuseumWorkspaceLayout navigation={navigation}>
   {children}
  </MuseumWorkspaceLayout></main>;
 }
