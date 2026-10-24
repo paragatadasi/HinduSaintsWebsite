@@ -1,12 +1,14 @@
 import {db} from "@/lib/db";
 import type {Prisma} from "@/lib/generated/prisma/client";
+import {readVrindavanMuseumInventory} from "./vrindavan-museum-inventory";
 import {readVrindavanSectionProposalAudit} from "./vrindavan-section-proposals";
 import {vrindavanSectionView} from "./vrindavan-section-view";
 import {readMuseumData} from "./museum-working-data";
 import {buildVrindavanWorkingView} from "./vrindavan-working-domain";
 // PRIVATE: caller requires access_museum and view_full_saint_catalog.
-export async function readBaseVrindavanWorkingData(client:Prisma.TransactionClient=db) {
- const [audit,spn,overrides,arrangements,relationships]=await Promise.all([readVrindavanSectionProposalAudit({},client),readMuseumData(client,{reconcileFamilies:false}),client.museumCuratorProposal.findMany({where:{museumId:"museum-vrindavan"}}),client.museumArrangement.findMany({where:{museumId:"museum-vrindavan"}}),client.saintRelationship.findMany({where:{status:"published",fromSaint:{status:{not:"archived"}},toSaint:{status:{not:"archived"}}},select:{id:true,fromSaintId:true,toSaintId:true,relationshipType:true,status:true,evidenceStatus:true,confidence:true}})]);
+export async function readBaseVrindavanWorkingData(client:Prisma.TransactionClient=db,inventory?:ReturnType<typeof readVrindavanMuseumInventory>) {
+ const sources={inventory:inventory??readVrindavanMuseumInventory({},client),spn:readMuseumData(client,{reconcileFamilies:false})};
+ const [audit,spn,overrides,arrangements,relationships]=await Promise.all([readVrindavanSectionProposalAudit({},client,sources),sources.spn,client.museumCuratorProposal.findMany({where:{museumId:"museum-vrindavan"}}),client.museumArrangement.findMany({where:{museumId:"museum-vrindavan"}}),client.saintRelationship.findMany({where:{status:"published",fromSaint:{status:{not:"archived"}},toSaint:{status:{not:"archived"}}},select:{id:true,fromSaintId:true,toSaintId:true,relationshipType:true,status:true,evidenceStatus:true,confidence:true}})]);
  const initial=vrindavanSectionView(audit);
  const labels=new Map(spn.sections.flatMap(s=>s.families.map(f=>[f.key,f.label] as const)));
  for(const row of initial.placements) {
@@ -21,6 +23,6 @@ export async function readBaseVrindavanWorkingData(client:Prisma.TransactionClie
 
 // Region containers never replace the existing subsection or arrangement identity.
 // V2 region-only snapshots remain preserved as source evidence but are not projected.
-export async function readVrindavanWorkingData(client:Prisma.TransactionClient=db){
- return readBaseVrindavanWorkingData(client);
+export async function readVrindavanWorkingData(client:Prisma.TransactionClient=db,inventory?:ReturnType<typeof readVrindavanMuseumInventory>){
+ return readBaseVrindavanWorkingData(client,inventory);
 }

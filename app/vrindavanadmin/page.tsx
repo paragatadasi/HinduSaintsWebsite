@@ -1,4 +1,4 @@
-import {getVrindavanWorkspaceData} from "@/lib/vrindavan-workspace-data";
+import {getVrindavanWorkspaceData,getVrindavanInventoryData} from "@/lib/vrindavan-workspace-data";
 import {inventoryTreeContexts} from "@/lib/museum-tree-options";
 import {hasCapability} from "@/lib/permissions";
 import {MuseumInventoryFilters} from "@/components/admin/museum-inventory-filters";
@@ -15,7 +15,7 @@ export default async function VrindavanInventory({searchParams}:{searchParams:Pr
  const value=(key:string)=>typeof params[key]==="string"?params[key].trim().slice(0,200):"";
  const filters={q:value("q"),display:value("display"),position:value("position")};
  let data: Awaited<ReturnType<typeof readVrindavanMuseumInventory>>;
- try { data=await readVrindavanMuseumInventory(); } catch(error) {
+ try { data=await getVrindavanInventoryData(); } catch(error) {
   if(error instanceof MuseumInventoryUnavailableError) return <div className="admin-stack"><h1>Vrindavan inventory</h1><p>This museum workspace is not available yet. A source administrator can check the museum setup.</p></div>;
   throw error;
  }
