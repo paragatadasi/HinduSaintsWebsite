@@ -14,6 +14,8 @@ export const relationshipTypeOptions: Array<{ value: RelationshipType; label: st
   { value: "partner", label: "Partner" },
   { value: "incarnation", label: "Incarnation" },
   { value: "family", label: "Family" },
+  { value: "household", label: "Household" },
+  { value: "encountered", label: "Encountered" },
   { value: "influence", label: "Influence" },
   { value: "initiator", label: "Initiator" },
   { value: "patron", label: "Patron" },

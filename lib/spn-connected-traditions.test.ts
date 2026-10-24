@@ -11,5 +11,7 @@ test("guidance and visits retain precise types without inventing guru relationsh
  const guidance=graph.families.find(f=>f.from.name.includes("Gupta")&&f.to.name.includes("Yogananda"));
  assert.ok(guidance);assert.equal(guidance.to.saintId,"cms0w7fr004ld07qidykpxgm1");assert.equal(guidance.type,"influence");
  const visits=graph.families.filter(f=>f.from.name.includes("Vaswani")&&f.to.name.includes("Ramana"));
- assert.equal(visits.length,2);assert.ok(visits.every(f=>f.type!=="guru_disciple"));
+ assert.equal(visits.length,2);assert.ok(visits.every(f=>f.type==="encountered"&&f.evidenceNote?.includes("1939")));
+ const household=graph.families.find(f=>f.from.name.includes("Namdev")&&f.to.name.includes("Janabai"));
+ assert.equal(household?.type,"household");assert.match(household?.evidenceNote??"",/no biological relationship/);
 });

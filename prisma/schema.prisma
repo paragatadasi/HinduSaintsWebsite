@@ -85,6 +85,8 @@ enum RelationshipType {
   partner
   incarnation
   family
+  household
+  encountered
   influence
   initiator
   patron
