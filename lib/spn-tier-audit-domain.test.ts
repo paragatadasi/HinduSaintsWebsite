@@ -31,6 +31,14 @@ test("source-linked canonical records outside the working view are explicit cove
  assert.ok(snapshot.records[0].issues.includes("project source link exists but no SPN working placement"));
 });
 
+test("public summary uses the same reviewed short description as the public reader",()=>{
+ const rows=[row("one",{saintId:"one"}),row("two",{saintId:"two"})];
+ const snapshot=buildSpnTierAudit(rows,rows,[identity("one",{status:"published",shortDescription:"Current public life summary",biographySummary:"Older import"}),identity("two",{shortDescription:"PRIVATE short description"})],[]);
+ assert.equal(snapshot.records[0].publicBiography.summary,"Current public life summary");
+ assert.equal(snapshot.records[0].publicBiography.summarySource,"shortDescription");
+ assert.ok(!JSON.stringify(snapshot).includes("PRIVATE"));
+});
+
 test("baseline and effective tiers remain distinct while planned location and confirmation are unchanged",()=>{
  const arrangement={status:"Implemented" as const,revision:"r",proposalRevision:"original",familyKey:"family",vitrine:"12",shelf:"C",confirmedAt:"2026-10-01T00:00:00.000Z",inventoryAcknowledged:true};
  const original=row("source",{saintId:"one",arrangement});
