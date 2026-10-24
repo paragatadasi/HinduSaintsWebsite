@@ -24,6 +24,7 @@ export default async function MuseumUpdates({searchParams}:{searchParams:Promise
     <p><Link href={"/admin/source-data/museum/relics" as Route}>Connect relics and review location changes</Link></p>
     <p><Link href={"/admin/source-data/museum/vrindavan" as Route}>Vrindavan saint matching</Link></p>
     <p><Link href={"/admin/source-data/museum/family-connections" as Route}>Reconcile preserved family-tree connections</Link></p>
+    <p><Link href={"/admin/source-data/museum/tier-review" as Route}>Review SPN display tiers</Link></p>
     <h2>Uncertain matches</h2><p>Review source identities and locations in batches. No saint is created or merged automatically. Linking a source does not approve its relic location.</p>
     {params.error?<p role="alert">{museumSourceReviewErrorMessage(params.error)}</p>:null}
     {params.saved?<p role="status">Decision saved. Check for updates again after linking to refresh the location review queue.</p>:null}
