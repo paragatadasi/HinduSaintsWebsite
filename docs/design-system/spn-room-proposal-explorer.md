@@ -30,5 +30,4 @@ proposal-level Connections view.
 The current v15 and earlier design study can be compared without applying either.
 Browser-local shortlist and view orientation are convenience preferences, not
 saved curator move plans. The hover card is a pointer/focus preview; touch users
-can select the same vitrine for the full inspector. Deployment remains paused
-pending the user's release instruction.
+can select the same vitrine for the full inspector.
