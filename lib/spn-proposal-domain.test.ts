@@ -1,6 +1,6 @@
 import {test} from "node:test";
 import assert from "node:assert/strict";
-import {projectSpnProposal,spnBaselineRevision,spnReviewRevision} from "./spn-proposal-domain";
+import {projectSpnProposal,spnBaselineRevision,spnReviewRevision,spnRegionTagsSchema} from "./spn-proposal-domain";
 import {arrangementControl} from "./museum-arrangement-domain";
 import type {MuseumSaintPlacement} from "./museum-proposals";
 const row: MuseumSaintPlacement={id:"recSource",saintId:"canonical",name:"Saint",sourceRecordId:"recSource",section:"South",tier:"Tertiary",confidence:"Medium",rationale:"Source",note:"",familyId:"",curatorialFamily:"",familySize:0,spiritualRegions:[],sampradaya:"",normalizedPlaces:[],needsResearch:false,alternatives:[]};
@@ -26,4 +26,25 @@ test("form revision changes with decision and arrangement state",()=>{
  const next=projectSpnProposal(baseline,event,undefined);
  assert.notEqual(spnReviewRevision(next),spnReviewRevision(baseline));
  assert.notEqual(spnReviewRevision(next),spnReviewRevision({...next,arrangement:{...next.arrangement!,revision:"later"}}));
+});
+
+test("cross-regional tags remain separate from geography, tradition, section and tier",()=>{
+ const source={...baseline,normalizedPlaces:["Puducherry","Pune"],spiritualRegions:["Tamil Nadu"],sampradaya:"Integral Yoga"};
+ const regionalEvent={id:"regions",afterJson:{...event.afterJson,baselineRevision:spnBaselineRevision(source),section:source.section,tier:source.tier,familyKey:"",familyLabel:"",regionTags:["The South","Maharashtra & the West"]}};
+ const next=projectSpnProposal(source,regionalEvent,undefined);
+ assert.deepEqual(next.spnRegionTags,["Maharashtra & the West","The South"]);
+ for(const key of ["normalizedPlaces","spiritualRegions","sampradaya","section","tier"] as const)assert.deepEqual(next[key],source[key]);
+ const saved={proposalRevision:next.arrangement!.proposalRevision,status:"Implemented",version:3,vitrine:"29",shelf:"E",confirmedAt:new Date("2026-10-01"),inventoryAcknowledged:true};
+ const restored=projectSpnProposal(source,regionalEvent,saved);
+ assert.equal(restored.arrangement?.vitrine,"29");assert.equal(restored.arrangement?.shelf,"E");assert.equal(restored.arrangement?.status,"Implemented");
+ assert.equal(restored.arrangement?.confirmedAt,"2026-10-01T00:00:00.000Z");
+});
+
+test("unknown regions are rejected; old decisions still apply and changed baselines hold tags",()=>{
+ assert.equal(spnRegionTagsSchema.safeParse(["Invented spiritual tradition"]).success,false);
+ assert.deepEqual(spnRegionTagsSchema.parse(["The South","The South"]),["The South"]);
+ assert.deepEqual(projectSpnProposal(baseline,event,undefined).spnRegionTags,[]);
+ const regionalEvent={id:"regions",afterJson:{...event.afterJson,regionTags:["The South"]}};
+ const held=projectSpnProposal({...baseline,section:"Changed source"},regionalEvent,undefined);
+ assert.equal(held.spnProposal?.state,"needs_review");assert.equal(held.spnRegionTags,undefined);
 });

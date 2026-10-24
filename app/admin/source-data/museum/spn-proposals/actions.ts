@@ -13,8 +13,8 @@ export async function saveSpnProposalAction(form:FormData){
  const actor=await assertMuseumMutation();
  const saintId=z.string().cuid().parse(form.get("saintId"));
  let error="";
- try{await saveSpnProposal(Object.fromEntries(form),actor.id);}
- catch(e){if(e instanceof MuseumConflict)error=e.message;else if(e instanceof z.ZodError)error="Check the section, tier, family and decision reason.";else throw e;}
+ try{await saveSpnProposal({...Object.fromEntries(form),regionTags:form.has("regionTagsPresent")?form.getAll("regionTags"):undefined},actor.id);}
+ catch(e){if(e instanceof MuseumConflict)error=e.message;else if(e instanceof z.ZodError)error="Check the section, tier, family, museum regions and decision reason.";else throw e;}
  if(error)redirect(`/admin/source-data/museum/spn-proposals?saintId=${saintId}&error=${encodeURIComponent(error)}` as Route);
  revalidatePath("/museumadmin","layout");revalidatePath("/admin/source-data/museum");
  redirect(`/admin/source-data/museum/spn-proposals?saintId=${saintId}&saved=1` as Route);

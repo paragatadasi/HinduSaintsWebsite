@@ -12,6 +12,7 @@ export function buildSpnTierAudit(baseline:MuseumSaintPlacement[],effective:Muse
   section:row.section,baselineTier:original.get(row.id)?.tier??null,effectiveTier:row.tier,
   state:row.placementState??null,linkIssue:row.linkIssue??null,confidence:row.confidence,rationale:row.rationale,note:row.note,
   familyKey:row.curatorialFamily||row.familyId||null,groupLabel:row.groupLabel??null,
+  spnRegionTags:row.spnRegionTags??[],
   reviewed:row.proposalReviewed??false,familyReconciliation:row.familyReconciliation??null,spnProposal:row.spnProposal??null,
   displayMembership:row.displayMembership??null,arrangement:row.arrangement??null,
   normalizedPlaces:row.normalizedPlaces,tradition:row.sampradaya,
