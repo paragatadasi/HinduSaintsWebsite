@@ -1,5 +1,9 @@
 # Vrindavan suggested move plan
 
+For shared grouping, space and move-order reasoning, read
+[Museum planning principles](museum-planning-principles.md). The workflow and
+dated research inputs below remain the implementation reference for this planner.
+
 ## Fixed Sikh display constraint (21 October 2026)
 
 The curator reports a permanently fixed Sikh relic in Vitrine 11. Vrindavan's

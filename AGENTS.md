@@ -70,6 +70,7 @@ Data ingestion and reconciliation:
 - Do not silently overwrite human CMS edits with later Airtable, Instagram, CSV, or script-ingested data.
 
 Data workflow learning and skill maintenance:
+- Use `museum-planner` when available for physical layouts, curatorial grouping and ordered move guides; keep evidence interpretation with `museum-data-interpretation` and identity matching with `saint-identity-reconciliation`. Read `docs/museum-planning-principles.md` for the shared planning method.
 - At the end of each data workflow, review what was learned and update the relevant skills when the evidence changes a reusable interpretation, decision procedure, or verification step. Do not change a skill merely to record that a workflow finished.
 - For museum evidence and identity matching, maintain `museum-data-interpretation` and `saint-identity-reconciliation` in the local Codex skills directory (`$CODEX_HOME/skills`, or `~/.codex/skills`). Keep repository data contracts and documentation consistent with any changed rule.
 - Keep current placements, candidate lists, unresolved cases, credentials, and private raw records in their appropriate database or dated private evidence files. Skills should explain how to find and assess that evidence, not become a second live data store. Attribute and date source-specific clarifications; do not turn them into universal rules.

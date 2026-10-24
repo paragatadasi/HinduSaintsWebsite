@@ -1,5 +1,9 @@
 # SPN museum layout foundation — 23 October 2026
 
+For curatorial grouping, space and move-order reasoning, read
+[Museum planning principles](museum-planning-principles.md). This document defines
+the SPN floorplan, numbering and protected-housing constraints.
+
 The protected `/museumadmin/plan` screen begins SPN move planning with a browsable map and list. It shows recorded contents and restrictions; it does not yet save section assignments or record moves. Vrindavan retains its existing planner.
 
 ## Source and confirmed interpretation
