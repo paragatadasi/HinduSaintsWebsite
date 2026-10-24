@@ -590,3 +590,7 @@ Use the editorial navigation across SPN and Vrindavan: serif Museum, Workspace a
 Subsection links use the shared 0.8125rem (13px at default root) token, with 44px minimum targets. Regional groups have a compact space-1 gap, integrated chevrons and persistent per-museum/per-region disclosure state. Initial direct section visits reveal the active group unless the user previously closed it. Regional numbering and names accompany every color; gold remains the active-page cue. SPN hues follow the approved prototype; Vrindavan reuses its established six-region colors. Supplement/review groups use neutral cues. Existing permissions, URLs, section ordering and counts remain authoritative.
 
 Chosen from the local navigation prototypes: long underlines and color cues. Rejected short rules and tinted group panels. Prototype variants are not imported into production. See docs/museum-navigation-editorial.md for verification and decision history.
+
+## SPN room proposal explorer
+
+See [SPN room proposal explorer](design-system/spn-room-proposal-explorer.md) for the protected v15 room view, independent review/space indicators, and preservation of current curator decisions.
