@@ -2,7 +2,7 @@ import {createHash} from "node:crypto";
 import type {MuseumSaintPlacement} from "./museum-proposals";
 import {stable} from "./museum-update-domain";
 
-export type TierAuditIdentity={id:string;slug:string;displayName:string;status:string;publicationStatus:string;biographySummary:string|null;aliases:{alias:string}[];biographies:{id:string;title:string;bodyMarkdown:string;status:string}[]};
+export type TierAuditIdentity={id:string;slug:string;displayName:string;status:string;publicationStatus:string;shortDescription?:string|null;biographySummary:string|null;aliases:{alias:string}[];biographies:{id:string;title:string;bodyMarkdown:string;status:string}[]};
 export type TierAuditSource={externalId:string;entityId:string|null};
 
 export function buildSpnTierAudit(baseline:MuseumSaintPlacement[],effective:MuseumSaintPlacement[],identities:TierAuditIdentity[],sources:TierAuditSource[]) {
@@ -12,7 +12,7 @@ export function buildSpnTierAudit(baseline:MuseumSaintPlacement[],effective:Muse
   section:row.section,baselineTier:original.get(row.id)?.tier??null,effectiveTier:row.tier,
   state:row.placementState??null,linkIssue:row.linkIssue??null,confidence:row.confidence,rationale:row.rationale,note:row.note,
   familyKey:row.curatorialFamily||row.familyId||null,groupLabel:row.groupLabel??null,
-  reviewed:row.proposalReviewed??false,familyReconciliation:row.familyReconciliation??null,
+  reviewed:row.proposalReviewed??false,familyReconciliation:row.familyReconciliation??null,spnProposal:row.spnProposal??null,
   displayMembership:row.displayMembership??null,arrangement:row.arrangement??null,
   normalizedPlaces:row.normalizedPlaces,tradition:row.sampradaya,
   sourceLocation:row.sourceVitrine??null,
@@ -25,7 +25,8 @@ export function buildSpnTierAudit(baseline:MuseumSaintPlacement[],effective:Muse
    publicProfile:published?`/saints/${saint.slug}`:null,adminProfile:`/admin/saints/${saint.slug}`,
    aliases:saint.aliases.map(alias=>alias.alias).sort(),placements,
    sourceKeys:sources.filter(source=>source.entityId===saint.id).map(source=>source.externalId).sort(),
-   publicBiography:{summary:published?saint.biographySummary:null,
+   publicBiography:{summary:published?(saint.shortDescription??saint.biographySummary):null,
+    summarySource:published?(saint.shortDescription!==null&&saint.shortDescription!==undefined?"shortDescription":"biographySummary"):null,
     biographies:published?saint.biographies.filter(b=>b.status==="published").map(b=>({id:b.id,title:b.title,bodyMarkdown:b.bodyMarkdown})).sort((a,b)=>a.id.localeCompare(b.id)):[],
     qualification:"Content for evidence review only; presence or length does not automatically qualify a tier."},
    issues:[...(!placements.length?["project source link exists but no SPN working placement"]:[]),...(placements.length>1?["multiple placement rows; retain each proposal and review conflicts"]:[]),
