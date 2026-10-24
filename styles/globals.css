@@ -11849,3 +11849,46 @@ select:not([multiple]) {
     padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
   }
 }
+
+/* SPN keeps one contents column beside the map when the workspace has room. */
+.museum-layout-room { container-type:inline-size; }
+.museum-layout-room .museum-layout-workspace { grid-template-columns:minmax(0,1fr) var(--width-museum-contents-panel); }
+.museum-layout-room .museum-layout-detail { position:static; }
+.museum-layout-room .museum-room--schematic { gap:var(--gap-museum-layout-vitrines); }
+.museum-layout-room .museum-room--schematic [aria-pressed=true] { outline-offset:var(--offset-museum-layout-selection); }
+.museum-layout-room .museum-room--schematic .museum-room__vitrine:focus-visible { outline-color:var(--color-museum-focus); outline-offset:var(--offset-museum-layout-selection); }
+.museum-nav-disclosure > summary { display:flex; align-items:center; justify-content:space-between; gap:var(--space-3); list-style:none; cursor:pointer; }
+.museum-nav-disclosure > summary::-webkit-details-marker { display:none; }
+.museum-nav-disclosure > summary svg { width:var(--space-4); height:var(--space-4); flex-shrink:0; }
+.museum-nav-disclosure[open] > summary svg { transform:rotate(180deg); }
+
+@container (max-width: 62rem) {
+  .museum-layout-room .museum-layout-workspace { grid-template-columns:minmax(0,1fr); }
+  .museum-layout-room .museum-layout-detail { border-left:0; border-top:var(--border-width-default) solid var(--color-border); }
+}
+.museum-contents { display:grid; gap:var(--space-6); }
+.museum-contents section > h3 { padding-bottom:var(--space-3); border-bottom:var(--border-width-default) solid var(--color-border); color:var(--color-muted); }
+.museum-contents ul { display:grid; grid-template-columns:minmax(0,1fr); list-style:none; padding:0; margin:0; }
+.museum-contents li { display:flex; gap:var(--space-3); align-items:start; padding-block:var(--space-4); border-bottom:var(--border-width-default) solid var(--color-border); }
+.museum-contents li > div { min-width:0; }
+.museum-contents h4 { margin:0; font-family:var(--font-serif); font-size:var(--font-size-museum-layout-subheading); font-weight:normal; line-height:var(--line-height-museum-control); overflow-wrap:anywhere; }
+.museum-contents p { margin-top:var(--space-2); font-size:var(--font-size-review-hint); }
+.museum-contents-portrait { width:var(--width-museum-contents-portrait); height:var(--height-museum-contents-portrait); flex-shrink:0; object-fit:cover; object-position:top; border-radius:var(--radius-sm); }
+.museum-contents-portrait--empty { background:var(--color-surface); }
+.museum-questionnaire { background:var(--color-surface); border:var(--border-width-default) solid var(--color-border); padding:var(--space-5); }
+.museum-questionnaire__title { display:block; font-family:var(--font-serif); font-size:var(--font-size-museum-layout-detail); color:var(--color-text); }
+.museum-questionnaire summary > span { display:grid; gap:var(--space-2); }
+.museum-questionnaire summary { min-height:var(--size-control); }
+.museum-questionnaire__body { display:grid; gap:var(--space-4); padding-top:var(--space-4); min-width:0; }
+.museum-questionnaire__body p { margin:0; color:var(--color-muted); }
+.museum-questionnaire__question { border-top:var(--border-width-default) solid var(--color-border); padding-top:var(--space-4); }
+.museum-questionnaire__question h3 { font-family:var(--font-serif); font-size:var(--font-size-museum-layout-subheading); margin:0; }
+.museum-questionnaire label { display:grid; gap:var(--space-2); }
+.museum-questionnaire input:not([type=radio]),.museum-questionnaire textarea,.museum-questionnaire select { width:100%; min-width:0; font-size:var(--font-size-saint-profile-overview); color:var(--color-text); background:var(--color-bg); padding:var(--space-3); border:var(--border-width-default) solid var(--color-border); border-radius:var(--radius-control); }
+.museum-questionnaire__form fieldset { display:grid; gap:var(--space-3); border:0; padding:0; margin:0; min-width:0; }
+.museum-questionnaire__form legend { margin-bottom:var(--space-3); font-weight:600; }
+.museum-questionnaire label.museum-questionnaire__choice { display:flex; gap:var(--space-3); align-items:center; min-height:var(--size-control); cursor:pointer; }
+.museum-questionnaire__choice input { flex-shrink:0; }
+.museum-questionnaire__effect { border-left:var(--border-width-default) solid var(--color-accent); padding-left:var(--space-3); }
+.museum-questionnaire__history { display:grid; gap:var(--space-4); }
+.museum-questionnaire dd { overflow-wrap:anywhere; }

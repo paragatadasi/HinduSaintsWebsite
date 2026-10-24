@@ -453,3 +453,14 @@
   --line-height-museum-control: 1.45;
   --color-museum-focus: var(--color-text);
 }
+
+:root {
+ --gap-museum-layout-vitrines: var(--space-2);
+ --offset-museum-layout-selection: var(--border-width-default);
+}
+
+:root {
+  --width-museum-contents-portrait: 4rem;
+  --height-museum-contents-portrait: 5rem;
+  --width-museum-contents-panel: 20rem;
+}

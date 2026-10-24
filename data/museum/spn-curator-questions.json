@@ -1,0 +1,222 @@
+{
+  "cases": [
+    {
+      "relicDescription": "piece of his bedsheet, cotton from bed , candle holder, cloth from his samadhi",
+      "questionType": "identity",
+      "sourceName": "Sri Sri 108 Mauni Baba of Basak Para, Navadwip",
+      "sourceFields": {
+        "Vitrine #": 21,
+        "Name": "Sri Sri 108 Mauni Baba of Basak Para, Navadwip",
+        "Normalized places": "Navadwip, West Bengal, India",
+        "Shelf": "A",
+        "Place": [
+          "Navadwip"
+        ],
+        "Relics Description (move to other table)": "piece of his bedsheet, cotton from bed , candle holder, cloth from his samadhi"
+      },
+      "sourceRecordId": "recqIwxHUPhbdDOGa",
+      "sourceLocationClue": {
+        "vitrine": "21",
+        "shelf": "A",
+        "status": "source reported; current physical location not confirmed"
+      },
+      "candidateSlugs": [
+        "sri-mauni-baba",
+        "sri-mauni-baba-of-vrindavan-uttar-pradesh-the-silent-saint",
+        "sri-gopal-das-ji-maharaj-mauni-baba",
+        "sri-radha-govind-dasji-mauni-baba"
+      ],
+      "evidenceVersion": "ffbd2ae709c00a3bb41daefbdcccd8eafb8805052feeccd62eb1a001df9705d3",
+      "title": "Mauni Baba · Navadwip",
+      "caseId": "spn:curator:recqIwxHUPhbdDOGa",
+      "context": "A fuller name, teacher, ashram or recognisable portrait would help distinguish him from other saints called Mauni Baba.",
+      "question": "Who is the Mauni Baba named in the Basak Para, Navadwip entry?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+    },
+    {
+      "relicDescription": "mint/white shawl (or towel)",
+      "questionType": "identity",
+      "sourceName": "Sri Krishna Dasji Maharaj of Govardhana",
+      "sourceFields": {
+        "Vitrine #": 11,
+        "Name": "Sri Krishna Dasji Maharaj of Govardhana",
+        "Normalized places": "Vrindavan, Uttar Pradesh, India",
+        "Shelf": "E",
+        "Place": [
+          "Vrindavan, India"
+        ],
+        "Relics Description (move to other table)": "mint/white shawl (or towel)",
+        "Samadhi (YYYY-MM-DD)": "still alive"
+      },
+      "sourceRecordId": "rechNsZrAAHvPvA8L",
+      "sourceLocationClue": {
+        "vitrine": "11",
+        "shelf": "E",
+        "status": "source reported; current physical location not confirmed"
+      },
+      "candidateSlugs": [
+        "sri-sri-krishna-dasji-maharaj"
+      ],
+      "evidenceVersion": "bb0287ba5a0e30d262c6d26e8d6968ceb55fbb40302a03ec8fad5d84649ca725",
+      "title": "Krishna Dasji · Govardhan",
+      "caseId": "spn:curator:rechNsZrAAHvPvA8L",
+      "context": "The source describes him as living when recorded. The existing candidate names Radha Kund; a portrait, teacher or specific ashram would help establish the match.",
+      "question": "Which Krishna Dasji does this Govardhan entry represent?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+    },
+    {
+      "relicDescription": "Japa mala",
+      "questionType": "biography_conflict",
+      "sourceName": "Sant Gyaneshwar Singh, Amritsar",
+      "sourceFields": {
+        "Bio/Info": "Baba Sri Chand Ji (1494–1643) was a revered ascetic mystic and the eldest son of Guru Nanak Dev Ji, the first Sikh Guru",
+        "Vitrine #": 64,
+        "Name": "Sant Gyaneshwar Singh, Amritsar",
+        "Shelf": "B",
+        "Place": [
+          "Amritsar",
+          "Punjab"
+        ],
+        "Relics Description (move to other table)": "Japa mala"
+      },
+      "sourceRecordId": "recpzyusiDTbmz4nO",
+      "sourceLocationClue": {
+        "vitrine": "64",
+        "shelf": "B",
+        "status": "source reported; current physical location not confirmed"
+      },
+      "candidateSlugs": [
+        "sant-gyaneshwar-singh-amritsar"
+      ],
+      "evidenceVersion": "f5e7dbe146a61f980c086628e3e2853088e133fa65f82ddee3950fce2023544c",
+      "title": "Gyaneshwar Singh · Amritsar",
+      "caseId": "spn:curator:recpzyusiDTbmz4nO",
+      "context": "The inventory name says Gyaneshwar Singh. Its biography describes Baba Sri Chand, Guru Nanak’s son.",
+      "question": "Does this japa mala entry belong to Sant Gyaneshwar Singh or Baba Sri Chand?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+    },
+    {
+      "relicDescription": "metal tool",
+      "questionType": "identity_conflict",
+      "sourceName": "Sri Baba Santokh Singh of Dera Gurudwara Sant Baba Santokh Singh ji Jyoti Swaroop Sahib ji",
+      "sourceFields": {
+        "Name": "Sri Baba Santokh Singh of Dera Gurudwara Sant Baba Santokh Singh ji Jyoti Swaroop Sahib ji",
+        "Birth (YYYY-MM-DD)": "1787",
+        "Relics Description (move to other table)": "metal tool",
+        "Samadhi (YYYY-MM-DD)": "1843"
+      },
+      "sourceRecordId": "recwwMWvkqz29fGgS",
+      "sourceLocationClue": {
+        "vitrine": "",
+        "shelf": "",
+        "status": "source reported; current physical location not confirmed"
+      },
+      "candidateSlugs": [
+        "sri-baba-santokh-singh"
+      ],
+      "evidenceVersion": "11ff6e2b3e02372a75dfa0e029fe4e087c44ea24c1b702c94bdcc2642bab40c9",
+      "title": "Santokh Singh · Jyoti Swaroop",
+      "caseId": "spn:curator:recwwMWvkqz29fGgS",
+      "context": "The dera name points to Jyoti Swaroop Wale; the dates 1787–1843 point to the Sikh poet. A portrait or collection label would help resolve the conflict.",
+      "question": "Which Santokh Singh does this metal-tool entry represent?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+    },
+    {
+      "relicDescription": null,
+      "questionType": "source_entry_clarification",
+      "sourceName": null,
+      "sourceFields": {
+        "Vitrine #": 15,
+        "Shelf": "A"
+      },
+      "sourceRecordId": "rec4xOqRUEzWnxTdw",
+      "sourceLocationClue": {
+        "vitrine": "15",
+        "shelf": "A",
+        "status": "source clue only; no identified object or current physical location"
+      },
+      "candidateSlugs": [
+        ""
+      ],
+      "evidenceVersion": "f788165ccd605f0be4bcacfc123823b0c41a1657f4cda31b8ecca43ad65e2549",
+      "title": "Blank inventory entry · 15/A",
+      "caseId": "spn:curator:rec4xOqRUEzWnxTdw",
+      "context": "Only a vitrine and shelf were recorded. Check the collection record before identifying an object.",
+      "question": "Does this blank inventory entry correspond to an item, or is it an unused row?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+    },
+    {
+      "relicDescription": null,
+      "questionType": "source_entry_clarification",
+      "sourceName": null,
+      "sourceFields": {
+        "Vitrine #": 20,
+        "Shelf": "D"
+      },
+      "sourceRecordId": "recPWVPc3i5A0KH7h",
+      "sourceLocationClue": {
+        "vitrine": "20",
+        "shelf": "D",
+        "status": "source clue only; no identified object or current physical location"
+      },
+      "candidateSlugs": [
+        ""
+      ],
+      "evidenceVersion": "ad1cf4328639bc36b1a4855e7e92dd3387cb9fe3fb55c6f3635f45b681d0d787",
+      "title": "Blank inventory entry · 20/D",
+      "caseId": "spn:curator:recPWVPc3i5A0KH7h",
+      "context": "Only a vitrine and shelf were recorded. Check the collection record before identifying an object.",
+      "question": "Does this blank inventory entry correspond to an item, or is it an unused row?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+    },
+    {
+      "relicDescription": null,
+      "questionType": "source_entry_clarification",
+      "sourceName": null,
+      "sourceFields": {
+        "Vitrine #": 10,
+        "Shelf": "C"
+      },
+      "sourceRecordId": "recTIJVFjrG7OSvlI",
+      "sourceLocationClue": {
+        "vitrine": "10",
+        "shelf": "C",
+        "status": "source clue only; no identified object or current physical location"
+      },
+      "candidateSlugs": [
+        ""
+      ],
+      "evidenceVersion": "d2199b2f84be8d96b05ddc1d4783f313ac17082278e7b99dc5e67dcf70a6c537",
+      "title": "Blank inventory entry · 10/C",
+      "caseId": "spn:curator:recTIJVFjrG7OSvlI",
+      "context": "Only a vitrine and shelf were recorded. Check the collection record before identifying an object.",
+      "question": "Does this blank inventory entry correspond to an item, or is it an unused row?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+    },
+    {
+      "relicDescription": null,
+      "questionType": "source_entry_clarification",
+      "sourceName": null,
+      "sourceFields": {
+        "Vitrine #": 20,
+        "Shelf": "A"
+      },
+      "sourceRecordId": "recq8jg20kMAD2Erc",
+      "sourceLocationClue": {
+        "vitrine": "20",
+        "shelf": "A",
+        "status": "source clue only; no identified object or current physical location"
+      },
+      "candidateSlugs": [
+        ""
+      ],
+      "evidenceVersion": "b65b953ca10603f323d7dbd051c1d1ac7ea7d6d6144a149ac611dbac77fe32a9",
+      "title": "Blank inventory entry · 20/A",
+      "caseId": "spn:curator:recq8jg20kMAD2Erc",
+      "context": "Only a vitrine and shelf were recorded. Check the collection record before identifying an object.",
+      "question": "Does this blank inventory entry correspond to an item, or is it an unused row?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+    }
+  ],
+  "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+}

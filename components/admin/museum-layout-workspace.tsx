@@ -4,8 +4,9 @@ import Link from "next/link";
 import {MuseumRoomPlan} from "./museum-room-plan";
 import {destinationEligibility,type MuseumRoomLayout} from "@/lib/museum-room-layout";
 import type {LocationBrowserRow} from "@/lib/museum-location-browser";
+import {MuseumPortraitContents,type MuseumPortraits} from "./museum-portrait-contents";
 
-export function MuseumLayoutWorkspace({layout,rows,collisions}:{layout:MuseumRoomLayout;rows:LocationBrowserRow[];collisions:string[]}){
+export function MuseumLayoutWorkspace({layout,rows,collisions,portraits={}}:{layout:MuseumRoomLayout;rows:LocationBrowserRow[];collisions:string[];portraits?:MuseumPortraits}){
  const[selected,setSelected]=useState<string|null>(null),[query,setQuery]=useState(''),[view,setView]=useState<'map'|'list'>('map');
  const active=layout.vitrines.find(v=>v.number===selected),q=query.trim().toLowerCase();
  const results=layout.vitrines.filter(v=>`${v.number} ${v.position} ${v.availability} ${v.restriction==='walking_sticks'?'sticks':''}`.toLowerCase().includes(q));
@@ -25,8 +26,9 @@ export function MuseumLayoutWorkspace({layout,rows,collisions}:{layout:MuseumRoo
       {active.availability==="future"?<p><strong>Unavailable for the current reorganization.</strong> Kept on the map for later planning.</p>:<p>{summary?.reason}</p>}
       {active.provisional?<p className="muted">Provisional number assigned to the sketch’s “{active.sourceLabel}” space. Confirm the label before creating inventory locations.</p>:null}
       {collisions.includes(active.number)?<p role="alert">Number collision: the records below may belong to a different location using this number.</p>:null}
-      <h3>Recorded contents</h3><p>{current.length} inventory items · {source.length} source-only saint locations</p>
-      {!contents.length?<p>No recorded contents found for this number. Check the vitrine in person.</p>:<ul className="admin-stack">{contents.map(row=><li key={row.key}><strong>{row.label}</strong><br/><span>{row.shelf?`Shelf ${row.shelf}`:"Shelf not recorded"} · {row.sourceOnly?"Source location, unverified":"Inventory location"}</span>{row.sections.length?<p className="muted">{row.sections.join(" · ")}</p>:null}</li>)}</ul>}
+      <h3>Recorded contents</h3><p>{current.length} inventory items · {source.length} source-recorded saint locations</p>
+      {source.length?<details className="museum-layout-notes"><summary>About these locations</summary><p>Source-recorded locations come from the supplied museum records. They are not yet connected to physical inventory items in this website.</p></details>:null}
+      {!contents.length?<p>No recorded contents found for this number. Check the vitrine in person.</p>:<MuseumPortraitContents rows={contents} portraits={portraits}/>}
       <Link className="museum-admin-button museum-admin-button--secondary" href={{pathname:"/museumadmin/locations",query:{vitrine:active.number}}} prefetch={false}>Open vitrine records</Link>
      </>:<><p className="eyebrow">Explore the layout</p><h2>Select a vitrine</h2><p>See its restrictions and recorded contents here.</p><p>The entrance is at the bottom right; Babaji cave is beyond the top of the upper room.</p></>}</aside></div>
  <details className="museum-layout-notes"><summary>About new vitrines and provisional numbers</summary><p>69 retains its supplied number. New spaces use provisional labels 70–82; future spaces use 83–85. New vitrines are generally empty, but their contents must be checked. 30 and 31 are for walking sticks only; 85 is a future walking-stick space.</p><ul>{layout.vitrines.filter(v=>v.provisional).map(v=><li key={v.id}>{v.number}* — {v.position}</li>)}</ul></details>{outside.length?<p>Recorded vitrine numbers outside this sketch: {outside.join(", ")}. These records remain available in Vitrine records.</p>:null}</div>
