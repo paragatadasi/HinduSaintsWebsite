@@ -2,7 +2,7 @@
 
 - Status: ready
 - Branch: `codex/spn-connections-map`
-- Commit: `5d80196c6e4226e4d061dc0d6301bea3dd7c76e1`
+- Commit: `6220da4`
 - Owner/agent: `Citra`
 - Bundle priority: immediate release candidate
 
@@ -34,3 +34,11 @@
 - Pushed to `main`: no
 - Merged to `deploy`: pending
 - Production workflow: pending
+
+## Accepted relationship label follow-up
+
+Nadi confirmed the live, user-approved Influence relationship from Mahendranath
+Gupta to Yogananda. The map now uses Influence and preserves the direction and
+personal-guidance context (Autobiography chapter 9). Other contextual labels are
+unchanged. Data/copy-only follow-up: focused research tests pass (2/2) and diff
+check passes; the full feature release build passed before this label update.
