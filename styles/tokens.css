@@ -64,7 +64,13 @@
   --line-height-saint-profile-title: 1.08;
   --line-height-saint-profile-overview: 1.75;
   --letter-spacing-saint-profile-title: 0.065em;
-  --width-saint-profile-overview: 58ch;
+  --width-saint-profile-overview: var(--width-prose);
+  --font-weight-saint-profile-action: 400;
+  --font-size-saint-profile-source-title: 1.125rem;
+  --font-weight-saint-profile-source-title: 400;
+  --line-height-saint-profile-source-title: 1.4;
+  --size-saint-profile-source-icon: 1.5rem;
+  --size-saint-profile-source-external: 1rem;
   --aspect-ratio-saint-profile-gallery: 4 / 5;
   --letter-spacing-eyebrow: 0.12em;
   --font-size-definition-tooltip: 0.875rem;

@@ -116,7 +116,7 @@ function SourceList({ sources }: { sources: PublicSourceSummary[] }) {
 
 function SourceItem({ source }: { source: PublicSourceSummary }) {
   const title = getSourceDisplayTitle(source);
-  const content = <><BookOpen className="source-list__book" size={30} strokeWidth={1.6} aria-hidden="true" /><div className="source-list__content"><h3>{title}{source.url ? <ExternalLink className="source-list__external" size={24} strokeWidth={1.8} aria-hidden="true" /> : null}</h3>{source.note ? <p>{source.note}</p> : null}<SourceMeta source={source} /></div></>;
+  const content = <><BookOpen className="source-list__book" size={30} strokeWidth={1.6} aria-hidden="true" /><div className="source-list__content"><h3>{title}</h3>{source.note ? <p>{source.note}</p> : null}<SourceMeta source={source} /></div>{source.url ? <ExternalLink className="source-list__external" size={24} strokeWidth={1.8} aria-hidden="true" /> : null}</>;
   return <li id={source.id ? `source-${source.id}` : undefined}>{source.url ? <a className="source-list__link" href={source.url} rel="noreferrer" target="_blank" aria-label={`${title} (opens in a new tab)`}>{content}</a> : <div className="source-list__link">{content}</div>}</li>;
 }
 

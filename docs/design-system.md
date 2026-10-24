@@ -88,6 +88,14 @@ wrapping facts group; do not add a separate guru fact or competing context panel
 Preserve the hero bottom divider, existing source typography and source links,
 but omit internal source-list rules on saint profiles.
 
+The overview uses the original shared prose width rather than the pilot's
+narrower character cap. Profile action labels use regular weight, scoped to the
+saint header. Source entries keep their gold sans-serif section heading and use
+regular-weight serif titles, compact book icons, and a quieter trailing external
+link icon. Author, publisher, year, notes and link behavior remain intact. Use the
+saint-profile action/source tokens; do not change global button or source styles
+to tune this page.
+
 Short overviews may remain expandable until full biographies are available.
 Use the editorial variant of SaintProfileSummary on public profiles, preserving
 authored paragraph breaks when expanded. Private museum summaries retain their
