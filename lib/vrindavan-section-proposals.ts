@@ -8,11 +8,18 @@ import {museumSectionForLocality} from "./museum-locality-proposals";
 
 // Private, read-only projection. Caller enforces access_museum and full saint catalogue.
 // Spiritual regions and website saint IDs are shared; museum operational assignments are not.
-export async function readVrindavanSectionProposalAudit(options:{snapshotHash?:string}={},client:Prisma.TransactionClient=db) {
- const inventory=await readVrindavanMuseumInventory(options,client);
- const [spn,saints,catalogue]=await Promise.all([
-  readMuseumData(client,{reconcileFamilies:false}),
-  client.saint.findMany({where:{id:{in:inventory.saints.map(s=>s.id)},status:{not:"archived"}},select:{id:true,places:{include:{place:true}}}}),
+export type VrindavanProposalSources = {
+ inventory?: Promise<Awaited<ReturnType<typeof readVrindavanMuseumInventory>>>;
+ spn?: Promise<Awaited<ReturnType<typeof readMuseumData>>>;
+};
+
+// Supplied sources belong to this call's client/snapshot; never retain them across requests or writes.
+export async function readVrindavanSectionProposalAudit(options:{snapshotHash?:string}={},client:Prisma.TransactionClient=db,sources:VrindavanProposalSources={}) {
+ const inventoryPromise=sources.inventory??readVrindavanMuseumInventory(options,client);
+ const spnPromise=sources.spn??readMuseumData(client,{reconcileFamilies:false});
+ const saintsPromise=inventoryPromise.then(inventory=>client.saint.findMany({where:{id:{in:inventory.saints.map(s=>s.id)},status:{not:"archived"}},select:{id:true,places:{include:{place:true}}}}));
+ const [inventory,spn,saints,catalogue]=await Promise.all([
+  inventoryPromise,spnPromise,saintsPromise,
   client.place.findMany({select:{id:true,name:true,alternateNames:true,region:true,country:true,placeKind:true}})
  ]);
  const rows=inventory.saints.map(saint=>{
