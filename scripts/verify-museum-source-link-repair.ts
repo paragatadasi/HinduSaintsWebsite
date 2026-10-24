@@ -5,6 +5,8 @@ if(!url||!["localhost","127.0.0.1"].includes(new URL(url).hostname)||new URL(url
 process.env.DATABASE_URL=url;
 const {db}=await import("../lib/db");
 const {decideMuseumSource}=await import("../lib/museum-source-review-service");
+const {MuseumSourceReviewError}=await import("../lib/museum-source-review-domain");
+const failsWith=(code:string)=>(error:unknown)=>error instanceof MuseumSourceReviewError && error.code===code;
 const {reviewMuseumSources}=await import("../lib/museum-update-domain");
 const {SPN_WEBSITE_AIRTABLE_BASE_ID:base}=await import("../lib/museum-vitrine-source");
 
@@ -26,7 +28,7 @@ try {
     return {key,raw,review,input:{id:review.id,version:review.updatedAt.toISOString(),action:"link" as const,saintId:target.id,note:"Confirmed source identity"}};
   }
   const missing=await fixture("recMissing");
-  await assert.rejects(decideMuseumSource("test-actor",{...missing.input,version:new Date(0).toISOString()}));
+  await assert.rejects(decideMuseumSource("test-actor",{...missing.input,version:new Date(0).toISOString()}),failsWith("stale_review"));
   assert.equal(await db.externalRecord.count({where:{externalId:missing.key}}),0);
   await decideMuseumSource("test-actor",missing.input);
   const restored=await db.externalRecord.findUniqueOrThrow({where:{sourceType_externalId:{sourceType:"airtable",externalId:missing.key}}});
@@ -46,7 +48,7 @@ try {
 
   const stale=await fixture("recStaleMirror");
   await db.airtableMirrorRecord.update({where:{baseId_tableIdOrName_recordId:{baseId:base,tableIdOrName:"Saints",recordId:"recStaleMirror"}},data:{rawFieldsJson:{...fields,Name:"Changed since preview"}}});
-  await assert.rejects(decideMuseumSource("test-actor",stale.input));
+  await assert.rejects(decideMuseumSource("test-actor",stale.input),failsWith("stale_source"));
   assert.equal(await db.externalRecord.count({where:{externalId:stale.key}}),0);
   assert.equal((await db.museumSourceReview.findUniqueOrThrow({where:{id:stale.review.id}})).status,"pending");
 
@@ -56,22 +58,22 @@ try {
     ["recWrongType",{entityType:"airtable:Relics"}],
   ] as const) {
     const held=await fixture(id,source);
-    await assert.rejects(decideMuseumSource("test-actor",held.input));
+    await assert.rejects(decideMuseumSource("test-actor",held.input),failsWith("existing_link"));
     const preserved=await db.externalRecord.findUniqueOrThrow({where:{sourceType_externalId:{sourceType:"airtable",externalId:held.key}}});
     assert.equal(preserved.entityType,source.entityType);
     assert.equal(preserved.entityId,"entityId" in source?source.entityId:null);
   }
   const occupied=await fixture("recOccupied");
   await db.externalRecord.create({data:{sourceType:"airtable",externalId:occupied.key,entityType:"Saint",entityId:target.id,rawPayloadJson:{}}});
-  await assert.rejects(decideMuseumSource("test-actor",occupied.input));
+  await assert.rejects(decideMuseumSource("test-actor",occupied.input),failsWith("existing_link"));
   const invalidTarget=await fixture("recInvalidTarget");
-  await assert.rejects(decideMuseumSource("test-actor",{...invalidTarget.input,saintId:archived.id}));
+  await assert.rejects(decideMuseumSource("test-actor",{...invalidTarget.input,saintId:archived.id}),failsWith("invalid_saint"));
   const absentMirror=await fixture("recAbsentMirror");
   await db.airtableMirrorRecord.delete({where:{baseId_tableIdOrName_recordId:{baseId:base,tableIdOrName:"Saints",recordId:"recAbsentMirror"}}});
-  await assert.rejects(decideMuseumSource("test-actor",absentMirror.input));
+  await assert.rejects(decideMuseumSource("test-actor",absentMirror.input),failsWith("missing_source"));
   const wrongScope=await fixture("recWrongScope");
   const changed=await db.museumSourceReview.update({where:{id:wrongScope.review.id},data:{sourceKey:"appOther:Saints:recWrongScope"}});
-  await assert.rejects(decideMuseumSource("test-actor",{...wrongScope.input,version:changed.updatedAt.toISOString()}));
+  await assert.rejects(decideMuseumSource("test-actor",{...wrongScope.input,version:changed.updatedAt.toISOString()}),failsWith("invalid_scope"));
   assert.equal(await db.saint.count(),2);
   assert.equal((await db.saint.findUniqueOrThrow({where:{id:target.id}})).displayName,"Reviewed survivor");
   assert.equal(await db.museumArrangement.count(),0);

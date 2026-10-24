@@ -2,7 +2,7 @@ import { db } from "./db";
 import { Prisma } from "./generated/prisma/client";
 import { reviewMuseumSources } from "./museum-update-domain";
 import { SPN_WEBSITE_AIRTABLE_BASE_ID as base } from "./museum-vitrine-source";
-import { museumSourceDecisionSchema, type MuseumReviewDecision } from "./museum-source-review-domain";
+import { MuseumSourceReviewError, museumSourceDecisionSchema, type MuseumReviewDecision } from "./museum-source-review-domain";
 export type { MuseumReviewDecision } from "./museum-source-review-domain";
 // Callers must enforce Source Data and reconciliation capabilities.
 export async function decideMuseumSource(actorId:string, input:MuseumReviewDecision) {
@@ -10,24 +10,24 @@ export async function decideMuseumSource(actorId:string, input:MuseumReviewDecis
     await db.$transaction(async tx=>{
       await tx.$queryRaw`SELECT id FROM "MuseumSourceReview" WHERE id=${input.id} FOR UPDATE`;
       const review=await tx.museumSourceReview.findUniqueOrThrow({where:{id:input.id}});
-      if(review.sourceKey!==`${base}:Saints:${review.recordId}`)throw Error("Unexpected source scope");
-      if(review.updatedAt.toISOString()!==input.version)throw Error("stale");
+      if(review.sourceKey!==`${base}:Saints:${review.recordId}`)throw new MuseumSourceReviewError("invalid_scope");
+      if(review.updatedAt.toISOString()!==input.version)throw new MuseumSourceReviewError("stale_review");
       let outcome=input.action==="defer"?"deferred":"pending";
       if(input.action==="link") {
-        if(review.reason!=="Saint identity needs review" || review.status==="resolved")throw Error("Identity review is no longer pending");
-        if(!input.saintId)throw Error("Choose a saint");
+        if(review.reason!=="Saint identity needs review" || review.status==="resolved")throw new MuseumSourceReviewError("review_closed");
+        if(!input.saintId)throw new MuseumSourceReviewError("choose_saint");
         const target=await tx.saint.findFirst({where:{id:input.saintId,status:{not:"archived"}},select:{id:true}});
-        if(!target)throw Error("Invalid saint");
+        if(!target)throw new MuseumSourceReviewError("invalid_saint");
         const source=await tx.externalRecord.findUnique({where:{sourceType_externalId:{sourceType:"airtable",externalId:review.sourceKey}}});
         // Never reassign an existing canonical link or replace another entity type.
-        if(source && (source.entityId || source.entityType!=="airtable:Saints"))throw Error("Existing link changed; use domain merge review");
+        if(source && (source.entityId || source.entityType!=="airtable:Saints"))throw new MuseumSourceReviewError("existing_link");
         const mirror=await tx.airtableMirrorRecord.findMany({where:{baseId:base,tableIdOrName:"Saints"},select:{recordId:true,rawFieldsJson:true,rawPayloadJson:true,importedAt:true,lastSeenAt:true}});
         const links=await tx.externalRecord.findMany({where:{sourceType:"airtable",externalId:{startsWith:base+":Saints:"}},select:{externalId:true,entityType:true,entityId:true}});
         const saints=await tx.saint.findMany({where:{status:{not:"archived"}},select:{id:true}});
-        const current=reviewMuseumSources(mirror.map(r=>({id:r.recordId,fields:r.rawFieldsJson as Record<string,unknown>})),links,new Set(saints.map(s=>s.id)));
-        if(current.reviews.find(r=>r.sourceKey===review.sourceKey)?.sourceHash!==review.sourceHash)throw Error("stale source");
         const evidence=mirror.find(r=>r.recordId===review.recordId);
-        if(!evidence)throw Error("Source mirror is unavailable");
+        if(!evidence)throw new MuseumSourceReviewError("missing_source");
+        const current=reviewMuseumSources(mirror.map(r=>({id:r.recordId,fields:r.rawFieldsJson as Record<string,unknown>})),links,new Set(saints.map(s=>s.id)));
+        if(current.reviews.find(r=>r.sourceKey===review.sourceKey)?.sourceHash!==review.sourceHash)throw new MuseumSourceReviewError("stale_source");
         const linked=source
           ? await tx.externalRecord.update({where:{id:source.id},data:{entityType:"Saint",entityId:target.id}})
           : await tx.externalRecord.create({data:{sourceType:"airtable",externalId:review.sourceKey,entityType:"Saint",entityId:target.id,
