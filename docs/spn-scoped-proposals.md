@@ -10,6 +10,34 @@ Vrindavan's reader requests the unprojected SPN baseline and does not inherit th
 
 ## Current authorized applications
 
+### Museum region tags
+
+The same protected form accepts optional Museum regions, using the approved
+regional navigation names. They are private curatorial display tags, independent
+of section, historical tradition and website geography. Multiple tags describe
+a regional connection; an empty selection means use the section's normal region.
+The scoped audit payload stores `regionTags`; working placements and protected
+tier exports expose them as `spnRegionTags`. Old decisions without this field
+remain valid. Older forms that omit the region control preserve saved tags.
+Source/baseline conflicts still hold the whole scoped decision for review.
+
+For the approved South–West connection, tag Mirra Alfassa, Dilip Kumar Roy and
+Indira Devi with `The South` and `Maharashtra & the West`, retaining their shared
+Integral Yoga display family, existing tiers, traditions and localities. The
+research proposal puts them together in provisional case 72, subject to fit and
+number validation; region-tag acceptance does not save or confirm that location.
+Neem Karoli Baba's separately approved Northern section decision preserves his
+current tier, no-family state, biographical places and physical arrangements.
+
+UI consumers should prefer nonempty `spnRegionTags` when showing an SPN record's
+curatorial regions, falling back to its section mapping. Do not interpret these
+tags as new traditions, historical guru claims, public place links or physical
+destinations. Other museums do not inherit the scoped tags.
+
+Workflow review: the museum interpretation skill already separates geography,
+display grouping and physical placement. This contract is documented here;
+no new general skill instruction is needed.
+
 Paragata's 24 October instruction, recorded in Saarthi's chat, authorizes Kaleshwar's SPN addition to the existing Sai family (FAM-007), governed by Maharashtra Guru Lineages. His devotional relationship to Shirdi Sai Baba has already been reviewed separately. Keep Penukonda/Andhra website geography and both museums' physical data unchanged. Apply through the production admin only after the new route is deployed, inspect the current proposal, preserve unrelated reviewed fields, and verify the resulting source placement ID and arrangement.
 
 Separate approved tier decisions—Savata Mali Primary; Harisundari and Madhavadas Secondary—can use the same workflow after fresh current-record checks. The broader tier evidence review remains a distinct batch; this release does not apply it automatically.

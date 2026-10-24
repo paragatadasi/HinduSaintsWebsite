@@ -2,16 +2,22 @@ import {createHash} from "node:crypto";
 import {z} from "zod";
 import type {MuseumSaintPlacement} from "./museum-proposals";
 import {arrangementControl,type SavedArrangement} from "./museum-arrangement-domain";
+import {SPN_REGION_GROUPS} from "./spn-region-navigation";
 
 const digest=(value:unknown)=>createHash("sha256").update(JSON.stringify(value)).digest("hex");
+export const spnRegionTagsSchema=z.array(z.string().refine(
+ name=>SPN_REGION_GROUPS.some(group=>group.title===name),"Choose an available SPN region."
+)).max(SPN_REGION_GROUPS.length).transform(tags=>
+ SPN_REGION_GROUPS.filter(group=>tags.includes(group.title)).map(group=>group.title)
+);
 export const spnProposalInput=z.object({
  saintId:z.string().cuid(),revision:z.string().regex(/^[a-f0-9]{64}$/),
  section:z.string().trim().min(1).max(200),tier:z.enum(["Featured","Secondary","Tertiary"]),
- familyKey:z.string().max(300),reason:z.string().trim().min(1).max(4000)
+ familyKey:z.string().max(300),regionTags:spnRegionTagsSchema.optional(),reason:z.string().trim().min(1).max(4000)
 });
 export const spnProposalDecision=z.object({
  baselineRevision:z.string().regex(/^[a-f0-9]{64}$/),placementId:z.string(),saintId:z.string(),
- section:z.string(),tier:z.enum(["Featured","Secondary","Tertiary"]),familyKey:z.string(),familyLabel:z.string(),reason:z.string()
+ section:z.string(),tier:z.enum(["Featured","Secondary","Tertiary"]),familyKey:z.string(),familyLabel:z.string(),regionTags:spnRegionTagsSchema.optional(),reason:z.string()
 });
 export type SpnProposalDecision=z.infer<typeof spnProposalDecision>;
 export type SpnProposalReview={eventId:string;state:"applied"|"needs_review";reason:string;baselineRevision:string;baselineFamilyKey?:string};
@@ -31,6 +37,7 @@ export function projectSpnProposal(row:MuseumSaintPlacement,event:{id:string;aft
  const review:SpnProposalReview={eventId:event.id,state:valid?"applied":"needs_review",reason:decision.reason,baselineRevision:decision.baselineRevision,baselineFamilyKey:row.curatorialFamily||row.familyId};
  if(!valid)return {...row,spnProposal:review};
  const next: MuseumSaintPlacement={...row,section:decision.section,tier:decision.tier,
+  spnRegionTags:decision.regionTags??[],
   familyId:decision.familyKey,curatorialFamily:decision.familyKey,groupLabel:decision.familyLabel,
   proposalReviewed:true,placementState:"Confirmed",spnProposal:review};
  if(decision.familyKey!==(row.curatorialFamily||row.familyId))next.displayMembership=undefined;

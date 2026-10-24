@@ -18,6 +18,7 @@ export type MuseumTier = "Featured" | "Secondary" | "Tertiary";
 
 export type MuseumSaintPlacement = {
   spnProposal?: import("./spn-proposal-domain").SpnProposalReview;
+  spnRegionTags?: string[];
   proposalReviewed?: boolean;
   familyReconciliation?: import("./museum-family-reconciliation").MuseumFamilyReconciliation;
   sourcePackaging?: import("./museum-relic-packaging").RelicPackagingSource[];

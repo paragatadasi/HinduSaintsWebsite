@@ -49,3 +49,11 @@ test("baseline and effective tiers remain distinct while planned location and co
  const reordered=buildSpnTierAudit([original],[effective],[identity("one")],[]);
  assert.equal(snapshot.fingerprint,reordered.fingerprint);
 });
+
+test("protected research export carries museum region tags independently of localities",()=>{
+ const original=row("source",{saintId:"one",normalizedPlaces:["Puducherry"]});
+ const effective={...original,spnRegionTags:["Maharashtra & the West","The South"]};
+ const snapshot=buildSpnTierAudit([original],[effective],[identity("one")],[]);
+ assert.deepEqual(snapshot.records[0].placements[0].spnRegionTags,effective.spnRegionTags);
+ assert.deepEqual(snapshot.records[0].placements[0].normalizedPlaces,["Puducherry"]);
+});
