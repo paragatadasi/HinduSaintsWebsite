@@ -1,3 +1,4 @@
+import {spnRegionGroups} from "@/lib/spn-region-navigation";
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { MuseumProposalOverview } from "@/components/admin/museum-proposal-overview";
@@ -26,8 +27,7 @@ export default async function MuseumAdminPage({ searchParams }: MuseumAdminPageP
       {arrangementSaved?<p role="status">Arrangement updated. Individual relic records remain available for precise location updates.</p>:null}
       {membershipSaved?<p role="status">Display membership updated. Relic locations and historical relationships are unchanged.</p>:null}
       {correctionRequested?<p role="status">Relationship correction requested for editorial review.</p>:null}
-      <MuseumProposalOverview museumName="SPN Museum" sections={sections} basePath="/museumadmin">
-      <p><Link className="museum-admin-button" href="/museumadmin/review">Resolve source links</Link></p>
+      <MuseumProposalOverview museumName="SPN Museum" sections={sections} basePath="/museumadmin" flowZones={spnRegionGroups(sections)} showBridges={false} showRegionTotals flowTitle="Explore sections by region" flowDescription="Regions help you browse related traditions. These headings preserve existing section assignments; some families span more than one region. Vitrine locations are unchanged.">
       <section className="museum-admin-panel">
         <div className="museum-admin-section-heading">
           <div>

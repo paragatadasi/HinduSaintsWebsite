@@ -5,7 +5,7 @@ import { GitBranch, Map as MapIcon } from "lucide-react";
 import { museumBridgeCards, museumFlowZones } from "@/lib/museum-layout-groups";
 import type { MuseumSection } from "@/lib/museum-proposals";
 
-export function MuseumProposalOverview({museumName,sections,basePath,queryLinks=false,showBridges=true,showRegionTotals=false,flowZones=museumFlowZones,sectionCount,children}:{museumName:string;sections:MuseumSection[];basePath:string;queryLinks?:boolean;showBridges?:boolean;showRegionTotals?:boolean;flowZones?:readonly {title:string;summary:string;sections:readonly string[]}[];sectionCount?:number;children:ReactNode}) {
+export function MuseumProposalOverview({museumName,sections,basePath,queryLinks=false,showBridges=true,showRegionTotals=false,flowZones=museumFlowZones,sectionCount,flowTitle,flowDescription,children}:{museumName:string;sections:MuseumSection[];basePath:string;queryLinks?:boolean;showBridges?:boolean;showRegionTotals?:boolean;flowZones?:readonly {title:string;summary:string;badge?:string;sections:readonly string[]}[];sectionCount?:number;flowTitle?:string;flowDescription?:string;children:ReactNode}) {
  const totals=sections.reduce((a,s)=>({saints:a.saints+s.total,featured:a.featured+s.featured,secondary:a.secondary+s.secondary,tertiary:a.tertiary+s.tertiary}),{saints:0,featured:0,secondary:0,tertiary:0});
  const byName=new Map(sections.map(s=>[s.name,s]));
  const sectionHref=(name:string)=>(queryLinks?`${basePath}?section=${encodeURIComponent(byName.get(name)!.slug)}`:`${basePath}/${byName.get(name)!.slug}`) as Route;
@@ -35,17 +35,17 @@ export function MuseumProposalOverview({museumName,sections,basePath,queryLinks=
       <section className="museum-admin-panel museum-flow-panel" aria-labelledby="museum-flow-title">
         <div className="museum-admin-section-heading">
           <div>
-            <div className="museum-admin-kicker">Visitor circuit</div>
-            <h2 id="museum-flow-title">{showBridges ? "Proposed museum flow and bridges" : "Suggested section arrangement"}</h2>
+            <div className="museum-admin-kicker">{flowTitle ? "Section regions" : "Visitor circuit"}</div>
+            <h2 id="museum-flow-title">{flowTitle || (showBridges ? "Proposed museum flow and bridges" : "Suggested section arrangement")}</h2>
           </div>
           <MapIcon aria-hidden="true" size={22} />
         </div>
 
-        {!showBridges ? <p className="museum-filter-note">A starting sequence for discussion; physical vitrine layout remains to be planned.</p> : null}
-        <ol className="museum-flow-zones" aria-label="Proposed visitor flow">
+        {!showBridges ? <p className="museum-filter-note">{flowDescription || "A starting sequence for discussion; physical vitrine layout remains to be planned."}</p> : null}
+        <ol className="museum-flow-zones" aria-label={flowTitle || "Proposed visitor flow"}>
           {zones.map((zone, index) => (
             <li className="museum-flow-zone" key={zone.title}>
-              <div className="museum-flow-zone__index">{String(index + 1).padStart(2, "0")}</div>
+              <div className="museum-flow-zone__index">{zone.badge || String(index + 1).padStart(2, "0")}</div>
               <div className="museum-flow-zone__content">
                 <h3>{zone.title}{showRegionTotals?` (${zone.sections.reduce((sum,name)=>sum+(byName.get(name)?.total||0),0)})`:null}</h3>
                 <p>{zone.summary}</p>
