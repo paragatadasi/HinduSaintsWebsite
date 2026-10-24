@@ -1762,7 +1762,7 @@
         "saintId": "cms0w7h0p065807qi6cyn3dk1",
         "name": "Sri Ramana Maharishi"
       },
-      "type": "documented_visit",
+      "type": "encountered",
       "sections": [
         "Maharashtra Guru Lineages",
         "Ramana & Arunachala"
@@ -1786,7 +1786,7 @@
         "saintId": "cms0w7h0p065807qi6cyn3dk1",
         "name": "Sri Ramana Maharishi"
       },
-      "type": "documented_visit",
+      "type": "encountered",
       "sections": [
         "Maharashtra Guru Lineages",
         "Ramana & Arunachala"
@@ -1857,7 +1857,7 @@
         "saintId": "cms0w7dfm01jv07qi6o8h7rvx",
         "name": "Sri Janabai"
       },
-      "type": "devotional_household",
+      "type": "household",
       "sections": [
         "Varkari"
       ],
@@ -2208,7 +2208,7 @@
           "saintId": "cms0w7h0p065807qi6cyn3dk1",
           "name": "Sri Ramana Maharishi"
         },
-        "type": "documented_visit",
+        "type": "encountered",
         "sections": [
           "Maharashtra Guru Lineages",
           "Ramana & Arunachala"
@@ -2232,7 +2232,7 @@
           "saintId": "cms0w7h0p065807qi6cyn3dk1",
           "name": "Sri Ramana Maharishi"
         },
-        "type": "documented_visit",
+        "type": "encountered",
         "sections": [
           "Maharashtra Guru Lineages",
           "Ramana & Arunachala"
@@ -2302,7 +2302,7 @@
           "saintId": "cms0w7dfm01jv07qi6o8h7rvx",
           "name": "Sri Janabai"
         },
-        "type": "devotional_household",
+        "type": "household",
         "sections": [
           "Varkari"
         ],
