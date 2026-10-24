@@ -1,96 +1,140 @@
 "use client";
-import {useMemo,useState} from 'react';
-import {RotateCcw,RotateCw,HelpCircle,MoveHorizontal,GitBranch} from 'lucide-react';
-import type baseline from '@/data/museum/spn-room-proposal-v15.json';
-import {showFlexibleSpace,type ExplorerObservation} from '@/lib/spn-room-proposal';
+import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { Search, MapPin, ChevronDown, ArrowRight, Star, GitBranch, Check, RotateCcw, RotateCw } from 'lucide-react';
+import type baselineData from '@/data/museum/spn-room-proposal-v15.json';
+import designData from '@/data/museum/spn-room-explorer-design.json';
+import { explorerSaints, vitrineConnectionPlaces, type ExplorerSaint, type ExplorerDriver, type ExplorerOption, type ExplorerPlacement } from '@/lib/spn-room-explorer';
+import { showFlexibleSpace, type ExplorerObservation } from '@/lib/spn-room-proposal';
+import '@/styles/spn-room-explorer.css';
+type Proposal = Omit<typeof baselineData, 'rows' | 'namedOnly'>;
+type Direction = 'north' | 'east' | 'south' | 'west';
+import portraitData from '@/data/museum/spn-room-explorer-portraits.json';
+const portraits: Record<string, {
+    image: string;
+    href: string;
+}> = portraitData;
+function Portrait({ saint }: {
+    saint: ExplorerSaint;
+}) { const [failed, setFailed] = useState(false); const photo = portraits[saint.saintId]; return photo && !failed ? <img className="saint-portrait" src={photo.image} alt="" width="64" height="80" loading="lazy" onError={() => setFailed(true)}/> : <span className="saint-portrait portrait-empty" aria-hidden="true"/>; }
+const baseline: ExplorerOption = designData.options[0], previous: ExplorerOption = designData.comparisonPrevious;
+const proposals = [...(designData.options as ExplorerOption[]).map(option => ({ id: option.id, label: option.title + ' · v15', archived: false, option })), { id: 'archived-earlier', label: previous.title + ' · Earlier design study', archived: true, option: previous }];
+const regions: Record<string, string> = { N: 'Himalaya & the North', B: 'Braj & the Ganga', W: 'Maharashtra & the West', E: 'Bengal, Odisha & the East', S: 'The South', K: 'Sikh Gurus & Udasin', C: 'Bhakti Marga & global context', R: 'Flexible space', L: 'Large objects', T: 'Walking sticks' };
+const short: Record<string, string> = { N: 'North', B: 'Braj & Ganga', W: 'West', E: 'East', S: 'South', K: 'Sikh & Udasin', C: 'Global', R: 'Reserve', L: 'Large objects', T: 'Sticks' };
+const geo = (v: Proposal['layout']['vitrines'][number]) => ({ x: (v.row - 1) * 16 + 32, y: (25 - v.column - v.columnSpan) * 17 + 38, w: v.rowSpan * 16 - 5, h: v.columnSpan * 17 - 5 });
+const queryLowerSafe = (q: string) => q.toLowerCase().trim();
+const bridgePlaces = (d: ExplorerDriver) => vitrineConnectionPlaces(d);
+const bridgeLabel = (d: ExplorerDriver, n: string | number) => d.connection === 'Gaudiya ↔ Puri; Kriya ↔ Ramakrishna' ? (['5', '57'].includes(String(n)) ? 'Kriya ↔ Ramakrishna' : 'Gaudiya ↔ Puri') : d.connection;
+const orientations = { north: { label: 'Up', angle: 90, transform: 'translate(470 0) rotate(90)', viewBox: '0 0 470 740', cave: '↑', entry: '↓' }, east: { label: 'Right', angle: 180, transform: 'translate(740 470) rotate(180)', viewBox: '0 0 740 470', cave: '→', entry: '←' }, south: { label: 'Down', angle: 270, transform: 'translate(0 740) rotate(270)', viewBox: '0 0 470 740', cave: '↓', entry: '↑' }, west: { label: 'Left', angle: 0, transform: '', viewBox: '0 0 740 470', cave: '←', entry: '→' } };
+const named = (o: ExplorerOption, n: string | number) => o.primeAnchors[n]?.people || '';
+export function SpnRoomExplorer({ proposal, rows }: {
+    proposal: Proposal;
+    rows: ExplorerObservation[];
+}) {
+    const data = { proposal, inventory: explorerSaints(rows), indicators: proposal.indicators };
+    const vitrine = (n: string | number) => proposal.layout.vitrines.find(v => v.number === String(n))!;
+    const changedCases = new Set(rows.filter(r => r.reviewReason).flatMap(r => [r.vitrine, r.effectiveVitrine]));
+    const designPlacements: ExplorerPlacement[] = designData.placements;
+    const currentChanges = rows.filter(r => r.reviewReason);
+    const [caveDirection, setCaveDirection] = useState<Direction>('west');
+    const orientation = orientations[caveDirection];
+    const frame = orientation.angle % 180 ? { width: 470, height: 740 } : { width: 740, height: 470 };
+    const caveLabel = { north: [235, -28], east: [785, 235], south: [235, 782], west: [-45, 235] }[caveDirection];
+    const entryLabel = { north: [235, 782], east: [-45, 235], south: [235, -28], west: [785, 235] }[caveDirection];
+    const [proposalId, setProposalId] = useState(baseline.id), [comparisonId, setComparisonId] = useState('archived-earlier'), [selected, setSelected] = useState('5'), [driver, setDriver] = useState<number | null>(null), [query, setQuery] = useState(''), [lens, setLens] = useState('sections'), [compare, setCompare] = useState(false), [list, setList] = useState(false), [shortlist, setShortlist] = useState<Record<string, boolean>>({});
+    const current = proposals.find(p => p.id === proposalId) ?? proposals[0], option = current.option, archived = current.archived, favorite = !!shortlist[proposalId];
+    const comparison = proposals.find(p => p.id === comparisonId) || proposals.find(p => p.id !== proposalId)!;
+    const sectionResults = queryLowerSafe(query) ? option.displayPackets.filter(p => ((p.label + ' ' + regions[p.group]).toLowerCase().includes(queryLowerSafe(query)))) : [];
+    const assignment = option.assignments.find(a => a.number === selected);
+    const packet = option.displayPackets.find(p => p.cases.map(String).includes(selected));
+    const chosenDriver = driver === null ? null : option.drivers[driver];
+    const selectedCases = chosenDriver?.places?.map(String) || packet?.cases.map(String) || [selected];
+    const primary = data.inventory.filter(s => s.tier === 'Primary' && !s.sourceAttributionHold);
+    const placements = archived ? [] : designPlacements;
+    const placementFor = (s: ExplorerSaint) => { const p = placements.find(p => p.saintId === s.saintId); return s.caseEnvelope[0] ? { ...p, saintId: s.saintId, vitrine: s.caseEnvelope[0] } : undefined; };
+    const primariesIn = (n: string | number) => primary.filter(s => s.caseEnvelope.includes(String(n))).sort((a, b) => (placementFor(a)?.priority || 99) - (placementFor(b)?.priority || 99));
+    const bridgesIn = (n: string | number) => option.drivers.filter(d => /↔|Vraj → Rama → Kashi|Nath → Dnyaneshwar → Varkari/.test(d.connection) && bridgePlaces(d).map(String).includes(String(n)));
+    const queryLower = query.toLowerCase().trim();
+    const results = queryLower ? data.inventory.filter(s => (s.name + ' ' + s.currentSections.join(' ') + ' ' + s.recommendedRegion).toLowerCase().includes(queryLower)) : [];
+    const changed = option.assignments.filter(a => { let before = comparison.option.assignments.find(b => b.number === a.number); return before?.subsection !== a.subsection; });
+    function orient(key: Direction, focus = false) { setCaveDirection(key); localStorage.setItem('spn-explorer-cave-direction', key); if (focus)
+        requestAnimationFrame(() => document.querySelector(`.compass-${key}`)?.scrollIntoView({ block: 'nearest' })); }
+    function choose(n: string | number) { setSelected(String(n)); setDriver(null); }
+    function resetProposal(value: string) { if (value === comparisonId)
+        setComparisonId(proposalId); setProposalId(value); setDriver(null); setQuery(''); }
+    useEffect(() => { try {
+        const saved = localStorage.getItem('spn-explorer-cave-direction');
+        if (saved && saved in orientations)
+            setCaveDirection(saved as Direction);
+        const savedShortlist = JSON.parse(localStorage.getItem('spn-explorer-shortlists') || '{}') as Record<string, unknown>;
+        setShortlist(Object.fromEntries(Object.entries(savedShortlist).filter(([, value]) => typeof value === 'boolean')) as Record<string, boolean>);
+    }
+    catch {
+        setShortlist({});
+    } }, []);
+    function CaseButtons({ numbers }: {
+        numbers: (string | number)[];
+    }) { return <div className="case-links">{numbers.map(n => <button key={n} onClick={() => choose(n)} aria-pressed={selected === String(n)}>V{n}</button>)}</div>; }
+    function Map() {
+        const [hover, setHover] = useState<{
+            number: string;
+            left: number;
+            top: number;
+        } | null>(null), timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined), warm = useRef(false);
+        function dismiss() { clearTimeout(timer.current); setHover(null); warm.current = false; }
+        function leave() { clearTimeout(timer.current); timer.current = setTimeout(() => { setHover(null); warm.current = false; }, 300); }
+        function reveal(e: React.PointerEvent<SVGGElement> | React.FocusEvent<SVGGElement>, n: string, immediate = false) { if (!immediate && (('pointerType' in e && e.pointerType === 'touch') || !matchMedia('(hover: hover)').matches))
+            return; clearTimeout(timer.current); const target = e.currentTarget; timer.current = setTimeout(() => { const rect = target.getBoundingClientRect(); setHover({ number: n, left: Math.max(12, Math.min(rect.right + 12, innerWidth - 304)), top: Math.max(12, Math.min(rect.top, innerHeight - 370)) }); warm.current = true; }, immediate ? 80 : warm.current ? 0 : 220); }
+        useEffect(() => { function key(e: KeyboardEvent) { if (e.key === 'Escape')
+            dismiss(); } function scroll() { setHover(null); } addEventListener('keydown', key); addEventListener('scroll', scroll, true); return () => { clearTimeout(timer.current); removeEventListener('keydown', key); removeEventListener('scroll', scroll, true); }; }, []);
+        const hovered = hover && option.assignments.find(a => a.number === hover.number), hoverExact = hover ? primariesIn(hover.number) : [], hoverSaints = hover ? (primariesIn(hover.number).length ? primariesIn(hover.number) : archived ? [] : primary.filter(s => s.caseEnvelope.map(String).includes(hover.number)).sort((a, b) => { const keywords = named(option, hover.number).toLowerCase().split(/[^a-z]+/).filter(w => w.length > 3 && !['family', 'immediate', 'together'].includes(w)); return Number(keywords.some(w => b.name.toLowerCase().includes(w))) - Number(keywords.some(w => a.name.toLowerCase().includes(w))); })).slice(0, 3) : [], hoverBridges = hover ? bridgesIn(hover.number) : [];
+        return <section className="panel map-panel"><div className="panel-heading"><div><p className="eyebrow">Room explorer</p><h2>Proposed layout</h2></div><button className="quiet" onClick={() => setList(!list)}>{list ? 'Show map' : 'Show list'}</button></div><div className="map-controls"><div className="lenses" aria-label="Map emphasis">{[['sections', 'Sections'], ['primary', 'Primary saints'], ['connections', 'Connections']].map(([id, label]) => <button key={id} aria-pressed={lens === id} onClick={() => setLens(id)}>{label}</button>)}</div>
+ {!list ? <div className="orientation-control control-2"><div className="turn-controls" role="group" aria-label="Rotate room view"><button aria-label="Turn view anticlockwise" onClick={() => { const keys: Direction[] = ['north', 'east', 'south', 'west']; orient(keys[(keys.indexOf(caveDirection) + 3) % 4]); }}><RotateCcw size={18}/></button><span aria-live="polite"><small>Cave</small>{orientation.label}</span><button aria-label="Turn view clockwise" onClick={() => { const keys: Direction[] = ['north', 'east', 'south', 'west']; orient(keys[(keys.indexOf(caveDirection) + 1) % 4]); }}><RotateCw size={18}/></button></div></div> : null}</div>
+ {chosenDriver ? <p className="caption">Gold lines show the selected placement rationale. Dashed lines indicate cross-room links, not necessarily guru relationships.</p> : null}
+ {list ? <div className="case-directory">{option.assignments.map(a => <button className={'directory-row tone-' + a.group} key={a.number} onClick={() => choose(a.number)}><b>V{a.number}</b><span>{a.subsection}</span><ArrowRight size={16}/></button>)}</div> : <div className="map-scroll"><svg viewBox={orientation.angle % 180 ? `0 -60 ${frame.width} ${frame.height + 120}` : `-100 0 ${frame.width + 200} ${frame.height}`} className={'floorplan orientation-' + caveDirection} aria-label={'SPN proposed display areas · Babaji Cave ' + orientation.label}><g transform={orientation.transform}><path className="room" d="M32 432V105H440V20H704V432Z"/>
+ {data.proposal.layout.vitrines.map(v => { let a = option.assignments.find(x => x.number === v.number), g = geo(v), focus = selectedCases.includes(v.number), isPrimary = primariesIn(v.number).length > 0, dim = lens === 'primary' && !isPrimary; return <g key={v.number} className={'case tone-' + (a?.group || 'R') + (focus ? ' chosen' : '') + (v.availability === 'future' ? ' future' : '') + (dim ? ' subdued' : '')} role="button" tabIndex={0} aria-label={`Vitrine ${v.number}${v.provisional ? ', provisional number' : ''}: ${a?.subsection || 'Future space'}`} aria-pressed={v.number === selected} aria-describedby={hover?.number === v.number ? 'vitrine-hover' : undefined} onPointerEnter={e => reveal(e, v.number)} onPointerLeave={leave} onFocus={e => reveal(e, v.number, true)} onBlur={dismiss} onClick={() => choose(v.number)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                choose(v.number);
+            } }}><rect x={g.x} y={g.y} width={g.w} height={g.h} rx="3"/><text x={g.x + g.w / 2} y={g.y + g.h / 2} dominantBaseline="central" transform={`rotate(${-orientation.angle} ${g.x + g.w / 2} ${g.y + g.h / 2})`}>{v.number}{v.provisional ? '*' : ''}</text>{bridgesIn(v.number).length ? <circle className="bridge-dot" cx={g.x + g.w - 5} cy={g.y + 5} r="2.5"/> : null}{compare && changed.some(x => x.number === v.number) ? <path className="change-mark" d={`M${g.x + 4} ${g.y + g.h - 4}h${g.w - 8}`}/> : null}</g>; })}
+ {chosenDriver ? <g className="route-lines">{chosenDriver.places.slice(1).map((n, i) => { if (/cross-room/.test(chosenDriver.reason) && i % 2 === 1)
+                return null; let a = geo(vitrine(chosenDriver.places[i])), b = geo(vitrine(n)); return <path key={i} d={`M${a.x + a.w / 2} ${a.y + a.h / 2}L${b.x + b.w / 2} ${b.y + b.h / 2}`} className={/cross-room|weaker/.test(chosenDriver.reason) ? 'cross-room' : ''}/>; })}</g> : null}
+ </g><text x={caveLabel[0]} y={caveLabel[1]} textAnchor="middle" className="map-landmark"><tspan x={caveLabel[0]}>{orientation.cave}</tspan><tspan x={caveLabel[0]} dy="18">Babaji Cave</tspan></text><text x={entryLabel[0]} y={entryLabel[1]} textAnchor="middle" className="map-landmark"><tspan x={entryLabel[0]}>{orientation.entry}</tspan><tspan x={entryLabel[0]} dy="18">Entrance</tspan></text></svg></div>}
+ <div className="legend">{Object.entries(regions).slice(0, 7).map(([g, label]) => <button key={g} className={'tone-' + g} onClick={() => choose(option.assignments.find(a => a.group === g)?.number || '5')}><i />{short[g]}</button>)}</div><div className="symbol-legend" aria-label="Map symbols"><span><i className="symbol-bridge" aria-hidden="true"/>Key bridge</span><span><i className="symbol-provisional" aria-hidden="true">*</i>Provisional number</span><span><i className="symbol-future" aria-hidden="true"/>Future space</span>{compare ? <span><i className="symbol-change" aria-hidden="true"/>Changed allocation</span> : null}</div><p className="caption">{lens === 'primary' ? 'Highlighted vitrines have a proposed primary saint. Select one to see who is proposed here.' : 'Select a vitrine to see its section, saints, and placement rationale.'}</p>
+ {hover ? createPortal(<div id="vitrine-hover" role="tooltip" className={'spn-room-explorer vitrine-hover tone-' + (hovered?.group || 'R')} style={{ left: hover.left, top: hover.top }} onPointerEnter={() => clearTimeout(timer.current)} onPointerLeave={leave}><p className="eyebrow">Vitrine {hover.number}{vitrine(hover.number)?.provisional ? '*' : ''} · {hovered ? short[hovered.group] : 'Future space'}</p><h3>{hovered ? hovered.subsection.split(':')[0].split(';')[0] : 'Not available for this reorganization'}</h3>{hovered ? <><p className="hover-label">{hoverExact.length ? 'Proposed in this vitrine' : 'Primary saints in the area'}</p>{hoverSaints.length ? <ul>{hoverSaints.map(s => <li key={s.saintId}>{s.name}</li>)}</ul> : <p className="caption">{archived ? 'Individual placements are not mapped in this archived study.' : 'No primary saints listed for this area.'}</p>}{!archived && !hoverExact.length && hoverSaints.length ? <p className="placement-pending">Specific vitrines are still being refined.</p> : null}{hoverBridges.length ? <div className="hover-bridges"><span className="hover-label"><i className="symbol-bridge"/>Key bridges</span>{hoverBridges.map(d => <p key={d.connection}>{bridgeLabel(d, hover.number)}</p>)}</div> : null}</> : null}</div>, document.body) : null}
+ </section>;
+    }
+    function SaintList({ saints, empty }: {
+        saints: ExplorerSaint[];
+        empty?: string;
+    }) { return <div className="saint-list">{saints.length ? saints.map(s => { const p = placementFor(s); return <details className="saint-portrait-row" key={s.saintId}><summary><Portrait saint={s}/><span className="saint-row-copy"><span className="saint-row-name">{s.name}</span><small>{s.tier}{p?.vitrine ? ' · V' + p.vitrine : ''}</small></span><ChevronDown className="saint-row-chevron" size={16} aria-hidden="true"/></summary>{p ? <><p>{p.rationale || p.basis}</p>{p.fitNote ? <p>{p.fitNote}</p> : null}</> : <p>Proposed in {s.caseEnvelope.map(n => 'V' + n).join(', ')}. {s.sourceAttributionHold ? 'Identity remains under review.' : 'Exact shelf and fit to confirm.'}</p>}{s.observations.filter(r => r.reviewReason).map(r => <p key={r.sourceId || r.saintId} className="caption">{r.reviewReason}. V15 suggests V{r.vitrine}; {r.currentVitrine ? 'saved destination V' + r.currentVitrine : 'current curator record retained'}.</p>)}<p>Current source record: {s.sourceLocations.map(l => `V${l.vitrine}${l.shelf ? ' / Shelf ' + l.shelf : ''}`).join(' · ') || 'Location not recorded'}</p>{s.sourceAttributionHold ? <p>Source attribution needs review.</p> : null}</details>; }) : <p className="caption">{empty}</p>}</div>; }
+    function Inspector() {
+        const indicator = archived ? null : data.indicators.find(i => String(i.vitrine) === selected);
+        let saints = archived ? [] : data.inventory.filter(s => s.caseEnvelope.map(String).includes(selected));
+        let anchors = archived ? [] : data.inventory.filter(s => s.tier === 'Primary' && s.caseEnvelope.some(n => packet?.cases.map(String).includes(String(n))));
+        let drivers = option.drivers.map((d, i) => ({ ...d, index: i })).filter(d => vitrineConnectionPlaces(d).map(String).includes(selected));
+        const localDriver = chosenDriver && drivers.some(d => d.index === driver) ? chosenDriver : null;
+        return <aside className={'panel inspector tone-' + (assignment?.group || 'R')} aria-label="Selected vitrine"><p className="eyebrow">{assignment?.region || 'Future space'}</p><h2>Vitrine {selected}{vitrine(selected)?.provisional ? '*' : ''}</h2>{!assignment ? <p>This future space is excluded from the current reorganization.</p> : <><h3>{assignment.subsection}</h3>{packet ? <><p className="caption">Shared proposed area</p><CaseButtons numbers={packet.cases}/></> : null}{option.primeAnchors[selected] ? <div className="anchor-callout"><MapPin size={18}/><div><b>{named(option, selected)}</b><small>Proposed display focus</small></div></div> : null}
+ {localDriver ? <div className="reason"><p className="eyebrow">Why these displays connect</p><h3>{localDriver.connection}</h3><p>{localDriver.reason}</p><span className="tag">{/cross-room|weaker/.test(localDriver.reason) ? 'Cross-room link' : 'Neighborhood rationale'}</span>{localDriver.sources?.length ? <details><summary>Research sources</summary>{localDriver.sources.map((s, i) => <a key={s.url} href={s.url} target="_blank" rel="noreferrer">Source {i + 1} ↗</a>)}</details> : null}</div> : drivers.length ? <div className="reason"><p className="eyebrow">Why this vitrine is here</p>{drivers.map(d => <button className="reason-link" key={d.index} onClick={() => { setDriver(d.index); setLens('connections'); }}><GitBranch size={16}/><span>{d.connection}</span><ArrowRight size={15}/></button>)}</div> : <p className="caption">{option.primeAnchors[selected]?.reason || 'This area keeps its section or immediate family together. A named historical relationship is not implied by a shared display.'}</p>}
+ {!archived ? <><div className="subheading"><h3>Primary saints here</h3><span>{primariesIn(selected).length || '—'}</span></div><p className="caption">Proposed upper display · physical fit to confirm</p><SaintList saints={primariesIn(selected)} empty="No primary saints proposed in this vitrine."/>
+ {anchors.filter(s => placementFor(s)?.vitrine && String(placementFor(s)?.vitrine) !== selected).length ? <><div className="subheading"><h3>Elsewhere in this area</h3><span>{anchors.filter(s => placementFor(s)?.vitrine && String(placementFor(s)?.vitrine) !== selected).length}</span></div><SaintList saints={anchors.filter(s => placementFor(s)?.vitrine && String(placementFor(s)?.vitrine) !== selected)}/></> : null}
+ {anchors.some(s => !placementFor(s)?.vitrine) ? <details className="unplaced-primary"><summary>Primary saints in this area · vitrine pending ({anchors.filter(s => !placementFor(s)?.vitrine).length})</summary><SaintList saints={anchors.filter(s => !placementFor(s)?.vitrine)}/></details> : null}
+ <details className="unplaced-primary"><summary>Other saints proposed here ({saints.filter(s => s.tier !== 'Primary' && !s.sourceAttributionHold).length})</summary><SaintList saints={saints.filter(s => s.tier !== 'Primary' && !s.sourceAttributionHold).sort((a, b) => Number(b.tier === 'Secondary') - Number(a.tier === 'Secondary'))}/></details>
+ {indicator?.hasUnresolvedHoldings ? <details className="unplaced-primary"><summary>Identity under review · lower display ({indicator.unresolvedSourceObservationCount} records)</summary><p className="caption">These records remain separate from the host tradition while their identities are reviewed.</p><SaintList saints={saints.filter(s => s.sourceAttributionHold)}/></details> : null}
+ {showFlexibleSpace(selected, !!indicator?.potentialFlexibleSpace, changedCases.has(selected)) ? <div className="reason"><p className="eyebrow">Potential flexible space</p><p className="caption">The source-based estimate suggests room to explore. Confirm object sizes and physical fit before adding anything.</p></div> : null}
+ {indicator?.specialFitNote ? <p className="caption">{indicator.specialFitNote}</p> : null}
+ <p className="caption inspector-footnote">{saints.length} saint / source entries proposed here · Inventory snapshot: 24 Oct</p></> : <p className="caption">Archived study. Individual saint allocations are not shown against the newer inventory mapping.</p>}
+ </>}</aside>;
+    }
+    return <section className="spn-room-explorer" aria-label="SPN room proposal explorer"><header className="page-title"><div><p className="eyebrow">SPN · Plan the space</p><h1>Explore arrangements</h1><p>Explore the room, find primary saints, and follow the connections between displays.</p></div><span className="tag">{archived ? "Earlier design study" : "Proposal · v15"}</span></header>
+ {currentChanges.length ? <details className="panel review-note"><summary>{currentChanges.length} entries have newer curator decisions</summary><p>Current names, tiers and saved destinations are retained. Review these differences before moving anything; space estimates are withheld in affected vitrines.</p>{currentChanges.map(r => <p key={r.sourceId || r.saintId}>{r.name} · {r.reviewReason}</p>)}</details> : null}
+ <section className="proposal-head panel"><div><label htmlFor="proposal">Viewing proposal</label><select id="proposal" value={proposalId} onChange={e => resetProposal(e.target.value)}>{proposals.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}</select><p>{option.summary}</p></div><div className="proposal-actions"><button className={favorite ? 'saved' : 'primary'} onClick={() => { const next = { ...shortlist, [proposalId]: !favorite }; setShortlist(next); localStorage.setItem('spn-explorer-shortlists', JSON.stringify(next)); }}>{favorite ? <Check size={16}/> : <Star size={16}/>} {favorite ? 'Shortlisted in this browser' : 'Shortlist for discussion'}</button><label className="check"><input type="checkbox" checked={compare} onChange={e => setCompare(e.target.checked)}/>Compare proposals</label>{compare ? <div><label htmlFor="comparison">Compare against</label><select id="comparison" value={comparisonId} onChange={e => setComparisonId(e.target.value)}>{proposals.filter(p => p.id !== proposalId).map(p => <option key={p.id} value={p.id}>{p.label}</option>)}</select></div> : null}</div></section>
 
-type Proposal=Omit<typeof baseline,'rows'|'namedOnly'>;
-const views=[
- {label:'Up',angle:90,transform:'translate(470 0) rotate(90)',cave:[235,-28],entry:[235,782],arrow:'↑',back:'↓'},
- {label:'Right',angle:180,transform:'translate(740 470) rotate(180)',cave:[785,235],entry:[-45,235],arrow:'→',back:'←'},
- {label:'Down',angle:270,transform:'translate(0 740) rotate(270)',cave:[235,782],entry:[235,-28],arrow:'↓',back:'↑'},
- {label:'Left',angle:0,transform:'',cave:[-45,235],entry:[785,235],arrow:'←',back:'→'}
-];
-const geometry=(v:Proposal['layout']['vitrines'][number])=>({x:(v.row-1)*16+32,y:(25-v.column-v.columnSpan)*17+38,w:v.rowSpan*16-5,h:v.columnSpan*17-5});
-const rank=(tier:string)=>tier==='Primary'||tier==='Featured'?0:tier==='Secondary'?1:2;
-
-export function SpnRoomExplorer({proposal,rows}:{proposal:Proposal;rows:ExplorerObservation[]}){
- const [selected,setSelected]=useState('14'),[direction,setDirection]=useState(3),[query,setQuery]=useState('');
- const [lens,setLens]=useState('all'),[hover,setHover]=useState<string|null>(null);
- const view=views[direction],portrait=view.angle%180!==0;
- const changedCases=useMemo(()=>new Set(rows.filter(r=>r.reviewReason).flatMap(r=>[r.vitrine,r.effectiveVitrine])),[rows]);
- const changed=rows.filter(r=>r.reviewReason);
- const assignment=proposal.assignments.find(a=>a.number===selected);
- const indicator=proposal.indicators.find(i=>i.vitrine===selected);
- const contents=useMemo(()=>{
-  const groups=new Map<string,{row:ExplorerObservation;sourceIds:string[]}>();
-  rows.filter(r=>r.effectiveVitrine===selected).forEach(row=>{
-   const key=(row.saintId||row.sourceId)+(row.unresolved?'-review':'');
-   const existing=groups.get(key);
-   if(existing)existing.sourceIds.push(row.sourceId);else groups.set(key,{row,sourceIds:[row.sourceId]});
-  });
-  return [...groups.values()].sort((a,b)=>rank(a.row.tier)-rank(b.row.tier)||a.row.name.localeCompare(b.row.name));
- },[rows,selected]);
- const matches=useMemo(()=>new Set(rows.filter(r=>`${r.name} ${r.section} ${r.effectiveVitrine}`.toLowerCase().includes(query.toLowerCase())).map(r=>r.effectiveVitrine)),[rows,query]);
- const drivers=proposal.drivers.filter(d=>d.places.map(String).includes(selected));
- const bridgeDrivers=proposal.drivers.filter(d=>d.places.length<=6&&!/lower review|coherent main/i.test(d.connection));
- const hoverAssignment=proposal.assignments.find(a=>a.number===hover);
- const hoverPrimaries=[...new Set(rows.filter(r=>r.effectiveVitrine===hover&&rank(r.tier)===0&&!r.unresolved).map(r=>r.name))].slice(0,3);
- const hasReview=!!indicator?.hasUnresolvedHoldings||contents.some(c=>c.row.unresolved);
- function choose(number:string){setSelected(number);setHover(null);}
- function contentList(unresolved:boolean){return <ul className="spn-explorer__records">{contents.filter(c=>c.row.unresolved===unresolved).map(({row,sourceIds})=><li key={row.saintId||row.sourceId}>
-  <strong>{row.name}</strong><small>{row.tier==='Featured'?'Primary':row.tier}{row.regions.length&&!unresolved?` · ${row.regions.join(' · ')}`:''}</small>
-  {row.reviewReason?<p className="spn-explorer__notice">{row.reviewReason}. V15 suggests {row.vitrine}; current {row.currentStatus.toLowerCase()}{row.currentVitrine?` destination ${row.currentVitrine}`:''}.</p>:null}
-  <details><summary>Source and placement details</summary><p>Source-reported location: {row.sourceVitrine?`Vitrine ${row.sourceVitrine}${row.sourceShelf?` · Shelf ${row.sourceShelf}`:''}`:'Not recorded'}.</p>
-   <p>V15 proposed destination: Vitrine {row.vitrine}. {unresolved?'Separate lower display; identity remains under review.':'Principal anchors first, then secondary saints and close families.'}</p>
-   {row.currentVitrine?<p>Current saved {row.currentStatus.toLowerCase()} destination: {row.currentVitrine}{row.currentShelf?` · ${row.currentShelf}`:''}.</p>:null}
-   {!row.baseline?<p>No working placement was present at the source snapshot. This remains a source-level proposal.</p>:null}
-   <p className="muted">{sourceIds.some(Boolean)?`Source records: ${sourceIds.filter(Boolean).join(', ')}.`:'No linked source observation; footprint unknown.'} {row.allocationKind}.</p></details>
- </li>)}</ul>;}
- return <section className="spn-explorer admin-stack" aria-label="SPN room proposal explorer">
-  <header className="museum-planning-heading"><p className="eyebrow">Explore the proposed room</p><h2>Related saints, together</h2><p>Select a vitrine to see its main families, primary saints and the connections behind its position.</p></header>
-  <div className="spn-explorer__toolbar"><label>Proposal<select value={proposal.version} onChange={()=>{}}><option value={proposal.version}>{proposal.title}</option></select></label>
-   <label>Find a saint or section<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Name, section or vitrine"/></label>
-   <label>Highlight<select value={lens} onChange={e=>setLens(e.target.value)}><option value="all">All vitrines</option><option value="primary">Primary saints</option><option value="review">Identity under review</option><option value="flexible">Potential flexible space</option></select></label>
-  </div>
-  <p className="muted">Proposal only · Current curator destinations are retained. Display bands are suggestions, not numbered shelves or confirmed moves.</p>
-  {changed.length?<details className="spn-explorer__notice"><summary>{changed.length} proposal entries have current-record differences</summary><p>Current names, tiers, region tags and saved destinations take precedence. Review these differences before moving anything. Space cues are withheld in affected vitrines.</p><ul>{changed.map(r=><li key={r.sourceId||r.saintId}><button type="button" className="museum-saint-link" onClick={()=>choose(r.effectiveVitrine)}>{r.name} · {r.reviewReason}</button></li>)}</ul></details>:null}
-  {query?<div className="spn-explorer__results" aria-live="polite">{matches.size?proposal.layout.vitrines.filter(v=>matches.has(v.number)).map(v=><button type="button" key={v.number} className="museum-admin-button museum-admin-button--secondary" onClick={()=>choose(v.number)}>Vitrine {v.number}</button>):<p>No proposal entries match your search.</p>}</div>:null}
-  <div className="spn-explorer__workspace" data-portrait={portrait}>
-   <div className="museum-admin-panel spn-explorer__map-panel">
-    <div className="spn-explorer__map-heading"><div><p className="eyebrow">Proposed arrangement</p><h3>The whole room</h3></div><div className="spn-explorer__turn" role="group" aria-label="Rotate room view"><button type="button" className="museum-admin-button museum-admin-button--secondary" aria-label="Turn view anticlockwise" onClick={()=>{setDirection((direction+3)%4);setHover(null);}}><RotateCcw size={18}/></button><span aria-live="polite"><small>Cave</small>{view.label}</span><button type="button" className="museum-admin-button museum-admin-button--secondary" aria-label="Turn view clockwise" onClick={()=>{setDirection((direction+1)%4);setHover(null);}}><RotateCw size={18}/></button></div></div>
-    <div className="spn-explorer__legend"><span><HelpCircle size={15}/> Identity under review</span><span><MoveHorizontal size={15}/> Potential flexible space</span><span><i className="spn-explorer__bridge-dot"/> Key bridge</span><span>* Provisional number</span></div>
-    <svg className="spn-explorer__map" viewBox={portrait?'0 -60 470 860':'-100 0 940 470'} role="group" aria-label={`SPN proposed room, Babaji Cave ${view.label.toLowerCase()}`} onKeyDown={e=>{if(e.key==='Escape')setHover(null);}}>
-     <g transform={view.transform}><path className="spn-explorer__room" d="M32 432V105H440V20H704V432Z"/>
-      {proposal.layout.vitrines.map(v=>{
-       const a=proposal.assignments.find(item=>item.number===v.number),i=proposal.indicators.find(item=>item.vitrine===v.number),g=geometry(v);
-       const review=!!i?.hasUnresolvedHoldings||rows.some(r=>r.effectiveVitrine===v.number&&r.unresolved);
-       const flex=showFlexibleSpace(v.number,!!i?.potentialFlexibleSpace,changedCases.has(v.number));
-       const primary=rows.some(r=>r.effectiveVitrine===v.number&&rank(r.tier)===0);
-       const dim=(!!query&&!matches.has(v.number))||(lens==='primary'&&!primary)||(lens==='review'&&!review)||(lens==='flexible'&&!flex);
-       const bridges=bridgeDrivers.filter(d=>d.places.map(String).includes(v.number));
-       return <g key={v.number} role="button" tabIndex={0} aria-pressed={selected===v.number} aria-label={`Vitrine ${v.number}, ${a?.subsection??'Future space'}${review?', identity under review':''}${flex?', potential flexible space':''}`} className="spn-explorer__case" data-region={a?.group??'R'} data-selected={selected===v.number} data-dim={dim} data-future={v.availability==='future'} onClick={()=>choose(v.number)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose(v.number);}}} onPointerEnter={e=>{if(e.pointerType!=='touch')setHover(v.number);}} onPointerLeave={()=>setHover(null)} onFocus={()=>setHover(v.number)} onBlur={()=>setHover(null)}>
-        <rect x={g.x} y={g.y} width={g.w} height={g.h} rx={3}/><g transform={`rotate(${-view.angle} ${g.x+g.w/2} ${g.y+g.h/2})`}><text x={g.x+g.w/2} y={g.y+g.h/2} dominantBaseline="central">{v.number}{v.provisional?'*':''}</text>
-         <text className="spn-explorer__map-indicator" x={g.x+g.w/2} y={g.y+g.h/2+10}>{review?'? ':''}{flex?'↔':''}</text></g>{bridges.length?<circle className="spn-explorer__map-bridge" cx={g.x+g.w-5} cy={g.y+5} r={2}/>:null}
-       </g>;
-      })}</g>
-     <text className="spn-explorer__landmark" x={view.cave[0]} y={view.cave[1]}>{view.arrow}<tspan x={view.cave[0]} dy={18}>Babaji Cave</tspan></text><text className="spn-explorer__landmark" x={view.entry[0]} y={view.entry[1]}>{view.back}<tspan x={view.entry[0]} dy={18}>Entrance</tspan></text>
-    </svg>
-    <div className="spn-explorer__hover" aria-live="polite">{hover?<><p className="eyebrow">Vitrine {hover}</p><strong>{hoverAssignment?.subsection??'Future space · unavailable'}</strong>{hoverPrimaries.length?<p>{hoverPrimaries.join(' · ')}</p>:null}<small>{proposal.drivers.find(d=>d.places.map(String).includes(hover))?.connection??'Select to explore this vitrine.'}</small></>:<p className="muted">Point to a vitrine for a quick preview, or select it for details.</p>}</div>
-    <details><summary>How to read the space cues</summary><p>Five recorded source-shelf shares is a historical comparison reference, not measured capacity. “Potential flexible space” means at least one comparison share of headroom. Unknown-size records are not empty space. Lower-review holdings are already included in the total.</p><p>Layout is schematic. Verify object fit, large objects and display heights in the room.</p></details>
-   </div>
-   <aside className="museum-admin-panel spn-explorer__inspector" aria-label="Selected vitrine details">
-    <p className="eyebrow">{assignment?.region??'Future space'}</p><h2>Vitrine {selected}</h2><h3>{assignment?.subsection??'Not available for this reorganization'}</h3>
-    <div className="spn-explorer__badges">{hasReview?<span><HelpCircle size={16}/> Identity under review · lower display</span>:null}{showFlexibleSpace(selected,!!indicator?.potentialFlexibleSpace,changedCases.has(selected))?<span><MoveHorizontal size={16}/> Potential flexible space</span>:null}</div>
-    {indicator?.flexibleSpaceExclusion?<p className="spn-explorer__notice">{indicator.flexibleSpaceExclusion}</p>:null}{indicator?.specialFitNote?<p>{indicator.specialFitNote}</p>:null}
-    {indicator&&indicator.unknownShelfSourceObservationCount>0?<p className="spn-explorer__notice">Fit check needed · {indicator.unknownShelfSourceObservationCount} source observations have no measured footprint.</p>:null}
-    {contents.some(c=>!c.row.sourceId)?<p className="spn-explorer__notice">This vitrine also includes named placements without a linked source observation. Their footprint needs checking.</p>:null}
-    {indicator?.potentialFlexibleSpace&&selected==='4'?<p>Any flexibility here is reserved for the Sai / Meher group.</p>:null}
-    {indicator?<p className="muted">V15 estimate: {indicator.totalObservedShelfShares.toFixed(2)} recorded shelf shares, including lower-review holdings.{changedCases.has(selected)?' Current-record changes require a fresh fit review.':''}</p>:null}
-    <h4>Main families and saints</h4>{contentList(false)}{!contents.some(c=>!c.row.unresolved)?<p>No named main-display entries in this proposal. This does not establish that the vitrine is empty.</p>:null}
-    {hasReview?<details className="spn-explorer__review"><summary>Identity under review · {contents.filter(c=>c.row.unresolved).length} named / source entries</summary><p>Keep these in a separate lower display. Their placement does not assign the host region or lineage, or resolve their identity.</p>{contentList(true)}</details>:null}
-    {drivers.length?<section><h4><GitBranch size={17}/> Why these neighbours?</h4>{drivers.map((d,i)=><details key={i}><summary>{d.connection}</summary><p>{d.reason}</p><div className="spn-explorer__results">{d.places.map(n=><button type="button" key={n} className="museum-admin-button museum-admin-button--secondary" onClick={()=>choose(String(n))}>{n}</button>)}</div></details>)}</section>:null}
-   </aside>
-  </div>
+ <div className="toolbar"><form role="search" onSubmit={e => { e.preventDefault(); if (results[0])
+        choose(results[0].caseEnvelope[0]); }}><label htmlFor="search">Find a saint or section</label><div className="search-wrap"><Search size={17}/><input id="search" type="search" value={query} onChange={e => setQuery(e.target.value)} placeholder="Try Yogananda, Varkari, or Sikh…" autoComplete="off"/></div></form><p className="caption"><b>82</b> available vitrines <span>·</span> <b>3</b> future spaces excluded <span>·</span> <b>{primary.length}</b> primary saints</p></div>
+ {queryLower ? <section className="panel results" aria-label="Search results"><p className="eyebrow">Matching areas in this proposal</p>{sectionResults.map((p, i) => <button className="result" key={i} onClick={() => { choose(p.cases[0]); setQuery(''); }}><span><b>{p.label}</b><small>{regions[p.group]}</small></span><span className="caption">{p.cases.map(n => 'V' + n).join(', ')}</span></button>)}{!sectionResults.length ? <p className="caption">No matching areas in this proposal.</p> : null}<p role="status">{results.length} matching saints · Current baseline</p>{results.slice(0, 12).map(s => <button className="result" key={s.saintId} onClick={() => { setProposalId(baseline.id); if (comparisonId === baseline.id)
+        setComparisonId('archived-earlier'); choose(s.caseEnvelope[0]); setQuery(''); }}><span><b>{s.name}</b><small>{s.tier} · {s.recommendedRegion}</small></span><span className="caption">{s.caseEnvelope.map(n => 'V' + n).join(', ')} <ArrowRight size={15}/></span></button>)}{!results.length ? <p>No matching saints. Try a shorter name or section.</p> : null}{results.length > 12 ? <p className="caption">Showing 12 matches. Add a name to narrow your search.</p> : null}</section> : null}
+ {compare ? <details className="panel comparison" open><summary>{changed.length} vitrines have a different proposed allocation</summary><p className="caption">Comparison of research layouts, not a count of relic moves.</p><div className="change-list">{changed.map(a => <button key={a.number} onClick={() => choose(a.number)}><b>V{a.number}</b><span>{comparison.option.assignments.find(b => b.number === a.number)?.subsection}</span><ArrowRight size={15}/><span>{a.subsection}</span></button>)}</div></details> : null}
+ <div className="workspace room-first" data-orientation={caveDirection}><div className="map-column"><Map />{lens === 'connections' ? <section className="panel connection-index"><p className="eyebrow">Placement rationale</p><h2>Connections & arrangement guidance</h2>{option.drivers.map((d, i) => <button key={i} aria-pressed={driver === i} onClick={() => { setSelected(String(d.places[0])); setDriver(i); }}><GitBranch size={17}/><span>{d.connection}<small>{d.places.map(n => 'V' + n).join(' · ')}</small></span><ArrowRight size={16}/></button>)}</section> : null}</div><Inspector /></div>
+ <details className="panel checks"><summary>Practical checks before this becomes a move plan</summary><p>{option.largeObjects.note}</p><p>{option.largeObjects.fallback}</p><ul>{option.tradeoffs.map(t => <li key={t}>{t}</li>)}</ul><p>Areas reserve space for families and sections. Confirm dimensions, source attribution, and individual relic destinations before implementation. Saint tiers are from the supplied inventory snapshot; research placements do not edit those records.</p></details>
  </section>;
 }
