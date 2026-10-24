@@ -487,7 +487,7 @@
   {
     "selector": ":root",
     "name": "--shadow-interactive",
-    "value": "0 0 0 1px color-mix(in srgb, var(--color-accent) 16%, transparent),\r\n    0 5px 14px color-mix(in srgb, var(--color-gold) 18%, transparent)"
+    "value": "0 0 0 1px color-mix(in srgb, var(--color-accent) 16%, transparent),\n    0 5px 14px color-mix(in srgb, var(--color-gold) 18%, transparent)"
   },
   {
     "selector": ":root",
@@ -1452,7 +1452,7 @@
   {
     "selector": "[data-theme=\"watercolor\"]",
     "name": "--shadow-interactive",
-    "value": "0 0 0 1px color-mix(in srgb, var(--color-accent) 17%, transparent),\r\n    0 5px 14px color-mix(in srgb, var(--color-gold) 20%, transparent)"
+    "value": "0 0 0 1px color-mix(in srgb, var(--color-accent) 17%, transparent),\n    0 5px 14px color-mix(in srgb, var(--color-gold) 20%, transparent)"
   },
   {
     "selector": "[data-theme=\"watercolor\"]",
@@ -1562,7 +1562,7 @@
   {
     "selector": "[data-theme=\"nocturne\"]",
     "name": "--shadow-soft",
-    "value": "0 0 0 1px rgba(0, 0, 0, 0.2),\r\n    0 4px 10px rgba(0, 0, 0, 0.26)"
+    "value": "0 0 0 1px rgba(0, 0, 0, 0.2),\n    0 4px 10px rgba(0, 0, 0, 0.26)"
   },
   {
     "selector": "[data-theme=\"nocturne\"]",
@@ -1572,7 +1572,7 @@
   {
     "selector": "[data-theme=\"nocturne\"]",
     "name": "--shadow-interactive",
-    "value": "0 0 0 1px color-mix(in srgb, var(--color-accent-strong) 32%, transparent),\r\n    0 0 10px color-mix(in srgb, var(--color-gold) 18%, transparent),\r\n    0 5px 12px rgba(0, 0, 0, 0.3)"
+    "value": "0 0 0 1px color-mix(in srgb, var(--color-accent-strong) 32%, transparent),\n    0 0 10px color-mix(in srgb, var(--color-gold) 18%, transparent),\n    0 5px 12px rgba(0, 0, 0, 0.3)"
   },
   {
     "selector": "[data-theme=\"nocturne\"]",
@@ -1787,7 +1787,7 @@
   {
     "selector": "[data-theme=\"temple\"]",
     "name": "--shadow-interactive",
-    "value": "0 0 0 1px color-mix(in srgb, var(--color-accent-strong) 32%, transparent),\r\n    0 0 12px color-mix(in srgb, var(--color-gold) 20%, transparent),\r\n    0 6px 16px color-mix(in srgb, var(--color-gold) 11%, transparent)"
+    "value": "0 0 0 1px color-mix(in srgb, var(--color-accent-strong) 32%, transparent),\n    0 0 12px color-mix(in srgb, var(--color-gold) 20%, transparent),\n    0 6px 16px color-mix(in srgb, var(--color-gold) 11%, transparent)"
   },
   {
     "selector": "[data-theme=\"temple\"]",
