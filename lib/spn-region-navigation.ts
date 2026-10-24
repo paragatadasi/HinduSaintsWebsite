@@ -6,7 +6,7 @@ export const SPN_REGION_GROUPS = [
     "title": "Himalaya & the North",
     "eyebrow": "Region",
     "badge": "01",
-    "summary": "Related traditions, with existing families kept together.",
+    "summary": "Browse related traditions and their existing section proposals.",
     "sections": [
       "Rishikesh-Haridwar & Himalayan Monastic Lineages"
     ]
@@ -15,7 +15,7 @@ export const SPN_REGION_GROUPS = [
     "title": "Sikh Gurus & Udasin",
     "eyebrow": "Region",
     "badge": "02",
-    "summary": "Related traditions, with existing families kept together.",
+    "summary": "Browse related traditions and their existing section proposals.",
     "sections": [
       "Sikh & Punjab Traditions",
       "Udasin Saints"
@@ -25,7 +25,7 @@ export const SPN_REGION_GROUPS = [
     "title": "Braj & the Ganga",
     "eyebrow": "Region",
     "badge": "03",
-    "summary": "Related traditions, with existing families kept together.",
+    "summary": "Browse related traditions and their existing section proposals.",
     "sections": [
       "Gaudiya Vaishnava",
       "Ramanandi",
@@ -38,7 +38,7 @@ export const SPN_REGION_GROUPS = [
     "title": "Bengal, Odisha & the East",
     "eyebrow": "Region",
     "badge": "04",
-    "summary": "Related traditions, with existing families kept together.",
+    "summary": "Browse related traditions and their existing section proposals.",
     "sections": [
       "Jagannath-Puri & Odisha",
       "Bengal Shakta, Baul & Modern Saints",
@@ -49,7 +49,7 @@ export const SPN_REGION_GROUPS = [
     "title": "Maharashtra & the West",
     "eyebrow": "Region",
     "badge": "05",
-    "summary": "Related traditions, with existing families kept together.",
+    "summary": "Browse related traditions and their existing section proposals.",
     "sections": [
       "Varkari",
       "Datta Tradition",
@@ -62,7 +62,7 @@ export const SPN_REGION_GROUPS = [
     "title": "The South",
     "eyebrow": "Region",
     "badge": "06",
-    "summary": "Related traditions, with existing families kept together.",
+    "summary": "Browse related traditions and their existing section proposals.",
     "sections": [
       "Ramana & Arunachala",
       "Sri Vaishnava & South Indian Vaishnava Traditions",
