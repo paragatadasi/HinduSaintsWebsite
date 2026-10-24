@@ -71,7 +71,7 @@ export async function loadDiagramLayoutsAction(){
 }
 async function changeDiagram(input:unknown,remove:boolean){
  await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");const user=await assertMuseumMutation();
- try{return {data:await (remove?deleteMuseumDiagramLayout:saveMuseumDiagramLayout)(input,user.id),error:""};}
+ try{const parsed=z.object({museumId:z.literal("museum-vrindavan")}).passthrough().parse(input);return {data:await (remove?deleteMuseumDiagramLayout:saveMuseumDiagramLayout)(parsed,user.id),error:""};}
  catch(error){if(error instanceof MuseumConflict)return {data:null,error:error.message};if(error instanceof z.ZodError)return {data:null,error:error.issues[0]?.message||"Check this diagram view."};throw error;}
 }
 export async function saveDiagramLayoutAction(input:unknown){return changeDiagram(input,false);}

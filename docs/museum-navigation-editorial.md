@@ -23,3 +23,20 @@ Workspace no longer advertises Placement review or Moves and relics. Source matc
 Museum Overview is the first SPN Workspace destination and the museum selector/sign-in landing route (`/museumadmin/overview`). Layout and Vitrine records are two views of this same route. Record filtering, pagination, clear-filters and vitrine deep links retain `view=records`; returning to Layout retains the selected vitrine. The existing `/museumadmin/plan` and `/museumadmin/locations` links redirect into the overview, with supported record filters retained. Section overview and its existing subsection URLs remain unchanged.
 
 The shared room layout component owns browsing and selection, not page navigation or a move workflow. Overview owns its title, statistics and view navigation. The curator questionnaire remains below the map, so the museum reference is the primary landing content. No new move execution controls are introduced. Existing access checks remain: layout/questionnaire require full catalogue access, records retain museum-access requirements. Vrindavan navigation and its move planner are unchanged.
+
+## SPN connections workspace
+
+Museum Overview remains the first Workspace destination. Plan the move follows it
+for curators with full catalogue access and starts with Connected traditions.
+The shared museum graph uses the same regional colors across museums (matched by
+region name, not catalogue order); supplementary context uses the gold accent.
+
+SPN offers Original connections plus named, shared saved diagram views. Selecting,
+moving, saving or deleting diagram positions never changes physical placements,
+source bindings, families or saint relationships. Save actions are scoped to the
+museum, authenticated and revision-checked. Vrindavan retains its additional
+Current museum proposal view and its existing saved arrangements.
+
+SPN section details use current catalogue counts and precisely typed named
+relationships. Contextual guidance and visits are not rendered as initiating
+lineage. Held research candidates are excluded from the interactive relationships.

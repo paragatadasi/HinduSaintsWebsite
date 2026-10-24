@@ -1,4 +1,5 @@
 "use server";
+import {readMuseumDiagramLayouts,saveMuseumDiagramLayout,deleteMuseumDiagramLayout} from "@/lib/museum-diagram-layouts";
 import {z} from "zod";
 import {revalidatePath} from "next/cache";
 import {assertCapability} from "@/lib/admin-access";
@@ -35,3 +36,17 @@ export async function loadSpnCandidateAction(raw: unknown) {
   if (!item || item.revision !== input.revision || !item.candidates.some(s => s.id === input.saintId)) throw new MuseumConflict("The comparison record changed. Reload the questions.");
   return (await readMuseumSaintProfiles([input.saintId]))[input.saintId] ?? null;
 }
+
+export async function loadSpnDiagramLayoutsAction(){
+ const user=await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");
+ return readMuseumDiagramLayouts("museum-spn",user.id);
+}
+async function changeSpnDiagram(input:unknown,remove:boolean){
+ await checkReadAccess();const user=await assertMuseumMutation();
+ try{
+  const parsed=z.object({museumId:z.literal("museum-spn")}).passthrough().parse(input);
+  return {data:await (remove?deleteMuseumDiagramLayout:saveMuseumDiagramLayout)(parsed,user.id),error:""};
+ }catch(error){if(error instanceof MuseumConflict)return {data:null,error:error.message};if(error instanceof z.ZodError)return {data:null,error:error.issues[0]?.message||"Check this diagram view."};throw error;}
+}
+export async function saveSpnDiagramLayoutAction(input:unknown){return changeSpnDiagram(input,false);}
+export async function deleteSpnDiagramLayoutAction(input:unknown){return changeSpnDiagram(input,true);}

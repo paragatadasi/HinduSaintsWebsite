@@ -11955,3 +11955,9 @@ select:not([multiple]) {
 
 .museum-navigation[data-museum="spn"] [data-tone="06"] { --navigation-region:var(--color-museum-navigation-spn-6); }
 .museum-navigation[data-museum="vrindavan"] [data-tone="06"] { --navigation-region:var(--color-museum-region-6); }
+
+/* Connection research uses the shared museum surfaces and regional palette. */
+[data-region="-1"] { --region-color:var(--color-accent); }
+.museum-connection-detail { margin-top:var(--space-6); }
+.museum-connection-detail__relationship { border-top:1px solid var(--color-border); padding-block:var(--space-4); }
+.museum-connection-detail__relationship h4 { margin:0; font-family:var(--font-serif); }

@@ -1,0 +1,2421 @@
+{
+  "version": "spn-connected-traditions-2026-10-24-v3",
+  "museumId": "museum-spn",
+  "snapshotGeneratedAt": "2026-10-24T14:06:01.925Z",
+  "regions": [
+    {
+      "regionName": "Himalaya & the North",
+      "regionSlug": "himalaya-and-the-north",
+      "subsections": [
+        {
+          "name": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+          "existingSlug": "rishikesh-haridwar-himalayan-monastic-lineages",
+          "count": 78
+        }
+      ]
+    },
+    {
+      "regionName": "Sikh Gurus & Udasin",
+      "regionSlug": "sikh-gurus-and-udasin",
+      "subsections": [
+        {
+          "name": "Sikh & Punjab Traditions",
+          "existingSlug": "sikh-punjab-traditions",
+          "count": 34
+        },
+        {
+          "name": "Udasin Saints",
+          "existingSlug": "udasin-saints",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "regionName": "Braj & the Ganga",
+      "regionSlug": "braj-and-the-ganga",
+      "subsections": [
+        {
+          "name": "Gaudiya Vaishnava",
+          "existingSlug": "gaudiya-vaishnava",
+          "count": 120
+        },
+        {
+          "name": "Ramanandi",
+          "existingSlug": "ramanandi",
+          "count": 34
+        },
+        {
+          "name": "Rama & Avadh",
+          "existingSlug": "rama-avadh",
+          "count": 48
+        },
+        {
+          "name": "Braj & Krishna Bhakti",
+          "existingSlug": "braj-krishna-bhakti",
+          "count": 124
+        },
+        {
+          "name": "Kashi & Ascetic Lineages",
+          "existingSlug": "kashi-ascetic-lineages",
+          "count": 81
+        }
+      ]
+    },
+    {
+      "regionName": "Bengal, Odisha & the East",
+      "regionSlug": "bengal-odisha-and-the-east",
+      "subsections": [
+        {
+          "name": "Jagannath-Puri & Odisha",
+          "existingSlug": "jagannath-puri-odisha",
+          "count": 35
+        },
+        {
+          "name": "Bengal Shakta, Baul & Modern Saints",
+          "existingSlug": "bengal-shakta-baul-modern-saints",
+          "count": 75
+        },
+        {
+          "name": "Buddhist Saints",
+          "existingSlug": "buddhist-saints",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "regionName": "Maharashtra & the West",
+      "regionSlug": "maharashtra-and-the-west",
+      "subsections": [
+        {
+          "name": "Varkari",
+          "existingSlug": "varkari",
+          "count": 43
+        },
+        {
+          "name": "Datta Tradition",
+          "existingSlug": "datta-tradition",
+          "count": 34
+        },
+        {
+          "name": "Girnar & Nath Traditions",
+          "existingSlug": "girnar-nath-traditions",
+          "count": 94
+        },
+        {
+          "name": "Maharashtra Guru Lineages",
+          "existingSlug": "maharashtra-guru-lineages",
+          "count": 118
+        },
+        {
+          "name": "Gujarat & Swaminarayan Traditions",
+          "existingSlug": "gujarat-swaminarayan-traditions",
+          "count": 164
+        }
+      ]
+    },
+    {
+      "regionName": "The South",
+      "regionSlug": "the-south",
+      "subsections": [
+        {
+          "name": "Ramana & Arunachala",
+          "existingSlug": "ramana-arunachala",
+          "count": 7
+        },
+        {
+          "name": "Sri Vaishnava & South Indian Vaishnava Traditions",
+          "existingSlug": "sri-vaishnava-south-indian-vaishnava-traditions",
+          "count": 46
+        },
+        {
+          "name": "Shaiva Siddhanta & Tamil Traditions",
+          "existingSlug": "shaiva-siddhanta-tamil-traditions",
+          "count": 39
+        },
+        {
+          "name": "Andhra Avadhuta & Datta-Advaita Lineages",
+          "existingSlug": "andhra-avadhuta-datta-advaita-lineages",
+          "count": 50
+        }
+      ]
+    },
+    {
+      "regionName": "Bhakti Marga & Global Context",
+      "regionSlug": "context",
+      "subsections": [
+        {
+          "name": "Bhakti Marga & Mauritius Lineage",
+          "existingSlug": "bhakti-marga-mauritius-lineage",
+          "count": 11
+        },
+        {
+          "name": "Global & Diaspora Lineages",
+          "existingSlug": "global-diaspora-lineages",
+          "count": 4
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "Sikh & Punjab Traditions",
+      "target": "Udasin Saints",
+      "kind": "documented",
+      "rationale": "Sri Chand provides an historical connection; retain separate tradition identities.",
+      "sourceKeys": [
+        "udasi"
+      ],
+      "origin": "Previously researched tradition bridge; evaluated for SPN interpretation",
+      "priorityBoundary": false
+    },
+    {
+      "source": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "target": "Kashi & Ascetic Lineages",
+      "kind": "curatorial",
+      "rationale": "Follow the upper-Ganga to Kashi ascetic corridor; keep Kriya together where reviewed and cross-reference its eastern locations.",
+      "sourceKeys": [
+        "kriya"
+      ],
+      "origin": "Previously researched tradition bridge; evaluated for SPN interpretation",
+      "priorityBoundary": false
+    },
+    {
+      "source": "Braj & Krishna Bhakti",
+      "target": "Gaudiya Vaishnava",
+      "kind": "documented",
+      "rationale": "Goswami/Vrindavan anchors move naturally from Braj’s wider devotional landscape into Gaudiya history.",
+      "sourceKeys": [
+        "chaitanya"
+      ],
+      "origin": "Previously researched tradition bridge; evaluated for SPN interpretation",
+      "priorityBoundary": false
+    },
+    {
+      "source": "Gaudiya Vaishnava",
+      "target": "Jagannath-Puri & Odisha",
+      "kind": "documented",
+      "rationale": "Chaitanya’s Puri life and the Vrindavan Goswamis connect these displays. Keep the Gaudiya–Puri boundary easy to cross when choosing neighbouring display areas.",
+      "sourceKeys": [
+        "chaitanya",
+        "southtour"
+      ],
+      "origin": "Previously researched tradition bridge; evaluated for SPN interpretation",
+      "priorityBoundary": true
+    },
+    {
+      "source": "Shaiva Siddhanta & Tamil Traditions",
+      "target": "Ramana & Arunachala",
+      "kind": "documented",
+      "rationale": "Ramana’s early reading of the Periyapuranam, the lives of the Tamil Shaiva saints, stirred his devotion and renunciation. A nearby Tamil-saints display gives visitors this formative context.",
+      "sourceKeys": [
+        "ramana-tamil"
+      ],
+      "origin": "Previously researched tradition bridge; evaluated for SPN interpretation",
+      "priorityBoundary": false
+    },
+    {
+      "source": "Andhra Avadhuta & Datta-Advaita Lineages",
+      "target": "Datta Tradition",
+      "kind": "documented",
+      "rationale": "Narasimha Saraswati’s Karnataka–Maharashtra sacred geography connects southern and western Datta displays. Place related branches nearby while retaining their separate guru lines.",
+      "sourceKeys": [
+        "datta",
+        "ganagapur"
+      ],
+      "origin": "Previously researched tradition bridge; evaluated for SPN interpretation",
+      "priorityBoundary": true
+    },
+    {
+      "source": "Datta Tradition",
+      "target": "Maharashtra Guru Lineages",
+      "kind": "curatorial",
+      "rationale": "Continue into Maharashtra’s connected guru settings; use only reviewed named relationships, not an all-saints Datta umbrella.",
+      "sourceKeys": [],
+      "origin": "Previously researched tradition bridge; evaluated for SPN interpretation",
+      "priorityBoundary": false
+    },
+    {
+      "source": "Maharashtra Guru Lineages",
+      "target": "Varkari",
+      "kind": "curatorial",
+      "rationale": "Maharashtra’s guru communities and the Pandharpur/Vitthal devotional communities can be useful neighbours. The more specific Tukaram–Bahinabai–Jagnade group is documented historically, but its exact SPN Tukaram record binding is still being reconciled.",
+      "sourceKeys": [],
+      "origin": "Previously researched tradition bridge; evaluated for SPN interpretation",
+      "priorityBoundary": false
+    },
+    {
+      "source": "Varkari",
+      "target": "Girnar & Nath Traditions",
+      "kind": "documented",
+      "rationale": "Dnyaneshwar/Nivrittinath’s Nath context offers a specific bridge toward Nath material; no claim that all Varkaris are Nath or directly connected to all Girnar saints.",
+      "sourceKeys": [
+        "nath"
+      ],
+      "origin": "Previously researched tradition bridge; evaluated for SPN interpretation",
+      "priorityBoundary": false
+    },
+    {
+      "source": "Gaudiya Vaishnava",
+      "target": "Sri Vaishnava & South Indian Vaishnava Traditions",
+      "kind": "documented",
+      "rationale": "Chaitanya’s Srirangam stay and Gopala Bhatta’s southern background form a named biographical bridge, not a common initiating lineage for these entire subsections.",
+      "sourceKeys": [
+        "chaitanya",
+        "southtour"
+      ],
+      "origin": "Previously researched tradition bridge; evaluated for SPN interpretation",
+      "priorityBoundary": false
+    },
+    {
+      "source": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "target": "Global & Diaspora Lineages",
+      "kind": "documented",
+      "rationale": "Sivananda’s disciple Sahajananda carried Divine Life Society service into South Africa. SPN holds records for both. A neighbouring display or cross-reference can show how this Himalayan teaching community became an international service network.",
+      "sourceKeys": [
+        "sahajananda-spn"
+      ],
+      "priorityBoundary": true,
+      "origin": "SPN research pass, 24 October 2026"
+    },
+    {
+      "source": "Bengal Shakta, Baul & Modern Saints",
+      "target": "Ramana & Arunachala",
+      "kind": "documented",
+      "rationale": "Dilip Kumar Roy, represented in SPN’s Bengal group, wrote a first-person account of visiting Ramana in 1945. This is a personal encounter linking two displays; preserve his own teaching relationship with Sri Aurobindo separately.",
+      "sourceKeys": [
+        "dilip-ramana"
+      ],
+      "priorityBoundary": false,
+      "origin": "SPN research pass, 24 October 2026"
+    },
+    {
+      "source": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "target": "Bengal Shakta, Baul & Modern Saints",
+      "kind": "documented",
+      "rationale": "Mahendranath Gupta, Ramakrishna’s disciple and recorder, personally guided the young Yogananda, as Yogananda recounts in his autobiography. Put the M. end of the Ramakrishna group toward the Kriya display. Anandamayi Ma’s meeting with Yogananda offers another named connection.",
+      "sourceKeys": [
+        "anandamayi-spn",
+        "m-yogananda-spn"
+      ],
+      "priorityBoundary": true,
+      "origin": "SPN research pass, 24 October 2026"
+    },
+    {
+      "source": "Andhra Avadhuta & Datta-Advaita Lineages",
+      "target": "Maharashtra Guru Lineages",
+      "kind": "documented",
+      "rationale": "Keep the Sai connections together. Kaleshwar’s reported visionary guidance from Shirdi Sai provides context for the connections between the southern and western displays.",
+      "sourceKeys": [],
+      "priorityBoundary": true,
+      "origin": "SPN research pass, 24 October 2026"
+    },
+    {
+      "source": "Bhakti Marga & Mauritius Lineage",
+      "target": "Global & Diaspora Lineages",
+      "kind": "curatorial",
+      "rationale": "Use this shared context area to introduce international spiritual communities. Keep each community identifiable; place confirmed Bhakti Marga members together. This is a proposed display adjacency.",
+      "sourceKeys": [],
+      "priorityBoundary": false,
+      "origin": "SPN research pass, 24 October 2026"
+    },
+    {
+      "source": "Maharashtra Guru Lineages",
+      "target": "Ramana & Arunachala",
+      "kind": "documented",
+      "rationale": "Sadhu Vaswani and Dada J. P. Vaswani visited Ramana together in 1939. Keep the teacher–disciple pair together and use their meeting with Ramana to connect the two display areas.",
+      "sourceKeys": [
+        "vaswani-ramana-spn"
+      ],
+      "priorityBoundary": true,
+      "origin": "SPN expansion, 24 October 2026"
+    },
+    {
+      "source": "Gaudiya Vaishnava",
+      "target": "Bengal Shakta, Baul & Modern Saints",
+      "kind": "documented",
+      "rationale": "Keep Omkarnath’s immediate lineage coherent in the East; retain cross-tradition context. His relationship with Parankush Ramanuj is a named guru–disciple connection, not a reason to divide the family between displays.",
+      "sourceKeys": [
+        "jaiguru-spn"
+      ],
+      "priorityBoundary": true,
+      "origin": "SPN expansion, 24 October 2026"
+    }
+  ],
+  "sources": [
+    {
+      "key": "udasi",
+      "title": "The Encyclopaedia of Sikhism: Udasi",
+      "url": "https://www.thesikhencyclopedia.com/udasi/",
+      "kind": "Scholarly reference",
+      "supports": "Sri Chand and the historical Udasi connection to the Sikh setting; adjacency does not equate traditions."
+    },
+    {
+      "key": "kriya",
+      "title": "Self-Realization Fellowship: lineage and leadership",
+      "url": "https://yogananda.org/lineage-and-leadership",
+      "kind": "Lineage institution",
+      "supports": "Babaji–Lahiri–Yukteswar–Yogananda links explain the cross-regional Kriya thread; no new membership certified."
+    },
+    {
+      "key": "chaitanya",
+      "title": "ISKCON News: Gopala Bhatta Goswami’s gifts",
+      "url": "https://iskconnews.org/hi/gopala-bhatta-goswamis-gifts-to-the-vaishnava-community/",
+      "kind": "Lineage institution",
+      "supports": "Gopala Bhatta’s Vrindavan life and Chaitanya/Srirangam/Puri connections support a Vaishnava bridge."
+    },
+    {
+      "key": "southtour",
+      "title": "Sri Chaitanya Mahaprabhu, lineage biography",
+      "url": "https://www.srilapurimaharaja.org/books/Sri_Chaitanya_Mahaprabhu.pdf",
+      "kind": "Lineage account of traditional biography",
+      "supports": "Chaitanya’s Srirangam stay and Gopala Bhatta provide a Puri–South cross-reference. Does not make every southern tradition Gaudiya."
+    },
+    {
+      "key": "aurobindo",
+      "title": "Sri Aurobindo Ashram: The Mother",
+      "url": "https://www.sriaurobindoashram.org/mother/",
+      "kind": "Responsible institution",
+      "supports": "Mother and Sri Aurobindo’s common ashram context; modern eastern/southern mission cross-reference, not a Sri Vaishnava lineage claim."
+    },
+    {
+      "key": "dilip",
+      "title": "Mother India: correspondence with Dilip Kumar Roy",
+      "url": "https://www.sriaurobindoashram.org/journals/motherindia/issues/2022/4._Mother_India_April_2022.pdf",
+      "kind": "Ashram publication of primary correspondence",
+      "supports": "Dilip Kumar Roy’s Sri Aurobindo/Mother context supports the modern East–Puducherry cross-reference; not new display membership."
+    },
+    {
+      "key": "ramana",
+      "title": "Sri Ramanasramam: Life of Sri Ramana",
+      "url": "https://www.archive.arunachala.org/ramana/life/",
+      "kind": "Responsible institution",
+      "supports": "Arunachala and Advaita context; Shaiva/Tamil-to-Arunachala adjacency is comparative/sacred-geographic, not a teacher succession."
+    },
+    {
+      "key": "datta",
+      "title": "Vasudevanand Saraswati biography: householder period",
+      "url": "https://www.shrivasudevanandsaraswati.com/English/Householder.html",
+      "kind": "Lineage biography",
+      "supports": "Narasimha Saraswati and Narsobawadi context supports Datta’s western life-geography connections."
+    },
+    {
+      "key": "ganagapur",
+      "title": "Ganagapur Datta temple: festivals",
+      "url": "https://www.ganagapurdatta.com/festivals-at-ganagapur.html",
+      "kind": "Temple account of tradition",
+      "supports": "Narasimha Saraswati, Ganagapur and Srisailam traditional associations support a Karnataka–Maharashtra Datta bridge; no inferred links for every avadhuta."
+    },
+    {
+      "key": "nath",
+      "title": "Marathi Vishwakosh: Dnyaneshwari",
+      "url": "https://vishwakosh.marathi.gov.in/20299/",
+      "kind": "State scholarly encyclopaedia",
+      "supports": "Nivritti–Dnyaneshwar’s Nath context supports an interpretive Varkari-to-Nath bridge; it does not prove a relation to each Girnar saint."
+    },
+    {
+      "key": "gujarat",
+      "title": "BAPS: Gadhada",
+      "url": "https://www.baps.org/gadhada",
+      "kind": "Responsible institution",
+      "supports": "Gadhada/Gujarat institutional anchor; geographic adjacency to Girnar is editorial, not an initiatory relationship."
+    },
+    {
+      "key": "chinmaya-spn",
+      "title": "Chinmaya Mission: Sivananda initiation and Tapovan training",
+      "url": "https://www.chinmayamissionmumbai.com/chinmaya_pradeep/making_of_chinmaya_pradeep/concept-details"
+    },
+    {
+      "key": "sahajananda-spn",
+      "title": "South African Government: Sahajananda and Sivananda",
+      "url": "https://www.gov.za/af/news/s-ndebele-passing-away-sri-swami-sahajananda-10-dec-2007"
+    },
+    {
+      "key": "dilip-ramana",
+      "title": "Dilip Kumar Roy: How I Came to the Maharshi (Mountain Path, October 1964)",
+      "url": "https://realization.org/down/mountain-path/1-4.1964-Oct.pdf"
+    },
+    {
+      "key": "anandamayi-spn",
+      "title": "Anandamayi Sangha: meetings with saints",
+      "url": "https://www.anandamayi.org/meeting-with-saints-and-mahatmas-2/"
+    },
+    {
+      "key": "ramana-tamil",
+      "title": "Arunachala Ashrama: Ramana’s life and reading of Periyapuranam",
+      "url": "https://www.archive.arunachala.org/ramana/life/"
+    },
+    {
+      "key": "vaswani-ramana-spn",
+      "title": "Sri Ramanasramam: Vaswani pair visit, 1939",
+      "url": "https://pro.gururamana.org/search/m/pdf/MountainPath/full/MountainPath_2018_Oct.pdf"
+    },
+    {
+      "key": "jaiguru-spn",
+      "title": "Swami Parankush Sevak Sangha: Omkarnath as Parankush’s guru",
+      "url": "https://swami-parankush-sevak-sangha.org/"
+    },
+    {
+      "key": "m-yogananda-spn",
+      "title": "Yogananda: Master Mahasaya, Autobiography chapter 9",
+      "url": "https://www.ananda.org/autobiography/"
+    }
+  ],
+  "families": [
+    {
+      "from": {
+        "saintId": "cms0w7do501vq07qifzgeltqf",
+        "name": "Swami Akkalkot Maharaj"
+      },
+      "to": {
+        "saintId": "cms0w7isv086007qi2qits4uh",
+        "name": "Sri Balappa Maharaj"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Datta Tradition"
+      ],
+      "sources": [
+        {
+          "title": "Swami Samarth biography, Balappa chapter",
+          "url": "https://swamisamarth.com/wp-content/uploads/2017/02/SwamiSamarth.pdf#page=193"
+        },
+        {
+          "title": "Datta Peetham: Sripada and Narasimha Saraswati",
+          "url": "https://www.dattapeetham.org/page/view/datta-peetha-guru-parampara"
+        },
+        {
+          "title": "World Teacher Trust: traditional Datta manifestations",
+          "url": "https://sripada-srivallabha.org/en/web/datta/the_avatars"
+        },
+        {
+          "title": "Official Shri Datta Sansthan: Pant’s biography",
+          "url": "https://pantmaharaj.com/Pages/biography.html"
+        },
+        {
+          "title": "Official institution: Balavadhoot as Pant’s guru",
+          "url": "https://www.pantmaharaj.com/Pages/Literature.html"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7do501vq07qifzgeltqf",
+        "name": "Swami Akkalkot Maharaj"
+      },
+      "to": {
+        "saintId": "cms0w7ddu01ho07qi252m60nx",
+        "name": "Sri Krishna Saraswati Datt Maharaj"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Datta Tradition"
+      ],
+      "sources": [
+        {
+          "title": "Swami Samarth biography, Balappa chapter",
+          "url": "https://swamisamarth.com/wp-content/uploads/2017/02/SwamiSamarth.pdf#page=193"
+        },
+        {
+          "title": "Datta Peetham: Sripada and Narasimha Saraswati",
+          "url": "https://www.dattapeetham.org/page/view/datta-peetha-guru-parampara"
+        },
+        {
+          "title": "World Teacher Trust: traditional Datta manifestations",
+          "url": "https://sripada-srivallabha.org/en/web/datta/the_avatars"
+        },
+        {
+          "title": "Official Shri Datta Sansthan: Pant’s biography",
+          "url": "https://pantmaharaj.com/Pages/biography.html"
+        },
+        {
+          "title": "Official institution: Balavadhoot as Pant’s guru",
+          "url": "https://www.pantmaharaj.com/Pages/Literature.html"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7ivh088m07qi2bl8sj8b",
+        "name": "Sri Upasani Maharaj"
+      },
+      "to": {
+        "saintId": "cms0w7fz904v607qijuaa118u",
+        "name": "Sri Godavari Mata"
+      },
+      "type": "guru_disciple_and_institutional_successor",
+      "sections": [
+        "Maharashtra Guru Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Meher Baba Trust, introductory life sketch",
+          "url": "https://avatarmeherbabatrust.org/wp-content/uploads/2020/03/703665.pdf"
+        },
+        {
+          "title": "Meher Baba Pune Centre, biography",
+          "url": "https://mehercenterpune.org/meher-baba/who-is-meher-baba"
+        },
+        {
+          "title": "Sakori institution: Godavari’s discipleship and succession",
+          "url": "https://upasanigodama.in/SatiGodavariMataji"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7f0l03nb07qik1abxafl",
+        "name": "Sri Samarth Ramdas"
+      },
+      "to": {
+        "saintId": "cms0w7e7h02ky07qi6rjds61j",
+        "name": "Sri Vena Bai Swami"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Maharashtra Guru Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Marathi encyclopaedia: the Ramdasi tradition and Venabai",
+          "url": "https://vishwakosh.marathi.gov.in/31180/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": "Miraj/Kolhapur and the widowed-devotee biography support identity, but the record era 1628–1678 differs from raw birth 1627/samadhi 1700. No dates are corrected or displayed in the guide."
+    },
+    {
+      "from": {
+        "saintId": "cms0w7hr3070707qik220ydwi",
+        "name": "Sri Bhagavan Nityananda"
+      },
+      "to": {
+        "saintId": "cms0w7eld033407qi9zmuya1v",
+        "name": "Sri Saligram Swami"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Maharashtra Guru Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Nityananda lineage archive: Shaligram among the disciples",
+          "url": "https://nityanandatradition.org/lineage/disciples-nityananda.html"
+        },
+        {
+          "title": "Nityananda lineage archive: Balyogi Sadanand of Tungareshwar",
+          "url": "https://nityanandatradition.org/lineage/sadanand.html"
+        }
+      ],
+      "evidenceNote": "Medium confidence: devotee-maintained lineage archive corroborates names/Ganeshpuri context, not inherited family membership alone. Saligram has no biography/dates/photo in the museum record. Sadanand birth1958 in record versus1957 in archive is retained as a source discrepancy; no dates displayed or changed. No new placement or canonical-edge writes.",
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7hr3070707qik220ydwi",
+        "name": "Sri Bhagavan Nityananda"
+      },
+      "to": {
+        "saintId": "cms0w7hfv06mv07qi3vq90u1a",
+        "name": "Balyogi Sri Sadanand Maharaj"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Maharashtra Guru Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Nityananda lineage archive: Shaligram among the disciples",
+          "url": "https://nityanandatradition.org/lineage/disciples-nityananda.html"
+        },
+        {
+          "title": "Nityananda lineage archive: Balyogi Sadanand of Tungareshwar",
+          "url": "https://nityanandatradition.org/lineage/sadanand.html"
+        }
+      ],
+      "evidenceNote": "Medium confidence: devotee-maintained lineage archive corroborates names/Ganeshpuri context, not inherited family membership alone. Saligram has no biography/dates/photo in the museum record. Sadanand birth1958 in record versus1957 in archive is retained as a source discrepancy; no dates displayed or changed. No new placement or canonical-edge writes.",
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7dg301kf07qinm0alnxb",
+        "name": "Sri Swami Shivananda Saraswati"
+      },
+      "to": {
+        "saintId": "cms0w7gbj05aa07qij87q96dm",
+        "name": "Sri Swami Chinmayananda"
+      },
+      "type": "sannyasa_guru_disciple",
+      "sections": [
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Chinmaya Mission: Chinmayananda’s two teachers",
+          "url": "https://www.chinmayamission.com/who-we-are/swami-chinmayananda/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7jew08si07qiu6p8lh4q",
+        "name": "Sri Lahiri Mahasaya"
+      },
+      "to": {
+        "saintId": "cms0w7fey046507qi4z4gcbti",
+        "name": "Sri Swami SriYukteshwar Giri"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Self-Realization Fellowship, lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogananda, Autobiography of a Yogi, chapter 31",
+          "url": "https://www.ananda.org/autobiography/"
+        },
+        {
+          "title": "Self-Realization Fellowship: Daya Mata and the Kriya lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogoda Satsanga Society: Durga Mata among Yogananda’s disciples",
+          "url": "https://yssofindia.org/paramahansa-yogananda/disciples-reminisce"
+        },
+        {
+          "title": "Ananda: Kriyananda’s direct discipleship",
+          "url": "https://www.ananda.org/about-ananda-sangha/lineage/swami-kriyananda/"
+        },
+        {
+          "title": "Karar Ashram: Yukteswar’s pupils and Hariharananda’s training",
+          "url": "https://www.kararashram.org/gurus.html"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7fey046507qi4z4gcbti",
+        "name": "Sri Swami SriYukteshwar Giri"
+      },
+      "to": {
+        "saintId": "cms0w7fr004ld07qidykpxgm1",
+        "name": "Sri Paramahamsa Yogananda"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Self-Realization Fellowship, lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogananda, Autobiography of a Yogi, chapter 31",
+          "url": "https://www.ananda.org/autobiography/"
+        },
+        {
+          "title": "Self-Realization Fellowship: Daya Mata and the Kriya lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogoda Satsanga Society: Durga Mata among Yogananda’s disciples",
+          "url": "https://yssofindia.org/paramahansa-yogananda/disciples-reminisce"
+        },
+        {
+          "title": "Ananda: Kriyananda’s direct discipleship",
+          "url": "https://www.ananda.org/about-ananda-sangha/lineage/swami-kriyananda/"
+        },
+        {
+          "title": "Karar Ashram: Yukteswar’s pupils and Hariharananda’s training",
+          "url": "https://www.kararashram.org/gurus.html"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7fr004ld07qidykpxgm1",
+        "name": "Sri Paramahamsa Yogananda"
+      },
+      "to": {
+        "saintId": "cms0w7ils07yc07qi08agtyap",
+        "name": "Sri Daya Mata"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Self-Realization Fellowship, lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogananda, Autobiography of a Yogi, chapter 31",
+          "url": "https://www.ananda.org/autobiography/"
+        },
+        {
+          "title": "Self-Realization Fellowship: Daya Mata and the Kriya lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogoda Satsanga Society: Durga Mata among Yogananda’s disciples",
+          "url": "https://yssofindia.org/paramahansa-yogananda/disciples-reminisce"
+        },
+        {
+          "title": "Ananda: Kriyananda’s direct discipleship",
+          "url": "https://www.ananda.org/about-ananda-sangha/lineage/swami-kriyananda/"
+        },
+        {
+          "title": "Karar Ashram: Yukteswar’s pupils and Hariharananda’s training",
+          "url": "https://www.kararashram.org/gurus.html"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7fr004ld07qidykpxgm1",
+        "name": "Sri Paramahamsa Yogananda"
+      },
+      "to": {
+        "saintId": "cms0w7fnu04hc07qit9nwaudj",
+        "name": "Sri Durga Mata"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Self-Realization Fellowship, lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogananda, Autobiography of a Yogi, chapter 31",
+          "url": "https://www.ananda.org/autobiography/"
+        },
+        {
+          "title": "Self-Realization Fellowship: Daya Mata and the Kriya lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogoda Satsanga Society: Durga Mata among Yogananda’s disciples",
+          "url": "https://yssofindia.org/paramahansa-yogananda/disciples-reminisce"
+        },
+        {
+          "title": "Ananda: Kriyananda’s direct discipleship",
+          "url": "https://www.ananda.org/about-ananda-sangha/lineage/swami-kriyananda/"
+        },
+        {
+          "title": "Karar Ashram: Yukteswar’s pupils and Hariharananda’s training",
+          "url": "https://www.kararashram.org/gurus.html"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7fr004ld07qidykpxgm1",
+        "name": "Sri Paramahamsa Yogananda"
+      },
+      "to": {
+        "saintId": "cms0w7ir2084007qi1cuzm66g",
+        "name": "Sri Swami Kriyananda"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Self-Realization Fellowship, lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogananda, Autobiography of a Yogi, chapter 31",
+          "url": "https://www.ananda.org/autobiography/"
+        },
+        {
+          "title": "Self-Realization Fellowship: Daya Mata and the Kriya lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogoda Satsanga Society: Durga Mata among Yogananda’s disciples",
+          "url": "https://yssofindia.org/paramahansa-yogananda/disciples-reminisce"
+        },
+        {
+          "title": "Ananda: Kriyananda’s direct discipleship",
+          "url": "https://www.ananda.org/about-ananda-sangha/lineage/swami-kriyananda/"
+        },
+        {
+          "title": "Karar Ashram: Yukteswar’s pupils and Hariharananda’s training",
+          "url": "https://www.kararashram.org/gurus.html"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7fvo04qs07qi5l3znh4c",
+        "name": "Sri Gaura Kishor Das Babaji"
+      },
+      "to": {
+        "saintId": "cms0w7cw800w707qip4vr4swx",
+        "name": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Sri Gopinath Gaudiya Math, lineage and disciples",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        },
+        {
+          "title": "ISKCON, meeting Bhaktisiddhanta",
+          "url": "https://www.iskconbangalore.org/meeting-his-spiritual-master/"
+        },
+        {
+          "title": "Nitaibadi, Ram Radharaman literature",
+          "url": "https://nitaibadi.org/Publications/OurPublication/publication.php"
+        },
+        {
+          "title": "Biographical account drawing on Carit Sudha and family recollections",
+          "url": "https://sriradhakund.wordpress.com/tag/lalita-sakhi-dasi/"
+        },
+        {
+          "title": "Jagadananda Das, Women Saints in Gaudiya Vaishnavism, note 24",
+          "url": "https://gaudiya.com/pdf/Women_Saints_in_Gaudiya_Vaishnavism.pdf#page=9"
+        },
+        {
+          "title": "Sri Gopinath Gaudiya Math: named direct pupils",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7cw800w707qip4vr4swx",
+        "name": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+      },
+      "to": {
+        "saintId": "cms0w7en7035g07qiz6rl1u9d",
+        "name": "A. C. Bhaktivedanta Swami Prabhupada"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Sri Gopinath Gaudiya Math, lineage and disciples",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        },
+        {
+          "title": "ISKCON, meeting Bhaktisiddhanta",
+          "url": "https://www.iskconbangalore.org/meeting-his-spiritual-master/"
+        },
+        {
+          "title": "Nitaibadi, Ram Radharaman literature",
+          "url": "https://nitaibadi.org/Publications/OurPublication/publication.php"
+        },
+        {
+          "title": "Biographical account drawing on Carit Sudha and family recollections",
+          "url": "https://sriradhakund.wordpress.com/tag/lalita-sakhi-dasi/"
+        },
+        {
+          "title": "Jagadananda Das, Women Saints in Gaudiya Vaishnavism, note 24",
+          "url": "https://gaudiya.com/pdf/Women_Saints_in_Gaudiya_Vaishnavism.pdf#page=9"
+        },
+        {
+          "title": "Sri Gopinath Gaudiya Math: named direct pupils",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7cw800w707qip4vr4swx",
+        "name": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+      },
+      "to": {
+        "saintId": "cms0w7hah06gi07qil5pafm2a",
+        "name": "Sri Tridandi Swami Srimad Bhakti Pramod Puri Goswami Maharaj"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Sri Gopinath Gaudiya Math, lineage and disciples",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        },
+        {
+          "title": "ISKCON, meeting Bhaktisiddhanta",
+          "url": "https://www.iskconbangalore.org/meeting-his-spiritual-master/"
+        },
+        {
+          "title": "Nitaibadi, Ram Radharaman literature",
+          "url": "https://nitaibadi.org/Publications/OurPublication/publication.php"
+        },
+        {
+          "title": "Biographical account drawing on Carit Sudha and family recollections",
+          "url": "https://sriradhakund.wordpress.com/tag/lalita-sakhi-dasi/"
+        },
+        {
+          "title": "Jagadananda Das, Women Saints in Gaudiya Vaishnavism, note 24",
+          "url": "https://gaudiya.com/pdf/Women_Saints_in_Gaudiya_Vaishnavism.pdf#page=9"
+        },
+        {
+          "title": "Sri Gopinath Gaudiya Math: named direct pupils",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7cw800w707qip4vr4swx",
+        "name": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+      },
+      "to": {
+        "saintId": "cms0w7iuf087j07qicygi4d23",
+        "name": "Sri Bhakti Prajnana Keshav Goswami"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Sri Gopinath Gaudiya Math, lineage and disciples",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        },
+        {
+          "title": "ISKCON, meeting Bhaktisiddhanta",
+          "url": "https://www.iskconbangalore.org/meeting-his-spiritual-master/"
+        },
+        {
+          "title": "Nitaibadi, Ram Radharaman literature",
+          "url": "https://nitaibadi.org/Publications/OurPublication/publication.php"
+        },
+        {
+          "title": "Biographical account drawing on Carit Sudha and family recollections",
+          "url": "https://sriradhakund.wordpress.com/tag/lalita-sakhi-dasi/"
+        },
+        {
+          "title": "Jagadananda Das, Women Saints in Gaudiya Vaishnavism, note 24",
+          "url": "https://gaudiya.com/pdf/Women_Saints_in_Gaudiya_Vaishnavism.pdf#page=9"
+        },
+        {
+          "title": "Sri Gopinath Gaudiya Math: named direct pupils",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7cw800w707qip4vr4swx",
+        "name": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+      },
+      "to": {
+        "saintId": "cms0w7elh033907qiub5841j0",
+        "name": "Sri Bhakti Pradeep Tirtha Goswami Maharaj"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Sri Gopinath Gaudiya Math, lineage and disciples",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        },
+        {
+          "title": "ISKCON, meeting Bhaktisiddhanta",
+          "url": "https://www.iskconbangalore.org/meeting-his-spiritual-master/"
+        },
+        {
+          "title": "Nitaibadi, Ram Radharaman literature",
+          "url": "https://nitaibadi.org/Publications/OurPublication/publication.php"
+        },
+        {
+          "title": "Biographical account drawing on Carit Sudha and family recollections",
+          "url": "https://sriradhakund.wordpress.com/tag/lalita-sakhi-dasi/"
+        },
+        {
+          "title": "Jagadananda Das, Women Saints in Gaudiya Vaishnavism, note 24",
+          "url": "https://gaudiya.com/pdf/Women_Saints_in_Gaudiya_Vaishnavism.pdf#page=9"
+        },
+        {
+          "title": "Sri Gopinath Gaudiya Math: named direct pupils",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7cw800w707qip4vr4swx",
+        "name": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+      },
+      "to": {
+        "saintId": "cms0w7fnh04gy07qitnrp1c2u",
+        "name": "Sri 108 Sri Sripad Srila Bhakti Dayita Madhav Goswami Maharaj"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Sri Gopinath Gaudiya Math, lineage and disciples",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        },
+        {
+          "title": "ISKCON, meeting Bhaktisiddhanta",
+          "url": "https://www.iskconbangalore.org/meeting-his-spiritual-master/"
+        },
+        {
+          "title": "Nitaibadi, Ram Radharaman literature",
+          "url": "https://nitaibadi.org/Publications/OurPublication/publication.php"
+        },
+        {
+          "title": "Biographical account drawing on Carit Sudha and family recollections",
+          "url": "https://sriradhakund.wordpress.com/tag/lalita-sakhi-dasi/"
+        },
+        {
+          "title": "Jagadananda Das, Women Saints in Gaudiya Vaishnavism, note 24",
+          "url": "https://gaudiya.com/pdf/Women_Saints_in_Gaudiya_Vaishnavism.pdf#page=9"
+        },
+        {
+          "title": "Sri Gopinath Gaudiya Math: named direct pupils",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7cw800w707qip4vr4swx",
+        "name": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+      },
+      "to": {
+        "saintId": "cms0w7dkk01qi07qi3aqn1oj2",
+        "name": "Sri Swami Bon Maharaj"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Braj & Krishna Bhakti",
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Sri Gopinath Gaudiya Math, lineage and disciples",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        },
+        {
+          "title": "ISKCON, meeting Bhaktisiddhanta",
+          "url": "https://www.iskconbangalore.org/meeting-his-spiritual-master/"
+        },
+        {
+          "title": "Nitaibadi, Ram Radharaman literature",
+          "url": "https://nitaibadi.org/Publications/OurPublication/publication.php"
+        },
+        {
+          "title": "Biographical account drawing on Carit Sudha and family recollections",
+          "url": "https://sriradhakund.wordpress.com/tag/lalita-sakhi-dasi/"
+        },
+        {
+          "title": "Jagadananda Das, Women Saints in Gaudiya Vaishnavism, note 24",
+          "url": "https://gaudiya.com/pdf/Women_Saints_in_Gaudiya_Vaishnavism.pdf#page=9"
+        },
+        {
+          "title": "Sri Gopinath Gaudiya Math: named direct pupils",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7cw800w707qip4vr4swx",
+        "name": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+      },
+      "to": {
+        "saintId": "cms0w7gyt062z07qirs9cmb3e",
+        "name": "Sri Srimad Bhakti Saranga Goswami Maharaj"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Sri Gopinath Gaudiya Math, lineage and disciples",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        },
+        {
+          "title": "ISKCON, meeting Bhaktisiddhanta",
+          "url": "https://www.iskconbangalore.org/meeting-his-spiritual-master/"
+        },
+        {
+          "title": "Nitaibadi, Ram Radharaman literature",
+          "url": "https://nitaibadi.org/Publications/OurPublication/publication.php"
+        },
+        {
+          "title": "Biographical account drawing on Carit Sudha and family recollections",
+          "url": "https://sriradhakund.wordpress.com/tag/lalita-sakhi-dasi/"
+        },
+        {
+          "title": "Jagadananda Das, Women Saints in Gaudiya Vaishnavism, note 24",
+          "url": "https://gaudiya.com/pdf/Women_Saints_in_Gaudiya_Vaishnavism.pdf#page=9"
+        },
+        {
+          "title": "Sri Gopinath Gaudiya Math: named direct pupils",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7cw800w707qip4vr4swx",
+        "name": "Bhaktisiddhanta Sarasvati Thakura Goswami"
+      },
+      "to": {
+        "saintId": "cms0w7gb3059r07qinx72kgyh",
+        "name": "Sri Bhakti Vilas Tirtha Goswami Maharaj"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Gaudiya Vaishnava",
+        "Needs Research"
+      ],
+      "sources": [
+        {
+          "title": "Sri Gopinath Gaudiya Math, lineage and disciples",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        },
+        {
+          "title": "ISKCON, meeting Bhaktisiddhanta",
+          "url": "https://www.iskconbangalore.org/meeting-his-spiritual-master/"
+        },
+        {
+          "title": "Nitaibadi, Ram Radharaman literature",
+          "url": "https://nitaibadi.org/Publications/OurPublication/publication.php"
+        },
+        {
+          "title": "Biographical account drawing on Carit Sudha and family recollections",
+          "url": "https://sriradhakund.wordpress.com/tag/lalita-sakhi-dasi/"
+        },
+        {
+          "title": "Jagadananda Das, Women Saints in Gaudiya Vaishnavism, note 24",
+          "url": "https://gaudiya.com/pdf/Women_Saints_in_Gaudiya_Vaishnavism.pdf#page=9"
+        },
+        {
+          "title": "Sri Gopinath Gaudiya Math: named direct pupils",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7h3c068907qi1ajzanag",
+        "name": "Sri Radha Raman Charan Das"
+      },
+      "to": {
+        "saintId": "cms0w7f0103mn07qiabdbm67v",
+        "name": "Sri Lalita Sakhi Dasi"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Sri Gopinath Gaudiya Math, lineage and disciples",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        },
+        {
+          "title": "ISKCON, meeting Bhaktisiddhanta",
+          "url": "https://www.iskconbangalore.org/meeting-his-spiritual-master/"
+        },
+        {
+          "title": "Nitaibadi, Ram Radharaman literature",
+          "url": "https://nitaibadi.org/Publications/OurPublication/publication.php"
+        },
+        {
+          "title": "Biographical account drawing on Carit Sudha and family recollections",
+          "url": "https://sriradhakund.wordpress.com/tag/lalita-sakhi-dasi/"
+        },
+        {
+          "title": "Jagadananda Das, Women Saints in Gaudiya Vaishnavism, note 24",
+          "url": "https://gaudiya.com/pdf/Women_Saints_in_Gaudiya_Vaishnavism.pdf#page=9"
+        },
+        {
+          "title": "Sri Gopinath Gaudiya Math: named direct pupils",
+          "url": "https://srigopinathgaudiyamath.in/lineage/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7cb8006207qix8q1aash",
+        "name": "Sri Mokshada Sundari Devi"
+      },
+      "to": {
+        "saintId": "cms0w7e2q02f407qie0yjy7xe",
+        "name": "Sri Anandamayi Ma"
+      },
+      "type": "biological_mother_daughter",
+      "sections": [
+        "Bengal Shakta, Baul & Modern Saints"
+      ],
+      "sources": [
+        {
+          "title": "Anandamayi Sangha, Didima biography",
+          "url": "https://www.anandamayi.org/muktananda-giriji-didima/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7c6e001h07qi248w64am",
+        "name": "Sri Bamakhepa Baba"
+      },
+      "to": {
+        "saintId": "cms0w7cl800i707qi368teg2q",
+        "name": "Paramahamsa Sri Swami Nigammananda ji Saraswati Deva"
+      },
+      "type": "tantra_teacher_pupil",
+      "sections": [
+        "Bengal Shakta, Baul & Modern Saints"
+      ],
+      "sources": [
+        {
+          "title": "America Saraswata Sangha, Saraswata Madhuri 2012, PDF page 22",
+          "url": "https://www.jayaguru.org/organization/madhuri/Saraswata_Madhuri_2012.pdf#page=22"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": "Do not identify Nigamananda’s sannyasa teacher with the similarly named Shinor record from name alone."
+    },
+    {
+      "from": {
+        "saintId": "cms0w7joi092a07qiqkyvnm8m",
+        "name": "Sri Dadaji Dilip Kumar Roy"
+      },
+      "to": {
+        "saintId": "cms0w7jp4092z07qit35r6mx3",
+        "name": "Sri Indira Devi"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Bengal Shakta, Baul & Modern Saints"
+      ],
+      "sources": [
+        {
+          "title": "Anandamayi archive: Dilip, Indira and their Pune institution",
+          "url": "https://www.anandamayi.org/dilip-kumar-roy/"
+        },
+        {
+          "title": "Published correspondence: Sri Aurobindo to Dilip",
+          "url": "https://www.motherandsriaurobindo.in/disciples/dilip-kumar-roy/books/sri-aurobindo-to-dilip-volume-i/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7eh402xm07qi26e8l4xg",
+        "name": "Sri SitaRamDas Omkarnath"
+      },
+      "to": {
+        "saintId": "cms0w7foe04i107qiwkkjtma8",
+        "name": "Sri Srimad Swami Parang Kush Ramanuj"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Bengal Shakta, Baul & Modern Saints",
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Official Parankush Sevak Sangha: Omkarnath as spiritual guru",
+          "url": "https://swami-parankush-sevak-sangha.org/"
+        },
+        {
+          "title": "Omkarnath Mission: Jaiguru and its teaching centres",
+          "url": "https://www.omkarnathmission.in/Anantasri-Omkarnath-Dev.php"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7fey046507qi4z4gcbti",
+        "name": "Sri Swami SriYukteshwar Giri"
+      },
+      "to": {
+        "saintId": "cms0w7dkz01r407qiwpvn2sa1",
+        "name": "Sri Hariharananda Giri"
+      },
+      "type": "kriya_guru_disciple_as_reported_by_Karar_Ashram",
+      "sections": [
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Self-Realization Fellowship, lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogananda, Autobiography of a Yogi, chapter 31",
+          "url": "https://www.ananda.org/autobiography/"
+        },
+        {
+          "title": "Self-Realization Fellowship: Daya Mata and the Kriya lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogoda Satsanga Society: Durga Mata among Yogananda’s disciples",
+          "url": "https://yssofindia.org/paramahansa-yogananda/disciples-reminisce"
+        },
+        {
+          "title": "Ananda: Kriyananda’s direct discipleship",
+          "url": "https://www.ananda.org/about-ananda-sangha/lineage/swami-kriyananda/"
+        },
+        {
+          "title": "Karar Ashram: Yukteswar’s pupils and Hariharananda’s training",
+          "url": "https://www.kararashram.org/gurus.html"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7fey046507qi4z4gcbti",
+        "name": "Sri Swami SriYukteshwar Giri"
+      },
+      "to": {
+        "saintId": "cms0w7jbl08pr07qi8w9i43tn",
+        "name": "Sri Motilal Mukhabadhyay, Mukarji"
+      },
+      "type": "guru_disciple_as_reported_by_Karar_Ashram",
+      "sections": [
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Self-Realization Fellowship, lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogananda, Autobiography of a Yogi, chapter 31",
+          "url": "https://www.ananda.org/autobiography/"
+        },
+        {
+          "title": "Self-Realization Fellowship: Daya Mata and the Kriya lineage",
+          "url": "https://yogananda.org/lineage-and-leadership"
+        },
+        {
+          "title": "Yogoda Satsanga Society: Durga Mata among Yogananda’s disciples",
+          "url": "https://yssofindia.org/paramahansa-yogananda/disciples-reminisce"
+        },
+        {
+          "title": "Ananda: Kriyananda’s direct discipleship",
+          "url": "https://www.ananda.org/about-ananda-sangha/lineage/swami-kriyananda/"
+        },
+        {
+          "title": "Karar Ashram: Yukteswar’s pupils and Hariharananda’s training",
+          "url": "https://www.kararashram.org/gurus.html"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": null
+    },
+    {
+      "from": {
+        "saintId": "cms0w7f8403xd07qin696rwb5",
+        "name": "Sri Chaitanya Mahaprabhu"
+      },
+      "to": {
+        "saintId": "cms0w7jbr08px07qiml4wmfuh",
+        "name": "Sri Vishnupriya Devi"
+      },
+      "type": "wife",
+      "sections": [
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Caitanya-caritamrita: the Pancha Tattva",
+          "url": "https://vedabase.io/en/library/cc/adi/7/4/"
+        },
+        {
+          "title": "Caitanya-caritamrita: the six Goswamis named",
+          "url": "https://vedabase.io/en/library/cc/adi/1/36/"
+        },
+        {
+          "title": "Bhagavatam commentary: Vishnupriya as Mahaprabhu’s wife",
+          "url": "https://vedabase.io/en/library/sb/4/23/20/"
+        },
+        {
+          "title": "Caitanya-caritamrita: Haridas and Mahaprabhu",
+          "url": "https://vedabase.io/en/library/cc/antya/11/"
+        },
+        {
+          "title": "Caitanya-caritamrita: Sarvabhauma",
+          "url": "https://vedabase.io/en/library/cc/madhya/6/"
+        },
+        {
+          "title": "Caitanya-caritamrita: Chand Kazi",
+          "url": "https://vedabase.io/en/library/cc/adi/17/"
+        }
+      ],
+      "evidenceNote": null,
+      "ambiguity": "The separately named Sri Raghunath Das Goswami record in Braj is not silently equated with historical Raghunatha Dasa. Identity and section need checking before recommending a transfer."
+    },
+    {
+      "from": {
+        "saintId": "cms0w7h2m067f07qidjhcets0",
+        "name": "Sri Tapovan Maharaj"
+      },
+      "to": {
+        "saintId": "cms0w7gbj05aa07qij87q96dm",
+        "name": "Sri Swami Chinmayananda"
+      },
+      "type": "Vedanta teacher",
+      "sections": [
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "key": "chinmaya-spn",
+          "title": "Chinmaya Mission: Sivananda initiation and Tapovan training",
+          "url": "https://www.chinmayamissionmumbai.com/chinmaya_pradeep/making_of_chinmaya_pradeep/concept-details"
+        }
+      ],
+      "evidenceNote": "Institutional biography and SPN named records; no identity merge or site relationship write."
+    },
+    {
+      "from": {
+        "saintId": "cms0w7gpu05rz07qisc53dyx7",
+        "name": "Sant Sri Bhoja Bhagat"
+      },
+      "to": {
+        "saintId": "cms0w7cyk00z107qii6760lkx",
+        "name": "Sri Jalaram Babaji"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Gujarat & Swaminarayan Traditions"
+      ],
+      "sources": [
+        {
+          "title": "Jalaram temple: life story",
+          "url": "https://jalarambapapondy.org/life-story.html"
+        }
+      ],
+      "placementSuggestion": "Place Bhoja Bhagat beside Jalaram; read teacher → disciple.",
+      "evidenceNote": null,
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms0w7ft004nk07qi45hh7kfh",
+        "name": "Sadhu T.L. Vaswani"
+      },
+      "to": {
+        "saintId": "cms0w7fq904ke07qi0z8zm61c",
+        "name": "Sri Dada J.P. Vaswani"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Maharashtra Guru Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Sadhu Vaswani Mission: Dada’s teacher",
+          "url": "https://www.sadhuvaswani.org/dada-jp-vaswani"
+        }
+      ],
+      "placementSuggestion": "Keep Sadhu T. L. Vaswani and Dada J. P. Vaswani side by side.",
+      "evidenceNote": "The nephew connection also appears in the Ramanasramam source below; teacher–disciple is directly confirmed by the Mission.",
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms0w7dg301kf07qinm0alnxb",
+        "name": "Sri Swami Shivananda Saraswati"
+      },
+      "to": {
+        "saintId": "cms0w7fmd04fn07qis9cd8h6u",
+        "name": "Sri Swami Vishnudevananda Saraswati"
+      },
+      "type": "sannyasa_guru_disciple",
+      "sections": [
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Divine Life Society: Vishnudevananda",
+          "url": "https://www.sivanandaonline.org/?cmd=displaysection&section_id=1368"
+        }
+      ],
+      "placementSuggestion": "Place Vishnudevananda beside Sivananda’s other direct disciples, retaining his international mission story.",
+      "evidenceNote": null,
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms0w7dg301kf07qinm0alnxb",
+        "name": "Sri Swami Shivananda Saraswati"
+      },
+      "to": {
+        "saintId": "cmus3rxcy006n07o5yg4198z8",
+        "name": "Sri Swami Chidananda Saraswati"
+      },
+      "type": "guru_disciple_and_successor",
+      "sections": [
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Divine Life Society: Chidananda",
+          "url": "https://www.dlshq.org/saints/his-holiness-sri-swami-chidananda-saraswati-maharaj/"
+        }
+      ],
+      "placementSuggestion": "Keep the Divine Life Society’s Chidananda with Sivananda.",
+      "evidenceNote": "Use the verified Divine Life Society Chidananda profile; preserve source-locality conflicts separately.",
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms0w7dg301kf07qinm0alnxb",
+        "name": "Sri Swami Shivananda Saraswati"
+      },
+      "to": {
+        "saintId": "cmsa65ox5005p07nyiijzqrjh",
+        "name": "Sri Sahajananda Saraswati",
+        "snapshotSaintId": "cms0w7hk306ru07qi67meh6qk"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Global & Diaspora Lineages",
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "South African Government: Sahajananda’s teacher",
+          "url": "https://www.gov.za/af/news/s-ndebele-passing-away-sri-swami-sahajananda-10-dec-2007"
+        }
+      ],
+      "placementSuggestion": "Put Sahajananda’s South African display near the Sivananda group or give the two displays a clear cross-reference.",
+      "evidenceNote": null,
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms5syqhn002d07st8knp4fpw",
+        "name": "Sri Ramakrishna Paramahansa",
+        "snapshotSaintId": "cms0w7gb6059t07qis1a9kn28"
+      },
+      "to": {
+        "saintId": "cms0w7hno06w007qiusuli5ab",
+        "name": "Sri Swami Vivekananda"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Bengal Shakta, Baul & Modern Saints"
+      ],
+      "sources": [
+        {
+          "title": "Belur Math: Vivekananda",
+          "url": "https://belurmath.org/swami-vivekananda/"
+        }
+      ],
+      "placementSuggestion": "Place Vivekananda beside Ramakrishna, with the household disciples close by.",
+      "evidenceNote": null,
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms5syqhn002d07st8knp4fpw",
+        "name": "Sri Ramakrishna Paramahansa",
+        "snapshotSaintId": "cms0w7gb6059t07qis1a9kn28"
+      },
+      "to": {
+        "saintId": "cms0w7jft08ti07qimg33dh8m",
+        "name": "Sri Mahendranath Gupta"
+      },
+      "type": "guru_disciple_and_recorder",
+      "sections": [
+        "Bengal Shakta, Baul & Modern Saints"
+      ],
+      "sources": [
+        {
+          "title": "Gospel of Sri Ramakrishna: introduction to M.",
+          "url": "https://www.ramakrishnavivekananda.info/gospel/introduction/mahendra.htm"
+        }
+      ],
+      "placementSuggestion": "Place Mahendranath Gupta beside Ramakrishna; his diary gives this pair a teacher-and-recorder story.",
+      "evidenceNote": null,
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms5syqhn002d07st8knp4fpw",
+        "name": "Sri Ramakrishna Paramahansa",
+        "snapshotSaintId": "cms0w7gb6059t07qis1a9kn28"
+      },
+      "to": {
+        "saintId": "cms0w7i6v07i807qiot1t3jt5",
+        "name": "Sri Lakshmi Mani Devi"
+      },
+      "type": "uncle_niece",
+      "sections": [
+        "Bengal Shakta, Baul & Modern Saints"
+      ],
+      "sources": [
+        {
+          "title": "Nachiketa Tapovan: Lakshmimani Devi",
+          "url": "https://nachiketa.org/wp-content/uploads/nachiketanjali-201302.pdf"
+        }
+      ],
+      "placementSuggestion": "Keep Lakshmi Mani beside Ramakrishna’s household group.",
+      "evidenceNote": "The article identifies Lakshmimani as the daughter of Ramakrishna’s brother Rameshwar; devotional incarnation claims are not used for this family connection.",
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms0w7jft08ti07qimg33dh8m",
+        "name": "Sri Mahendranath Gupta"
+      },
+      "to": {
+        "saintId": "cms0w7fr004ld07qidykpxgm1",
+        "name": "Sri Paramahamsa Yogananda"
+      },
+      "type": "personal_spiritual_guidance",
+      "sections": [
+        "Bengal Shakta, Baul & Modern Saints",
+        "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+      ],
+      "sources": [
+        {
+          "title": "Yogananda: Autobiography, chapter 9",
+          "url": "https://www.ananda.org/autobiography/#chap9"
+        }
+      ],
+      "placementSuggestion": "Place the Mahendranath Gupta end of the Ramakrishna group toward the Yogananda/Kriya display.",
+      "evidenceNote": "A personal guide and source of devotional instruction, distinct from Yogananda’s initiating Kriya guru sequence.",
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms0w7ft004nk07qi45hh7kfh",
+        "name": "Sadhu T.L. Vaswani"
+      },
+      "to": {
+        "saintId": "cms0w7h0p065807qi6cyn3dk1",
+        "name": "Sri Ramana Maharishi"
+      },
+      "type": "documented_visit",
+      "sections": [
+        "Maharashtra Guru Lineages",
+        "Ramana & Arunachala"
+      ],
+      "sources": [
+        {
+          "title": "Sri Ramanasramam: Mountain Path, October 2018, p.63",
+          "url": "https://pro.gururamana.org/search/m/pdf/MountainPath/full/MountainPath_2018_Oct.pdf"
+        }
+      ],
+      "placementSuggestion": "Keep the Vaswani pair together, with a cross-reference toward Ramana’s display.",
+      "evidenceNote": "Ramanasramam’s publication records Sadhu Vaswani and his nephew Dada J. P. Vaswani visiting Ramana in 1939. A visit, not a discipleship claim.",
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms0w7fq904ke07qi0z8zm61c",
+        "name": "Sri Dada J.P. Vaswani"
+      },
+      "to": {
+        "saintId": "cms0w7h0p065807qi6cyn3dk1",
+        "name": "Sri Ramana Maharishi"
+      },
+      "type": "documented_visit",
+      "sections": [
+        "Maharashtra Guru Lineages",
+        "Ramana & Arunachala"
+      ],
+      "sources": [
+        {
+          "title": "Sri Ramanasramam: Mountain Path, October 2018, p.63",
+          "url": "https://pro.gururamana.org/search/m/pdf/MountainPath/full/MountainPath_2018_Oct.pdf"
+        }
+      ],
+      "placementSuggestion": "Keep the Vaswani pair together, with a cross-reference toward Ramana’s display.",
+      "evidenceNote": "Ramanasramam’s publication records Sadhu Vaswani and his nephew Dada J. P. Vaswani visiting Ramana in 1939. A visit, not a discipleship claim.",
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms0w7gtq05wo07qis37cvfs1",
+        "name": "Sri Ram Sharma Acharya"
+      },
+      "to": {
+        "saintId": "cms0w7fvs04qy07qi80lcl7jq",
+        "name": "Mata Sri Bhagwati Devi Sharma"
+      },
+      "type": "spouses_and_mission_leaders",
+      "sections": [
+        "Needs Research"
+      ],
+      "sources": [
+        {
+          "title": "All World Gayatri Pariwar: Bhagwati Devi Sharma",
+          "url": "https://www.awgp.org/en/about_us/patron_founder/mata_bhagwati_devi_sharma"
+        }
+      ],
+      "placementSuggestion": "Keep Shriram Sharma Acharya and Bhagwati Devi Sharma together as the Gayatri Pariwar group.",
+      "evidenceNote": "Both currently sit in Needs Research in this snapshot; recommend a coherent northern/Shantikunj home after current-record review. Recognize her own leadership, not only her marriage.",
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms0w7dsb021707qiiyou77fv",
+        "name": "Sri Mahapurusha Sankardev"
+      },
+      "to": {
+        "saintId": "cms0w7h9x06fv07qioy54x3o8",
+        "name": "Sri Mahapurusha Madhavdev"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Needs Research"
+      ],
+      "sources": [
+        {
+          "title": "Assam Tourism: Majuli and its satras",
+          "url": "https://assamtourism.gov.in/pdf/Majuli_Tourism_2025.pdf"
+        }
+      ],
+      "placementSuggestion": "Keep Sankardev and Madhavdev together in an Assamese/Ekasarana group in the East.",
+      "evidenceNote": "Both currently remain in Needs Research in the snapshot. The relationship is supported; a section recommendation is separate from an applied assignment.",
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms0w7duq024f07qi3ito3t75",
+        "name": "Namdev (13th century)",
+        "snapshotSaintId": "cms0w7eyj03kp07qiwtmla1pm"
+      },
+      "to": {
+        "saintId": "cms0w7dfm01jv07qi6o8h7rvx",
+        "name": "Sri Janabai"
+      },
+      "type": "devotional_household",
+      "sections": [
+        "Varkari"
+      ],
+      "sources": [
+        {
+          "title": "Guy Poitevin and Hema Rairkar: Janabai and Namdev’s household",
+          "url": "https://grindmill.org/wp-content/uploads/2020/08/soumission.pdf"
+        }
+      ],
+      "placementSuggestion": "Keep Janabai beside the medieval Namdev display.",
+      "evidenceNote": "Use the explicit 13th-century Namdev record, not modern Namdev namesakes. This is a devotional household connection; no biological relationship is implied.",
+      "researchRound": 2
+    },
+    {
+      "from": {
+        "saintId": "cms0w7exg03ja07qifulmk878",
+        "name": "Sri Srimad Kishorikishorananda Das Babaji Maharaj Goswami"
+      },
+      "to": {
+        "saintId": "cms0w7g89056707qizu8jipuv",
+        "name": "Sri Murari Das Babaji"
+      },
+      "type": "guru_disciple",
+      "sections": [
+        "Braj & Krishna Bhakti",
+        "Gaudiya Vaishnava"
+      ],
+      "sources": [
+        {
+          "title": "Radha Kund teaching account: Murari and Tinkori",
+          "url": "https://www.bhaktijoga.lt/audio/ar-vaisnavas-priklausantis-vienai-tradicinio-vaisnavizmo-linijai-gali-gauti-pamokymus-vedima"
+        }
+      ],
+      "placementSuggestion": "Keep Tinkodi/Tinkori and Murari together, connecting the Gaudiya and wider Braj displays.",
+      "evidenceNote": "The current published relationship and the Radha Kund account support the pair; historical naming follows the existing reviewed Tinkodi identity.",
+      "researchRound": 2
+    }
+  ],
+  "heldRelationshipCandidates": [
+    {
+      "from": {
+        "saintId": null,
+        "name": "Balappa / Balavadhoot of Parishawad"
+      },
+      "to": {
+        "saintId": "cms0w7g8i056i07qi2p5e8oho",
+        "name": "Sri Pant Maharaj"
+      },
+      "reason": "One or both exact canonical IDs absent from this SPN snapshot. Reconcile before using as an SPN holding."
+    },
+    {
+      "from": {
+        "saintId": null,
+        "name": "Mahendra Brahmachari · Mahanam lineage"
+      },
+      "to": {
+        "saintId": "cms0w7i8r07k607qib72u99nr",
+        "name": "Sri Mahanambrata Brahmachari"
+      },
+      "reason": "One or both exact canonical IDs absent from this SPN snapshot. Reconcile before using as an SPN holding."
+    },
+    {
+      "from": {
+        "saintId": "cms0w7cdr008r07qim1f6c46u",
+        "name": "Sri Vijay Krishna Goswami"
+      },
+      "to": {
+        "saintId": "cms3d4ktl000007ozc8967glx",
+        "name": "Sri Kuladananda Brahmachari"
+      },
+      "reason": "One or both exact canonical IDs absent from this SPN snapshot. Reconcile before using as an SPN holding."
+    },
+    {
+      "from": {
+        "saintId": null,
+        "name": "Sachchidananda Saraswati · Nigamananda’s sannyasa guru"
+      },
+      "to": {
+        "saintId": "cms0w7cl800i707qi368teg2q",
+        "name": "Paramahamsa Sri Swami Nigammananda ji Saraswati Deva"
+      },
+      "reason": "One or both exact canonical IDs absent from this SPN snapshot. Reconcile before using as an SPN holding."
+    },
+    {
+      "from": {
+        "saintId": null,
+        "name": "Sri Aurobindo"
+      },
+      "to": {
+        "saintId": "cms0w7joi092a07qiqkyvnm8m",
+        "name": "Sri Dadaji Dilip Kumar Roy"
+      },
+      "reason": "One or both exact canonical IDs absent from this SPN snapshot. Reconcile before using as an SPN holding."
+    },
+    {
+      "from": {
+        "saintId": null,
+        "name": "Papa Ramdas of Anandashram"
+      },
+      "to": {
+        "saintId": "cms0w7hle06te07qiegamkjgn",
+        "name": "Sri Yogi Ram Baba Surat Kumar"
+      },
+      "reason": "One or both exact canonical IDs absent from this SPN snapshot. Reconcile before using as an SPN holding."
+    },
+    {
+      "from": {
+        "saintId": null,
+        "name": "Swami Tapovan Maharaj"
+      },
+      "to": {
+        "saintId": "cms0w7gbj05aa07qij87q96dm",
+        "name": "Sri Swami Chinmayananda"
+      },
+      "reason": "One or both exact canonical IDs absent from this SPN snapshot. Reconcile before using as an SPN holding."
+    }
+  ],
+  "scope": "Selected SPN interpretation reference, not an exhaustive family catalogue or a physical move plan. Section counts are read from the current museum catalogue. Named historical connections do not automatically establish relic-source identity.",
+  "dataQualityFlags": [
+    {
+      "relationship": "Akkalkot Balappa → Pant Maharaj",
+      "reason": "Current raw edge must not be copied into the map: Pant’s guru was Balavadhoot of Parishawad, a different person."
+    },
+    {
+      "relationship": "Imported/uncategorized raw guru edges",
+      "reason": "Not automatically promoted to documented connections; researched direction and identity required."
+    }
+  ],
+  "expansionReview": {
+    "date": "2026-10-24",
+    "scope": "Screened all inherited SPN display-family groups and current cross-region family splits; targeted source checks for the most useful added neighbours. Not exhaustive historical verification of all 1,408 canonical records.",
+    "newRelationships": [
+      {
+        "from": {
+          "saintId": "cms0w7gpu05rz07qisc53dyx7",
+          "name": "Sant Sri Bhoja Bhagat"
+        },
+        "to": {
+          "saintId": "cms0w7cyk00z107qii6760lkx",
+          "name": "Sri Jalaram Babaji"
+        },
+        "type": "guru_disciple",
+        "sections": [
+          "Gujarat & Swaminarayan Traditions"
+        ],
+        "sources": [
+          {
+            "title": "Jalaram temple: life story",
+            "url": "https://jalarambapapondy.org/life-story.html"
+          }
+        ],
+        "placementSuggestion": "Place Bhoja Bhagat beside Jalaram; read teacher → disciple.",
+        "evidenceNote": null,
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7ft004nk07qi45hh7kfh",
+          "name": "Sadhu T.L. Vaswani"
+        },
+        "to": {
+          "saintId": "cms0w7fq904ke07qi0z8zm61c",
+          "name": "Sri Dada J.P. Vaswani"
+        },
+        "type": "guru_disciple",
+        "sections": [
+          "Maharashtra Guru Lineages"
+        ],
+        "sources": [
+          {
+            "title": "Sadhu Vaswani Mission: Dada’s teacher",
+            "url": "https://www.sadhuvaswani.org/dada-jp-vaswani"
+          }
+        ],
+        "placementSuggestion": "Keep Sadhu T. L. Vaswani and Dada J. P. Vaswani side by side.",
+        "evidenceNote": "The nephew connection also appears in the Ramanasramam source below; teacher–disciple is directly confirmed by the Mission.",
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7dg301kf07qinm0alnxb",
+          "name": "Sri Swami Shivananda Saraswati"
+        },
+        "to": {
+          "saintId": "cms0w7fmd04fn07qis9cd8h6u",
+          "name": "Sri Swami Vishnudevananda Saraswati"
+        },
+        "type": "sannyasa_guru_disciple",
+        "sections": [
+          "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+        ],
+        "sources": [
+          {
+            "title": "Divine Life Society: Vishnudevananda",
+            "url": "https://www.sivanandaonline.org/?cmd=displaysection&section_id=1368"
+          }
+        ],
+        "placementSuggestion": "Place Vishnudevananda beside Sivananda’s other direct disciples, retaining his international mission story.",
+        "evidenceNote": null,
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7dg301kf07qinm0alnxb",
+          "name": "Sri Swami Shivananda Saraswati"
+        },
+        "to": {
+          "saintId": "cmus3rxcy006n07o5yg4198z8",
+          "name": "Sri Swami Chidananda Saraswati"
+        },
+        "type": "guru_disciple_and_successor",
+        "sections": [
+          "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+        ],
+        "sources": [
+          {
+            "title": "Divine Life Society: Chidananda",
+            "url": "https://www.dlshq.org/saints/his-holiness-sri-swami-chidananda-saraswati-maharaj/"
+          }
+        ],
+        "placementSuggestion": "Keep the Divine Life Society’s Chidananda with Sivananda.",
+        "evidenceNote": "Use the verified Divine Life Society Chidananda profile; preserve source-locality conflicts separately.",
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7dg301kf07qinm0alnxb",
+          "name": "Sri Swami Shivananda Saraswati"
+        },
+        "to": {
+          "saintId": "cms0w7hk306ru07qi67meh6qk",
+          "name": "Sri Sahajananda Saraswati"
+        },
+        "type": "guru_disciple",
+        "sections": [
+          "Global & Diaspora Lineages",
+          "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+        ],
+        "sources": [
+          {
+            "title": "South African Government: Sahajananda’s teacher",
+            "url": "https://www.gov.za/af/news/s-ndebele-passing-away-sri-swami-sahajananda-10-dec-2007"
+          }
+        ],
+        "placementSuggestion": "Put Sahajananda’s South African display near the Sivananda group or give the two displays a clear cross-reference.",
+        "evidenceNote": null,
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7gb6059t07qis1a9kn28",
+          "name": "Sri Ramakrishna Paramahansa"
+        },
+        "to": {
+          "saintId": "cms0w7hno06w007qiusuli5ab",
+          "name": "Sri Swami Vivekananda"
+        },
+        "type": "guru_disciple",
+        "sections": [
+          "Bengal Shakta, Baul & Modern Saints"
+        ],
+        "sources": [
+          {
+            "title": "Belur Math: Vivekananda",
+            "url": "https://belurmath.org/swami-vivekananda/"
+          }
+        ],
+        "placementSuggestion": "Place Vivekananda beside Ramakrishna, with the household disciples close by.",
+        "evidenceNote": null,
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7gb6059t07qis1a9kn28",
+          "name": "Sri Ramakrishna Paramahansa"
+        },
+        "to": {
+          "saintId": "cms0w7jft08ti07qimg33dh8m",
+          "name": "Sri Mahendranath Gupta"
+        },
+        "type": "guru_disciple_and_recorder",
+        "sections": [
+          "Bengal Shakta, Baul & Modern Saints"
+        ],
+        "sources": [
+          {
+            "title": "Gospel of Sri Ramakrishna: introduction to M.",
+            "url": "https://www.ramakrishnavivekananda.info/gospel/introduction/mahendra.htm"
+          }
+        ],
+        "placementSuggestion": "Place Mahendranath Gupta beside Ramakrishna; his diary gives this pair a teacher-and-recorder story.",
+        "evidenceNote": null,
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7gb6059t07qis1a9kn28",
+          "name": "Sri Ramakrishna Paramahansa"
+        },
+        "to": {
+          "saintId": "cms0w7i6v07i807qiot1t3jt5",
+          "name": "Sri Lakshmi Mani Devi"
+        },
+        "type": "uncle_niece",
+        "sections": [
+          "Bengal Shakta, Baul & Modern Saints"
+        ],
+        "sources": [
+          {
+            "title": "Nachiketa Tapovan: Lakshmimani Devi",
+            "url": "https://nachiketa.org/wp-content/uploads/nachiketanjali-201302.pdf"
+          }
+        ],
+        "placementSuggestion": "Keep Lakshmi Mani beside Ramakrishna’s household group.",
+        "evidenceNote": "The article identifies Lakshmimani as the daughter of Ramakrishna’s brother Rameshwar; devotional incarnation claims are not used for this family connection.",
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7jft08ti07qimg33dh8m",
+          "name": "Sri Mahendranath Gupta"
+        },
+        "to": {
+          "saintId": "cms0w7fr004ld07qidykpxgm1",
+          "name": "Sri Paramahamsa Yogananda"
+        },
+        "type": "personal_spiritual_guidance",
+        "sections": [
+          "Bengal Shakta, Baul & Modern Saints",
+          "Rishikesh-Haridwar & Himalayan Monastic Lineages"
+        ],
+        "sources": [
+          {
+            "title": "Yogananda: Autobiography, chapter 9",
+            "url": "https://www.ananda.org/autobiography/#chap9"
+          }
+        ],
+        "placementSuggestion": "Place the Mahendranath Gupta end of the Ramakrishna group toward the Yogananda/Kriya display.",
+        "evidenceNote": "A personal guide and source of devotional instruction, distinct from Yogananda’s initiating Kriya guru sequence.",
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7ft004nk07qi45hh7kfh",
+          "name": "Sadhu T.L. Vaswani"
+        },
+        "to": {
+          "saintId": "cms0w7h0p065807qi6cyn3dk1",
+          "name": "Sri Ramana Maharishi"
+        },
+        "type": "documented_visit",
+        "sections": [
+          "Maharashtra Guru Lineages",
+          "Ramana & Arunachala"
+        ],
+        "sources": [
+          {
+            "title": "Sri Ramanasramam: Mountain Path, October 2018, p.63",
+            "url": "https://pro.gururamana.org/search/m/pdf/MountainPath/full/MountainPath_2018_Oct.pdf"
+          }
+        ],
+        "placementSuggestion": "Keep the Vaswani pair together, with a cross-reference toward Ramana’s display.",
+        "evidenceNote": "Ramanasramam’s publication records Sadhu Vaswani and his nephew Dada J. P. Vaswani visiting Ramana in 1939. A visit, not a discipleship claim.",
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7fq904ke07qi0z8zm61c",
+          "name": "Sri Dada J.P. Vaswani"
+        },
+        "to": {
+          "saintId": "cms0w7h0p065807qi6cyn3dk1",
+          "name": "Sri Ramana Maharishi"
+        },
+        "type": "documented_visit",
+        "sections": [
+          "Maharashtra Guru Lineages",
+          "Ramana & Arunachala"
+        ],
+        "sources": [
+          {
+            "title": "Sri Ramanasramam: Mountain Path, October 2018, p.63",
+            "url": "https://pro.gururamana.org/search/m/pdf/MountainPath/full/MountainPath_2018_Oct.pdf"
+          }
+        ],
+        "placementSuggestion": "Keep the Vaswani pair together, with a cross-reference toward Ramana’s display.",
+        "evidenceNote": "Ramanasramam’s publication records Sadhu Vaswani and his nephew Dada J. P. Vaswani visiting Ramana in 1939. A visit, not a discipleship claim.",
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7gtq05wo07qis37cvfs1",
+          "name": "Sri Ram Sharma Acharya"
+        },
+        "to": {
+          "saintId": "cms0w7fvs04qy07qi80lcl7jq",
+          "name": "Mata Sri Bhagwati Devi Sharma"
+        },
+        "type": "spouses_and_mission_leaders",
+        "sections": [
+          "Needs Research"
+        ],
+        "sources": [
+          {
+            "title": "All World Gayatri Pariwar: Bhagwati Devi Sharma",
+            "url": "https://www.awgp.org/en/about_us/patron_founder/mata_bhagwati_devi_sharma"
+          }
+        ],
+        "placementSuggestion": "Keep Shriram Sharma Acharya and Bhagwati Devi Sharma together as the Gayatri Pariwar group.",
+        "evidenceNote": "Both currently sit in Needs Research in this snapshot; recommend a coherent northern/Shantikunj home after current-record review. Recognize her own leadership, not only her marriage.",
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7dsb021707qiiyou77fv",
+          "name": "Sri Mahapurusha Sankardev"
+        },
+        "to": {
+          "saintId": "cms0w7h9x06fv07qioy54x3o8",
+          "name": "Sri Mahapurusha Madhavdev"
+        },
+        "type": "guru_disciple",
+        "sections": [
+          "Needs Research"
+        ],
+        "sources": [
+          {
+            "title": "Assam Tourism: Majuli and its satras",
+            "url": "https://assamtourism.gov.in/pdf/Majuli_Tourism_2025.pdf"
+          }
+        ],
+        "placementSuggestion": "Keep Sankardev and Madhavdev together in an Assamese/Ekasarana group in the East.",
+        "evidenceNote": "Both currently remain in Needs Research in the snapshot. The relationship is supported; a section recommendation is separate from an applied assignment.",
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7eyj03kp07qiwtmla1pm",
+          "name": "Namdev (13th century)"
+        },
+        "to": {
+          "saintId": "cms0w7dfm01jv07qi6o8h7rvx",
+          "name": "Sri Janabai"
+        },
+        "type": "devotional_household",
+        "sections": [
+          "Varkari"
+        ],
+        "sources": [
+          {
+            "title": "Guy Poitevin and Hema Rairkar: Janabai and Namdev’s household",
+            "url": "https://grindmill.org/wp-content/uploads/2020/08/soumission.pdf"
+          }
+        ],
+        "placementSuggestion": "Keep Janabai beside the medieval Namdev display.",
+        "evidenceNote": "Use the explicit 13th-century Namdev record, not modern Namdev namesakes. This is a devotional household connection; no biological relationship is implied.",
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "saintId": "cms0w7exg03ja07qifulmk878",
+          "name": "Sri Srimad Kishorikishorananda Das Babaji Maharaj Goswami"
+        },
+        "to": {
+          "saintId": "cms0w7g89056707qizu8jipuv",
+          "name": "Sri Murari Das Babaji"
+        },
+        "type": "guru_disciple",
+        "sections": [
+          "Braj & Krishna Bhakti",
+          "Gaudiya Vaishnava"
+        ],
+        "sources": [
+          {
+            "title": "Radha Kund teaching account: Murari and Tinkori",
+            "url": "https://www.bhaktijoga.lt/audio/ar-vaisnavas-priklausantis-vienai-tradicinio-vaisnavizmo-linijai-gali-gauti-pamokymus-vedima"
+          }
+        ],
+        "placementSuggestion": "Keep Tinkodi/Tinkori and Murari together, connecting the Gaudiya and wider Braj displays.",
+        "evidenceNote": "The current published relationship and the Radha Kund account support the pair; historical naming follows the existing reviewed Tinkodi identity.",
+        "researchRound": 2
+      }
+    ],
+    "historicalRelationshipsAwaitingBinding": [
+      {
+        "from": {
+          "name": "Tukaram of Dehu",
+          "publishedCandidateSlug": "sri-tukaram",
+          "saintId": null
+        },
+        "to": {
+          "saintId": "cms0w7g3e050607qiljgurms1",
+          "name": "Sri Bahina Bai"
+        },
+        "type": "guru_disciple_including_visionary_initiation",
+        "sections": [
+          "Maharashtra Guru Lineages",
+          "Varkari"
+        ],
+        "sources": [
+          {
+            "title": "J. Nelson Fraser and J. F. Edwards: Tukaram, biographical sources",
+            "url": "https://www.holybooks.com/wp-content/uploads/Life-And-Teachings-Of-Tukaram.pdf"
+          }
+        ],
+        "placementSuggestion": "Keep Bahinabai beside the famous Tukaram’s display, together with the Jagnade story.",
+        "evidenceNote": "Historical connection supported. SPN holdings of famous Tukaram confirmed by user; exact canonical/source binding awaits review. Do not assign this connection to the Mohapa/Nagpur import.",
+        "researchRound": 2
+      },
+      {
+        "from": {
+          "name": "Tukaram of Dehu",
+          "publishedCandidateSlug": "sri-tukaram",
+          "saintId": null
+        },
+        "to": {
+          "saintId": "cms0w7dpf01xd07qidu28zilh",
+          "name": "Sri Jaganade Maharaj"
+        },
+        "type": "devotional_companion_and_recorder",
+        "sections": [
+          "Maharashtra Guru Lineages",
+          "Varkari"
+        ],
+        "sources": [
+          {
+            "title": "Maharashtra Government: Santaji Jagnade",
+            "url": "https://www.mhada.gov.in/en/node/19628"
+          }
+        ],
+        "placementSuggestion": "Place Jagnade beside Tukaram and Bahinabai, so the singing and preservation of Tukaram’s abhangs form one readable group.",
+        "evidenceNote": "Historical connection supported. SPN holdings of famous Tukaram confirmed by user; exact canonical/source binding awaits review. Do not assign this connection to the Mohapa/Nagpur import.",
+        "researchRound": 2
+      }
+    ],
+    "heldCandidates": [
+      {
+        "people": "Vijayindra – Raghavendra",
+        "reason": "Institutional parampara includes Sudhindra between them. The generic SPN labels require identity checks; do not draw a direct guru–disciple edge."
+      },
+      {
+        "people": "Amritananda – Minati Patra",
+        "reason": "Inherited family spans Andhra/Girnar, but independent personal relationship evidence was not found in this pass."
+      },
+      {
+        "people": "Vitthalananda – Vedananda",
+        "reason": "Inherited family spans North/Varkari. Identity and personal relationship still need evidence."
+      },
+      {
+        "people": "Siddhaiah – Veerabrahmendra",
+        "reason": "Temple confirms the historical relationship, but the current Siddhaiah locality needs checking against the Mudumala disciple before treating this record as that saint."
+      },
+      {
+        "people": "Parankush – Lakshman Ramanuj",
+        "reason": "Institution lists both in its lineage, but precise teacher/successor direction and current SPN identity still need checking."
+      }
+    ],
+    "mutationStatus": "Research only; famous Tukaram holdings confirmed, exact source binding pending."
+  },
+  "canonicalReview": "Canonical endpoint substitutions supplied by Nadi, 24 October 2026. Original source bindings remain unchanged. Contextual relationships retain their precise labels and do not imply initiating discipleship."
+}

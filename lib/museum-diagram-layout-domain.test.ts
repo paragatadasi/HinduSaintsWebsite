@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {DIAGRAM_NODE_IDS,diagramSaveInput,diagramDeleteInput,changeDiagramLayouts} from "./museum-diagram-layout-domain";
+import {diagramDomain,SPN_DIAGRAM_NODE_IDS,DIAGRAM_NODE_IDS,diagramSaveInput,diagramDeleteInput,changeDiagramLayouts} from "./museum-diagram-layout-domain";
 const id="11111111-1111-4111-8111-111111111111";
 const raw={museumId:"museum-vrindavan",revision:"a".repeat(64),name:"  First view  ",positions:[{nodeId:DIAGRAM_NODE_IDS[0],x:.2,y:.8}]};
 const input=diagramSaveInput.parse(raw),now="2026-10-21T12:00:00.000Z";
@@ -10,3 +10,15 @@ test("missing update ids and duplicate names cannot overwrite another saved view
 test("bounded collection still permits replacing an existing view",()=>{const layouts=Array.from({length:30},(_,i)=>({...changeDiagramLayouts([],input,"actor",id,now)[0],id:String(i),name:String(i)}));assert.throws(()=>changeDiagramLayouts(layouts,{...input,name:"New"},"actor","new",now),/30/);assert.equal(changeDiagramLayouts(layouts,{...input,id:"0",name:"Revised"},"actor","new",now).length,30);});
 test("delete accepts only exact scoped id and revision",()=>{assert.ok(diagramDeleteInput.safeParse({museumId:raw.museumId,revision:raw.revision,id}).success);assert.equal(diagramDeleteInput.safeParse({museumId:raw.museumId,revision:raw.revision,id,section:"arbitrary"}).success,false);assert.equal(diagramDeleteInput.safeParse({museumId:raw.museumId,revision:"stale",id}).success,false);});
 test("saved views retain schema, graph and optional area provenance without destination effects",()=>{const saved=changeDiagramLayouts([],{...input,areaRevision:"b".repeat(64)},"actor",id,now)[0];assert.equal(saved.schemaVersion,1);assert.ok(saved.graphVersion);assert.equal(saved.areaRevision,"b".repeat(64));assert.ok(!("vitrine" in saved));});
+test("SPN saved views use their own node catalogue and graph version",()=>{
+ const spn=diagramDomain("museum-spn");
+ const input=spn.diagramSaveInput.parse({...raw,museumId:"museum-spn",positions:[{nodeId:SPN_DIAGRAM_NODE_IDS[0],x:.3,y:.4}]});
+ const saved=spn.changeDiagramLayouts([],input,"curator",id,now);
+ assert.match(saved[0].graphVersion,/^spn-/);
+ assert.ok(spn.diagramSnapshotSchema.safeParse({version:1,layouts:saved}).success);
+ assert.equal(spn.diagramSaveInput.safeParse({...input,museumId:"museum-vrindavan"}).success,false);
+ const vrOnly=DIAGRAM_NODE_IDS.find(node=>!SPN_DIAGRAM_NODE_IDS.includes(node));
+ assert.ok(vrOnly);
+ assert.equal(spn.diagramSaveInput.safeParse({...input,positions:[{nodeId:vrOnly,x:.5,y:.5}]}).success,false);
+ assert.equal(spn.diagramSaveInput.safeParse({...input,vitrine:"11"}).success,false);
+});
