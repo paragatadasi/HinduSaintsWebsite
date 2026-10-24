@@ -172,7 +172,7 @@ export default async function MuseumSaintPage({
     <div className="museum-admin">
       <nav className="museum-breadcrumb">
         <Link href="/museumadmin">Museum</Link>
-        <Link href="/museumadmin/review">Placement review</Link>
+        <Link href="/museumadmin">Section overview</Link>
       </nav>
       <h1>{saint.displayName}</h1>
       <p>

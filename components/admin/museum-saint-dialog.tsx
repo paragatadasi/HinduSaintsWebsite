@@ -51,8 +51,7 @@ export function MuseumSaintDialog({member,onClose,row,moveControl,profile,sectio
         </dl>
         <div className="review-actions">
           {inventoryHref?<Link className="museum-admin-button" href={inventoryHref as Route}>View relics and source locations</Link>:null}
-          {!readOnly && row.collectionItems?.map(item => <Link key={item.id} className="museum-admin-button" href={`/museumadmin/collections/${item.id}` as Route}>Plan move: {item.label}</Link>)}
-          {!readOnly ? row.saintId ? <Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>{"Edit proposal"}</Link> : <p>This proposal needs a saint link before planning. <Link href={`/museumadmin/review?q=${encodeURIComponent(row.sourceRecordId || row.id)}`}>Review source link</Link></p>:null}
+          {!readOnly ? row.saintId ? <Link className="museum-admin-button" href={`/museumadmin/saints/${row.saintId}` as Route}>{"Edit proposal"}</Link> : <p>This record needs a saint match. The data team can review it in Main admin / Source Data / Museum updates.</p>:null}
           {moveControl}
         </div>
       </section>
