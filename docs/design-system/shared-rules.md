@@ -73,9 +73,12 @@ Rules:
 - Saint pages use shared templates.
 - Biographies use the shared `Prose` component.
 - Admin pages can be simpler but should still use shared primitives.
-- Museum planning routes use the shared `MuseumWorkspaceLayout` focused view:
-  navigation starts collapsed to give the map and arrangement workspace the
-  available width. An outlined Show/Hide navigation control stays visible,
-  exposes its expanded state, and restores the existing navigation on demand.
-  Other museum routes retain their normal navigation. Re-entering a planning
-  route resets the focused default; opening navigation does not remount the plan.
+- Expandable panels use an integrated chevron in their header or disclosure row
+  instead of separate Show/Hide buttons. Preserve accessible labels, keyboard
+  operation, focus indication, and expanded state; do not add collapsing behavior
+  to panels that should remain visible.
+- Museum planning uses the shared `MuseumWorkspaceLayout`. The current curator
+  direction keeps the SPN planning sidebar visible and preserves Browse sections
+  expansion across navigation until manually collapsed. Museum implementation
+  and rollout belong to the museum workflow; the public showcase does not change
+  those routes.

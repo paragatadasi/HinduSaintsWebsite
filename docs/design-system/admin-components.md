@@ -9,6 +9,10 @@ Implementation direction:
 - Use `ReviewFactGrid` for readable current-value summaries.
 - Use `CollapsibleReviewCard` for secondary cards whose open state should
   persist in `sessionStorage` by route and card ID.
+- Integrate expand/collapse chevrons into the panel header or disclosure row,
+  rather than adding separate Show/Hide buttons. Keep a visible title or accessible
+  action label, native keyboard operation, focus indication, and accurate expanded
+  state. Prefer native disclosure semantics when they fit the interaction.
 - Keep configurable admin image and crop previews within the shared compact
   editor dimensions. Use `AdminImageEditorDialog` for full-size inspection or
   a larger synchronized editor instead of expanding images to the page width.

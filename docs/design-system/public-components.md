@@ -98,6 +98,15 @@ InstagramEmbedGrid supports layout `section` (default) / `sidebar` and presentat
 
 ## Page and shell compositions
 
+Expandable panels use a chevron integrated into the panel header or disclosure
+row, rather than a separate Show/Hide button. Use a native `details`/`summary`
+when its behavior fits; otherwise use a native button with `aria-expanded` and
+`aria-controls`. Keep the panel title or an accessible action label on the control,
+a visible focus indicator, and Enter/Space operation. The chevron reflects state;
+it must not be an unlabeled icon-only click target. Do not turn permanently useful
+navigation into a disclosure merely to apply this pattern. Preserve existing
+expansion persistence unless a specific workflow requires a different lifetime.
+
 Use IndexPageHero for directory headings; use domain page components for detail
 pages. Their `rootElement="div"` option supports private previews without nested
 main landmarks. TraditionPageLayouts is for reviewed editorial detail; basic
