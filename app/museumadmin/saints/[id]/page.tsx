@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getMuseumProposalData } from "@/lib/museum-proposals";
 import { getDirectMuseumProposals } from "@/lib/museum-direct-proposals";
 import { db } from "@/lib/db";
+import {readMuseumData} from "@/lib/museum-working-data";
 import { requireCapability } from "@/lib/admin-access";
 import {
   airtableIdentity,
@@ -33,6 +34,7 @@ export default async function MuseumSaintPage({
   await requireCapability("access_museum");
   const { id } = await params;
   const result = await searchParams;
+  const scoped=(await readMuseumData()).placements.find(row=>row.saintId===id&&row.spnProposal);
   const [saint, sections, sources, groups, history, direct] = await Promise.all(
     [
       db.saint.findUnique({
@@ -172,7 +174,7 @@ export default async function MuseumSaintPage({
     <div className="museum-admin">
       <nav className="museum-breadcrumb">
         <Link href="/museumadmin">Museum</Link>
-        <Link href="/museumadmin/review">Placement review</Link>
+        <Link href="/museumadmin">Section overview</Link>
       </nav>
       <h1>{saint.displayName}</h1>
       <p>
@@ -186,6 +188,11 @@ export default async function MuseumSaintPage({
       </p>
       {result.error ? <p role="alert">{result.error}</p> : null}
       {result.saved ? <p role="status">Museum proposal saved.</p> : null}
+      {scoped?.spnProposal?<ReviewSection title="Reviewed SPN proposal">
+        <p role={scoped.spnProposal.state==="needs_review"?"alert":"status"}>{scoped.spnProposal.state==="applied"?"Confirmed":"Needs review"}: {scoped.section} · {scoped.tier==="Featured"?"Primary":scoped.tier} · {scoped.groupLabel||"No display family"}</p>
+        <p>{scoped.spnProposal.reason}</p>
+        <p><Link href={`/admin/source-data/museum/spn-proposals?saintId=${id}` as Route}>Review this SPN decision</Link>. The original proposal below remains available for comparison. Saving a different underlying proposal will require this decision to be reviewed again.</p>
+      </ReviewSection>:null}
       <ReviewWorkflow
         eyebrow="Section proposal"
         title="Museum placement"

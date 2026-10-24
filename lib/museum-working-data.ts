@@ -1,4 +1,5 @@
 import {reconcileMuseumFamilies} from "./museum-family-reconciliation";
+import {projectSpnProposal} from "./spn-proposal-domain";
 import {buildMuseumView} from "./museum-proposals";
 import {arrangementControl,familyArrangementControl} from "@/lib/museum-arrangement-domain";
 import { projectSourceVitrines, SPN_WEBSITE_AIRTABLE_BASE_ID } from "@/lib/museum-vitrine-source";
@@ -12,7 +13,7 @@ import { resolveSnapshotIdentity } from "@/lib/museum-domain";
 import { buildWorkingMuseumView, museumRelationshipDetails, type CurrentMuseumSaint } from "@/lib/museum-working-view";
 
 // Private data reader; route entry points must enforce access_museum before calling.
-export async function readMuseumData(client: Prisma.TransactionClient = db, options: {reconcileFamilies?:boolean} = {}) {
+export async function readMuseumData(client: Prisma.TransactionClient = db, options: {reconcileFamilies?:boolean;applyScopedProposals?:boolean} = {}) {
   const [mirrorLocations, collections, saints, links, definitions, membership, arrangements] = await Promise.all([
     client.airtableMirrorRecord.findMany({
       where: { baseId: SPN_WEBSITE_AIRTABLE_BASE_ID, tableIdOrName: "Saints" },
@@ -124,6 +125,25 @@ export async function readMuseumData(client: Prisma.TransactionClient = db, opti
     rebuilt.sectionBySlug=new Map(rebuilt.sections.map(s=>[s.slug,s]));
     view=rebuilt;
   }
+  // Vrindavan deliberately requests the unprojected baseline. SPN decisions
+  // never enter that shared inheritance path or update global saint versions.
+  if(options.reconcileFamilies!==false&&options.applyScopedProposals!==false){
+    const decisions=await client.auditEvent.findMany({where:{action:"museum.spn_proposal.saved",entityType:"Saint"},orderBy:[{createdAt:"desc"},{id:"desc"}]});
+    const latest=new Map<string,typeof decisions[number]>();
+    for(const event of decisions)if(event.entityId&&!latest.has(event.entityId))latest.set(event.entityId,event);
+    const projected=view.placements.map(row=>{
+      const decision=row.saintId?latest.get(row.saintId):undefined;
+      return decision?projectSpnProposal(row,decision,arrangements.find(a=>a.placementId===row.id)):row;
+    });
+    if(decisions.length){
+      const labels=new Map(view.sections.flatMap(s=>s.families.map(f=>[f.key,f.label] as const)));
+      for(const row of projected)if(row.spnProposal?.state==="applied"&&row.familyId&&row.groupLabel)labels.set(row.familyId,row.groupLabel);
+      const trees=new Map(view.sections.flatMap(s=>s.families.filter(f=>f.treeFile).map(f=>[f.key,f.treeFile!] as const)));
+      const rebuilt=buildMuseumView(projected,view.membersById,labels,trees,new Set(projected.filter(p=>p.needsResearch).map(p=>p.id)));
+      for(const section of view.sections){const next=rebuilt.sections.find(s=>s.name===section.name);if(next){next.slug=section.slug;next.idea=section.idea;}else rebuilt.sections.push({...section,rows:[],total:0,featured:0,secondary:0,tertiary:0,confidence:{high:0,medium:0,low:0},geography:[],health:[],families:[],primaryGroups:[],secondaryOnlyGroups:[],secondaryUngrouped:[],tertiaryGroups:[],tertiaryUngrouped:[]});}
+      rebuilt.sectionBySlug=new Map(rebuilt.sections.map(s=>[s.slug,s]));view=rebuilt;
+    }
+  }
   const activeIds = new Set(current.map(s => s.id));
   for (const row of original.placements) {
     row.saintId = resolveSnapshotIdentity(row.id, links, activeIds).record?.entityId || undefined;
@@ -135,5 +155,6 @@ export async function readMuseumData(client: Prisma.TransactionClient = db, opti
     familyMoveOptions.push({key,label:rows[0].groupLabel||"Display family",count:rows.length,revision:"",moveUnavailable:true,arrangement:familyArrangementControl(rows)} as typeof familyMoveOptions[number]);
   }
   for(const option of familyMoveOptions)option.count=view.placements.filter(row=>(row.curatorialFamily||row.familyId)===option.key).length;
+  for(const option of familyMoveOptions)if(view.placements.some(row=>row.spnProposal?.state==="applied"&&[(row.curatorialFamily||row.familyId),row.spnProposal.baselineFamilyKey].includes(option.key)))option.moveUnavailable=true;
   return { ...view, original, familyMoveOptions };
 }
