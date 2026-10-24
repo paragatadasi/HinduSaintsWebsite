@@ -1,5 +1,28 @@
 # Museum data integration
 
+## SPN missing source-link repair (24 October 2026)
+
+The source review queue can contain an original mirrored Saints row whose
+`ExternalRecord` is absent. Linking a reviewed match now reconstructs that
+missing record from the current SPN project mirror inside the existing
+serializable transaction. It preserves the raw mirror payload and import/seen
+timestamps and audits the source key, evidence hash, selected saint and actor.
+The existing review version and current source hash must both agree.
+
+This repair does not reassign occupied links, including archived or unavailable
+targets, or replace a different entity type. Those remain for domain merge or
+reconciliation review. It rejects missing mirror evidence, stale forms, resolved
+identity reviews and archived targets. It creates no saints, section assignments,
+physical inventory or physical confirmations and performs no Airtable writes.
+
+`scripts/verify-museum-source-link-repair.ts` exercises restoration, ordinary
+placeholders, raw evidence preservation, replay, stale evidence, occupied and
+archived/dangling links, wrong entity types, museum scope, absent mirrors and
+unrelated data preservation. It requires a disposable localhost database named
+`museum_integration_test`. No migration or environment change is required.
+Deployment and any subsequent curator-applied links are separate steps; this
+documentation does not assert that production data has been repaired.
+
 ## Curator UX revamp: current checkpoint (3 October 2026)
 
 The curator workflow starts with recognizing a saint, understanding its proposed
