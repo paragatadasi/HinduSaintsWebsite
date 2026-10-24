@@ -21,11 +21,11 @@ tier exports expose them as `spnRegionTags`. Old decisions without this field
 remain valid. Older forms that omit the region control preserve saved tags.
 Source/baseline conflicts still hold the whole scoped decision for review.
 
-For the approved South–West connection, tag Mirra Alfassa, Dilip Kumar Roy and
-Indira Devi with `The South` and `Maharashtra & the West`, retaining their shared
-Integral Yoga display family, existing tiers, traditions and localities. The
-research proposal puts them together in provisional case 72, subject to fit and
-number validation; region-tag acceptance does not save or confirm that location.
+For the approved Puducherry-to-Pune connection, tag Mirra Alfassa, Dilip Kumar Roy
+and Indira Devi with **`The South` only**, retaining their shared Integral Yoga
+display family, existing tiers, traditions and localities. Their shared destination
+is a separate versioned layout proposal, subject to fit and number validation;
+region-tag acceptance does not save or confirm that location.
 Neem Karoli Baba's separately approved Northern section decision preserves his
 current tier, no-family state, biographical places and physical arrangements.
 
@@ -37,6 +37,33 @@ destinations. Other museums do not inherit the scoped tags.
 Workflow review: the museum interpretation skill already separates geography,
 display grouping and physical placement. This contract is documented here;
 no new general skill instruction is needed.
+
+### Verified production applications, 24 October 2026
+
+The user superseded the initial two-region idea: the three Integral Yoga records
+belong to the Southern region, with the Western connection retained only in the
+decision note. No separate South–West region was created. All three saves were
+verified through the protected UI and the 19:32 UTC tier export. Their sections,
+tiers, family, website places, traditions, source locations and physical states
+were unchanged. Existing section navigation still follows section mapping until
+the separate region-tag display consumer is integrated.
+
+Other completed scoped decisions in this session:
+
+- Neem Karoli Baba: Northern section, then explicitly approved Primary tier;
+  no family assigned and source location 1/C preserved.
+- The existing Arunachala record `cms0w7hle06te07qiegamkjgn`, imported as
+  Sri Yogi Ram Baba Surat Kumar: Secondary by explicit curator instruction.
+  Source 8/B, dates and profile identity preserved; historical relationships and
+  conflicting dates remain a separate research task.
+- Exact Pathbari Ramdas and Madhusudan: Gaudiya/FAM-002 under Radharaman's
+  reviewed guru chain, both Secondary. The broad family retains its existing
+  Jagad Bandhu Sundar label; no namesake merges or physical moves occurred.
+
+The 19:32 UTC export contains 93 Primary, 193 Secondary and 1,134 Tertiary
+placement rows. These are not verified unique-person or physical-item counts.
+The Secondary rows comprise 191 canonical records and two unlinked source rows;
+keep those identity holds distinct in physical planning and capacity ledgers.
 
 Paragata's 24 October instruction, recorded in Saarthi's chat, authorizes Kaleshwar's SPN addition to the existing Sai family (FAM-007), governed by Maharashtra Guru Lineages. His devotional relationship to Shirdi Sai Baba has already been reviewed separately. Keep Penukonda/Andhra website geography and both museums' physical data unchanged. Apply through the production admin only after the new route is deployed, inspect the current proposal, preserve unrelated reviewed fields, and verify the resulting source placement ID and arrangement.
 

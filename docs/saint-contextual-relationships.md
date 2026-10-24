@@ -12,6 +12,12 @@ section, tier or placement. Explicit curatorial grouping remains separate.
 
 ## Approved applications, 24 October 2026
 
+All three applications below were saved through the production Summary editor
+and verified after reload and in the 18:28 UTC protected export. Both Encountered
+links were also checked from Ramana's reciprocal profile. Across all 1,420 SPN
+placement rows, section, tier, family, source location and physical arrangement
+were unchanged. Do not repeat these inserts without checking existing edges.
+
 Apply through the protected Summary relationship editor after the additive enum
 migration and application release are live. Recheck current profiles and existing
 edges before saving; keep the source note and do not create duplicate edges.
