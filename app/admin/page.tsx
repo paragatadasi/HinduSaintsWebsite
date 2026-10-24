@@ -100,7 +100,7 @@ async function loadTeamWorkflow({
 }
 
 function MuseumOnlyDashboard() {
-  return <div className="admin-stack"><div><div className="eyebrow">Dashboard</div><h1>Museum workspace</h1><p className="lede">Your current role is focused on Museum planning and curation.</p></div><div className="admin-stat-grid"><Link className="admin-stat admin-stat--link interactive-surface" href="/museumadmin"><StatusBadge label="Curator" /><h2>Open Museum Admin</h2></Link></div></div>;
+  return <div className="admin-stack"><div><div className="eyebrow">Dashboard</div><h1>Museum workspace</h1><p className="lede">Your current role is focused on Museum planning and curation.</p></div><div className="admin-stat-grid"><Link className="admin-stat admin-stat--link interactive-surface" href="/museumadmin/overview"><StatusBadge label="Curator" /><h2>Open Museum Admin</h2></Link></div></div>;
 }
 
 function AccessLimitedDashboard() {

@@ -20,7 +20,7 @@ export async function saveSpnAnswerAction(input: unknown) {
   const actor = await assertMuseumMutation();
   try {
     await saveSpnCuratorAnswer(input, actor.id);
-    revalidatePath("/museumadmin/plan");
+    revalidatePath("/museumadmin/overview");
     return {error: ""};
   } catch (error) {
     if (error instanceof MuseumConflict) return {error: error.message};

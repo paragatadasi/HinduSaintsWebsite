@@ -16,3 +16,10 @@ SPN uses six navigation parents from Saarthi's approved v2 comparison: Himalaya 
 This is a display hierarchy, not a saint reassignment or physical move. Nadi owns separately reviewed SPN family exceptions (including Kaleshwar); no database operation is part of this UI change. Vrindavan retains its existing visitor sequence.
 
 Workspace no longer advertises Placement review or Moves and relics. Source matching belongs in Main admin / Source Data / Museum updates. Legacy relic move action links are removed from curator saint and vitrine views; the underlying routes and history remain intact for compatibility. The existing Plan the move layout experience remains available; future execution controls should be designed when needed.
+
+
+## SPN Museum Overview
+
+Museum Overview is the first SPN Workspace destination and the museum selector/sign-in landing route (`/museumadmin/overview`). Layout and Vitrine records are two views of this same route. Record filtering, pagination, clear-filters and vitrine deep links retain `view=records`; returning to Layout retains the selected vitrine. The existing `/museumadmin/plan` and `/museumadmin/locations` links redirect into the overview, with supported record filters retained. Section overview and its existing subsection URLs remain unchanged.
+
+The shared room layout component owns browsing and selection, not page navigation or a move workflow. Overview owns its title, statistics and view navigation. The curator questionnaire remains below the map, so the museum reference is the primary landing content. No new move execution controls are introduced. Existing access checks remain: layout/questionnaire require full catalogue access, records retain museum-access requirements. Vrindavan navigation and its move planner are unchanged.
