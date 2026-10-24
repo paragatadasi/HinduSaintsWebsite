@@ -16,7 +16,7 @@ export function MuseumActionForm({
     { error: "" }
   );
   return (
-    <form action={submit} className={className} aria-busy={pending} onSubmit={event => {
+    <form action={submit} className={["museum-action-form", className].filter(Boolean).join(" ")} aria-busy={pending} onSubmit={event => {
       event.preventDefault();
       const form = new FormData(event.currentTarget, (event.nativeEvent as SubmitEvent).submitter);
       startTransition(() => submit(form));

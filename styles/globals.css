@@ -7850,8 +7850,14 @@ fieldset.admin-field {
   display: inline-flex;
   font: inherit;
   font-weight: 700;
-  min-height: 38px;
-  padding: 0 var(--space-4);
+  min-height: var(--size-museum-control);
+  padding: var(--space-2) var(--space-4);
+  justify-content: center;
+  gap: var(--space-2);
+  line-height: var(--line-height-museum-control);
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 .museum-admin-button--secondary {
@@ -8454,9 +8460,10 @@ fieldset.admin-field {
   color: var(--color-muted);
   cursor: pointer;
   display: inline-flex;
-  height: 38px;
+  height: var(--size-museum-control);
+  flex-shrink: 0;
   justify-content: center;
-  width: 38px;
+  width: var(--size-museum-control);
 }
 
 .museum-icon-button:hover,
@@ -11735,3 +11742,110 @@ select:not([multiple]) {
 .museum-layout-key [data-key=new]{background:var(--museum-layout-vitrine-new)}
 .museum-layout-key [data-key=future]{background:var(--museum-layout-vitrine-future);border-color:var(--color-muted)}
 @media(hover:hover) and (pointer:fine){.museum-layout-room .museum-room--schematic .museum-room__vitrine:hover{border-color:var(--color-text)}}
+
+/* Museum Admin polish: common controls and readable forms in both museum shells and dialogs. */
+.museum-admin-button:disabled,
+.museum-icon-button:disabled,
+.museum-curator-review__case:disabled {
+  opacity: var(--opacity-control-disabled);
+  cursor: not-allowed;
+}
+:is(.museum-admin-shell, .museum-modal, .museum-family-move-dialog) :is(button, a, input, select, textarea, summary):focus-visible {
+  outline: var(--size-focus-ring) solid var(--color-museum-focus);
+  outline-offset: var(--size-focus-offset);
+}
+:is(.museum-admin-shell, .museum-modal, .museum-family-move-dialog) .review-actions {
+  align-items: center;
+  gap: var(--space-3);
+}
+:is(.museum-admin-shell, .museum-modal, .museum-family-move-dialog) .review-actions > * {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+:is(.museum-admin-shell, .museum-modal, .museum-family-move-dialog) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), select, textarea) {
+  font-size: var(--font-size-museum-input);
+  min-width: 0;
+}
+.museum-action-form > fieldset,
+.museum-planner__completion fieldset {
+  gap: var(--space-3);
+}
+.museum-action-form .form-stack label,
+.museum-planner__completion .form-stack label {
+  font-size: var(--font-size-review-field);
+  line-height: var(--line-height-museum-control);
+  text-transform: none;
+  font-weight: var(--font-weight-museum-label);
+}
+.museum-action-form label:has(> input[type="checkbox"]),
+.museum-planner__completion .form-stack .museum-planner__member,
+.museum-curator-review__option {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-height: var(--size-museum-control);
+  padding-block: var(--space-2);
+}
+.museum-action-form input[type="checkbox"],
+.museum-planner__completion input[type="checkbox"],
+.museum-curator-review__option input {
+  flex: none;
+  width: var(--space-4);
+  height: var(--space-4);
+  min-height: 0;
+  margin-top: var(--space-1);
+  padding: 0;
+}
+.museum-planner__completion .admin-field .museum-planner__member span {
+  font-size: var(--font-size-review-field);
+  font-weight: normal;
+  line-height: var(--line-height-museum-control);
+  text-transform: none;
+  color: var(--color-text);
+}
+:is(.museum-admin-shell, .museum-modal, .museum-family-move-dialog) .admin-field > span {
+  font-size: var(--font-size-review-field);
+  font-weight: var(--font-weight-museum-label);
+  text-transform: none;
+  color: var(--color-text);
+}
+.museum-planning-stats dd,
+.museum-packaging dd,
+.museum-admin-hero__stats,
+.museum-admin-nav__group-links small {
+  font-variant-numeric: tabular-nums;
+}
+.museum-saint-link {
+  min-height: var(--size-museum-control);
+}
+.museum-admin-nav nav a,
+.museum-admin-nav summary,
+.museum-saint-review-section > summary,
+.museum-planner__completion > summary {
+  min-height: var(--size-museum-control);
+  padding-block: var(--space-2);
+  cursor: pointer;
+}
+.museum-saint-review-section > summary { color: var(--color-text); }
+.museum-saint-review-section[open] > summary { margin-bottom: var(--space-2); }
+.museum-curator-review__option > span,
+.museum-curator-review__case,
+.museum-move-entry__identity,
+.museum-move-entry__route > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.museum-modal--profile { overscroll-behavior: contain; }
+@media (hover: hover) and (pointer: fine) {
+  .museum-admin-button:not(:disabled):hover {
+    box-shadow: inset 0 0 0 var(--border-width-default) currentColor;
+  }
+}
+@media (max-width: 640px) {
+  .museum-move-controls__top { grid-template-columns: minmax(0, 1fr); }
+  .museum-modal--profile {
+    padding: var(--space-4);
+    padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  }
+}
