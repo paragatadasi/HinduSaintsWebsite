@@ -37,7 +37,7 @@ test("curator assignments, explicit detachments and museum overrides win over re
 });
 
 test("draft, archived, imported, disputed, low-confidence and generic associations cannot change proposals",()=>{
- const variants=[{status:"needs_review"},{status:"archived"},{evidenceStatus:"imported"},{evidenceStatus:"disputed"},{confidence:"low"},{relationshipType:"associated"},{relationshipType:"contemporary"},{relationshipType:"influence"}];
+ const variants=[{status:"needs_review"},{status:"archived"},{evidenceStatus:"imported"},{evidenceStatus:"disputed"},{confidence:"low"},{relationshipType:"associated"},{relationshipType:"contemporary"},{relationshipType:"influence"},{relationshipType:"household"},{relationshipType:"encountered"}];
  for(const variant of variants){const member=row("member");assert.equal(reconcileMuseumFamilies([primary,member],[edge("e","primary","member","disciple",variant)])[1],member);}
 });
 
