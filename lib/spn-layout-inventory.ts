@@ -17,5 +17,6 @@ export async function readSpnLayoutInventory(){
  ]);
  const rows=buildLocationBrowserRows(items.map(item=>({...item,saints:item.saints.filter(s=>s.saint.status!=="archived").map(s=>({id:s.saint.id,name:s.saint.displayName})),location:item.placements[0]?.location??null,plannedLocation:null})),data.placements);
  const collisions=provisionalNumberCollisions(spnMuseumLayout,[...locations.map(l=>l.code),...data.placements.flatMap(p=>p.sourceVitrine?[p.sourceVitrine.vitrine]:[]),...rows.map(r=>r.vitrine)]);
- return {rows,collisions};
+ const portraits=await db.saint.findMany({where:{id:{in:[...new Set(rows.flatMap(r=>r.saints.map(s=>s.id)))]},status:"published",primaryImageId:{not:null}},select:{id:true,primaryImage:{select:{url:true}}}});
+ return {rows,collisions,portraits:Object.fromEntries(portraits.flatMap(s=>s.primaryImage?[[s.id,{url:s.primaryImage.url}]]:[]))};
 }

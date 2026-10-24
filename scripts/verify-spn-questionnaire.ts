@@ -1,0 +1,51 @@
+/** Run against the dedicated disposable local database, never production. */
+import assert from "node:assert/strict";
+import seed from "../data/museum/spn-curator-questions.json";
+const url = new URL(process.env.MUSEUM_TEST_DATABASE_URL || "http://invalid");
+if (!["localhost","127.0.0.1"].includes(url.hostname) || url.pathname !== "/spn_questionnaire_test") throw new Error("Use the disposable local spn_questionnaire_test database.");
+process.env.DATABASE_URL = url.toString();
+const {db} = await import("../lib/db");
+const {readSpnCuratorQuestions,saveSpnCuratorAnswer} = await import("../lib/spn-curator-questionnaire");
+
+const json = (v:unknown): import("../lib/generated/prisma/client").Prisma.InputJsonValue => JSON.parse(JSON.stringify(v));
+try {
+  await db.auditEvent.deleteMany({where:{entityType:"MuseumCuratorQuestionnaire"}});
+  await db.airtableMirrorRecord.deleteMany({where:{baseId:"appMapiXrtNwnS9oZ",tableIdOrName:"Saints",recordId:{in:seed.cases.map(c=>c.sourceRecordId)}}});
+  await db.user.deleteMany({where:{email:{in:["curator-test@example.invalid","denied-test@example.invalid"]}}});
+  const actor = await db.user.create({data:{email:"curator-test@example.invalid",roles:["site_admin"],active:true}});
+  const denied = await db.user.create({data:{email:"denied-test@example.invalid",roles:[],active:true}});
+  for (const c of seed.cases) await db.airtableMirrorRecord.create({data:{baseId:"appMapiXrtNwnS9oZ",tableIdOrName:"Saints",recordId:c.sourceRecordId,rawFieldsJson:json(c.sourceFields),rawPayloadJson:{},importedAt:new Date(seed.sourceCapturedAt)}});
+  let list=await readSpnCuratorQuestions();
+  assert.equal(list.length,8); assert.ok(list.every(q=>q.status==="awaiting_curator"));
+  const input=(q= list[0],decision="unknown")=>({museumId:"museum-spn",caseId:q.caseId,revision:q.revision,decision});
+  await assert.rejects(saveSpnCuratorAnswer(input(),denied.id),/permission/);
+  await assert.rejects(saveSpnCuratorAnswer({...input(),museumId:"museum-vrindavan"},actor.id));
+  await assert.rejects(saveSpnCuratorAnswer({...input(),decision:"unused"},actor.id),/not available/);
+  await saveSpnCuratorAnswer(input(),actor.id);
+  await assert.rejects(saveSpnCuratorAnswer(input(),actor.id),/changed/);
+  list=await readSpnCuratorQuestions(); assert.equal(list[0].status,"research"); assert.equal(list[0].history.length,1);
+  const revision=list[0].revision;
+  await db.airtableMirrorRecord.updateMany({data:{importedAt:new Date(),lastSeenAt:new Date()}});
+  list=await readSpnCuratorQuestions(); assert.equal(list[0].status,"research"); assert.equal(list[0].revision,revision);
+  await saveSpnCuratorAnswer(input(list[0],"reopen"),actor.id);
+  list=await readSpnCuratorQuestions(); assert.equal(list[0].status,"awaiting_curator"); assert.equal(list[0].history.length,2);
+  await saveSpnCuratorAnswer({...input(list[0],"recognized"),identification:"Name read from label"},actor.id);
+  list=await readSpnCuratorQuestions(); assert.equal(list[0].status,"verification");
+  const beforeDrift=list[0];
+  await db.airtableMirrorRecord.updateMany({where:{recordId:seed.cases[0].sourceRecordId},data:{rawFieldsJson:json({...seed.cases[0].sourceFields,Name:"New evidence"})}});
+  list=await readSpnCuratorQuestions(); assert.equal(list[0].status,"blocked"); assert.equal(list[0].history.length,3);
+  await assert.rejects(saveSpnCuratorAnswer(input(beforeDrift),actor.id),/changed/);
+  await assert.rejects(saveSpnCuratorAnswer(input(list[0]),actor.id),/evidence/);
+  await saveSpnCuratorAnswer(input(list[1],"onsite"),actor.id);
+  await saveSpnCuratorAnswer({...input(list[2],"referral"),referral:"Collection team"},actor.id);
+  await saveSpnCuratorAnswer(input(list[4],"unused"),actor.id);
+  const race=await Promise.allSettled([saveSpnCuratorAnswer(input(list[5]),actor.id),saveSpnCuratorAnswer(input(list[5]),actor.id)]);
+  assert.equal(race.filter(r=>r.status==="fulfilled").length,1);
+  list=await readSpnCuratorQuestions(); assert.equal(list[1].status,"onsite"); assert.equal(list[2].status,"referral"); assert.equal(list[4].status,"verification");
+  await db.airtableMirrorRecord.deleteMany({where:{recordId:seed.cases[7].sourceRecordId}});
+  list=await readSpnCuratorQuestions(); assert.equal(list[7].status,"blocked");
+  assert.equal(await db.saint.count(),0); assert.equal(await db.externalRecord.count(),0);
+  assert.equal(await db.museumCuratorProposal.count(),0); assert.equal(await db.museumArrangement.count(),0); assert.equal(await db.museumCollectionItem.count(),0);
+  assert.equal(await db.auditEvent.count(),7);
+  console.log("PASS: eight cases, roles, museum isolation, optional unknown note, stale/racing saves, history, reopen, research persistence, evidence drift, missing source and no identity/placement writes.");
+} finally { await db.$disconnect(); }
