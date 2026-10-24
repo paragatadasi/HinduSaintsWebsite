@@ -191,6 +191,7 @@ export default async function MuseumSaintPage({
       {scoped?.spnProposal?<ReviewSection title="Reviewed SPN proposal">
         <p role={scoped.spnProposal.state==="needs_review"?"alert":"status"}>{scoped.spnProposal.state==="applied"?"Confirmed":"Needs review"}: {scoped.section} · {scoped.tier==="Featured"?"Primary":scoped.tier} · {scoped.groupLabel||"No display family"}</p>
         <p>{scoped.spnProposal.reason}</p>
+          {scoped.spnRegionTags?.length?<p>Museum regions: {scoped.spnRegionTags.join(" · ")}</p>:null}
         <p><Link href={`/admin/source-data/museum/spn-proposals?saintId=${id}` as Route}>Review this SPN decision</Link>. The original proposal below remains available for comparison. Saving a different underlying proposal will require this decision to be reviewed again.</p>
       </ReviewSection>:null}
       <ReviewWorkflow
