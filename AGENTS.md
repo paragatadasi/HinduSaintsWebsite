@@ -61,6 +61,14 @@ Data ingestion and reconciliation:
 - Create reconciliation issues when external content conflicts with reviewed website content.
 - Do not silently overwrite human CMS edits with later Airtable, Instagram, CSV, or script-ingested data.
 
+Data workflow learning and skill maintenance:
+- At the end of each data workflow, review what was learned and update the relevant skills when the evidence changes a reusable interpretation, decision procedure, or verification step. Do not change a skill merely to record that a workflow finished.
+- For museum evidence and identity matching, maintain `museum-data-interpretation` and `saint-identity-reconciliation` in the local Codex skills directory (`$CODEX_HOME/skills`, or `~/.codex/skills`). Keep repository data contracts and documentation consistent with any changed rule.
+- Keep current placements, candidate lists, unresolved cases, credentials, and private raw records in their appropriate database or dated private evidence files. Skills should explain how to find and assess that evidence, not become a second live data store. Attribute and date source-specific clarifications; do not turn them into universal rules.
+- Coordinate relevant interpretation, research, and UX implications with the existing Citra and Saarthi chats as needed. Paragata Dasi has authorized this coordination; it does not authorize unrelated messages, new chats, or additional production changes.
+- Before changing a rule, check it against the current implementation and supporting evidence, preserving explicit curator decisions. Validate edited skills and check representative cases, including an ambiguous case or counterexample when it affects the rule.
+- Briefly report which skills changed and why, or that the review found no reusable changes. If a skill is unavailable or cannot be updated, record the proposed correction in the workflow handoff and report the limitation without blocking otherwise completed work.
+
 Worktree and branch hygiene:
 - Treat the repository root as the canonical working tree for `main`. Do not leave `main` checked out in long-lived Codex task worktrees.
 - Treat `deploy` as a release target only. Do not develop directly on `deploy`, and do not leave `deploy` checked out in stale worktrees after a release.
