@@ -9,7 +9,7 @@ test("SPN connections reference existing unique sections and sources",()=>{
 });
 test("guidance and visits retain precise types without inventing guru relationships",()=>{
  const guidance=graph.families.find(f=>f.from.name.includes("Gupta")&&f.to.name.includes("Yogananda"));
- assert.ok(guidance);assert.equal(guidance.to.saintId,"cms0w7fr004ld07qidykpxgm1");assert.notEqual(guidance.type,"guru_disciple");
+ assert.ok(guidance);assert.equal(guidance.to.saintId,"cms0w7fr004ld07qidykpxgm1");assert.equal(guidance.type,"influence");
  const visits=graph.families.filter(f=>f.from.name.includes("Vaswani")&&f.to.name.includes("Ramana"));
  assert.equal(visits.length,2);assert.ok(visits.every(f=>f.type!=="guru_disciple"));
 });
