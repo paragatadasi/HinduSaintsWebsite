@@ -26,6 +26,7 @@ export const answerInput = z.object({
 export type QuestionAnswer = z.infer<typeof answerInput>;
 export type QuestionHistory = Pick<QuestionAnswer, "decision" | "note" | "identification" | "referral"> & {id: string; at: string; evidenceVersion: string};
 export type CuratorQuestion = {
+  reviewGroup: "inventory" | "conflict" | "optional"; recognitionLabel: string; identificationPrompt: string; suggestedNames: string[];
   caseId: string; revision: string; title: string; question: string; context: string;
   sourceName: string | null; sourceLocation: string; relicDescription: string | null;
   sourceCapturedAt: string; mirrorCapturedAt: string | null; sourceFields: Record<string, unknown>;
@@ -47,7 +48,7 @@ export function allowedDecisions(blank: boolean): QuestionAnswer["decision"][] {
 }
 export function answerEffect(decision: QuestionAnswer["decision"]) {
   switch (decision) {
-    case "recognized": return "Save this identification for verification. It will not link or rename a saint, change a proposal, or confirm a move.";
+    case "recognized": return "We’ll review these details before updating the record. Your answer does not change the move plan.";
     case "onsite": return "Save for an on-site check. You can return with the label or collection record later.";
     case "referral": return "Save this referral for follow-up. No message will be sent automatically.";
     case "unknown": case "unlabelled": return "Move this question to Awaiting research. No explanation is required; your answer stays in its history.";

@@ -43,3 +43,11 @@ This is an extensible starter manifest, not a self-service question editor. Addi
 - Browser fixture uses the actual production components with mock actions and illustrative inventory, not production saves. Unknown-save and reopen, 1600px map/portrait alignment, five loaded portraits, single-column rows, 390px stacking/no page overflow and 16px review inputs verified.
 - `codex:verify` completed (exit 0), with existing CSS compatibility warnings and a Windows standalone trace-copy EPERM warning. Release captain must verify integrated packaging in the release worktree.
 - Broader regression run: 26/27 passed; the unchanged Vrindavan navigation test expects Andhra at the South region's end, while existing catalogue ordering returns Kerala. No ordering change is included here; reported to release captain.
+
+## Purpose-led questions (24 October 2026)
+
+Reviewed with Saarthi and Nadi against the eight source records. Four blank rows are collection checks; two conflicting name/biography cases remain held and appear separately; Mauni Baba and Krishna Dasji are optional research, not preliminary-planning gates. Their existing proposals are source-level, not newly confirmed canonical assignments. Source Place and normalized place may share one upstream assertion. A museum shelf does not establish saint geography.
+
+Question copy and group affect the optimistic revision so an old screen cannot silently submit against a changed prompt. Evidence versions and case IDs remain stable: historical answers, including unknown, remain saved without demanding repeated answers after copy edits. The response contract remains unchanged and writes only audit answers. No identity, proposal or physical location changes occur.
+
+The shared questionnaire pattern uses purpose selectors, a bounded evidence/answer split, stacked mobile layout, neutral evidence text, optional notes, compact comparison profiles, selected comparison state and a focused save outcome. Optional research never contributes to the collection-check count.

@@ -29,7 +29,8 @@ async function context(tx: Prisma.TransactionClient) {
     const changed = mirror && mirror.importedAt >= new Date(c.sourceCapturedAt) && hash(questionEvidence(mirror.rawFieldsJson)) !== hash(questionEvidence(c.sourceFields));
     const blockedReason = !mirror ? "The source entry is missing from the website mirror. The data team must restore it before an answer can be saved." : changed ? "Newer source evidence differs from this question. The data team must review it before an answer can be saved." : undefined;
     const review: CuratorQuestion = {
-      caseId: c.caseId, revision: hash({caseId: c.caseId, evidenceVersion: c.evidenceVersion, mirror: mirror ? questionEvidence(mirror.rawFieldsJson) : null, blockedReason, latest: history[0]?.id ?? null}),
+      reviewGroup: c.reviewGroup as CuratorQuestion["reviewGroup"], recognitionLabel: c.recognitionLabel, identificationPrompt: c.identificationPrompt, suggestedNames: c.suggestedNames,
+      caseId: c.caseId, revision: hash({question: c.question, reviewGroup: c.reviewGroup, caseId: c.caseId, evidenceVersion: c.evidenceVersion, mirror: mirror ? questionEvidence(mirror.rawFieldsJson) : null, blockedReason, latest: history[0]?.id ?? null}),
       title: c.title, question: c.question, context: c.context, sourceName: c.sourceName,
       sourceLocation: c.sourceLocationClue.vitrine ? `Vitrine ${c.sourceLocationClue.vitrine}${c.sourceLocationClue.shelf ? " / Shelf " + c.sourceLocationClue.shelf : ""}` : "Location not recorded",
       relicDescription: c.relicDescription, sourceCapturedAt: c.sourceCapturedAt,

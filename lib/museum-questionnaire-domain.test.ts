@@ -28,3 +28,16 @@ test("evidence ignores refresh metadata and proposal churn but preserves meaning
   assert.notDeepEqual(questionEvidence(fields),questionEvidence({...fields,Name:"Mauni Baba of Vrindavan"}));
   assert.deepEqual(questionEvidence({}),questionEvidence({Name:null,Shelf:""}));
 });
+
+import seed from '../data/museum/spn-curator-questions.json';
+test('planning checks exclude supported geographic defaults and preserve explicit conflict review', () => {
+  assert.equal(seed.cases.filter(c => c.reviewGroup === 'inventory').length, 4);
+  assert.equal(seed.cases.filter(c => c.reviewGroup === 'conflict').length, 2);
+  assert.equal(seed.cases.filter(c => c.reviewGroup === 'optional').length, 2);
+  for (const c of seed.cases.filter(c => c.reviewGroup === 'inventory')) {
+    assert.equal(c.questionType, 'source_entry_clarification');
+    assert.match(c.question, /Is there an item/);
+  }
+  for (const id of ['recqIwxHUPhbdDOGa', 'rechNsZrAAHvPvA8L']) assert.equal(seed.cases.find(c => c.sourceRecordId === id)?.reviewGroup, 'optional');
+  assert.equal(new Set(seed.cases.map(c => c.caseId)).size, 8);
+});

@@ -29,9 +29,13 @@
       "evidenceVersion": "ffbd2ae709c00a3bb41daefbdcccd8eafb8805052feeccd62eb1a001df9705d3",
       "title": "Mauni Baba · Navadwip",
       "caseId": "spn:curator:recqIwxHUPhbdDOGa",
-      "context": "A fuller name, teacher, ashram or recognisable portrait would help distinguish him from other saints called Mauni Baba.",
-      "question": "Who is the Mauni Baba named in the Basak Para, Navadwip entry?",
-      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+      "context": "The source names Basak Para, Navadwip, which supports a preliminary eastern regional placement. A Gaudiya proposal already exists in the source-level record, but Navadwip alone does not establish that tradition. Add a clue only if you know one; exact identity is not needed to start planning.",
+      "question": "Do you know his teacher, tradition or ashram?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z",
+      "reviewGroup": "optional",
+      "recognitionLabel": "I can add a teacher, tradition or ashram",
+      "identificationPrompt": "Teacher, tradition or ashram",
+      "suggestedNames": []
     },
     {
       "relicDescription": "mint/white shawl (or towel)",
@@ -60,9 +64,13 @@
       "evidenceVersion": "bb0287ba5a0e30d262c6d26e8d6968ceb55fbb40302a03ec8fad5d84649ca725",
       "title": "Krishna Dasji · Govardhan",
       "caseId": "spn:curator:rechNsZrAAHvPvA8L",
-      "context": "The source describes him as living when recorded. The existing candidate names Radha Kund; a portrait, teacher or specific ashram would help establish the match.",
-      "question": "Which Krishna Dasji does this Govardhan entry represent?",
-      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+      "context": "The named Govardhana association supports the existing source-level Braj proposal. Matching him to a website profile is optional research and does not need to hold up the preliminary arrangement.",
+      "question": "Do you know his teacher or ashram in Govardhan?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z",
+      "reviewGroup": "optional",
+      "recognitionLabel": "I can add a teacher or ashram",
+      "identificationPrompt": "Teacher or ashram",
+      "suggestedNames": []
     },
     {
       "relicDescription": "Japa mala",
@@ -91,9 +99,16 @@
       "evidenceVersion": "f5e7dbe146a61f980c086628e3e2853088e133fa65f82ddee3950fce2023544c",
       "title": "Gyaneshwar Singh · Amritsar",
       "caseId": "spn:curator:recpzyusiDTbmz4nO",
-      "context": "The inventory name says Gyaneshwar Singh. Its biography describes Baba Sri Chand, Guru Nanak’s son.",
-      "question": "Does this japa mala entry belong to Sant Gyaneshwar Singh or Baba Sri Chand?",
-      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+      "context": "Amritsar supports a preliminary Punjab grouping. We need the label to resolve the conflicting name and biography before linking a website profile; this review hold remains in place.",
+      "question": "The label names Gyaneshwar Singh, but the biography describes Baba Sri Chand. What does the collection label say?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z",
+      "reviewGroup": "conflict",
+      "recognitionLabel": "I can read or recall the label",
+      "identificationPrompt": "Name on the label",
+      "suggestedNames": [
+        "Gyaneshwar Singh",
+        "Baba Sri Chand"
+      ]
     },
     {
       "relicDescription": "metal tool",
@@ -117,9 +132,16 @@
       "evidenceVersion": "11ff6e2b3e02372a75dfa0e029fe4e087c44ea24c1b702c94bdcc2642bab40c9",
       "title": "Santokh Singh · Jyoti Swaroop",
       "caseId": "spn:curator:recwwMWvkqz29fGgS",
-      "context": "The dera name points to Jyoti Swaroop Wale; the dates 1787–1843 point to the Sikh poet. A portrait or collection label would help resolve the conflict.",
-      "question": "Which Santokh Singh does this metal-tool entry represent?",
-      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+      "context": "The dera name and recorded dates point to different people. A broad Sikh & Punjab grouping can be considered separately, but the identity remains on hold until the conflict is reviewed.",
+      "question": "Does the label identify Santokh Singh of the Jyoti Swaroop dera, Bhai Santokh Singh the poet, or someone else?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z",
+      "reviewGroup": "conflict",
+      "recognitionLabel": "I can identify the name on the label",
+      "identificationPrompt": "Name or details on the label",
+      "suggestedNames": [
+        "Santokh Singh of the Jyoti Swaroop dera",
+        "Bhai Santokh Singh the poet"
+      ]
     },
     {
       "relicDescription": null,
@@ -141,9 +163,13 @@
       "evidenceVersion": "f788165ccd605f0be4bcacfc123823b0c41a1657f4cda31b8ecca43ad65e2549",
       "title": "Blank inventory entry · 15/A",
       "caseId": "spn:curator:rec4xOqRUEzWnxTdw",
-      "context": "Only a vitrine and shelf were recorded. Check the collection record before identifying an object.",
-      "question": "Does this blank inventory entry correspond to an item, or is it an unused row?",
-      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+      "context": "The collection record contains only a vitrine and shelf. If an item exists, its label, teacher, tradition or associated place can help us propose a section. The shelf number alone cannot tell us where it belongs.",
+      "question": "Is there an item corresponding to the blank entry at Vitrine 15 / Shelf A?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z",
+      "reviewGroup": "inventory",
+      "recognitionLabel": "Yes, I can add the label or item details",
+      "identificationPrompt": "Label or item details",
+      "suggestedNames": []
     },
     {
       "relicDescription": null,
@@ -165,9 +191,13 @@
       "evidenceVersion": "ad1cf4328639bc36b1a4855e7e92dd3387cb9fe3fb55c6f3635f45b681d0d787",
       "title": "Blank inventory entry · 20/D",
       "caseId": "spn:curator:recPWVPc3i5A0KH7h",
-      "context": "Only a vitrine and shelf were recorded. Check the collection record before identifying an object.",
-      "question": "Does this blank inventory entry correspond to an item, or is it an unused row?",
-      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+      "context": "The collection record contains only a vitrine and shelf. If an item exists, its label, teacher, tradition or associated place can help us propose a section. The shelf number alone cannot tell us where it belongs.",
+      "question": "Is there an item corresponding to the blank entry at Vitrine 20 / Shelf D?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z",
+      "reviewGroup": "inventory",
+      "recognitionLabel": "Yes, I can add the label or item details",
+      "identificationPrompt": "Label or item details",
+      "suggestedNames": []
     },
     {
       "relicDescription": null,
@@ -189,9 +219,13 @@
       "evidenceVersion": "d2199b2f84be8d96b05ddc1d4783f313ac17082278e7b99dc5e67dcf70a6c537",
       "title": "Blank inventory entry · 10/C",
       "caseId": "spn:curator:recTIJVFjrG7OSvlI",
-      "context": "Only a vitrine and shelf were recorded. Check the collection record before identifying an object.",
-      "question": "Does this blank inventory entry correspond to an item, or is it an unused row?",
-      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+      "context": "The collection record contains only a vitrine and shelf. If an item exists, its label, teacher, tradition or associated place can help us propose a section. The shelf number alone cannot tell us where it belongs.",
+      "question": "Is there an item corresponding to the blank entry at Vitrine 10 / Shelf C?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z",
+      "reviewGroup": "inventory",
+      "recognitionLabel": "Yes, I can add the label or item details",
+      "identificationPrompt": "Label or item details",
+      "suggestedNames": []
     },
     {
       "relicDescription": null,
@@ -213,9 +247,13 @@
       "evidenceVersion": "b65b953ca10603f323d7dbd051c1d1ac7ea7d6d6144a149ac611dbac77fe32a9",
       "title": "Blank inventory entry · 20/A",
       "caseId": "spn:curator:recq8jg20kMAD2Erc",
-      "context": "Only a vitrine and shelf were recorded. Check the collection record before identifying an object.",
-      "question": "Does this blank inventory entry correspond to an item, or is it an unused row?",
-      "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
+      "context": "The collection record contains only a vitrine and shelf. If an item exists, its label, teacher, tradition or associated place can help us propose a section. The shelf number alone cannot tell us where it belongs.",
+      "question": "Is there an item corresponding to the blank entry at Vitrine 20 / Shelf A?",
+      "sourceCapturedAt": "2026-10-24T09:23:15.303Z",
+      "reviewGroup": "inventory",
+      "recognitionLabel": "Yes, I can add the label or item details",
+      "identificationPrompt": "Label or item details",
+      "suggestedNames": []
     }
   ],
   "sourceCapturedAt": "2026-10-24T09:23:15.303Z"
