@@ -7,13 +7,13 @@ export function MuseumLocationBrowser({rows, sections, filters, pageNumber="1"}:
   const matches = filterLocationBrowserRows(rows,filters);
   const page = Math.max(1, Math.min(Math.max(1, Math.ceil(matches.length / 30)), parseInt(pageNumber, 10) || 1));
   const visible = matches.slice((page - 1) * 30, page * 30);
-  const pageHref = (next:number) => `/museumadmin/locations?${new URLSearchParams({...filters,page:String(next)})}` as Route;
+  const pageHref = (next:number) => `/museumadmin/overview?${new URLSearchParams({...filters,view:"records",page:String(next)})}` as Route;
   const vitrines = [...new Set(rows.map(r=>r.vitrine).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
   const shelves = [...new Set(rows.filter(r=>!filters.vitrine||r.vitrine===filters.vitrine).map(r=>r.shelf).filter(Boolean))].sort();
   const sectionSlug = new Map(sections.map(s=>[s.name,s.slug]));
   return <div className="museum-admin admin-stack">
-    <header><div className="eyebrow">SPN Museum</div><h1>Vitrines and shelves</h1><p>See where relics are recorded now and which sections their saints belong to in the working arrangement.</p></header>
-    <MuseumInventoryFilters action="/museumadmin/locations" query={filters.q} searchLabel="Saint or relic" submitLabel="Show locations" filters={[
+    <header><h2>Vitrine records</h2><p>See where relics are recorded now and which sections their saints belong to in the working arrangement.</p></header>
+    <MuseumInventoryFilters action="/museumadmin/overview" fixedParams={{view:"records"}} query={filters.q} searchLabel="Saint or relic" submitLabel="Show locations" filters={[
       {name:"vitrine",label:"Vitrine",value:filters.vitrine,allLabel:"All vitrines",options:[...vitrines.map(v=>({value:v,label:"Vitrine "+v})),{value:"unknown",label:"Unknown or other location"}]},
       {name:"shelf",label:"Shelf",value:filters.shelf,allLabel:"All shelves",options:[...shelves.map(s=>({value:s,label:s})),{value:"unspecified",label:"Shelf not recorded"}]},
       {name:"section",label:"Destination section",value:filters.section,allLabel:"All sections",options:sections.map(s=>({value:s.name,label:s.name}))}
