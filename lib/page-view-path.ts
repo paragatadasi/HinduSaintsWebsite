@@ -1,4 +1,4 @@
-const EXCLUDED_PATH_PREFIXES = ["/admin", "/api", "/media", "/museumadmin", "/_next"];
+const EXCLUDED_PATH_PREFIXES = ["/admin", "/api", "/media", "/museumadmin", "/design-system-preview", "/_next"];
 const MAX_PAGE_PATH_LENGTH = 500;
 const PUBLIC_STATIC_PATHS = new Set([
   "/",

@@ -184,7 +184,7 @@ function getResourceFailure(target: EventTarget | null): { resourceType: ClientR
 
 function isClientTrackablePath(path: string) {
   if (!path.startsWith("/")) return false;
-  return !["/admin", "/api", "/media", "/museumadmin", "/_next"].some(
+  return !["/admin", "/api", "/media", "/museumadmin", "/design-system-preview", "/_next"].some(
     (prefix) => path === prefix || path.startsWith(`${prefix}/`)
   );
 }

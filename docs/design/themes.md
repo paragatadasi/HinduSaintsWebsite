@@ -1,5 +1,14 @@
 # Design System Themes
 
+[Canonical design system index](../design-system.md)
+
+## Current and historical status
+
+`nocturne` is the active public theme and `cosmic` the selected homepage layout.
+The other themes and layout values below describe existing implementation history;
+they are not approval to change the live design. Do not add new exploratory
+toggles. Remove obsolete alternatives only in a separately reviewed cleanup.
+
 Reference boards are stored in `docs/design/references/`:
 
 - `artistic-site-layouts.png`
@@ -74,7 +83,7 @@ Treat theme, layout, and component variants as separate decisions:
 
 - Theme changes belong in token values. For example, the nocturne palette defines the dark background, gold accents, translucent card surface, cream text, and image treatments.
 - Interactive state colors and shadows are theme decisions. Keep clickable-card affordance values such as `--color-interactive-border` and `--shadow-interactive` in each theme, while shared CSS controls when the state appears.
-- Layout changes belong in layout variants or shared layout classes. The archive and devotional homepages should be switchable without deleting either composition.
+- Layout changes belong in shared layout classes or approved variants. Archive and devotional remain historical implementation options; new public work should target the selected cosmic composition.
 - Interactive movement and image scale are layout/motion decisions. Keep values such as `--interactive-surface-lift` and `--interactive-image-scale` in shared tokens unless a future layout variant needs a deliberate override.
 - Component presentation changes belong in component variants. Saint cards use summary and portrait variants; tradition cards use summary and icon variants.
 - Homepage-specific orchestration can live under a page-scoped class such as

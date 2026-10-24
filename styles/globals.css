@@ -1,5 +1,27 @@
 @import "./tokens.css";
 
+/* Design review frames isolate public specimens from the admin document. */
+.design-system-toolbar { align-items: center; display: flex; flex-wrap: wrap; gap: var(--space-4); }
+.design-system-toolbar a { text-decoration: underline; text-underline-offset: var(--space-1); }
+.design-system-frame-viewport { max-width: 100%; overflow: auto; background: var(--color-bg); }
+.design-system-frame { border: var(--border-width-default) solid var(--color-border); display: block; height: var(--height-design-preview); margin-inline: auto; width: 100%; }
+.design-system-frame--phone { max-width: var(--width-design-preview-phone); }
+.design-system-frame--tablet { max-width: var(--width-design-preview-tablet); }
+.design-system-table-scroll { max-width: 100%; overflow: auto; }
+.design-system-inventory { border-collapse: collapse; text-align: left; width: 100%; }
+.design-system-inventory :is(th, td) { border-bottom: var(--border-width-default) solid var(--color-border); padding: var(--space-3); vertical-align: top; }
+.design-system-inventory code { overflow-wrap: anywhere; }
+.design-system-specimen { border-top: var(--border-width-default) solid var(--color-border); padding-block: var(--space-8); scroll-margin-top: var(--space-8); }
+.design-system-example-stack { display: grid; gap: var(--space-4); margin-block: var(--space-6); }
+.design-system-swatches { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.design-system-swatch { border: var(--border-width-default) solid var(--color-border); min-width: var(--width-design-swatch); padding: var(--space-5); }
+.design-system-swatch--background { background: var(--color-bg); color: var(--color-text); }
+.design-system-swatch--surface { background: var(--color-surface); color: var(--color-text); }
+.design-system-swatch--text { background: var(--color-text); color: var(--color-bg); }
+.design-system-swatch--muted { background: var(--color-muted); color: var(--color-bg); }
+.design-system-swatch--gold { background: var(--color-gold); color: var(--color-text-inverse); }
+.design-system-swatch--border { background: var(--color-border); color: var(--color-text); }
+
 * {
   box-sizing: border-box;
 }

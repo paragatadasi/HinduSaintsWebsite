@@ -26,6 +26,9 @@ Admin/CMS:
 - Preview routes must require auth and be noindexed.
 
 Design system:
+- Start with `docs/design-system.md`, the canonical design index. Read its public guidance for public work and its admin review/detail guidance for admin work.
+- Before adding public UI, inspect `lib/design-system/public-registry.ts` and the protected `/admin/site/design-system` showcase. Reuse an existing pattern; add a registry entry and specimen or an explicit integration-review location when introducing a shared component.
+- After token changes, run `npm run design:inventory` and `npm run design:check`; commit the generated token catalogue with the token changes. Keep design decisions in the indexed topic docs rather than creating a second design-system overview.
 - Use design tokens for colors, fonts, spacing, shadows, radii, widths, and image treatments.
 - All design and layout changes must go through the design system first: tokens, shared CSS classes, shared configuration, or reusable components.
 - Before changing admin review/detail UX, read `docs/design-system.md`, especially "Admin review UX direction" and "Detail-page review model".

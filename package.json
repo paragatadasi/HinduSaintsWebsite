@@ -13,6 +13,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "design:inventory": "node scripts/public-design-inventory.mjs",
+    "design:check": "node scripts/public-design-inventory.mjs --check",
     "test": "tsx --test lib/*.test.ts",
     "dev:check": "prisma generate && tsc --noEmit",
     "release:handoff": "node scripts/create-release-handoff.mjs",

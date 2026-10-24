@@ -13,6 +13,8 @@ test("rejects non-page and private paths", () => {
   assert.equal(normalizePageViewPath("/admin/analytics"), null);
   assert.equal(normalizePageViewPath("/api/health"), null);
   assert.equal(normalizePageViewPath("/_next/static/app.js"), null);
+  assert.equal(normalizePageViewPath("/design-system-preview?example=saint"), null);
+  assert.equal(normalizeTelemetryPath("/design-system-preview"), null);
 });
 
 test("limits telemetry to known public route shapes", () => {

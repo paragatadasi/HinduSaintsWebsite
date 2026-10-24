@@ -12,7 +12,8 @@ const siteConfigurationGroups: AdminNavigationGroup[] = [
       { exact: true, href: "/admin/site", label: "Homepage" },
       { href: "/admin/site/about", label: "About" },
       { href: "/admin/site/directory-headers", label: "Directory headers" },
-      { href: "/admin/site/footer", label: "Footer" }
+      { href: "/admin/site/footer", label: "Footer" },
+      { href: "/admin/site/design-system", label: "Public Design System" }
     ]
   }
 ];
