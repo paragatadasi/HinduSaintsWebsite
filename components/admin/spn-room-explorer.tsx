@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Search, MapPin, ChevronDown, ArrowRight, Star, GitBranch, Check, RotateCcw, RotateCw } from 'lucide-react';
 import type baselineData from '@/data/museum/spn-room-proposal-v15.json';
-import designData from '@/data/museum/spn-room-explorer-design.json';
+
 import { explorerSaints, vitrineConnectionPlaces, type ExplorerSaint, type ExplorerDriver, type ExplorerOption, type ExplorerPlacement } from '@/lib/spn-room-explorer';
 import { showFlexibleSpace, type ExplorerObservation } from '@/lib/spn-room-proposal';
 import '@/styles/spn-room-explorer.css';
@@ -17,8 +17,6 @@ const portraits: Record<string, {
 function Portrait({ saint }: {
     saint: ExplorerSaint;
 }) { const [failed, setFailed] = useState(false); const photo = portraits[saint.saintId]; return photo && !failed ? <img className="saint-portrait" src={photo.image} alt="" width="64" height="80" loading="lazy" onError={() => setFailed(true)}/> : <span className="saint-portrait portrait-empty" aria-hidden="true"/>; }
-const baseline: ExplorerOption = designData.options[0], previous: ExplorerOption = designData.comparisonPrevious;
-const proposals = [...(designData.options as ExplorerOption[]).map(option => ({ id: option.id, label: option.title + ' · v15', archived: false, option })), { id: 'archived-earlier', label: previous.title + ' · Earlier design study', archived: true, option: previous }];
 const regions: Record<string, string> = { N: 'Himalaya & the North', B: 'Braj & the Ganga', W: 'Maharashtra & the West', E: 'Bengal, Odisha & the East', S: 'The South', K: 'Sikh Gurus & Udasin', C: 'Bhakti Marga & global context', R: 'Flexible space', L: 'Large objects', T: 'Walking sticks' };
 const short: Record<string, string> = { N: 'North', B: 'Braj & Ganga', W: 'West', E: 'East', S: 'South', K: 'Sikh & Udasin', C: 'Global', R: 'Reserve', L: 'Large objects', T: 'Sticks' };
 const geo = (v: Proposal['layout']['vitrines'][number]) => ({ x: (v.row - 1) * 16 + 32, y: (25 - v.column - v.columnSpan) * 17 + 38, w: v.rowSpan * 16 - 5, h: v.columnSpan * 17 - 5 });
@@ -27,10 +25,13 @@ const bridgePlaces = (d: ExplorerDriver) => vitrineConnectionPlaces(d);
 const bridgeLabel = (d: ExplorerDriver, n: string | number) => d.connection === 'Gaudiya ↔ Puri; Kriya ↔ Ramakrishna' ? (['5', '57'].includes(String(n)) ? 'Kriya ↔ Ramakrishna' : 'Gaudiya ↔ Puri') : d.connection;
 const orientations = { north: { label: 'Up', angle: 90, transform: 'translate(470 0) rotate(90)', viewBox: '0 0 470 740', cave: '↑', entry: '↓' }, east: { label: 'Right', angle: 180, transform: 'translate(740 470) rotate(180)', viewBox: '0 0 740 470', cave: '→', entry: '←' }, south: { label: 'Down', angle: 270, transform: 'translate(0 740) rotate(270)', viewBox: '0 0 470 740', cave: '↓', entry: '↑' }, west: { label: 'Left', angle: 0, transform: '', viewBox: '0 0 740 470', cave: '←', entry: '→' } };
 const named = (o: ExplorerOption, n: string | number) => o.primeAnchors[n]?.people || '';
-export function SpnRoomExplorer({ proposal, rows }: {
+export function SpnRoomExplorer({ proposal, rows, designData }: {
     proposal: Proposal;
     rows: ExplorerObservation[];
+    designData: {options:ExplorerOption[];comparisonPrevious:ExplorerOption;placements:ExplorerPlacement[]};
 }) {
+const baseline: ExplorerOption = designData.options[0], previous: ExplorerOption = designData.comparisonPrevious;
+const proposals = [...(designData.options as ExplorerOption[]).map(option => ({ id: option.id, label: option.title + ' · v15', archived: false, option })), { id: 'archived-earlier', label: previous.title + ' · Earlier design study', archived: true, option: previous }];
     const data = { proposal, inventory: explorerSaints(rows), indicators: proposal.indicators };
     const vitrine = (n: string | number) => proposal.layout.vitrines.find(v => v.number === String(n))!;
     const changedCases = new Set(rows.filter(r => r.reviewReason).flatMap(r => [r.vitrine, r.effectiveVitrine]));
