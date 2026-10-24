@@ -70,17 +70,16 @@ function CuratorReviewCard({item,canEdit,onSaved,onBusy}:{item:CuratorReviewCase
    {item.options.map(value=><label className="museum-curator-review__option" key={value.id}><input type="radio" name={`identity-${item.caseId}`} checked={choice===value.id} disabled={!!value.unavailableReason} onChange={()=>{setChoice(value.id);setIdentityAck(false);}}/><span><strong>{value.label}</strong>{value.description?<span>{value.description}</span>:null}{value.unavailableReason?<span>{value.unavailableReason}</span>:null}</span></label>)}
   </fieldset>
   {option?<section className="admin-stack" aria-label="Changes if confirmed"><h4>What confirmation will change</h4><div className="museum-curator-review__changes"><table><thead><tr><th scope="col">Field</th><th scope="col">Current</th><th scope="col">After confirmation</th></tr></thead><tbody>{option.changes.map((change,index)=><tr key={`${change.field}:${index}`}><th scope="row">{change.field}</th><td>{change.before||"Not recorded"}</td><td>{change.after||"Not recorded"}</td></tr>)}</tbody></table></div>
-   <p className="muted">This records an identity review and the listed museum proposal changes. It does not confirm a physical move.</p>
-   {option.requiresIdentityLink?<label className="museum-curator-review__option"><input type="checkbox" checked={identityAck} disabled={locked} onChange={event=>setIdentityAck(event.target.checked)}/><span>I have checked the evidence and approve the source identity-link change shown above.</span></label>:null}
+   {option.requiresIdentityLink?<label className="museum-curator-review__option"><input type="checkbox" checked={identityAck} disabled={locked} onChange={event=>setIdentityAck(event.target.checked)}/><span>I have checked the evidence and approve the identity changes shown above.</span></label>:null}
   </section>:null}
-  <label className="admin-field">Review note<textarea value={note} maxLength={2000} disabled={locked} onChange={event=>setNote(event.target.value)} placeholder="What did you recognize, or what should we check next?"/></label>
+  <label className="admin-field">Review note<textarea aria-describedby={`review-note-${item.caseId}`} value={note} maxLength={2000} disabled={locked} onChange={event=>setNote(event.target.value)} placeholder="What did you recognize, or what should we check next?"/></label>
+  <p id={`review-note-${item.caseId}`} className="muted">Add a note for “Different saint” or “Unsure.” The review stays open.</p>
   {error?<p role="alert">{error}</p>:null}
   <div className="review-actions">
    <button type="button" className="museum-admin-button" disabled={locked||item.status==="blocked"||!option||!!option.unavailableReason||(option.requiresIdentityLink&&!identityAck)} onClick={()=>save("confirm_supported")}>{pending?"Saving…":"Confirm identity and update proposal"}</button>
    <button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={locked||!note.trim()} onClick={()=>save("different")}>Different saint</button>
    <button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={locked||!note.trim()} onClick={()=>save("unsure")}>Unsure — keep for review</button>
   </div>
-  <p className="muted">For a different saint or an uncertain identity, add a short note. The case stays open.</p>
  </article>;
 }
 

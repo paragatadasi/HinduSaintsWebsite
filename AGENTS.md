@@ -35,6 +35,14 @@ Design system:
 - Theme-specific changes must use theme tokens instead of conditional component logic.
 - Reuse existing UI components before creating new ones.
 
+UX copy:
+- Use the UX Writing & Content Design skill when available for product copy changes. Apply the rules below even when the skill is unavailable.
+- Review words in context: the curator’s task, visible controls, action outcome, and recovery path. Decide whether to keep, remove, move, or rewrite each explanation before shortening it.
+- Remove explanations that repeat clear labels or controls. Describe what an action does; mention limitations only when they affect the decision. Put occasional guidance beside the relevant action, usually in a disclosure.
+- Preserve visible and accessible labels, required acknowledgements, uncertainty, save consequences, and error recovery. Keep proposal changes distinct from confirmed physical moves and recorded inventory distinct from verified contents.
+- Check shared callers and loading, empty, partial, success, and failure states. Do not impose word limits at the expense of meaning.
+- Routine copy cleanup within an authorized task does not need per-string approval. Flag changes to product meaning or workflow for review with contextual before/after examples.
+
 Security:
 - Do not expose secrets in client code.
 - Validate server-side form inputs.

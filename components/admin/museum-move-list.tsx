@@ -45,7 +45,7 @@ export function MuseumMoveList({data,canEdit,proposal}:{data:PlannerData;canEdit
    </fieldset>
    <div className="review-actions"><button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>setFilters({...initial,query:filters.query,sort:filters.sort,status:"all"})}>Clear filters</button></div>
   </section>
-  <p>{rows.length} {rows.length===1?"saint":"saints"} shown. Check the listed relics, place them at the destination, then confirm the saint’s arrangement. Leave a partial or uncertain move planned.</p>
+  <p>{rows.length} {rows.length===1?"saint":"saints"} shown.</p>
   {!rows.length?<p>No moves match these filters. You can assign destinations in Plan destinations or choose another progress filter.</p>:null}
   {rows.map(row=><MoveCard key={`${row.id}:${row.revision}:${row.flexibleVitrines?.join(",")||""}`} row={row} planRevision={data.revision} canEdit={canEdit} onComplete={()=>setNotice(`${row.name}: arrangement recorded as implemented.`)}/>)}
  </section>;
@@ -83,12 +83,13 @@ function MoveCard({row,planRevision,canEdit,onComplete}:{row:PlannerRow;planRevi
     }catch{setError("Could not confirm the save. Reload to check the arrangement before retrying.");}});
    }}>
     <fieldset className="admin-field form-stack" disabled={pending}>
-     {flexible?<label>Where did you place this saint?<select name="vitrine" required defaultValue=""><option value="" disabled>Choose the actual vitrine</option>{row.flexibleVitrines!.map(number=><option key={number} value={number}>Vitrine {number}</option>)}</select></label>:<p>Destination: <strong>Vitrine {row.vitrine}</strong>. Only confirm when this saint’s intended arrangement is in place.</p>}
+     {flexible?<label>Where did you place this saint?<select name="vitrine" required defaultValue=""><option value="" disabled>Choose the actual vitrine</option>{row.flexibleVitrines!.map(number=><option key={number} value={number}>Vitrine {number}</option>)}</select></label>:<p>Destination: <strong>Vitrine {row.vitrine}</strong>.</p>}
+     <p>Leave partial or uncertain moves planned.</p>
      {row.sources.map((source,index)=><label className="museum-planner__member" key={source.id}><input required type="checkbox" name="source" value={source.id}/><span>I checked entry {index+1}: {source.relics||"Description missing"} (source {source.vitrine||"unknown"}{source.shelf?` / ${source.shelf}`:""}).</span></label>)}
      <label>Final shelf / position (optional)<input name="shelf" defaultValue={row.shelf} maxLength={100}/></label>
      <label>Move note (optional)<textarea name="note" maxLength={2000} rows={2}/></label>
-     <label className="museum-planner__member"><input required type="checkbox" name="physical"/><span>I have physically checked that the latest arrangement is in place at this destination.</span></label>
-     <label className="museum-planner__member"><input required type="checkbox" name="inventory"/><span>I understand that the complete relic inventory has not been verified. This records my confirmation, not individual relic-location verification.</span></label>
+     <label className="museum-planner__member"><input required type="checkbox" name="physical"/><span>I have checked in person that the latest arrangement is in place at this destination.</span></label>
+     <label className="museum-planner__member"><input required type="checkbox" name="inventory"/><span>The complete relic inventory has not been verified. I am confirming the arrangement, not each relic’s recorded location.</span></label>
      {error?<p role="alert">{error}</p>:null}
      <button className="museum-admin-button" type="submit">{pending?"Saving…":"Mark arrangement implemented"}</button>
     </fieldset>

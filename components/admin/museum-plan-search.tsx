@@ -9,7 +9,7 @@ export function MuseumPlanSearch({data,onVitrine,onSection,stayInPlace=false}:{s
  const terms=query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
  const matches=terms.length?data.rows.filter(row=>terms.every(term=>row.name.toLocaleLowerCase().includes(term))).sort((a,b)=>a.name.localeCompare(b.name)):[];
  return <section className="museum-planner__surface admin-stack" aria-label="Find a saint in the saved plan">
-  <div className="museum-planning-heading"><p className="eyebrow">Explore destinations</p><h2>Find a saint</h2><p>Find a saint’s section and planned vitrines without changing the arrangement.</p></div>
+  <div className="museum-planning-heading"><p className="eyebrow">Explore destinations</p><h2>Find a saint</h2><p>Find a saint’s section and planned vitrines.</p></div>
   <label className="admin-field"><span>Saint name</span><input type="search" value={query} onChange={event=>setQuery(event.target.value)} placeholder="Search any saint’s name"/></label>
   {terms.length?<><p role="status">{matches.length} {matches.length===1?"saint":"saints"} found{matches.length>30?" · Showing the first 30; refine the name for more specific results":""}.</p>
    <div className="admin-stack">{matches.slice(0,30).map(row=><article key={row.id} className="museum-planning-card admin-stack">

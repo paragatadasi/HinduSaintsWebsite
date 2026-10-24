@@ -20,7 +20,7 @@ export function MuseumLiveTrees({section,museum}:{section:MuseumSection;museum:"
  if(museum==="vrindavan"&&section.name==="Sikh & Punjab Traditions")main.unshift({key:"context:sikh-guru-succession",familyKey:"context:sikh-guru-succession",label:"Sikh Guru succession",seeds:[],count:10,contextLabel:"10 Gurus + related context"});
  return <section className="museum-admin-panel">
   <div className="museum-admin-kicker">Family trees</div><h2>Relationship trees in this section</h2>
-  <p>Open a family to explore its relationships. Reference connections remain labeled where website records are incomplete.</p>
+  <p>Reference connections remain labeled where website records are incomplete.</p>
   {museum==="vrindavan"?<MuseumGuideConnections section={section.name}/>:null}
   <div className="museum-tree-grid">{main.map(option=><MuseumLiveTreePanel key={option.key} option={option} museum={museum}/>)}</div>
   {additional.length?<details><summary>More families in this section ({additional.length})</summary><div className="museum-tree-grid">{additional.map(option=><MuseumLiveTreePanel key={option.key} option={option} museum={museum}/>)}</div></details>:null}
