@@ -23,6 +23,13 @@ unrelated data preservation. It requires a disposable localhost database named
 Deployment and any subsequent curator-applied links are separate steps; this
 documentation does not assert that production data has been repaired.
 
+Source-review failures now distinguish stale review versions, changed source
+evidence, absent mirrors, occupied links, unavailable targets, invalid inputs,
+transaction conflicts and timeouts. Only fixed error codes reach the URL and
+allowlisted recovery messages reach the screen; raw database errors are not
+displayed. Unknown failures remain a separate investigation hold. These messages
+do not weaken link guards, run an import or retry a mutation automatically.
+
 ## Curator UX revamp: current checkpoint (3 October 2026)
 
 The curator workflow starts with recognizing a saint, understanding its proposed
