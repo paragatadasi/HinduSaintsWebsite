@@ -26,6 +26,7 @@ export function VrindavanProposalEditor({row,options,action=saveVrindavanProposa
  <input type="hidden" name="saintId" value={row.saintId}/><input type="hidden" name="revision" value={row.curatorProposalRevision}/>
  <label>Display tier<select name="tier" defaultValue={row.tier}><option value="Featured">Primary</option><option>Secondary</option><option>Tertiary</option></select></label>
  <SearchableSelect name="groupKey" onValueChange={setGroupKey} label="Display family" defaultValue={row.familyId} options={[{value:"",label:"No display family"},...options.groups.map(g=>({value:g.key,label:g.label}))]}/>
+ <details className="museum-saint-review-section"><summary>Display family or historical relationship?</summary><p>Display families group saints for the museum. Add or correct historical relationships in the separate editor below.</p></details>
  <SearchableSelect name="section" onValueChange={setSection} label="Section" required defaultValue={row.section==="Needs section proposal"?"":row.section} options={options.sections.map(value=>({value,label:value}))}/>
  <SectionDestinationPreview preview={preview}/>
  <div className="review-actions"><button className="museum-admin-button" type="submit" disabled={!preview.ready}>Save proposal</button></div>
