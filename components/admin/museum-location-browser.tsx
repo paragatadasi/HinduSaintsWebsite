@@ -22,7 +22,7 @@ export function MuseumLocationBrowser({rows, sections, filters, pageNumber="1"}:
     <p role="status">{matches.filter(r=>!r.sourceOnly).length} relic records · {matches.filter(r=>r.sourceOnly).length} source-only saint locations</p>
     {!matches.length?<p>No locations match these filters.</p>:null}
     <div className="museum-location-list">{visible.map(row=><article key={row.key} className="museum-admin-panel">
-      <div className="museum-admin-section-heading"><h2>{row.itemId?<Link href={`/museumadmin/collections/${row.itemId}` as Route}>{row.label}</Link>:row.label}</h2>{row.sourceOnly?<small>Inventory incomplete</small>:null}</div>
+      <div className="museum-admin-section-heading"><h2>{row.label}</h2>{row.sourceOnly?<small>Inventory incomplete</small>:null}</div>
       <dl className="museum-saint-data museum-saint-data--flat">
         <div><dt>{row.sourceOnly?"Source location · not verified":"Current recorded location"}</dt><dd>{row.locationLabel}</dd></div>
         <div><dt>Working section{row.sections.length>1?"s":""}</dt><dd>{row.sections.length?row.sections.map((section,i)=><span key={section}>{i?" · ":""}<Link href={`/museumadmin/${sectionSlug.get(section)}` as Route}>{section}</Link></span>):"No section proposal recorded"}</dd></div>
@@ -30,7 +30,7 @@ export function MuseumLocationBrowser({rows, sections, filters, pageNumber="1"}:
         {row.plannedLocation?<div><dt>Individual relic move plan</dt><dd>{row.plannedLocation}</dd></div>:null}
       </dl>
       {!row.sourceOnly?<p>{row.saints.map((saint,i)=><span key={saint.id}>{i?" · ":""}<Link href={`/museumadmin?q=${encodeURIComponent(saint.name)}` as Route}>{saint.name}</Link></span>)}{!row.saints.length?"No saint linked":null}</p>:<p>This location comes from the source record. Individual relics have not yet been connected.</p>}
-      {row.itemId?<Link href={`/museumadmin/collections/${row.itemId}` as Route}>Open relic and move details</Link>:<Link href={`/museumadmin?q=${encodeURIComponent(row.label)}` as Route}>Open saint search</Link>}
+      {row.sourceOnly?<Link href={`/museumadmin?q=${encodeURIComponent(row.label)}` as Route}>Open saint search</Link>:null}
     </article>)}</div>
     {matches.length>30?<nav className="review-actions" aria-label="Location pages">{page>1?<Link href={pageHref(page-1)}>Previous</Link>:null}<span>Page {page} of {Math.ceil(matches.length/30)}</span>{page*30<matches.length?<Link href={pageHref(page+1)}>Next</Link>:null}</nav>:null}
   </div>;
