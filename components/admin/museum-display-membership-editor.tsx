@@ -15,7 +15,7 @@ export function MuseumDisplayMembershipEditor({row,canEditRelationships=false,co
   {row.saintId?<details className="museum-saint-review-section"><summary>Add or correct a historical relationship</summary>
    <p>Use this to connect a saint in the tree through a supported relationship, or correct a mistaken connection. This is separate from display-family membership.</p>
    {canEditRelationships&&row.adminSaintSlug?<p><Link href={`/admin/saints/${row.adminSaintSlug}/summary#saint-relationships` as Route}>Open the relationship editor</Link></p>:null}
-   <MuseumActionForm action={correctionAction}><input type="hidden" name="saintId" value={row.saintId}/><label>What relationship should be added or corrected?<textarea name="note" required minLength={10} maxLength={2000} placeholder="Describe the mistaken relationship and the evidence or correction."/></label><div className="review-actions"><button className="museum-admin-button" type="submit">Request relationship review</button></div><p>The editorial team can review this request in the reconciliation queue.</p></MuseumActionForm>
+   <MuseumActionForm action={correctionAction}><input type="hidden" name="saintId" value={row.saintId}/><label>What relationship should be added or corrected?<textarea name="note" required minLength={10} maxLength={2000} placeholder="Describe the relationship and supporting evidence."/></label><div className="review-actions"><button className="museum-admin-button" type="submit">Request relationship review</button></div><p>Your request goes to the editorial team for review.</p></MuseumActionForm>
   </details>:null}
  </>;
 }

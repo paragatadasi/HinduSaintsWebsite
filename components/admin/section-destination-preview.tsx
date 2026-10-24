@@ -20,7 +20,7 @@ export function SectionDestinationPreview({preview}:{preview:ReturnType<typeof u
   {preview.failed?<p role="alert">Could not load the destination preview. Refresh it before saving.</p>:!preview.data?<p role="status">Checking the section’s saved vitrines…</p>:<>
    {preview.data.blockedReason?<p role="alert">{preview.data.blockedReason}</p>:null}
    {preview.data.rows.length?<ul>{preview.data.rows.map(row=><li key={row.saintId}><strong>{row.name}</strong>: {row.message}</li>)}</ul>:<p>The section is unchanged; existing destinations are retained.</p>}
-   <p>This updates the move plan. Physical locations are only confirmed in Move companion.</p>
+   <p>Check the updated destination before saving.</p>
   </>}
   <button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={preview.refresh}>Refresh destination preview</button>
  </section>;
