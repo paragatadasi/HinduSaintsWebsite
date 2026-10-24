@@ -48,7 +48,7 @@ export function allowedDecisions(blank: boolean): QuestionAnswer["decision"][] {
 }
 export function answerEffect(decision: QuestionAnswer["decision"]) {
   switch (decision) {
-    case "recognized": return "We’ll review these details before updating the record. Your answer does not change the move plan.";
+    case "recognized": return "We'll review these details before updating the record. Your answer does not change the move plan.";
     case "onsite": return "Save for an on-site check. You can return with the label or collection record later.";
     case "referral": return "Save this referral for follow-up. No message will be sent automatically.";
     case "unknown": case "unlabelled": return "Move this question to Awaiting research. No explanation is required; your answer stays in its history.";
