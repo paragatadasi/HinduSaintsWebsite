@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { MuseumUpdateControl } from "@/components/admin/museum-update-control";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import { reviewMuseumSource } from "./actions";
+import { museumSourceReviewErrorMessage } from "@/lib/museum-source-review-domain";
 export default async function MuseumUpdates({searchParams}:{searchParams:Promise<{status?:string;q?:string;page?:string;error?:string;saved?:string}>}) {
   const user=await requireCapability("view_source_data");const params=await searchParams;
   const status=params.status==="deferred"?"deferred":params.status==="resolved"?"resolved":"pending";
@@ -24,7 +25,7 @@ export default async function MuseumUpdates({searchParams}:{searchParams:Promise
     <p><Link href={"/admin/source-data/museum/vrindavan" as Route}>Vrindavan saint matching</Link></p>
     <p><Link href={"/admin/source-data/museum/family-connections" as Route}>Reconcile preserved family-tree connections</Link></p>
     <h2>Uncertain matches</h2><p>Review source identities and locations in batches. No saint is created or merged automatically. Linking a source does not approve its relic location.</p>
-    {params.error?<p role="alert">The record changed or could not be updated. Reload and review its current source and saint link.</p>:null}
+    {params.error?<p role="alert">{museumSourceReviewErrorMessage(params.error)}</p>:null}
     {params.saved?<p role="status">Decision saved. Check for updates again after linking to refresh the location review queue.</p>:null}
     <form className="admin-search"><label>Find a record<input name="q" defaultValue={q}/></label><input type="hidden" name="status" value={status}/><button className="admin-form-button">Search</button></form>
     <nav aria-label="Source review status"><Link href="/admin/source-data/museum">Needs review</Link> &middot; <Link href="/admin/source-data/museum?status=deferred">Deferred</Link> &middot; <Link href="/admin/source-data/museum?status=resolved">Resolved</Link></nav>
