@@ -23,8 +23,8 @@ Source/baseline conflicts still hold the whole scoped decision for review.
 
 For the approved South–West connection, tag Mirra Alfassa, Dilip Kumar Roy and
 Indira Devi with `The South` and `Maharashtra & the West`, retaining their shared
-Integral Yoga display family, existing tiers, traditions and localities. The
-research proposal puts them together in provisional case 72, subject to fit and
+Integral Yoga display family, existing tiers, traditions and localities. Their
+shared destination is a separate versioned layout proposal, subject to fit and
 number validation; region-tag acceptance does not save or confirm that location.
 Neem Karoli Baba's separately approved Northern section decision preserves his
 current tier, no-family state, biographical places and physical arrangements.
