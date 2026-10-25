@@ -254,6 +254,40 @@
       "recognitionLabel": "Yes, I can add the label or item details",
       "identificationPrompt": "Label or item details",
       "suggestedNames": []
+    },
+    {
+      "relicDescription": "Chandan from when he left his body",
+      "questionType": "identity",
+      "sourceName": "Sri Nar Hari Das ji of Vrindavan",
+      "sourceFields": {
+        "Name": "Sri Nar Hari Das ji of Vrindavan",
+        "Place": [
+          "Vrindavan, India"
+        ],
+        "Normalized places": "Vrindavan, Uttar Pradesh, India",
+        "Primary Museum Section": "Braj & Krishna Bhakti",
+        "Museum Section Tier": "Tertiary",
+        "Vitrine #": 45,
+        "Shelf": "E",
+        "Relics Description (move to other table)": "Chandan from when he left his body"
+      },
+      "sourceRecordId": "rec5kC0WPXiXYelqp",
+      "sourceLocationClue": {
+        "vitrine": "45",
+        "shelf": "E",
+        "status": "source reported; current physical location not confirmed"
+      },
+      "candidateSlugs": [],
+      "evidenceVersion": "3230f921029cf4233ea424fbff9741d44a23ab084d7a0e0600576a5524fa5b6c",
+      "title": "Nar Hari Das · Vrindavan",
+      "caseId": "spn:curator:rec5kC0WPXiXYelqp",
+      "context": "The source records Vrindavan and chandan from when he left his body, which supports a preliminary Braj placement. His teacher and tradition are not known. Narahari Sonar is a separate record; a connection to Tulsidas has not been established. Add a clue only if you know one.",
+      "question": "Do you know this Nar Hari Das’s teacher, tradition or ashram?",
+      "sourceCapturedAt": "2026-10-25T14:23:51.459Z",
+      "reviewGroup": "optional",
+      "recognitionLabel": "I can add a teacher, tradition or ashram",
+      "identificationPrompt": "Teacher, tradition or ashram, and how you know",
+      "suggestedNames": []
     }
   ],
   "sourceCapturedAt": "2026-10-24T09:23:15.303Z"

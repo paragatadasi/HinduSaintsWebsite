@@ -27,8 +27,14 @@ Show only a rationale involving the selected display in the vitrine inspector.
 General display policies and routes merely passing a vitrine belong to the
 proposal-level Connections view.
 
-The current v15 and earlier design study can be compared without applying either.
+The current v16, retained v15 and earlier design study can be compared without applying any of them.
 Browser-local shortlist and view orientation are convenience preferences, not
 saved curator move plans. The hover card is a pointer/focus preview; touch users
-can select the same vitrine for the full inspector. Deployment remains paused
-pending the user's release instruction.
+can select the same vitrine for the full inspector.
+
+
+## Versioned proposal review
+
+Each release owns its source allocations, indicators, snapshot date, exact saint placements and connection rationale. Switching versions must switch the entire dataset together. V16 is the default; v15 remains selectable. Current scoped curator decisions are reconciled independently against each version, and viewing or comparing a proposal never writes placements.
+
+Show held identity or merge cases beside the affected vitrine without conflating them with physical fit. Optional curator questions retain exact source evidence and ask only for missing planning clues. Published portraits remain shared; private proposal metadata stays server-loaded behind museum authorization.

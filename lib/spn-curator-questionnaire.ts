@@ -37,7 +37,7 @@ async function context(tx: Prisma.TransactionClient) {
       mirrorCapturedAt: mirror?.importedAt.toISOString() ?? null, sourceFields: c.sourceFields,
       blankEntry: c.questionType === "source_entry_clarification", blockedReason,
       status: blockedReason ? "blocked" : questionStatus(history, c.evidenceVersion), history,
-      candidates: candidates.filter(s => c.candidateSlugs.includes(s.slug)).map(s => ({id: s.id, name: s.displayName}))
+      candidates: candidates.filter(s => c.candidateSlugs.some(slug => slug === s.slug)).map(s => ({id: s.id, name: s.displayName}))
     };
     return {review, evidenceVersion: c.evidenceVersion};
   });
