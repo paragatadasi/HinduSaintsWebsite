@@ -7,11 +7,13 @@ import designData from "@/data/museum/spn-room-explorer-design.json";
 import proposal from "@/data/museum/spn-room-proposal-v15.json";
 import proposalV16 from "@/data/museum/spn-room-proposal-v16.json";
 import designV16 from "@/data/museum/spn-room-explorer-v16-design.json";
+import proposalV16R1 from "@/data/museum/spn-room-proposal-v16-r1.json";
+import designV16R1 from "@/data/museum/spn-room-explorer-v16-r1-design.json";
 import {reconcileSpnRoomProposal} from "@/lib/spn-room-proposal";
 export default async function SpnMovePlan(){
  const user=await requireCapability("access_museum");await requireCapability("view_full_saint_catalog");
  const {sections,placements}=await getMuseumData();
- const releases=[{proposal:proposalV16,designData:designV16},{proposal,designData}].map(({proposal,designData})=>{
+ const releases=[{proposal:proposalV16R1,designData:designV16R1},{proposal:proposalV16,designData:designV16},{proposal,designData}].map(({proposal,designData})=>{
   const {rows,namedOnly,...view}=proposal;
   return {proposal:view,designData,rows:reconcileSpnRoomProposal([...rows,...namedOnly],placements)};
  });
