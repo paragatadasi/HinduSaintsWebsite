@@ -1,9 +1,28 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {explorerSaints,vitrineConnectionPlaces} from './spn-room-explorer';
+import {explorerSaints,vitrineConnectionPlaces,vitrineNeighborhoods} from './spn-room-explorer';
 import {reconcileSpnRoomProposal} from './spn-room-proposal';
 import data from '../data/museum/spn-room-proposal-v15.json';
 import design from '../data/museum/spn-room-explorer-design.json';
+import v16 from '../data/museum/spn-room-explorer-v16-design.json';
+
+test('operational collections never become neighborhoods or family navigation',()=>{
+ const option=v16.options[0];
+ for(const n of ['24','75','30','31','64','68','69'])assert.deepEqual(vitrineNeighborhoods(option,n),[]);
+ assert.deepEqual(vitrineNeighborhoods(option,'6').map(p=>p.unitId),['braj']);
+ assert.deepEqual(vitrineNeighborhoods(option,'5').map(p=>p.unitId),['kriya']);
+ assert.deepEqual(vitrineNeighborhoods(option,'3').map(p=>p.unitId),['datta']);
+ assert.deepEqual(vitrineNeighborhoods(design.options[0],'75').map(p=>p.unitId),['kriya']);
+ const forward=vitrineNeighborhoods(option,'78').map(p=>p.unitId).sort();
+ assert.ok(forward.length>1);
+ assert.deepEqual(vitrineNeighborhoods({...option,displayPackets:[...option.displayPackets].reverse()},'78').map(p=>p.unitId).sort(),forward);
+ assert.deepEqual(vitrineNeighborhoods({...option,displayPackets:[{label:'Unclassified collection',group:'N',cases:[75]}]},'75'),[]);
+});
+
+test('Kriya continuation context is not represented as actual holdings at75',()=>{
+ const driver=v16.options[0].drivers.find(d=>d.connection==='Core Kriya guru tree')!;
+ assert.deepEqual(driver.contextPlaces,[75]);assert.deepEqual(vitrineConnectionPlaces(driver),[5]);
+});
 
 test('explorer keeps source coverage and exact primary and secondary placements',()=>{
  const rows=reconcileSpnRoomProposal([...data.rows,...data.namedOnly],[]);
