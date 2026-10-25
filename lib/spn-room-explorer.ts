@@ -5,7 +5,7 @@ export type ExplorerSaint={
  sourceLocations:{vitrine:string;shelf:string}[];sourceAttributionHold:boolean;recommendedRegion:string;
  observations:ExplorerObservation[];
 };
-export type ExplorerDriver={connection:string;places:number[];contextPlaces?:number[];reason:string;sources?:{url:string}[]};
+export type ExplorerDriver={connection:string;places:number[];contextPlaces?:number[];connectionKind?:string;reason:string;sources?:{url:string}[]};
 export type ExplorerPacket={unitId?:string;label:string;group:string;cases:number[];navigationKind?:string};
 export type ExplorerOption={
  id:string;title:string;summary:string;
@@ -15,6 +15,10 @@ export type ExplorerOption={
  drivers:ExplorerDriver[];largeObjects:{note:string;fallback:string};tradeoffs:string[];
 };
 export type ExplorerPlacement={saintId:string;vitrine:number|string;priority?:number;rationale?:string;basis?:string;fitNote?:string};
+
+export function proposalVersionLabel(version:string){
+ return (version.match(/v\d+(?:-r\d+)?$/)?.[0]??version).replace('-r',' · revision ');
+}
 
 export function vitrineNeighborhoods(option:ExplorerOption,number:string):ExplorerPacket[]{
  return option.displayPackets.filter(p=>p.navigationKind==='neighborhood'&&p.cases.map(String).includes(number));
