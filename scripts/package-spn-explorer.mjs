@@ -22,13 +22,15 @@ const rows=holdings.sourceObservationAssignments.map(r=>{
    proposalRevision:placement.arrangement?.proposalRevision??''}:null};
 });
 if(rows.length!==1423||new Set(rows.map(r=>r.sourceId)).size!==1423)throw new Error('Incomplete or repeated source observations');
-const namedOnly=[...option.primaryAssignments,...option.secondaryAssignments].filter(a=>!rows.some(r=>r.saintId===a.saintId)).map(a=>{
+const namedOnly=handoff.namedOnlyAssignments??[...option.primaryAssignments,...option.secondaryAssignments].filter(a=>!rows.some(r=>r.saintId===a.saintId)).map(a=>{
  const record=records.get(a.saintId),p=record?.placements.length===1?record.placements[0]:null;
  return {sourceId:'',saintId:a.saintId,name:record?.name||a.name,vitrine:String(a.vitrine),tier:p?.effectiveTier??a.tier??'Unclassified',section:p?.section??'',
   sourceVitrine:p?.sourceLocation?.vitrine??'',sourceShelf:p?.sourceLocation?.shelf??'',unresolved:false,allocationKind:'Named proposal without linked source observation',share:null,state:'unknown',
   baseline:p?{placementId:p.placementId,section:p.section,tier:p.effectiveTier,familyKey:p.familyKey??'',regionTags:p.spnRegionTags??[],revision:p.arrangement?.revision??'',proposalRevision:p.arrangement?.proposalRevision??''}:null};
 });
-const result={version:handoff.proposalVersion,title:'Regional proposal · v15',snapshotAt:snapshot.generatedAt,
+const versionLabel=handoff.proposalVersion.match(/v\d+$/)?.[0];
+if(!versionLabel)throw new Error('Proposal version is required');
+const result={version:handoff.proposalVersion,title:`Regional proposal · ${versionLabel}`,snapshotAt:snapshot.generatedAt,
  provenance:[handoffPath,handoff.files.layout,handoff.files.sourceAllocations,snapshotPath].map(p=>({file:path.basename(p),sha256:createHash('sha256').update(readFileSync(p)).digest('hex')})),
  layout:layout.layout,assignments:option.assignments,drivers:option.drivers,indicators:handoff.vitrines,rows,namedOnly};
 writeFileSync(outputPath,JSON.stringify(result));
