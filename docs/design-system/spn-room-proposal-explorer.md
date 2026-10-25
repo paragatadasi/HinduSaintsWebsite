@@ -38,3 +38,7 @@ can select the same vitrine for the full inspector.
 Each release owns its source allocations, indicators, snapshot date, exact saint placements and connection rationale. Switching versions must switch the entire dataset together. V16 is the default; v15 remains selectable. Current scoped curator decisions are reconciled independently against each version, and viewing or comparing a proposal never writes placements.
 
 Show held identity or merge cases beside the affected vitrine without conflating them with physical fit. Optional curator questions retain exact source evidence and ask only for missing planning clues. Published portraits remain shared; private proposal metadata stays server-loaded behind museum authorization.
+
+## Neighborhoods and operational collections
+
+Display packets must explicitly declare navigationKind. Only neighborhood packets participate in regional navigation; operational review, reserve, walking-stick and full-height collections never imply family membership or a shared visitor area. Unknown packet kinds are excluded. Show all matching neighborhoods, never the first overlapping packet, and select only the clicked vitrine until a connection is explicitly chosen. Neighborhood context is labelled separately from exact saint holdings. A driver's contextPlaces describes optional continuation rather than actual holdings; render that context separately and use dashed rationale links.

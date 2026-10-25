@@ -689,7 +689,8 @@
             ],
             "interveningCases": [],
             "note": "Continuous Kriya run from 5 through 75 / 23 / 24. Reuse of 23 depends on full-height object clearance at 64."
-          }
+          },
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "teachers",
@@ -698,7 +699,8 @@
             73,
             25
           ],
-          "label": "Sivananda, Tapovan, Chinmayananda and direct disciples"
+          "label": "Sivananda, Tapovan, Chinmayananda and direct disciples",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "north_other",
@@ -707,7 +709,8 @@
             26,
             37
           ],
-          "label": "Himalayan masters: Haidakhan Babaji and other northern families"
+          "label": "Himalayan masters: Haidakhan Babaji and other northern families",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "sai",
@@ -715,7 +718,8 @@
           "cases": [
             4
           ],
-          "label": "Meher Baba formation circle and Sai families: one-vitrine fit proposal"
+          "label": "Meher Baba formation circle and Sai families: one-vitrine fit proposal",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "swaminarayan",
@@ -723,7 +727,8 @@
           "cases": [
             1
           ],
-          "label": "BAPS guru family: one-vitrine allocation"
+          "label": "BAPS guru family: one-vitrine allocation",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "varkari",
@@ -734,7 +739,8 @@
             43,
             42
           ],
-          "label": "Varkari: prominent four-case family neighbourhood"
+          "label": "Varkari: prominent four-case family neighbourhood",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "nath",
@@ -746,7 +752,8 @@
             47,
             46
           ],
-          "label": "Nath traditions; Nivrittinath–Dnyaneshwar bridge at 46 / 45"
+          "label": "Nath traditions; Nivrittinath–Dnyaneshwar bridge at 46 / 45",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "west_other",
@@ -759,7 +766,8 @@
             59,
             58
           ],
-          "label": "Other western families: Gujarat, Maharashtra, Datta and Brahma Kumaris"
+          "label": "Other western families: Gujarat, Maharashtra, Datta and Brahma Kumaris",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "gaudiya",
@@ -773,7 +781,8 @@
             34,
             35
           ],
-          "label": "Chaitanya and Gaudiya families"
+          "label": "Chaitanya and Gaudiya families",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "bhakti_bridge",
@@ -788,7 +797,8 @@
             2,
             78,
             36
-          ]
+          ],
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "rama",
@@ -805,7 +815,8 @@
             36,
             27,
             38
-          ]
+          ],
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "kashi",
@@ -820,7 +831,8 @@
             29,
             76,
             28
-          ]
+          ],
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "braj",
@@ -843,7 +855,8 @@
             10,
             11,
             12
-          ]
+          ],
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "ramakrishna",
@@ -851,7 +864,8 @@
           "cases": [
             57
           ],
-          "label": "Ramakrishna, Vivekananda, Mahendranath Gupta and Lakshmi Mani"
+          "label": "Ramakrishna, Vivekananda, Mahendranath Gupta and Lakshmi Mani",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "anandamayi",
@@ -859,7 +873,8 @@
           "cases": [
             55
           ],
-          "label": "Anandamayi Ma and immediate family"
+          "label": "Anandamayi Ma and immediate family",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "jaiguru",
@@ -867,7 +882,8 @@
           "cases": [
             54
           ],
-          "label": "Omkarnath, Parankush and supported immediate Jaiguru lineage"
+          "label": "Omkarnath, Parankush and supported immediate Jaiguru lineage",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "puri",
@@ -876,7 +892,8 @@
             53,
             52
           ],
-          "label": "Vijay Krishna, Yogmaya and immediate family / Odisha"
+          "label": "Vijay Krishna, Yogmaya and immediate family / Odisha",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "east_other",
@@ -885,7 +902,8 @@
             51,
             56
           ],
-          "label": "Other eastern families: keep each family intact, including Sankardev–Madhavdev"
+          "label": "Other eastern families: keep each family intact, including Sankardev–Madhavdev",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "buddhist",
@@ -893,7 +911,8 @@
           "cases": [
             63
           ],
-          "label": "Buddhist display: across the short aisle from the eastern island"
+          "label": "Buddhist display: across the short aisle from the eastern island",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "ramana",
@@ -902,7 +921,8 @@
             19,
             20
           ],
-          "label": "Ramana / Arunachala and related Tamil setting"
+          "label": "Ramana / Arunachala and related Tamil setting",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "tamil",
@@ -911,7 +931,8 @@
             16,
             17
           ],
-          "label": "Tamil / Shaiva families"
+          "label": "Tamil / Shaiva families",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "sri_vaishnava",
@@ -920,7 +941,8 @@
             18,
             70
           ],
-          "label": "Sri Vaishnava and southern Vaishnava families"
+          "label": "Sri Vaishnava and southern Vaishnava families",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "andhra",
@@ -930,7 +952,8 @@
             22,
             74
           ],
-          "label": "Andhra avadhuta / Datta families"
+          "label": "Andhra avadhuta / Datta families",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "sikh",
@@ -940,7 +963,8 @@
             66,
             67
           ],
-          "label": "Sikh Gurus and immediate families; retain Udasin identity"
+          "label": "Sikh Gurus and immediate families; retain Udasin identity",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "sikh_large",
@@ -948,7 +972,8 @@
           "cases": [
             68
           ],
-          "label": "Large Sikh relics: mounting and clearance reserve"
+          "label": "Large Sikh relics: mounting and clearance reserve",
+          "navigationKind": "operational"
         },
         {
           "unitId": "global",
@@ -957,7 +982,8 @@
             71,
             13
           ],
-          "label": "Bhakti Marga / global context: two-case family neighbourhood"
+          "label": "Bhakti Marga / global context: two-case family neighbourhood",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "unresolved",
@@ -972,7 +998,8 @@
             12,
             15,
             72
-          ]
+          ],
+          "navigationKind": "operational"
         },
         {
           "unitId": "uniform",
@@ -980,7 +1007,8 @@
           "cases": [
             69
           ],
-          "label": "Harbhajan Singh uniform: beside Sikh group, clearance pending"
+          "label": "Harbhajan Singh uniform: beside Sikh group, clearance pending",
+          "navigationKind": "operational"
         },
         {
           "unitId": "plow",
@@ -988,7 +1016,8 @@
           "cases": [
             64
           ],
-          "label": "Full-height display from 23: candidate 64; object identification and clearance pending"
+          "label": "Full-height display from 23: candidate 64; object identification and clearance pending",
+          "navigationKind": "operational"
         },
         {
           "unitId": "sticks",
@@ -997,7 +1026,8 @@
             30,
             31
           ],
-          "label": "Walking sticks: retain stick-only housing"
+          "label": "Walking sticks: retain stick-only housing",
+          "navigationKind": "operational"
         },
         {
           "unitId": "datta",
@@ -1008,7 +1038,8 @@
             80,
             82
           ],
-          "label": "Dattatreya, Datta devotional families and Akkalkot direct family"
+          "label": "Dattatreya, Datta devotional families and Akkalkot direct family",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "nath_hinge",
@@ -1016,7 +1047,8 @@
           "cases": [
             40
           ],
-          "label": "Nath context: Goraknath; Nivrittinath interpretive bridge"
+          "label": "Nath context: Goraknath; Nivrittinath interpretive bridge",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "dnyan_hinge",
@@ -1024,7 +1056,8 @@
           "cases": [
             41
           ],
-          "label": "Dnyaneshwar: Nivrittinath connection into the Varkari run"
+          "label": "Dnyaneshwar: Nivrittinath connection into the Varkari run",
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "south_west_hinge",
@@ -1036,7 +1069,8 @@
           "regionalAssociations": [
             "The South"
           ],
-          "fitConfirmed": false
+          "fitConfirmed": false,
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "kerala_v15",
@@ -1047,7 +1081,8 @@
           "label": "Kerala and southern ascetic context",
           "route": [
             15
-          ]
+          ],
+          "navigationKind": "neighborhood"
         },
         {
           "unitId": "karnataka_v15",
@@ -1058,7 +1093,8 @@
           "label": "Karnataka / Hubli–Mugalkhod context",
           "route": [
             72
-          ]
+          ],
+          "navigationKind": "neighborhood"
         }
       ],
       "primeAnchors": {
@@ -1890,7 +1926,8 @@
           29
         ],
         "group": "N",
-        "label": "Kriya: Babaji, Lahiri, Yukteswar, Yogananda and reviewed disciples"
+        "label": "Kriya: Babaji, Lahiri, Yukteswar, Yogananda and reviewed disciples",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "teachers",
@@ -1899,7 +1936,8 @@
           28
         ],
         "group": "N",
-        "label": "Sivananda, Tapovan, Chinmayananda and direct disciples"
+        "label": "Sivananda, Tapovan, Chinmayananda and direct disciples",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "north_other",
@@ -1908,7 +1946,8 @@
           38
         ],
         "group": "N",
-        "label": "Other Himalayan families, including Haidakhan; distinct from Mahavatar Babaji"
+        "label": "Other Himalayan families, including Haidakhan; distinct from Mahavatar Babaji",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "samarth",
@@ -1916,7 +1955,8 @@
           1
         ],
         "group": "W",
-        "label": "Swami Samarth, Balappa and Krishna Saraswati: immediate family"
+        "label": "Swami Samarth, Balappa and Krishna Saraswati: immediate family",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "sai",
@@ -1927,7 +1967,8 @@
           82
         ],
         "group": "W",
-        "label": "Sai families and Meher Baba formation circle; Upasani–Godavari together"
+        "label": "Sai families and Meher Baba formation circle; Upasani–Godavari together",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "swaminarayan",
@@ -1937,7 +1978,8 @@
           43
         ],
         "group": "W",
-        "label": "Swaminarayan / BAPS: keep successive guru families together"
+        "label": "Swaminarayan / BAPS: keep successive guru families together",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "varkari",
@@ -1948,7 +1990,8 @@
           42
         ],
         "group": "W",
-        "label": "Varkari: a major four-case neighbourhood"
+        "label": "Varkari: a major four-case neighbourhood",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "nath",
@@ -1960,7 +2003,8 @@
           46
         ],
         "group": "W",
-        "label": "Nath traditions; Nivrittinath–Dnyaneshwar bridge at 50 / 39"
+        "label": "Nath traditions; Nivrittinath–Dnyaneshwar bridge at 50 / 39",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "west_other",
@@ -1972,7 +2016,8 @@
           58
         ],
         "group": "W",
-        "label": "Other western families: Gujarat, Maharashtra, Datta and Brahma Kumaris"
+        "label": "Other western families: Gujarat, Maharashtra, Datta and Brahma Kumaris",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "gaudiya",
@@ -1985,7 +2030,8 @@
           35
         ],
         "group": "B",
-        "label": "Chaitanya / Goswami / Gaudiya teaching families"
+        "label": "Chaitanya / Goswami / Gaudiya teaching families",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "bhakti_bridge",
@@ -1995,7 +2041,8 @@
           22
         ],
         "group": "B",
-        "label": "Mirabai–Ravidas–Kabir / Ramanandi bridge; retain traditional labels"
+        "label": "Mirabai–Ravidas–Kabir / Ramanandi bridge; retain traditional labels",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "tulsidas",
@@ -2003,7 +2050,8 @@
           4
         ],
         "group": "B",
-        "label": "Tulsidas and immediate family: compact prime display"
+        "label": "Tulsidas and immediate family: compact prime display",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "rama",
@@ -2012,7 +2060,8 @@
           7
         ],
         "group": "B",
-        "label": "Other Rama / Avadh families"
+        "label": "Other Rama / Avadh families",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "kashi",
@@ -2021,7 +2070,8 @@
           9
         ],
         "group": "B",
-        "label": "Kashi and ascetic families"
+        "label": "Kashi and ascetic families",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "braj",
@@ -2033,7 +2083,8 @@
           71
         ],
         "group": "B",
-        "label": "Braj & Krishna Bhakti; keep immediate families intact"
+        "label": "Braj & Krishna Bhakti; keep immediate families intact",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "ramakrishna",
@@ -2042,7 +2093,8 @@
           56
         ],
         "group": "E",
-        "label": "Ramakrishna, Vivekananda, Mahendranath Gupta and Lakshmi Mani"
+        "label": "Ramakrishna, Vivekananda, Mahendranath Gupta and Lakshmi Mani",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "anandamayi",
@@ -2050,7 +2102,8 @@
           55
         ],
         "group": "E",
-        "label": "Anandamayi Ma and immediate family"
+        "label": "Anandamayi Ma and immediate family",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "jaiguru",
@@ -2058,7 +2111,8 @@
           54
         ],
         "group": "E",
-        "label": "Omkarnath, Parankush and supported immediate Jaiguru lineage"
+        "label": "Omkarnath, Parankush and supported immediate Jaiguru lineage",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "puri",
@@ -2067,7 +2121,8 @@
           52
         ],
         "group": "E",
-        "label": "Vijay Krishna, Yogmaya and immediate family / Odisha"
+        "label": "Vijay Krishna, Yogmaya and immediate family / Odisha",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "east_other",
@@ -2075,7 +2130,8 @@
           51
         ],
         "group": "E",
-        "label": "Other eastern families: keep each family intact, including Sankardev–Madhavdev"
+        "label": "Other eastern families: keep each family intact, including Sankardev–Madhavdev",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "buddhist",
@@ -2083,7 +2139,8 @@
           63
         ],
         "group": "E",
-        "label": "Buddhist display: across the short aisle from the eastern island"
+        "label": "Buddhist display: across the short aisle from the eastern island",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "ramana",
@@ -2092,7 +2149,8 @@
           15
         ],
         "group": "S",
-        "label": "Ramana / Arunachala and related Tamil setting"
+        "label": "Ramana / Arunachala and related Tamil setting",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "tamil",
@@ -2101,7 +2159,8 @@
           17
         ],
         "group": "S",
-        "label": "Tamil / Shaiva families"
+        "label": "Tamil / Shaiva families",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "sri_vaishnava",
@@ -2110,7 +2169,8 @@
           70
         ],
         "group": "S",
-        "label": "Sri Vaishnava and southern Vaishnava families"
+        "label": "Sri Vaishnava and southern Vaishnava families",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "andhra",
@@ -2120,7 +2180,8 @@
           72
         ],
         "group": "S",
-        "label": "Andhra avadhuta / Datta families"
+        "label": "Andhra avadhuta / Datta families",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "sikh",
@@ -2130,7 +2191,8 @@
           67
         ],
         "group": "K",
-        "label": "Sikh Gurus and immediate families; retain Udasin identity"
+        "label": "Sikh Gurus and immediate families; retain Udasin identity",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "sikh_large",
@@ -2138,7 +2200,8 @@
           68
         ],
         "group": "K",
-        "label": "Large Sikh relics: mounting and clearance reserve"
+        "label": "Large Sikh relics: mounting and clearance reserve",
+        "navigationKind": "operational"
       },
       {
         "unitId": "global",
@@ -2147,7 +2210,8 @@
           26
         ],
         "group": "C",
-        "label": "Bhakti Marga and global families: cave-end context neighbourhood"
+        "label": "Bhakti Marga and global families: cave-end context neighbourhood",
+        "navigationKind": "neighborhood"
       },
       {
         "unitId": "unresolved",
@@ -2160,7 +2224,8 @@
           64
         ],
         "group": "R",
-        "label": "Unresolved holdings and fit reserve"
+        "label": "Unresolved holdings and fit reserve",
+        "navigationKind": "operational"
       },
       {
         "unitId": "uniform",
@@ -2168,7 +2233,8 @@
           69
         ],
         "group": "L",
-        "label": "Harbhajan Singh uniform: beside Sikh group, clearance pending"
+        "label": "Harbhajan Singh uniform: beside Sikh group, clearance pending",
+        "navigationKind": "operational"
       },
       {
         "unitId": "plow",
@@ -2176,7 +2242,8 @@
           23
         ],
         "group": "L",
-        "label": "Plow / source-described spade: full-height housing"
+        "label": "Plow / source-described spade: full-height housing",
+        "navigationKind": "operational"
       },
       {
         "unitId": "sticks",
@@ -2185,7 +2252,8 @@
           31
         ],
         "group": "T",
-        "label": "Walking sticks: retain stick-only housing"
+        "label": "Walking sticks: retain stick-only housing",
+        "navigationKind": "operational"
       }
     ],
     "primeAnchors": {
