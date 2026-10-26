@@ -8,6 +8,8 @@ import { explorerSaints, proposalVersionLabel, vitrineConnectionPlaces, vitrineN
 import { showFlexibleSpace, type ExplorerObservation } from '@/lib/spn-room-proposal';
 import '@/styles/spn-room-explorer.css';
 type Proposal = Pick<typeof baselineData, 'version' | 'title' | 'snapshotAt' | 'layout'> & {
+    tertiaryCityClusters?: {vitrine:number;groups:{city:string;members:{saintId:string;name:string;evidence:string}[]}[];placement:string}[];
+    visitorStoryRoute?: {title:string;cases:number[];people:string;story:string;transition:string}[];
     reviewStatus?: string;
     reviewNote?: string;
     indicators: {unresolvedDisplayBand?:string|null;vitrine:string;hasUnresolvedHoldings:boolean;unresolvedSourceObservationCount:number;potentialFlexibleSpace:boolean;specialFitNote:string|null}[];
@@ -48,7 +50,8 @@ export function SpnRoomExplorer({releases}: {releases: ExplorerRelease[]}) {
     const baseline = designData.options[0], previous = releases[0].designData.comparisonPrevious;
     const versionLabel = proposalVersionLabel(proposal.version);
     const proposalLabels: Record<string, {label: string; group: ProposalChoice['group']}> = {
-        'spn-sikh-north-connections-2026-10-26-v1': {label: 'East–North connections · v3', group: 'candidate'},
+        'spn-sikh-north-connections-2026-10-26-v3': {label: 'East–North connections · v4 · latest', group: 'candidate'},
+        'spn-sikh-north-connections-2026-10-26-v1': {label: 'East–North connections · v3', group: 'earlier'},
         'spn-vraj-girnar-alternative-2026-10-26-v1': {label: 'East–North connections · v2', group: 'earlier'},
         'spn-proposal-16-revision-2026-10-25-r1': {label: 'Compact regional neighborhoods · v3', group: 'candidate'},
         'archived-earlier': {label: 'Compact regional neighborhoods · baseline study', group: 'earlier'},
@@ -149,6 +152,8 @@ export function SpnRoomExplorer({releases}: {releases: ExplorerRelease[]}) {
  {!archived ? <><div className="subheading"><h3>Primary saints here</h3><span>{primariesIn(selected).length || '—'}</span></div><p className="caption">Proposed upper display · physical fit to confirm</p><SaintList saints={primariesIn(selected)} empty="No primary saints proposed in this vitrine."/>
  {anchors.filter(s => placementFor(s)?.vitrine && String(placementFor(s)?.vitrine) !== selected).length ? <><div className="subheading"><h3>Neighborhood primary saints</h3><span>{anchors.filter(s => placementFor(s)?.vitrine && String(placementFor(s)?.vitrine) !== selected).length}</span></div><SaintList saints={anchors.filter(s => placementFor(s)?.vitrine && String(placementFor(s)?.vitrine) !== selected)}/></> : null}
  {anchors.some(s => !placementFor(s)?.vitrine) ? <details className="unplaced-primary"><summary>Neighborhood primary saints · vitrine pending ({anchors.filter(s => !placementFor(s)?.vitrine).length})</summary><SaintList saints={anchors.filter(s => !placementFor(s)?.vitrine)}/></details> : null}
+ {proposal.visitorStoryRoute?.filter(stop=>stop.cases.map(String).includes(selected)).map(stop=><details className="unplaced-primary" key={stop.title}><summary>{stop.title} · regional story</summary><p>{stop.story}</p><p className="caption">{stop.transition}</p><CaseButtons numbers={stop.cases}/></details>)}
+ {proposal.tertiaryCityClusters?.filter(cluster=>String(cluster.vitrine)===selected).map(cluster=><details className="unplaced-primary" key={cluster.vitrine}><summary>City groupings · tertiary saints</summary><p className="caption">Suggested display groups, not lineage relationships. Source-place clues remain provisional.</p>{cluster.groups.map(group=>{const members=group.members.filter(member=>saints.some(s=>s.saintId===member.saintId));return members.length?<div key={group.city}><h3>{group.city}</h3>{members.map(member=><p key={member.saintId}>{member.name}<small className="caption"> · {member.evidence}</small></p>)}</div>:null})}</details>)}
  <details className="unplaced-primary"><summary>Other saints proposed here ({saints.filter(s => s.tier !== 'Primary' && !s.sourceAttributionHold).length})</summary><SaintList saints={saints.filter(s => s.tier !== 'Primary' && !s.sourceAttributionHold).sort((a, b) => Number(b.tier === 'Secondary') - Number(a.tier === 'Secondary'))}/></details>
  {indicator?.hasUnresolvedHoldings ? <details className="unplaced-primary"><summary>Identity under review{indicator.unresolvedDisplayBand ? ` · ${indicator.unresolvedDisplayBand}` : ""} ({indicator.unresolvedSourceObservationCount} records)</summary><p className="caption">These records remain separate from the host tradition while their identities are reviewed.</p><SaintList saints={saints.filter(s => s.sourceAttributionHold)}/></details> : null}
  {designData.heldCases?.filter(c => c.saintIds.some(id => saints.some(s => s.saintId === id))).map(c => <details className="unplaced-primary" key={c.case}><summary>{c.case} · review pending</summary><p>{c.status}</p><p className="caption">{c.reason}</p></details>)}
