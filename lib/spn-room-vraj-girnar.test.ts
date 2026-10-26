@@ -6,7 +6,7 @@ import design from '../data/museum/spn-room-explorer-vraj-girnar-v1-design.json'
 import {vitrineNeighborhoods} from './spn-room-explorer';
 
 test('Vraj and Girnar changes only reviewed destinations, retaining source evidence and tiers',()=>{
- const permutation:Record<string,string>={'2':'79','79':'77','77':'38','38':'2','18':'50','50':'18','17':'47','47':'17','16':'46','46':'16'};
+ const permutation:Record<string,string>={'26':'37','37':'26','2':'79','79':'77','77':'38','38':'2','18':'50','50':'18','17':'47','47':'17','16':'46','46':'16'};
  const overrides:Record<string,string>={cms0w7gly05na07qiaokme7v0:'2',cms0w7dih01nm07qijrrpvmfh:'38',cms0w7d0y011p07qi7nkexcob:'38',cms0w7d29013907qigdnksqab:'77',cms0w7jdz08rk07qiiy0vbbpm:'77'};
  const oldRows=new Map(previous.rows.map(r=>[r.sourceId,r]));
  assert.equal(proposal.rows.length,1423);assert.equal(new Set(proposal.rows.map(r=>r.sourceId)).size,1423);
@@ -38,4 +38,30 @@ test('review context and actual neighborhoods stay distinct',()=>{
  assert.ok(!vitrineNeighborhoods(option,'18').some(p=>p.unitId==='unresolved'));
  assert.equal(option.assignments.find(a=>a.number==='38')?.prime,false);
  assert.match(option.primeAnchors['38'].people,/Bhaktivinoda.*Bhaktisiddhanta.*Prabhupada/);
+});
+
+test('approved East–North exchange retains complete families, physical evidence and indicator totals',()=>{
+ const old=previous.rows.filter(r=>['26','37'].includes(r.vitrine));
+ assert.equal(old.length,34);
+ for(const row of old){
+  const moved=proposal.rows.find(r=>r.sourceId===row.sourceId)!;
+  assert.deepEqual({...moved,vitrine:row.vitrine},row);
+  assert.equal(moved.vitrine,row.vitrine==='26'?'37':'26');
+ }
+ for(const n of ['26','37']){
+  const indicator=proposal.indicators.find(i=>i.vitrine===n)!;
+  assert.equal(indicator.totalObservedShelfShares,Number(proposal.rows.filter(r=>r.vitrine===n).reduce((sum,r)=>sum+(r.share??0),0).toFixed(4)));
+ }
+ const option=design.options[0];
+ assert.match(option.assignments.find(a=>a.number==='37')!.subsection,/Gosaiji/);
+ assert.match(option.assignments.find(a=>a.number==='26')!.subsection,/Puri/);
+ assert.deepEqual(vitrineNeighborhoods(option,'37').map(p=>p.unitId),['puri']);
+ const connection=option.drivers.find(d=>d.connection==='Gaudiya / Vraj → Gosaiji and Yogmaya → Puri')!;
+ assert.deepEqual(connection.places,[38,37,26]);
+ assert.match(connection.reason,/does not create a new guru relationship/);
+ for(const placement of design.placements.filter(p=>['26','37'].includes(String(p.vitrine)))){
+  const rows=proposal.rows.filter(r=>r.saintId===placement.saintId);
+  assert.ok(rows.length);assert.ok(rows.every(r=>r.vitrine===String(placement.vitrine)));
+ }
+ assert.equal(proposal.amendments[0].changedSourceObservations,34);
 });
