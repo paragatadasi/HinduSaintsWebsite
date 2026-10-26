@@ -48,6 +48,7 @@ export function SpnRoomExplorer({releases}: {releases: ExplorerRelease[]}) {
     const baseline = designData.options[0], previous = releases[0].designData.comparisonPrevious;
     const versionLabel = proposalVersionLabel(proposal.version);
     const proposalLabels: Record<string, {label: string; group: ProposalChoice['group']}> = {
+        'spn-sikh-north-connections-2026-10-26-v1': {label: 'Sikh–North connections · v1', group: 'candidate'},
         'spn-vraj-girnar-alternative-2026-10-26-v1': {label: 'East–North connections · v2', group: 'candidate'},
         'spn-proposal-16-revision-2026-10-25-r1': {label: 'Compact regional neighborhoods · v3', group: 'candidate'},
         'archived-earlier': {label: 'Compact regional neighborhoods · baseline study', group: 'earlier'},
