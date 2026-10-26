@@ -54,3 +54,9 @@ The East meets Kriya and Vraj study is a separate selectable release; v16 revisi
 Package the study only after verifying the research manifest and all source allocations. Retain original source coordinates, protected housings, unknown footprints and current curator overrides. Mirabai remains in 2 and the source-context Trilokidas entry moves to 36 as documented exceptions to the case permutation; this does not establish a disciple relationship. The full-height clearance dependency in 23 remains visible. Never ingest separate framework sketches as destinations.
 
 The separately reviewed Vraj gateway and Girnar / Nath option retains the East study and the same default. Its Vitrine 79 Rama continuation remains open for refinement. Keep the Keshava candidate co-location in 38 explicitly provisional: both canonical identities and source observations remain, including the conflicting birth years and possible shared paduka assembly. Research relationships explain adjacency without writing canonical relationships or changing tiers.
+
+## Accepted corrections across proposal versions
+
+Apply dated, exact-source corrections to a copy of each packaged proposal before live curator reconciliation. The research snapshots remain intact; corrected allocations, local focus, rationale and affected space estimates must agree. Never change tiers or physical coordinates as a side effect. A newer saved curator destination still wins and is flagged for review.
+
+The 26 October Sankaranya correction moves only source `rec7cV8OOW6dYau1K` beside Radharaman Charan Das, resolving the destination from each version rather than a fixed vitrine number. The Yogendranath alias distinguishes this record from Vishvarupa. Both current Primary tiers remain. Nadi's fresh 26 October 13:53 UTC export found no saved destination conflict. The earlier archived design study has no individual allocations and does not imply a corrected saint destination.
