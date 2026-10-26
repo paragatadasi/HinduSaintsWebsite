@@ -59,3 +59,15 @@ test('a later curator destination wins over the co-location correction without p
  assert.equal(result.vitrine,'32');assert.equal(result.effectiveVitrine,'41');assert.match(result.reviewReason,/retained/);
  assert.equal(JSON.stringify(live),before);assert.equal(result.tier,'Primary');
 });
+
+test('a saved curator destination still wins for a saint in the swapped groups',()=>{
+ const fixed=correctSpnProposal(releases[4]);
+ const row=fixed.proposal.rows.find(r=>r.vitrine==='37'&&r.baseline&&r.saintId)!;
+ const live={id:row.baseline!.placementId,saintId:row.saintId,name:row.name,section:row.section,tier:row.tier==='Primary'?'Featured':row.tier,
+  curatorialFamily:row.baseline!.familyKey,spnRegionTags:row.baseline!.regionTags,
+  arrangement:{status:'Implemented',vitrine:'26',shelf:'B',proposalRevision:row.baseline!.proposalRevision}} as MuseumSaintPlacement;
+ const before=JSON.stringify(live),[result]=reconcileSpnRoomProposal([row],[live]);
+ assert.equal(result.vitrine,'37');assert.equal(result.effectiveVitrine,'26');assert.equal(result.currentShelf,'B');
+ assert.equal(result.currentStatus,'Implemented');assert.match(result.reviewReason,/retained/);
+ assert.equal(JSON.stringify(live),before);
+});
