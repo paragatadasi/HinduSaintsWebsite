@@ -13,6 +13,13 @@ type Proposal = Pick<typeof baselineData, 'version' | 'title' | 'snapshotAt' | '
     indicators: {unresolvedDisplayBand?:string|null;vitrine:string;hasUnresolvedHoldings:boolean;unresolvedSourceObservationCount:number;potentialFlexibleSpace:boolean;specialFitNote:string|null}[];
 };
 type Direction = 'north' | 'east' | 'south' | 'west';
+type ProposalChoice = {
+    id: string;
+    label: string;
+    group: 'candidate' | 'earlier';
+    archived: boolean;
+    option: ExplorerOption;
+};
 import portraitData from '@/data/museum/spn-room-explorer-portraits.json';
 const portraits: Record<string, {
     image: string;
@@ -40,7 +47,19 @@ export function SpnRoomExplorer({releases}: {releases: ExplorerRelease[]}) {
     const {proposal, rows, designData} = active;
     const baseline = designData.options[0], previous = releases[0].designData.comparisonPrevious;
     const versionLabel = proposalVersionLabel(proposal.version);
-    const proposals = [...releases.flatMap(r => r.designData.options.map(option => ({id:option.id,label:option.title+' · '+proposalVersionLabel(r.proposal.version),archived:false,option}))), {id:'archived-earlier',label:previous.title+' · Earlier design study',archived:true,option:previous}];
+    const proposalLabels: Record<string, {label: string; group: ProposalChoice['group']}> = {
+        'spn-vraj-girnar-alternative-2026-10-26-v1': {label: 'East–North connections · v2', group: 'candidate'},
+        'spn-proposal-16-revision-2026-10-25-r1': {label: 'Compact regional neighborhoods · v3', group: 'candidate'},
+        'archived-earlier': {label: 'Compact regional neighborhoods · baseline study', group: 'earlier'},
+        'compact-baseline-v15': {label: 'Compact regional neighborhoods · v1', group: 'earlier'},
+        'compact-baseline-v16': {label: 'Compact regional neighborhoods · v2', group: 'earlier'},
+        'spn-east-cave-room-alternative-2026-10-26-v2': {label: 'East–North connections · v1', group: 'earlier'},
+    };
+    const proposals: ProposalChoice[] = [...releases.flatMap(r => r.designData.options.map(option => {
+        const display = proposalLabels[option.id] ?? {label: option.title + ' · ' + proposalVersionLabel(r.proposal.version), group: 'earlier' as const};
+        return {id: option.id, label: display.label, group: display.group, archived: false, option};
+    })), {id: 'archived-earlier', ...proposalLabels['archived-earlier'], archived: true, option: previous}]
+        .sort((a, b) => Number(a.group === 'earlier') - Number(b.group === 'earlier'));
     const data = {proposal, inventory:explorerSaints(rows), indicators:proposal.indicators};
     const vitrine = (n:string|number) => proposal.layout.vitrines.find(v=>v.number===String(n))!;
     const changedCases = new Set(rows.filter(r=>r.reviewReason).flatMap(r=>[r.vitrine,r.effectiveVitrine]));
@@ -140,7 +159,7 @@ export function SpnRoomExplorer({releases}: {releases: ExplorerRelease[]}) {
     return <section className="spn-room-explorer" aria-label="SPN room proposal explorer"><header className="page-title"><div><p className="eyebrow">SPN · Plan the space</p><h1>Explore arrangements</h1><p>Explore the room, find primary saints, and follow the connections between displays.</p></div><span className="tag">{archived ? "Earlier design study" : "Proposal · " + versionLabel}</span></header>
  {!archived && proposal.reviewNote ? <p className="panel review-note" role="status">{proposal.reviewNote}</p> : null}
  {currentChanges.length ? <details className="panel review-note"><summary>{currentChanges.length} entries have newer curator decisions</summary><p>Current names, tiers and saved destinations are retained. Review these differences before moving anything; space estimates are withheld in affected vitrines.</p>{currentChanges.map(r => <p key={r.sourceId || r.saintId}>{r.name} · {r.reviewReason}</p>)}</details> : null}
- <section className="proposal-head panel"><div><label htmlFor="proposal">Viewing proposal</label><select id="proposal" value={proposalId} onChange={e => resetProposal(e.target.value)}>{proposals.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}</select><p>{option.summary}</p></div><div className="proposal-actions"><button className={favorite ? 'saved' : 'primary'} onClick={() => { const next = { ...shortlist, [proposalId]: !favorite }; setShortlist(next); localStorage.setItem('spn-explorer-shortlists', JSON.stringify(next)); }}>{favorite ? <Check size={16}/> : <Star size={16}/>} {favorite ? 'Shortlisted in this browser' : 'Shortlist for discussion'}</button><label className="check"><input type="checkbox" checked={compare} onChange={e => setCompare(e.target.checked)}/>Compare proposals</label>{compare ? <div><label htmlFor="comparison">Compare against</label><select id="comparison" value={comparisonId} onChange={e => setComparisonId(e.target.value)}>{proposals.filter(p => p.id !== proposalId).map(p => <option key={p.id} value={p.id}>{p.label}</option>)}</select></div> : null}</div></section>
+ <section className="proposal-head panel"><div><label htmlFor="proposal">Viewing proposal</label><select id="proposal" value={proposalId} onChange={e => resetProposal(e.target.value)}><optgroup label="Candidates">{proposals.filter(p => p.group === 'candidate').map(p => <option key={p.id} value={p.id}>{p.label}</option>)}</optgroup><optgroup label="Earlier studies">{proposals.filter(p => p.group === 'earlier').map(p => <option key={p.id} value={p.id}>{p.label}</option>)}</optgroup></select><p>{option.summary}</p><p className="caption">Original study ID: <code>{option.id}</code></p></div><div className="proposal-actions"><button className={favorite ? 'saved' : 'primary'} onClick={() => { const next = { ...shortlist, [proposalId]: !favorite }; setShortlist(next); localStorage.setItem('spn-explorer-shortlists', JSON.stringify(next)); }}>{favorite ? <Check size={16}/> : <Star size={16}/>} {favorite ? 'Shortlisted in this browser' : 'Shortlist for discussion'}</button><label className="check"><input type="checkbox" checked={compare} onChange={e => setCompare(e.target.checked)}/>Compare proposals</label>{compare ? <div><label htmlFor="comparison">Compare against</label><select id="comparison" value={comparisonId} onChange={e => setComparisonId(e.target.value)}><optgroup label="Candidates">{proposals.filter(p => p.id !== proposalId && p.group === 'candidate').map(p => <option key={p.id} value={p.id}>{p.label}</option>)}</optgroup><optgroup label="Earlier studies">{proposals.filter(p => p.id !== proposalId && p.group === 'earlier').map(p => <option key={p.id} value={p.id}>{p.label}</option>)}</optgroup></select></div> : null}</div></section>
 
  <div className="toolbar"><form role="search" onSubmit={e => { e.preventDefault(); if (results[0])
         choose(results[0].caseEnvelope[0]); }}><label htmlFor="search">Find a saint or section</label><div className="search-wrap"><Search size={17}/><input id="search" type="search" value={query} onChange={e => setQuery(e.target.value)} placeholder="Try Yogananda, Varkari, or Sikh…" autoComplete="off"/></div></form><p className="caption"><b>82</b> available vitrines <span>·</span> <b>3</b> future spaces excluded <span>·</span> <b>{primary.length}</b> primary saints</p></div>
