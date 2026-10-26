@@ -6,7 +6,7 @@ import design from '../data/museum/spn-room-explorer-vraj-girnar-v1-design.json'
 import {vitrineNeighborhoods} from './spn-room-explorer';
 
 test('Vraj and Girnar changes only reviewed destinations, retaining source evidence and tiers',()=>{
- const permutation:Record<string,string>={'26':'37','37':'26','2':'79','79':'77','77':'38','38':'2','18':'50','50':'18','17':'47','47':'17','16':'46','46':'16'};
+ const permutation:Record<string,string>={'70':'22','26':'37','37':'26','2':'79','79':'77','77':'38','38':'2','18':'50','50':'18','17':'47','47':'17','16':'46','46':'16'};
  const overrides:Record<string,string>={cms0w7gly05na07qiaokme7v0:'2',cms0w7dih01nm07qijrrpvmfh:'38',cms0w7d0y011p07qi7nkexcob:'38',cms0w7d29013907qigdnksqab:'77',cms0w7jdz08rk07qiiy0vbbpm:'77'};
  const oldRows=new Map(previous.rows.map(r=>[r.sourceId,r]));
  assert.equal(proposal.rows.length,1423);assert.equal(new Set(proposal.rows.map(r=>r.sourceId)).size,1423);
@@ -64,4 +64,28 @@ test('approved East–North exchange retains complete families, physical evidenc
   assert.ok(rows.length);assert.ok(rows.every(r=>r.vitrine===String(placement.vitrine)));
  }
  assert.equal(proposal.amendments[0].changedSourceObservations,34);
+});
+
+test('Haidakhan joins the North while provisional 70 stays empty and 23 retains its clearance guard',()=>{
+ const moved=previous.rows.filter(r=>r.vitrine==='70');
+ assert.equal(moved.length,23);
+ for(const row of moved){
+  const now=proposal.rows.find(r=>r.sourceId===row.sourceId)!;
+  assert.deepEqual({...now,vitrine:row.vitrine},row);assert.equal(now.vitrine,'22');
+ }
+ assert.equal(proposal.rows.filter(r=>r.vitrine==='70').length,0);
+ assert.deepEqual(proposal.layout,previous.layout);
+ const option=design.options[0];
+ assert.match(option.assignments.find(a=>a.number==='22')!.subsection,/Haidakhan/);
+ assert.match(option.assignments.find(a=>a.number==='70')!.subsection,/spillover.*no planned family/);
+ assert.ok(vitrineNeighborhoods(option,'22').some(p=>p.unitId==='north_other'));
+ assert.deepEqual(vitrineNeighborhoods(option,'70'),[]);
+ assert.equal(option.primaryPackets['22'].dependency,null);
+ assert.equal(option.primaryPackets['70'].dependency,null);
+ assert.match(option.primaryPackets['23'].dependency!,/case23.*64.*69/);
+ assert.equal(proposal.indicators.find(i=>i.vitrine==='22')!.totalObservedShelfShares,4.9167);
+ assert.equal(proposal.indicators.find(i=>i.vitrine==='70')!.totalObservedShelfShares,0);
+ assert.equal(proposal.indicators.find(i=>i.vitrine==='23')!.potentialFlexibleSpace,false);
+ assert.match(proposal.indicators.find(i=>i.vitrine==='23')!.specialFitNote!,/23.*64 and 69/);
+ for(const n of ['22','70'])assert.equal(proposal.indicators.find(i=>i.vitrine===n)!.fitConfirmed,false);
 });
