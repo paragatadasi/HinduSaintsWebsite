@@ -46,3 +46,9 @@ Display packets must explicitly declare navigationKind. Only neighborhood packet
 ## Approved v16 revision 1
 
 The Neem Karoli Baba revision is a separate immutable proposal, with original v16 file hashes and the approved exact-source delta retained in provenance. Only source recxjM8XNprzBWzuT changes proposed destination from 26 to 75. Its review cohort and Keshavanandji in 5 remain unchanged. North–Vraj adjacency is thematic, never a guru relationship. The local focus metadata does not designate 75 as a physical prime-position case. All revisions pass through the same current-curator reconciliation before rendering.
+
+## Selectable comparison studies
+
+The East meets Kriya and Vraj study is a separate selectable release; v16 revision 1 remains the initial selection. Show the study qualification beside the proposal controls using the existing review-note surface. Vitrine 2's Vraj organization remains under review. Viewing, comparing and browser-local shortlisting do not accept a move plan or update physical locations.
+
+Package the study only after verifying the research manifest and all source allocations. Retain original source coordinates, protected housings, unknown footprints and current curator overrides. Mirabai remains in 2 and the source-context Trilokidas entry moves to 36 as documented exceptions to the case permutation; this does not establish a disciple relationship. The full-height clearance dependency in 23 remains visible. Never ingest separate framework sketches as destinations.

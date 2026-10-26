@@ -8,6 +8,8 @@ import { explorerSaints, proposalVersionLabel, vitrineConnectionPlaces, vitrineN
 import { showFlexibleSpace, type ExplorerObservation } from '@/lib/spn-room-proposal';
 import '@/styles/spn-room-explorer.css';
 type Proposal = Pick<typeof baselineData, 'version' | 'title' | 'snapshotAt' | 'layout'> & {
+    reviewStatus?: string;
+    reviewNote?: string;
     indicators: {vitrine:string;hasUnresolvedHoldings:boolean;unresolvedSourceObservationCount:number;potentialFlexibleSpace:boolean;specialFitNote:string|null}[];
 };
 type Direction = 'north' | 'east' | 'south' | 'west';
@@ -136,6 +138,7 @@ export function SpnRoomExplorer({releases}: {releases: ExplorerRelease[]}) {
  </>}</aside>;
     }
     return <section className="spn-room-explorer" aria-label="SPN room proposal explorer"><header className="page-title"><div><p className="eyebrow">SPN · Plan the space</p><h1>Explore arrangements</h1><p>Explore the room, find primary saints, and follow the connections between displays.</p></div><span className="tag">{archived ? "Earlier design study" : "Proposal · " + versionLabel}</span></header>
+ {!archived && proposal.reviewNote ? <p className="panel review-note" role="status">{proposal.reviewNote}</p> : null}
  {currentChanges.length ? <details className="panel review-note"><summary>{currentChanges.length} entries have newer curator decisions</summary><p>Current names, tiers and saved destinations are retained. Review these differences before moving anything; space estimates are withheld in affected vitrines.</p>{currentChanges.map(r => <p key={r.sourceId || r.saintId}>{r.name} · {r.reviewReason}</p>)}</details> : null}
  <section className="proposal-head panel"><div><label htmlFor="proposal">Viewing proposal</label><select id="proposal" value={proposalId} onChange={e => resetProposal(e.target.value)}>{proposals.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}</select><p>{option.summary}</p></div><div className="proposal-actions"><button className={favorite ? 'saved' : 'primary'} onClick={() => { const next = { ...shortlist, [proposalId]: !favorite }; setShortlist(next); localStorage.setItem('spn-explorer-shortlists', JSON.stringify(next)); }}>{favorite ? <Check size={16}/> : <Star size={16}/>} {favorite ? 'Shortlisted in this browser' : 'Shortlist for discussion'}</button><label className="check"><input type="checkbox" checked={compare} onChange={e => setCompare(e.target.checked)}/>Compare proposals</label>{compare ? <div><label htmlFor="comparison">Compare against</label><select id="comparison" value={comparisonId} onChange={e => setComparisonId(e.target.value)}>{proposals.filter(p => p.id !== proposalId).map(p => <option key={p.id} value={p.id}>{p.label}</option>)}</select></div> : null}</div></section>
 
