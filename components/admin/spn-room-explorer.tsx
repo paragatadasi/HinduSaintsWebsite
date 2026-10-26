@@ -10,7 +10,7 @@ import '@/styles/spn-room-explorer.css';
 type Proposal = Pick<typeof baselineData, 'version' | 'title' | 'snapshotAt' | 'layout'> & {
     reviewStatus?: string;
     reviewNote?: string;
-    indicators: {vitrine:string;hasUnresolvedHoldings:boolean;unresolvedSourceObservationCount:number;potentialFlexibleSpace:boolean;specialFitNote:string|null}[];
+    indicators: {unresolvedDisplayBand?:string|null;vitrine:string;hasUnresolvedHoldings:boolean;unresolvedSourceObservationCount:number;potentialFlexibleSpace:boolean;specialFitNote:string|null}[];
 };
 type Direction = 'north' | 'east' | 'south' | 'west';
 import portraitData from '@/data/museum/spn-room-explorer-portraits.json';
@@ -130,7 +130,7 @@ export function SpnRoomExplorer({releases}: {releases: ExplorerRelease[]}) {
  {anchors.filter(s => placementFor(s)?.vitrine && String(placementFor(s)?.vitrine) !== selected).length ? <><div className="subheading"><h3>Neighborhood primary saints</h3><span>{anchors.filter(s => placementFor(s)?.vitrine && String(placementFor(s)?.vitrine) !== selected).length}</span></div><SaintList saints={anchors.filter(s => placementFor(s)?.vitrine && String(placementFor(s)?.vitrine) !== selected)}/></> : null}
  {anchors.some(s => !placementFor(s)?.vitrine) ? <details className="unplaced-primary"><summary>Neighborhood primary saints · vitrine pending ({anchors.filter(s => !placementFor(s)?.vitrine).length})</summary><SaintList saints={anchors.filter(s => !placementFor(s)?.vitrine)}/></details> : null}
  <details className="unplaced-primary"><summary>Other saints proposed here ({saints.filter(s => s.tier !== 'Primary' && !s.sourceAttributionHold).length})</summary><SaintList saints={saints.filter(s => s.tier !== 'Primary' && !s.sourceAttributionHold).sort((a, b) => Number(b.tier === 'Secondary') - Number(a.tier === 'Secondary'))}/></details>
- {indicator?.hasUnresolvedHoldings ? <details className="unplaced-primary"><summary>Identity under review · lower display ({indicator.unresolvedSourceObservationCount} records)</summary><p className="caption">These records remain separate from the host tradition while their identities are reviewed.</p><SaintList saints={saints.filter(s => s.sourceAttributionHold)}/></details> : null}
+ {indicator?.hasUnresolvedHoldings ? <details className="unplaced-primary"><summary>Identity under review{indicator.unresolvedDisplayBand ? ` · ${indicator.unresolvedDisplayBand}` : ""} ({indicator.unresolvedSourceObservationCount} records)</summary><p className="caption">These records remain separate from the host tradition while their identities are reviewed.</p><SaintList saints={saints.filter(s => s.sourceAttributionHold)}/></details> : null}
  {designData.heldCases?.filter(c => c.saintIds.some(id => saints.some(s => s.saintId === id))).map(c => <details className="unplaced-primary" key={c.case}><summary>{c.case} · review pending</summary><p>{c.status}</p><p className="caption">{c.reason}</p></details>)}
  {showFlexibleSpace(selected, !!indicator?.potentialFlexibleSpace, changedCases.has(selected)) ? <div className="reason"><p className="eyebrow">Potential flexible space</p><p className="caption">The source-based estimate suggests room to explore. Confirm object sizes and physical fit before adding anything.</p></div> : null}
  {indicator?.specialFitNote ? <p className="caption">{indicator.specialFitNote}</p> : null}
