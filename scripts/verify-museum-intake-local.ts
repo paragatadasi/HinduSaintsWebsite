@@ -12,7 +12,7 @@ if (!["localhost", "127.0.0.1", "[::1]"].includes(url.hostname) || !url.pathname
   throw new Error("Use a disposable localhost museum_intake_test database, never a website or production database.");
 }
 process.env.MEDIA_STORAGE_BACKEND = "filesystem";
-process.env.MUSEUM_INTAKE_UPLOAD_ROOT = await mkdtemp(path.join(tmpdir(), "museum-intake-integration-"));
+process.env.MEDIA_UPLOAD_ROOT = await mkdtemp(path.join(tmpdir(), "museum-intake-integration-"));
 const { db } = await import("../lib/db");
 const intake = await import("../lib/museum-intake-service");
 const suffix = randomUUID();
