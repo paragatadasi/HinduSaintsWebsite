@@ -85,3 +85,7 @@ Morning review / release prerequisites:
   remain safely pending; no saints, collection items or external records are created.
 
 This feature is held undeployed and is not part of the SPN proposal release.
+
+## Local database verification, 27 October
+
+All 85 migrations applied successfully to disposable localhost database `museum_intake_test_20261027`. `verify-museum-intake-local.ts` passed persistence, duplicate upload/create retries, concurrent edits, ownership, curator corrections, immutable approval, and disabled delivery checks. Combined `dev:check`, six focused tests and `codex:verify` passed. Production private-storage configuration and authenticated mobile/browser smoke checks remain rollout requirements. Airtable and website delivery adapters remain disabled.
