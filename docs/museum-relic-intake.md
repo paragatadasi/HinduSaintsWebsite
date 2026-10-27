@@ -29,22 +29,22 @@ Base: `/api/admin/museum-intake`. Writes require same-origin requests. Configure
 | GET `/:id` | Private entry DTO. |
 | PATCH `/:id` | `{expectedVersion,fields}`; replaces the complete fields object. |
 | POST `/:id/media` | Multipart `file`, `kind=relic\|saint_portrait`, `expectedVersion`; maximum 12 photos. |
-| GET `/:id/media/:mediaId` | Authenticated JPEG bytes, private/no-store. |
+| GET `/:id/media/:mediaId` | Authenticated JPEG bytes, with the same photo also available through its public `/media/...` URL. |
 | DELETE `/:id/media/:mediaId` | `{expectedVersion}`; editable entries only. |
 | POST `/:id/submit` | `{expectedVersion}`. |
 | POST `/:id/review` | `{action:"approve",expectedVersion,saintDecision,note?}` or `{action:"request_changes",expectedVersion,note}`. |
 
 `fields`: `{saintName,relicDescription,saintPlaceRaw?,birthDateRaw?,samadhiDateRaw?,broughtByRaw?}`. `saintDecision`: `{kind:"existing",saintId}` or `{kind:"new_draft"}`. Notes are optional for approval, required for requested corrections.
 
-DTO: `id,museumId,version,status,createdById,fields,reviewNote,reviewedAt,reviewedVersion,approvedSnapshot,createdAt,updatedAt,media,deliveries,deliverySummary`. Media exposes ID, kind, dimensions, byte size, MIME type and authenticated URL, never a storage key. Delivery exposes target, status, attempts, external record ID, error code and delivery timestamp. The snapshot is private and includes provenance hashes.
+DTO: `id,museumId,version,status,createdById,fields,reviewNote,reviewedAt,reviewedVersion,approvedSnapshot,createdAt,updatedAt,media,deliveries,deliverySummary`. Media exposes ID, kind, dimensions, byte size, MIME type and public media URL, never a storage key. Delivery exposes target, status, attempts, external record ID, error code and delivery timestamp. The snapshot is private and includes provenance hashes.
 
-## Private photos
+## Public intake photos
 
-Do not use the existing public media uploader. Intake photos are decoded and validated as JPEG/PNG/WebP, orientation-corrected, resized to at most 2400 pixels, reencoded to JPEG and stripped of original metadata. The original-byte SHA-256 is retained for duplicate detection; original files are not retained.
+Intake photos use the existing public media backend and `MEDIA_UPLOAD_ROOT`/`MEDIA_STORAGE_BACKEND` configuration. They are decoded and validated as JPEG/PNG/WebP, orientation-corrected, resized to at most 2400 pixels, reencoded to JPEG and stripped of original metadata. The original-byte SHA-256 is retained for duplicate detection; original files are not retained.
 
-Filesystem development defaults to ignored `private-uploads/`. Production requires `MUSEUM_INTAKE_UPLOAD_ROOT`, a persistent private directory. It must be outside public files and the public upload root, except for the exact guarded `_museum-private` subtree described below. Do not point it at symlinks/junctions into public storage or expose it through the web server. Protect filesystem access and backups.
+The normalized files use the `museum-intake/` storage prefix and ordinary public `/media/...` URLs. The intake record and all mutations remain authenticated and permission-checked; the photo itself follows the same public-media behavior as existing museum media.
 
-With effective intake backend `s3` (`MUSEUM_INTAKE_STORAGE_BACKEND`, falling back to `MEDIA_STORAGE_BACKEND`), configure a separate **private** `MUSEUM_INTAKE_S3_BUCKET`; the public media bucket is rejected. Existing S3 endpoint/region/credentials configure the client. Operators must verify anonymous reads and public listing are denied, and ensure credentials can access the private bucket. No public or presigned URLs are emitted. The application serves bytes only after entry access checks.
+With `MEDIA_STORAGE_BACKEND=s3`, the existing public `MEDIA_S3_BUCKET` and credentials are used. Existing S3 endpoint/region/credentials configure the client. Operators should verify the public media bucket behavior matches the rest of the museum media already in use.
 
 Photo removal deletes the private object after its database reference is removed. Failed cleanup logs an identifier for operator reconciliation. An interrupted process can also leave unreferenced upload files. A future retention/cleanup job must compare database references and avoid deleting approved evidence; this checkpoint does not install a cleanup scheduler.
 
@@ -61,11 +61,11 @@ Next adapter phase:
 
 ## Rollout and verification
 
-Additive migration: `20261027020000_museum_relic_intake`. Three private tables, no alteration of existing saints or inventory. Apply through the deployment migration phase, not the web build. Configure and verify private media storage before enabling uploads. No new dependency or Airtable environment variable is required for this foundation.
+Additive migration: `20261027020000_museum_relic_intake`. Three private tables, no alteration of existing saints or inventory. Apply through the deployment migration phase, not the web build. Verify the existing public media storage before enabling uploads. No new dependency or Airtable environment variable is required for this foundation.
 
 Focused tests cover required evidence, raw date/place preservation, explicit identity choice, locked approved records, target-specific retries, same-origin validation behind a proxy, actual image decode/metadata removal and private filesystem confinement. Run `dev:check`; schema/auth/API changes also require `codex:verify` before release.
 
-`scripts/verify-museum-intake-local.ts` exercises persistence, concurrency, ownership and review against a migrated disposable local database. `scripts/verify-museum-intake-http-local.ts` checks real authenticated routes, private media access and denied requests against a local server using temporary database sessions. Both refuse nonlocal databases and require a database name beginning `museum_intake_test`; the HTTP test also requires `MUSEUM_INTAKE_TEST_URL` on HTTP localhost. Start that server against the same disposable database with a random test-only `AUTH_SECRET`, `AUTH_TRUST_HOST=true`, matching `AUTH_URL`, `MUSEUM_INTAKE_STORAGE_BACKEND=filesystem`, a temporary `MEDIA_UPLOAD_ROOT`, and `MUSEUM_INTAKE_UPLOAD_ROOT` set to exactly that root plus `/_museum-private` for both server and test process. The HTTP check probes the actual reserved public key and expects 404 with no redirect. No OAuth login or email delivery is used. Never run these scripts against the website database. Disposable users, entries and private files remain for inspection; test sessions are removed. Dispose of the dedicated environment after testing.
+`scripts/verify-museum-intake-local.ts` exercises persistence, concurrency, ownership and review against a migrated disposable local database. `scripts/verify-museum-intake-http-local.ts` checks real authenticated routes and public photo URLs against a local server using temporary database sessions. Both refuse nonlocal databases and require a database name beginning `museum_intake_test`; the HTTP test also requires `MUSEUM_INTAKE_TEST_URL` on HTTP localhost. Start that server against the same disposable database with a random test-only `AUTH_SECRET`, `AUTH_TRUST_HOST=true`, matching `AUTH_URL`, and a temporary `MEDIA_UPLOAD_ROOT`. No OAuth login or email delivery is used. Never run these scripts against the website database. Disposable users, entries and public media remain for inspection; test sessions are removed. Dispose of the dedicated environment after testing.
 
 Docker was unavailable during initial implementation; Citra subsequently applied all 85 migrations and passed the database integration script on `museum_intake_test_20261027`. HTTP verification initially caught the internal-bind origin mismatch and prompted the guard correction. Record the rerun result in the release handoff; unit checks alone do not establish route or production-storage verification.
 
@@ -81,7 +81,7 @@ explicit identity decisions and approval. The museum Workspace navigation expose
 Morning review / release prerequisites:
 - Decide which team accounts may submit; no roles or access were expanded.
 - Confirm the official Airtable base/table fields and intended attachment handling.
-- Configure persistent private photo storage before enabling production uploads.
+- Verify the existing persistent public media storage before enabling production uploads.
 - Run `scripts/verify-museum-intake-local.ts` against an isolated local database
   after applying migrations; Docker was unavailable for the combined checkpoint.
 - Verify authenticated browser flow and mobile camera behavior with the integrated app.
@@ -95,10 +95,6 @@ This feature is held undeployed and is not part of the SPN proposal release.
 All 85 migrations applied successfully to disposable localhost database `museum_intake_test_20261027`. `verify-museum-intake-local.ts` passed persistence, duplicate upload/create retries, concurrent edits, ownership, curator corrections, immutable approval, and disabled delivery checks. Combined `dev:check`, six focused tests and `codex:verify` passed. Production private-storage configuration and authenticated mobile/browser smoke checks remain rollout requirements. Airtable and website delivery adapters remain disabled.
 
 
-## Approved shared-volume private storage
+## Existing public media storage
 
-The intake can use the existing persistent `app_uploads` volume without publishing its files. Set `MUSEUM_INTAKE_STORAGE_BACKEND=filesystem` and `MUSEUM_INTAKE_UPLOAD_ROOT=/app/uploads/_museum-private`, with `MEDIA_UPLOAD_ROOT=/app/uploads`. The intake backend override is independent of the public media backend. Only this exact reserved subtree is allowed within the public upload root; other public paths remain rejected.
-
-Deploy the public media deny guard in the same release, before accepting any photo. Both the public route and shared public media readers must reject `_museum-private` before reading or redirecting. Intake media remains served only through authenticated entry-media routes. The existing volume must be persistent, writable by runtime UID 1001, included in restricted backups, and not exposed by Caddy or another static file server.
-
-Verify an actual photo persists across app restart, its authenticated URL works, and its exact reserved public key returns 404. Do not roll back to a version without the public deny guard while private files remain in the shared volume. Keep that guard as a rollback patch, or move the private directory to protected storage before rollback. Never delete private photos to perform rollback. Airtable and website delivery remain disabled.
+The intake reuses the existing persistent `app_uploads` volume and public media configuration. Verify an actual photo persists across app restart and its public `/media/...` URL works before collecting data. Airtable and website delivery remain disabled.

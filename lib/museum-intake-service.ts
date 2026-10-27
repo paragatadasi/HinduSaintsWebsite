@@ -3,7 +3,7 @@ import { Prisma, type UserRole } from "./generated/prisma/client";
 import { db } from "./db";
 import { canViewSaintWithRoles } from "./admin-saint-access";
 import { assertIntakeEditable, assertIntakeSubmission, createMuseumIntakeInput, editMuseumIntakeInput, intakeDeliverySummary, museumIntakeFields, MuseumIntakeError, reviewMuseumIntakeInput, submitMuseumIntakeInput, type IntakeMediaKind } from "./museum-intake-domain";
-import { discardPrivateIntakeImage, prepareIntakeImage, writePrivateIntakeImage } from "./museum-intake-storage";
+import { discardIntakeImage, getIntakeImageUrl, prepareIntakeImage, writeIntakeImage } from "./museum-intake-storage";
 
 export type IntakeActor = { id: string; canReview: boolean; roles: readonly UserRole[] };
 const include = { media: true, deliveries: true } as const;
@@ -29,7 +29,7 @@ function dto(row: Intake) {
     createdById: row.createdById, fields: row.rawFields, reviewNote: row.reviewNote,
     reviewedAt: row.reviewedAt, reviewedVersion: row.reviewedVersion,
     approvedSnapshot: row.approvedSnapshot, createdAt: row.createdAt, updatedAt: row.updatedAt,
-    media: row.media.map(photo => ({ id: photo.id, kind: photo.kind, mimeType: photo.mimeType, byteSize: photo.byteSize, width: photo.width, height: photo.height, url: `/api/admin/museum-intake/${row.id}/media/${photo.id}` })),
+    media: row.media.map(photo => ({ id: photo.id, kind: photo.kind, mimeType: photo.mimeType, byteSize: photo.byteSize, width: photo.width, height: photo.height, url: getIntakeImageUrl(photo.storageKey) })),
     deliveries: row.deliveries.map(delivery => ({ target: delivery.target, status: delivery.status, attempts: delivery.attempts, externalRecordId: delivery.externalRecordId, errorCode: delivery.errorCode, deliveredAt: delivery.deliveredAt })),
     deliverySummary: intakeDeliverySummary(row.deliveries)
   };
@@ -86,7 +86,7 @@ export async function addMuseumIntakeMedia(id: string, expectedVersion: number, 
   const prepared = await prepareIntakeImage(file);
   if (initial.media.some(photo => photo.kind === kind && photo.sourceSha256 === prepared.sourceSha256)) return dto(initial);
   versionIs(initial, expectedVersion);
-  const storageKey = await writePrivateIntakeImage(prepared.body);
+  const storageKey = await writeIntakeImage(prepared.body);
   let committed = false;
   try {
     const result = await locked(id, actor, async (tx, row) => {
@@ -102,7 +102,7 @@ export async function addMuseumIntakeMedia(id: string, expectedVersion: number, 
     return dto(result.row);
   } finally {
     if (!committed) {
-      try { await discardPrivateIntakeImage(storageKey); }
+      try { await discardIntakeImage(storageKey); }
       catch { console.error("Private intake upload cleanup failed", { intakeId: id, storageKey }); }
     }
   }
@@ -153,7 +153,7 @@ export async function removeMuseumIntakeMedia(id: string, mediaId: string, raw: 
     await tx.auditEvent.create({ data: { userId: actor.id, action: "museum.intake.photo_removed", entityType: "MuseumRelicIntake", entityId: id, beforeJson: { mediaId, kind: photo.kind, sourceSha256: photo.sourceSha256 } } });
     return { entry: dto(next), storageKey: photo.storageKey };
   });
-  try { await discardPrivateIntakeImage(result.storageKey); }
+  try { await discardIntakeImage(result.storageKey); }
   catch { console.error("Private intake photo cleanup failed", { intakeId: id, mediaId }); }
   return result.entry;
 }

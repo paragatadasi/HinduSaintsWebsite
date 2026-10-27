@@ -111,6 +111,7 @@ export function AdminFormGuard({ children }: { children: React.ReactNode }) {
       if (destination.href === window.location.href || window.confirm(LEAVE_MESSAGE)) return;
       event.preventDefault();
       event.stopImmediatePropagation();
+      document.dispatchEvent(new Event("route-navigation-cancelled"));
     };
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       if (dirtyForms.size === 0) return;

@@ -11979,3 +11979,9 @@ select:not([multiple]) {
 .museum-intake__error{color:var(--color-text);border-inline-start:2px solid var(--color-accent);padding-inline-start:var(--space-3);margin:0}
 .museum-intake__optional{padding-block:var(--space-4);border-block-start:1px solid var(--color-border)}
 @media(max-width:48rem){.museum-intake{grid-template-columns:minmax(0,1fr)}.museum-intake__queue{order:2}}
+
+.museum-intake__draft-queue {
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}

@@ -20,8 +20,6 @@ services:
       - ../.env
     environment:
       MEDIA_UPLOAD_ROOT: /app/uploads
-      MUSEUM_INTAKE_STORAGE_BACKEND: filesystem
-      MUSEUM_INTAKE_UPLOAD_ROOT: /app/uploads/_museum-private
     volumes:
       - app_uploads:/app/uploads
 

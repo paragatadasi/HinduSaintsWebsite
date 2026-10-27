@@ -1,7 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import {
+  DeleteObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
   S3Client
@@ -150,6 +151,39 @@ export async function getStoredMediaFile(storageKey: string) {
   };
 }
 
+export async function writeStoredMediaFile(storageKey: string, body: Buffer, contentType: AllowedImageType) {
+  const normalized = normalizeStorageKey(storageKey);
+
+  if (getMediaStorageBackend() === "s3") {
+    await getS3Client().send(new PutObjectCommand({
+      Bucket: requireEnvironmentValue("MEDIA_S3_BUCKET"),
+      Key: normalized,
+      Body: body,
+      CacheControl: "public, max-age=31536000, immutable",
+      ContentType: contentType
+    }));
+    return;
+  }
+
+  const filePath = path.join(getMediaUploadRoot(), normalized);
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(filePath, body, { flag: "wx" });
+}
+
+export async function deleteStoredMediaFile(storageKey: string) {
+  const normalized = normalizeStorageKey(storageKey);
+
+  if (getMediaStorageBackend() === "s3") {
+    await getS3Client().send(new DeleteObjectCommand({
+      Bucket: requireEnvironmentValue("MEDIA_S3_BUCKET"),
+      Key: normalized
+    }));
+    return;
+  }
+
+  await unlink(path.join(getMediaUploadRoot(), normalized));
+}
+
 export async function saveUploadedImage(file: File): Promise<StoredMedia> {
   if (file.size <= 0) {
     throw new Error("Uploaded image is empty.");
@@ -256,9 +290,7 @@ async function writeStoredObject(storageKey: string, body: Buffer, contentType: 
     return;
   }
 
-  const filePath = path.join(getMediaUploadRoot(), normalized);
-  await mkdir(path.dirname(filePath), { recursive: true });
-  await writeFile(filePath, body, { flag: "wx" });
+  await writeStoredMediaFile(normalized, body, contentType);
 }
 
 function getS3Client() {

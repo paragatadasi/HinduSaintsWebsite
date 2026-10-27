@@ -1,7 +1,6 @@
 import "dotenv/config";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import path from "node:path";
 import sharp from "sharp";
 
 const database = new URL(process.env.DATABASE_URL || "postgresql://invalid/invalid");
@@ -10,8 +9,8 @@ const local = (hostname: string) => ["localhost", "127.0.0.1", "[::1]"].includes
 if (!local(database.hostname) || !database.pathname.startsWith("/museum_intake_test") || !local(base.hostname) || base.protocol !== "http:") {
   throw new Error("Use only an explicitly configured disposable localhost museum_intake_test database and HTTP localhost test server.");
 }
-if (!process.env.MEDIA_UPLOAD_ROOT || !process.env.MUSEUM_INTAKE_UPLOAD_ROOT || path.resolve(process.env.MUSEUM_INTAKE_UPLOAD_ROOT) !== path.resolve(process.env.MEDIA_UPLOAD_ROOT, "_museum-private")) {
-  throw new Error("Use a disposable public upload root with intake storage in its exact _museum-private subtree, matching the test server.");
+if (!process.env.MEDIA_UPLOAD_ROOT) {
+  throw new Error("Use a disposable public upload root matching the test server.");
 }
 const { db } = await import("../lib/db");
 const suffix = randomUUID();
@@ -47,20 +46,20 @@ try {
   assert.equal(uploaded.status, 200);
   entry = await uploaded.json() as Entry;
   const photo = entry.media[0];
-  assert.equal((await request(photo.url)).status, 401);
-  assert.equal((await request(photo.url, deniedToken)).status, 403);
-  const authenticated = await request(photo.url, curatorToken);
+  const publicPhoto = await request(photo.url);
+  assert.equal(publicPhoto.status, 200);
+  assert.equal(publicPhoto.headers.get("Cache-Control"), "public, max-age=31536000, immutable");
+  const authenticated = await request(`${api}/${entry.id}/media/${photo.id}`, curatorToken);
   assert.equal(authenticated.status, 200);
   assert.equal(authenticated.headers.get("Content-Type"), "image/jpeg");
   assert.equal(authenticated.headers.get("Cache-Control"), "private, no-store");
   assert.equal((await sharp(Buffer.from(await authenticated.arrayBuffer())).metadata()).format, "jpeg");
-  const privateReference = await db.museumIntakeMedia.findUniqueOrThrow({ where: { id: photo.id } });
   assert.equal("storageKey" in photo, false);
-  const publicProbe = await request(`/media/_museum-private/${privateReference.storageKey}`);
-  assert.equal(publicProbe.status, 404);
-  assert.equal(publicProbe.headers.get("location"), null);
   const stale = await jsonMutation(`${api}/${entry.id}`, { expectedVersion: entry.version - 1, fields }, "PATCH");
   assert.equal(stale.status, 409);
+  form.set("kind", "bio_document"); form.set("expectedVersion", String(entry.version));
+  const bioUpload = await request(`${api}/${entry.id}/media`, curatorToken, { method: "POST", body: form });
+  assert.equal(bioUpload.status, 200); entry = await bioUpload.json() as Entry;
   const submitted = await jsonMutation(`${api}/${entry.id}/submit`, { expectedVersion: entry.version });
   assert.equal(submitted.status, 200); entry = await submitted.json() as Entry;
   const approved = await jsonMutation(`${api}/${entry.id}/review`, { action: "approve", expectedVersion: entry.version, saintDecision: { kind: "new_draft" } });
