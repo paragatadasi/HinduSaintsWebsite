@@ -1,6 +1,6 @@
 # Release Handoff: codex/spn-panchand-proposal-delta
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/spn-panchand-proposal-delta`
 - Commit: `53a406f`
 - Owner/agent: Nadi
@@ -30,7 +30,7 @@
 - Data/backfill/release steps: no database writes; new immutable v10 JSON artifacts and default registry `lib/spn-current-proposal.ts`.
 - Bundle: include Citra's independently verified intake-team UI/backend handoff in this user-requested release. Exclude unfinished room-move companion/session work.
 - Operational notes: 76/78 confirmed empty as of 27 Oct. Hemalata in 2, Sudama/Sant Ramdas in 78, Maitrayani in 28 retain unknown footprints; known shares do not prove fit. User authorized shipping with those notes.
-- Queue/deploy trigger: ready now
+- Queue/deploy trigger: deployed
 
 ## Risk And Conflicts
 
@@ -40,7 +40,7 @@
 
 ## Release Captain Notes
 
-- Integrated into `main`: pending
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: pending
+- Integrated into `main`: `f8ad261`
+- Pushed to `main`: yes
+- Merged to `deploy`: `bed29c7`
+- Production workflow: [40525298331](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40525298331) — success
