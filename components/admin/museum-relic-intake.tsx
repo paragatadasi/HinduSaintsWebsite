@@ -150,6 +150,30 @@ export function MuseumRelicIntake({ museumId, canReview, canTeam, initialView, u
     } setRetryPhotos(old => ({ ...old, [key]: file }));
     await perform(async () => { const saved = dirty || !entry ? await saveFields() : entry; setMessage("Details saved. Uploading photo…"); setActivity("Uploading photo…"); const data = new FormData(); data.set("file", file); data.set("kind", kind); if (relicId) data.set("relicId", relicId); data.set("expectedVersion", String(saved.version)); try { remember(await request<Entry>(`/${saved.id}/media`, "POST", data)); } catch (error) { setMessage("Details saved. Photo not saved—retry the upload."); throw error; } setRetryPhotos(old => { const next = { ...old }; delete next[key]; return next; }); setMessage("Details and photo saved."); }, key);
     }
+    async function saveAndStartNew() {
+      if (Object.keys(retryPhotos).length) {
+        setMessage("Retry or remove the unsaved photos before starting a new draft. Your details are still here.");
+        return;
+      }
+      await perform(async () => {
+        const saved = await saveFields();
+        setEntry(null);
+        setFields({...blank});
+        setRelics([newRelic()]);
+        setDirty(false);
+        setCorrecting(false);
+        setConflict(false);
+        setErrors({});
+        setRetryPhotos({});
+        setReviewNote("");
+        setDecision("");
+        setSaintId("");
+        setReturnView("entries");
+        requestId.current = "";
+        setMessage(`${saved.fields.saintName || "Entry"} saved. Ready for a new saint.`);
+        window.scrollTo({top:0,behavior:"instant"});
+      });
+    }
     function change(key: keyof Fields, value: string) { setFields(old => ({ ...old, [key]: value })); setDirty(true); setMessage(""); errorAt(key, ""); }
     function field(key: keyof Fields, label: string, optional = false) { return <label className="museum-intake__field" key={key} htmlFor={`intake-${key}`}><span>{label}{optional ? <small> · Optional</small> : null}</span><input id={`intake-${key}`} data-field={key} value={fields[key] ?? ""} maxLength={key === "broughtByRaw" ? 500 : key === "saintPlaceRaw" ? 2000 : 300} disabled={!editable || busy} aria-invalid={!!errors[key]} aria-describedby={errors[key] ? `error-${key}` : undefined} onChange={e => change(key, e.target.value)}/><ErrorText name={key} text={errors[key]}/></label>; }
     function photos(kind: PhotoKind, label: string, relicId?: string) {
@@ -161,7 +185,7 @@ export function MuseumRelicIntake({ museumId, canReview, canTeam, initialView, u
     return <div className="intake-stack" data-intake-theme={theme}>
       <div className="intake-stack__appearance"><span>Appearance</span>{["cream", "dark"].map(value => <button type="button" key={value} aria-pressed={theme === value} onClick={() => appearance(value)}>{value === "cream" ? "Cream" : "Dark"}</button>)}</div>
       <div className="intake-stack__main">
-      <header className="intake-stack__heading"><div><p className="intake-stack__eyebrow">SPN · New arrivals</p><h1>{view === "team" ? "Team entries" : view === "entries" ? "My entries" : reviewMode ? "Curator review" : "Receive relics"}</h1>{view === "intake" ? <p>One saint. Add each relic below.</p> : null}</div>{view === "entries" || view === "team" ? <button type="button" onClick={() => changeView("intake")}>New saint</button> : null}</header>
+      <header className="intake-stack__heading"><div><p className="intake-stack__eyebrow">SPN · New arrivals</p><h1>{view === "team" ? "Team entries" : view === "entries" ? "My entries" : reviewMode ? "Curator review" : "Receive relics"}</h1>{view === "intake" ? <p>One saint. Add each relic below.</p> : null}</div>{view === "entries" || view === "team" ? <button type="button" onClick={() => changeView("intake")}>New saint</button> : view === "intake" && editable ? <button type="button" disabled={busy || conflict} onClick={() => void saveAndStartNew()}>Save &amp; start new</button> : null}</header>
       <AdminViewTabs<View> label="Relic intake" value={view} onChange={changeView} options={[{value:"intake",label:"Team intake"},{value:"entries",label:"My entries"},...(canTeam ? [{value:"team" as const,label:"Team entries"}] : []),...(canReview ? [{value:"review" as const,label:"Curator review"}] : [])]}/>
       {busy || message ? <p role="status" className="intake-stack__status">{busy ? activity || "Saving…" : message}</p> : null}
       {view !== "intake" && !entry ? <section className="intake-stack__card">{loading ? <p>Loading entries…</p> : <><p>{queueEntries.length} {queueEntries.length === 1 ? "entry" : "entries"}</p>{queueEntries.length ? queueEntries.map(queueItem) : <p>{reviewMode ? "No entries submitted for review yet." : "No entries yet."}</p>}{reviewMode ? <details><summary>Drafts ({drafts.length})</summary>{drafts.map(queueItem)}</details> : null}{cursor ? <button type="button" disabled={busy} onClick={() => perform(async () => { const data = await request<{entries:Entry[];nextCursor:string|null}>(`?museumId=${encodeURIComponent(museumId)}${scope}&cursor=${encodeURIComponent(cursor)}`);setEntries(old => [...old,...data.entries.filter(e => !old.some(saved => saved.id === e.id))]);setCursor(data.nextCursor); })}>Load more entries</button> : null}</>}</section> : <>
