@@ -1,8 +1,10 @@
 # Release Handoff: codex/museum-relic-intake-ui
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/museum-relic-intake-ui`
-- Commit: `ae196a4`
+- Feature commit: `ae196a4`
+- Integrated main: `7a05f66`
+- Integrated deploy: `c382461`
 - Owner/agent: Citra
 - Bundle priority: immediate authorized intake release; SPN proposal already deployed
 
@@ -41,5 +43,7 @@ Protected relic intake and curator review, with private photo uploads, saved dra
 ## Release Captain Notes
 
 - Direct user authorizes intake deployment with approved reserved-volume fallback. Verify actual production persistence, UID1001 permissions and no direct static exposure before accepting photos.
-- Integrated into main: pending.
-- Production workflow: pending.
+- Integrated into main: `7a05f66`.
+- Integrated into deploy: `c382461`.
+- Production workflow: [40489005792](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40489005792) — completed successfully.
+- Production storage checks remain operational follow-up: confirm the live `app_uploads` volume is persistent, writable by UID 1001, and not directly exposed by Caddy/static hosting before accepting photos.

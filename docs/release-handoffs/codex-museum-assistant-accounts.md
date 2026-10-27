@@ -1,8 +1,10 @@
 # Release Handoff: codex/museum-assistant-accounts
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/museum-assistant-accounts`
-- Commit: `d5c7f1c878218c2c821899ae62b1fffb14cd2fdb`
+- Feature commit: `d5c7f1c878218c2c821899ae62b1fffb14cd2fdb`
+- Integrated main: `efc1526`
+- Integrated deploy: `8c81830`
 - Owner/agent: `Citra`
 - Bundle priority: immediate release candidate
 
@@ -30,7 +32,8 @@
 
 ## Release Captain Notes
 
-- Integrated into `main`: pending
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: pending
+- Integrated into `main`: `efc1526`
+- Pushed to `main`: yes
+- Merged to `deploy`: `8c81830`
+- Production workflow: [40492534156](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40492534156) — completed successfully
+- Production follow-up: verify canonical `AUTH_URL`/`NEXTAUTH_URL` and `AUTH_SECRET`; create no real accounts until the curator authorizes them. Airtable and website delivery remain disabled.
