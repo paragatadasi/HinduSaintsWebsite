@@ -1,10 +1,10 @@
 # Release Handoff: codex/spn-final-v8
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/spn-final-v8`
 - Commit: `1adc06293bdcfc24bb1a25e7c97463e6c18ad2e3`
 - Owner/agent: Citra
-- Bundle priority: bundle with intake once its HTTP/storage gates pass, per direct user request
+- Release scope: proposal-only; museum intake remains a separate blocked release candidate
 
 ## Summary
 
@@ -34,5 +34,6 @@ Final v8 proposal as latest East–North candidate, preserving earlier options a
 
 ## Release Captain Notes
 
-- Integrated main/deploy: pending.
-- Production workflow: pending.
+- Integrated main: `e44d756`.
+- Deploy merge: `b78579b`.
+- Production workflow: `Dispatch Production Deploy` run `40435750011`, completed successfully.
