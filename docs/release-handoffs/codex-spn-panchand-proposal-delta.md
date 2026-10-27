@@ -2,7 +2,7 @@
 
 - Status: ready
 - Branch: `codex/spn-panchand-proposal-delta`
-- Commit: `f8b652edd8b383159f525fcb6fa9b3149f55aa5c`
+- Commit: `0de3e09`
 - Owner/agent: Nadi
 - Bundle priority: immediate release candidate
 
@@ -11,6 +11,7 @@
 - Publish independently reviewed city-first corrected v3 as application proposal `spn-city-first-2026-10-27-v10`, including the earlier v9 Haridwar delta.
 - Preserve all 1423 source observations, 3 named-only records, 99 reviewed relationship pairs, Primary/Secondary/fixed assignments, raw evidence and physical history. Show the four unknown footprints beside their cases.
 - Accepted baseline becomes default only when the saved arrangement revision still matches the captured baseline. Newer curator revisions retain precedence; recorded physical fields stay separate.
+- Metadata correction: Vitrine64 has a retained Sri Potty Amma source holding and is labelled availability-dependent, never unallocated or vacant; its flexible-space exclusion remains. No destination/digest changed.
 - Include dated user confirmation that 76/78 are empty new vitrines; later occupancy wins. No actual move is confirmed.
 
 ## Verification
@@ -34,7 +35,7 @@
 
 - Shared areas touched: SPN plan page/static pilgrimage route, `lib/spn-room-proposal.ts`, shared active-proposal registry, private proposal/design/static companion data.
 - Expected conflicts: room-companion work may later use the active-proposal registry; do not include unfinished branch in this release.
-- Rollback notes: revert `f8b652e` and any dependent release commits
+- Rollback notes: revert `0de3e09`, `f8b652e` and any dependent release commits
 
 ## Release Captain Notes
 
