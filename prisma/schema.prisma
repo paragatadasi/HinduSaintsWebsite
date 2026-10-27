@@ -1870,3 +1870,15 @@ model MuseumMoveSessionEvent {
   @@unique([sessionId, clientRequestId])
   @@index([sessionId, createdAt])
 }
+
+model MuseumGuideSuggestionDecision {
+  museumId String
+  guideVersion String
+  suggestionId String
+  decision String @default("pending")
+  note String?
+  version Int @default(1)
+  updatedById String
+  updatedAt DateTime @updatedAt
+  @@id([museumId, guideVersion, suggestionId])
+}
