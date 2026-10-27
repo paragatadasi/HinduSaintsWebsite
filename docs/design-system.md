@@ -619,3 +619,18 @@ Team intake, My entries, and permission-gated Curator review are separate views.
 Assistant submission returns to My entries with confirmation; corrections reopen
 the same form and return to curator review on resubmission. Never expose curator
 actions to assistants or present a saved draft as a submitted entry.
+
+### SPN room-based move preparation
+
+The protected `/museumadmin/move` preparation view follows the room-based
+prototype: room selection and incoming displays on the main column, staging and
+optional guidance beside it, stacking on narrow screens. Reuse MuseumRoomPlan,
+AdminViewTabs and shared museum surfaces. Shared `room-move__*` classes provide
+the display-list and filter layouts.
+
+Use “Original recorded location” for supplied source evidence; show later physical
+confirmations separately. Planned destinations never become current locations.
+Keep each source observation distinct even when several belong to one saint.
+“Recorded here” is not “Confirmed here”; missing contents are not an empty-vitrine
+claim. Preparation views do not write physical progress. Staging and move actions
+require the durable session contract before they are enabled.
