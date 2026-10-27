@@ -2,7 +2,7 @@ import { z } from "zod";
 import { db } from "./db";
 import { Prisma } from "./generated/prisma/client";
 import { moveSnapshot, moveLocation, sameMoveLocation, assertDistinctMoveSources, assertWholeCaseClearing, MuseumMoveSessionError, type MoveSnapshot } from "./museum-move-session-domain";
-import { readStarterGuideDefinition } from "./spn-starter-guide-registry";
+import { readStarterGuideDefinition, registeredStarterGuide, starterGuideContext } from "./spn-starter-guide-registry";
 import { physicalFingerprint, resolveMuseumPhysicalCurrent } from "./museum-physical-location-current";
 import type { MoveSessionActor } from "./museum-move-session-service";
 
@@ -49,7 +49,32 @@ async function view(loader: PhysicalSnapshotLoader, tx: Prisma.TransactionClient
 
 export async function readMuseumPhysicalLocations(loader: PhysicalSnapshotLoader, sourceIds?: string[]) {
   const current = await view(loader, db, sourceIds);
-  return { ...current, confirmationHistory: await db.auditEvent.findMany({ where: { action, entityType: receiptType, entityId: { startsWith: "museum-spn:" } }, orderBy: [{ createdAt: "desc" }, { id: "desc" }], take: 100, select: { id: true, createdAt: true, afterJson: true } }) };
+  const [confirmationHistory, reportedPlacementReceipts] = await Promise.all([
+    db.auditEvent.findMany({ where: { action, entityType: receiptType, entityId: { startsWith: "museum-spn:" } }, orderBy: [{ createdAt: "desc" }, { id: "desc" }], take: 100, select: { id: true, createdAt: true, afterJson: true } }),
+    readReportedPlacementReceipts()
+  ]);
+  return { ...current, confirmationHistory, reportedPlacementReceipts };
+}
+
+export async function readReportedPlacementReceipts(tx: Prisma.TransactionClient = db,
+  reported: { sourceId: string; currentLocation: { vitrine: string }; confirmedDate: string }[] = registeredStarterGuide.physicalConfirmations.moves) {
+  if (!reported.length) return { guideContext: starterGuideContext, expectedCount: 0, matchedCount: 0, complete: true, matched: [], outstandingSourceIds: [] };
+  const expected = Prisma.join(reported.map(row => Prisma.sql`(${row.sourceId},${row.currentLocation.vitrine},${row.confirmedDate})`));
+  const matched = await tx.$queryRaw<{ sourceId: string; receiptId: string; recordedAt: Date; confirmedDate: string; vitrine: string }[]>(Prisma.sql`
+    SELECT DISTINCT ON (expected."sourceId") expected."sourceId", event.id AS "receiptId", event."createdAt" AS "recordedAt",
+      event."afterJson"->>'confirmedDate' AS "confirmedDate", expected.vitrine AS vitrine
+    FROM "AuditEvent" event
+    CROSS JOIN LATERAL jsonb_array_elements(CASE WHEN jsonb_typeof(event."afterJson"->'moves')='array' THEN event."afterJson"->'moves' ELSE '[]'::jsonb END) movement
+    JOIN (VALUES ${expected}) AS expected("sourceId",vitrine,"confirmedDate")
+      ON movement.value->>'sourceId'=expected."sourceId" AND movement.value->'location'->>'kind'='vitrine'
+      AND movement.value->'location'->>'code'=expected.vitrine
+    WHERE event.action=${action} AND event."entityType"=${receiptType}
+      AND event."afterJson"->>'museumId'='museum-spn' AND event."afterJson"->>'confirmedDate'>=expected."confirmedDate"
+    ORDER BY expected."sourceId", event."createdAt" DESC, event.id DESC
+  `);
+  const ids = new Set(matched.map(row => row.sourceId));
+  return { guideContext: starterGuideContext, expectedCount: reported.length, matchedCount: ids.size, complete: ids.size === reported.length,
+    matched, outstandingSourceIds: reported.filter(row => !ids.has(row.sourceId)).map(row => row.sourceId) };
 }
 
 export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSessionActor, loader: PhysicalSnapshotLoader) {

@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { registeredStarterGuide as guide, readStarterGuideDefinition, starterGuideContext } from "./spn-starter-guide-registry";
 
-test("the pilot pins the approved rotation and preserves the real physical walk", () => {
+test("the pilot pins the current review guide and preserves the real physical walk", () => {
   assert.equal(guide.proposalVersion, "spn-three-sided-rotation-review-2026-10-27-v7");
   assert.deepEqual(guide.vitrines.map(row => row.code), ["2", "78", "36", "29", "76", "28", "27"]);
   assert.equal(guide.rows.length, 136);
