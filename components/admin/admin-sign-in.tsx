@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowLeft, LogIn, Mail, MailCheck, ShieldCheck } from "lucide-react";
+import { MuseumAssistantSignIn } from "./museum-assistant-sign-in";
 import { signIn } from "@/lib/auth";
 
 type AdminSignInProps = {
@@ -22,7 +23,6 @@ export function AdminSignIn({
   workspaceLabel,
   workspaceSubtitle
 }: AdminSignInProps) {
-  const configured = emailConfigured || googleConfigured;
 
   return (
     <AdminAuthPanel workspaceLabel={workspaceLabel} workspaceSubtitle={workspaceSubtitle}>
@@ -30,7 +30,7 @@ export function AdminSignIn({
         <div className="admin-auth__heading">
           <div className="review-workflow__eyebrow">Secure access</div>
           <h1 id="admin-sign-in-title">Sign in to continue</h1>
-          <p>{configured ? description : configurationDescription}</p>
+          <p>{description}</p>
         </div>
 
         <div className="admin-auth__actions">
@@ -76,11 +76,8 @@ export function AdminSignIn({
             </form>
           ) : null}
 
-          {!configured ? (
-            <p className="admin-auth__configuration-note">
-              Configure Google OAuth or Resend email authentication in the environment, then restart the app.
-            </p>
-          ) : null}
+          <details className="admin-stack"><summary>Sign in with a username</summary><MuseumAssistantSignIn /></details>
+
           <p className="admin-auth__access-note">Access is limited to approved team accounts.</p>
         </div>
       </section>

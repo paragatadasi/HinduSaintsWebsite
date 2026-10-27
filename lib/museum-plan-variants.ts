@@ -12,7 +12,7 @@ import {registrySchema,variantSchema,variantSaveInput,variantSelectInput,compare
 const museumId="museum-vrindavan",entityType="MuseumPlanVariants";
 const json=(value:unknown):Prisma.InputJsonValue=>JSON.parse(JSON.stringify(value));
 const hash=(value:unknown)=>createHash("sha256").update(JSON.stringify(value)).digest("hex");
-async function authorize(tx:Prisma.TransactionClient,actorId:string,write:boolean){const user=await tx.user.findUnique({where:{id:actorId},select:{active:true,roles:true}});if(!user?.active||!hasCapability(user.roles,"access_museum")||!hasCapability(user.roles,"view_full_saint_catalog")||(write&&!hasCapability(user.roles,"manage_museum")))throw new MuseumConflict("Museum permission is required.");}
+async function authorize(tx:Prisma.TransactionClient,actorId:string,write:boolean){const user=await tx.user.findUnique({where:{id:actorId},select:{active:true,roles:true}});if(!user?.active||!hasCapability(user.roles,"access_museum")||!hasCapability(user.roles,"view_museum_catalog")||(write&&!hasCapability(user.roles,"manage_museum")))throw new MuseumConflict("Museum permission is required.");}
 async function state(tx:Prisma.TransactionClient){
  const [data,working,event,implemented]=await Promise.all([readVrindavanMovePlanner(tx),readVrindavanWorkingData(tx),tx.auditEvent.findFirst({where:{entityType,entityId:museumId},orderBy:[{createdAt:"desc"},{id:"desc"}]}),tx.museumArrangement.findMany({where:{museumId,status:"Implemented"},select:{placementId:true}})]);
  const proposals=new Map(working.placements.map(row=>[row.id,row]));

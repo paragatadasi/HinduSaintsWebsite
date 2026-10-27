@@ -7,7 +7,7 @@ import { z } from "zod";
 import { assertCapability } from "@/lib/admin-access";
 import { db } from "@/lib/db";
 
-const roles = ["site_admin", "data_admin", "editor", "fact_checker", "writer", "curator", "translator"] as const;
+const roles = ["site_admin", "data_admin", "editor", "fact_checker", "writer", "curator", "translator", "museum_assistant"] as const;
 const optionalProfileField = z.preprocess(
   (value) => typeof value === "string" && value.trim() ? value : undefined,
   z.string().trim().max(200).optional()
@@ -32,6 +32,8 @@ const createSchema = z.object({
 
 export async function createAdminUser(formData: FormData) {
   const actor = await assertCapability("manage_users");
+  const actorEmail = actor.email;
+  if (!actorEmail) redirectWith("error", "Use an email-based Site Admin account to manage access.");
   const parsed = createSchema.safeParse({
     email: formData.get("email"),
     name: formData.get("name"),
@@ -60,7 +62,7 @@ export async function createAdminUser(formData: FormData) {
     await tx.adminAccessAudit.create({
       data: {
         targetUserId: user.id,
-        actorEmail: actor.email,
+        actorEmail,
         action: "created",
         beforeRoles: [],
         afterRoles: parsed.data.roles,
@@ -75,6 +77,8 @@ export async function createAdminUser(formData: FormData) {
 
 export async function updateUserAccess(formData: FormData) {
   const actor = await assertCapability("manage_users");
+  const actorEmail = actor.email;
+  if (!actorEmail) redirectWith("error", "Use an email-based Site Admin account to manage access.");
   const parsed = accessSchema.safeParse({
     userId: formData.get("userId"),
     name: formData.get("name"),
@@ -97,10 +101,12 @@ export async function updateUserAccess(formData: FormData) {
       telegramId: true,
       instagramId: true,
       roles: true,
-      active: true
+      active: true,
+      passwordCredential: { select: { username: true } }
     }
   });
   if (!target) redirectWith("error", "That user no longer exists.");
+  if (target.passwordCredential && (input.roles.length !== 1 || input.roles[0] !== "museum_assistant")) redirectWith("error", "Username accounts must remain Museum Assistants. Use an email account for other access.");
 
   const removesSiteAdmin = target.roles.includes("site_admin") && (!input.active || !input.roles.includes("site_admin"));
   if (target.id === actor.id && removesSiteAdmin) redirectWith("error", "You cannot remove or deactivate your own Site Admin access.");
@@ -130,7 +136,7 @@ export async function updateUserAccess(formData: FormData) {
       db.adminAccessAudit.create({
         data: {
           targetUserId: target.id,
-          actorEmail: actor.email,
+          actorEmail,
           action: target.active !== input.active
             ? (input.active ? "reactivated" : "deactivated")
             : accessChanged
@@ -141,11 +147,12 @@ export async function updateUserAccess(formData: FormData) {
           beforeActive: target.active,
           afterActive: input.active
         }
-      })
+      }),
+      ...(accessChanged ? [db.session.deleteMany({ where: { userId: target.id } })] : [])
     ]);
   }
   revalidatePath("/admin/users");
-  redirectWith("updated", target.email);
+  redirectWith("updated", target.email ?? target.passwordCredential?.username ?? target.id);
 }
 
 function sameRoles(left: readonly string[], right: readonly string[]) {

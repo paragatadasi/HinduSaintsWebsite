@@ -4,15 +4,19 @@ import { db } from "@/lib/db";
 import { hasCapability, type Capability } from "@/lib/permissions";
 import { canAccessSaintCatalog, canViewSaintWithRoles } from "@/lib/admin-saint-access";
 import { userDisplayNameSelect } from "@/lib/user-display-name";
+import { isExclusiveMuseumAssistant } from "@/lib/local-password";
 
 export async function getAdminUser() {
   const session = await auth();
+  const id = session?.user?.id;
   const email = session?.user?.email?.trim().toLowerCase();
-  if (!email) return null;
-  return db.user.findUnique({
-    where: { email },
-    select: { id: true, ...userDisplayNameSelect, roles: true, active: true }
+  if (!id && !email) return null;
+  const user = await db.user.findUnique({
+    where: id ? { id } : { email: email! },
+    select: { id: true, ...userDisplayNameSelect, roles: true, active: true, passwordCredential: { select: { username: true } } }
   });
+  if (user?.passwordCredential && !isExclusiveMuseumAssistant(user.roles)) return null;
+  return user;
 }
 
 export async function requireAdminUser() {

@@ -10,8 +10,8 @@ export const metadata:Metadata={robots:{index:false,follow:false}};
 export default function VrindavanAdminLayout({children}:{children:React.ReactNode}) {
  return <MuseumWorkspace name="Vrindavan Museum" subtitle="Sections, inventory and locations" homeHref="/vrindavanadmin" loadNavigation={navigation}>{children}</MuseumWorkspace>;
 }
-async function navigation(canViewSections:boolean) {
+async function navigation(canViewSections:boolean,canAccessMainAdmin:boolean) {
  let sections:MuseumNavSection[]=[],unavailable=false;
  if(canViewSections)try{sections=(await getVrindavanWorkspaceData()).sections.map(({name,slug,count})=>({name,slug,total:count}));}catch(error){if(error instanceof MuseumInventoryUnavailableError)unavailable=true;else throw error;}
- return <Suspense fallback={<p>Loading navigation…</p>}><MuseumNavigation museum="vrindavan" sections={sections} canViewSections={canViewSections} sectionsUnavailable={unavailable}/></Suspense>;
+ return <Suspense fallback={<p>Loading navigation…</p>}><MuseumNavigation museum="vrindavan" sections={sections} canViewSections={canViewSections} canAccessMainAdmin={canAccessMainAdmin} sectionsUnavailable={unavailable}/></Suspense>;
 }

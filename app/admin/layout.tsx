@@ -1,5 +1,6 @@
+import {redirect} from "next/navigation";
 import type { Metadata } from "next";
-import { auth, isEmailAuthConfigured, isGoogleAuthConfigured, signOut } from "@/lib/auth";
+import { isEmailAuthConfigured, isGoogleAuthConfigured, signOut } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { hasCapability } from "@/lib/permissions";
 import { getAdminUser } from "@/lib/admin-access";
@@ -19,9 +20,9 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const session = await auth();
+  const adminUser = await getAdminUser();
 
-  if (!session?.user?.email) {
+  if (!adminUser?.active) {
     return (
       <AdminSignIn
         emailConfigured={isEmailAuthConfigured}
@@ -35,7 +36,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     );
   }
 
-  const adminUser = await getAdminUser();
+  if (adminUser.roles.length>0 && adminUser.roles.every(role=>role==="museum_assistant")) redirect("/museumadmin/overview");
   const roles = adminUser?.active ? adminUser.roles : [];
   const [newFeedbackCount, openReconciliationCount, openDuplicateCount] = await Promise.all([
     hasCapability(roles, "view_feedback_inbox")

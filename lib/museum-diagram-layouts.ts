@@ -10,7 +10,7 @@ const json=(value:unknown):Prisma.InputJsonValue=>JSON.parse(JSON.stringify(valu
 
 async function authorize(tx:Prisma.TransactionClient,actorId:string,write:boolean){
  const actor=await tx.user.findUnique({where:{id:actorId},select:{active:true,roles:true}});
- if(!actor?.active||!hasCapability(actor.roles,"access_museum")||!hasCapability(actor.roles,"view_full_saint_catalog")||(write&&!hasCapability(actor.roles,"manage_museum")))throw new MuseumConflict(write?"Museum editing permission is required.":"Museum access is required.");
+ if(!actor?.active||!hasCapability(actor.roles,"access_museum")||!hasCapability(actor.roles,"view_museum_catalog")||(write&&!hasCapability(actor.roles,"manage_museum")))throw new MuseumConflict(write?"Museum editing permission is required.":"Museum access is required.");
 }
 async function current(tx:Prisma.TransactionClient,museumId:DiagramLayouts["museumId"]):Promise<DiagramLayouts>{
  const {diagramSnapshotSchema,nodeIds,graphVersion}=domain(museumId);

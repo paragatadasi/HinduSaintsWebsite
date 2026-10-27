@@ -1,3 +1,4 @@
+import { MuseumAssistantAccountForm } from "@/components/admin/museum-assistant-account-form";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { requireCapability } from "@/lib/admin-access";
@@ -8,7 +9,7 @@ import { getUserDisplayName, userDisplayNameSelect, type UserDisplayNameFields }
 import { setBulkDeletePasswordAction } from "../actions";
 import { createAdminUser, updateUserAccess } from "./actions";
 
-const roles = ["site_admin", "data_admin", "editor", "fact_checker", "writer", "curator", "translator"] as const;
+const roles = ["site_admin", "data_admin", "editor", "fact_checker", "writer", "curator", "museum_assistant", "translator"] as const;
 
 type UsersAccessPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -18,7 +19,7 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
   await requireCapability("manage_users");
   const [params, users, audits, passwordStatus] = await Promise.all([
     searchParams,
-    db.user.findMany({ orderBy: [{ active: "desc" }, { email: "asc" }] }),
+    db.user.findMany({ include: {passwordCredential: {select: {username: true}}}, orderBy: [{ active: "desc" }, { email: "asc" }] }),
     db.adminAccessAudit.findMany({
       include: { targetUser: { select: userDisplayNameSelect } },
       orderBy: { createdAt: "desc" },
@@ -47,7 +48,7 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
       <CollapsibleReviewCard
         cardId="approve-user"
         defaultOpen={users.length === 0}
-        description="Create an approved database user before their first Google sign-in. Their verified Google account links to this record."
+        description="Approve an email account for Google or email-link sign-in."
         eyebrow="New access"
         title="Approve a user"
       >
@@ -60,6 +61,10 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
         </form>
       </CollapsibleReviewCard>
 
+      <CollapsibleReviewCard cardId="create-museum-assistant" eyebrow="No email required" title="Create a museum assistant account" description="Set a username and password for museum access.">
+        <MuseumAssistantAccountForm />
+      </CollapsibleReviewCard>
+
       <section aria-label="Approved users">
         <div className="section-heading"><h2>Approved users</h2><StatusBadge label={String(users.length)} /></div>
         <div className="review-list">
@@ -68,8 +73,8 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
             return <CollapsibleReviewCard
               cardId={`user-${user.id}`}
               className="admin-user-access-card"
-              defaultOpen={updatedEmail === user.email}
-              description={displayName !== user.email ? user.email : formatRoles(user.roles)}
+              defaultOpen={updatedEmail === (user.email ?? user.passwordCredential?.username)}
+              description={user.passwordCredential ? `Username: ${user.passwordCredential.username} · Museum Assistant` : displayName !== user.email ? user.email ?? undefined : formatRoles(user.roles)}
               eyebrow={`${user.active ? "Active" : "Inactive"} · ${user.lastSignedInAt ? `Last sign-in ${formatDate(user.lastSignedInAt)}` : "Never signed in"}`}
               key={user.id}
               title={displayName}
@@ -77,12 +82,13 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
               <form action={updateUserAccess} className="admin-settings-form admin-settings-form--stacked">
                 <input name="userId" type="hidden" value={user.id} />
                 <UserIdentityFields user={user} />
-                <RoleCheckboxes defaults={user.roles} />
+                {user.passwordCredential ? <><input type="hidden" name="roles" value="museum_assistant"/><p className="admin-settings-note">Museum Assistant · Museum browsing and own intake entries only.</p></> : <RoleCheckboxes defaults={user.roles} />}
                 <div className="admin-form-footer">
                   <label className="admin-option-toggle"><input defaultChecked={user.active} name="active" type="checkbox" /><span>Active account</span></label>
                   <button className="admin-form-button" type="submit">Save user</button>
                 </div>
               </form>
+              {user.passwordCredential ? <details><summary>Reset password</summary><MuseumAssistantAccountForm userId={user.id} username={user.passwordCredential.username}/></details> : null}
             </CollapsibleReviewCard>;
           })}
         </div>
