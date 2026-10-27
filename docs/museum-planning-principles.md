@@ -119,6 +119,8 @@ Verify separately:
 
 For a whole-group rotation, compare exact source-ID sets and unchanged per-source estimates, not just counts or rounded subtotals. Audit canonical holdings and likely duplicate identities separately: a same-person split can be hidden behind different canonical IDs.
 
+Audit preserved source-recorded Master/Disciple links as a separate evidence set, binding exact source IDs to their current canonical identities. Duplicate or unresolved canonical bindings can hide a source link from the canonical-pair audit. Keep such claims attributed and held until the people and relationship type are checked; an imported traditional teacher claim is not automatically a verified immediate guru relationship.
+
 Do not describe a canonical-edge check as exhaustive historical verification of every researched relationship. Record which relationship set, source snapshot and unit the audit covered.
 
 The 25 October working model checked the proposed core Kriya family together using recorded shelf shares and preserved source observations and fixed-object restrictions. This supports testing intact groups first; it does not establish dimensional fit or a universal occupancy threshold.
