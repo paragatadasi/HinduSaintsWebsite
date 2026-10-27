@@ -1,5 +1,5 @@
-import proposalFinal from "@/data/museum/spn-room-proposal-final-v8.json";
-import designFinal from "@/data/museum/spn-room-explorer-final-v8-design.json";
+import proposalFinal from "@/data/museum/spn-room-proposal-final-v9.json";
+import designFinal from "@/data/museum/spn-room-explorer-final-v9-design.json";
 import {requireCapability} from "@/lib/admin-access";
 import {hasCapability} from "@/lib/permissions";
 import {getMuseumData} from "@/lib/museum-data";

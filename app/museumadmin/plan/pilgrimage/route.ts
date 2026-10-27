@@ -1,5 +1,5 @@
 import {requireCapability} from "@/lib/admin-access";
-import companion from "@/data/museum/spn-pilgrimage-final-v8.json";
+import companion from "@/data/museum/spn-pilgrimage-final-v9.json";
 export const dynamic="force-dynamic";
 export async function GET(){
  await requireCapability("access_museum");await requireCapability("view_museum_catalog");
