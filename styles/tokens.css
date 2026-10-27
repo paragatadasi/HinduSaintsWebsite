@@ -483,3 +483,43 @@
  --color-museum-navigation-spn-5:oklch(.78 .065 320);
  --color-museum-navigation-spn-6:oklch(.78 .065 185);
 }
+
+/* Stacked intake follows the approved cream/dark prototype within the admin shell. */
+:root {
+  --width-intake-form: 53.75rem;
+  --height-intake-control: 2.75rem;
+  --size-intake-photo: 6.25rem;
+  --font-size-intake-body: 1rem;
+  --font-size-intake-title: clamp(2rem, 4vw, 3rem);
+  --font-size-intake-section: 1.8rem;
+  --font-size-intake-small: .8rem;
+  --line-height-intake: 1.55;
+}
+[data-intake-theme="cream"] {
+  color-scheme: light;
+  --color-bg: #fbfaf6;
+  --color-surface: #ffffff;
+  --color-section-surface: #f7f2e9;
+  --color-text: #211f1a;
+  --color-muted: #6f685f;
+  --color-border: #ddd5c6;
+  --color-copper: #9a6731;
+  --color-gold: #c28b2c;
+  --color-green: #366153;
+  --color-text-inverse: #ffffff;
+  --color-accent: var(--color-gold);
+}
+[data-intake-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #050914;
+  --color-surface: #121a28;
+  --color-section-surface: #08101d;
+  --color-text: #f7ead3;
+  --color-muted: #c4b79f;
+  --color-border: rgba(232, 169, 68, 0.22);
+  --color-copper: #b8732c;
+  --color-gold: #f1b545;
+  --color-green: #82a9a0;
+  --color-text-inverse: #050914;
+  --color-accent: var(--color-gold);
+}

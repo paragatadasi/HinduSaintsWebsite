@@ -257,8 +257,11 @@ Implementation direction:
   coherent workflow groups within Saint and Tradition review. Nested tabs use links with
   `aria-current="page"`; they are not client-side tab panels and must preserve
   normal URLs, history, and authorization gates. They should read visually as a
-  connected tab strip: outlined tab-shaped controls, a selected surface, and an
-  accent rule joining the strip to its content. Do not render them as pills.
+  quiet horizontal strip: text labels above a subtle shared baseline, with a
+  gold underline beneath only the active label. Keep inactive labels muted,
+  backgrounds transparent, and keyboard focus visible. Use `admin-tab-strip` /
+  `admin-tab-strip__tab`; legacy `admin-tabs` / `admin-tab` share this treatment.
+  Do not render navigation tabs as pills or raised boxes. Status badges remain badges.
 - Do not add a horizontal section rail to shallow detail pages. Instagram and
   Place review keep their primary workflow and supporting cards in one readable
   stream. Saint and Tradition use normal URL-backed links with
@@ -604,3 +607,15 @@ See [relic intake guidance](design-system/shared-museum-workspaces.md#relic-inta
 Use the shared admin sign-in panel and stacked form fields for username sign-in. Keep Google/email options unchanged, with the username option in an integrated disclosure. Use persistent labels, password-manager autocomplete on sign-in, inline field errors, and a busy submit state. Account creation and password reset live in Users & Access using existing collapsible review cards; never display or retain saved passwords. Password-reset copy must explain that existing sessions end.
 
 Museum assistants see museum navigation and read-only summaries. Hide unavailable editing controls and Main admin navigation, retain exploration/search/expand controls, and provide Sign out in the museum shell. Permissions must also be enforced by server actions and APIs; visual restrictions alone are insufficient.
+
+### Stacked museum intake
+
+`MuseumRelicIntake` uses the approved stacked prototype: one shared Saint card,
+then numbered relic cards, within the `intake-stack` shared pattern. Optional
+fields use one **More details** disclosure per card. Bio documents are optional.
+The local Cream/Dark appearance control scopes theme tokens to intake and keeps
+16px form text, quiet gold-underline tabs, and the same layout in both themes.
+Team intake, My entries, and permission-gated Curator review are separate views.
+Assistant submission returns to My entries with confirmation; corrections reopen
+the same form and return to curator review on resubmission. Never expose curator
+actions to assistants or present a saved draft as a submitted entry.

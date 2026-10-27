@@ -32,7 +32,7 @@ try {
   const file = new File([new Uint8Array(raw)], "relic.png", { type: "image/png" });
   entry = await intake.addMuseumIntakeMedia(entry.id, entry.version, "relic", file, owner);
   assert.equal((await intake.addMuseumIntakeMedia(entry.id, entry.version - 1, "relic", file, owner)).version, entry.version);
-  await assert.rejects(intake.submitMuseumIntake(entry.id, { expectedVersion: entry.version }, owner), /bio document/);
+  // Shared biography documents are optional.
   entry = await intake.addMuseumIntakeMedia(entry.id, entry.version, "bio_document", file, owner);
   const expectedVersion = entry.version;
   const saves = await Promise.allSettled([
@@ -42,8 +42,10 @@ try {
   assert.equal(saves.filter(result => result.status === "fulfilled").length, 1);
   entry = await intake.readMuseumIntake(entry.id, owner);
   entry = await intake.submitMuseumIntake(entry.id, { expectedVersion: entry.version }, owner);
-  await assert.rejects(intake.editMuseumIntake(entry.id, { expectedVersion: entry.version, fields }, owner), /in review/);
+  entry = await intake.editMuseumIntake(entry.id, { expectedVersion: entry.version, fields }, owner);
+  assert.equal(entry.status, "draft");
   entry = await intake.editMuseumIntake(entry.id, { expectedVersion: entry.version, fields }, reviewer);
+  entry = await intake.submitMuseumIntake(entry.id, { expectedVersion: entry.version }, owner);
   const approval = { action: "approve", expectedVersion: entry.version, saintDecision: { kind: "existing", saintId: saint.id } };
   await assert.rejects(intake.reviewMuseumIntake(entry.id, approval, owner), /curator/);
   entry = await intake.reviewMuseumIntake(entry.id, approval, reviewer);
@@ -51,8 +53,12 @@ try {
   assert.equal(entry.deliverySummary, "configuration_required");
   assert.equal(entry.deliveries.length, 2);
   assert.equal((await intake.reviewMuseumIntake(entry.id, approval, reviewer)).version, entry.version);
-  await assert.rejects(intake.editMuseumIntake(entry.id, { expectedVersion: entry.version, fields }, reviewer));
-  await assert.rejects(intake.removeMuseumIntakeMedia(entry.id, entry.media[0].id, { expectedVersion: entry.version }, reviewer));
+  const snapshot = entry.approvedSnapshot;
+  entry = await intake.editMuseumIntake(entry.id, { expectedVersion: entry.version, fields }, owner);
+  assert.equal(entry.status, "draft");
+  assert.deepEqual(entry.approvedSnapshot, snapshot);
+  entry = await intake.removeMuseumIntakeMedia(entry.id, entry.media[0].id, { expectedVersion: entry.version }, owner);
+  assert.deepEqual(entry.approvedSnapshot, snapshot);
   assert.equal(await db.saint.count({ where: { slug: `intake-${suffix}` } }), 1);
   assert.equal(await db.museumCollectionItem.count({ where: { catalogMuseumId: museum.id } }), 0);
   assert.equal((await db.saint.findUniqueOrThrow({ where: { id: saint.id } })).status, "draft");

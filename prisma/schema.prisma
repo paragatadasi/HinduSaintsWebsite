@@ -1743,6 +1743,8 @@ model MuseumRelicIntake {
   reviewFingerprint String?
   approvedSnapshot Json?
   media MuseumIntakeMedia[]
+  relics MuseumIntakeRelic[]
+  approvals MuseumIntakeApproval[]
   deliveries MuseumIntakeDelivery[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1755,6 +1757,9 @@ model MuseumIntakeMedia {
   id String @id @default(cuid())
   intakeId String
   intake MuseumRelicIntake @relation(fields: [intakeId], references: [id], onDelete: Restrict)
+  relicId String?
+  relic MuseumIntakeRelic? @relation(fields: [intakeId, relicId], references: [intakeId, id], onDelete: Restrict)
+  archivedAt DateTime?
   kind String
   storageKey String @unique
   sourceSha256 String
@@ -1764,7 +1769,7 @@ model MuseumIntakeMedia {
   height Int
   createdById String
   createdAt DateTime @default(now())
-  @@unique([intakeId, kind, sourceSha256])
+  @@unique([intakeId, relicId, kind, sourceSha256])
 }
 
 // Each target has its own receipt and recovery state; do not retry a successful target.
@@ -1784,6 +1789,29 @@ model MuseumIntakeDelivery {
   deliveredAt DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  @@unique([intakeId, target])
+  @@unique([intakeId, target, reviewedVersion])
   @@index([target, status, createdAt])
+}
+
+model MuseumIntakeRelic {
+  id String @id
+  intakeId String
+  intake MuseumRelicIntake @relation(fields: [intakeId], references: [id], onDelete: Restrict)
+  rawFields Json
+  position Int
+  archivedAt DateTime?
+  media MuseumIntakeMedia[]
+  @@unique([intakeId, id])
+  @@index([intakeId, archivedAt, position])
+}
+
+model MuseumIntakeApproval {
+  id String @id @default(cuid())
+  intakeId String
+  intake MuseumRelicIntake @relation(fields: [intakeId], references: [id], onDelete: Restrict)
+  reviewedVersion Int
+  snapshot Json
+  reviewedById String?
+  createdAt DateTime @default(now())
+  @@unique([intakeId, reviewedVersion])
 }
