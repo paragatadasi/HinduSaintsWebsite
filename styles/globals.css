@@ -11961,3 +11961,21 @@ select:not([multiple]) {
 .museum-connection-detail { margin-top:var(--space-6); }
 .museum-connection-detail__relationship { border-top:1px solid var(--color-border); padding-block:var(--space-4); }
 .museum-connection-detail__relationship h4 { margin:0; font-family:var(--font-serif); }
+/* Shared museum intake: private arrivals and curator review use the same field layout. */
+.museum-intake{display:grid;grid-template-columns:minmax(0,var(--width-museum-planner-sections)) minmax(0,1fr);gap:var(--space-6);align-items:start;margin-block:var(--space-6)}
+.museum-intake__sections{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-5)}
+.museum-intake__field{display:grid;gap:var(--space-2);margin-block:var(--space-4)}
+.museum-intake__field input,.museum-intake__field textarea,.museum-intake__field select{width:100%;min-width:0;font-size:var(--font-size-saint-biography-body)}
+.museum-intake__field small{font-weight:normal;color:var(--color-muted)}
+.museum-intake__actions{display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center}
+.museum-intake__queue-item{display:grid;text-align:start;width:100%;gap:var(--space-2);padding:var(--space-3);margin-block:var(--space-2);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);color:var(--color-text)}
+.museum-intake__queue-item[aria-pressed=true]{border-color:var(--color-accent)}
+.museum-intake__photos{display:flex;gap:var(--space-3);flex-wrap:wrap}
+.museum-intake__photos figure{margin:0;display:grid;gap:var(--space-2)}
+.museum-intake__photos img{width:var(--width-instagram-preview);max-width:100%;height:var(--width-instagram-preview);object-fit:contain;border-radius:var(--radius-md)}
+.museum-intake__upload{position:relative;overflow:hidden;cursor:pointer}
+.museum-intake__upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.museum-intake__upload:focus-within{outline:2px solid var(--color-accent);outline-offset:2px}
+.museum-intake__error{color:var(--color-text);border-inline-start:2px solid var(--color-accent);padding-inline-start:var(--space-3);margin:0}
+.museum-intake__optional{padding-block:var(--space-4);border-block-start:1px solid var(--color-border)}
+@media(max-width:48rem){.museum-intake{grid-template-columns:minmax(0,1fr)}.museum-intake__queue{order:2}}
