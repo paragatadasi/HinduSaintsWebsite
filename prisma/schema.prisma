@@ -274,6 +274,7 @@ model User {
   telegramId    String?
   instagramId   String?
   email         String?   @unique
+  intakeTeamMemberships MuseumIntakeTeamMember[]
   passwordCredential UserPasswordCredential?
   emailVerified DateTime?
   image         String?
@@ -1480,6 +1481,7 @@ model Museum {
   imports   MuseumCollectionImport[]
   catalogItems MuseumCollectionItem[]
   relicIntakes MuseumRelicIntake[]
+  intakeTeamMembers MuseumIntakeTeamMember[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -1814,6 +1816,16 @@ model MuseumIntakeApproval {
   reviewedById String?
   createdAt DateTime @default(now())
   @@unique([intakeId, reviewedVersion])
+}
+
+model MuseumIntakeTeamMember {
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  museumId String
+  museum Museum @relation(fields: [museumId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  @@id([userId, museumId])
+  @@index([museumId])
 }
 
 model MuseumMoveSession {

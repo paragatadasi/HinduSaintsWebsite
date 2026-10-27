@@ -103,3 +103,24 @@ The intake reuses the existing persistent `app_uploads` volume and public media 
 Multi-relic migration and persistence verification: run `scripts/verify-museum-multi-relic-local.ts` against a **fresh** disposable localhost database named `museum_intake_test_multi…`. It installs prior migrations, seeds a legacy approved entry/photo, applies the new migration, then checks child evidence, ownership, corrections, stale versions, approval/media retention and disabled delivery. Do not run this schema-building verifier against an existing development or production database. Shared model/schema changes require regenerating Prisma before starting either UI or API.
 
 Learning review (27 October 2026): existing museum interpretation rules already separate saint identity, source observations and physical relics, and preserve evidence. This change applies those rules through explicit intake children and approval revisions; no reusable skill rule changed.
+
+
+## Museum intake teams — 27 October 2026
+
+`MuseumIntakeTeamMember` is an explicit user/museum grant, separate from the global Museum Assistant role. Migration `20261027220000_museum_intake_team` assigns existing users with that role to the active SPN museum only, as authorized by Paragata. It preserves all users, intake rows, children, media and approval history. The backfill uses an idempotent insert; future accounts receive no implicit team assignment.
+
+Site Admin account creation accepts optional `museumIds:string[]`. Site Admin may replace assignments using `PUT /api/admin/local-accounts/:userId/museum-team` with `{museumIds:string[]}`. Only active museums and Museum Assistant accounts are accepted; assignment changes are audited. Membership is checked on requests and again inside intake mutation transactions, so removing a grant does not depend on signing the assistant out.
+
+`GET /api/admin/museum-intake?scope=team&museumId=…` requires membership in that museum, or curator review access. Assistants can read/edit team drafts, submitted entries and returned entries. Their own entries remain available through `scope=mine`; another person's approved entry is outside team editing. Collaboration never grants review, approval, publication, canonical data mutation or access to another museum. Curators retain their existing review access. Entry DTOs add `creatorDisplayName` (name, then username, never email), `canTeam` (team access for the entry's museum) and per-entry `canEdit`. Team photo access follows the same record/museum boundary.
+
+Each child accepts optional `relicPlaceRaw` up to 2000 characters: an explicitly reported place associated with that relic. It starts blank and **never inherits** `saintPlaceRaw`. Empty/absent means no additional relic-place evidence. Preserve raw text; do not normalize it, create a locality, change the saint's place, match an identity or assign a physical storage location.
+
+`verify-museum-intake-team-local.ts` uses a fresh disposable localhost `museum_intake_test_multi…` database. It checks team edit/resubmit, owner/team filtering, cross-museum denial, no review privilege, immediate membership revocation including photo access, explicit-place clearing, SPN-only backfill idempotency and retained legacy/approval evidence. No production operation or automatic release is part of this verifier.
+
+## Relic-document upload constraint repair — 27 October 2026
+
+The multi-relic application accepted `relic_document`, but the database check still allowed only `relic`, `saint_portrait` and `bio_document`. A relic-specific document therefore failed while other photos saved. Additive migration `20261027230000_museum_intake_relic_document` includes the fourth kind without changing existing media, entry fields or approval history. Run it in the normal release migration phase; do not edit earlier applied migrations or execute manual production SQL.
+
+`scripts/verify-museum-intake-document-local.ts` requires a fresh disposable localhost database named `museum_intake_test_document_…`. It installs the prior migration chain, uploads the three earlier kinds through the real service, reproduces the document constraint failure, applies the repair, then verifies document upload/read/retry/submission and preservation of earlier media and fields. Unsupported kinds remain rejected. Future supported media kinds need both application validation and a migrated-database upload check.
+
+No environment or dependency changes are required. Retain the expanded constraint if rolling back application code after documents have been saved; tightening it would conflict with valid stored documents. Learning review: no museum evidence or identity interpretation changed, so the museum skills remain unchanged.

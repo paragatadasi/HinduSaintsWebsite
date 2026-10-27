@@ -1,8 +1,8 @@
 # Release Handoff: codex/spn-panchand-proposal-delta
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/spn-panchand-proposal-delta`
-- Commit: `0de3e09`
+- Commit: `53a406f`
 - Owner/agent: Nadi
 - Bundle priority: immediate release candidate
 
@@ -11,6 +11,7 @@
 - Publish independently reviewed city-first corrected v3 as application proposal `spn-city-first-2026-10-27-v10`, including the earlier v9 Haridwar delta.
 - Preserve all 1423 source observations, 3 named-only records, 99 reviewed relationship pairs, Primary/Secondary/fixed assignments, raw evidence and physical history. Show the four unknown footprints beside their cases.
 - Accepted baseline becomes default only when the saved arrangement revision still matches the captured baseline. Newer curator revisions retain precedence; recorded physical fields stay separate.
+- Static companion coverage now includes all 82 source-occupied cases, including 64/69; neither is listed as unallocated. Regression test checks every occupied case. No source assignment/digest changed.
 - Metadata correction: Vitrine64 has a retained Sri Potty Amma source holding and is labelled availability-dependent, never unallocated or vacant; its flexible-space exclusion remains. No destination/digest changed.
 - Include dated user confirmation that 76/78 are empty new vitrines; later occupancy wins. No actual move is confirmed.
 
@@ -29,7 +30,7 @@
 - Data/backfill/release steps: no database writes; new immutable v10 JSON artifacts and default registry `lib/spn-current-proposal.ts`.
 - Bundle: include Citra's independently verified intake-team UI/backend handoff in this user-requested release. Exclude unfinished room-move companion/session work.
 - Operational notes: 76/78 confirmed empty as of 27 Oct. Hemalata in 2, Sudama/Sant Ramdas in 78, Maitrayani in 28 retain unknown footprints; known shares do not prove fit. User authorized shipping with those notes.
-- Queue/deploy trigger: ready now
+- Queue/deploy trigger: deployed
 
 ## Risk And Conflicts
 
@@ -39,7 +40,7 @@
 
 ## Release Captain Notes
 
-- Integrated into `main`: pending
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: pending
+- Integrated into `main`: `f8ad261`
+- Pushed to `main`: yes
+- Merged to `deploy`: `bed29c7`
+- Production workflow: [40525298331](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40525298331) — success

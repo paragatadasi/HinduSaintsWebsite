@@ -36,6 +36,7 @@ test('accepted default applies only to the captured baseline and never changes r
 test('static route companion uses the same city membership and has valid script syntax',()=>{
  const decoded=companion.html.match(/srcdoc="([^"]*)"/)![1].replaceAll('&quot;','"').replaceAll('&#x27;',"'").replaceAll('&#39;',"'").replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&amp;','&');
  const route=JSON.parse(decoded.match(/const DATA=(.*);[\r\n]/)![1]);assert.equal(route.baseline,proposal.version);
+ for(const vitrine of new Set(proposal.rows.map(r=>Number(r.vitrine))))assert.ok(route.stops.some((s:{cases:number[]})=>s.cases.includes(vitrine)),`Missing occupied case${vitrine}`);assert.ok(!route.unallocatedCases.includes(64)&&!route.unallocatedCases.includes(69));
  const script=[...decoded.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(m=>m[1]).find(s=>s.includes('const DATA='));assert.ok(script);assert.doesNotThrow(()=>new Script(script));
  assert.deepEqual(design.options[0].tertiaryCityClusters,proposal.tertiaryCityClusters);
 });

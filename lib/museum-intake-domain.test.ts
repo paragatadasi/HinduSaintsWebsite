@@ -55,3 +55,9 @@ test("client relic IDs must be distinct and saint details remain optional", () =
   assert.equal(createMuseumIntakeInput.safeParse({ ...base, relics: [{ id: "one", relicDescription: "cloth" }, { id: "one", relicDescription: "mala" }] }).success, false);
   assert.equal(createMuseumIntakeInput.safeParse({ ...base, relics: [] }).success, false);
 });
+
+test("relic place is optional raw evidence and never inherited from the saint place", () => {
+  const input = createMuseumIntakeInput.parse({ museumId: "spn", clientRequestId: "178c7810-45c0-48b5-bdc6-dd5ab3ba48a9", fields: { saintName: "Guru", saintPlaceRaw: "Main town" }, relics: [{ id: "one", relicDescription: "cloth" }] });
+  assert.equal(input.relics![0].relicPlaceRaw, undefined);
+  assert.equal(createMuseumIntakeInput.parse({ ...input, relics: [{ ...input.relics![0], relicPlaceRaw: "" }] }).relics![0].relicPlaceRaw, "");
+});
