@@ -1461,6 +1461,7 @@ model Museum {
   locations MuseumLocation[]
   imports   MuseumCollectionImport[]
   catalogItems MuseumCollectionItem[]
+  relicIntakes MuseumRelicIntake[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -1705,4 +1706,66 @@ model MuseumSectionSpacePlan {
   updatedById String
   updatedAt DateTime @updatedAt
   @@id([museumId, section])
+}
+
+// Private reported evidence. Approval queues delivery; it never publishes a public saint.
+model MuseumRelicIntake {
+  id String @id @default(cuid())
+  museumId String
+  museum Museum @relation(fields: [museumId], references: [id], onDelete: Restrict)
+  clientRequestId String
+  createdById String
+  rawFields Json
+  status String @default("draft")
+  version Int @default(1)
+  reviewNote String?
+  reviewedById String?
+  reviewedAt DateTime?
+  reviewedVersion Int?
+  reviewFingerprint String?
+  approvedSnapshot Json?
+  media MuseumIntakeMedia[]
+  deliveries MuseumIntakeDelivery[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([createdById, clientRequestId])
+  @@index([museumId, status, createdAt])
+}
+
+// Kept outside MediaAsset and public media URLs, including the optional portrait.
+model MuseumIntakeMedia {
+  id String @id @default(cuid())
+  intakeId String
+  intake MuseumRelicIntake @relation(fields: [intakeId], references: [id], onDelete: Restrict)
+  kind String
+  storageKey String @unique
+  sourceSha256 String
+  mimeType String
+  byteSize Int
+  width Int
+  height Int
+  createdById String
+  createdAt DateTime @default(now())
+  @@unique([intakeId, kind, sourceSha256])
+}
+
+// Each target has its own receipt and recovery state; do not retry a successful target.
+model MuseumIntakeDelivery {
+  id String @id @default(cuid())
+  intakeId String
+  intake MuseumRelicIntake @relation(fields: [intakeId], references: [id], onDelete: Restrict)
+  target String
+  status String @default("blocked_configuration")
+  idempotencyKey String @unique
+  reviewedVersion Int
+  attempts Int @default(0)
+  externalRecordId String?
+  errorCode String?
+  leaseToken String?
+  leaseExpiresAt DateTime?
+  deliveredAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([intakeId, target])
+  @@index([target, status, createdAt])
 }

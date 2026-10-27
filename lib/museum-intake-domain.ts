@@ -1,0 +1,64 @@
+import { z } from "zod";
+
+// Keep reported dates and places as evidence; review does not parse or geocode them.
+export const museumIntakeFields = z.object({
+  saintName: z.string().max(300),
+  relicDescription: z.string().max(8000),
+  saintPlaceRaw: z.string().max(2000).optional(),
+  birthDateRaw: z.string().max(300).optional(),
+  samadhiDateRaw: z.string().max(300).optional(),
+  broughtByRaw: z.string().max(500).optional()
+}).strict();
+
+export const createMuseumIntakeInput = z.object({
+  museumId: z.string().min(1).max(100),
+  clientRequestId: z.string().uuid(),
+  fields: museumIntakeFields
+}).strict();
+export const editMuseumIntakeInput = z.object({
+  expectedVersion: z.number().int().positive(), fields: museumIntakeFields
+}).strict();
+export const submitMuseumIntakeInput = z.object({ expectedVersion: z.number().int().positive() }).strict();
+export const museumIntakeSaintDecision = z.discriminatedUnion("kind", [
+  z.object({ kind: z.literal("existing"), saintId: z.string().cuid() }).strict(),
+  z.object({ kind: z.literal("new_draft") }).strict()
+]);
+export const reviewMuseumIntakeInput = z.discriminatedUnion("action", [
+  z.object({ action: z.literal("approve"), expectedVersion: z.number().int().positive(), saintDecision: museumIntakeSaintDecision, note: z.string().max(4000).optional() }).strict(),
+  z.object({ action: z.literal("request_changes"), expectedVersion: z.number().int().positive(), note: z.string().trim().min(1).max(4000) }).strict()
+]);
+export type IntakeFields = z.infer<typeof museumIntakeFields>;
+export type IntakeSaintDecision = z.infer<typeof museumIntakeSaintDecision>;
+export const intakeMediaKind = z.enum(["relic", "saint_portrait"]);
+export type IntakeMediaKind = z.infer<typeof intakeMediaKind>;
+
+export class MuseumIntakeError extends Error {
+  constructor(public readonly status: number, message: string) { super(message); }
+}
+
+export function assertIntakeEditable(status: string) {
+  if (status !== "draft" && status !== "needs_changes") throw new MuseumIntakeError(409, "This entry is in review. Ask the curator to return it before editing.");
+}
+
+export function assertIntakeSubmission(fields: IntakeFields, media: readonly { kind: string }[]) {
+  if (!fields.saintName.trim()) throw new MuseumIntakeError(400, "Enter the saint's name.");
+  if (!fields.relicDescription.trim()) throw new MuseumIntakeError(400, "Describe the relic.");
+  if (!media.some(photo => photo.kind === "relic")) throw new MuseumIntakeError(400, "Add a photo of the relic before sending it for review.");
+}
+
+export type IntakeDeliveryStatus = "blocked_configuration" | "queued" | "sending" | "succeeded" | "failed" | "unknown";
+export function intakeDeliverySummary(deliveries: readonly { status: string }[]) {
+  if (!deliveries.length) return "not_approved";
+  if (deliveries.every(d => d.status === "succeeded")) return "complete";
+  if (deliveries.some(d => d.status === "succeeded")) return "partial_success";
+  if (deliveries.some(d => d.status === "unknown")) return "needs_delivery_check";
+  if (deliveries.some(d => d.status === "sending")) return "sending";
+  if (deliveries.some(d => d.status === "failed")) return "needs_retry";
+  if (deliveries.some(d => d.status === "blocked_configuration")) return "configuration_required";
+  return "queued";
+}
+
+export function intakeRetryTargets(deliveries: readonly { target: string; status: string }[]) {
+  // An unknown result needs reconciliation with the remote marker, not a blind create retry.
+  return deliveries.filter(d => d.status === "failed" || d.status === "blocked_configuration").map(d => d.target);
+}
