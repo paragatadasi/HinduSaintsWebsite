@@ -1,6 +1,7 @@
 import "dotenv/config";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
+import path from "node:path";
 import sharp from "sharp";
 
 const database = new URL(process.env.DATABASE_URL || "postgresql://invalid/invalid");
@@ -8,6 +9,9 @@ const base = new URL(process.env.MUSEUM_INTAKE_TEST_URL || "http://invalid");
 const local = (hostname: string) => ["localhost", "127.0.0.1", "[::1]"].includes(hostname);
 if (!local(database.hostname) || !database.pathname.startsWith("/museum_intake_test") || !local(base.hostname) || base.protocol !== "http:") {
   throw new Error("Use only an explicitly configured disposable localhost museum_intake_test database and HTTP localhost test server.");
+}
+if (!process.env.MEDIA_UPLOAD_ROOT || !process.env.MUSEUM_INTAKE_UPLOAD_ROOT || path.resolve(process.env.MUSEUM_INTAKE_UPLOAD_ROOT) !== path.resolve(process.env.MEDIA_UPLOAD_ROOT, "_museum-private")) {
+  throw new Error("Use a disposable public upload root with intake storage in its exact _museum-private subtree, matching the test server.");
 }
 const { db } = await import("../lib/db");
 const suffix = randomUUID();
@@ -52,7 +56,9 @@ try {
   assert.equal((await sharp(Buffer.from(await authenticated.arrayBuffer())).metadata()).format, "jpeg");
   const privateReference = await db.museumIntakeMedia.findUniqueOrThrow({ where: { id: photo.id } });
   assert.equal("storageKey" in photo, false);
-  assert.equal((await request(`/media/${privateReference.storageKey}`)).status, 404);
+  const publicProbe = await request(`/media/_museum-private/${privateReference.storageKey}`);
+  assert.equal(publicProbe.status, 404);
+  assert.equal(publicProbe.headers.get("location"), null);
   const stale = await jsonMutation(`${api}/${entry.id}`, { expectedVersion: entry.version - 1, fields }, "PATCH");
   assert.equal(stale.status, 409);
   const submitted = await jsonMutation(`${api}/${entry.id}/submit`, { expectedVersion: entry.version });

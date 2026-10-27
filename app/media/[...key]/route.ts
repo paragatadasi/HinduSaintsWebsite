@@ -2,13 +2,14 @@ import { NextResponse } from "next/server";
 import {
   getMediaStorageBackend,
   getPublicMediaUrl,
-  getStoredMediaFile
+  getStoredMediaFile,
+  normalizeStorageKey
 } from "@/lib/media-storage";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ key: string[] }> }) {
   try {
     const { key } = await params;
-    const storageKey = key.join("/");
+    const storageKey = normalizeStorageKey(key.join("/"));
 
     if (getMediaStorageBackend() === "s3") {
       return NextResponse.redirect(getPublicMediaUrl(storageKey), 308);

@@ -79,6 +79,11 @@ export function normalizeStorageKey(storageKey: string) {
     throw new Error("Media storage key contains unsupported characters.");
   }
 
+  const firstSegment = normalized.split("/").find(segment => segment && segment !== ".");
+  if (firstSegment?.replace(/\.+$/, "").toLowerCase() === "_museum-private") {
+    throw new Error("Private museum files are unavailable through public media.");
+  }
+
   return normalized;
 }
 
