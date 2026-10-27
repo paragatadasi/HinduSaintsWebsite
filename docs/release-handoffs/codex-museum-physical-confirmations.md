@@ -1,6 +1,6 @@
 # Release Handoff: codex/museum-physical-confirmations
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/museum-physical-confirmations`
 - Commit: `641507d1955c62aa2753188b318cecce89d91670`
 - Owner/agent: `Nadi`
@@ -30,7 +30,7 @@
 
 ## Release Captain Notes
 
-- Integrated into `main`: pending
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: pending
+- Integrated into `main`: `b30a9c6`
+- Pushed to `main`: yes
+- Merged to `deploy`: `6f281da`
+- Production workflow: [40552540964](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40552540964) — success
