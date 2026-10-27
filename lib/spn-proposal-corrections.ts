@@ -24,6 +24,7 @@ export function correctSpnProposal<T extends CorrectableRelease>(release:T):T{
  const destinations=new Set([...release.proposal.rows,...release.proposal.namedOnly].filter(r=>r.saintId===correction.targetSaintId).map(r=>r.vitrine));
  if(destinations.size!==1)throw new Error('Radharaman needs one proposed destination for the approved co-location');
  const destination=[...destinations][0],origin=sources[0].vitrine;
+ if(origin===destination)return release;
  const result=structuredClone(release);
  const row=result.proposal.rows.find(r=>r.sourceId===correction.sourceId)!;
  row.vitrine=destination;
