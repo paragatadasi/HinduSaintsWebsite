@@ -26,7 +26,7 @@ export type MoveFilters={query:string;start:string;current:string;destination:st
 export const emptyMoveFilters:MoveFilters={query:"",start:"",current:"",destination:"",region:"",section:"",tier:"",status:"",sort:"tier"};
 export function displayMoveStatus(row:RoomMoveDisplay){
  if(row.holdReason)return "Needs review";
- if(row.current?.kind==="table")return "On a table";
+ if(row.current?.kind==="table")return "In staging area";
  if(row.current?.code===row.destination)return row.currentBasis==="confirmed"?"Confirmed here":"Recorded here";
  return "Still to bring";
 }
@@ -37,4 +37,18 @@ export function filterRoomMoveDisplays(rows:RoomMoveDisplay[],f:MoveFilters){
  &&(!f.destination||r.destination===f.destination)&&(!f.region||r.region===f.region)
  &&(!f.section||r.section===f.section)&&(!f.tier||r.tier===f.tier)&&(!f.status||displayMoveStatus(r)===f.status))
  .sort((a,b)=>f.sort==="name"?a.name.localeCompare(b.name):f.sort==="current"?(a.current?.label??"").localeCompare(b.current?.label??"",undefined,{numeric:true})||a.name.localeCompare(b.name):(rank[a.tier]??3)-(rank[b.tier]??3)||a.name.localeCompare(b.name));
+}
+
+
+export const starterRowVitrines = ["2","78","36","29","76","28","27"] as const;
+export function starterRowSummary(rows:RoomMoveDisplay[]){
+ return starterRowVitrines.map(vitrine=>{
+  const recorded=rows.filter(row=>row.current?.kind==="vitrine"&&row.current.code===vitrine);
+  const incoming=rows.filter(row=>row.destination===vitrine);
+  return {vitrine,recorded:recorded.length,incoming:incoming.length,
+   staying:recorded.filter(row=>row.destination===vitrine).length,
+   toBring:incoming.filter(row=>row.current?.kind!=="vitrine"||row.current.code!==vitrine).length,
+   outgoing:recorded.filter(row=>row.destination!==vitrine).length,
+   needsReview:incoming.filter(row=>row.holdReason).length};
+ });
 }

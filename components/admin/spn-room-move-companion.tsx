@@ -3,14 +3,13 @@ import {useState} from "react";
 import {AdminViewTabs} from "./admin-view-tabs";
 import {MuseumRoomPlan} from "./museum-room-plan";
 import {spnMuseumLayout} from "@/lib/spn-museum-layout";
-import {displayMoveStatus,emptyMoveFilters,filterRoomMoveDisplays,type RoomMoveDisplay,type MoveFilters} from "@/lib/spn-room-move-domain";
+import {displayMoveStatus,emptyMoveFilters,starterRowVitrines,starterRowSummary,filterRoomMoveDisplays,type RoomMoveDisplay,type MoveFilters} from "@/lib/spn-room-move-domain";
 
 type Tab="room"|"tables"|"find";
 export function SpnRoomMoveCompanion({rows,title,proposalVersion}:{rows:RoomMoveDisplay[];title:string;proposalVersion:string}){
  const [tab,setTab]=useState<Tab>("room"),[selected,setSelected]=useState<string[]>([]),[filters,setFilters]=useState({...emptyMoveFilters});
  const [limit,setLimit]=useState(50);
  const staged=rows.filter(r=>r.current?.kind==="table");
- const tableNames=[...new Set(staged.map(r=>r.current!.code))];
  function select(number:string){setSelected(old=>old.includes(number)?old.filter(n=>n!==number):[...old,number]);}
  function filter(key:keyof MoveFilters,value:string){setFilters(old=>({...old,[key]:value,...(key==="region"?{section:""}:{})}));setLimit(50);}
  const results=filterRoomMoveDisplays(rows,filters);
@@ -25,11 +24,13 @@ export function SpnRoomMoveCompanion({rows,title,proposalVersion}:{rows:RoomMove
   </article>)}</div>;
  }
  return <div className="room-move admin-stack">
-  <header><p className="eyebrow">SPN · Move companion</p><h1>Clear a space. Bring its families home.</h1><p>Work by vitrine, at your own pace.</p><p className="muted">{title} · {proposalVersion}</p></header>
+  <header><p className="eyebrow">SPN · Move companion</p><h1>Start with the 2–27 row</h1><p>Vitrines 2, 78, 36, 29, 76, 28 and 27. Work on one space or several together.</p><p className="muted">{title} · {proposalVersion}</p></header>
   <p className="admin-notice">Preparation view. Explore recorded locations and proposed destinations here. Physical move recording and reviewed guidance are being connected; nothing on this screen changes museum locations.</p>
-  <AdminViewTabs<Tab> label="Move companion tools" value={tab} onChange={setTab} options={[{value:"room",label:"Clear & refill"},{value:"tables",label:"Staging tables"},{value:"find",label:"Find a display"}]}/>
+  <AdminViewTabs<Tab> label="Move companion tools" value={tab} onChange={setTab} options={[{value:"room",label:"Clear & refill"},{value:"tables",label:"Staging area"},{value:"find",label:"Find a display"}]}/>
   {tab==="room"?<div className="room-move__workspace"><div className="admin-stack">
    <section className="museum-admin-panel"><p className="eyebrow">Your working area</p><h2>Which vitrines are you working on?</h2><p>Select one or several to see their recorded contents and proposed replacements.</p>
+   <div className="review-actions"><button className="museum-admin-button" onClick={()=>setSelected([...starterRowVitrines])}>Select starter row</button></div>
+   <div className="room-move__phase" aria-label="Starter row overview">{starterRowSummary(rows).map(item=><button type="button" className="museum-admin-button museum-admin-button--secondary" aria-pressed={selected.includes(item.vitrine)} key={item.vitrine} onClick={()=>select(item.vitrine)}><strong>Vitrine {item.vitrine}</strong><small>{item.recorded} recorded here · {item.toBring} to bring</small></button>)}</div>
    <MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={selected} multiple onSelect={select}/>
    <div className="review-actions"><p>{selected.length?selected.map(n=>"Vitrine "+n).join(" · "):"Select a vitrine on the map."}</p>{selected.length?<button className="museum-admin-button museum-admin-button--secondary" onClick={()=>setSelected([])}>Clear selection</button>:null}</div>
    <p className="muted">Future vitrines are for reference only. Vitrines 30 and 31 hold walking sticks only.</p></section>
@@ -40,9 +41,9 @@ export function SpnRoomMoveCompanion({rows,title,proposalVersion}:{rows:RoomMove
     {outgoing.length?<details><summary>Recorded here, proposed elsewhere ({outgoing.length})</summary>{displayList(outgoing)}</details>:null}
     {incoming.length?displayList(incoming):<p>No destination assignments in this proposal. This does not mean the vitrine is empty.</p>}</section>;
    })}</section></div>
-   <aside className="admin-stack"><section className="museum-admin-panel"><p className="eyebrow">Staging</p><h2>On the tables</h2>{staged.length?<><p>{staged.length} display records</p><button className="museum-admin-button museum-admin-button--secondary" onClick={()=>setTab("tables")}>See staging tables</button></>:<p>No staging locations recorded. Table tracking will appear here when a move session starts.</p>}</section>
-   <section className="museum-admin-panel"><p className="eyebrow">Optional guidance</p><h2>Suggested order</h2><p>Reviewed move batches will appear here as the guidance is prepared.</p><p className="muted">Proposed destinations are not instructions to move an object before its space and restrictions are checked.</p></section></aside></div>:null}
-  {tab==="tables"?<section className="museum-admin-panel"><h2>Staging tables</h2>{tableNames.length?tableNames.map(code=><section key={code}><h3>{staged.find(r=>r.current?.code===code)?.current?.label}</h3>{displayList(staged.filter(r=>r.current?.code===code))}</section>):<p>No staging locations recorded yet.</p>}</section>:null}
+   <aside className="admin-stack"><section className="museum-admin-panel"><p className="eyebrow">Staging</p><h2>In the staging area</h2>{staged.length?<><p>{staged.length} display records</p><button className="museum-admin-button museum-admin-button--secondary" onClick={()=>setTab("tables")}>See staged displays</button></>:<p>No displays recorded in the staging area yet.</p>}</section>
+   <section className="museum-admin-panel"><p className="eyebrow">Optional guidance</p><h2>Starter-row guidance</h2><p>Saarthi’s reviewed clearing and refill batches will appear here. The row buttons follow the room’s physical order, not a required move sequence.</p><p className="muted">Proposed destinations are not instructions to move an object before its space and restrictions are checked.</p></section></aside></div>:null}
+  {tab==="tables"?<section className="museum-admin-panel"><h2>Staging area</h2>{staged.length?displayList(staged):<p>No displays recorded in the staging area yet.</p>}</section>:null}
   {tab==="find"?<section className="museum-admin-panel"><h2>Find a display</h2><div className="room-move__filters"><label className="admin-field"><span>Search saint, family or record</span><input type="search" value={filters.query} onChange={e=>filter("query",e.target.value)}/></label><label className="admin-field"><span>Sort by</span><select value={filters.sort} onChange={e=>filter("sort",e.target.value)}><option value="tier">Primary → secondary → tertiary</option><option value="name">Saint name</option><option value="current">Current location</option></select></label></div>
    <details open><summary>Filter displays</summary><div className="room-move__filters">{picker("start","Original vitrine",rows.map(r=>r.original?.code??""))}{picker("current","Current location",rows.map(r=>r.current?.code??""))}{picker("destination","Destination vitrine",rows.map(r=>r.destination))}{picker("region","Region",rows.map(r=>r.region))}{picker("section","Section",rows.filter(r=>!filters.region||r.region===filters.region).map(r=>r.section))}{picker("tier","Priority",rows.map(r=>r.tier))}{picker("status","Status",rows.map(displayMoveStatus))}</div></details>
    <button className="museum-admin-button museum-admin-button--secondary" onClick={()=>{setFilters({...emptyMoveFilters});setLimit(50);}}>Clear filters</button><p role="status">{results.length} matching display records</p>{displayList(results.slice(0,limit),true)}{!results.length?<p>No matching displays. Try clearing the filters.</p>:null}{results.length>limit?<button className="museum-admin-button" onClick={()=>setLimit(old=>old+50)}>Show more displays</button>:null}</section>:null}

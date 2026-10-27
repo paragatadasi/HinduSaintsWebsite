@@ -634,3 +634,7 @@ Keep each source observation distinct even when several belong to one saint.
 “Recorded here” is not “Confirmed here”; missing contents are not an empty-vitrine
 claim. Preparation views do not write physical progress. Staging and move actions
 require the durable session contract before they are enabled.
+
+The SPN companion uses one generic **Staging area**. Do not ask the curator to
+name tables or distribute displays among tables. Retain per-display location history
+and explicit physical confirmation behind the minimal clear/refill actions.
