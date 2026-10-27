@@ -11,7 +11,7 @@ import {filterSourceInventory} from "@/lib/museum-source-inventory-search";
 import {MuseumSourceInventoryCards} from "@/components/admin/museum-source-inventory-cards";
 
 export default async function VrindavanInventory({searchParams}:{searchParams:Promise<Record<string,string|string[]|undefined>>}) {
- const user=await requireCapability("access_museum");const canViewTrees=hasCapability(user.roles,"view_full_saint_catalog");const params=await searchParams;
+ const user=await requireCapability("access_museum");const canViewTrees=hasCapability(user.roles,"view_museum_catalog");const params=await searchParams;
  const value=(key:string)=>typeof params[key]==="string"?params[key].trim().slice(0,200):"";
  const filters={q:value("q"),display:value("display"),position:value("position")};
  let data: Awaited<ReturnType<typeof readVrindavanMuseumInventory>>;

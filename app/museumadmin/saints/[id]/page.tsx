@@ -5,6 +5,8 @@ import { getMuseumProposalData } from "@/lib/museum-proposals";
 import { getDirectMuseumProposals } from "@/lib/museum-direct-proposals";
 import { db } from "@/lib/db";
 import {readMuseumData} from "@/lib/museum-working-data";
+import {hasCapability} from "@/lib/permissions";
+import {canAccessSaintCatalog} from "@/lib/admin-saint-access";
 import { requireCapability } from "@/lib/admin-access";
 import {
   airtableIdentity,
@@ -31,7 +33,8 @@ export default async function MuseumSaintPage({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ error?: string; saved?: string }>;
 }) {
-  await requireCapability("access_museum");
+  const user=await requireCapability("access_museum");
+  const canEdit=hasCapability(user.roles,"manage_museum");
   const { id } = await params;
   const result = await searchParams;
   const scoped=(await readMuseumData()).placements.find(row=>row.saintId===id&&row.spnProposal);
@@ -178,10 +181,7 @@ export default async function MuseumSaintPage({
       </nav>
       <h1>{saint.displayName}</h1>
       <p>
-        <Link href={`/admin/saints/${saint.slug}` as Route}>
-          Open main saint record
-        </Link>{" "}
-        ·{" "}
+        {canAccessSaintCatalog(user.roles)?<><Link href={`/admin/saints/${saint.slug}` as Route}>Open main saint record</Link> · </>:null}
         {current?.status === "published"
           ? "Current museum proposal"
           : "Museum proposal available"}
@@ -192,7 +192,7 @@ export default async function MuseumSaintPage({
         <p role={scoped.spnProposal.state==="needs_review"?"alert":"status"}>{scoped.spnProposal.state==="applied"?"Confirmed":"Needs review"}: {scoped.section} · {scoped.tier==="Featured"?"Primary":scoped.tier} · {scoped.groupLabel||"No display family"}</p>
         <p>{scoped.spnProposal.reason}</p>
           {scoped.spnRegionTags?.length?<p>Museum regions: {scoped.spnRegionTags.join(" · ")}</p>:null}
-        <p><Link href={`/admin/source-data/museum/spn-proposals?saintId=${id}` as Route}>Review this SPN decision</Link>. The original proposal below remains available for comparison. Saving a different underlying proposal will require this decision to be reviewed again.</p>
+        <p>{hasCapability(user.roles,"view_source_data")?<><Link href={`/admin/source-data/museum/spn-proposals?saintId=${id}` as Route}>Review this SPN decision</Link>. </>:null} The original proposal below remains available for comparison. Saving a different underlying proposal will require this decision to be reviewed again.</p>
       </ReviewSection>:null}
       <ReviewWorkflow
         eyebrow="Section proposal"
@@ -209,7 +209,7 @@ export default async function MuseumSaintPage({
               one placement preserves the old assignments in history.
             </p>
           ) : null}
-          <ReviewEditToggle
+          <ReviewEditToggle editable={canEdit}
             editLabel={current ? "Edit placement" : "Edit proposal"}
             summary={
               <ReviewFactGrid
@@ -442,7 +442,7 @@ export default async function MuseumSaintPage({
                     been preserved.
                   </p>
                 )}
-                <MuseumActionForm action={reviewProposalAction}>
+                {canEdit?<MuseumActionForm action={reviewProposalAction}>
                   {identity}
                   <input type="hidden" name="proposalId" value={p.id} />
                   {value ? (
@@ -461,7 +461,7 @@ export default async function MuseumSaintPage({
                   >
                     {current ? "Keep current proposal" : "Dismiss proposal"}
                   </button>
-                </MuseumActionForm>
+                </MuseumActionForm>:null}
               </article>
             );
           })}

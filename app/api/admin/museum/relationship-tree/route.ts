@@ -9,7 +9,7 @@ const headers={"Cache-Control":"private, no-store","X-Robots-Tag":"noindex, nofo
 export async function POST(request:Request){
  const user=await getAdminUser();
  if(!user?.active)return NextResponse.json({error:"Please sign in again."},{status:401,headers});
- if(!hasCapability(user.roles,"access_museum")||!hasCapability(user.roles,"view_full_saint_catalog"))return NextResponse.json({error:"Museum and full catalogue access are required."},{status:403,headers});
+ if(!hasCapability(user.roles,"access_museum")||!hasCapability(user.roles,"view_museum_catalog"))return NextResponse.json({error:"Museum catalogue access is required."},{status:403,headers});
  const parsed=input.safeParse(await request.json().catch(()=>null));
  if(!parsed.success)return NextResponse.json({error:"Choose up to 60 linked saints and a valid museum."},{status:400,headers});
  try{return NextResponse.json(await readMuseumLiveTree([...new Set(parsed.data.seeds)],parsed.data.museum,parsed.data.includeUnreviewed,parsed.data.familyKey,parsed.data.includeSource),{headers});}

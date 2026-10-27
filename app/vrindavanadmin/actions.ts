@@ -7,7 +7,7 @@ import {assertCapability} from "@/lib/admin-access";
 import {MuseumConflict} from "@/lib/museum-service";
 import {saveVrindavanProposal,moveVrindavanFamily,saveVrindavanArrangement} from "@/lib/vrindavan-proposal-service";
 import {requestMuseumRelationshipCorrection} from "@/lib/museum-display-membership";
-async function actor(){await assertCapability("view_full_saint_catalog");return assertMuseumMutation();}
+async function actor(){await assertCapability("view_museum_catalog");return assertMuseumMutation();}
 function errorResult(error:unknown){if(error instanceof MuseumConflict)return {error:error.message};if(error instanceof z.ZodError)return {error:error.issues[0]?.message||"Check the fields."};throw error;}
 export async function saveVrindavanProposalAction(form:FormData):Promise<{error:string}>{const user=await actor();let name:string;try{name=await saveVrindavanProposal(Object.fromEntries(form),user.id,true);}catch(error){return errorResult(error);}revalidatePath("/vrindavanadmin","layout");redirect(`/vrindavanadmin/sections?q=${encodeURIComponent(name)}&saved=1`);}
 export async function moveVrindavanFamilyAction(form:FormData):Promise<{error:string}>{const user=await actor();let slug:string;try{slug=await moveVrindavanFamily(Object.fromEntries(form),user.id);}catch(error){return errorResult(error);}revalidatePath("/vrindavanadmin","layout");redirect(`/vrindavanadmin/sections?section=${encodeURIComponent(slug)}&saved=1`);}
