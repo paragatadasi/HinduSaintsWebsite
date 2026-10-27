@@ -2,13 +2,15 @@
 
 - Status: queued
 - Branch: `codex/museum-neighbourhood-learning`
-- Commit: `40797e7fb7b7758acdf95267168ac5650e905614`
+- Commit: `275fc61`
 - Owner/agent: `Nadi`
 - Bundle priority: queue for next major/bundled deployment
 
 ## Summary
 
 - Restore previously approved museum planning principles and integrate the neighbourhood refinement procedure; no application or data changes.
+
+- Follow-up: check preserved source Master/Disciple claims separately from canonical edges; keep imported claims attributed until identities and type are verified.
 
 ## Verification
 
