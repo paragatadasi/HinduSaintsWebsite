@@ -74,6 +74,6 @@ try {
   await db.museumMoveCurrentLocation.create({ data: { museumId: "museum-spn", sourceId: "retained-old-source", location: vitrine("28"), confirmedAt: new Date(), confirmedById: curator.id } });
   assert.equal((await api.readMuseumPhysicalLocations(loader)).unmappedCurrentLocations[0].sourceId, "retained-old-source");
   assert.equal(api.physicalConfirmationInput.safeParse({ ...first, confirmedDate: "2026-02-31" }).success, false);
-  assert.equal(api.physicalConfirmationInput.safeParse({ ...first, records: [{ ...first.records[0], to: { kind: "table", code: "staging-area", label: "Staging area" } }] }).success, false);
+  assert.equal(api.physicalConfirmationInput.safeParse({ ...first, records: [{ ...first.records[0], to: { kind: "invalid", code: "staging-area", label: "Staging area" } }] }).success, false);
   console.log("PASS: exact-source/date-precision confirmations without sessions; original/proposal preservation; retry receipts; stale atomic/identity rejection; catalog/fixed/role holds; same-saint scope; existing-session history independent of later proposal changes.");
 } finally { await db.$disconnect(); }
