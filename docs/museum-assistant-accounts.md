@@ -39,3 +39,13 @@ Migration `20261027040000_museum_assistant_accounts` adds the role, nullable Use
 Unit checks cover real scrypt hashing/verification, username normalization, role exclusivity and capability boundaries. `scripts/verify-museum-assistant-local.ts` exercises account creation, session creation/reset, inactive and disallowed-role rejection, and persistent quotas. It refuses any database except an explicitly named disposable localhost `museum_assistant_test*` database. It does not create production users or print passwords, hashes or tokens.
 
 The combined UI release must additionally test real HTTP login/cookies, logout, existing email/database sessions, main-admin denial, museum read access, direct mutation denial, own-versus-other intake/photo access, approval denial, reset/deactivation invalidation, and public photo denial. The account backend alone does not establish that every UI/read route uses the new boundary correctly.
+
+## Combined interface verification
+
+The assistant-account UI branch passed `npm run dev:check`, `npm run codex:verify`, and 25 focused password, permission, display-name and intake-domain tests. The production check needed elevated access after Windows blocked standalone-file copying; the retry passed.
+
+`scripts/verify-museum-assistant-http-local.ts` passed against the built application and disposable `museum_intake_test_20261027` database. It verifies Site Admin creation, case-insensitive username uniqueness, null email, secure cookie attributes on the local HTTP policy, museum page access, main-admin redirection, direct import/account-management denial, own intake/photo/submission, other-entry denial, approval denial, password-reset revocation, standard Auth.js logout, deactivated-user denial and foreign-origin denial. The synthetic email-based Site Admin database session continues to work. Live Google/email-provider delivery was not exercised.
+
+The broader suite reported 582 passed, three failed and one skipped out of 586. The import test passed separately with its required mock database URL. The two remaining failures are unchanged museum-navigation ordering and questionnaire-count expectations (`Kerala & Southern Advaita` versus the expected Andhra section; three planning checks versus two). They are outside the account changes and are not fixed by this feature.
+
+No real assistant accounts were created. Site Admins create them in **Users & Access → Create a museum assistant account**, then share credentials privately. The username sign-in option is available on the existing sign-in screen. This branch has not been deployed; its migration must be included in the release phase.
