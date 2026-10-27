@@ -4,6 +4,7 @@ import Resend from "next-auth/providers/resend";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { isAuthEmailRateLimited } from "@/lib/auth-email-rate-limit";
 import { db } from "@/lib/db";
+import { authSessionCookie, AUTH_SESSION_MAX_AGE } from "@/lib/auth-session-policy";
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID ?? process.env.AUTH_GOOGLE_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET ?? process.env.AUTH_GOOGLE_SECRET;
@@ -22,6 +23,8 @@ export const isEmailAuthConfigured = Boolean(resendApiKey && authEmailFrom);
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
+  session: { strategy: "database", maxAge: AUTH_SESSION_MAX_AGE },
+  cookies: { sessionToken: authSessionCookie() },
   providers: [
     ...(googleClientId && googleClientSecret
       ? [Google({
@@ -42,10 +45,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       : [])
   ],
   callbacks: {
+    async session({ session, user }) {
+      session.user.id = user.id;
+      return session;
+    },
     async authorized({ auth: session }) {
-      const email = session?.user?.email?.toLowerCase();
-      if (!email) return false;
-      const user = await db.user.findUnique({ where: { email }, select: { active: true } });
+      const id = session?.user?.id;
+      if (!id) return false;
+      const user = await db.user.findUnique({ where: { id }, select: { active: true } });
       return Boolean(user?.active);
     },
     async signIn({ user, email: emailContext }) {

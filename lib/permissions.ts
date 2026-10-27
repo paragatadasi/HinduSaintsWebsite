@@ -9,6 +9,7 @@ export type Capability =
   | "run_imports"
   | "resolve_reconciliation"
   | "access_museum"
+  | "view_museum_catalog"
   | "manage_museum"
   | "manage_site"
   | "view_analytics"
@@ -49,6 +50,7 @@ const roleCapabilities: Record<UserRole, readonly Capability[]> = {
     "run_imports",
     "resolve_reconciliation",
     "access_museum",
+    "view_museum_catalog",
     "manage_museum",
     "manage_site",
     "view_analytics",
@@ -60,7 +62,8 @@ const roleCapabilities: Record<UserRole, readonly Capability[]> = {
   contributor: structuredEditor,
   fact_checker: structuredEditor,
   writer: longFormEditor,
-  curator: ["access_museum", "manage_museum", "view_full_saint_catalog", "manage_saint_team_visibility", ...workflowParticipant],
+  curator: ["access_museum", "view_museum_catalog", "manage_museum", "view_full_saint_catalog", "manage_saint_team_visibility", ...workflowParticipant],
+  museum_assistant: ["access_museum", "view_museum_catalog"],
   translator: ["view_content", ...workflowParticipant]
 };
 
@@ -72,6 +75,7 @@ export const userRoleLabels: Record<UserRole, string> = {
   fact_checker: "Fact-checker",
   writer: "Writer",
   curator: "Curator",
+  museum_assistant: "Museum Assistant",
   translator: "Translator"
 };
 
