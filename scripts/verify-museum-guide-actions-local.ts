@@ -67,6 +67,14 @@ try {
   assert.equal((empty.receipt.afterJson as { emptyCaseClaim: string }).emptyCaseClaim, "curator_confirmed_at_event_time");
   await assert.rejects(physical.confirmMuseumPhysicalLocations(await request(["b"], { ...staging, code: "other-table" }), actor, loader), /Staging area/);
   assert.deepEqual(snapshot, before);
+  await physical.confirmMuseumPhysicalLocations(await request(["b"], vitrine("27")), actor, loader);
+  const reported = [{ sourceId: "a", currentLocation: { vitrine: "28" }, confirmedDate: "2026-10-27" }, { sourceId: "b", currentLocation: { vitrine: "27" }, confirmedDate: "2026-10-27" }];
+  assert.equal((await physical.readReportedPlacementReceipts(db, reported)).complete, true);
+  await physical.confirmMuseumPhysicalLocations(await request(["a"], vitrine("3")), actor, loader);
+  await db.auditEvent.createMany({ data: Array.from({ length: 101 }, (_, i) => ({ userId: actor.id, action: "museum.physical_location.confirmed", entityType: "MuseumPhysicalConfirmation", entityId: `museum-spn:unrelated-${i}`, afterJson: { museumId: "museum-spn", confirmedDate: "2026-10-27", moves: [{ sourceId: "unrelated", location: vitrine("28") }] }, createdAt: new Date(Date.now() + i) })) });
+  const recognition = await physical.readReportedPlacementReceipts(db, reported);
+  assert.equal(recognition.complete, true); assert.equal(recognition.matchedCount, 2);
+  assert.equal((await physical.readMuseumPhysicalLocations(loader, ["a"])).rows[0].current!.code, "3");
   assert.equal((await decisions.readMuseumGuideDecisions("fixture-v1", guideLoader)).decisions[0].version, 3);
   assert.equal(await db.museumMoveSession.count(), 0); assert.equal(await db.museumArrangement.count(), 0);
   assert.equal(await db.saint.count(), 0);
