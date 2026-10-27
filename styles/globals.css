@@ -5133,7 +5133,6 @@ html[data-route-entering="true"] body > main {
   justify-content: space-between;
 }
 
-.admin-tabs,
 .review-meta,
 .review-actions {
   display: flex;
@@ -5160,7 +5159,6 @@ html[data-route-entering="true"] body > main {
   scroll-margin-top: var(--space-6);
 }
 
-.admin-tab,
 .status-badge {
   align-items: center;
   background: var(--color-surface);
@@ -5174,10 +5172,7 @@ html[data-route-entering="true"] body > main {
   padding: 0.25rem 0.65rem;
 }
 
-.admin-tab[aria-current="page"] {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
+
 
 .review-list {
   gap: var(--space-4);
@@ -5542,23 +5537,27 @@ fieldset.admin-field {
   font-weight: 700;
 }
 
-.admin-tab-strip {
-  align-items: flex-end;
-  border-bottom: var(--border-width-tab-accent) solid var(--color-accent);
+/* Shared admin navigation: quiet baseline with an active gold underline. */
+.admin-tab-strip,
+.admin-tabs {
+  align-items: stretch;
+  border-bottom: var(--border-width-default) solid var(--color-border);
   display: flex;
-  gap: var(--space-1);
+  gap: var(--space-6);
   max-width: 100%;
   overflow-x: auto;
-  padding: var(--space-1) var(--space-1) 0;
+  padding: 0;
   scrollbar-width: thin;
 }
 
-.admin-tab-strip__tab {
+.admin-tab-strip__tab,
+.admin-tab {
   align-items: center;
-  background: var(--color-surface-muted);
-  border: var(--border-width-default) solid var(--color-border);
-  border-bottom: 0;
-  border-radius: var(--radius-tab);
+  background: transparent;
+  border: 0;
+  border-bottom: var(--border-width-tab-accent) solid transparent;
+  border-radius: 0;
+  box-shadow: none;
   color: var(--color-muted);
   display: inline-flex;
   flex: 0 0 auto;
@@ -5566,25 +5565,25 @@ fieldset.admin-field {
   font-weight: 400;
   gap: var(--space-2);
   min-height: var(--height-review-tab);
-  padding: 0 var(--space-4);
+  padding: var(--space-3) 0;
+  text-decoration: none;
 }
 
 .admin-tab-strip__tab:hover,
-.admin-tab-strip__tab:focus-visible {
-  border-color: var(--color-accent);
-  color: var(--color-text);
-}
+.admin-tab:hover { color: var(--color-text); }
 
-.admin-tab-strip__tab:focus-visible {
+.admin-tab-strip__tab:focus-visible,
+.admin-tab:focus-visible {
   outline: var(--size-focus-ring) solid var(--color-focus);
   outline-offset: calc(var(--size-focus-ring) * -1);
 }
 
 .admin-tab-strip__tab[aria-current="page"],
-.admin-tab-strip__tab[aria-current="location"] {
-  background: var(--color-surface-elevated);
-  border-color: var(--color-accent);
-  box-shadow: inset 0 var(--border-width-tab-accent) 0 var(--color-accent);
+.admin-tab-strip__tab[aria-current="location"],
+.admin-tab[aria-current="page"] {
+  background: transparent;
+  border-bottom-color: var(--color-accent);
+  box-shadow: none;
   color: var(--color-text);
 }
 

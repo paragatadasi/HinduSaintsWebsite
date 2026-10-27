@@ -257,8 +257,11 @@ Implementation direction:
   coherent workflow groups within Saint and Tradition review. Nested tabs use links with
   `aria-current="page"`; they are not client-side tab panels and must preserve
   normal URLs, history, and authorization gates. They should read visually as a
-  connected tab strip: outlined tab-shaped controls, a selected surface, and an
-  accent rule joining the strip to its content. Do not render them as pills.
+  quiet horizontal strip: text labels above a subtle shared baseline, with a
+  gold underline beneath only the active label. Keep inactive labels muted,
+  backgrounds transparent, and keyboard focus visible. Use `admin-tab-strip` /
+  `admin-tab-strip__tab`; legacy `admin-tabs` / `admin-tab` share this treatment.
+  Do not render navigation tabs as pills or raised boxes. Status badges remain badges.
 - Do not add a horizontal section rail to shallow detail pages. Instagram and
   Place review keep their primary workflow and supporting cards in one readable
   stream. Saint and Tradition use normal URL-backed links with
