@@ -20,7 +20,7 @@ Mutations use `expectedVersion`; conflicts return 409 and require reloading. Cre
 
 ## API contract
 
-Base: `/api/admin/museum-intake`. Writes require same-origin requests. Success returns the entry DTO directly, except list returns `{entries, limit:100, nextCursor}`. Errors return `{error:string}` with an appropriate HTTP status. JSON bodies are limited to 32 KiB; upload requests to 11 MiB, with an individual image limit of 10 MiB.
+Base: `/api/admin/museum-intake`. Writes require same-origin requests. Configure the canonical public `AUTH_URL` (or `NEXTAUTH_URL`) behind a reverse proxy: Next's internal bind address may differ from the browser origin. Without that configuration, the fallback checks the browser Host and request protocol. Missing or foreign origins are rejected. Success returns the entry DTO directly, except list returns `{entries, limit:100, nextCursor}`. Errors return `{error:string}` with an appropriate HTTP status. JSON bodies are limited to 32 KiB; upload requests to 11 MiB, with an individual image limit of 10 MiB.
 
 | Method and path | Body / result |
 | --- | --- |
@@ -63,7 +63,11 @@ Next adapter phase:
 
 Additive migration: `20261027020000_museum_relic_intake`. Three private tables, no alteration of existing saints or inventory. Apply through the deployment migration phase, not the web build. Configure and verify private media storage before enabling uploads. No new dependency or Airtable environment variable is required for this foundation.
 
-Focused tests cover required evidence, raw date/place preservation, explicit identity choice, locked approved records, target-specific retries, actual image decode/metadata removal and private filesystem confinement. Run `dev:check`; schema/auth/API changes also require `codex:verify` before release. Database migration execution, row locking, concurrent saves and authorization routes still need development-database/integration verification; Docker was unavailable during initial implementation. Do not treat unit checks as those integration results.
+Focused tests cover required evidence, raw date/place preservation, explicit identity choice, locked approved records, target-specific retries, same-origin validation behind a proxy, actual image decode/metadata removal and private filesystem confinement. Run `dev:check`; schema/auth/API changes also require `codex:verify` before release.
+
+`scripts/verify-museum-intake-local.ts` exercises persistence, concurrency, ownership and review against a migrated disposable local database. `scripts/verify-museum-intake-http-local.ts` checks real authenticated routes, private media access and denied requests against a local server using temporary database sessions. Both refuse nonlocal databases and require a database name beginning `museum_intake_test`; the HTTP test also requires `MUSEUM_INTAKE_TEST_URL` on HTTP localhost. Start that server against the same disposable database with a random test-only `AUTH_SECRET`, `AUTH_TRUST_HOST=true`, matching `AUTH_URL` and a private test upload root. No OAuth login or email delivery is used. Never run these scripts against the website database. Disposable users, entries and private files remain for inspection; test sessions are removed. Dispose of the dedicated environment after testing.
+
+Docker was unavailable during initial implementation; Citra subsequently applied all 85 migrations and passed the database integration script on `museum_intake_test_20261027`. HTTP verification initially caught the internal-bind origin mismatch and prompted the guard correction. Record the rerun result in the release handoff; unit checks alone do not establish route or production-storage verification.
 
 Skill review: this workflow follows existing museum evidence and identity rules; no source interpretation changed. Private storage and delivery contracts belong in this project document rather than the museum interpretation skills.
 
