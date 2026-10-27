@@ -61,6 +61,9 @@ try {
   assert.equal(publicProbe.headers.get("location"), null);
   const stale = await jsonMutation(`${api}/${entry.id}`, { expectedVersion: entry.version - 1, fields }, "PATCH");
   assert.equal(stale.status, 409);
+  form.set("kind", "bio_document"); form.set("expectedVersion", String(entry.version));
+  const bioUpload = await request(`${api}/${entry.id}/media`, curatorToken, { method: "POST", body: form });
+  assert.equal(bioUpload.status, 200); entry = await bioUpload.json() as Entry;
   const submitted = await jsonMutation(`${api}/${entry.id}/submit`, { expectedVersion: entry.version });
   assert.equal(submitted.status, 200); entry = await submitted.json() as Entry;
   const approved = await jsonMutation(`${api}/${entry.id}/review`, { action: "approve", expectedVersion: entry.version, saintDecision: { kind: "new_draft" } });

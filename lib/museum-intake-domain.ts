@@ -29,7 +29,7 @@ export const reviewMuseumIntakeInput = z.discriminatedUnion("action", [
 ]);
 export type IntakeFields = z.infer<typeof museumIntakeFields>;
 export type IntakeSaintDecision = z.infer<typeof museumIntakeSaintDecision>;
-export const intakeMediaKind = z.enum(["relic", "saint_portrait"]);
+export const intakeMediaKind = z.enum(["relic", "saint_portrait", "bio_document"]);
 export type IntakeMediaKind = z.infer<typeof intakeMediaKind>;
 
 export class MuseumIntakeError extends Error {
@@ -55,6 +55,7 @@ export function assertIntakeSubmission(fields: IntakeFields, media: readonly { k
   if (!fields.saintName.trim()) throw new MuseumIntakeError(400, "Enter the saint's name.");
   if (!fields.relicDescription.trim()) throw new MuseumIntakeError(400, "Describe the relic.");
   if (!media.some(photo => photo.kind === "relic")) throw new MuseumIntakeError(400, "Add a photo of the relic before sending it for review.");
+  if (!media.some(photo => photo.kind === "bio_document")) throw new MuseumIntakeError(400, "Add a photo of the bio document before sending it for review.");
 }
 
 export type IntakeDeliveryStatus = "blocked_configuration" | "queued" | "sending" | "succeeded" | "failed" | "unknown";

@@ -32,6 +32,8 @@ try {
   const file = new File([new Uint8Array(raw)], "relic.png", { type: "image/png" });
   entry = await intake.addMuseumIntakeMedia(entry.id, entry.version, "relic", file, owner);
   assert.equal((await intake.addMuseumIntakeMedia(entry.id, entry.version - 1, "relic", file, owner)).version, entry.version);
+  await assert.rejects(intake.submitMuseumIntake(entry.id, { expectedVersion: entry.version }, owner), /bio document/);
+  entry = await intake.addMuseumIntakeMedia(entry.id, entry.version, "bio_document", file, owner);
   const expectedVersion = entry.version;
   const saves = await Promise.allSettled([
     intake.editMuseumIntake(entry.id, { expectedVersion, fields: { ...fields, relicDescription: "Cloth A" } }, owner),

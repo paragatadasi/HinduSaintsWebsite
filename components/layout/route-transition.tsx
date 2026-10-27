@@ -82,16 +82,25 @@ export function RouteTransition() {
       }
     }
 
+    function cancelNavigation() {
+      if (navigationFallbackRef.current) clearTimeout(navigationFallbackRef.current);
+      phaseRef.current = "idle";
+      setPhase("idle");
+      delete document.documentElement.dataset.routePending;
+    }
+
     function handlePopState() {
       beginNavigation(window.location.pathname);
     }
 
     document.addEventListener("click", handleDocumentClick, true);
     window.addEventListener("popstate", handlePopState);
+    document.addEventListener("route-navigation-cancelled", cancelNavigation);
 
     return () => {
       document.removeEventListener("click", handleDocumentClick, true);
       window.removeEventListener("popstate", handlePopState);
+      document.removeEventListener("route-navigation-cancelled", cancelNavigation);
       delete document.documentElement.dataset.routePending;
       delete document.documentElement.dataset.routeEntering;
 

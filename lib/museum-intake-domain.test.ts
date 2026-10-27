@@ -20,7 +20,8 @@ test("submission needs a relic photo, not merely an optional portrait", () => {
   const fields = { saintName: "Guru", relicDescription: "cloth" };
   assert.throws(() => assertIntakeSubmission(fields, [{ kind: "saint_portrait" }]), /photo of the relic/);
   assert.throws(() => assertIntakeSubmission({ ...fields, saintName: " " }, [{ kind: "relic" }]), /name/);
-  assert.doesNotThrow(() => assertIntakeSubmission(fields, [{ kind: "relic" }]));
+  assert.throws(() => assertIntakeSubmission(fields, [{ kind: "relic" }, { kind: "saint_portrait" }]), /bio document/);
+  assert.doesNotThrow(() => assertIntakeSubmission(fields, [{ kind: "relic" }, { kind: "bio_document" }]));
 });
 test("approval requires an explicit identity decision, and approved content is locked", () => {
   assert.equal(reviewMuseumIntakeInput.safeParse({ action: "approve", expectedVersion: 3 }).success, false);
