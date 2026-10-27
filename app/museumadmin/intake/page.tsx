@@ -15,7 +15,7 @@ export default async function IntakePage({ searchParams }: {
     const museum = await db.museum.findFirst({ where: { slug: "spn", archivedAt: null }, select: { id: true } });
     if (!museum)
         return <p>Museum intake is unavailable. Ask an administrator to check the museum setup.</p>;
-    const canTeam = canReview || !!await db.museumIntakeTeamMember.findUnique({where:{userId_museumId:{userId:user.id,museumId:museum.id}}});
+    const canTeam = canReview || user.roles.includes("museum_assistant") && !!await db.museumIntakeTeamMember.findUnique({where:{userId_museumId:{userId:user.id,museumId:museum.id}}});
     const initialView = canReview && requestedView === "review" ? "review" : canTeam && requestedView === "team" ? "team" : requestedView === "entries" ? "entries" : "intake";
     return <MuseumRelicIntake canTeam={canTeam} museumId={museum.id} userId={user.id} canReview={canReview} initialView={initialView} initialRelicId={randomUUID()}/>;
 }
