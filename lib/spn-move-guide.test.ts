@@ -29,3 +29,10 @@ test("source location in target is not a confirmed move",()=>{
  assert.equal(isPlaced({...row,currentBasis:"confirmed"},"27"),true);
  assert.equal(isPlaced({...row,currentBasis:"confirmed"},"28"),false);
 });
+import {reportedPlacementsRecorded} from "./spn-move-guide";
+test("reported placement receipts remain recognized after a later move",()=>{
+ const reported=[{sourceId:"a",destination:"27",date:"2026-10-27"}];
+ const state={rows:[],unmappedCurrentLocations:[],confirmationHistory:[{afterJson:{moves:[{sourceId:"a",location:{kind:"vitrine",code:"28"}}]}},{afterJson:{moves:[{sourceId:"a",location:{kind:"vitrine",code:"27"}}]}}]};
+ assert.equal(reportedPlacementsRecorded(state,reported),true);
+ assert.equal(reportedPlacementsRecorded({...state,confirmationHistory:state.confirmationHistory.slice(0,1)},reported),false);
+});

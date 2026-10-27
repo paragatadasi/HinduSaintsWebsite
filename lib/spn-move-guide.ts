@@ -4,7 +4,7 @@ export type GuideEntry = {
 };
 export type GuideGroup = {
  id:string;title:string;sourceIds:string[];rationale:string;suggestedVitrines:string[];
- saintCount?:number;unmatchedEntryCount?:number;relationshipReviewRequired?:boolean;
+ suggestionIdsByTarget?:Record<string,string>;saintCount?:number;unmatchedEntryCount?:number;relationshipReviewRequired?:boolean;
  spaceEstimate?:{label:string;basis:string;confidence:string};
  edges?:{fromSourceId:string;toSourceId:string;label:string}[];
 };
@@ -19,7 +19,7 @@ export type CompanionRow={
  currentBasis:string;currentVersion:number;currentRevision:string;sourceRevision:string;
  fixedHousing:boolean;verifiedItemIds:string[];identityChanged:boolean;
 };
-export type PhysicalState={confirmationHistory?:{afterJson:unknown}[];rows:CompanionRow[];unmappedCurrentLocations:{sourceId:string;location:PhysicalLocation;version:number}[]};
+export type PhysicalState={reportedPlacementReceipts?:{guideContext:{guideVersion:string;contentDigest:string;assignmentDigest:string};complete:boolean};confirmationHistory?:{afterJson:unknown}[];rows:CompanionRow[];unmappedCurrentLocations:{sourceId:string;location:PhysicalLocation;version:number}[]};
 export function isPlaced(row:CompanionRow,destination:string){return row.currentBasis==="confirmed"&&row.current?.kind==="vitrine"&&row.current.code===destination;}
 export function currentLocationLabel(location:PhysicalLocation|null){return location?location.label+(location.shelf?` · Shelf ${location.shelf}`:""):"Location not recorded";}
 
@@ -36,4 +36,11 @@ export function reportedPlacementsRecorded(state:PhysicalState,reported:StarterM
   }
  }
  return reported.every(p=>saved.has(p.sourceId+":"+p.destination));
+}
+
+export function cityFitsStarterCase(city:string,code:string){
+ if(code==="28")return /puri|cuttack|bhubaneswar/i.test(city);
+ if(["29","36"].includes(code))return /navadwip|nabadwip|mayapur/i.test(city);
+ if(code==="76")return /navadwip|nabadwip/i.test(city);
+ return false;
 }

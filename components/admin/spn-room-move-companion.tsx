@@ -3,13 +3,14 @@ import {useEffect,useRef,useState} from "react";
 import {AdminViewTabs} from "./admin-view-tabs";
 import {MuseumRoomPlan} from "./museum-room-plan";
 import {spnMuseumLayout} from "@/lib/spn-museum-layout";
-import {currentLocationLabel,isPlaced,reportedPlacementsRecorded,type StarterMoveGuide,type GuideGroup,type PhysicalState,type GuideDecision,type CompanionRow,type PhysicalLocation} from "@/lib/spn-move-guide";
+import {currentLocationLabel,isPlaced,reportedPlacementsRecorded,cityFitsStarterCase,type StarterMoveGuide,type GuideGroup,type PhysicalState,type GuideDecision,type CompanionRow,type PhysicalLocation} from "@/lib/spn-move-guide";
 
 type Step="clear"|"families"|"cities"|"staging";
 type RequestBody=Record<string,unknown>;
 export function SpnRoomMoveCompanion({guide,initialPhysical,canManage}:{guide:StarterMoveGuide;initialPhysical:PhysicalState|null;canManage:boolean}){
  const [physical,setPhysical]=useState(initialPhysical),[step,setStep]=useState<Step>("families"),[selected,setSelected]=useState(guide.vitrines[0]?.code??"2");
  const [busy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState(""),[query,setQuery]=useState(""),[showAlternatives,setShowAlternatives]=useState(false);
+ const [allCities,setAllCities]=useState(false);
  const [acknowledged,setAcknowledged]=useState(false),[clearConfirmed,setClearConfirmed]=useState(false);
  const [decisions,setDecisions]=useState<GuideDecision[]>([]),[decisionsLoaded,setDecisionsLoaded]=useState(false);
  const pending=useRef(false),retry=useRef<{method:string;body:RequestBody;url:string}|null>(null);
@@ -21,7 +22,9 @@ export function SpnRoomMoveCompanion({guide,initialPhysical,canManage}:{guide:St
  const staged=rows.filter(r=>r.current?.kind==="table");
  const initiallyEmpty=["76","78"].includes(selected)&&!occupants.length;
  const reported=guide.reportedPlacements.map(p=>({placement:p,row:rows.find(r=>r.sourceId===p.sourceId)}));
- const reportsSaved=(!!physical&&reportedPlacementsRecorded(physical,guide.reportedPlacements))||reported.every(({placement,row})=>row&&isPlaced(row,placement.destination));
+ const receiptProof=physical?.reportedPlacementReceipts;
+ const durableReported=receiptProof?.complete&&receiptProof.guideContext.guideVersion===guide.version&&receiptProof.guideContext.contentDigest===guide.contentDigest&&receiptProof.guideContext.assignmentDigest===guide.assignmentDigest;
+ const reportsSaved=durableReported||(!!physical&&reportedPlacementsRecorded(physical,guide.reportedPlacements))||reported.every(({placement,row})=>row&&isPlaced(row,placement.destination));
  const reportsBlocked=reported.some(({placement,row})=>!row||blocked(row)||(row.currentBasis==="confirmed"&&!isPlaced(row,placement.destination)));
  function recordReported(){
   if(!editable||reportsBlocked)return;
@@ -67,21 +70,21 @@ export function SpnRoomMoveCompanion({guide,initialPhysical,canManage}:{guide:St
  function move(items:CompanionRow[],to:PhysicalLocation,clearedVitrines?:string[]){
   if(!editable)return;
   const now=new Date();const confirmedDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
-  void send("POST",{museumId:"museum-spn",clientRequestId:crypto.randomUUID(),confirmedDate,datePrecision:"date",evidence:"Curator confirmed this physical move in the starter-row companion.",physicalConfirmation:true,inventoryAcknowledged:true,
+  void send("POST",{museumId:"museum-spn",clientRequestId:crypto.randomUUID(),confirmedDate,datePrecision:"date",evidence:"Curator confirmed this physical move in the starter-row companion.",physicalConfirmation:true,inventoryAcknowledged:true,guideContext:{guideVersion:guide.version,contentDigest:guide.contentDigest,assignmentDigest:guide.assignmentDigest},
    records:items.map(r=>({sourceId:r.sourceId,saintId:r.saintId,expectedLocationVersion:r.currentVersion,expectedCurrentRevision:r.currentRevision,expectedSourceRevision:r.sourceRevision,to})),...(clearedVitrines?{clearedVitrines}:{})});
  }
  function blocked(row:CompanionRow){return row.verifiedItemIds.length>0||row.fixedHousing||row.identityChanged;}
- function display(sourceId:string,target=selected){
+ function display(sourceId:string,target=selected,allowMove=true){
   const row=rows.find(r=>r.sourceId===sourceId),entry=guideById.get(sourceId);
   if(!row)return <p key={sourceId} role="note">{entry?.name??sourceId}: current record unavailable. Reload before recording a move.</p>;
   const placed=isPlaced(row,target);
   return <article className="room-move__display" key={sourceId} id={`move-${sourceId}`}>
    <div><p className="eyebrow">{entry?.tier??"Display"}{entry?.city?` · ${entry.city}`:""}</p><h3>{entry?.name??row.name}</h3><p>{entry?.relicDescription}</p></div>
    <div><small>{row.currentBasis==="confirmed"?"Current location":"Last recorded location"}</small><strong>{currentLocationLabel(row.current)}</strong><p>{target?`To Vitrine ${target}`:"No destination in this guide"}</p>
-    <label className="room-move__check"><input type="checkbox" checked={placed} disabled={!editable||placed||blocked(row)||!target} onChange={()=>move([row],{kind:"vitrine",code:target,label:`Vitrine ${target}`})}/>{placed?"Placed · saved":"Placed in this vitrine"}</label>
+    <label className="room-move__check"><input type="checkbox" checked={placed} disabled={!editable||placed||blocked(row)||!target||!allowMove} onChange={()=>move([row],{kind:"vitrine",code:target,label:`Vitrine ${target}`})}/>{placed?"Placed · saved":"Placed in this vitrine"}</label>
 
-   {!placed&&canManage&&pilotIds.has(sourceId)?decisionControls("row:"+sourceId):null}</div>
-   <details><summary>Details & original location</summary><p>Original: {currentLocationLabel(row.original)}</p><p>{entry?.rationale}</p>{blocked(row)?<p>Fixed housing or a verified inventory item needs its existing item-move workflow.</p>:null}<small>Source record: {sourceId}</small></details>
+   {!placed&&canManage&&allowMove&&pilotIds.has(sourceId)?decisionControls("row:"+sourceId):null}</div>
+   <details><summary>Details & original location</summary><p>Original: {currentLocationLabel(row.original)}</p><p>{entry?.rationale}</p>{row.identityChanged?<p>This source identity has changed. Reload and review it before recording a move.</p>:blocked(row)?<p>Fixed housing or a verified inventory item needs its existing item-move workflow.</p>:null}<small>Source record: {sourceId}</small></details>
   </article>;
  }
  function group(group:GuideGroup,alternative=false){
@@ -95,8 +98,9 @@ export function SpnRoomMoveCompanion({guide,initialPhysical,canManage}:{guide:St
    {alternative?<p>Suggested: {group.suggestedVitrines.map(v=>`Vitrine ${v}`).join(" · ")}</p>:null}
    {group.edges?.length?<details><summary>Family connections</summary><ul className="room-move__tree">{group.edges.map((edge,i)=><li key={i}><a href={`#move-${edge.fromSourceId}`}>{guideById.get(edge.fromSourceId)?.name??edge.fromSourceId}</a><span> → {edge.label} → </span><a href={`#move-${edge.toSourceId}`}>{guideById.get(edge.toSourceId)?.name??edge.toSourceId}</a></li>)}</ul></details>:null}
 
-   {!alternative&&canManage?decisionControls(group.id):null}
-   {eligible.map(id=>display(id))}
+   {canManage&&(!alternative||cityFitsStarterCase(group.title,selected))?decisionControls(group.suggestionIdsByTarget?.[selected]??group.id):null}
+   {alternative&&!cityFitsStarterCase(group.title,selected)?<p>Explore this existing allocation here; review its family connections and placement before proposing a transfer.</p>:null}
+   {eligible.map(id=>display(id,selected,!alternative||cityFitsStarterCase(group.title,selected)))}
   </details>;
  }
  return <div className="room-move admin-stack"><header><p className="eyebrow">SPN · Move companion</p><h1>The starter row</h1><p>Clear the space, place the key families, then fill around them.</p></header>
@@ -110,7 +114,7 @@ export function SpnRoomMoveCompanion({guide,initialPhysical,canManage}:{guide:St
   <section className="museum-admin-panel"><p className="eyebrow">{step==="staging"?"Temporary locations":`Vitrine ${selected}`}</p><h2>{step==="clear"?"Confirm the space is clear":step==="families"?"Place the key saints & families":step==="cities"?"Fill the remaining space":"In the staging area"}</h2><p>{view?.summary}</p>{step!=="staging"?<p className="muted">{selectedPlaced} of {selectedIds.length} display records confirmed here</p>:null}
   {step==="clear"?<>{!reportsSaved?<p>Record the 23 reported placements above before confirming more vitrines cleared.</p>:null}<p>{initiallyEmpty?"Confirmed empty when added. Ready to fill.":`${occupants.length} display records currently associated with this vitrine.`}</p><details><summary>Review the listed contents</summary>{occupants.map(r=><p key={r.sourceId}>{r.name} · {currentLocationLabel(r.current)}</p>)}{unmapped.map(r=><p key={r.sourceId}>{r.sourceId} · Outside this guide; resolve before confirming clearance.</p>)}</details>{!initiallyEmpty?<><label className="room-move__check"><input type="checkbox" checked={clearConfirmed} onChange={e=>setClearConfirmed(e.target.checked)}/>I have cleared this vitrine into the staging area.</label><label className="room-move__check"><input type="checkbox" checked={acknowledged} onChange={e=>setAcknowledged(e.target.checked)}/>I checked the listed contents, including displays that will return here.</label><button type="button" className="museum-admin-button" disabled={!editable||!reportsSaved||!clearConfirmed||!acknowledged||unmapped.length>0||occupants.some(blocked)} onClick={()=>move(occupants,{kind:"table",code:"staging-area",label:"Staging area"},[selected])}>Confirm cleared</button><p className="muted">This records the listed contents in the staging area. It does not assume every object in the vitrine is catalogued.</p></>:null}</>:null}
   {step==="families"?<><p className="muted">Check “Placed” only after the display is physically in this vitrine. Defer or decline leaves its current location unchanged.</p>{view?.families.length?view.families.map(g=>group(g)):<p>No key-family suggestions for this vitrine.</p>}</>:null}
-  {step==="cities"?<><p className="muted">Shelf estimates are planning comparisons, not a measured fit guarantee.</p><button type="button" className="museum-admin-button museum-admin-button--secondary" aria-pressed={showAlternatives} onClick={()=>setShowAlternatives(!showAlternatives)}>{showAlternatives?"Show suggested groups":"Explore other city groups"}</button>{showAlternatives?<><label className="admin-field"><span>Find a city or saint</span><input type="search" value={query} onChange={e=>setQuery(e.target.value)}/></label>{guide.alternatives.filter(g=>(g.title+g.sourceIds.map(id=>guideById.get(id)?.name??"").join(" ")).toLowerCase().includes(query.toLowerCase())).map(g=>group(g,true))}</>:view?.cityGroups.length?view.cityGroups.map(g=>group(g)):<p>No remaining city groups suggested here.</p>}</>:null}
+  {step==="cities"?<><p className="muted">Shelf estimates are planning comparisons, not a measured fit guarantee.</p><button type="button" className="museum-admin-button museum-admin-button--secondary" aria-pressed={showAlternatives} onClick={()=>setShowAlternatives(!showAlternatives)}>{showAlternatives?"Show suggested groups":"Explore other city groups"}</button>{showAlternatives?<><label className="admin-field"><span>Find a city or saint</span><input type="search" value={query} onChange={e=>setQuery(e.target.value)}/></label><label className="room-move__check"><input type="checkbox" checked={allCities} onChange={e=>setAllCities(e.target.checked)}/>Show all cities for reference</label>{!["28","29","36","76"].includes(selected)&&!allCities?<p>Keep this vitrine focused on its named family displays. No general city infill is recommended.</p>:null}{guide.alternatives.filter(g=>(allCities||cityFitsStarterCase(g.title,selected))).filter(g=>(g.title+g.sourceIds.map(id=>guideById.get(id)?.name??"").join(" ")).toLowerCase().includes(query.toLowerCase())).map(g=>group(g,true))}</>:view?.cityGroups.length?view.cityGroups.map(g=>group(g)):<p>No remaining city groups suggested here.</p>}</>:null}
   {step==="staging"?(staged.length?staged.map(r=>display(r.sourceId,guideById.get(r.sourceId)?.destination??"")):<p>No displays recorded in the staging area.</p>):null}
   </section></div>;
 }

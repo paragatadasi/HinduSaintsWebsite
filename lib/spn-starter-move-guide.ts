@@ -1,5 +1,5 @@
 import alternatives from "@/data/museum/spn-city-alternative-metadata-v1.json";
-import packet from "@/data/museum/spn-starter-move-guide-v2.json";
+import {registeredStarterGuide as packet} from "./spn-starter-guide-registry";
 import type {StarterMoveGuide,GuideGroup} from "./spn-move-guide";
 
 export const starterMoveGuide:StarterMoveGuide={
@@ -9,7 +9,7 @@ export const starterMoveGuide:StarterMoveGuide={
  vitrines:packet.vitrines.map(v=>({code:v.code,summary:v.summary,
   families:v.families.map(g=>({...g,suggestedVitrines:[v.code]})),
   cityGroups:v.cityGroups.map(g=>({...g,title:g.city}))})),
- alternatives:packet.cityAlternatives.map((g,index):GuideGroup=>({id:`city-alternative-${index}`,title:g.city,sourceIds:g.sourceIds,rationale:g.rationale,suggestedVitrines:[g.currentlySuggestedVitrine],saintCount:g.saintCount,unmatchedEntryCount:g.unmatchedEntryCount,relationshipReviewRequired:g.alternativeRequiresFamilyCheck,
+ alternatives:packet.cityAlternatives.map((g,index):GuideGroup=>({id:g.id,suggestionIdsByTarget:g.suggestionIdsByTarget,title:g.city,sourceIds:g.sourceIds,rationale:g.rationale,suggestedVitrines:[g.currentlySuggestedVitrine],saintCount:g.saintCount,unmatchedEntryCount:g.unmatchedEntryCount,relationshipReviewRequired:g.alternativeRequiresFamilyCheck,
  spaceEstimate:{label:`About ${g.knownShelfEstimate.toFixed(2)} source-shelf equivalents${g.unknownFootprintCount?` + ${g.unknownFootprintCount} unknown`:""}`,basis:g.spaceBasis,confidence:"Planning estimate"}}))
 };
 
