@@ -66,3 +66,22 @@ Additive migration: `20261027020000_museum_relic_intake`. Three private tables, 
 Focused tests cover required evidence, raw date/place preservation, explicit identity choice, locked approved records, target-specific retries, actual image decode/metadata removal and private filesystem confinement. Run `dev:check`; schema/auth/API changes also require `codex:verify` before release. Database migration execution, row locking, concurrent saves and authorization routes still need development-database/integration verification; Docker was unavailable during initial implementation. Do not treat unit checks as those integration results.
 
 Skill review: this workflow follows existing museum evidence and identity rules; no source interpretation changed. Private storage and delivery contracts belong in this project document rather than the museum interpretation skills.
+
+## Integrated interface checkpoint
+
+The protected SPN `/museumadmin/intake` page now uses these endpoints for saved
+entries, private camera/upload photos, inline validation, curator corrections,
+explicit identity decisions and approval. The museum Workspace navigation exposes
+“Receive a relic”. Review queue pagination keeps older entries reachable.
+
+Morning review / release prerequisites:
+- Decide which team accounts may submit; no roles or access were expanded.
+- Confirm the official Airtable base/table fields and intended attachment handling.
+- Configure persistent private photo storage before enabling production uploads.
+- Run `scripts/verify-museum-intake-local.ts` against an isolated local database
+  after applying migrations; Docker was unavailable for the combined checkpoint.
+- Verify authenticated browser flow and mobile camera behavior with the integrated app.
+- Implement and verify delivery adapters before enabling delivery. Approvals currently
+  remain safely pending; no saints, collection items or external records are created.
+
+This feature is held undeployed and is not part of the SPN proposal release.
