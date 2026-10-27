@@ -19,8 +19,21 @@ export type CompanionRow={
  currentBasis:string;currentVersion:number;currentRevision:string;sourceRevision:string;
  fixedHousing:boolean;verifiedItemIds:string[];identityChanged:boolean;
 };
-export type PhysicalState={rows:CompanionRow[];unmappedCurrentLocations:{sourceId:string;location:PhysicalLocation;version:number}[]};
+export type PhysicalState={confirmationHistory?:{afterJson:unknown}[];rows:CompanionRow[];unmappedCurrentLocations:{sourceId:string;location:PhysicalLocation;version:number}[]};
 export function isPlaced(row:CompanionRow,destination:string){return row.currentBasis==="confirmed"&&row.current?.kind==="vitrine"&&row.current.code===destination;}
 export function currentLocationLabel(location:PhysicalLocation|null){return location?location.label+(location.shelf?` · Shelf ${location.shelf}`:""):"Location not recorded";}
 
 export type GuideDecision={suggestionId:string;decision:"pending"|"deferred"|"declined";note:string|null;version:number};
+
+export function reportedPlacementsRecorded(state:PhysicalState,reported:StarterMoveGuide["reportedPlacements"]){
+ const saved=new Set<string>();
+ for(const event of state.confirmationHistory??[]){
+  const value=event.afterJson;if(!value||typeof value!=="object"||!("moves" in value)||!Array.isArray(value.moves))continue;
+  for(const move of value.moves){
+   if(!move||typeof move!=="object")continue;
+   const location=move.location;
+   if(typeof move.sourceId==="string"&&location?.kind==="vitrine"&&typeof location.code==="string")saved.add(move.sourceId+":"+location.code);
+  }
+ }
+ return reported.every(p=>saved.has(p.sourceId+":"+p.destination));
+}
