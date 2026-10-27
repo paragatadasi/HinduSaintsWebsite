@@ -1,6 +1,6 @@
 # Release Handoff: codex/museum-intake-save-recovery
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/museum-intake-save-recovery`
 - Commit: `c6fb61a3150fc2715fe108447c41c81b2c5672d6`
 - Owner/agent: `Citra`
@@ -31,9 +31,9 @@
 ## Release Captain Notes
 
 - Integrated into `main`: `d31f981` (joint UI recovery, bio-document migration, and public-media storage release)
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: pending
+- Pushed to `main`: `13951e8`
+- Merged to `deploy`: `29a503f`
+- Production workflow: [40500244301](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40500244301) — success
 
 ## Integrated Verification
 
