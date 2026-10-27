@@ -1,6 +1,6 @@
 # Release Handoff: codex/intake-save-start-new
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/intake-save-start-new`
 - Commit: `5e1502656fca106e827b381eda3f59568ce30f71`
 - Owner/agent: `Citra`
@@ -19,7 +19,7 @@
 - Migrations: none
 - Environment variables: none
 - Data/backfill/release steps: No data changes, migrations or delivery changes. Keep Airtable delivery disabled.
-- Queue/deploy trigger: ready now
+- Queue/deploy trigger: deployed
 
 ## Risk And Conflicts
 
@@ -29,7 +29,7 @@
 
 ## Release Captain Notes
 
-- Integrated into `main`: pending
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: pending
+- Integrated into `main`: `774061e`
+- Pushed to `main`: yes
+- Merged to `deploy`: `7020d08`
+- Production workflow: [40539202606](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40539202606) — success
