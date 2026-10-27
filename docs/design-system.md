@@ -594,3 +594,7 @@ Chosen from the local navigation prototypes: long underlines and color cues. Rej
 ## SPN room proposal explorer
 
 See [SPN room proposal explorer](design-system/spn-room-proposal-explorer.md) for the protected v15 room view, independent review/space indicators, and preservation of current curator decisions.
+
+### Private museum relic intake
+
+See [relic intake guidance](design-system/shared-museum-workspaces.md#relic-intake) for required-first forms, inline errors, private photos and truthful delivery states.
