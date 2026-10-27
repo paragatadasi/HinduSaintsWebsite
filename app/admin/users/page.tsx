@@ -1,4 +1,4 @@
-import { MuseumAssistantAccountForm } from "@/components/admin/museum-assistant-account-form";
+import { MuseumAssistantAccountForm, MuseumAssistantTeamForm } from "@/components/admin/museum-assistant-account-form";
 import { CollapsibleReviewCard } from "@/components/admin/collapsible-review-card";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { requireCapability } from "@/lib/admin-access";
@@ -16,8 +16,9 @@ type UsersAccessPageProps = {
 };
 
 export default async function UsersAccessPage({ searchParams }: UsersAccessPageProps) {
-  await requireCapability("manage_users");
-  const [params, users, audits, passwordStatus] = await Promise.all([
+  const actor = await requireCapability("manage_users");
+  const canManageTeams = actor.roles.includes("site_admin");
+  const [params, users, audits, passwordStatus, museums, teamMemberships] = await Promise.all([
     searchParams,
     db.user.findMany({ include: {passwordCredential: {select: {username: true}}}, orderBy: [{ active: "desc" }, { email: "asc" }] }),
     db.adminAccessAudit.findMany({
@@ -25,7 +26,9 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
       orderBy: { createdAt: "desc" },
       take: 30
     }),
-    getBulkDeletePasswordStatus()
+    getBulkDeletePasswordStatus(),
+    db.museum.findMany({where:{archivedAt:null},select:{id:true,name:true},orderBy:{name:"asc"}}),
+    db.museumIntakeTeamMember.findMany({select:{userId:true,museumId:true}})
   ]);
   users.sort((left, right) => {
     if (left.active !== right.active) return left.active ? -1 : 1;
@@ -62,7 +65,7 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
       </CollapsibleReviewCard>
 
       <CollapsibleReviewCard cardId="create-museum-assistant" eyebrow="No email required" title="Create a museum assistant account" description="Set a username and password for museum access.">
-        <MuseumAssistantAccountForm />
+        <MuseumAssistantAccountForm museums={museums}/>
       </CollapsibleReviewCard>
 
       <section aria-label="Approved users">
@@ -82,12 +85,13 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
               <form action={updateUserAccess} className="admin-settings-form admin-settings-form--stacked">
                 <input name="userId" type="hidden" value={user.id} />
                 <UserIdentityFields user={user} />
-                {user.passwordCredential ? <><input type="hidden" name="roles" value="museum_assistant"/><p className="admin-settings-note">Museum Assistant · Museum browsing and own intake entries only.</p></> : <RoleCheckboxes defaults={user.roles} />}
+                {user.passwordCredential ? <><input type="hidden" name="roles" value="museum_assistant"/><p className="admin-settings-note">Museum Assistant · Museum browsing and intake editing. Approval remains curator-only.</p></> : <RoleCheckboxes defaults={user.roles} />}
                 <div className="admin-form-footer">
                   <label className="admin-option-toggle"><input defaultChecked={user.active} name="active" type="checkbox" /><span>Active account</span></label>
                   <button className="admin-form-button" type="submit">Save user</button>
                 </div>
               </form>
+              {canManageTeams && user.roles.includes("museum_assistant") ? <MuseumAssistantTeamForm userId={user.id} museums={museums} selected={teamMemberships.filter(member => member.userId === user.id).map(member => member.museumId)}/> : null}
               {user.passwordCredential ? <details><summary>Reset password</summary><MuseumAssistantAccountForm userId={user.id} username={user.passwordCredential.username}/></details> : null}
             </CollapsibleReviewCard>;
           })}
