@@ -1,6 +1,6 @@
 # Release Handoff: codex/intake-relic-document-hotfix
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/intake-relic-document-hotfix`
 - Commit: `7ca6ee9298190d85153b81cd63983a0366be08ea`
 - Owner/agent: `Nadi`
@@ -19,7 +19,7 @@
 - Migrations: 20261027230000_museum_intake_relic_document: expand existing media-kind check; run in release migration phase only.
 - Environment variables: none
 - Data/backfill/release steps: No backfill or manual production SQL. Existing media, fields and approvals retained.
-- Queue/deploy trigger: ready now
+- Queue/deploy trigger: deployed
 
 ## Risk And Conflicts
 
@@ -29,8 +29,8 @@
 
 ## Release Captain Notes
 
-- Integrated into `main`: pending
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: pending
+- Integrated into `main`: `d6b4406`
+- Pushed to `main`: yes
+- Merged to `deploy`: `187f2f8`
+- Production workflow: [40541046517](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40541046517) — success
 
