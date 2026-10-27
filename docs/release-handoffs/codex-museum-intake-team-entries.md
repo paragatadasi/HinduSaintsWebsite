@@ -1,6 +1,6 @@
 # Release Handoff: codex/museum-intake-team-entries
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/museum-intake-team-entries`
 - Commit: `57a9d6a403ceeef582817370309b779ade2dd4e4`
 - Owner/agent: `Citra`
@@ -20,7 +20,7 @@
 - Migrations: 20261027220000_museum_intake_team: additive membership table and authorized existing-assistant SPN backfill.
 - Environment variables: None. Keep Airtable and website delivery disabled.
 - Data/backfill/release steps: All current Museum Assistant accounts join active SPN only. Future accounts require explicit site-admin assignment. No existing intake, media, approvals or deliveries rewritten.
-- Queue/deploy trigger: ready now
+- Queue/deploy trigger: deployed
 
 ## Risk And Conflicts
 
@@ -30,7 +30,7 @@
 
 ## Release Captain Notes
 
-- Integrated into `main`: pending
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: pending
+- Integrated into `main`: `f8ad261`
+- Pushed to `main`: yes
+- Merged to `deploy`: `bed29c7`
+- Production workflow: [40525298331](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40525298331) — success
