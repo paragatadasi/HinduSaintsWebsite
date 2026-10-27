@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { Prisma } from "./generated/prisma/client";
 import { db } from "./db";
+import { resolveMuseumPhysicalCurrent } from "./museum-physical-location-current";
 import { readLegacyCurrentForSnapshot } from "./museum-move-session-source";
 import { createMoveSession, moveSessionAction, moveSnapshot, moveLocation, sameMoveLocation, assertDistinctMoveSources, assertWholeCaseClearing, MuseumMoveSessionError, type MoveSnapshot, type MoveLocation } from "./museum-move-session-domain";
 export type MoveSessionActor = { id: string; canManage: boolean };
@@ -20,10 +21,7 @@ async function present(session: Session, tx: Prisma.TransactionClient) {
     rows: snapshot.rows.map(row => {
       const saved = current.find(location => location.sourceId === row.sourceId);
       const legacy = latestLegacy.get(row.sourceId) ?? row.legacyConfirmed;
-      const useLegacy = legacy && (!saved || Date.parse(legacy.confirmedAt) > saved.confirmedAt.getTime());
-      const confirmed = useLegacy ? { ...legacy, version: saved?.version ?? 0 } : saved ? { location: moveLocation.parse(saved.location), confirmedAt: saved.confirmedAt.toISOString(), version: saved.version } : null;
-      const location = confirmed?.location ?? row.sourceReported;
-      return { ...row, original: row.sourceReported, sessionStarting: starting[row.sourceId], currentConfirmed: confirmed, current: location, currentBasis: confirmed ? "confirmed" : row.sourceReported ? "source" : "unknown", currentVersion: saved?.version ?? 0, currentRevision: fingerprint({version:saved?.version??0,location,confirmedAt:confirmed?.confirmedAt??null}) };
+      return { ...row, original: row.sourceReported, sessionStarting: starting[row.sourceId], ...resolveMuseumPhysicalCurrent(row.sourceReported, saved, legacy) };
     }) };
 }
 export async function readMuseumMoveSession(museumId: string, sessionId?: string) {
