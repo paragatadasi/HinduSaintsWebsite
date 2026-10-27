@@ -4,6 +4,11 @@ import { db } from "./db";
 import { runAirtableSaintsMissingDraftImport, runAirtableSlugCollisionRepair } from "./airtable-saint-import";
 
 test("a longer Airtable name cannot bypass an existing saint slug", async (t) => {
+  // Prisma is lazy, but accessing its mocked delegates still needs a syntactically valid URL.
+  // No database connection is used by this test.
+  const originalUrl = process.env.DATABASE_URL;
+  process.env.DATABASE_URL ||= "postgresql://test:test@127.0.0.1:1/mocked_import_test";
+  t.after(() => { if (originalUrl === undefined) delete process.env.DATABASE_URL; else process.env.DATABASE_URL = originalUrl; });
   function mockMethod(object: object, key: string, replacement: (...args: unknown[]) => unknown) {
     const target = object as Record<string, unknown>; const original = target[key];
     target[key] = replacement; t.after(() => { target[key] = original; });
