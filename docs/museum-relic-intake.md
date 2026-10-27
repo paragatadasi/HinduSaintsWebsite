@@ -116,3 +116,11 @@ Site Admin account creation accepts optional `museumIds:string[]`. Site Admin ma
 Each child accepts optional `relicPlaceRaw` up to 2000 characters: an explicitly reported place associated with that relic. It starts blank and **never inherits** `saintPlaceRaw`. Empty/absent means no additional relic-place evidence. Preserve raw text; do not normalize it, create a locality, change the saint's place, match an identity or assign a physical storage location.
 
 `verify-museum-intake-team-local.ts` uses a fresh disposable localhost `museum_intake_test_multi…` database. It checks team edit/resubmit, owner/team filtering, cross-museum denial, no review privilege, immediate membership revocation including photo access, explicit-place clearing, SPN-only backfill idempotency and retained legacy/approval evidence. No production operation or automatic release is part of this verifier.
+
+## Relic-document upload constraint repair — 27 October 2026
+
+The multi-relic application accepted `relic_document`, but the database check still allowed only `relic`, `saint_portrait` and `bio_document`. A relic-specific document therefore failed while other photos saved. Additive migration `20261027230000_museum_intake_relic_document` includes the fourth kind without changing existing media, entry fields or approval history. Run it in the normal release migration phase; do not edit earlier applied migrations or execute manual production SQL.
+
+`scripts/verify-museum-intake-document-local.ts` requires a fresh disposable localhost database named `museum_intake_test_document_…`. It installs the prior migration chain, uploads the three earlier kinds through the real service, reproduces the document constraint failure, applies the repair, then verifies document upload/read/retry/submission and preservation of earlier media and fields. Unsupported kinds remain rejected. Future supported media kinds need both application validation and a migrated-database upload check.
+
+No environment or dependency changes are required. Retain the expanded constraint if rolling back application code after documents have been saved; tightening it would conflict with valid stored documents. Learning review: no museum evidence or identity interpretation changed, so the museum skills remain unchanged.
