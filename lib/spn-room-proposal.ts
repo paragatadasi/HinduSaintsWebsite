@@ -40,3 +40,9 @@ export function showFlexibleSpace(vitrine:string,potential:boolean,hasCurrentCha
 }
 
 
+export type SourceContextFit = {estimatedRequiredShelfShares?:number|null;planningHeadroomShelfShares?:number|null;unknownPlanningFootprintCount?:number;unknownPlanningFootprintSourceIds?:string[];namedOnlyUnknownFootprintCount?:number;potentialFlexibleSpace:boolean;flexibleSpaceExclusion?:string|null};
+export function sourceContextFit(indicator:SourceContextFit|undefined,changed:boolean){
+ if(!indicator||changed||indicator.estimatedRequiredShelfShares==null)return null;
+ const unknown=indicator.unknownPlanningFootprintSourceIds?.length??indicator.unknownPlanningFootprintCount??0;
+ return {estimate:indicator.estimatedRequiredShelfShares,unknown,namedUnknown:indicator.namedOnlyUnknownFootprintCount??0,flexible:indicator.potentialFlexibleSpace&&!indicator.flexibleSpaceExclusion&&unknown===0&&(indicator.namedOnlyUnknownFootprintCount??0)===0};
+}
