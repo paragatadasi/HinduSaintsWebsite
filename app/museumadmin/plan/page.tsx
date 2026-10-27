@@ -27,7 +27,7 @@ export default async function SpnMovePlan(){
   return {proposal:view,designData,rows:reconcileSpnRoomProposal([...rows,...namedOnly],placements,{acceptedBaseline:"acceptedBaseline" in releasePolicy&&releasePolicy.acceptedBaseline===true})};
  });
  return <div className="admin-stack">
- <div className="review-actions"><Link className="museum-admin-button museum-admin-button--secondary" href="/museumadmin/move" prefetch={false}>Move companion · preparation</Link></div>
+ <div className="review-actions"><Link className="museum-admin-button museum-admin-button--secondary" href="/museumadmin/move" prefetch={false}>Move companion</Link></div>
  <SpnRoomExplorer releases={releases}/>
  <details className="museum-admin-panel"><summary>Connected traditions · original and saved arrangements</summary><SpnConnectedTraditions sections={sections.map(({name,slug,total})=>({name,slug,total}))} canEdit={hasCapability(user.roles,"manage_museum")}/></details></div>;
 }

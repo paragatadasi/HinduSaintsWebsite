@@ -1,11 +1,12 @@
 import {requireCapability} from "@/lib/admin-access";
-import proposal from "@/data/museum/spn-room-proposal-final-v8.json";
-import {readSpnMoveSnapshot} from "@/lib/spn-room-move-reader";
+import {hasCapability} from "@/lib/permissions";
+import {starterMoveGuide} from "@/lib/spn-starter-move-guide";
+import {readMuseumPhysicalLocations} from "@/lib/museum-physical-locations";
+import {readMuseumMoveSessionSource,registeredMoveProposal} from "@/lib/museum-move-session-source";
 import {SpnRoomMoveCompanion} from "@/components/admin/spn-room-move-companion";
-
 export default async function SpnMoveCompanionPage(){
  await requireCapability("access_museum");
- await requireCapability("view_museum_catalog");
- const snapshot=await readSpnMoveSnapshot(proposal.version);
- return <SpnRoomMoveCompanion {...snapshot}/>;
+ const user=await requireCapability("view_museum_catalog");
+ const physical=await readMuseumPhysicalLocations(tx=>readMuseumMoveSessionSource(registeredMoveProposal.version,tx));
+ return <SpnRoomMoveCompanion guide={starterMoveGuide} initialPhysical={physical} canManage={hasCapability(user.roles,"manage_museum")}/>;
 }
