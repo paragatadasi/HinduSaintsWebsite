@@ -1827,3 +1827,46 @@ model MuseumIntakeTeamMember {
   @@id([userId, museumId])
   @@index([museumId])
 }
+
+model MuseumMoveSession {
+  id String @id @default(cuid())
+  museumId String
+  proposalVersion String
+  snapshot Json
+  startingSnapshot Json
+  tables Json
+  status String @default("active")
+  version Int @default(1)
+  clientRequestId String
+  createdById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  events MuseumMoveSessionEvent[]
+  @@unique([museumId, clientRequestId])
+  @@index([museumId, status, createdAt])
+}
+
+model MuseumMoveCurrentLocation {
+  museumId String
+  sourceId String
+  location Json
+  version Int @default(1)
+  confirmedAt DateTime
+  confirmedById String
+  @@id([museumId, sourceId])
+}
+
+model MuseumMoveSessionEvent {
+  id String @id @default(cuid())
+  sessionId String
+  session MuseumMoveSession @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  clientRequestId String
+  fingerprint String
+  action String
+  beforeJson Json
+  afterJson Json
+  actorId String
+  createdAt DateTime @default(now())
+  @@unique([sessionId, clientRequestId])
+  @@index([sessionId, createdAt])
+}
