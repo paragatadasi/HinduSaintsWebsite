@@ -93,3 +93,12 @@ This feature is held undeployed and is not part of the SPN proposal release.
 ## Local database verification, 27 October
 
 All 85 migrations applied successfully to disposable localhost database `museum_intake_test_20261027`. `verify-museum-intake-local.ts` passed persistence, duplicate upload/create retries, concurrent edits, ownership, curator corrections, immutable approval, and disabled delivery checks. Combined `dev:check`, six focused tests and `codex:verify` passed. Production private-storage configuration and authenticated mobile/browser smoke checks remain rollout requirements. Airtable and website delivery adapters remain disabled.
+
+
+## Approved shared-volume private storage
+
+The intake can use the existing persistent `app_uploads` volume without publishing its files. Set `MUSEUM_INTAKE_STORAGE_BACKEND=filesystem` and `MUSEUM_INTAKE_UPLOAD_ROOT=/app/uploads/_museum-private`, with `MEDIA_UPLOAD_ROOT=/app/uploads`. The intake backend override is independent of the public media backend. Only this exact reserved subtree is allowed within the public upload root; other public paths remain rejected.
+
+Deploy the public media deny guard in the same release, before accepting any photo. Both the public route and shared public media readers must reject `_museum-private` before reading or redirecting. Intake media remains served only through authenticated entry-media routes. The existing volume must be persistent, writable by runtime UID 1001, included in restricted backups, and not exposed by Caddy or another static file server.
+
+Verify an actual photo persists across app restart, its authenticated URL works, and its exact reserved public key returns 404. Do not roll back to a version without the public deny guard while private files remain in the shared volume. Keep that guard as a rollback patch, or move the private directory to protected storage before rollback. Never delete private photos to perform rollback. Airtable and website delivery remain disabled.

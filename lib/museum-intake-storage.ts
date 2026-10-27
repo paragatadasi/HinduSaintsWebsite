@@ -14,7 +14,9 @@ function required(name: string) {
   return value;
 }
 function privateStorage() {
-  if (process.env.MEDIA_STORAGE_BACKEND === "s3") {
+  const backend = process.env.MUSEUM_INTAKE_STORAGE_BACKEND || process.env.MEDIA_STORAGE_BACKEND || "filesystem";
+  if (!["filesystem", "s3"].includes(backend)) throw new MuseumIntakeError(503, "Private photo storage needs configuration. Contact the site administrator.");
+  if (backend === "s3") {
     const bucket = required("MUSEUM_INTAKE_S3_BUCKET");
     if (bucket === process.env.MEDIA_S3_BUCKET) throw new MuseumIntakeError(503, "Intake photos need a separate private storage bucket.");
     privateClient ??= new S3Client({ endpoint: process.env.MEDIA_S3_ENDPOINT || undefined, region: process.env.MEDIA_S3_REGION || "auto", forcePathStyle: process.env.MEDIA_S3_FORCE_PATH_STYLE === "true", credentials: { accessKeyId: required("MEDIA_S3_ACCESS_KEY_ID"), secretAccessKey: required("MEDIA_S3_SECRET_ACCESS_KEY") } });
@@ -26,7 +28,12 @@ function privateStorage() {
   const normalizedRoot = process.platform === "win32" ? root.toLowerCase() : root;
   if (publicRoots.some(publicRoot => {
     const normalizedPublic = process.platform === "win32" ? publicRoot.toLowerCase() : publicRoot;
-    return normalizedRoot === normalizedPublic || normalizedRoot.startsWith(normalizedPublic + path.sep);
+    const insidePublicRoot = normalizedRoot === normalizedPublic || normalizedRoot.startsWith(normalizedPublic + path.sep);
+    const reservedRoot = path.join(path.resolve(process.env.MEDIA_UPLOAD_ROOT || "uploads"), "_museum-private");
+    const normalizedReserved = process.platform === "win32" ? reservedRoot.toLowerCase() : reservedRoot;
+    // This reserved subtree is denied by every public media reader before filesystem access or redirects.
+    const allowedReservedRoot = publicRoot !== path.resolve("public") && normalizedRoot === normalizedReserved;
+    return insidePublicRoot && !allowedReservedRoot;
   })) throw new MuseumIntakeError(503, "Intake photos need storage outside the public upload folders.");
   return { kind: "filesystem" as const, root };
 }
