@@ -14,7 +14,7 @@ import {buildMuseumView,type MuseumSection} from "@/lib/museum-proposals";
 import {searchWorkingMuseumPlacements} from "@/lib/museum-working-view";
 
 export default async function VrindavanSections({searchParams}:{searchParams:Promise<Record<string,string|string[]|undefined>>}) {
- const user=await requireCapability("access_museum");await requireCapability("view_full_saint_catalog");
+ const user=await requireCapability("access_museum");await requireCapability("view_museum_catalog");
  const params=await searchParams;
  const value=(key:string)=>typeof params[key]==="string"?params[key].trim().slice(0,200):"";
  const query=value("q"),sectionSlug=value("section");

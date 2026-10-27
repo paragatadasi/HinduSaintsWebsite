@@ -594,3 +594,10 @@ Chosen from the local navigation prototypes: long underlines and color cues. Rej
 ## SPN room proposal explorer
 
 See [SPN room proposal explorer](design-system/spn-room-proposal-explorer.md) for the protected v15 room view, independent review/space indicators, and preservation of current curator decisions.
+
+
+### Museum assistant accounts
+
+Use the shared admin sign-in panel and stacked form fields for username sign-in. Keep Google/email options unchanged, with the username option in an integrated disclosure. Use persistent labels, password-manager autocomplete on sign-in, inline field errors, and a busy submit state. Account creation and password reset live in Users & Access using existing collapsible review cards; never display or retain saved passwords. Password-reset copy must explain that existing sessions end.
+
+Museum assistants see museum navigation and read-only summaries. Hide unavailable editing controls and Main admin navigation, retain exploration/search/expand controls, and provide Sign out in the museum shell. Permissions must also be enforced by server actions and APIs; visual restrictions alone are insufficient.

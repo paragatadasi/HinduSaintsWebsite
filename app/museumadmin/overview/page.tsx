@@ -14,7 +14,7 @@ import {loadSpnQuestionsAction,saveSpnAnswerAction,loadSpnCandidateAction} from 
 export default async function MuseumOverview({searchParams}:{searchParams:Promise<MuseumOverviewParams>}) {
  const user=await requireCapability("access_museum");
  const params=await searchParams;
- const canViewLayout=hasCapability(user.roles,"view_full_saint_catalog");
+ const canViewLayout=hasCapability(user.roles,"view_museum_catalog");
  const records=params.view==="records"||!canViewLayout;
  return <div className="admin-stack">
   <header className="museum-layout-header"><div><p className="eyebrow">SPN museum</p><h1>Museum Overview</h1><p>Explore the room and find the saints and relics recorded in each vitrine.</p></div><dl className="museum-layout-stats"><div><dt>Available now</dt><dd>{spnMuseumLayout.vitrines.filter(v=>v.availability!=="future").length}</dd></div><div><dt>Including new</dt><dd>{spnMuseumLayout.vitrines.filter(v=>v.availability==="new").length}</dd></div><div><dt>Future spaces</dt><dd>{spnMuseumLayout.vitrines.filter(v=>v.availability==="future").length}</dd></div></dl></header>

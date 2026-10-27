@@ -10,7 +10,7 @@ import {readMuseumSaintProfiles} from "@/lib/museum-saint-profiles";
 
 async function checkReadAccess() {
   await assertCapability("access_museum");
-  await assertCapability("view_full_saint_catalog");
+  await assertCapability("view_museum_catalog");
 }
 export async function loadSpnQuestionsAction() {
   await checkReadAccess();
@@ -38,7 +38,7 @@ export async function loadSpnCandidateAction(raw: unknown) {
 }
 
 export async function loadSpnDiagramLayoutsAction(){
- const user=await assertCapability("access_museum");await assertCapability("view_full_saint_catalog");
+ const user=await assertCapability("access_museum");await assertCapability("view_museum_catalog");
  return readMuseumDiagramLayouts("museum-spn",user.id);
 }
 async function changeSpnDiagram(input:unknown,remove:boolean){
