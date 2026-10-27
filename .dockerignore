@@ -3,6 +3,7 @@ node_modules
 .git
 backups
 uploads
+private-uploads
 .env*
 !.env.example
 !.env.codex.example
