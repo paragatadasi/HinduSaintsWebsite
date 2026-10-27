@@ -83,6 +83,7 @@ export async function updateMuseumMoveSession(raw: unknown, actor: MoveSessionAc
       for (const move of input.moves) {
         const row = snapshot.rows.find(row => row.sourceId === move.sourceId), saved = positions.find(position => position.sourceId === move.sourceId);
         if (!row) throw new MuseumMoveSessionError(400, "Choose a source display from this pinned proposal.");
+        if (row.itemId || row.itemIds?.length) throw new MuseumMoveSessionError(409, "This source is linked to verified inventory. Use the existing item-move workflow so its physical history stays consistent.");
         if ((saved?.version ?? 0) !== move.expectedLocationVersion) throw new MuseumMoveSessionError(409, "A display moved since you opened this session. Reload its current location.");
         const currentRow = currentView.rows.find(current => current.sourceId === row.sourceId)!;
         if (currentRow.currentRevision !== move.expectedCurrentRevision) throw new MuseumMoveSessionError(409, "A recorded physical location changed. Reload before confirming this move.");
