@@ -16,7 +16,7 @@ test("intake image decode verifies bytes, reencodes to JPEG and strips original 
 });
 test("private filesystem files round-trip without a public URL and reject traversal or public roots", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "museum-intake-"));
-  const before = { root: process.env.MUSEUM_INTAKE_UPLOAD_ROOT, backend: process.env.MEDIA_STORAGE_BACKEND };
+  const before = { root: process.env.MUSEUM_INTAKE_UPLOAD_ROOT, backend: process.env.MEDIA_STORAGE_BACKEND, publicRoot: process.env.MEDIA_UPLOAD_ROOT, intakeBackend: process.env.MUSEUM_INTAKE_STORAGE_BACKEND };
   process.env.MUSEUM_INTAKE_UPLOAD_ROOT = root;
   process.env.MEDIA_STORAGE_BACKEND = "filesystem";
   try {
@@ -26,11 +26,24 @@ test("private filesystem files round-trip without a public URL and reject traver
     await assert.rejects(readPrivateIntakeImage("../private-test"), /not found/);
     await discardPrivateIntakeImage(key);
     await assert.rejects(readPrivateIntakeImage(key));
+    process.env.MEDIA_UPLOAD_ROOT = path.join(root, "uploads");
+    process.env.MUSEUM_INTAKE_UPLOAD_ROOT = path.join(process.env.MEDIA_UPLOAD_ROOT, "_museum-private");
+    process.env.MUSEUM_INTAKE_STORAGE_BACKEND = "filesystem";
+    process.env.MEDIA_STORAGE_BACKEND = "s3";
+    const reservedKey = await writePrivateIntakeImage(Buffer.from("reserved-private-test"));
+    assert.equal((await readPrivateIntakeImage(reservedKey)).toString(), "reserved-private-test");
+    await discardPrivateIntakeImage(reservedKey);
+    for (const suffix of ["", "other", "_museum-private/nested", "_museum-private-copy"]) {
+      process.env.MUSEUM_INTAKE_UPLOAD_ROOT = path.join(process.env.MEDIA_UPLOAD_ROOT, suffix);
+      await assert.rejects(writePrivateIntakeImage(Buffer.from("private-test")), /outside the public/);
+    }
     process.env.MUSEUM_INTAKE_UPLOAD_ROOT = path.resolve("public", "intake");
     await assert.rejects(writePrivateIntakeImage(Buffer.from("private-test")), /outside the public/);
   } finally {
     if (before.root === undefined) delete process.env.MUSEUM_INTAKE_UPLOAD_ROOT; else process.env.MUSEUM_INTAKE_UPLOAD_ROOT = before.root;
     if (before.backend === undefined) delete process.env.MEDIA_STORAGE_BACKEND; else process.env.MEDIA_STORAGE_BACKEND = before.backend;
+    if (before.publicRoot === undefined) delete process.env.MEDIA_UPLOAD_ROOT; else process.env.MEDIA_UPLOAD_ROOT = before.publicRoot;
+    if (before.intakeBackend === undefined) delete process.env.MUSEUM_INTAKE_STORAGE_BACKEND; else process.env.MUSEUM_INTAKE_STORAGE_BACKEND = before.intakeBackend;
     await rm(root, { recursive: true, force: true });
   }
 });
