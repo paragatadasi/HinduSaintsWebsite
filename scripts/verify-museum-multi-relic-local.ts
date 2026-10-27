@@ -24,6 +24,7 @@ await client.query(await readFile(`prisma/migrations/${migration}/migration.sql`
 assert.deepEqual((await client.query(`SELECT "rawFields","approvedSnapshot" FROM "MuseumRelicIntake" WHERE id=$1`,[legacyId])).rows[0], { rawFields: legacyFields, approvedSnapshot: oldSnapshot });
 assert.equal((await client.query(`SELECT "relicId" FROM "MuseumIntakeMedia" WHERE id='legacy-photo'`)).rows[0].relicId, `legacy_${legacyId}`);
 assert.deepEqual((await client.query(`SELECT snapshot FROM "MuseumIntakeApproval" WHERE "intakeId"=$1`,[legacyId])).rows[0].snapshot, oldSnapshot);
+for (const name of (await readdir("prisma/migrations")).filter(name => name > migration && /^\d/.test(name)).sort()) await client.query(await readFile(`prisma/migrations/${name}/migration.sql`, "utf8"));
 await client.end();
 process.env.MEDIA_STORAGE_BACKEND = "filesystem";
 process.env.MUSEUM_INTAKE_STORAGE_BACKEND = "filesystem";

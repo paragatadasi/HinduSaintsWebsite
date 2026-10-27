@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const localUsername = z.string().trim().toLowerCase().regex(/^[a-z][a-z0-9._-]{2,47}$/, "Use 3–48 letters, numbers, dots, underscores or hyphens, starting with a letter.");
 export const localPassword = z.string().min(12, "Use at least 12 characters.").max(128, "Use at most 128 characters.").refine(value => Buffer.byteLength(value, "utf8") <= 256, "This password is too long.");
-export const createLocalAccountInput = z.object({ username: localUsername, password: localPassword, name: z.string().trim().max(100).optional() }).strict();
+export const createLocalAccountInput = z.object({ username: localUsername, password: localPassword, name: z.string().trim().max(100).optional(), museumIds: z.array(z.string().min(1).max(100)).max(50).optional() }).strict();
 export const resetLocalPasswordInput = z.object({ password: localPassword }).strict();
 export const localSignInInput = z.object({ username: localUsername, password: z.string().min(1).max(128).refine(value => Buffer.byteLength(value, "utf8") <= 256) }).strict();
 export class LocalAccountError extends Error {

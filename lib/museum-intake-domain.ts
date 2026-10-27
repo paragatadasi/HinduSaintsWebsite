@@ -13,6 +13,7 @@ export const museumIntakeFields = z.object({
 export const intakeRelicId = z.string().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/);
 export const museumIntakeRelicInput = z.object({
   id: intakeRelicId,
+  relicPlaceRaw: z.string().max(2000).optional(),
   relicDescription: z.string().max(8000),
   broughtByRaw: z.string().max(500).optional()
 }).strict();
