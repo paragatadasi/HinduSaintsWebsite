@@ -73,7 +73,7 @@ export default async function UsersAccessPage({ searchParams }: UsersAccessPageP
             return <CollapsibleReviewCard
               cardId={`user-${user.id}`}
               className="admin-user-access-card"
-              defaultOpen={updatedEmail === user.email}
+              defaultOpen={updatedEmail === (user.email ?? user.passwordCredential?.username)}
               description={user.passwordCredential ? `Username: ${user.passwordCredential.username} · Museum Assistant` : displayName !== user.email ? user.email ?? undefined : formatRoles(user.roles)}
               eyebrow={`${user.active ? "Active" : "Inactive"} · ${user.lastSignedInAt ? `Last sign-in ${formatDate(user.lastSignedInAt)}` : "Never signed in"}`}
               key={user.id}
