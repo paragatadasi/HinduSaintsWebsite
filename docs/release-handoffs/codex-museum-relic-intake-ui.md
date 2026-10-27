@@ -1,8 +1,8 @@
 # Release Handoff: codex/museum-relic-intake-ui
 
-- Status: blocked
+- Status: ready
 - Branch: `codex/museum-relic-intake-ui`
-- Commit: `3c4f576e466c6ec297e548244fdc06964e0ee4b6`
+- Commit: `76efec7e54e59192decabb27a6728f39d785d69d`
 - Owner/agent: Citra
 - Bundle priority: bundle with final SPN proposal once blockers below pass
 
@@ -14,15 +14,16 @@ Protected relic intake and curator review, with private photo uploads, saved dra
 
 - `npm run dev:check`: passed.
 - `npm run codex:verify`: passed for combined UI and backend.
-- Six domain/storage tests: passed.
+- Seven domain/storage tests: passed, including proxy-origin regression.
 - All 85 migrations applied to disposable local database `museum_intake_test_20261027`.
 - Local database integration: passed persistence, retry safety, owner isolation, concurrent edits, corrections, immutable approvals, and blocked deliveries.
-- Real authenticated HTTP checks: Nadi investigating curator POST returning 403. Release blocked until fixed and retested.
+- Real authenticated HTTP checks: PASS on corrected build. Anonymous401, contributor403, foreign-origin403, curator create/upload200, private photo access and no-store, public media404, stale save409, submit/approve200, both deliveries blocked, approved photo deletion409. Disposable sessions removed.
 - Real mobile camera and production private-storage verification: outstanding.
 
 ## Deploy Notes
 
 - Migration: `20261027020000_museum_relic_intake` (three additive tables); apply in release phase.
+- Set AUTH_URL to the canonical public origin; origin fix supports reverse-proxy internal hostnames while rejecting foreign origins.
 - Requires persistent private `MUSEUM_INTAKE_UPLOAD_ROOT` outside public uploads, owned by runtime UID 1001, or a separate private `MUSEUM_INTAKE_S3_BUCKET` when using S3.
 - Existing compose only has public upload storage; Mira owns private storage deployment configuration.
 - Keep Airtable delivery disabled until user review in the morning. Website delivery is also unimplemented/disabled; approval does not publish or create canonical saints/relics.
@@ -37,6 +38,6 @@ Protected relic intake and curator review, with private photo uploads, saved dra
 
 ## Release Captain Notes
 
-- Direct user authorizes bundled release after checks; current HTTP/storage blockers must be resolved first.
+- Direct user authorizes bundled release after checks; production private-storage configuration and integrated release checks must pass first.
 - Integrated into main: pending.
 - Production workflow: pending.
