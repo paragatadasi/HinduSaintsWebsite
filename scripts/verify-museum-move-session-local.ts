@@ -16,6 +16,7 @@ const snapshot:MoveSnapshot = { proposalVersion: "test-v1", title: "Session test
   { sourceId: "a", saintId: "same-saint", name: "RelicA", sourceReported: vitrine("1"), destination: vitrine("2"), holdReason: "", fixedHousing: false },
   { sourceId: "b", saintId: "same-saint", name: "RelicB", sourceReported: vitrine("2"), destination: vitrine("3"), holdReason: "", fixedHousing: false },
   { sourceId: "fixed", saintId: null, name: "Fixed object", sourceReported: vitrine("1"), destination: vitrine("1"), holdReason: "Fixed", fixedHousing: true },
+  { sourceId: "catalog", saintId: null, itemId: "cverified1234567890123456789", name: "Verified catalog item", sourceReported: vitrine("1"), destination: vitrine("2"), holdReason: "Use catalog workflow", fixedHousing: false },
   { sourceId: "unknown", saintId: null, name: "Unknown origin", sourceReported: null, destination: vitrine("3"), holdReason: "Find first", fixedHousing: false }
 ] };
 const loader = async(version:string) => { assert.equal(version,snapshot.proposalVersion);return structuredClone(snapshot); };
@@ -46,6 +47,7 @@ try {
   const before=await db.museumMoveCurrentLocation.count();
   await assert.rejects(api.updateMuseumMoveSession(move([{sourceId:"a",expectedLocationVersion:1,to:vitrine("3")},{sourceId:"b",expectedLocationVersion:99,to:vitrine("3")}]),curator),/moved since/);
   assert.equal(await db.museumMoveCurrentLocation.count(),before);
+  await assert.rejects(api.updateMuseumMoveSession(move([{sourceId:"catalog",expectedLocationVersion:0,to:vitrine("2")}]),curator),/verified inventory/);
   await assert.rejects(api.updateMuseumMoveSession(move([{sourceId:"fixed",expectedLocationVersion:0,to:vitrine("2")}]),curator),/fixed or special/);
   await assert.rejects(api.updateMuseumMoveSession({...move([{sourceId:"a",expectedLocationVersion:1,to:{kind:"table",code:"staging-area",label:"ignored"}}]),clearedVitrines:["2"]},curator),/every listed/);
   ({session}=await api.updateMuseumMoveSession({...move([{sourceId:"a",expectedLocationVersion:1,to:{kind:"table",code:"staging-area",label:"ignored"}},{sourceId:"b",expectedLocationVersion:0,to:{kind:"table",code:"staging-area",label:"ignored"}}]),clearedVitrines:["2"]},curator));
