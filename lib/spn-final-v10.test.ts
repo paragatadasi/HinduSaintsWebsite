@@ -24,6 +24,7 @@ test('all case summaries retain unknown footprints and agree with the design led
   if(indicator.unknownPlanningFootprintCount)assert.equal(indicator.potentialFlexibleSpace,false);
  }
  assert.equal(proposal.indicators.find(i=>i.vitrine==='78')?.unknownPlanningFootprintCount,2);assert.equal(proposal.indicators.find(i=>i.vitrine==='28')?.unknownPlanningFootprintCount,1);assert.match(proposal.reviewNote,/physical|Physical/);
+ assert.ok(proposal.rows.some(r=>r.vitrine==='64'));assert.doesNotMatch(proposal.assignments.find(a=>a.number==='64')!.subsection,/Unallocated/);assert.equal(proposal.indicators.find(i=>i.vitrine==='64')!.potentialFlexibleSpace,false);
 });
 test('accepted default applies only to the captured baseline and never changes recorded physical facts',()=>{
  const row=proposal.rows.find(r=>r.sourceId==='recjA6M4REhXbtb1Z')!;

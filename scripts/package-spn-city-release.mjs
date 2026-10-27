@@ -64,6 +64,7 @@ proposal.drivers.push({connection:'Source-qualified city centers',places:[39,40,
 for(const a of proposal.assignments){
  if(a.number==='29')a.subsection='Kabir and Kashi traditions · separate Chitrakoot/Rama continuation';
  if(a.number==='27')a.subsection='Prayagraj · separate Naimisharanya source cohort';
+ if(a.number==='64'){a.subsection='Southern source holding: Sri Potty Amma · verify availability';a.allocationType='source_qualified_regional_holding';}
  if(a.number==='69')a.subsection='Bengaluru / Karnataka city cohort · availability and footprint check';
 }
 const option=design.options[0];option.id=version;option.title=proposal.title;option.summary=warning;option.reviewStatus=proposal.reviewStatus;option.assignments=structuredClone(proposal.assignments);option.tertiaryCityClusters=structuredClone(proposal.tertiaryCityClusters);option.drivers=structuredClone(proposal.drivers);option.revisionChanges.push(...changes.map(c=>({saintId:c.saintId,name:c.name,fromVitrine:Number(c.from),toVitrine:Number(c.to),planningShelfEstimate:c.planningShelfEstimate,basis:'Approved city-first allocation; exact source context and protected family constraints retained.'})));option.routeCompanion='spn-museum-india-pilgrimage-2026-10-27-v10-standalone.html';
