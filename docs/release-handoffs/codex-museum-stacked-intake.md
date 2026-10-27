@@ -1,6 +1,6 @@
 # Release Handoff: codex/museum-stacked-intake
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/museum-stacked-intake`
 - Commit: `ec2c37a7cebb41fce732b8b768e5e825c4ec1601`
 - Owner/agent: `Citra`
@@ -19,7 +19,7 @@
 - Migrations: 20261027200000_museum_multi_relic_intake: release migration phase required; lossless legacy child and approval backfill.
 - Environment variables: No changes. Airtable and website delivery adapters remain disabled. Existing public media storage remains.
 - Data/backfill/release steps: Preserves IDs, photos, approval snapshots and delivery receipts. Omitted children/media archive. No operational production records edited.
-- Queue/deploy trigger: ready now
+- Queue/deploy trigger: deployed
 
 ## Risk And Conflicts
 
@@ -29,7 +29,7 @@
 
 ## Release Captain Notes
 
-- Integrated into `main`: pending
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: pending
+- Integrated into `main`: `6692840`
+- Pushed to `main`: yes
+- Merged to `deploy`: `e11174d`
+- Production workflow: [40509862968](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40509862968) — success
