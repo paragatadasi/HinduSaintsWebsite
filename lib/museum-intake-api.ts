@@ -45,6 +45,6 @@ export async function boundedIntakeBody(request: Request, limit: number) {
 }
 export async function intakeJson(request: Request) {
   if (!request.headers.get("content-type")?.startsWith("application/json")) throw new MuseumIntakeError(415, "Send the entry as JSON.");
-  return JSON.parse((await boundedIntakeBody(request, 32 * 1024)).toString("utf8")) as unknown;
+  return JSON.parse((await boundedIntakeBody(request, 512 * 1024)).toString("utf8")) as unknown;
 }
 export const intakeId = z.string().cuid();
