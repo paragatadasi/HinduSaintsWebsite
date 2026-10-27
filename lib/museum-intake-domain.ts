@@ -36,6 +36,17 @@ export class MuseumIntakeError extends Error {
   constructor(public readonly status: number, message: string) { super(message); }
 }
 
+export function intakeWriteOriginAllowed(requestUrl: string, origin: string | null, host: string | null, canonicalUrl?: string) {
+  if (!origin || origin === "null") return false;
+  try {
+    const source = new URL(origin), target = new URL(requestUrl);
+    if (source.origin !== origin) return false;
+    if (canonicalUrl) return source.origin === new URL(canonicalUrl).origin;
+    // Next may construct request.url with its internal bind host. Browsers still send the public Host.
+    return source.origin === target.origin || (source.host === host && source.protocol === target.protocol);
+  } catch { return false; }
+}
+
 export function assertIntakeEditable(status: string) {
   if (status !== "draft" && status !== "needs_changes") throw new MuseumIntakeError(409, "This entry is in review. Ask the curator to return it before editing.");
 }

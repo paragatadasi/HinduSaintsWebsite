@@ -1,6 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { assertIntakeEditable, assertIntakeSubmission, museumIntakeFields, reviewMuseumIntakeInput, intakeDeliverySummary, intakeRetryTargets } from "./museum-intake-domain";
+import { assertIntakeEditable, assertIntakeSubmission, museumIntakeFields, reviewMuseumIntakeInput, intakeDeliverySummary, intakeRetryTargets, intakeWriteOriginAllowed } from "./museum-intake-domain";
+
+test("write origin checks accept the canonical public origin behind an internal bind host", () => {
+  assert.equal(intakeWriteOriginAllowed("http://0.0.0.0:3000/api", "https://hindusaints.org", "hindusaints.org", "https://hindusaints.org"), true);
+  assert.equal(intakeWriteOriginAllowed("http://localhost:3006/api", "http://127.0.0.1:3006", "127.0.0.1:3006"), true);
+  for (const origin of [null, "null", "https://other.invalid", "https://hindusaints.org/path"]) {
+    assert.equal(intakeWriteOriginAllowed("http://0.0.0.0:3000/api", origin, "hindusaints.org", "https://hindusaints.org"), false);
+  }
+  assert.equal(intakeWriteOriginAllowed("http://localhost:3006/api", "https://127.0.0.1:3006", "127.0.0.1:3006"), false);
+});
 
 test("reported geography and uncertain dates remain raw evidence", () => {
   const fields = { saintName: " Guru ", relicDescription: "cloth", birthDateRaw: "circa 1700?", samadhiDateRaw: "Still alive", saintPlaceRaw: "collection place / saint place?" };

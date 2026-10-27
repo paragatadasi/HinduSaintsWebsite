@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getAdminUser } from "./admin-access";
 import { hasCapability } from "./permissions";
-import { MuseumIntakeError } from "./museum-intake-domain";
+import { MuseumIntakeError, intakeWriteOriginAllowed } from "./museum-intake-domain";
 import type { IntakeActor } from "./museum-intake-service";
 
 export async function intakeApi(request: Request, operation: (actor: IntakeActor) => Promise<unknown>) {
@@ -10,7 +10,7 @@ export async function intakeApi(request: Request, operation: (actor: IntakeActor
     const user = await getAdminUser();
     if (!user?.active) throw new MuseumIntakeError(401, "Sign in to continue.");
     if (!hasCapability(user.roles, "access_museum")) throw new MuseumIntakeError(403, "Museum access is required.");
-    if (!["GET", "HEAD"].includes(request.method) && request.headers.get("origin") !== new URL(request.url).origin) {
+    if (!["GET", "HEAD"].includes(request.method) && !intakeWriteOriginAllowed(request.url, request.headers.get("origin"), request.headers.get("host"), process.env.AUTH_URL || process.env.NEXTAUTH_URL)) {
       throw new MuseumIntakeError(403, "Reload this page before saving.");
     }
     const result = await operation({ id: user.id, canReview: hasCapability(user.roles, "manage_museum"), roles: user.roles });
