@@ -3,20 +3,32 @@ import { z } from "zod";
 // Keep reported dates and places as evidence; review does not parse or geocode them.
 export const museumIntakeFields = z.object({
   saintName: z.string().max(300),
-  relicDescription: z.string().max(8000),
+  relicDescription: z.string().max(8000).optional(),
   saintPlaceRaw: z.string().max(2000).optional(),
   birthDateRaw: z.string().max(300).optional(),
   samadhiDateRaw: z.string().max(300).optional(),
   broughtByRaw: z.string().max(500).optional()
 }).strict();
 
+export const intakeRelicId = z.string().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/);
+export const museumIntakeRelicInput = z.object({
+  id: intakeRelicId,
+  relicDescription: z.string().max(8000),
+  broughtByRaw: z.string().max(500).optional()
+}).strict();
+const relicList = z.array(museumIntakeRelicInput).min(1).max(50).refine(
+  relics => new Set(relics.map(relic => relic.id)).size === relics.length,
+  "Each relic needs its own identifier."
+);
 export const createMuseumIntakeInput = z.object({
   museumId: z.string().min(1).max(100),
   clientRequestId: z.string().uuid(),
-  fields: museumIntakeFields
+  fields: museumIntakeFields,
+  relics: relicList.optional()
 }).strict();
 export const editMuseumIntakeInput = z.object({
-  expectedVersion: z.number().int().positive(), fields: museumIntakeFields
+  expectedVersion: z.number().int().positive(), fields: museumIntakeFields,
+  relics: relicList.optional()
 }).strict();
 export const submitMuseumIntakeInput = z.object({ expectedVersion: z.number().int().positive() }).strict();
 export const museumIntakeSaintDecision = z.discriminatedUnion("kind", [
@@ -29,7 +41,7 @@ export const reviewMuseumIntakeInput = z.discriminatedUnion("action", [
 ]);
 export type IntakeFields = z.infer<typeof museumIntakeFields>;
 export type IntakeSaintDecision = z.infer<typeof museumIntakeSaintDecision>;
-export const intakeMediaKind = z.enum(["relic", "saint_portrait", "bio_document"]);
+export const intakeMediaKind = z.enum(["relic", "saint_portrait", "bio_document", "relic_document"]);
 export type IntakeMediaKind = z.infer<typeof intakeMediaKind>;
 
 export class MuseumIntakeError extends Error {
@@ -48,14 +60,18 @@ export function intakeWriteOriginAllowed(requestUrl: string, origin: string | nu
 }
 
 export function assertIntakeEditable(status: string) {
-  if (status !== "draft" && status !== "needs_changes") throw new MuseumIntakeError(409, "This entry is in review. Ask the curator to return it before editing.");
+  if (!["draft", "needs_changes", "submitted", "approved"].includes(status)) throw new MuseumIntakeError(409, "This entry cannot be edited.");
 }
 
-export function assertIntakeSubmission(fields: IntakeFields, media: readonly { kind: string }[]) {
+export type IntakeRelicInput = z.infer<typeof museumIntakeRelicInput>;
+export function assertIntakeSubmission(fields: IntakeFields, media: readonly { kind: string; relicId?: string | null }[], relics?: readonly IntakeRelicInput[]) {
   if (!fields.saintName.trim()) throw new MuseumIntakeError(400, "Enter the saint's name.");
-  if (!fields.relicDescription.trim()) throw new MuseumIntakeError(400, "Describe the relic.");
-  if (!media.some(photo => photo.kind === "relic")) throw new MuseumIntakeError(400, "Add a photo of the relic before sending it for review.");
-  if (!media.some(photo => photo.kind === "bio_document")) throw new MuseumIntakeError(400, "Add a photo of the bio document before sending it for review.");
+  const children = relics ?? [{ id: "legacy", relicDescription: fields.relicDescription ?? "" }];
+  if (!children.length) throw new MuseumIntakeError(400, "Add at least one relic.");
+  for (const [index, relic] of children.entries()) {
+    if (!relic.relicDescription.trim()) throw new MuseumIntakeError(400, `Describe relic ${index + 1}.`);
+    if (!media.some(photo => photo.kind === "relic" && (relics ? photo.relicId === relic.id : true))) throw new MuseumIntakeError(400, `Add a photo of relic ${index + 1} before sending it for review.`);
+  }
 }
 
 export type IntakeDeliveryStatus = "blocked_configuration" | "queued" | "sending" | "succeeded" | "failed" | "unknown";

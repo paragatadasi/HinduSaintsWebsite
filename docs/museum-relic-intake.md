@@ -4,7 +4,7 @@ Backend foundation, 27 October 2026. Citra owns the intake UI. This checkpoint s
 
 ## Evidence and identity
 
-One intake entry describes a received relic, not a new saint identity. Required at submission: reported saint name, relic description and at least one relic photo. Optional: saint portrait, reported place, birth date, samadhi date and who brought the relic. Preserve reported dates and places as strings. They do not establish a saint's locality, parsed chronology or reviewed biography. The donor/collector value and all intake material remain private.
+One intake group describes reported relics for one saint; it does not establish a new saint identity. Required at submission: reported saint name and one or more relic children, each with a description and at least one relic photo. Saint portrait, shared biography document, reported place, birth date, samadhi date and brought-by details are optional. Each child may have a supporting document and a brought-by override. An absent override inherits the shared value; an explicit empty string preserves an intentionally blank override. Preserve reported dates and places as strings. They do not establish a saint's locality, parsed chronology or reviewed biography. The donor/collector value and all intake material remain private.
 
 Approval requires an explicit existing saint ID or `new_draft` decision. The latter records intent to create a private draft later; it does not create one at this checkpoint. Matching by name alone is insufficient. Existing reviewed website content must not be overwritten by optional intake fields. Future adapters must turn conflicting values into reconciliation evidence.
 
@@ -14,29 +14,29 @@ The official museum Airtable and the Saints project Airtable are separate bases.
 
 All endpoints require an active signed-in user with `access_museum`. Users see their own entries; `manage_museum` users can see and review all entries. This uses existing role grants, without adding volunteer access or changing roles. Confirm team accounts and access with the curator before rollout.
 
-States: `draft` → `submitted` → `approved`, or `submitted` → `needs_changes` → `submitted`. Owners edit drafts and returned entries. Curators can also correct fields/photos while submitted. Every field change increments the entry version and records an audit event. Submission and approval validate the required fields again. Approval captures the raw fields, identity decision, selected saint revision, media references and hashes in an immutable snapshot. Approved entries cannot be edited or have photos removed.
+States: `draft` → `submitted` → `approved`, or `submitted` → `needs_changes` → `submitted`. Owners may correct their submitted or approved entries as well as drafts and returned entries. Curators may correct entries they can review. Editing submitted or approved content returns it to draft for resubmission. Every field change increments the entry version and records an audit event. Submission and approval validate the required fields again. Approval captures the raw fields, identity decision, selected saint revision, media references and hashes in an immutable snapshot. Each approval is retained in `MuseumIntakeApproval`. Later edits preserve that snapshot and its media; a subsequent approval creates a new snapshot and separate delivery receipts.
 
-Mutations use `expectedVersion`; conflicts return 409 and require reloading. Creation uses a client-generated UUID `clientRequestId`, unique per author, so a network retry returns the existing draft. Duplicate photo bytes within an entry and photo kind are deduplicated. Repeating the same approval request returns the stored result without new delivery rows. Transactions lock the entry and use serializable isolation; serialization conflicts require reload/retry.
+Mutations use `expectedVersion`; conflicts return 409 and require reloading. Creation uses a client-generated UUID `clientRequestId`, unique per author, so a network retry returns the existing draft. Duplicate photo bytes within one child and photo kind are deduplicated; the same image may document two different children. Repeating the same approval request returns the stored result without new delivery rows. Transactions lock the entry and use serializable isolation; serialization conflicts require reload/retry.
 
 ## API contract
 
-Base: `/api/admin/museum-intake`. Writes require same-origin requests. Configure the canonical public `AUTH_URL` (or `NEXTAUTH_URL`) behind a reverse proxy: Next's internal bind address may differ from the browser origin. Without that configuration, the fallback checks the browser Host and request protocol. Missing or foreign origins are rejected. Success returns the entry DTO directly, except list returns `{entries, limit:100, nextCursor}`. Errors return `{error:string}` with an appropriate HTTP status. JSON bodies are limited to 32 KiB; upload requests to 11 MiB, with an individual image limit of 10 MiB.
+Base: `/api/admin/museum-intake`. Writes require same-origin requests. Configure the canonical public `AUTH_URL` (or `NEXTAUTH_URL`) behind a reverse proxy: Next's internal bind address may differ from the browser origin. Without that configuration, the fallback checks the browser Host and request protocol. Missing or foreign origins are rejected. Success returns the entry DTO directly, except list returns `{entries, total, limit:100, nextCursor}`. Errors return `{error:string}` with an appropriate HTTP status. JSON bodies are limited to 512 KiB; upload requests to 11 MiB, with an individual image limit of 10 MiB.
 
 | Method and path | Body / result |
 | --- | --- |
-| GET base | Optional `museumId` and `cursor`; newest entries first. |
-| POST base | `{museumId,clientRequestId,fields}`. SPN's ID is `museum-spn`. |
+| GET base | Optional `museumId`, `cursor` and `scope=mine`; newest entries first. Ownership is enforced before pagination and counts. |
+| POST base | `{museumId,clientRequestId,fields,relics}`. SPN's ID is `museum-spn`. |
 | GET `/:id` | Private entry DTO. |
-| PATCH `/:id` | `{expectedVersion,fields}`; replaces the complete fields object. |
-| POST `/:id/media` | Multipart `file`, `kind=relic\|saint_portrait`, `expectedVersion`; maximum 12 photos. |
+| PATCH `/:id` | `{expectedVersion,fields,relics}`; replaces shared fields and the complete active child list. |
+| POST `/:id/media` | Multipart `file`, `kind=relic\|relic_document\|saint_portrait\|bio_document`, `expectedVersion` and `relicId` for child media; maximum 12 photos per child or shared section. |
 | GET `/:id/media/:mediaId` | Authenticated JPEG bytes, with the same photo also available through its public `/media/...` URL. |
-| DELETE `/:id/media/:mediaId` | `{expectedVersion}`; editable entries only. |
+| DELETE `/:id/media/:mediaId` | `{expectedVersion}`; archives the active photo reference; approved evidence remains available. |
 | POST `/:id/submit` | `{expectedVersion}`. |
 | POST `/:id/review` | `{action:"approve",expectedVersion,saintDecision,note?}` or `{action:"request_changes",expectedVersion,note}`. |
 
-`fields`: `{saintName,relicDescription,saintPlaceRaw?,birthDateRaw?,samadhiDateRaw?,broughtByRaw?}`. `saintDecision`: `{kind:"existing",saintId}` or `{kind:"new_draft"}`. Notes are optional for approval, required for requested corrections.
+`fields`: `{saintName,saintPlaceRaw?,birthDateRaw?,samadhiDateRaw?,broughtByRaw?}`. `relics`: `[{id,relicDescription,broughtByRaw?}]`, one to 50 children. Generate stable UUID child IDs in the form and reuse them across saves. Omitted existing children are archived, not deleted. Legacy one-relic requests may omit `relics` and retain `fields.relicDescription`; that compatibility path never replaces a multi-child list. `saintDecision`: `{kind:"existing",saintId}` or `{kind:"new_draft"}`. Notes are optional for approval, required for requested corrections.
 
-DTO: `id,museumId,version,status,createdById,fields,reviewNote,reviewedAt,reviewedVersion,approvedSnapshot,createdAt,updatedAt,media,deliveries,deliverySummary`. Media exposes ID, kind, dimensions, byte size, MIME type and public media URL, never a storage key. Delivery exposes target, status, attempts, external record ID, error code and delivery timestamp. The snapshot is private and includes provenance hashes.
+DTO: `id,museumId,version,status,createdById,fields,reviewNote,reviewedAt,reviewedVersion,approvedSnapshot,createdAt,updatedAt,relics,approvals,media,deliveries,deliverySummary`. Each relic includes its scoped media. Top-level media is flattened and includes `relicId` (null for shared media). Media exposes ID, kind, dimensions, byte size, MIME type and public media URL, never a storage key. Delivery exposes target, reviewed version, status, attempts, external record ID, error code and delivery timestamp. The snapshot is private and includes provenance hashes.
 
 ## Public intake photos
 
@@ -46,11 +46,11 @@ The normalized files use the `museum-intake/` storage prefix and ordinary public
 
 With `MEDIA_STORAGE_BACKEND=s3`, the existing public `MEDIA_S3_BUCKET` and credentials are used. Existing S3 endpoint/region/credentials configure the client. Operators should verify the public media bucket behavior matches the rest of the museum media already in use.
 
-Photo removal deletes the private object after its database reference is removed. Failed cleanup logs an identifier for operator reconciliation. An interrupted process can also leave unreferenced upload files. A future retention/cleanup job must compare database references and avoid deleting approved evidence; this checkpoint does not install a cleanup scheduler.
+Photo removal archives its active reference and retains its stored bytes for historical approvals. Child removal similarly archives its row and hides its media from the current DTO. Failed cleanup logs an identifier for operator reconciliation. An interrupted process can also leave unreferenced upload files. A future retention/cleanup job must compare database references and avoid deleting approved evidence; this checkpoint does not install a cleanup scheduler.
 
 ## Separate destination deliveries
 
-Approval creates exactly one `website` and one `official_airtable` delivery row in the same transaction as the reviewed snapshot. Both start `blocked_configuration` with `delivery_adapter_not_enabled`. The UI must say approved and awaiting configuration, rather than sent. There is no send/retry endpoint or worker yet. Partial-success and unknown-result states are part of the future delivery contract, not evidence that external delivery works today.
+Each approval revision creates exactly one `website` and one `official_airtable` delivery row in the same transaction as the reviewed snapshot. Both start `blocked_configuration` with `delivery_adapter_not_enabled`. The UI must say approved and awaiting configuration, rather than sent. There is no send/retry endpoint or worker yet. Partial-success and unknown-result states are part of the future delivery contract, not evidence that external delivery works today.
 
 Next adapter phase:
 
@@ -61,9 +61,9 @@ Next adapter phase:
 
 ## Rollout and verification
 
-Additive migration: `20261027020000_museum_relic_intake`. Three private tables, no alteration of existing saints or inventory. Apply through the deployment migration phase, not the web build. Verify the existing public media storage before enabling uploads. No new dependency or Airtable environment variable is required for this foundation.
+Additive migration: `20261027020000_museum_relic_intake`. The multi-relic follow-up `20261027200000_museum_multi_relic_intake` adds child rows, scoped media, approval history and revision-specific delivery uniqueness. Existing entries become one child each without changing raw fields, media IDs/storage keys or prior snapshots. Neither migration alters saints or inventory. Apply through the deployment migration phase, not the web build. Verify the existing public media storage before enabling uploads. No new dependency or Airtable environment variable is required for this foundation.
 
-Focused tests cover required evidence, raw date/place preservation, explicit identity choice, locked approved records, target-specific retries, same-origin validation behind a proxy, actual image decode/metadata removal and private filesystem confinement. Run `dev:check`; schema/auth/API changes also require `codex:verify` before release.
+Focused tests cover required evidence, raw date/place preservation, explicit identity choice, preserved approval history, target-specific retries, same-origin validation behind a proxy, actual image decode/metadata removal and private filesystem confinement. Run `dev:check`; schema/auth/API changes also require `codex:verify` before release.
 
 `scripts/verify-museum-intake-local.ts` exercises persistence, concurrency, ownership and review against a migrated disposable local database. `scripts/verify-museum-intake-http-local.ts` checks real authenticated routes and public photo URLs against a local server using temporary database sessions. Both refuse nonlocal databases and require a database name beginning `museum_intake_test`; the HTTP test also requires `MUSEUM_INTAKE_TEST_URL` on HTTP localhost. Start that server against the same disposable database with a random test-only `AUTH_SECRET`, `AUTH_TRUST_HOST=true`, matching `AUTH_URL`, and a temporary `MEDIA_UPLOAD_ROOT`. No OAuth login or email delivery is used. Never run these scripts against the website database. Disposable users, entries and public media remain for inspection; test sessions are removed. Dispose of the dedicated environment after testing.
 
@@ -98,3 +98,8 @@ All 85 migrations applied successfully to disposable localhost database `museum_
 ## Existing public media storage
 
 The intake reuses the existing persistent `app_uploads` volume and public media configuration. Verify an actual photo persists across app restart and its public `/media/...` URL works before collecting data. Airtable and website delivery remain disabled.
+
+
+Multi-relic migration and persistence verification: run `scripts/verify-museum-multi-relic-local.ts` against a **fresh** disposable localhost database named `museum_intake_test_multi…`. It installs prior migrations, seeds a legacy approved entry/photo, applies the new migration, then checks child evidence, ownership, corrections, stale versions, approval/media retention and disabled delivery. Do not run this schema-building verifier against an existing development or production database. Shared model/schema changes require regenerating Prisma before starting either UI or API.
+
+Learning review (27 October 2026): existing museum interpretation rules already separate saint identity, source observations and physical relics, and preserve evidence. This change applies those rules through explicit intake children and approval revisions; no reusable skill rule changed.
