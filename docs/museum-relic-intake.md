@@ -1,0 +1,68 @@
+# Museum relic intake
+
+Backend foundation, 27 October 2026. Citra owns the intake UI. This checkpoint saves private entries, photos and curator decisions. It does **not** send records to either destination, create canonical saints or collection items, publish content, assign locations, or write to Airtable.
+
+## Evidence and identity
+
+One intake entry describes a received relic, not a new saint identity. Required at submission: reported saint name, relic description and at least one relic photo. Optional: saint portrait, reported place, birth date, samadhi date and who brought the relic. Preserve reported dates and places as strings. They do not establish a saint's locality, parsed chronology or reviewed biography. The donor/collector value and all intake material remain private.
+
+Approval requires an explicit existing saint ID or `new_draft` decision. The latter records intent to create a private draft later; it does not create one at this checkpoint. Matching by name alone is insufficient. Existing reviewed website content must not be overwritten by optional intake fields. Future adapters must turn conflicting values into reconciliation evidence.
+
+The official museum Airtable and the Saints project Airtable are separate bases. Existing read-only official access and read/write project access do not authorize using the project copy as the official delivery destination.
+
+## Access and workflow
+
+All endpoints require an active signed-in user with `access_museum`. Users see their own entries; `manage_museum` users can see and review all entries. This uses existing role grants, without adding volunteer access or changing roles. Confirm team accounts and access with the curator before rollout.
+
+States: `draft` → `submitted` → `approved`, or `submitted` → `needs_changes` → `submitted`. Owners edit drafts and returned entries. Curators can also correct fields/photos while submitted. Every field change increments the entry version and records an audit event. Submission and approval validate the required fields again. Approval captures the raw fields, identity decision, selected saint revision, media references and hashes in an immutable snapshot. Approved entries cannot be edited or have photos removed.
+
+Mutations use `expectedVersion`; conflicts return 409 and require reloading. Creation uses a client-generated UUID `clientRequestId`, unique per author, so a network retry returns the existing draft. Duplicate photo bytes within an entry and photo kind are deduplicated. Repeating the same approval request returns the stored result without new delivery rows. Transactions lock the entry and use serializable isolation; serialization conflicts require reload/retry.
+
+## API contract
+
+Base: `/api/admin/museum-intake`. Writes require same-origin requests. Success returns the entry DTO directly, except list returns `{entries, limit:100, nextCursor}`. Errors return `{error:string}` with an appropriate HTTP status. JSON bodies are limited to 32 KiB; upload requests to 11 MiB, with an individual image limit of 10 MiB.
+
+| Method and path | Body / result |
+| --- | --- |
+| GET base | Optional `museumId` and `cursor`; newest entries first. |
+| POST base | `{museumId,clientRequestId,fields}`. SPN's ID is `museum-spn`. |
+| GET `/:id` | Private entry DTO. |
+| PATCH `/:id` | `{expectedVersion,fields}`; replaces the complete fields object. |
+| POST `/:id/media` | Multipart `file`, `kind=relic\|saint_portrait`, `expectedVersion`; maximum 12 photos. |
+| GET `/:id/media/:mediaId` | Authenticated JPEG bytes, private/no-store. |
+| DELETE `/:id/media/:mediaId` | `{expectedVersion}`; editable entries only. |
+| POST `/:id/submit` | `{expectedVersion}`. |
+| POST `/:id/review` | `{action:"approve",expectedVersion,saintDecision,note?}` or `{action:"request_changes",expectedVersion,note}`. |
+
+`fields`: `{saintName,relicDescription,saintPlaceRaw?,birthDateRaw?,samadhiDateRaw?,broughtByRaw?}`. `saintDecision`: `{kind:"existing",saintId}` or `{kind:"new_draft"}`. Notes are optional for approval, required for requested corrections.
+
+DTO: `id,museumId,version,status,createdById,fields,reviewNote,reviewedAt,reviewedVersion,approvedSnapshot,createdAt,updatedAt,media,deliveries,deliverySummary`. Media exposes ID, kind, dimensions, byte size, MIME type and authenticated URL, never a storage key. Delivery exposes target, status, attempts, external record ID, error code and delivery timestamp. The snapshot is private and includes provenance hashes.
+
+## Private photos
+
+Do not use the existing public media uploader. Intake photos are decoded and validated as JPEG/PNG/WebP, orientation-corrected, resized to at most 2400 pixels, reencoded to JPEG and stripped of original metadata. The original-byte SHA-256 is retained for duplicate detection; original files are not retained.
+
+Filesystem development defaults to ignored `private-uploads/`. Production requires `MUSEUM_INTAKE_UPLOAD_ROOT`, a persistent directory outside public files and the public upload root. Do not point it at symlinks/junctions into public storage or expose it through the web server. Protect filesystem access and backups.
+
+With `MEDIA_STORAGE_BACKEND=s3`, configure a separate **private** `MUSEUM_INTAKE_S3_BUCKET`; the public media bucket is rejected. Existing S3 endpoint/region/credentials configure the client. Operators must verify anonymous reads and public listing are denied, and ensure credentials can access the private bucket. No public or presigned URLs are emitted. The application serves bytes only after entry access checks.
+
+Photo removal deletes the private object after its database reference is removed. Failed cleanup logs an identifier for operator reconciliation. An interrupted process can also leave unreferenced upload files. A future retention/cleanup job must compare database references and avoid deleting approved evidence; this checkpoint does not install a cleanup scheduler.
+
+## Separate destination deliveries
+
+Approval creates exactly one `website` and one `official_airtable` delivery row in the same transaction as the reviewed snapshot. Both start `blocked_configuration` with `delivery_adapter_not_enabled`. The UI must say approved and awaiting configuration, rather than sent. There is no send/retry endpoint or worker yet. Partial-success and unknown-result states are part of the future delivery contract, not evidence that external delivery works today.
+
+Next adapter phase:
+
+- Website delivery needs a transactionally unique intake receipt, existing identity revision checks, or explicit new private draft creation. Create the physical collection item separately from the person; do not publish automatically or silently overwrite reviewed fields.
+- Official Airtable delivery needs an explicitly configured official base ID, verified destination table/field IDs, a narrowly scoped write credential and an external stable intake marker. Never fall back to `AIRTABLE_BASE_ID` or trial-write to discover permission. Confirm whether the destination is Saints plus Relics, or a dedicated intake table.
+- Define private attachment transfer before enabling Airtable photos. Permanent public photo URLs are not an acceptable shortcut. Account for attachment expiry and retries.
+- Each target needs a lease and receipt. Retry failed targets independently, never replay a successful target. A timeout after a possible remote create is `unknown`: reconcile the external intake marker before any new create. Do not claim atomic delivery across two systems or roll back one successful destination when the other fails.
+
+## Rollout and verification
+
+Additive migration: `20261027020000_museum_relic_intake`. Three private tables, no alteration of existing saints or inventory. Apply through the deployment migration phase, not the web build. Configure and verify private media storage before enabling uploads. No new dependency or Airtable environment variable is required for this foundation.
+
+Focused tests cover required evidence, raw date/place preservation, explicit identity choice, locked approved records, target-specific retries, actual image decode/metadata removal and private filesystem confinement. Run `dev:check`; schema/auth/API changes also require `codex:verify` before release. Database migration execution, row locking, concurrent saves and authorization routes still need development-database/integration verification; Docker was unavailable during initial implementation. Do not treat unit checks as those integration results.
+
+Skill review: this workflow follows existing museum evidence and identity rules; no source interpretation changed. Private storage and delivery contracts belong in this project document rather than the museum interpretation skills.
