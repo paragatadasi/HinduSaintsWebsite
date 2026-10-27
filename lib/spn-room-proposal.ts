@@ -7,7 +7,7 @@ export type ExplorerObservation=ProposalObservation&{currentVitrine:string;curre
 const sameTags=(a:string[],b:string[])=>JSON.stringify([...a].sort())===JSON.stringify([...b].sort());
 
 // The baseline is read-only. Current curator arrangements take precedence without writing any records.
-export function reconcileSpnRoomProposal(proposed:ProposalObservation[],current:MuseumSaintPlacement[]):ExplorerObservation[]{
+export function reconcileSpnRoomProposal(proposed:ProposalObservation[],current:MuseumSaintPlacement[],policy:{acceptedBaseline?:boolean}={}):ExplorerObservation[]{
  const bySaint=new Map<string,MuseumSaintPlacement[]>();
  for(const row of current)if(row.saintId)bySaint.set(row.saintId,[...(bySaint.get(row.saintId)??[]),row]);
  return proposed.map(row=>{
@@ -25,7 +25,7 @@ export function reconcileSpnRoomProposal(proposed:ProposalObservation[],current:
   }
   const saved=live?.arrangement;
   const currentVitrine=saved?.vitrine??'';
-  const retained=!!currentVitrine&&(saved?.status==='Planned'||saved?.status==='Implemented');
+  const retained=!!currentVitrine&&(saved?.status==='Planned'||saved?.status==='Implemented')&&(!policy.acceptedBaseline||!row.baseline||saved.revision!==row.baseline.revision);
   if(retained&&currentVitrine!==row.vitrine)reviewReason='Current curator destination retained';
   return {...row,name:live?.name??row.name,tier:live?.tier==='Featured'?'Primary':live?.tier??row.tier,
    section:live?.section??row.section,regions:live?.spnRegionTags??[],currentVitrine,currentShelf:saved?.shelf??'',

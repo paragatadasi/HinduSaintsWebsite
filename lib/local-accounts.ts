@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { createHmac, randomBytes } from "node:crypto";
 import { Prisma } from "./generated/prisma/client";
 import { db } from "./db";
@@ -8,6 +9,28 @@ async function assertSiteAdmin(tx: Prisma.TransactionClient, actorId: string) {
   const actor = await tx.user.findUnique({ where: { id: actorId }, select: { active: true, roles: true } });
   if (!actor?.active || !actor.roles.includes("site_admin")) throw new LocalAccountError(403, "Site Admin access is required.");
 }
+const teamAssignmentInput = z.object({ museumIds: z.array(z.string().min(1).max(100)).max(50) }).strict();
+async function assignMuseums(tx: Prisma.TransactionClient, userId: string, museumIds: string[]) {
+  const ids = [...new Set(museumIds)];
+  const active = await tx.museum.count({ where: { id: { in: ids }, archivedAt: null } });
+  if (active !== ids.length) throw new LocalAccountError(400, "Choose active museums.");
+  await tx.museumIntakeTeamMember.deleteMany({ where: { userId, museumId: { notIn: ids } } });
+  if (ids.length) await tx.museumIntakeTeamMember.createMany({ data: ids.map(museumId => ({ userId, museumId })), skipDuplicates: true });
+  return ids;
+}
+export async function updateLocalMuseumTeam(userId: string, raw: unknown, actorId: string) {
+  const input = teamAssignmentInput.parse(raw);
+  return db.$transaction(async tx => {
+    await assertSiteAdmin(tx, actorId);
+    await tx.$queryRaw(Prisma.sql`SELECT id FROM "User" WHERE id=${userId} FOR UPDATE`);
+    const user = await tx.user.findUnique({ where: { id: userId }, select: { roles: true } });
+    if (!user || !isExclusiveMuseumAssistant(user.roles)) throw new LocalAccountError(400, "Choose a Museum Assistant account.");
+    const before = await tx.museumIntakeTeamMember.findMany({ where: { userId }, select: { museumId: true } });
+    const museumIds = await assignMuseums(tx, userId, input.museumIds);
+    await tx.auditEvent.create({ data: { userId: actorId, action: "user.museum_intake_team_changed", entityType: "User", entityId: userId, beforeJson: { museumIds: before.map(row => row.museumId) }, afterJson: { museumIds } } });
+    return { userId, museumIds };
+  }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
+}
 export async function createLocalMuseumAccount(raw: unknown, actorId: string) {
   const input = createLocalAccountInput.parse(raw);
   await assertSiteAdmin(db, actorId);
@@ -15,8 +38,9 @@ export async function createLocalMuseumAccount(raw: unknown, actorId: string) {
   return db.$transaction(async tx => {
     await assertSiteAdmin(tx, actorId);
     const user = await tx.user.create({ data: { email: null, name: input.name || input.username, roles: ["museum_assistant"], passwordCredential: { create: { username: input.username, passwordHash } } } });
-    await tx.auditEvent.create({ data: { userId: actorId, action: "user.local_account_created", entityType: "User", entityId: user.id, afterJson: { username: input.username, roles: ["museum_assistant"] } } });
-    return { userId: user.id, username: input.username };
+    const museumIds = await assignMuseums(tx, user.id, input.museumIds ?? []);
+    await tx.auditEvent.create({ data: { userId: actorId, action: "user.local_account_created", entityType: "User", entityId: user.id, afterJson: { username: input.username, roles: ["museum_assistant"], museumIds } } });
+    return { userId: user.id, username: input.username, museumIds };
   });
 }
 export async function resetLocalMuseumPassword(userId: string, raw: unknown, actorId: string) {
