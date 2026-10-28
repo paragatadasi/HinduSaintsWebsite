@@ -7,6 +7,8 @@ async function main(){
  const root=resolve(process.env.MUSEUM_PHASE_TEST_WORKTREE??process.cwd());
  const {db}=await import(pathToFileURL(join(root,"lib/db.ts")).href);
  const {confirmMuseumPhysicalLocations,readPhysicalLocationView,readMuseumPhaseClearances,saveMuseumPreparation}=await import(pathToFileURL(join(root,"lib/museum-physical-locations.ts")).href);
+ const {starterGuideContext:historicalContext}=await import(pathToFileURL(join(root,"lib/spn-starter-guide-v4.ts")).href);
+ const {physicalFingerprint}=await import(pathToFileURL(join(root,"lib/museum-physical-location-current.ts")).href);
  const {gosaijiSaiGuideContext:guideContext,gosaijiSaiMoveGuide:guide}=await import(pathToFileURL(join(root,"lib/spn-gosaiji-sai-guide.ts")).href);
  try{
  for(const sql of [
@@ -27,6 +29,11 @@ async function main(){
  const record=(row:any,to:any)=>({sourceId:row.sourceId,saintId:row.saintId,expectedCurrentRevision:row.currentRevision,expectedSourceRevision:row.sourceRevision,expectedLocationVersion:row.currentVersion,to});
  const common={museumId:"museum-spn",confirmedDate:"2026-10-28",datePrecision:"date",evidence:"Disposable local test",physicalConfirmation:true,inventoryAcknowledged:true,guideContext};
  let state=await read();
+ const historicalInput={...common,guideContext:historicalContext,clientRequestId:randomUUID(),records:[record(state.rows.find((r:any)=>r.sourceId===incoming[0].sourceId),incoming[0].destination)]};
+ await assert.rejects(confirmMuseumPhysicalLocations(historicalInput,{id:"actor",canManage:true},loader),/guide is historical/);
+ await db.auditEvent.create({data:{action:"museum.physical_location.confirmed",entityType:"MuseumPhysicalConfirmation",entityId:`museum-spn:${historicalInput.clientRequestId}`,afterJson:{fingerprint:physicalFingerprint(historicalInput)}}});
+ assert.equal((await confirmMuseumPhysicalLocations(historicalInput,{id:"actor",canManage:true},loader)).replayed,true);
+
  for(const incomingRow of incoming.slice(0,2))await assert.rejects(confirmMuseumPhysicalLocations({...common,clientRequestId:randomUUID(),records:[record(state.rows.find((r:any)=>r.sourceId===incomingRow.sourceId),incomingRow.destination)]},{id:"actor",canManage:true},loader),/initial vitrine clearing/);
  const early=incoming[2];
  const earlyInput={...common,clientRequestId:randomUUID(),records:[record(state.rows.find((r:any)=>r.sourceId===early.sourceId),early.destination)]};
