@@ -1,0 +1,13 @@
+{
+  "version": "spn-starter-curator-adjustments-2026-10-28-v1",
+  "destinations": {
+    "rec1bOVrWmAFek7Tn": "28",
+    "recJepdkXi90kdROh": "2",
+    "recIv4yKRknjgONrZ": "78"
+  },
+  "privateSourceIds": [
+    "rechBZw1LyW9TTX9L"
+  ],
+  "privateHoldReason": "Privately held; the curator reports no relic on museum display. Do not record a museum move.",
+  "physicalWrites": false
+}

@@ -132,6 +132,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       if (receipt?.fingerprint !== fingerprint) throw new MuseumMoveSessionError(409, "This request already recorded different locations. Reload before recording another confirmation.");
       return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx), receipt: retry, replayed: true };
     }
+    if(input.guideContext && readStarterGuideDefinition(input.guideContext.guideVersion).readOnly)
+      throw new MuseumMoveSessionError(409,"This guide is historical. Reload the current guide before recording a new physical move.");
     const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length ? undefined : input.records.map(row => row.sourceId));
     if (input.clearedVitrines?.some(code => !current.vitrineCodes.includes(code))) throw new MuseumMoveSessionError(400, "Choose cleared vitrines in this museum's layout.");
     const phase = input.guideContext ? readStarterGuideDefinition(input.guideContext.guideVersion) : null;

@@ -1,3 +1,4 @@
+import adjustments from "../data/museum/spn-starter-curator-adjustments-v1.json";
 import { MuseumMoveSessionError, sameMoveLocation, type MoveLocation } from "./museum-move-session-domain";
 import proposal from "../data/museum/spn-starter-reviewed-proposal-v16.json";
 
@@ -6,6 +7,7 @@ import proposal from "../data/museum/spn-starter-reviewed-proposal-v16.json";
 const housingReviewSources = new Set(proposal.rows.filter(row => row.movementBlockedReason).map(row => row.sourceId));
 
 export function spnMovementBlockedReason(sourceId: string): string | undefined {
+  if(adjustments.privateSourceIds.includes(sourceId))return adjustments.privateHoldReason;
   return housingReviewSources.has(sourceId)
     ? "Confirm this source's separate objects and stick housing before recording a move of the whole display."
     : undefined;
