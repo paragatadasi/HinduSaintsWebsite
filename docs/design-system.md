@@ -638,3 +638,17 @@ require the durable session contract before they are enabled.
 The SPN companion uses one generic **Staging area**. Do not ask the curator to
 name tables or distribute displays among tables. Retain per-display location history
 and explicit physical confirmation behind the minimal clear/refill actions.
+
+### Parchment move companion
+
+The SPN move companion uses the approved `move-room.html` prototype presentation,
+scoped with `data-museum-companion-theme="parchment"`. Its palette and type scale
+live in `styles/tokens.css`; `.museum-companion` shared classes own the canvas,
+white panels, gold top rule, serif hierarchy, green primary actions and staging
+sidebar. This explicit theme stays parchment inside either admin shell theme.
+
+Keep the room and working content in the wider column, with staging and selected
+vitrine context in the narrower column. Stack columns on small screens and let
+the map scroll rather than crushing its labels. Preserve the live three-phase
+workflow, saved-location evidence, review holds and defer/decline controls when
+adapting the prototype. Never copy prototype sample data or local-only save logic.
