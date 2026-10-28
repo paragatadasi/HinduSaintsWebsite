@@ -1,7 +1,7 @@
 export type GuideEntry = {
  sourceId:string;saintId:string|null;name:string;tier:string;city:string;relicDescription:string;
  destination:string;section:string;family:string;rationale:string;
- reviewNotes?:string[];movementBlockedReason?:string;
+ reviewNotes?:string[];movementBlockedReason?:string;reportedOrigin?:string|null;
  lifeStatus?:{tag:string|null;basis:string};currentLocation?:PhysicalLocation|null;currentLocationBasis?:string;
 };
 export type GuideGroup = {
@@ -13,7 +13,7 @@ export type GuideGroup = {
 };
 export type StarterMoveGuide = {
  version:string;contentDigest:string;proposalVersion:string;assignmentDigest:string;title:string;entries:GuideEntry[];
- proposalLabel?:string;allowClear?:boolean;phaseLabel?:string;requiredClearVitrines?:string[];
+ proposalLabel?:string;allowClear?:boolean;phaseLabel?:string;requiredClearVitrines?:string[];clearanceRequiredDestinations?:string[];preparationVitrines?:string[];
  outgoingDependencies?:{sourceId:string;name:string;previousProposedVitrine:string;proposedDestination:null|string;state:string}[];
  transitionSourceIds?:string[];
  vitrines:{code:string;summary:string;families:GuideGroup[];cityGroups:GuideGroup[]}[];

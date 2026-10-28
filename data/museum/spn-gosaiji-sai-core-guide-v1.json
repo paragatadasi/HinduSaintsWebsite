@@ -1,10 +1,164 @@
 {
-  "version": "spn-gosaiji-sai-core-guide-2026-10-28-v1",
+  "version": "spn-gosaiji-sai-core-guide-2026-10-28-v2",
   "proposalVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
-  "title": "Gosaiji & Sai families",
+  "title": "Ramakrishna, Gosaiji & Sai",
   "proposalLabel": "East–North connections · Gosaiji & Sai core",
   "sourcePacket": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
   "rows": [
+    {
+      "sourceId": "rec896V7fs1lwnSkY",
+      "saintId": "cms0w7dd501gv07qijoc78ezs",
+      "name": "Sri (Ishwar) Tota Puri Baba",
+      "tier": "Primary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Punjap/ or Puri/ - wandering monk",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [
+        "Totapuri identity under review; do not treat this entry as a verified teacher identification."
+      ],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recbZIJBveOYqWWs5",
+      "saintId": "cms0w7e3l02fz07qi534y407z",
+      "name": "Sri Dandi Swami Damodarashram",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Addyapeeth",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Addyapeeth",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recgjan7BxjyG7CeZ",
+      "saintId": "cms0w7f7a03w807qi25ypfqdb",
+      "name": "Sri Manisen",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Puri",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [
+        "Mani Sen (recorded as Manisen) · Ramakrishna’s host at Panihati; not a direct-disciple claim."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "reciI9fE7xVYFuN4u",
+      "saintId": "cms0w7fpl04ji07qisl0wupco",
+      "name": "Sri Yugacharya Sreemat Praanavanandaji Maharaj",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "reckV8sJXL5cq978J",
+      "saintId": "cms0w7gb6059t07qis1a9kn28",
+      "name": "Sri Ramakrishna Paramahansa",
+      "tier": "Primary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recqrHsjXJuayrZml",
+      "saintId": "cms0w7hno06w007qiusuli5ab",
+      "name": "Sri Swami Vivekananda",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recrWjhRIBpUX7A6J",
+      "saintId": "cmus3rxlw007v07o5ad59qkab",
+      "name": "Sri Lal Baba",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Kolkata",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recSUU4X56pAqF1JC",
+      "saintId": "cms0w7i6v07i807qiot1t3jt5",
+      "name": "Sri Lakshmi Mani Devi",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recXa1fpOwmlwQ4YH",
+      "saintId": "cms0w7jft08ti07qimg33dh8m",
+      "name": "Sri Mahendranath Gupta",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recZPkXeFQBUFoa19",
+      "saintId": "cms0w7k6u09l907qi1b2qa7ij",
+      "name": "Sri Annada Thakur",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Addyapeeth",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
     {
       "sourceId": "rec1cTbJ4iPAMUW0v",
       "saintId": "cms0w7cdr008r07qim1f6c46u",
@@ -367,6 +521,64 @@
   ],
   "groups": [
     {
+      "id": "ramakrishna-circle-75",
+      "title": "Ramakrishna’s circle",
+      "vitrine": "75",
+      "sourceIds": [
+        "reckV8sJXL5cq978J",
+        "recqrHsjXJuayrZml",
+        "recSUU4X56pAqF1JC",
+        "recXa1fpOwmlwQ4YH",
+        "recgjan7BxjyG7CeZ"
+      ],
+      "rationale": "Reviewed personal circle. Source-specific display connections; canonical identity review remains separate.",
+      "edges": [
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recqrHsjXJuayrZml",
+          "label": "disciple"
+        },
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recXa1fpOwmlwQ4YH",
+          "label": "disciple · recorder"
+        },
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recSUU4X56pAqF1JC",
+          "label": "niece"
+        },
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recgjan7BxjyG7CeZ",
+          "label": "host at Panihati"
+        }
+      ]
+    },
+    {
+      "id": "addyapeeth-75",
+      "title": "Addyapeeth",
+      "vitrine": "75",
+      "sourceIds": [
+        "recbZIJBveOYqWWs5",
+        "recZPkXeFQBUFoa19"
+      ],
+      "rationale": "Institutional association; keep these two entries distinct.",
+      "edges": []
+    },
+    {
+      "id": "kolkata-associates-75",
+      "title": "Other associated displays",
+      "vitrine": "75",
+      "sourceIds": [
+        "rec896V7fs1lwnSkY",
+        "reciI9fE7xVYFuN4u",
+        "recrWjhRIBpUX7A6J"
+      ],
+      "rationale": "Keep each display distinct. Totapuri’s exact identity remains under review.",
+      "edges": []
+    },
+    {
       "id": "gosaiji-navadvip-core",
       "title": "Gosaiji and the Navadwip connection",
       "vitrine": "37",
@@ -554,6 +766,7 @@
       "recVN6Ty3682Uz2g4"
     ]
   },
-  "assignmentDigest": "5b0025b7dfc2d75ed96d8dd904e4202981dd192f06437c1d74bda9b98def7b80",
-  "contentDigest": "d70cd052394b795dd56bfb97237f42179169ab9dbe16466b97135600ad919b9a"
+  "assignmentDigest": "4499ece46d98d7f293b11b2a5ccd93ffa4afd11f9fd10576bada954d29b49c2b",
+  "sourcePacket75": "spn-vitrine75-before37-final-2026-10-28-v1",
+  "contentDigest": "c3e1d176f66ceb8a29aedcacc85a51e4c617391e2a776c6f92a15ae6eb84e4ac"
 }
