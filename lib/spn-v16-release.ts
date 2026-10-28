@@ -6,6 +6,7 @@ import type { ExplorerOption, ExplorerPlacement } from "./spn-room-explorer";
 const cases = new Map(source.reviewCases.map(row => [row.vitrine, row]));
 const assignments = source.assignments.map(row => ({ ...row, subsection: cases.get(row.number)?.title ?? row.subsection }));
 const allRows = [...source.rows, ...source.namedOnly];
+const reviewNote = "Accepted v16 proposal, approved on 28 October 2026. Newer curator choices remain in effect. Recorded physical locations are shown separately; no additional moves are confirmed. Source-only observations and identity holds remain distinct. Space estimates include unknowns and do not certify physical fit.";
 const indicators = baseline.indicators.map(original => {
   const rows = source.rows.filter(row => row.vitrine === original.vitrine);
   const unresolved = rows.filter(row => row.unresolved);
@@ -35,7 +36,7 @@ const primeAnchors = Object.fromEntries(assignments.flatMap(assignment => {
   return names.length ? [[assignment.number, { people: names.join(" · "), reason: cases.get(assignment.number)?.anchors ?? "Preserve the reviewed anchor group; physical fit remains unconfirmed." }]] : [];
 }));
 const option: ExplorerOption = {
-  id: source.version, title: "SPN v16", summary: source.reviewNote,
+  id: source.version, title: "SPN v16", summary: reviewNote,
   assignments, primeAnchors,
   displayPackets: assignments.map(row => ({ unitId: `v16-case-${row.number}`, label: row.subsection, group: row.group, cases: [Number(row.number)], navigationKind: "neighborhood" })),
   drivers: source.reviewCases.map(row => ({ connection: row.title, places: [Number(row.vitrine)], reason: `${row.cityPlacement} ${row.connection}` })),
@@ -44,8 +45,7 @@ const option: ExplorerOption = {
 };
 const placements: ExplorerPlacement[] = allRows.flatMap(row => row.saintId ? [{ saintId: row.saintId, vitrine: row.vitrine, rationale: cases.get(row.vitrine)?.anchors ?? row.allocationKind }] : []);
 
-// Prepared review projection only. Selecting it as the accepted release is separate.
 export const spnV16Release = {
-  proposal: { ...source, assignments, indicators },
+  proposal: { ...source, assignments, indicators, reviewNote, reviewStatus: "Accepted default proposal; physical moves remain separate" },
   designData: { options: [option], comparisonPrevious: previous.options[0], placements },
 };

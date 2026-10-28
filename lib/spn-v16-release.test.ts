@@ -4,6 +4,18 @@ import { spnV16Release } from "./spn-v16-release";
 import baseline from "../data/museum/spn-starter-reviewed-proposal-v7.json";
 import { reconcileSpnRoomProposal } from "./spn-room-proposal";
 import type { MuseumSaintPlacement } from "./museum-proposals";
+import { currentSpnProposalRelease } from "./spn-current-proposal";
+import { registeredStarterGuide } from "./spn-starter-guide-registry";
+import { correctSpnProposal } from "./spn-proposal-corrections";
+
+test("the accepted planner, move source and guide share the audited v16 baseline", () => {
+  assert.equal(currentSpnProposalRelease.acceptedBaseline, true);
+  assert.equal(currentSpnProposalRelease.proposal.version, registeredStarterGuide.proposalVersion);
+  const corrected = correctSpnProposal(currentSpnProposalRelease);
+  const assignments = new Map(corrected.proposal.rows.map(row => [row.sourceId, row.vitrine]));
+  for (const row of registeredStarterGuide.rows) assert.equal(assignments.get(row.sourceId), row.vitrine);
+  for (const row of registeredStarterGuide.transitionRowsOutsideStarter) assert.equal(assignments.get(row.sourceId), row.destination.vitrine);
+});
 
 test("v16 projection conserves raw source evidence and baseline curator revision tokens", () => {
   const rows = spnV16Release.proposal.rows;

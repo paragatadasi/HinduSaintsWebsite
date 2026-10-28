@@ -1,6 +1,6 @@
 # SPN v16 proposal and starter guide
 
-Prepared on 28 October 2026. The proposal projection is staged in `lib/spn-v16-release.ts`; selecting it as the active default requires the explicit activation approval requested after automatic approval review rejected that switch. Do not deploy the new guide with an older default proposal.
+Prepared on 28 October 2026. Paragata Dasi explicitly approved activation of v16 in the planner, starter guide and rebuilt explorer in Citra's chat. `lib/spn-current-proposal.ts` now selects the reviewed projection in `lib/spn-v16-release.ts` as the accepted default. Release the proposal and guide together.
 
 ## Data contract
 
