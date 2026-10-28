@@ -9,7 +9,7 @@ import {currentLocationLabel,isPlaced,reportedPlacementsRecorded,cityFitsStarter
 
 type Step="clear"|"families"|"cities"|"staging";
 type RequestBody=Record<string,unknown>;
-export function SpnRoomMoveCompanion({guide,initialPhysical,canManage,workflow="guided",allowClear=true,phaseLabel="Starter row",phase="starter"}:{guide:StarterMoveGuide;initialPhysical:PhysicalState|null;canManage:boolean;workflow?:"guided"|"room";allowClear?:boolean;phaseLabel?:string;phase?:"starter"|"datta"}){
+export function SpnRoomMoveCompanion({guide,initialPhysical,canManage,workflow="guided",allowClear=true,phaseLabel="Starter row",phase="starter"}:{guide:StarterMoveGuide;initialPhysical:PhysicalState|null;canManage:boolean;workflow?:"guided"|"room";allowClear?:boolean;phaseLabel?:string;phase?:"starter"|"datta"|"ram-bhakti"}){
  const [physical,setPhysical]=useState(initialPhysical),[step,setStep]=useState<Step>("families"),[selected,setSelected]=useState(guide.vitrines[0]?.code??"2");
  const [busy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState(""),[query,setQuery]=useState(""),[showAlternatives,setShowAlternatives]=useState(false);
  const [saintSearch,setSaintSearch]=useState(""),[startFilter,setStartFilter]=useState(""),[endFilter,setEndFilter]=useState("");
@@ -149,7 +149,7 @@ export function SpnRoomMoveCompanion({guide,initialPhysical,canManage,workflow="
  }
  return <div className={`room-move museum-companion${workflow==="guided"?" museum-companion--guide":""}`} data-museum-companion-theme="parchment"><div className="museum-companion__canvas"><header className="museum-companion__header"><div><p className="eyebrow">SPN · Move companion</p><h1>{workflow==="guided"?"SPN · placement guide":"The starter row"}</h1>{workflow==="room"?<p className="muted">Clear the space, place the key families, then fill around them.</p>:null}</div>
   <div className="review-actions"><button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={busy} onClick={()=>void reload()}>Refresh progress</button>{busy?<span role="status">Saving…</span>:message?<span role="status">{message}</span>:null}</div></header><div className="museum-companion__session"><span>{guide.proposalLabel}</span><span>{guide.vitrines.length} vitrines · Progress saved to the museum</span></div>
-  <nav className="admin-tab-strip" aria-label="Guide phase"><a className="admin-tab-strip__tab" aria-current={phase==="starter"?"page":undefined} href="/museumadmin/move">Starter row</a><a className="admin-tab-strip__tab" aria-current={phase==="datta"?"page":undefined} href="/museumadmin/move?phase=datta">Datta · 3, 81 & 82</a></nav>
+  <nav className="admin-tab-strip" aria-label="Guide phase"><a className="admin-tab-strip__tab" aria-current={phase==="starter"?"page":undefined} href="/museumadmin/move">Starter row</a><a className="admin-tab-strip__tab" aria-current={phase==="datta"?"page":undefined} href="/museumadmin/move?phase=datta">Datta · 3, 81 & 82</a><a className="admin-tab-strip__tab" aria-current={phase==="ram-bhakti"?"page":undefined} href="/museumadmin/move?phase=ram-bhakti">Ram bhakti · 80</a></nav>
   {searchPanel()}
   {error?<div role="alert" className="admin-notice"><p>{error}</p>{retry.current?<button type="button" disabled={busy} onClick={()=>{const r=retry.current;if(r)void send(r.method,r.body,r.url);}}>Retry same save</button>:null}{retry.current?<p>Keep this page open. Retry the same save, or refresh to check whether it was recorded.</p>:null}</div>:null}
 
