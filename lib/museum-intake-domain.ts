@@ -13,6 +13,7 @@ export const museumIntakeFields = z.object({
 export const intakeRelicId = z.string().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/);
 export const museumIntakeRelicInput = z.object({
   id: intakeRelicId,
+  additionalSaintsRaw: z.string().max(2000).optional(),
   relicPlaceRaw: z.string().max(2000).optional(),
   relicDescription: z.string().max(8000),
   broughtByRaw: z.string().max(500).optional()
@@ -90,4 +91,9 @@ export function intakeDeliverySummary(deliveries: readonly { status: string }[])
 export function intakeRetryTargets(deliveries: readonly { target: string; status: string }[]) {
   // An unknown result needs reconciliation with the remote marker, not a blind create retry.
   return deliveries.filter(d => d.status === "failed" || d.status === "blocked_configuration").map(d => d.target);
+}
+
+export function preserveAdditionalSaints(next: IntakeRelicInput, previous?: IntakeRelicInput): IntakeRelicInput {
+  return next.additionalSaintsRaw === undefined && previous?.additionalSaintsRaw !== undefined
+    ? { ...next, additionalSaintsRaw: previous.additionalSaintsRaw } : next;
 }
