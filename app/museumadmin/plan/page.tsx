@@ -1,3 +1,4 @@
+import {buildLatestSpnReview} from "@/lib/spn-reviewed-proposal";
 import Link from "next/link";
 import {currentSpnProposalRelease} from "@/lib/spn-current-proposal";
 import {requireCapability} from "@/lib/admin-access";
@@ -29,6 +30,7 @@ export default async function SpnMovePlan(){
   const reconciled=reconcileSpnRoomProposal([...rows,...namedOnly],placements,{acceptedBaseline});
   return {proposal:view,designData:acceptedBaseline?{...designData,options:designData.options.map(option=>projectCurrentPrimaryAnchors(option,reconciled))}:designData,rows:reconciled};
  });
+ releases.unshift(buildLatestSpnReview(placements));
  return <div className="admin-stack">
  <div className="review-actions"><Link className="museum-admin-button museum-admin-button--secondary" href="/museumadmin/move" prefetch={false}>Move companion</Link></div>
  <SpnRoomExplorer releases={releases}/>

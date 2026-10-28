@@ -1,6 +1,7 @@
 // Concept versions describe the approved design lineage, not artifact filenames.
 export const currentSpnConceptLabel = "East–North connections · v4 · current";
 export const spnProposalLabels: Record<string, { label: string; versionLabel: string; group: "candidate" | "earlier" }> = {
+  "spn-approved-refinements-2026-10-28-v1": { label: "East–North connections · current refinements", versionLabel: "East–North connections · refined 28 October", group: "candidate" },
   "spn-highlighted-anchor-city-refinement-2026-10-27-v16": { label: currentSpnConceptLabel, versionLabel: "East–North connections · v4", group: "candidate" },
   "spn-sikh-north-connections-2026-10-27-v8": { label: "East–North connections · v3 · refined interim", versionLabel: "East–North connections · v3", group: "candidate" },
   "spn-sikh-north-connections-2026-10-26-v1": { label: "East–North connections · v3 · Sikh–North interim", versionLabel: "East–North connections · v3", group: "candidate" },

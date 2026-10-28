@@ -675,3 +675,5 @@ The parchment companion has session-level Active move, Staging area and To-do ta
 Clearing is a preparation card, not another tab. Its persisted result must remain visible after filling, and it must not offer the same clearing action after placement starts. Preserve the difference between acknowledging a prepared space and recording its contents as physically staged.
 
 Family-tree guide entries align relationship captions with the name card, keeping the placement checkbox in a separate column. Per-entry defer/decline and restore controls use the checklist decision state and quiet secondary actions below the card; confirmed placements retain undo rather than suggestion actions.
+
+Approved proposal refinements are a new reviewer option, preserving earlier studies. Map anchors, rosters, family diagrams, place groups and space estimates use the same effective source assignments after current curator choices are reconciled. Unsettled receivers and privately held observations remain in a separate visible review list, outside core counts. Reviewer trees omit physical-location controls; companion trees retain them.

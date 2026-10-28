@@ -1,0 +1,1530 @@
+{
+  "version": "spn-approved-proposal-overlay-2026-10-28-v1",
+  "status": "Evidence handoff, not activation/mutation",
+  "baseline": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+  "sources": [
+    {
+      "version": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "sha256": "e019668b2dcd7edb88b4cfac655acd65053fa351d92cf3f7425051e1a1d9221e"
+    },
+    {
+      "version": "spn-ram-bhakti-core-guide-2026-10-28-v1",
+      "sha256": "8f6f96ddb3281c1a855afe225722130cbf3c5e9789afa7cc2b6ce258b0de280e"
+    },
+    {
+      "version": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "sha256": "2ee4fc1616ba7ed2d329034cc8759daea2dcc55c3d7581dfd70ebb45e2733614"
+    }
+  ],
+  "overrides": [
+    {
+      "sourceId": "rec2H25WTkUXoX3wl",
+      "saintId": "cms0w7cj000fe07qizeo87gkm",
+      "name": "Dattatreya",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "rec2H25WTkUXoX3wl",
+        "section": "Datta Tradition",
+        "tier": "Featured",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "b4e90224de9a15c8c6fe82f10fc861c9f199784696fe8e0afef2b5cfc8c22ee9",
+        "proposalRevision": "3e65c0de295fc145f84a346773acb3e4747a7573b32c02c7444c8c8d16772e41"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rec542avx5EJLdPqI",
+      "saintId": "cms0w7cwu00ww07qil9k17gm8",
+      "name": "Sri Narasimha Saraswati",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "rec542avx5EJLdPqI",
+        "section": "Datta Tradition",
+        "tier": "Featured",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "9ad14e964469f6321bfcb72294dd68008d61f69866b451cb236c77e3a12ad154",
+        "proposalRevision": "e3d51761edd9aa48a1451412c640c5853e887299b8b28c24a55d3780cc270087"
+      },
+      "spaceEstimate": null,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rec6yrEBBbpSoujJY",
+      "saintId": "cms0w7d7v019n07qiv4m266j3",
+      "name": "Sri Sita Ram Das",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec6yrEBBbpSoujJY",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e08642c84a10f210f3a5731f6f4ef4909970029c896497fcdf2d19968afe11d9",
+        "proposalRevision": "0aab2bdf1883e653652753785e82774decb87eb68aab2aacb84c32d478d2c409"
+      },
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recAdoHb834kJnkig",
+      "saintId": "cms0w7do501vq07qifzgeltqf",
+      "name": "Swami Akkalkot Maharaj",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recAdoHb834kJnkig",
+        "section": "Datta Tradition",
+        "tier": "Featured",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "90439c4db3dd644f69455f8b925ada092afba259002614d0ce3ae9906ba7579c",
+        "proposalRevision": "0e29852f05bd79f146577eaff644a0226fa3d530efb300bc63a87523abf7dfc9"
+      },
+      "spaceEstimate": 0.5,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recEhlZJadMj1ae8L",
+      "saintId": "cms0w7eqp03ac07qiqddvnmxd",
+      "name": "Sri Tembe Swami",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recEhlZJadMj1ae8L",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "39aea1981fd547df284488e06ae3a2c5f284fd0c56ba7fd64840863607886b29",
+        "proposalRevision": "046b0d8deac93ef720c203958f8e04f732f2312623e51bef0a60c255db4dfd8a"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recEvPtUXEpvPZtBk",
+      "saintId": "cmus3rwrz002v07o54n75mgqn",
+      "name": "Sri Narasimha Saraswati",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recEvPtUXEpvPZtBk",
+        "section": "Datta Tradition",
+        "tier": "Featured",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "fdb61f75905c7b39c0c8b6f0602f43d730d79e4be41166dccb17ab8a52cc1fef",
+        "proposalRevision": "3177c2ec5ad6bda986c612f551541a3f8e1b1cd57b276f0397113b1261f178ab"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recJlxMVAhiEXIlDH",
+      "saintId": "cms0w7fxq04tc07qiwr3rrwsw",
+      "name": "Sri Swami Shamanand ji",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recJlxMVAhiEXIlDH",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c4164f262b0a95e5056e95010f7ae6c79d4d0404a337f5e302570f7146153205",
+        "proposalRevision": "3fbf4b1e42b78fbbbd2200a48120bcd614a71984a93a0baa826d6cd57f3a21e4"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recrMH17Ga8tP11z0",
+      "saintId": "cms0w7hw7076a07qi4hqjhuhx",
+      "name": "Sri Gawdi Baba",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recrMH17Ga8tP11z0",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "4db598c50500a3076ecdddb647ca08474417281ecbc302084c497d10376c42d7",
+        "proposalRevision": "6247150df6015757f54fc7f12d4aa5785642988b1bdfd5132d15d983b1fa801c"
+      },
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recUzBdPjfszv1w8D",
+      "saintId": "cms0w7isv086007qi2qits4uh",
+      "name": "Sri Balappa Maharaj",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recUzBdPjfszv1w8D",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "d899656dc918bdb5eb91dde477c0a0aa592d714053c1520344d20aba3c9aa43c",
+        "proposalRevision": "e98aeddf7707ec945c05fe379e95c4baf1798eb85559c3cdb587737ef36fa462"
+      },
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recVNNh7e8ifVyQnO",
+      "saintId": "cms0w7izt08d807qicc6snznj",
+      "name": "Sri Avadhuta Pitchamma",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recVNNh7e8ifVyQnO",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a6f0f610eea78ff544123ba38571db9c3dcc59c729496afae5192d22d317ad66",
+        "proposalRevision": "93bd2db25d71ed125b3f805e2c57dc2211e9af4f8de38ed08d889ef3496e3b58"
+      },
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recWCBILl4t5fUT1c",
+      "saintId": "cms0w7j6708k807qiw00mx7vx",
+      "name": "Sri Gangadhara Maharaj",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recWCBILl4t5fUT1c",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "0ad4458cc10c8a540c19d6340271c5aaf779753aafc2a35957426a600e75c053",
+        "proposalRevision": "84b81f884dd64b2fc87b9535618618351d0445eef008b6ab0049142f7f17c205"
+      },
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recxEz0VEdK2EF6G6",
+      "saintId": "cms0w7jhi08v307qiv9qmaedn",
+      "name": "Param Pujya Sri Manik Prabhu",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recxEz0VEdK2EF6G6",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "614411fcc05707ac283b632351c3bef508c19395202d510bb8407d855baf59d9",
+        "proposalRevision": "7fa5250a23432904d5f7f6e4e27fc75bd3bc765a9f718262eb62972d7747fe66"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recdZzkFXHY1iH1Ct",
+      "saintId": "cms0w7eo7036v07qiyxlrml0p",
+      "name": "Sri Rang Avadhoot",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recdZzkFXHY1iH1Ct",
+        "section": "Gujarat & Swaminarayan Traditions",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "505bdbff4f5880fdfa339a89095340c39671e3a4cab536bdcc10318a800135ac",
+        "proposalRevision": "8aa97ce0864c8e4d282fa205c54bcb1168903173fe71209125e2aa733995e663"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recZ8dSUCZSv0HSTl",
+      "saintId": "cms0w7k0p09fb07qi2am8wk84",
+      "name": "Yogananda Swami",
+      "proposedVitrine": "3",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recZ8dSUCZSv0HSTl",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "a13d5f5b8c5c9eeb250cd059d212a487b37bcb73231ce67f57e71d587b62c738",
+        "proposalRevision": "f55e466a0fc40eb748fd0a647a1a2bb4addf1a40651780ce85054a3d057f54e2"
+      },
+      "spaceEstimate": null,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recOFdAquHaua3csH",
+      "saintId": "cms0w7h4g069i07qiutly2tdw",
+      "name": "Sri Gajanan Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recOFdAquHaua3csH",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Featured",
+        "familyKey": "FAM-021",
+        "regionTags": [],
+        "revision": "6c107b7c970ebc67294d7fb09bcd3e6b60b3a42d33df50559caea0867a7d5805",
+        "proposalRevision": "5c459fbfe890ac178ebc448f619e8d9a10a6e1a79424ed25487a4c0fb170b3a3"
+      },
+      "spaceEstimate": 0.14285714285714285,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rech5NjFF9igacZOG",
+      "saintId": "cms0w7fe9045b07qiv7h2wlsy",
+      "name": "Sri Bhaskar Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "rech5NjFF9igacZOG",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-021",
+        "regionTags": [],
+        "revision": "7183b807aea144c64e866eae7102ed53c065576b9da54d58b12177c668ccccf4",
+        "proposalRevision": "6fb12f82ab777f5c5d3508b04253fa0f2a833b638dfd7bf248c4a665f14a7850"
+      },
+      "spaceEstimate": 0.14285714285714285,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recops2O0wjNvudCR",
+      "saintId": "cms0w7h7p06d507qicji2tzok",
+      "name": "Vasudev Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recops2O0wjNvudCR",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-021",
+        "regionTags": [],
+        "revision": "8418ebf42419a5f600f5c6abf46c436b71cf24cc037cd3e8bd1b47e814f05720",
+        "proposalRevision": "d74b34cdade5d0765c72ba5e43aea339cc18288420e98aab366da8daba7762ed"
+      },
+      "spaceEstimate": null,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recSRwoghGnzVJ9tA",
+      "saintId": "cms0w7i6107hd07qijtv18pfn",
+      "name": "Sri Gomaji Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recSRwoghGnzVJ9tA",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4b07f77bb2ec01058fd4ba607ff88c27d7cdfb31f356ae4ba568afc6db598448",
+        "proposalRevision": "62e4c270e58bc39ff9ee470ab1ebd6040ec3e4295fa0bf159af36fb43618b61c"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "reciBIEhPusrMNpq0",
+      "saintId": "cms0w7fmw04g907qip7dhwvhl",
+      "name": "Sri Sant Gulap Baba Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "reciBIEhPusrMNpq0",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0b0905f812b71ec84b08692d578b2ada87004ac8c38ae150b8c354c84ada9464",
+        "proposalRevision": "ea77709141c652fa5f48897c7bf657092ba061f16461fffb757f1bd81930b2a9"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rec0CkGBX7uKd9y3o",
+      "saintId": "cms0w7c7d002d07qia8q2kmnn",
+      "name": "Sri Adaneshwar Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec0CkGBX7uKd9y3o",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "03de2571ce67a5ee7bf397e1ed984de3af8b34074cf996015d4d8e25264fc56f",
+        "proposalRevision": "7e48b543cc0173eac4cc019b1a36e863c70ead4fe696296a06a9d525d61d07c9"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recBmh3Lo44Fj6om0",
+      "saintId": "cms0w7dz502ai07qizeer6vts",
+      "name": "Sri Paramahansa Lahanu ji Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recBmh3Lo44Fj6om0",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "83a51dec2682ef6f8144094a8b84cf2bbb83b41e59d71c57a99507b04abc01ef",
+        "proposalRevision": "89fb55f8ef351d8e2d95e39212836eed7fd778c0b1e6d4bfcd7e9c501a9e9d4f"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "reccc5sNaj8Vscimk",
+      "saintId": "cms0w7e6v02k607qieztsdndl",
+      "name": "Sri Samarth Yogiraj Govinda Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "reccc5sNaj8Vscimk",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "54d1dabfc85a91d39bd5136ea24d80a4ae16ee9fecf60230870266c0341859e9",
+        "proposalRevision": "f42e24f987c09dce7230a9179fe984086c85ebfd6fa4935e648f366cce342818"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recdCWFHtpGYHqE8F",
+      "saintId": "cms0w7efr02vr07qieln15173",
+      "name": "Same Saint the Tukadoji 40A Sri Tukadrodji Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recdCWFHtpGYHqE8F",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4a1bd67f0388c80fdaaab77a989556efa45cbe6ad5829860db536cf16d29d9c3",
+        "proposalRevision": "fb2daf3ca20e1d02d7479c9ec5a092e57b52c3f0d4277bee064c75b413cac2aa"
+      },
+      "spaceEstimate": null,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recHrmmTo7VrP1YfY",
+      "saintId": "cms0w7fj504bm07qi7nl50go3",
+      "name": "Sri Gadgey Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recHrmmTo7VrP1YfY",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "25ebd3ce323d4b072e9c0afd8ab128dd08428d807c8d70243e9787a05a10f287",
+        "proposalRevision": "5470ce693bdc3d2d746f4804d6c6e6613be68106b61f18de99a686e8cb54b7d5"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recnSUUjt7RP46o88",
+      "saintId": "cms0w7h02064h07qixrel8peq",
+      "name": "Sri Bausaheb Firke (Saupan Bhao)",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recnSUUjt7RP46o88",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "dd07a327632e82994f3954b1d37fc5e904410429356e9ea7a8bfb791ca5e6ded",
+        "proposalRevision": "a30c8ab015a7e3ecff840893c0f2ea02d1b42eca4eff56c613e2e3f83d447b5c"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recNUav0Zgh3pg5nd",
+      "saintId": "cms0w7h0u065e07qinytv88ix",
+      "name": "Sri Gulabrao Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recNUav0Zgh3pg5nd",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ab989665476f9577f2876cf667109e97eb2b885529e8bcae8956d7f59f000877",
+        "proposalRevision": "fdfd80c0a9ea95dde662e609c14806593a950ad8011294a0a9b6046e06b0ffe0"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recOBef516igAnO5g",
+      "saintId": "cms0w7h3p068o07qi4ktsk24l",
+      "name": "Paramahamsa Sri Sadguru Aadaku Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recOBef516igAnO5g",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e0df87e139304d03418270e7df6a7e7255746feaf88a80fd17eaffbbd07de2c4",
+        "proposalRevision": "51b033212a99adefced8704cdcba19ba48f077fd1f2c9065138477a791d1381a"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recpYUX5tRfimFzHh",
+      "saintId": "cms0w7hih06pz07qiex1icymo",
+      "name": "Paramahansa Sri Tukadoji Maharaj",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recpYUX5tRfimFzHh",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "92d83ab209b4ee38ec20b8b015123d4e67ba2acdedf25cae5b180670ffcfc39b",
+        "proposalRevision": "ec9a7f4ecc7da42c0254eae9dea12acdb96a222e35172b7b8494c3e3061e5743"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recuIIGxf3QoRie5y",
+      "saintId": "cms0w7ioi081807qixpy33uy9",
+      "name": "Sri Gulabrao Baba",
+      "proposedVitrine": "81",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recuIIGxf3QoRie5y",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c0318a402a1b25187c11a308fb04d3f713492c583090bdd9b962fcc2cade394f",
+        "proposalRevision": "128377c2d5223875326c952f412128aa89c342b11f48a09a6a9dc0e80ca28a81"
+      },
+      "spaceEstimate": null,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recaUt3hYFYOke7zb",
+      "saintId": "cms0w7du8023l07qi7gpyjp1d",
+      "name": "Sri Samarth Sadguru Vishvanath Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recaUt3hYFYOke7zb",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5bcaa8fa3cef8ece6617f8317dcd9fda8ac829a5063e947842903aad5d58203f",
+        "proposalRevision": "e09f7037077419420bdddf59c9a9d557db4c693a82d83b492e2b7f2bcbd8fe4c"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "reccorfTb0jN9XUyn",
+      "saintId": "cms0w7eao02pa07qimlu6z5tz",
+      "name": "Sri Maha Daba Patil",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "reccorfTb0jN9XUyn",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3e3279bd161ca628f309e4174bb3c22c9bef993554be605fe320603ba99e4a25",
+        "proposalRevision": "01a6b5d590ee27d9c8d2d629bf8f7e81a99d8f6ac2c15c1df87cbfb3f0b5ce20"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recCXTEbnox9nOG4W",
+      "saintId": "cms0w7ed702si07qi5drvo66o",
+      "name": "Sri Chille Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recCXTEbnox9nOG4W",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c850de8ac64fa6a2ee6340a1d6b90dbed3b7202448eab886fc7a49a706d6fb94",
+        "proposalRevision": "954cf4bb648e899531e430bc1922362a20a053a55f06728926ee3fe94b8bee11"
+      },
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recdtwvbxtQysRy3D",
+      "saintId": "cms0w7em1033z07qim9gbisny",
+      "name": "Sri Balmukunda Avadhut Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recdtwvbxtQysRy3D",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b21f459189ed9e501584c815e7cdc15b95d374d8221cb1654e23e63f045c0385",
+        "proposalRevision": "af98899dc909fe691fca75ecc2b108e15f309c3c47d41aba64fb5633017ff1b9"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recDvvnxk6XDW7DC8",
+      "saintId": "cms0w7emy035607qi6i9n8nu2",
+      "name": "Sri Siddheshwar Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recDvvnxk6XDW7DC8",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "6c4c94ffca4cb63f29bde9559d6746e45e499c0cb828be2bd6d816354758948b",
+        "proposalRevision": "78c2c3fc99de271f0e0a6f3462407eab6b5267e08e37d011af831d976d032542"
+      },
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recFMiA1H4ZW1r0gq",
+      "saintId": "cms0w7f1s03ou07qiq5e6ou7z",
+      "name": "Sri Rajyogi Gajanan Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recFMiA1H4ZW1r0gq",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "fdecb603c1385264efe722e8054144e2388082c80627d3b283085b718aa70cfc",
+        "proposalRevision": "dac683edaad3b1109e7704d211cf556dc0635cf342b5056a5a45aca81b062b75"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recKqavgeeeOGQzAk",
+      "saintId": "cms0w7g9e057n07qi91f900q8",
+      "name": "Sri Jnaneshwar Hari Katkar Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recKqavgeeeOGQzAk",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0070252f340f535888344b3ffe4914629997450d797d7fcc82186da636b2ec36",
+        "proposalRevision": "b5211671eadbcf2c34da2c66dd93923de3d778c3130ec00da36f2e4282e9a75c"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recmGMLa0E8bmx9MQ",
+      "saintId": "cms0w7gno05pe07qiukmiqpeo",
+      "name": "Sri Gagangiri Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recmGMLa0E8bmx9MQ",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c0e6dc08692a5496b0f72de4c77bde7386e760d43a6b38819c1582d152876860",
+        "proposalRevision": "4fdbc95f56f73b30146b734b809cb71ecc8bad3567203dc4498bdc6fe40344f5"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recneBQ4cSLNVqSSq",
+      "saintId": "cms0w7gwt060f07qi7pvdiaps",
+      "name": "Sri Devakinandashrama Swami",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recneBQ4cSLNVqSSq",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8bb491197177a2e7429fbccb1c4fe458c450a1db60a0df3c2784519f34a2a502",
+        "proposalRevision": "6b1f391b78093384c6b229db2379b9d2640eb579ddceed6e036fa62965828ff7"
+      },
+      "spaceEstimate": 0.09090909090909091,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recSx9QQVGLugLNjG",
+      "saintId": "cms0w7i7y07ja07qi02rgnjv0",
+      "name": "Sri Shankarnath Raval Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recSx9QQVGLugLNjG",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "6d65461e7e0caadbedd5e081a33c3822b9ef0eefaad8de2939a00465a1530269",
+        "proposalRevision": "7524b08cb2f8d475801426284b15145487db241ddaa02c56fe57c5a982f6fbe8"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recYjuNIXQc57GQyJ",
+      "saintId": "cms0w7jtk097s07qi8eol9732",
+      "name": "Sri Madhavnath Sangwadekar Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recYjuNIXQc57GQyJ",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e1e2f605ca75b75f59b743ea04d808b512fe701f9a0f600b0e94ec1a41552bb5",
+        "proposalRevision": "a7fb62741e3656d24969217ff9ac7533043c2571246d5ba9053c2cb2922d73d0"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rec8dNXWS2LIRcLGe",
+      "saintId": "cms0w7ddu01ho07qi252m60nx",
+      "name": "Sri Krishna Saraswati Datt Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "rec8dNXWS2LIRcLGe",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "62f0162b89f1048288b616038eb921bcacf587c672f2d847edef2fb5b8fa5325",
+        "proposalRevision": "1be44736a429f5e6df9a1f0f8b09f95e39b53979914aa2bf1fda74b3bf78fdfd"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recFeb8DyNtLuEtfs",
+      "saintId": "cms0w7ezo03m607qibrzp7me5",
+      "name": "Sri Naamdevji Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recFeb8DyNtLuEtfs",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-059",
+        "regionTags": [],
+        "revision": "ebdcf6392b277248a9664b4d0dbcc0bbcd438d3603acce6609b51a5de2fb2b1b",
+        "proposalRevision": "44a6b81977e1ba86bbd74e4bcf991ecae470cbf5352a17ac791b3d2b72c24842"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recKmUNZB0LwvnQYV",
+      "saintId": "cms0w7g8i056i07qi2p5e8oho",
+      "name": "Sri Pant Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recKmUNZB0LwvnQYV",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "f92ddaefa3bdad48960f94ebb0651bd428d9f84e42dc92ecbc904ac35a614b18",
+        "proposalRevision": "b418b6bba41ecaefe93492951833b81b33e33091e5c7ce48dd8b8608824cae78"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recEGuGQQ4N4EXAil",
+      "saintId": "cms0w7eqi03a507qirld8vnh4",
+      "name": "Sri Dattatreya Sonar",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recEGuGQQ4N4EXAil",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "f7ec885d360208fabc9ca49a964d60cbe5e14d8fe06c9f5f271b62c28a279d54",
+        "proposalRevision": "259b0b41dea8b71f85bb76cbeb4908c538887c65bcd46254b8405a0945ba39bd"
+      },
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recb0bxlGKljLlnHX",
+      "saintId": "cms0w7dw3026407qiefynszwb",
+      "name": "Sri Ramanand Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recb0bxlGKljLlnHX",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "02247e21c98629e980697cfb9d5e612be6b3a3fa0132fa836fde08d81f1bbfbf",
+        "proposalRevision": "8c0577aa8ba5d4579376e2ac78b0edbbbf886a6a86845cb2eb9f2f74a2bd0083"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recToCTKv11kDx7Ax",
+      "saintId": "cms0w7iew07qy07qijgecgahj",
+      "name": "Sri Narayan Das Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recToCTKv11kDx7Ax",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-045",
+        "regionTags": [],
+        "revision": "aa69b72a1a5aac087ba3274b7f13e5050b11cc7f5aa1d18d5ef4715039d90357",
+        "proposalRevision": "a86cbbcc164e4cff58986010a38f10f2fbf55ca01cc5e065a8cb62a8cb598401"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recVkkhtVH8yfppid",
+      "saintId": "cms0w7izc08cr07qitk6woeo8",
+      "name": "Sri Dutta Das",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recVkkhtVH8yfppid",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-045",
+        "regionTags": [],
+        "revision": "0aca762b69292635844956d108ad3505956a160ea5fa972645dedca8dcf42462",
+        "proposalRevision": "c78e4c2eed94f4e39301af42d166db47beb1584a9623f760e476622b0a66799a"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recRnVf9eR7izgH7r",
+      "saintId": "cms0w7hwt076y07qib1rb7dkz",
+      "name": "Sri Shankar Maharaj",
+      "proposedVitrine": "82",
+      "evidenceVersion": "spn-datta-move-guide-phase-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recRnVf9eR7izgH7r",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a4cb42e07c9e53819dac58fbf7d17ae8974909c0e2e663fb2b268e084fe3f980",
+        "proposalRevision": "bd0a18569874b5a8aa4769c702f362034c41d4dbaaba0d1510b4618651626aeb"
+      },
+      "spaceEstimate": 0.5,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recfi9BOPvQP4SGAE",
+      "saintId": "cms0w7f0l03nb07qik1abxafl",
+      "name": "Sri Samarth Ramdas",
+      "proposedVitrine": "80",
+      "evidenceVersion": "spn-ram-bhakti-core-guide-2026-10-28-v1",
+      "capturedTier": "Primary",
+      "capturedBaseline": null,
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recCGUZ0GOInZQ8y3",
+      "saintId": "cms0w7e7h02ky07qi6rjds61j",
+      "name": "Sri Vena Bai Swami",
+      "proposedVitrine": "80",
+      "evidenceVersion": "spn-ram-bhakti-core-guide-2026-10-28-v1",
+      "capturedTier": "Secondary",
+      "capturedBaseline": null,
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rec8ob3C56Q6tv3kb",
+      "saintId": "cms0w7dfs01k307qiefqq5di6",
+      "name": "Sri Shivaji Maharaj",
+      "proposedVitrine": "80",
+      "evidenceVersion": "spn-ram-bhakti-core-guide-2026-10-28-v1",
+      "capturedTier": "Primary",
+      "capturedBaseline": null,
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recGtVWuUclVacwiB",
+      "saintId": "cmus3rwuv003c07o53utlo4h6",
+      "name": "Sri Shridhar Swami",
+      "proposedVitrine": "80",
+      "evidenceVersion": "spn-ram-bhakti-core-guide-2026-10-28-v1",
+      "capturedTier": "Primary",
+      "capturedBaseline": null,
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recyQbBAPywfZ41O2",
+      "saintId": "cms0w7jw209ak07qiwl534cau",
+      "name": "Sri Dada Godsay",
+      "proposedVitrine": "80",
+      "evidenceVersion": "spn-ram-bhakti-core-guide-2026-10-28-v1",
+      "capturedTier": "Secondary",
+      "capturedBaseline": null,
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recxjM8XNprzBWzuT",
+      "saintId": "cms0w7jjj08x907qiyw8q9hae",
+      "name": "Sri Neem Karoli Baba",
+      "proposedVitrine": "80",
+      "evidenceVersion": "spn-ram-bhakti-core-guide-2026-10-28-v1",
+      "capturedTier": "Primary",
+      "capturedBaseline": null,
+      "spaceEstimate": 0.20833333333333331,
+      "reviewNotes": [
+        "Northern regional identity is preserved; Ram/Hanuman connection is thematic."
+      ]
+    },
+    {
+      "sourceId": "recl4gAipADCmXJrH",
+      "saintId": "cms0w7gde05cl07qihkl5hb6u",
+      "name": "Sri Gondawalekar Maharaj",
+      "proposedVitrine": "80",
+      "evidenceVersion": "spn-ram-bhakti-core-guide-2026-10-28-v1",
+      "capturedTier": "Primary",
+      "capturedBaseline": null,
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rec1cTbJ4iPAMUW0v",
+      "saintId": "cms0w7cdr008r07qim1f6c46u",
+      "name": "Sri Vijay Krishna Goswami",
+      "proposedVitrine": "37",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "rec1cTbJ4iPAMUW0v",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Featured",
+        "familyKey": "FAM-006",
+        "regionTags": [],
+        "revision": "ee6beffa3f10ea3fe612ccf369c54a089b0ca4e6004c477ac0993ad202e1af6d",
+        "proposalRevision": "aea11c102c89de91508ea3346437273d3faddf39f21738cd74ca8696cd006101"
+      },
+      "spaceEstimate": 0.5,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recaSmpkXpqslt29K",
+      "saintId": "cms0w7dti022v07qiuilv6m9z",
+      "name": "Sri Yogmaya Devi",
+      "proposedVitrine": "37",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recaSmpkXpqslt29K",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Featured",
+        "familyKey": "FAM-006",
+        "regionTags": [],
+        "revision": "4803c51a6c3ac2cbc288c789074d1981bcad072dbfa2a06cd9b37d8cb23d288e",
+        "proposalRevision": "82edab05b05aad623153a64c78fc2cd0bc068fe50737a97b29f54c4242d1b357"
+      },
+      "spaceEstimate": 1,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recRZkHSnl8nDNArl",
+      "saintId": null,
+      "name": "Sri Yogmaya Devi of Puri/ Vrindavan ",
+      "proposedVitrine": "37",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Unclassified",
+      "capturedBaseline": null,
+      "spaceEstimate": 0.5,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rec8zRjsV6xnw4mwa",
+      "saintId": "cms0w7dgu01lg07qi9lfmgamq",
+      "name": "Kuladananda Brahmachari",
+      "proposedVitrine": "37",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "rec8zRjsV6xnw4mwa",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Secondary",
+        "familyKey": "FAM-006",
+        "regionTags": [],
+        "revision": "16d1575b750dc474717bdf79067eb436cd8b39ab69bd7d5bb44e8139f6e5596d",
+        "proposalRevision": "1178d7cd96f5334824de7f457e020da1c5fb258e554304018c3a05c7d776a01c"
+      },
+      "spaceEstimate": 0.5,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recPw3FxLbHjXdgaD",
+      "saintId": "cms0w7hhf06ou07qiamdg3lk6",
+      "name": "Sri Sri Kiranchand Darveshji",
+      "proposedVitrine": "37",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recPw3FxLbHjXdgaD",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Secondary",
+        "familyKey": "FAM-006",
+        "regionTags": [],
+        "revision": "9df42a936972b3a661ee1814925618aae62d641e454926ff57f8ae435d5a433c",
+        "proposalRevision": "ca39812c4689e99f3f122fb050d64e515f43cb17f4f40af765b8bca00b5645a9"
+      },
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rechEXrlzldl7ZpoA",
+      "saintId": "cms0w7fgh048407qiifplz4iw",
+      "name": "Sri Mata Saroj Bala Devi",
+      "proposedVitrine": "37",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "rechEXrlzldl7ZpoA",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Secondary",
+        "familyKey": "FAM-006",
+        "regionTags": [],
+        "revision": "038b7d59602c78f913cd65b19fba3e6c123fb59aa4203aeb2a33c2b478b93a9d",
+        "proposalRevision": "a9be7464d0ef45e278217e0e4ac4f0c23acd3ada0911475fe9b771e0933f17fd"
+      },
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recsumN8i2tdC7GbV",
+      "saintId": "cms0w7i6l07hw07qi6pwtf2er",
+      "name": "Sri Sri Maa Moni",
+      "proposedVitrine": "37",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recsumN8i2tdC7GbV",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Secondary",
+        "familyKey": "FAM-006",
+        "regionTags": [],
+        "revision": "58817dad278e2428307fb0f55b086f2537ae6809f7f57b0efee7d63277d6c6b8",
+        "proposalRevision": "2c5ae1514d1e8dabfa92ecebee6384828837b83e98fbac6bf9041d7a4e239fc0"
+      },
+      "spaceEstimate": 0.125,
+      "reviewNotes": [
+        "Recorded Gosaiji discipleship accepted by user; dates1993/1996 retained as disputed."
+      ]
+    },
+    {
+      "sourceId": "reckCzqScd99ZzKth",
+      "saintId": "cms0w7g4q051v07qi70ao66sj",
+      "name": "Sri Sri Siddha Chaitanya Das Babaji",
+      "proposedVitrine": "37",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "reckCzqScd99ZzKth",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Featured",
+        "familyKey": "FAM-074",
+        "regionTags": [],
+        "revision": "0841791f22caf75375486b5d618b610ecac07d3de21ecc7f01c5c424f08ad6ee",
+        "proposalRevision": "d8303cee47e356c5c262adc434893131a683dcf8696b4ea2f8aeebb3be5f30e2"
+      },
+      "spaceEstimate": 0.1111111111111111,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recVBH9QlLXVBdYW9",
+      "saintId": "cms0w7iwe089l07qifinqo53t",
+      "name": "Sri Srila Krishnadas Babaji",
+      "proposedVitrine": "37",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recVBH9QlLXVBdYW9",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Secondary",
+        "familyKey": "FAM-074",
+        "regionTags": [],
+        "revision": "914cb680766a5b8a0a2341d22027e358c4da01c61cb4c26b62aa054425df1ad3",
+        "proposalRevision": "212bfcb0e47009f5c1fae55d904e52115a751bb4bd7808195ed9f495e0151230"
+      },
+      "spaceEstimate": 0.08333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recwXrEbirWApVteB",
+      "saintId": "cms0w7jbx08q307qi39kwfusb",
+      "name": "Sri Swami Didhishananda Saraswati",
+      "proposedVitrine": "37",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recwXrEbirWApVteB",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Secondary",
+        "familyKey": "FAM-006",
+        "regionTags": [],
+        "revision": "0c9b504112635094116c870b0a0bb0a5e834e1c1e3534e76e596ae000a901299",
+        "proposalRevision": "216ac6cc5c450f8f2990da757374b9a55eab422d0f59404767aa5f46fa544906"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recGN3z8hfy3Z0qqU",
+      "saintId": "cms0w7f8x03ye07qi9g4vumc5",
+      "name": "Sri Meher Baba",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recGN3z8hfy3Z0qqU",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Featured",
+        "familyKey": "CUR-FAM-FIVE-PERFECT-MASTERS",
+        "regionTags": [],
+        "revision": "0f605588e57831f24a7990168f638b1ce81f7a3e92b1c99f607a92eb3618ac16",
+        "proposalRevision": "d95e5d6f4418dcc0baee9544b0e302039a9b9d7f69b86ad0b85ec00efeb513f8"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recAzBZTh80FmTUJN",
+      "saintId": "cms0w7dvj025c07qid5p1koit",
+      "name": "Sri Hazrat Babajan",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recAzBZTh80FmTUJN",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Featured",
+        "familyKey": "CUR-FAM-FIVE-PERFECT-MASTERS",
+        "regionTags": [],
+        "revision": "dfcca4f675b06ac5dcde6367d17b8fc6d0f567d29cfbb8553bc3c0c001b9c5e4",
+        "proposalRevision": "f36b2de00716e96cd37d88b46c3534e0a2d55eff813ba6d7cdd1f995cfe4c5eb"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rec7rcJAHv3rsPsZN",
+      "saintId": "cmus3rwco000u07o500ujq33h",
+      "name": "Sri Narayan Maharaj",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "rec7rcJAHv3rsPsZN",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Featured",
+        "familyKey": "CUR-FAM-FIVE-PERFECT-MASTERS",
+        "regionTags": [],
+        "revision": "86082d4609519366cc3166b5f4222cc7b1b65f32097c1928050b39f74e43128d",
+        "proposalRevision": "9920fccebbbb4efd265195272b0f7483ea85d3c16baa85c35fb283787784be65"
+      },
+      "spaceEstimate": 0.5,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recDQE3wQ8BNrmIpR",
+      "saintId": "cms0w7ekk032007qil1n8orbp",
+      "name": "Sri Shirdi Sai Baba",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recDQE3wQ8BNrmIpR",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Featured",
+        "familyKey": "CUR-FAM-FIVE-PERFECT-MASTERS",
+        "regionTags": [],
+        "revision": "af7faf08275164c53f8614932c775fd094e072fe8ced4077f1dc4c035b4f8b1c",
+        "proposalRevision": "b3823d6a48aed0130a42c1fbe5abfe210db56a955332edbfd782ca62a784d0c2"
+      },
+      "spaceEstimate": 1.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recV8xezfabpzSS0B",
+      "saintId": "cms0w7ivh088m07qi2bl8sj8b",
+      "name": "Sri Upasani Maharaj",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recV8xezfabpzSS0B",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Featured",
+        "familyKey": "CUR-FAM-FIVE-PERFECT-MASTERS",
+        "regionTags": [],
+        "revision": "d8f69a479ec9ab672acdb3f8653b8d9d15b4dd95ae350c29b90711e3d9fee825",
+        "proposalRevision": "676270350c3997f3dd3ed6c0156a50ba733f7e6411fb77aab89d7ef56166ad1c"
+      },
+      "spaceEstimate": 0.3125,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recZxEDfwSCOpkXyC",
+      "saintId": "cms0w7ka509op07qiy3vg3gg1",
+      "name": "Hazrat Tajuddin Baba of Nagpur",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recZxEDfwSCOpkXyC",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Featured",
+        "familyKey": "CUR-FAM-FIVE-PERFECT-MASTERS",
+        "regionTags": [],
+        "revision": "c603d3925eb1fe0c8d9b6fd227a56e19b28ba23078eda428a4ada72bae012f5e",
+        "proposalRevision": "b8ed2accb10258dc91dafc57845aae2b60c7a9c0da1043a59970b9d0d8bb74cd"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recjqj3HtOfhT7hmY",
+      "saintId": "cms0w7fz904v607qijuaa118u",
+      "name": "Sri Godavari Mata",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recjqj3HtOfhT7hmY",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "CUR-FAM-FIVE-PERFECT-MASTERS",
+        "regionTags": [],
+        "revision": "aa69ce8d3adb42ab799dd7dfad5d5fcd90728df1070faa4eaab13e757a53649c",
+        "proposalRevision": "7a96c6cadd88d1045796cb189ddc28d1460a4d9bfa8da358f4039ba1994a5882"
+      },
+      "spaceEstimate": 0.3125,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recKQvAzazop2jggr",
+      "saintId": "cms0w7g9v058c07qiiv3ej2nr",
+      "name": "Sri Sai Leela Amma",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recKQvAzazop2jggr",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "CUR-FAM-FIVE-PERFECT-MASTERS",
+        "regionTags": [],
+        "revision": "7be361df5d7b259fd308f78e671af1aa095fb4aed434f641f9a902c49b04f77f",
+        "proposalRevision": "b0a456347c74eaebf54a93a2b0a454d9537245c2afaf3638b8f3c61d5279d952"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rech5MQ4nOMgkH1FL",
+      "saintId": "cms0w7fdw044x07qirr782v8b",
+      "name": "Sri Swami Kaleshwar",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rech5MQ4nOMgkH1FL",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "FAM-007",
+        "regionTags": [],
+        "revision": "e6837c33e8d40bb4689b9b8c4bf03655e861bbccc49c0e913558226bc5aa1a97",
+        "proposalRevision": "3d1895f5edb1fcb88278c3af8b94cfa5b3086c7a86a4b23efbc9557e61080caf"
+      },
+      "spaceEstimate": 0.3125,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recmnzklbsFkmcOUh",
+      "saintId": "cms0w7gq005s607qib62v1tz6",
+      "name": "Sri Saibhakt Nana Saheb Nimonkar Deshpande",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recmnzklbsFkmcOUh",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-007",
+        "regionTags": [],
+        "revision": "b547b3d516f2db81ccc08b742add6811d49a6d2fcf3ba14bbc17f1a453f24506",
+        "proposalRevision": "1a7e0d11b536e11adf46b46e0a9792b51a32f67781b7148f2b7b158aabdd51a4"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rec9cGrqgBRNKmfQV",
+      "saintId": "cms0w7dho01mk07qiobliagjd",
+      "name": "Sri Sathya Sai Baba",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "rec9cGrqgBRNKmfQV",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Featured",
+        "familyKey": "FAM-007",
+        "regionTags": [],
+        "revision": "98de4045289226701eca9d1e63c6d0adcce93c8ab5dd14f021b58382ce7ba71d",
+        "proposalRevision": "56adfead306fc610221eb6b51638272de63824c092e7bdc1e5242eba43076864"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rec6NG6MDSYvD0JT5",
+      "saintId": "cms0w7d4t016107qijs960uxr",
+      "name": "Sri Bala Sai Baba",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "rec6NG6MDSYvD0JT5",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-007",
+        "regionTags": [],
+        "revision": "16dc1646e729264d8d6293688f79697bf421690abe2146a2739fb459d615d7c9",
+        "proposalRevision": "ad63c8d26457bf0ab4463cd9202c46bca2d7d7e0998fd03761c717fe5d4aa0f7"
+      },
+      "spaceEstimate": 0.2,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rec0WHeheDqNQnKw4",
+      "saintId": "cms0w7cbs006p07qi44q5kt48",
+      "name": "Sri Shafi Baba Kadari (Taji)",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "rec0WHeheDqNQnKw4",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-024",
+        "regionTags": [],
+        "revision": "8016d7aeff66c6a909f3c81e74ce59488b6d70f37c79bd2c0f3641fc302dc0dc",
+        "proposalRevision": "6a3e0c3e0f1c93f8faa0de220bb4bf0632da7dc00c64eedafeec067f14f1cbb6"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "recj3tFdEZ16m85Qs",
+      "saintId": "cms0w7ftc04ny07qiaiim9zmn",
+      "name": "Sri Daji Maharaj (Bhaiya ji Maharaj)",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recj3tFdEZ16m85Qs",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-024",
+        "regionTags": [],
+        "revision": "bf93655e4deecc8c625661a6f107abd567b7eb29d60fb69bf69c7b6693fd6ca9",
+        "proposalRevision": "445efa6d744f3ffbf5c63bb375222845ef2a1df85b24c239b98d829ab1e9b569"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": []
+    },
+    {
+      "sourceId": "rece342T8PgvjAtX9",
+      "saintId": "cms0w7eoh037807qi9esujgw4",
+      "name": "Sri Dattatreya Nagnath Deshpande (Nimonkar)",
+      "proposedVitrine": "4",
+      "evidenceVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rece342T8PgvjAtX9",
+        "section": "Girnar & Nath Traditions",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3c0b8787da3c355e3fd718deb18af712491581a9c50e0d3e1bd24e314843fc23",
+        "proposalRevision": "58d58453c9428648334ebaf166d58d3d0d795897213f69b82841a252c552a288"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "reviewNotes": [
+        "User-approved general family relationship; exact generation unspecified."
+      ]
+    },
+    {
+      "sourceId": "recc9hYwqqmB3Di2r",
+      "saintId": "cms0w7e5t02ix07qifphk74po",
+      "name": "Sri Gaudi Das Pandit",
+      "proposedVitrine": "36",
+      "note": "Gauridasa approved36",
+      "preserveTierFamily": true
+    },
+    {
+      "sourceId": "recJepdkXi90kdROh",
+      "saintId": "cms0w7fvi04qj07qir5t8b2fk",
+      "name": "Sri Srinivasa Acharya",
+      "proposedVitrine": "2",
+      "note": "User: Srinivasa stayed2",
+      "preserveTierFamily": true
+    },
+    {
+      "sourceId": "recIv4yKRknjgONrZ",
+      "saintId": "cms0w7fs104mh07qiqajqilhg",
+      "name": "Sri Dhanamamjari Devi",
+      "proposedVitrine": "78",
+      "note": "User: Dhanamamjari moved78 Manipur/Assam",
+      "preserveTierFamily": true
+    }
+  ],
+  "excludedFromMuseumDisplay": [
+    {
+      "sourceId": "rechBZw1LyW9TTX9L",
+      "saintId": "cms0w7ffp047207qioau044ur",
+      "reason": "User: Hemalata privatelyheld, notonmuseumdisplay; preserve canonical tier/family/history"
+    }
+  ],
+  "pendingReceiverSourceIds": [
+    "rec3tCQCd95bdyD01",
+    "recMajTBqEWnjz0II",
+    "recrlwdicIYg2eixj",
+    "recRoVxSYIxoob8sJ",
+    "recsRbIOXNQYU4GBd",
+    "recuGDRayeoOlxRO9",
+    "recVN6Ty3682Uz2g4"
+  ],
+  "policy": [
+    "Read current reviewed tiers/families; captured tier is fallback.",
+    "Compare captured revision to runtime curator choice and preserve newer decisions; flag conflict.",
+    "All targets are proposals only; actuals exclusively physical ledger. No pre-staging.",
+    "Do not invent receivers for core-excluded city records.",
+    "Citra owns immutable registration/digests and consistent reviewer maps/trees/loads."
+  ]
+}
