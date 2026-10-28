@@ -1,0 +1,93 @@
+{
+  "version": "spn-gauridasa-starter-addition-2026-10-28-v1",
+  "status": "User-authorized addition; backend readback pending",
+  "row": {
+    "sourceId": "recc9hYwqqmB3Di2r",
+    "saintId": "cms0w7e5t02ix07qifphk74po",
+    "name": "Sri Gaudi Das Pandit",
+    "vitrine": "36",
+    "tier": "Primary",
+    "section": "Gaudiya Vaishnava",
+    "sourceVitrine": "53",
+    "sourceShelf": "A",
+    "unresolved": false,
+    "allocationKind": "rebalanced source / family cohort",
+    "share": 0.25,
+    "state": "shelf_proxy",
+    "baseline": {
+      "placementId": "recc9hYwqqmB3Di2r",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "tier": "Tertiary",
+      "familyKey": "",
+      "regionTags": [],
+      "revision": "4d68ac10e65ec23a216e1ce2b5097206e95f08ca2af44c6f5777c8df72a1d37d",
+      "proposalRevision": "bf994a0b7a264d080b1d7cedfcf2d6d5461e906040cb65259812a9145b2e9d37"
+    },
+    "planningShelfEstimate": 0.25,
+    "spaceAssessmentState": "shelf_proxy",
+    "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+    "reviewNotes": [],
+    "movementBlockedReason": "",
+    "destination": {
+      "vitrine": "36",
+      "shelf": null
+    },
+    "city": "Ambika Kalna, West Bengal, India",
+    "originalLocation": {
+      "vitrine": "53",
+      "shelf": "A"
+    },
+    "currentLocation": {
+      "vitrine": "53",
+      "shelf": "A"
+    },
+    "locationBasis": "Last protected read: source-reported53/A, no completed move; re-read before writes",
+    "phase": "key-saints-families",
+    "family": "Early Gaudiya / Ambika Kalna context",
+    "completed": false,
+    "physicalConfirmation": null,
+    "lifeStatus": {
+      "tag": null,
+      "basis": "Historically identified early-sixteenth-century Gauridasa Pandit; missing death is not evidence of living status"
+    },
+    "placementReason": {
+      "kind": "reviewed-associate",
+      "text": "Gauridasa Pandit of Ambika Kalna, close associate of Chaitanya and Nityananda; collection photo caption and characteristic oar support identity. Early Gaudiya context in36; preserve Ambika Kalna locality."
+    },
+    "relicDescription": "Tulsi and chandan from his Saligram",
+    "currentLocationState": "source-reported",
+    "originalLocationImmutable": true
+  },
+  "todo": {
+    "scope": "exact-source record",
+    "sourceId": "recc9hYwqqmB3Di2r",
+    "saintId": "cms0w7e5t02ix07qifphk74po",
+    "title": "Update display name to Sri Gauridasa Pandit",
+    "detail": "Retain Sri Gaudi Das Pandit as an inventory/search alias.",
+    "status": "pending",
+    "requestedEffect": "Create durable record task; do not rename automatically or mark complete"
+  },
+  "relationshipContext": [
+    {
+      "withSourceId": "recgLvBMiGOevOuZM",
+      "relationship": "close associate; not a newly asserted initiating-guru edge"
+    },
+    {
+      "withSourceId": "recK4u1sUzyWGtVTu",
+      "relationship": "close associate"
+    }
+  ],
+  "sources": [
+    "https://bbtirtha.org/EN/text/422",
+    "https://srimayapurdhama.com/kalna/gauridasa/"
+  ],
+  "collectionEvidence": "C:/Users/aporu/Downloads/5409360650909196180.jpg",
+  "preserve": [
+    "raw source spelling",
+    "original source53/A",
+    "current physical state and future newer confirmations",
+    "existing135-row guide digests and prior receipts"
+  ],
+  "canonicalNameChangePerformed": false,
+  "canonicalRelationshipWrites": false
+}

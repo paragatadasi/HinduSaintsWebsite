@@ -1,5 +1,5 @@
 import treeOverlay from "@/data/museum/spn-vitrine-two-tree-v1.json";
-import proposal from "@/data/museum/spn-starter-reviewed-proposal-v16.json";
+import { starterAmendedProposal as proposal } from "./spn-starter-amended-proposal";
 import { registeredStarterGuide as packet } from "./spn-starter-guide-registry";
 import { spnMovementBlockedReason } from "./spn-movement-holds";
 import { currentSpnConceptLabel } from "./spn-proposal-labels";
