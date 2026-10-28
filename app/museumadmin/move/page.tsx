@@ -14,6 +14,7 @@ export default async function SpnMoveCompanionPage({searchParams}:{searchParams:
  const [physical,current]=await Promise.all([readMuseumPhysicalLocations(tx=>readMuseumMoveSessionSource(registeredMoveProposal.version,tx)),getMuseumData()]);
  const requested=(await searchParams).phase;
  const phase=requested==="datta"||requested==="ram-bhakti"?requested:"starter";
- const guide=phase==="ram-bhakti"?projectRamBhaktiGuide(current.placements,physical):phase==="datta"?projectDattaGuide(current.placements,physical):projectStarterDisplayTiers(starterMoveGuide,current.placements);
- return <SpnRoomMoveCompanion key={guide.version} guide={guide} initialPhysical={physical} allowClear={phase==="starter"} phaseLabel={guide.phaseLabel??"Starter row"} phase={phase} canManage={hasCapability(user.roles,"manage_museum")}/>;
+ const phaseGuides={starter:projectStarterDisplayTiers(starterMoveGuide,current.placements),datta:projectDattaGuide(current.placements,physical),"ram-bhakti":projectRamBhaktiGuide(current.placements,physical)};
+ const guide=phaseGuides[phase];
+ return <SpnRoomMoveCompanion phaseGuides={phaseGuides} guide={guide} initialPhysical={physical} allowClear={phase==="starter"} phaseLabel={guide.phaseLabel??"Starter row"} phase={phase} canManage={hasCapability(user.roles,"manage_museum")}/>;
 }

@@ -1,6 +1,6 @@
 import type { GuideDefinition, RegisteredSuggestion } from "./spn-starter-guide-registry";
 
-type Decision = { suggestionId: string; decision: string; note: string | null; version: number; updatedAt: Date };
+type Decision = { suggestionId: string; decision: string; note: string | null; alternativeVitrine?: string | null; alternativeShelf?: string | null; version: number; updatedAt: Date };
 const scope = (suggestion: RegisteredSuggestion) => JSON.stringify([suggestion.kind, suggestion.targetVitrine, [...suggestion.sourceIds].sort()]);
 
 export function inheritGuideDecisions(guide: GuideDefinition, current: Decision[], previous: { guide: GuideDefinition; decisions: Decision[] }[]) {
