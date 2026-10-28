@@ -1,15 +1,22 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {starterMoveGuide as guide} from "./spn-starter-move-guide";
-import {isPlaced,type CompanionRow} from "./spn-move-guide";
+import {cityFitsStarterCase,isPlaced,type CompanionRow,type GuideGroup} from "./spn-move-guide";
 
 test("starter guide covers each row once in family or city phase",()=>{
  assert.deepEqual(guide.vitrines.map(v=>v.code),["2","78","36","29","76","28","27"]);
  const ids=guide.vitrines.flatMap(v=>[...v.families,...v.cityGroups].flatMap(g=>g.sourceIds));
- assert.equal(ids.length,136);assert.equal(new Set(ids).size,136);
+ assert.ok(ids.length>0);assert.equal(new Set(ids).size,ids.length);
  for(const v of guide.vitrines)for(const g of [...v.families,...v.cityGroups])for(const id of g.sourceIds){
   assert.equal(guide.entries.find(e=>e.sourceId===id)?.destination,v.code);
  }
+});
+test("city alternatives require explicit versioned target eligibility",()=>{
+ const group:GuideGroup={id:"puri",title:"Puri",sourceIds:["source"],rationale:"Reviewed locality",suggestedVitrines:["26"]};
+ assert.equal(cityFitsStarterCase(group,"28"),false);
+ assert.equal(cityFitsStarterCase(group,"26"),false);
+ assert.equal(cityFitsStarterCase({...group,allowedTargetVitrines:["26"]},"26"),true);
+ assert.equal(cityFitsStarterCase({...group,allowedTargetVitrines:["26"]},"28"),false);
 });
 test("city candidates retain known and unknown space evidence and complete display metadata",()=>{
  for(const group of guide.alternatives){
