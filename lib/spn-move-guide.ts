@@ -21,6 +21,7 @@ export type StarterMoveGuide = {
 };
 export type PhysicalLocation={kind:"vitrine"|"table";code:string;label:string;shelf?:string|null};
 export type CompanionRow={
+ undo?:{available:boolean;receiptId?:string|null;previous:PhysicalLocation|null;previousBasis:string|null;previousConfirmedAt?:string|null;reason?:string|null};
  sourceId:string;name:string;saintId:string|null;original:PhysicalLocation|null;current:PhysicalLocation|null;
  currentBasis:string;currentVersion:number;currentRevision:string;sourceRevision:string;
  fixedHousing:boolean;verifiedItemIds:string[];identityChanged:boolean;
