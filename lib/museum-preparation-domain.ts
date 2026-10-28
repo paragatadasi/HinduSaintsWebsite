@@ -16,8 +16,10 @@ export function projectPreparations(events: {id:string;createdAt:Date;afterJson:
     if (!data || data.museumId !== "museum-spn") continue;
     if (typeof data.vitrine === "string" && typeof data.prepared === "boolean" && typeof data.version === "number")
       latest.set(data.vitrine,{vitrine:data.vitrine,prepared:data.prepared,version:data.version,recordedAt:event.createdAt.toISOString(),receiptId:event.id,basis:"preparation"});
-    else if(Array.isArray(data.clearedVitrines)) for(const vitrine of data.clearedVitrines) if(typeof vitrine === "string")
-      latest.set(vitrine,{vitrine,prepared:true,version:latest.get(vitrine)?.version ?? 0,recordedAt:event.createdAt.toISOString(),receiptId:event.id,basis:"legacy_clear"});
+    else if(Array.isArray(data.clearedVitrines)) for(const vitrine of data.clearedVitrines) if(typeof vitrine === "string") {
+      const prior=latest.get(vitrine);
+      latest.set(vitrine,{vitrine,prepared:true,version:prior ? prior.version + 1 : 0,recordedAt:event.createdAt.toISOString(),receiptId:event.id,basis:"legacy_clear"});
+    }
   }
   return [...latest.values()].sort((a,b)=>a.vitrine.localeCompare(b.vitrine,undefined,{numeric:true}));
 }

@@ -10,6 +10,8 @@ test("preparation survives placements and preserves independent readiness revoca
  events.push(event("ack",3,{museumId:"museum-spn",vitrine:"2",prepared:false,version:1}));
  assert.equal(projectPreparations(events)[0].prepared,false);
  assert.equal(projectPreparations([...events].reverse())[0].version,1);
+ events.push(event("clear-again",4,{museumId:"museum-spn",clearedVitrines:["2"]}));
+ assert.equal(projectPreparations(events)[0].version,2);
  assert.equal(projectPreparations([event("other",1,{museumId:"museum-vrindavan",vitrine:"2",prepared:true,version:1})]).length,0);
 });
 test("whole clear rejects already confirmed placements but permits source-only preparation",()=>{
