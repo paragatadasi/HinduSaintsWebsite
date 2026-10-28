@@ -13,7 +13,7 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[]){
  const base=correctSpnProposal(currentSpnProposalRelease);
  const overrides=new Map(overlay.overrides.map(row=>[row.sourceId,row]));
  const originals=[...base.proposal.rows,...base.proposal.namedOnly];
- if(overrides.size!==83||[...overrides.values()].some(change=>!originals.some(row=>row.sourceId===change.sourceId&&row.saintId===change.saintId)))throw new Error("The approved proposal refinements need source reconciliation.");
+ if(overrides.size!==85||[...overrides.values()].some(change=>!originals.some(row=>row.sourceId===change.sourceId&&row.saintId===change.saintId)))throw new Error("The approved proposal refinements need source reconciliation.");
  const amended=originals.map(row=>{const change=overrides.get(row.sourceId);return change?{...row,vitrine:change.proposedVitrine,
   tier:change.capturedTier??row.tier,baseline:change.capturedBaseline??row.baseline}:row;});
  const reconciled=reconcileSpnRoomProposal(amended,current,{acceptedBaseline:true});

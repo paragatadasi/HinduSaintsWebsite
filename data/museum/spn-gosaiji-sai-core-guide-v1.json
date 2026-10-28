@@ -517,6 +517,22 @@
         "User-approved general family relationship; exact generation unspecified."
       ],
       "knownShelfProxy": 0.3333333333333333
+    },
+    {
+      "sourceId": "rectvEBy833q3i4L6",
+      "saintId": "cms0w7ihx07u507qi0vodpwck",
+      "name": "Sri Siddha Bhagwan Das Maharaj",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Kalna",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved alongside the Ramakrishna circle; the recorded encounter depends on confirming this collection identity.",
+      "reviewNotes": [
+        "Collection identity remains qualified: likely the Kalna Bhagwan Das who met Ramakrishna, not independently confirmed."
+      ],
+      "knownShelfProxy": 0.25
     }
   ],
   "groups": [
@@ -573,9 +589,10 @@
       "sourceIds": [
         "rec896V7fs1lwnSkY",
         "reciI9fE7xVYFuN4u",
-        "recrWjhRIBpUX7A6J"
+        "recrWjhRIBpUX7A6J",
+        "rectvEBy833q3i4L6"
       ],
-      "rationale": "Keep each display distinct. Totapuri’s exact identity remains under review.",
+      "rationale": "Keep each display distinct. Totapuri and Bhagwan Das retain their identity qualifications.",
       "edges": []
     },
     {
@@ -766,7 +783,7 @@
       "recVN6Ty3682Uz2g4"
     ]
   },
-  "assignmentDigest": "4499ece46d98d7f293b11b2a5ccd93ffa4afd11f9fd10576bada954d29b49c2b",
-  "sourcePacket75": "spn-vitrine75-before37-final-2026-10-28-v1",
-  "contentDigest": "c3e1d176f66ceb8a29aedcacc85a51e4c617391e2a776c6f92a15ae6eb84e4ac"
+  "assignmentDigest": "d41a37af69b3a944d84f6a228d1561c2b9e722b1bc14f64a293520de4024d7b8",
+  "sourcePacket75": "spn-vitrine75-before37-final-2026-10-28-v2",
+  "contentDigest": "85f95c1cb8546df51d8bb8118161a6f7a766318171d8088f634b7cab5a4f9ed8"
 }

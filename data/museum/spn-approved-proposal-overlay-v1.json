@@ -1502,6 +1502,47 @@
       "proposedVitrine": "78",
       "note": "User: Dhanamamjari moved78 Manipur/Assam",
       "preserveTierFamily": true
+    },
+    {
+      "sourceId": "rectvEBy833q3i4L6",
+      "saintId": "cms0w7ihx07u507qi0vodpwck",
+      "name": "Sri Siddha Bhagwan Das Maharaj",
+      "proposedVitrine": "75",
+      "evidenceVersion": "spn-vitrine75-before37-final-2026-10-28-v2",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rectvEBy833q3i4L6",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "fbdf38b5ae0392647a6907e6a941fb50e1b6fcd3c971040b576f31e2aee4fb02",
+        "proposalRevision": "a21888c24c258028196f97b0638fd534c133028bf5fcefab5f693314d813a93f"
+      },
+      "spaceEstimate": 0.25,
+      "reviewNotes": [
+        "CollectionKalnaBhagwanDas likelytheBabajiwhometRamakrishna; exactidentitynotindependentlyconfirmed."
+      ]
+    },
+    {
+      "sourceId": "rec1bOVrWmAFek7Tn",
+      "saintId": "cms0w7cdh008j07qi1bj66ukn",
+      "name": "Sri Harendranath Mukarji",
+      "proposedVitrine": "28",
+      "evidenceVersion": "spn-vitrine75-before37-final-2026-10-28-v2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "rec1bOVrWmAFek7Tn",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Secondary",
+        "familyKey": "FAM-002",
+        "regionTags": [],
+        "revision": "d0caac0377e11306bb6acd3799e2a552c5de0d4047feaf806c1a5ac35bd2da21",
+        "proposalRevision": "921f044626d79205175e08c63ab66d9cdf866713c96a447ab0f113dbe9557def"
+      },
+      "reviewNotes": [
+        "Source-recorded disciple of Ramdas Babaji (recqPwPML5FbWMvaV). Current physical placement remains separately recorded."
+      ]
     }
   ],
   "excludedFromMuseumDisplay": [

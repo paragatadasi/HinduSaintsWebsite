@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import {gosaijiSaiMoveGuide as guide,gosaijiSaiGuideDefinition as definition,projectGosaijiSaiGuide} from "./spn-gosaiji-sai-guide";
 import type {CompanionRow} from "./spn-move-guide";
 test("Gosaiji and Sai phase preserves the approved 10/15 source partition and relationship qualifications",()=>{
- assert.deepEqual(guide.vitrines.map(v=>[v.code,v.families.flatMap(g=>g.sourceIds).length]),[["75",10],["37",10],["4",15]]);
- assert.equal(new Set(guide.entries.map(e=>e.sourceId)).size,35);
+ assert.deepEqual(guide.vitrines.map(v=>[v.code,v.families.flatMap(g=>g.sourceIds).length]),[["75",11],["37",10],["4",15]]);
+ assert.equal(new Set(guide.entries.map(e=>e.sourceId)).size,36);
  assert.deepEqual(definition.physicalScope?.clearVitrines,["37"]);
  const edges=guide.vitrines.flatMap(v=>v.families.flatMap(g=>g.edges??[]));
  assert.equal(edges.filter(e=>e.fromSourceId==="recZxEDfwSCOpkXyC"&&e.label==="source-recorded disciple").length,2);
