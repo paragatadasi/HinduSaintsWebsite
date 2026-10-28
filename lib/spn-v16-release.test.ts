@@ -6,14 +6,21 @@ import { reconcileSpnRoomProposal } from "./spn-room-proposal";
 import type { MuseumSaintPlacement } from "./museum-proposals";
 import { currentSpnProposalRelease } from "./spn-current-proposal";
 import { registeredStarterGuide } from "./spn-starter-guide-registry";
+import frozenGuide from "../data/museum/spn-starter-move-guide-v3.json";
+import { starterAmendedProposal } from "./spn-starter-amended-proposal";
 import { correctSpnProposal } from "./spn-proposal-corrections";
 
-test("the accepted planner, move source and guide share the audited v16 baseline", () => {
+test("the frozen starter guide shares the audited v16 baseline; its successor has one explicit amendment", () => {
   assert.equal(currentSpnProposalRelease.acceptedBaseline, true);
   assert.equal(currentSpnProposalRelease.proposal.version, registeredStarterGuide.proposalVersion);
   const corrected = correctSpnProposal(currentSpnProposalRelease);
   const assignments = new Map(corrected.proposal.rows.map(row => [row.sourceId, row.vitrine]));
-  for (const row of registeredStarterGuide.rows) assert.equal(assignments.get(row.sourceId), row.vitrine);
+  for (const row of frozenGuide.rows) assert.equal(assignments.get(row.sourceId), row.vitrine);
+  const amended = new Map(starterAmendedProposal.rows.map(row => [row.sourceId, row.vitrine]));
+  const changed = registeredStarterGuide.rows.filter(row => assignments.get(row.sourceId) !== row.vitrine);
+  assert.deepEqual(changed.map(row => [row.sourceId, assignments.get(row.sourceId), row.vitrine]), [["recc9hYwqqmB3Di2r", "24", "36"]]);
+  for (const row of registeredStarterGuide.rows) assert.equal(amended.get(row.sourceId), row.vitrine);
+  for (const row of frozenGuide.rows) assert.deepEqual(registeredStarterGuide.rows.find(next => next.sourceId === row.sourceId), row);
   for (const row of registeredStarterGuide.transitionRowsOutsideStarter) assert.equal(assignments.get(row.sourceId), row.destination.vitrine);
 });
 
