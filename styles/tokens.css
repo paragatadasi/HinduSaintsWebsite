@@ -562,3 +562,7 @@
   --width-museum-schematic-min: 35rem;
   --height-museum-schematic-unit: .75rem;
 }
+
+.museum-companion--guide {--width-companion:65rem;--font-size-companion-title:1.8rem;--font-size-companion-heading:1.45rem;--font-size-companion-subheading:1.05rem}
+
+.museum-companion--guide {--width-companion:90rem;--width-companion-map:35rem}

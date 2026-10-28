@@ -2488,5 +2488,25 @@
     "selector": "[data-museum-companion-theme=\"parchment\"]",
     "name": "--height-museum-schematic-unit",
     "value": ".75rem"
+  },
+  {
+    "selector": ".museum-companion--guide",
+    "name": "--width-companion",
+    "value": "65rem"
+  },
+  {
+    "selector": ".museum-companion--guide",
+    "name": "--font-size-companion-title",
+    "value": "1.8rem"
+  },
+  {
+    "selector": ".museum-companion--guide",
+    "name": "--font-size-companion-heading",
+    "value": "1.45rem"
+  },
+  {
+    "selector": ".museum-companion--guide",
+    "name": "--width-companion",
+    "value": "90rem"
   }
 ]

@@ -659,3 +659,7 @@ the checklist and city groups afterward. `room` mode retains the separate city
 exploration workflow for less settled proposals. Do not infer guru relationships
 from a locality grouping; the tree renders only the guide's supplied edges and
 keeps their relationship labels, including uncertainty and non-guru connections.
+
+### Compact move guide
+
+The guided companion uses the shared parchment tokens, an initially expanded room map beside the guide on wide screens, and a stacked layout on narrow screens. Present families, then city groups, then one complete tiered checklist. Group checkboxes and checklist checkboxes read the same physical state and invoke the same confirmed-placement action. Keep tiers as small tags within groups; preserve relationship hierarchy when sorting tree siblings. Tree names open the shared museum dialog. Deferred/declined suggestions use compact text-labelled status chips with a Restore action; they do not change physical location.
