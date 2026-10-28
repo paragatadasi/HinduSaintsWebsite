@@ -2,7 +2,7 @@
 
 - Status: ready
 - Branch: codex/companion-session-refinements
-- Commit: 55a4bda
+- Commit: 5d95fc5
 - Owner/agent: Citra; backend by Nadi
 - Bundle priority: curator workflow refinements and authorized mistaken-clearing correction
 
@@ -14,6 +14,8 @@
 - Optional per-relic Additional saints connected to this relic in More details. Raw text only, no canonical relationship creation. Existing IDs, drafts, submissions and media unchanged; older clients preserve the new field when omitted.
 
 ## Verification
+
+- Release follow-up 5d95fc5: full npm test passes (670 passed, 1 skipped, 0 failed); dev:check passes. Frozen v3 baseline remains audited separately from the approved v4 Gauridasa amendment. Runtime guard permits the Vitrine 2 tree overlay only while that vitrine remains identical to its reviewed v3 scope. No proposal or physical data changed.
 
 - prepare:deployment and dev:check passed.
 -27 focused preparation, clear-correction, undo and intake tests passed in integrated feature worktree.
@@ -44,3 +46,4 @@
 - Pushed to main: no
 - Merged to deploy: pending
 - Production workflow: pending
+
