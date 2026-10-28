@@ -1,3 +1,4 @@
+import { registeredStarterGuide as v4Guide } from "./spn-starter-guide-v4";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { registeredStarterGuide as guide, readStarterGuideDefinition, starterGuideContext } from "./spn-starter-guide-registry";
@@ -37,6 +38,7 @@ import v3 from '../data/museum/spn-starter-move-guide-v3.json';
 import { inheritGuideDecisions } from './museum-guide-decision-inheritance';
 
 test('single-source amendment preserves all prior rows, physical facts and unrelated groups', () => {
+ const guide=v4Guide;
  const added = guide.rows.filter(row => !v3.rows.some(old => old.sourceId === row.sourceId));
  assert.deepEqual(added.map(row => [row.sourceId,row.saintId,row.vitrine,row.tier,row.section]), [['recc9hYwqqmB3Di2r','cms0w7e5t02ix07qifphk74po','36','Primary','Gaudiya Vaishnava']]);
  for (const row of v3.rows) assert.deepEqual(guide.rows.find(next => next.sourceId === row.sourceId), row);
@@ -53,6 +55,7 @@ test('single-source amendment preserves all prior rows, physical facts and unrel
 });
 
 test('v3 remains readable with its original digest and inherits exact-scope decisions into v4', () => {
+ const guide=v4Guide;
  const previous = readStarterGuideDefinition(v3.version);
  const current = readStarterGuideDefinition(guide.version);
  assert.equal(previous.readOnly,true);

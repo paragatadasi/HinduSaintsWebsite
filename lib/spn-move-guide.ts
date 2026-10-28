@@ -1,7 +1,7 @@
 export type GuideEntry = {
  sourceId:string;saintId:string|null;name:string;tier:string;city:string;relicDescription:string;
  destination:string;section:string;family:string;rationale:string;
- reviewNotes?:string[];movementBlockedReason?:string;
+ reviewNotes?:string[];movementBlockedReason?:string;reportedOrigin?:string|null;
  lifeStatus?:{tag:string|null;basis:string};currentLocation?:PhysicalLocation|null;currentLocationBasis?:string;
 };
 export type GuideGroup = {
@@ -13,7 +13,7 @@ export type GuideGroup = {
 };
 export type StarterMoveGuide = {
  version:string;contentDigest:string;proposalVersion:string;assignmentDigest:string;title:string;entries:GuideEntry[];
- proposalLabel?:string;allowClear?:boolean;phaseLabel?:string;
+ proposalLabel?:string;allowClear?:boolean;phaseLabel?:string;requiredClearVitrines?:string[];clearanceRequiredDestinations?:string[];preparationVitrines?:string[];
  outgoingDependencies?:{sourceId:string;name:string;previousProposedVitrine:string;proposedDestination:null|string;state:string}[];
  transitionSourceIds?:string[];
  vitrines:{code:string;summary:string;families:GuideGroup[];cityGroups:GuideGroup[]}[];
@@ -29,7 +29,7 @@ export type CompanionRow={
 };
 export type VitrinePreparation={vitrine:string;prepared:boolean;version:number;recordedAt:string;receiptId:string;basis:"preparation"|"legacy_clear"};
 export type ClearCorrection={receiptId:string;vitrine:string;excludedCount:number;records:{sourceId:string;saintId:string|null;name:string;expectedCurrentRevision:string;expectedSourceRevision:string;expectedLocationVersion:number;previous:PhysicalLocation;previousConfirmedAt:string}[]};
-export type PhysicalState={clearCorrections?:ClearCorrection[];preparations?:VitrinePreparation[];reportedPlacementReceipts?:{guideContext:{guideVersion:string;contentDigest:string;assignmentDigest:string};complete:boolean};confirmationHistory?:{afterJson:unknown}[];rows:CompanionRow[];unmappedCurrentLocations:{sourceId:string;location:PhysicalLocation;version:number}[]};
+export type PhysicalState={phaseClearances?:{guideVersion:string;vitrine:string;receiptId:string;recordedAt:string}[];clearCorrections?:ClearCorrection[];preparations?:VitrinePreparation[];reportedPlacementReceipts?:{guideContext:{guideVersion:string;contentDigest:string;assignmentDigest:string};complete:boolean};confirmationHistory?:{afterJson:unknown}[];rows:CompanionRow[];unmappedCurrentLocations:{sourceId:string;location:PhysicalLocation;version:number}[]};
 export function isPlaced(row:CompanionRow,destination:string){return row.currentBasis==="confirmed"&&row.current?.kind==="vitrine"&&row.current.code===destination;}
 export function currentLocationLabel(location:PhysicalLocation|null){return location?location.label+(location.shelf?` · Shelf ${location.shelf}`:""):"Location not recorded";}
 

@@ -3,7 +3,7 @@ import {type ReactNode} from "react";
 import {currentLocationLabel,isPlaced,type CompanionRow,type GuideEntry,type GuideGroup} from "@/lib/spn-move-guide";
 
 /** Render the guide's recorded connections without inferring relationships from grouping. */
-export function MuseumGuideFamilyTree({group,entries,physicalRows,renderControl}:{group:GuideGroup;entries:Map<string,GuideEntry>;physicalRows?:CompanionRow[];renderControl?:(id:string)=>ReactNode}) {
+export function MuseumGuideFamilyTree({group,entries,physicalRows,renderControl,renderActions,showLocations=true}:{group:GuideGroup;entries:Map<string,GuideEntry>;physicalRows?:CompanionRow[];renderControl?:(id:string)=>ReactNode;renderActions?:(id:string)=>ReactNode;showLocations?:boolean}) {
  const edges=group.edges??[];
  if(!edges.length)return null;
  const ids=[...new Set(edges.flatMap(edge=>[edge.fromSourceId,edge.toSourceId]))];
@@ -19,8 +19,7 @@ export function MuseumGuideFamilyTree({group,entries,physicalRows,renderControl}
   const location=physicalRows?.find(row=>row.sourceId===id);
   const descendants=cycle?[]:edges.filter(edge=>edge.fromSourceId===id).sort((a,b)=>rank(a.toSourceId)-rank(b.toSourceId));
   return <li key={`${relation??"root"}:${id}`}>
-   {relation?<small className="museum-guide-tree__relation">{relation}</small>:null}
-   <div className="museum-guide-tree__member">{renderControl?.(id)}<div className="museum-guide-tree__person">{entry?.name??"Related display"}{entry?<span className="museum-guide-tier">{entry.tier}</span>:null}<small className="museum-guide-tree__location">{location&&entry&&isPlaced(location,entry.destination)?"Placed":"Bring from"}: {currentLocationLabel(location?.current??null)}{location?.currentBasis!=="confirmed"&&location?.current?" · source-reported":""}</small>{entry?.lifeStatus?.tag?<small>{entry.lifeStatus.tag}</small>:null}</div></div>
+   <div className="museum-guide-tree__member">{renderControl?.(id)}<div className="museum-guide-tree__body">{relation?<small className="museum-guide-tree__relation">{relation}</small>:null}<div className="museum-guide-tree__person">{entry?.name??"Related display"}{entry?<span className="museum-guide-tier">{entry.tier}</span>:null}{showLocations?<small className="museum-guide-tree__location">{location&&entry&&isPlaced(location,entry.destination)?"Placed":"Bring from"}: {currentLocationLabel(location?.current??null)}{location?.currentBasis!=="confirmed"&&location?.current?" · source-reported":""}</small>:null}{showLocations&&entry?.reportedOrigin&&location?.currentBasis!=="confirmed"?<small>{entry.reportedOrigin}</small>:null}{entry?.lifeStatus?.tag?<small>{entry.lifeStatus.tag}</small>:null}</div>{renderActions?.(id)}</div></div>
    {descendants.length?<ul>{descendants.map(edge=>node(edge.toSourceId,next,edge.label))}</ul>:null}
   </li>;
  }

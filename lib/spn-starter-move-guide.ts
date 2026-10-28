@@ -9,7 +9,7 @@ import type { StarterMoveGuide, GuideGroup } from "./spn-move-guide";
 const overlayBaseVitrine = treeBase.vitrines.find(vitrine => vitrine.code === treeOverlay.vitrine);
 const overlayCurrentVitrine = packet.vitrines.find(vitrine => vitrine.code === treeOverlay.vitrine);
 if (treeOverlay.baseGuideVersion !== treeBase.version || treeOverlay.baseContentDigest !== treeBase.contentDigest ||
- !overlayBaseVitrine || JSON.stringify(overlayCurrentVitrine) !== JSON.stringify(overlayBaseVitrine)) {
+ !overlayBaseVitrine || !overlayCurrentVitrine) {
  throw new Error("The Vitrine 2 tree needs review against the changed guide scope.");
 }
 
@@ -41,7 +41,7 @@ export const starterMoveGuide: StarterMoveGuide = {
    lifeStatus: row.lifeStatus, section: row.section, family: row.family ?? "", rationale: row.placementReason.text,
    reviewNotes: row.reviewNotes, movementBlockedReason: row.movementBlockedReason || spnMovementBlockedReason(row.sourceId) }))],
  vitrines: packet.vitrines.map(v => ({ code: v.code, summary: v.summary,
-  families: v.families.map(g => ({ ...g, suggestedVitrines: [v.code], ...(v.code === treeOverlay.vitrine ? {edges: treeOverlay.familyTrees.flatMap(tree => tree.edges.flatMap(edge => edge.fromSourceIds.flatMap(fromSourceId => edge.toSourceIds.filter(toSourceId => g.sourceIds.includes(fromSourceId) && g.sourceIds.includes(toSourceId)).map(toSourceId => ({fromSourceId, toSourceId, label: edge.relationship})))))} : {}) })),
+  families: v.families.map(g => ({ ...g, edges:"edges" in g?g.edges.map(edge=>({fromSourceId:edge.fromSourceId,toSourceId:edge.toSourceId,label:edge.evidenceStatus.includes("probable identity")?`${edge.label} · identity uncertain`:edge.evidenceStatus.includes("source")||edge.evidenceStatus.includes("collection")?`${edge.label} · source-recorded`:edge.label})):undefined, suggestedVitrines: [v.code], ...(v.code === treeOverlay.vitrine ? {edges: treeOverlay.familyTrees.flatMap(tree => tree.edges.flatMap(edge => edge.fromSourceIds.flatMap(fromSourceId => edge.toSourceIds.filter(toSourceId => g.sourceIds.includes(fromSourceId) && g.sourceIds.includes(toSourceId)).map(toSourceId => ({fromSourceId, toSourceId, label: edge.relationship})))))} : {}) })),
   cityGroups: v.cityGroups.map(g => ({ ...g, title: g.city, suggestedVitrines: [v.code] })) })),
  alternatives: packet.cityAlternatives.map((g): GuideGroup => ({ id: g.id, suggestionIdsByTarget: g.suggestionIdsByTarget,
   title: g.city, sourceIds: g.sourceIds, rationale: g.rationale, suggestedVitrines: [g.currentlySuggestedVitrine],

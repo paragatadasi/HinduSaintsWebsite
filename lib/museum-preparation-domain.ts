@@ -23,3 +23,31 @@ export function projectPreparations(events: {id:string;createdAt:Date;afterJson:
   }
   return [...latest.values()].sort((a,b)=>a.vitrine.localeCompare(b.vitrine,undefined,{numeric:true}));
 }
+
+export type PhaseClearance = {guideVersion:string;vitrine:string;receiptId:string;recordedAt:string};
+export function projectPhaseClearances(events:{id:string;createdAt:Date;afterJson:unknown}[]):PhaseClearance[]{
+ return events.flatMap(event=>{
+  const data=event.afterJson as {museumId?:unknown;guideContext?:{guideVersion?:unknown};clearedVitrines?:unknown}|null;
+  const version=data?.guideContext?.guideVersion;
+  if(data?.museumId!=="museum-spn" || typeof version!=="string" || !Array.isArray(data.clearedVitrines))return [];
+  return data.clearedVitrines.flatMap(code=>typeof code==="string" ? [{guideVersion:version,vitrine:code,receiptId:event.id,recordedAt:event.createdAt.toISOString()}] : []);
+ });
+}
+export function assertPhaseClearance(input:{clearedVitrines?:string[];initialCaseClearAcknowledged?:true},required:string[],guideVersion:string,
+ clearances:PhaseClearance[],rows:{sourceId:string;current:{kind:string;code:string}|null}[],records:{sourceId:string}[]){
+ if(input.clearedVitrines?.length){
+  if(!input.initialCaseClearAcknowledged)throw new MuseumMoveSessionError(400,"Confirm that this initial clearing physically moves the listed contents to staging.");
+  if(clearances.some(c=>c.guideVersion===guideVersion && input.clearedVitrines!.includes(c.vitrine)))throw new MuseumMoveSessionError(409,"This phase already recorded its initial clearing. Review individual moves instead.");
+  if(records.some(record=>!rows.some(row=>row.sourceId===record.sourceId && row.current?.kind==="vitrine" && input.clearedVitrines!.includes(row.current.code))))
+   throw new MuseumMoveSessionError(409,"The clearing list changed. Include only the current occupants of the selected vitrine.");
+ }else if(required.some(code=>!clearances.some(c=>c.guideVersion===guideVersion && c.vitrine===code)))
+  throw new MuseumMoveSessionError(409,"Complete this phase's initial vitrine clearing before recording placements.");
+}
+
+export function phaseNeedsClearance(records:{to:{kind:string;code:string}}[],destinations?:string[]){
+ return records.some(row=>row.to.kind==="vitrine" && (!destinations || destinations.includes(row.to.code)));
+}
+export function assertPhasePreparation(records:{to:{kind:string;code:string}}[],required:string[],preparations:{vitrine:string;prepared:boolean}[]){
+ for(const code of required)if(records.some(row=>row.to.kind==="vitrine"&&row.to.code===code) && !preparations.some(row=>row.vitrine===code&&row.prepared))
+  throw new MuseumMoveSessionError(409,"Check that this destination vitrine is available and prepared before recording placements.");
+}

@@ -1,3 +1,4 @@
+import {projectGosaijiSaiGuide} from "@/lib/spn-gosaiji-sai-guide";
 import type {StarterMoveGuide} from "@/lib/spn-move-guide";
 import {projectCurrentGuideLifeStatus} from "@/lib/museum-guide-life-status";
 import {requireCapability} from "@/lib/admin-access";
@@ -15,9 +16,9 @@ export default async function SpnMoveCompanionPage({searchParams}:{searchParams:
  const user=await requireCapability("view_museum_catalog");
  const [physical,current]=await Promise.all([readMuseumPhysicalLocations(tx=>readMuseumMoveSessionSource(registeredMoveProposal.version,tx)),getMuseumData()]);
  const requested=(await searchParams).phase;
- const phase=requested==="datta"||requested==="ram-bhakti"?requested:"starter";
- const phaseGuides:Record<"starter"|"datta"|"ram-bhakti",StarterMoveGuide>={starter:projectStarterDisplayTiers(starterMoveGuide,current.placements),datta:projectDattaGuide(current.placements,physical),"ram-bhakti":projectRamBhaktiGuide(current.placements,physical)};
- for(const key of ["starter","datta","ram-bhakti"] as const)phaseGuides[key]=projectCurrentGuideLifeStatus(phaseGuides[key],current);
+ const phase=requested==="gosaiji-sai"||requested==="datta"||requested==="ram-bhakti"?requested:"starter";
+ const phaseGuides:Record<"starter"|"datta"|"ram-bhakti"|"gosaiji-sai",StarterMoveGuide>={starter:projectStarterDisplayTiers(starterMoveGuide,current.placements),datta:projectDattaGuide(current.placements,physical),"ram-bhakti":projectRamBhaktiGuide(current.placements,physical),"gosaiji-sai":projectGosaijiSaiGuide(current.placements,physical)};
+ for(const key of ["starter","datta","ram-bhakti","gosaiji-sai"] as const)phaseGuides[key]=projectCurrentGuideLifeStatus(phaseGuides[key],current);
  const guide=phaseGuides[phase];
- return <SpnRoomMoveCompanion phaseGuides={phaseGuides} guide={guide} initialPhysical={physical} allowClear={phase==="starter"} phaseLabel={guide.phaseLabel??"Starter row"} phase={phase} canManage={hasCapability(user.roles,"manage_museum")}/>;
+ return <SpnRoomMoveCompanion phaseGuides={phaseGuides} guide={guide} initialPhysical={physical} allowClear={guide.allowClear??phase==="starter"} phaseLabel={guide.phaseLabel??"Starter row"} phase={phase} canManage={hasCapability(user.roles,"manage_museum")}/>;
 }

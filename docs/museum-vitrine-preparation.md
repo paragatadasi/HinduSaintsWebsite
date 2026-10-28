@@ -31,3 +31,23 @@ This appends a batch correction plus per-source `check_undone` receipts and rest
 The action requires curator acknowledgement that the selected clearing records were mistaken. A server offer by itself is not authority to apply the correction. Never repair a generic source-only clear or infer physical continuity from old guide membership.
 
 A separate shelf annotation is rebound only if it still matches the exact saint, restored vitrine and immediately preceding physical version. Its text is retained and its annotation version increments with an audit copy. Newer or differently bound annotations remain untouched; reload companion-work after correction.
+
+## A phase with an explicit initial clearing
+
+A registered locked phase may declare `physicalScope: {allowClear: true, clearVitrines: ["37"], destinations}`. This grants no physical-move authorization by itself. The existing protected confirmation endpoint accepts a clear batch only for registered cases, only to generic staging, with `initialCaseClearAcknowledged: true` and fresh CAS for every current occupant, including returnees and sources outside the incoming core roster. Extra sources outside those current cases are rejected. Existing whole-case completeness, source/identity/item, movement-hold and fixed-housing checks still apply.
+
+All placements in that phase, including another destination case, require an actual clearing receipt for each required case. A preparation-only acknowledgement does not satisfy this gate. `phaseClearances` in physical GET/confirmation/undo responses contains `{guideVersion, vitrine, receiptId, recordedAt}` from actual clear receipts. After a first clear, the same phase/case cannot be cleared again; review individual subsequent moves instead. Other phases retain the general confirmed-occupant protection and never gain staging or clearing privileges from this addition.
+
+Incoming sources in cases that have not been explicitly cleared stay at their recorded origins until placement is confirmed. A published phase, an estimate or an outgoing-dependency list must never pre-stage them.
+
+For isolated service verification, `scripts/verify-museum-phase-clearance.ts` requires a disposable PostgreSQL database at exactly `127.0.0.1:55438/museum_test`. Set `MUSEUM_PHASE_TEST_WORKTREE` to a checkout containing the registered Gosaiji/Sai phase and use its tsconfig. The script creates synthetic tables in that empty database; it rejects other hosts/ports/database names. It verifies both-case pre-clear gating, incomplete batch rollback, extra-source rejection, a confirmed returnee, complete 22-entry staging, UUID replay, placement after clearing and repeat-clear rejection. It is never a production repair script.
+
+## Filling an available case before another case clears
+
+A registered phase can narrow its first-clear placement gate with `clearanceRequiredDestinations: ["37", "4"]` and require separate destination readiness with `preparationVitrines: ["75"]`. Omitting the former preserves the original all-destinations gate. With this policy, placing approved75 sources requires the latest museum-wide75 preparation acknowledgement, but does not require or imply clearing37. A batch also targeting37/4 still requires the actual37 clear receipt. Preparation may be revoked; the server rechecks it under the movement lock immediately before writing. Availability/preparation acknowledgement never stages contents or proves emptiness. Incoming origins and user-reported staging evidence remain separate until explicitly reconciled.
+
+## Starter guide v5 curator refinements
+
+The versioned successor retains all136 historical source observations and original physical-confirmation receipts. Harendranath is proposed28 with the exact reciprocal source-recorded Ramdas Babaji Maharaj branch; Srinivasa is proposed2; Dhanamamjari is proposed78 in a curator-labelled Manipur/Assam display outpost. Hemalata remains searchable as a historical observation, with a privately-held movement block in both guide and SPN physical-write guard. These labels do not rewrite canonical identities, historical relationships or website geography.
+
+The v4 reader stays frozen against its v4 Gauridasa-only proposal amendment and remains readable with its original digests. Current v5 decisions inherit only from unchanged exact source/destination scopes. New physical writes from historical guides are rejected after the exact UUID replay lookup, preserving retries of already-recorded confirmations. None of these guide refinements confirms a physical move or replaces the museum current-location ledger. In particular, Harendranath's current confirmed78 remains separate from planned28.

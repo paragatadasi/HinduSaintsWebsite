@@ -73,6 +73,13 @@ export function projectScopedMoveGuide(captured: StarterMoveGuide, current: Para
 export function assertGuidePhysicalScope(guide: GuideDefinition, records: { sourceId: string; to: { kind: string; code: string } }[], clearedVitrines: string[] = []) {
   if (!guide.physicalScope) return;
   if (!guide.physicalScope.allowClear && clearedVitrines.length) throw new MuseumMoveSessionError(409, "This phase does not clear whole vitrines. Keep outgoing placements separate.");
+  if (clearedVitrines.length) {
+    const allowed=guide.physicalScope.clearVitrines ?? [];
+    if (!allowed.length || clearedVitrines.some(code=>!allowed.includes(code)) ||
+      records.some(row=>row.to.kind!=="table" || row.to.code!=="staging-area"))
+      throw new MuseumMoveSessionError(409,"Clear only this phase's registered vitrine, sending its current contents to staging.");
+    return;
+  }
   for (const row of records) if (row.to.kind !== "vitrine" || guide.physicalScope.destinations[row.sourceId] !== row.to.code)
     throw new MuseumMoveSessionError(409, "Choose a source and destination from this locked phase. Staging and alternative targets are unavailable.");
 }

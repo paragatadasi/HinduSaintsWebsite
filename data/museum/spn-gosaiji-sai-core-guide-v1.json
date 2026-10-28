@@ -1,0 +1,789 @@
+{
+  "version": "spn-gosaiji-sai-core-guide-2026-10-28-v2",
+  "proposalVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+  "title": "Ramakrishna, Gosaiji & Sai",
+  "proposalLabel": "East–North connections · Gosaiji & Sai core",
+  "sourcePacket": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+  "rows": [
+    {
+      "sourceId": "rec896V7fs1lwnSkY",
+      "saintId": "cms0w7dd501gv07qijoc78ezs",
+      "name": "Sri (Ishwar) Tota Puri Baba",
+      "tier": "Primary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Punjap/ or Puri/ - wandering monk",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [
+        "Totapuri identity under review; do not treat this entry as a verified teacher identification."
+      ],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recbZIJBveOYqWWs5",
+      "saintId": "cms0w7e3l02fz07qi534y407z",
+      "name": "Sri Dandi Swami Damodarashram",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Addyapeeth",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Addyapeeth",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recgjan7BxjyG7CeZ",
+      "saintId": "cms0w7f7a03w807qi25ypfqdb",
+      "name": "Sri Manisen",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Puri",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [
+        "Mani Sen (recorded as Manisen) · Ramakrishna’s host at Panihati; not a direct-disciple claim."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "reciI9fE7xVYFuN4u",
+      "saintId": "cms0w7fpl04ji07qisl0wupco",
+      "name": "Sri Yugacharya Sreemat Praanavanandaji Maharaj",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "reckV8sJXL5cq978J",
+      "saintId": "cms0w7gb6059t07qis1a9kn28",
+      "name": "Sri Ramakrishna Paramahansa",
+      "tier": "Primary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recqrHsjXJuayrZml",
+      "saintId": "cms0w7hno06w007qiusuli5ab",
+      "name": "Sri Swami Vivekananda",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recrWjhRIBpUX7A6J",
+      "saintId": "cmus3rxlw007v07o5ad59qkab",
+      "name": "Sri Lal Baba",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Kolkata",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recSUU4X56pAqF1JC",
+      "saintId": "cms0w7i6v07i807qiot1t3jt5",
+      "name": "Sri Lakshmi Mani Devi",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recXa1fpOwmlwQ4YH",
+      "saintId": "cms0w7jft08ti07qimg33dh8m",
+      "name": "Sri Mahendranath Gupta",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recZPkXeFQBUFoa19",
+      "saintId": "cms0w7k6u09l907qi1b2qa7ij",
+      "name": "Sri Annada Thakur",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Addyapeeth",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "rec1cTbJ4iPAMUW0v",
+      "saintId": "cms0w7cdr008r07qim1f6c46u",
+      "name": "Sri Vijay Krishna Goswami",
+      "tier": "Primary",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "destination": "37",
+      "family": "Gosaiji and his close circle",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.5
+    },
+    {
+      "sourceId": "recaSmpkXpqslt29K",
+      "saintId": "cms0w7dti022v07qiuilv6m9z",
+      "name": "Sri Yogmaya Devi",
+      "tier": "Primary",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "destination": "37",
+      "family": "Gosaiji and his close circle",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 1
+    },
+    {
+      "sourceId": "recRZkHSnl8nDNArl",
+      "saintId": null,
+      "name": "Sri Yogmaya Devi of Puri/ Vrindavan",
+      "tier": "Unclassified",
+      "section": "",
+      "city": "",
+      "relicDescription": "",
+      "destination": "37",
+      "family": "Gosaiji and his close circle",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [
+        "Separate source observation; retain both Yogmaya entries until objects are checked."
+      ],
+      "knownShelfProxy": 0.5
+    },
+    {
+      "sourceId": "rec8zRjsV6xnw4mwa",
+      "saintId": "cms0w7dgu01lg07qi9lfmgamq",
+      "name": "Kuladananda Brahmachari",
+      "tier": "Secondary",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "destination": "37",
+      "family": "Gosaiji and his close circle",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.5
+    },
+    {
+      "sourceId": "recPw3FxLbHjXdgaD",
+      "saintId": "cms0w7hhf06ou07qiamdg3lk6",
+      "name": "Sri Sri Kiranchand Darveshji",
+      "tier": "Secondary",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "destination": "37",
+      "family": "Gosaiji and his close circle",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2
+    },
+    {
+      "sourceId": "rechEXrlzldl7ZpoA",
+      "saintId": "cms0w7fgh048407qiifplz4iw",
+      "name": "Sri Mata Saroj Bala Devi",
+      "tier": "Secondary",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "destination": "37",
+      "family": "Gosaiji and his close circle",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2
+    },
+    {
+      "sourceId": "recsumN8i2tdC7GbV",
+      "saintId": "cms0w7i6l07hw07qi6pwtf2er",
+      "name": "Sri Sri Maa Moni",
+      "tier": "Secondary",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "destination": "37",
+      "family": "Gosaiji and his close circle",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [
+        "Recorded Gosaiji discipleship accepted by user; dates1993/1996 retained as disputed.",
+        "Check Maa Moni’s birth and samadhi dates. Recorded 1993/1996 remain disputed; no replacement inferred."
+      ],
+      "knownShelfProxy": 0.125
+    },
+    {
+      "sourceId": "reckCzqScd99ZzKth",
+      "saintId": "cms0w7g4q051v07qi70ao66sj",
+      "name": "Sri Sri Siddha Chaitanya Das Babaji",
+      "tier": "Primary",
+      "section": "Gaudiya Vaishnava",
+      "city": "",
+      "relicDescription": "",
+      "destination": "37",
+      "family": "Siddha Chaitanya Das and his disciple Krishnadas",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.1111111111111111
+    },
+    {
+      "sourceId": "recVBH9QlLXVBdYW9",
+      "saintId": "cms0w7iwe089l07qifinqo53t",
+      "name": "Sri Srila Krishnadas Babaji",
+      "tier": "Secondary",
+      "section": "Gaudiya Vaishnava",
+      "city": "",
+      "relicDescription": "",
+      "destination": "37",
+      "family": "Siddha Chaitanya Das and his disciple Krishnadas",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.08333333333333333
+    },
+    {
+      "sourceId": "recwXrEbirWApVteB",
+      "saintId": "cms0w7jbx08q307qi39kwfusb",
+      "name": "Sri Swami Didhishananda Saraswati",
+      "tier": "Secondary",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "destination": "37",
+      "family": "Didhishananda — source-recorded affiliation",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [
+        "*Disciple in the collection records; not independently historically verified."
+      ],
+      "knownShelfProxy": 0.16666666666666666
+    },
+    {
+      "sourceId": "recGN3z8hfy3Z0qqU",
+      "saintId": "cms0w7f8x03ye07qi9g4vumc5",
+      "name": "Sri Meher Baba",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Meher Baba and the five Perfect Masters",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333
+    },
+    {
+      "sourceId": "recAzBZTh80FmTUJN",
+      "saintId": "cms0w7dvj025c07qid5p1koit",
+      "name": "Sri Hazrat Babajan",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Meher Baba and the five Perfect Masters",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333
+    },
+    {
+      "sourceId": "rec7rcJAHv3rsPsZN",
+      "saintId": "cmus3rwco000u07o500ujq33h",
+      "name": "Sri Narayan Maharaj",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Meher Baba and the five Perfect Masters",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.5
+    },
+    {
+      "sourceId": "recDQE3wQ8BNrmIpR",
+      "saintId": "cms0w7ekk032007qil1n8orbp",
+      "name": "Sri Shirdi Sai Baba",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Meher Baba and the five Perfect Masters",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 1.25
+    },
+    {
+      "sourceId": "recV8xezfabpzSS0B",
+      "saintId": "cms0w7ivh088m07qi2bl8sj8b",
+      "name": "Sri Upasani Maharaj",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Meher Baba and the five Perfect Masters",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3125
+    },
+    {
+      "sourceId": "recZxEDfwSCOpkXyC",
+      "saintId": "cms0w7ka509op07qiy3vg3gg1",
+      "name": "Hazrat Tajuddin Baba of Nagpur",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Meher Baba and the five Perfect Masters",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recjqj3HtOfhT7hmY",
+      "saintId": "cms0w7fz904v607qijuaa118u",
+      "name": "Sri Godavari Mata",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Keep beside Upasani: Godavari",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3125
+    },
+    {
+      "sourceId": "recKQvAzazop2jggr",
+      "saintId": "cms0w7g9v058c07qiiv3ej2nr",
+      "name": "Sri Sai Leela Amma",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Keep beside Shirdi Sai: Sai Leelamma, Kaleshwar and Nana Nimonkar",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "rech5MQ4nOMgkH1FL",
+      "saintId": "cms0w7fdw044x07qirr782v8b",
+      "name": "Sri Swami Kaleshwar",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Keep beside Shirdi Sai: Sai Leelamma, Kaleshwar and Nana Nimonkar",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3125
+    },
+    {
+      "sourceId": "recmnzklbsFkmcOUh",
+      "saintId": "cms0w7gq005s607qib62v1tz6",
+      "name": "Sri Saibhakt Nana Saheb Nimonkar Deshpande",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Keep beside Shirdi Sai: Sai Leelamma, Kaleshwar and Nana Nimonkar",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333
+    },
+    {
+      "sourceId": "rec9cGrqgBRNKmfQV",
+      "saintId": "cms0w7dho01mk07qiobliagjd",
+      "name": "Sri Sathya Sai Baba",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Sathya Sai and Bala Sai — associated",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "rec6NG6MDSYvD0JT5",
+      "saintId": "cms0w7d4t016107qijs960uxr",
+      "name": "Sri Bala Sai Baba",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Sathya Sai and Bala Sai — associated",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2
+    },
+    {
+      "sourceId": "rec0WHeheDqNQnKw4",
+      "saintId": "cms0w7cbs006p07qi44q5kt48",
+      "name": "Sri Shafi Baba Kadari (Taji)",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Tajuddin’s disciples — keep beside him; check fit",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recj3tFdEZ16m85Qs",
+      "saintId": "cms0w7ftc04ny07qiaiim9zmn",
+      "name": "Sri Daji Maharaj (Bhaiya ji Maharaj)",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Tajuddin’s disciples — keep beside him; check fit",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "rece342T8PgvjAtX9",
+      "saintId": "cms0w7eoh037807qi9esujgw4",
+      "name": "Sri Dattatreya Nagnath Deshpande (Nimonkar)",
+      "tier": "Tertiary",
+      "section": "Girnar & Nath Traditions",
+      "city": "",
+      "relicDescription": "",
+      "destination": "4",
+      "family": "Nana Saheb Nimonkar ↔ Dattatreya Nagnath Nimonkar · family",
+      "rationale": "Approved core group; confirm physical fit before assigning shelves.",
+      "reviewNotes": [
+        "User-approved general family relationship; exact generation unspecified."
+      ],
+      "knownShelfProxy": 0.3333333333333333
+    },
+    {
+      "sourceId": "rectvEBy833q3i4L6",
+      "saintId": "cms0w7ihx07u507qi0vodpwck",
+      "name": "Sri Siddha Bhagwan Das Maharaj",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Kalna",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved alongside the Ramakrishna circle; the recorded encounter depends on confirming this collection identity.",
+      "reviewNotes": [
+        "Collection identity remains qualified: likely the Kalna Bhagwan Das who met Ramakrishna, not independently confirmed."
+      ],
+      "knownShelfProxy": 0.25
+    }
+  ],
+  "groups": [
+    {
+      "id": "ramakrishna-circle-75",
+      "title": "Ramakrishna’s circle",
+      "vitrine": "75",
+      "sourceIds": [
+        "reckV8sJXL5cq978J",
+        "recqrHsjXJuayrZml",
+        "recSUU4X56pAqF1JC",
+        "recXa1fpOwmlwQ4YH",
+        "recgjan7BxjyG7CeZ"
+      ],
+      "rationale": "Reviewed personal circle. Source-specific display connections; canonical identity review remains separate.",
+      "edges": [
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recqrHsjXJuayrZml",
+          "label": "disciple"
+        },
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recXa1fpOwmlwQ4YH",
+          "label": "disciple · recorder"
+        },
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recSUU4X56pAqF1JC",
+          "label": "niece"
+        },
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recgjan7BxjyG7CeZ",
+          "label": "host at Panihati"
+        }
+      ]
+    },
+    {
+      "id": "addyapeeth-75",
+      "title": "Addyapeeth",
+      "vitrine": "75",
+      "sourceIds": [
+        "recbZIJBveOYqWWs5",
+        "recZPkXeFQBUFoa19"
+      ],
+      "rationale": "Institutional association; keep these two entries distinct.",
+      "edges": []
+    },
+    {
+      "id": "kolkata-associates-75",
+      "title": "Other associated displays",
+      "vitrine": "75",
+      "sourceIds": [
+        "rec896V7fs1lwnSkY",
+        "reciI9fE7xVYFuN4u",
+        "recrWjhRIBpUX7A6J",
+        "rectvEBy833q3i4L6"
+      ],
+      "rationale": "Keep each display distinct. Totapuri and Bhagwan Das retain their identity qualifications.",
+      "edges": []
+    },
+    {
+      "id": "gosaiji-navadvip-core",
+      "title": "Gosaiji and the Navadwip connection",
+      "vitrine": "37",
+      "rationale": "Keep Gosaiji’s circle together, beside his friend Siddha Chaitanya Das and Krishnadas.",
+      "edges": [
+        {
+          "fromSourceId": "rec1cTbJ4iPAMUW0v",
+          "toSourceId": "recaSmpkXpqslt29K",
+          "label": "spouse · spiritual companion"
+        },
+        {
+          "fromSourceId": "rec1cTbJ4iPAMUW0v",
+          "toSourceId": "rec8zRjsV6xnw4mwa",
+          "label": "disciple · recorder"
+        },
+        {
+          "fromSourceId": "rec1cTbJ4iPAMUW0v",
+          "toSourceId": "recPw3FxLbHjXdgaD",
+          "label": "source-recorded disciple"
+        },
+        {
+          "fromSourceId": "recPw3FxLbHjXdgaD",
+          "toSourceId": "rechEXrlzldl7ZpoA",
+          "label": "spouse"
+        },
+        {
+          "fromSourceId": "rec1cTbJ4iPAMUW0v",
+          "toSourceId": "reckCzqScd99ZzKth",
+          "label": "source-recorded friendship"
+        },
+        {
+          "fromSourceId": "reckCzqScd99ZzKth",
+          "toSourceId": "recVBH9QlLXVBdYW9",
+          "label": "source-recorded disciple"
+        },
+        {
+          "fromSourceId": "rec1cTbJ4iPAMUW0v",
+          "toSourceId": "recwXrEbirWApVteB",
+          "label": "source-recorded disciple*"
+        },
+        {
+          "fromSourceId": "rec1cTbJ4iPAMUW0v",
+          "toSourceId": "recsumN8i2tdC7GbV",
+          "label": "recorded disciple · dates to check"
+        }
+      ],
+      "sourceIds": [
+        "rec1cTbJ4iPAMUW0v",
+        "recaSmpkXpqslt29K",
+        "recRZkHSnl8nDNArl",
+        "rec8zRjsV6xnw4mwa",
+        "recPw3FxLbHjXdgaD",
+        "rechEXrlzldl7ZpoA",
+        "recsumN8i2tdC7GbV",
+        "reckCzqScd99ZzKth",
+        "recVBH9QlLXVBdYW9",
+        "recwXrEbirWApVteB"
+      ]
+    },
+    {
+      "id": "meher-sai-core",
+      "title": "Meher Baba’s formation circle and the Sai families",
+      "vitrine": "4",
+      "rationale": "Show the five Perfect Masters as spiritual guides in Meher Baba’s formation. Keep their own families together.",
+      "edges": [
+        {
+          "fromSourceId": "recGN3z8hfy3Z0qqU",
+          "toSourceId": "recAzBZTh80FmTUJN",
+          "label": "formation · spiritual guidance"
+        },
+        {
+          "fromSourceId": "recGN3z8hfy3Z0qqU",
+          "toSourceId": "rec7rcJAHv3rsPsZN",
+          "label": "formation · spiritual guidance"
+        },
+        {
+          "fromSourceId": "recGN3z8hfy3Z0qqU",
+          "toSourceId": "recDQE3wQ8BNrmIpR",
+          "label": "formation · spiritual guidance"
+        },
+        {
+          "fromSourceId": "recGN3z8hfy3Z0qqU",
+          "toSourceId": "recV8xezfabpzSS0B",
+          "label": "formation · spiritual guidance"
+        },
+        {
+          "fromSourceId": "recGN3z8hfy3Z0qqU",
+          "toSourceId": "recZxEDfwSCOpkXyC",
+          "label": "formation · spiritual guidance"
+        },
+        {
+          "fromSourceId": "recV8xezfabpzSS0B",
+          "toSourceId": "recjqj3HtOfhT7hmY",
+          "label": "disciple · successor"
+        },
+        {
+          "fromSourceId": "recDQE3wQ8BNrmIpR",
+          "toSourceId": "recKQvAzazop2jggr",
+          "label": "disciple"
+        },
+        {
+          "fromSourceId": "recDQE3wQ8BNrmIpR",
+          "toSourceId": "rech5MQ4nOMgkH1FL",
+          "label": "disciple"
+        },
+        {
+          "fromSourceId": "recDQE3wQ8BNrmIpR",
+          "toSourceId": "recmnzklbsFkmcOUh",
+          "label": "devotee association"
+        },
+        {
+          "fromSourceId": "recmnzklbsFkmcOUh",
+          "toSourceId": "rece342T8PgvjAtX9",
+          "label": "family · exact generation unspecified"
+        },
+        {
+          "fromSourceId": "recZxEDfwSCOpkXyC",
+          "toSourceId": "rec0WHeheDqNQnKw4",
+          "label": "source-recorded disciple"
+        },
+        {
+          "fromSourceId": "recZxEDfwSCOpkXyC",
+          "toSourceId": "recj3tFdEZ16m85Qs",
+          "label": "source-recorded disciple"
+        }
+      ],
+      "sourceIds": [
+        "recGN3z8hfy3Z0qqU",
+        "recAzBZTh80FmTUJN",
+        "rec7rcJAHv3rsPsZN",
+        "recDQE3wQ8BNrmIpR",
+        "recV8xezfabpzSS0B",
+        "recZxEDfwSCOpkXyC",
+        "recjqj3HtOfhT7hmY",
+        "recKQvAzazop2jggr",
+        "rech5MQ4nOMgkH1FL",
+        "recmnzklbsFkmcOUh",
+        "rec0WHeheDqNQnKw4",
+        "recj3tFdEZ16m85Qs",
+        "rece342T8PgvjAtX9"
+      ]
+    },
+    {
+      "id": "sathya-bala-core",
+      "title": "Sathya Sai and Bala Sai",
+      "vitrine": "4",
+      "rationale": "An associated pair, shown separately from the Shirdi Sai family.",
+      "edges": [
+        {
+          "fromSourceId": "rec9cGrqgBRNKmfQV",
+          "toSourceId": "rec6NG6MDSYvD0JT5",
+          "label": "associated"
+        }
+      ],
+      "sourceIds": [
+        "rec9cGrqgBRNKmfQV",
+        "rec6NG6MDSYvD0JT5"
+      ]
+    }
+  ],
+  "space": {
+    "4": {
+      "observations": 15,
+      "known": 5.470833333333333,
+      "fitCaveat": "Estimated5.47/5 shelf-height spaces; check the complete group physically fits."
+    },
+    "37": {
+      "observations": 10,
+      "known": 3.386111111111111
+    }
+  },
+  "spaceNotes": [
+    "Estimates compare source shelf-height occupancy with five usual shelf-height spaces; physical fit remains to check.",
+    "Both Yogmaya source observations retained: combined allowance1.5; no duplicate-space deduction."
+  ],
+  "excludedFromCore": {
+    "4": [],
+    "37": [
+      "rec3tCQCd95bdyD01",
+      "recMajTBqEWnjz0II",
+      "recrlwdicIYg2eixj",
+      "recRoVxSYIxoob8sJ",
+      "recsRbIOXNQYU4GBd",
+      "recuGDRayeoOlxRO9",
+      "recVN6Ty3682Uz2g4"
+    ]
+  },
+  "assignmentDigest": "d41a37af69b3a944d84f6a228d1561c2b9e722b1bc14f64a293520de4024d7b8",
+  "sourcePacket75": "spn-vitrine75-before37-final-2026-10-28-v2",
+  "contentDigest": "85f95c1cb8546df51d8bb8118161a6f7a766318171d8088f634b7cab5a4f9ed8"
+}
