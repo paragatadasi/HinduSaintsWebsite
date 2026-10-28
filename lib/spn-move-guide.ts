@@ -27,7 +27,9 @@ export type CompanionRow={
  fixedHousing:boolean;verifiedItemIds:string[];identityChanged:boolean;
  movementBlockedReason?:string|null;
 };
-export type PhysicalState={reportedPlacementReceipts?:{guideContext:{guideVersion:string;contentDigest:string;assignmentDigest:string};complete:boolean};confirmationHistory?:{afterJson:unknown}[];rows:CompanionRow[];unmappedCurrentLocations:{sourceId:string;location:PhysicalLocation;version:number}[]};
+export type VitrinePreparation={vitrine:string;prepared:boolean;version:number;recordedAt:string;receiptId:string;basis:"preparation"|"legacy_clear"};
+export type ClearCorrection={receiptId:string;vitrine:string;excludedCount:number;records:{sourceId:string;saintId:string|null;name:string;expectedCurrentRevision:string;expectedSourceRevision:string;expectedLocationVersion:number;previous:PhysicalLocation;previousConfirmedAt:string}[]};
+export type PhysicalState={clearCorrections?:ClearCorrection[];preparations?:VitrinePreparation[];reportedPlacementReceipts?:{guideContext:{guideVersion:string;contentDigest:string;assignmentDigest:string};complete:boolean};confirmationHistory?:{afterJson:unknown}[];rows:CompanionRow[];unmappedCurrentLocations:{sourceId:string;location:PhysicalLocation;version:number}[]};
 export function isPlaced(row:CompanionRow,destination:string){return row.currentBasis==="confirmed"&&row.current?.kind==="vitrine"&&row.current.code===destination;}
 export function currentLocationLabel(location:PhysicalLocation|null){return location?location.label+(location.shelf?` · Shelf ${location.shelf}`:""):"Location not recorded";}
 

@@ -12170,3 +12170,13 @@ select:not([multiple]) {
 .museum-display-work__form {display:flex;align-items:flex-end;gap:var(--space-2);margin-block:var(--space-2)}
 .museum-display-work__form .admin-field {flex:1;min-width:0}
 .museum-display-work input {font-size:var(--font-size-companion-body)}
+
+/* Session tools stay outside phase navigation; the guide owns its vitrine controls. */
+.museum-companion--guide .museum-companion__main>.museum-companion__guide {grid-column:2;min-width:0;display:grid;gap:var(--space-3)}
+.museum-companion--guide .museum-companion__task {grid-row:1;}
+.museum-companion__guide>.room-move__phase {margin:0;}
+.museum-companion__search {min-width:0;}
+.museum-companion__search .museum-guide-search {margin-top:0;}
+.museum-companion__search-results {padding-block:var(--space-2);}
+.museum-companion__task-group + .museum-companion__task-group {margin-top:var(--space-5);}
+.museum-companion__prepared {display:flex;align-items:center;gap:var(--space-2);color:var(--color-muted);}
