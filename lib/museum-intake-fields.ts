@@ -9,6 +9,7 @@ type RelicFormFields = {
   relicDescription: string;
   broughtByRaw?: string;
   relicPlaceRaw?: string;
+  additionalSaintsRaw?: string;
 };
 
 export function intakeRelicPayload(relic: RelicFormFields) {
@@ -17,6 +18,7 @@ export function intakeRelicPayload(relic: RelicFormFields) {
     relicDescription: relic.relicDescription,
     broughtByRaw: relic.broughtByRaw?.trim() || undefined,
     relicPlaceRaw: relic.relicPlaceRaw?.trim() || undefined,
+    ...(relic.additionalSaintsRaw !== undefined ? {additionalSaintsRaw: relic.additionalSaintsRaw.trim()} : {}),
   };
 }
 

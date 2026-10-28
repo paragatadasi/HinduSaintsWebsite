@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { Prisma, type UserRole } from "./generated/prisma/client";
 import { db } from "./db";
 import { canViewSaintWithRoles } from "./admin-saint-access";
-import { assertIntakeEditable, assertIntakeSubmission, createMuseumIntakeInput, editMuseumIntakeInput, intakeDeliverySummary, museumIntakeFields, MuseumIntakeError, reviewMuseumIntakeInput, submitMuseumIntakeInput, museumIntakeRelicInput, type IntakeRelicInput, type IntakeMediaKind } from "./museum-intake-domain";
+import { preserveAdditionalSaints, assertIntakeEditable, assertIntakeSubmission, createMuseumIntakeInput, editMuseumIntakeInput, intakeDeliverySummary, museumIntakeFields, MuseumIntakeError, reviewMuseumIntakeInput, submitMuseumIntakeInput, museumIntakeRelicInput, type IntakeRelicInput, type IntakeMediaKind } from "./museum-intake-domain";
 import { discardIntakeImage, getIntakeImageUrl, prepareIntakeImage, writeIntakeImage } from "./museum-intake-storage";
 
 export type IntakeActor = { id: string; canReview: boolean; roles: readonly UserRole[] };
@@ -71,7 +71,7 @@ async function saveRelics(tx: Prisma.TransactionClient, row: Intake, relics: Int
   if (foreign) throw new MuseumIntakeError(400, "A relic belongs to another entry. Reload this entry.");
   await tx.museumIntakeRelic.updateMany({ where: { intakeId: row.id, id: { notIn: ids }, archivedAt: null }, data: { archivedAt: new Date() } });
   for (const [position, relic] of relics.entries()) {
-    const { id, ...fields } = relic;
+    const { id, ...fields } = preserveAdditionalSaints(relic, activeRelics(row).find(prior => prior.id === relic.id));
     if (owned.has(id)) await tx.museumIntakeRelic.update({ where: { id }, data: { rawFields: asJson(fields), position, archivedAt: null } });
     else await tx.museumIntakeRelic.create({ data: { id, intakeId: row.id, rawFields: asJson(fields), position } });
   }

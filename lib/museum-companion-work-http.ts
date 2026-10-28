@@ -16,7 +16,7 @@ export async function museumCompanionWorkHttp(request:Request,loader:PhysicalSna
   if(request.method==="GET"){
    const query=new URL(request.url).searchParams;
    if((query.get("museumId")??"museum-spn")!=="museum-spn")throw new MuseumMoveSessionError(400,"Choose the SPN museum.");
-   const ids=z.array(z.string().min(1).max(200)).min(1).max(2000).parse(query.getAll("sourceId"));result=await readCompanionWork([...new Set(ids)]);
+   const ids=z.array(z.string().min(1).max(200)).max(2000).parse(query.getAll("sourceId"));result=await readCompanionWork(ids.length ? [...new Set(ids)] : undefined);
   }else if(request.method==="POST"){
    if(!hasCapability(user.roles,"manage_museum"))throw new MuseumMoveSessionError(403,"A museum curator must save display work.");
    if(!intakeWriteOriginAllowed(request.url,request.headers.get("origin"),request.headers.get("host"),process.env.AUTH_URL||process.env.NEXTAUTH_URL))throw new MuseumMoveSessionError(403,"Reload before saving display work.");
