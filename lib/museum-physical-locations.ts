@@ -1,3 +1,4 @@
+import { assertGuidePhysicalScope } from "./spn-datta-guide";
 import { z } from "zod";
 import { assertSpnMovementAllowed, spnMovementBlockedReason } from "./spn-movement-holds";
 import { db } from "./db";
@@ -83,7 +84,9 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
   const input = physicalConfirmationInput.parse(raw);
   assertDistinctMoveSources(input.records);
   if (input.guideContext) {
-    const registered = readStarterGuideDefinition(input.guideContext.guideVersion).context;
+    const definition = readStarterGuideDefinition(input.guideContext.guideVersion);
+    assertGuidePhysicalScope(definition, input.records, input.clearedVitrines);
+    const registered = definition.context;
     if (registered.contentDigest !== input.guideContext.contentDigest || registered.assignmentDigest !== input.guideContext.assignmentDigest) throw new MuseumMoveSessionError(409, "The guide content changed. Reload it before recording a placement.");
   }
   return db.$transaction(async tx => {
