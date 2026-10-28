@@ -1,5 +1,5 @@
 import { clearCorrectionInput, clearCorrectionOffers, clearCorrectionShelfApplies } from "./museum-clear-correction-domain";
-import { preparationInput, projectPreparations, assertSafeCaseClear, projectPhaseClearances, assertPhaseClearance } from "./museum-preparation-domain";
+import { preparationInput, projectPreparations, assertSafeCaseClear, projectPhaseClearances, assertPhaseClearance, phaseNeedsClearance, assertPhasePreparation } from "./museum-preparation-domain";
 import { memoizePhysicalSnapshot } from "./museum-physical-snapshot-cache";
 import { physicalUndoInput, physicalUndoOffer } from "./museum-physical-undo-domain";
 import { assertGuidePhysicalScope } from "./spn-datta-guide";
@@ -136,7 +136,9 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     if (input.clearedVitrines?.some(code => !current.vitrineCodes.includes(code))) throw new MuseumMoveSessionError(400, "Choose cleared vitrines in this museum's layout.");
     const phase = input.guideContext ? readStarterGuideDefinition(input.guideContext.guideVersion) : null;
     const initialCases=phase?.physicalScope?.allowClear ? phase.physicalScope.clearVitrines ?? [] : [];
-    if(initialCases.length)assertPhaseClearance(input,initialCases,phase?.context.guideVersion ?? "",await readMuseumPhaseClearances(tx),current.rows,input.records);
+    if(initialCases.length && (input.clearedVitrines?.length || phaseNeedsClearance(input.records,phase?.physicalScope?.clearanceRequiredDestinations)))
+      assertPhaseClearance(input,initialCases,phase?.context.guideVersion ?? "",await readMuseumPhaseClearances(tx),current.rows,input.records);
+    if(phase?.physicalScope?.preparationVitrines?.length)assertPhasePreparation(input.records,phase.physicalScope.preparationVitrines,await readMuseumPreparations(tx));
     if (input.clearedVitrines?.length && !initialCases.length) assertSafeCaseClear(input.clearedVitrines, [...current.rows, ...current.unmappedCurrentLocations.map(row=>({currentBasis:"confirmed",current:row.location}))]);
     if (input.clearedVitrines?.length) assertWholeCaseClearing(input.clearedVitrines, [...current.rows.map(row => ({ sourceId: row.sourceId, current: row.current })), ...current.unmappedCurrentLocations.map(row => ({ sourceId: row.sourceId, current: row.location }))], input.records);
     const changes = input.records.map(record => {
