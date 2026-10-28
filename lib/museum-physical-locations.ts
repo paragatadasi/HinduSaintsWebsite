@@ -1,3 +1,4 @@
+import { memoizePhysicalSnapshot } from "./museum-physical-snapshot-cache";
 import { physicalUndoInput, physicalUndoOffer } from "./museum-physical-undo-domain";
 import { assertGuidePhysicalScope } from "./spn-datta-guide";
 import { z } from "zod";
@@ -46,8 +47,18 @@ async function view(loader: PhysicalSnapshotLoader, tx: Prisma.TransactionClient
       sourceRevision: physicalFingerprint({ sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, original: row.sourceReported, link, itemIds: row.itemIds ?? [], fixedHousing: row.fixedHousing }),
       ...current };
   });
-  const undoReceipts = await tx.auditEvent.findMany({ where: { action, entityType: receiptType, entityId: { startsWith: "museum-spn:" } },
-    orderBy: [{ createdAt: "desc" }, { id: "desc" }], take: 1000, select: { id: true, afterJson: true } });
+  const confirmedRows = rows.filter(row => row.currentBasis === "confirmed" && row.currentConfirmed && !row.identityChanged && !row.verifiedItemIds.length);
+  const expectedReceipts = confirmedRows.length ? Prisma.join(confirmedRows.map(row =>
+    Prisma.sql`(${row.sourceId},${String(row.currentVersion)},${row.currentConfirmed!.confirmedAt})`)) : null;
+  const undoReceipts = expectedReceipts ? await tx.$queryRaw<{ id: string; afterJson: Prisma.JsonValue }[]>(Prisma.sql`
+    SELECT DISTINCT event.id, event."afterJson" FROM "AuditEvent" event
+    CROSS JOIN LATERAL jsonb_array_elements(CASE WHEN jsonb_typeof(event."afterJson"->'moves')='array' THEN event."afterJson"->'moves' ELSE '[]'::jsonb END) movement
+    JOIN (VALUES ${expectedReceipts}) expected("sourceId",version,"confirmedAt")
+      ON movement.value->>'sourceId'=expected."sourceId" AND movement.value->>'version'=expected.version
+      AND event."afterJson"->>'recordedAt'=expected."confirmedAt"
+    WHERE event.action=${action} AND event."entityType"=${receiptType}
+      AND event."afterJson"->>'museumId'='museum-spn'
+  `) : [];
   return { museumId: "museum-spn" as const, sourceSnapshotAt: snapshot.sourceSnapshotAt ?? null, rows: rows.map(row => ({ ...row, undo: physicalUndoOffer(row, undoReceipts) })), vitrineCodes: snapshot.vitrineCodes,
     unmappedCurrentLocations: positions.filter(position => !snapshot.rows.some(row => row.sourceId === position.sourceId)).flatMap(position => { const location = storedPhysicalLocation(position.location); return location ? [{ sourceId: position.sourceId, location, version: position.version, recordedAt: position.confirmedAt }] : []; }) };
 }
@@ -99,6 +110,7 @@ export async function readReportedPlacementReceipts(tx: Prisma.TransactionClient
 
 export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSessionActor, loader: PhysicalSnapshotLoader) {
   if (!actor.canManage) throw new MuseumMoveSessionError(403, "A museum curator must record physical locations.");
+  loader = memoizePhysicalSnapshot(loader);
   const input = physicalConfirmationInput.parse(raw);
   assertDistinctMoveSources(input.records);
   if (input.guideContext) {
@@ -157,6 +169,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
 
 export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionActor, loader: PhysicalSnapshotLoader) {
   if (!actor.canManage) throw new MuseumMoveSessionError(403, "A museum curator must correct placement checks.");
+  loader = memoizePhysicalSnapshot(loader);
   const input = physicalUndoInput.parse(raw);
   return db.$transaction(async tx => {
     await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-move-session:spn'))`;
