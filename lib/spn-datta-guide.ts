@@ -62,7 +62,7 @@ export function projectDattaGuide(current: Parameters<typeof projectStarterDispl
     const identityMatches = row && !row.identityChanged && row.saintId === entry.saintId;
     return { ...entry, currentLocation: identityMatches ? row.current : null,
       currentLocationBasis: identityMatches ? row.currentBasis : "unknown",
-      movementBlockedReason: entry.movementBlockedReason || (identityMatches ? row.movementBlockedReason : "Reload and review this source identity before moving it.") };
+      movementBlockedReason: entry.movementBlockedReason || (identityMatches ? row.movementBlockedReason ?? undefined : "Reload and review this source identity before moving it.") };
   }) };
 }
 

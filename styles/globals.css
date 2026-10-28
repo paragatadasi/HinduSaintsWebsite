@@ -12152,3 +12152,9 @@ select:not([multiple]) {
 .museum-guide-decision {align-items:center}
 .museum-guide-decision__status {font-size:var(--font-size-companion-small);white-space:nowrap;border:var(--border-width-default) solid var(--color-border);border-radius:var(--radius-sm);padding:var(--space-1) var(--space-2);color:var(--color-muted);background:var(--color-surface-muted)}
 .museum-guide-decision[data-status="declined"] .museum-guide-decision__status {background:var(--color-surface)}
+
+.museum-guide-search {display:grid;grid-template-columns:minmax(0,2fr) repeat(2,minmax(0,1fr));gap:var(--space-3);margin-block:var(--space-3)}
+.museum-guide-search__results {max-height:var(--width-companion-map);overflow-y:auto}
+.museum-companion .admin-tab-strip a {color:var(--color-muted);padding:var(--space-3) 0;text-decoration:none;border-bottom:var(--border-width-default) solid transparent}
+.museum-companion .admin-tab-strip a[aria-current="page"] {color:var(--color-text);border-bottom-color:var(--color-copper)}
+@media(max-width:45rem){.museum-guide-search{grid-template-columns:minmax(0,1fr)}}
