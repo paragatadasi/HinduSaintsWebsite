@@ -54,6 +54,7 @@ export function SpnRoomMoveCompanion({guide,initialPhysical,canManage,workflow="
    if(!result.decision&&!Array.isArray(result.rows))throw new Error("The save could not be confirmed. Refresh progress before trying again.");
    if(body.action==="undo"){
     retry.current=null;
+    setPhysical(previous=>previous?{...previous,confirmationHistory:[],reportedPlacementReceipts:undefined,rows:previous.rows.map(row=>result.rows.find((next:CompanionRow)=>next.sourceId===row.sourceId)??row)}:result);
     const refreshed=await fetch("/api/admin/museum-physical-locations?museumId=museum-spn",{cache:"no-store"});
     const snapshot=await refreshed.json();
     if(!refreshed.ok||!Array.isArray(snapshot.rows))throw new Error("The check was undone. Refresh progress to load the updated history.");
