@@ -652,3 +652,10 @@ vitrine context in the narrower column. Stack columns on small screens and let
 the map scroll rather than crushing its labels. Preserve the live three-phase
 workflow, saved-location evidence, review holds and defer/decline controls when
 adapting the prototype. Never copy prototype sample data or local-only save logic.
+
+For the reviewed starter row, use the `guided` companion mode: keep the room map,
+then show one placement guide per vitrine, with family connections visible above
+the checklist and city groups afterward. `room` mode retains the separate city
+exploration workflow for less settled proposals. Do not infer guru relationships
+from a locality grouping; the tree renders only the guide's supplied edges and
+keeps their relationship labels, including uncertainty and non-guru connections.
