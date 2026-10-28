@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { Prisma } from "./generated/prisma/client";
 import { db } from "./db";
-import { resolveMuseumPhysicalCurrent } from "./museum-physical-location-current";
+import { resolveMuseumPhysicalCurrent, storedPhysicalLocation } from "./museum-physical-location-current";
 import { readLegacyCurrentForSnapshot } from "./museum-move-session-source";
 import { assertSpnMovementAllowed } from "./spn-movement-holds";
 import { createMoveSession, moveSessionAction, moveSnapshot, moveLocation, sameMoveLocation, assertDistinctMoveSources, assertWholeCaseClearing, MuseumMoveSessionError, type MoveSnapshot, type MoveLocation } from "./museum-move-session-domain";
@@ -18,7 +18,7 @@ async function present(session: Session, tx: Prisma.TransactionClient) {
   const events = await tx.museumMoveSessionEvent.findMany({ where: { sessionId: session.id }, orderBy: [{ createdAt: "asc" }, { id: "asc" }], select: { id: true, action: true, beforeJson: true, afterJson: true, createdAt: true } });
   const latestLegacy = await readLegacyCurrentForSnapshot(snapshot, tx);
   const starting = session.startingSnapshot as Record<string, Prisma.JsonValue>;
-  return { id: session.id, museumId: session.museumId, version: session.version, status: session.status, proposalVersion: session.proposalVersion, title: snapshot.title, guidance: snapshot.guidance, sourceSnapshotAt: snapshot.sourceSnapshotAt ?? null, initialEmptyVitrines: snapshot.initialEmptyVitrines ?? [], unmappedCurrentLocations: current.filter(position => !snapshot.rows.some(row => row.sourceId === position.sourceId)).map(position => ({ sourceId: position.sourceId, location: position.location, version: position.version })), tables: session.tables, createdAt: session.createdAt, events,
+  return { id: session.id, museumId: session.museumId, version: session.version, status: session.status, proposalVersion: session.proposalVersion, title: snapshot.title, guidance: snapshot.guidance, sourceSnapshotAt: snapshot.sourceSnapshotAt ?? null, initialEmptyVitrines: snapshot.initialEmptyVitrines ?? [], unmappedCurrentLocations: current.filter(position => !snapshot.rows.some(row => row.sourceId === position.sourceId)).flatMap(position => { const location = storedPhysicalLocation(position.location); return location ? [{ sourceId: position.sourceId, location, version: position.version }] : []; }), tables: session.tables, createdAt: session.createdAt, events,
     rows: snapshot.rows.map(row => {
       const saved = current.find(location => location.sourceId === row.sourceId);
       const legacy = latestLegacy.get(row.sourceId) ?? row.legacyConfirmed;
@@ -43,10 +43,11 @@ export async function startMuseumMoveSession(raw: unknown, actor: MoveSessionAct
     const snapshot = moveSnapshot.parse(await loader(input.proposalVersion, tx));
     if (snapshot.proposalVersion !== input.proposalVersion) throw new MuseumMoveSessionError(409, "The registered proposal changed. Reload it before starting.");
     const current = await tx.museumMoveCurrentLocation.findMany({ where: { museumId: input.museumId } });
-    if (current.some(location => moveLocation.parse(location.location).kind === "table")) throw new MuseumMoveSessionError(409, "Displays remain in the Staging area. Continue their session before starting a new one.");
+    if (current.some(location => storedPhysicalLocation(location.location)?.kind === "table")) throw new MuseumMoveSessionError(409, "Displays remain in the Staging area. Continue their session before starting a new one.");
     const starting = Object.fromEntries(snapshot.rows.map(row => {
       const saved = current.find(location => location.sourceId === row.sourceId);
-      return [row.sourceId, { location: saved ? saved.location : row.legacyConfirmed?.location ?? row.sourceReported, basis: saved || row.legacyConfirmed ? "confirmed" : row.sourceReported ? "source" : "unknown", version: saved?.version ?? 0 }];
+      const resolved = resolveMuseumPhysicalCurrent(row.sourceReported, saved, row.legacyConfirmed);
+      return [row.sourceId, { location: resolved.current, basis: resolved.currentBasis, version: resolved.currentVersion }];
     }));
     const session = await tx.museumMoveSession.create({ data: { museumId: input.museumId, proposalVersion: input.proposalVersion, snapshot: json(snapshot), startingSnapshot: json(starting), tables: [{ id: "staging-area", label: "Staging area" }], clientRequestId: input.clientRequestId, createdById: actor.id } });
     await tx.auditEvent.create({ data: { userId: actor.id, action: "museum.move_session.started", entityType: "MuseumMoveSession", entityId: session.id, afterJson: { museumId: input.museumId, proposalVersion: input.proposalVersion, sourceRows: snapshot.rows.length } } });
@@ -75,7 +76,7 @@ export async function updateMuseumMoveSession(raw: unknown, actor: MoveSessionAc
       if (input.clearedVitrines?.some(code => !snapshot.vitrineCodes.includes(code))) throw new MuseumMoveSessionError(400, "Choose vitrines in this registered layout.");
       const currentView = await present(session, tx);
       if (input.clearedVitrines?.length) {
-        assertWholeCaseClearing(input.clearedVitrines, [...currentView.rows.map(row => ({ sourceId: row.sourceId, current: row.current })), ...currentView.unmappedCurrentLocations.map(row => ({ sourceId: row.sourceId, current: moveLocation.parse(row.location) }))], input.moves);
+        assertWholeCaseClearing(input.clearedVitrines, [...currentView.rows.map(row => ({ sourceId: row.sourceId, current: row.current })), ...currentView.unmappedCurrentLocations.map(row => ({ sourceId: row.sourceId, current: storedPhysicalLocation(row.location) }))], input.moves);
       }
       const positions = await tx.museumMoveCurrentLocation.findMany({ where: { museumId: session.museumId, sourceId: { in: input.moves.map(move => move.sourceId) } } });
       const changes: { sourceId: string; from: MoveLocation | null; to: MoveLocation; beforeVersion: number }[] = [];
@@ -107,7 +108,7 @@ export async function updateMuseumMoveSession(raw: unknown, actor: MoveSessionAc
       after = { moves: changes.map(change => ({ sourceId: change.sourceId, location: change.to, version: change.beforeVersion + 1 })), note: input.note ?? null, scope: "source_observation", clearedVitrines: input.clearedVitrines ?? [], inventoryCompleteness: "unverified", emptyClaim: input.clearedVitrines?.length ? "curator_confirmed_at_event_time" : "none" };
     } else {
       const current = await tx.museumMoveCurrentLocation.findMany({ where: { museumId: session.museumId } });
-      if (current.some(position => moveLocation.parse(position.location).kind === "table")) throw new MuseumMoveSessionError(409, "Displays remain in the Staging area. Record their current placement before closing this session.");
+      if (current.some(position => storedPhysicalLocation(position.location)?.kind === "table")) throw new MuseumMoveSessionError(409, "Displays remain in the Staging area. Record their current placement before closing this session.");
       after = { status: "closed" };
     }
     await tx.museumMoveSessionEvent.create({ data: { sessionId: session.id, clientRequestId: input.clientRequestId, fingerprint: hash, action: input.action, beforeJson: json(before), afterJson: json(after), actorId: actor.id } });

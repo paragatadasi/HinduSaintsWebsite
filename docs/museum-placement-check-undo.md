@@ -1,0 +1,17 @@
+# Correcting a placement check
+
+Unchecking a placement retracts a mistaken recorded confirmation. It does not confirm that the relic physically returned. A real return movement continues to use the ordinary physical-location confirmation workflow.
+
+The protected `/api/admin/museum-physical-locations` POST accepts `action: "undo"`, museum ID, request UUID, exact receipt/source/saint IDs, expected source and current revisions, expected location version, and `mistakenCheckAcknowledged: true`. It does not accept a destination. Existing authentication, curator capability, same-origin and bounded-JSON controls remain in force.
+
+Each physical row exposes server-derived `undo`: availability, exact receipt ID, previous location/basis/confirmation timestamp, or a reason why correction cannot safely proceed. Missing or ambiguous prior evidence is not replaced with the source origin. Historical first confirmations can recover source/unknown state only when their exact recorded origin matches current source evidence and no legacy confirmation intervenes. New confirmations capture previous basis and effective confirmation timestamp explicitly. Receipt lookup is bounded to the latest 1,000 direct confirmation events; an older unlocated receipt remains unavailable rather than being guessed.
+
+Undo takes the same museum advisory lock as moves and rechecks current/source fingerprints, saint identity, ledger version, verified-item state and exact receipt. A version-checked update increments the ledger version; it never deletes a row or resets its counter. Repeated identical request UUIDs return the prior correction receipt; reuse with different content conflicts. Whole-vitrine clearing events require separate review and cannot be undone by one checkbox.
+
+The ledger JSON retains a validated `restored_recorded_state` envelope with the prior basis, location and effective confirmation timestamp. Source and unknown states remain unconfirmed. Shared physical and pinned-session readers understand this envelope, including staging checks, starting snapshots and unmapped occupancy. There is no schema migration. Original source evidence and confirmation receipts remain intact; a separate `museum.physical_location.check_undone` audit event records the correction, its target receipt/source and before/after version. Active confirmation-history projections and reported-placement receipt queries exclude the corrected source event; other rows in the same batch remain valid.
+
+Undo does not change tiers, proposals, guide definitions or canonical identities. The guide context is unnecessary in the correction payload because the exact existing receipt determines the state being retracted; clients cannot use undo to select an alternate destination. Normal new placement checks retain the phase’s exact-source/target restrictions.
+
+Citra owns the checkbox/dialog and bring-from presentation. The backend returns a full fresh row view after undo so all copies of a source checkbox refresh together. Missing availability on older client payloads must not become an optimistic local reversal.
+
+Verification covers stale versions, receipt/identity mismatch, fixed historical scope, source/unknown restoration, confirmed timestamp restoration, legacy precedence, explicit mistake acknowledgement and destination injection. The combined UI branch should also run its integrated production build before release. No production correction was performed during development.

@@ -1,3 +1,4 @@
+import { physicalUndoInput, physicalUndoOffer } from "./museum-physical-undo-domain";
 import { assertGuidePhysicalScope } from "./spn-datta-guide";
 import { z } from "zod";
 import { assertSpnMovementAllowed, spnMovementBlockedReason } from "./spn-movement-holds";
@@ -5,7 +6,7 @@ import { db } from "./db";
 import { Prisma } from "./generated/prisma/client";
 import { moveSnapshot, moveLocation, sameMoveLocation, assertDistinctMoveSources, assertWholeCaseClearing, MuseumMoveSessionError, type MoveSnapshot } from "./museum-move-session-domain";
 import { readStarterGuideDefinition, registeredStarterGuide, starterGuideContext } from "./spn-starter-guide-registry";
-import { physicalFingerprint, resolveMuseumPhysicalCurrent } from "./museum-physical-location-current";
+import { physicalFingerprint, resolveMuseumPhysicalCurrent, storedPhysicalLocation } from "./museum-physical-location-current";
 import type { MoveSessionActor } from "./museum-move-session-service";
 
 export type PhysicalSnapshotLoader = (tx: Prisma.TransactionClient) => Promise<MoveSnapshot>;
@@ -40,13 +41,15 @@ async function view(loader: PhysicalSnapshotLoader, tx: Prisma.TransactionClient
     const identityChanged = Boolean(row.saintId && (!link || link.entityType !== "Saint" || link.entityId !== row.saintId));
     const current = resolveMuseumPhysicalCurrent(row.sourceReported, positions.find(position => position.sourceId === row.sourceId), row.legacyConfirmed);
     return { sourceId: row.sourceId, sourceKey: row.sourceKey ?? null, saintId: row.saintId, name: row.name,
-      original: row.sourceReported, proposalDestination: row.destination, proposalVersion: snapshot.proposalVersion,
+      original: row.sourceReported, legacyConfirmed: row.legacyConfirmed ?? null, proposalDestination: row.destination, proposalVersion: snapshot.proposalVersion,
       fixedHousing: row.fixedHousing, movementBlockedReason: spnMovementBlockedReason(row.sourceId), verifiedItemIds: [...new Set([...(row.itemIds ?? []), ...(row.itemId ? [row.itemId] : [])])], identityChanged,
       sourceRevision: physicalFingerprint({ sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, original: row.sourceReported, link, itemIds: row.itemIds ?? [], fixedHousing: row.fixedHousing }),
       ...current };
   });
-  return { museumId: "museum-spn" as const, sourceSnapshotAt: snapshot.sourceSnapshotAt ?? null, rows, vitrineCodes: snapshot.vitrineCodes,
-    unmappedCurrentLocations: positions.filter(position => !snapshot.rows.some(row => row.sourceId === position.sourceId)).map(position => ({ sourceId: position.sourceId, location: moveLocation.parse(position.location), version: position.version, recordedAt: position.confirmedAt })) };
+  const undoReceipts = await tx.auditEvent.findMany({ where: { action, entityType: receiptType, entityId: { startsWith: "museum-spn:" } },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }], take: 1000, select: { id: true, afterJson: true } });
+  return { museumId: "museum-spn" as const, sourceSnapshotAt: snapshot.sourceSnapshotAt ?? null, rows: rows.map(row => ({ ...row, undo: physicalUndoOffer(row, undoReceipts) })), vitrineCodes: snapshot.vitrineCodes,
+    unmappedCurrentLocations: positions.filter(position => !snapshot.rows.some(row => row.sourceId === position.sourceId)).flatMap(position => { const location = storedPhysicalLocation(position.location); return location ? [{ sourceId: position.sourceId, location, version: position.version, recordedAt: position.confirmedAt }] : []; }) };
 }
 
 export async function readMuseumPhysicalLocations(loader: PhysicalSnapshotLoader, sourceIds?: string[]) {
@@ -55,7 +58,18 @@ export async function readMuseumPhysicalLocations(loader: PhysicalSnapshotLoader
     db.auditEvent.findMany({ where: { action, entityType: receiptType, entityId: { startsWith: "museum-spn:" } }, orderBy: [{ createdAt: "desc" }, { id: "desc" }], take: 100, select: { id: true, createdAt: true, afterJson: true } }),
     readReportedPlacementReceipts()
   ]);
-  return { ...current, confirmationHistory, reportedPlacementReceipts };
+  const corrections = await db.auditEvent.findMany({ where: { action: "museum.physical_location.check_undone", entityType: "MuseumPhysicalCheckUndo", entityId: { startsWith: "museum-spn:" } }, select: { afterJson: true } });
+  const corrected = corrections.flatMap(event => {
+    const value = event.afterJson;
+    return value && typeof value === "object" && !Array.isArray(value) && typeof value.targetReceiptId === "string" && typeof value.sourceId === "string"
+      ? [{ receiptId: value.targetReceiptId, sourceId: value.sourceId }] : [];
+  });
+  const activeHistory = confirmationHistory.map(event => {
+    const value = event.afterJson;
+    if (!value || typeof value !== "object" || Array.isArray(value) || !Array.isArray(value.moves)) return event;
+    return { ...event, afterJson: { ...value, moves: value.moves.filter(move => !move || typeof move !== "object" || Array.isArray(move) || !corrected.some(c => c.receiptId === event.id && c.sourceId === move.sourceId)) } };
+  });
+  return { ...current, confirmationHistory: activeHistory, reportedPlacementReceipts };
 }
 
 export async function readReportedPlacementReceipts(tx: Prisma.TransactionClient = db,
@@ -72,6 +86,10 @@ export async function readReportedPlacementReceipts(tx: Prisma.TransactionClient
       AND movement.value->'location'->>'code'=expected.vitrine
     WHERE event.action=${action} AND event."entityType"=${receiptType}
       AND event."afterJson"->>'museumId'='museum-spn' AND event."afterJson"->>'confirmedDate'>=expected."confirmedDate"
+      AND NOT EXISTS (SELECT 1 FROM "AuditEvent" correction
+        WHERE correction.action='museum.physical_location.check_undone' AND correction."entityType"='MuseumPhysicalCheckUndo'
+          AND correction."afterJson"->>'museumId'='museum-spn'
+          AND correction."afterJson"->>'targetReceiptId'=event.id AND correction."afterJson"->>'sourceId'=expected."sourceId")
     ORDER BY expected."sourceId", event."createdAt" DESC, event.id DESC
   `);
   const ids = new Set(matched.map(row => row.sourceId));
@@ -119,7 +137,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertSpnMovementAllowed(row.sourceId, row.current, to);
       if (row.fixedHousing && !sameMoveLocation(row.current, to)) throw new MuseumMoveSessionError(409, "This display has fixed or special housing. Review that restriction before moving it.");
       return { sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, name: row.name, original: row.original,
-        previous: row.current, location: to, version: row.currentVersion + 1 };
+        previous: row.current, previousState: { basis: row.currentBasis, location: row.current, effectiveConfirmedAt: row.currentConfirmed?.confirmedAt ?? null }, location: to, version: row.currentVersion + 1 };
     });
     const recordedAt = new Date();
     for (const change of changes) await tx.museumMoveCurrentLocation.upsert({
@@ -134,5 +152,38 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         guideContext: input.guideContext ?? null, clearedVitrines: input.clearedVitrines ?? [], inventoryCompleteness: "unverified",
         emptyCaseClaim: input.clearedVitrines?.length ? "curator_confirmed_at_event_time" : "none", proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
     return { ...await view(loader, tx, input.records.map(row => row.sourceId)), receipt, replayed: false };
+  }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 60_000 });
+}
+
+export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionActor, loader: PhysicalSnapshotLoader) {
+  if (!actor.canManage) throw new MuseumMoveSessionError(403, "A museum curator must correct placement checks.");
+  const input = physicalUndoInput.parse(raw);
+  return db.$transaction(async tx => {
+    await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-move-session:spn'))`;
+    const undoAction = "museum.physical_location.check_undone", entityId = `${input.museumId}:${input.clientRequestId}`;
+    const fingerprint = physicalFingerprint(input);
+    const retry = await tx.auditEvent.findFirst({ where: { action: undoAction, entityType: "MuseumPhysicalCheckUndo", entityId }, select: { id: true, afterJson: true } });
+    if (retry) {
+      if ((retry.afterJson as { fingerprint?: string } | null)?.fingerprint !== fingerprint) throw new MuseumMoveSessionError(409, "This request already corrected a different check. Reload before trying again.");
+      return { ...await view(loader, tx), receipt: retry, replayed: true };
+    }
+    const state = await view(loader, tx, [input.sourceId]);
+    const row = state.rows[0];
+    if (!row || row.identityChanged || row.saintId !== input.saintId || row.sourceRevision !== input.expectedSourceRevision ||
+      row.currentVersion !== input.expectedLocationVersion || row.currentRevision !== input.expectedCurrentRevision)
+      throw new MuseumMoveSessionError(409, "This source or its physical location changed. Reload before undoing the check.");
+    const offer = row.undo;
+    if (!offer.available || offer.receiptId !== input.receiptId) throw new MuseumMoveSessionError(409, offer.reason ?? "This confirmation can no longer be undone.");
+    const restored = { kind: "restored_recorded_state", basis: offer.previousBasis, location: offer.previous, effectiveConfirmedAt: offer.previousConfirmedAt };
+    const recordedAt = new Date();
+    const changed = await tx.museumMoveCurrentLocation.updateMany({ where: { museumId: input.museumId, sourceId: input.sourceId, version: input.expectedLocationVersion },
+      data: { location: json(restored), version: { increment: 1 }, confirmedAt: recordedAt, confirmedById: actor.id } });
+    if (changed.count !== 1) throw new MuseumMoveSessionError(409, "This location changed. Reload before undoing the check.");
+    const receipt = await tx.auditEvent.create({ data: { userId: actor.id, action: undoAction, entityType: "MuseumPhysicalCheckUndo", entityId,
+      beforeJson: json({ sourceId: row.sourceId, current: row.current, basis: row.currentBasis, version: row.currentVersion }),
+      afterJson: json({ museumId: input.museumId, fingerprint, targetReceiptId: input.receiptId, sourceId: row.sourceId, saintId: row.saintId,
+        restored, version: row.currentVersion + 1, recordedAt: recordedAt.toISOString(), correctionOnly: true, physicalReturnClaim: false,
+        proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
+    return { ...await view(loader, tx), receipt, replayed: false };
   }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 60_000 });
 }
