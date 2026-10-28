@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Search, MapPin, ChevronDown, ArrowRight, Star, GitBranch, Check, RotateCcw, RotateCw } from 'lucide-react';
+import { spnProposalLabels as proposalLabels } from '@/lib/spn-proposal-labels';
 import type baselineData from '@/data/museum/spn-room-proposal-v15.json';
 
 import { explorerSaints, proposalVersionLabel, vitrineConnectionPlaces, vitrineNeighborhoods, type ExplorerSaint, type ExplorerDriver, type ExplorerOption, type ExplorerPlacement } from '@/lib/spn-room-explorer';
@@ -49,17 +50,7 @@ export function SpnRoomExplorer({releases}: {releases: ExplorerRelease[]}) {
     const active = releases.find(r => r.designData.options.some(o => o.id === proposalId)) ?? releases[0];
     const {proposal, rows, designData} = active;
     const baseline = designData.options[0], previous = releases[0].designData.comparisonPrevious;
-    const versionLabel = proposalVersionLabel(proposal.version);
-    const proposalLabels: Record<string, {label: string; group: ProposalChoice['group']}> = {
-        'spn-sikh-north-connections-2026-10-27-v8': {label: 'East–North connections · v8 · latest', group: 'candidate'},
-        'spn-sikh-north-connections-2026-10-26-v1': {label: 'Sikh–North connections · v1', group: 'candidate'},
-        'spn-vraj-girnar-alternative-2026-10-26-v1': {label: 'East–North connections · v2', group: 'candidate'},
-        'spn-proposal-16-revision-2026-10-25-r1': {label: 'Compact regional neighborhoods · v3', group: 'candidate'},
-        'archived-earlier': {label: 'Compact regional neighborhoods · baseline study', group: 'earlier'},
-        'compact-baseline-v15': {label: 'Compact regional neighborhoods · v1', group: 'earlier'},
-        'compact-baseline-v16': {label: 'Compact regional neighborhoods · v2', group: 'earlier'},
-        'spn-east-cave-room-alternative-2026-10-26-v2': {label: 'East–North connections · v1', group: 'earlier'},
-    };
+    const versionLabel = proposalLabels[proposalId]?.versionLabel ?? proposalVersionLabel(proposal.version);
     const proposals: ProposalChoice[] = [...releases.flatMap(r => r.designData.options.map(option => {
         const display = proposalLabels[option.id] ?? {label: option.title + ' · ' + proposalVersionLabel(r.proposal.version), group: 'earlier' as const};
         return {id: option.id, label: display.label, group: display.group, archived: false, option};

@@ -1,6 +1,7 @@
 import proposal from "@/data/museum/spn-starter-reviewed-proposal-v16.json";
 import { registeredStarterGuide as packet } from "./spn-starter-guide-registry";
 import { spnMovementBlockedReason } from "./spn-movement-holds";
+import { currentSpnConceptLabel } from "./spn-proposal-labels";
 import type { StarterMoveGuide, GuideGroup } from "./spn-move-guide";
 
 const transitions = packet.transitionRowsOutsideStarter.map(transition => {
@@ -19,12 +20,12 @@ const references = packet.cityAlternatives.flatMap(cohort => cohort.sourceIds.fi
 
 export const starterMoveGuide: StarterMoveGuide = {
  version: packet.version, contentDigest: packet.contentDigest, proposalVersion: packet.proposalVersion,
- assignmentDigest: packet.assignmentDigest, title: packet.title, proposalLabel: packet.proposalLabel,
+ assignmentDigest: packet.assignmentDigest, title: packet.title, proposalLabel: currentSpnConceptLabel,
  transitionSourceIds: transitions.map(row => row.sourceId),
  reportedPlacements: packet.physicalConfirmations.moves.map(row => ({ sourceId: row.sourceId, destination: row.currentLocation.vitrine, date: row.confirmedDate })),
  entries: [...references, ...transitions.map(row => ({ sourceId: row.sourceId, saintId: row.saintId, name: row.name,
   tier: row.tier, city: "", relicDescription: "", destination: row.vitrine, section: row.section, family: "",
-  rationale: "Revised v16 destination; the recorded physical placement remains separate.", reviewNotes: row.reviewNotes,
+  rationale: "Revised proposal destination; the recorded physical placement remains separate.", reviewNotes: row.reviewNotes,
   movementBlockedReason: row.movementBlockedReason || spnMovementBlockedReason(row.sourceId) })),
   ...packet.rows.map(row => ({ sourceId: row.sourceId, saintId: row.saintId, name: row.name, tier: row.tier,
    city: row.planningCity || row.city, relicDescription: row.relicDescription ?? "", destination: row.vitrine,
