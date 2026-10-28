@@ -3,6 +3,7 @@ import { Prisma } from "./generated/prisma/client";
 import { db } from "./db";
 import { resolveMuseumPhysicalCurrent } from "./museum-physical-location-current";
 import { readLegacyCurrentForSnapshot } from "./museum-move-session-source";
+import { assertSpnMovementAllowed } from "./spn-movement-holds";
 import { createMoveSession, moveSessionAction, moveSnapshot, moveLocation, sameMoveLocation, assertDistinctMoveSources, assertWholeCaseClearing, MuseumMoveSessionError, type MoveSnapshot, type MoveLocation } from "./museum-move-session-domain";
 export type MoveSessionActor = { id: string; canManage: boolean };
 export type MoveSnapshotLoader = (version: string, tx: Prisma.TransactionClient) => Promise<MoveSnapshot>;
@@ -95,6 +96,7 @@ export async function updateMuseumMoveSession(raw: unknown, actor: MoveSessionAc
           if (!snapshot.vitrineCodes.includes(to.code)) throw new MuseumMoveSessionError(400, "Choose a vitrine in this registered layout.");
           to = { ...to, label: `Vitrine ${to.code}` };
         }
+        assertSpnMovementAllowed(row.sourceId, from, to);
         if (row.fixedHousing && !sameMoveLocation(from, to)) throw new MuseumMoveSessionError(409, "This display has fixed or special housing. Resolve that restriction before moving it.");
         changes.push({ sourceId: row.sourceId, from, to, beforeVersion: saved?.version ?? 0 });
       }

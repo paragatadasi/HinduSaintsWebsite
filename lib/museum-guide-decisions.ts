@@ -3,6 +3,7 @@ import { db } from "./db";
 import { Prisma } from "./generated/prisma/client";
 import { physicalFingerprint } from "./museum-physical-location-current";
 import { MuseumMoveSessionError } from "./museum-move-session-domain";
+import { inheritGuideDecisions } from "./museum-guide-decision-inheritance";
 import type { GuideDefinition } from "./spn-starter-guide-registry";
 import type { MoveSessionActor } from "./museum-move-session-service";
 
@@ -15,12 +16,16 @@ const action = "museum.guide_suggestion.decided";
 const json = (value: unknown) => JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 export async function readMuseumGuideDecisions(guideVersion: string, loader: GuideDefinitionLoader) {
   const guide = loader(guideVersion);
+  const history = await Promise.all((guide.previousVersions ?? []).map(async version => ({ guide: loader(version),
+    decisions: await db.museumGuideSuggestionDecision.findMany({ where: { museumId: "museum-spn", guideVersion: version }, select: { suggestionId: true, decision: true, note: true, version: true, updatedAt: true } }) })));
+  const current = await db.museumGuideSuggestionDecision.findMany({ where: { museumId: "museum-spn", guideVersion }, orderBy: { suggestionId: "asc" }, select: { suggestionId: true, decision: true, note: true, version: true, updatedAt: true } });
   return { museumId: "museum-spn", guideContext: guide.context, suggestions: guide.suggestions,
-    decisions: await db.museumGuideSuggestionDecision.findMany({ where: { museumId: "museum-spn", guideVersion }, orderBy: { suggestionId: "asc" }, select: { suggestionId: true, decision: true, note: true, version: true, updatedAt: true } }) };
+    decisions: inheritGuideDecisions(guide, current, history) };
 }
 export async function saveMuseumGuideDecision(raw: unknown, actor: MoveSessionActor, loader: GuideDefinitionLoader) {
   if (!actor.canManage) throw new MuseumMoveSessionError(403, "A museum curator must review suggestions.");
   const input = guideDecisionInput.parse(raw), guide = loader(input.guideVersion);
+  if (guide.readOnly) throw new MuseumMoveSessionError(409, "This guide has been superseded. Open the current guide before changing a suggestion.");
   if (input.contentDigest !== guide.context.contentDigest || input.assignmentDigest !== guide.context.assignmentDigest) throw new MuseumMoveSessionError(409, "The guide content changed. Reload it before reviewing this suggestion.");
   const suggestion = guide.suggestions.find(row => row.id === input.suggestionId);
   if (!suggestion) throw new MuseumMoveSessionError(409, "This suggestion is not in the pinned guide. Reload the guide.");
