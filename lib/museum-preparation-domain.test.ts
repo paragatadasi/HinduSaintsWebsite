@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {preparationInput,projectPreparations,assertSafeCaseClear} from "./museum-preparation-domain";
+import {preparationInput,projectPreparations,assertSafeCaseClear,assertPhaseClearance,projectPhaseClearances} from "./museum-preparation-domain";
 import {museumIntakeRelicInput,preserveAdditionalSaints} from "./museum-intake-domain";
 import {intakeRelicPayload,intakeRelicsEqual} from "./museum-intake-fields";
 test("preparation survives placements and preserves independent readiness revocation",()=>{
@@ -33,4 +33,23 @@ test("additional saints remain per-relic raw evidence and survive old clients",(
  assert.equal(preserveAdditionalSaints({...prior,additionalSaintsRaw:""},prior).additionalSaintsRaw,"");
  assert.equal(intakeRelicPayload(prior).additionalSaintsRaw,prior.additionalSaintsRaw);
  assert.equal(intakeRelicsEqual([prior],[{...prior,additionalSaintsRaw:"Sri C"}]),false);
+});
+
+test("phase first-clear is explicit, limited to current occupants and never repeatable",()=>{
+ const rows=[{sourceId:"outgoing",current:{kind:"vitrine",code:"37"}},{sourceId:"elsewhere",current:{kind:"vitrine",code:"4"}}];
+ const input={clearedVitrines:["37"],initialCaseClearAcknowledged:true as const};
+ assert.doesNotThrow(()=>assertPhaseClearance(input,["37"],"phase",[],rows,[{sourceId:"outgoing"}]));
+ assert.throws(()=>assertPhaseClearance({clearedVitrines:["37"]},["37"],"phase",[],rows,[{sourceId:"outgoing"}]));
+ assert.throws(()=>assertPhaseClearance(input,["37"],"phase",[],rows,[{sourceId:"elsewhere"}]));
+ const receipts=[{guideVersion:"phase",vitrine:"37",receiptId:"receipt",recordedAt:"2026-10-28T10:00:00Z"}];
+ assert.throws(()=>assertPhaseClearance(input,["37"],"phase",receipts,rows,[{sourceId:"outgoing"}]));
+ assert.throws(()=>assertPhaseClearance({},["37"],"phase",[],rows,[]));
+ assert.doesNotThrow(()=>assertPhaseClearance({},["37"],"phase",receipts,rows,[]));
+ assert.throws(()=>assertPhaseClearance({},["37"],"different-phase",receipts,rows,[]));
+});
+test("preparation-only acknowledgements never satisfy the phase clearing prerequisite",()=>{
+ const date=new Date("2026-10-28T10:00:00Z");
+ const events=[{id:"prep",createdAt:date,afterJson:{museumId:"museum-spn",vitrine:"37",prepared:true,version:1}},
+  {id:"clear",createdAt:date,afterJson:{museumId:"museum-spn",guideContext:{guideVersion:"phase"},clearedVitrines:["37"]}}];
+ assert.deepEqual(projectPhaseClearances(events).map(r=>[r.guideVersion,r.vitrine,r.receiptId]),[["phase","37","clear"]]);
 });

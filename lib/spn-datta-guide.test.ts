@@ -55,3 +55,14 @@ test("traditional figures do not acquire living status from missing death data",
   assert.equal(dattaMoveGuide.entries.find(row => row.name === "Dattatreya")?.lifeStatus?.tag, null);
   assert.equal(dattaMoveGuide.entries.find(row => row.name === "Sri Gawdi Baba")?.lifeStatus?.tag, "May be alive");
 });
+
+test("registered initial-clear scope permits only staged current-case candidates; ordinary phase placements stay locked",()=>{
+ const scope={...dattaGuideDefinition,physicalScope:{allowClear:true,clearVitrines:["37"],destinations:{incoming:"4"}}};
+ assert.doesNotThrow(()=>assertGuidePhysicalScope(scope,[{sourceId:"outgoing-not-in-core",to:{kind:"table",code:"staging-area"}}],["37"]));
+ assert.doesNotThrow(()=>assertGuidePhysicalScope(scope,[{sourceId:"incoming",to:{kind:"vitrine",code:"4"}}]));
+ for(const [records,cases] of [
+  [[{sourceId:"outgoing",to:{kind:"table",code:"staging-area"}}],["4"]],
+  [[{sourceId:"incoming",to:{kind:"vitrine",code:"4"}}],["37"]],
+  [[{sourceId:"outgoing",to:{kind:"table",code:"staging-area"}}],[]]
+ ] as const)assert.throws(()=>assertGuidePhysicalScope(scope,[...records],[...cases]));
+});

@@ -1,5 +1,5 @@
 import { clearCorrectionInput, clearCorrectionOffers, clearCorrectionShelfApplies } from "./museum-clear-correction-domain";
-import { preparationInput, projectPreparations, assertSafeCaseClear } from "./museum-preparation-domain";
+import { preparationInput, projectPreparations, assertSafeCaseClear, projectPhaseClearances, assertPhaseClearance } from "./museum-preparation-domain";
 import { memoizePhysicalSnapshot } from "./museum-physical-snapshot-cache";
 import { physicalUndoInput, physicalUndoOffer } from "./museum-physical-undo-domain";
 import { assertGuidePhysicalScope } from "./spn-datta-guide";
@@ -21,6 +21,7 @@ export const physicalConfirmationInput = z.object({ museumId: z.literal("museum-
   confirmedDate, datePrecision: z.literal("date"), evidence: z.string().trim().min(1).max(2000),
   physicalConfirmation: z.literal(true), inventoryAcknowledged: z.literal(true),
   guideContext: z.object({ guideVersion: z.string().min(1).max(200), contentDigest: z.string().regex(/^[a-f0-9]{64}$/), assignmentDigest: z.string().regex(/^[a-f0-9]{64}$/) }).strict().optional(),
+  initialCaseClearAcknowledged: z.literal(true).optional(),
   clearedVitrines: z.array(z.string().min(1).max(100)).max(100).optional(),
   records: z.array(z.object({ sourceId: z.string().min(1).max(200), saintId: z.string().nullable(),
     expectedCurrentRevision: z.string().regex(/^[a-f0-9]{64}$/), expectedSourceRevision: z.string().regex(/^[a-f0-9]{64}$/),
@@ -82,7 +83,7 @@ export async function readMuseumPhysicalLocations(loader: PhysicalSnapshotLoader
     if (!value || typeof value !== "object" || Array.isArray(value) || !Array.isArray(value.moves)) return event;
     return { ...event, afterJson: { ...value, moves: value.moves.filter(move => !move || typeof move !== "object" || Array.isArray(move) || !corrected.some(c => c.receiptId === event.id && c.sourceId === move.sourceId)) } };
   });
-  return { ...current, confirmationHistory: activeHistory, clearCorrections: clearCorrectionOffers(current.rows, confirmationHistory), reportedPlacementReceipts, preparations: await readMuseumPreparations() };
+  return { ...current, confirmationHistory: activeHistory, clearCorrections: clearCorrectionOffers(current.rows, confirmationHistory), reportedPlacementReceipts, preparations: await readMuseumPreparations(), phaseClearances: await readMuseumPhaseClearances() };
 }
 
 export async function readReportedPlacementReceipts(tx: Prisma.TransactionClient = db,
@@ -129,11 +130,14 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     if (retry) {
       const receipt = retry.afterJson as { fingerprint?: string } | null;
       if (receipt?.fingerprint !== fingerprint) throw new MuseumMoveSessionError(409, "This request already recorded different locations. Reload before recording another confirmation.");
-      return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), receipt: retry, replayed: true };
+      return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx), receipt: retry, replayed: true };
     }
     const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length ? undefined : input.records.map(row => row.sourceId));
     if (input.clearedVitrines?.some(code => !current.vitrineCodes.includes(code))) throw new MuseumMoveSessionError(400, "Choose cleared vitrines in this museum's layout.");
-    if (input.clearedVitrines?.length) assertSafeCaseClear(input.clearedVitrines, [...current.rows, ...current.unmappedCurrentLocations.map(row=>({currentBasis:"confirmed",current:row.location}))]);
+    const phase = input.guideContext ? readStarterGuideDefinition(input.guideContext.guideVersion) : null;
+    const initialCases=phase?.physicalScope?.allowClear ? phase.physicalScope.clearVitrines ?? [] : [];
+    if(initialCases.length)assertPhaseClearance(input,initialCases,phase?.context.guideVersion ?? "",await readMuseumPhaseClearances(tx),current.rows,input.records);
+    if (input.clearedVitrines?.length && !initialCases.length) assertSafeCaseClear(input.clearedVitrines, [...current.rows, ...current.unmappedCurrentLocations.map(row=>({currentBasis:"confirmed",current:row.location}))]);
     if (input.clearedVitrines?.length) assertWholeCaseClearing(input.clearedVitrines, [...current.rows.map(row => ({ sourceId: row.sourceId, current: row.current })), ...current.unmappedCurrentLocations.map(row => ({ sourceId: row.sourceId, current: row.location }))], input.records);
     const changes = input.records.map(record => {
       const row = current.rows.find(row => row.sourceId === record.sourceId);
@@ -166,7 +170,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         datePrecision: input.datePrecision, recordedAt: recordedAt.toISOString(), evidence: input.evidence, scope: "source_observation", moves: changes,
         guideContext: input.guideContext ?? null, clearedVitrines: input.clearedVitrines ?? [], inventoryCompleteness: "unverified",
         emptyCaseClaim: input.clearedVitrines?.length ? "curator_confirmed_at_event_time" : "none", proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
-    return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), receipt, replayed: false };
+    return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx), receipt, replayed: false };
   }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 60_000 });
 }
 
@@ -181,7 +185,7 @@ export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionAc
     const retry = await tx.auditEvent.findFirst({ where: { action: undoAction, entityType: "MuseumPhysicalCheckUndo", entityId }, select: { id: true, afterJson: true } });
     if (retry) {
       if ((retry.afterJson as { fingerprint?: string } | null)?.fingerprint !== fingerprint) throw new MuseumMoveSessionError(409, "This request already corrected a different check. Reload before trying again.");
-      return { ...await readPhysicalLocationView(loader, tx), preparations: await readMuseumPreparations(tx), receipt: retry, replayed: true };
+      return { ...await readPhysicalLocationView(loader, tx), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx), receipt: retry, replayed: true };
     }
     const state = await readPhysicalLocationView(loader, tx, [input.sourceId]);
     const row = state.rows[0];
@@ -200,7 +204,7 @@ export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionAc
       afterJson: json({ museumId: input.museumId, fingerprint, targetReceiptId: input.receiptId, sourceId: row.sourceId, saintId: row.saintId,
         restored, version: row.currentVersion + 1, recordedAt: recordedAt.toISOString(), correctionOnly: true, physicalReturnClaim: false,
         proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
-    return { ...await readPhysicalLocationView(loader, tx), preparations: await readMuseumPreparations(tx), receipt, replayed: false };
+    return { ...await readPhysicalLocationView(loader, tx), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx), receipt, replayed: false };
   }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 60_000 });
 }
 
@@ -273,4 +277,9 @@ export async function correctMuseumClear(raw:unknown,actor:MoveSessionActor,load
     recordedAt:recordedAt.toISOString(),correctionOnly:true,physicalMoveClaim:false})},select:{id:true,afterJson:true}});
   return {...await readPhysicalLocationView(loader,tx),preparations:await readMuseumPreparations(tx),receipt,replayed:false};
  },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable,timeout:60_000});
+}
+
+export async function readMuseumPhaseClearances(tx:Prisma.TransactionClient=db){
+ return projectPhaseClearances(await tx.auditEvent.findMany({where:{action,entityType:receiptType,entityId:{startsWith:"museum-spn:"},
+  afterJson:{path:["clearedVitrines"],not:[]}},select:{id:true,createdAt:true,afterJson:true}}));
 }
