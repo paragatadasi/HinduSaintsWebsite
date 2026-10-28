@@ -1,0 +1,3821 @@
+{
+  "version": "spn-datta-move-guide-phase-2026-10-28-v2",
+  "title": "Next phase · Datta island",
+  "proposalVersion": "spn-datta-island-locked-2026-10-28-v17-r2",
+  "proposalLabel": "East–North connections · v4 · Datta island refinement",
+  "scope": [
+    "3",
+    "81",
+    "82"
+  ],
+  "rosterDigest": "1225116aaf368a9004b502375585b3c8d2d2945a088e93d69bb0c9e69bfa8149",
+  "rows": [
+    {
+      "sourceId": "rec2H25WTkUXoX3wl",
+      "saintId": "cms0w7cj000fe07qizeo87gkm",
+      "name": "Dattatreya",
+      "vitrine": "3",
+      "tier": "Primary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "7",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "rec2H25WTkUXoX3wl",
+        "section": "Datta Tradition",
+        "tier": "Featured",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "b4e90224de9a15c8c6fe82f10fc861c9f199784696fe8e0afef2b5cfc8c22ee9",
+        "proposalRevision": "3e65c0de295fc145f84a346773acb3e4747a7573b32c02c7444c8c8d16772e41"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "7",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "7",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Girnar, Gujarat, India",
+      "relicDescription": "piece from the Stone on which he used to sit; Prasad and ash from the Dhooni that Dattatreya inflamed by himself (Dattatreya Temple)",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "tradition",
+        "text": "Dattatreya, the two Narasimha Saraswati holdings and Manik Prabhu. Traditional avatar context; retain both Narasimha relic observations."
+      },
+      "family": "Core Datta anchors",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "rec542avx5EJLdPqI",
+      "saintId": "cms0w7cwu00ww07qil9k17gm8",
+      "name": "Sri Narasimha Saraswati",
+      "vitrine": "3",
+      "tier": "Primary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "",
+      "sourceShelf": "",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": null,
+      "state": "unknown_shelf",
+      "baseline": {
+        "placementId": "rec542avx5EJLdPqI",
+        "section": "Datta Tradition",
+        "tier": "Featured",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "9ad14e964469f6321bfcb72294dd68008d61f69866b451cb236c77e3a12ad154",
+        "proposalRevision": "e3d51761edd9aa48a1451412c640c5853e887299b8b28c24a55d3780cc270087"
+      },
+      "planningShelfEstimate": null,
+      "spaceAssessmentState": "unknown_shelf",
+      "spaceEstimateBasis": "Unknown footprint / special housing retained",
+      "reviewNotes": [],
+      "movementBlockedReason": "Locate this holding with the curator; starting vitrine is not recorded.",
+      "originalLocation": {
+        "vitrine": "",
+        "shelf": ""
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "",
+        "shelf": ""
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": true,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Washim, Vidarbha, Maharashtra, India; Lad-Karanja",
+      "relicDescription": "Branch and tree bark from the birthplace",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "tradition",
+        "text": "Dattatreya, the two Narasimha Saraswati holdings and Manik Prabhu. Traditional avatar context; retain both Narasimha relic observations."
+      },
+      "family": "Core Datta anchors",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "rec6yrEBBbpSoujJY",
+      "saintId": "cms0w7d7v019n07qiv4m266j3",
+      "name": "Sri Sita Ram Das",
+      "vitrine": "3",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "54",
+      "sourceShelf": "D",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.2,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "rec6yrEBBbpSoujJY",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e08642c84a10f210f3a5731f6f4ef4909970029c896497fcdf2d19968afe11d9",
+        "proposalRevision": "0aab2bdf1883e653652753785e82774decb87eb68aab2aacb84c32d478d2c409"
+      },
+      "planningShelfEstimate": 0.2,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "54",
+        "shelf": "D"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "54",
+        "shelf": "D"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Bhimbetka, Raisen, Madhya Pradesh, India; Bhimbetka Caves; Bhopal",
+      "relicDescription": "Robe, hair, script of Aryuvedha Medicine",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "tradition",
+        "text": "Keep separately labelled. These have source Datta affiliations; no new initiating lineage is asserted. Gawdi’s direct Tembe claim remains held."
+      },
+      "family": "Other Datta contexts",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recAdoHb834kJnkig",
+      "saintId": "cms0w7do501vq07qifzgeltqf",
+      "name": "Swami Akkalkot Maharaj",
+      "vitrine": "3",
+      "tier": "Primary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "25",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.5,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recAdoHb834kJnkig",
+        "section": "Datta Tradition",
+        "tier": "Featured",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "90439c4db3dd644f69455f8b925ada092afba259002614d0ce3ae9906ba7579c",
+        "proposalRevision": "0e29852f05bd79f146577eaff644a0226fa3d530efb300bc63a87523abf7dfc9"
+      },
+      "planningShelfEstimate": 0.5,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "25",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "25",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Akkalkot, Maharashtra, India",
+      "relicDescription": "Pieces from the Mattress he used; Pieces of wood from the tree under which he used to sit, piece of wool from his bed, leaves etc found in a pipe in his room; pipe, piece from his Chamar/fan; 2 marble ball with which he used to play; 2 Rudrakshas, piece from the asan on which he sat, piece of metal from his Yoga stick",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Keep Akkalkot, Balappa and Gangadhara beside one another."
+      },
+      "family": "Akkalkot branch",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recEhlZJadMj1ae8L",
+      "saintId": "cms0w7eqp03ac07qiqddvnmxd",
+      "name": "Sri Tembe Swami",
+      "vitrine": "3",
+      "tier": "Secondary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "24",
+      "sourceShelf": "C",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.16666666666666666,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recEhlZJadMj1ae8L",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "39aea1981fd547df284488e06ae3a2c5f284fd0c56ba7fd64840863607886b29",
+        "proposalRevision": "046b0d8deac93ef720c203958f8e04f732f2312623e51bef0a60c255db4dfd8a"
+      },
+      "planningShelfEstimate": 0.16666666666666666,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "24",
+        "shelf": "C"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "24",
+        "shelf": "C"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Mangaon, Maharashtra, India; Garudeshwar, Gujarat, India; Hingoli, Maharashtra, India",
+      "relicDescription": "Relic description not recorded",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Place Rang beside Tembe. Keep the collection’s Yogananda entry nearby, with its exact identity still under review."
+      },
+      "family": "Tembe and his disciple circle",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recEvPtUXEpvPZtBk",
+      "saintId": "cmus3rwrz002v07o54n75mgqn",
+      "name": "Sri Narasimha Saraswati",
+      "vitrine": "3",
+      "tier": "Primary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "25",
+      "sourceShelf": "C",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recEvPtUXEpvPZtBk",
+        "section": "Datta Tradition",
+        "tier": "Featured",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "fdb61f75905c7b39c0c8b6f0602f43d730d79e4be41166dccb17ab8a52cc1fef",
+        "proposalRevision": "3177c2ec5ad6bda986c612f551541a3f8e1b1cd57b276f0397113b1261f178ab"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "25",
+        "shelf": "C"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "25",
+        "shelf": "C"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India; Narasimha Wadi",
+      "relicDescription": "cloth and chandan from Padukas,cloth which was used to clean his padukas after abhisehk, cloth from his birth place (lad karanja)that was given to Shiv Durga´s husband (museum owner in pune), cloth from his padukas ",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "tradition",
+        "text": "Dattatreya, the two Narasimha Saraswati holdings and Manik Prabhu. Traditional avatar context; retain both Narasimha relic observations."
+      },
+      "family": "Core Datta anchors",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recJlxMVAhiEXIlDH",
+      "saintId": "cms0w7fxq04tc07qiwr3rrwsw",
+      "name": "Sri Swami Shamanand ji",
+      "vitrine": "3",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "41",
+      "sourceShelf": "C",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recJlxMVAhiEXIlDH",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c4164f262b0a95e5056e95010f7ae6c79d4d0404a337f5e302570f7146153205",
+        "proposalRevision": "3fbf4b1e42b78fbbbd2200a48120bcd614a71984a93a0baa826d6cd57f3a21e4"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "41",
+        "shelf": "C"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "41",
+        "shelf": "C"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Gokarna, Karnataka, India",
+      "relicDescription": "Incense holder, thread from asan, piece from the door",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "tradition",
+        "text": "Keep separately labelled. These have source Datta affiliations; no new initiating lineage is asserted. Gawdi’s direct Tembe claim remains held."
+      },
+      "family": "Other Datta contexts",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recrMH17Ga8tP11z0",
+      "saintId": "cms0w7hw7076a07qi4hqjhuhx",
+      "name": "Sri Gawdi Baba",
+      "vitrine": "3",
+      "tier": "Secondary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "37",
+      "sourceShelf": "C",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.2,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recrMH17Ga8tP11z0",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "4db598c50500a3076ecdddb647ca08474417281ecbc302084c497d10376c42d7",
+        "proposalRevision": "6247150df6015757f54fc7f12d4aa5785642988b1bdfd5132d15d983b1fa801c"
+      },
+      "planningShelfEstimate": 0.2,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "37",
+        "shelf": "C"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "37",
+        "shelf": "C"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Narsobawadi, Maharashtra, India",
+      "relicDescription": "Hair",
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "tradition",
+        "text": "Keep separately labelled. These have source Datta affiliations; no new initiating lineage is asserted. Gawdi’s direct Tembe claim remains held."
+      },
+      "family": "Other Datta contexts",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recUzBdPjfszv1w8D",
+      "saintId": "cms0w7isv086007qi2qits4uh",
+      "name": "Sri Balappa Maharaj",
+      "vitrine": "3",
+      "tier": "Secondary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "25",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.2,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recUzBdPjfszv1w8D",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "d899656dc918bdb5eb91dde477c0a0aa592d714053c1520344d20aba3c9aa43c",
+        "proposalRevision": "e98aeddf7707ec945c05fe379e95c4baf1798eb85559c3cdb587737ef36fa462"
+      },
+      "planningShelfEstimate": 0.2,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "25",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "25",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Akkalkot, Maharashtra, India",
+      "relicDescription": "Relic description not recorded",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Keep Akkalkot, Balappa and Gangadhara beside one another."
+      },
+      "family": "Akkalkot branch",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recVNNh7e8ifVyQnO",
+      "saintId": "cms0w7izt08d807qicc6snznj",
+      "name": "Sri Avadhuta Pitchamma",
+      "vitrine": "3",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "32",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.2,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recVNNh7e8ifVyQnO",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a6f0f610eea78ff544123ba38571db9c3dcc59c729496afae5192d22d317ad66",
+        "proposalRevision": "93bd2db25d71ed125b3f805e2c57dc2211e9af4f8de38ed08d889ef3496e3b58"
+      },
+      "planningShelfEstimate": 0.2,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "32",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "32",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Kurumaddali, Andhra Pradesh, India",
+      "relicDescription": "Relic description not recorded",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "tradition",
+        "text": "Keep separately labelled. These have source Datta affiliations; no new initiating lineage is asserted. Gawdi’s direct Tembe claim remains held."
+      },
+      "family": "Other Datta contexts",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recWCBILl4t5fUT1c",
+      "saintId": "cms0w7j6708k807qiw00mx7vx",
+      "name": "Sri Gangadhara Maharaj",
+      "vitrine": "3",
+      "tier": "Secondary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "25",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.2,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recWCBILl4t5fUT1c",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "0ad4458cc10c8a540c19d6340271c5aaf779753aafc2a35957426a600e75c053",
+        "proposalRevision": "84b81f884dd64b2fc87b9535618618351d0445eef008b6ab0049142f7f17c205"
+      },
+      "planningShelfEstimate": 0.2,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "25",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "25",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Akkalkot, Maharashtra, India",
+      "relicDescription": "from the chair and thread from his Mala",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Keep Akkalkot, Balappa and Gangadhara beside one another."
+      },
+      "family": "Akkalkot branch",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recxEz0VEdK2EF6G6",
+      "saintId": "cms0w7jhi08v307qiv9qmaedn",
+      "name": "Param Pujya Sri Manik Prabhu",
+      "vitrine": "3",
+      "tier": "Tertiary",
+      "section": "Needs Research",
+      "sourceVitrine": "24",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.16666666666666666,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recxEz0VEdK2EF6G6",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "614411fcc05707ac283b632351c3bef508c19395202d510bb8407d855baf59d9",
+        "proposalRevision": "7fa5250a23432904d5f7f6e4e27fc75bd3bc765a9f718262eb62972d7747fe66"
+      },
+      "planningShelfEstimate": 0.16666666666666666,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "24",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "24",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Maniknagar, Humnabad, Karnataka, India",
+      "relicDescription": "dust from his stick",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "tradition",
+        "text": "Dattatreya, the two Narasimha Saraswati holdings and Manik Prabhu. Traditional avatar context; retain both Narasimha relic observations."
+      },
+      "family": "Core Datta anchors",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recdZzkFXHY1iH1Ct",
+      "saintId": "cms0w7eo7036v07qiyxlrml0p",
+      "name": "Sri Rang Avadhoot",
+      "vitrine": "3",
+      "tier": "Tertiary",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "sourceVitrine": "57",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recdZzkFXHY1iH1Ct",
+        "section": "Gujarat & Swaminarayan Traditions",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "505bdbff4f5880fdfa339a89095340c39671e3a4cab536bdcc10318a800135ac",
+        "proposalRevision": "8aa97ce0864c8e4d282fa205c54bcb1168903173fe71209125e2aa733995e663"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "57",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "57",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Gujarat; Nareshwar; Vadodara",
+      "relicDescription": "Towel",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Place Rang beside Tembe. Keep the collection’s Yogananda entry nearby, with its exact identity still under review."
+      },
+      "family": "Tembe and his disciple circle",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recZ8dSUCZSv0HSTl",
+      "saintId": "cms0w7k0p09fb07qi2am8wk84",
+      "name": "Yogananda Swami",
+      "vitrine": "3",
+      "tier": "Secondary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "",
+      "sourceShelf": "",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": null,
+      "state": "unknown_shelf",
+      "baseline": {
+        "placementId": "recZ8dSUCZSv0HSTl",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "a13d5f5b8c5c9eeb250cd059d212a487b37bcb73231ce67f57e71d587b62c738",
+        "proposalRevision": "f55e466a0fc40eb748fd0a647a1a2bb4addf1a40651780ce85054a3d057f54e2"
+      },
+      "planningShelfEstimate": null,
+      "spaceAssessmentState": "unknown_shelf",
+      "spaceEstimateBasis": "Unknown footprint / special housing retained",
+      "reviewNotes": [],
+      "movementBlockedReason": "Locate this holding with the curator; starting vitrine is not recorded.",
+      "originalLocation": {
+        "vitrine": "",
+        "shelf": ""
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "",
+        "shelf": ""
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": true,
+      "destination": {
+        "vitrine": "3",
+        "shelf": null
+      },
+      "city": "Locality not recorded",
+      "relicDescription": "Relic description not recorded",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Place Rang beside Tembe. Keep the collection’s Yogananda entry nearby, with its exact identity still under review."
+      },
+      "family": "Tembe and his disciple circle",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recOFdAquHaua3csH",
+      "saintId": "cms0w7h4g069i07qiutly2tdw",
+      "name": "Sri Gajanan Maharaj",
+      "vitrine": "81",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "14",
+      "sourceShelf": "D",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.14285714285714285,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recOFdAquHaua3csH",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Featured",
+        "familyKey": "FAM-021",
+        "regionTags": [],
+        "revision": "6c107b7c970ebc67294d7fb09bcd3e6b60b3a42d33df50559caea0867a7d5805",
+        "proposalRevision": "5c459fbfe890ac178ebc448f619e8d9a10a6e1a79424ed25487a4c0fb170b3a3"
+      },
+      "planningShelfEstimate": 0.14285714285714285,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "14",
+        "shelf": "D"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "14",
+        "shelf": "D"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Shegaon, Maharashtra, India; Shegaon, Buldhana District, Maharashtra, India",
+      "relicDescription": "Relic description not recorded",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Gajanan, Bhaskar and Vasudev together. Vasudev remains the collection’s generic identity with unknown footprint."
+      },
+      "family": "Gajanan’s family",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "rech5NjFF9igacZOG",
+      "saintId": "cms0w7fe9045b07qiv7h2wlsy",
+      "name": "Sri Bhaskar Maharaj",
+      "vitrine": "81",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "14",
+      "sourceShelf": "D",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.14285714285714285,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "rech5NjFF9igacZOG",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-021",
+        "regionTags": [],
+        "revision": "7183b807aea144c64e866eae7102ed53c065576b9da54d58b12177c668ccccf4",
+        "proposalRevision": "6fb12f82ab777f5c5d3508b04253fa0f2a833b638dfd7bf248c4a665f14a7850"
+      },
+      "planningShelfEstimate": 0.14285714285714285,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "14",
+        "shelf": "D"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "14",
+        "shelf": "D"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Adhgaon Village, Shegaon, Maharashtra, India",
+      "relicDescription": "Relic description not recorded",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Gajanan, Bhaskar and Vasudev together. Vasudev remains the collection’s generic identity with unknown footprint."
+      },
+      "family": "Gajanan’s family",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recops2O0wjNvudCR",
+      "saintId": "cms0w7h7p06d507qicji2tzok",
+      "name": "Vasudev Maharaj",
+      "vitrine": "81",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "",
+      "sourceShelf": "",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": null,
+      "state": "unknown_shelf",
+      "baseline": {
+        "placementId": "recops2O0wjNvudCR",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-021",
+        "regionTags": [],
+        "revision": "8418ebf42419a5f600f5c6abf46c436b71cf24cc037cd3e8bd1b47e814f05720",
+        "proposalRevision": "d74b34cdade5d0765c72ba5e43aea339cc18288420e98aab366da8daba7762ed"
+      },
+      "planningShelfEstimate": null,
+      "spaceAssessmentState": "unknown_shelf",
+      "spaceEstimateBasis": "Unknown footprint / special housing retained",
+      "reviewNotes": [],
+      "movementBlockedReason": "Locate this holding with the curator; starting vitrine is not recorded.",
+      "originalLocation": {
+        "vitrine": "",
+        "shelf": ""
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "",
+        "shelf": ""
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": true,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Locality not recorded",
+      "relicDescription": "Relic description not recorded",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Gajanan, Bhaskar and Vasudev together. Vasudev remains the collection’s generic identity with unknown footprint."
+      },
+      "family": "Gajanan’s family",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recSRwoghGnzVJ9tA",
+      "saintId": "cms0w7i6107hd07qijtv18pfn",
+      "name": "Sri Gomaji Maharaj",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "40",
+      "sourceShelf": "D",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recSRwoghGnzVJ9tA",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4b07f77bb2ec01058fd4ba607ff88c27d7cdfb31f356ae4ba568afc6db598448",
+        "proposalRevision": "62e4c270e58bc39ff9ee470ab1ebd6040ec3e4295fa0bf159af36fb43618b61c"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "40",
+        "shelf": "D"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "40",
+        "shelf": "D"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Shegaon, Maharashtra, India",
+      "relicDescription": "Turban from his samadhi murti.. stones from the Gufa he digged",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Gomaji and Gulap form a separate locality group beside Gajanan’s family. Gulap is not represented as Gajanan’s direct historical disciple."
+      },
+      "family": "Shegaon locality",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "reciBIEhPusrMNpq0",
+      "saintId": "cms0w7fmw04g907qip7dhwvhl",
+      "name": "Sri Sant Gulap Baba Maharaj",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "50",
+      "sourceShelf": "D",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "reciBIEhPusrMNpq0",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0b0905f812b71ec84b08692d578b2ada87004ac8c38ae150b8c354c84ada9464",
+        "proposalRevision": "ea77709141c652fa5f48897c7bf657092ba061f16461fffb757f1bd81930b2a9"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "50",
+        "shelf": "D"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "50",
+        "shelf": "D"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Nagpur, Maharashtra, India; Shegaon, Maharashtra, India",
+      "relicDescription": "Kurta, Tulsi Necklace ",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Gomaji and Gulap form a separate locality group beside Gajanan’s family. Gulap is not represented as Gajanan’s direct historical disciple."
+      },
+      "family": "Shegaon locality",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "rec0CkGBX7uKd9y3o",
+      "saintId": "cms0w7c7d002d07qia8q2kmnn",
+      "name": "Sri Adaneshwar Maharaj",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "40",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "rec0CkGBX7uKd9y3o",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "03de2571ce67a5ee7bf397e1ed984de3af8b34074cf996015d4d8e25264fc56f",
+        "proposalRevision": "7e48b543cc0173eac4cc019b1a36e863c70ead4fe696296a06a9d525d61d07c9"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "40",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "40",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Amravati, Maharashtra, India",
+      "relicDescription": "Eating Bowl",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "One distinct regional block. Keep both Tukadoji observations together and both Gulabrao entries together; retain all source rows and footprints."
+      },
+      "family": "Amravati / Vidarbha",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recBmh3Lo44Fj6om0",
+      "saintId": "cms0w7dz502ai07qizeer6vts",
+      "name": "Sri Paramahansa Lahanu ji Maharaj",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "40",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recBmh3Lo44Fj6om0",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "83a51dec2682ef6f8144094a8b84cf2bbb83b41e59d71c57a99507b04abc01ef",
+        "proposalRevision": "89fb55f8ef351d8e2d95e39212836eed7fd778c0b1e6d4bfcd7e9c501a9e9d4f"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "40",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "40",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Amravati, Maharashtra, India",
+      "relicDescription": "Padukas",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "One distinct regional block. Keep both Tukadoji observations together and both Gulabrao entries together; retain all source rows and footprints."
+      },
+      "family": "Amravati / Vidarbha",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "reccc5sNaj8Vscimk",
+      "saintId": "cms0w7e6v02k607qieztsdndl",
+      "name": "Sri Samarth Yogiraj Govinda Maharaj",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "39",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "reccc5sNaj8Vscimk",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "54d1dabfc85a91d39bd5136ea24d80a4ae16ee9fecf60230870266c0341859e9",
+        "proposalRevision": "f42e24f987c09dce7230a9179fe984086c85ebfd6fa4935e648f366cce342818"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "39",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "39",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Amravati, Maharashtra, India",
+      "relicDescription": "Chandan",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "One distinct regional block. Keep both Tukadoji observations together and both Gulabrao entries together; retain all source rows and footprints."
+      },
+      "family": "Amravati / Vidarbha",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recdCWFHtpGYHqE8F",
+      "saintId": "cms0w7efr02vr07qieln15173",
+      "name": "Same Saint the Tukadoji 40A Sri Tukadrodji Maharaj",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "",
+      "sourceShelf": "",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": null,
+      "state": "unknown_shelf",
+      "baseline": {
+        "placementId": "recdCWFHtpGYHqE8F",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4a1bd67f0388c80fdaaab77a989556efa45cbe6ad5829860db536cf16d29d9c3",
+        "proposalRevision": "fb2daf3ca20e1d02d7479c9ec5a092e57b52c3f0d4277bee064c75b413cac2aa"
+      },
+      "planningShelfEstimate": null,
+      "spaceAssessmentState": "unknown_shelf",
+      "spaceEstimateBasis": "Unknown footprint / special housing retained",
+      "reviewNotes": [],
+      "movementBlockedReason": "Locate this holding with the curator; starting vitrine is not recorded.",
+      "originalLocation": {
+        "vitrine": "",
+        "shelf": ""
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "",
+        "shelf": ""
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": true,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Amravati, Maharashtra, India",
+      "relicDescription": "Clothes/ Kurta",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "One distinct regional block. Keep both Tukadoji observations together and both Gulabrao entries together; retain all source rows and footprints."
+      },
+      "family": "Amravati / Vidarbha",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recHrmmTo7VrP1YfY",
+      "saintId": "cms0w7fj504bm07qi7nl50go3",
+      "name": "Sri Gadgey Maharaj",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "10",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recHrmmTo7VrP1YfY",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "25ebd3ce323d4b072e9c0afd8ab128dd08428d807c8d70243e9787a05a10f287",
+        "proposalRevision": "5470ce693bdc3d2d746f4804d6c6e6613be68106b61f18de99a686e8cb54b7d5"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "10",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "10",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Amravati, Maharashtra, India",
+      "relicDescription": "Cloth, Kopin (underwear), 2 Malas, BHagavat Gita (inside cloth), thread from his car, piece from his Asan/seat",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "One distinct regional block. Keep both Tukadoji observations together and both Gulabrao entries together; retain all source rows and footprints."
+      },
+      "family": "Amravati / Vidarbha",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recnSUUjt7RP46o88",
+      "saintId": "cms0w7h02064h07qixrel8peq",
+      "name": "Sri Bausaheb Firke (Saupan Bhao)",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "39",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recnSUUjt7RP46o88",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "dd07a327632e82994f3954b1d37fc5e904410429356e9ea7a8bfb791ca5e6ded",
+        "proposalRevision": "a30c8ab015a7e3ecff840893c0f2ea02d1b42eca4eff56c613e2e3f83d447b5c"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "39",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "39",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Amravati, Maharashtra, India",
+      "relicDescription": "Slippers",
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "One distinct regional block. Keep both Tukadoji observations together and both Gulabrao entries together; retain all source rows and footprints."
+      },
+      "family": "Amravati / Vidarbha",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recNUav0Zgh3pg5nd",
+      "saintId": "cms0w7h0u065e07qinytv88ix",
+      "name": "Sri Gulabrao Maharaj",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "40",
+      "sourceShelf": "D",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recNUav0Zgh3pg5nd",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ab989665476f9577f2876cf667109e97eb2b885529e8bcae8956d7f59f000877",
+        "proposalRevision": "fdfd80c0a9ea95dde662e609c14806593a950ad8011294a0a9b6046e06b0ffe0"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "40",
+        "shelf": "D"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "40",
+        "shelf": "D"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Madhan, Amravati, Maharashtra, India",
+      "relicDescription": "Relic description not recorded",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "One distinct regional block. Keep both Tukadoji observations together and both Gulabrao entries together; retain all source rows and footprints."
+      },
+      "family": "Amravati / Vidarbha",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recOBef516igAnO5g",
+      "saintId": "cms0w7h3p068o07qi4ktsk24l",
+      "name": "Paramahamsa Sri Sadguru Aadaku Maharaj",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "40",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recOBef516igAnO5g",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e0df87e139304d03418270e7df6a7e7255746feaf88a80fd17eaffbbd07de2c4",
+        "proposalRevision": "51b033212a99adefced8704cdcba19ba48f077fd1f2c9065138477a791d1381a"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "40",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "40",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Amravati, Maharashtra, India",
+      "relicDescription": "Samadhi cloth (jivant samadhi)",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "One distinct regional block. Keep both Tukadoji observations together and both Gulabrao entries together; retain all source rows and footprints."
+      },
+      "family": "Amravati / Vidarbha",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recpYUX5tRfimFzHh",
+      "saintId": "cms0w7hih06pz07qiex1icymo",
+      "name": "Paramahansa Sri Tukadoji Maharaj",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "40",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recpYUX5tRfimFzHh",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "92d83ab209b4ee38ec20b8b015123d4e67ba2acdedf25cae5b180670ffcfc39b",
+        "proposalRevision": "ec9a7f4ecc7da42c0254eae9dea12acdb96a222e35172b7b8494c3e3061e5743"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "40",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "40",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Amravati, Maharashtra, India",
+      "relicDescription": "Kanjire (Musical Instrument he used to play with)",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "One distinct regional block. Keep both Tukadoji observations together and both Gulabrao entries together; retain all source rows and footprints."
+      },
+      "family": "Amravati / Vidarbha",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recuIIGxf3QoRie5y",
+      "saintId": "cms0w7ioi081807qixpy33uy9",
+      "name": "Sri Gulabrao Baba",
+      "vitrine": "81",
+      "tier": "Tertiary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "",
+      "sourceShelf": "",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": null,
+      "state": "unknown_shelf",
+      "baseline": {
+        "placementId": "recuIIGxf3QoRie5y",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c0318a402a1b25187c11a308fb04d3f713492c583090bdd9b962fcc2cade394f",
+        "proposalRevision": "128377c2d5223875326c952f412128aa89c342b11f48a09a6a9dc0e80ca28a81"
+      },
+      "planningShelfEstimate": null,
+      "spaceAssessmentState": "unknown_shelf",
+      "spaceEstimateBasis": "Unknown footprint / special housing retained",
+      "reviewNotes": [],
+      "movementBlockedReason": "Locate this holding with the curator; starting vitrine is not recorded.",
+      "originalLocation": {
+        "vitrine": "",
+        "shelf": ""
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "",
+        "shelf": ""
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": true,
+      "destination": {
+        "vitrine": "81",
+        "shelf": null
+      },
+      "city": "Amravati, Maharashtra, India",
+      "relicDescription": "Pieces from the bed ",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "One distinct regional block. Keep both Tukadoji observations together and both Gulabrao entries together; retain all source rows and footprints."
+      },
+      "family": "Amravati / Vidarbha",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recaUt3hYFYOke7zb",
+      "saintId": "cms0w7du8023l07qi7gpyjp1d",
+      "name": "Sri Samarth Sadguru Vishvanath Maharaj",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "33",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recaUt3hYFYOke7zb",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5bcaa8fa3cef8ece6617f8317dcd9fda8ac829a5063e947842903aad5d58203f",
+        "proposalRevision": "e09f7037077419420bdddf59c9a9d557db4c693a82d83b492e2b7f2bcbd8fe4c"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "33",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "33",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India",
+      "relicDescription": "Relic description not recorded",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "reccorfTb0jN9XUyn",
+      "saintId": "cms0w7eao02pa07qimlu6z5tz",
+      "name": "Sri Maha Daba Patil",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "25",
+      "sourceShelf": "C",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "reccorfTb0jN9XUyn",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3e3279bd161ca628f309e4174bb3c22c9bef993554be605fe320603ba99e4a25",
+        "proposalRevision": "01a6b5d590ee27d9c8d2d629bf8f7e81a99d8f6ac2c15c1df87cbfb3f0b5ce20"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "25",
+        "shelf": "C"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "25",
+        "shelf": "C"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India; Narasimha Wadi, Maharashtra, India",
+      "relicDescription": "piece from the chair and leather from the seat, fabric from his turban, pieces from the chair on which he took samadhi, piece from his padukas ",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recCXTEbnox9nOG4W",
+      "saintId": "cms0w7ed702si07qi5drvo66o",
+      "name": "Sri Chille Maharaj",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "25",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.2,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recCXTEbnox9nOG4W",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c850de8ac64fa6a2ee6340a1d6b90dbed3b7202448eab886fc7a49a706d6fb94",
+        "proposalRevision": "954cf4bb648e899531e430bc1922362a20a053a55f06728926ee3fe94b8bee11"
+      },
+      "planningShelfEstimate": 0.2,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "25",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "25",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Paijarwadi, Maharashtra, India; Kolhapur, Maharashtra, India",
+      "relicDescription": "Rudraksha (possibly fake), gardening tool, shirt, trousers, jacket, horse, hat, flower, piece from samadhi clothes, piece from his padukas",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Place Shankar beside Chille: documented friendship."
+      },
+      "family": "Chille and Shankar",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recdtwvbxtQysRy3D",
+      "saintId": "cms0w7em1033z07qim9gbisny",
+      "name": "Sri Balmukunda Avadhut Maharaj",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "37",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recdtwvbxtQysRy3D",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b21f459189ed9e501584c815e7cdc15b95d374d8221cb1654e23e63f045c0385",
+        "proposalRevision": "af98899dc909fe691fca75ecc2b108e15f309c3c47d41aba64fb5633017ff1b9"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "37",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "37",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India",
+      "relicDescription": "Hair, nail and piece from his bench",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recDvvnxk6XDW7DC8",
+      "saintId": "cms0w7emy035607qi6i9n8nu2",
+      "name": "Sri Siddheshwar Maharaj",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "37",
+      "sourceShelf": "C",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.2,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recDvvnxk6XDW7DC8",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "6c4c94ffca4cb63f29bde9559d6746e45e499c0cb828be2bd6d816354758948b",
+        "proposalRevision": "78c2c3fc99de271f0e0a6f3462407eab6b5267e08e37d011af831d976d032542"
+      },
+      "planningShelfEstimate": 0.2,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "37",
+        "shelf": "C"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "37",
+        "shelf": "C"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India",
+      "relicDescription": "Saligram",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recFMiA1H4ZW1r0gq",
+      "saintId": "cms0w7f1s03ou07qiq5e6ou7z",
+      "name": "Sri Rajyogi Gajanan Maharaj",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "33",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recFMiA1H4ZW1r0gq",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "fdecb603c1385264efe722e8054144e2388082c80627d3b283085b718aa70cfc",
+        "proposalRevision": "dac683edaad3b1109e7704d211cf556dc0635cf342b5056a5a45aca81b062b75"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "33",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "33",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India",
+      "relicDescription": "Paduka from his Samadhi; bead from his mala",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recKqavgeeeOGQzAk",
+      "saintId": "cms0w7g9e057n07qi91f900q8",
+      "name": "Sri Jnaneshwar Hari Katkar Maharaj",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "33",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recKqavgeeeOGQzAk",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0070252f340f535888344b3ffe4914629997450d797d7fcc82186da636b2ec36",
+        "proposalRevision": "b5211671eadbcf2c34da2c66dd93923de3d778c3130ec00da36f2e4282e9a75c"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "33",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "33",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India",
+      "relicDescription": "Cap; kurta; Threads from his blanket; bark from the tree which he planted; ",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recmGMLa0E8bmx9MQ",
+      "saintId": "cms0w7gno05pe07qiukmiqpeo",
+      "name": "Sri Gagangiri Maharaj",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "37",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recmGMLa0E8bmx9MQ",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c0e6dc08692a5496b0f72de4c77bde7386e760d43a6b38819c1582d152876860",
+        "proposalRevision": "4fdbc95f56f73b30146b734b809cb71ecc8bad3567203dc4498bdc6fe40344f5"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "37",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "37",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India",
+      "relicDescription": "Robe",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recneBQ4cSLNVqSSq",
+      "saintId": "cms0w7gwt060f07qi7pvdiaps",
+      "name": "Sri Devakinandashrama Swami",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "60",
+      "sourceShelf": "D",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.09090909090909091,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recneBQ4cSLNVqSSq",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8bb491197177a2e7429fbccb1c4fe458c450a1db60a0df3c2784519f34a2a502",
+        "proposalRevision": "6b1f391b78093384c6b229db2379b9d2640eb579ddceed6e036fa62965828ff7"
+      },
+      "planningShelfEstimate": 0.09090909090909091,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "60",
+        "shelf": "D"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "60",
+        "shelf": "D"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Andhra Pradesh; Kolhapur, Maharashtra, India",
+      "relicDescription": "Piece from the bed, Vibuddhi (Vibhuti?) pot",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recSx9QQVGLugLNjG",
+      "saintId": "cms0w7i7y07ja07qi02rgnjv0",
+      "name": "Sri Shankarnath Raval Maharaj",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "37",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recSx9QQVGLugLNjG",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "6d65461e7e0caadbedd5e081a33c3822b9ef0eefaad8de2939a00465a1530269",
+        "proposalRevision": "7524b08cb2f8d475801426284b15145487db241ddaa02c56fe57c5a982f6fbe8"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "37",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "37",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India",
+      "relicDescription": "Rudraksha mala",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recYjuNIXQc57GQyJ",
+      "saintId": "cms0w7jtk097s07qi8eol9732",
+      "name": "Sri Madhavnath Sangwadekar Maharaj",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "37",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recYjuNIXQc57GQyJ",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e1e2f605ca75b75f59b743ea04d808b512fe701f9a0f600b0e94ec1a41552bb5",
+        "proposalRevision": "a7fb62741e3656d24969217ff9ac7533043c2571246d5ba9053c2cb2922d73d0"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "37",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "37",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India; Vishwapandari Ashram, Kolhapur, Maharashtra, India",
+      "relicDescription": "Shirt, pen and piece from his paduka",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "rec8dNXWS2LIRcLGe",
+      "saintId": "cms0w7ddu01ho07qi252m60nx",
+      "name": "Sri Krishna Saraswati Datt Maharaj",
+      "vitrine": "82",
+      "tier": "Secondary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "25",
+      "sourceShelf": "C",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "rec8dNXWS2LIRcLGe",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "62f0162b89f1048288b616038eb921bcacf587c672f2d847edef2fb5b8fa5325",
+        "proposalRevision": "1be44736a429f5e6df9a1f0f8b09f95e39b53979914aa2bf1fda74b3bf78fdfd"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "25",
+        "shelf": "C"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "25",
+        "shelf": "C"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India",
+      "relicDescription": "sand he slept on, Karvat Katti-clothes he wore (white with red border), bark from the tree he used to sit under and meditate, cloth from under his Padukas (pink), cloth offered to his Padukas (light red), piece from the string of his Veena, piece from his Padukas,",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Place the modern Naamdevji beside Krishna Saraswati; distinct from medieval Varkari Namdev."
+      },
+      "family": "Krishna Saraswati and Naamdevji",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recFeb8DyNtLuEtfs",
+      "saintId": "cms0w7ezo03m607qibrzp7me5",
+      "name": "Sri Naamdevji Maharaj",
+      "vitrine": "82",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "24",
+      "sourceShelf": "C",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.16666666666666666,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recFeb8DyNtLuEtfs",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-059",
+        "regionTags": [],
+        "revision": "ebdcf6392b277248a9664b4d0dbcc0bbcd438d3603acce6609b51a5de2fb2b1b",
+        "proposalRevision": "44a6b81977e1ba86bbd74e4bcf991ecae470cbf5352a17ac791b3d2b72c24842"
+      },
+      "planningShelfEstimate": 0.16666666666666666,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "24",
+        "shelf": "C"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "24",
+        "shelf": "C"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Maharashtra",
+      "relicDescription": "Piece from his Dandha",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Place the modern Naamdevji beside Krishna Saraswati; distinct from medieval Varkari Namdev."
+      },
+      "family": "Krishna Saraswati and Naamdevji",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recKmUNZB0LwvnQYV",
+      "saintId": "cms0w7g8i056i07qi2p5e8oho",
+      "name": "Sri Pant Maharaj",
+      "vitrine": "82",
+      "tier": "Secondary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "24",
+      "sourceShelf": "C",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.16666666666666666,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recKmUNZB0LwvnQYV",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "f92ddaefa3bdad48960f94ebb0651bd428d9f84e42dc92ecbc904ac35a614b18",
+        "proposalRevision": "b418b6bba41ecaefe93492951833b81b33e33091e5c7ce48dd8b8608824cae78"
+      },
+      "planningShelfEstimate": 0.16666666666666666,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "24",
+        "shelf": "C"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "24",
+        "shelf": "C"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Balekundri, Karnataka, India; Maharashtra; Balekundri/ Mungarwadi; Balekundri, Belgaum; Belagavi, India; Balekundri, India",
+      "relicDescription": "Piece from his Kurta (from Mungarwadi)",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Keep Pant and Sonar together. Pant’s teacher Balmukund/Balappa is historical context, distinct from Akkalkot’s Balappa in 3."
+      },
+      "family": "Pant and Sonar",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recEGuGQQ4N4EXAil",
+      "saintId": "cms0w7eqi03a507qirld8vnh4",
+      "name": "Sri Dattatreya Sonar",
+      "vitrine": "82",
+      "tier": "Secondary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "37",
+      "sourceShelf": "D",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.2,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recEGuGQQ4N4EXAil",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-003",
+        "regionTags": [],
+        "revision": "f7ec885d360208fabc9ca49a964d60cbe5e14d8fe06c9f5f271b62c28a279d54",
+        "proposalRevision": "259b0b41dea8b71f85bb76cbeb4908c538887c65bcd46254b8405a0945ba39bd"
+      },
+      "planningShelfEstimate": 0.2,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "37",
+        "shelf": "D"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "37",
+        "shelf": "D"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Mungurwadi",
+      "relicDescription": "Shirt",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Keep Pant and Sonar together. Pant’s teacher Balmukund/Balappa is historical context, distinct from Akkalkot’s Balappa in 3."
+      },
+      "family": "Pant and Sonar",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recb0bxlGKljLlnHX",
+      "saintId": "cms0w7dw3026407qiefynszwb",
+      "name": "Sri Ramanand Maharaj",
+      "vitrine": "82",
+      "tier": "Tertiary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "33",
+      "sourceShelf": "B",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.3333333333333333,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recb0bxlGKljLlnHX",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "02247e21c98629e980697cfb9d5e612be6b3a3fa0132fa836fde08d81f1bbfbf",
+        "proposalRevision": "8c0577aa8ba5d4579376e2ac78b0edbbbf886a6a86845cb2eb9f2f74a2bd0083"
+      },
+      "planningShelfEstimate": 0.3333333333333333,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "33",
+        "shelf": "B"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "33",
+        "shelf": "B"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India",
+      "relicDescription": "Relic description not recorded",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recToCTKv11kDx7Ax",
+      "saintId": "cms0w7iew07qy07qijgecgahj",
+      "name": "Sri Narayan Das Maharaj",
+      "vitrine": "82",
+      "tier": "Secondary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "33",
+      "sourceShelf": "C",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recToCTKv11kDx7Ax",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-045",
+        "regionTags": [],
+        "revision": "aa69b72a1a5aac087ba3274b7f13e5050b11cc7f5aa1d18d5ef4715039d90357",
+        "proposalRevision": "a86cbbcc164e4cff58986010a38f10f2fbf55ca01cc5e065a8cb62a8cb598401"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "33",
+        "shelf": "C"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "33",
+        "shelf": "C"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India",
+      "relicDescription": "Samadhi cloth, murti worshipped at his samadhi ",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recVkkhtVH8yfppid",
+      "saintId": "cms0w7izc08cr07qitk6woeo8",
+      "name": "Sri Dutta Das",
+      "vitrine": "82",
+      "tier": "Secondary",
+      "section": "Datta Tradition",
+      "sourceVitrine": "33",
+      "sourceShelf": "C",
+      "unresolved": false,
+      "allocationKind": "preserved named assignment",
+      "share": 0.25,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recVkkhtVH8yfppid",
+        "section": "Datta Tradition",
+        "tier": "Secondary",
+        "familyKey": "FAM-045",
+        "regionTags": [],
+        "revision": "0aca762b69292635844956d108ad3505956a160ea5fa972645dedca8dcf42462",
+        "proposalRevision": "c78e4c2eed94f4e39301af42d166db47beb1584a9623f760e476622b0a66799a"
+      },
+      "planningShelfEstimate": 0.25,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "33",
+        "shelf": "C"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "33",
+        "shelf": "C"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Kolhapur, Maharashtra, India",
+      "relicDescription": "His Clothes ",
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "city",
+        "text": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree."
+      },
+      "family": "Kolhapur neighbourhood",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    },
+    {
+      "sourceId": "recRnVf9eR7izgH7r",
+      "saintId": "cms0w7hwt076y07qib1rb7dkz",
+      "name": "Sri Shankar Maharaj",
+      "vitrine": "82",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "sourceVitrine": "25",
+      "sourceShelf": "A",
+      "unresolved": false,
+      "allocationKind": "rebalanced source / family cohort",
+      "share": 0.5,
+      "state": "shelf_proxy",
+      "baseline": {
+        "placementId": "recRnVf9eR7izgH7r",
+        "section": "Maharashtra Guru Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a4cb42e07c9e53819dac58fbf7d17ae8974909c0e2e663fb2b268e084fe3f980",
+        "proposalRevision": "bd0a18569874b5a8aa4769c702f362034c41d4dbaaba0d1510b4618651626aeb"
+      },
+      "planningShelfEstimate": 0.5,
+      "spaceAssessmentState": "shelf_proxy",
+      "spaceEstimateBasis": "Within specific source shelf, equal record split, adjusted for full source-vitrine context under user assumption",
+      "reviewNotes": [],
+      "movementBlockedReason": "",
+      "originalLocation": {
+        "vitrine": "25",
+        "shelf": "A"
+      },
+      "originalLocationImmutable": true,
+      "currentLocation": {
+        "vitrine": "25",
+        "shelf": "A"
+      },
+      "locationBasis": "Source-reported location; not a fresh floor confirmation",
+      "locationUncertain": false,
+      "destination": {
+        "vitrine": "82",
+        "shelf": null
+      },
+      "city": "Pune, Maharashtra, India",
+      "relicDescription": "Kurta, 1 rudraksha, padukas, hair, cloth from Kurta at time of samadhi",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Positive source/reviewed flag only; absence of death does not establish living status"
+      },
+      "placementReason": {
+        "kind": "family",
+        "text": "Place Shankar beside Chille: documented friendship."
+      },
+      "family": "Chille and Shankar",
+      "completed": false,
+      "phase": "datta-island",
+      "physicalConfirmation": null,
+      "stagingEligible": false,
+      "currentLocationState": "source-reported"
+    }
+  ],
+  "vitrines": [
+    {
+      "code": "3",
+      "summary": "Core Datta",
+      "families": [
+        {
+          "id": "datta-anchors",
+          "vitrine": "3",
+          "title": "Core Datta anchors",
+          "sourceIds": [
+            "rec2H25WTkUXoX3wl",
+            "rec542avx5EJLdPqI",
+            "recEvPtUXEpvPZtBk",
+            "recxEz0VEdK2EF6G6"
+          ],
+          "rationale": "Dattatreya, the two Narasimha Saraswati holdings and Manik Prabhu. Traditional avatar context; retain both Narasimha relic observations.",
+          "kind": "tradition",
+          "edges": []
+        },
+        {
+          "id": "akkalkot",
+          "vitrine": "3",
+          "title": "Akkalkot branch",
+          "sourceIds": [
+            "recAdoHb834kJnkig",
+            "recUzBdPjfszv1w8D",
+            "recWCBILl4t5fUT1c"
+          ],
+          "rationale": "Keep Akkalkot, Balappa and Gangadhara beside one another.",
+          "kind": "family",
+          "edges": [
+            {
+              "fromSourceId": "recAdoHb834kJnkig",
+              "toSourceId": "recUzBdPjfszv1w8D",
+              "label": "guru–disciple",
+              "evidenceStatus": "reviewed",
+              "source": null
+            },
+            {
+              "fromSourceId": "recUzBdPjfszv1w8D",
+              "toSourceId": "recWCBILl4t5fUT1c",
+              "label": "guru–disciple",
+              "evidenceStatus": "source-recorded",
+              "source": null
+            }
+          ]
+        },
+        {
+          "id": "tembe-rang",
+          "vitrine": "3",
+          "title": "Tembe and his disciple circle",
+          "sourceIds": [
+            "recEhlZJadMj1ae8L",
+            "recdZzkFXHY1iH1Ct",
+            "recZ8dSUCZSv0HSTl"
+          ],
+          "rationale": "Place Rang beside Tembe. Keep the collection’s Yogananda entry nearby, with its exact identity still under review.",
+          "kind": "family",
+          "edges": [
+            {
+              "fromSourceId": "recEhlZJadMj1ae8L",
+              "toSourceId": "recdZzkFXHY1iH1Ct",
+              "label": "guru–disciple",
+              "evidenceStatus": "institutionally documented",
+              "source": "https://www.shrivasudevanandsaraswati.com/English/Shishya_Pariwar_Eng.html"
+            },
+            {
+              "fromSourceId": "recEhlZJadMj1ae8L",
+              "toSourceId": "recZ8dSUCZSv0HSTl",
+              "label": "source-recorded disciple; exact identity held",
+              "evidenceStatus": "source-recorded",
+              "source": null
+            }
+          ]
+        },
+        {
+          "id": "datta-context",
+          "vitrine": "3",
+          "title": "Other Datta contexts",
+          "sourceIds": [
+            "rec6yrEBBbpSoujJY",
+            "recJlxMVAhiEXIlDH",
+            "recrMH17Ga8tP11z0",
+            "recVNNh7e8ifVyQnO"
+          ],
+          "rationale": "Keep separately labelled. These have source Datta affiliations; no new initiating lineage is asserted. Gawdi’s direct Tembe claim remains held.",
+          "kind": "tradition",
+          "edges": []
+        }
+      ],
+      "cityGroups": [],
+      "space": {
+        "sourceIds": [
+          "rec2H25WTkUXoX3wl",
+          "rec542avx5EJLdPqI",
+          "rec6yrEBBbpSoujJY",
+          "recAdoHb834kJnkig",
+          "recEhlZJadMj1ae8L",
+          "recEvPtUXEpvPZtBk",
+          "recJlxMVAhiEXIlDH",
+          "recrMH17Ga8tP11z0",
+          "recUzBdPjfszv1w8D",
+          "recVNNh7e8ifVyQnO",
+          "recWCBILl4t5fUT1c",
+          "recxEz0VEdK2EF6G6",
+          "recdZzkFXHY1iH1Ct",
+          "recZ8dSUCZSv0HSTl"
+        ],
+        "observations": 14,
+        "known": 2.8333333333333335,
+        "unknown": 2
+      }
+    },
+    {
+      "code": "81",
+      "summary": "Shegaon & Amravati",
+      "families": [
+        {
+          "id": "gajanan",
+          "vitrine": "81",
+          "title": "Gajanan’s family",
+          "sourceIds": [
+            "recOFdAquHaua3csH",
+            "rech5NjFF9igacZOG",
+            "recops2O0wjNvudCR"
+          ],
+          "rationale": "Gajanan, Bhaskar and Vasudev together. Vasudev remains the collection’s generic identity with unknown footprint.",
+          "kind": "family",
+          "edges": [
+            {
+              "fromSourceId": "recOFdAquHaua3csH",
+              "toSourceId": "rech5NjFF9igacZOG",
+              "label": "guru–disciple",
+              "evidenceStatus": "reviewed display branch",
+              "source": null
+            },
+            {
+              "fromSourceId": "rech5NjFF9igacZOG",
+              "toSourceId": "recops2O0wjNvudCR",
+              "label": "guru–disciple",
+              "evidenceStatus": "reviewed display branch",
+              "source": null
+            }
+          ]
+        }
+      ],
+      "cityGroups": [
+        {
+          "id": "shegaon-locality",
+          "vitrine": "81",
+          "title": "Shegaon locality",
+          "sourceIds": [
+            "recSRwoghGnzVJ9tA",
+            "reciBIEhPusrMNpq0"
+          ],
+          "rationale": "Gomaji and Gulap form a separate locality group beside Gajanan’s family. Gulap is not represented as Gajanan’s direct historical disciple.",
+          "kind": "city",
+          "edges": []
+        },
+        {
+          "id": "amravati",
+          "vitrine": "81",
+          "title": "Amravati / Vidarbha",
+          "sourceIds": [
+            "rec0CkGBX7uKd9y3o",
+            "recBmh3Lo44Fj6om0",
+            "reccc5sNaj8Vscimk",
+            "recdCWFHtpGYHqE8F",
+            "recHrmmTo7VrP1YfY",
+            "recnSUUjt7RP46o88",
+            "recNUav0Zgh3pg5nd",
+            "recOBef516igAnO5g",
+            "recpYUX5tRfimFzHh",
+            "recuIIGxf3QoRie5y"
+          ],
+          "rationale": "One distinct regional block. Keep both Tukadoji observations together and both Gulabrao entries together; retain all source rows and footprints.",
+          "kind": "city",
+          "edges": []
+        }
+      ],
+      "space": {
+        "sourceIds": [
+          "recOFdAquHaua3csH",
+          "rech5NjFF9igacZOG",
+          "recops2O0wjNvudCR",
+          "recSRwoghGnzVJ9tA",
+          "reciBIEhPusrMNpq0",
+          "rec0CkGBX7uKd9y3o",
+          "recBmh3Lo44Fj6om0",
+          "reccc5sNaj8Vscimk",
+          "recdCWFHtpGYHqE8F",
+          "recHrmmTo7VrP1YfY",
+          "recnSUUjt7RP46o88",
+          "recNUav0Zgh3pg5nd",
+          "recOBef516igAnO5g",
+          "recpYUX5tRfimFzHh",
+          "recuIIGxf3QoRie5y"
+        ],
+        "observations": 15,
+        "known": 3.5357142857142856,
+        "unknown": 3
+      }
+    },
+    {
+      "code": "82",
+      "summary": "Kolhapur & neighbouring Datta centres",
+      "families": [
+        {
+          "id": "krishna-naamdev",
+          "vitrine": "82",
+          "title": "Krishna Saraswati and Naamdevji",
+          "sourceIds": [
+            "rec8dNXWS2LIRcLGe",
+            "recFeb8DyNtLuEtfs"
+          ],
+          "rationale": "Place the modern Naamdevji beside Krishna Saraswati; distinct from medieval Varkari Namdev.",
+          "kind": "family",
+          "edges": [
+            {
+              "fromSourceId": "rec8dNXWS2LIRcLGe",
+              "toSourceId": "recFeb8DyNtLuEtfs",
+              "label": "guru–disciple",
+              "evidenceStatus": "source-recorded",
+              "source": null
+            }
+          ]
+        },
+        {
+          "id": "pant-sonar",
+          "vitrine": "82",
+          "title": "Pant and Sonar",
+          "sourceIds": [
+            "recKmUNZB0LwvnQYV",
+            "recEGuGQQ4N4EXAil"
+          ],
+          "rationale": "Keep Pant and Sonar together. Pant’s teacher Balmukund/Balappa is historical context, distinct from Akkalkot’s Balappa in 3.",
+          "kind": "family",
+          "edges": [
+            {
+              "fromSourceId": "recKmUNZB0LwvnQYV",
+              "toSourceId": "recEGuGQQ4N4EXAil",
+              "label": "guru–disciple",
+              "evidenceStatus": "source-recorded",
+              "source": null
+            }
+          ]
+        },
+        {
+          "id": "chille-shankar",
+          "vitrine": "82",
+          "title": "Chille and Shankar",
+          "sourceIds": [
+            "recCXTEbnox9nOG4W",
+            "recRnVf9eR7izgH7r"
+          ],
+          "rationale": "Place Shankar beside Chille: documented friendship.",
+          "kind": "family",
+          "edges": [
+            {
+              "fromSourceId": "recCXTEbnox9nOG4W",
+              "toSourceId": "recRnVf9eR7izgH7r",
+              "label": "friendship",
+              "evidenceStatus": "temple-trust documented",
+              "source": "https://chilemaharaj.com/"
+            }
+          ]
+        }
+      ],
+      "cityGroups": [
+        {
+          "id": "kolhapur",
+          "vitrine": "82",
+          "title": "Kolhapur neighbourhood",
+          "sourceIds": [
+            "recaUt3hYFYOke7zb",
+            "reccorfTb0jN9XUyn",
+            "recdtwvbxtQysRy3D",
+            "recDvvnxk6XDW7DC8",
+            "recFMiA1H4ZW1r0gq",
+            "recKqavgeeeOGQzAk",
+            "recmGMLa0E8bmx9MQ",
+            "recneBQ4cSLNVqSSq",
+            "recSx9QQVGLugLNjG",
+            "recYjuNIXQc57GQyJ",
+            "recb0bxlGKljLlnHX",
+            "recToCTKv11kDx7Ax",
+            "recVkkhtVH8yfppid"
+          ],
+          "rationale": "Arrange as a distinct locality block around the named branches; shared city or Datta affiliation does not make one guru tree.",
+          "kind": "city",
+          "edges": []
+        }
+      ],
+      "space": {
+        "sourceIds": [
+          "recaUt3hYFYOke7zb",
+          "reccorfTb0jN9XUyn",
+          "recCXTEbnox9nOG4W",
+          "recdtwvbxtQysRy3D",
+          "recDvvnxk6XDW7DC8",
+          "recFMiA1H4ZW1r0gq",
+          "recKqavgeeeOGQzAk",
+          "recmGMLa0E8bmx9MQ",
+          "recneBQ4cSLNVqSSq",
+          "recSx9QQVGLugLNjG",
+          "recYjuNIXQc57GQyJ",
+          "rec8dNXWS2LIRcLGe",
+          "recFeb8DyNtLuEtfs",
+          "recKmUNZB0LwvnQYV",
+          "recEGuGQQ4N4EXAil",
+          "recb0bxlGKljLlnHX",
+          "recToCTKv11kDx7Ax",
+          "recVkkhtVH8yfppid",
+          "recRnVf9eR7izgH7r"
+        ],
+        "observations": 19,
+        "known": 4.857575757575757,
+        "unknown": 0
+      }
+    }
+  ],
+  "familyTrees": [
+    {
+      "vitrine": "3",
+      "title": "Akkalkot branch",
+      "edges": [
+        {
+          "fromSourceIds": [
+            "recAdoHb834kJnkig"
+          ],
+          "toSourceIds": [
+            "recUzBdPjfszv1w8D"
+          ],
+          "relationship": "guru–disciple",
+          "evidenceStatus": "reviewed",
+          "source": null
+        },
+        {
+          "fromSourceIds": [
+            "recUzBdPjfszv1w8D"
+          ],
+          "toSourceIds": [
+            "recWCBILl4t5fUT1c"
+          ],
+          "relationship": "guru–disciple",
+          "evidenceStatus": "source-recorded",
+          "source": null
+        }
+      ],
+      "notes": [
+        "Keep Akkalkot, Balappa and Gangadhara beside one another."
+      ]
+    },
+    {
+      "vitrine": "3",
+      "title": "Tembe and his disciple circle",
+      "edges": [
+        {
+          "fromSourceIds": [
+            "recEhlZJadMj1ae8L"
+          ],
+          "toSourceIds": [
+            "recdZzkFXHY1iH1Ct"
+          ],
+          "relationship": "guru–disciple",
+          "evidenceStatus": "institutionally documented",
+          "source": "https://www.shrivasudevanandsaraswati.com/English/Shishya_Pariwar_Eng.html"
+        },
+        {
+          "fromSourceIds": [
+            "recEhlZJadMj1ae8L"
+          ],
+          "toSourceIds": [
+            "recZ8dSUCZSv0HSTl"
+          ],
+          "relationship": "source-recorded disciple; exact identity held",
+          "evidenceStatus": "source-recorded",
+          "source": null
+        }
+      ],
+      "notes": [
+        "Place Rang beside Tembe. Keep the collection’s Yogananda entry nearby, with its exact identity still under review."
+      ]
+    },
+    {
+      "vitrine": "81",
+      "title": "Gajanan’s family",
+      "edges": [
+        {
+          "fromSourceIds": [
+            "recOFdAquHaua3csH"
+          ],
+          "toSourceIds": [
+            "rech5NjFF9igacZOG"
+          ],
+          "relationship": "guru–disciple",
+          "evidenceStatus": "reviewed display branch",
+          "source": null
+        },
+        {
+          "fromSourceIds": [
+            "rech5NjFF9igacZOG"
+          ],
+          "toSourceIds": [
+            "recops2O0wjNvudCR"
+          ],
+          "relationship": "guru–disciple",
+          "evidenceStatus": "reviewed display branch",
+          "source": null
+        }
+      ],
+      "notes": [
+        "Gajanan, Bhaskar and Vasudev together. Vasudev remains the collection’s generic identity with unknown footprint."
+      ]
+    },
+    {
+      "vitrine": "82",
+      "title": "Krishna Saraswati and Naamdevji",
+      "edges": [
+        {
+          "fromSourceIds": [
+            "rec8dNXWS2LIRcLGe"
+          ],
+          "toSourceIds": [
+            "recFeb8DyNtLuEtfs"
+          ],
+          "relationship": "guru–disciple",
+          "evidenceStatus": "source-recorded",
+          "source": null
+        }
+      ],
+      "notes": [
+        "Place the modern Naamdevji beside Krishna Saraswati; distinct from medieval Varkari Namdev."
+      ]
+    },
+    {
+      "vitrine": "82",
+      "title": "Pant and Sonar",
+      "edges": [
+        {
+          "fromSourceIds": [
+            "recKmUNZB0LwvnQYV"
+          ],
+          "toSourceIds": [
+            "recEGuGQQ4N4EXAil"
+          ],
+          "relationship": "guru–disciple",
+          "evidenceStatus": "source-recorded",
+          "source": null
+        }
+      ],
+      "notes": [
+        "Keep Pant and Sonar together. Pant’s teacher Balmukund/Balappa is historical context, distinct from Akkalkot’s Balappa in 3."
+      ]
+    },
+    {
+      "vitrine": "82",
+      "title": "Chille and Shankar",
+      "edges": [
+        {
+          "fromSourceIds": [
+            "recCXTEbnox9nOG4W"
+          ],
+          "toSourceIds": [
+            "recRnVf9eR7izgH7r"
+          ],
+          "relationship": "friendship",
+          "evidenceStatus": "temple-trust documented",
+          "source": "https://chilemaharaj.com/"
+        }
+      ],
+      "notes": [
+        "Place Shankar beside Chille: documented friendship."
+      ]
+    }
+  ],
+  "cityAlternatives": [],
+  "rules": [
+    "Place anchors and close groups first; city groups follow.",
+    "Living and May be alive entries stay below the top.",
+    "Show current source location independently of proposal destination.",
+    "No whole-case-clear step or empty-case claim. Fit incoming groups in space actually available on the floor.",
+    "If an existing occupant prevents placement, retain its identity/location and record a receiving dependency; no invented destination.",
+    "Keep unknown footprints visible. Separate source observations remain separate.",
+    "Retain all previous phase confirmations; no automatic completion or staging claims."
+  ],
+  "outgoingDependencies": [
+    {
+      "sourceId": "rec3ke5uNczm1awEG",
+      "name": "Sri Ram Lakhan Das",
+      "previousProposedVitrine": "82",
+      "locality": "Yavatmal, Maharashtra, India",
+      "originalSourceLocation": {
+        "vitrine": "53",
+        "shelf": "C"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "rec6hHwCPZlG7imPh",
+      "name": "Sri Nityanand Ji Maharaj",
+      "previousProposedVitrine": "81",
+      "locality": "Dwarka, Gujarat, India; Dwaraka; Sanyasi Ashram",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "A"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "rec6RzhtQGKjyWUu0",
+      "name": "Sri Tokhra Swami",
+      "previousProposedVitrine": "81",
+      "locality": "Dwarka, Gujarat, India; Dwaraka; Dakshineshwar Mandir; Gomti Ghat",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "A"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "rec6wFtDN5bu69pIB",
+      "name": "Sant Sri Kumardas",
+      "previousProposedVitrine": "82",
+      "locality": "Maharashtra; Laul",
+      "originalSourceLocation": {
+        "vitrine": "49",
+        "shelf": "C"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "rec731zp4RUjeaWaY",
+      "name": "Sri Sitaramdas Bapu",
+      "previousProposedVitrine": "82",
+      "locality": "Gujarat; Kahona",
+      "originalSourceLocation": {
+        "vitrine": "57",
+        "shelf": "C"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "rec7aLLgDa0jXhEKc",
+      "name": "Sri Baldev Das Ji",
+      "previousProposedVitrine": "81",
+      "locality": "Dwarka, Gujarat, India; Dwaraka",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "D"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "rec7wI21383fcNIve",
+      "name": "Sri Siyaram Baba",
+      "previousProposedVitrine": "81",
+      "locality": "Madhya Pradesh; Hanuman Temple; Mohammed Badodiya",
+      "originalSourceLocation": {
+        "vitrine": "47",
+        "shelf": "C"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "rec8QbPLpAjtQSu4Q",
+      "name": "Sri Gopal Das Baba",
+      "previousProposedVitrine": "82",
+      "locality": "Maharashtra",
+      "originalSourceLocation": {
+        "vitrine": "50",
+        "shelf": "D"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "rec8yNPDOHj7Ho4wt",
+      "name": "Sri Ughesh Giri Bapu",
+      "previousProposedVitrine": "81",
+      "locality": "Salava, Amreli, Gujarat, India",
+      "originalSourceLocation": {
+        "vitrine": "52",
+        "shelf": "D"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recAriDLsmc6YkbHp",
+      "name": "Sri Sadguru Vyankatnath Maharaj",
+      "previousProposedVitrine": "82",
+      "locality": "Devgaon Rangari, Maharashtra, India",
+      "originalSourceLocation": {
+        "vitrine": "41",
+        "shelf": "C"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recBiuGXStrJWEtln",
+      "name": "Sant Sri Chaturbapa",
+      "previousProposedVitrine": "82",
+      "locality": "Gujarat; Uteliya",
+      "originalSourceLocation": {
+        "vitrine": "57",
+        "shelf": "C"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recBRjhdw2jf5P23S",
+      "name": "Sri Namdev Baba",
+      "previousProposedVitrine": "81",
+      "locality": "Dvaha village, Hingoli, Maharashtra, India; Hingoli, Maharashtra, India",
+      "originalSourceLocation": {
+        "vitrine": "14",
+        "shelf": "E"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "reccKKvB9Ep8ilaYM",
+      "name": "Sri Hirsagar Bapa",
+      "previousProposedVitrine": "82",
+      "locality": "Rajkot, Gujarat, India",
+      "originalSourceLocation": {
+        "vitrine": "44",
+        "shelf": "B"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recdIJbhgX9MwqP9W",
+      "name": "Sri Sanjivan Swami",
+      "previousProposedVitrine": "82",
+      "locality": "Nazare, Maharashtra, India",
+      "originalSourceLocation": {
+        "vitrine": "49",
+        "shelf": "B"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "rece8TkBogU3sVpwc",
+      "name": "Sri Ramdas ji Maharaj",
+      "previousProposedVitrine": "81",
+      "locality": "Dwarka, Gujarat, India; Dwaraka; Khuk Chowk; Gomati Ghat",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "A"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recEnD8tEMbdNXtbQ",
+      "name": "Mahant Sri Kuldeep Bharatiji Maharaj",
+      "previousProposedVitrine": "82",
+      "locality": "Virpur, Gujarat, India; Rajkot / Virpur; Sri Trivenishwar Mahadev Mandir; Virpur 9 E",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "E"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recGwFSR5sfdlhTMT",
+      "name": "Sri Rami Mataji",
+      "previousProposedVitrine": "81",
+      "locality": "Dwarka, Gujarat, India; Dwaraka; Dwaraka near Kandas Bapuji Ashram",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "A"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "reci5j0k7U8Ha2f2m",
+      "name": "Sri Ranchordasji Maharaj",
+      "previousProposedVitrine": "82",
+      "locality": "Rajkot, Gujarat, India; Rajkot / Virpur",
+      "originalSourceLocation": {
+        "vitrine": "24",
+        "shelf": "A"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recic7dKaAtT15WXV",
+      "name": "Sri Swami Pritam Muni",
+      "previousProposedVitrine": "81",
+      "locality": "Gujarat",
+      "originalSourceLocation": {
+        "vitrine": "56",
+        "shelf": "A"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recj7tGgKoauOaM4r",
+      "name": "Sri Samarth Sadguru Kisangiri Baba",
+      "previousProposedVitrine": "82",
+      "locality": "Godhegaon, Maharashtra, India",
+      "originalSourceLocation": {
+        "vitrine": "10",
+        "shelf": "C"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recjA6O6snsRrdlUA",
+      "name": "Sri Kandas Bapuji",
+      "previousProposedVitrine": "81",
+      "locality": "Dwarka, Gujarat, India; Dwaraka; Kandas Bapuji Ashram",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "A"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recjT5Upm7602ZMk5",
+      "name": "Sant Sri Dhana Bapa",
+      "previousProposedVitrine": "82",
+      "locality": "Gujarat; Hadala Bhal",
+      "originalSourceLocation": {
+        "vitrine": "57",
+        "shelf": "C"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "reckMEo9zwH4wKJJM",
+      "name": "Sri Sri 1008 Sri Dadaji Dhuniwaley (Sri Keshavanandji Maharaj)",
+      "previousProposedVitrine": "81",
+      "locality": "Narmada, Madhya Pradesh, India; Kheri Ghat",
+      "originalSourceLocation": {
+        "vitrine": "59",
+        "shelf": "A"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recl4gAipADCmXJrH",
+      "name": "Sri Gondawalekar Maharaj",
+      "previousProposedVitrine": "82",
+      "locality": "Gondavale, Maharashtra, India",
+      "originalSourceLocation": {
+        "vitrine": "25",
+        "shelf": "C"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recL9d14BW4lGbceX",
+      "name": "Sri Purnanand Maharaj",
+      "previousProposedVitrine": "81",
+      "locality": "Purnanand Ashram, Ahmedabad, Gujarat, India; Purnanand Ashram, Ahmedabad, Gujrat; Ahmedbad",
+      "originalSourceLocation": {
+        "vitrine": "16",
+        "shelf": "B"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recmtsRvLYP37610P",
+      "name": "Sri Balak Giri",
+      "previousProposedVitrine": "82",
+      "locality": "Rajkot, Gujarat, India; Chotila Ashram",
+      "originalSourceLocation": {
+        "vitrine": "52",
+        "shelf": "D"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recNUYxXhqLlajDKR",
+      "name": "Sri Dondhi Raj Maharaj",
+      "previousProposedVitrine": "82",
+      "locality": "Palus, Sangli, Maharashtra, India; Distr Sangli",
+      "originalSourceLocation": {
+        "vitrine": "33",
+        "shelf": "C"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recoJDmYfi6mW01ol",
+      "name": "Sri Purushottam Bapu",
+      "previousProposedVitrine": "81",
+      "locality": "Dwarka, Gujarat, India; Dwaraka; Harihar Ashram; Chaurasi dhuni; Bhet Dwaraka",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "D"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recOOvysi3zaV9A79",
+      "name": "Sri Rajarshi Muni Ji",
+      "previousProposedVitrine": "81",
+      "locality": "Gujarat; Kayavarohan",
+      "originalSourceLocation": {
+        "vitrine": "56",
+        "shelf": "E"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recP5x11FRPXMSRTj",
+      "name": "Paramahansa Sri Satyadeva Maharaj",
+      "previousProposedVitrine": "82",
+      "locality": "Maharashtra; Bharwadi",
+      "originalSourceLocation": {
+        "vitrine": "40",
+        "shelf": "B"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recp9Qd482IPagFW7",
+      "name": "Sri Gangadas Guru Changadas Kabir Saheb",
+      "previousProposedVitrine": "81",
+      "locality": "Dwarka, Gujarat, India; Dwaraka; Ravara Hanuman",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "D"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recr0IW26sqLI5tHu",
+      "name": "Sri Sitaram Kabir Das Bapu (Lakhar Das)",
+      "previousProposedVitrine": "81",
+      "locality": "Dwarka, Gujarat, India; Dwaraka; Panch Mukhi Hanuman Mandir",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "D"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recsm43oeUdKNUMqs",
+      "name": "Sri Bimal Das Bapu",
+      "previousProposedVitrine": "81",
+      "locality": "Sasan Gir, Gujarat, India",
+      "originalSourceLocation": {
+        "vitrine": "64",
+        "shelf": "E"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recSrBwSNp68fQDXg",
+      "name": "Sri Mahant Badri Maharaj",
+      "previousProposedVitrine": "82",
+      "locality": "Murtizapur, Maharashtra, India; Murtyjapur",
+      "originalSourceLocation": {
+        "vitrine": "41",
+        "shelf": "A"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recU0W9UAWA4dfJsd",
+      "name": "Sri Anandrishi ji Maharaj",
+      "previousProposedVitrine": "82",
+      "locality": "Ahmednagar, Maharashtra, India",
+      "originalSourceLocation": {
+        "vitrine": "41",
+        "shelf": "D"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recUAtOOXXZARwgGC",
+      "name": "Sri Jivan Das",
+      "previousProposedVitrine": "82",
+      "locality": "Rajkot, Gujarat, India; Gondal",
+      "originalSourceLocation": {
+        "vitrine": "24",
+        "shelf": "B"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recvtg4qmPTrKNB5c",
+      "name": "Sri Gurusri Tapasui Bapu (Tapsi Bapu)",
+      "previousProposedVitrine": "81",
+      "locality": "Dwarka, Gujarat, India; Dwaraka; Tulsi Chaura; Bhet Dwaraka",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "D"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recvtWm0B1R3MVPxd",
+      "name": "Sri Abba Babu",
+      "previousProposedVitrine": "81",
+      "locality": "Dwarka, Gujarat, India; Dwaraka; Abba Babu Ashram",
+      "originalSourceLocation": {
+        "vitrine": "6",
+        "shelf": "D"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recVVLS0iE5Xc8jg1",
+      "name": "Sri Sadguru Brahmachari Swami Maharaj",
+      "previousProposedVitrine": "82",
+      "locality": "Vadodara, Gujarat, India; Baroda",
+      "originalSourceLocation": {
+        "vitrine": "9",
+        "shelf": "A"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    },
+    {
+      "sourceId": "recVzUfFbQrS7Kx1h",
+      "name": "Sri Siddhayogi Fakdanath",
+      "previousProposedVitrine": "81",
+      "locality": "Gujarat; Zamrala",
+      "originalSourceLocation": {
+        "vitrine": "56",
+        "shelf": "C"
+      },
+      "proposedDestination": null,
+      "state": "Needs coherent receiving destination"
+    }
+  ],
+  "physicalConfirmations": [],
+  "backendWritesAuthorizedByPacket": false,
+  "canonicalRelationshipWritesAuthorizedByPacket": false,
+  "notActivatedDraft": false,
+  "publicationScope": "Locked content handoff for requested guide phase; full museum receiving allocation not activated",
+  "contentDigestBasis": "Node canonical sorted object keys; JSON.stringify scalar values; retained array order; contentDigest excluded",
+  "contentDigest": "9c50c15146eb0a0b9f8375ee7afbf4efde9d5fc3ae9baa2b971ab36ff7f3692d"
+}

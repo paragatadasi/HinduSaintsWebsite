@@ -2,11 +2,12 @@ import source from "../data/museum/spn-starter-reviewed-proposal-v16.json";
 import baseline from "../data/museum/spn-starter-reviewed-proposal-v7.json";
 import previous from "../data/museum/spn-room-explorer-final-v10-design.json";
 import type { ExplorerOption, ExplorerPlacement } from "./spn-room-explorer";
+import { currentSpnConceptLabel } from "./spn-proposal-labels";
 
 const cases = new Map(source.reviewCases.map(row => [row.vitrine, row]));
 const assignments = source.assignments.map(row => ({ ...row, subsection: cases.get(row.number)?.title ?? row.subsection }));
 const allRows = [...source.rows, ...source.namedOnly];
-const reviewNote = "Accepted v16 proposal, approved on 28 October 2026. Newer curator choices remain in effect. Recorded physical locations are shown separately; no additional moves are confirmed. Source-only observations and identity holds remain distinct. Space estimates include unknowns and do not certify physical fit.";
+const reviewNote = "Accepted East–North connections v4 proposal, approved on 28 October 2026. Newer curator choices remain in effect. Recorded physical locations are shown separately; no additional moves are confirmed. Source-only observations and identity holds remain distinct. Space estimates include unknowns and do not certify physical fit.";
 const indicators = baseline.indicators.map(original => {
   const rows = source.rows.filter(row => row.vitrine === original.vitrine);
   const unresolved = rows.filter(row => row.unresolved);
@@ -36,7 +37,7 @@ const primeAnchors = Object.fromEntries(assignments.flatMap(assignment => {
   return names.length ? [[assignment.number, { people: names.join(" · "), reason: cases.get(assignment.number)?.anchors ?? "Preserve the reviewed anchor group; physical fit remains unconfirmed." }]] : [];
 }));
 const option: ExplorerOption = {
-  id: source.version, title: "SPN v16", summary: reviewNote,
+  id: source.version, title: currentSpnConceptLabel, summary: reviewNote,
   assignments, primeAnchors,
   displayPackets: assignments.map(row => ({ unitId: `v16-case-${row.number}`, label: row.subsection, group: row.group, cases: [Number(row.number)], navigationKind: "neighborhood" })),
   drivers: source.reviewCases.map(row => ({ connection: row.title, places: [Number(row.vitrine)], reason: `${row.cityPlacement} ${row.connection}` })),
@@ -46,6 +47,6 @@ const option: ExplorerOption = {
 const placements: ExplorerPlacement[] = allRows.flatMap(row => row.saintId ? [{ saintId: row.saintId, vitrine: row.vitrine, rationale: cases.get(row.vitrine)?.anchors ?? row.allocationKind }] : []);
 
 export const spnV16Release = {
-  proposal: { ...source, assignments, indicators, reviewNote, reviewStatus: "Accepted default proposal; physical moves remain separate" },
+  proposal: { ...source, title: currentSpnConceptLabel, assignments, indicators, reviewNote, reviewStatus: "Accepted default proposal; physical moves remain separate" },
   designData: { options: [option], comparisonPrevious: previous.options[0], placements },
 };
