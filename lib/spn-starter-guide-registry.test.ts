@@ -1,26 +1,34 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { registeredStarterGuide as guide, readStarterGuideDefinition, starterGuideContext } from "./spn-starter-guide-registry";
+import oldGuide from "../data/museum/spn-starter-move-guide-v2.json";
+import proposal from "../data/museum/spn-starter-reviewed-proposal-v16.json";
 
-test("the pilot pins the current review guide and preserves the real physical walk", () => {
-  assert.equal(guide.proposalVersion, "spn-three-sided-rotation-review-2026-10-27-v7");
-  assert.deepEqual(guide.vitrines.map(row => row.code), ["2", "78", "36", "29", "76", "28", "27"]);
-  assert.equal(guide.rows.length, 136);
-  assert.throws(() => readStarterGuideDefinition("spn-city-first-2026-10-27-v10"), /not registered/);
+test("v16 guide has an exact source partition and matches all reviewed destinations", () => {
+ assert.equal(guide.proposalVersion, proposal.version);
+ assert.deepEqual(guide.vitrines.map(row => row.code), ["2", "78", "36", "29", "76", "28", "27"]);
+ const ids = guide.vitrines.flatMap(v => [...v.families, ...v.cityGroups].flatMap(g => g.sourceIds));
+ assert.equal(ids.length, 135); assert.equal(new Set(ids).size, 135);
+ for (const row of guide.rows) assert.equal(proposal.rows.find(p => p.sourceId === row.sourceId)?.vitrine, row.vitrine);
 });
-test("the later review-only transfers are excluded and source-only identity stays separate", () => {
-  assert.equal(guide.rows.find(row => row.sourceId === "rec1bOVrWmAFek7Tn")!.vitrine, "27");
-  assert.equal(guide.rows.find(row => row.sourceId === "reckCzqScd99ZzKth")!.vitrine, "28");
-  const extra = guide.rows.find(row => row.sourceId === "recOs3jGNyfMlakIB")!;
-  assert.equal(extra.vitrine, "27"); assert.equal(extra.saintId, null);
+
+test("historical guide definitions and reported physical facts survive version changes", () => {
+ const historical = readStarterGuideDefinition(oldGuide.version);
+ assert.equal(historical.context.contentDigest, oldGuide.contentDigest);
+ assert.deepEqual(guide.physicalConfirmations.moves, oldGuide.physicalConfirmations.moves);
+ const extra = guide.rows.find(row => row.sourceId === "recOs3jGNyfMlakIB")!;
+ assert.equal(extra.saintId, null); assert.equal(extra.vitrine, "28");
+ assert.throws(() => readStarterGuideDefinition("unknown"), /not registered/);
 });
-test("each pilot entry belongs to one phase group and alternatives have target-specific decisions", () => {
-  const ids = guide.vitrines.flatMap(vitrine => [...vitrine.families, ...vitrine.cityGroups].flatMap(group => group.sourceIds));
-  assert.equal(ids.length, 136); assert.equal(new Set(ids).size, 136);
-  const cohort = guide.cityAlternatives.find(row => row.sourceIds.some(id => !guide.rows.some(row => row.sourceId === id)))!;
-  const definition = readStarterGuideDefinition(starterGuideContext.guideVersion);
-  const chosen = definition.suggestions.find(row => row.id === cohort.suggestionIdsByTarget["78"])!;
-  assert.equal(chosen.kind, "alternative"); assert.equal(chosen.targetVitrine, "78");
-  assert.deepEqual(chosen.sourceIds, cohort.sourceIds);
-  assert.notEqual(cohort.suggestionIdsByTarget["78"], cohort.suggestionIdsByTarget["27"]);
+
+test("unreviewed locality alternatives cannot register actions; transitions can", () => {
+ const definition = readStarterGuideDefinition(starterGuideContext.guideVersion);
+ assert.ok(guide.cityAlternatives.length > 0);
+ assert.ok(guide.cityAlternatives.every(row => row.allowedTargetVitrines.length === 0));
+ assert.ok(definition.suggestions.every(row => row.kind !== "alternative"));
+ assert.equal(guide.transitionRowsOutsideStarter.length, 4);
+ for (const row of guide.transitionRowsOutsideStarter) {
+  assert.equal(definition.suggestions.find(s => s.id === `row:${row.sourceId}`)?.targetVitrine, row.destination.vitrine);
+  assert.equal(row.currentLocation.vitrine, "28");
+ }
 });

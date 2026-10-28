@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { assertSpnMovementAllowed, spnMovementBlockedReason } from "./spn-movement-holds";
 import { db } from "./db";
 import { Prisma } from "./generated/prisma/client";
 import { moveSnapshot, moveLocation, sameMoveLocation, assertDistinctMoveSources, assertWholeCaseClearing, MuseumMoveSessionError, type MoveSnapshot } from "./museum-move-session-domain";
@@ -39,7 +40,7 @@ async function view(loader: PhysicalSnapshotLoader, tx: Prisma.TransactionClient
     const current = resolveMuseumPhysicalCurrent(row.sourceReported, positions.find(position => position.sourceId === row.sourceId), row.legacyConfirmed);
     return { sourceId: row.sourceId, sourceKey: row.sourceKey ?? null, saintId: row.saintId, name: row.name,
       original: row.sourceReported, proposalDestination: row.destination, proposalVersion: snapshot.proposalVersion,
-      fixedHousing: row.fixedHousing, verifiedItemIds: [...new Set([...(row.itemIds ?? []), ...(row.itemId ? [row.itemId] : [])])], identityChanged,
+      fixedHousing: row.fixedHousing, movementBlockedReason: spnMovementBlockedReason(row.sourceId), verifiedItemIds: [...new Set([...(row.itemIds ?? []), ...(row.itemId ? [row.itemId] : [])])], identityChanged,
       sourceRevision: physicalFingerprint({ sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, original: row.sourceReported, link, itemIds: row.itemIds ?? [], fixedHousing: row.fixedHousing }),
       ...current };
   });
@@ -112,6 +113,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         if (!current.vitrineCodes.includes(to.code)) throw new MuseumMoveSessionError(400, "Choose a vitrine in this museum's layout.");
         to = { ...to, label: `Vitrine ${to.code}` };
       }
+      assertSpnMovementAllowed(row.sourceId, row.current, to);
       if (row.fixedHousing && !sameMoveLocation(row.current, to)) throw new MuseumMoveSessionError(409, "This display has fixed or special housing. Review that restriction before moving it.");
       return { sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, name: row.name, original: row.original,
         previous: row.current, location: to, version: row.currentVersion + 1 };
