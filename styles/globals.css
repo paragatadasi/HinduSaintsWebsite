@@ -12138,7 +12138,7 @@ select:not([multiple]) {
 
 /* Keep the orienting map beside the concise guide while space permits. */
 .museum-companion--guide .museum-companion__main {display:grid;grid-template-columns:minmax(0,var(--width-companion-map)) minmax(0,1fr);align-items:start}
-.museum-companion--guide .museum-companion__task {grid-column:1;grid-row:1 / 3;position:sticky;top:var(--space-4)}
+.museum-companion--guide .museum-companion__task {grid-column:1;grid-row:1 / 4;position:sticky;top:var(--space-4)}
 .museum-companion--guide .museum-companion__main>.admin-tab-strip,.museum-companion--guide .museum-companion__main>section:not(.museum-companion__task) {grid-column:2}
 .museum-guide-tree__person {text-align:left;cursor:pointer;font:inherit}
 .museum-companion .museum-modal {background:var(--color-surface);color:var(--color-text);border-color:var(--color-border)}

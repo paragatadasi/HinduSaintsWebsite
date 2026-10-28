@@ -31,7 +31,7 @@ export type PhysicalState={reportedPlacementReceipts?:{guideContext:{guideVersio
 export function isPlaced(row:CompanionRow,destination:string){return row.currentBasis==="confirmed"&&row.current?.kind==="vitrine"&&row.current.code===destination;}
 export function currentLocationLabel(location:PhysicalLocation|null){return location?location.label+(location.shelf?` · Shelf ${location.shelf}`:""):"Location not recorded";}
 
-export type GuideDecision={suggestionId:string;decision:"pending"|"deferred"|"declined";note:string|null;version:number};
+export type GuideDecision={suggestionId:string;decision:"pending"|"deferred"|"declined";note:string|null;version:number;alternativeVitrine?:string|null;alternativeShelf?:string|null};
 
 export function reportedPlacementsRecorded(state:PhysicalState,reported:StarterMoveGuide["reportedPlacements"]){
  const saved=new Set<string>();
