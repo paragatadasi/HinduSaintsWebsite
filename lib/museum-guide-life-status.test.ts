@@ -11,6 +11,8 @@ test("starter adapter retains captured life-status metadata",()=>{assert.equal(s
 test("century rule respects exact date, unknown-year boundary and latest year in ranges",()=>{
  assert.equal(bornOverCenturyAgo(person({birthYear:1925}),now),true);
  assert.equal(bornOverCenturyAgo(person({birthYear:1926}),now),false);
+ assert.equal(bornOverCenturyAgo(person({birthYear:1926,birthMonth:1}),now),true);
+ assert.equal(bornOverCenturyAgo(person({birthYear:1926,birthMonth:10}),now),false);
  assert.equal(bornOverCenturyAgo(person({birthYear:1926,birthMonth:10,birthDay:27}),now),true);
  assert.equal(bornOverCenturyAgo(person({birthYear:1926,birthMonth:10,birthDay:28}),now),false);
  assert.equal(bornOverCenturyAgo(person({birthYear:1900,birthYearEnd:1930}),now),false);

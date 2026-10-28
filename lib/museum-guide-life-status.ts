@@ -7,8 +7,9 @@ export function bornOverCenturyAgo(person:GuideLifeEvidence,now:Date){
  const cutoff=now.getUTCFullYear()-100;
  if(year!==cutoff)return year<cutoff;
  if(person.birthYearEnd&&person.birthYearEnd!==person.birthYear)return false;
- if(!person.birthMonth||!person.birthDay)return false;
- return person.birthMonth<now.getUTCMonth()+1||(person.birthMonth===now.getUTCMonth()+1&&person.birthDay<now.getUTCDate());
+ if(!person.birthMonth)return false;
+ if(person.birthMonth!==now.getUTCMonth()+1)return person.birthMonth<now.getUTCMonth()+1;
+ return !!person.birthDay&&person.birthDay<now.getUTCDate();
 }
 export function projectGuideLifeStatus(guide:StarterMoveGuide,evidence:GuideLifeEvidence[],now=new Date()):StarterMoveGuide{
  const people=new Map(evidence.map(person=>[person.id,person]));
