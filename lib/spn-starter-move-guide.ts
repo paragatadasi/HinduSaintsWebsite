@@ -30,7 +30,7 @@ export const starterMoveGuide: StarterMoveGuide = {
   movementBlockedReason: row.movementBlockedReason || spnMovementBlockedReason(row.sourceId) })),
   ...packet.rows.map(row => ({ sourceId: row.sourceId, saintId: row.saintId, name: row.name, tier: row.tier,
    city: row.planningCity || row.city, relicDescription: row.relicDescription ?? "", destination: row.vitrine,
-   section: row.section, family: row.family ?? "", rationale: row.placementReason.text,
+   lifeStatus: row.lifeStatus, section: row.section, family: row.family ?? "", rationale: row.placementReason.text,
    reviewNotes: row.reviewNotes, movementBlockedReason: row.movementBlockedReason || spnMovementBlockedReason(row.sourceId) }))],
  vitrines: packet.vitrines.map(v => ({ code: v.code, summary: v.summary,
   families: v.families.map(g => ({ ...g, suggestedVitrines: [v.code], ...(v.code === treeOverlay.vitrine ? {edges: treeOverlay.familyTrees.flatMap(tree => tree.edges.flatMap(edge => edge.fromSourceIds.flatMap(fromSourceId => edge.toSourceIds.filter(toSourceId => g.sourceIds.includes(fromSourceId) && g.sourceIds.includes(toSourceId)).map(toSourceId => ({fromSourceId, toSourceId, label: edge.relationship})))))} : {}) })),
