@@ -1,6 +1,6 @@
 # Release Handoff: codex/spn-v16-companion
 
-- Status: `queued`
+- Status: `ready`
 - Branch: `codex/spn-v16-companion`
 - Commit: `4fc3f30db66bb37ca89c9b5b92f04db837128e3f`
 - Owner/agent: `Citra`
@@ -24,7 +24,7 @@
 - Environment variables: none. Airtable delivery stays disabled.
 - Required bundle: Nadi `codex/spn-v16-guide-data`, Saarthi audited v3 guide / v16 full proposal. Do not deploy this UI alone: old alternative metadata has no reviewed target eligibility.
 - Preserve all existing curator revisions, 23 recorded physical placements and historical guide decisions. Do not resubmit historical moves.
-- Automatic approval review blocked active v16 proposal activation; direct human confirmation is pending in Citra/Nadi chats. Do not activate until resolved.
+- Activation approved directly by the user on 28 October: "Yes, activate v16". Release with the aligned Nadi data branch after integrated checks.
 
 ## Risk And Conflicts
 
