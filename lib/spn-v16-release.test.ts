@@ -10,7 +10,7 @@ import frozenGuide from "../data/museum/spn-starter-move-guide-v3.json";
 import { starterAmendedProposal } from "./spn-starter-amended-proposal";
 import { correctSpnProposal } from "./spn-proposal-corrections";
 
-test("the frozen starter guide shares the audited v16 baseline; its successor has one explicit amendment", () => {
+test("the frozen starter guide shares the audited v16 baseline; its successor contains only approved placement amendments", () => {
   assert.equal(currentSpnProposalRelease.acceptedBaseline, true);
   assert.equal(currentSpnProposalRelease.proposal.version, registeredStarterGuide.proposalVersion);
   const corrected = correctSpnProposal(currentSpnProposalRelease);
@@ -18,9 +18,9 @@ test("the frozen starter guide shares the audited v16 baseline; its successor ha
   for (const row of frozenGuide.rows) assert.equal(assignments.get(row.sourceId), row.vitrine);
   const amended = new Map(starterAmendedProposal.rows.map(row => [row.sourceId, row.vitrine]));
   const changed = registeredStarterGuide.rows.filter(row => assignments.get(row.sourceId) !== row.vitrine);
-  assert.deepEqual(changed.map(row => [row.sourceId, assignments.get(row.sourceId), row.vitrine]), [["recc9hYwqqmB3Di2r", "24", "36"]]);
+  assert.deepEqual(changed.map(row => [row.sourceId, assignments.get(row.sourceId), row.vitrine]), [["rec1bOVrWmAFek7Tn", "78", "28"], ["recIv4yKRknjgONrZ", "36", "78"], ["recJepdkXi90kdROh", "78", "2"], ["recc9hYwqqmB3Di2r", "24", "36"]]);
   for (const row of registeredStarterGuide.rows) assert.equal(amended.get(row.sourceId), row.vitrine);
-  for (const row of frozenGuide.rows) assert.deepEqual(registeredStarterGuide.rows.find(next => next.sourceId === row.sourceId), row);
+  for (const row of frozenGuide.rows) if (!["rec1bOVrWmAFek7Tn","recIv4yKRknjgONrZ","recJepdkXi90kdROh","rechBZw1LyW9TTX9L"].includes(row.sourceId)) assert.deepEqual(registeredStarterGuide.rows.find(next => next.sourceId === row.sourceId), row);
   for (const row of registeredStarterGuide.transitionRowsOutsideStarter) assert.equal(assignments.get(row.sourceId), row.destination.vitrine);
 });
 

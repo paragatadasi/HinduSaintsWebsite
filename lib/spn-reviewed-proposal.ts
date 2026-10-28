@@ -5,6 +5,7 @@ import {reconcileSpnRoomProposal} from "./spn-room-proposal";
 import {projectCurrentPrimaryAnchors} from "./spn-live-display-tiers";
 import {gosaijiSaiMoveGuide} from "./spn-gosaiji-sai-guide";
 import {dattaMoveGuide} from "./spn-datta-guide";
+import {starterMoveGuide} from "./spn-starter-move-guide";
 import {ramBhaktiMoveGuide} from "./spn-ram-bhakti-guide";
 import type {MuseumSaintPlacement} from "./museum-proposals";
 
@@ -34,7 +35,7 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[]){
    hasUnresolvedHoldings:!!unresolved.length,unresolvedSourceObservationCount:unresolved.length,
    specialFitNote:indicator.vitrine==="4"?"Approved core: 15 source entries, estimated 5.47 / 5 shelf-height spaces. Check fit before filling. Other current occupants need separate review.":indicator.vitrine==="37"?"Approved core: 10 source entries, estimated 3.39 / 5 shelf-height spaces. Yogmaya’s two observations retain a combined allowance of 1.5. Seven city entries await separate destinations.":indicator.specialFitNote};
  });
- const guides=[dattaMoveGuide,ramBhaktiMoveGuide,gosaijiSaiMoveGuide];
+ const guides=[{...starterMoveGuide,vitrines:starterMoveGuide.vitrines.filter(v=>v.code==="28")},dattaMoveGuide,ramBhaktiMoveGuide,gosaijiSaiMoveGuide];
  const reviewedFamilies=guides.flatMap(guide=>guide.vitrines.map(v=>({...v,families:v.families.map(group=>{const present=new Set(rows.filter(row=>row.effectiveVitrine===v.code).map(row=>row.sourceId));return {...group,sourceIds:group.sourceIds.filter(id=>present.has(id)),edges:group.edges?.filter(edge=>present.has(edge.fromSourceId)&&present.has(edge.toSourceId))};}),entries:guide.entries.map(entry=>{const row=rows.find(row=>row.sourceId===entry.sourceId);return row?{...entry,name:row.name,tier:row.tier}:entry;})})));
  const caseTitles=new Map(reviewedFamilies.map(v=>[v.code,v.families.map(g=>g.title).join(" · ")]));
  const options=base.designData.options.map(original=>{
