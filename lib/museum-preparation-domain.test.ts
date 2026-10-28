@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {preparationInput,projectPreparations,assertSafeCaseClear,assertPhaseClearance,projectPhaseClearances} from "./museum-preparation-domain";
+import {preparationInput,projectPreparations,assertSafeCaseClear,assertPhaseClearance,projectPhaseClearances,phaseNeedsClearance,assertPhasePreparation} from "./museum-preparation-domain";
 import {museumIntakeRelicInput,preserveAdditionalSaints} from "./museum-intake-domain";
 import {intakeRelicPayload,intakeRelicsEqual} from "./museum-intake-fields";
 test("preparation survives placements and preserves independent readiness revocation",()=>{
@@ -52,4 +52,16 @@ test("preparation-only acknowledgements never satisfy the phase clearing prerequ
  const events=[{id:"prep",createdAt:date,afterJson:{museumId:"museum-spn",vitrine:"37",prepared:true,version:1}},
   {id:"clear",createdAt:date,afterJson:{museumId:"museum-spn",guideContext:{guideVersion:"phase"},clearedVitrines:["37"]}}];
  assert.deepEqual(projectPhaseClearances(events).map(r=>[r.guideVersion,r.vitrine,r.receiptId]),[["phase","37","clear"]]);
+});
+
+test("75 can precede37clear only with separate recorded readiness;37and4 remain gated",()=>{
+ const record=(code:string)=>({to:{kind:"vitrine",code}});
+ assert.equal(phaseNeedsClearance([record("75")],["37","4"]),false);
+ assert.equal(phaseNeedsClearance([record("75")]),true);
+ assert.equal(phaseNeedsClearance([record("4")],["37","4"]),true);
+ assert.equal(phaseNeedsClearance([record("37"),record("75")],["37","4"]),true);
+ assert.throws(()=>assertPhasePreparation([record("75")],["75"],[]),/available and prepared/);
+ assert.throws(()=>assertPhasePreparation([record("75")],["75"],[{vitrine:"75",prepared:false}]));
+ assert.doesNotThrow(()=>assertPhasePreparation([record("75")],["75"],[{vitrine:"75",prepared:true}]));
+ assert.doesNotThrow(()=>assertPhasePreparation([record("4")],["75"],[]));
 });

@@ -9,7 +9,7 @@ import { MuseumMoveSessionError } from "./museum-move-session-domain";
 
 export type GuideContext = { guideVersion: string; contentDigest: string; assignmentDigest: string };
 export type RegisteredSuggestion = { id: string; kind: "family" | "city" | "row" | "alternative"; sourceIds: string[]; targetVitrine: string };
-export type GuideDefinition = { context: GuideContext; suggestions: RegisteredSuggestion[]; previousVersions?: string[]; readOnly?: boolean; physicalScope?: { allowClear: boolean; clearVitrines?: string[]; destinations: Record<string, string> } };
+export type GuideDefinition = { context: GuideContext; suggestions: RegisteredSuggestion[]; previousVersions?: string[]; readOnly?: boolean; physicalScope?: { allowClear: boolean; clearVitrines?: string[]; clearanceRequiredDestinations?: string[]; preparationVitrines?: string[]; destinations: Record<string, string> } };
 const hash = (value: string) => createHash("sha256").update(value).digest("hex");
 function canonical(value: unknown): string {
   if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
