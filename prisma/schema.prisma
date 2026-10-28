@@ -1877,6 +1877,8 @@ model MuseumGuideSuggestionDecision {
   suggestionId String
   decision String @default("pending")
   note String?
+  alternativeVitrine String?
+  alternativeShelf String?
   version Int @default(1)
   updatedById String
   updatedAt DateTime @updatedAt
