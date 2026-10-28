@@ -1,0 +1,300 @@
+{
+  "version": "spn-ram-bhakti-core-guide-2026-10-28-v1",
+  "proposalVersion": "spn-vitrine-80-core-review-2026-10-28-v1",
+  "title": "Ram bhakti · core group",
+  "proposalLabel": "East–North connections · v4 · Ram bhakti core",
+  "scope": [
+    "80"
+  ],
+  "rows": [
+    {
+      "sourceId": "recfi9BOPvQP4SGAE",
+      "saintId": "cms0w7f0l03nb07qik1abxafl",
+      "name": "Sri Samarth Ramdas",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "Pune, Maharashtra, India; Sajjangad, Maharashtra, India",
+      "relicDescription": "",
+      "destination": "80",
+      "rationale": "Institutional tradition identifies Venabai as disciple",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status inferred from missing death data."
+      },
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceCity": "Pune, Maharashtra, India; Sajjangad, Maharashtra, India"
+    },
+    {
+      "sourceId": "recCGUZ0GOInZQ8y3",
+      "saintId": "cms0w7e7h02ky07qi6rjds61j",
+      "name": "Sri Vena Bai Swami",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "Miraj, Maharashtra, India; Kolhapur, Maharashtra, India",
+      "relicDescription": "cloth from under his Padukas (orange), small door piece from the house where he lived in Miraj; cloth from the Temple in Miraj (white shall)",
+      "destination": "80",
+      "rationale": "Institutional tradition identifies Venabai as disciple",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status inferred from missing death data."
+      },
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceCity": "Miraj, Maharashtra, India; Kolhapur, Maharashtra, India"
+    },
+    {
+      "sourceId": "rec8ob3C56Q6tv3kb",
+      "saintId": "cms0w7dfs01k307qiefqq5di6",
+      "name": "Sri Shivaji Maharaj",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "Maharashtra",
+      "relicDescription": "4 Coins from his coronation june 6th 1674; ",
+      "destination": "80",
+      "rationale": "Separate historical association; no settled initiation claim",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status inferred from missing death data."
+      },
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceCity": "Maharashtra"
+    },
+    {
+      "sourceId": "recGtVWuUclVacwiB",
+      "saintId": "cmus3rwuv003c07o53utlo4h6",
+      "name": "Sri Shridhar Swami",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "Sajjangad, Maharashtra; Varadpur/Varadahalli, Karnataka",
+      "relicDescription": "His pillow ",
+      "destination": "80",
+      "rationale": "Ramdas to Shridhar is later spiritual affiliation, not lifetime discipleship; Shridhar to Godsay is source-recorded",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status inferred from missing death data."
+      },
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceCity": "Pune, Maharashtra, India; Varadpur, Maharashtra, India"
+    },
+    {
+      "sourceId": "recyQbBAPywfZ41O2",
+      "saintId": "cms0w7jw209ak07qiwl534cau",
+      "name": "Sri Dada Godsay",
+      "tier": "Secondary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "Pune, Maharashtra, India",
+      "relicDescription": "Towel and bones ",
+      "destination": "80",
+      "rationale": "Ramdas to Shridhar is later spiritual affiliation, not lifetime discipleship; Shridhar to Godsay is source-recorded",
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Source says still alive but relic description includes bones; check before choosing a top position."
+      },
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceCity": "Pune, Maharashtra, India"
+    },
+    {
+      "sourceId": "recxjM8XNprzBWzuT",
+      "saintId": "cms0w7jjj08x907qiyw8q9hae",
+      "name": "Sri Neem Karoli Baba",
+      "tier": "Primary",
+      "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "city": "Kainchi/Nainital, Uttarakhand; Vrindavan, Uttar Pradesh",
+      "relicDescription": "new: piece from his bed in Brindavan; His shawl\n",
+      "destination": "80",
+      "rationale": "Thematic bridge, no Samarth guru edge; preserve Northern section and approved Primary tier",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status inferred from missing death data."
+      },
+      "reviewNotes": [
+        "Northern regional identity is preserved; Ram/Hanuman connection is thematic."
+      ],
+      "knownShelfProxy": 0.20833333333333331,
+      "sourceCity": "Shirdi, Maharashtra, India"
+    },
+    {
+      "sourceId": "recl4gAipADCmXJrH",
+      "saintId": "cms0w7gde05cl07qihkl5hb6u",
+      "name": "Sri Gondawalekar Maharaj",
+      "tier": "Primary",
+      "section": "Maharashtra Guru Lineages",
+      "city": "Gondavale, Maharashtra, India",
+      "relicDescription": "Page from his potti and pieces from the sofa he took Samadhi on ",
+      "destination": "80",
+      "rationale": "Independent Ramnam tradition; own guru Tukaram Chaitanya/Tukamai, not Varkari Tukaram or Ramdas",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status inferred from missing death data."
+      },
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceCity": "Gondavale, Maharashtra, India"
+    }
+  ],
+  "groups": [
+    {
+      "id": "ram-bhakti:0",
+      "title": "Samarth Ramdas and Venabai",
+      "sourceIds": [
+        "recfi9BOPvQP4SGAE",
+        "recCGUZ0GOInZQ8y3"
+      ],
+      "rationale": "Institutional tradition identifies Venabai as disciple",
+      "suggestedVitrines": [
+        "80"
+      ],
+      "allowedTargetVitrines": [],
+      "edges": [
+        {
+          "fromSourceId": "recfi9BOPvQP4SGAE",
+          "toSourceId": "recCGUZ0GOInZQ8y3",
+          "label": "disciple — institutional tradition"
+        }
+      ]
+    },
+    {
+      "id": "ram-bhakti:1",
+      "title": "Shivaji and Sajjangad",
+      "sourceIds": [
+        "rec8ob3C56Q6tv3kb"
+      ],
+      "rationale": "Separate historical association; no settled initiation claim",
+      "suggestedVitrines": [
+        "80"
+      ],
+      "allowedTargetVitrines": [],
+      "edges": []
+    },
+    {
+      "id": "ram-bhakti:2",
+      "title": "Later Samarth tradition: Shridhar and Dada Godsay",
+      "sourceIds": [
+        "recGtVWuUclVacwiB",
+        "recyQbBAPywfZ41O2"
+      ],
+      "rationale": "Ramdas to Shridhar is later spiritual affiliation, not lifetime discipleship; Shridhar to Godsay is source-recorded",
+      "suggestedVitrines": [
+        "80"
+      ],
+      "allowedTargetVitrines": [],
+      "edges": [
+        {
+          "fromSourceId": "recGtVWuUclVacwiB",
+          "toSourceId": "recyQbBAPywfZ41O2",
+          "label": "source-recorded disciple"
+        }
+      ]
+    },
+    {
+      "id": "ram-bhakti:3",
+      "title": "Neem Karoli Baba: Ram and Hanuman",
+      "sourceIds": [
+        "recxjM8XNprzBWzuT"
+      ],
+      "rationale": "Thematic bridge, no Samarth guru edge; preserve Northern section and approved Primary tier",
+      "suggestedVitrines": [
+        "80"
+      ],
+      "allowedTargetVitrines": [],
+      "edges": []
+    },
+    {
+      "id": "ram-bhakti:4",
+      "title": "Gondavalekar Maharaj: Ramnam",
+      "sourceIds": [
+        "recl4gAipADCmXJrH"
+      ],
+      "rationale": "Independent Ramnam tradition; own guru Tukaram Chaitanya/Tukamai, not Varkari Tukaram or Ramdas",
+      "suggestedVitrines": [
+        "80"
+      ],
+      "allowedTargetVitrines": [],
+      "edges": []
+    }
+  ],
+  "knownShelfProxy": 1.8583333333333334,
+  "outgoingDependencies": [
+    {
+      "sourceId": "rec3nvB9eJa9oBCnp",
+      "name": "Sri Paramananda Giri Maharaj",
+      "baselineDestination": "80",
+      "state": "No replacement destination invented; separate peripheral/receiving review"
+    },
+    {
+      "sourceId": "rec9kMxYCspmmByD1",
+      "name": "Sri Shanti Giri Maharaj",
+      "baselineDestination": "80",
+      "state": "No replacement destination invented; separate peripheral/receiving review"
+    },
+    {
+      "sourceId": "recgKrcZzKVVTquDv",
+      "name": "Sri Vatareshwar Sanstan",
+      "baselineDestination": "80",
+      "state": "No replacement destination invented; separate peripheral/receiving review"
+    },
+    {
+      "sourceId": "recjtrqGSGg72x6Fs",
+      "name": "Sri Mekan Dada",
+      "baselineDestination": "80",
+      "state": "No replacement destination invented; separate peripheral/receiving review"
+    },
+    {
+      "sourceId": "reckIAnRCfjle4JRW",
+      "name": "Sri Vidhyanand Maharaj",
+      "baselineDestination": "80",
+      "state": "No replacement destination invented; separate peripheral/receiving review"
+    },
+    {
+      "sourceId": "reclgGlgEze6aQUzo",
+      "name": "Sri Dhuniwale Dadaji",
+      "baselineDestination": "80",
+      "state": "No replacement destination invented; separate peripheral/receiving review"
+    },
+    {
+      "sourceId": "rectIOEaE15eMvB2I",
+      "name": "Sri Mohan Maharaj",
+      "baselineDestination": "80",
+      "state": "No replacement destination invented; separate peripheral/receiving review"
+    },
+    {
+      "sourceId": "recUGf2K67AR5c59I",
+      "name": "Sri Janardhana Giri (Swami) Maharaj",
+      "baselineDestination": "80",
+      "state": "No replacement destination invented; separate peripheral/receiving review"
+    },
+    {
+      "sourceId": "recwjVQBr8ZnvZgap",
+      "name": "Parampuja Sri Bhagvan Narayan Pokrhe",
+      "baselineDestination": "80",
+      "state": "No replacement destination invented; separate peripheral/receiving review"
+    },
+    {
+      "sourceId": "recZnqb1WnXsGOQSU",
+      "name": "Sri Poornawad Vardishnu Adv Sri Vishnu Maharaj Parnerkar",
+      "baselineDestination": "80",
+      "state": "No replacement destination invented; separate peripheral/receiving review"
+    }
+  ],
+  "rules": [
+    "Seven approved core source observations only; other occupants and city choices remain separate.",
+    "No whole-case clearing, staging or empty-case claim.",
+    "Use fresh source and confirmed locations separately; no automatic completion.",
+    "Qualified spiritual/historical associations do not create canonical guru relationships."
+  ],
+  "sources": {
+    "RamdasVenabai": "https://www.ramdasswami.org/samarth/life-history/?lang=en",
+    "ShridharSamarthInstitution": "https://ramdasswami.com/about-shri-samarth-ramdas-swami",
+    "ShridharPublicBiography": "https://shridharamrut.com/",
+    "ShivajiQualifiedAssociation": "https://gazetteers.maharashtra.gov.in/cultural.maharashtra.gov.in/english/gazetteer/SATARA/his_muslim_rule.html",
+    "GondavalekarOwnTradition": "https://shrigondavalekarmaharaj.org/maharaj/home.html",
+    "NeemKaroliRamHanuman": "https://nkbashram.org/",
+    "MuktanandSourceContext": "https://sites.google.com/site/mukatanandgirimaharaj/about-us"
+  },
+  "assignmentDigest": "7c9dbbdf99353c6662745e5c446c49881ac97539721322152b48846e4715902d",
+  "contentDigest": "7523006abcec85d26c6d2238d7e110b880c86ae78ca5fbf6f9dbadcda4c1c905"
+}

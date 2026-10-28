@@ -1,3 +1,4 @@
+import { ramBhaktiGuideContext, ramBhaktiGuideDefinition } from "./spn-ram-bhakti-guide";
 import { dattaGuideContext, dattaGuideDefinition } from "./spn-datta-guide";
 import { createHash } from "node:crypto";
 import guide from "../data/museum/spn-starter-move-guide-v3.json";
@@ -51,6 +52,7 @@ const cityAlternatives = guide.cityAlternatives.map(cohort => {
 if (new Set(suggestions.map(row => row.id)).size !== suggestions.length) throw new Error("Duplicate registered suggestion identifiers.");
 export const registeredStarterGuide = { ...guide, cityAlternatives, guideContext: starterGuideContext };
 export function readStarterGuideDefinition(version: string): GuideDefinition {
+  if (version === ramBhaktiGuideContext.guideVersion) return ramBhaktiGuideDefinition;
   if (version === dattaGuideContext.guideVersion) return dattaGuideDefinition;
   if (version === v2Context.guideVersion) return { ...readV2(version), readOnly: true };
   if (version !== starterGuideContext.guideVersion) throw new MuseumMoveSessionError(409, "This guide version is not registered. Reload the guide before changing a suggestion.");

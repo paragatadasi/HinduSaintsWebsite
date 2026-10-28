@@ -1,0 +1,15 @@
+# Ram bhakti core move-guide phase
+
+Paragata Dasi approved the seven-source core as the next SPN move-guide phase on 28 October 2026, then explicitly confirmed the proposed tier updates. Shivaji, Shridhar Swami and Gondavalekar were saved as Primary through the protected proposal form and read back successfully. Their sections, display families and planned/physical locations were preserved. No canonical historical relationship was added.
+
+The immutable packet `data/museum/spn-ram-bhakti-core-guide-v1.json` contains seven exact observations targeting 80, partitioned into five groups: Ramdas–Venabai, Shivaji’s historical association, the later Shridhar–Godsay branch, Neem Karoli’s Ram/Hanuman connection, and Gondavalekar’s independent Ramnam tradition. Ramdas, Shivaji, Shridhar, Neem Karoli and Gondavalekar are captured as Primary; Venabai and Godsay remain Secondary. Fresh current tiers still take precedence in presentation.
+
+`lib/spn-ram-bhakti-guide.ts` exports `ramBhaktiMoveGuide`, `ramBhaktiGuideContext` and `projectRamBhaktiGuide(current.placements, physical)`. Citra owns phase selector and companion composition. Use phase key `ram-bhakti`, `key={guide.version}`, `allowClear={false}` and `phaseLabel="Ram bhakti · 80"`. Reuse the fresh physical reader and pass the same ledger object to the projection and companion. The existing starter and Datta registrations remain intact.
+
+The physical context restricts records to the seven exact sources and destination 80. Whole-vitrine clearing, staging and alternative targets are rejected. The ten other baseline 80 observations remain outside this phase, with no invented receiving locations or vacancy claims. The known core subtotal is 1.858333 source-shelf comparison units, not measured dimensional capacity.
+
+Godsay retains source life-status uncertainty: the source says still alive but describes bones among relics. Keep the uncertainty visible and avoid a top placement until checked. Neem Karoli’s Northern section remains unchanged. His planning geography and Shridhar’s Karnataka connection are distinguished from preserved conflicting imported geography in `sourceCity`; no website locality write is included.
+
+Ramdas–Shridhar is later spiritual affiliation, not ordinary lifetime discipleship. Shivaji’s relationship to Ramdas is historically disputed and is not drawn as a direct guru edge. Gondavalekar’s own teacher is Tukamai/Tukaram Chaitanya; no Ramanandi or Ramdas initiation is invented. URLs supporting these distinctions are stored in the protected packet.
+
+Verification includes exact roster partition and tier counts, registry isolation, invalid clearing/staging/source rejection, qualified edges, fresh location projection and existing movement holds. No migration or environment change is required. Release this contract with Citra’s corresponding phase selector; the contract alone does not expose the new phase. Existing museum interpretation and identity skills cover this workflow; no further reusable rule changed.
