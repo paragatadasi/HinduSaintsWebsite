@@ -11,7 +11,7 @@ const previousState = z.object({ basis: z.enum(["confirmed","source","unknown"])
 const move = z.object({ sourceId:z.string(),sourceKey:z.string().nullable(),saintId:z.string().nullable(),
   original:moveLocation.nullable(),previous:moveLocation.nullable(),location:moveLocation,version:z.number().int().positive(),
   previousState:previousState.optional() });
-const receipt = z.object({ museumId:z.literal("museum-spn"),recordedAt:z.string().datetime(),moves:z.array(move),
+export const physicalConfirmationReceipt = z.object({ museumId:z.literal("museum-spn"),recordedAt:z.string().datetime(),moves:z.array(move),
   clearedVitrines:z.array(z.string()).optional() });
 export type UndoRow = {sourceId:string;sourceKey:string|null;saintId:string|null;original:MoveLocation|null;current:MoveLocation|null;
   currentBasis:string;currentVersion:number;currentConfirmed?:{confirmedAt:string}|null;identityChanged:boolean;
@@ -23,7 +23,7 @@ export function physicalUndoOffer(row:UndoRow, events:{id:string;afterJson:unkno
   if(row.identityChanged || row.verifiedItemIds.length) return unavailable("This source changed or has verified items. Review its inventory history.");
   if(row.currentBasis!=="confirmed") return unavailable("There is no current placement check to undo.");
   for(const event of events) {
-    const parsed=receipt.safeParse(event.afterJson);if(!parsed.success)continue;
+    const parsed=physicalConfirmationReceipt.safeParse(event.afterJson);if(!parsed.success)continue;
     const data=parsed.data; const matches=data.moves.filter(m=>m.sourceId===row.sourceId);
     if(matches.length!==1)continue; const m=matches[0];
     if(m.version!==row.currentVersion || data.recordedAt!==row.currentConfirmed?.confirmedAt || !sameMoveLocation(m.location,row.current))continue;
