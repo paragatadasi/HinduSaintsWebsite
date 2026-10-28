@@ -1882,3 +1882,32 @@ model MuseumGuideSuggestionDecision {
   updatedAt DateTime @updatedAt
   @@id([museumId, guideVersion, suggestionId])
 }
+
+model MuseumCompanionShelf {
+  museumId String
+  sourceId String
+  saintId String?
+  vitrine String
+  shelf String
+  physicalVersion Int
+  version Int @default(1)
+  updatedAt DateTime @updatedAt
+  updatedById String
+  @@id([museumId, sourceId])
+}
+
+model MuseumCompanionTask {
+  id String @id @default(cuid())
+  museumId String
+  sourceId String
+  saintId String?
+  title String
+  status String @default("open")
+  version Int @default(1)
+  createdAt DateTime @default(now())
+  createdById String
+  updatedAt DateTime @updatedAt
+  completedAt DateTime?
+  updatedById String
+  @@index([museumId, sourceId, status])
+}
