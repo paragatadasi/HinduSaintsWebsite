@@ -53,7 +53,11 @@ export const dattaMoveGuide: StarterMoveGuide = {
 
 // Current physical state comes from the ledger reader, never the captured packet's currentLocation.
 export function projectDattaGuide(current: Parameters<typeof projectStarterDisplayTiers>[1], physical: PhysicalState) {
-  const guide = projectStarterDisplayTiers(dattaMoveGuide, current);
+  return projectScopedMoveGuide(dattaMoveGuide, current, physical);
+}
+
+export function projectScopedMoveGuide(captured: StarterMoveGuide, current: Parameters<typeof projectStarterDisplayTiers>[1], physical: PhysicalState) {
+  const guide = projectStarterDisplayTiers(captured, current);
   const grouped = new Map<string, CompanionRow[]>();
   for (const row of physical.rows) grouped.set(row.sourceId, [...(grouped.get(row.sourceId) ?? []), row]);
   return { ...guide, entries: guide.entries.map(entry => {
