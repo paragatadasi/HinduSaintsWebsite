@@ -87,3 +87,25 @@
 .spn-room-explorer{min-width:0;width:100%}
 .spn-room-explorer .proposal-head>div,.spn-room-explorer .proposal-actions,.spn-room-explorer select{min-width:0;max-width:100%}
 .spn-room-explorer .spn-pilgrimage-frame{width:100%;height:var(--height-editorial-revision-preview);border:1px solid var(--color-border);}
+
+/* Linked room, geographic context, and vitrine detail share one responsive workspace. */
+.spn-room-explorer{--explorer-linked-height:42rem;--explorer-linked-column:18rem;--explorer-linked-map-height:28rem}
+.spn-room-explorer .workspace.linked-workspace{grid-template-columns:minmax(0,.9fr) minmax(0,1fr) minmax(var(--explorer-linked-column),1.15fr)}
+.spn-room-explorer .linked-workspace .floorplan{min-width:0;max-width:100%;max-height:var(--explorer-linked-height);width:100%;height:auto}
+.spn-room-explorer .linked-workspace .map-controls{flex-wrap:wrap}
+.spn-room-explorer .linked-workspace .lenses{flex-wrap:wrap}
+.spn-room-explorer .locality-map{display:block;width:100%;height:var(--explorer-linked-map-height);background:var(--color-bg);margin-block:var(--space-3);border:1px solid var(--color-card-border);border-radius:var(--radius-sm)}
+.spn-room-explorer .locality-land{fill:var(--color-surface);stroke:var(--color-card-border);stroke-width:.08}
+.spn-room-explorer .locality-context{fill:var(--color-muted);opacity:.35}
+.spn-room-explorer .locality-point{fill:var(--color-gold);cursor:pointer}
+.spn-room-explorer .locality-point[aria-pressed=true],.spn-room-explorer .locality-point:focus{fill:var(--color-text);outline:none;stroke:var(--color-gold);stroke-width:.15}
+.spn-room-explorer .locality-point .locality-hit{fill:transparent;stroke:none}
+.spn-room-explorer .locality-controls,.spn-room-explorer .locality-chips,.spn-room-explorer .locality-filter{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-3);align-items:center}
+.spn-room-explorer .locality-controls button,.spn-room-explorer .locality-chips button{padding-inline:var(--space-2);font-size:var(--explorer-small)}
+.spn-room-explorer .locality-controls button[aria-pressed=true],.spn-room-explorer .locality-chips button[aria-pressed=true]{border-color:var(--color-gold);background:var(--color-surface)}
+.spn-room-explorer .locality-controls button:disabled{opacity:.5;cursor:default}
+.spn-room-explorer .vitrine-totals{margin-block:var(--space-3);color:var(--color-text);font-variant-numeric:tabular-nums}
+@media(max-width:1100px){.spn-room-explorer .workspace.linked-workspace{grid-template-columns:repeat(2,minmax(0,1fr))}.spn-room-explorer .linked-workspace>.inspector{grid-column:1/-1}}
+@media(max-width:650px){.spn-room-explorer .workspace.linked-workspace{grid-template-columns:minmax(0,1fr)}.spn-room-explorer .locality-map{height:var(--explorer-linked-column)}}
+
+.spn-room-explorer .locality-map{touch-action:pan-y;cursor:grab}.spn-room-explorer .locality-map:active{cursor:grabbing}

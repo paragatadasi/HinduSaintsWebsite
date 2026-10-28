@@ -677,3 +677,20 @@ Clearing is a preparation card, not another tab. Its persisted result must remai
 Family-tree guide entries align relationship captions with the name card, keeping the placement checkbox in a separate column. Per-entry defer/decline and restore controls use the checklist decision state and quiet secondary actions below the card; confirmed placements retain undo rather than suggestion actions.
 
 Approved proposal refinements are a new reviewer option, preserving earlier studies. Map anchors, rosters, family diagrams, place groups and space estimates use the same effective source assignments after current curator choices are reconciled. Unsettled receivers and privately held observations remain in a separate visible review list, outside core counts. Reviewer trees omit physical-location controls; companion trees retain them.
+
+
+### Linked proposal maps
+
+The SPN proposal explorer uses three coordinated panels in reading order: room
+layout, geographic context, selected vitrine. On medium screens the vitrine spans
+both map columns; on phones all three stack. Room schematics may shrink in either
+orientation; never impose a horizontal minimum width that spills the panel.
+Use the shared explorer tokens and `SpnLinkedLocalityMap` for this treatment.
+
+Geographic points link to inventory source IDs, not frozen destination numbers.
+Highlight them from the selected proposal's effective assignments, preserving
+newer curator destinations. Selecting a place filters the vitrine's portrait rows;
+its total count and space estimate still describe the whole vitrine. Reset the
+filter across vitrines/proposals, expose missing coordinates, and never imply
+that geographical proximity establishes a lineage. Keep space-estimate caveats
+in a disclosure and show unknown sizes alongside the summary estimate.
