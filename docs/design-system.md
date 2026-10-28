@@ -638,3 +638,28 @@ require the durable session contract before they are enabled.
 The SPN companion uses one generic **Staging area**. Do not ask the curator to
 name tables or distribute displays among tables. Retain per-display location history
 and explicit physical confirmation behind the minimal clear/refill actions.
+
+### Parchment move companion
+
+The SPN move companion uses the approved `move-room.html` prototype presentation,
+scoped with `data-museum-companion-theme="parchment"`. Its palette and type scale
+live in `styles/tokens.css`; `.museum-companion` shared classes own the canvas,
+white panels, gold top rule, serif hierarchy, green primary actions and staging
+sidebar. This explicit theme stays parchment inside either admin shell theme.
+
+Keep the room and working content in the wider column, with staging and selected
+vitrine context in the narrower column. Stack columns on small screens and let
+the map scroll rather than crushing its labels. Preserve the live three-phase
+workflow, saved-location evidence, review holds and defer/decline controls when
+adapting the prototype. Never copy prototype sample data or local-only save logic.
+
+For the reviewed starter row, use the `guided` companion mode: keep the room map,
+then show one placement guide per vitrine, with family connections visible above
+the checklist and city groups afterward. `room` mode retains the separate city
+exploration workflow for less settled proposals. Do not infer guru relationships
+from a locality grouping; the tree renders only the guide's supplied edges and
+keeps their relationship labels, including uncertainty and non-guru connections.
+
+### Compact move guide
+
+The guided companion uses the shared parchment tokens, an initially expanded room map beside the guide on wide screens, and a stacked layout on narrow screens. Present families, then city groups, then one complete tiered checklist. Group checkboxes and checklist checkboxes read the same physical state and invoke the same confirmed-placement action. Keep tiers as small tags within groups; preserve relationship hierarchy when sorting tree siblings. Tree names open the shared museum dialog. Deferred/declined suggestions use compact text-labelled status chips with a Restore action; they do not change physical location.

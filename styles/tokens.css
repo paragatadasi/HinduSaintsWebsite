@@ -523,3 +523,46 @@
   --color-text-inverse: #050914;
   --color-accent: var(--color-gold);
 }
+
+/* Approved room-companion prototype: scoped parchment, independent of admin theme. */
+[data-museum-companion-theme="parchment"] {
+  color-scheme: light;
+  --color-bg: #fbfaf6;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-surface-muted: #f3efe6;
+  --color-section-surface: #f7f2e9;
+  --color-text: #211f1a;
+  --color-text-inverse: #ffffff;
+  --color-muted: #6f685f;
+  --color-border: #ddd5c6;
+  --color-copper: #9a6731;
+  --color-gold: #c28b2c;
+  --color-green: #366153;
+  --color-accent: var(--color-green);
+  --color-accent-strong: var(--color-green);
+  --color-cream: var(--color-text);
+  --color-focus: var(--color-copper);
+  --color-museum-new-space: var(--color-section-surface);
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --width-companion: 75rem;
+  --width-companion-aside: 16.25rem;
+  --font-size-companion-title: clamp(2rem, 4vw, 3rem);
+  --font-size-companion-heading: 1.8rem;
+  --font-size-companion-subheading: 1.25rem;
+  --font-size-companion-body: 1rem;
+  --font-size-companion-small: .8rem;
+  --font-size-companion-eyebrow: .75rem;
+  --line-height-companion: 1.55;
+  --line-height-companion-title: 1.15;
+  --line-height-companion-heading: 1.3;
+  --tracking-companion-eyebrow: .1em;
+  --height-companion-control: 2.75rem;
+  --width-museum-schematic-min: 35rem;
+  --height-museum-schematic-unit: .75rem;
+}
+
+.museum-companion--guide {--width-companion:65rem;--font-size-companion-title:1.8rem;--font-size-companion-heading:1.45rem;--font-size-companion-subheading:1.05rem}
+
+.museum-companion--guide {--width-companion:90rem;--width-companion-map:35rem}
