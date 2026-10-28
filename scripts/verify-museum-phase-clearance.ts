@@ -6,7 +6,7 @@ async function main(){
  const url=new URL(process.env.DATABASE_URL??"");assert.equal(url.hostname,"127.0.0.1");assert.equal(url.port,"55438");assert.equal(url.pathname,"/museum_test");
  const root=resolve(process.env.MUSEUM_PHASE_TEST_WORKTREE??process.cwd());
  const {db}=await import(pathToFileURL(join(root,"lib/db.ts")).href);
- const {confirmMuseumPhysicalLocations,readPhysicalLocationView,readMuseumPhaseClearances,saveMuseumPreparation}=await import(pathToFileURL(join(root,"lib/museum-physical-locations.ts")).href);
+ const {confirmMuseumPhysicalLocations,readPhysicalLocationView,readMuseumPhaseClearances,saveMuseumPreparation,physicalConfirmationInput}=await import(pathToFileURL(join(root,"lib/museum-physical-locations.ts")).href);
  const {starterGuideContext:historicalContext}=await import(pathToFileURL(join(root,"lib/spn-starter-guide-v4.ts")).href);
  const {physicalFingerprint}=await import(pathToFileURL(join(root,"lib/museum-physical-location-current.ts")).href);
  const {gosaijiSaiGuideContext:guideContext,gosaijiSaiMoveGuide:guide}=await import(pathToFileURL(join(root,"lib/spn-gosaiji-sai-guide.ts")).href);
@@ -31,7 +31,7 @@ async function main(){
  let state=await read();
  const historicalInput={...common,guideContext:historicalContext,clientRequestId:randomUUID(),records:[record(state.rows.find((r:any)=>r.sourceId===incoming[0].sourceId),incoming[0].destination)]};
  await assert.rejects(confirmMuseumPhysicalLocations(historicalInput,{id:"actor",canManage:true},loader),/guide is historical/);
- await db.auditEvent.create({data:{action:"museum.physical_location.confirmed",entityType:"MuseumPhysicalConfirmation",entityId:`museum-spn:${historicalInput.clientRequestId}`,afterJson:{fingerprint:physicalFingerprint(historicalInput)}}});
+ await db.auditEvent.create({data:{action:"museum.physical_location.confirmed",entityType:"MuseumPhysicalConfirmation",entityId:`museum-spn:${historicalInput.clientRequestId}`,afterJson:{fingerprint:physicalFingerprint(physicalConfirmationInput.parse(historicalInput))}}});
  assert.equal((await confirmMuseumPhysicalLocations(historicalInput,{id:"actor",canManage:true},loader)).replayed,true);
 
  for(const incomingRow of incoming.slice(0,2))await assert.rejects(confirmMuseumPhysicalLocations({...common,clientRequestId:randomUUID(),records:[record(state.rows.find((r:any)=>r.sourceId===incomingRow.sourceId),incomingRow.destination)]},{id:"actor",canManage:true},loader),/initial vitrine clearing/);
@@ -57,7 +57,7 @@ async function main(){
  assert.equal(placed.rows[0].current.code,"37");
  await assert.rejects(confirmMuseumPhysicalLocations({...clear,clientRequestId:randomUUID()},{id:"actor",canManage:true},loader),/already recorded its initial clearing/);
  assert.equal((await read()).rows.filter((r:any)=>r.current?.code==="staging-area").length,22);
- console.log("PASS: prepared75 succeeds before37 without implicit clearing, both-case preclear gate, incomplete22 rollback, extra-source reject, confirmed returnee clear, UUID retry, postclear placement and repeatclear rejection");
+ console.log("PASS: historical write rejected/prior receipt replay preserved, prepared75 succeeds before37 without implicit clearing, both-case preclear gate, incomplete22 rollback, extra-source reject, confirmed returnee clear, UUID retry, postclear placement and repeatclear rejection");
  }finally{await db.$disconnect();}
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});
