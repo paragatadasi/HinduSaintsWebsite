@@ -1,3 +1,4 @@
+import treeOverlay from "@/data/museum/spn-vitrine-two-tree-v1.json";
 import proposal from "@/data/museum/spn-starter-reviewed-proposal-v16.json";
 import { registeredStarterGuide as packet } from "./spn-starter-guide-registry";
 import { spnMovementBlockedReason } from "./spn-movement-holds";
@@ -32,7 +33,7 @@ export const starterMoveGuide: StarterMoveGuide = {
    section: row.section, family: row.family ?? "", rationale: row.placementReason.text,
    reviewNotes: row.reviewNotes, movementBlockedReason: row.movementBlockedReason || spnMovementBlockedReason(row.sourceId) }))],
  vitrines: packet.vitrines.map(v => ({ code: v.code, summary: v.summary,
-  families: v.families.map(g => ({ ...g, suggestedVitrines: [v.code] })),
+  families: v.families.map(g => ({ ...g, suggestedVitrines: [v.code], ...(v.code === treeOverlay.vitrine ? {edges: treeOverlay.familyTrees.flatMap(tree => tree.edges.flatMap(edge => edge.fromSourceIds.flatMap(fromSourceId => edge.toSourceIds.filter(toSourceId => g.sourceIds.includes(fromSourceId) && g.sourceIds.includes(toSourceId)).map(toSourceId => ({fromSourceId, toSourceId, label: edge.relationship})))))} : {}) })),
   cityGroups: v.cityGroups.map(g => ({ ...g, title: g.city, suggestedVitrines: [v.code] })) })),
  alternatives: packet.cityAlternatives.map((g): GuideGroup => ({ id: g.id, suggestionIdsByTarget: g.suggestionIdsByTarget,
   title: g.city, sourceIds: g.sourceIds, rationale: g.rationale, suggestedVitrines: [g.currentlySuggestedVitrine],
