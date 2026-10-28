@@ -1,6 +1,6 @@
 # Release Handoff: codex/spn-concept-labels
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/spn-concept-labels`
 - Commit: `999b680a8b6714bd40ef8f2a305e1bb6de7fb308`
 - Owner/agent: `Nadi`
@@ -30,7 +30,7 @@
 
 ## Release Captain Notes
 
-- Integrated into `main`: pending
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: pending
+- Integrated into `main`: `a5ea60b`
+- Pushed to `main`: yes
+- Merged to `deploy`: `dca79d0`
+- Production workflow: `40652990720` (in progress)
