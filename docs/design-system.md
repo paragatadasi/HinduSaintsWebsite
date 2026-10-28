@@ -692,5 +692,7 @@ Highlight them from the selected proposal's effective assignments, preserving
 newer curator destinations. Selecting a place filters the vitrine's portrait rows;
 its total count and space estimate still describe the whole vitrine. Reset the
 filter across vitrines/proposals, expose missing coordinates, and never imply
-that geographical proximity establishes a lineage. Keep space-estimate caveats
-in a disclosure and show unknown sizes alongside the summary estimate.
+that geographical proximity establishes a lineage. Keep the vitrine column about half the width of either map and match all three
+panel heading sizes. Show saint count and shelf usage under a quiet uppercase
+summary label, with unknown sizes alongside it; omit duplicate display-focus and
+flexible-space callouts.

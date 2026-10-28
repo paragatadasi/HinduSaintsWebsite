@@ -90,7 +90,7 @@
 
 /* Linked room, geographic context, and vitrine detail share one responsive workspace. */
 .spn-room-explorer{--explorer-linked-height:42rem;--explorer-linked-column:18rem;--explorer-linked-map-height:28rem}
-.spn-room-explorer .workspace.linked-workspace{grid-template-columns:minmax(0,.9fr) minmax(0,1fr) minmax(var(--explorer-linked-column),1.15fr)}
+.spn-room-explorer .workspace.linked-workspace{grid-template-columns:minmax(0,1.25fr) minmax(0,1.25fr) minmax(0,.65fr)}
 .spn-room-explorer .linked-workspace .floorplan{min-width:0;max-width:100%;max-height:var(--explorer-linked-height);width:100%;height:auto}
 .spn-room-explorer .linked-workspace .map-controls{flex-wrap:wrap}
 .spn-room-explorer .linked-workspace .lenses{flex-wrap:wrap}
@@ -109,3 +109,6 @@
 @media(max-width:650px){.spn-room-explorer .workspace.linked-workspace{grid-template-columns:minmax(0,1fr)}.spn-room-explorer .locality-map{height:var(--explorer-linked-column)}}
 
 .spn-room-explorer .locality-map{touch-action:pan-y;cursor:grab}.spn-room-explorer .locality-map:active{cursor:grabbing}
+
+.spn-room-explorer .linked-workspace h2{font-size:var(--explorer-heading);line-height:1.2}
+.spn-room-explorer .linked-workspace .inspector{overflow-wrap:anywhere}
