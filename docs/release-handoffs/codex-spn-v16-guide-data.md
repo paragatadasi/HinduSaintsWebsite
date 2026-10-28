@@ -1,6 +1,6 @@
 # Release Handoff: codex/spn-v16-guide-data
 
-- Status: ready
+- Status: deployed
 - Branch: `codex/spn-v16-guide-data`
 - Commit: `7ee5e6ae5f14123caca086771d5ef593224b216c`
 - Owner/agent: `Nadi`
@@ -20,7 +20,7 @@
 - Migrations: none
 - Environment variables: none
 - Data/backfill/release steps: No database writes or backfill. Deploy proposal and guide together. Existing 23 placement receipts remain unchanged.
-- Queue/deploy trigger: ready now
+- Queue/deploy trigger: deployed
 - Activation approval: Paragata Dasi answered "Yes, activate v16" in Citra's chat on 28 October 2026, explicitly covering planner, guide and rebuilt explorer while preserving edits and actuals.
 - Expected proposal: `spn-highlighted-anchor-city-refinement-2026-10-27-v16`; expected guide: `spn-starter-move-guide-handoff-2026-10-28-v3`.
 - Smoke checks: 135 starter sources, four outgoing transition sources, existing 23 placement receipts still recognized, and no executable reference-only alternatives. Newer curator destinations must remain visible.
@@ -34,7 +34,7 @@
 
 ## Release Captain Notes
 
-- Integrated into `main`: pending
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: pending
+- Integrated into `main`: `d933a17`
+- Pushed to `main`: yes
+- Merged to `deploy`: `6d1017c`
+- Production workflow: [40649044273](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40649044273) — success

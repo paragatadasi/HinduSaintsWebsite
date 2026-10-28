@@ -1,6 +1,6 @@
 # Release Handoff: codex/spn-v16-companion
 
-- Status: `ready`
+- Status: `deployed`
 - Branch: `codex/spn-v16-companion`
 - Commit: `4fc3f30db66bb37ca89c9b5b92f04db837128e3f`
 - Owner/agent: `Citra`
@@ -34,7 +34,7 @@
 
 ## Release Captain Notes
 
-- Integrated into `main`: pending
-- Pushed to `main`: no
-- Merged to `deploy`: pending
-- Production workflow: not started
+- Integrated into `main`: `d933a17`
+- Pushed to `main`: yes
+- Merged to `deploy`: `6d1017c`
+- Production workflow: [40649044273](https://github.com/paragatadasi/HinduSaintsWebsite/actions/runs/40649044273) — success
