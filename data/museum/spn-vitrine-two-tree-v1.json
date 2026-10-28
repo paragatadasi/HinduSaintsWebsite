@@ -1,0 +1,258 @@
+{
+  "version": "spn-vitrine-2-reviewed-tree-overlay-2026-10-28-v1",
+  "vitrine": "2",
+  "overlayType": "presentation-only",
+  "baseGuideVersion": "spn-starter-move-guide-handoff-2026-10-28-v3",
+  "baseContentDigest": "9540ed985f2718327c52c3ee1e05b14d645e14326eaf393ed17bc02c257d81b9",
+  "title": "Chaitanya’s circle and the Vraj continuation",
+  "sourceIds": [
+    "rec7064CikptruWW3",
+    "rec9Qdld6jmoy5cuC",
+    "rec9iOaPtSzM2pvmx",
+    "recBvAIzHPy3xmzNr",
+    "recCtoBgaO6q9LlU9",
+    "recHtWkpayatvf2d1",
+    "recK4u1sUzyWGtVTu",
+    "recd2UE4TEFj2dmoP",
+    "recgLvBMiGOevOuZM",
+    "recmarxKCZnFGzlo0",
+    "recwXgwhRieoQeKxm",
+    "recwlct6RplW4XEhj",
+    "reczcdKSdHDeOlHdt"
+  ],
+  "familyTrees": [
+    {
+      "vitrine": "2",
+      "title": "Chaitanya’s circle and the Vraj continuation",
+      "edges": [
+        {
+          "fromSourceIds": [
+            "recgLvBMiGOevOuZM"
+          ],
+          "toSourceIds": [
+            "recwXgwhRieoQeKxm"
+          ],
+          "relationship": "wife",
+          "relationshipKind": "spouse",
+          "evidenceStatus": "reviewed for presentation",
+          "source": "https://vedabase.io/en/library/cc/adi/16/",
+          "note": "",
+          "crossCaseContext": false,
+          "endpointDestinations": {
+            "recgLvBMiGOevOuZM": "2",
+            "recwXgwhRieoQeKxm": "2"
+          }
+        },
+        {
+          "fromSourceIds": [
+            "recgLvBMiGOevOuZM"
+          ],
+          "toSourceIds": [
+            "recK4u1sUzyWGtVTu"
+          ],
+          "relationship": "sankirtan companion",
+          "relationshipKind": "associate",
+          "evidenceStatus": "reviewed for presentation",
+          "source": "https://www.purebhakti.com/resources/ebooks-magazines/bhakti-books/english/620-namacarya-srila-haridasa-thakura/file",
+          "note": "",
+          "crossCaseContext": false,
+          "endpointDestinations": {
+            "recgLvBMiGOevOuZM": "2",
+            "recK4u1sUzyWGtVTu": "2"
+          }
+        },
+        {
+          "fromSourceIds": [
+            "recgLvBMiGOevOuZM"
+          ],
+          "toSourceIds": [
+            "recd2UE4TEFj2dmoP"
+          ],
+          "relationship": "close associate · Namacharya",
+          "relationshipKind": "associate",
+          "evidenceStatus": "reviewed for presentation",
+          "source": "https://vedabase.io/en/library/cc/antya/11/",
+          "note": "",
+          "crossCaseContext": false,
+          "endpointDestinations": {
+            "recgLvBMiGOevOuZM": "2",
+            "recd2UE4TEFj2dmoP": "2"
+          }
+        },
+        {
+          "fromSourceIds": [
+            "recgLvBMiGOevOuZM"
+          ],
+          "toSourceIds": [
+            "recHtWkpayatvf2d1"
+          ],
+          "relationship": "intimate companion",
+          "relationshipKind": "associate",
+          "evidenceStatus": "reviewed for presentation",
+          "source": "https://vedabase.io/en/library/cc/antya/12/",
+          "note": "",
+          "crossCaseContext": false,
+          "endpointDestinations": {
+            "recgLvBMiGOevOuZM": "2",
+            "recHtWkpayatvf2d1": "2"
+          }
+        },
+        {
+          "fromSourceIds": [
+            "recgLvBMiGOevOuZM"
+          ],
+          "toSourceIds": [
+            "recCtoBgaO6q9LlU9"
+          ],
+          "relationship": "devotee · received his teachings in Puri",
+          "relationshipKind": "teaching",
+          "evidenceStatus": "reviewed for presentation",
+          "source": "https://vedabase.io/en/library/cc/madhya/6/",
+          "note": "",
+          "crossCaseContext": false,
+          "endpointDestinations": {
+            "recgLvBMiGOevOuZM": "2",
+            "recCtoBgaO6q9LlU9": "2"
+          }
+        },
+        {
+          "fromSourceIds": [
+            "recgLvBMiGOevOuZM"
+          ],
+          "toSourceIds": [
+            "rec9iOaPtSzM2pvmx"
+          ],
+          "relationship": "Navadwip dialogue and reconciliation",
+          "relationshipKind": "encounter",
+          "evidenceStatus": "reviewed for presentation",
+          "source": "https://vedabase.io/en/library/cc/adi/17/",
+          "note": "",
+          "crossCaseContext": false,
+          "endpointDestinations": {
+            "recgLvBMiGOevOuZM": "2",
+            "rec9iOaPtSzM2pvmx": "2"
+          }
+        },
+        {
+          "fromSourceIds": [
+            "recgLvBMiGOevOuZM"
+          ],
+          "toSourceIds": [
+            "recBvAIzHPy3xmzNr"
+          ],
+          "relationship": "Gaudiya tradition carried into Vraj",
+          "relationshipKind": "tradition-context",
+          "evidenceStatus": "reviewed for presentation",
+          "source": "https://www.iskconbangalore.org/blog/sri-gopala-bhatta-goswami/",
+          "note": "Collective Goswamis relic entry, not an additional individual or a direct initiation claim for every member.",
+          "crossCaseContext": false,
+          "endpointDestinations": {
+            "recgLvBMiGOevOuZM": "2",
+            "recBvAIzHPy3xmzNr": "2"
+          }
+        },
+        {
+          "fromSourceIds": [
+            "recBvAIzHPy3xmzNr"
+          ],
+          "toSourceIds": [
+            "rec7064CikptruWW3"
+          ],
+          "relationship": "one of the Six Goswamis",
+          "relationshipKind": "group-membership",
+          "evidenceStatus": "reviewed for presentation",
+          "source": "https://www.iskconbangalore.org/blog/sri-gopala-bhatta-goswami/",
+          "note": "",
+          "crossCaseContext": false,
+          "endpointDestinations": {
+            "recBvAIzHPy3xmzNr": "2",
+            "rec7064CikptruWW3": "2"
+          }
+        },
+        {
+          "fromSourceIds": [
+            "recBvAIzHPy3xmzNr"
+          ],
+          "toSourceIds": [
+            "reczcdKSdHDeOlHdt"
+          ],
+          "relationship": "one of the Six Goswamis",
+          "relationshipKind": "group-membership",
+          "evidenceStatus": "reviewed for presentation",
+          "source": "https://www.iskconpunjabibagh.com/event/appearance-day-of-srila-jiva-goswami-23rd-sept-2026/",
+          "note": "",
+          "crossCaseContext": false,
+          "endpointDestinations": {
+            "recBvAIzHPy3xmzNr": "2",
+            "reczcdKSdHDeOlHdt": "2"
+          }
+        },
+        {
+          "fromSourceIds": [
+            "rec7064CikptruWW3"
+          ],
+          "toSourceIds": [
+            "recwlct6RplW4XEhj"
+          ],
+          "relationship": "Radha Raman · founding seva",
+          "relationshipKind": "deity-seva",
+          "evidenceStatus": "reviewed for presentation",
+          "source": "https://www.iskconbangalore.org/blog/sri-gopala-bhatta-goswami/",
+          "note": "",
+          "crossCaseContext": false,
+          "endpointDestinations": {
+            "rec7064CikptruWW3": "2",
+            "recwlct6RplW4XEhj": "2"
+          }
+        },
+        {
+          "fromSourceIds": [
+            "recgLvBMiGOevOuZM"
+          ],
+          "toSourceIds": [
+            "rec9Qdld6jmoy5cuC"
+          ],
+          "relationship": "Gaudiya / Vraj tradition · Gadadhara’s disciple",
+          "relationshipKind": "tradition-context",
+          "evidenceStatus": "reviewed for presentation",
+          "source": "https://portal.iskcon.hr/index.php?id=2334&p=keywords",
+          "note": "Gadadhara is contextual teacher information, not an additional assigned holding. Do not label Madhu a directly initiated disciple of Chaitanya.",
+          "crossCaseContext": false,
+          "endpointDestinations": {
+            "recgLvBMiGOevOuZM": "2",
+            "rec9Qdld6jmoy5cuC": "2"
+          }
+        }
+      ],
+      "notes": [
+        "Use distinct labels for spouse, companionship, teaching, encounter, tradition and deity seva. These are not all guru–disciple relationships.",
+        "Mirabai remains a separate gateway anchor; no personal Chaitanya/Mirabai edge is asserted.",
+        "The Goswamis collective relic entry and individual relic entries remain separate inventory observations."
+      ]
+    }
+  ],
+  "standaloneNodes": [
+    {
+      "sourceId": "recmarxKCZnFGzlo0",
+      "label": "Mirabai · separate Krishna-bhakti gateway anchor"
+    }
+  ],
+  "placementSuggestions": [
+    "Keep Vishnupriya with Chaitanya’s household context; place Nityananda, Haridas and Jagadananda nearby.",
+    "Keep Gopala Bhatta beside Radha Raman. Show Jiva within the Goswami/Vraj continuation.",
+    "Label Madhu Pandit’s Gadadhara affiliation; keep the temple-service context distinct from the Six Goswamis membership."
+  ],
+  "preserve": [
+    "all source IDs and inventory counts",
+    "all assignments and tiers",
+    "all prior physical confirmations",
+    "immutable starter and Datta v2 packets"
+  ],
+  "authorizedEffects": [
+    "add a separately reviewed Vitrine 2 presentation tree overlay",
+    "deploy move-guide rendering"
+  ],
+  "canonicalRelationshipWrites": false,
+  "scopePlacementChanges": false,
+  "overlayDigest": "27a75cf4c978cc575cf63f9f7de90dc1bfe4dffcbec5cbc426a0434b4dbef3b0"
+}
