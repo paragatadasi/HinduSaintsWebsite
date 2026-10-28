@@ -1,9 +1,17 @@
+import treeBase from "@/data/museum/spn-starter-move-guide-v3.json";
 import treeOverlay from "@/data/museum/spn-vitrine-two-tree-v1.json";
 import { starterAmendedProposal as proposal } from "./spn-starter-amended-proposal";
 import { registeredStarterGuide as packet } from "./spn-starter-guide-registry";
 import { spnMovementBlockedReason } from "./spn-movement-holds";
 import { currentSpnConceptLabel } from "./spn-proposal-labels";
 import type { StarterMoveGuide, GuideGroup } from "./spn-move-guide";
+
+const overlayBaseVitrine = treeBase.vitrines.find(vitrine => vitrine.code === treeOverlay.vitrine);
+const overlayCurrentVitrine = packet.vitrines.find(vitrine => vitrine.code === treeOverlay.vitrine);
+if (treeOverlay.baseGuideVersion !== treeBase.version || treeOverlay.baseContentDigest !== treeBase.contentDigest ||
+ !overlayBaseVitrine || JSON.stringify(overlayCurrentVitrine) !== JSON.stringify(overlayBaseVitrine)) {
+ throw new Error("The Vitrine 2 tree needs review against the changed guide scope.");
+}
 
 const transitions = packet.transitionRowsOutsideStarter.map(transition => {
  const row = proposal.rows.find(row => row.sourceId === transition.sourceId);

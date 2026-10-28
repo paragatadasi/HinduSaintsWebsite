@@ -6,9 +6,9 @@ type Shelf={sourceId:string;saintId:string|null;vitrine:string;shelf:string|null
 export type DisplayTask={id:string;sourceId:string;saintId:string|null;title:string;status:"open"|"completed";version:number;createdAt:string;completedAt:string|null};
 type Work={shelves:Shelf[];tasks:DisplayTask[]};
 const endpoint="/api/admin/museum-companion-work";
-export function useMuseumDisplayWork(sourceIds:string[]){
+export function useMuseumDisplayWork(sourceIds?:string[]){
  const pending=useRef(new Map<string,string>());
- const scope=[...new Set(sourceIds)].sort().join(",");
+ const scope=sourceIds?[...new Set(sourceIds)].sort().join(","):"";
  const currentScope=useRef(scope);currentScope.current=scope;
  const [work,setWork]=useState<Work>({shelves:[],tasks:[]});
  const [busy,setBusy]=useState(false);

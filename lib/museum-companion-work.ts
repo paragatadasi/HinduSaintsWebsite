@@ -7,12 +7,12 @@ import { SPN_WEBSITE_AIRTABLE_BASE_ID } from "./museum-vitrine-source";
 import { MuseumMoveSessionError } from "./museum-move-session-domain";
 import type { MoveSessionActor } from "./museum-move-session-service";
 const json = (value: unknown) => JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
-export async function readCompanionWork(sourceIds: string[], tx: Prisma.TransactionClient = db) {
+export async function readCompanionWork(sourceIds: string[] | undefined, tx: Prisma.TransactionClient = db) {
  const [shelves,tasks] = await Promise.all([
-  tx.museumCompanionShelf.findMany({where:{museumId:"museum-spn",sourceId:{in:sourceIds}},orderBy:{sourceId:"asc"}}),
-  tx.museumCompanionTask.findMany({where:{museumId:"museum-spn",sourceId:{in:sourceIds}},orderBy:[{createdAt:"asc"},{id:"asc"}]})
+  tx.museumCompanionShelf.findMany({where:{museumId:"museum-spn",...(sourceIds ? {sourceId:{in:sourceIds}} : {})},orderBy:{sourceId:"asc"}}),
+  tx.museumCompanionTask.findMany({where:{museumId:"museum-spn",...(sourceIds ? {sourceId:{in:sourceIds}} : {})},orderBy:[{createdAt:"asc"},{id:"asc"}]})
  ]);
- return {museumId:"museum-spn",sourceIds,shelves,tasks};
+ return {museumId:"museum-spn",sourceIds:sourceIds ?? [...new Set([...shelves,...tasks].map(row=>row.sourceId))],scope:sourceIds ? "sources" as const : "museum" as const,shelves,tasks};
 }
 async function assertSource(tx: Prisma.TransactionClient, sourceId:string, saintId:string|null) {
  const source = await tx.externalRecord.findUnique({where:{sourceType_externalId:{sourceType:"airtable",externalId:`${SPN_WEBSITE_AIRTABLE_BASE_ID}:Saints:${sourceId}`}},select:{entityType:true,entityId:true}});

@@ -5,7 +5,7 @@ import { hasCapability } from "./permissions";
 import { intakeWriteOriginAllowed } from "./museum-intake-domain";
 import { boundedIntakeBody } from "./museum-intake-api";
 import { MuseumMoveSessionError } from "./museum-move-session-domain";
-import { confirmMuseumPhysicalLocations, undoMuseumPhysicalCheck, readMuseumPhysicalLocations, type PhysicalSnapshotLoader } from "./museum-physical-locations";
+import { correctMuseumClear, saveMuseumPreparation, confirmMuseumPhysicalLocations, undoMuseumPhysicalCheck, readMuseumPhysicalLocations, type PhysicalSnapshotLoader } from "./museum-physical-locations";
 
 export async function museumPhysicalLocationsHttp(request: Request, loader: PhysicalSnapshotLoader) {
   const started = performance.now();
@@ -24,7 +24,11 @@ export async function museumPhysicalLocationsHttp(request: Request, loader: Phys
       if (!intakeWriteOriginAllowed(request.url, request.headers.get("origin"), request.headers.get("host"), process.env.AUTH_URL || process.env.NEXTAUTH_URL)) throw new MuseumMoveSessionError(403, "Reload this page before recording a location.");
       if (!request.headers.get("content-type")?.startsWith("application/json")) throw new MuseumMoveSessionError(415, "Send this confirmation as JSON.");
       const body: unknown = JSON.parse((await boundedIntakeBody(request, 512 * 1024)).toString("utf8"));
-      result = body && typeof body === "object" && "action" in body && body.action === "undo"
+      result = body && typeof body === "object" && "action" in body && body.action === "clear.correct"
+        ? await correctMuseumClear(body, { id: user.id, canManage: true }, loader)
+        : body && typeof body === "object" && "action" in body && body.action === "preparation.update"
+        ? await saveMuseumPreparation(body, { id: user.id, canManage: true }, loader)
+        : body && typeof body === "object" && "action" in body && body.action === "undo"
         ? await undoMuseumPhysicalCheck(body, { id: user.id, canManage: true }, loader)
         : await confirmMuseumPhysicalLocations(body, { id: user.id, canManage: true }, loader);
     } else throw new MuseumMoveSessionError(405, "This action is unavailable.");
