@@ -13,6 +13,7 @@ export type GuideGroup = {
 export type StarterMoveGuide = {
  version:string;contentDigest:string;proposalVersion:string;assignmentDigest:string;title:string;entries:GuideEntry[];
  proposalLabel?:string;
+ transitionSourceIds?:string[];
  vitrines:{code:string;summary:string;families:GuideGroup[];cityGroups:GuideGroup[]}[];
  alternatives:GuideGroup[];reportedPlacements:{sourceId:string;destination:string;date:string}[];
 };
