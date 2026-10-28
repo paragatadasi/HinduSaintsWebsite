@@ -13,7 +13,8 @@ const indicators = baseline.indicators.map(original => {
   const estimate = rows.reduce((sum, row) => sum + (row.planningShelfEstimate ?? 0), 0);
   const namedUnknown = source.namedOnly.filter(row => row.vitrine === original.vitrine).length;
   const headroom = original.referenceShelfShares - estimate;
-  const flexible = !original.flexibleSpaceExclusion && !unknown.length && !namedUnknown && headroom >= 1;
+  const exclusion = original.vitrine === "68" && source.availabilityOverrides["68"] ? null : original.flexibleSpaceExclusion;
+  const flexible = !exclusion && !unknown.length && !namedUnknown && headroom >= 1;
   return { ...original, mainFocus: cases.get(original.vitrine)?.title ?? original.mainFocus,
     hasUnresolvedHoldings: unresolved.length > 0, unresolvedSourceObservationCount: unresolved.length,
     unresolvedCanonicalCount: new Set(unresolved.map(row => row.saintId).filter(Boolean)).size,
@@ -25,7 +26,7 @@ const indicators = baseline.indicators.map(original => {
     unknownShelfSourceObservationCount: rows.filter(row => row.share == null).length,
     unknownShelfSourceRecordIds: rows.filter(row => row.share == null).map(row => row.sourceId),
     unknownPlanningFootprintCount: unknown.length, unknownPlanningFootprintSourceIds: unknown.map(row => row.sourceId),
-    namedOnlyUnknownFootprintCount: namedUnknown, potentialFlexibleSpace: flexible,
+    namedOnlyUnknownFootprintCount: namedUnknown, potentialFlexibleSpace: flexible, flexibleSpaceExclusion: exclusion,
     flexibleSpaceLabel: flexible ? "Potential flexible space" : null,
     tertiaryCityClusters: [], specialFitNote: cases.get(original.vitrine)?.remainingReview ?? original.specialFitNote };
 });

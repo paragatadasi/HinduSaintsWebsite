@@ -1,14 +1,9 @@
 import { MuseumMoveSessionError, sameMoveLocation, type MoveLocation } from "./museum-move-session-domain";
+import proposal from "../data/museum/spn-starter-reviewed-proposal-v16.json";
 
 // These source observations may combine a complete stick with other relics.
 // A saint-level destination does not establish which objects can move together.
-const housingReviewSources = new Set([
-  "reck86EKve5tFAi6R", // Ramdas Tyagi: Stick
-  "rec9vEn5oj7QZTXl0", // Durgaprasad: walking stick and dhoti
-  "recVN6Ty3682Uz2g4", // Paramanand Das: armrest stick
-  "recsm43oeUdKNUMqs", // Bimal: yoga stick and prayer book
-  "rec7GxgNvmubmTvMM", // Pagal: Dandha Yoga Patta; separate stick observation in 31
-]);
+const housingReviewSources = new Set(proposal.rows.filter(row => row.movementBlockedReason).map(row => row.sourceId));
 
 export function spnMovementBlockedReason(sourceId: string): string | undefined {
   return housingReviewSources.has(sourceId)
