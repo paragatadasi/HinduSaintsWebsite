@@ -1,3 +1,4 @@
+import { gosaijiSaiGuideContext, gosaijiSaiGuideDefinition } from "./spn-gosaiji-sai-guide";
 import { ramBhaktiGuideContext, ramBhaktiGuideDefinition } from "./spn-ram-bhakti-guide";
 import { dattaGuideContext, dattaGuideDefinition } from "./spn-datta-guide";
 import { createHash } from "node:crypto";
@@ -9,7 +10,7 @@ import { MuseumMoveSessionError } from "./museum-move-session-domain";
 
 export type GuideContext = { guideVersion: string; contentDigest: string; assignmentDigest: string };
 export type RegisteredSuggestion = { id: string; kind: "family" | "city" | "row" | "alternative"; sourceIds: string[]; targetVitrine: string };
-export type GuideDefinition = { context: GuideContext; suggestions: RegisteredSuggestion[]; previousVersions?: string[]; readOnly?: boolean; physicalScope?: { allowClear: boolean; destinations: Record<string, string> } };
+export type GuideDefinition = { context: GuideContext; suggestions: RegisteredSuggestion[]; previousVersions?: string[]; readOnly?: boolean; physicalScope?: { allowClear: boolean; clearVitrines?: string[]; destinations: Record<string, string> } };
 const hash = (value: string) => createHash("sha256").update(value).digest("hex");
 function canonical(value: unknown): string {
   if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
@@ -53,6 +54,7 @@ const cityAlternatives = guide.cityAlternatives.map(cohort => {
 if (new Set(suggestions.map(row => row.id)).size !== suggestions.length) throw new Error("Duplicate registered suggestion identifiers.");
 export const registeredStarterGuide = { ...guide, cityAlternatives, guideContext: starterGuideContext };
 export function readStarterGuideDefinition(version: string): GuideDefinition {
+  if (version === gosaijiSaiGuideContext.guideVersion) return gosaijiSaiGuideDefinition;
   if (version === ramBhaktiGuideContext.guideVersion) return ramBhaktiGuideDefinition;
   if (version === dattaGuideContext.guideVersion) return dattaGuideDefinition;
   if (version === v3Context.guideVersion) return { ...readV3(version), readOnly: true };

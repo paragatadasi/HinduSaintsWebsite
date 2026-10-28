@@ -12180,3 +12180,7 @@ select:not([multiple]) {
 .museum-companion__search-results {padding-block:var(--space-2);}
 .museum-companion__task-group + .museum-companion__task-group {margin-top:var(--space-5);}
 .museum-companion__prepared {display:flex;align-items:center;gap:var(--space-2);color:var(--color-muted);}
+
+.museum-guide-tree__body {min-width:0}
+.museum-guide-tree__body>.museum-guide-decision {margin:0;gap:var(--space-1);flex-wrap:wrap}
+.museum-guide-tree__body>.museum-guide-decision .museum-admin-button {border:0;background:transparent;padding:var(--space-2);font-size:var(--font-size-companion-small);color:var(--color-muted)}

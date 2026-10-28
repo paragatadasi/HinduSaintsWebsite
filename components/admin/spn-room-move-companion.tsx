@@ -10,13 +10,13 @@ import {MuseumRoomPlan} from "./museum-room-plan";
 import {spnMuseumLayout} from "@/lib/spn-museum-layout";
 import {currentLocationLabel,isPlaced,reportedPlacementsRecorded,type StarterMoveGuide,type PhysicalState,type GuideDecision,type CompanionRow,type PhysicalLocation} from "@/lib/spn-move-guide";
 
-type Phase="starter"|"datta"|"ram-bhakti";
+type Phase="starter"|"datta"|"ram-bhakti"|"gosaiji-sai";
 type SessionView="active"|"staging"|"tasks";
 type RequestBody=Record<string,unknown>;
 export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canManage,workflow="guided",allowClear:initialAllowClear=true,phaseLabel:initialPhaseLabel="Starter row",phase:initialPhase="starter",phaseGuides}:{guide:StarterMoveGuide;initialPhysical:PhysicalState|null;canManage:boolean;workflow?:"guided"|"room";allowClear?:boolean;phaseLabel?:string;phase?:Phase;phaseGuides?:Record<Phase,StarterMoveGuide>}){
  const [phase,setPhase]=useState<Phase>(initialPhase);
  const guide=phaseGuides?.[phase]??initialGuide;
- const allowClear=phaseGuides?phase==="starter":initialAllowClear;
+ const allowClear=guide.allowClear??(phaseGuides?phase==="starter":initialAllowClear);
  const phaseLabel=guide.phaseLabel??initialPhaseLabel;
  const [physical,setPhysical]=useState(initialPhysical),[sessionView,setSessionView]=useState<SessionView>("active"),[selected,setSelected]=useState(guide.vitrines[0]?.code??"2");
  const [busy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState("");
@@ -64,7 +64,8 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  const selectedIds=[...(view?.families??[]),...(view?.cityGroups??[])].flatMap(g=>g.sourceIds);
  const preparation=physical?.preparations?.find(item=>item.vitrine===selected);
  const selectedPlaced=selectedIds.filter(id=>{const row=rows.find(r=>r.sourceId===id);return row&&isPlaced(row,selected);}).length;
- const preparationReady=!allowClear||preparation?.prepared===true||selectedPlaced>0;
+ const requiredClear=guide.requiredClearVitrines?.find(code=>!physical?.phaseClearances?.some(receipt=>receipt.guideVersion===guide.version&&receipt.vitrine===code));
+ const preparationReady=guide.requiredClearVitrines?.length?!requiredClear:!allowClear||preparation?.prepared===true||selectedPlaced>0;
  const guideById=allEntries;
  function switchPhase(next:Phase){
   if(next===phase||!phaseGuides||busy||displayWork.busy||!!retry.current||taskBusy!==null)return;
@@ -93,7 +94,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
     setPhysical(snapshot);if(body.action==="clear.correct")await displayWork.reload();setClearCorrectionId(null);setCorrectionAcknowledged(false);setMessage(body.action==="clear.correct"?"Mistaken clearing corrected.":"Check undone.");return;
    }
    if(result.decision){setDecisions(previous=>[...previous.filter(d=>d.suggestionId!==result.decision.suggestionId),result.decision]);if(body.decision==="declined")setDeclineSource(null);}
-   else setPhysical(previous=>previous?{...previous,...(Array.isArray(result.preparations)?{preparations:result.preparations}:{}),confirmationHistory:result.receipt?[result.receipt,...(previous.confirmationHistory??[])]:previous.confirmationHistory,rows:previous.rows.map(row=>result.rows.find((next:CompanionRow)=>next.sourceId===row.sourceId)??row)}:result);retry.current=null;setMessage("Saved.");setClearConfirmed(false);
+   else setPhysical(previous=>previous?{...previous,...(Array.isArray(result.preparations)?{preparations:result.preparations}:{}),...(Array.isArray(result.phaseClearances)?{phaseClearances:result.phaseClearances}:{}),confirmationHistory:result.receipt?[result.receipt,...(previous.confirmationHistory??[])]:previous.confirmationHistory,rows:previous.rows.map(row=>result.rows.find((next:CompanionRow)=>next.sourceId===row.sourceId)??row)}:result);retry.current=null;setMessage("Saved.");setClearConfirmed(false);
   }catch(e){setError(e instanceof Error?e.message:"Could not save. Retry the same action or reload to check its status.");}
   finally{pending.current=false;setBusy(false);setSavingSources([]);}
  }
@@ -121,7 +122,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   if(!editable)return;
   const now=new Date();const confirmedDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
   void send("POST",{museumId:"museum-spn",clientRequestId:crypto.randomUUID(),confirmedDate,datePrecision:"date",evidence:"Curator confirmed this physical move in the starter-row companion.",physicalConfirmation:true,inventoryAcknowledged:true,guideContext:{guideVersion:guide.version,contentDigest:guide.contentDigest,assignmentDigest:guide.assignmentDigest},
-   records:items.map(r=>({sourceId:r.sourceId,saintId:r.saintId,expectedLocationVersion:r.currentVersion,expectedCurrentRevision:r.currentRevision,expectedSourceRevision:r.sourceRevision,to})),...(clearedVitrines?{clearedVitrines}:{})});
+   records:items.map(r=>({sourceId:r.sourceId,saintId:r.saintId,expectedLocationVersion:r.currentVersion,expectedCurrentRevision:r.currentRevision,expectedSourceRevision:r.sourceRevision,to})),...(clearedVitrines?{clearedVitrines,...(guide.requiredClearVitrines?.length?{initialCaseClearAcknowledged:true}:{})}:{})});
  }
  function togglePlacement(row:CompanionRow,target:string){
   if(isPlaced(row,target)){setUndoSource(row.sourceId);return;}
@@ -171,6 +172,12 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   return <>{displayWork.error?<p role="alert">{displayWork.error} <button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>void displayWork.reload().catch(error=>setTaskError(error.message))}>Retry</button></p>:null}{taskError?<p role="alert">{taskError}</p>:null}{!displayWork.loaded?<p>Loading to-dos…</p>:!displayWork.tasks.length?<p>No to-dos yet. Add one from a saint’s final checklist entry.</p>:[...groups].sort(([a],[b])=>(Number(a)||Infinity)-(Number(b)||Infinity)).map(([code,tasks])=><section className="museum-companion__task-group" key={code}><h3>{code?'Vitrine '+code:'Vitrine not assigned'}</h3>{tasks.sort((a,b)=>Number(a.status==="completed")-Number(b.status==="completed")).map(task=>{const entry=guideById.get(task.sourceId),row=rows.find(r=>r.sourceId===task.sourceId);return <label className="museum-guide-check" key={task.id}><input type="checkbox" checked={task.status==="completed"} disabled={!canManage||taskBusy!==null} onChange={event=>void completeTask(task,event.target.checked)}/><span className="museum-guide-check__body"><strong>{task.title}</strong><small>{entry?.name??row?.name??task.sourceId}</small>{taskBusy===task.id?<small role="status">Saving…</small>:null}</span></label>;})}</section>)}</>;
  }
  function markPrepared(){if(!editable)return;void send("POST",{action:"preparation.update",museumId:"museum-spn",clientRequestId:crypto.randomUUID(),vitrine:selected,prepared:true,expectedVersion:preparation?.version??0});}
+ function phaseClearanceCard(){
+  if(!requiredClear)return <p className="museum-companion__prepared">✓ Vitrine 37 clearing recorded</p>;
+  const contents=rows.filter(row=>row.current?.kind==="vitrine"&&row.current.code===requiredClear);
+  const missing=physical?.unmappedCurrentLocations.filter(row=>row.location.kind==="vitrine"&&row.location.code===requiredClear)??[];
+  return <section className="museum-admin-panel" aria-label="Required phase clearing"><h2>First, clear Vitrine {requiredClear}</h2><details open><summary>{contents.length+missing.length} recorded occupants</summary>{contents.map(row=><p key={row.sourceId}>{row.name} · {currentLocationLabel(row.current)}{row.currentBasis!=="confirmed"?" · source-reported":""}</p>)}{missing.map(row=><p key={row.sourceId}>{row.sourceId} · Unlinked record: review before clearing.</p>)}</details><label className="room-move__check"><input type="checkbox" checked={clearConfirmed} disabled={!editable} onChange={event=>setClearConfirmed(event.target.checked)}/>I have cleared Vitrine {requiredClear}; all listed contents are in the staging area.</label><button type="button" className="museum-admin-button" disabled={!editable||!clearConfirmed||missing.length>0||contents.some(blocked)} onClick={()=>move(contents,{kind:"table",code:"staging-area",label:"Staging area"},[requiredClear])}>Confirm cleared</button><small>Confirm this clearing before recording placements in either vitrine.</small></section>;
+ }
  function clearanceCard(){
   if(preparation?.prepared)return <p className="museum-companion__prepared" role="status">✓ Vitrine {selected} · preparation complete</p>;
   const started=occupants.some(row=>row.currentBasis==="confirmed");
@@ -208,7 +215,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   if(!view)return null;
   return <><h3 className="museum-guide-stage">Families & named saints</h3>{view.families.filter(g=>g.sourceIds.some(matchesVitrine)).map(g=>{
    const treeIds=new Set((g.edges??[]).flatMap(e=>[e.fromSourceId,e.toSourceId]));
-   return <section key={g.id} className="museum-guide-narrative"><h3>{g.title}</h3><p>{g.rationale}</p><MuseumGuideFamilyTree group={g} entries={guideById} physicalRows={rows} renderControl={placementControl}/>{sorted(g.sourceIds.filter(id=>!treeIds.has(id))).map(id=>display(id,selected,true,true))}</section>;
+   return <section key={g.id} className="museum-guide-narrative"><h3>{g.title}</h3><p>{g.rationale}</p><MuseumGuideFamilyTree group={g} entries={guideById} physicalRows={rows} renderControl={placementControl} renderActions={id=>{const row=rows.find(r=>r.sourceId===id);return row&&!isPlaced(row,selected)&&canManage&&pilotIds.has(id)?decisionControls("row:"+id):null;}}/>{sorted(g.sourceIds.filter(id=>!treeIds.has(id))).map(id=>display(id,selected,true,true))}</section>;
   })}
   {view.cityGroups.length?<><h3 className="museum-guide-stage">City groups</h3>{view.cityGroups.filter(g=>g.sourceIds.some(matchesVitrine)).map(g=><section key={g.id} className="museum-guide-narrative"><h3>{g.title}</h3><p>{g.rationale}</p>{g.spaceEstimate?<small>{g.spaceEstimate.label}</small>:null}{sorted(g.sourceIds.filter(matchesVitrine)).map(id=>display(id,selected,true,true))}</section>)}</>:null}
   <section aria-label="Complete vitrine checklist"><h2 className="museum-guide-stage">Complete vitrine checklist</h2>{displayWork.error?<p role="alert">Shelf and to-do controls could not load. Open the To-do tab to retry.</p>:null}{tiered([...new Set(selectedIds)].filter(matchesVitrine))}{!selectedIds.some(matchesVitrine)?<p>No matching saints in this vitrine.</p>:null}</section>
@@ -225,11 +232,12 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   <AdminViewTabs<SessionView> label="Move workspace" value={sessionView} onChange={setSessionView} disabled={busy||displayWork.busy||!!retry.current||taskBusy!==null} options={[{value:"active",label:"Active move"},{value:"staging",label:'Staging area ('+(staged.length+(physical?.unmappedCurrentLocations.filter(row=>row.location.kind==="table").length??0))+')'},{value:"tasks",label:'To-do ('+displayWork.tasks.filter(task=>task.status==="open").length+')'}]}/>
   {sessionView==="active"?<div className="museum-companion__layout"><div className="museum-companion__main"><section className="museum-admin-panel museum-companion__task"><details open><summary>Room layout</summary><MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={[selected]} onSelect={code=>{if(guide.vitrines.some(v=>v.code===code)){setSelected(code);setClearConfirmed(false);}}}/></details></section>
    <div className="museum-companion__guide">
-    <AdminViewTabs<Phase> label="Guide phase" value={phase} onChange={switchPhase} disabled={busy||displayWork.busy||!!retry.current||taskBusy!==null||!phaseGuides} options={[{value:"starter",label:"Starter row"},{value:"datta",label:"Datta · 3, 81 & 82"},{value:"ram-bhakti",label:"Ram bhakti · 80"}]}/>
+    <AdminViewTabs<Phase> label="Guide phase" value={phase} onChange={switchPhase} disabled={busy||displayWork.busy||!!retry.current||taskBusy!==null||!phaseGuides} options={[{value:"starter",label:"Starter row"},{value:"datta",label:"Datta · 3, 81 & 82"},{value:"ram-bhakti",label:"Ram bhakti · 80"},...(phaseGuides?.["gosaiji-sai"]?[{value:"gosaiji-sai" as const,label:"Gosaiji & Sai · 37 & 4"}]:[])]}/>
     <div className="room-move__phase" aria-label={phaseLabel}>{guide.vitrines.map(v=><button type="button" className="museum-admin-button museum-admin-button--secondary" aria-pressed={selected===v.code} key={v.code} onClick={()=>{setSelected(v.code);setClearConfirmed(false);}}>Vitrine {v.code}</button>)}</div>
-    {allowClear?clearanceCard():null}
+    {guide.requiredClearVitrines?.length?phaseClearanceCard():allowClear?clearanceCard():null}
     <section className="museum-admin-panel"><p className="eyebrow">{phaseLabel}</p><h2>Vitrine {selected}</h2><label className="admin-field museum-guide-vitrine-search"><span>Find in this vitrine</span><input type="search" value={vitrineSearch} onChange={event=>setVitrineSearch(event.target.value)} placeholder="Saint or city"/></label><p>{view?.summary}</p><p className="muted">{selectedPlaced} of {selectedIds.length} display records confirmed here</p>
      {guide.outgoingDependencies?.some(d=>d.previousProposedVitrine===selected)?<details className="museum-guide-help"><summary>Outgoing displays need separate destinations</summary><p>This guide does not mark the vitrine empty. Check space before placing the incoming groups.</p>{guide.outgoingDependencies.filter(d=>d.previousProposedVitrine===selected).map(d=><p key={d.sourceId}>{d.name} · Destination pending</p>)}</details>:null}
+     {guide.requiredClearVitrines?.length&&selected==="4"?<details className="museum-guide-help"><summary>Check remaining occupants · {occupants.filter(row=>!selectedIds.includes(row.sourceId)).length} outside this group</summary>{occupants.filter(row=>!selectedIds.includes(row.sourceId)).map(row=><p key={row.sourceId}>{row.name} · {currentLocationLabel(row.current)}</p>)}<p>Check their destinations separately before filling the remaining space.</p></details>:null}
      {guidedPlacement()}
      {outgoing.length?<section><h3>Moving beyond the starter row</h3>{outgoing.map(id=>display(id,guideById.get(id)?.destination??""))}</section>:null}
     </section>
