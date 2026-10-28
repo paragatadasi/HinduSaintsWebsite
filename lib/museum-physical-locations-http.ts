@@ -8,6 +8,7 @@ import { MuseumMoveSessionError } from "./museum-move-session-domain";
 import { confirmMuseumPhysicalLocations, undoMuseumPhysicalCheck, readMuseumPhysicalLocations, type PhysicalSnapshotLoader } from "./museum-physical-locations";
 
 export async function museumPhysicalLocationsHttp(request: Request, loader: PhysicalSnapshotLoader) {
+  const started = performance.now();
   try {
     const user = await getAdminUser();
     if (!user?.active) throw new MuseumMoveSessionError(401, "Sign in to continue.");
@@ -27,13 +28,13 @@ export async function museumPhysicalLocationsHttp(request: Request, loader: Phys
         ? await undoMuseumPhysicalCheck(body, { id: user.id, canManage: true }, loader)
         : await confirmMuseumPhysicalLocations(body, { id: user.id, canManage: true }, loader);
     } else throw new MuseumMoveSessionError(405, "This action is unavailable.");
-    return NextResponse.json(result, { headers: { "Cache-Control": "private, no-store" } });
+    return NextResponse.json(result, { headers: { "Cache-Control": "private, no-store", "Server-Timing": `museum;dur=${(performance.now() - started).toFixed(1)}` } });
   } catch (error) {
     let status = 500, message = "These locations could not be recorded. Reload the current locations before trying again.";
     if (error instanceof MuseumMoveSessionError) { status = error.status; message = error.message; }
     else if (error instanceof z.ZodError || error instanceof SyntaxError) { status = 400; message = "Check the source records, confirmed date, locations and acknowledgements."; }
     else if (error && typeof error === "object" && "code" in error && ["P2034", "P2002"].includes(String(error.code))) { status = 409; message = "A physical location changed. Reload before recording this confirmation."; }
     else if (error && typeof error === "object" && "status" in error && error.status === 413) { status = 413; message = "Choose a smaller batch of source records."; }
-    return NextResponse.json({ error: message }, { status, headers: { "Cache-Control": "private, no-store" } });
+    return NextResponse.json({ error: message }, { status, headers: { "Cache-Control": "private, no-store", "Server-Timing": `museum;dur=${(performance.now() - started).toFixed(1)}` } });
   }
 }
