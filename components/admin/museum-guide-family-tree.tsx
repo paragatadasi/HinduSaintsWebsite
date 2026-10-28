@@ -1,14 +1,9 @@
 "use client";
-import {useId,useState,type ReactNode} from "react";
-import {MuseumDetailDialog} from "./museum-detail-dialog";
+import {type ReactNode} from "react";
 import {currentLocationLabel,isPlaced,type CompanionRow,type GuideEntry,type GuideGroup} from "@/lib/spn-move-guide";
 
 /** Render the guide's recorded connections without inferring relationships from grouping. */
 export function MuseumGuideFamilyTree({group,entries,physicalRows,renderControl}:{group:GuideGroup;entries:Map<string,GuideEntry>;physicalRows?:CompanionRow[];renderControl?:(id:string)=>ReactNode}) {
- const [selected,setSelected]=useState<string|null>(null);
- const titleId=useId();
- const member=selected?entries.get(selected):undefined;
- const location=physicalRows?.find(row=>row.sourceId===selected);
  const edges=group.edges??[];
  if(!edges.length)return null;
  const ids=[...new Set(edges.flatMap(edge=>[edge.fromSourceId,edge.toSourceId]))];
@@ -21,14 +16,15 @@ export function MuseumGuideFamilyTree({group,entries,physicalRows,renderControl}
   const cycle=path.has(id);
   const next=new Set(path).add(id);
   const entry=entries.get(id);
+  const location=physicalRows?.find(row=>row.sourceId===id);
   const descendants=cycle?[]:edges.filter(edge=>edge.fromSourceId===id).sort((a,b)=>rank(a.toSourceId)-rank(b.toSourceId));
   return <li key={`${relation??"root"}:${id}`}>
    {relation?<small className="museum-guide-tree__relation">{relation}</small>:null}
-   <div className="museum-guide-tree__member">{renderControl?.(id)}<button type="button" className="museum-guide-tree__person" onClick={()=>setSelected(id)}>{entry?.name??"Related display"}{entry?<span className="museum-guide-tier">{entry.tier}</span>:null}</button></div>
+   <div className="museum-guide-tree__member">{renderControl?.(id)}<div className="museum-guide-tree__person">{entry?.name??"Related display"}{entry?<span className="museum-guide-tier">{entry.tier}</span>:null}<small className="museum-guide-tree__location">{location&&entry&&isPlaced(location,entry.destination)?"Placed":"Bring from"}: {currentLocationLabel(location?.current??null)}{location?.currentBasis!=="confirmed"&&location?.current?" · source-reported":""}</small>{entry?.lifeStatus?.tag?<small>{entry.lifeStatus.tag}</small>:null}</div></div>
    {descendants.length?<ul>{descendants.map(edge=>node(edge.toSourceId,next,edge.label))}</ul>:null}
   </li>;
  }
  const branches=roots.map(id=>node(id,new Set()));
  for(const id of ids)if(!covered.has(id))branches.push(node(id,new Set()));
- return <div className="museum-guide-tree" aria-label={`${group.title} connections`}><ul>{branches}</ul>{selected?<MuseumDetailDialog titleId={titleId} kicker="Guide details" closeLabel="Close saint details" onClose={()=>setSelected(null)}><h2 id={titleId}>{member?.name??"Related display"}</h2>{member?<><p>{member.lifeStatus?.tag}</p><p>{member.tier}{member.city?` · ${member.city}`:""}</p><p><strong>{location&&isPlaced(location,member.destination)?"Current location":"Bring from"}:</strong> {currentLocationLabel(location?.current??null)}{location?.currentBasis!=="confirmed"&&location?.current?" · source-reported":""}</p><p>Proposed: Vitrine {member.destination}</p>{member.relicDescription?<p>{member.relicDescription}</p>:null}<p>{member.rationale}</p>{member.reviewNotes?.map(note=><p key={note}>{note}</p>)}</>:<p>Details are not available in this guide.</p>}</MuseumDetailDialog>:null}</div>;
+ return <div className="museum-guide-tree" aria-label={`${group.title} connections`}><ul>{branches}</ul></div>;
 }

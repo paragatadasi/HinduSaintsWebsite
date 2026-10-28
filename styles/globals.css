@@ -12158,3 +12158,15 @@ select:not([multiple]) {
 .museum-companion .admin-tab-strip a {color:var(--color-muted);padding:var(--space-3) 0;text-decoration:none;border-bottom:var(--border-width-default) solid transparent}
 .museum-companion .admin-tab-strip a[aria-current="page"] {color:var(--color-text);border-bottom-color:var(--color-copper)}
 @media(max-width:45rem){.museum-guide-search{grid-template-columns:minmax(0,1fr)}}
+
+.museum-guide-tree__person {cursor:default}
+.museum-guide-tree__location {display:block;color:var(--color-muted);font-size:var(--font-size-companion-small);margin-top:var(--space-1)}
+.museum-guide-tree__check {display:flex;flex-direction:column;gap:var(--space-1);align-items:center}
+.museum-guide-tree__check small {font-size:var(--font-size-companion-small);color:var(--color-muted)}
+.museum-guide-vitrine-search {margin-block:var(--space-3)}
+
+.museum-guide-tree__check input {width:var(--space-5);height:var(--space-5)}
+.museum-display-work {margin-top:var(--space-2);font-size:var(--font-size-companion-small)}
+.museum-display-work__form {display:flex;align-items:flex-end;gap:var(--space-2);margin-block:var(--space-2)}
+.museum-display-work__form .admin-field {flex:1;min-width:0}
+.museum-display-work input {font-size:var(--font-size-companion-body)}
