@@ -52,6 +52,13 @@ export function SpnRoomMoveCompanion({guide,initialPhysical,canManage,workflow="
    const result=await response.json();
    if(!response.ok){if(response.status<500)retry.current=null;throw new Error(result.error||"Could not save this change.");}
    if(!result.decision&&!Array.isArray(result.rows))throw new Error("The save could not be confirmed. Refresh progress before trying again.");
+   if(body.action==="undo"){
+    retry.current=null;
+    const refreshed=await fetch("/api/admin/museum-physical-locations?museumId=museum-spn",{cache:"no-store"});
+    const snapshot=await refreshed.json();
+    if(!refreshed.ok||!Array.isArray(snapshot.rows))throw new Error("The check was undone. Refresh progress to load the updated history.");
+    setPhysical(snapshot);setMessage("Check undone.");return;
+   }
    if(result.decision)setDecisions(previous=>[...previous.filter(d=>d.suggestionId!==result.decision.suggestionId),result.decision]);
    else setPhysical(previous=>previous?{...previous,confirmationHistory:result.receipt?[result.receipt,...(previous.confirmationHistory??[])]:previous.confirmationHistory,rows:previous.rows.map(row=>result.rows.find((next:CompanionRow)=>next.sourceId===row.sourceId)??row)}:result);retry.current=null;setMessage("Saved.");setAcknowledged(false);setClearConfirmed(false);
   }catch(e){setError(e instanceof Error?e.message:"Could not save. Retry the same action or reload to check its status.");}
