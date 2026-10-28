@@ -19,12 +19,15 @@ import {reconcileSpnRoomProposal} from "@/lib/spn-room-proposal";
 import proposalSikh from "@/data/museum/spn-room-proposal-sikh-north-v1.json";
 import designSikh from "@/data/museum/spn-room-explorer-sikh-north-v1-design.json";
 import {correctSpnProposal} from "@/lib/spn-proposal-corrections";
+import {projectCurrentPrimaryAnchors} from "@/lib/spn-live-display-tiers";
 export default async function SpnMovePlan(){
  const user=await requireCapability("access_museum");await requireCapability("view_museum_catalog");
  const {sections,placements}=await getMuseumData();
  const releases=[currentSpnProposalRelease,{proposal:proposalV16R1,designData:designV16R1},{proposal:proposalVraj,designData:designVraj},{proposal:proposalSikh,designData:designSikh},{proposal:proposalEast,designData:designEast},{proposal:proposalV16,designData:designV16},{proposal,designData}].map(correctSpnProposal).map(({proposal,designData,...releasePolicy})=>{
   const {rows,namedOnly,...view}=proposal;
-  return {proposal:view,designData,rows:reconcileSpnRoomProposal([...rows,...namedOnly],placements,{acceptedBaseline:"acceptedBaseline" in releasePolicy&&releasePolicy.acceptedBaseline===true})};
+  const acceptedBaseline="acceptedBaseline" in releasePolicy&&releasePolicy.acceptedBaseline===true;
+  const reconciled=reconcileSpnRoomProposal([...rows,...namedOnly],placements,{acceptedBaseline});
+  return {proposal:view,designData:acceptedBaseline?{...designData,options:designData.options.map(option=>projectCurrentPrimaryAnchors(option,reconciled))}:designData,rows:reconciled};
  });
  return <div className="admin-stack">
  <div className="review-actions"><Link className="museum-admin-button museum-admin-button--secondary" href="/museumadmin/move" prefetch={false}>Move companion</Link></div>
