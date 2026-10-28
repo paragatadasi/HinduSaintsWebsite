@@ -1,4 +1,6 @@
-import { z } from "zod";
+import { guideDecisionInput, assertDeclineAlternative, availableDeclineAlternatives, declineAlternativeValues } from "./museum-guide-decision-domain";
+export { guideDecisionInput } from "./museum-guide-decision-domain";
+import { currentSpnProposalRelease } from "./spn-current-proposal";
 import { db } from "./db";
 import { Prisma } from "./generated/prisma/client";
 import { physicalFingerprint } from "./museum-physical-location-current";
@@ -8,18 +10,15 @@ import type { GuideDefinition } from "./spn-starter-guide-registry";
 import type { MoveSessionActor } from "./museum-move-session-service";
 
 export type GuideDefinitionLoader = (version: string) => GuideDefinition;
-export const guideDecisionInput = z.object({ museumId: z.literal("museum-spn"), guideVersion: z.string().min(1).max(200),
-  contentDigest: z.string().regex(/^[a-f0-9]{64}$/), assignmentDigest: z.string().regex(/^[a-f0-9]{64}$/),
-  suggestionId: z.string().min(1).max(300), expectedVersion: z.number().int().nonnegative(), clientRequestId: z.string().uuid(),
-  decision: z.enum(["pending", "deferred", "declined"]), note: z.string().trim().max(2000).optional() }).strict();
+
 const action = "museum.guide_suggestion.decided";
 const json = (value: unknown) => JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 export async function readMuseumGuideDecisions(guideVersion: string, loader: GuideDefinitionLoader) {
   const guide = loader(guideVersion);
   const history = await Promise.all((guide.previousVersions ?? []).map(async version => ({ guide: loader(version),
-    decisions: await db.museumGuideSuggestionDecision.findMany({ where: { museumId: "museum-spn", guideVersion: version }, select: { suggestionId: true, decision: true, note: true, version: true, updatedAt: true } }) })));
-  const current = await db.museumGuideSuggestionDecision.findMany({ where: { museumId: "museum-spn", guideVersion }, orderBy: { suggestionId: "asc" }, select: { suggestionId: true, decision: true, note: true, version: true, updatedAt: true } });
-  return { museumId: "museum-spn", guideContext: guide.context, suggestions: guide.suggestions,
+    decisions: await db.museumGuideSuggestionDecision.findMany({ where: { museumId: "museum-spn", guideVersion: version }, select: { suggestionId: true, decision: true, note: true, alternativeVitrine: true, alternativeShelf: true, version: true, updatedAt: true } }) })));
+  const current = await db.museumGuideSuggestionDecision.findMany({ where: { museumId: "museum-spn", guideVersion }, orderBy: { suggestionId: "asc" }, select: { suggestionId: true, decision: true, note: true, alternativeVitrine: true, alternativeShelf: true, version: true, updatedAt: true } });
+  return { museumId: "museum-spn", guideContext: guide.context, suggestions: guide.suggestions, alternativeVitrines: availableDeclineAlternatives(currentSpnProposalRelease.proposal.layout.vitrines),
     decisions: inheritGuideDecisions(guide, current, history) };
 }
 export async function saveMuseumGuideDecision(raw: unknown, actor: MoveSessionActor, loader: GuideDefinitionLoader) {
@@ -28,21 +27,27 @@ export async function saveMuseumGuideDecision(raw: unknown, actor: MoveSessionAc
   if (guide.readOnly) throw new MuseumMoveSessionError(409, "This guide has been superseded. Open the current guide before changing a suggestion.");
   if (input.contentDigest !== guide.context.contentDigest || input.assignmentDigest !== guide.context.assignmentDigest) throw new MuseumMoveSessionError(409, "The guide content changed. Reload it before reviewing this suggestion.");
   const suggestion = guide.suggestions.find(row => row.id === input.suggestionId);
+  assertDeclineAlternative(input,currentSpnProposalRelease.proposal.layout.vitrines);
   if (!suggestion) throw new MuseumMoveSessionError(409, "This suggestion is not in the pinned guide. Reload the guide.");
   return db.$transaction(async tx => {
     await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
     const entityId = `${input.museumId}:${input.clientRequestId}`, fingerprint = physicalFingerprint(input);
+    const legacyInput = Object.fromEntries(Object.entries(input).filter(([key]) => !["alternativeVitrine", "alternativeShelf"].includes(key)));
+    const legacyFingerprint = raw && typeof raw === "object" && !Object.hasOwn(raw, "alternativeVitrine") && !Object.hasOwn(raw, "alternativeShelf")
+      ? physicalFingerprint(legacyInput) : null;
     const key = { museumId: input.museumId, guideVersion: input.guideVersion, suggestionId: input.suggestionId };
     const before = await tx.museumGuideSuggestionDecision.findUnique({ where: { museumId_guideVersion_suggestionId: key } });
+    const alternatives = declineAlternativeValues(input,before,Boolean(raw && typeof raw === "object" && (Object.hasOwn(raw,"alternativeVitrine") || Object.hasOwn(raw,"alternativeShelf"))));
     const retry = await tx.auditEvent.findFirst({ where: { action, entityType: "MuseumGuideSuggestionDecision", entityId }, select: { id: true, afterJson: true } });
     if (retry) {
-      if ((retry.afterJson as { fingerprint?: string } | null)?.fingerprint !== fingerprint) throw new MuseumMoveSessionError(409, "This request already reviewed a different suggestion. Reload before trying again.");
+      const savedFingerprint = (retry.afterJson as { fingerprint?: string } | null)?.fingerprint;
+      if (savedFingerprint !== fingerprint && savedFingerprint !== legacyFingerprint) throw new MuseumMoveSessionError(409, "This request already reviewed a different suggestion. Reload before trying again.");
       return { decision: before, receipt: retry, replayed: true };
     }
     if ((before?.version ?? 0) !== input.expectedVersion) throw new MuseumMoveSessionError(409, "This suggestion was reviewed elsewhere. Reload its latest decision.");
     const after = await tx.museumGuideSuggestionDecision.upsert({ where: { museumId_guideVersion_suggestionId: key },
-      create: { ...key, decision: input.decision, note: input.note || null, updatedById: actor.id },
-      update: { decision: input.decision, note: input.note || null, updatedById: actor.id, version: { increment: 1 } } });
+      create: { ...key, decision: input.decision, note: input.note || null, ...alternatives, updatedById: actor.id },
+      update: { decision: input.decision, note: input.note || null, ...alternatives, updatedById: actor.id, version: { increment: 1 } } });
     const receipt = await tx.auditEvent.create({ data: { userId: actor.id, action, entityType: "MuseumGuideSuggestionDecision", entityId,
       beforeJson: before ? json(before) : Prisma.JsonNull,
       afterJson: json({ fingerprint, guideContext: guide.context, suggestionId: suggestion.id, sourceIds: suggestion.sourceIds, kind: suggestion.kind,
