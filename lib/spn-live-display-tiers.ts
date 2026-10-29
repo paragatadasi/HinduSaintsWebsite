@@ -1,3 +1,4 @@
+import {activeSpnGuide} from "./spn-observation-suppression";
 import type { MuseumSaintPlacement } from "./museum-proposals";
 import type { StarterMoveGuide } from "./spn-move-guide";
 import type { ExplorerOption } from "./spn-room-explorer";
@@ -6,6 +7,7 @@ import type { ExplorerObservation } from "./spn-room-proposal";
 type TierRow = Pick<MuseumSaintPlacement, "id" | "sourceRecordId" | "saintId" | "tier" | "linkIssue" | "placementState">;
 
 export function projectStarterDisplayTiers(guide: StarterMoveGuide, current: TierRow[]): StarterMoveGuide {
+  guide = activeSpnGuide(guide);
   const bySaint = new Map<string, TierRow[]>();
   for (const row of current) if (row.saintId) bySaint.set(row.saintId, [...(bySaint.get(row.saintId) ?? []), row]);
   return { ...guide, entries: guide.entries.map(entry => {

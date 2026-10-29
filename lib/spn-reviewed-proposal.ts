@@ -1,3 +1,4 @@
+import {spnDuplicateObservations} from "./spn-observation-suppression";
 import reviewedCaseNotes from "../data/museum/spn-vraj-current-case-notes-v17.json";
 import rawVraj from "../data/museum/spn-vraj-approved-v17.json";
 import {vrajMoveGuide} from "./spn-vraj-guide";
@@ -21,7 +22,7 @@ import type {MuseumSaintPlacement} from "./museum-proposals";
 
 const currentCaseNotes: Record<string, string | null> = reviewedCaseNotes;
 export const latestSpnReviewVersion=vraj.version;
-export function buildLatestSpnReview(current:MuseumSaintPlacement[]){
+export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternatives:{sourceId:string;vitrine:string;shelf:string|null}[]=[]){
  const base=correctSpnProposal(currentSpnProposalRelease);
  const overrides=new Map(overlay.overrides.map(row=>[row.sourceId,row]));
  const originals=[...base.proposal.rows,...base.proposal.namedOnly];
@@ -31,10 +32,11 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[]){
  const vrajById=new Map(vraj.assignments.map(row=>[row.sourceId,row]));
  if(vrajById.size!==167||vraj.assignments.some(change=>!originals.some(row=>row.sourceId===change.sourceId&&row.saintId===change.saintId)))throw new Error("The approved Vraj source identities changed.");
  const scoped:ProposalObservation[]=amended.map(row=>{const change=vrajById.get(row.sourceId);return change?{...row,vitrine:change.destination,tier:change.capturedTier,baseline:change.capturedBaseline??row.baseline}:row;});
- const reconciled=reconcileSpnRoomProposal(scoped,current,{acceptedBaseline:true});
+ const reconciled=reconcileSpnRoomProposal(scoped,current,{acceptedBaseline:true}).map(row=>{const alternative=alternatives.find(a=>a.sourceId===row.sourceId);return alternative?{...row,effectiveVitrine:alternative.vitrine,reviewReason:"Curator alternative destination"}:row;});
  const privateIds=new Set(overlay.excludedFromMuseumDisplay.map(row=>row.sourceId));
  const pendingIds=new Set(overlay.pendingReceiverSourceIds);
  const pendingPlacements=reconciled.filter(row=>privateIds.has(row.sourceId)||pendingIds.has(row.sourceId)&&row.effectiveVitrine===row.vitrine&&!current.some(record=>record.id===row.baseline?.placementId&&record.arrangement?.vitrine&&["Planned","Implemented"].includes(record.arrangement.status)&&record.arrangement.revision!==row.baseline?.revision)).map(row=>({sourceId:row.sourceId,name:row.name,previousVitrine:row.effectiveVitrine,reason:privateIds.has(row.sourceId)?"Privately held; excluded from museum display":"Outside the approved core; destination still to review"}));
+ pendingPlacements.push(...scoped.filter(row=>spnDuplicateObservations[row.sourceId]).map(row=>({sourceId:row.sourceId,name:row.name,previousVitrine:row.vitrine,reason:spnDuplicateObservations[row.sourceId].reason})));
  const withheld=new Set(pendingPlacements.map(row=>row.sourceId));
  const rows=reconciled.filter(row=>!withheld.has(row.sourceId));
  const estimates=new Map(base.proposal.rows.map(row=>[row.sourceId,row.planningShelfEstimate]));
