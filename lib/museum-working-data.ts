@@ -1,3 +1,4 @@
+import {isActiveSpnObservation} from "./spn-observation-suppression";
 import {reconcileMuseumFamilies} from "./museum-family-reconciliation";
 import {projectSpnProposal} from "./spn-proposal-domain";
 import {buildMuseumView} from "./museum-proposals";
@@ -113,7 +114,7 @@ export async function readMuseumData(client: Prisma.TransactionClient = db, opti
     });
   }
   if(options.reconcileFamilies!==false){
-    const placements=reconcileMuseumFamilies(view.placements,saints.flatMap(s=>s.relationshipsFrom));
+    const placements=reconcileMuseumFamilies(view.placements.filter(row=>isActiveSpnObservation(row.sourceRecordId??row.id)),saints.flatMap(s=>s.relationshipsFrom));
     const labels=new Map(view.sections.flatMap(s=>s.families.map(f=>[f.key,f.label] as const)));
     const trees=new Map(view.sections.flatMap(s=>s.families.filter(f=>f.treeFile).map(f=>[f.key,f.treeFile!] as const)));
     const rebuilt=buildMuseumView(placements,view.membersById,labels,trees,new Set(placements.filter(p=>p.needsResearch).map(p=>p.id)));

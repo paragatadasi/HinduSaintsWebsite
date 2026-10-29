@@ -1,3 +1,4 @@
+import {activeSpnGuide} from "./spn-observation-suppression";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { projectCurrentPrimaryAnchors, projectStarterDisplayTiers } from "./spn-live-display-tiers";
@@ -15,7 +16,7 @@ test("current tier overlays a captured Secondary without changing guide identity
   const projected = projectStarterDisplayTiers(guide, [current]);
   assert.equal(projected.entries[0].tier, "Primary");
   assert.equal(projected.entries[0].destination, captured.destination);
-  for (const key of ["version", "contentDigest", "assignmentDigest", "proposalVersion", "reportedPlacements", "vitrines", "alternatives"] as const) assert.deepEqual(projected[key], guide[key]);
+  for (const key of ["version", "contentDigest", "assignmentDigest", "proposalVersion", "reportedPlacements", "vitrines", "alternatives"] as const) assert.deepEqual(projected[key], activeSpnGuide(guide)[key]);
   assert.equal(JSON.stringify(guide), before);
 });
 
