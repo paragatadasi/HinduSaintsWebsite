@@ -1,3 +1,4 @@
+import reviewedCaseNotes from "../data/museum/spn-vraj-current-case-notes-v17.json";
 import rawVraj from "../data/museum/spn-vraj-approved-v17.json";
 import {vrajMoveGuide} from "./spn-vraj-guide";
 import overlay from "../data/museum/spn-approved-proposal-overlay-v1.json";
@@ -18,6 +19,7 @@ const vraj: {
 } = rawVraj;
 import type {MuseumSaintPlacement} from "./museum-proposals";
 
+const currentCaseNotes: Record<string, string | null> = reviewedCaseNotes;
 export const latestSpnReviewVersion=vraj.version;
 export function buildLatestSpnReview(current:MuseumSaintPlacement[]){
  const base=correctSpnProposal(currentSpnProposalRelease);
@@ -46,7 +48,7 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[]){
   return {...indicator,estimatedRequiredShelfShares:estimate,planningHeadroomShelfShares:5-estimate,unknownPlanningFootprintCount:unknown.length,unknownPlanningFootprintSourceIds:unknown.map(row=>row.sourceId),namedOnlyUnknownFootprintCount:0,
    potentialFlexibleSpace:!indicator.flexibleSpaceExclusion&&!unknown.length&&estimate<=4,
    hasUnresolvedHoldings:!!unresolved.length,unresolvedSourceObservationCount:unresolved.length,
-   specialFitNote:indicator.vitrine==="38"?null:indicator.vitrine==="4"?"Approved core: 15 source entries, estimated 5.47 / 5 shelf-height spaces. Check fit before filling. Other current occupants need separate review.":indicator.vitrine==="37"?"Approved core: 10 source entries, estimated 3.39 / 5 shelf-height spaces. Yogmaya’s two observations retain a combined allowance of 1.5. Seven city entries await separate destinations.":indicator.specialFitNote};
+   specialFitNote:Object.hasOwn(currentCaseNotes,indicator.vitrine)?currentCaseNotes[indicator.vitrine]:indicator.vitrine==="38"?null:indicator.vitrine==="4"?"Approved core: 15 source entries, estimated 5.47 / 5 shelf-height spaces. Check fit before filling. Other current occupants need separate review.":indicator.vitrine==="37"?"Approved core: 10 source entries, estimated 3.39 / 5 shelf-height spaces. Yogmaya’s two observations retain a combined allowance of 1.5. Seven city entries await separate destinations.":indicator.specialFitNote};
  });
  const guides=[{...starterMoveGuide,vitrines:starterMoveGuide.vitrines.filter(v=>v.code==="28")},dattaMoveGuide,ramBhaktiMoveGuide,gosaijiSaiMoveGuide,vrajMoveGuide];
  const reviewedFamilies=guides.flatMap(guide=>guide.vitrines.map(v=>({...v,families:v.families.map(group=>{const present=new Set(rows.filter(row=>row.effectiveVitrine===v.code).map(row=>row.sourceId));return {...group,sourceIds:group.sourceIds.filter(id=>present.has(id)),edges:group.edges?.filter(edge=>present.has(edge.fromSourceId)&&present.has(edge.toSourceId))};}),entries:guide.entries.map(entry=>{const row=rows.find(row=>row.sourceId===entry.sourceId);return row?{...entry,name:row.name,tier:row.tier}:entry;})})));

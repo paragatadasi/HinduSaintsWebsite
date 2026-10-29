@@ -31,3 +31,18 @@ test("newer curator destinations override approved overlay and move map anchors 
  assert.ok(view.proposal.tertiaryCityClusters.find(v=>v.vitrine===12)!.groups.some(g=>g.city==="Puri"));
 });
 
+
+test("current case notes retain cautions without historical roster directions",()=>{
+ const before=JSON.stringify(currentSpnProposalRelease);
+ const view=buildLatestSpnReview([]);
+ const note=(code:string)=>view.proposal.indicators.find(i=>i.vitrine===code)!.specialFitNote;
+ for(const code of ["2","5","27","38"])assert.equal(note(code),null);
+ assert.match(note("79")!,/Gayatri Pariwar couple/);
+ assert.match(note("32")!,/identity under review/);
+ assert.match(note("33")!,/size is unknown/);
+ assert.match(note("77")!,/institutional branches distinct/);
+ assert.match(note("34")!,/source records say Still alive/);
+ assert.match(note("35")!,/identity and locality questions/);
+ for(const code of ["79","32","33","77","34","35"])assert.doesNotMatch(note(code)!,/Known \d|Gayatri.*Mathura 35|Banke Bihari/);
+ assert.equal(JSON.stringify(currentSpnProposalRelease),before);
+});
