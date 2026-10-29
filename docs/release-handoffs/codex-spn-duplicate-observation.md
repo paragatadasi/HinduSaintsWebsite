@@ -48,3 +48,9 @@
 
 - Placement checkboxes now explain missing preparation and focus the relevant confirmation area instead of silently ignoring clicks. Covers family trees, city groups, and final checklist. No physical write is sent until preparation is complete; all other edit guards remain.
 - Local real-component browser checks passed for Vitrine 73 readiness, fixed-object transfer prerequisites, undo relocking, and mobile layout.
+
+## Starter cleanup follow-up
+
+- Add the seven curator-supplied cleanup items in a compact starter-phase disclosure, with qualified destinations and identity holds preserved.
+- Exact-source partial-move tags for Balak Sadhu and Sachinandan appear in cleanup and checklist. This is a component-completion note, not a physical status rewrite; all receipts and saved proposals stay intact. No database or environment changes.
+- Nadi confirmed exact source mapping. Skill review found no new reusable interpretation rule; the existing partial-assembly/physical-evidence distinction applies.
