@@ -726,3 +726,10 @@ dialog. “Proposed” changes the exact source record's destination; “Already
 also requests a guarded physical confirmation. Show partial-save failures plainly.
 Curator additions appear in the overall proposal and receiving phase without
 rewriting the frozen guide or other relics attached to the same saint.
+
+### Qualified museum guide relationships
+
+The shared guide tree supports `basis: "source"` edges. These use dashed
+connectors alongside explicit source-recorded labels; verified edges remain
+solid. Keep historical corroboration caveats visible in the group context.
+A display grouping alone must not generate a relationship edge.

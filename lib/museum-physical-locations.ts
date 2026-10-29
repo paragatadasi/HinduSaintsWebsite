@@ -1,11 +1,12 @@
 import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
 import {readGuideAlternativeDestinations} from "./museum-guide-alternatives";
 import { readEffectiveCompanionAdditions } from "./museum-companion-additions-state";
+import { assertCurrentNorthernGuideTargets } from "./spn-northern-voyage";
 import { currentReceiverGuideDefinitions } from "./spn-starter-guide-registry";
 import {spnDuplicateObservations} from "./spn-observation-suppression";
 import { clearCorrectionInput, clearCorrectionOffers, clearCorrectionShelfApplies } from "./museum-clear-correction-domain";
 import { allowsPreparedFixedHousingTransfer, assertPreparatoryTransfers } from "./museum-preparatory-transfers";
-import { preparationInput, projectPreparations, assertSafeCaseClear, projectPhaseClearances, assertPhaseClearance, phaseNeedsClearance, assertPhasePreparation } from "./museum-preparation-domain";
+import { preparationInput, projectPreparations, assertSafeCaseClear, projectPhaseClearances, assertPhaseClearance, phaseNeedsClearance, phaseClearanceRequirements, assertPhasePreparation } from "./museum-preparation-domain";
 import { memoizePhysicalSnapshot } from "./museum-physical-snapshot-cache";
 import { physicalUndoInput, physicalUndoOffer } from "./museum-physical-undo-domain";
 import { assertGuidePhysicalScope } from "./spn-datta-guide";
@@ -143,6 +144,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     }
     if(input.guideContext && readStarterGuideDefinition(input.guideContext.guideVersion).readOnly)
       throw new MuseumMoveSessionError(409,"This guide is historical. Reload the current guide before recording a new physical move.");
+    assertCurrentNorthernGuideTargets(input);
     if(input.alternativeDecision){
       if(!input.guideContext||input.clearedVitrines?.length)throw new MuseumMoveSessionError(400,"Reload the alternative destination before confirming it.");
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
@@ -181,14 +183,14 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       for (const receiver of additionPhases) {
         const scope = receiver.physicalScope;
         if (scope?.allowClear && scope.clearVitrines?.length && phaseNeedsClearance(input.records, scope.clearanceRequiredDestinations))
-          assertPhaseClearance(input, scope.clearVitrines, receiver.context.guideVersion,
+          assertPhaseClearance(input, phaseClearanceRequirements(input.records, scope.clearVitrines, scope.clearancePerDestination), receiver.context.guideVersion,
             clearances.map(row => scope.previousClearanceVersions?.includes(row.guideVersion) ? { ...row, guideVersion: receiver.context.guideVersion } : row), current.rows, input.records);
         if (scope?.preparationVitrines?.length) assertPhasePreparation(input.records, scope.preparationVitrines, preparations);
       }
     }
     const initialCases=phase?.physicalScope?.allowClear ? phase.physicalScope.clearVitrines ?? [] : [];
     if(initialCases.length && (input.clearedVitrines?.length || phaseNeedsClearance(input.records,phase?.physicalScope?.clearanceRequiredDestinations)))
-      assertPhaseClearance(input,initialCases,phase?.context.guideVersion ?? "",(await readMuseumPhaseClearances(tx)).map(c=>phase?.physicalScope?.previousClearanceVersions?.includes(c.guideVersion)?{...c,guideVersion:phase.context.guideVersion}:c),current.rows,input.records);
+      assertPhaseClearance(input,input.clearedVitrines?.length ? initialCases : phaseClearanceRequirements(input.records, initialCases, phase?.physicalScope?.clearancePerDestination),phase?.context.guideVersion ?? "",(await readMuseumPhaseClearances(tx)).map(c=>phase?.physicalScope?.previousClearanceVersions?.includes(c.guideVersion)?{...c,guideVersion:phase.context.guideVersion}:c),current.rows,input.records);
     const preparationVitrines = [...new Set([...(phase?.physicalScope?.preparationVitrines ?? []), ...transfers.map(row => row.toVitrine)])];
     if(preparationVitrines.length)assertPhasePreparation(input.records,preparationVitrines,await readMuseumPreparations(tx));
     if (input.clearedVitrines?.length && !initialCases.length) assertSafeCaseClear(input.clearedVitrines, [...current.rows, ...current.unmappedCurrentLocations.map(row=>({currentBasis:"confirmed",current:row.location}))]);

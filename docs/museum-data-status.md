@@ -1,5 +1,25 @@
 # Museum data integration: status and remaining work
 
+## Northern journey and East baseline audit — 29 October 2026
+
+Latest approved checkpoint: `spn-northern-voyage-approved-v19.json` follows research V16, whose destinations are unchanged from V15, and supersedes the V9 destinations below. The curator approved locking this row and adding it as the next companion phase on 29 October. Activation requires the matching reviewer and registered guide in the same release; this data checkpoint alone is not a deployment. Tier snapshot 43 supplies exact identities and arrangement baselines for 122 observations: 111 assigned destinations and 11 pending holdings. The combined Buddhist/Assam/Nepal proposal has 23 entries in 74; its 14 previously confirmed physical placements remain in 73. Delhi Hanuman Swami is proposed for 11, Kanupriya for 36, and Appaji for 68. Receiving-case footprint unknowns remain explicit; no physical fit is confirmed.
+
+The pending list removes unresolved holdings from assigned-case loads without turning them into physical staging records or deleting their previous proposals. Effective source-scoped additions and newer curator arrangements must retain precedence. Six Northern case stories are separate from the three receiving-case notes, so a small addition does not replace the whole story in 11, 36 or 68. Fourteen East rows in the research visualization omitted canonical IDs; the prepared packet resolves those IDs from their exact existing source bindings, without merging or creating identities.
+
+The final physical audit found 54 recorded occupants across 19, 20, 21 and 22. Whole-display movement holds affect Pagal Baba in 19 and Durgaprasad and Paramanand Das in 20; do not bypass them or infer that those cases have been cleared. Northern clearance is checked per destination, so 21 and 22 can proceed independently after explicit clearing and preparation. Preserve the 18 confirmed occupants of 36 and add Kanupriya only after its receiving check. No recorded occupants in 72, 74 or 68 is not proof that those vitrines are empty. Preparation remains a curator observation, and clearing remains a separate explicit physical action. Older phase targets cannot overwrite these approved destinations; effective saved curator alternatives/additions and historical undo receipts retain their supported paths.
+
+The V9 capture that follows is historical and must not be activated:
+
+Prepared data, not an activated proposal: `spn-northern-voyage-approved-v18.json` captures Saarthi's approved 108 source observations against the authenticated 20:35 UTC tier snapshot. It includes 107 destination recommendations and one unchanged, held Vashishta/cave observation. Nine supported Nepal observations are proposed for 73; the already approved Gondavalekar/Tukamai observations remain excluded from this packet. No tiers, relationships, source values or physical locations are written by the packet or its pure projection helper.
+
+The packet follows research revision V9, which supersedes V8 following the user's reversal of the journey: 19 Kumaon, 20 Haridwar, 72 Rishikesh, 21 Badri–Kedar, 22 Himachal and 74 Katra. Nepal remains in 73. The Vashishta/cave entry remains held; a reversed case label does not establish its identity or a physical move.
+
+The companion's registered fill-first guide must be reflected in the overall proposal before activating this Northern overlay. `spn-east-fill-reviewed-baseline-v1.json` captures its exact 50 observations and current identity/arrangement baselines: 11 assigned to 75, 23 to 23, and 16 to 73. All 17 obsolete Bengal assignments to 73 have registered destinations in 23. Fourteen observations were physically confirmed in 73 at audit time; the two ambiguous Kamaal/Gajanan observations remain held at their recorded source locations. These counts describe different states and must remain distinct.
+
+Integration order: apply the reviewed East baseline, then the Northern destinations, then reconcile current curator records and apply effective alternatives/additions. Preserve newer curator destinations and every physical confirmation. The unique reviewed CMS placement for Balak Yogeshwar is linked by canonical identity, rather than by an invented source placement ID. Citra owns the matching reviewer and registered guide integration in a separate checkpoint. Physical fit remains an estimate, including an unknown footprint in 73.
+
+Workflow learning review found no new reusable skill rule; the existing source-identity, reviewed-override and proposal-versus-physical rules cover these findings.
+
 Status recorded October 3, 2026. This is the data workstream record; release handoffs and the release captain establish production deployment status. The UX workstream owns the curator screens and museum-specific working proposal editor.
 
 ## Completed checkpoints

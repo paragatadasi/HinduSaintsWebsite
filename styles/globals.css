@@ -12199,3 +12199,7 @@ select:not([multiple]) {
 .admin-tab-strip--scrollable .admin-tab-strip__tab{white-space:nowrap;flex-shrink:0}
 .museum-companion__guide{min-width:0}
 .museum-companion__canvas>nav[aria-label="Move plan"]{margin-bottom:var(--space-5)}
+
+.museum-guide-tree ul.museum-guide-tree__qualified {border-left:0;padding-left:0}
+.museum-guide-tree__qualified > li {border-left:var(--border-width-default) solid var(--color-copper);padding-left:var(--space-4)}
+.museum-guide-tree__qualified > li[data-relationship-basis="source"] {border-left-style:dashed}
