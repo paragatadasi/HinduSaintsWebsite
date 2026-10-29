@@ -17,6 +17,8 @@ test("latest reviewer projects approved 4/37 rosters, fit and held records witho
  assert.equal(view.rows.find(r=>r.sourceId==="recc9hYwqqmB3Di2r")?.effectiveVitrine,"36");
  assert.equal(view.rows.find(r=>r.sourceId==="recJepdkXi90kdROh")?.effectiveVitrine,"2");
  assert.equal(view.rows.find(r=>r.sourceId==="recIv4yKRknjgONrZ")?.effectiveVitrine,"78");
+ assert.equal(view.proposal.indicators.find(i=>i.vitrine==="38")!.specialFitNote,null);
+ assert.match(currentSpnProposalRelease.proposal.indicators.find(i=>i.vitrine==="38")!.specialFitNote!,/1\.826\/2/);
  assert.equal(JSON.stringify(currentSpnProposalRelease),original);
 });
 test("newer curator destinations override approved overlay and move map anchors and fit together",()=>{
