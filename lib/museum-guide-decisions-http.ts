@@ -1,3 +1,4 @@
+import {readGuideAlternativeDestinations} from "./museum-guide-alternatives";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getAdminUser } from "./admin-access";
@@ -24,7 +25,7 @@ export async function museumGuideDecisionsHttp(request: Request) {
       if (!request.headers.get("content-type")?.startsWith("application/json")) throw new MuseumMoveSessionError(415, "Send this decision as JSON.");
       result = await saveMuseumGuideDecision(JSON.parse((await boundedIntakeBody(request, 16 * 1024)).toString("utf8")), { id: user.id, canManage: true }, readStarterGuideDefinition);
     } else throw new MuseumMoveSessionError(405, "This action is unavailable.");
-    return NextResponse.json(result, { headers: { "Cache-Control": "private, no-store" } });
+    return NextResponse.json({...result,alternativeDestinations:await readGuideAlternativeDestinations()}, { headers: { "Cache-Control": "private, no-store" } });
   } catch (error) {
     let status = 500, message = "This decision could not be saved. Reload the guide before trying again.";
     if (error instanceof MuseumMoveSessionError) { status = error.status; message = error.message; }

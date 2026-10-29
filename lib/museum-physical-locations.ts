@@ -1,3 +1,6 @@
+import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
+import {readGuideAlternativeDestinations} from "./museum-guide-alternatives";
+import {spnDuplicateObservations} from "./spn-observation-suppression";
 import { clearCorrectionInput, clearCorrectionOffers, clearCorrectionShelfApplies } from "./museum-clear-correction-domain";
 import { allowsPreparedFixedHousingTransfer, assertPreparatoryTransfers } from "./museum-preparatory-transfers";
 import { preparationInput, projectPreparations, assertSafeCaseClear, projectPhaseClearances, assertPhaseClearance, phaseNeedsClearance, assertPhasePreparation } from "./museum-preparation-domain";
@@ -21,6 +24,7 @@ const confirmedDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(value => {
 export const physicalConfirmationInput = z.object({ museumId: z.literal("museum-spn"), clientRequestId: z.string().uuid(),
   confirmedDate, datePrecision: z.literal("date"), evidence: z.string().trim().min(1).max(2000),
   physicalConfirmation: z.literal(true), inventoryAcknowledged: z.literal(true),
+  alternativeDecision:z.object({guideVersion:z.string().min(1).max(200),suggestionId:z.string().min(1).max(300),version:z.number().int().positive()}).strict().optional(),
   guideContext: z.object({ guideVersion: z.string().min(1).max(200), contentDigest: z.string().regex(/^[a-f0-9]{64}$/), assignmentDigest: z.string().regex(/^[a-f0-9]{64}$/) }).strict().optional(),
   initialCaseClearAcknowledged: z.literal(true).optional(),
   clearedVitrines: z.array(z.string().min(1).max(100)).max(100).optional(),
@@ -47,6 +51,7 @@ export async function readPhysicalLocationView(loader: PhysicalSnapshotLoader, t
     const current = resolveMuseumPhysicalCurrent(row.sourceReported, positions.find(position => position.sourceId === row.sourceId), row.legacyConfirmed);
     return { sourceId: row.sourceId, sourceKey: row.sourceKey ?? null, saintId: row.saintId, name: row.name,
       original: row.sourceReported, legacyConfirmed: row.legacyConfirmed ?? null, proposalDestination: row.destination, proposalVersion: snapshot.proposalVersion,
+      duplicateOfSourceId: spnDuplicateObservations[row.sourceId]?.duplicateOfSourceId ?? null,
       fixedHousing: row.fixedHousing, movementBlockedReason: spnMovementBlockedReason(row.sourceId), verifiedItemIds: [...new Set([...(row.itemIds ?? []), ...(row.itemId ? [row.itemId] : [])])], identityChanged,
       sourceRevision: physicalFingerprint({ sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, original: row.sourceReported, link, itemIds: row.itemIds ?? [], fixedHousing: row.fixedHousing }),
       ...current };
@@ -64,7 +69,7 @@ export async function readPhysicalLocationView(loader: PhysicalSnapshotLoader, t
       AND event."afterJson"->>'museumId'='museum-spn'
   `) : [];
   return { museumId: "museum-spn" as const, sourceSnapshotAt: snapshot.sourceSnapshotAt ?? null, rows: rows.map(row => ({ ...row, undo: physicalUndoOffer(row, undoReceipts) })), vitrineCodes: snapshot.vitrineCodes,
-    unmappedCurrentLocations: positions.filter(position => !snapshot.rows.some(row => row.sourceId === position.sourceId)).flatMap(position => { const location = storedPhysicalLocation(position.location); return location ? [{ sourceId: position.sourceId, location, version: position.version, recordedAt: position.confirmedAt }] : []; }) };
+    unmappedCurrentLocations: positions.filter(position => !spnDuplicateObservations[position.sourceId] && !snapshot.rows.some(row => row.sourceId === position.sourceId)).flatMap(position => { const location = storedPhysicalLocation(position.location); return location ? [{ sourceId: position.sourceId, location, version: position.version, recordedAt: position.confirmedAt }] : []; }) };
 }
 
 export async function readMuseumPhysicalLocations(loader: PhysicalSnapshotLoader, sourceIds?: string[]) {
@@ -119,7 +124,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
   assertDistinctMoveSources(input.records);
   if (input.guideContext) {
     const definition = readStarterGuideDefinition(input.guideContext.guideVersion);
-    assertGuidePhysicalScope(definition, input.records, input.clearedVitrines);
+    if(!input.alternativeDecision)assertGuidePhysicalScope(definition, input.records, input.clearedVitrines);
     const registered = definition.context;
     if (registered.contentDigest !== input.guideContext.contentDigest || registered.assignmentDigest !== input.guideContext.assignmentDigest) throw new MuseumMoveSessionError(409, "The guide content changed. Reload it before recording a placement.");
   }
@@ -135,6 +140,17 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     }
     if(input.guideContext && readStarterGuideDefinition(input.guideContext.guideVersion).readOnly)
       throw new MuseumMoveSessionError(409,"This guide is historical. Reload the current guide before recording a new physical move.");
+    if(input.alternativeDecision){
+      if(!input.guideContext||input.clearedVitrines?.length)throw new MuseumMoveSessionError(400,"Reload the alternative destination before confirming it.");
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      const key={museumId:"museum-spn",guideVersion:input.alternativeDecision.guideVersion,suggestionId:input.alternativeDecision.suggestionId};
+      const decision=await tx.museumGuideSuggestionDecision.findUnique({where:{museumId_guideVersion_suggestionId:key}});
+      const suggestion=assertAlternativeGuideContext(readStarterGuideDefinition(input.guideContext.guideVersion),readStarterGuideDefinition(key.guideVersion),key.suggestionId);
+      const effective=await readGuideAlternativeDestinations(tx);
+      if(!decision||decision.version!==input.alternativeDecision.version||decision.decision!=="declined"||!decision.alternativeVitrine||!suggestion||
+        input.records.some(r=>!effective.some(a=>a.sourceId===r.sourceId&&a.guideVersion===key.guideVersion&&a.suggestionId===key.suggestionId&&a.version===decision.version)||!suggestion.sourceIds.includes(r.sourceId)||r.to.kind!=="vitrine"||r.to.code!==decision.alternativeVitrine||(r.to.shelf??null)!==(decision.alternativeShelf??null)))
+        throw new MuseumMoveSessionError(409,"The alternative changed. Reload it before recording the move.");
+    }
     const phase = input.guideContext ? readStarterGuideDefinition(input.guideContext.guideVersion) : null;
     const transfers = phase?.physicalScope?.preparatoryTransfers ?? [];
     const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length ? undefined : [...new Set([...input.records.map(row => row.sourceId), ...transfers.map(row => row.sourceId)])]);

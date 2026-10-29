@@ -1,3 +1,4 @@
+import {readGuideAlternativeDestinations} from "@/lib/museum-guide-alternatives";
 import {buildLatestSpnReview} from "@/lib/spn-reviewed-proposal";
 import {MuseumPlanTabs} from "@/components/admin/museum-plan-tabs";
 import {currentSpnProposalRelease} from "@/lib/spn-current-proposal";
@@ -30,7 +31,7 @@ export default async function SpnMovePlan(){
   const reconciled=reconcileSpnRoomProposal([...rows,...namedOnly],placements,{acceptedBaseline});
   return {proposal:view,designData:acceptedBaseline?{...designData,options:designData.options.map(option=>projectCurrentPrimaryAnchors(option,reconciled))}:designData,rows:reconciled};
  });
- releases.unshift(buildLatestSpnReview(placements));
+ releases.unshift(buildLatestSpnReview(placements,await readGuideAlternativeDestinations()));
  return <div className="admin-stack">
  <MuseumPlanTabs active="reviewer"/>
  <SpnRoomExplorer releases={releases}/>

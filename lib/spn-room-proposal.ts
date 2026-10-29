@@ -1,3 +1,4 @@
+import {isActiveSpnObservation} from "./spn-observation-suppression";
 import type {MuseumSaintPlacement} from './museum-proposals';
 
 export type ProposalObservation={sourceId:string;saintId:string|null;name:string;vitrine:string;tier:string;section:string;
@@ -10,7 +11,7 @@ const sameTags=(a:string[],b:string[])=>JSON.stringify([...a].sort())===JSON.str
 export function reconcileSpnRoomProposal(proposed:ProposalObservation[],current:MuseumSaintPlacement[],policy:{acceptedBaseline?:boolean}={}):ExplorerObservation[]{
  const bySaint=new Map<string,MuseumSaintPlacement[]>();
  for(const row of current)if(row.saintId)bySaint.set(row.saintId,[...(bySaint.get(row.saintId)??[]),row]);
- return proposed.map(row=>{
+ return proposed.filter(row=>isActiveSpnObservation(row.sourceId)).map(row=>{
   const candidates=row.saintId?bySaint.get(row.saintId)??[]:[];
   const live=candidates.find(p=>p.id===row.baseline?.placementId);
   let reviewReason='';

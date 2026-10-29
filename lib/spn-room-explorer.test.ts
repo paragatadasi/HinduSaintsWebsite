@@ -27,7 +27,7 @@ test('Kriya continuation context is not represented as actual holdings at75',()=
 test('explorer keeps source coverage and exact primary and secondary placements',()=>{
  const rows=reconcileSpnRoomProposal([...data.rows,...data.namedOnly],[]);
  const saints=explorerSaints(rows);
- assert.equal(saints.flatMap(s=>s.observations).length,1426);
+ assert.equal(saints.flatMap(s=>s.observations).length,1425);
  assert.equal(new Set(saints.filter(s=>s.tier==='Primary').map(s=>s.saintId)).size,90);
  assert.equal(new Set(saints.filter(s=>s.tier==='Secondary').map(s=>s.saintId)).size,191);
  const yogananda=saints.find(s=>s.name==='Sri Paramahamsa Yogananda')!;
