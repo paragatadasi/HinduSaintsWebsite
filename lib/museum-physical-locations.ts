@@ -1,6 +1,6 @@
 import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
 import {readGuideAlternativeDestinations} from "./museum-guide-alternatives";
-import { readCompanionAdditions } from "./museum-companion-additions-state";
+import { readEffectiveCompanionAdditions } from "./museum-companion-additions-state";
 import { currentReceiverGuideDefinitions } from "./spn-starter-guide-registry";
 import {spnDuplicateObservations} from "./spn-observation-suppression";
 import { clearCorrectionInput, clearCorrectionOffers, clearCorrectionShelfApplies } from "./museum-clear-correction-domain";
@@ -160,7 +160,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       if (input.alternativeDecision || input.clearedVitrines?.length || input.records.length !== 1)
         throw new MuseumMoveSessionError(400, "Confirm one added record without clearing a vitrine.");
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      const addition = (await readCompanionAdditions(tx)).find(row => row.sourceId === input.curatorAddition!.sourceId);
+      const addition = (await readEffectiveCompanionAdditions(tx)).find(row => row.sourceId === input.curatorAddition!.sourceId);
       const record = input.records[0];
       if (!addition || addition.version !== input.curatorAddition.version || addition.sourceId !== record.sourceId ||
         addition.saintId !== record.saintId || addition.sourceRevision !== record.expectedSourceRevision ||

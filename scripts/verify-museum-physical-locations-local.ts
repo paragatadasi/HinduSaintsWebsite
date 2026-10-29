@@ -81,5 +81,23 @@ try {
   assert.equal((await api.readMuseumPhysicalLocations(loader)).unmappedCurrentLocations[0].sourceId, "retained-old-source");
   assert.equal(api.physicalConfirmationInput.safeParse({ ...first, confirmedDate: "2026-02-31" }).success, false);
   assert.equal(api.physicalConfirmationInput.safeParse({ ...first, records: [{ ...first.records[0], to: { kind: "invalid", code: "staging-area", label: "Staging area" } }] }).success, false);
+  const additionRequest = await request(["a"], "2");
+  const { starterGuideContext } = await import("../lib/spn-starter-guide-registry");
+  await db.auditEvent.create({ data: { userId: curator.id, action: "museum.companion.addition.planned", entityType: "MuseumCompanionAddition", entityId: "museum-spn:a",
+    afterJson: { sourceId: "a", saintId: "same-saint", sourceRevision: additionRequest.records[0].expectedSourceRevision, vitrine: "2", shelf: null, version: 1, updatedAt: new Date().toISOString(), clientRequestId: randomUUID() } } });
+  const added = { ...additionRequest, curatorAddition: { sourceId: "a", version: 1 } };
+  await assert.rejects(api.confirmMuseumPhysicalLocations(added, curator, loader), /current move guide/);
+  const guided = { ...added, guideContext: starterGuideContext };
+  await assert.rejects(api.confirmMuseumPhysicalLocations(guided, curator, loader), /available and prepared/);
+  await api.saveMuseumPreparation({ action: "preparation.update", museumId: "museum-spn", clientRequestId: randomUUID(), vitrine: "2", prepared: true, expectedVersion: 0 }, curator, loader);
+  await assert.rejects(api.confirmMuseumPhysicalLocations({ ...guided, curatorAddition: { sourceId: "a", version: 99 } }, curator, loader), /added destination changed/);
+  await assert.rejects(api.confirmMuseumPhysicalLocations({ ...guided, records: guided.records.map(row => ({ ...row, to: vitrine("28") })) }, curator, loader), /added destination changed/);
+  const confirmedAddition = await api.confirmMuseumPhysicalLocations(guided, curator, loader);
+  assert.equal(confirmedAddition.rows[0].current?.code, "2");
+  const { readMuseumPhysicalProgress } = await import("../lib/museum-physical-progress");
+  const progress = await readMuseumPhysicalProgress();
+  assert.equal(progress.positions.find(row => row.sourceId === "a")?.currentRevision, confirmedAddition.rows[0].currentRevision);
+  await db.auditEvent.create({ data: { userId: curator.id, action: "museum.arrangement.updated", entityType: "MuseumArrangement", entityId: "a", afterJson: { museumId: "museum-spn" } } });
+  await assert.rejects(api.confirmMuseumPhysicalLocations({ ...guided, clientRequestId: randomUUID() }, curator, loader), /added destination changed/);
   console.log("PASS: exact-source/date-precision confirmations without sessions; original/proposal preservation; retry receipts; stale atomic/identity rejection; catalog/fixed/role holds; same-saint scope; existing-session history independent of later proposal changes.");
 } finally { await db.$disconnect(); }
