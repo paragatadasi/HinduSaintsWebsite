@@ -47,6 +47,10 @@ export function assertPhaseClearance(input:{clearedVitrines?:string[];initialCas
 export function phaseNeedsClearance(records:{to:{kind:string;code:string}}[],destinations?:string[]){
  return records.some(row=>row.to.kind==="vitrine" && (!destinations || destinations.includes(row.to.code)));
 }
+
+export function phaseClearanceRequirements(records: { to: { kind: string; code: string } }[], cases: string[], perDestination = false) {
+ return perDestination ? cases.filter(code => records.some(row => row.to.kind === "vitrine" && row.to.code === code)) : cases;
+}
 export function assertPhasePreparation(records:{to:{kind:string;code:string}}[],required:string[],preparations:{vitrine:string;prepared:boolean}[]){
  for(const code of required)if(records.some(row=>row.to.kind==="vitrine"&&row.to.code===code) && !preparations.some(row=>row.vitrine===code&&row.prepared))
   throw new MuseumMoveSessionError(409,"Check that this destination vitrine is available and prepared before recording placements.");
