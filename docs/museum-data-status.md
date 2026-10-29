@@ -2,6 +2,12 @@
 
 ## Northern journey and East baseline audit — 29 October 2026
 
+Latest prepared checkpoint: `spn-northern-voyage-approved-v19.json` follows research V15 and supersedes the V9 destinations below. Release status remains **held**. The fresh tier snapshot 43 supplies exact identities and arrangement baselines for 122 observations: 111 assigned destinations and 11 pending holdings. The combined Buddhist/Assam/Nepal proposal has 23 entries in 74; its 14 previously confirmed physical placements remain in 73. Delhi Hanuman Swami is proposed for 11, Kanupriya for 36, and Appaji for 68. Receiving-case footprint unknowns remain explicit; no physical fit is confirmed.
+
+The pending list removes unresolved holdings from assigned-case loads without turning them into physical staging records or deleting their previous proposals. Effective source-scoped additions and newer curator arrangements must retain precedence. Six Northern case stories are separate from the three receiving-case notes, so a small addition does not replace the whole story in 11, 36 or 68. Fourteen East rows in the research visualization omitted canonical IDs; the prepared packet resolves those IDs from their exact existing source bindings, without merging or creating identities.
+
+The V9 capture that follows is historical and must not be activated:
+
 Prepared data, not an activated proposal: `spn-northern-voyage-approved-v18.json` captures Saarthi's approved 108 source observations against the authenticated 20:35 UTC tier snapshot. It includes 107 destination recommendations and one unchanged, held Vashishta/cave observation. Nine supported Nepal observations are proposed for 73; the already approved Gondavalekar/Tukamai observations remain excluded from this packet. No tiers, relationships, source values or physical locations are written by the packet or its pure projection helper.
 
 The packet follows research revision V9, which supersedes V8 following the user's reversal of the journey: 19 Kumaon, 20 Haridwar, 72 Rishikesh, 21 Badri–Kedar, 22 Himachal and 74 Katra. Nepal remains in 73. The Vashishta/cave entry remains held; a reversed case label does not establish its identity or a physical move.

@@ -5,28 +5,41 @@ import { reconcileSpnRoomProposal, type ProposalObservation } from "./spn-room-p
 import type { MuseumSaintPlacement } from "./museum-proposals";
 import east from "../data/museum/spn-east-fill-reviewed-baseline-v1.json";
 import fillGuide from "../data/museum/spn-fill-first-guide-v1.json";
+import { currentSpnProposalRelease } from "./spn-current-proposal";
+import { correctSpnProposal } from "./spn-proposal-corrections";
 
 const rows: ProposalObservation[] = northernVoyage.assignments.map(row => ({ sourceId: row.sourceId,
   saintId: row.saintId, name: row.name, vitrine: "original", tier: row.capturedTier,
-  section: row.capturedBaseline.section, sourceVitrine: "", sourceShelf: "", unresolved: row.held,
+  section: row.capturedBaseline.section, sourceVitrine: "", sourceShelf: "", unresolved: row.status === "pending",
   allocationKind: "baseline", share: row.spaceEstimate, state: "shelf_proxy", baseline: row.capturedBaseline }));
 
-test("Northern packet assigns nine exact Nepal observations and preserves held and excluded sources", () => {
+test("Northern V15 packet assigns the combined East and Nepal group and preserves pending and excluded sources", () => {
   const before = JSON.stringify(rows);
   const result = applyNorthernVoyage(rows);
-  assert.equal(result.filter(row => row.vitrine === "73").length, 9);
+  assert.equal(result.filter(row => row.vitrine === "74").length, 23);
   assert.equal(result.find(row => row.sourceId === "recmWirQlF3WoLTYk")?.vitrine, "original");
-  assert.equal(result.filter(row => row.vitrine !== "original").length, 107);
+  assert.equal(result.filter(row => row.vitrine !== "original").length, 111);
+  assert.equal(northernVoyage.pendingReceiverSourceIds.length, 11);
   for (const id of northernVoyage.excludedAlreadyApproved80) assert.ok(!result.some(row => row.sourceId === id));
   assert.equal(JSON.stringify(rows), before);
-  assert.equal(northernVoyage.researchPacketVersion, "spn-northern-voyage-2026-10-29-v9");
-  assert.equal(result.find(row => row.sourceId === "receeTTYzFn1nRAom")?.vitrine, "21");
-  assert.equal(northernVoyage.caseStories["19"], "Sattal and Kumaon");
-  assert.equal(northernVoyage.caseStories["74"], "Katra and Vaishno Devi");
+  assert.equal(northernVoyage.researchPacketVersion, "spn-northern-voyage-2026-10-29-v15-review");
+  assert.equal(result.find(row => row.sourceId === "receeTTYzFn1nRAom")?.vitrine, "20");
+  assert.equal(result.find(row => row.sourceId === "recijNKdW2wF5Lhw1")?.vitrine, "11");
+  assert.equal(result.find(row => row.sourceId === "recBpkMpvzm57a1J8")?.vitrine, "36");
+  assert.equal(result.find(row => row.sourceId === "rectqE1YWAEVoP9z3")?.vitrine, "68");
+  assert.equal(northernVoyage.releaseStatus, "held");
+  assert.equal(northernVoyage.preservedPhysical73.length, 14);
 });
 
 test("changed source identities cannot silently inherit a Northern destination", () => {
   assert.throws(() => applyNorthernVoyage(rows.map((row, i) => i ? row : { ...row, saintId: "different" })), /identities need reconciliation/);
+});
+
+test("every approved observation resolves in the real retained proposal source inventory", () => {
+  const base = correctSpnProposal(currentSpnProposalRelease).proposal;
+  const result = applyNorthernVoyage([...base.rows, ...base.namedOnly]);
+  assert.equal(result.find(row => row.sourceId === "recijNKdW2wF5Lhw1")?.vitrine, "11");
+  assert.equal(result.find(row => row.sourceId === "rec4V2uLs4HP4Ps3d")?.vitrine, "74");
 });
 
 test("East baseline retains the exact registered 50 destinations and distinguishes confirmed placements from holds", () => {
@@ -43,7 +56,7 @@ test("East baseline retains the exact registered 50 destinations and distinguish
 });
 
 test("newer curator destinations and tiers retain precedence after the reviewed Northern baseline", () => {
-  const source = northernVoyage.assignments.find(row => row.destination === "73")!;
+  const source = northernVoyage.assignments.find(row => row.destination === "74")!;
   const live: MuseumSaintPlacement = { alternatives: [], confidence: "high", rationale: "", note: "", familySize: 1,
     spiritualRegions: [], sampradaya: "", needsResearch: false, normalizedPlaces: [],
     id: source.capturedBaseline.placementId, sourceRecordId: source.sourceId, saintId: source.saintId!,
