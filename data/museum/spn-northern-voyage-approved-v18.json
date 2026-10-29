@@ -1,0 +1,2247 @@
+{
+  "version": "spn-northern-voyage-2026-10-29-v18",
+  "researchPacketVersion": "spn-northern-voyage-2026-10-29-v9",
+  "capturedAt": "2026-10-29T20:35:29.029Z",
+  "snapshotFingerprint": "9ed7d641cf58465143c60182f2741121b12e120c10f870e93bd20c32468e19a0",
+  "physicalWrites": false,
+  "preserveNewerCuratorDecisions": true,
+  "assignments": [
+    {
+      "sourceId": "receeTTYzFn1nRAom",
+      "saintId": "cms0w7eq3039i07qibwl2hwux",
+      "name": "Badrinarayana deity",
+      "destination": "21",
+      "storyOrLocality": "Badrinarayana",
+      "cardId": "north-1",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "receeTTYzFn1nRAom",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Primary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f0f8116317fbd9bd6ecc818f4684059474fda9bbf16cc11971b20884bd47068f",
+        "proposalRevision": "ba30f2fd8789b0c1e49050bf20997ae0c997e12b6e15daeb05b0b47542a542d4"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recfC3aq74ATZisCg",
+      "saintId": "cms0w7ez803lm07qifz2r7x2o",
+      "name": "Sri Swami Dharmaraj Bharati Mouni Baba",
+      "destination": "21",
+      "storyOrLocality": "Dharmaraj & Gangavarti",
+      "cardId": "north-2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recfC3aq74ATZisCg",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-046",
+        "regionTags": [],
+        "revision": "5ed13483fdea575b13950d544b7a2592d8fb5d246bb7b3d2dc1973f960e1f3f6",
+        "proposalRevision": "79f1156fb8f44202fb349c1b110a703825023da78f91af071aebed41a5be1d1a"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recfnKOjMiG6f1CTw",
+      "saintId": "cms0w7f2k03pv07qi0mza0sdh",
+      "name": "Sri Gangavarti",
+      "destination": "21",
+      "storyOrLocality": "Dharmaraj & Gangavarti",
+      "cardId": "north-2",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recfnKOjMiG6f1CTw",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-046",
+        "regionTags": [],
+        "revision": "495c6acaeb728b8bb98d4da51b5c1fbacaf1adf92d4bd7afea6963aaff4c559d",
+        "proposalRevision": "14bd4a427b3181e897f4a477c78176541f0dd227737df2d9b59986e75354dcb1"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "reco5amho3BdJbBku",
+      "saintId": "cms0w7h2m067f07qidjhcets0",
+      "name": "Sri Tapovan Maharaj",
+      "destination": "72",
+      "storyOrLocality": "Tapovan & Chinmayananda",
+      "cardId": "north-3",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "reco5amho3BdJbBku",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4c360fcae501bf4900c20991812ec5afe5b3ab03bd0ed5f8fa5ef7d799e7ee50",
+        "proposalRevision": "71410ca66cc705fa31a606c2f899e31dc7d93636f26daf4c33b41cf085458f2d"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "reckvQNbpExEDFhIS",
+      "saintId": "cms0w7gbj05aa07qij87q96dm",
+      "name": "Sri Swami Chinmayananda",
+      "destination": "72",
+      "storyOrLocality": "Tapovan & Chinmayananda",
+      "cardId": "north-3",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "reckvQNbpExEDFhIS",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Primary",
+        "familyKey": "FAM-022",
+        "regionTags": [],
+        "revision": "0415bbe28bda49e91b21ae5577bb8d345aed7a60aaa26f939a9e9b8551c16f82",
+        "proposalRevision": "3b1bcb93bf6728bc6869f929dcc47154fdd25f0d6dd0f96e5ba103a64948da77"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recpKvax2OFIJNQWT",
+      "saintId": "cms0w7hdh06k407qi8nr6s3oi",
+      "name": "Sri Vishudhanand Ji Saraswati (Khir Baba)",
+      "destination": "72",
+      "storyOrLocality": "Khir Baba & Lal Baba",
+      "cardId": "north-4",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recpKvax2OFIJNQWT",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "FAM-036",
+        "regionTags": [],
+        "revision": "d0e567d06885761df9899640d241128b97276df200f1a7b3c4551a7fe66438b4",
+        "proposalRevision": "e6267187603ccfe105af31c8efd18d3c2c2e8f0d75e2174c096e27edc614393d"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "rectxzbiD3OeRYLrv",
+      "saintId": "cms0w7ii707ug07qiu6r5icsx",
+      "name": "Sri Aditya Sabrup (Lal Baba)",
+      "destination": "72",
+      "storyOrLocality": "Khir Baba & Lal Baba",
+      "cardId": "north-4",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rectxzbiD3OeRYLrv",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "FAM-036",
+        "regionTags": [],
+        "revision": "15d6dae8c002eb237275c933b218b11139b628bbe29fe1665d5d578d6520fb02",
+        "proposalRevision": "910f9467852549d5880db34a62c5576b0eae90e9951b4bd90cf1c223d60697a4"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "rec8qDaH8zmGtELbj",
+      "saintId": "cms0w7dg301kf07qinm0alnxb",
+      "name": "Sri Swami Shivananda Saraswati",
+      "destination": "72",
+      "storyOrLocality": "Sivananda & direct disciples",
+      "cardId": "north-6",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "rec8qDaH8zmGtELbj",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Primary",
+        "familyKey": "FAM-009",
+        "regionTags": [],
+        "revision": "ddc540f0fddfb01a5907093f458afdd9bbb0d9e76f5145fa2126d62204774a9b",
+        "proposalRevision": "c775e098774ed3f6b1493e25ed99873170e970ac670a02d22050f23e7d342a74"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "reci9mOaQMMeNqeeW",
+      "saintId": "cms0w7fmd04fn07qis9cd8h6u",
+      "name": "Sri Swami Vishnudevananda Saraswati",
+      "destination": "72",
+      "storyOrLocality": "Sivananda & direct disciples",
+      "cardId": "north-6",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "reci9mOaQMMeNqeeW",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-009",
+        "regionTags": [],
+        "revision": "6c2155e7df6bab6bb6d65299010b59aa44b16d5075d6d36b4b7ec66b79f3e0dd",
+        "proposalRevision": "c732ada61c9d395b2c953698c8c207b40553b1742d3a2fbb86e850e3b4941a48"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recosc27YgiELa175",
+      "saintId": "cmus3rxcy006n07o5yg4198z8",
+      "name": "Sri Swami Chidananda Saraswati",
+      "destination": "72",
+      "storyOrLocality": "Sivananda & direct disciples",
+      "cardId": "north-6",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recosc27YgiELa175",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-009",
+        "regionTags": [],
+        "revision": "551d73243545b379bd5837efaac7fdf010f63aa1ab1ee0b045070fd9419e0242",
+        "proposalRevision": "9392adf3ac02e84b2ceccbf93bca72e88b790b74b581aeffd7f9ddfe11f04cc6"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recI9vNewSjgz1HYE",
+      "saintId": "cms0w7fmo04g007qibkqzdda4",
+      "name": "Sri Akhil Brahmanand Nayika Parivajakacharya Paramahamsa Yogini Vishwamata Sadguru Om Malati Devi",
+      "destination": "74",
+      "storyOrLocality": "Om Malati & Bhavamayee · affiliation review",
+      "cardId": "north-7",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recI9vNewSjgz1HYE",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-009",
+        "regionTags": [],
+        "revision": "3c53994ec8ba779170fc03d79e92a8b094485f19cae99749acde5a95ee1dd4ba",
+        "proposalRevision": "0fd643a7525614ea3906076a5bd93ec78145854c72b1ab5049b951e6012ec401"
+      },
+      "spaceEstimate": 0.5,
+      "held": false
+    },
+    {
+      "sourceId": "recyTkbGdrdvC5hto",
+      "saintId": "cms0w7jxa09br07qihkok2t7w",
+      "name": "Sri Maa Bhavamayee Paramahansa",
+      "destination": "74",
+      "storyOrLocality": "Om Malati & Bhavamayee · affiliation review",
+      "cardId": "north-7",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recyTkbGdrdvC5hto",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-009",
+        "regionTags": [],
+        "revision": "71b49ab5cfaa6c20c1de1e04fd7ea41871d971b0554d8a1682d6f356c47b539d",
+        "proposalRevision": "80483928c73942979819e69d4beb44a8c2c36c2d951195a393db6bf2c141bdec"
+      },
+      "spaceEstimate": 0.14285714285714285,
+      "held": false
+    },
+    {
+      "sourceId": "recbSiDH0qSzRl5vY",
+      "saintId": "cms0w7e1k02dx07qily8lgz2n",
+      "name": "Sri Shivpuri Baba",
+      "destination": "73",
+      "storyOrLocality": "Shivpuri Baba & Todke Baba",
+      "cardId": "north-8",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recbSiDH0qSzRl5vY",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Primary",
+        "familyKey": "FAM-071",
+        "regionTags": [],
+        "revision": "d97ac531e783d2e8ef30967473ececc9fd8cd5a1a17f6e9d621644786e76aefe",
+        "proposalRevision": "cd6fcf9f0e1297779847b9ebd80e82f3a847ab12539871422b89aaf9dd612dbb"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "recwALNXldWfBLASm",
+      "saintId": "cms0w7j5p08jn07qi6g9trthl",
+      "name": "Sri Todke Baba",
+      "destination": "73",
+      "storyOrLocality": "Shivpuri Baba & Todke Baba",
+      "cardId": "north-8",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recwALNXldWfBLASm",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Secondary",
+        "familyKey": "FAM-071",
+        "regionTags": [],
+        "revision": "c4c6141b4b205fddf09b2fcaadd18e34506f96cda771e5450fd75cc61af09c54",
+        "proposalRevision": "fb317e55bfcdee3ef52b6827b2e11b73ce74c807cbf5589e6c4ab6f15bd5b679"
+      },
+      "spaceEstimate": 0.125,
+      "held": false
+    },
+    {
+      "sourceId": "recFjWjXyxkIFkeMr",
+      "saintId": "cms0w7f1003nx07qi9yia88vj",
+      "name": "Sri Swami Bhoomanand ji Maharaj",
+      "destination": "72",
+      "storyOrLocality": "Bhoomanand · Uttarkashi",
+      "cardId": "north-9",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recFjWjXyxkIFkeMr",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-077",
+        "regionTags": [],
+        "revision": "e73bda927f9e2bb5e4a511f3ceb432b1b04f1c169758b1966210a85e5adca943",
+        "proposalRevision": "44ce3a45283925971766a3c48bc32ca92f01b32e6d25813489b8b7b671f256f0"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recLPboyEJSXcyDhx",
+      "saintId": "cms0w7gh905ho07qiaw52hpsm",
+      "name": "Sri Haidakhan Babaji",
+      "destination": "19",
+      "storyOrLocality": "Haidakhan · Sitaramananda · Mahendra",
+      "cardId": "north-10",
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recLPboyEJSXcyDhx",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Primary",
+        "familyKey": "FAM-018",
+        "regionTags": [],
+        "revision": "ce13c93095bac72ef9a03e5241a396435dfb6af85dcfdde00cd37c2653b12b93",
+        "proposalRevision": "26fb0aab3d3d37a84fbe36ed22e728a353bdfe21ee441e949783bd2d4c7e2bd6"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "reccOHbK0BcyzNftg",
+      "saintId": "cms0w7eam02p807qi782vzcl6",
+      "name": "Sri Baba Sitaramanada Swami",
+      "destination": "19",
+      "storyOrLocality": "Haidakhan · Sitaramananda · Mahendra",
+      "cardId": "north-10",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "reccOHbK0BcyzNftg",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-018",
+        "regionTags": [],
+        "revision": "1e784edff9b0e25dbd7cdbd0e00901fa5b6f46498c933632543817d5e303bff2",
+        "proposalRevision": "5ed84440b6aa1e71b48e424b819ab83836dbd3fedcaf5fea0982053def36b469"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "recMQQQzFR0cD6IZd",
+      "saintId": "cms0w7gqz05ta07qipfnp378d",
+      "name": "Sri Mahendra Das Baba",
+      "destination": "19",
+      "storyOrLocality": "Haidakhan · Sitaramananda · Mahendra",
+      "cardId": "north-10",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recMQQQzFR0cD6IZd",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-018",
+        "regionTags": [],
+        "revision": "878b82b5f41578c9c76b8b816c7a495bc68b21a340feb5e9746ce5f5acaa829f",
+        "proposalRevision": "c035725a4443f95bff618d84f19665ea69f30e1209259911d5b513a663230e30"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "recIBLoUbLLQQTSbP",
+      "saintId": "cms0w7fn604gj07qi7umjwnd1",
+      "name": "Sri Sombari Baba",
+      "destination": "19",
+      "storyOrLocality": "Almora",
+      "cardId": "north-11",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recIBLoUbLLQQTSbP",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "1cd9c96a5e44198b0853a48120244a139f848f6d2741e7903c85639d197992a8",
+        "proposalRevision": "abfeba542e53d9e9b7fe25feb0b755a7ca4bd0a2b6236c68c7bc4faefd422320"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "rec3E1tuKGh8MOhwW",
+      "saintId": "cms0w7cn100kk07qiof4bi90c",
+      "name": "Sri Barfani Das Baba",
+      "destination": "21",
+      "storyOrLocality": "Badrinath",
+      "cardId": "north-12",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec3E1tuKGh8MOhwW",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "470a8d27afea98a3a192e849d4e339f36588de4e142f1c931a5d391c029bb0b9",
+        "proposalRevision": "0a458253acc0d369188c9c4d8248a2746e43c986d16991b29ae827b86aef46c6"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "held": false
+    },
+    {
+      "sourceId": "recfmgSikPoBr7PUd",
+      "saintId": "cms0w7f1l03om07qipjlibr7p",
+      "name": "Sri Paramahamsa Swami Parivrajaca Satchidananda Sarasvati (Ayama Baba)",
+      "destination": "21",
+      "storyOrLocality": "Badrinath",
+      "cardId": "north-12",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recfmgSikPoBr7PUd",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "56775d3b087092204745b1fada0289940f07c05344d6e113ccc1df531a31d4e8",
+        "proposalRevision": "5f97a0031f0ce77d4c1a5307b469968b16ffcb2ae51485636808f7fb04c196b5"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recJuPKSRPAw0EzMh",
+      "saintId": "cms0w7g0104w507qiggp96td1",
+      "name": "Mahant Sri Mukunda Acharya Swāmi",
+      "destination": "21",
+      "storyOrLocality": "Badrinath",
+      "cardId": "north-12",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recJuPKSRPAw0EzMh",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "2d12c5f1ff71ba78cbd57e3b471a59404d74c4ba3f0be342b103ce2997f18fc9",
+        "proposalRevision": "71433062a4ba0de1ff92817c32dbd533b6bd4a65f108b1466ebf61bfa87d8eab"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recKWHDMv3ejIwDDI",
+      "saintId": "cms0w7gbs05ak07qi8tx9sud9",
+      "name": "Sri Digambar Subaj Giri",
+      "destination": "21",
+      "storyOrLocality": "Badrinath",
+      "cardId": "north-12",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recKWHDMv3ejIwDDI",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8b54db87e21ee905eba547de920587a503fb7d52c5724845d7668eb4756715cd",
+        "proposalRevision": "0cf0a91208adb66c917ac865167ee646f1514789a1b92aaa2158188f727c27c7"
+      },
+      "spaceEstimate": 0.125,
+      "held": false
+    },
+    {
+      "sourceId": "recMeQJMJiKrTT5LA",
+      "saintId": "cms0w7gmy05oj07qionjg0xep",
+      "name": "Sri Swāmi Ramdas",
+      "destination": "21",
+      "storyOrLocality": "Badrinath",
+      "cardId": "north-12",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recMeQJMJiKrTT5LA",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f8e840741b03bbd32001f7b4d22a9945f3ed597ff6ee7462e29c72a8f9c37af1",
+        "proposalRevision": "33868ca4fb6c77eb01985b351dc46a8bdb4944b3d0b3241ec8ea0aeccfb12ee4"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recpvbCF5wXQRhZDf",
+      "saintId": "cms0w7hgb06ne07qi5bcd5svu",
+      "name": "Sri Krishna Anandabharati Paramahamsa",
+      "destination": "21",
+      "storyOrLocality": "Badrinath",
+      "cardId": "north-12",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recpvbCF5wXQRhZDf",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b902eb17e6f58be916dd22c53115abdbcc2877285783502006a9a8a60f687643",
+        "proposalRevision": "76b6e33c41fe29fb2310b4cc0a1d72d4622c00e23e46919aea89460fe3bee04a"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "held": false
+    },
+    {
+      "sourceId": "recQEPPbBMR47GAlb",
+      "saintId": "cms0w7hkr06sm07qie9iax4in",
+      "name": "Sri Buddhiyogi",
+      "destination": "21",
+      "storyOrLocality": "Badrinath",
+      "cardId": "north-12",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recQEPPbBMR47GAlb",
+        "section": "Girnar & Nath Traditions",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "09425c6e04832ffe1d4efd981d92d9dd8bd5466089f370eb9b096c4561eb43bb",
+        "proposalRevision": "d4673210b412ec173cfe1103785a64a42950b6482a0656efce0d657c97eb6220"
+      },
+      "spaceEstimate": 0.125,
+      "held": false
+    },
+    {
+      "sourceId": "recSeXyMLoESitdd0",
+      "saintId": "cmus3rxn4008507o5wrnzs3ps",
+      "name": "Sri Balak Yogeshwar Das ji Maharaj",
+      "destination": "21",
+      "storyOrLocality": "Badrinath",
+      "cardId": "north-12",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "cmvmfbkun00as07lasnyrts2f",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5e75da78f76035e836adeb4ebcd161a938f522664ce92f310723ab8e662f0a5a",
+        "proposalRevision": "b3cced380ad85fb074e1b692587f2f7ff6a706b2113e1e3dff64b25ba19224d0"
+      },
+      "spaceEstimate": null,
+      "held": false
+    },
+    {
+      "sourceId": "recW9wfkoPE6IPhnm",
+      "saintId": "cms0w7j5g08jf07qil86reow0",
+      "name": "Sri Hari Om Baba",
+      "destination": "21",
+      "storyOrLocality": "Badrinath",
+      "cardId": "north-12",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recW9wfkoPE6IPhnm",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "08a61afeb7484cce4529f9cc1a5829424fe900deb06c18af5e1902eaf8375f94",
+        "proposalRevision": "cc7dce6fa47d4de9128f9c8823226aaa8d102220723ff1d84b1f11bd3ba7f77c"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "rec3ISaYxUAssvXzO",
+      "saintId": "cms0w7cng00l107qi60p7qme9",
+      "name": "Sri Maharaj Lal Babaji",
+      "destination": "21",
+      "storyOrLocality": "Bhavishya Badri",
+      "cardId": "north-13",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec3ISaYxUAssvXzO",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "76c58a3125cf78574948890e5887aa65c5b85f41bc1ef6f44cf7a0b69321e24a",
+        "proposalRevision": "f016c8dd92ef61a515d9ba59e5286726e570c3e2da2c15345e739bc5c4884a99"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recqXl7GcR045xZDk",
+      "saintId": "cms0w7hpj06ya07qigq50z3me",
+      "name": "Sri Vedananda Baba",
+      "destination": "19",
+      "storyOrLocality": "Dwarahat",
+      "cardId": "north-14",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recqXl7GcR045xZDk",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "55aa2a3d0bbbe02d23fa99d4b4278714c5012b5239ffde3c755de9f0b8d2580e",
+        "proposalRevision": "cfa063f19e130862578f60c857d350fd6948c585f99430897ef321a38c4a2245"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "recyokcxEvhxvtyPk",
+      "saintId": "cms0w7jvq09a707qiha1bb3et",
+      "name": "Sri Paramahamsa Sant Vedananda Saraswati Maharaj",
+      "destination": "19",
+      "storyOrLocality": "Dwarahat",
+      "cardId": "north-14",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recyokcxEvhxvtyPk",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-063",
+        "regionTags": [],
+        "revision": "8008933be0dc0548e0b47df0f3391be66bed26b38cc25ecb3ff35fe17f3a0405",
+        "proposalRevision": "fbdc9c422f34974c9fae7f3054e68fad5f89bf8a73f246c0c8265d171a80d42f"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recv5AeDjNqa6rSbp",
+      "saintId": "cms0w7iu3087607qi43r01riq",
+      "name": "Sri Danvantara Giri",
+      "destination": "19",
+      "storyOrLocality": "Dwarahat",
+      "cardId": "north-14",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recv5AeDjNqa6rSbp",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ad840f68cdc6a320560418af6a2f08288b7e4a78041101ba2abf2c1fd21d9e12",
+        "proposalRevision": "b6267dd154ebe8b33a0379b194b8e3392c640b794097d0f8807b92e8dc9b6c7d"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recFmrOxVMA0umuTh",
+      "saintId": "cms0w7f2203p607qisl459k2d",
+      "name": "Sri Bhakti Priya",
+      "destination": "72",
+      "storyOrLocality": "Gangotri",
+      "cardId": "north-15",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recFmrOxVMA0umuTh",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8494c0043c5590c1d681b17a411e6223564b2c55218c58a31131818f7c4b41d5",
+        "proposalRevision": "66f201006dc614739b8a8975acd491f1b22326caa7624016ef9d42ea788a1aa9"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "held": false
+    },
+    {
+      "sourceId": "rec3HT7rDR1erZTnh",
+      "saintId": "cms0w7cna00ks07qigutwo907",
+      "name": "Sri Kewalpuri Baba",
+      "destination": "22",
+      "storyOrLocality": "Himachal Pradesh",
+      "cardId": "north-16",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec3HT7rDR1erZTnh",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "029ffc1b6670c2ced9962e845c42a6db40970c318234baf8768f502d90ec7519",
+        "proposalRevision": "90eeff7ab52fe7ccbc743780e6ed302e85f6b8376d184c831c49965c8f3770fb"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "held": false
+    },
+    {
+      "sourceId": "reckSOP93swGpRjsT",
+      "saintId": "cms0w7ga3058l07qi7l1z5qfw",
+      "name": "Sri Ganesh Baba (Shri Mahant Ganesh Giriji Maharaj",
+      "destination": "21",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-17",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "reckSOP93swGpRjsT",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "15de8ac56edab46aa692ed27d3901ab5ef531ad46e612819c477a2c64432f54a",
+        "proposalRevision": "be55ca8008597e829539e7d3bbefbee604615a406536451fb68bfd0212e0eaa3"
+      },
+      "spaceEstimate": 0.14285714285714285,
+      "held": false
+    },
+    {
+      "sourceId": "recyn3TFIzmxgoC7R",
+      "saintId": "cms0w7juu099707qizwnrtt08",
+      "name": "Sri Swami Sarveshananda Baharti",
+      "destination": "22",
+      "storyOrLocality": "Kangra / Manali",
+      "cardId": "north-18",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recyn3TFIzmxgoC7R",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b0e794c5950448945655330bd795d907717610602da4dbff85dfeb7ac924d5b7",
+        "proposalRevision": "92f42c799ad2b100303227a219b2ef7b270c403927c9a2d2d4fe1c0b802c087f"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recDzej9PiC98nmwF",
+      "saintId": "cms0w7enr036807qie7p93e3o",
+      "name": "Sri Shukadevananda Maharaj",
+      "destination": "22",
+      "storyOrLocality": "Kathog",
+      "cardId": "north-19",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recDzej9PiC98nmwF",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "d684944bd241251d0449e5a0c6d4f5b5419d56118945c7086d138e9ab15cf10f",
+        "proposalRevision": "3de106d9e3c059db9eece464a13cf3256af93edb20d7e171794eb923341b066f"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recE9ntzuel2YFTo7",
+      "saintId": "cms0w7epe038k07qix9i7swez",
+      "name": "Sri Shivanath ji Maharaj",
+      "destination": "21",
+      "storyOrLocality": "Uttarakhand",
+      "cardId": "north-20",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recE9ntzuel2YFTo7",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "07ed6e9c419dac33c1396888bd66fd39a42e7ca3e5eed2de4fd67c9168241a45",
+        "proposalRevision": "834dff8df85df8af75e9f0d62af81170087846649fe2d6b5170940f416e652ad"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "held": false
+    },
+    {
+      "sourceId": "rec9g1wVf8tZM1RTr",
+      "saintId": "cms0w7dip01nx07qicu7pxhsy",
+      "name": "Sri Sri Swami Sevak Ji Maharaj",
+      "destination": "21",
+      "storyOrLocality": "Uttarakhand",
+      "cardId": "north-20",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec9g1wVf8tZM1RTr",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b4cbb05b111b42ab3fe9f64b57467c9e170bb06be9d1854a3039411fbabffc4e",
+        "proposalRevision": "bd1853340dc8866d9b5de4ccb48f46fce1eba57d19355ee581909e43994be24f"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "held": false
+    },
+    {
+      "sourceId": "rec3yq5XtTNoYDxJi",
+      "saintId": "cms0w7cpd00nf07qih6qau3x4",
+      "name": "Sri Bhakti Maa (Mauni Maa)",
+      "destination": "21",
+      "storyOrLocality": "Uttarakhand",
+      "cardId": "north-20",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec3yq5XtTNoYDxJi",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f1803401c784a2124339de06b65a64f0d8830ef200bb66308474ad6c6749f9f6",
+        "proposalRevision": "21ea1f1c129ed9f253322fa23e1a83fa4923eaf455838adb8e94f658642a485e"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "rechSjVXrbU5P8Ss3",
+      "saintId": "cms0w7fjd04bw07qi2mws5tsb",
+      "name": "Sri Swami Vitthalanand Saraswati",
+      "destination": "21",
+      "storyOrLocality": "Uttarakhand",
+      "cardId": "north-20",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rechSjVXrbU5P8Ss3",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "36f3bee6b816f677328802db139290a58b78918fccfd0c7a8989f5a0ddb8e01d",
+        "proposalRevision": "b1f462c8c658fd722a39bf9ac45f81a9f99600d429f4161bc3dfb3b20d9fc92f"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "rec2kQu9FUpLwcr1U",
+      "saintId": "cms0w7cj500fj07qibz675juz",
+      "name": "Sri Kuldip Giri",
+      "destination": "21",
+      "storyOrLocality": "Guptakashi",
+      "cardId": "north-22",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec2kQu9FUpLwcr1U",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0a68af805d901fbd32b4e28436e9b086b272772b9ba5d99f5857ffa5b5d089a6",
+        "proposalRevision": "11c6999988676a32ed456accfa3830a07a87553e883d0b46cee4df8941b84138"
+      },
+      "spaceEstimate": 0.125,
+      "held": false
+    },
+    {
+      "sourceId": "recOpJaRXT7beIfSK",
+      "saintId": "cms0w7h7c06cq07qiek3n107t",
+      "name": "Sri Girijanand Ji Maharaj",
+      "destination": "21",
+      "storyOrLocality": "Guptakashi",
+      "cardId": "north-22",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recOpJaRXT7beIfSK",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "623379fd014b518727fe5f6f19fdd58936b341dd7e37c8a349eb40b4a49bb19c",
+        "proposalRevision": "56e4a1e810cea80f378efb4e9631b214594449864568e677fe0054ea63e114b5"
+      },
+      "spaceEstimate": 0.125,
+      "held": false
+    },
+    {
+      "sourceId": "recLs6T066cSNJb35",
+      "saintId": "cms0w7ghq05ia07qiuk8ov2sn",
+      "name": "Sri Bhakta Narasimha",
+      "destination": "22",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-23",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recLs6T066cSNJb35",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "120d7d11774fba6c00c8f91350624fcdf85070cef797debcb1a5ef1829f713a8",
+        "proposalRevision": "2b72d33ba7c87750fe6be13f0e5b0c0e9b2989249ec60a20ac4a0425f265d3ee"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "rec2yoKF0KcnAO5Ur",
+      "saintId": "cms0w7cll00im07qi57agfmrq",
+      "name": "Sri Arlanand Saraswati Maharaj",
+      "destination": "22",
+      "storyOrLocality": "Kangra",
+      "cardId": "north-24",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec2yoKF0KcnAO5Ur",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5d641fe5202afd2ddd54bdc961a8dcc332acb740eb9333e0780211329fa8695f",
+        "proposalRevision": "2b371a397749fa0a1d2215d59bce215c2e82a1d99b9a59018118a47f9f2ee7fc"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recgFVQEe6W4lm5Ax",
+      "saintId": "cms0w7f6n03ve07qi5bkfaqq2",
+      "name": "Sri Bholanand Saraswati Maharaj",
+      "destination": "22",
+      "storyOrLocality": "Kangra",
+      "cardId": "north-24",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recgFVQEe6W4lm5Ax",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "bf31eb4959332a2b867d64c60f15aaaca59775fbb544b8840983cc6baa523e41",
+        "proposalRevision": "83447264f0addb9eedd12fa72d2584e1abfbe91be84567d77b4e3e0a2d97ecd3"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recBhtH9RZKgIOAdl",
+      "saintId": "cms0w7dy1028y07qiinsm4nmg",
+      "name": "Sri Vishambardasji Maharaj",
+      "destination": "22",
+      "storyOrLocality": "Kangra",
+      "cardId": "north-24",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recBhtH9RZKgIOAdl",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c90dc0f67550789547efa8f7260ec815ae41b4aab69baa612ba893c47a0965ae",
+        "proposalRevision": "d4a55ce60899563632b62720077201ec8b9a9fc8c15bd4ab08e20fd7bcea1e6f"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recK53Fzs4bwp72EI",
+      "saintId": "cms0w7g2q04zd07qisgcxld8g",
+      "name": "Sri 1008 Param Adaniya Param Pujanya Brahmagyani Brahmanisht Brahmaveda Sant Devji Maharaj",
+      "destination": "22",
+      "storyOrLocality": "Kangra",
+      "cardId": "north-24",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recK53Fzs4bwp72EI",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "94e3f00924de08068673cd0181db8d1fd5f07aca2f5d80df95c518fefd4f98c5",
+        "proposalRevision": "764ead4ed2bf2cd7d373be92aacc0bf207c11fd6db8c93c07cd7fdfa7e453f15"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recEQkjmS9ditf46F",
+      "saintId": "cms0w7eu603ey07qi01aph35l",
+      "name": "Sri Digambar Hariom Bharti",
+      "destination": "21",
+      "storyOrLocality": "Kedarnath",
+      "cardId": "north-25",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recEQkjmS9ditf46F",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "2d6214eea3b7cdca1e15125bb2c3b6c1da76e6d03135fd09f8b7b6f237fa5fc0",
+        "proposalRevision": "8e08401994db8b219672080da4b1a5be2a7a9b06866853dc40dc7c565c1cd7d9"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recz5ca1IAP6fByeW",
+      "saintId": "cms0w7k0g09f207qi0vl4vzug",
+      "name": "Sri Pujya Dadaji",
+      "destination": "22",
+      "storyOrLocality": "Shimla",
+      "cardId": "north-26",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recz5ca1IAP6fByeW",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "45a0dc10b25cab902d56ace265a8a1cee16ed9fa81bac27e9811e029bc5c6c08",
+        "proposalRevision": "0cde35f356313ba15ca24459a86d87820bae00bae0d0b3c8771edc4fd51e20fb"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recG1QmsdJh1MWEY9",
+      "saintId": "cms0w7f5a03tf07qioerb3zrh",
+      "name": "Sri Swami Shravananda ji",
+      "destination": "72",
+      "storyOrLocality": "Uttarkashi",
+      "cardId": "north-28",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recG1QmsdJh1MWEY9",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5e2f9d47a8060ad7271579bc0bf12d7d8ea3dd0d2f38688fe6ff494956cee99d",
+        "proposalRevision": "953dc7062adba9b6a5e0cb74b4aa10eda88d3267fa761324cedd5cfa049fed02"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recMlR5jy61TvaRlN",
+      "saintId": "cms0w7gp105r007qijfsa7wul",
+      "name": "Sri Swami Chaitanyanand ji",
+      "destination": "72",
+      "storyOrLocality": "Uttarkashi",
+      "cardId": "north-28",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recMlR5jy61TvaRlN",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "96828c51d28254c928e56b453a37be1610deca4c0f4feffd3c226a2901f3da7a",
+        "proposalRevision": "633bb9fbcb8bbbd76709d77b273a33799d09ba3f93d263ddc2f064865f73dd70"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "reco0ilcpoRpLH4gZ",
+      "saintId": "cms0w7h20066q07qiyod5wew1",
+      "name": "Sri Swami Swarupanand ji Maharaj",
+      "destination": "72",
+      "storyOrLocality": "Uttarkashi",
+      "cardId": "north-28",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "reco0ilcpoRpLH4gZ",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c12cfda382de9eb1e80ecded292959b9b92128f67b4170e6ae851205f81756b3",
+        "proposalRevision": "6f3180a094e88cc722d90bdbe334d9662697ba560155c234d9f9a1d4e98efe7c"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recd7LPsJWfdAH5HU",
+      "saintId": "cms0w7eeg02u107qio9tqo2jg",
+      "name": "Sri Sri 1008 Baba Kalyan Das ji Maharaj (Kaale Baba)",
+      "destination": "22",
+      "storyOrLocality": "Bilaspur",
+      "cardId": "north-29",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recd7LPsJWfdAH5HU",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "65c9b67040824a2c546a8654b5bda876e1613c9b348b9bb006def4273514afd6",
+        "proposalRevision": "0c36e65f0be774b7085b0e5b686a47604bb54ac965cb32d24c9efa082365ba59"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recijNKdW2wF5Lhw1",
+      "saintId": "cms0w7fq304k707qidgqmgifu",
+      "name": "Sri Hanuman Swami",
+      "destination": "74",
+      "storyOrLocality": "Delhi",
+      "cardId": "north-30",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recijNKdW2wF5Lhw1",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e772035fa7d9cd2bc622fbaf4ee5081c1d7601b087dc0f5b1c7731cb968c0899",
+        "proposalRevision": "fc34816864dec3fe6ed2fb68931e767ff74865d60987d6a3a437d9f886d66fe0"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "held": false
+    },
+    {
+      "sourceId": "recQzqybkUv01Tqph",
+      "saintId": "cms0w7hqh06zg07qis2wtrls2",
+      "name": "Sri Muniraj Baba",
+      "destination": "19",
+      "storyOrLocality": "Haldwani",
+      "cardId": "north-31",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recQzqybkUv01Tqph",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8b57aaad94f157cff2f304b29b2a9b7ddb4b69f90d6288829ffac6cee04df49d",
+        "proposalRevision": "55bc01693c0ab1a2509bedda9d0dc1395752a5d9937618983f703c3106cec8d6"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recy4cCbJokFP3Mye",
+      "saintId": "cms0w7jqd094b07qixthhmkfx",
+      "name": "Sri Mahamandaleshwar Swami Balkrishna Yati ji Maharaj",
+      "destination": "19",
+      "storyOrLocality": "Haldwani",
+      "cardId": "north-31",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recy4cCbJokFP3Mye",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f7d2c92039a04bcb278df95a6fcc2afd68ba4a9f200b6d51e599410489e03519",
+        "proposalRevision": "28ccd3b22442aa433beffa80e7aa652c44eaf87778d0a376570c116196e4f9c1"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recFWaxngpSGzkYQS",
+      "saintId": "cms0w7f4303rx07qimyahx308",
+      "name": "Maharishi Mahesh Yogi",
+      "destination": "74",
+      "storyOrLocality": "Jabalpur",
+      "cardId": "north-32",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recFWaxngpSGzkYQS",
+        "section": "Datta Tradition",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "2118be709a901e169217110bde70542327eabdcbdd0a5b38f300f8ae29e1180b",
+        "proposalRevision": "d58526703c64906635c6d1da263e78effe9691b8750d2cfaee5ca746b3f7efc9"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recDrYiUzauA9xVdI",
+      "saintId": "cms0w7el0032m07qi0wcu832r",
+      "name": "Sri Swami Prakashanand Saraswati",
+      "destination": "72",
+      "storyOrLocality": "Rishikesh",
+      "cardId": "north-33",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recDrYiUzauA9xVdI",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a94cfceb54efc4714b2c372f7ef8b56fe4ef6f5d8981dceaa72b86cebe244e04",
+        "proposalRevision": "cd3d72d1881ea66120b36201f9a42c04f23a26d1e6aa3b984088b46312758f3f"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recGTvaJlA6Ql1Nw0",
+      "saintId": "cms0w7fb0041007qienkvakuh",
+      "name": "Sri Vanamali Devi Mataji",
+      "destination": "72",
+      "storyOrLocality": "Rishikesh",
+      "cardId": "north-33",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recGTvaJlA6Ql1Nw0",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "45e86945728c01b98b975bfd1cbed6500755a64137c5a6559c5944cecffd75c2",
+        "proposalRevision": "7e8b7846a34a8426a29fcd64e81f656a6da615fe7d422235c6987212f89be19d"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recQT5TNa4KPmOafN",
+      "saintId": "cms0w7hny06wc07qitmq2az79",
+      "name": "Sri Dandhi Swami Maharaj",
+      "destination": "72",
+      "storyOrLocality": "Rishikesh",
+      "cardId": "north-33",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recQT5TNa4KPmOafN",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0b399475c3773d588077907d7adcb44f171e4f2020df86d71fa50893f3f6c358",
+        "proposalRevision": "ba373484469c602b2efc9141a66836b8610958d9a2830c43b25e5da0ca38ed8e"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recridc3rHHt53itd",
+      "saintId": "cms0w7huw074s07qiq6re1hfg",
+      "name": "Sri Swami Rama",
+      "destination": "72",
+      "storyOrLocality": "Rishikesh",
+      "cardId": "north-33",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recridc3rHHt53itd",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4f941485d8ef057d38f98e50848f954f6fe78ce66663a7452e41b662ce5b30ad",
+        "proposalRevision": "e486511d7d0432a85a5a372972d6275e2508323c46c65fdb8fa197110aa921e9"
+      },
+      "spaceEstimate": 0.14285714285714285,
+      "held": false
+    },
+    {
+      "sourceId": "recSvNj9vdvRTFkhs",
+      "saintId": "cms0w7i7e07ip07qihh057mfy",
+      "name": "Sri Swami Shantanand Saraswati",
+      "destination": "72",
+      "storyOrLocality": "Rishikesh",
+      "cardId": "north-33",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recSvNj9vdvRTFkhs",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8866ba55001320b56240778e74dc1abab2cbd785fa6a25f05cde2124b1a0ba75",
+        "proposalRevision": "b3ea39c662b5fef525b59e1079bae1ad15a68a2cc8412f53b58e79990fe37018"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "held": false
+    },
+    {
+      "sourceId": "recwcuvazSHfWVS3a",
+      "saintId": "cms0w7j6e08ke07qiot3l5g80",
+      "name": "Sri Swami Purushottamanandji Maharaj",
+      "destination": "72",
+      "storyOrLocality": "Rishikesh",
+      "cardId": "north-33",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recwcuvazSHfWVS3a",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "414bd4ccd19cece192705bb6056f8b1a1bd4536319e9974c43e4440798811031",
+        "proposalRevision": "a4bf18c351755e9f238e4404e4f8308086f1726d1c8cf23fa35619fef78d92af"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recMZzMDDR3zIs3w7",
+      "saintId": "cms0w7guk05xq07qidawv9co1",
+      "name": "Sri Pilot Baba",
+      "destination": "74",
+      "storyOrLocality": "Sasaram",
+      "cardId": "north-34",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recMZzMDDR3zIs3w7",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5367c1bdca3b2085dc339374be35187bbf01fdb575384b82bacb29703e823419",
+        "proposalRevision": "7ac67940e7f1e84c5a9966d98e0f1c60549c820747b27b4741d47f2536ad4146"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "rec7U1NIIWwz8Nypx",
+      "saintId": "cms0w7db701eb07qi91mfpcyq",
+      "name": "Sri Vankhandi Baba",
+      "destination": "19",
+      "storyOrLocality": "Sattal",
+      "cardId": "north-35",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec7U1NIIWwz8Nypx",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "496f776455a191afe3041349566f292f587c38bf31e62caed432a18a31603c1f",
+        "proposalRevision": "b2e8f5bc50ed6e91e90f12d6036cf2b5f81afca02ffdb69e741d20a239533073"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "rec3mQlWpwjgaz5ml",
+      "saintId": "cms0w7cof00mc07qiem08e1er",
+      "name": "Sri Swami Chidananda Saraswati",
+      "destination": "74",
+      "storyOrLocality": "Vijayawada",
+      "cardId": "north-37",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec3mQlWpwjgaz5ml",
+        "section": "Andhra Avadhuta & Datta-Advaita Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "60bb5c32a58d5d946f415080a0705d8694fe32d7b73286902058efd754b1307e",
+        "proposalRevision": "955c199bf7a35672d393599ac37b2e2cc2e3d26d3eaf8b23f5944712ca2f5508"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "rec5hoT3MY3b5Vb3K",
+      "saintId": "cms0w7czn010907qid647obxq",
+      "name": "Sri Thangal Karipoor Abdul Salam",
+      "destination": "74",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-38",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec5hoT3MY3b5Vb3K",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "d11c959fc79a76932b1ab86cbd47687e0044f7548fcd5eeff3f1c60a73fac758",
+        "proposalRevision": "2067566e1017f68e7b1a37d58f1eafcc431b0132043805f4d0a427999cc478a2"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recBpkMpvzm57a1J8",
+      "saintId": "cms0w7e1502de07qi0w6okekl",
+      "name": "Sri Sri Viyyasanjo Prabhupad Kanupriya Goswami Maharaj",
+      "destination": "74",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-38",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recBpkMpvzm57a1J8",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "bd15dc8385f63db2e2679dd91f320b514c9188d75c13a6e4376fb2d04888191a",
+        "proposalRevision": "507cf7afb68ea022b62dee2bc67c1f4c57d6ab7c05ef273fbd575ca30b47ecf8"
+      },
+      "spaceEstimate": 0.14285714285714285,
+      "held": false
+    },
+    {
+      "sourceId": "recNCHFgORFcwkPZW",
+      "saintId": "cms0w7gwn060b07qi1m0jp2n2",
+      "name": "Sri Sri Indi Swami Kashi Ashram ji Maharaj",
+      "destination": "74",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-38",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recNCHFgORFcwkPZW",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "57305119ac602d28dcdf52917588b5c94bac4cdd94c90440e931aea1d5b2eec2",
+        "proposalRevision": "8daa48519b448b88d82f3c441f606524b2c530f59d27e2a9a33debec23927b9b"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "recb4HUZeReDXmY7M",
+      "saintId": "cms0w7dwa026c07qiu7votk1n",
+      "name": "Sri Milk Baba",
+      "destination": "73",
+      "storyOrLocality": "Nepal",
+      "cardId": "north-40",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recb4HUZeReDXmY7M",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3a27d3f913bbfa4b025ca66f528f60071fdbf5b5aff7f6e7ab568d4f7daa9f27",
+        "proposalRevision": "351f6ebcf7f7518a8a4db4ff5ffba05331019ef57de6c231cf09a145a0b19d9b"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "recDNdUifKDuhAqnc",
+      "saintId": "cms0w7ejh030h07qitfsj1503",
+      "name": "Sri Atmanand Das Tyagi (Nepali Baba)",
+      "destination": "73",
+      "storyOrLocality": "Nepal",
+      "cardId": "north-40",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recDNdUifKDuhAqnc",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "7ad113797a4747756218845f8cb7d0f7a836f953c7b7c31bbd02d6301f195532",
+        "proposalRevision": "ad9908ff31fd9a89d110af5fbab38a5d84efaefd205c75207176c5744b1a66aa"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recf5wEqHftBSILAK",
+      "saintId": "cms0w7ey003k107qic12ivvr0",
+      "name": "Sri Yogiraj Dr. Ramnath Aghori Baba",
+      "destination": "73",
+      "storyOrLocality": "Nepal",
+      "cardId": "north-40",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recf5wEqHftBSILAK",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8681509e44f4dfd6b411eb99329322a8623b934dcae7cf8f9076270455b3c4fd",
+        "proposalRevision": "03917fb51dc6ca11ba6df32e821ca074039a8d7580daf000e165b35fd8181797"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recJrmkvOXktLlIrv",
+      "saintId": "cms0w7fzg04ve07qix15xkhgt",
+      "name": "Sri Yogi Shiva Mahant",
+      "destination": "73",
+      "storyOrLocality": "Nepal",
+      "cardId": "north-40",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recJrmkvOXktLlIrv",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e79761e00937c49992cfc5e4f6fde68288ad047fa695ef484898e8b98f683bf6",
+        "proposalRevision": "892695511ad03c33aa4b19f87b82ec81aaf8f514128bca3fc284ead153f7e19b"
+      },
+      "spaceEstimate": 0.08333333333333333,
+      "held": false
+    },
+    {
+      "sourceId": "recp8UqwZZqAL2Usl",
+      "saintId": "cms0w7hc106ib07qiv20sws0i",
+      "name": "Sri Chun Chun Nath Agori Baba",
+      "destination": "73",
+      "storyOrLocality": "Nepal",
+      "cardId": "north-40",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recp8UqwZZqAL2Usl",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e9d971180d12380735fe6b219062563977a7b0b69888aa932ffd823760dc7c67",
+        "proposalRevision": "406bc78d19c049188503ec0a0590f7ba7a553ee4baba72c530c1dbe2580d3faf"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "recxkPxC2QoDANL81",
+      "saintId": "cms0w7jk908y207qir5j68myi",
+      "name": "Sri Swami Satchidananda Vishudda Deva Maharaj",
+      "destination": "73",
+      "storyOrLocality": "Nepal",
+      "cardId": "north-40",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recxkPxC2QoDANL81",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8d187a33a90981740993b12b60ec13edd6b8e33e5b20d0649eca4db51d82c202",
+        "proposalRevision": "617a9c1a55a6b786bcb21fefe20ca56e984e62fe25dd46988104669d27f955e8"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recXLz5Zodri3mnAb",
+      "saintId": "cms0w7jkp08yi07qijqjf6a8u",
+      "name": "Sri Tiger Baba",
+      "destination": "73",
+      "storyOrLocality": "Nepal",
+      "cardId": "north-40",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recXLz5Zodri3mnAb",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "065a37328210afa08dea37fb70464161a832f2d8ccfae7ba134476a7d00d5ca2",
+        "proposalRevision": "3b99a17979a54c177718c1048040be3aea478e12da790e14e96077dc8cfb6f63"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "rec0GbpMjM14oN5G2",
+      "saintId": "cms0w7c7l002l07qieffb7lzl",
+      "name": "Sri Panchand Giri",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec0GbpMjM14oN5G2",
+        "section": "Girnar & Nath Traditions",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "76700de7e3e5ed7952cb6a31083fa5efaeb0b276ffeaad769969aa78b89a371f",
+        "proposalRevision": "f2a97ee9686a1a2c09d2e05cfe963f9eea28f7b4e0b0c28bfef7a52a682a6552"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "rec0I0KR24EzhDo2b",
+      "saintId": "cms0w7c8f003g07qi1fnc0uet",
+      "name": "Mahamandaleshwar Sri Mayogashakti",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec0I0KR24EzhDo2b",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "bee0cf2ae64d515c7836eaf703ce42730ddd6b2c956840434dab28f0e9f56373",
+        "proposalRevision": "a9f5a34436e91f883e3d337693749390fe7e8318e07d081ecf8c060944a2f5ce"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "rec1UL3ctqGPZ5ybW",
+      "saintId": "cms0w7chn00dl07qioh9hx44c",
+      "name": "Sri Sitaram Baba",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec1UL3ctqGPZ5ybW",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "18c54e8532c730bbdabf3ac0f25c45dae6d348d748f5fa3e8167c2f369234724",
+        "proposalRevision": "af7a06497e9e8640c8f79f0d9e1f3958c006a500cd0288244c1c2a068190edc7"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "rec4VCRxr1DoVIv0w",
+      "saintId": "cms0w7cvf00v807qirf8170e2",
+      "name": "Sri Swami Vigyanand Puri",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec4VCRxr1DoVIv0w",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e794398b1992d134f49eefadfe0c3c8915f3cc8c87e0ab75e420b43ba40995ff",
+        "proposalRevision": "a304d9eb71133b5b9f4fdd88014938647a91e1dcab5967b9e621e9a532d21748"
+      },
+      "spaceEstimate": 0.3333333333333333,
+      "held": false
+    },
+    {
+      "sourceId": "rec5FAiSbTqv34E1g",
+      "saintId": "cms0w7cyy00zg07qiemmsywyi",
+      "name": "Sri Swami Premananda Saraswati Maha Mrityumjay",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec5FAiSbTqv34E1g",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "dab2a033c7507dae19807e096e92e70bd98ea200f123eb8bf7f7dc1754f593fc",
+        "proposalRevision": "ad594fe0214f2cb6b2b5c08c03d447fd91f9d5a65684e3cdb7f9dcdd560dcb00"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "rec7VNSpAzsbmRzkq",
+      "saintId": "cms0w7dbz01fe07qieebv8k8m",
+      "name": "Sri Swami Satyamitranand Giri ji",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec7VNSpAzsbmRzkq",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0b53336fd29304a70a268415c544d96f0d8bd20600d98e77a588b6375dded22e",
+        "proposalRevision": "5c9d2c189568a8ef76b0720cf674015233fe2d4158c3e586b3620db418e31ce9"
+      },
+      "spaceEstimate": 0.125,
+      "held": false
+    },
+    {
+      "sourceId": "rec7YxwtERAX8Gc0g",
+      "saintId": "cms0w7dcj01g007qie1mz1ui8",
+      "name": "Sri Santosh Puri Maharaj",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec7YxwtERAX8Gc0g",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "90e965795f80395e7dec25f4c1b0a27e76e15c65cd08c2a6de3d9032364acca0",
+        "proposalRevision": "406ed90e5a89a41c234495a91bb23dfa5ebfe5bb4b4eeec3dc1fdb9b0ab69bc8"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recePIf387x4YGvNg",
+      "saintId": "cms0w7ett03eh07qircuzrtwn",
+      "name": "Sri 1008 Swami Sri Akhandanandji Maharaj",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recePIf387x4YGvNg",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "00807bcdd400363734966b9586c4ed8530df44ed7106d75daae8bc35c1abad2c",
+        "proposalRevision": "413719f40c9473d085bfcabe5e5b1abd65e49732fe8bc33bdba94f132e7a314b"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recRkYL9U9henaB8c",
+      "saintId": "cms0w7hvv075x07qi4svsxpnr",
+      "name": "Sri Vivekanand Puriji Maharaj",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recRkYL9U9henaB8c",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a09b9b2fd13982fb452b3637feca7bfdd3032dd4bcfeaae631c2c8ac2e3186ef",
+        "proposalRevision": "803544bbdee159ff03219e49dff7fcd95667a98e15189659cc9e939e5d34e418"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recRyh5sEg7vSy9az",
+      "saintId": "cms0w7hzk07a807qiff7i8m5e",
+      "name": "Mahamandaleshwar Anant Sri Vibhushit Balyogi Swami Arjun Puriji Maharaj",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recRyh5sEg7vSy9az",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9478b5ad9010e57627ce846d7c8626b8ef4cf1fa69d174d85f3da1403c800c78",
+        "proposalRevision": "c3d1b3cea51087d9b10b7db01e63b6a5729ba26c658ff3263824b261732ffd5b"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recu6EVkuESrb0aWu",
+      "saintId": "cms0w7ikl07x307qiwdag7jl0",
+      "name": "Mahant Sri Badamdasji Maharaj",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recu6EVkuESrb0aWu",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "764566b0e37c68898d3377a05f9b53fdf9233bdc0ea3050e7fe9628e00e05754",
+        "proposalRevision": "1ed9d706050f834f3400623beb2886b09ed14503fd0a54a01754c707c0e0ea1b"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recUsQPvYMKcz4d3F",
+      "saintId": "cms0w7iqx083u07qig6eff68k",
+      "name": "Sri Rajeshwarji Maharaj",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recUsQPvYMKcz4d3F",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e91921e5051a2347c8df2263c7aa29da8cf61d69a494addbcc3c4e1170bf8fa4",
+        "proposalRevision": "4cbca795883072600a23f8ed839f7253cba5abf7aac8de54d251ba07da214c8b"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recWVngE5PhuxTQ5w",
+      "saintId": "cms0w7jak08op07qiik395ieo",
+      "name": "Parampujya Mahamandaleshwar 108 Swami Vivekanand ji Maharaj",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recWVngE5PhuxTQ5w",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ccf64edb908bcd607a5894bdcde2bf7f09cdd62a0888b133da37bb2fa348d8bb",
+        "proposalRevision": "ebf909efd71facb5a346df8f0858d6fb9bc5e6b6360d204ca2470c7c6ae45356"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recZv7jQ3c04uXa3f",
+      "saintId": "cms0w7k8609mm07qimpokd7g1",
+      "name": "Mahamandaleshwar 1008 Swami Vishnu Puriji Maharaj",
+      "destination": "20",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recZv7jQ3c04uXa3f",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "64e595bc9b85199e9c5ace78b092d9669a75a6714fad820a356740b408728315",
+        "proposalRevision": "ddd3353a60fd30d6263b7637b34848bd6d3cc9ea7ed0f8013f6f7043603a21ff"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recjOwQ0YKGIQUU9G",
+      "saintId": "cms0w7fyh04ua07qi91gx9hfe",
+      "name": "Sri Brahmarishi Mohan ji",
+      "destination": "20",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-42",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recjOwQ0YKGIQUU9G",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "74cc9955f2363ddc0a97b8a533b79272a6618226c62dadcd07f38dcc10ffe834",
+        "proposalRevision": "9bf1dadcb327c67a8f60cd2a8342eab667f5dd618363bdf425ea886b65a22a3b"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recaCk9vTAVLCjjFE",
+      "saintId": "cms0w7dne01un07qiout7sjxh",
+      "name": "Sri Partha Baba",
+      "destination": "74",
+      "storyOrLocality": "Katra · Vaishno Devi",
+      "cardId": "north-43",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recaCk9vTAVLCjjFE",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9551f0d68e0e16feb2c088d40187911f37bc7a17e036805938089f086ec72e71",
+        "proposalRevision": "ebf70783e7933387423dff20b7b07619540471ea532c84ba2a82200a9edacafe"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "receipszGYRnJRtAj",
+      "saintId": "cms0w7ert03bu07qilf6jhoci",
+      "name": "Sri Swami Nityananda",
+      "destination": "74",
+      "storyOrLocality": "Katra · Vaishno Devi",
+      "cardId": "north-43",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "receipszGYRnJRtAj",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "bd61519143ef77489320f027c71a02704f9e435c8b84ca10a1f04220b46b4f2c",
+        "proposalRevision": "958a93f429b32262e25e974bad0c25d41a7114d9f5665d9de2e8e55ebb3f5a71"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "recrqzrWmuf1nKDGW",
+      "saintId": "cms0w7hxt078807qigastyu18",
+      "name": "Sri Mahant Narayan Dasji Maharaj",
+      "destination": "72",
+      "storyOrLocality": "Tapovan",
+      "cardId": "north-44",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recrqzrWmuf1nKDGW",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "cd04fae24bb4d8098aca20bb7eadefc27eec041c7304b444bda43f0a01f92797",
+        "proposalRevision": "953351cadac6d898a41ed102d87e2da8b5a034b560bf9ac08247cc4c1479c8b5"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "reccgX6zRZ4jpGg2W",
+      "saintId": "cms0w7e7p02la07qijdzhkfcr",
+      "name": "Sri 1008 Hath Yogi Muni Baba Omkarnathji Maharaj",
+      "destination": "22",
+      "storyOrLocality": "Chandigarh",
+      "cardId": "north-45",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "reccgX6zRZ4jpGg2W",
+        "section": "Girnar & Nath Traditions",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5a751eb3c5cb47b1b21e4823f52e82fa6fe4ab789de7837c628eec4d12b3cb6c",
+        "proposalRevision": "844b85bd2fca1aa00874b71f734e92601df162d93abb665ab13e937682e29ecd"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recGRMgYhGmK61WAC",
+      "saintId": "cms0w7fai040e07qiidrwkyd2",
+      "name": "Sri Panchan Das",
+      "destination": "22",
+      "storyOrLocality": "Chandigarh",
+      "cardId": "north-45",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recGRMgYhGmK61WAC",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "1b73d6bb9bbbee88c754530f52b02dcce9664b9af15b8cc97235324933f2aa31",
+        "proposalRevision": "6417c1975435f50a387cc2af4e77e052672c0659f7116663d777fb798609f6ac"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recicFhAX8NxwepVF",
+      "saintId": "cms0w7fo104hm07qig85e26z7",
+      "name": "Sri Shiv Narayan Das (Nepali Baba)",
+      "destination": "22",
+      "storyOrLocality": "Chandigarh",
+      "cardId": "north-45",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recicFhAX8NxwepVF",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f0c34150cae6939f4f68e684179263d3ae31b7b6545a6d5b7052ca0ea897e8f1",
+        "proposalRevision": "901391b450b3dfb336f02a72227f69c8f6b8ee121504576cfb0111ea358a3081"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "reckMGpuoqWaE04AU",
+      "saintId": "cms0w7g82056007qi5q4mr5go",
+      "name": "Sri Advaitanand",
+      "destination": "22",
+      "storyOrLocality": "Chandigarh",
+      "cardId": "north-45",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "reckMGpuoqWaE04AU",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "598565558f968e709c09061302607c41024ca5dcd8e176c434f7b4bc74a98cb3",
+        "proposalRevision": "210ccb93cf9aed4bfa73c03a15d297656e87d5af2dfc79aca14b14a183441c72"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recV2LxEpbPKlNygx",
+      "saintId": "cms0w7it1086707qiqjgv4921",
+      "name": "Brahmrishi Sri Vishwatma Bawra Ji Maharaj",
+      "destination": "22",
+      "storyOrLocality": "Chandigarh",
+      "cardId": "north-45",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recV2LxEpbPKlNygx",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "6296493bd7b4be3f3741ae93389b261ddfbf5ea332dbe7e4a14e662d1ba5a24a",
+        "proposalRevision": "20dc2e06a7bdb69c3cc0a44f05bb72076be0cc73d36c25363763baedeae0fa32"
+      },
+      "spaceEstimate": 0.16666666666666666,
+      "held": false
+    },
+    {
+      "sourceId": "recxVbnSEdIDAiBzr",
+      "saintId": "cms0w7jnr091l07qihp9k7dnn",
+      "name": "Sri Amarnath Das Maharaj",
+      "destination": "22",
+      "storyOrLocality": "Chandigarh",
+      "cardId": "north-45",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recxVbnSEdIDAiBzr",
+        "section": "Girnar & Nath Traditions",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ef18f87571055914cca1bd84be5adfd99e78bc08b0096b4761bf3f362c0909d8",
+        "proposalRevision": "773cbb789a0da03f173e9eddbdf9bbc8227a87f3afacbe80ea9a9f6ae7286a39"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recgQf22pongtyYV6",
+      "saintId": "cms0w7f9v03zm07qiuur9aeoq",
+      "name": "Sri Ramdas Baba ji",
+      "destination": "19",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-46",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recgQf22pongtyYV6",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "7f51496755ffc880f5d252d3c40eca8ecbe9a3e9d35a3a259341cafe8a22c1c3",
+        "proposalRevision": "61039b718572695e2426eee889d66692d8a3c859eecafdf76e6c2f030e390e0b"
+      },
+      "spaceEstimate": 0.25,
+      "held": false
+    },
+    {
+      "sourceId": "recmWirQlF3WoLTYk",
+      "saintId": "cms0w7gt005vs07qi1fugt3lm",
+      "name": "Sri Rishi Vashishta (+ Vashishta and Sita cave Devghat Triben Nepal",
+      "destination": "19",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-46",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recmWirQlF3WoLTYk",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0632c483e79c0cd267e72f50d8ed2a3ec8a86552d5d7ea1687459cc79612c694",
+        "proposalRevision": "37efbf9ba5b4f50ec6fa1cd85e601975664e1edae8ee1542a02d409ce695be49"
+      },
+      "spaceEstimate": 0.125,
+      "held": true
+    },
+    {
+      "sourceId": "recqTSYY3AZJelvNJ",
+      "saintId": "cms0w7hoe06wv07qih1czy3eu",
+      "name": "Sri Bhakti Vedanta Narayan Maharaj",
+      "destination": "19",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-46",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recqTSYY3AZJelvNJ",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4f58fcf640ce22de5a6a03fb1fb196e075e23d52f1227100ae6fca476ecd5a56",
+        "proposalRevision": "b713985edb77fe9c17b62ac9521ec517c118e2813880ec7dd7c03b3ead7dc42b"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "recrPWc8bPOHLOaME",
+      "saintId": "cms0w7hxb077l07qil0tx45on",
+      "name": "Sri Baba Thakur Singh",
+      "destination": "19",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-46",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recrPWc8bPOHLOaME",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c2b88007e5a45ff4b4c9367ad1a1eed258e5365e43a5c0e551f61866585cc7e3",
+        "proposalRevision": "1cad9035e8c34260d5c86738ca2c98031f3b3f6ebebdeccacb9d9d371de94582"
+      },
+      "spaceEstimate": 0.125,
+      "held": false
+    },
+    {
+      "sourceId": "recsUUsYXvsrkd1ZZ",
+      "saintId": "cms0w7i7207ig07qievr5a7nn",
+      "name": "Vishwaswaroop Murti",
+      "destination": "19",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-46",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recsUUsYXvsrkd1ZZ",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4a58121151534ec0047c04e47ce8c083294b000f5993c159ae807ee8b37a117b",
+        "proposalRevision": "16c2ad7f9c04570b8b1848bbd67f8416ecf035650b700caedff4b43df79e85bb"
+      },
+      "spaceEstimate": 0.23809523809523808,
+      "held": false
+    },
+    {
+      "sourceId": "rectqE1YWAEVoP9z3",
+      "saintId": "cms0w7ifv07ry07qirtw90qba",
+      "name": "Sri Parampujya Appaji",
+      "destination": "19",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-46",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rectqE1YWAEVoP9z3",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "22070f252604296626733e142bc08634ba1b9fee378bec05d6eb0f3afd4e917f",
+        "proposalRevision": "a2b22bee95c322359fc521c211da63bfb26443ea80bb57ac02d0ed4fc79a93b2"
+      },
+      "spaceEstimate": 0.2,
+      "held": false
+    },
+    {
+      "sourceId": "recq8jg20kMAD2Erc",
+      "saintId": null,
+      "name": "Unidentified source entry · recq8jg20kMAD2Erc",
+      "destination": "19",
+      "storyOrLocality": "Identity / locality under review",
+      "cardId": "north-46",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recq8jg20kMAD2Erc",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0b37fd1d093ffa8abf3416e47a20cc3078b5c336672a4569df3bd656b677e769",
+        "proposalRevision": "8f52988a53add1cffdd269e1347f88456609be324cafeb469b81e24ba05c1066"
+      },
+      "spaceEstimate": 0.14285714285714285,
+      "held": false
+    }
+  ],
+  "caseStories": {
+    "19": "Sattal and Kumaon",
+    "20": "Haridwar",
+    "72": "Rishikesh and the Upper Ganga",
+    "21": "Badri–Kedar and Garhwal",
+    "22": "Himachal and Chandigarh",
+    "74": "Katra and Vaishno Devi",
+    "73": "Buddhist and Bodhgaya · Assam · Nepal"
+  },
+  "excludedAlreadyApproved80": [
+    "rec8CzHCFrZ3P5v06",
+    "recZIUYP9Lvl4Z1Hq"
+  ],
+  "preservedExisting73": [
+    "rec4V2uLs4HP4Ps3d",
+    "recBnLw7Q3ZLCbck4",
+    "recC3zchheU7N9g2E",
+    "recSUaw6o0jRfF08q",
+    "recv7xsxOB32vlFNE",
+    "recX2VUC6rvHjV8Fe",
+    "recZbwL1wz3gD9B70",
+    "recaNtSLYQh5Fm4lN",
+    "recOYRXmecpwN3Unl",
+    "rec1iHJEqLnLP7ImA",
+    "recrR2rQ8fUgEKiDR",
+    "recEIaqG3AkCmP6mS",
+    "recV9C9kIiVVqlPpw",
+    "recycW2GnQ4n8xXV0"
+  ],
+  "heldSourceIds": [
+    "recsmno4Rquvfnth2",
+    "recpyhIScDxJbDdE1",
+    "recmWirQlF3WoLTYk"
+  ],
+  "space": {
+    "19": {
+      "entriesInThisBoard": 17,
+      "known": 3.330952380952381,
+      "unknown": 0
+    },
+    "20": {
+      "entriesInThisBoard": 15,
+      "known": 3.2416666666666667,
+      "unknown": 0
+    },
+    "72": {
+      "entriesInThisBoard": 19,
+      "known": 4.309523809523809,
+      "unknown": 0
+    },
+    "21": {
+      "entriesInThisBoard": 21,
+      "known": 4.1761904761904765,
+      "unknown": 1
+    },
+    "22": {
+      "entriesInThisBoard": 16,
+      "known": 3.6666666666666665,
+      "unknown": 0
+    },
+    "74": {
+      "entriesInThisBoard": 11,
+      "known": 2.552380952380952,
+      "unknown": 0
+    },
+    "73": {
+      "entriesInThisBoard": 23,
+      "known": 4.103571428571429,
+      "unknown": 1
+    }
+  },
+  "supersedesResearchPacket": "spn-northern-voyage-2026-10-29-v8",
+  "caseSwaps": {
+    "19": "74",
+    "20": "22",
+    "72": "21"
+  }
+}

@@ -1,5 +1,17 @@
 # Museum data integration: status and remaining work
 
+## Northern journey and East baseline audit — 29 October 2026
+
+Prepared data, not an activated proposal: `spn-northern-voyage-approved-v18.json` captures Saarthi's approved 108 source observations against the authenticated 20:35 UTC tier snapshot. It includes 107 destination recommendations and one unchanged, held Vashishta/cave observation. Nine supported Nepal observations are proposed for 73; the already approved Gondavalekar/Tukamai observations remain excluded from this packet. No tiers, relationships, source values or physical locations are written by the packet or its pure projection helper.
+
+The packet follows research revision V9, which supersedes V8 following the user's reversal of the journey: 19 Kumaon, 20 Haridwar, 72 Rishikesh, 21 Badri–Kedar, 22 Himachal and 74 Katra. Nepal remains in 73. The Vashishta/cave entry remains held; a reversed case label does not establish its identity or a physical move.
+
+The companion's registered fill-first guide must be reflected in the overall proposal before activating this Northern overlay. `spn-east-fill-reviewed-baseline-v1.json` captures its exact 50 observations and current identity/arrangement baselines: 11 assigned to 75, 23 to 23, and 16 to 73. All 17 obsolete Bengal assignments to 73 have registered destinations in 23. Fourteen observations were physically confirmed in 73 at audit time; the two ambiguous Kamaal/Gajanan observations remain held at their recorded source locations. These counts describe different states and must remain distinct.
+
+Integration order: apply the reviewed East baseline, then the Northern destinations, then reconcile current curator records and apply effective alternatives/additions. Preserve newer curator destinations and every physical confirmation. The unique reviewed CMS placement for Balak Yogeshwar is linked by canonical identity, rather than by an invented source placement ID. Citra owns the matching reviewer and registered guide integration in a separate checkpoint. Physical fit remains an estimate, including an unknown footprint in 73.
+
+Workflow learning review found no new reusable skill rule; the existing source-identity, reviewed-override and proposal-versus-physical rules cover these findings.
+
 Status recorded October 3, 2026. This is the data workstream record; release handoffs and the release captain establish production deployment status. The UX workstream owns the curator screens and museum-specific working proposal editor.
 
 ## Completed checkpoints

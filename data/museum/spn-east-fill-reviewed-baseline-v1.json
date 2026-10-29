@@ -1,0 +1,1035 @@
+{
+  "version": "spn-east-fill-reviewed-baseline-2026-10-29-v1",
+  "guideVersion": "spn-fill-first-guide-2026-10-28-v1",
+  "contentDigest": "42eaf603b8e37ca9d9957c47c45b055e4c0002655e74e3523b7a160bfa9c30b7",
+  "assignmentDigest": "246dc5c974f3879a12f8f8f254e016d4cc535cf6c01549366d828b102d3648f3",
+  "capturedAt": "2026-10-29T20:35:29.029Z",
+  "snapshotFingerprint": "9ed7d641cf58465143c60182f2741121b12e120c10f870e93bd20c32468e19a0",
+  "physicalWrites": false,
+  "assignments": [
+    {
+      "sourceId": "rec896V7fs1lwnSkY",
+      "saintId": "cms0w7dd501gv07qijoc78ezs",
+      "name": "Sri (Ishwar) Tota Puri Baba",
+      "destination": "75",
+      "held": false,
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "rec896V7fs1lwnSkY",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Primary",
+        "familyKey": "FAM-008",
+        "regionTags": [],
+        "revision": "f10b0a0fcfa8c168171b3cc6aeed965bd9230245552717921c7b8baeb27f504b",
+        "proposalRevision": "ff5b1a3bcebc656c015cb4d03169a3b33a86a53678ca7c518d5bfd2666ea62a7"
+      },
+      "spaceEstimate": 0.5
+    },
+    {
+      "sourceId": "recbZIJBveOYqWWs5",
+      "saintId": "cms0w7e3l02fz07qi534y407z",
+      "name": "Sri Dandi Swami Damodarashram",
+      "destination": "75",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recbZIJBveOYqWWs5",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "30dc584b679defdee3e72d0db399e837bd4b2121e685490d89213e42239cbb3f",
+        "proposalRevision": "eab0b3f7de19eec26012e26fbbefe91574501725d1900b27030dbee75d34597d"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recgjan7BxjyG7CeZ",
+      "saintId": "cms0w7f7a03w807qi25ypfqdb",
+      "name": "Sri Manisen",
+      "destination": "75",
+      "held": false,
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recgjan7BxjyG7CeZ",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-008",
+        "regionTags": [],
+        "revision": "84ddfbdcee8df0b9214fd48c60b4b577b01c30da8ad3f61dec9741cb0327be61",
+        "proposalRevision": "a252ba244d41142f741d979ec6f2e394deef17e63b11a96d6cbf08b2377ee02d"
+      },
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "reciI9fE7xVYFuN4u",
+      "saintId": "cms0w7fpl04ji07qisl0wupco",
+      "name": "Sri Yugacharya Sreemat Praanavanandaji Maharaj",
+      "destination": "75",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "reciI9fE7xVYFuN4u",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "94236be80115c71c2a252e154ebba3493cadad21c787e08fc16338f83564ad78",
+        "proposalRevision": "7519731f1937b963e3eaadbd96c986c061e40b3a9662f58fcdb7fb7742ebcfdf"
+      },
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "reckV8sJXL5cq978J",
+      "saintId": "cms0w7gb6059t07qis1a9kn28",
+      "name": "Sri Ramakrishna Paramahansa",
+      "destination": "75",
+      "held": false,
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "reckV8sJXL5cq978J",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Primary",
+        "familyKey": "FAM-008",
+        "regionTags": [],
+        "revision": "ad204cf63a95dec22e64e0eb89de9c0156adcf8b361164a8ea42fa27d0273faf",
+        "proposalRevision": "964ab4cf1ec9d158a576a425cfc94cc92e04ccef138236b4aa71ca6c8bc4ef25"
+      },
+      "spaceEstimate": 0.5
+    },
+    {
+      "sourceId": "recqrHsjXJuayrZml",
+      "saintId": "cms0w7hno06w007qiusuli5ab",
+      "name": "Sri Swami Vivekananda",
+      "destination": "75",
+      "held": false,
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recqrHsjXJuayrZml",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-008",
+        "regionTags": [],
+        "revision": "6ee38328cd542d27efa00600aff3e502f83bc21f32c4c1459ea127b3da89b276",
+        "proposalRevision": "24e165a17afa3889301923a0081ea28f0ac70bdc3f090788b5469e18edf60c40"
+      },
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recrWjhRIBpUX7A6J",
+      "saintId": "cmus3rxlw007v07o5ad59qkab",
+      "name": "Sri Lal Baba",
+      "destination": "75",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recrWjhRIBpUX7A6J",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0ba5fc2b54179430a18cc01423eec02152d00fac8dcd5ef397a0124100d033fd",
+        "proposalRevision": "cb1473c829da11c3c0579bc3587c41c0c7c8eef02e6d6d99470cd7e5e20d5e51"
+      },
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recSUU4X56pAqF1JC",
+      "saintId": "cms0w7i6v07i807qiot1t3jt5",
+      "name": "Sri Lakshmi Mani Devi",
+      "destination": "75",
+      "held": false,
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recSUU4X56pAqF1JC",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-008",
+        "regionTags": [],
+        "revision": "e8179fa6d1fea011d12f1c11424a39ce276346e2b6f0c9882234248155f2d5ed",
+        "proposalRevision": "bcf8899795719ab84819c5d7f504eaa6dac2f4f0009a29bd2f8cb9c3a3c7980a"
+      },
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recXa1fpOwmlwQ4YH",
+      "saintId": "cms0w7jft08ti07qimg33dh8m",
+      "name": "Sri Mahendranath Gupta",
+      "destination": "75",
+      "held": false,
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recXa1fpOwmlwQ4YH",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-008",
+        "regionTags": [],
+        "revision": "7a8339b99660b9c59f8cad444236e6655cf2a57b349708e2a9dc482817c02341",
+        "proposalRevision": "fadf54222c01a9cc601fbf1ecee347d9d94489d29c632d2cdafdd86ca1448790"
+      },
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recZPkXeFQBUFoa19",
+      "saintId": "cms0w7k6u09l907qi1b2qa7ij",
+      "name": "Sri Annada Thakur",
+      "destination": "75",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recZPkXeFQBUFoa19",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9bfc0360867f5a42c9b8202a29ce4e6164abc0b31af866e7149c1eb6e4a586a2",
+        "proposalRevision": "19899e1dad31846ef4242c300a78b21cc38af376dfdde6b93ae0a29d844bbc46"
+      },
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "rectvEBy833q3i4L6",
+      "saintId": "cms0w7ihx07u507qi0vodpwck",
+      "name": "Sri Siddha Bhagwan Das Maharaj",
+      "destination": "75",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rectvEBy833q3i4L6",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "70928d8bd1a58611a2f4d3d8353eece76d4a62886fb4a4e2edda2fd5b9ad276d",
+        "proposalRevision": "a7f0d1da15c54f113f49ec03a677818ea30696c568ede72c704af7fa733cbf24"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec4V2uLs4HP4Ps3d",
+      "saintId": "cms0w7cv200uw07qi4v8l692z",
+      "name": "Sri Gauthama Buddha",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "rec4V2uLs4HP4Ps3d",
+        "section": "Buddhist Saints",
+        "tier": "Primary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0b087b26f2bf8a4c03860be035308dd4f3f1cbaa05acc13d0979d894ef670c65",
+        "proposalRevision": "a15722f426389041e4e1416c741fcbb71f2dfd6633ae7c8182a2cfdfc68c0a52"
+      },
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recBnLw7Q3ZLCbck4",
+      "saintId": "cms0w7e0402by07qic8v4l1xo",
+      "name": "Unknown Buddhist Saint relic",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recBnLw7Q3ZLCbck4",
+        "section": "Buddhist Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "081271e312e158d81c424cb2f1bec7220d74da7c0666268afcc48d2002521482",
+        "proposalRevision": "043798d64bd719ad25e94460d4b7c6741dbd1c80d3d2d86cb305ed4621af41f4"
+      },
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recC3zchheU7N9g2E",
+      "saintId": "cms0w7e4z02ht07qi8doxzhab",
+      "name": "Sogyal Rinpoche",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recC3zchheU7N9g2E",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "18cbfbae8cb6c5e69deed353d289df62b975063a220f1ed04b0ae32fb3dba04d",
+        "proposalRevision": "35a6ebde88ccee6dee9793ea7ce81b8c090bd1f66422e6fbf766a78ddd4abe26"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recSUaw6o0jRfF08q",
+      "saintId": "cms0w7i6g07ht07qi54k2lobr",
+      "name": "Mokkalana",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recSUaw6o0jRfF08q",
+        "section": "Buddhist Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "92b3da4f0b07635b30ba669b57449555293aac7f896309eda3eb61fbec6df1d2",
+        "proposalRevision": "97b833f15211de2ab7c067f3043c27546aac2a7e083f522ca7245ad5356e4c46"
+      },
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recv7xsxOB32vlFNE",
+      "saintId": "cms0w7iuy088207qi7xuv3fjl",
+      "name": "Sri Nichidatsu Fujii (Fujii Guruji)",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recv7xsxOB32vlFNE",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3a7d5171b0dc5d8804ba960127d8479c35e441660337f735938a7b21ccd6eb4b",
+        "proposalRevision": "447940ff613b0805a20bfe687938eb40ed174977553c74ce17d23c4ab17df820"
+      },
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recX2VUC6rvHjV8Fe",
+      "saintId": "cms0w7jdd08r207qinfkvxw0q",
+      "name": "Salibutr",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recX2VUC6rvHjV8Fe",
+        "section": "Buddhist Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b1ffb7e0e0f7b470f2ffe59347fbb1d420f9b9db6c4f9e5c3cedfafd3ec75053",
+        "proposalRevision": "c6d5fe535236b5bae2396530f39b127d4a86c4a6bef2b924f37b3a40e08bdc54"
+      },
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recZbwL1wz3gD9B70",
+      "saintId": "cms0w7k1809fo07qiabqvhoae",
+      "name": "Khandro Tsering Chödron",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recZbwL1wz3gD9B70",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b63526316dfc06f8ca17e9a14ea017f40a2f1b23c0fbc499872c269c6e79ab4e",
+        "proposalRevision": "dfec9283a16618e68e27e13fcdd0e1862a0a41c24e84ec3d3be59a9fcb86f0d9"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recaNtSLYQh5Fm4lN",
+      "saintId": "cms0w7dsb021707qiiyou77fv",
+      "name": "Sri Mahapurusha Sankardev",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recaNtSLYQh5Fm4lN",
+        "section": "Needs Research",
+        "tier": "Primary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "df74d9dd233900444929bcb68932eedfea8a88632d67f8bcc29ed7709bc69d5c",
+        "proposalRevision": "d8b50824262e4dca750e81ad0071210648811318c406bc2cb73471113f1ad4ee"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recOYRXmecpwN3Unl",
+      "saintId": "cms0w7h9x06fv07qioy54x3o8",
+      "name": "Sri Mahapurusha Madhavdev",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recOYRXmecpwN3Unl",
+        "section": "Needs Research",
+        "tier": "Primary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "2255581e0ed137cb8e2874bd10033f63ed5aff43dc7dff85c85f28060989b412",
+        "proposalRevision": "b7ca80fbcd1b4d441c4b1fafa3ac229a19dfdf421985740dfd0e66ac431238d3"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recpyhIScDxJbDdE1",
+      "saintId": "cms0w7hid06pu07qixhc35ehi",
+      "name": "Sri Kamaal Darvesh Dargaah",
+      "destination": "73",
+      "held": true,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recpyhIScDxJbDdE1",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e4a42ca960b48b5df9598077ba87817e257530ec41b336f151800e705252cbf2",
+        "proposalRevision": "3e36abdac8997b2c3fc766547d85e4a11f7b95a08bfe8acccafe7ef08c0c333f"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recsmno4Rquvfnth2",
+      "saintId": "cmus3rxpn008h07o57vl7ryun",
+      "name": "Sri Gajanan Maharaj",
+      "destination": "73",
+      "held": true,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recsmno4Rquvfnth2",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "10dffde179a38726193ee0d959d6ec061453fae3fde6b2ff7570a1f29a944531",
+        "proposalRevision": "35cf223a5129ca3c6f62165b15b922f95ea29a87a1bba4fc9822cb331d49cb6a"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec1iHJEqLnLP7ImA",
+      "saintId": "cms0w7cet009z07qioc6yud18",
+      "name": "Mahant of Bodhgaya",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec1iHJEqLnLP7ImA",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "2ac8f4272072ffbfd467bb74dfa1be607ac1b28af8d12a5403491cde7c0370aa",
+        "proposalRevision": "ba18b693350bebd4939e12f7c35d46498d1db0e02014412fd0179f0a994205d0"
+      },
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "recrR2rQ8fUgEKiDR",
+      "saintId": "cmus3rxle007q07o5q7fzz09q",
+      "name": "Sri Sitaram Baba",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recrR2rQ8fUgEKiDR",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "41f253e440ab4324738c55c97eaf272fcbee09196faa9fc972123a299a91fef9",
+        "proposalRevision": "3369f414d92cb5326efab59e7a43dcf2c88e57a5435cebfe789a70cbc81f2f94"
+      },
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "recEIaqG3AkCmP6mS",
+      "saintId": "cms0w7er603az07qi1zah564g",
+      "name": "Sri 108 Sri Narayan Das ji Bhakta Mali Mamaji",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recEIaqG3AkCmP6mS",
+        "section": "Ramanandi",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ff762d567640d108e594960e04ecab7f841ddf5426ed3debd6421a43753727e2",
+        "proposalRevision": "29bcb758b812b3453f8de6e9a1fde20456e867bb953b46d96ee2187782f46f17"
+      },
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recV9C9kIiVVqlPpw",
+      "saintId": "cms0w7ivr088x07qikymkkncn",
+      "name": "Sri Maharshri Sahi Swami ji Maharaj",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recV9C9kIiVVqlPpw",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3e5ab785107b0ae1c3cc4945c9b5a0d024e2b693efb8aab87ef7fbcf57c83eb2",
+        "proposalRevision": "ee10e12c958e01e2a01c1c3de98ee79ace684dd99f3d800a28df98f6b512b98b"
+      },
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recycW2GnQ4n8xXV0",
+      "saintId": "cms0w7jrj095m07qix6z2lizh",
+      "name": "Sri Dashrath Manjhi",
+      "destination": "73",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recycW2GnQ4n8xXV0",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9cdc2b464e7dfc55d127d20bba88d136ebf228f06e7ff87bec50e6dc7e7be79e",
+        "proposalRevision": "7d98ab749adffea55315797712f210819a3c798835d2dcc3185cb2772973fe54"
+      },
+      "spaceEstimate": null
+    },
+    {
+      "sourceId": "recbdw5UUfTtrzYtA",
+      "saintId": "cms0w7dx4027m07qic4cs8yy7",
+      "name": "Sri Shrimad Swami Paramananda",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recbdw5UUfTtrzYtA",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9db298245cbd07768dc402871e848a998fa1582c35d6a58d49ce364a90b9f3ba",
+        "proposalRevision": "fd23325399b3816dc3faebd2d5f511e44d0365a656235bff731776b351ace828"
+      },
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recEl1aeAqZWFDMSu",
+      "saintId": "cms0w7esh03cq07qia2tm3c8o",
+      "name": "Sri Ram Thakur Maharaj",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recEl1aeAqZWFDMSu",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "1faa3fbfab66027d7af257b2b75f90343227d0c67e7baee12b4ba6f2aa0a51ff",
+        "proposalRevision": "740e11fc90227c707f68a2f83e20ec8c030e89935c2bd2db4a3c4a4d388c17c4"
+      },
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recFwJWKusgV51Uso",
+      "saintId": "cms0w7f4c03s807qip8fhy8oo",
+      "name": "Sri Haridas Dey",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recFwJWKusgV51Uso",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "7d38cbb2233aa5879dddc592853a4b44b2238d5c4c7235fd9b608d65f0be905e",
+        "proposalRevision": "e3d7bd9ce1ed80e1e21581112945a768d98c0d0c723a9ffb849b618ecb1a0023"
+      },
+      "spaceEstimate": null
+    },
+    {
+      "sourceId": "recfzhFIVbBPDkCYS",
+      "saintId": "cms0w7f4v03sw07qis8k6570z",
+      "name": "Sri Shrimad Swami Abhayanand Giri Paramahamsa Dev",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recfzhFIVbBPDkCYS",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "7f3f34b36ead681954a0ac45970d03a910022149712490bc478b98b2d4028b72",
+        "proposalRevision": "ee7c5cbfc12c50ea33e87d1ebf4f2ddec14c3fa5839ea3437998b1e350e8fb13"
+      },
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recSYEInZCyvDPkGk",
+      "saintId": "cms0w7i8g07jr07qixjwk5ig7",
+      "name": "Sri Abhijeet Roy",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recSYEInZCyvDPkGk",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "2d365dbb19875e811ee2225ddd5f5a2f6c65e57a40440e9f00c880e06a58fde4",
+        "proposalRevision": "7b980f549f01df8e91c3785f26081872d97adfcc0ecdc218778e8ebf5c89b788"
+      },
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recX9wYe8fUdPLhPX",
+      "saintId": "cms0w7jfk08t607qiursu89q6",
+      "name": "Sri Rām Thakur",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recX9wYe8fUdPLhPX",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "bdfaa484fde2862f79ffda07eda5f02509e44e36cbfa2b85d754d287c4ba90aa",
+        "proposalRevision": "05f222f74e4bcf4200058642e8b7d5a75d09ca9f7caffbad430170d36c95a783"
+      },
+      "spaceEstimate": null
+    },
+    {
+      "sourceId": "rec0SGXTdsSl2P73u",
+      "saintId": "cms0w7caz005p07qid7kttbkz",
+      "name": "Sri Srimad Balaananda Brahmachari Maharaj",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec0SGXTdsSl2P73u",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9a15be05ecb0b27b00be6a1f28fcfe45757d6f7830c0a757b3275df015c81e1b",
+        "proposalRevision": "b3cb318765b5572a851e24fc148335325d95f4783bc99b3349b0087b24e108e8"
+      },
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recx5AJ8L5CdLzJJy",
+      "saintId": "cms0w7jdz08rk07qiiy0vbbpm",
+      "name": "Sri Srimad Tarananda Bramachari",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recx5AJ8L5CdLzJJy",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "168f09b9b3166502d95bcc753ec1273e83c7cc54921d6f059687a8123c6bd8cb",
+        "proposalRevision": "6ce0fdaebf598697575cdaaf23feca52f03a36718e88a72a711015f4f603933d"
+      },
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "rec7Jp1JDp4Vm9470",
+      "saintId": "cms0w7dag01da07qi4y8fjeqm",
+      "name": "Sri Govindanand Giri Maharaj",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec7Jp1JDp4Vm9470",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "26490e776e437777779e977358263adfac6a08abf2229d52ead8b6b2eb255ef8",
+        "proposalRevision": "5754007ea0baa8644cb426e170bb7c9e744a9d0021fbd7f7db59e75421c1921d"
+      },
+      "spaceEstimate": 0.1111111111111111
+    },
+    {
+      "sourceId": "recrYgHIIdcjcxN2N",
+      "saintId": "cms0w7hza079x07qi6m901wnc",
+      "name": "Sri Shrimad Sadhanand Giri Maharaj",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recrYgHIIdcjcxN2N",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b89a7d1aaaa80541dcfd190f3a9157abaa7ddde3861579e79b899ea55766ddd2",
+        "proposalRevision": "86810248612f9ad7c1307524d33b20b8c8593eb2a6fbd4d55fa8a75e448f6e54"
+      },
+      "spaceEstimate": 0.1111111111111111
+    },
+    {
+      "sourceId": "recdMxyeocl1lyD6a",
+      "saintId": "cms0w7eja030907qiox5whv7r",
+      "name": "Sri Lokanath Baba",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recdMxyeocl1lyD6a",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3de1fd7d5695c08d7d5342c6a0b2cafb8ab29100db0e1e5a88ed7d9fdae43d50",
+        "proposalRevision": "0247d6d44f552051ab68ed4d4379c73ad703564ef38d5df6b419d73563918539"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recRivuJkmJR7uYVc",
+      "saintId": "cms0w7hvc075a07qicrrinmr3",
+      "name": "Sri Paramahamsa Guruji Sri 108 Mangal Das ji Maharaj",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recRivuJkmJR7uYVc",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "2fa75c496125e02a75fdfb9c4fd0baa3e9e0747b33014c144a1d6abb0167ef68",
+        "proposalRevision": "f27d78a597497fdcf2a63b2fd79f194fd7e872024b9bc37ea0c8704f4cd6c289"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recSZ8Fcf0kN0uvm4",
+      "saintId": "cms0w7i9i07kx07qidw4jhbye",
+      "name": "Sri Bhakti Vedanta Tridandi Goswami Maharaj",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recSZ8Fcf0kN0uvm4",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3e04bed38df89d91ab0b11d12b3995c3ab810fbc490b1af10b269083ee22cb53",
+        "proposalRevision": "52c063313f97fc2ea423488d3ef0715c6c1146db73a52eb7052fdc984bbc4f7d"
+      },
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recVcmAKuNX8Dpp54",
+      "saintId": "cms0w7iww08a007qikhranewb",
+      "name": "Brahmachari Sri Anilananda Maharaj",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recVcmAKuNX8Dpp54",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "184e27a33707c41e06f7d6bd6fa1c4467e350d8774ed26e2bfa01f74b35427da",
+        "proposalRevision": "381ba1579652fa67eb0d806a59cbbf7f0f73e75c44387ac27b9b1efc19819d22"
+      },
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "rec0UdBlKfO9mbpZD",
+      "saintId": "cms0w7cb8006207qix8q1aash",
+      "name": "Sri Mokshada Sundari Devi",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "rec0UdBlKfO9mbpZD",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9991070546bdd5c91c12332aa61e00709c293ad3442a5c2d6e2a7108dd021f79",
+        "proposalRevision": "702bd1e8f761a01dd8b38745705cdd596eff5f3f1a265c8fac666b80a0ca3175"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec41qsOfiZMDpPHZ",
+      "saintId": "cms0w7cpr00o107qillguaaa6",
+      "name": "Sri Swami Shudanshu Maharaj",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "rec41qsOfiZMDpPHZ",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-010",
+        "regionTags": [],
+        "revision": "025937a1be88d633f0864ccff4788b3f1f48f1a4068d73c4c2de5e432dec9bf9",
+        "proposalRevision": "0a09c81a730528b9f7896a162009042630cb86c75bd64af871d3fada25f0e66b"
+      },
+      "spaceEstimate": 0.0625
+    },
+    {
+      "sourceId": "recBVn7Vp9onOO9Bh",
+      "saintId": "cms0w7e2q02f407qie0yjy7xe",
+      "name": "Sri Anandamayi Ma",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recBVn7Vp9onOO9Bh",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Primary",
+        "familyKey": "FAM-010",
+        "regionTags": [],
+        "revision": "5beb4f5419a97e3fdbeb8eb4eb5aa1e5c5d2b7c8471e69cc0fd354c0bdc6fb21",
+        "proposalRevision": "edbbc5b27ff3f7c2a39973a2a47c24ead269c3fc91cb465df832d77c25d11346"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recCIuQTzNZY1KNsQ",
+      "saintId": "cms0w7e8c02m507qihab2pdoc",
+      "name": "Sri Baba Bolanath",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recCIuQTzNZY1KNsQ",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-010",
+        "regionTags": [],
+        "revision": "507f09842d224c8e17ed66838e3cdc3333dd81fa78b3e94db606cb362045025c",
+        "proposalRevision": "5af08901e29db6052d40b9b1b2472ae3aea07174ce2008679554c0cfb6b4a602"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recgWx4aYAekvRxg1",
+      "saintId": "cms0w7fbp041v07qin8sforua",
+      "name": "Sri Ramani Mohan Chakrabarti (Bholanath)",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recgWx4aYAekvRxg1",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-010",
+        "regionTags": [],
+        "revision": "5dc683b99ad82038cf37282f7c95d34556a8bb62271179a9d470b477514c8c5c",
+        "proposalRevision": "353160b54bbec81d56ece5e6b8b44dc9aa48a43608757e8d2d2f9d0212e3856b"
+      },
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recSp8gOh0CJjhDej",
+      "saintId": "cms0w7i4t07g507qibr708u2a",
+      "name": "Sri Swami Kedarnath Maharaj",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recSp8gOh0CJjhDej",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-010",
+        "regionTags": [],
+        "revision": "27f924ac092db9b78ace4bb5c167f076cfe757aa0f72bd2822bf75481506c693",
+        "proposalRevision": "9ecd01a3e11d9917e7aff68c239a1b804037f0683c310153b12570c4838075d5"
+      },
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "recdHeSKJd6wfLiaq",
+      "saintId": "cms0w7eh402xm07qi26e8l4xg",
+      "name": "Sri SitaRamDas Omkarnath",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Primary",
+      "capturedBaseline": {
+        "placementId": "recdHeSKJd6wfLiaq",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Primary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "356042609ecfe0bc4fccd4b4ab22a1b43370cf2d0c5ae1e8bba43a13f6fdeda2",
+        "proposalRevision": "750c1dd5a796136d8733265bc8d833e9616b5b844cccfaf65292d216ee6eaaef"
+      },
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recich5ddJOLsUnVm",
+      "saintId": "cms0w7foe04i107qiwkkjtma8",
+      "name": "Sri Srimad Swami Parang Kush Ramanuj",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recich5ddJOLsUnVm",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-075",
+        "regionTags": [],
+        "revision": "1494fc6498515d6da10a6bba7d83de3c36eca1ed6bfcc8826fa45eaeaa98e139",
+        "proposalRevision": "78fe06076f0e19e283a1b90a2135399ec2d459cc277fefc8c20447f340d2254e"
+      },
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recjfGeU4OqaBqtZ2",
+      "saintId": "cms0w7fvw04r307qik4ikz6ak",
+      "name": "Sri Srijivasharan Das",
+      "destination": "23",
+      "held": false,
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recjfGeU4OqaBqtZ2",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ca4e5170bf826949ea66e156f95c01c3e15cffb9bcc70d110ca4b401f52a0f67",
+        "proposalRevision": "5d1c1fe9362b97a64cfe1d3128b99076228ed215e0068d7cc81696e58b4d62df"
+      },
+      "spaceEstimate": 0.25
+    }
+  ],
+  "heldSourceIds": [
+    "recsmno4Rquvfnth2",
+    "recpyhIScDxJbDdE1"
+  ],
+  "confirmedExisting73": [
+    "rec1iHJEqLnLP7ImA",
+    "rec4V2uLs4HP4Ps3d",
+    "recaNtSLYQh5Fm4lN",
+    "recBnLw7Q3ZLCbck4",
+    "recC3zchheU7N9g2E",
+    "recEIaqG3AkCmP6mS",
+    "recOYRXmecpwN3Unl",
+    "recrR2rQ8fUgEKiDR",
+    "recSUaw6o0jRfF08q",
+    "recv7xsxOB32vlFNE",
+    "recV9C9kIiVVqlPpw",
+    "recX2VUC6rvHjV8Fe",
+    "recycW2GnQ4n8xXV0",
+    "recZbwL1wz3gD9B70"
+  ],
+  "outgoingStale73": [
+    {
+      "sourceId": "rec0SGXTdsSl2P73u",
+      "name": "Sri Srimad Balaananda Brahmachari Maharaj",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "rec7Jp1JDp4Vm9470",
+      "name": "Sri Govindanand Giri Maharaj",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recbdw5UUfTtrzYtA",
+      "name": "Sri Shrimad Swami Paramananda",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recdHeSKJd6wfLiaq",
+      "name": "Sri SitaRamDas Omkarnath",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recdMxyeocl1lyD6a",
+      "name": "Sri Lokanath Baba",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recEl1aeAqZWFDMSu",
+      "name": "Sri Ram Thakur Maharaj",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recFwJWKusgV51Uso",
+      "name": "Sri Haridas Dey",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recfzhFIVbBPDkCYS",
+      "name": "Sri Shrimad Swami Abhayanand Giri Paramahamsa Dev",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recich5ddJOLsUnVm",
+      "name": "Sri Srimad Swami Parang Kush Ramanuj",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recjfGeU4OqaBqtZ2",
+      "name": "Sri Srijivasharan Das",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recRivuJkmJR7uYVc",
+      "name": "Sri Paramahamsa Guruji Sri 108 Mangal Das ji Maharaj",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recrYgHIIdcjcxN2N",
+      "name": "Sri Shrimad Sadhanand Giri Maharaj",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recSYEInZCyvDPkGk",
+      "name": "Sri Abhijeet Roy",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recSZ8Fcf0kN0uvm4",
+      "name": "Sri Bhakti Vedanta Tridandi Goswami Maharaj",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recVcmAKuNX8Dpp54",
+      "name": "Brahmachari Sri Anilananda Maharaj",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recx5AJ8L5CdLzJJy",
+      "name": "Sri Srimad Tarananda Bramachari",
+      "next": "23",
+      "nextCount": 1
+    },
+    {
+      "sourceId": "recX9wYe8fUdPLhPX",
+      "name": "Sri Rām Thakur",
+      "next": "23",
+      "nextCount": 1
+    }
+  ]
+}
