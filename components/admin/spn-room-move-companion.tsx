@@ -1,4 +1,8 @@
 "use client";
+import {mergeMuseumPhysicalProgress} from "@/lib/museum-physical-progress-client";
+import {MuseumCompanionSearch,type CompanionSearchEntry} from "./museum-companion-search";
+import type {CompanionAddition} from "@/lib/museum-companion-additions-state";
+import {projectCompanionAdditions} from "@/lib/museum-companion-addition-projection";
 import { spnStarterCleanup, starterCleanupPartial } from "@/lib/spn-starter-cleanup";
 import {projectGuideAlternatives} from "@/lib/museum-guide-alternative-projection";
 import type {AlternativeDestination} from "@/lib/museum-guide-alternatives";
@@ -21,13 +25,35 @@ type SessionView="active"|"staging"|"tasks";
 type RequestBody=Record<string,unknown>;
 export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canManage,workflow="guided",allowClear:initialAllowClear=true,phaseLabel:initialPhaseLabel="Starter row",phase:initialPhase="starter",phaseGuides:capturedPhaseGuides,initialAlternatives=[],roomTones={}}:{initialAlternatives?:AlternativeDestination[];roomTones?:Record<string,string>;guide:StarterMoveGuide;initialPhysical:PhysicalState|null;canManage:boolean;workflow?:"guided"|"room";allowClear?:boolean;phaseLabel?:string;phase?:Phase;phaseGuides?:Record<Phase,StarterMoveGuide>}){
  const [alternatives,setAlternatives]=useState(initialAlternatives);
- const phaseGuides=useMemo(()=>capturedPhaseGuides?Object.fromEntries(Object.entries(capturedPhaseGuides).map(([key,value])=>[key,projectGuideAlternatives(value,alternatives)])) as Record<Phase,StarterMoveGuide>:undefined,[capturedPhaseGuides,alternatives]);
+ const [additions,setAdditions]=useState<CompanionAddition[]>([]),[additionEntries,setAdditionEntries]=useState<import("@/lib/spn-move-guide").GuideEntry[]>([]);
+ const basePhaseGuides=useMemo(()=>capturedPhaseGuides?Object.fromEntries(Object.entries(capturedPhaseGuides).map(([key,value])=>[key,projectGuideAlternatives(value,alternatives)])) as Record<Phase,StarterMoveGuide>:undefined,[capturedPhaseGuides,alternatives]);
+ const phaseGuides=useMemo(()=>basePhaseGuides?projectCompanionAdditions(basePhaseGuides,additions,additionEntries):undefined,[basePhaseGuides,additions,additionEntries]);
  const [phase,setPhase]=useState<Phase>(initialPhase);
  const fallbackGuide=useMemo(()=>projectGuideAlternatives(initialGuide,alternatives),[initialGuide,alternatives]);
  const guide=phaseGuides?.[phase]??fallbackGuide;
  const allowClear=guide.allowClear??(phaseGuides?phase==="starter":initialAllowClear);
  const phaseLabel=phaseGuides?({starter:"Starter row",datta:"Datta","ram-bhakti":"Ram bhakti","gosaiji-sai":"East Phase 1",vraj:"Vraj Phase 1"} satisfies Record<Phase,string>)[phase]:guide.phaseLabel??initialPhaseLabel;
  const [physical,setPhysical]=useState(initialPhysical),[sessionView,setSessionView]=useState<SessionView>("active"),[selected,setSelected]=useState(guide.vitrines[0]?.code??"2");
+ const [viewRestored,setViewRestored]=useState(false);
+ useEffect(()=>{
+  const url=new URL(window.location.href);
+  const requestedPhase=url.searchParams.get("phase");
+  const restoredPhase=requestedPhase&&capturedPhaseGuides&&requestedPhase in capturedPhaseGuides?requestedPhase as Phase:initialPhase;
+  const restoredGuide=basePhaseGuides?.[restoredPhase]??fallbackGuide;
+  const requestedVitrine=url.searchParams.get("vitrine");
+  setPhase(restoredPhase);
+  if(requestedVitrine&&restoredGuide.vitrines.some(item=>item.code===requestedVitrine))setSelected(requestedVitrine);
+  const requestedView=url.searchParams.get("moveView");
+  if(requestedView==="staging"||requestedView==="tasks")setSessionView(requestedView);
+  setViewRestored(true);
+ },[]);
+ useEffect(()=>{
+  if(!viewRestored)return;
+  const url=new URL(window.location.href);
+  url.searchParams.set("phase",phase);url.searchParams.set("vitrine",selected);
+  if(sessionView==="active")url.searchParams.delete("moveView");else url.searchParams.set("moveView",sessionView);
+  window.history.replaceState(window.history.state,"",url);
+ },[viewRestored,phase,selected,sessionView]);
  const [readinessAttempts,setReadinessAttempts]=useState(0);
  const readinessNotice=useRef<HTMLParagraphElement>(null);
  useEffect(()=>setReadinessAttempts(0),[selected,phase]);
@@ -45,17 +71,53 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  function rowsForUndo(){return physical?.rows.find(row=>row.sourceId===undoSource);}
  const [vitrineSearch,setVitrineSearch]=useState("");
  const [savingSources,setSavingSources]=useState<string[]>([]);
+ const [savingTargets,setSavingTargets]=useState<Record<string,string>>({});
  useEffect(()=>{setVitrineSearch("");setClearConfirmed(false);},[selected]);
  const displayWork=useMuseumDisplayWork();
- const allGuides=phaseGuides?Object.values(phaseGuides):[guide];
- const allEntries=new Map(allGuides.flatMap(item=>item.entries).map(entry=>[entry.sourceId,entry]));
- for(const item of allGuides)for(const vitrine of item.vitrines)for(const group of [...vitrine.families,...vitrine.cityGroups])for(const id of group.sourceIds){const entry=item.entries.find(row=>row.sourceId===id);if(entry)allEntries.set(id,entry);}
+ const allGuides=useMemo(()=>phaseGuides?Object.values(phaseGuides):[guide],[phaseGuides,guide]);
+ const allEntries=useMemo(()=>{
+  const entries=new Map(allGuides.flatMap(item=>item.entries).map(entry=>[entry.sourceId,entry]));
+  for(const item of allGuides){const byId=new Map(item.entries.map(entry=>[entry.sourceId,entry]));for(const vitrine of item.vitrines)for(const group of [...vitrine.families,...vitrine.cityGroups])for(const id of group.sourceIds){const entry=byId.get(id);if(entry)entries.set(id,entry);}}
+  return entries;
+ },[allGuides]);
  const [taskBusy,setTaskBusy]=useState<string|null>(null);
  const [taskError,setTaskError]=useState("");
  const [clearConfirmed,setClearConfirmed]=useState(false);
  const [decisions,setDecisions]=useState<GuideDecision[]>([]),[decisionsLoaded,setDecisionsLoaded]=useState(false);
  const guideVersion=useRef(guide.version);guideVersion.current=guide.version;
  const pending=useRef(false),retry=useRef<{method:string;body:RequestBody;url:string}|null>(null);
+ const mutationEpoch=useRef(0);
+ const physicalRef=useRef(physical);physicalRef.current=physical;
+ const [syncError,setSyncError]=useState("");
+ useEffect(()=>{
+  let stopped=false,inFlight=false,lastFull=Date.now(),etag="";
+  let controller:AbortController|null=null;
+  const refresh=async()=>{
+   if(stopped||inFlight||pending.current||retry.current||document.visibilityState!=="visible")return;
+   inFlight=true;const epoch=mutationEpoch.current;controller=new AbortController();
+   const timeout=window.setTimeout(()=>controller?.abort(),20000);
+   try{
+    const full=Date.now()-lastFull>=60000;
+    if(full)lastFull=Date.now();
+    const response=await fetch("/api/admin/museum-physical-locations?museumId=museum-spn"+(full?"":"&view=progress"),{cache:"no-store",signal:controller.signal,headers:!full&&etag?{"If-None-Match":etag}:{}});
+    if(response.status===304){if(!stopped)setSyncError("");return;}
+    const data=await response.json();
+    if(!response.ok||!(full?Array.isArray(data.rows):Array.isArray(data.positions)))throw new Error("Live updates paused. Refresh progress to reconnect.");
+    if(stopped||pending.current||epoch!==mutationEpoch.current)return;
+    if(full){setPhysical(data);}else if(physicalRef.current){
+     const merged=mergeMuseumPhysicalProgress(physicalRef.current.rows,data.positions);
+     if(merged.needsFullRefresh)lastFull=0;
+     setPhysical(previous=>previous?{...previous,rows:merged.rows,preparations:data.preparations,phaseClearances:data.phaseClearances}:previous);
+     etag=response.headers.get("ETag")??"";
+    }
+    setSyncError("");
+   }catch{if(!stopped)setSyncError("Live updates paused. Refresh progress to reconnect.");}
+   finally{window.clearTimeout(timeout);inFlight=false;}
+  };
+  const timer=window.setInterval(()=>void refresh(),10000);
+  const resume=()=>void refresh();window.addEventListener("focus",resume);document.addEventListener("visibilitychange",resume);
+  return()=>{stopped=true;window.clearInterval(timer);controller?.abort();window.removeEventListener("focus",resume);document.removeEventListener("visibilitychange",resume);};
+ },[]);
  const view=guide.vitrines.find(v=>v.code===selected);
  const editable=canManage&&!!physical&&!busy&&!displayWork.busy&&!retry.current;
  const rows=(physical?.rows??[]).map(row=>row.currentBasis==="confirmed"&&row.current?{...row,current:{...row.current,shelf:displayWork.shelf(row)}}:row);
@@ -94,15 +156,24 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  }
  async function send(method:string,body:RequestBody,url="/api/admin/museum-physical-locations"){
   if(pending.current)return;
-  pending.current=true;setBusy(true);setError("");setMessage("");
+  pending.current=true;mutationEpoch.current+=1;setBusy(true);setError("");setMessage("");
   setSavingSources(Array.isArray(body.records)?body.records.map((record:{sourceId:string})=>record.sourceId):typeof body.sourceId==="string"?[body.sourceId]:[]);
+  setSavingTargets(Object.fromEntries((Array.isArray(body.records)?body.records:[]).filter(record=>record.to?.kind==="vitrine").map(record=>[record.sourceId,record.to.code])));
   retry.current={method,body,url};
   try{
    const response=await fetch(url,{method,headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
    const result=await response.json();
-   if(!response.ok){if(response.status<500)retry.current=null;throw new Error(result.error||"Could not save this change.");}
+   if(!response.ok){
+    if(response.status<500)retry.current=null;
+    if(response.status===409){
+     const refreshed=await fetch("/api/admin/museum-physical-locations?museumId=museum-spn",{cache:"no-store"});
+     const snapshot=await refreshed.json();
+     if(refreshed.ok&&Array.isArray(snapshot.rows)){setPhysical(snapshot);throw new Error((result.error||"Another curator updated this record.")+" Current progress is now loaded; review it before trying again.");}
+    }
+    throw new Error(result.error||"Could not save this change.");
+   }
    if(!result.decision&&!Array.isArray(result.rows)&&!Array.isArray(result.preparations))throw new Error("The save could not be confirmed. Refresh progress before trying again.");
-   if(body.action==="preparation.update"){setPhysical(previous=>previous?{...previous,preparations:result.preparations}:previous);retry.current=null;setMessage("Preparation saved.");return;}
+   if(body.action==="preparation.update"){setPhysical(previous=>previous?{...previous,preparations:result.preparations}:previous);retry.current=null;setMessage("Preparation saved.");return result;}
    if(body.action==="undo"||body.action==="clear.correct"){
     retry.current=null;
     setPhysical(previous=>previous?{...previous,confirmationHistory:[],reportedPlacementReceipts:undefined,rows:previous.rows.map(row=>result.rows.find((next:CompanionRow)=>next.sourceId===row.sourceId)??row)}:result);
@@ -113,14 +184,14 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
    }
    if(Array.isArray(result.alternativeDestinations))setAlternatives(result.alternativeDestinations);
    if(result.decision){setDecisions(previous=>[...previous.filter(d=>d.suggestionId!==result.decision.suggestionId),result.decision]);if(body.decision==="declined")setDeclineSource(null);}
-   else setPhysical(previous=>previous?{...previous,...(Array.isArray(result.preparations)?{preparations:result.preparations}:{}),...(Array.isArray(result.phaseClearances)?{phaseClearances:result.phaseClearances}:{}),confirmationHistory:result.receipt?[result.receipt,...(previous.confirmationHistory??[])]:previous.confirmationHistory,rows:previous.rows.map(row=>result.rows.find((next:CompanionRow)=>next.sourceId===row.sourceId)??row)}:result);retry.current=null;setMessage("Saved.");setClearConfirmed(false);return result;
+   else setPhysical(previous=>previous?{...previous,...(Array.isArray(result.preparations)?{preparations:result.preparations}:{}),...(Array.isArray(result.phaseClearances)?{phaseClearances:result.phaseClearances}:{}),confirmationHistory:result.receipt?[result.receipt,...(previous.confirmationHistory??[])]:previous.confirmationHistory,rows:previous.rows.map(row=>result.rows.find((next:CompanionRow)=>next.sourceId===row.sourceId)??row)}:result);retry.current=null;setMessage(result.alreadyRecorded?.length?"Already recorded by another curator. Progress updated.":"Saved.");setClearConfirmed(false);return result;
   }catch(e){setError(e instanceof Error?e.message:"Could not save. Retry the same action or reload to check its status.");}
-  finally{pending.current=false;setBusy(false);setSavingSources([]);}
+  finally{pending.current=false;setBusy(false);setSavingSources([]);setSavingTargets({});}
  }
  async function reload(){
-  if(pending.current)return;pending.current=true;setBusy(true);setError("");
-  try{const response=await fetch("/api/admin/museum-physical-locations?museumId=museum-spn",{cache:"no-store"});const data=await response.json();if(!response.ok)throw new Error(data.error||"Could not load current locations.");setPhysical(data);await Promise.all([loadDecisions(),displayWork.reload()]);retry.current=null;setMessage("Current progress loaded.");}
-  catch(e){setError(e instanceof Error?e.message:"Could not load current progress.");}finally{pending.current=false;setBusy(false);setSavingSources([]);}
+  if(pending.current)return;pending.current=true;mutationEpoch.current+=1;setBusy(true);setError("");
+  try{const response=await fetch("/api/admin/museum-physical-locations?museumId=museum-spn",{cache:"no-store"});const data=await response.json();if(!response.ok)throw new Error(data.error||"Could not load current locations.");setPhysical(data);await Promise.all([loadDecisions(),displayWork.reload()]);retry.current=null;setMessage("Current progress loaded.");setSyncError("");}
+  catch(e){setError(e instanceof Error?e.message:"Could not load current progress.");}finally{pending.current=false;setBusy(false);setSavingSources([]);setSavingTargets({});}
  }
  async function loadDecisions(){
   const response=await fetch("/api/admin/museum-guide-decisions?museumId=museum-spn&guideVersion="+encodeURIComponent(guide.version),{cache:"no-store"});
@@ -150,16 +221,20 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  }
  function openDecline(id:string){setAlternativeIntent("proposed");setError("");const saved=decisions.find(d=>d.suggestionId===id);setAlternativeVitrine(saved?.alternativeVitrine??"");setAlternativeShelf(saved?.alternativeShelf??"");setDeclineSource(id);}
  function decisionControls(id:string){
+  if(id.startsWith("curator-additions:")||(id.startsWith("row:")&&additions.some(a=>a.sourceId===id.slice(4))))return null;
   const saved=decisions.find(d=>d.suggestionId===id);const status=saved?.decision??"pending";
   return <div className="review-actions museum-guide-decision" data-status={status}>{status==="pending"?<><button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!editable||!decisionsLoaded} onClick={()=>decide(id,"deferred")}>Defer</button><button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!editable||!decisionsLoaded} onClick={()=>openDecline(id)}>Decline</button></>:<><span className="museum-guide-decision__status">{status==="deferred"?"◷ Deferred":saved?.alternativeVitrine?"Alternative proposed":"− Declined"}</span>{status==="declined"?<>{saved?.alternativeVitrine?<small>Alternative: Vitrine {saved.alternativeVitrine}{saved.alternativeShelf?` · Shelf ${saved.alternativeShelf}`:""}</small>:null}<button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!editable||!decisionsLoaded} onClick={()=>openDecline(id)}>Edit alternative</button></>:null}<button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!editable||!decisionsLoaded} onClick={()=>decide(id,"pending")} aria-label="Restore suggestion">Restore</button></>}</div>;
  }
  function move(items:CompanionRow[],to:PhysicalLocation,clearedVitrines?:string[]){
   if(!editable)return;
   const alternative=items.length===1&&!clearedVitrines?alternatives.find(a=>a.sourceId===items[0].sourceId&&to.kind==="vitrine"&&a.vitrine===to.code):undefined;
-  if(alternative)to={...to,...(alternative.shelf?{shelf:alternative.shelf}:{})};
+  const addition=items.length===1&&!clearedVitrines&&to.kind==="vitrine"?additions.find(a=>a.sourceId===items[0].sourceId&&a.vitrine===to.code):undefined;
+  if(addition)to={...to,shelf:addition.shelf};
+  else if(alternative)to={...to,...(alternative.shelf?{shelf:alternative.shelf}:{})};
   const now=new Date();const confirmedDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
   void send("POST",{museumId:"museum-spn",clientRequestId:crypto.randomUUID(),confirmedDate,datePrecision:"date",evidence:"Curator confirmed this physical move in the starter-row companion.",physicalConfirmation:true,inventoryAcknowledged:true,guideContext:{guideVersion:guide.version,contentDigest:guide.contentDigest,assignmentDigest:guide.assignmentDigest},
-   ...(alternative?{alternativeDecision:{guideVersion:alternative.guideVersion,suggestionId:alternative.suggestionId,version:alternative.version}}:{}),
+   ...(additions.find(a=>items.length===1&&a.sourceId===items[0].sourceId&&a.vitrine===to.code)?{curatorAddition:{sourceId:items[0].sourceId,version:additions.find(a=>a.sourceId===items[0].sourceId)!.version}}:{}),
+   ...(alternative&&!additions.some(a=>items.length===1&&a.sourceId===items[0].sourceId&&a.vitrine===to.code)?{alternativeDecision:{guideVersion:alternative.guideVersion,suggestionId:alternative.suggestionId,version:alternative.version}}:{}),
    records:items.map(r=>({sourceId:r.sourceId,saintId:r.saintId,expectedLocationVersion:r.currentVersion,expectedCurrentRevision:r.currentRevision,expectedSourceRevision:r.sourceRevision,to})),...(clearedVitrines?{clearedVitrines,...(guide.requiredClearVitrines?.length?{initialCaseClearAcknowledged:true}:{})}:{})});
  }
  function togglePlacement(row:CompanionRow,target:string){
@@ -179,7 +254,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   const placed=isPlaced(row,target);
   const reviewBlock=row.movementBlockedReason||entry?.movementBlockedReason;
   if(workflow==="guided")return <div className="museum-guide-check" key={sourceId} id={compact?undefined:`move-${sourceId}`}>
-   <input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${target}`} checked={placed} disabled={!editable||blocked(row)||!target||!allowMove||!!reviewBlock} onChange={()=>togglePlacement(row,target)}/>
+   <input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${target}`} checked={placed||savingTargets[sourceId]===target} disabled={!editable||blocked(row)||!target||!allowMove||!!reviewBlock} onChange={()=>togglePlacement(row,target)}/>
    <div className="museum-guide-check__body"><details><summary>{entry?.name??row.name}{compact&&entry?<span className="museum-guide-tier">{entry.tier}</span>:null}</summary><p>{entry?.relicDescription}</p><p>Original: {currentLocationLabel(row.original)}</p><p>{entry?.rationale}</p></details>
     {starterCleanupPartial(sourceId)?<small className="museum-guide-tier">Partially moved · remaining pieces to bring</small>:null}{savingSources.includes(sourceId)?<small role="status">Saving…</small>:null}<small>{placed?"Placed · saved":row.currentBasis==="confirmed"?"Current":"Last recorded"}: {currentLocationLabel(row.current)}{target!==selected?` → Vitrine ${target}`:""}</small>
     {entry?.reportedOrigin&&row.currentBasis!=="confirmed"?<small>{entry.reportedOrigin}</small>:null}{entry?.city?<small>{entry.city}</small>:null}{entry?.lifeStatus?.tag?<small>{entry.lifeStatus.tag}</small>:null}{row.identityChanged?<small>Identity changed. Reload and review before recording a move.</small>:!reviewBlock&&blocked(row)?<small>Fixed housing or a verified inventory item needs its existing item-move workflow.</small>:null}{reviewBlock?<p role="note">{reviewBlock}</p>:null}{entry?.reviewNotes?.map(note=><small key={note}>{note}</small>)}{showWork&&allowMove?<MuseumDisplayWork tasks={displayWork.tasks.filter(task=>task.sourceId===sourceId)} name={entry?.name??row.name} shelf={displayWork.shelf(row)} canEditShelf={placed} canManage={editable&&displayWork.loaded} onShelfSave={value=>displayWork.saveShelf(row,value)} onTaskAdd={title=>displayWork.addTask(row,title)}/>:null}
@@ -188,7 +263,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   return <article className="room-move__display" key={sourceId} id={`move-${sourceId}`}>
    <div><p className="eyebrow">{entry?.tier??"Display"}{entry?.city?` · ${entry.city}`:""}</p><h3>{entry?.name??row.name}</h3><p>{entry?.relicDescription}</p></div>
    <div><small>{row.currentBasis==="confirmed"?"Current location":"Last recorded location"}</small><strong>{currentLocationLabel(row.current)}</strong><p>{target?`To Vitrine ${target}`:"No destination in this guide"}</p>{reviewBlock?<p role="note">{reviewBlock}</p>:null}{entry?.reviewNotes?.map(note=><p key={note} className="muted">{note}</p>)}
-    <label className="room-move__check"><input type="checkbox" checked={placed} disabled={!editable||blocked(row)||!target||!allowMove||!!reviewBlock} onChange={()=>togglePlacement(row,target)}/>{placed?"Placed · saved":"Placed in this vitrine"}</label>
+    <label className="room-move__check"><input type="checkbox" checked={placed||savingTargets[sourceId]===target} disabled={!editable||blocked(row)||!target||!allowMove||!!reviewBlock} onChange={()=>togglePlacement(row,target)}/>{placed?"Placed · saved":"Placed in this vitrine"}</label>
 
    {!placed&&canManage&&allowMove&&pilotIds.has(sourceId)?decisionControls("row:"+sourceId):null}</div>
    <details><summary>Details & original location</summary><p>Original: {currentLocationLabel(row.original)}</p><p>{entry?.rationale}</p>{row.identityChanged?<p>This source identity has changed. Reload and review it before recording a move.</p>:reviewBlock?<p>{reviewBlock}</p>:blocked(row)?<p>Fixed housing or a verified inventory item needs its existing item-move workflow.</p>:null}<small>Source record: {sourceId}</small></details>
@@ -200,8 +275,9 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  }
  function openDestination(sourceId:string,target:string){
   if(busy||displayWork.busy||retry.current)return;
-  const owner=phaseGuides&&(Object.keys(phaseGuides) as Phase[]).find(key=>phaseGuides[key].vitrines.some(v=>v.code===target&&[...v.families,...v.cityGroups].some(g=>g.sourceIds.includes(sourceId))));
-  if(owner&&owner!==phase)switchPhase(owner);
+  const owner=phaseGuides&&(Object.keys(phaseGuides) as Phase[]).find(key=>phaseGuides[key].vitrines.some(v=>v.code===target));
+  if(!owner){setMessage(`Vitrine ${target} has no phase guide yet. Its proposed destination is shown in search and the proposal reviewer.`);return;}
+  if(owner!==phase)switchPhase(owner);
   setSelected(target);setSessionView("active");setClearConfirmed(false);
  }
  function taskList(){
@@ -241,19 +317,22 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
    return matches.length?<section key={tier}><h3 className="museum-guide-stage">{tier} · {matches.length}</h3>{matches.map(id=>display(id,selected,true,false,true))}</section>:null;
   });
  }
- function searchPanel(){
-  const members=new Set(guide.vitrines.flatMap(v=>[...v.families,...v.cityGroups].flatMap(g=>g.sourceIds)));
-  const entries=guide.entries.filter(e=>members.has(e.sourceId));
-  const codes=(values:(string|undefined)[])=>[...new Set(values.filter((v):v is string=>!!v))].sort((a,b)=>Number(a)-Number(b));
-  const found=entries.filter(e=>{const row=rows.find(r=>r.sourceId===e.sourceId);return e.name.toLocaleLowerCase().includes(saintSearch.trim().toLocaleLowerCase())&&(!startFilter||(startFilter==="unknown"?!row?.original:row?.original?.kind==="vitrine"&&row.original.code===startFilter))&&(!endFilter||e.destination===endFilter);});
-  return <section className="museum-companion__search" aria-label="Saint search"><div className="museum-guide-search"><label className="admin-field"><span>Find a saint</span><input type="search" value={saintSearch} onChange={e=>setSaintSearch(e.target.value)}/></label><label className="admin-field"><span>Starting vitrine</span><select aria-label="Starting vitrine" value={startFilter} onChange={e=>setStartFilter(e.target.value)}><option value="">All</option>{codes(entries.map(e=>rows.find(r=>r.sourceId===e.sourceId)?.original?.code)).map(code=><option key={code} value={code}>{code}</option>)}<option value="unknown">Not recorded</option></select></label><label className="admin-field"><span>Destination vitrine</span><select aria-label="Destination vitrine" value={endFilter} onChange={e=>setEndFilter(e.target.value)}><option value="">All</option>{codes(entries.map(e=>e.destination)).map(code=><option key={code} value={code}>{code}</option>)}</select></label></div>
-  {saintSearch.trim()||startFilter||endFilter?<div className="museum-companion__search-results"><p className="muted" role="status">{found.length} entries</p><div className="museum-guide-search__results">{found.map(e=>{const row=rows.find(r=>r.sourceId===e.sourceId);const region=SPN_REGION_GROUPS.find(g=>(g.sections as readonly string[]).includes(e.section))?.title??"Region not assigned";return <article className="museum-guide-check" key={e.sourceId}><div className="museum-guide-check__body"><strong>{e.name}</strong><small>{region} · {e.section||"Section not assigned"}</small><small>Source start: {currentLocationLabel(row?.original??null)} → Proposed: Vitrine {e.destination}</small>{row?.currentBasis==="confirmed"?<small>Current: {currentLocationLabel(row.current)}</small>:null}</div><button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>openDestination(e.sourceId,e.destination)}>Vitrine {e.destination}</button></article>;})}{!found.length?<p>No matching saints. Try another name or clear a filter.</p>:null}</div></div>:null}</section>;
+ function catalogEntry(entry:CompanionSearchEntry){return {sourceId:entry.sourceId,saintId:entry.saintId,name:entry.name,tier:entry.tier,city:entry.city,relicDescription:allEntries.get(entry.sourceId)?.relicDescription??"",destination:entry.destination,section:entry.section,family:"",rationale:"Curator-added destination"};}
+ async function addDestination(addition:CompanionAddition,entry:CompanionSearchEntry,moved:boolean){
+  setAdditions(previous=>[...previous.filter(a=>a.sourceId!==addition.sourceId),addition]);
+  setAdditionEntries(previous=>[...previous.filter(e=>e.sourceId!==entry.sourceId),catalogEntry(entry)]);
+  if(!moved){setMessage("Proposed destination saved.");return true;}
+  const receiver=allGuides.find(g=>g.vitrines.some(v=>v.code===addition.vitrine));
+  const row=physical?.rows.find(r=>r.sourceId===entry.sourceId)??entry;
+  const now=new Date();const confirmedDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
+  const result=await send("POST",{museumId:"museum-spn",clientRequestId:crypto.randomUUID(),confirmedDate,datePrecision:"date",physicalConfirmation:true,inventoryAcknowledged:true,evidence:"Curator confirmed a museum-search addition as already moved.",curatorAddition:{sourceId:addition.sourceId,version:addition.version},...(receiver?{guideContext:{guideVersion:receiver.version,contentDigest:receiver.contentDigest,assignmentDigest:receiver.assignmentDigest}}:{}),records:[{sourceId:row.sourceId,saintId:row.saintId,expectedLocationVersion:row.currentVersion,expectedCurrentRevision:row.currentRevision,expectedSourceRevision:row.sourceRevision,to:{kind:"vitrine",code:addition.vitrine,label:"Vitrine "+addition.vitrine,shelf:addition.shelf}}]});
+  return !!result;
  }
  function placementControl(id:string){
   const row=rows.find(r=>r.sourceId===id),entry=guideById.get(id);
   if(!row||!selectedIds.includes(id))return null;
   const placed=isPlaced(row,selected);
-  return <span className="museum-guide-tree__check"><input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${selected}`} checked={placed} disabled={!editable||blocked(row)||!!entry?.movementBlockedReason} onChange={()=>togglePlacement(row,selected)}/>{savingSources.includes(id)?<small role="status">Saving…</small>:null}</span>;
+  return <span className="museum-guide-tree__check"><input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${selected}`} checked={placed||savingTargets[id]===selected} disabled={!editable||blocked(row)||!!entry?.movementBlockedReason} onChange={()=>togglePlacement(row,selected)}/>{savingSources.includes(id)?<small role="status">Saving…</small>:null}</span>;
  }
  function sorted(ids:string[]){const rank=(id:string)=>{const n=["Primary","Secondary","Tertiary"].indexOf(guideById.get(id)?.tier??"");return n<0?3:n;};return [...new Set(ids)].sort((a,b)=>rank(a)-rank(b));}
  function matchesVitrine(id:string){const entry=guideById.get(id);return !vitrineSearch.trim()||`${entry?.name??""} ${entry?.city??""}`.toLocaleLowerCase().includes(vitrineSearch.trim().toLocaleLowerCase());}
@@ -270,7 +349,8 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  return <div className={`room-move museum-companion${workflow==="guided"?" museum-companion--guide":""}`} data-museum-companion-theme="parchment"><div className="museum-companion__canvas"><MuseumPlanTabs active="companion" disabled={busy||displayWork.busy||!!retry.current||taskBusy!==null}/><header className="museum-companion__header"><div><p className="eyebrow">SPN · Move companion</p><h1>{workflow==="guided"?"SPN · placement guide":"The starter row"}</h1>{workflow==="room"?<p className="muted">Clear the space, place the key families, then fill around them.</p>:null}</div>
   <div className="review-actions"><button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={busy} onClick={()=>void reload()}>Refresh progress</button>{busy?<span role="status">Saving…</span>:message?<span role="status">{message}</span>:null}</div></header><div className="museum-companion__session"><span>{guide.proposalLabel}</span><span>{guide.vitrines.length} vitrines · Progress saved to the museum</span></div>
 
-  {searchPanel()}
+  {syncError?<p role="status" className="admin-notice">{syncError}</p>:null}
+  <MuseumCompanionSearch rows={rows} canManage={canManage} disabled={!editable} isPrepared={code=>physical?.preparations?.some(p=>p.vitrine===code&&p.prepared)??false} onPrepare={async code=>!!await send("POST",{action:"preparation.update",museumId:"museum-spn",clientRequestId:crypto.randomUUID(),vitrine:code,prepared:true,expectedVersion:physical?.preparations?.find(p=>p.vitrine===code)?.version??0})} onOpen={openDestination} onAdd={addDestination} onCatalog={catalog=>{setAdditions(catalog.additions);setAdditionEntries(catalog.entries.map(catalogEntry));}}/>
   {error?<div role="alert" className="admin-notice"><p>{error}</p>{retry.current?<button type="button" disabled={busy} onClick={()=>{const r=retry.current;if(r)void send(r.method,r.body,r.url);}}>Retry same save</button>:null}{retry.current?<p>Keep this page open. Retry the same save, or refresh to check whether it was recorded.</p>:null}</div>:null}
 
 
