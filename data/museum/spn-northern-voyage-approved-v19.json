@@ -1,8 +1,8 @@
 {
   "version": "spn-northern-voyage-2026-10-29-v19",
-  "researchPacketVersion": "spn-northern-voyage-2026-10-29-v15-review",
+  "researchPacketVersion": "spn-northern-voyage-2026-10-29-v16-review",
   "supersedes": "spn-northern-voyage-2026-10-29-v18",
-  "releaseStatus": "held",
+  "releaseStatus": "approved",
   "capturedAt": "2026-10-29T21:19:51.391Z",
   "snapshotFingerprint": "9ed7d641cf58465143c60182f2741121b12e120c10f870e93bd20c32468e19a0",
   "physicalWrites": false,
@@ -27,7 +27,8 @@
         "proposalRevision": "ba30f2fd8789b0c1e49050bf20997ae0c997e12b6e15daeb05b0b47542a542d4"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recfC3aq74ATZisCg",
@@ -48,7 +49,8 @@
         "proposalRevision": "79f1156fb8f44202fb349c1b110a703825023da78f91af071aebed41a5be1d1a"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recfnKOjMiG6f1CTw",
@@ -69,7 +71,8 @@
         "proposalRevision": "14bd4a427b3181e897f4a477c78176541f0dd227737df2d9b59986e75354dcb1"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "reco5amho3BdJbBku",
@@ -90,7 +93,8 @@
         "proposalRevision": "71410ca66cc705fa31a606c2f899e31dc7d93636f26daf4c33b41cf085458f2d"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "reckvQNbpExEDFhIS",
@@ -111,7 +115,8 @@
         "proposalRevision": "3b1bcb93bf6728bc6869f929dcc47154fdd25f0d6dd0f96e5ba103a64948da77"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recpKvax2OFIJNQWT",
@@ -132,7 +137,8 @@
         "proposalRevision": "e6267187603ccfe105af31c8efd18d3c2c2e8f0d75e2174c096e27edc614393d"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rectxzbiD3OeRYLrv",
@@ -153,7 +159,8 @@
         "proposalRevision": "910f9467852549d5880db34a62c5576b0eae90e9951b4bd90cf1c223d60697a4"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec8qDaH8zmGtELbj",
@@ -161,7 +168,7 @@
       "name": "Sri Swami Shivananda Saraswati",
       "destination": "72",
       "status": "assigned",
-      "storyOrLocality": "Sivananda & direct disciples",
+      "storyOrLocality": "Sivananda & disciples",
       "cardId": "north-6",
       "capturedTier": "Primary",
       "capturedBaseline": {
@@ -174,7 +181,8 @@
         "proposalRevision": "c775e098774ed3f6b1493e25ed99873170e970ac670a02d22050f23e7d342a74"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "reci9mOaQMMeNqeeW",
@@ -182,7 +190,7 @@
       "name": "Sri Swami Vishnudevananda Saraswati",
       "destination": "72",
       "status": "assigned",
-      "storyOrLocality": "Sivananda & direct disciples",
+      "storyOrLocality": "Sivananda & disciples",
       "cardId": "north-6",
       "capturedTier": "Secondary",
       "capturedBaseline": {
@@ -195,7 +203,8 @@
         "proposalRevision": "c732ada61c9d395b2c953698c8c207b40553b1742d3a2fbb86e850e3b4941a48"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recosc27YgiELa175",
@@ -203,7 +212,7 @@
       "name": "Sri Swami Chidananda Saraswati",
       "destination": "72",
       "status": "assigned",
-      "storyOrLocality": "Sivananda & direct disciples",
+      "storyOrLocality": "Sivananda & disciples",
       "cardId": "north-6",
       "capturedTier": "Secondary",
       "capturedBaseline": {
@@ -216,7 +225,8 @@
         "proposalRevision": "9392adf3ac02e84b2ceccbf93bca72e88b790b74b581aeffd7f9ddfe11f04cc6"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec3mQlWpwjgaz5ml",
@@ -224,7 +234,7 @@
       "name": "Sri Swami Chidananda Saraswati",
       "destination": "72",
       "status": "assigned",
-      "storyOrLocality": "Sivananda & direct disciples",
+      "storyOrLocality": "Sivananda & disciples",
       "cardId": "north-6",
       "capturedTier": "Tertiary",
       "capturedBaseline": {
@@ -237,7 +247,8 @@
         "proposalRevision": "955c199bf7a35672d393599ac37b2e2cc2e3d26d3eaf8b23f5944712ca2f5508"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recI9vNewSjgz1HYE",
@@ -245,8 +256,8 @@
       "name": "Sri Akhil Brahmanand Nayika Parivajakacharya Paramahamsa Yogini Vishwamata Sadguru Om Malati Devi",
       "destination": "72",
       "status": "assigned",
-      "storyOrLocality": "Om Malati & Bhavamayee · Sivananda links",
-      "cardId": "north-7",
+      "storyOrLocality": "Sivananda & disciples",
+      "cardId": "north-6",
       "capturedTier": "Secondary",
       "capturedBaseline": {
         "placementId": "recI9vNewSjgz1HYE",
@@ -258,7 +269,8 @@
         "proposalRevision": "0fd643a7525614ea3906076a5bd93ec78145854c72b1ab5049b951e6012ec401"
       },
       "spaceEstimate": 0.5,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": "Source-recorded Sivananda master link; historical corroboration remains open for Bhavamayee."
     },
     {
       "sourceId": "recyTkbGdrdvC5hto",
@@ -266,8 +278,8 @@
       "name": "Sri Maa Bhavamayee Paramahansa",
       "destination": "72",
       "status": "assigned",
-      "storyOrLocality": "Om Malati & Bhavamayee · Sivananda links",
-      "cardId": "north-7",
+      "storyOrLocality": "Sivananda & disciples",
+      "cardId": "north-6",
       "capturedTier": "Secondary",
       "capturedBaseline": {
         "placementId": "recyTkbGdrdvC5hto",
@@ -279,7 +291,8 @@
         "proposalRevision": "80483928c73942979819e69d4beb44a8c2c36c2d951195a393db6bf2c141bdec"
       },
       "spaceEstimate": 0.14285714285714285,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": "Source-recorded Sivananda master link; historical corroboration remains open for Bhavamayee."
     },
     {
       "sourceId": "recbSiDH0qSzRl5vY",
@@ -300,7 +313,8 @@
         "proposalRevision": "cd6fcf9f0e1297779847b9ebd80e82f3a847ab12539871422b89aaf9dd612dbb"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recwALNXldWfBLASm",
@@ -321,7 +335,8 @@
         "proposalRevision": "fb317e55bfcdee3ef52b6827b2e11b73ce74c807cbf5589e6c4ab6f15bd5b679"
       },
       "spaceEstimate": 0.125,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recFjWjXyxkIFkeMr",
@@ -342,7 +357,8 @@
         "proposalRevision": "44ce3a45283925971766a3c48bc32ca92f01b32e6d25813489b8b7b671f256f0"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recLPboyEJSXcyDhx",
@@ -363,7 +379,8 @@
         "proposalRevision": "26fb0aab3d3d37a84fbe36ed22e728a353bdfe21ee441e949783bd2d4c7e2bd6"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "reccOHbK0BcyzNftg",
@@ -384,7 +401,8 @@
         "proposalRevision": "5ed84440b6aa1e71b48e424b819ab83836dbd3fedcaf5fea0982053def36b469"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recMQQQzFR0cD6IZd",
@@ -405,7 +423,8 @@
         "proposalRevision": "c035725a4443f95bff618d84f19665ea69f30e1209259911d5b513a663230e30"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recIBLoUbLLQQTSbP",
@@ -426,7 +445,8 @@
         "proposalRevision": "abfeba542e53d9e9b7fe25feb0b755a7ca4bd0a2b6236c68c7bc4faefd422320"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec3E1tuKGh8MOhwW",
@@ -447,7 +467,8 @@
         "proposalRevision": "0a458253acc0d369188c9c4d8248a2746e43c986d16991b29ae827b86aef46c6"
       },
       "spaceEstimate": 0.3333333333333333,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recfmgSikPoBr7PUd",
@@ -468,7 +489,8 @@
         "proposalRevision": "5f97a0031f0ce77d4c1a5307b469968b16ffcb2ae51485636808f7fb04c196b5"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recJuPKSRPAw0EzMh",
@@ -489,7 +511,8 @@
         "proposalRevision": "71433062a4ba0de1ff92817c32dbd533b6bd4a65f108b1466ebf61bfa87d8eab"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recKWHDMv3ejIwDDI",
@@ -510,7 +533,8 @@
         "proposalRevision": "0cf0a91208adb66c917ac865167ee646f1514789a1b92aaa2158188f727c27c7"
       },
       "spaceEstimate": 0.125,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recMeQJMJiKrTT5LA",
@@ -531,7 +555,8 @@
         "proposalRevision": "33868ca4fb6c77eb01985b351dc46a8bdb4944b3d0b3241ec8ea0aeccfb12ee4"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recpvbCF5wXQRhZDf",
@@ -552,7 +577,8 @@
         "proposalRevision": "76b6e33c41fe29fb2310b4cc0a1d72d4622c00e23e46919aea89460fe3bee04a"
       },
       "spaceEstimate": 0.3333333333333333,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recQEPPbBMR47GAlb",
@@ -573,7 +599,8 @@
         "proposalRevision": "d4673210b412ec173cfe1103785a64a42950b6482a0656efce0d657c97eb6220"
       },
       "spaceEstimate": 0.125,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recSeXyMLoESitdd0",
@@ -594,7 +621,8 @@
         "proposalRevision": "b3cced380ad85fb074e1b692587f2f7ff6a706b2113e1e3dff64b25ba19224d0"
       },
       "spaceEstimate": null,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recW9wfkoPE6IPhnm",
@@ -615,7 +643,8 @@
         "proposalRevision": "cc7dce6fa47d4de9128f9c8823226aaa8d102220723ff1d84b1f11bd3ba7f77c"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec3ISaYxUAssvXzO",
@@ -636,7 +665,8 @@
         "proposalRevision": "f016c8dd92ef61a515d9ba59e5286726e570c3e2da2c15345e739bc5c4884a99"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recqXl7GcR045xZDk",
@@ -657,7 +687,8 @@
         "proposalRevision": "cfa063f19e130862578f60c857d350fd6948c585f99430897ef321a38c4a2245"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recyokcxEvhxvtyPk",
@@ -678,7 +709,8 @@
         "proposalRevision": "fbdc9c422f34974c9fae7f3054e68fad5f89bf8a73f246c0c8265d171a80d42f"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recv5AeDjNqa6rSbp",
@@ -699,7 +731,8 @@
         "proposalRevision": "b6267dd154ebe8b33a0379b194b8e3392c640b794097d0f8807b92e8dc9b6c7d"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recFmrOxVMA0umuTh",
@@ -720,7 +753,8 @@
         "proposalRevision": "66f201006dc614739b8a8975acd491f1b22326caa7624016ef9d42ea788a1aa9"
       },
       "spaceEstimate": 0.3333333333333333,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec3HT7rDR1erZTnh",
@@ -741,7 +775,8 @@
         "proposalRevision": "90eeff7ab52fe7ccbc743780e6ed302e85f6b8376d184c831c49965c8f3770fb"
       },
       "spaceEstimate": 0.3333333333333333,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "reckSOP93swGpRjsT",
@@ -762,7 +797,8 @@
         "proposalRevision": "be55ca8008597e829539e7d3bbefbee604615a406536451fb68bfd0212e0eaa3"
       },
       "spaceEstimate": 0.14285714285714285,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recyn3TFIzmxgoC7R",
@@ -783,7 +819,8 @@
         "proposalRevision": "92f42c799ad2b100303227a219b2ef7b270c403927c9a2d2d4fe1c0b802c087f"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recDzej9PiC98nmwF",
@@ -804,7 +841,8 @@
         "proposalRevision": "3de106d9e3c059db9eece464a13cf3256af93edb20d7e171794eb923341b066f"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recE9ntzuel2YFTo7",
@@ -825,7 +863,8 @@
         "proposalRevision": "834dff8df85df8af75e9f0d62af81170087846649fe2d6b5170940f416e652ad"
       },
       "spaceEstimate": 0.3333333333333333,
-      "previousProposedVitrine": "19"
+      "previousProposedVitrine": "19",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec9g1wVf8tZM1RTr",
@@ -846,7 +885,8 @@
         "proposalRevision": "bd1853340dc8866d9b5de4ccb48f46fce1eba57d19355ee581909e43994be24f"
       },
       "spaceEstimate": 0.3333333333333333,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec3yq5XtTNoYDxJi",
@@ -867,7 +907,8 @@
         "proposalRevision": "21ea1f1c129ed9f253322fa23e1a83fa4923eaf455838adb8e94f658642a485e"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rechSjVXrbU5P8Ss3",
@@ -888,7 +929,8 @@
         "proposalRevision": "b1f462c8c658fd722a39bf9ac45f81a9f99600d429f4161bc3dfb3b20d9fc92f"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec2kQu9FUpLwcr1U",
@@ -909,7 +951,8 @@
         "proposalRevision": "11c6999988676a32ed456accfa3830a07a87553e883d0b46cee4df8941b84138"
       },
       "spaceEstimate": 0.125,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recOpJaRXT7beIfSK",
@@ -930,7 +973,8 @@
         "proposalRevision": "56e4a1e810cea80f378efb4e9631b214594449864568e677fe0054ea63e114b5"
       },
       "spaceEstimate": 0.125,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recLs6T066cSNJb35",
@@ -951,7 +995,8 @@
         "proposalRevision": "2b72d33ba7c87750fe6be13f0e5b0c0e9b2989249ec60a20ac4a0425f265d3ee"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec2yoKF0KcnAO5Ur",
@@ -972,7 +1017,8 @@
         "proposalRevision": "2b371a397749fa0a1d2215d59bce215c2e82a1d99b9a59018118a47f9f2ee7fc"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recgFVQEe6W4lm5Ax",
@@ -993,7 +1039,8 @@
         "proposalRevision": "83447264f0addb9eedd12fa72d2584e1abfbe91be84567d77b4e3e0a2d97ecd3"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recBhtH9RZKgIOAdl",
@@ -1014,7 +1061,8 @@
         "proposalRevision": "d4a55ce60899563632b62720077201ec8b9a9fc8c15bd4ab08e20fd7bcea1e6f"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recK53Fzs4bwp72EI",
@@ -1035,7 +1083,8 @@
         "proposalRevision": "764ead4ed2bf2cd7d373be92aacc0bf207c11fd6db8c93c07cd7fdfa7e453f15"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recEQkjmS9ditf46F",
@@ -1056,7 +1105,8 @@
         "proposalRevision": "8e08401994db8b219672080da4b1a5be2a7a9b06866853dc40dc7c565c1cd7d9"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recz5ca1IAP6fByeW",
@@ -1077,7 +1127,8 @@
         "proposalRevision": "0cde35f356313ba15ca24459a86d87820bae00bae0d0b3c8771edc4fd51e20fb"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recG1QmsdJh1MWEY9",
@@ -1098,7 +1149,8 @@
         "proposalRevision": "953dc7062adba9b6a5e0cb74b4aa10eda88d3267fa761324cedd5cfa049fed02"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recMlR5jy61TvaRlN",
@@ -1119,7 +1171,8 @@
         "proposalRevision": "633bb9fbcb8bbbd76709d77b273a33799d09ba3f93d263ddc2f064865f73dd70"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "reco0ilcpoRpLH4gZ",
@@ -1140,7 +1193,8 @@
         "proposalRevision": "6f3180a094e88cc722d90bdbe334d9662697ba560155c234d9f9a1d4e98efe7c"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "20"
+      "previousProposedVitrine": "20",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recd7LPsJWfdAH5HU",
@@ -1161,7 +1215,8 @@
         "proposalRevision": "0c36e65f0be774b7085b0e5b686a47604bb54ac965cb32d24c9efa082365ba59"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recijNKdW2wF5Lhw1",
@@ -1182,7 +1237,8 @@
         "proposalRevision": "fc34816864dec3fe6ed2fb68931e767ff74865d60987d6a3a437d9f886d66fe0"
       },
       "spaceEstimate": 0.3333333333333333,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recQzqybkUv01Tqph",
@@ -1203,7 +1259,8 @@
         "proposalRevision": "55bc01693c0ab1a2509bedda9d0dc1395752a5d9937618983f703c3106cec8d6"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recy4cCbJokFP3Mye",
@@ -1224,7 +1281,8 @@
         "proposalRevision": "28ccd3b22442aa433beffa80e7aa652c44eaf87778d0a376570c116196e4f9c1"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recFWaxngpSGzkYQS",
@@ -1245,7 +1303,8 @@
         "proposalRevision": "d58526703c64906635c6d1da263e78effe9691b8750d2cfaee5ca746b3f7efc9"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recDrYiUzauA9xVdI",
@@ -1266,7 +1325,8 @@
         "proposalRevision": "cd3d72d1881ea66120b36201f9a42c04f23a26d1e6aa3b984088b46312758f3f"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recGTvaJlA6Ql1Nw0",
@@ -1287,7 +1347,8 @@
         "proposalRevision": "7e8b7846a34a8426a29fcd64e81f656a6da615fe7d422235c6987212f89be19d"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recQT5TNa4KPmOafN",
@@ -1308,7 +1369,8 @@
         "proposalRevision": "ba373484469c602b2efc9141a66836b8610958d9a2830c43b25e5da0ca38ed8e"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recridc3rHHt53itd",
@@ -1329,7 +1391,8 @@
         "proposalRevision": "e486511d7d0432a85a5a372972d6275e2508323c46c65fdb8fa197110aa921e9"
       },
       "spaceEstimate": 0.14285714285714285,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recSvNj9vdvRTFkhs",
@@ -1350,7 +1413,8 @@
         "proposalRevision": "b3ea39c662b5fef525b59e1079bae1ad15a68a2cc8412f53b58e79990fe37018"
       },
       "spaceEstimate": 0.3333333333333333,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recwcuvazSHfWVS3a",
@@ -1371,7 +1435,8 @@
         "proposalRevision": "a4bf18c351755e9f238e4404e4f8308086f1726d1c8cf23fa35619fef78d92af"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recMZzMDDR3zIs3w7",
@@ -1379,8 +1444,8 @@
       "name": "Sri Pilot Baba",
       "destination": "21",
       "status": "assigned",
-      "storyOrLocality": "Sasaram",
-      "cardId": "north-34",
+      "storyOrLocality": "Haridwar",
+      "cardId": "north-41",
       "capturedTier": "Tertiary",
       "capturedBaseline": {
         "placementId": "recMZzMDDR3zIs3w7",
@@ -1392,7 +1457,8 @@
         "proposalRevision": "7ac67940e7f1e84c5a9966d98e0f1c60549c820747b27b4741d47f2536ad4146"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec7U1NIIWwz8Nypx",
@@ -1413,7 +1479,8 @@
         "proposalRevision": "b2e8f5bc50ed6e91e90f12d6036cf2b5f81afca02ffdb69e741d20a239533073"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "72"
+      "previousProposedVitrine": "72",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec5hoT3MY3b5Vb3K",
@@ -1434,7 +1501,8 @@
         "proposalRevision": "2067566e1017f68e7b1a37d58f1eafcc431b0132043805f4d0a427999cc478a2"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recNCHFgORFcwkPZW",
@@ -1455,7 +1523,8 @@
         "proposalRevision": "8daa48519b448b88d82f3c441f606524b2c530f59d27e2a9a33debec23927b9b"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recb4HUZeReDXmY7M",
@@ -1476,7 +1545,8 @@
         "proposalRevision": "351f6ebcf7f7518a8a4db4ff5ffba05331019ef57de6c231cf09a145a0b19d9b"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recDNdUifKDuhAqnc",
@@ -1497,7 +1567,8 @@
         "proposalRevision": "ad9908ff31fd9a89d110af5fbab38a5d84efaefd205c75207176c5744b1a66aa"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recf5wEqHftBSILAK",
@@ -1518,7 +1589,8 @@
         "proposalRevision": "03917fb51dc6ca11ba6df32e821ca074039a8d7580daf000e165b35fd8181797"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recJrmkvOXktLlIrv",
@@ -1539,7 +1611,8 @@
         "proposalRevision": "892695511ad03c33aa4b19f87b82ec81aaf8f514128bca3fc284ead153f7e19b"
       },
       "spaceEstimate": 0.08333333333333333,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recp8UqwZZqAL2Usl",
@@ -1560,7 +1633,8 @@
         "proposalRevision": "406bc78d19c049188503ec0a0590f7ba7a553ee4baba72c530c1dbe2580d3faf"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recxkPxC2QoDANL81",
@@ -1581,7 +1655,8 @@
         "proposalRevision": "617a9c1a55a6b786bcb21fefe20ca56e984e62fe25dd46988104669d27f955e8"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recXLz5Zodri3mnAb",
@@ -1602,7 +1677,8 @@
         "proposalRevision": "3b99a17979a54c177718c1048040be3aea478e12da790e14e96077dc8cfb6f63"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec0GbpMjM14oN5G2",
@@ -1623,7 +1699,8 @@
         "proposalRevision": "f2a97ee9686a1a2c09d2e05cfe963f9eea28f7b4e0b0c28bfef7a52a682a6552"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec0I0KR24EzhDo2b",
@@ -1644,7 +1721,8 @@
         "proposalRevision": "a9f5a34436e91f883e3d337693749390fe7e8318e07d081ecf8c060944a2f5ce"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec1UL3ctqGPZ5ybW",
@@ -1665,7 +1743,8 @@
         "proposalRevision": "af7a06497e9e8640c8f79f0d9e1f3958c006a500cd0288244c1c2a068190edc7"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec4VCRxr1DoVIv0w",
@@ -1686,7 +1765,8 @@
         "proposalRevision": "a304d9eb71133b5b9f4fdd88014938647a91e1dcab5967b9e621e9a532d21748"
       },
       "spaceEstimate": 0.3333333333333333,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec5FAiSbTqv34E1g",
@@ -1707,7 +1787,8 @@
         "proposalRevision": "ad594fe0214f2cb6b2b5c08c03d447fd91f9d5a65684e3cdb7f9dcdd560dcb00"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec7VNSpAzsbmRzkq",
@@ -1728,7 +1809,8 @@
         "proposalRevision": "5c9d2c189568a8ef76b0720cf674015233fe2d4158c3e586b3620db418e31ce9"
       },
       "spaceEstimate": 0.125,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec7YxwtERAX8Gc0g",
@@ -1749,7 +1831,8 @@
         "proposalRevision": "406ed90e5a89a41c234495a91bb23dfa5ebfe5bb4b4eeec3dc1fdb9b0ab69bc8"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recePIf387x4YGvNg",
@@ -1770,7 +1853,8 @@
         "proposalRevision": "413719f40c9473d085bfcabe5e5b1abd65e49732fe8bc33bdba94f132e7a314b"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recRkYL9U9henaB8c",
@@ -1791,7 +1875,8 @@
         "proposalRevision": "803544bbdee159ff03219e49dff7fcd95667a98e15189659cc9e939e5d34e418"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recRyh5sEg7vSy9az",
@@ -1812,7 +1897,8 @@
         "proposalRevision": "c3d1b3cea51087d9b10b7db01e63b6a5729ba26c658ff3263824b261732ffd5b"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recu6EVkuESrb0aWu",
@@ -1833,7 +1919,8 @@
         "proposalRevision": "1ed9d706050f834f3400623beb2886b09ed14503fd0a54a01754c707c0e0ea1b"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recUsQPvYMKcz4d3F",
@@ -1854,7 +1941,8 @@
         "proposalRevision": "4cbca795883072600a23f8ed839f7253cba5abf7aac8de54d251ba07da214c8b"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recWVngE5PhuxTQ5w",
@@ -1875,7 +1963,8 @@
         "proposalRevision": "ebf909efd71facb5a346df8f0858d6fb9bc5e6b6360d204ca2470c7c6ae45356"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recZv7jQ3c04uXa3f",
@@ -1896,7 +1985,8 @@
         "proposalRevision": "ddd3353a60fd30d6263b7637b34848bd6d3cc9ea7ed0f8013f6f7043603a21ff"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recjOwQ0YKGIQUU9G",
@@ -1917,7 +2007,8 @@
         "proposalRevision": "9bf1dadcb327c67a8f60cd2a8342eab667f5dd618363bdf425ea886b65a22a3b"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recaCk9vTAVLCjjFE",
@@ -1938,7 +2029,8 @@
         "proposalRevision": "ebf70783e7933387423dff20b7b07619540471ea532c84ba2a82200a9edacafe"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "receipszGYRnJRtAj",
@@ -1959,7 +2051,8 @@
         "proposalRevision": "958a93f429b32262e25e974bad0c25d41a7114d9f5665d9de2e8e55ebb3f5a71"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recrqzrWmuf1nKDGW",
@@ -1980,7 +2073,8 @@
         "proposalRevision": "953351cadac6d898a41ed102d87e2da8b5a034b560bf9ac08247cc4c1479c8b5"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "22"
+      "previousProposedVitrine": "22",
+      "relationshipBasis": null
     },
     {
       "sourceId": "reccgX6zRZ4jpGg2W",
@@ -2001,7 +2095,8 @@
         "proposalRevision": "844b85bd2fca1aa00874b71f734e92601df162d93abb665ab13e937682e29ecd"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recGRMgYhGmK61WAC",
@@ -2022,7 +2117,8 @@
         "proposalRevision": "6417c1975435f50a387cc2af4e77e052672c0659f7116663d777fb798609f6ac"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recicFhAX8NxwepVF",
@@ -2043,7 +2139,8 @@
         "proposalRevision": "901391b450b3dfb336f02a72227f69c8f6b8ee121504576cfb0111ea358a3081"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "reckMGpuoqWaE04AU",
@@ -2064,7 +2161,8 @@
         "proposalRevision": "210ccb93cf9aed4bfa73c03a15d297656e87d5af2dfc79aca14b14a183441c72"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recV2LxEpbPKlNygx",
@@ -2085,7 +2183,8 @@
         "proposalRevision": "20dc2e06a7bdb69c3cc0a44f05bb72076be0cc73d36c25363763baedeae0fa32"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recxVbnSEdIDAiBzr",
@@ -2106,7 +2205,8 @@
         "proposalRevision": "773cbb789a0da03f173e9eddbdf9bbc8227a87f3afacbe80ea9a9f6ae7286a39"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recgQf22pongtyYV6",
@@ -2127,7 +2227,8 @@
         "proposalRevision": "61039b718572695e2426eee889d66692d8a3c859eecafdf76e6c2f030e390e0b"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recmWirQlF3WoLTYk",
@@ -2148,7 +2249,8 @@
         "proposalRevision": "37efbf9ba5b4f50ec6fa1cd85e601975664e1edae8ee1542a02d409ce695be49"
       },
       "spaceEstimate": 0.125,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recqTSYY3AZJelvNJ",
@@ -2169,7 +2271,8 @@
         "proposalRevision": "b713985edb77fe9c17b62ac9521ec517c118e2813880ec7dd7c03b3ead7dc42b"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recrPWc8bPOHLOaME",
@@ -2190,7 +2293,8 @@
         "proposalRevision": "1cad9035e8c34260d5c86738ca2c98031f3b3f6ebebdeccacb9d9d371de94582"
       },
       "spaceEstimate": 0.125,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recsUUsYXvsrkd1ZZ",
@@ -2211,7 +2315,8 @@
         "proposalRevision": "16c2ad7f9c04570b8b1848bbd67f8416ecf035650b700caedff4b43df79e85bb"
       },
       "spaceEstimate": 0.23809523809523808,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "recq8jg20kMAD2Erc",
@@ -2232,7 +2337,8 @@
         "proposalRevision": "8f52988a53add1cffdd269e1347f88456609be324cafeb469b81e24ba05c1066"
       },
       "spaceEstimate": 0.14285714285714285,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec4V2uLs4HP4Ps3d",
@@ -2253,7 +2359,8 @@
         "proposalRevision": "a15722f426389041e4e1416c741fcbb71f2dfd6633ae7c8182a2cfdfc68c0a52"
       },
       "spaceEstimate": 0.14285714285714285,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recBnLw7Q3ZLCbck4",
@@ -2274,7 +2381,8 @@
         "proposalRevision": "043798d64bd719ad25e94460d4b7c6741dbd1c80d3d2d86cb305ed4621af41f4"
       },
       "spaceEstimate": 0.3333333333333333,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recC3zchheU7N9g2E",
@@ -2295,7 +2403,8 @@
         "proposalRevision": "35a6ebde88ccee6dee9793ea7ce81b8c090bd1f66422e6fbf766a78ddd4abe26"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recSUaw6o0jRfF08q",
@@ -2316,7 +2425,8 @@
         "proposalRevision": "97b833f15211de2ab7c067f3043c27546aac2a7e083f522ca7245ad5356e4c46"
       },
       "spaceEstimate": 0.14285714285714285,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recv7xsxOB32vlFNE",
@@ -2337,7 +2447,8 @@
         "proposalRevision": "447940ff613b0805a20bfe687938eb40ed174977553c74ce17d23c4ab17df820"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recX2VUC6rvHjV8Fe",
@@ -2358,7 +2469,8 @@
         "proposalRevision": "c6d5fe535236b5bae2396530f39b127d4a86c4a6bef2b924f37b3a40e08bdc54"
       },
       "spaceEstimate": 0.14285714285714285,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recZbwL1wz3gD9B70",
@@ -2379,7 +2491,8 @@
         "proposalRevision": "dfec9283a16618e68e27e13fcdd0e1862a0a41c24e84ec3d3be59a9fcb86f0d9"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recaNtSLYQh5Fm4lN",
@@ -2400,7 +2513,8 @@
         "proposalRevision": "d8b50824262e4dca750e81ad0071210648811318c406bc2cb73471113f1ad4ee"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recOYRXmecpwN3Unl",
@@ -2421,7 +2535,8 @@
         "proposalRevision": "b7ca80fbcd1b4d441c4b1fafa3ac229a19dfdf421985740dfd0e66ac431238d3"
       },
       "spaceEstimate": 0.25,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "rec1iHJEqLnLP7ImA",
@@ -2442,7 +2557,8 @@
         "proposalRevision": "ba18b693350bebd4939e12f7c35d46498d1db0e02014412fd0179f0a994205d0"
       },
       "spaceEstimate": 0.08333333333333333,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recrR2rQ8fUgEKiDR",
@@ -2463,7 +2579,8 @@
         "proposalRevision": "3369f414d92cb5326efab59e7a43dcf2c88e57a5435cebfe789a70cbc81f2f94"
       },
       "spaceEstimate": 0.08333333333333333,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recEIaqG3AkCmP6mS",
@@ -2484,7 +2601,8 @@
         "proposalRevision": "29bcb758b812b3453f8de6e9a1fde20456e867bb953b46d96ee2187782f46f17"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recV9C9kIiVVqlPpw",
@@ -2505,7 +2623,8 @@
         "proposalRevision": "ee10e12c958e01e2a01c1c3de98ee79ace684dd99f3d800a28df98f6b512b98b"
       },
       "spaceEstimate": 0.16666666666666666,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recycW2GnQ4n8xXV0",
@@ -2526,7 +2645,8 @@
         "proposalRevision": "7d98ab749adffea55315797712f210819a3c798835d2dcc3185cb2772973fe54"
       },
       "spaceEstimate": null,
-      "previousProposedVitrine": null
+      "previousProposedVitrine": null,
+      "relationshipBasis": null
     },
     {
       "sourceId": "recBpkMpvzm57a1J8",
@@ -2547,7 +2667,8 @@
         "proposalRevision": "507cf7afb68ea022b62dee2bc67c1f4c57d6ab7c05ef273fbd575ca30b47ecf8"
       },
       "spaceEstimate": 0.14285714285714285,
-      "previousProposedVitrine": "21"
+      "previousProposedVitrine": "21",
+      "relationshipBasis": null
     },
     {
       "sourceId": "rectqE1YWAEVoP9z3",
@@ -2568,7 +2689,8 @@
         "proposalRevision": "a2b22bee95c322359fc521c211da63bfb26443ea80bb57ac02d0ed4fc79a93b2"
       },
       "spaceEstimate": 0.2,
-      "previousProposedVitrine": "74"
+      "previousProposedVitrine": "74",
+      "relationshipBasis": null
     }
   ],
   "pendingReceiverSourceIds": [
@@ -2637,5 +2759,10 @@
     "36": "Receiving destination · Navadwip",
     "68": "Receiving destination · Karnataka / Belagavi",
     "11": "Receiving destination · separate Delhi holding"
+  },
+  "approval": {
+    "date": "2026-10-29",
+    "source": "Direct curator approval to lock the Northern row and add it as the next companion phase",
+    "physicalMovesAuthorizedByApproval": false
   }
 }
