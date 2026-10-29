@@ -27,6 +27,10 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  const allowClear=guide.allowClear??(phaseGuides?phase==="starter":initialAllowClear);
  const phaseLabel=phaseGuides?({starter:"Starter row",datta:"Datta","ram-bhakti":"Ram bhakti","gosaiji-sai":"East Phase 1",vraj:"Vraj Phase 1"} satisfies Record<Phase,string>)[phase]:guide.phaseLabel??initialPhaseLabel;
  const [physical,setPhysical]=useState(initialPhysical),[sessionView,setSessionView]=useState<SessionView>("active"),[selected,setSelected]=useState(guide.vitrines[0]?.code??"2");
+ const [readinessAttempts,setReadinessAttempts]=useState(0);
+ const readinessNotice=useRef<HTMLParagraphElement>(null);
+ useEffect(()=>setReadinessAttempts(0),[selected,phase]);
+ useEffect(()=>{if(readinessAttempts){readinessNotice.current?.focus();readinessNotice.current?.scrollIntoView({block:"center"});}},[readinessAttempts]);
  const [busy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState("");
  const [saintSearch,setSaintSearch]=useState(""),[startFilter,setStartFilter]=useState(""),[endFilter,setEndFilter]=useState("");
  const [alternativeOptions,setAlternativeOptions]=useState<string[]>([]);
@@ -159,7 +163,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  }
  function togglePlacement(row:CompanionRow,target:string){
   if(isPlaced(row,target)){setUndoSource(row.sourceId);return;}
-  if(!preparationReady)return;
+  if(!preparationReady){setReadinessAttempts(value=>value+1);return;}
   move([row],{kind:"vitrine",code:target,label:`Vitrine ${target}`});
  }
  function undoPlacement(){
@@ -174,7 +178,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   const placed=isPlaced(row,target);
   const reviewBlock=row.movementBlockedReason||entry?.movementBlockedReason;
   if(workflow==="guided")return <div className="museum-guide-check" key={sourceId} id={compact?undefined:`move-${sourceId}`}>
-   <input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${target}`} checked={placed} disabled={!editable||(!placed&&!preparationReady)||blocked(row)||!target||!allowMove||!!reviewBlock} onChange={()=>togglePlacement(row,target)}/>
+   <input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${target}`} checked={placed} disabled={!editable||blocked(row)||!target||!allowMove||!!reviewBlock} onChange={()=>togglePlacement(row,target)}/>
    <div className="museum-guide-check__body"><details><summary>{entry?.name??row.name}{compact&&entry?<span className="museum-guide-tier">{entry.tier}</span>:null}</summary><p>{entry?.relicDescription}</p><p>Original: {currentLocationLabel(row.original)}</p><p>{entry?.rationale}</p></details>
     {savingSources.includes(sourceId)?<small role="status">Saving…</small>:null}<small>{placed?"Placed · saved":row.currentBasis==="confirmed"?"Current":"Last recorded"}: {currentLocationLabel(row.current)}{target!==selected?` → Vitrine ${target}`:""}</small>
     {entry?.reportedOrigin&&row.currentBasis!=="confirmed"?<small>{entry.reportedOrigin}</small>:null}{entry?.city?<small>{entry.city}</small>:null}{entry?.lifeStatus?.tag?<small>{entry.lifeStatus.tag}</small>:null}{row.identityChanged?<small>Identity changed. Reload and review before recording a move.</small>:!reviewBlock&&blocked(row)?<small>Fixed housing or a verified inventory item needs its existing item-move workflow.</small>:null}{reviewBlock?<p role="note">{reviewBlock}</p>:null}{entry?.reviewNotes?.map(note=><small key={note}>{note}</small>)}{showWork&&allowMove?<MuseumDisplayWork tasks={displayWork.tasks.filter(task=>task.sourceId===sourceId)} name={entry?.name??row.name} shelf={displayWork.shelf(row)} canEditShelf={placed} canManage={editable&&displayWork.loaded} onShelfSave={value=>displayWork.saveShelf(row,value)} onTaskAdd={title=>displayWork.addTask(row,title)}/>:null}
@@ -183,7 +187,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   return <article className="room-move__display" key={sourceId} id={`move-${sourceId}`}>
    <div><p className="eyebrow">{entry?.tier??"Display"}{entry?.city?` · ${entry.city}`:""}</p><h3>{entry?.name??row.name}</h3><p>{entry?.relicDescription}</p></div>
    <div><small>{row.currentBasis==="confirmed"?"Current location":"Last recorded location"}</small><strong>{currentLocationLabel(row.current)}</strong><p>{target?`To Vitrine ${target}`:"No destination in this guide"}</p>{reviewBlock?<p role="note">{reviewBlock}</p>:null}{entry?.reviewNotes?.map(note=><p key={note} className="muted">{note}</p>)}
-    <label className="room-move__check"><input type="checkbox" checked={placed} disabled={!editable||(!placed&&!preparationReady)||blocked(row)||!target||!allowMove||!!reviewBlock} onChange={()=>togglePlacement(row,target)}/>{placed?"Placed · saved":"Placed in this vitrine"}</label>
+    <label className="room-move__check"><input type="checkbox" checked={placed} disabled={!editable||blocked(row)||!target||!allowMove||!!reviewBlock} onChange={()=>togglePlacement(row,target)}/>{placed?"Placed · saved":"Placed in this vitrine"}</label>
 
    {!placed&&canManage&&allowMove&&pilotIds.has(sourceId)?decisionControls("row:"+sourceId):null}</div>
    <details><summary>Details & original location</summary><p>Original: {currentLocationLabel(row.original)}</p><p>{entry?.rationale}</p>{row.identityChanged?<p>This source identity has changed. Reload and review it before recording a move.</p>:reviewBlock?<p>{reviewBlock}</p>:blocked(row)?<p>Fixed housing or a verified inventory item needs its existing item-move workflow.</p>:null}<small>Source record: {sourceId}</small></details>
@@ -248,7 +252,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   const row=rows.find(r=>r.sourceId===id),entry=guideById.get(id);
   if(!row||!selectedIds.includes(id))return null;
   const placed=isPlaced(row,selected);
-  return <span className="museum-guide-tree__check"><input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${selected}`} checked={placed} disabled={!editable||(!placed&&!preparationReady)||blocked(row)||!!entry?.movementBlockedReason} onChange={()=>togglePlacement(row,selected)}/>{savingSources.includes(id)?<small role="status">Saving…</small>:null}</span>;
+  return <span className="museum-guide-tree__check"><input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${selected}`} checked={placed} disabled={!editable||blocked(row)||!!entry?.movementBlockedReason} onChange={()=>togglePlacement(row,selected)}/>{savingSources.includes(id)?<small role="status">Saving…</small>:null}</span>;
  }
  function sorted(ids:string[]){const rank=(id:string)=>{const n=["Primary","Secondary","Tertiary"].indexOf(guideById.get(id)?.tier??"");return n<0?3:n;};return [...new Set(ids)].sort((a,b)=>rank(a)-rank(b));}
  function matchesVitrine(id:string){const entry=guideById.get(id);return !vitrineSearch.trim()||`${entry?.name??""} ${entry?.city??""}`.toLocaleLowerCase().includes(vitrineSearch.trim().toLocaleLowerCase());}
@@ -275,6 +279,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
    <div className="museum-companion__guide">
     <AdminViewTabs<Phase> scrollable label="Guide phase" value={phase} onChange={switchPhase} disabled={busy||displayWork.busy||!!retry.current||taskBusy!==null||!phaseGuides} options={[{value:"starter",label:"Starter row"},{value:"datta",label:"Datta"},{value:"ram-bhakti",label:"Ram bhakti"},...(phaseGuides?.["gosaiji-sai"]?[{value:"gosaiji-sai" as const,label:"East Phase 1"}]:[]),...(phaseGuides?.vraj?[{value:"vraj" as const,label:"Vraj Phase 1"}]:[])]}/>
     <div className="room-move__phase" aria-label={phaseLabel}>{guide.vitrines.map(v=><button type="button" className="museum-admin-button museum-admin-button--secondary" aria-pressed={selected===v.code} key={v.code} onClick={()=>{setSelected(v.code);setClearConfirmed(false);}}>Vitrine {v.code}</button>)}</div>
+    {readinessAttempts>0&&!preparationReady?<p ref={readinessNotice} tabIndex={-1} role="alert" className="museum-guide-help">{!transfersReady?"Complete the transfers from Vitrine 23 to 70 before recording placements here.":needsAvailability?`Before recording placements, check Vitrine ${selected} is ready and choose “Confirm available” below.`:needsPhaseClear?`Confirm Vitrine ${requiredClear} is cleared before recording placements here.`:`Complete the preparation for Vitrine ${selected} below before recording placements.`}</p>:null}
     {selected==="23"?preparatoryTransfersCard():null}{needsAvailability?availabilityCard():needsPhaseClear?phaseClearanceCard():allowClear?clearanceCard():null}
     <section className="museum-admin-panel"><p className="eyebrow">{phaseLabel}</p><h2>Vitrine {selected}</h2><label className="admin-field museum-guide-vitrine-search"><span>Find in this vitrine</span><input type="search" value={vitrineSearch} onChange={event=>setVitrineSearch(event.target.value)} placeholder="Saint or city"/></label><p>{view?.summary}</p><p className="muted">{selectedPlaced} of {selectedIds.length} display records confirmed here</p>
      {guide.outgoingDependencies?.some(d=>d.previousProposedVitrine===selected)?<details className="museum-guide-help"><summary>Outgoing displays need separate destinations</summary><p>This guide does not mark the vitrine empty. Check space before placing the incoming groups.</p>{guide.outgoingDependencies.filter(d=>d.previousProposedVitrine===selected).map(d=><p key={d.sourceId}>{d.name} · Destination pending</p>)}</details>:null}

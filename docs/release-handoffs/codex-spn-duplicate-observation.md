@@ -43,3 +43,8 @@
 - The historical staging disclosure depends on Nadi's endpoint. Nadi owns the separate authorized repair and final readback; do not replay a whole-case clear or duplicate that write.
 - Source rec419YldTnqJc6lM is suppressed only as a duplicate observation of recL5wb5a9ffIoqO9. Raw evidence, canonical identities, physical receipts and the existing retained-record to-do remain intact.
 - Skill review: existing museum evidence/physical-state distinctions cover this workflow; no reusable skill rule changed.
+
+## Readiness feedback follow-up
+
+- Placement checkboxes now explain missing preparation and focus the relevant confirmation area instead of silently ignoring clicks. Covers family trees, city groups, and final checklist. No physical write is sent until preparation is complete; all other edit guards remain.
+- Local real-component browser checks passed for Vitrine 73 readiness, fixed-object transfer prerequisites, undo relocking, and mobile layout.
