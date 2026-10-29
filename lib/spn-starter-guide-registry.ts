@@ -57,6 +57,12 @@ const cityAlternatives = guide.cityAlternatives.map(cohort => {
 });
 if (new Set(suggestions.map(row => row.id)).size !== suggestions.length) throw new Error("Duplicate registered suggestion identifiers.");
 export const registeredStarterGuide = { ...guide, cityAlternatives, guideContext: starterGuideContext };
+export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinition[] {
+  return [ramakrishnaGuideContext, fillFirstGuideContext, vrajGuideContext, gosaijiSaiGuideContext,
+    ramBhaktiGuideContext, dattaGuideContext, starterGuideContext].map(context => readStarterGuideDefinition(context.guideVersion))
+    .filter(definition => !definition.readOnly && (definition.suggestions.some(row => row.targetVitrine === vitrine) ||
+      Object.values(definition.physicalScope?.destinations ?? {}).includes(vitrine)));
+}
 export function readStarterGuideDefinition(version: string): GuideDefinition {
   if (version === ramakrishnaGuideContext.guideVersion) return ramakrishnaGuideDefinition;
   if (version === fillFirstGuideContext.guideVersion) return fillFirstGuideDefinition;

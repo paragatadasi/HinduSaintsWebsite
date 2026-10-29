@@ -54,6 +54,7 @@ try {
   await assert.rejects(physical.confirmMuseumPhysicalLocations(await request(["a"], staging, ["2"]), actor, loader), /every listed display/);
   const clear = await request(["a", "b"], staging, ["2"]);
   const cleared = await physical.confirmMuseumPhysicalLocations(clear, actor, loader);
+  assert.ok(cleared.receipt);
   assert.ok(cleared.rows.every(row => row.current?.kind === "table"));
   const receipt = cleared.receipt.afterJson as { emptyCaseClaim: string; clearedVitrines: string[] };
   assert.equal(receipt.emptyCaseClaim, "curator_confirmed_at_event_time"); assert.deepEqual(receipt.clearedVitrines, ["2"]);
@@ -64,6 +65,7 @@ try {
   assert.equal((await physical.readMuseumPhysicalLocations(loader, ["a"])).rows[0].current!.code, "28");
   await assert.rejects(physical.confirmMuseumPhysicalLocations(await request([], staging, ["28"]), actor, loader), /every listed display/);
   const empty = await physical.confirmMuseumPhysicalLocations(await request([], staging, ["5"]), actor, loader);
+  assert.ok(empty.receipt);
   assert.equal((empty.receipt.afterJson as { emptyCaseClaim: string }).emptyCaseClaim, "curator_confirmed_at_event_time");
   await assert.rejects(physical.confirmMuseumPhysicalLocations(await request(["b"], { ...staging, code: "other-table" }), actor, loader), /Staging area/);
   assert.deepEqual(snapshot, before);

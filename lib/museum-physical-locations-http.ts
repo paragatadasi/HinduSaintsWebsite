@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { readMuseumPhysicalProgress } from "./museum-physical-progress";
 import { getAdminUser } from "./admin-access";
 import { hasCapability } from "./permissions";
 import { intakeWriteOriginAllowed } from "./museum-intake-domain";
@@ -17,6 +18,13 @@ export async function museumPhysicalLocationsHttp(request: Request, loader: Phys
     if (request.method === "GET") {
       const query = new URL(request.url).searchParams;
       if ((query.get("museumId") ?? "museum-spn") !== "museum-spn") throw new MuseumMoveSessionError(400, "Choose the SPN museum.");
+      if (query.get("view") === "progress") {
+        const progress = await readMuseumPhysicalProgress();
+        const headers = { "Cache-Control": "private, no-cache", ETag: `"${progress.progressRevision}"`,
+          "Server-Timing": `museum;dur=${(performance.now() - started).toFixed(1)}` };
+        return request.headers.get("if-none-match") === headers.ETag
+          ? new Response(null, { status: 304, headers }) : NextResponse.json(progress, { headers });
+      }
       const ids = z.array(z.string().min(1).max(200)).max(2000).parse(query.getAll("sourceId"));
       result = await readMuseumPhysicalLocations(loader, ids.length ? [...new Set(ids)] : undefined);
     } else if (request.method === "POST") {

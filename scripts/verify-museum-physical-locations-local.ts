@@ -34,6 +34,7 @@ try {
   const first = await request(["a"]);
   await assert.rejects(api.confirmMuseumPhysicalLocations(first, { ...curator, canManage: false }, loader), /curator/);
   const saved = await api.confirmMuseumPhysicalLocations(first, curator, loader);
+  assert.ok(saved.receipt);
   assert.equal(saved.rows[0].current!.code, "27");
   assert.equal(saved.rows[0].current!.shelf, undefined);
   assert.deepEqual(saved.rows[0].original, vitrine("1", "A"));
@@ -45,7 +46,12 @@ try {
   assert.equal(receipt.emptyCaseClaim, "none"); assert.equal(receipt.proposalChanged, false);
   assert.equal((await api.confirmMuseumPhysicalLocations(first, curator, loader)).replayed, true);
   await assert.rejects(api.confirmMuseumPhysicalLocations({ ...first, evidence: "Changed retry" }, curator, loader), /already recorded/);
-  await assert.rejects(api.confirmMuseumPhysicalLocations({ ...first, clientRequestId: randomUUID() }, curator, loader), /physical location changed/);
+  const noOp = await api.confirmMuseumPhysicalLocations({ ...first, clientRequestId: randomUUID() }, curator, loader);
+  assert.deepEqual(noOp.alreadyRecorded, ["a"]);
+  assert.equal(noOp.receipt, null);
+  assert.equal(noOp.rows[0].currentVersion, saved.rows[0].currentVersion);
+  assert.equal(await db.auditEvent.count({ where: { action: "museum.physical_location.confirmed" } }), 1);
+  await assert.rejects(api.confirmMuseumPhysicalLocations({ ...first, clientRequestId: randomUUID(), records: first.records.map(row => ({ ...row, to: vitrine("28") })) }, curator, loader), /physical location changed/);
   const batch = await request(["a", "b"], "28"); batch.records[1].expectedLocationVersion = 99;
   await assert.rejects(api.confirmMuseumPhysicalLocations(batch, curator, loader), /physical location changed/);
   assert.equal(await db.museumMoveCurrentLocation.count(), 1);
