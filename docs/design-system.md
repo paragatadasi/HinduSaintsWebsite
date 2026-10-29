@@ -685,3 +685,21 @@ The shared room plan accepts an optional list of vitrines with guides and region
 ### Versioned Vraj guide
 
 The 29 October Vraj refinement is a scoped, read-only proposal overlay. Newer curator arrangements take precedence over its captured revisions. The 79/77 fill phase requires an individual availability acknowledgement before placement; no publication action clears or moves holdings. Tradition and locality cohorts are not drawn as unsupported family trees. Explicit top-anchor labels apply only to reviewed source IDs.
+
+### Linked proposal maps
+
+The SPN proposal explorer uses three coordinated panels in reading order: room
+layout, geographic context, selected vitrine. On medium screens the vitrine spans
+both map columns; on phones all three stack. Room schematics may shrink in either
+orientation; never impose a horizontal minimum width that spills the panel.
+Use the shared explorer tokens and `SpnLinkedLocalityMap` for this treatment.
+
+Geographic points link to inventory source IDs, not frozen destination numbers.
+Highlight them from the selected proposal's effective assignments, preserving
+newer curator destinations. Selecting a place filters the vitrine's portrait rows;
+its total count and space estimate still describe the whole vitrine. Reset the
+filter across vitrines/proposals, expose missing coordinates, and never imply
+that geographical proximity establishes a lineage. Keep the vitrine column about half the width of either map and match all three
+panel heading sizes. Show saint count and shelf usage under a quiet uppercase
+summary label, with unknown sizes alongside it; omit duplicate display-focus and
+flexible-space callouts.
