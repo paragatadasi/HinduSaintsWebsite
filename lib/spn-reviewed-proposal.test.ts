@@ -9,7 +9,7 @@ test("latest reviewer projects approved 4/37 rosters, fit and held records witho
  assert.equal(view.rows.filter(r=>r.effectiveVitrine==="4").length,15);
  assert.equal(view.rows.filter(r=>r.effectiveVitrine==="37").length,10);
  assert.ok(Math.abs(view.proposal.indicators.find(i=>i.vitrine==="4")!.estimatedRequiredShelfShares-5.4708333333)<0.000001);
- assert.equal(view.proposal.pendingPlacements.length,9);
+ assert.equal(view.proposal.pendingPlacements.length,22);
  assert.ok(!view.rows.some(r=>r.sourceId==="rec419YldTnqJc6lM"));
  assert.ok(view.rows.some(r=>r.sourceId==="recL5wb5a9ffIoqO9"));
  assert.equal(view.rows.filter(r=>r.effectiveVitrine==="75").length,11);

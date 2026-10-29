@@ -43,3 +43,11 @@ test("previous East review holds stay pending while Northern approvals remain sc
  const result=buildLatestSpnReview([]);
  for(const id of east.heldSourceIds){assert.ok(!result.rows.some(r=>r.sourceId===id));assert.ok(result.proposal.pendingPlacements.some(r=>r.sourceId===id));}
 });
+
+test("every Northern receiving card has its own summary and preparation scope",()=>{
+ for(const v of northernMoveGuide.vitrines){assert.ok(v.summary&&!v.summary.startsWith("undefined"));assert.ok(northernMoveGuide.preparationVitrines?.includes(v.code));}
+ assert.deepEqual(northernMoveGuide.requiredClearVitrines,["19","20","21","22"]);
+ assert.equal(northernMoveGuide.clearancePerDestination,true);
+ assert.equal(northernGuideDefinition.physicalScope?.clearancePerDestination,true);
+ for(const code of ["11","36","68","73"])assert.ok(!northernGuideDefinition.physicalScope?.clearVitrines?.includes(code));
+});
