@@ -703,3 +703,13 @@ that geographical proximity establishes a lineage. Keep the vitrine column about
 panel heading sizes. Show saint count and shelf usage under a quiet uppercase
 summary label, with unknown sizes alongside it; omit duplicate display-focus and
 flexible-space callouts.
+
+### Museum reviewer and companion navigation
+
+The SPN move workspace shares `MuseumPlanTabs` across reviewer and companion
+routes, using the standard horizontal admin tabs. Companion phase tabs use the
+`AdminViewTabs` scrollable variant: one line, native horizontal scrolling, and
+keyboard navigation. Keep phase switching disabled while records are saving.
+The companion room layout stays open. Reviewer rotations start with the cave up;
+compact turn controls share a single row with the map lenses. Place context lives
+quietly below each saint name instead of repeating a separate contextual list.

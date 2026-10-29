@@ -90,7 +90,7 @@
 
 /* Linked room, geographic context, and vitrine detail share one responsive workspace. */
 .spn-room-explorer{--explorer-linked-height:42rem;--explorer-linked-column:18rem;--explorer-linked-map-height:28rem}
-.spn-room-explorer .workspace.linked-workspace{grid-template-columns:minmax(0,1.25fr) minmax(0,1.25fr) minmax(0,.65fr)}
+.spn-room-explorer .workspace.linked-workspace{grid-template-columns:minmax(0,1.25fr) minmax(0,1.055fr) minmax(0,.845fr)}
 .spn-room-explorer .linked-workspace .floorplan{min-width:0;max-width:100%;max-height:var(--explorer-linked-height);width:100%;height:auto}
 .spn-room-explorer .linked-workspace .map-controls{flex-wrap:wrap}
 .spn-room-explorer .linked-workspace .lenses{flex-wrap:wrap}
@@ -112,3 +112,16 @@
 
 .spn-room-explorer .linked-workspace h2{font-size:var(--explorer-heading);line-height:1.2}
 .spn-room-explorer .linked-workspace .inspector{overflow-wrap:anywhere}
+
+/* Keep the two map canvases aligned beneath one compact control row. */
+.spn-room-explorer .linked-workspace .map-controls{flex-wrap:nowrap;margin-block:var(--space-3) var(--space-4);padding:0;border:0;min-height:var(--explorer-control)}
+.spn-room-explorer .linked-workspace .map-controls .lenses{flex-wrap:nowrap;gap:0;min-width:0}
+.spn-room-explorer .linked-workspace .map-controls .lenses button{padding-inline:var(--space-1);white-space:nowrap}
+.spn-room-explorer .linked-workspace .map-controls .orientation-control{width:auto;margin:0;flex-shrink:0}
+.spn-room-explorer .linked-workspace .turn-controls{padding:0;gap:0;background:transparent;border:0}
+.spn-room-explorer .linked-workspace .turn-controls>span{min-width:0;padding-inline:var(--space-1)}
+.spn-room-explorer .linked-workspace .turn-controls small{display:none}
+.spn-room-explorer .linked-workspace .turn-controls button{width:var(--space-8);min-height:var(--explorer-control)}
+.spn-room-explorer .linked-workspace .locality-controls{min-height:var(--explorer-control);margin-top:var(--space-3)}
+.spn-room-explorer .saint-row-places{margin-top:var(--space-1);font-weight:400}
+@media(max-width:650px){.spn-room-explorer .linked-workspace .map-controls{gap:var(--space-1)}.spn-room-explorer .linked-workspace .map-controls .lenses{width:auto;justify-content:flex-start}}

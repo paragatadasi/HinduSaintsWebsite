@@ -1,5 +1,5 @@
 import {buildLatestSpnReview} from "@/lib/spn-reviewed-proposal";
-import Link from "next/link";
+import {MuseumPlanTabs} from "@/components/admin/museum-plan-tabs";
 import {currentSpnProposalRelease} from "@/lib/spn-current-proposal";
 import {requireCapability} from "@/lib/admin-access";
 import {hasCapability} from "@/lib/permissions";
@@ -32,7 +32,7 @@ export default async function SpnMovePlan(){
  });
  releases.unshift(buildLatestSpnReview(placements));
  return <div className="admin-stack">
- <div className="review-actions"><Link className="museum-admin-button museum-admin-button--secondary" href="/museumadmin/move" prefetch={false}>Move companion</Link></div>
+ <MuseumPlanTabs active="reviewer"/>
  <SpnRoomExplorer releases={releases}/>
  <details className="museum-admin-panel"><summary>Connected traditions · original and saved arrangements</summary><SpnConnectedTraditions sections={sections.map(({name,slug,total})=>({name,slug,total}))} canEdit={hasCapability(user.roles,"manage_museum")}/></details></div>;
 }
