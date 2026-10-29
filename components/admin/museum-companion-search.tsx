@@ -19,7 +19,7 @@ export function MuseumCompanionSearch({rows,canManage,disabled,onOpen,onAdd,onCa
  useEffect(()=>setLimit(30),[query,start,end]);
  const codes=[...new Set(catalog?.entries.flatMap(e=>e.original?.kind==="vitrine"?[e.original.code]:[])??[])].sort((a,b)=>Number(a)-Number(b));
  const found=catalog?.entries.filter(e=>(!query.trim()||[e.name,...e.searchNames].some(n=>n.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())))&&(!start||(start==="unknown"?!e.original:e.original?.kind==="vitrine"&&e.original.code===start))&&(!end||(end==="unknown"?!e.destination:e.destination===end)))??[];
- function open(entry:CompanionSearchEntry){setSelected(entry);setTarget(entry.destination);setShelf("");setIntent("proposed");setReady(false);setSaveError("");requestId.current=null;}
+ function open(entry:CompanionSearchEntry){setSelected(entry);setTarget(entry.destination);setShelf(entry.destinationShelf??"");setIntent("proposed");setReady(false);setSaveError("");requestId.current=null;}
  async function save(){
   if(!selected||!target||saving.current||(intent==="moved"&&!isPrepared(target)&&!ready))return;
   saving.current=true;catalogEpoch.current+=1;setBusy(true);setSaveError("");requestId.current??=crypto.randomUUID();

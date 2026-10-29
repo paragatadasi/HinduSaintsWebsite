@@ -18,7 +18,7 @@ export async function readCompanionCatalog(){
  const valid=currentCompanionAdditions(effective,physical.rows);
  const placements=new Map(data.placements.filter(p=>p.sourceRecordId).map(p=>[p.sourceRecordId!,p]));
  return {additions:valid,vitrines:availableDeclineAlternatives(currentSpnProposalRelease.proposal.layout.vitrines),entries:physical.rows.filter(r=>isActiveSpnObservation(r.sourceId)&&!proposalOverlay.excludedFromMuseumDisplay.some(item=>item.sourceId===r.sourceId)).map(row=>{
-  const placement=placements.get(row.sourceId),addition=valid.find(a=>a.sourceId===row.sourceId);
-  return {...row,section:placement?.section??"",region:SPN_REGION_GROUPS.find(g=>(g.sections as readonly string[]).includes(placement?.section??""))?.title??"",tier:placement?.tier??"",city:placement?.normalizedPlaces.join(" · ")??"",searchNames:placement?.searchNames??[],destination:addition?.vitrine??alternatives.find(a=>a.sourceId===row.sourceId)?.vitrine??row.proposalDestination?.code??"",additionVersion:additions.find(a=>a.sourceId===row.sourceId)?.version??0};
+  const placement=placements.get(row.sourceId),addition=valid.find(a=>a.sourceId===row.sourceId),alternative=alternatives.find(a=>a.sourceId===row.sourceId);
+  return {...row,section:placement?.section??"",region:SPN_REGION_GROUPS.find(g=>(g.sections as readonly string[]).includes(placement?.section??""))?.title??"",tier:placement?.tier??"",city:placement?.normalizedPlaces.join(" · ")??"",searchNames:placement?.searchNames??[],destination:addition?.vitrine??alternative?.vitrine??row.proposalDestination?.code??"",destinationShelf:addition?addition.shelf??"":alternative?alternative.shelf??"":row.proposalDestination?.shelf??"",additionVersion:additions.find(a=>a.sourceId===row.sourceId)?.version??0};
  })};
 }
