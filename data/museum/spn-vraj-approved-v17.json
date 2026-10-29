@@ -1,0 +1,4860 @@
+{
+  "version": "spn-vraj-locked-2026-10-29-v17",
+  "assignments": [
+    {
+      "sourceId": "recgLvBMiGOevOuZM",
+      "saintId": "cms0w7f8403xd07qin696rwb5",
+      "name": "Sri Chaitanya Mahaprabhu",
+      "destination": "2",
+      "groupId": "vraj1",
+      "capturedBaseline": {
+        "placementId": "recgLvBMiGOevOuZM",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Featured",
+        "familyKey": "FAM-005",
+        "regionTags": [],
+        "revision": "b3a74643f4816e725f6af0cc974d8eafad27efa959c82983e66ec2d834ce2846",
+        "proposalRevision": "07533fe8732474e2e0ad8ca70f209c37ee7cbd958feb10c08b8cb09634a740ae"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.5
+    },
+    {
+      "sourceId": "recK4u1sUzyWGtVTu",
+      "saintId": "cms0w7g2j04z507qibdpw1jr3",
+      "name": "Sri Nityananda Prabhu",
+      "destination": "2",
+      "groupId": "vraj1",
+      "capturedBaseline": {
+        "placementId": "recK4u1sUzyWGtVTu",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Featured",
+        "familyKey": "FAM-005",
+        "regionTags": [],
+        "revision": "bdaa9e3ed40e8ccbcf8058588cbc29d0d99cd1743cdf2e010139556690a9d87f",
+        "proposalRevision": "a05133591f20769b7c9727ff8fad1d91631fc32c6cd6e9eb25979702406866ba"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.5
+    },
+    {
+      "sourceId": "recwXgwhRieoQeKxm",
+      "saintId": "cms0w7jbr08px07qiml4wmfuh",
+      "name": "Sri Vishnupriya Devi",
+      "destination": "2",
+      "groupId": "vraj1",
+      "capturedBaseline": {
+        "placementId": "recwXgwhRieoQeKxm",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Featured",
+        "familyKey": "FAM-005",
+        "regionTags": [],
+        "revision": "e975edaf839a5b5315dd1f5fe2f2e6d52819842af8d914195b777aed357a4e21",
+        "proposalRevision": "f94762251f932fefc19a6be568a82ed58616658704435a8381d283d1598d66d3"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recd2UE4TEFj2dmoP",
+      "saintId": "cms0w7edy02th07qi7gwufj69",
+      "name": "Sri Haridas Thakur",
+      "destination": "2",
+      "groupId": "vraj1",
+      "capturedBaseline": {
+        "placementId": "recd2UE4TEFj2dmoP",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Featured",
+        "familyKey": "FAM-005",
+        "regionTags": [],
+        "revision": "8122d41e8693264d18342a844fb8ac8b2461863ec85f33535cb586d665ad4bc4",
+        "proposalRevision": "a1cd02f3371922a1a2d068a46982ddfc71ba43f7a373010fcb5fd4731b5535a3"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.5
+    },
+    {
+      "sourceId": "recHtWkpayatvf2d1",
+      "saintId": "cms0w7fk204cp07qil7w0xdsk",
+      "name": "Sri Jagadananda Pandit",
+      "destination": "2",
+      "groupId": "vraj1",
+      "capturedBaseline": {
+        "placementId": "recHtWkpayatvf2d1",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Featured",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5b6d405a7939e75b1c66e83663dd425aaec28f3534fd1c251f58b48ce167c85b",
+        "proposalRevision": "854e9558cdac9f603280e795e437737ad764f2423e1707c8b9db54c401ed8eef"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recCtoBgaO6q9LlU9",
+      "saintId": "cms0w7ec902ra07qi5mzq7svj",
+      "name": "Sri Sarvabhauma Bhattacharya",
+      "destination": "2",
+      "groupId": "vraj1",
+      "capturedBaseline": {
+        "placementId": "recCtoBgaO6q9LlU9",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Secondary",
+        "familyKey": "FAM-005",
+        "regionTags": [],
+        "revision": "59d1ae303cf4f23685c92f8e3721c0bb8882484be3b28b8a35ca807bb036a191",
+        "proposalRevision": "4775b0f4ea125aaea82f63aa84d423db66056063756896f2d821e3acef33e9c8"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "rec9iOaPtSzM2pvmx",
+      "saintId": "cms0w7diw01o807qiqpmiltvz",
+      "name": "Sri Chand Kazi",
+      "destination": "2",
+      "groupId": "vraj1",
+      "capturedBaseline": {
+        "placementId": "rec9iOaPtSzM2pvmx",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Secondary",
+        "familyKey": "FAM-005",
+        "regionTags": [],
+        "revision": "3a31906332016876b628c20541477bf09690372fb1e40627b3d65d06aa249ff5",
+        "proposalRevision": "9b0c026418d32e7b97a3059b9adca37baf12dc756c646ba847870a8e17e2073e"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.5
+    },
+    {
+      "sourceId": "rec7064CikptruWW3",
+      "saintId": "cms0w7d8i01ah07qi4kulwfzd",
+      "name": "Sri Gopala Bhatta Goswami",
+      "destination": "2",
+      "groupId": "vraj2",
+      "capturedBaseline": {
+        "placementId": "rec7064CikptruWW3",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Featured",
+        "familyKey": "FAM-005",
+        "regionTags": [],
+        "revision": "dd912a3eb98e3439495266d4798a947d367038082dd88c1ab91390a181b1d878",
+        "proposalRevision": "9e6973d12dd729ae114ae62a677c6fd69f7590247c9b97db1ddf8b9897cd318d"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recwlct6RplW4XEhj",
+      "saintId": "cms0w7j8w08mz07qivj9gd4lx",
+      "name": "Sri Radha Raman (deity in Vrindavan)",
+      "destination": "2",
+      "groupId": "vraj2",
+      "capturedBaseline": {
+        "placementId": "recwlct6RplW4XEhj",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Featured",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "aae4b617bbd801d477ab7fdb375649edff5bb0d7363a771eb2ae97eccf72034e",
+        "proposalRevision": "de0483b9067907966c6d0e104d75f72e532056a00da18bee1fa15c5aef4d33e9"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recBvAIzHPy3xmzNr",
+      "saintId": "cms0w7e2g02eu07qi30gtdfrg",
+      "name": "Goswamis of Vrindavan",
+      "destination": "2",
+      "groupId": "vraj2",
+      "capturedBaseline": {
+        "placementId": "recBvAIzHPy3xmzNr",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Featured",
+        "familyKey": "FAM-005",
+        "regionTags": [],
+        "revision": "9cb120ac02282a7b22d4cba0b1c9447ffa23ac1d37d266bff1dbe81c908cd80c",
+        "proposalRevision": "eaa3a360c2cbe09fde4938bb1c113150b43705f6746ce91a558917ab604a89e1"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "reczcdKSdHDeOlHdt",
+      "saintId": "cms0w7k1p09g407qirl5stxye",
+      "name": "Sri Jiva Goswami",
+      "destination": "2",
+      "groupId": "vraj2",
+      "capturedBaseline": {
+        "placementId": "reczcdKSdHDeOlHdt",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Featured",
+        "familyKey": "FAM-005",
+        "regionTags": [],
+        "revision": "0fa1cb174b854a51e6a6b0e5c387fd42e423691aad460c488298bd6b39c6be52",
+        "proposalRevision": "63236f48e47466804296c43b585f0ed3f03d888a216f431a2399027f6bc97dad"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec9Qdld6jmoy5cuC",
+      "saintId": "cms0w7dkf01qa07qikm4pbwjx",
+      "name": "Sri Madhu Pandit Goswami",
+      "destination": "2",
+      "groupId": "vraj2",
+      "capturedBaseline": {
+        "placementId": "rec9Qdld6jmoy5cuC",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Secondary",
+        "familyKey": "FAM-005",
+        "regionTags": [],
+        "revision": "f22c67d94a1ddef476ee723d7af356b08b9319f5ce3261d1892208588a4741ef",
+        "proposalRevision": "301ccfdb025db588412ed64b25ca734b4bb0857fa9392ea02c8143379ea47aee"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recJepdkXi90kdROh",
+      "saintId": "cms0w7fvi04qj07qir5t8b2fk",
+      "name": "Sri Srinivasa Acharya",
+      "destination": "2",
+      "groupId": "vraj2",
+      "capturedBaseline": {
+        "placementId": "recJepdkXi90kdROh",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Featured",
+        "familyKey": "FAM-005",
+        "regionTags": [],
+        "revision": "620078623c95a42eab26361588cea77a774d02e7f4adf8f37f8faef95730b6d8",
+        "proposalRevision": "07828815a1b6102a759b05623ca39a03353e6e17b8971240827e09c0d4f0f897"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recyCtOnmOZwhVgTI",
+      "saintId": "cms0w7jr7095907qi7sfxzjyb",
+      "name": "Sri Hit Kinkar Sewak Sharanji Maharaj",
+      "destination": "33",
+      "groupId": "vraj5",
+      "capturedBaseline": {
+        "placementId": "recyCtOnmOZwhVgTI",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Secondary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5a22084430aa648a2820bb10f8770c91ae8b92de72d2f43fee5440ce9a16333a",
+        "proposalRevision": "5d0b6ac4239914b9a69f638533152a0f9148b99820126341051fb5ea734c764a"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec1rC2Ds0JSWSMt7",
+      "saintId": "cms0w7cgj00c407qi2g8xw9yz",
+      "name": "Sri Advaita Das",
+      "destination": "32",
+      "groupId": "vraj6-4",
+      "capturedBaseline": {
+        "placementId": "rec1rC2Ds0JSWSMt7",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "7f661020f43ad21d0844ef3f181736c54cd2e7dfc2341f828e4c5c09b33ecbdc",
+        "proposalRevision": "d286536f0035f54c120d775ac55a1974126dba098c1f82f6caabe1ed6bdc938a"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recjCHsWkWsKvE0UI",
+      "saintId": "cms0w7fuj04pf07qiwo4vzccu",
+      "name": "Sri Priya Charan Das Baba",
+      "destination": "32",
+      "groupId": "vraj6-4",
+      "capturedBaseline": {
+        "placementId": "recjCHsWkWsKvE0UI",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c9e7e9e999dc3b244ece3975ef13b1e3ab6a255350933b0e851d5331b0a5da12",
+        "proposalRevision": "8871835aec034b2c4f0fa2098c236b7b649e47b53158f486310ebff443635ec8"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recr59tNcv8rnvu0n",
+      "saintId": "cms0w7hrs071407qi7k1e0g2w",
+      "name": "Sri Giriraj Das Babaji",
+      "destination": "32",
+      "groupId": "vraj6-4",
+      "capturedBaseline": {
+        "placementId": "recr59tNcv8rnvu0n",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "cff5f7e00d9965708790e987b9d63ceaf814f7e5a7660351984bc3dcbb9a9497",
+        "proposalRevision": "7124f33eca791cdfdf1b1932665af5fadef40ace0308199e4680434c0138a798"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "rechNsZrAAHvPvA8L",
+      "saintId": null,
+      "name": "Sri Krishna Dasji Maharaj of Govardhana",
+      "destination": "32",
+      "groupId": "vraj6-4",
+      "capturedBaseline": null,
+      "capturedTier": "Unclassified",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recYz0sAfOqxGX3xd",
+      "saintId": "cms0w7jzn09e707qihmpt7adk",
+      "name": "Sri Chaitan Baba",
+      "destination": "32",
+      "groupId": "vraj6-4",
+      "capturedBaseline": {
+        "placementId": "recYz0sAfOqxGX3xd",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "22d8d397fe13d2d1cf4c024c9b073cf8e9f8ec0ea56c1280f6f6dbed6261987e",
+        "proposalRevision": "55036d68cfdd614970ac2ea01ce8159f2c4220ec7d7d30ac7f29a6f46149f925"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recW7KxJ0OxE6NQUZ",
+      "saintId": "cms0w7j4z08ix07qij6jeneac",
+      "name": "Sri Yamuna Jivan Prabhu",
+      "destination": "32",
+      "groupId": "vraj6-4",
+      "capturedBaseline": {
+        "placementId": "recW7KxJ0OxE6NQUZ",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b352d0beaa64aec7c0cc3a3ffbe60731b6fcf51378dd4421bb03e109e83d2226",
+        "proposalRevision": "ed24ae76df26d70cdb24cf0eb7117398a1880cd046e11cf11d1426e1cefcecc6"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "rec5uQS2pz9kEuGon",
+      "saintId": "cms0w7d1k012f07qiy9dm6d33",
+      "name": "Sri Prashant Das Baba",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "rec5uQS2pz9kEuGon",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8f669c088ce1206a31e5a00c14729da326bd63fecceaef16c02b76758a6c44dc",
+        "proposalRevision": "25bcd59e8088ef8f1999aba3261d3b17feb5b5a58ba401e722893c8448efb7d3"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "rec6YZs1zGqm2SaxC",
+      "saintId": "cms0w7d8901a507qitq8nuuso",
+      "name": "Sri Tyagi Baba",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "rec6YZs1zGqm2SaxC",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8dcd724cad522460df684ea488d4e1250ce27680906440c66c110bbf87da0ce3",
+        "proposalRevision": "8ae838db33c89b4acc6965446006fc25f89a0c2c90677ef019703f3a102292d7"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.125
+    },
+    {
+      "sourceId": "rec82hFqcoW0N6dUe",
+      "saintId": "cms0w7dcu01gf07qi3g0yyb60",
+      "name": "Sri Kunja Bihari Das",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "rec82hFqcoW0N6dUe",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4fa1615ec57fc9a38c36461c8c4c3150200ce1509f9c2fd5c721438db9e732e6",
+        "proposalRevision": "30eb7677c46cc3fc67a44891fdcc02afea9403dbecc2e95b6f1210d951a4b6cf"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recA3nxFhZ0PDaF78",
+      "saintId": "cms0w7dm301sp07qinzs7t98h",
+      "name": "Sri Gyaandas ji Maharaj",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "recA3nxFhZ0PDaF78",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "835ccf77a5db9de62dfb521ca2c95054acc8b660933165d1ded04941653407bb",
+        "proposalRevision": "546989327627eafd48424030dfcde2952e1e02a1776c6cc8870c70cad9ed8ac5"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recAEx5Op0jFyV4JI",
+      "saintId": "cms0w7doq01wg07qi73rsljkf",
+      "name": "Sri Gauranga Das Babaji",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "recAEx5Op0jFyV4JI",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a70a6828cb28f471d862d0f5c05f0102b6c3536129fc654811c461e6d17318ed",
+        "proposalRevision": "f8e6537744e870f2f4be0da7f34258d6688eac74dea61e4c68b34565defc12ae"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recArd2WMWc2wQbcJ",
+      "saintId": "cms0w7dsu021w07qivhvppoa4",
+      "name": "Sri Panduranga (deity)",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "recArd2WMWc2wQbcJ",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4b33ffefb5b3661f97a82e2ccba046ea0bed9426950a5aa038879feb4ec7da33",
+        "proposalRevision": "d570a2ff08db396b95702d602eeceb6f9f9cf2321c0346193ea25888651f14ef"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recjniR3isfH2T1Bc",
+      "saintId": "cms0w7fy304tq07qixt2tn5pr",
+      "name": "Sri Pagal Babaji Maharaj",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "recjniR3isfH2T1Bc",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "27ee2bfc7e32a3156b4110ef23c8dbdb2017b1d6001a61fc6ff7af8e1742588d",
+        "proposalRevision": "6ddb75ed9d8882b3ba78d1ff85f5ed798e0b2ce8eeb21c6fd9dd0bf2e7f7d393"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "reckJqVswMXRwc2uA",
+      "saintId": "cms0w7g78055107qivimmaiie",
+      "name": "Sri Lala Babu",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "reckJqVswMXRwc2uA",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c60e43f5d70ee0e71a9dc3c32f189d3bb84f856ed4bcf6e1e8b33ddf246de136",
+        "proposalRevision": "9a6fd444152b18dc21694fa0db72bdd91274fffe80af3c30582e36761ec34b4b"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recL6pd3mneBukCEb",
+      "saintId": "cms0w7ge905ds07qi1lmo9lws",
+      "name": "Sri Usha Mataji",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "recL6pd3mneBukCEb",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "51c210d5dd9ac2d52577a690559eb4f56a2dc528494fc3f2f8470e41b6201c33",
+        "proposalRevision": "f32bc2d0d9ded4fef915f8580d5ba66a04ab8523e48c388850931346a59b02f8"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recTIvmCmSVHWspHM",
+      "saintId": "cms0w7icl07oa07qiocwf3n4n",
+      "name": "Sri Atul Krishna Das Maharaj",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "recTIvmCmSVHWspHM",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4c4c56a99995c5dbdad3700033046445e92f385a218c21825eee06b065a689e7",
+        "proposalRevision": "1e68404fa330fd014bcb43716c11b078489388b6f49b4a2f546fc8a6c78d17a3"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recYhFy1wEWE4YN6A",
+      "saintId": "cms0w7jsb096f07qitqv7e103",
+      "name": "Sri Mahadev",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "recYhFy1wEWE4YN6A",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "fd07225f88e6e02da52e995a6d0cf16b6d2e126c3ed365d3269aca41b5f86f91",
+        "proposalRevision": "fb335742bd58a6d7b6739061b1397647e9dc8b5b67c6400c127736ecfed5ec21"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recxHe0WZ1ulo1Quh",
+      "saintId": "cms0w7jie08w207qiu4hz6h1r",
+      "name": "Ramtal, Vrindavan (Brick 2700yrs old)",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "recxHe0WZ1ulo1Quh",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "bc8bbc7f61c68591cacc2e79131f082c775b5ee371939dc417a13b9b5dcf4897",
+        "proposalRevision": "388ebf3d8eb890c7bcb932e2172d1c10905c988d0c9929ec2e75bb33b08a4146"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.5
+    },
+    {
+      "sourceId": "recyyiy9MkoJX6hJx",
+      "saintId": "cms0w7jzg09e107qidcff1yty",
+      "name": "Sri Priyasharan Baba",
+      "destination": "77",
+      "groupId": "vraj7-5",
+      "capturedBaseline": {
+        "placementId": "recyyiy9MkoJX6hJx",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "94008ccac5ac5c4c59a0949afd8708fe847218e04899f8bfa3824839d106515f",
+        "proposalRevision": "6ecaa56ece26eaaaef757b2ad5cfaf408fbca75ffb26193b842046a874accbe0"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec5kC0WPXiXYelqp",
+      "saintId": "cms0w7d0p011e07qiz6gu5acv",
+      "name": "Sri Nar Hari Das ji",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "rec5kC0WPXiXYelqp",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8c3049024a549d9c80beb9b851d2a419ec9fa9f71027278c736afb9f28b6da37",
+        "proposalRevision": "5ac0cd957f948d6ecb293e012df2bad1853cb3ac0dd426ef1e54bcef26eb2f2e"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recf5TVTPdhQ9I3fG",
+      "saintId": "cms0w7exu03jr07qi2nleo3zx",
+      "name": "Sri Venodanandji Maharaj (also known as Langta Baba)",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "recf5TVTPdhQ9I3fG",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "fb47180e778321d5325c373f413553cdfd2ebceddab4e68770b636d6cc9b1d4d",
+        "proposalRevision": "6224d4ae3687ce18df184f75159103a3a658376ebc00f9cf728097648cdf44d4"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "rechEgcxIpn8wJYwn",
+      "saintId": "cms0w7fga047v07qi19qjfvh2",
+      "name": "Sri Ramdevanand Saraswati",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "rechEgcxIpn8wJYwn",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3ab85cdc59bde9481064f5f75a0416e12701b04023c5fa440142be070514cd8d",
+        "proposalRevision": "c05de09da753354e4866c014cc6010314e83546d2d9eb4e9a636711292f6980e"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recnGWguvlWIIZYaa",
+      "saintId": "cms0w7gx8061107qias11p4fq",
+      "name": "Sri Parampujya Sri Sri 1008 Sri Hridayananda Das Babaji Maharaj",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "recnGWguvlWIIZYaa",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c87e4c0b983608bf1b8684328f091425a1f264470d29726b7a3a6e129ce3a892",
+        "proposalRevision": "285fae9503f3e3c3646a3ad0ade57f7535245c44aa275c20dde0d448c45aaa83"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recSNYGyyw23mVVfE",
+      "saintId": "cms0w7i4m07fy07qi0zrlxesg",
+      "name": "Sri Gaya Prasadji Maharaj",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "recSNYGyyw23mVVfE",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0c2fe5944c1d33656cd042672048419be2e38a9113129115633d3ccee8106a77",
+        "proposalRevision": "52bd8ff5c1b316f10fa37e32e5725e37f2dad5423e5258d5d7b7e257078af331"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "rectJk81omsOqa2cD",
+      "saintId": "cms0w7icz07os07qiwkva1zz0",
+      "name": "Sri Deepanand Baba",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "rectJk81omsOqa2cD",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9401c8efbb37f00c74c75866bd122f517c2a18ce7fbb8bae9028f49a3ee3bb90",
+        "proposalRevision": "244fadea87650e5935163312f975c54b43bf92861ec6a071dd26e94d29396e5b"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rectt7X59r1jM3LQ6",
+      "saintId": "cms0w7ih507ta07qii8ar5m5v",
+      "name": "Sri Sushila Mataji",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "rectt7X59r1jM3LQ6",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c5d3328eae0cfd9a9a43fd01033583573349637f44d31727b01143521218b48c",
+        "proposalRevision": "4aedaf4ab4ad25b937c2afd6c14d555a352ac4637dbbba1ff7e2796453f5e6da"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recXjMRI0bmYSqq5M",
+      "saintId": "cms0w7jjt08xk07qi9i1vcz37",
+      "name": "Sri Ganshyamdas Babaji Maharaj",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "recXjMRI0bmYSqq5M",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "85e906e51b65f3914bac396552e4ed841b40124585766060b9b2a84fe40f585c",
+        "proposalRevision": "98fbc41a53425f9368f191d779ae52133c918addb18b9cbf98e64104d03d1ba2"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recXPuLdP5ogPQGKS",
+      "saintId": "cms0w7jly08zt07qi9wrpgxhe",
+      "name": "Sri Sita Didi",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "recXPuLdP5ogPQGKS",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4155503eab24aeb7a5edd0a7ea6ccb292934da533edca20aaf10e8f41950a4de",
+        "proposalRevision": "bad4fcff854ecfb7ce93fb22e14aac53184197c6538d6e3cd88aeffe4eb29f0b"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recyyGtf6Nn5dWTyW",
+      "saintId": "cms0w7jz209dn07qivw3qpja5",
+      "name": "Sri Siddhanath Chinnakunjammal",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "recyyGtf6Nn5dWTyW",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f98a3e704dab3c45d769849de71e05440e8575f04c1a7d6c9acc1eae93fcb4a6",
+        "proposalRevision": "f1c544a1bbd701846df05eea62d3cf232df3374bd7f9c5a286d1b96a11ba2e95"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.125
+    },
+    {
+      "sourceId": "rec5b3yl4uTKsznpm",
+      "saintId": "cms0w7cyd00yt07qidjvt7ssn",
+      "name": "Sri Balakrishna Dasji Maharaj",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "rec5b3yl4uTKsznpm",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5edcfc5d10c5315287a4091aabf277a60ca24c7e0fcc5c3c8915a84de08a4355",
+        "proposalRevision": "39ba831371d79e60ffc394f845330dce43427c479ee257a06b311a25a7174ba4"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "rec6wVN98kz7D9Sup",
+      "saintId": "cms0w7d7c018z07qifjpr7sop",
+      "name": "Mahamandaleshwar 1008 Sri Parmeshwar Das Tyagi ji",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "rec6wVN98kz7D9Sup",
+        "section": "Sri Vaishnava & South Indian Vaishnava Traditions",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "1910afde199d8e3829f9cbaf900bf55b9a3e97e3cd6746f98c1ca53d63c37115",
+        "proposalRevision": "49867dcf1090ef0ef0d32c8f3d12a8d3380f9cb138f2bdefc2ed4bee07244c92"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recDGMad2d2BHUE0r",
+      "saintId": "cms0w7egw02x807qik7em5i5l",
+      "name": "Sri Sri 108 Madhav Dasji Maharaj",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "recDGMad2d2BHUE0r",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "33dd6da7b5c68b3c52f998d3e40268aa8081d2361f9e872f8bf36b287e744357",
+        "proposalRevision": "fdc46442301aab42f3e72d9ad910bfdb30adb767171f94d16673a767a0144176"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recG9Kk2TZrIalKaT",
+      "saintId": "cms0w7f5z03ud07qi4nsy0jaq",
+      "name": "Sri Bhatimati Nathia Bai",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "recG9Kk2TZrIalKaT",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "1ac8dffa66b8f70f0ad833f58b5484c37801a9cddc2824957ae24bad62a0e9a8",
+        "proposalRevision": "cfbac3f4ab5f82556d25b8edd9d3b21daacf734e1f5346883ddaadfb5de4ca32"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recLf7ixrMj4BUke5",
+      "saintId": "cms0w7gfi05fe07qimptzkx0u",
+      "name": "Sri Krishnapriya Kishori",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "recLf7ixrMj4BUke5",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "d00579b40f5633ae52c1d7c8e838910c67db1ce617e0333e79a5e5d5a3630c8b",
+        "proposalRevision": "94bb630c22a536fe927052e1a5c05944bf4939edce4b1c81a0bbd821d9de4561"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recuVJid8KgYXPf01",
+      "saintId": "cms0w7irk084j07qinyhaevac",
+      "name": "Sri Goswami Ballabh Lal Dev",
+      "destination": "33",
+      "groupId": "vraj7-6",
+      "capturedBaseline": {
+        "placementId": "recuVJid8KgYXPf01",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a67c7e666084c0f68604cc767178bc9d84dfb46549e17710fe4685f9b2d09e51",
+        "proposalRevision": "befc4119da108f694f977298c1ad2ebda2f4b8b5f23914161fd09ee8279c3f54"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "reccicav89HsNJlCr",
+      "saintId": "cms0w7e8302ls07qi2tmvqd96",
+      "name": "Sri Ramdas Babaji",
+      "destination": "79",
+      "groupId": "vraj7-7",
+      "capturedBaseline": {
+        "placementId": "reccicav89HsNJlCr",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "1ccd3d9b7e0d7861b5d6c3fe34f33b698c525ad0fff9f0d93c1b5f2bcda8d4c8",
+        "proposalRevision": "d37aac7d167abc6e64b71be2b1232cfa5793351e478d3109af9869a073c80104"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "reccSd9i0y1gwYVsN",
+      "saintId": "cms0w7ebv02qw07qiejju8u7b",
+      "name": "Sri Brijpaldas",
+      "destination": "79",
+      "groupId": "vraj7-7",
+      "capturedBaseline": {
+        "placementId": "reccSd9i0y1gwYVsN",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "34b862c53eaba8c640adcedd92534ccb8be417ed7984e65b6c12828103f3bf06",
+        "proposalRevision": "8c52074e799ab435aebbe23d3bb53299d2f53fb0c270d4e2122d5fe1f2077f35"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recCSq1SKGyVRlhYK",
+      "saintId": "cms0w7ec202r307qi38fn60n3",
+      "name": "Sri Haridas ji Maharaj",
+      "destination": "79",
+      "groupId": "vraj7-7",
+      "capturedBaseline": {
+        "placementId": "recCSq1SKGyVRlhYK",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "7c6a4c0a96081cd4676f7937ea5888825605ffc10632909760689fe15d220024",
+        "proposalRevision": "c89b80744852c2510772b9a2b0e4477d1f790026dd4187740b64ac70d1c76e84"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec6mcBjrRieSiRZx",
+      "saintId": "cms0w7d4h015r07qixmycgwmm",
+      "name": "Sri Baba Ragavindra Das (Australian Baba)",
+      "destination": "79",
+      "groupId": "vraj7-7",
+      "capturedBaseline": {
+        "placementId": "rec6mcBjrRieSiRZx",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "dafff4a96d52f1df3707f28d66c88f2b854b82b7f270711d457b3d1eae901ecc",
+        "proposalRevision": "0aeed23023a52d678784265b7e15469344ba66096cd99dfd79630b915b327f2b"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recx23ZlxPwkU5ZYy",
+      "saintId": "cms0w7jce08qg07qibi36nbg9",
+      "name": "Sri Ananta Das Babaji",
+      "destination": "79",
+      "groupId": "vraj7-7",
+      "capturedBaseline": {
+        "placementId": "recx23ZlxPwkU5ZYy",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "08d51106342417e37e2226a5ae292bfa5619799cfa9b71324ad1ba6abd50472c",
+        "proposalRevision": "48027f927189c9edce6f28dbfb7b3f288e1b73b74ec91cd5cced4c4c2fd9818e"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recAODr4cE5dA0DTg",
+      "saintId": "cms0w7dsj021h07qi0q2rwkix",
+      "name": "Sri Rasheshwari Baba",
+      "destination": "79",
+      "groupId": "vraj7-7",
+      "capturedBaseline": {
+        "placementId": "recAODr4cE5dA0DTg",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "03000316826712bd6405de461888b3f02d14aa57aaeca387c247fbc3bd06d874",
+        "proposalRevision": "1898276cbb3fc9e2532e205f9b61a711389ea57c9ba9bb6cb76ff29af68cc260"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "reccJXiq8YBXjpayo",
+      "saintId": "cms0w7e8u02ms07qisqi3gr41",
+      "name": "Sri Shyamdas Baba",
+      "destination": "79",
+      "groupId": "vraj7-7",
+      "capturedBaseline": {
+        "placementId": "reccJXiq8YBXjpayo",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ac5bc3082b3f20fe23330160898ab37c6a59c6e20b36728ec4bfe3401b2c215d",
+        "proposalRevision": "18a4bd9783792ad1e87eedc7105cad351f47ddc1d4be240649c537dbd3f27dee"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "reck86EKve5tFAi6R",
+      "saintId": "cms0w7g3504zx07qigfcnvy6p",
+      "name": "Sri Ramdas Tyagi Baba",
+      "destination": "79",
+      "groupId": "vraj7-7",
+      "capturedBaseline": {
+        "placementId": "reck86EKve5tFAi6R",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "da66d43105591e67ea5f5114b94572d292eb2fb6b0f5ec428bb01a74bbe33acb",
+        "proposalRevision": "82dd1eebb6675bf8a0fdc85406d16c1501b003fad72a09fc880f97caa567fbbb"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recuqae8tso98J177",
+      "saintId": "cms0w7iq8083507qi2xg09t54",
+      "name": "Sri Gargi Mataji",
+      "destination": "79",
+      "groupId": "vraj7-7",
+      "capturedBaseline": {
+        "placementId": "recuqae8tso98J177",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "6cdf521e639595b473cebb4399d84d461b79a22a47937928749b72688f269118",
+        "proposalRevision": "06398ba8bee11b656bd8b41382090a7e86297ba870cbe8d3af224761d0aadf32"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recWdITS0bLJSxgVM",
+      "saintId": "cms0w7j6j08kk07qif7znjoxx",
+      "name": "Sri Raja Ram Baba",
+      "destination": "79",
+      "groupId": "vraj7-7",
+      "capturedBaseline": {
+        "placementId": "recWdITS0bLJSxgVM",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "20883e31f731f535550de25a352dc71d0e9e3d0360c9f0f1ed883786e18844a1",
+        "proposalRevision": "195d1673dbb1d05931776dea8633f5c225764b7c1d35297bfe7f7f0acad1cb3a"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec42M1Ol2VVxBKZN",
+      "saintId": "cms0w7cq400oi07qii89um8pq",
+      "name": "Sri Mauni Baba",
+      "destination": "38",
+      "groupId": "vraj9",
+      "capturedBaseline": {
+        "placementId": "rec42M1Ol2VVxBKZN",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "50813024a7f4cd3995adfd5882420ff48964e79dd48acc9316b604cdf66ad541",
+        "proposalRevision": "1a870078c32ae9e07c553ae7d0221b762971c868f5206a52be351d225d900e65"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.125
+    },
+    {
+      "sourceId": "receUmjyw5DxHquLX",
+      "saintId": "cmus3rwrb002l07o538hx75lh",
+      "name": "Sri Mauni Baba",
+      "destination": "38",
+      "groupId": "vraj9",
+      "capturedBaseline": {
+        "placementId": "receUmjyw5DxHquLX",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a303c87bdf4df565e7e7012271bf6cee6785db368990a4ff2555498113085901",
+        "proposalRevision": "e83bcfcea82a6bd2f80ea3aaefab93a8f84c5825515c9aa0779338f4a94832bc"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.125
+    },
+    {
+      "sourceId": "recgxF7UKZcRQkWAM",
+      "saintId": "cms0w7fc4042g07qiplqni39b",
+      "name": "Sri Hridayanath",
+      "destination": "38",
+      "groupId": "vraj13",
+      "capturedBaseline": {
+        "placementId": "recgxF7UKZcRQkWAM",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b4ce65a148aff20c7f10e1ea89a30f2d22dd4faa258c3fb80232da2c622987b3",
+        "proposalRevision": "dc16fe179def7ba1f4ef2a2d63b987df0f3007b00c6ad54383d6eefd21a98359"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "reckSQIxGVy2mjRGw",
+      "saintId": "cms0w7gaf058x07qi0hxindhy",
+      "name": "Sri Hrydaya Nath Baba",
+      "destination": "38",
+      "groupId": "vraj13",
+      "capturedBaseline": {
+        "placementId": "reckSQIxGVy2mjRGw",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "d35be8302a9b248f56a53c50c2f2bd5f37cf438cdac146c7166057f842185e54",
+        "proposalRevision": "a91a78e2ed05b662438426baaa4f342bf9e3e441cdcc4feb8b38cf55a12ce8d1"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recarvbfUWSXTbPPM",
+      "saintId": "cms0w7dte022n07qi7yw1zdkc",
+      "name": "Sri Sri 1008 Acharya Goswami Sri Milan Bihari Ji Maharaj",
+      "destination": "34",
+      "groupId": "vraj14-19",
+      "capturedBaseline": {
+        "placementId": "recarvbfUWSXTbPPM",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3098b3e6a75b8cd6062e1eb2d8fc80645169528544a322c3aa6097ec8c0e5142",
+        "proposalRevision": "60e70e548745da675d15ca23232bbca03d5d7399d9b8b2afb42e2d145a637465"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recy20QZ2gHuWbLpE",
+      "saintId": "cms0w7jpt093r07qi7fg96xi3",
+      "name": "Sri Gopi Baba",
+      "destination": "34",
+      "groupId": "vraj14-19",
+      "capturedBaseline": {
+        "placementId": "recy20QZ2gHuWbLpE",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9431bfda912cd96b3e7a80135a4613a1db6c3c87a5e841e5a136b6aa32202e13",
+        "proposalRevision": "eeea1f1a88dfc11bbfb6e0f6fb88b3c4e3866a9288cb00b154e87ebbed960788"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recTlXdHu57FHcvh6",
+      "saintId": "cms0w7idr07pp07qizln9430x",
+      "name": "Sri Anurag Das Baba (Sakhi)",
+      "destination": "34",
+      "groupId": "vraj14-19",
+      "capturedBaseline": {
+        "placementId": "recTlXdHu57FHcvh6",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "59d7a2453c9588353c15668bd1f68b61b2c1fe68380252a4865f89948d8d351a",
+        "proposalRevision": "66048f290b2042141d2cbc4ca91e949e547c0671495a041235c010dd295cbff8"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recMD8r2e4y1I5cfU",
+      "saintId": "cms0w7gmk05o007qine59vp4w",
+      "name": "Sri Hathi Baba",
+      "destination": "34",
+      "groupId": "vraj14-19",
+      "capturedBaseline": {
+        "placementId": "recMD8r2e4y1I5cfU",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "1e5dbbb732688871b67d61de730cc28ba3889d5c0ad63d22c2bb71d53506828e",
+        "proposalRevision": "3da83f7e126bebc1d69daa9e42a0401274960f9e38c3f097673099595dc9f519"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "rec59TlK0U02yKqC9",
+      "saintId": "cms0w7cxd00xl07qiemcd50pn",
+      "name": "Sri Albeli Sharan ji Maharaj",
+      "destination": "34",
+      "groupId": "vraj14-19",
+      "capturedBaseline": {
+        "placementId": "rec59TlK0U02yKqC9",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "6076627de8b707b2c11f49e946a0a5def6dab41236d87bb013d7a1d1d3bd1749",
+        "proposalRevision": "339d64b32748708cd8a862b6ca51eedb42ac6c4c11b13777f0521b2df4902408"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recnk1IXIvGI54Mll",
+      "saintId": "cms0w7gxg061c07qidqdfm6ec",
+      "name": "Sri Swami Ishwar Puriji",
+      "destination": "34",
+      "groupId": "vraj14-19",
+      "capturedBaseline": {
+        "placementId": "recnk1IXIvGI54Mll",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8a436ff74aa96533d8e98cb85378a1e0d4275ecce287488449e182f44ebe045f",
+        "proposalRevision": "3155e7da0bfa94e30f67ef9c9428388efe92009baf4afc5782095280efdfd3f1"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recKFP79mZ8Fyhvao",
+      "saintId": "cms0w7g5k052y07qigeldl38i",
+      "name": "Sri Sri Hanuman Das Babaji",
+      "destination": "34",
+      "groupId": "vraj14-19",
+      "capturedBaseline": {
+        "placementId": "recKFP79mZ8Fyhvao",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "84ea9aaa7b3b2904a704982f9bcdf662fa32ade7ad8112893ce6a5b512ff42ea",
+        "proposalRevision": "d6ecbf39b9b92ad768b4e7de04d26b0853081e72730cc022983702f860538ca7"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec4kdIIun9ooUz82",
+      "saintId": "cms0w7csb00rb07qixbs0714a",
+      "name": "Sri Gopinath Das Baba",
+      "destination": "34",
+      "groupId": "vraj14-19",
+      "capturedBaseline": {
+        "placementId": "rec4kdIIun9ooUz82",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4f7777cf71d4b2bffed75a5d609f8b6cf75926a978947d56f9e54d2c01a643d8",
+        "proposalRevision": "049200c0ca45eddd387fb4531a267c12c7d43cbefba43371872b5ccce4f1ad93"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recUha5G2Ph73NiGe",
+      "saintId": "cms0w7inq080e07qiuy2ad92t",
+      "name": "Sri Shanilalta Baba Aghori",
+      "destination": "34",
+      "groupId": "vraj14-19",
+      "capturedBaseline": {
+        "placementId": "recUha5G2Ph73NiGe",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4b3bd0e8cd7d6232c69e52d1c326663af2e5a9fa2749580dc230bf400a11d764",
+        "proposalRevision": "bb55c8c447be5ca8a209125a0d5d3500f6675a1180cd87e6646fb359f380cf5c"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recpT01HyezKTKppi",
+      "saintId": "cms0w7hg406n407qiojrmweun",
+      "name": "Sri Sri 1008 Vishudhanand Puriji Maharaj (Hanuman Baba)",
+      "destination": "34",
+      "groupId": "vraj14-19",
+      "capturedBaseline": {
+        "placementId": "recpT01HyezKTKppi",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5f0ef71ccf8bfddd9756407b3d77d72d6fc5f4d60ca9a0fe7a6431deafe73873",
+        "proposalRevision": "10792a077c8656cbcea64935dc67c0fbdd373ec98104e4a04040a310c7158e93"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recrJuM5i9L9T7hui",
+      "saintId": "cms0w7hvl075l07qi8rm3k5d6",
+      "name": "Sri Sri 108 Kishor Das Maharaj",
+      "destination": "79",
+      "groupId": "vraj14-22",
+      "capturedBaseline": {
+        "placementId": "recrJuM5i9L9T7hui",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "dbea488daf8fd69efb3ca5de6059eefac33b6397796003f7c8ff83c300c5c6b0",
+        "proposalRevision": "642709199481f67bd941c6a061027c4dc1cab9b64fbfdf2c6403bb7e37fed821"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recDT8u9BBJyXriUu",
+      "saintId": "cmus3rwn1002007o5xkgonm9d",
+      "name": "Sri Siyaram Baba",
+      "destination": "34",
+      "groupId": "vraj15-23",
+      "capturedBaseline": {
+        "placementId": "recDT8u9BBJyXriUu",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "fe10e6a71ccb862b5c3697172d0b65466634cf7771d225238b9fd6076ebce11e",
+        "proposalRevision": "2ebd8d54fca224942d5e0b4bc8ee0cc58e7fe71280d2c1f6bd9389eb88d605e0"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recq30YpPvbBeNWvy",
+      "saintId": "cms0w7hit06qb07qijp106atp",
+      "name": "Sri Haridasa Sastriji Maharaj (Guru",
+      "destination": "2",
+      "groupId": "vraj17",
+      "capturedBaseline": {
+        "placementId": "recq30YpPvbBeNWvy",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Secondary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "58f3a74a4ec7bdb3f228985cdf9b7e58defde59f6aea100d5ee1a946ed764a83",
+        "proposalRevision": "8a62a65c44c2a923d263ac63ecae0a2ea24e46f8722bce2dee3127a67bc6ad63"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec4nHxugYAVIdCd2",
+      "saintId": "cms0w7ct200sd07qim483ezzq",
+      "name": "Sri Kripalu Maharaj",
+      "destination": "38",
+      "groupId": "vraj21",
+      "capturedBaseline": {
+        "placementId": "rec4nHxugYAVIdCd2",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Featured",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a13f0e77514d99474099b822045f6c94174feb0583e2fe7bad96b731a4a447f0",
+        "proposalRevision": "06226b93fe62f407c86d49975c56801a81b1aa0085aef183163d52b5373b6143"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recn3uvyUGvrsL5kk",
+      "saintId": "cmus3rx7n005r07o5m5duuece",
+      "name": "Sri Kripalu Maharaj",
+      "destination": "38",
+      "groupId": "vraj21",
+      "capturedBaseline": {
+        "placementId": "recn3uvyUGvrsL5kk",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Featured",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0567c0be5069fb7dac11bd581773a1e8cc97841d373fbdfbf3057c24680f3536",
+        "proposalRevision": "c084fbd1ae4ed1c1332c40678df43e8aa310f909d9000c8d1d803fbe74085ad7"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "rec0qNQ06e49fFCVU",
+      "saintId": "cms0w7ca2004u07qi796nhugc",
+      "name": "Sri Natha Bapa",
+      "destination": "38",
+      "groupId": "vraj22",
+      "capturedBaseline": {
+        "placementId": "rec0qNQ06e49fFCVU",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9a1e9315ac83ab861fe6d5bb88d405c187a8e9a4ef047910aca4f7e6d0297bb0",
+        "proposalRevision": "c6ee7e8c10528fdf8c5a6dac35ebbdf5c0a5c3cbfdbe00a585a8000a3d2ff9ce"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.4166666666666667
+    },
+    {
+      "sourceId": "recPXA2z64STAw7mj",
+      "saintId": "cms0w7hhp06p607qiogzl2o5r",
+      "name": "Sri Mahant Chaitanya Das Bapu, Jamnagar, Gujarat",
+      "destination": "38",
+      "groupId": "vraj22",
+      "capturedBaseline": {
+        "placementId": "recPXA2z64STAw7mj",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "dc1473a005e0e7b6ae614f21e28a340c0a64f254e5112690303c0c3f47cb2fc1",
+        "proposalRevision": "3eb41f34540b4e5ea54799c21136798911f716e6fd5a717243e2ef4f729aaa28"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.4166666666666667
+    },
+    {
+      "sourceId": "rec6eQFL3MESDRCxm",
+      "saintId": "cms0w7d3g014l07qiekamzik0",
+      "name": "Pandit Sri Ananta Das Babaji Maharaj",
+      "destination": "32",
+      "groupId": "vraj24-36",
+      "capturedBaseline": {
+        "placementId": "rec6eQFL3MESDRCxm",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8fe9a5fa43fc90fb4103e19fe2689146759a3c08c4d9bfbdaca28fd2d0789099",
+        "proposalRevision": "5f6698e5b1d65160872a8302c287f0e8d484dba6464c89388aa6c1bbd0471e51"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "rec6tqmpxSSstOnAr",
+      "saintId": "cms0w7d6j018007qijiatyytf",
+      "name": "Sri Nanda Lal Baba Dasji",
+      "destination": "32",
+      "groupId": "vraj24-36",
+      "capturedBaseline": {
+        "placementId": "rec6tqmpxSSstOnAr",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "649c332af8bae11af52dd7ccd8163d1cc2f4f64d860191b5859c621f1ed9289a",
+        "proposalRevision": "dffe494c673775559d137db4a156a2c848d1c9669b813d8d249b22a99acaaf8f"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "rec7zbeymH6f0hJH1",
+      "saintId": "cms0w7dco01g607qixj5jwt3p",
+      "name": "Sri Sri Krishna Dasji Maharaj",
+      "destination": "32",
+      "groupId": "vraj24-36",
+      "capturedBaseline": {
+        "placementId": "rec7zbeymH6f0hJH1",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "bdcc101046b35e70a747b8ba5a42d36be35fcdca1517583cfd39485cd6ef0759",
+        "proposalRevision": "cb6c1f922458770a61b4e9e8da3adfcb6cb1952d327f9f75ffbcce4cc322a4f6"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recC8pT2zrt13T629",
+      "saintId": "cms0w7e5h02ih07qihm2zj9z0",
+      "name": "Sri Prankrishna Das Baba",
+      "destination": "32",
+      "groupId": "vraj24-36",
+      "capturedBaseline": {
+        "placementId": "recC8pT2zrt13T629",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a66ce0981d7c8701be5c4720588c4dcc8dce3519bceeb9743f0ec2b79d5b1075",
+        "proposalRevision": "cf8a1ae9aec360fe44918d89be3d24a32420365bc0847be9efd9d300db911d41"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recCAwBjWoFjwHeow",
+      "saintId": "cms0w7e6602jf07qit68agan1",
+      "name": "Sri Sri 108 Mahatyagi Baba Mangal Das ji Maharaj",
+      "destination": "32",
+      "groupId": "vraj24-36",
+      "capturedBaseline": {
+        "placementId": "recCAwBjWoFjwHeow",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0b54e13c78da43c200362945ef143ee39438131df1de73c4d3efab1525a02a4c",
+        "proposalRevision": "f9033c169e1517f4f9f848ca8e3bd1bfa61d4ce199ea1da4880c77b61abb1fda"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "reccbl2L3o0VG1vF2",
+      "saintId": "cms0w7e6e02jp07qi68jaqjyo",
+      "name": "Sri 108 Sadguru Mastram Saheb",
+      "destination": "32",
+      "groupId": "vraj24-36",
+      "capturedBaseline": {
+        "placementId": "reccbl2L3o0VG1vF2",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "24467e6b4943782db0be9f6872488910537b2d718ec4ee081eccc7f5039d6afe",
+        "proposalRevision": "c67f5f6b1af6785d4c607789dd465e704d512309a37e15fc5e0432ce78de389f"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recOh5YsioR2xo9uv",
+      "saintId": "cms0w7h5c06ah07qie1lflrrj",
+      "name": "Sri Raghunath Das Goswami",
+      "destination": "32",
+      "groupId": "vraj24-36",
+      "capturedBaseline": {
+        "placementId": "recOh5YsioR2xo9uv",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "204875172b2e5427b3af33ba57a7231569aae2ecf8a49d72b77cc077a6f67048",
+        "proposalRevision": "c2369b85aeb41b8c3b647a7b1ee940cfe0da71de147a0c6361e8e41b10e850f8"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recQMK24q4pZThT4d",
+      "saintId": "cms0w7hmy06v807qilari6n9d",
+      "name": "Sri Uma Kumar",
+      "destination": "32",
+      "groupId": "vraj24-36",
+      "capturedBaseline": {
+        "placementId": "recQMK24q4pZThT4d",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "61cfbc6db8f63907131bee033e785eb37299dc01987d3f310107983be3b4274b",
+        "proposalRevision": "03cee07c51b484716f70dba224184d66fe61d5a2ac072814b04dd60771ab0e6c"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recTMiPzRn7lSQwey",
+      "saintId": "cms0w7ie207q207qibnjladhk",
+      "name": "Sri Pagal Das Babaji",
+      "destination": "32",
+      "groupId": "vraj24-36",
+      "capturedBaseline": {
+        "placementId": "recTMiPzRn7lSQwey",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8a6b9b9e351866fc06f52723588a28331f504630dd1df2865edb84a7ac918db9",
+        "proposalRevision": "48981fc2f34e09314f26c146f147637f2bcc60306f237f87b47a330c7295714a"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "rec5AxgKNzgnmRgvH",
+      "saintId": "cms0w7cy400yi07qi1ewcj4je",
+      "name": "Sri DevRaha Baba",
+      "destination": "38",
+      "groupId": "vraj35",
+      "capturedBaseline": {
+        "placementId": "rec5AxgKNzgnmRgvH",
+        "section": "Ramanandi",
+        "tier": "Featured",
+        "familyKey": "FAM-017",
+        "regionTags": [],
+        "revision": "427339dd939dee5012fc9ac3c7e0f8cde892af5f3ed50108f78c7353d994afad",
+        "proposalRevision": "a5c32cc5e09b9c87b1f89d089d6e077ad50a434e74ec1b31f9046f842a8d4698"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recy7hwm0zcdVUyC1",
+      "saintId": "cms0w7jqo094o07qizw8j524g",
+      "name": "Sri Dev Raha Baba",
+      "destination": "38",
+      "groupId": "vraj35",
+      "capturedBaseline": {
+        "placementId": "recy7hwm0zcdVUyC1",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Featured",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ed9e76fc8f7e62952e1f85f91c0792a9332219d5b329b16274fb0f8cabd940af",
+        "proposalRevision": "b02d17b803be14a9c9806bf25d55e36d2bd143ef363cb179d7a708ff8309e1b7"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recWlq9Oc6I9iEPMh",
+      "saintId": "cms0w7j9708na07qilhmcq63c",
+      "name": "Sri Devra Hansa Babaji",
+      "destination": "38",
+      "groupId": "vraj35",
+      "capturedBaseline": {
+        "placementId": "recWlq9Oc6I9iEPMh",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "53175710f2b3d1d327fef263b3525783dd152cffd7188f13617f241ea4d7ee33",
+        "proposalRevision": "8ee84deec08e12282c6762e3b5e89a102f32d91dd11c99fae3bba365ef7e2247"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recLsRC0bhkL9JO8E",
+      "saintId": "cms0w7gi805iv07qi9f7dt8fu",
+      "name": "Sri Ayodhya Dasji Maharaj",
+      "destination": "38",
+      "groupId": "vraj35",
+      "capturedBaseline": {
+        "placementId": "recLsRC0bhkL9JO8E",
+        "section": "Ramanandi",
+        "tier": "Secondary",
+        "familyKey": "FAM-017",
+        "regionTags": [],
+        "revision": "06da3f04fdd47b5fa0110cdd530110af365e63c29c8d8e2868b1bddb25bdc17d",
+        "proposalRevision": "9e0ec1c12e490d226e626601ddadd1f0c341742902872b9d0c7f58660600f636"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recLn3bLLWAWw2Q0v",
+      "saintId": "cms0w7ggm05gs07qivc2m4atw",
+      "name": "Sri Madhusudan",
+      "destination": "38",
+      "groupId": "vraj35",
+      "capturedBaseline": {
+        "placementId": "recLn3bLLWAWw2Q0v",
+        "section": "Ramanandi",
+        "tier": "Secondary",
+        "familyKey": "FAM-017",
+        "regionTags": [],
+        "revision": "ac5b2202a49316d29ffaca7218d2157983fe69ffc3046c058b2bc66c55746500",
+        "proposalRevision": "7ec00dfc861f7fee41e17631238e6123b1ec8315e40aa9addd1a2dc96c2b5d0f"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "rec2tNtwJKLv2hxcj",
+      "saintId": "cms0w7ckx00hs07qi11u8usbi",
+      "name": "Sri Jugal Das Maharaj",
+      "destination": "34",
+      "groupId": "vraj36",
+      "capturedBaseline": {
+        "placementId": "rec2tNtwJKLv2hxcj",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "59cabd15f36c04f8db7570d476543ba01bd9801f6ae19778dfdcafe54d9aab4f",
+        "proposalRevision": "cb9138521c4ea39337c75a34bd7bb2d73c8bfaa863d5c7a3b26eee455786c39d"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recC5TOgPfNAHTvAh",
+      "saintId": "cms0w7e5702i207qime68pr69",
+      "name": "Sri Gaur Hari Das",
+      "destination": "34",
+      "groupId": "vraj36",
+      "capturedBaseline": {
+        "placementId": "recC5TOgPfNAHTvAh",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "baeee82abdc4774399a00ac2ae05091a541c18f70c304febf2db6bf9c1f31d29",
+        "proposalRevision": "818e06f8f76e290a82d427853b8de11122ecdc9565432af050ddfa928b16f095"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recd8RpQYPYNsQ1XA",
+      "saintId": "cms0w7eeu02ul07qiwb1gnrp7",
+      "name": "Sri Radhikadas ji Maharaj",
+      "destination": "34",
+      "groupId": "vraj36",
+      "capturedBaseline": {
+        "placementId": "recd8RpQYPYNsQ1XA",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "66c5073a0487228e5977058895a595fb0f8c36d5e1e2e284d604d93024e44001",
+        "proposalRevision": "3597c0e30e5f4e77e3031c8022d2c438cb67cc002f1d960156a63965b54bbe51"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recILaP0Ev8VszgWL",
+      "saintId": "cms0w7fqi04kp07qip4ndsuqr",
+      "name": "Sri Sri Raghav das ji Maharaj",
+      "destination": "34",
+      "groupId": "vraj36",
+      "capturedBaseline": {
+        "placementId": "recILaP0Ev8VszgWL",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f7fb1a24fe7979502ad611d12a7d448f77839d2708dac0ebc1e390b0c782f61f",
+        "proposalRevision": "675a21dc2b19ddeed760abe2adbb4bed1002765dde6ee85873c315ccaf836483"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recltmpQpPqJARXr6",
+      "saintId": "cms0w7gii05j607qi6niwcg60",
+      "name": "Sri Lal Baba",
+      "destination": "34",
+      "groupId": "vraj36",
+      "capturedBaseline": {
+        "placementId": "recltmpQpPqJARXr6",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "df554228c595d3f9061e52e03f849dce21961d90bf7fe988ba677decad7c635a",
+        "proposalRevision": "9f0bf2e70249c331689c05b7d7af773c16f565b62f6bf9a9ad30ce7f604b752d"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recorynJGbwBdQWvr",
+      "saintId": "cms0w7h8a06dr07qi0gofzl2v",
+      "name": "Sri Sadhananda Das",
+      "destination": "34",
+      "groupId": "vraj36",
+      "capturedBaseline": {
+        "placementId": "recorynJGbwBdQWvr",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "37207559b3aa2acab8e55a5324a98fcd788bf6ccf0875c2daeb213b276ea78f3",
+        "proposalRevision": "93ab7d453879c25d2d40403dafc8f23e614b0575ab2b92fc756ae7b02e60e08a"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recQl9WkwYiow0BRF",
+      "saintId": "cmus3rxht007a07o5rynn1o0u",
+      "name": "Sri Ramdas Baba",
+      "destination": "34",
+      "groupId": "vraj36",
+      "capturedBaseline": {
+        "placementId": "recQl9WkwYiow0BRF",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b49c4ab0c5f1ac1054eb2e9c16437c7830c16fcc4cb379e43042f408019dff02",
+        "proposalRevision": "9b26aae94bddc16ced16f4568dc8639e04e35edc32d687708dc5eec2263e2f22"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recUcPmjGo7mUDsSK",
+      "saintId": "cmus3rxsl009107o5nih54n5n",
+      "name": "Sri Ramdas ji Maharaj",
+      "destination": "34",
+      "groupId": "vraj36",
+      "capturedBaseline": {
+        "placementId": "recUcPmjGo7mUDsSK",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "d14bef6bccbb5be54281a18f31f6b77d3290ba0df54d0d2ba62e246ca912fc03",
+        "proposalRevision": "42802dc8f57531f4a8dd23b53571fc9b2b18d6edacef08d999fc16ed80588bf6"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recDC1QAGrFX5MCh0",
+      "saintId": "cms0w7efg02vc07qi8r0yxc84",
+      "name": "Sri Sri 108 Sri Kishori Das ji Maharaj",
+      "destination": "33",
+      "groupId": "kamavan-pair-v9",
+      "capturedBaseline": {
+        "placementId": "recDC1QAGrFX5MCh0",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "7608066f86c0a4468038dbb0597dd2aa6e7c6befb85227ea3ede73d76abd10e4",
+        "proposalRevision": "7a3fba749abfe136b910f3a082bead621bdd7489c70c1caeb779f442bc751df2"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recYIE2g8p2NxItsz",
+      "saintId": "cms0w7jsv097007qi5ec4iz5f",
+      "name": "Sri Sri 108 Mahant Sukadev Das ji Maharaj",
+      "destination": "33",
+      "groupId": "kamavan-pair-v9",
+      "capturedBaseline": {
+        "placementId": "recYIE2g8p2NxItsz",
+        "section": "Ramanandi",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4e7ef9232965d78f017215cf501ae0e126f9b5d4e8d8961df2b7e1ecab5591f1",
+        "proposalRevision": "3b9a224a681a6808fdb2af5e845421c4cc0eed07391f5e788cd094a64e95aee2"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.125
+    },
+    {
+      "sourceId": "recaclOvEWZldL4On",
+      "saintId": "cms0w7dnq01v107qiqqmvt9wb",
+      "name": "Sri Bhutiya Baba",
+      "destination": "33",
+      "groupId": "kamavan-pair-v9",
+      "capturedBaseline": {
+        "placementId": "recaclOvEWZldL4On",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "777ef5099dca138e3c620a8ccd2502c7e056ce0d0fb5b9c7ae07b3bce7735169",
+        "proposalRevision": "64c83c36f4b7cce4ac8ab8c3322a8ac98306a9404f8cd558a0f2f0b2cb7f09dd"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": null
+    },
+    {
+      "sourceId": "recK9i0V5dVwDqzaF",
+      "saintId": "cms0w7g3b050407qib6euj0o0",
+      "name": "Unknown Saint White cloth and photo (man and cow) with tree under which Shiva Meditated",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recK9i0V5dVwDqzaF",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "da41bd1945a095e95302b50f47ed7005f2009153c77866fd2e3f76cfc95546ac",
+        "proposalRevision": "ff9c320a60dae5404da2d976bbc55e848c242c21e8dc7a5069dc110406f222ae"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recPWVPc3i5A0KH7h",
+      "saintId": null,
+      "name": "Unidentified source record",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": null,
+      "capturedTier": "Unclassified",
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "rec7YA7eCwApr1I5y",
+      "saintId": "cms0w7dcf01fv07qidu50w8dy",
+      "name": "Sri Ram Mangal Dasji Maharaj",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "rec7YA7eCwApr1I5y",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f328cc423ad1def402e4197a287d0e74bad396a6238eb3589a6eaf719a0ec3ef",
+        "proposalRevision": "b863a9263507d620fc48471f8f7e92990b0c1ddbbc915d72420db0204a6d735a"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recQq1sZzwupfjFYm",
+      "saintId": "cms0w7hnl06vy07qiexxmzj8w",
+      "name": "Sri Vishwatmanand Giriji Maharaj",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recQq1sZzwupfjFYm",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ba5783a1e4050b5cb3a3e97cf5854386b9ccbd603e09d40436a5e5354790c4d1",
+        "proposalRevision": "038a9a9b60c5e07e31ebf46e5dcb804316eb90408b9fd3ca68c7a103d67e1eaa"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recESP6UwZFGSwKxe",
+      "saintId": "cms0w7eut03fs07qi1qqlrejh",
+      "name": "Sri Asaram Bapu",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recESP6UwZFGSwKxe",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "fc03e1023443fd59113ae316821482b1037566129e85091b2a9259ac5477a165",
+        "proposalRevision": "b88b1cd29958d5ec2a630da77d08ff3edc821fba2c4e85752abb4c32035a44b5"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recZmfYhZM1sxjJ8O",
+      "saintId": "cms0w7k5v09ke07qiwqfgjfqj",
+      "name": "Sri Sri Swami Atamram Nand Puriji Maharaj",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recZmfYhZM1sxjJ8O",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9a3207503ca91769cabf5531e21c8603997321897461a18ab15f41198cbd1bea",
+        "proposalRevision": "1c2a095b65d782358f23bbacd8b9395442ca34c119dc5ffe72a28830f4b87a30"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "rec4h3DhRd94Ee8yz",
+      "saintId": "cms0w7cs000r207qic8gbijob",
+      "name": "Sri Mataji Nirmala Devi",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "rec4h3DhRd94Ee8yz",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "06dd941752e873931a260b88d5f14971035b882619298dc6583a0e45dc09c91b",
+        "proposalRevision": "43012102eb193179be69378b632442a0728cea40cb5d2c0e01e397301eef8a80"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "recaUBzuJUeWPZghI",
+      "saintId": "cms0w7du5023j07qi1vnn2o88",
+      "name": "Sri Baba Khehar Singh",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recaUBzuJUeWPZghI",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "29fea33bbb4e9a28fa3ac8f52a147e126c138516b6ee898d4154433d2adc8af8",
+        "proposalRevision": "4f115bce0d68eb9ce0b3434d96d877bb32880cdf093a6e053ff7bb6008b75e1a"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "recd0cjF8Py7tpDfI",
+      "saintId": "cms0w7edu02tc07qippep856m",
+      "name": "Sri Girijanandaji Saraswati Maharaj",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recd0cjF8Py7tpDfI",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "667efe51aaac5c0bc8191fe97e1c64100c60692398d083813ab036ddb9341b15",
+        "proposalRevision": "2e429791293ca0c98df26fb981e5a09631ef41a8cfcaccc6079cbd9a1a81534c"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recdhv8TXHDxqefjq",
+      "saintId": "cms0w7ehc02xt07qi0tq7uot8",
+      "name": "Nadege of Paris",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recdhv8TXHDxqefjq",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "bdaef6f045dad1ae84f947b951520ce47a76c7fc94d2579983b1b852eb59e0ac",
+        "proposalRevision": "849496d8930e23370b14b3e670643ef710aba8bfe9ed894c9f51f2e6a114a762"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recMVtEp0VnYTwZWC",
+      "saintId": "cms0w7gsu05vn07qi224c6h2e",
+      "name": "Sri Florea Baba",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recMVtEp0VnYTwZWC",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "cb5d7c93784a3f4296a016d3cc03a7619de275ddc4c1ffdce23913d73dddb94c",
+        "proposalRevision": "c47519fc5dbfbbb3486c458c39beee13f924569f5451a82888b39dfe95d01fdb"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recr2CTcUbP13CgUQ",
+      "saintId": "cms0w7hr0070507qiicx68pb3",
+      "name": "Sri Swami Ganesh Dasji Maharaj",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recr2CTcUbP13CgUQ",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "d7e79fc2c65c56334b96716973dd2571b62878be04ed25074ed6a2508278c64f",
+        "proposalRevision": "08ef2c273ee6d45584673b06c63a56f5749075b7b08099604ef2a500b69c2ed6"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "rec2nk9yAQbf5ni72",
+      "saintId": "cms0w7cjn00g607qisnqk6oov",
+      "name": "Pandavas",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "rec2nk9yAQbf5ni72",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "faa354f049b9cf7fc70d1a0e56da63024d18d1ce72d285bee76a9bbf7770fba3",
+        "proposalRevision": "2dc080a3e683916de3a7d8f8b7c2685f8152c7809790aab0d9d951d30868bbac"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.5
+    },
+    {
+      "sourceId": "reciyrgOojXeOfKz7",
+      "saintId": "cms0w7fsb04mu07qi2tp6m0st",
+      "name": "Acharya Sri Nirmal Saga Ji Maharaj",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "reciyrgOojXeOfKz7",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f31a78ed89085f47857c9531e18aa9d76c86548fc627ff8446fd7963703bb3b9",
+        "proposalRevision": "7bb75275f6df53576c948ec81b4a735a3d3148556a9bd35ea2dd896b737c0be0"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "recjA6M4REhXbtb1Z",
+      "saintId": "cms0w7ftv04ok07qije4e0vfo",
+      "name": "Sri Hihtdasji Maharaj",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recjA6M4REhXbtb1Z",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "2be5bfa95fe3e3d13384f6f2b310c9ab1adf34265a7a02c5a8998b1e83a0648b",
+        "proposalRevision": "c21bb4147555addd995d0e340be9961d86b2e1e4df1e62e0ac84a15d09cd8247"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recZDpbsnZYFhwjOp",
+      "saintId": "cms0w7k2709gn07qinwal664r",
+      "name": "Govardhan Shila supposedly",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recZDpbsnZYFhwjOp",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Featured",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a00b499034f99abab6c02f428919310af50e0b31f8187fd22b4f5804d5f7b525",
+        "proposalRevision": "8f2964bdf56618eb4ceda72e91184be493448e578ec1ace0e78bd4cc48714cec"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.5
+    },
+    {
+      "sourceId": "rec0wJK2U7kBE9S7o",
+      "saintId": "cms0w7cc7006z07qitfqqp5q3",
+      "name": "Sri Swami Maheshanand ji",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "rec0wJK2U7kBE9S7o",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5e941f5435a0fa923e8d83f9d804b191bfd20a745024766fbbfe9d6d39a97360",
+        "proposalRevision": "2d6a39a3e8e6f33325b1658b0670ab92f777327c0967ef7817b18aae66f75e06"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recBMTxwzsTVoDiOk",
+      "saintId": "cms0w7dzi02b107qi33zxkcn3",
+      "name": "Sri Swami Bidhyanand ji Maharaj",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "recBMTxwzsTVoDiOk",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "772eca67f048454556bd76aa95427f3c9fab7fc81d13a672d425e7582e392927",
+        "proposalRevision": "fa6d0886e293a4d0e25e6a43a0d9bce6c19cf0118228ca4939e485dfd78c45fe"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "reclWuYOI3Vpeyh0S",
+      "saintId": "cms0w7gjm05kq07qi0082dp9r",
+      "name": "Prabhupadacharya Sri Phanilal Goswami",
+      "destination": "35",
+      "groupId": "consolidated-review35",
+      "capturedBaseline": {
+        "placementId": "reclWuYOI3Vpeyh0S",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f25d857c24db225625fadcc0ff2b8540680c56b29eb5951b78fd435679f8faf7",
+        "proposalRevision": "e4c4d7081b199fd54ae1ba6b5de78afd79857715ca26c23bdc5936ea1b28c178"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recjUsnOqeSQMW1ie",
+      "saintId": "cms0w7g0g04wk07qiswg03yna",
+      "name": "Sri Prabhu Datta Brahamchariji",
+      "destination": "38",
+      "groupId": "vrindavan-extra-38",
+      "capturedBaseline": {
+        "placementId": "recjUsnOqeSQMW1ie",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "77af8d7951334c8e74da32b8e8883e79a772da6193148cdadddd57e9b77b61f7",
+        "proposalRevision": "f3099f88cf037f4e5287b8f894c83c33246abca7681d2128284b078d76357e1a"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recdJqZtqntKdukGi",
+      "saintId": "cms0w7ehu02yf07qiahvkdrkp",
+      "name": "Sri Praduman Pratap Singh",
+      "destination": "38",
+      "groupId": "vrindavan-extra-38",
+      "capturedBaseline": {
+        "placementId": "recdJqZtqntKdukGi",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f98d8ba9c4b3a16ed31a5885f5a72ce07a9ba40de5ea8e147a1ae5d592c2f03d",
+        "proposalRevision": "a3e88f012fecee49b0cd63b0a6331de034275fa82b48d866ea230607e33375dd"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "reckGjYeZvXHbhnQP",
+      "saintId": "cmus3rx04004n07o5bj3kdswl",
+      "name": "Sri Narayan Das",
+      "destination": "38",
+      "groupId": "vrindavan-extra-38",
+      "capturedBaseline": {
+        "placementId": "reckGjYeZvXHbhnQP",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "4a88988812048fe3476fdb7700cf7f8ca2176274df3135f6fb2da2c3d969b757",
+        "proposalRevision": "5d74669c20944e97dba8dac4a97455f04ce0eab5c477d4d223feb1a16e2d5b20"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recn9B0vgsAx6W1Zy",
+      "saintId": "cms0w7gvc05yp07qi1snko5k0",
+      "name": "Sri Deenahari Babaji",
+      "destination": "38",
+      "groupId": "vrindavan-extra-38",
+      "capturedBaseline": {
+        "placementId": "recn9B0vgsAx6W1Zy",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0b32da24f91805eb862ccc3bec8c5af76ece7ac7e8fc77a992f79206f9317d42",
+        "proposalRevision": "abb029d744884fd24a5ccebbbe4bb5fdf47eeec4c1f2cb7c9d5e60912b0d2055"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recoPlcDWU0kqRl5v",
+      "saintId": "cms0w7h7k06cx07qi3ikmzyfe",
+      "name": "Sri Chandrashekar Babaji",
+      "destination": "38",
+      "groupId": "vrindavan-extra-38",
+      "capturedBaseline": {
+        "placementId": "recoPlcDWU0kqRl5v",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b38abef815bd3f9fb0a572665fbd212aafb50241c297c06bc5825339a0082aed",
+        "proposalRevision": "a950f541ed9cee9d4e5d6fb0e421cf89c2a38e53d9ee2c3ee19e34b9fb206c8e"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recQuRVSuL2XlmuDH",
+      "saintId": "cms0w7hop06x607qiut56lbcr",
+      "name": "Sri Nityananda Das",
+      "destination": "38",
+      "groupId": "vrindavan-extra-38",
+      "capturedBaseline": {
+        "placementId": "recQuRVSuL2XlmuDH",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "1519d1500b8c4788f765a76d77abfda00019720afac48db8d20feef9e9bf3ba8",
+        "proposalRevision": "de57cf994bdb42352d7fa0c902b31c60e707d30bcb82e6b5d8401512d8be723a"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recWhZ375zMon1VZR",
+      "saintId": "cms0w7j7c08ld07qib5bqu70u",
+      "name": "Sri Anandi Bai",
+      "destination": "38",
+      "groupId": "vrindavan-extra-38",
+      "capturedBaseline": {
+        "placementId": "recWhZ375zMon1VZR",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f7d7f1ea3049dbad16b6a022aed79c956835ee276e631b494cb32b36117ff905",
+        "proposalRevision": "e3f8dad8bd14894fb6ddbd80bb1a45b0d433c25571aaf69977ccecbc10b53945"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "rec4vALRSNwodo5aX",
+      "saintId": "cms0w7cv700uz07qic04ogje9",
+      "name": "Sri Kishori Babaji",
+      "destination": "77",
+      "groupId": "nimbarka-kathia-combined",
+      "capturedBaseline": {
+        "placementId": "rec4vALRSNwodo5aX",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8d1883e8a0d2094125a9ed485bbeb61a6f996640b99b7e8fa352d58b473fdffd",
+        "proposalRevision": "875d8f650336c98b4aa4f3d22d3479f9db7f136dc3bed3863e61a18e99a2ac84"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "rec8gBJsufVbExGIk",
+      "saintId": "cms0w7de801i607qiw7dxwlc1",
+      "name": "Sri Mukund Sharan ji",
+      "destination": "77",
+      "groupId": "nimbarka-kathia-combined",
+      "capturedBaseline": {
+        "placementId": "rec8gBJsufVbExGIk",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "cb6848264add6178c2b3f5132163640395a9bbbd86d9048d14a58812a450ecb3",
+        "proposalRevision": "527bd2769e3c89f6003cef5685de77547d95f2aaed0b22337c29eb1fe6bbf442"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recBOFf000fRxR9xB",
+      "saintId": "cms0w7e0i02cg07qin7zpef70",
+      "name": "Sri Haripriya Dasi",
+      "destination": "77",
+      "groupId": "nimbarka-kathia-combined",
+      "capturedBaseline": {
+        "placementId": "recBOFf000fRxR9xB",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "adbc7f5c02c65a1ff328017b4430da3b42c01ad16db2b1ce6ddcb7c0e91a5c4c",
+        "proposalRevision": "36d3ef8b05fd6c747ac7d1c07b1ea1f5329e27f59ab78cfe87a13a7c251678b5"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.125
+    },
+    {
+      "sourceId": "recElWSGbSjVni5mI",
+      "saintId": "cms0w7esv03d907qihdz5iumz",
+      "name": "Pandit Sri Jagannath Das Bhaktmaliji Maharaj",
+      "destination": "77",
+      "groupId": "nimbarka-kathia-combined",
+      "capturedBaseline": {
+        "placementId": "recElWSGbSjVni5mI",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "f9d90efc9a3a5cda594f1afbcf9defd30174049fbac6ca5117749fec96d6d11c",
+        "proposalRevision": "6598273860a46baee673ba5db00eb6d837be344bc842f8fdb142645c80614215"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recS2SB8Um7wmJ8Rd",
+      "saintId": "cms0w7hzz07ap07qihkasn7jn",
+      "name": "Sri Bhagavati Dasi",
+      "destination": "77",
+      "groupId": "nimbarka-kathia-combined",
+      "capturedBaseline": {
+        "placementId": "recS2SB8Um7wmJ8Rd",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "68e951d3ff00748195693ee052374289014aa2bf7eacc5236ef20ad0f4ab3f98",
+        "proposalRevision": "8ad366e55118495ec7279deaabb9b072668eb0935a7fadfa9055a048188c1def"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.125
+    },
+    {
+      "sourceId": "recUBrbp6hmJFTL7p",
+      "saintId": "cms0w7ilj07y307qi887qc5yr",
+      "name": "Sri Bhagawat Sharan Ji Maharaj",
+      "destination": "77",
+      "groupId": "nimbarka-kathia-combined",
+      "capturedBaseline": {
+        "placementId": "recUBrbp6hmJFTL7p",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "36f1aff42b6a6143ced458a115d52e3ee1504610ade2021a389118b185943e14",
+        "proposalRevision": "9a9aff7557915050a32f3024d97d1fd8ae05e89a83d69b69c74d08821039e0d9"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recV5620566xzDihs",
+      "saintId": "cms0w7its086u07qi4y6vjo22",
+      "name": "Sri Rupkishor Das Babaji",
+      "destination": "77",
+      "groupId": "nimbarka-kathia-combined",
+      "capturedBaseline": {
+        "placementId": "recV5620566xzDihs",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "2924a286d74e4d78f6185e89a82fd20601015892e0f6d95ad5a56613a7dba539",
+        "proposalRevision": "35e81849e4f2bd49ef09a043f604d0ff16b0abde86f5c27679d84f3eedf371a6"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recags4oiqcsaGmPc",
+      "saintId": "cms0w7dpn01xo07qi29eba46n",
+      "name": "Anant Sri Sampann Sadgurudev Sri Govind Sharan Ji Mahraj",
+      "destination": "77",
+      "groupId": "nimbarka-kathia-combined",
+      "capturedBaseline": {
+        "placementId": "recags4oiqcsaGmPc",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "978b6f6248e690bc875e5831accd2ab46a9ae1b83e709080d1b1754b7c49e41b",
+        "proposalRevision": "0d05b829bbc5f1b7c132db346974a832d23af746fc028cb63fa63fbfc8d78c75"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recwnoNniYdyJ2hAP",
+      "saintId": "cms0w7j9x08o107qia8z35gix",
+      "name": "Sri Dhananjaydas Kathia Baba Maharaj",
+      "destination": "77",
+      "groupId": "nimbarka-kathia-combined",
+      "capturedBaseline": {
+        "placementId": "recwnoNniYdyJ2hAP",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8b456ead02ee73967a7c6e30bfcfac0f6b34dc47de34b619a272fa2e1201703b",
+        "proposalRevision": "1d654d1940fb24415c9e4f476f84eda28ebd4ca0159447fcbc2818e0b9c6ae76"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recwwvwL4vgUnVTCO",
+      "saintId": "cms0w7jb308p907qieh721rb0",
+      "name": "Mahandaleshwar Sri Mahant Tyagi Brijwasi Sri Sarveshwar Das Kathia Babaji Maharaj",
+      "destination": "77",
+      "groupId": "nimbarka-kathia-combined",
+      "capturedBaseline": {
+        "placementId": "recwwvwL4vgUnVTCO",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ee9b4cd4ecec5b0720dd342676933ff2b0361c687add5fa74a8a551cba8dd369",
+        "proposalRevision": "86f6e5276daace3c428d81a3face1068dbb01224d15b71c8552c813fb6007b67"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "rec7uMJLec4SDErel",
+      "saintId": "cms0w7dbl01ew07qilb8grwqs",
+      "name": "Sri Vallabhacharya",
+      "destination": "32",
+      "groupId": "vraj12",
+      "capturedBaseline": {
+        "placementId": "rec7uMJLec4SDErel",
+        "section": "Varkari",
+        "tier": "Featured",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "28212d472f4e66b8da2e1cd5f7e9bd0ea8d08bb9b9a67767254e00431684fde5",
+        "proposalRevision": "26f42c31b82637bf29361bea241640a17c99d8217115350676c6e6380477994d"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "reca69ZkG7n2a7yYY",
+      "saintId": "cms0w7dmj01tf07qiin8e9ha3",
+      "name": "Sri Surdasji",
+      "destination": "32",
+      "groupId": "vraj12",
+      "capturedBaseline": {
+        "placementId": "reca69ZkG7n2a7yYY",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Featured",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3611b4b279feafc24a42e67bfd456f2400346b3801acfb8702c6d47eac4ea726",
+        "proposalRevision": "84a60ded8a0407dc79e05c3b6abd4eb8ee0b4139a3a7fd43f2c74a32507e6be2"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recMSoLuciPELbyyu",
+      "saintId": "cms0w7grf05tu07qilpf3eul6",
+      "name": "Sri Radhavallabha Baba",
+      "destination": "32",
+      "groupId": "vraj12",
+      "capturedBaseline": {
+        "placementId": "recMSoLuciPELbyyu",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "8b449a5be550ad868c6a67c71479a7fe8c6ce777811687f1ba5797933c09179a",
+        "proposalRevision": "fc24bef1656d15f990821660ac91a58b2b0551c9e3dd8372ded1f5d53c2416a3"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recJf1dK9RiDcD2sE",
+      "saintId": "cms0w7fvs04qy07qi80lcl7jq",
+      "name": "Mata Sri Bhagwati Devi Sharma",
+      "destination": "79",
+      "groupId": "vraj27",
+      "capturedBaseline": {
+        "placementId": "recJf1dK9RiDcD2sE",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "05516ea329a41690e043ef1a63434993c1a1c01fc8896682a59f96993ce1e417",
+        "proposalRevision": "f0c1cbf7c68301149c33801c57bb24571e7e2458173ddeaada65458962d96858"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "recmXwcymGPlpQ7sY",
+      "saintId": "cms0w7gtq05wo07qis37cvfs1",
+      "name": "Sri Ram Sharma Acharya",
+      "destination": "79",
+      "groupId": "vraj27",
+      "capturedBaseline": {
+        "placementId": "recmXwcymGPlpQ7sY",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "db332f9a697ed51b76274500da6fd1933acd0e5c451bfe0f94a635931e70bc5d",
+        "proposalRevision": "9e7927ce59f369e9cf932c849d3359c419261593ee8ba9dad409153511735f07"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "rec4X5zisKGrxiShz",
+      "saintId": "cms0w7cvj00ve07qi27q3kzvq",
+      "name": "Sri Narayan Maharaj",
+      "destination": "79",
+      "groupId": "vraj27",
+      "capturedBaseline": {
+        "placementId": "rec4X5zisKGrxiShz",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "156986703f8622baf1b1dde9f5afac10bd77d726cb5112c55d3151ba270e74af",
+        "proposalRevision": "cab9fea3875ba9a7188f81edf2edab05097404e50769cc150a712195d873e0f3"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recqhQyifno0E9FZt",
+      "saintId": "cms0w7hlq06tt07qiywa0ebx2",
+      "name": "Sri Ramdas Baba",
+      "destination": "79",
+      "groupId": "vraj27",
+      "capturedBaseline": {
+        "placementId": "recqhQyifno0E9FZt",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "755474b93626e60bd63faf680a795694ae8c4d8d88703b1077338f77dd03a6ad",
+        "proposalRevision": "51a3052e0cd85f325de0c07859bd5a3e161068c03a756effbacf3bdeed416e3f"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recTHrXspmkdeNlxT",
+      "saintId": "cms0w7ibp07na07qi9rljadex",
+      "name": "Sri Lakshman Das Tyagi Maharaj (Birjo Baba)",
+      "destination": "79",
+      "groupId": "vraj27",
+      "capturedBaseline": {
+        "placementId": "recTHrXspmkdeNlxT",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "d100fce5e1c8295893cdf0ba8a0b581e1698c9dcea5f4d809fc139299b0aec1f",
+        "proposalRevision": "9516705889be70c2369e7b602cceed06bc0920672ac5424e6adb0b162738c659"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.125
+    },
+    {
+      "sourceId": "recYLCU4NbKXK09Yf",
+      "saintId": "cms0w7jub098m07qio8zfbssm",
+      "name": "Sri Bihari Das ji Maharaj",
+      "destination": "79",
+      "groupId": "vraj27",
+      "capturedBaseline": {
+        "placementId": "recYLCU4NbKXK09Yf",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "edbbc938b4a7ee43f4afb458a76dd8bd0f24752313cf9e5e9109e46836006738",
+        "proposalRevision": "9e6271aeb271b8180338e68647ca253ceb70a666690f11b245288b878553c068"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recu5aN4OfzptkLFs",
+      "saintId": "cms0w7ijz07wd07qi8o570rx3",
+      "name": "Sri Swami 108 Vidyanand ji Maharaj",
+      "destination": "5",
+      "groupId": "vidyanand-exploration",
+      "capturedBaseline": {
+        "placementId": "recu5aN4OfzptkLFs",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "1f76807fbd7ee6807089a5f30e0fe421a0963cd2e9a6d87dcdf445d5830e2c5d",
+        "proposalRevision": "a5341636f3ab993b79765687cd6a3b2ddac7f00ab31b2ff908ee3758821f46f3"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recNYNzrzpmXr2lbV",
+      "saintId": "cms0w7h1u066i07qixhx7s9br",
+      "name": "Banke Bihariji",
+      "destination": "33",
+      "groupId": "haridasi-combined33",
+      "capturedBaseline": {
+        "placementId": "recNYNzrzpmXr2lbV",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Featured",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "07120ece9cd71b268acd0104fdc798a5b6f762cbbe60bad1897333ca3c42893a",
+        "proposalRevision": "33fc4042ea55cec6602bfbcca69013890d440ea916a14418deaea3d1409d1ded"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "reclOBBadwRlyUAwc",
+      "saintId": "cms0w7ggr05gx07qi387lyaj3",
+      "name": "Sri Madan Mohan Dasji",
+      "destination": "33",
+      "groupId": "haridasi-combined33",
+      "capturedBaseline": {
+        "placementId": "reclOBBadwRlyUAwc",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3f54e5fad37c764859d737e0bce50df6030f091c71c25b77f4951c778685efaf",
+        "proposalRevision": "5dc1505d83b76bbd206bba8fe21d75e15d13f39048007212a4a9a17076125872"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "rec0H3FSQUnqIH95X",
+      "saintId": "cms0w7c7v002x07qisdxohvxv",
+      "name": "Sri Yogi Ramaiah",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "rec0H3FSQUnqIH95X",
+        "section": "Shaiva Siddhanta & Tamil Traditions",
+        "tier": "Secondary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "31b483d52e841d98a9b7bf519994c9c3c6000d030e082d16c518e6b484c53a83",
+        "proposalRevision": "c6969c82a70258542fee8c1dccbb4960e220826c9db813a93a22866a6cefbee3"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "rec6S1CQt0w8YmPjm",
+      "saintId": "cms0w7d5x017b07qis69tnmlg",
+      "name": "Sri Swami Keshavanandji",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "rec6S1CQt0w8YmPjm",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "0dc1023390379e6881a72f74de8f7e980ee773f6fed523b20fca3329037b685f",
+        "proposalRevision": "31ae3ce743c2b995f9c677104412fd750c3df528d0f7fa95ce7710399a887d84"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec9T6tpXGtrCWdxV",
+      "saintId": "cms0w7dkz01r407qiwpvn2sa1",
+      "name": "Sri Hariharananda Giri",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "rec9T6tpXGtrCWdxV",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "7e3d234ffba7196cfb6d08ee1b0f382f5426f37770fd0a9780377294c949d01a",
+        "proposalRevision": "ec8109d9aec175a2103ef9ac3815c71f984d2055fb8aa39f568767720fc0f22b"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recD6sS3ZtGRPqxjs",
+      "saintId": "cms0w7eec02tx07qike1mkz5q",
+      "name": "Sri Yogi S.A.A.Ramaiah",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "recD6sS3ZtGRPqxjs",
+        "section": "Shaiva Siddhanta & Tamil Traditions",
+        "tier": "Secondary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "225d9971214002cea0a415eaed3de708bdc21965669c2ce1034bb7c0d1893608",
+        "proposalRevision": "8aa80606bbe943524b05ec65b8ac15ba5842e9db12d953c2d90c2c1d98e4d32d"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recH8o102sJ3mQ7aT",
+      "saintId": "cms0w7fey046507qi4z4gcbti",
+      "name": "Sri Swami SriYukteshwar Giri",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "recH8o102sJ3mQ7aT",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Featured",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "c0dd4704f1f257ecf5dc9f5326142a577134f38e2995fafa3eab6d608ccd380d",
+        "proposalRevision": "919a23cf188c4167812c0e2e4197f469fdacbbe4c0b5ed26de9ed8f9f14eeb1b"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recIc9E1BwdIFc4OD",
+      "saintId": "cms0w7fnu04hc07qit9nwaudj",
+      "name": "Sri Durga Mata",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "recIc9E1BwdIFc4OD",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "006b25dc03684926fb2b811408325d16851876624dfcebb913c362c71bb63822",
+        "proposalRevision": "86d8de64dcc2aebe5f35dca30c6da632606b069245f06e51d97ab5e9c965236c"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "reciPBtb5T1Js7Lqz",
+      "saintId": "cms0w7fr004ld07qidykpxgm1",
+      "name": "Sri Paramahamsa Yogananda",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "reciPBtb5T1Js7Lqz",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Featured",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "fb081b064fbd4a9721b2ba04d14634cc4e21e55084c4093b16337b3f4663a25a",
+        "proposalRevision": "5605ce37e4a0b99e44566be26ea31a1fcf216f3f554402fec774310166c2cad6"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recLVwMPBTBcxHJG1",
+      "saintId": "cms0w7gjd05kd07qixd7gbv4h",
+      "name": "Sri Sri Bhupendranath Sanyal",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "recLVwMPBTBcxHJG1",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "c60bbce360e9fbc584b21acbadbaf71a156f1c3cc27b1dcafb50c51e75e6e86f",
+        "proposalRevision": "9c3e11bbf39ecd461e6b71a7049524e9f94e607e8cdf3eb8e3123b1b4b6b6806"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.125
+    },
+    {
+      "sourceId": "recoRltXupeZas8zP",
+      "saintId": "cms0w7h8206dj07qiyvrcuecq",
+      "name": "Mahavatar Kriya Babaji",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "recoRltXupeZas8zP",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Featured",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "67feaec9bce535e58c8e966bcdb669713b1086428f3565a5ca8ea25dc25f106b",
+        "proposalRevision": "dcf6c1d070d7d662d635dd27df650c6d1cf32478efbe4e7b23c962f6ad605d12"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 1
+    },
+    {
+      "sourceId": "recUCW4T6Le8f3ZdX",
+      "saintId": "cms0w7ils07yc07qi08agtyap",
+      "name": "Sri Daya Mata",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "recUCW4T6Le8f3ZdX",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "c723ba5920c06a81926ff6ea53b5bfd7a507ef8bfe0924708e7c53e457356241",
+        "proposalRevision": "d9015245200ec0036de053d1e6e262e120b17e6b64e9d498098c87c5ee206259"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recUTlwjCvniL1hEv",
+      "saintId": "cms0w7ir2084007qi1cuzm66g",
+      "name": "Sri Swami Kriyananda",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "recUTlwjCvniL1hEv",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "f1e8db5cc60abdd5fddc12ecade23bd26d6a51372f411b3877ffc71c8182f774",
+        "proposalRevision": "39408af3f7517871738250a17091836d5a987be895d75222d0354b2c90e9767f"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recwX7dFfmlq9FfAh",
+      "saintId": "cms0w7jbl08pr07qi8w9i43tn",
+      "name": "Sri Motilal Mukhabadhyay, Mukarji",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "recwX7dFfmlq9FfAh",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "2574824238143fd61eb2455a2c28f7770065269f54053eb3679f1ea040a5d2eb",
+        "proposalRevision": "cf51866a08017d8355c430551ebf0c02823002aceee6887ac0204458f89d6fbe"
+      },
+      "capturedTier": "Secondary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recx6n6mmw1tEEnFF",
+      "saintId": "cms0w7jew08si07qiu6p8lh4q",
+      "name": "Sri Lahiri Mahasaya",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "recx6n6mmw1tEEnFF",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Featured",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "f7f7c388950221556d48cd20636337acf9b49046b7a93f931bf2a5270baded9d",
+        "proposalRevision": "1b00ab75ab70c97bf66df65ef6c1f3181c663e6000c5ff7d7cc2833011c816bd"
+      },
+      "capturedTier": "Primary",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recxiIGSVaGfnTRC8",
+      "saintId": "cms0w7jj908x007qiofxet4qo",
+      "name": "Sri Kanaya Baba",
+      "destination": "5",
+      "groupId": "kriya-existing14",
+      "capturedBaseline": {
+        "placementId": "recxiIGSVaGfnTRC8",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "875900393f90eff4e53c8b4936f121ed395f87602caf2bc7f8bbaba8c4734fa2",
+        "proposalRevision": "fcd40d254994826b4766d39ad00d657e430c9ceabfd5453ca1e17ab943807064"
+      },
+      "capturedTier": "Tertiary",
+      "spaceEstimate": 0.16666666666666666
+    }
+  ],
+  "caseStories": {
+    "2": "Gaudiya gateway · Chaitanya, Goswamis and scholarship",
+    "79": "Mathura–Gokul & Barsana · childhood landscapes; Gayatri Pariwar leads Mathura",
+    "32": "Govardhan–Radha Kund · Pushtimarg and separate locality groups",
+    "33": "Vrindavan · Haridasi and separate Radhavallabha context",
+    "77": "Vrindavan · Nimbarka–Kathia tradition and local context",
+    "34": "Vamshi Vat · flute/rasa-lila locality and Yamuna-side Vrindavan",
+    "35": "Consolidated locality / identity review",
+    "38": "Modern Vrindavan · Devraha and Kripalu top anchors",
+    "27": "Released from this draft · physical holdings unchanged",
+    "5": "Kriya family intact · Katyayani Peeth connection beside Keshavananda"
+  },
+  "caseSummary": {
+    "2": {
+      "entries": 14,
+      "known": 4.216666666666667,
+      "unknown": 0
+    },
+    "79": {
+      "entries": 17,
+      "known": 3.6083333333333334,
+      "unknown": 0
+    },
+    "32": {
+      "entries": 18,
+      "known": 3.5833333333333335,
+      "unknown": 0
+    },
+    "33": {
+      "entries": 22,
+      "known": 4.9,
+      "unknown": 1
+    },
+    "77": {
+      "entries": 23,
+      "known": 4.746428571428571,
+      "unknown": 0
+    },
+    "34": {
+      "entries": 19,
+      "known": 4.55,
+      "unknown": 0
+    },
+    "35": {
+      "entries": 19,
+      "known": 4.492857142857143,
+      "unknown": 0
+    },
+    "38": {
+      "entries": 20,
+      "known": 4.169047619047619,
+      "unknown": 0
+    },
+    "27": {
+      "entries": 0,
+      "known": 0,
+      "unknown": 0
+    },
+    "5": {
+      "entries": 15,
+      "known": 3.539285714285714,
+      "unknown": 0
+    }
+  },
+  "topPlacement": {
+    "38": {
+      "sourceIds": [
+        "rec5AxgKNzgnmRgvH",
+        "recy7hwm0zcdVUyC1",
+        "rec4nHxugYAVIdCd2",
+        "recn3uvyUGvrsL5kk"
+      ],
+      "label": "Devraha Baba and Kripalu Maharaj at top; each saint’s observations together. Other family members require individual living-status placement."
+    }
+  },
+  "groups": [
+    {
+      "id": "vraj1",
+      "home": "2",
+      "title": "Chaitanya & companions",
+      "kind": "Reviewed personal circle",
+      "type": "story",
+      "palette": "gaudiya",
+      "note": "Companions, spouse, teaching and dialogue connections are distinct; this card does not imply one initiating-guru tree.",
+      "rows": [
+        {
+          "id": "recgLvBMiGOevOuZM",
+          "saintId": "cms0w7f8403xd07qin696rwb5",
+          "name": "Sri Chaitanya Mahaprabhu",
+          "locality": "Puri, Odisha, India; Navadwip, West Bengal, India",
+          "knownFootprint": 0.5
+        },
+        {
+          "id": "recK4u1sUzyWGtVTu",
+          "saintId": "cms0w7g2j04z507qibdpw1jr3",
+          "name": "Sri Nityananda Prabhu",
+          "locality": "Navadwip, West Bengal, India; Khardaha, India; Nabadwip, India; Ekachakra, India",
+          "knownFootprint": 0.5
+        },
+        {
+          "id": "recwXgwhRieoQeKxm",
+          "saintId": "cms0w7jbr08px07qiml4wmfuh",
+          "name": "Sri Vishnupriya Devi",
+          "locality": "Navadwip, West Bengal, India; Nabadwip, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recd2UE4TEFj2dmoP",
+          "saintId": "cms0w7edy02th07qi7gwufj69",
+          "name": "Sri Haridas Thakur",
+          "locality": "Puri, Odisha, India; Siddha Bakul Math",
+          "knownFootprint": 0.5
+        },
+        {
+          "id": "recHtWkpayatvf2d1",
+          "saintId": "cms0w7fk204cp07qil7w0xdsk",
+          "name": "Sri Jagadananda Pandit",
+          "locality": "Puri, Odisha, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recCtoBgaO6q9LlU9",
+          "saintId": "cms0w7ec902ra07qi5mzq7svj",
+          "name": "Sri Sarvabhauma Bhattacharya",
+          "locality": "Puri, Odisha, India",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "rec9iOaPtSzM2pvmx",
+          "saintId": "cms0w7diw01o807qiqpmiltvz",
+          "name": "Sri Chand Kazi",
+          "locality": "Mayapur, West Bengal, India",
+          "knownFootprint": 0.5
+        }
+      ],
+      "colorBasis": "Supported story/tradition context",
+      "sortPriority": 0,
+      "previousProposals": {
+        "recgLvBMiGOevOuZM": "2",
+        "recK4u1sUzyWGtVTu": "2",
+        "recwXgwhRieoQeKxm": "2",
+        "recd2UE4TEFj2dmoP": "2",
+        "recHtWkpayatvf2d1": "2",
+        "recCtoBgaO6q9LlU9": "2",
+        "rec9iOaPtSzM2pvmx": "2"
+      },
+      "mergedCardIds": [
+        "vraj1"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "vraj2",
+      "home": "2",
+      "title": "Goswamis · Vraj service",
+      "kind": "Connected devotional story",
+      "type": "story",
+      "palette": "gaudiya",
+      "note": "Gopala Bhatta and Radha Raman stay together. Srinivasa remains in2 following the curator’s later placement. Collective Goswami and individual holdings are retained separately.",
+      "rows": [
+        {
+          "id": "rec7064CikptruWW3",
+          "saintId": "cms0w7d8i01ah07qi4kulwfzd",
+          "name": "Sri Gopala Bhatta Goswami",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recwlct6RplW4XEhj",
+          "saintId": "cms0w7j8w08mz07qivj9gd4lx",
+          "name": "Sri Radha Raman (deity in Vrindavan)",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recBvAIzHPy3xmzNr",
+          "saintId": "cms0w7e2g02eu07qi30gtdfrg",
+          "name": "Goswamis of Vrindavan",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "reczcdKSdHDeOlHdt",
+          "saintId": "cms0w7k1p09g407qirl5stxye",
+          "name": "Sri Jiva Goswami",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "rec9Qdld6jmoy5cuC",
+          "saintId": "cms0w7dkf01qa07qikm4pbwjx",
+          "name": "Sri Madhu Pandit Goswami",
+          "locality": "Jaipur, Rajasthan, India; Jaipur Gopinath Temple",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recJepdkXi90kdROh",
+          "saintId": "cms0w7fvi04qj07qir5t8b2fk",
+          "name": "Sri Srinivasa Acharya",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        }
+      ],
+      "colorBasis": "Supported story/tradition context",
+      "sortPriority": 0,
+      "previousProposals": {
+        "rec7064CikptruWW3": "2",
+        "recwlct6RplW4XEhj": "2",
+        "recBvAIzHPy3xmzNr": "2",
+        "reczcdKSdHDeOlHdt": "2",
+        "rec9Qdld6jmoy5cuC": "2",
+        "recJepdkXi90kdROh": "2"
+      },
+      "mergedCardIds": [
+        "vraj2"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "vraj5",
+      "home": "33",
+      "title": "Hit Kinkar · Radhavallabha background",
+      "kind": "distinct tradition anchor",
+      "type": "story",
+      "palette": "radhavallabh",
+      "note": "Published biography describes early Radhavallabha affiliation and a later broader approach. No additional member inferred from a similar name.",
+      "rows": [
+        {
+          "id": "recyCtOnmOZwhVgTI",
+          "saintId": "cms0w7jr7095907qi7sfxzjyb",
+          "name": "Sri Hit Kinkar Sewak Sharanji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Attalla Chungi",
+          "knownFootprint": 0.25
+        }
+      ],
+      "colorBasis": "Supported story/tradition context",
+      "sortPriority": 0,
+      "previousProposals": {
+        "recyCtOnmOZwhVgTI": "79"
+      },
+      "mergedCardIds": [
+        "vraj5"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "vraj6-4",
+      "home": "32",
+      "title": "Govardhan",
+      "kind": "Placement locality",
+      "type": "city",
+      "palette": "kund",
+      "note": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "rows": [
+        {
+          "id": "rec1rC2Ds0JSWSMt7",
+          "saintId": "cms0w7cgj00c407qi2g8xw9yz",
+          "name": "Sri Advaita Das",
+          "locality": "Govardhan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Govardhan Marg - Parikrama Road",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "recjCHsWkWsKvE0UI",
+          "saintId": "cms0w7fuj04pf07qiwo4vzccu",
+          "name": "Sri Priya Charan Das Baba",
+          "locality": "Govardhan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recr59tNcv8rnvu0n",
+          "saintId": "cms0w7hrs071407qi7k1e0g2w",
+          "name": "Sri Giriraj Das Babaji",
+          "locality": "Vrindavan, Uttar Pradesh, India; Govardhana",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "rechNsZrAAHvPvA8L",
+          "saintId": null,
+          "name": "Sri Krishna Dasji Maharaj of Govardhana",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "recYz0sAfOqxGX3xd",
+          "saintId": "cms0w7jzn09e707qihmpt7adk",
+          "name": "Sri Chaitan Baba",
+          "locality": "Govardhan, Uttar Pradesh, India; Gōvind Kund; Govardhan Parikrama Marg",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "recW7KxJ0OxE6NQUZ",
+          "saintId": "cms0w7j4z08ix07qij6jeneac",
+          "name": "Sri Yamuna Jivan Prabhu",
+          "locality": "Kusum Sarovar, Govardhan, Uttar Pradesh, India",
+          "knownFootprint": 0.16666666666666666
+        }
+      ],
+      "colorBasis": "Shared locality",
+      "sortPriority": 1,
+      "previousProposals": {
+        "rec1rC2Ds0JSWSMt7": "79",
+        "recjCHsWkWsKvE0UI": "79",
+        "recUBrbp6hmJFTL7p": "79",
+        "recr59tNcv8rnvu0n": "32",
+        "rechNsZrAAHvPvA8L": "34",
+        "recYz0sAfOqxGX3xd": "77",
+        "recW7KxJ0OxE6NQUZ": "35"
+      },
+      "mergedCardIds": [
+        "vraj6-4"
+      ],
+      "detailLocalities": [
+        "Govardhan"
+      ]
+    },
+    {
+      "id": "vraj7-5",
+      "home": "77",
+      "title": "Vrindavan",
+      "kind": "Placement locality",
+      "type": "city",
+      "palette": "vrindavan",
+      "note": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "rows": [
+        {
+          "id": "rec5uQS2pz9kEuGon",
+          "saintId": "cms0w7d1k012f07qiy9dm6d33",
+          "name": "Sri Prashant Das Baba",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "rec6YZs1zGqm2SaxC",
+          "saintId": "cms0w7d8901a507qitq8nuuso",
+          "name": "Sri Tyagi Baba",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.125
+        },
+        {
+          "id": "rec82hFqcoW0N6dUe",
+          "saintId": "cms0w7dcu01gf07qi3g0yyb60",
+          "name": "Sri Kunja Bihari Das",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "id": "recA3nxFhZ0PDaF78",
+          "saintId": "cms0w7dm301sp07qinzs7t98h",
+          "name": "Sri Gyaandas ji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Bihar Kunj; U P",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recAEx5Op0jFyV4JI",
+          "saintId": "cms0w7doq01wg07qi73rsljkf",
+          "name": "Sri Gauranga Das Babaji",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recArd2WMWc2wQbcJ",
+          "saintId": "cms0w7dsu021w07qivhvppoa4",
+          "name": "Sri Panduranga (deity)",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recjniR3isfH2T1Bc",
+          "saintId": "cms0w7fy304tq07qixt2tn5pr",
+          "name": "Sri Pagal Babaji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "id": "reckJqVswMXRwc2uA",
+          "saintId": "cms0w7g78055107qivimmaiie",
+          "name": "Sri Lala Babu",
+          "locality": "Vrindavan, Uttar Pradesh, India; Brindavan",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "id": "recL6pd3mneBukCEb",
+          "saintId": "cms0w7ge905ds07qi1lmo9lws",
+          "name": "Sri Usha Mataji",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recTIvmCmSVHWspHM",
+          "saintId": "cms0w7icl07oa07qiocwf3n4n",
+          "name": "Sri Atul Krishna Das Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Shanti Padma Ashram; Brindavan 8 A",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recYhFy1wEWE4YN6A",
+          "saintId": "cms0w7jsb096f07qitqv7e103",
+          "name": "Sri Mahadev",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recxHe0WZ1ulo1Quh",
+          "saintId": "cms0w7jie08w207qiu4hz6h1r",
+          "name": "Ramtal, Vrindavan (Brick 2700yrs old)",
+          "locality": "Vrindavan, Uttar Pradesh, India; Mathura, Uttar Pradesh, India",
+          "knownFootprint": 0.5
+        },
+        {
+          "id": "recyyiy9MkoJX6hJx",
+          "saintId": "cms0w7jzg09e107qidcff1yty",
+          "name": "Sri Priyasharan Baba",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        }
+      ],
+      "colorBasis": "Shared locality",
+      "sortPriority": 1,
+      "previousProposals": {
+        "rec4kdIIun9ooUz82": "79",
+        "rec5uQS2pz9kEuGon": "32",
+        "rec6YZs1zGqm2SaxC": "32",
+        "rec82hFqcoW0N6dUe": "32",
+        "recA3nxFhZ0PDaF78": "32",
+        "recAEx5Op0jFyV4JI": "32",
+        "recArd2WMWc2wQbcJ": "32",
+        "recjniR3isfH2T1Bc": "32",
+        "reckJqVswMXRwc2uA": "32",
+        "recL6pd3mneBukCEb": "32",
+        "recTIvmCmSVHWspHM": "32",
+        "recYhFy1wEWE4YN6A": "32",
+        "rec8gBJsufVbExGIk": "34",
+        "recjUsnOqeSQMW1ie": "34",
+        "recxHe0WZ1ulo1Quh": "34",
+        "recyyiy9MkoJX6hJx": "34",
+        "recUha5G2Ph73NiGe": "32",
+        "recwwvwL4vgUnVTCO": "32",
+        "reclOBBadwRlyUAwc": "77",
+        "recpT01HyezKTKppi": "38"
+      },
+      "mergedCardIds": [
+        "vraj7-5"
+      ],
+      "detailLocalities": [
+        "Vrindavan"
+      ]
+    },
+    {
+      "id": "vraj7-6",
+      "home": "33",
+      "title": "Vrindavan",
+      "kind": "Placement locality",
+      "type": "city",
+      "palette": "vrindavan",
+      "note": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "rows": [
+        {
+          "id": "rec5kC0WPXiXYelqp",
+          "saintId": "cms0w7d0p011e07qiz6gu5acv",
+          "name": "Sri Nar Hari Das ji",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recf5TVTPdhQ9I3fG",
+          "saintId": "cms0w7exu03jr07qi2nleo3zx",
+          "name": "Sri Venodanandji Maharaj (also known as Langta Baba)",
+          "locality": "Vrindavan, Uttar Pradesh, India; Shanti Ashram; Brindavan",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "rechEgcxIpn8wJYwn",
+          "saintId": "cms0w7fga047v07qi19qjfvh2",
+          "name": "Sri Ramdevanand Saraswati",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recnGWguvlWIIZYaa",
+          "saintId": "cms0w7gx8061107qias11p4fq",
+          "name": "Sri Parampujya Sri Sri 1008 Sri Hridayananda Das Babaji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recSNYGyyw23mVVfE",
+          "saintId": "cms0w7i4m07fy07qi0zrlxesg",
+          "name": "Sri Gaya Prasadji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "rectJk81omsOqa2cD",
+          "saintId": "cms0w7icz07os07qiwkva1zz0",
+          "name": "Sri Deepanand Baba",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "rectt7X59r1jM3LQ6",
+          "saintId": "cms0w7ih507ta07qii8ar5m5v",
+          "name": "Sri Sushila Mataji",
+          "locality": "Vrindavan, Uttar Pradesh, India; Vrindavan behind Chaar Sampraday Ashram",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recXjMRI0bmYSqq5M",
+          "saintId": "cms0w7jjt08xk07qi9i1vcz37",
+          "name": "Sri Ganshyamdas Babaji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "recXPuLdP5ogPQGKS",
+          "saintId": "cms0w7jly08zt07qi9wrpgxhe",
+          "name": "Sri Sita Didi",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recyyGtf6Nn5dWTyW",
+          "saintId": "cms0w7jz209dn07qivw3qpja5",
+          "name": "Sri Siddhanath Chinnakunjammal",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.125
+        },
+        {
+          "id": "rec5b3yl4uTKsznpm",
+          "saintId": "cms0w7cyd00yt07qidjvt7ssn",
+          "name": "Sri Balakrishna Dasji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Brindavan",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "id": "rec6wVN98kz7D9Sup",
+          "saintId": "cms0w7d7c018z07qifjpr7sop",
+          "name": "Mahamandaleshwar 1008 Sri Parmeshwar Das Tyagi ji",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recDGMad2d2BHUE0r",
+          "saintId": "cms0w7egw02x807qik7em5i5l",
+          "name": "Sri Sri 108 Madhav Dasji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Barsana, Uttar Pradesh, India; Vrindavan/ Barsana; U P",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recG9Kk2TZrIalKaT",
+          "saintId": "cms0w7f5z03ud07qi4nsy0jaq",
+          "name": "Sri Bhatimati Nathia Bai",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recLf7ixrMj4BUke5",
+          "saintId": "cms0w7gfi05fe07qimptzkx0u",
+          "name": "Sri Krishnapriya Kishori",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "id": "recuVJid8KgYXPf01",
+          "saintId": "cms0w7irk084j07qinyhaevac",
+          "name": "Sri Goswami Ballabh Lal Dev",
+          "locality": "Vrindavan, Uttar Pradesh, India; Jaipur",
+          "knownFootprint": 0.3333333333333333
+        }
+      ],
+      "colorBasis": "Shared locality",
+      "sortPriority": 2,
+      "previousProposals": {
+        "rec5kC0WPXiXYelqp": "79",
+        "recags4oiqcsaGmPc": "79",
+        "recf5TVTPdhQ9I3fG": "79",
+        "rechEgcxIpn8wJYwn": "79",
+        "recnGWguvlWIIZYaa": "79",
+        "recSNYGyyw23mVVfE": "79",
+        "rectJk81omsOqa2cD": "79",
+        "rectt7X59r1jM3LQ6": "79",
+        "recXjMRI0bmYSqq5M": "79",
+        "recXPuLdP5ogPQGKS": "79",
+        "recyyGtf6Nn5dWTyW": "79",
+        "rec5b3yl4uTKsznpm": "77",
+        "rec6wVN98kz7D9Sup": "77",
+        "recDGMad2d2BHUE0r": "77",
+        "recG9Kk2TZrIalKaT": "77",
+        "recLf7ixrMj4BUke5": "77",
+        "recuVJid8KgYXPf01": "77",
+        "recBOFf000fRxR9xB": "33",
+        "recS2SB8Um7wmJ8Rd": "33",
+        "recDC1QAGrFX5MCh0": "32"
+      },
+      "mergedCardIds": [
+        "vraj7-6",
+        "vraj19-28"
+      ],
+      "detailLocalities": [
+        "Vrindavan"
+      ]
+    },
+    {
+      "id": "vraj7-7",
+      "home": "79",
+      "title": "Barsana",
+      "kind": "Placement locality",
+      "type": "city",
+      "palette": "barsana",
+      "note": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "rows": [
+        {
+          "id": "reccicav89HsNJlCr",
+          "saintId": "cms0w7e8302ls07qi2tmvqd96",
+          "name": "Sri Ramdas Babaji",
+          "locality": "Vrindavan, Uttar Pradesh, India; Charan Pahadi, Barsana, Uttar Pradesh, India",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "reccSd9i0y1gwYVsN",
+          "saintId": "cms0w7ebv02qw07qiejju8u7b",
+          "name": "Sri Brijpaldas",
+          "locality": "Barsana, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recCSq1SKGyVRlhYK",
+          "saintId": "cms0w7ec202r307qi38fn60n3",
+          "name": "Sri Haridas ji Maharaj",
+          "locality": "Barsana, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "rec6mcBjrRieSiRZx",
+          "saintId": "cms0w7d4h015r07qixmycgwmm",
+          "name": "Sri Baba Ragavindra Das (Australian Baba)",
+          "locality": "Barsana, Uttar Pradesh, India; Sri Radha Sarovar Gahvar Kund",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recx23ZlxPwkU5ZYy",
+          "saintId": "cms0w7jce08qg07qibi36nbg9",
+          "name": "Sri Ananta Das Babaji",
+          "locality": "Barsana, Uttar Pradesh, India; Sri Radha Sarovar Gahvar Kund",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recAODr4cE5dA0DTg",
+          "saintId": "cms0w7dsj021h07qi0q2rwkix",
+          "name": "Sri Rasheshwari Baba",
+          "locality": "Barsana, Uttar Pradesh, India; Surya Kund at village Dhawara",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "reccJXiq8YBXjpayo",
+          "saintId": "cms0w7e8u02ms07qisqi3gr41",
+          "name": "Sri Shyamdas Baba",
+          "locality": "Vraj Bhoomi, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Barsana, Uttar Pradesh, India; Nandgaon, Uttar Pradesh, India; the fields Domilivan",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "reck86EKve5tFAi6R",
+          "saintId": "cms0w7g3504zx07qigfcnvy6p",
+          "name": "Sri Ramdas Tyagi Baba",
+          "locality": "Barsana, Uttar Pradesh, India; Barsana near Barsana Parikrama road",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recuqae8tso98J177",
+          "saintId": "cms0w7iq8083507qi2xg09t54",
+          "name": "Sri Gargi Mataji",
+          "locality": "Barsana, Uttar Pradesh, India; Barsana Parikrama Marg",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recWdITS0bLJSxgVM",
+          "saintId": "cms0w7j6j08kk07qif7znjoxx",
+          "name": "Sri Raja Ram Baba",
+          "locality": "Barsana, Uttar Pradesh, India; Barsana Parikrama Marg",
+          "knownFootprint": 0.25
+        }
+      ],
+      "colorBasis": "Shared locality",
+      "sortPriority": 1,
+      "previousProposals": {
+        "reccicav89HsNJlCr": "79",
+        "rec4vALRSNwodo5aX": "35",
+        "reccSd9i0y1gwYVsN": "35",
+        "recCSq1SKGyVRlhYK": "35",
+        "rec6mcBjrRieSiRZx": "35",
+        "recx23ZlxPwkU5ZYy": "35",
+        "recAODr4cE5dA0DTg": "35",
+        "reccJXiq8YBXjpayo": "38"
+      },
+      "mergedCardIds": [
+        "vraj7-7"
+      ],
+      "detailLocalities": [
+        "Barsana"
+      ]
+    },
+    {
+      "id": "vraj9",
+      "home": "38",
+      "title": "Mauni Baba holdings",
+      "kind": "provisional grouped holdings",
+      "type": "review",
+      "palette": "neutral",
+      "note": "Existingv14 pairing only; common46/D does not independently establish identity.",
+      "rows": [
+        {
+          "id": "rec42M1Ol2VVxBKZN",
+          "saintId": "cms0w7cq400oi07qii89um8pq",
+          "name": "Sri Mauni Baba",
+          "locality": "Vrindavan, Uttar Pradesh, India; Uttar Pradesh The silent One",
+          "knownFootprint": 0.125
+        },
+        {
+          "id": "receUmjyw5DxHquLX",
+          "saintId": "cmus3rwrb002l07o538hx75lh",
+          "name": "Sri Mauni Baba",
+          "locality": "Vrindavan, Uttar Pradesh, India; Uttar Pradesh The silent Saint",
+          "knownFootprint": 0.125
+        }
+      ],
+      "colorBasis": "Separate or provisional group; no shared relationship inferred",
+      "sortPriority": 0,
+      "previousProposals": {
+        "rec42M1Ol2VVxBKZN": "32",
+        "receUmjyw5DxHquLX": "32"
+      },
+      "mergedCardIds": [
+        "vraj9"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "vraj13",
+      "home": "38",
+      "title": "Hrydaya Nath / Hridayanath holdings",
+      "kind": "provisional grouped holdings",
+      "type": "review",
+      "palette": "neutral",
+      "note": "Preserve source identity and both non-top cautions; no merge or added teacher edge.",
+      "rows": [
+        {
+          "id": "recgxF7UKZcRQkWAM",
+          "saintId": "cms0w7fc4042g07qiplqni39b",
+          "name": "Sri Hridayanath",
+          "locality": "Vrindavan, Uttar Pradesh, India; Vrindavan same then Hrydaya Nath Baba",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "reckSQIxGVy2mjRGw",
+          "saintId": "cms0w7gaf058x07qi0hxindhy",
+          "name": "Sri Hrydaya Nath Baba",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.16666666666666666
+        }
+      ],
+      "colorBasis": "Separate or provisional group; no shared relationship inferred",
+      "sortPriority": 0,
+      "previousProposals": {
+        "recgxF7UKZcRQkWAM": "33",
+        "reckSQIxGVy2mjRGw": "33"
+      },
+      "mergedCardIds": [
+        "vraj13"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "vraj14-19",
+      "home": "34",
+      "title": "Vrindavan",
+      "kind": "Placement locality",
+      "type": "city",
+      "palette": "vrindavan",
+      "note": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "rows": [
+        {
+          "id": "recarvbfUWSXTbPPM",
+          "saintId": "cms0w7dte022n07qi7yw1zdkc",
+          "name": "Sri Sri 1008 Acharya Goswami Sri Milan Bihari Ji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Gopal Mandir Brindavan",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recy20QZ2gHuWbLpE",
+          "saintId": "cms0w7jpt093r07qi7fg96xi3",
+          "name": "Sri Gopi Baba",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recTlXdHu57FHcvh6",
+          "saintId": "cms0w7idr07pp07qizln9430x",
+          "name": "Sri Anurag Das Baba (Sakhi)",
+          "locality": "Vrindavan, Uttar Pradesh, India; Barsana, Uttar Pradesh, India",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "id": "recMD8r2e4y1I5cfU",
+          "saintId": "cms0w7gmk05o007qine59vp4w",
+          "name": "Sri Hathi Baba",
+          "locality": "Vrindavan, Uttar Pradesh, India; Opposite Phogla Ashram, Vrindavan",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "rec59TlK0U02yKqC9",
+          "saintId": "cms0w7cxd00xl07qiemcd50pn",
+          "name": "Sri Albeli Sharan ji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Vrindavan Banks of the Yamuna",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "id": "recnk1IXIvGI54Mll",
+          "saintId": "cms0w7gxg061c07qidqdfm6ec",
+          "name": "Sri Swami Ishwar Puriji",
+          "locality": "Vrindavan, Uttar Pradesh, India; Jagannath Mandir; Jagannath Gath; Brindavan",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "id": "recKFP79mZ8Fyhvao",
+          "saintId": "cms0w7g5k052y07qigeldl38i",
+          "name": "Sri Sri Hanuman Das Babaji",
+          "locality": "Vrindavan, Uttar Pradesh, India; Parikrama Marg, Vrindavan",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "rec4kdIIun9ooUz82",
+          "saintId": "cms0w7csb00rb07qixbs0714a",
+          "name": "Sri Gopinath Das Baba",
+          "locality": "Vraj Bhoomi, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Sakhet Vat",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recUha5G2Ph73NiGe",
+          "saintId": "cms0w7inq080e07qiuy2ad92t",
+          "name": "Sri Shanilalta Baba Aghori",
+          "locality": "Vrindavan, Uttar Pradesh, India; Vrindavan Parikrama marg; Radha Vallabha temple",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recpT01HyezKTKppi",
+          "saintId": "cms0w7hg406n407qiojrmweun",
+          "name": "Sri Sri 1008 Vishudhanand Puriji Maharaj (Hanuman Baba)",
+          "locality": "Keshi Ghat, Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        }
+      ],
+      "colorBasis": "Shared locality",
+      "sortPriority": 2,
+      "previousProposals": {
+        "recaclOvEWZldL4On": "33",
+        "recarvbfUWSXTbPPM": "33",
+        "recdJqZtqntKdukGi": "33",
+        "reckGjYeZvXHbhnQP": "33",
+        "recn9B0vgsAx6W1Zy": "33",
+        "recoPlcDWU0kqRl5v": "33",
+        "recQuRVSuL2XlmuDH": "33",
+        "recV5620566xzDihs": "33",
+        "recWhZ375zMon1VZR": "33",
+        "recwnoNniYdyJ2hAP": "33",
+        "recy20QZ2gHuWbLpE": "33",
+        "recTlXdHu57FHcvh6": "35",
+        "recMD8r2e4y1I5cfU": "38",
+        "rec59TlK0U02yKqC9": "77",
+        "recnk1IXIvGI54Mll": "77",
+        "recu5aN4OfzptkLFs": "77",
+        "reck86EKve5tFAi6R": "35",
+        "recuqae8tso98J177": "35",
+        "recWdITS0bLJSxgVM": "35",
+        "recKFP79mZ8Fyhvao": "35"
+      },
+      "mergedCardIds": [
+        "vraj14-19",
+        "vraj31-48",
+        "vraj33-51"
+      ],
+      "detailLocalities": [
+        "Vrindavan"
+      ]
+    },
+    {
+      "id": "vraj14-22",
+      "home": "79",
+      "title": "Gokul–Mahavan",
+      "kind": "Placement locality",
+      "type": "city",
+      "palette": "mathura",
+      "note": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "rows": [
+        {
+          "id": "recrJuM5i9L9T7hui",
+          "saintId": "cms0w7hvl075l07qi8rm3k5d6",
+          "name": "Sri Sri 108 Kishor Das Maharaj",
+          "locality": "Gokul, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Chintaharan Mahadev",
+          "knownFootprint": 0.2
+        }
+      ],
+      "colorBasis": "Shared locality",
+      "sortPriority": 1,
+      "previousProposals": {
+        "recrJuM5i9L9T7hui": "33"
+      },
+      "mergedCardIds": [
+        "vraj14-22"
+      ],
+      "detailLocalities": [
+        "Gokul–Mahavan"
+      ]
+    },
+    {
+      "id": "vraj15-23",
+      "home": "34",
+      "title": "Vraj Bhoomi",
+      "kind": "Placement locality",
+      "type": "city",
+      "palette": "neutral",
+      "note": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "rows": [
+        {
+          "id": "recDT8u9BBJyXriUu",
+          "saintId": "cmus3rwn1002007o5xkgonm9d",
+          "name": "Sri Siyaram Baba",
+          "locality": "Vraj Bhoomi, Uttar Pradesh, India; Vraj Bhoomi born",
+          "knownFootprint": 0.2
+        }
+      ],
+      "colorBasis": "Separate or provisional group; no shared relationship inferred",
+      "sortPriority": 2,
+      "previousProposals": {
+        "recDT8u9BBJyXriUu": "33"
+      },
+      "mergedCardIds": [
+        "vraj15-23"
+      ],
+      "detailLocalities": [
+        "Vraj Bhoomi"
+      ]
+    },
+    {
+      "id": "vraj17",
+      "home": "2",
+      "title": "Haridasa Shastriji",
+      "kind": "identified individual anchor",
+      "type": "story",
+      "palette": "gaudiya",
+      "note": "Separate modern continuation of Gaudiya scholarship, beside Jiva Goswami’s story. Haridasa’s published work on Jiva’s texts and his Kalidaha teaching centre support the connection; no direct historical guru edge to Jiva is implied.",
+      "rows": [
+        {
+          "id": "recq30YpPvbBeNWvy",
+          "saintId": "cms0w7hit06qb07qijp106atp",
+          "name": "Sri Haridasa Sastriji Maharaj (Guru",
+          "locality": "Vrindavan (reviewed life/work centre)",
+          "knownFootprint": 0.25
+        }
+      ],
+      "colorBasis": "Supported story/tradition context",
+      "sortPriority": 0,
+      "previousProposals": {
+        "recq30YpPvbBeNWvy": "77"
+      },
+      "mergedCardIds": [
+        "vraj17"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "vraj21",
+      "home": "38",
+      "title": "Kripalu Maharaj holdings",
+      "kind": "Provisional same-saint grouping",
+      "type": "review",
+      "palette": "neutral",
+      "note": "Plate and mala beads together; identity attribution remains for confirmation.",
+      "rows": [
+        {
+          "id": "rec4nHxugYAVIdCd2",
+          "saintId": "cms0w7ct200sd07qim483ezzq",
+          "name": "Sri Kripalu Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recn3uvyUGvrsL5kk",
+          "saintId": "cmus3rx7n005r07o5m5duuece",
+          "name": "Sri Kripalu Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Vrindavan, India",
+          "knownFootprint": 0.14285714285714285
+        }
+      ],
+      "colorBasis": "Separate or provisional group; no shared relationship inferred",
+      "sortPriority": 0,
+      "previousProposals": {
+        "rec4nHxugYAVIdCd2": "34",
+        "recn3uvyUGvrsL5kk": "34"
+      },
+      "mergedCardIds": [
+        "vraj21"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "vraj22",
+      "home": "38",
+      "title": "Jamnagar",
+      "kind": "Placement locality",
+      "type": "city",
+      "palette": "neutral",
+      "note": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "rows": [
+        {
+          "id": "rec0qNQ06e49fFCVU",
+          "saintId": "cms0w7ca2004u07qi796nhugc",
+          "name": "Sri Natha Bapa",
+          "locality": "Jamnagar, Gujarat, India; Vasoya",
+          "knownFootprint": 0.4166666666666667
+        },
+        {
+          "id": "recPXA2z64STAw7mj",
+          "saintId": "cms0w7hhp06p607qiogzl2o5r",
+          "name": "Sri Mahant Chaitanya Das Bapu, Jamnagar, Gujarat",
+          "locality": "Jamnagar, Gujarat, India",
+          "knownFootprint": 0.4166666666666667
+        }
+      ],
+      "colorBasis": "Separate or provisional group; no shared relationship inferred",
+      "sortPriority": 3,
+      "previousProposals": {
+        "rec0qNQ06e49fFCVU": "34",
+        "recPXA2z64STAw7mj": "34"
+      },
+      "mergedCardIds": [
+        "vraj22"
+      ],
+      "detailLocalities": [
+        "Jamnagar"
+      ]
+    },
+    {
+      "id": "vraj24-36",
+      "home": "32",
+      "title": "Radha Kund",
+      "kind": "Placement locality",
+      "type": "city",
+      "palette": "kund",
+      "note": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "rows": [
+        {
+          "id": "rec6eQFL3MESDRCxm",
+          "saintId": "cms0w7d3g014l07qiekamzik0",
+          "name": "Pandit Sri Ananta Das Babaji Maharaj",
+          "locality": "Radha Kund, Govardhan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "rec6tqmpxSSstOnAr",
+          "saintId": "cms0w7d6j018007qijiatyytf",
+          "name": "Sri Nanda Lal Baba Dasji",
+          "locality": "Radha Kund, Govardhan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "rec7zbeymH6f0hJH1",
+          "saintId": "cms0w7dco01g607qixj5jwt3p",
+          "name": "Sri Sri Krishna Dasji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Radha Kund",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recC8pT2zrt13T629",
+          "saintId": "cms0w7e5h02ih07qihm2zj9z0",
+          "name": "Sri Prankrishna Das Baba",
+          "locality": "Govardhan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Radha Kund",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "recCAwBjWoFjwHeow",
+          "saintId": "cms0w7e6602jf07qit68agan1",
+          "name": "Sri Sri 108 Mahatyagi Baba Mangal Das ji Maharaj",
+          "locality": "Radha Kund, Govardhan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "reccbl2L3o0VG1vF2",
+          "saintId": "cms0w7e6e02jp07qi68jaqjyo",
+          "name": "Sri 108 Sadguru Mastram Saheb",
+          "locality": "Radha Kund, Govardhan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recOh5YsioR2xo9uv",
+          "saintId": "cms0w7h5c06ah07qie1lflrrj",
+          "name": "Sri Raghunath Das Goswami",
+          "locality": "West Bengal; Radha Kund, Govardhan, Uttar Pradesh, India",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "recQMK24q4pZThT4d",
+          "saintId": "cms0w7hmy06v807qilari6n9d",
+          "name": "Sri Uma Kumar",
+          "locality": "Radha Kund, Govardhan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recTMiPzRn7lSQwey",
+          "saintId": "cms0w7ie207q207qibnjladhk",
+          "name": "Sri Pagal Das Babaji",
+          "locality": "Radha Kund, Govardhan, Uttar Pradesh, India",
+          "knownFootprint": 0.16666666666666666
+        }
+      ],
+      "colorBasis": "Shared locality",
+      "sortPriority": 1,
+      "previousProposals": {
+        "rec6eQFL3MESDRCxm": "34",
+        "rec6tqmpxSSstOnAr": "34",
+        "rec7zbeymH6f0hJH1": "34",
+        "recC8pT2zrt13T629": "34",
+        "recCAwBjWoFjwHeow": "34",
+        "reccbl2L3o0VG1vF2": "34",
+        "recOh5YsioR2xo9uv": "34",
+        "recQMK24q4pZThT4d": "34",
+        "recTMiPzRn7lSQwey": "34"
+      },
+      "mergedCardIds": [
+        "vraj24-36"
+      ],
+      "detailLocalities": [
+        "Radha Kund"
+      ]
+    },
+    {
+      "id": "vraj35",
+      "home": "38",
+      "title": "Devraha Baba & disciples",
+      "kind": "Reviewed / source-recorded family",
+      "type": "story",
+      "palette": "devraha",
+      "note": "Both Devraha observations stay with Devra Hansa. Ayodhya Das and Madhusudan are source-recorded disciples; Bodhgaya locality does not split Madhusudan from the group.",
+      "rows": [
+        {
+          "id": "rec5AxgKNzgnmRgvH",
+          "saintId": "cms0w7cy400yi07qi1ewcj4je",
+          "name": "Sri DevRaha Baba",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recy7hwm0zcdVUyC1",
+          "saintId": "cms0w7jqo094o07qizw8j524g",
+          "name": "Sri Dev Raha Baba",
+          "locality": "Vrindavan, Uttar Pradesh, India; Brindavan",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recWlq9Oc6I9iEPMh",
+          "saintId": "cms0w7j9708na07qilhmcq63c",
+          "name": "Sri Devra Hansa Babaji",
+          "locality": "Vrindavan, Uttar Pradesh, India; Brindavan",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recLsRC0bhkL9JO8E",
+          "saintId": "cms0w7gi805iv07qi9f7dt8fu",
+          "name": "Sri Ayodhya Dasji Maharaj",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recLn3bLLWAWw2Q0v",
+          "saintId": "cms0w7ggm05gs07qivc2m4atw",
+          "name": "Sri Madhusudan",
+          "locality": "Bodhgaya, Bihar, India",
+          "knownFootprint": 0.08333333333333333
+        }
+      ],
+      "colorBasis": "Supported story/tradition context",
+      "sortPriority": 0,
+      "previousProposals": {
+        "rec5AxgKNzgnmRgvH": "27",
+        "recy7hwm0zcdVUyC1": "27",
+        "recWlq9Oc6I9iEPMh": "27",
+        "recLsRC0bhkL9JO8E": "27",
+        "recLn3bLLWAWw2Q0v": "27"
+      },
+      "mergedCardIds": [
+        "vraj35"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "vraj36",
+      "home": "34",
+      "title": "Vamshi Vat community",
+      "kind": "Distinct ashram / locality story",
+      "type": "story",
+      "palette": "vrindavan",
+      "note": "Keep this Vrindavan community separate from Devraha’s family. Shared Vamshi Vat locality alone does not establish a guru relationship.",
+      "rows": [
+        {
+          "id": "rec2tNtwJKLv2hxcj",
+          "saintId": "cms0w7ckx00hs07qi11u8usbi",
+          "name": "Sri Jugal Das Maharaj",
+          "locality": "Vamshi Vat, Vrindavan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Vamshi Vatt",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recC5TOgPfNAHTvAh",
+          "saintId": "cms0w7e5702i207qime68pr69",
+          "name": "Sri Gaur Hari Das",
+          "locality": "Vamshi Vat, Vrindavan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Vamshi Vatt",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recd8RpQYPYNsQ1XA",
+          "saintId": "cms0w7eeu02ul07qiwb1gnrp7",
+          "name": "Sri Radhikadas ji Maharaj",
+          "locality": "Vamshi Vat, Vrindavan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Vamshi Vatt",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recILaP0Ev8VszgWL",
+          "saintId": "cms0w7fqi04kp07qip4ndsuqr",
+          "name": "Sri Sri Raghav das ji Maharaj",
+          "locality": "Vamshi Vat, Vrindavan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Vamshi Vatt",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recltmpQpPqJARXr6",
+          "saintId": "cms0w7gii05j607qi6niwcg60",
+          "name": "Sri Lal Baba",
+          "locality": "Vamshi Vat, Vrindavan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Vamshi Vatt",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recorynJGbwBdQWvr",
+          "saintId": "cms0w7h8a06dr07qi0gofzl2v",
+          "name": "Sri Sadhananda Das",
+          "locality": "Vrindavan, Uttar Pradesh, India; Vamshi Vatt",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recQl9WkwYiow0BRF",
+          "saintId": "cmus3rxht007a07o5rynn1o0u",
+          "name": "Sri Ramdas Baba",
+          "locality": "Vamshi Vat, Vrindavan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Vamshi Vatt; Vrindavan, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recUcPmjGo7mUDsSK",
+          "saintId": "cmus3rxsl009107o5nih54n5n",
+          "name": "Sri Ramdas ji Maharaj",
+          "locality": "Vamshi Vat, Vrindavan, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Vamshi Vatt; Vrindavan, India",
+          "knownFootprint": 0.2
+        }
+      ],
+      "colorBasis": "Supported story/tradition context",
+      "sortPriority": 0,
+      "previousProposals": {
+        "rec2tNtwJKLv2hxcj": "27",
+        "recC5TOgPfNAHTvAh": "27",
+        "recd8RpQYPYNsQ1XA": "27",
+        "recILaP0Ev8VszgWL": "27",
+        "recltmpQpPqJARXr6": "27",
+        "recorynJGbwBdQWvr": "27",
+        "recQl9WkwYiow0BRF": "27",
+        "recUcPmjGo7mUDsSK": "27"
+      },
+      "mergedCardIds": [
+        "vraj36"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "kamavan-pair-v9",
+      "home": "33",
+      "title": "Kamavan / wider Vraj",
+      "type": "city",
+      "kind": "Placement locality",
+      "palette": "vrindavan",
+      "sortPriority": 1,
+      "note": "Kishori Das: Vimala Kund, Kamavan. Sukadev Das: Braj Kedarnath Dham, Bilond/Kaman, Rajasthan. Shared locality context; no personal relationship asserted.",
+      "rows": [
+        {
+          "id": "recDC1QAGrFX5MCh0",
+          "saintId": "cms0w7efg02vc07qi8r0yxc84",
+          "name": "Sri Sri 108 Sri Kishori Das ji Maharaj",
+          "locality": "Vraj Bhoomi, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Vimala Kund at Kama Van",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recYIE2g8p2NxItsz",
+          "saintId": "cms0w7jsv097007qi5ec4iz5f",
+          "name": "Sri Sri 108 Mahant Sukadev Das ji Maharaj",
+          "locality": "Deeg, Rajasthan, India; Sri Braj Kedarnath Dham; Bilond; Kaman",
+          "knownFootprint": 0.125
+        },
+        {
+          "id": "recaclOvEWZldL4On",
+          "saintId": "cms0w7dnq01v107qiqqmvt9wb",
+          "name": "Sri Bhutiya Baba",
+          "locality": "Kamyavan, Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": null
+        }
+      ]
+    },
+    {
+      "id": "consolidated-review35",
+      "home": "35",
+      "title": "Locality under review",
+      "type": "review",
+      "kind": "Identity / locality review",
+      "palette": "neutral",
+      "sortPriority": 4,
+      "rows": [
+        {
+          "id": "recK9i0V5dVwDqzaF",
+          "saintId": "cms0w7g3b050407qib6euj0o0",
+          "name": "Unknown Saint White cloth and photo (man and cow) with tree under which Shiva Meditated",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "id": "recPWVPc3i5A0KH7h",
+          "saintId": null,
+          "name": "Unidentified source record",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.08333333333333333
+        },
+        {
+          "id": "rec7YA7eCwApr1I5y",
+          "saintId": "cms0w7dcf01fv07qidu50w8dy",
+          "name": "Sri Ram Mangal Dasji Maharaj",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recQq1sZzwupfjFYm",
+          "saintId": "cms0w7hnl06vy07qiexxmzj8w",
+          "name": "Sri Vishwatmanand Giriji Maharaj",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recESP6UwZFGSwKxe",
+          "saintId": "cms0w7eut03fs07qi1qqlrejh",
+          "name": "Sri Asaram Bapu",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recZmfYhZM1sxjJ8O",
+          "saintId": "cms0w7k5v09ke07qiwqfgjfqj",
+          "name": "Sri Sri Swami Atamram Nand Puriji Maharaj",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "rec4h3DhRd94Ee8yz",
+          "saintId": "cms0w7cs000r207qic8gbijob",
+          "name": "Sri Mataji Nirmala Devi",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.08333333333333333
+        },
+        {
+          "id": "recaUBzuJUeWPZghI",
+          "saintId": "cms0w7du5023j07qi1vnn2o88",
+          "name": "Sri Baba Khehar Singh",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.08333333333333333
+        },
+        {
+          "id": "recd0cjF8Py7tpDfI",
+          "saintId": "cms0w7edu02tc07qippep856m",
+          "name": "Sri Girijanandaji Saraswati Maharaj",
+          "locality": "??Jyotimat?",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recdhv8TXHDxqefjq",
+          "saintId": "cms0w7ehc02xt07qi0tq7uot8",
+          "name": "Nadege of Paris",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "id": "recMVtEp0VnYTwZWC",
+          "saintId": "cms0w7gsu05vn07qi224c6h2e",
+          "name": "Sri Florea Baba",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recr2CTcUbP13CgUQ",
+          "saintId": "cms0w7hr0070507qiicx68pb3",
+          "name": "Sri Swami Ganesh Dasji Maharaj",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "rec2nk9yAQbf5ni72",
+          "saintId": "cms0w7cjn00g607qisnqk6oov",
+          "name": "Pandavas",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.5
+        },
+        {
+          "id": "reciyrgOojXeOfKz7",
+          "saintId": "cms0w7fsb04mu07qi2tp6m0st",
+          "name": "Acharya Sri Nirmal Saga Ji Maharaj",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.08333333333333333
+        },
+        {
+          "id": "recjA6M4REhXbtb1Z",
+          "saintId": "cms0w7ftv04ok07qije4e0vfo",
+          "name": "Sri Hihtdasji Maharaj",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "id": "recZDpbsnZYFhwjOp",
+          "saintId": "cms0w7k2709gn07qinwal664r",
+          "name": "Govardhan Shila supposedly",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.5
+        },
+        {
+          "id": "rec0wJK2U7kBE9S7o",
+          "saintId": "cms0w7cc7006z07qitfqqp5q3",
+          "name": "Sri Swami Maheshanand ji",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recBMTxwzsTVoDiOk",
+          "saintId": "cms0w7dzi02b107qi33zxkcn3",
+          "name": "Sri Swami Bidhyanand ji Maharaj",
+          "locality": "??? and Sri Gopilal ji Goswami",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "reclWuYOI3Vpeyh0S",
+          "saintId": "cms0w7gjm05kq07qi0082dp9r",
+          "name": "Prabhupadacharya Sri Phanilal Goswami",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.25
+        }
+      ],
+      "note": "Trial consolidation: 20 entries, 4.64 estimated shelf spaces; confirm physical fit on site. Individual identity and locality holds remain."
+    },
+    {
+      "id": "vrindavan-extra-38",
+      "home": "38",
+      "title": "Vrindavan",
+      "type": "city",
+      "kind": "Placement locality",
+      "palette": "vrindavan",
+      "sortPriority": 1,
+      "rows": [
+        {
+          "id": "recjUsnOqeSQMW1ie",
+          "saintId": "cms0w7g0g04wk07qiswg03yna",
+          "name": "Sri Prabhu Datta Brahamchariji",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recdJqZtqntKdukGi",
+          "saintId": "cms0w7ehu02yf07qiahvkdrkp",
+          "name": "Sri Praduman Pratap Singh",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "reckGjYeZvXHbhnQP",
+          "saintId": "cmus3rx04004n07o5bj3kdswl",
+          "name": "Sri Narayan Das",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recn9B0vgsAx6W1Zy",
+          "saintId": "cms0w7gvc05yp07qi1snko5k0",
+          "name": "Sri Deenahari Babaji",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "recoPlcDWU0kqRl5v",
+          "saintId": "cms0w7h7k06cx07qi3ikmzyfe",
+          "name": "Sri Chandrashekar Babaji",
+          "locality": "Vrindavan, Uttar Pradesh, India; Brindavan",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recQuRVSuL2XlmuDH",
+          "saintId": "cms0w7hop06x607qiut56lbcr",
+          "name": "Sri Nityananda Das",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "id": "recWhZ375zMon1VZR",
+          "saintId": "cms0w7j7c08ld07qib5bqu70u",
+          "name": "Sri Anandi Bai",
+          "locality": "Vrindavan, Uttar Pradesh, India; Amritsar, Punjab, India",
+          "knownFootprint": 0.16666666666666666
+        }
+      ],
+      "note": "Shared Vrindavan locality; separate from the named families."
+    },
+    {
+      "id": "nimbarka-kathia-combined",
+      "home": "77",
+      "title": "Nimbarka–Kathia",
+      "type": "story",
+      "kind": "Tradition / institutional grouping",
+      "palette": "nimbarka",
+      "sortPriority": 0,
+      "rows": [
+        {
+          "id": "rec4vALRSNwodo5aX",
+          "saintId": "cms0w7cv700uz07qic04ogje9",
+          "name": "Sri Kishori Babaji",
+          "locality": "Barsana, Uttar Pradesh, India",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "rec8gBJsufVbExGIk",
+          "saintId": "cms0w7de801i607qiw7dxwlc1",
+          "name": "Sri Mukund Sharan ji",
+          "locality": "Vrindavan, Uttar Pradesh, India; Barsana, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recBOFf000fRxR9xB",
+          "saintId": "cms0w7e0i02cg07qin7zpef70",
+          "name": "Sri Haripriya Dasi",
+          "locality": "Vrindavan, Uttar Pradesh, India; Sant Colony",
+          "knownFootprint": 0.125
+        },
+        {
+          "id": "recElWSGbSjVni5mI",
+          "saintId": "cms0w7esv03d907qihdz5iumz",
+          "name": "Pandit Sri Jagannath Das Bhaktmaliji Maharaj",
+          "locality": "Locality not recorded",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "id": "recS2SB8Um7wmJ8Rd",
+          "saintId": "cms0w7hzz07ap07qihkasn7jn",
+          "name": "Sri Bhagavati Dasi",
+          "locality": "Vrindavan, Uttar Pradesh, India; Sant Colony",
+          "knownFootprint": 0.125
+        },
+        {
+          "id": "recUBrbp6hmJFTL7p",
+          "saintId": "cms0w7ilj07y307qi887qc5yr",
+          "name": "Sri Bhagawat Sharan Ji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Govardhana",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "recV5620566xzDihs",
+          "saintId": "cms0w7its086u07qi4y6vjo22",
+          "name": "Sri Rupkishor Das Babaji",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recags4oiqcsaGmPc",
+          "saintId": "cms0w7dpn01xo07qi29eba46n",
+          "name": "Anant Sri Sampann Sadgurudev Sri Govind Sharan Ji Mahraj",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recwnoNniYdyJ2hAP",
+          "saintId": "cms0w7j9x08o107qia8z35gix",
+          "name": "Sri Dhananjaydas Kathia Baba Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Brindavan",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recwwvwL4vgUnVTCO",
+          "saintId": "cms0w7jb308p907qieh721rb0",
+          "name": "Mahandaleshwar Sri Mahant Tyagi Brijwasi Sri Sarveshwar Das Kathia Babaji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; 232; Durgapuram Colony; Panighat Vrindavan inside the parikama marg",
+          "knownFootprint": 0.16666666666666666
+        }
+      ],
+      "note": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained."
+    },
+    {
+      "id": "vraj12",
+      "home": "32",
+      "title": "Pushtimarg · Vallabha, Surdas & Radhavallabha Baba",
+      "kind": "existing reviewed anchor story",
+      "type": "story",
+      "palette": "pushti",
+      "note": "Vallabha–Surdas: Shrinathji seva at Govardhan. Radhavallabha Baba joins by curator direction following the source label Vallabha Sampradaya; Kadam Kandi locality retained. No direct teacher link to him is asserted.",
+      "rows": [
+        {
+          "id": "rec7uMJLec4SDErel",
+          "saintId": "cms0w7dbl01ew07qilb8grwqs",
+          "name": "Sri Vallabhacharya",
+          "locality": "Pandharpur, Maharashtra, India; Ahmedabad, Gujarat, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "reca69ZkG7n2a7yYY",
+          "saintId": "cms0w7dmj01tf07qiin8e9ha3",
+          "name": "Sri Surdasji",
+          "locality": "Govardhan",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recMSoLuciPELbyyu",
+          "saintId": "cms0w7grf05tu07qilpf3eul6",
+          "name": "Sri Radhavallabha Baba",
+          "locality": "Vraj Bhoomi, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Kadam Kandi",
+          "knownFootprint": 0.25
+        }
+      ],
+      "colorBasis": "Supported story/tradition context",
+      "sortPriority": 0,
+      "previousProposals": {
+        "rec7uMJLec4SDErel": "33",
+        "reca69ZkG7n2a7yYY": "33"
+      },
+      "mergedCardIds": [
+        "vraj12"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "vraj27",
+      "home": "79",
+      "title": "Mathura · Gayatri Pariwar & locality group",
+      "kind": "Named family / Mathura story",
+      "type": "story",
+      "palette": "gayatri",
+      "note": "Leads: Shriram Sharma Acharya and Bhagwati Devi Sharma, through Gayatri Tapobhumi and Akhand Jyoti. Keep the couple together. Other listed saints share Mathura locality; no mission membership or family link inferred.",
+      "rows": [
+        {
+          "id": "recJf1dK9RiDcD2sE",
+          "saintId": "cms0w7fvs04qy07qi80lcl7jq",
+          "name": "Mata Sri Bhagwati Devi Sharma",
+          "locality": "Gayatri Pariwar",
+          "knownFootprint": 0.08333333333333333
+        },
+        {
+          "id": "recmXwcymGPlpQ7sY",
+          "saintId": "cms0w7gtq05wo07qis37cvfs1",
+          "name": "Sri Ram Sharma Acharya",
+          "locality": "Gayatri Pariwar",
+          "knownFootprint": 0.08333333333333333
+        },
+        {
+          "id": "rec4X5zisKGrxiShz",
+          "saintId": "cms0w7cvj00ve07qi27q3kzvq",
+          "name": "Sri Narayan Maharaj",
+          "locality": "Mathura, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recqhQyifno0E9FZt",
+          "saintId": "cms0w7hlq06tt07qiywa0ebx2",
+          "name": "Sri Ramdas Baba",
+          "locality": "Mathura, Uttar Pradesh, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recTHrXspmkdeNlxT",
+          "saintId": "cms0w7ibp07na07qi9rljadex",
+          "name": "Sri Lakshman Das Tyagi Maharaj (Birjo Baba)",
+          "locality": "Mathura, Uttar Pradesh, India; Hathkauli",
+          "knownFootprint": 0.125
+        },
+        {
+          "id": "recYLCU4NbKXK09Yf",
+          "saintId": "cms0w7jub098m07qio8zfbssm",
+          "name": "Sri Bihari Das ji Maharaj",
+          "locality": "Mathura, Uttar Pradesh, India; Radhe Baba Gaulok Dham Samiti",
+          "knownFootprint": 0.25
+        }
+      ],
+      "colorBasis": "Supported story/tradition context",
+      "sortPriority": 0,
+      "previousProposals": {
+        "recJf1dK9RiDcD2sE": "35",
+        "recmXwcymGPlpQ7sY": "35"
+      },
+      "mergedCardIds": [
+        "vraj27"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "vidyanand-exploration",
+      "home": "5",
+      "title": "Katyayani Peeth · Keshavananda–Vidyanand",
+      "type": "story",
+      "kind": "Institutional connection",
+      "palette": "gaudiya",
+      "sortPriority": 0,
+      "rows": [
+        {
+          "id": "recu5aN4OfzptkLFs",
+          "saintId": "cms0w7ijz07wd07qi8o570rx3",
+          "name": "Sri Swami 108 Vidyanand ji Maharaj",
+          "locality": "Vrindavan, Uttar Pradesh, India; Katyayani Peeth",
+          "knownFootprint": 0.3333333333333333
+        }
+      ],
+      "note": "Place Vidyanand beside Keshavananda while preserving the Kriya family. Katyayani Trust documents institutional succession through Satyanand, Nityanand and Rani Ma; no direct guru relationship between Keshavananda and Vidyanand asserted. https://www.katyayanipeeth.org.in/untitled-mainpage"
+    },
+    {
+      "id": "haridasi-combined33",
+      "home": "33",
+      "title": "Haridasi · Banke Bihari & Madan Mohan Das",
+      "kind": "deity anchor",
+      "type": "story",
+      "palette": "haridasi",
+      "note": "Banke Bihari: Swami Haridas–Nidhivan tradition. Madan Mohan Das of Bihari Van: explicit source label Sri Haridas Sampradaya. Shared tradition; no new direct guru relationship asserted.",
+      "rows": [
+        {
+          "id": "recNYNzrzpmXr2lbV",
+          "saintId": "cms0w7h1u066i07qixhx7s9br",
+          "name": "Banke Bihariji",
+          "locality": "Vrindavan, Uttar Pradesh, India; Vrindavan deity",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "reclOBBadwRlyUAwc",
+          "saintId": "cms0w7ggr05gx07qi387lyaj3",
+          "name": "Sri Madan Mohan Dasji",
+          "locality": "Vrindavan, Uttar Pradesh, India; Bihari Van; Brindavan",
+          "knownFootprint": 0.3333333333333333
+        }
+      ],
+      "colorBasis": "Supported story/tradition context",
+      "sortPriority": 0,
+      "previousProposals": {
+        "recNYNzrzpmXr2lbV": "79"
+      },
+      "mergedCardIds": [
+        "vraj4"
+      ],
+      "detailLocalities": []
+    },
+    {
+      "id": "kriya-existing14",
+      "home": "5",
+      "title": "Kriya family · existing intact group",
+      "type": "story",
+      "kind": "Existing family / branches",
+      "palette": "gaudiya",
+      "sortPriority": 0,
+      "rows": [
+        {
+          "id": "rec0H3FSQUnqIH95X",
+          "saintId": "cms0w7c7v002x07qisdxohvxv",
+          "name": "Sri Yogi Ramaiah",
+          "locality": "Chettinad, Tamil Nadu, India",
+          "knownFootprint": 0.08333333333333333
+        },
+        {
+          "id": "rec6S1CQt0w8YmPjm",
+          "saintId": "cms0w7d5x017b07qis69tnmlg",
+          "name": "Sri Swami Keshavanandji",
+          "locality": "Vrindavan, Uttar Pradesh, India",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "rec9T6tpXGtrCWdxV",
+          "saintId": "cms0w7dkz01r407qiwpvn2sa1",
+          "name": "Sri Hariharananda Giri",
+          "locality": "Mayapur, West Bengal, India",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "id": "recD6sS3ZtGRPqxjs",
+          "saintId": "cms0w7eec02tx07qike1mkz5q",
+          "name": "Sri Yogi S.A.A.Ramaiah",
+          "locality": "Chettinad, Tamil Nadu, India",
+          "knownFootprint": 0.2
+        },
+        {
+          "id": "recH8o102sJ3mQ7aT",
+          "saintId": "cms0w7fey046507qi4z4gcbti",
+          "name": "Sri Swami SriYukteshwar Giri",
+          "locality": "Serampur, West Bengal, India; Pune, Maharashtra, India",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "id": "recIc9E1BwdIFc4OD",
+          "saintId": "cms0w7fnu04hc07qit9nwaudj",
+          "name": "Sri Durga Mata",
+          "locality": "USA",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "reciPBtb5T1Js7Lqz",
+          "saintId": "cms0w7fr004ld07qidykpxgm1",
+          "name": "Sri Paramahamsa Yogananda",
+          "locality": "Gorakpur, Uttar Pradesh, India",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "id": "recLVwMPBTBcxHJG1",
+          "saintId": "cms0w7gjd05kd07qixd7gbv4h",
+          "name": "Sri Sri Bhupendranath Sanyal",
+          "locality": "Puri, Odisha, India",
+          "knownFootprint": 0.125
+        },
+        {
+          "id": "recoRltXupeZas8zP",
+          "saintId": "cms0w7h8206dj07qiyvrcuecq",
+          "name": "Mahavatar Kriya Babaji",
+          "locality": "Badrinath, Uttarakhand, India",
+          "knownFootprint": 1
+        },
+        {
+          "id": "recUCW4T6Le8f3ZdX",
+          "saintId": "cms0w7ils07yc07qi08agtyap",
+          "name": "Sri Daya Mata",
+          "locality": "USA",
+          "knownFootprint": 0.25
+        },
+        {
+          "id": "recUTlwjCvniL1hEv",
+          "saintId": "cms0w7ir2084007qi1cuzm66g",
+          "name": "Sri Swami Kriyananda",
+          "locality": "Azuga, Romania; Assisi, Italy",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "id": "recwX7dFfmlq9FfAh",
+          "saintId": "cms0w7jbl08pr07qi8w9i43tn",
+          "name": "Sri Motilal Mukhabadhyay, Mukarji",
+          "locality": "Serampur, West Bengal, India",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "id": "recx6n6mmw1tEEnFF",
+          "saintId": "cms0w7jew08si07qiu6p8lh4q",
+          "name": "Sri Lahiri Mahasaya",
+          "locality": "Varanasi, Uttar Pradesh, India",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "id": "recxiIGSVaGfnTRC8",
+          "saintId": "cms0w7jj908x007qiofxet4qo",
+          "name": "Sri Kanaya Baba",
+          "locality": "Puri, Odisha, India",
+          "knownFootprint": 0.16666666666666666
+        }
+      ],
+      "note": "Existing14 source observations retained together, including Babaji, Lahiri, Yukteswar, Yogananda, Keshavananda and their recorded branches. Two Ramaiah observations retained without merging. Vidyanand is an institutional companion beside Keshavananda, not a new Kriya disciple."
+    }
+  ]
+}

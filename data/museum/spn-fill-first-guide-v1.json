@@ -1,0 +1,1108 @@
+{
+  "version": "spn-fill-first-guide-2026-10-28-v1",
+  "proposalVersion": "spn-vitrines-37-and-4-final-core-2026-10-28-v4",
+  "title": "Fill the available vitrines",
+  "proposalLabel": "Approved fill-first phase",
+  "sourcePacket": "spn-fill-first-75-23-73-phase-approved-2026-10-28-v1.json",
+  "rows": [
+    {
+      "sourceId": "rec896V7fs1lwnSkY",
+      "saintId": "cms0w7dd501gv07qijoc78ezs",
+      "name": "Sri (Ishwar) Tota Puri Baba",
+      "tier": "Primary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Punjap/ or Puri/ - wandering monk",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [
+        "Totapuri identity under review; do not treat this entry as a verified teacher identification."
+      ],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recbZIJBveOYqWWs5",
+      "saintId": "cms0w7e3l02fz07qi534y407z",
+      "name": "Sri Dandi Swami Damodarashram",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Addyapeeth",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Addyapeeth",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recgjan7BxjyG7CeZ",
+      "saintId": "cms0w7f7a03w807qi25ypfqdb",
+      "name": "Sri Manisen",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Puri",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [
+        "Mani Sen (recorded as Manisen) · Ramakrishna’s host at Panihati; not a direct-disciple claim."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "reciI9fE7xVYFuN4u",
+      "saintId": "cms0w7fpl04ji07qisl0wupco",
+      "name": "Sri Yugacharya Sreemat Praanavanandaji Maharaj",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "reckV8sJXL5cq978J",
+      "saintId": "cms0w7gb6059t07qis1a9kn28",
+      "name": "Sri Ramakrishna Paramahansa",
+      "tier": "Primary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recqrHsjXJuayrZml",
+      "saintId": "cms0w7hno06w007qiusuli5ab",
+      "name": "Sri Swami Vivekananda",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recrWjhRIBpUX7A6J",
+      "saintId": "cmus3rxlw007v07o5ad59qkab",
+      "name": "Sri Lal Baba",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Kolkata",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recSUU4X56pAqF1JC",
+      "saintId": "cms0w7i6v07i807qiot1t3jt5",
+      "name": "Sri Lakshmi Mani Devi",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recXa1fpOwmlwQ4YH",
+      "saintId": "cms0w7jft08ti07qimg33dh8m",
+      "name": "Sri Mahendranath Gupta",
+      "tier": "Secondary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Ramakrishna’s circle",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recZPkXeFQBUFoa19",
+      "saintId": "cms0w7k6u09l907qi1b2qa7ij",
+      "name": "Sri Annada Thakur",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Calcutta",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Addyapeeth",
+      "rationale": "Approved Vitrine 75 roster; place before clearing Vitrine 37.",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "rectvEBy833q3i4L6",
+      "saintId": "cms0w7ihx07u507qi0vodpwck",
+      "name": "Sri Siddha Bhagwan Das Maharaj",
+      "tier": "Tertiary",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Kalna",
+      "relicDescription": "",
+      "destination": "75",
+      "family": "Other associated displays",
+      "rationale": "Approved alongside the Ramakrishna circle; the recorded encounter depends on confirming this collection identity.",
+      "reviewNotes": [
+        "Collection identity remains qualified: likely the Kalna Bhagwan Das who met Ramakrishna, not independently confirmed."
+      ],
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "rec4V2uLs4HP4Ps3d",
+      "saintId": "cms0w7cv200uw07qi4v8l692z",
+      "name": "Sri Gauthama Buddha",
+      "tier": "Primary",
+      "city": "Bodh Gaya, Bihar, India; Bodh Gaya, India; Shravasti, India; Rajgir, India",
+      "relicDescription": "Prasalirikathat (cristalized bone)",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Buddhist holdings",
+      "rationale": "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city.",
+      "reviewNotes": [
+        "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.14285714285714285
+    },
+    {
+      "sourceId": "recBnLw7Q3ZLCbck4",
+      "saintId": "cms0w7e0402by07qic8v4l1xo",
+      "name": "Unknown Buddhist Saint relic",
+      "tier": "Tertiary",
+      "city": "Locality not recorded",
+      "relicDescription": "dust pieces",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Buddhist holdings",
+      "rationale": "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city.",
+      "reviewNotes": [
+        "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.3333333333333333
+    },
+    {
+      "sourceId": "recC3zchheU7N9g2E",
+      "saintId": "cms0w7e4z02ht07qi8doxzhab",
+      "name": "Sogyal Rinpoche",
+      "tier": "Tertiary",
+      "city": "Tibet; Tipet",
+      "relicDescription": "Salt from his body in “kundun”",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Buddhist holdings",
+      "rationale": "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city.",
+      "reviewNotes": [
+        "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recSUaw6o0jRfF08q",
+      "saintId": "cms0w7i6g07ht07qi54k2lobr",
+      "name": "Mokkalana",
+      "tier": "Tertiary",
+      "city": "Locality not recorded",
+      "relicDescription": "Prathat (cristalized bone)",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Buddhist holdings",
+      "rationale": "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city.",
+      "reviewNotes": [
+        "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.14285714285714285
+    },
+    {
+      "sourceId": "recv7xsxOB32vlFNE",
+      "saintId": "cms0w7iuy088207qi7xuv3fjl",
+      "name": "Sri Nichidatsu Fujii (Fujii Guruji)",
+      "tier": "Tertiary",
+      "city": "Darjeeling, West Bengal, India; Wardha, India; Rajgir, India",
+      "relicDescription": "Handwritten note ",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Buddhist holdings",
+      "rationale": "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city.",
+      "reviewNotes": [
+        "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.16666666666666666
+    },
+    {
+      "sourceId": "recX2VUC6rvHjV8Fe",
+      "saintId": "cms0w7jdd08r207qinfkvxw0q",
+      "name": "Salibutr",
+      "tier": "Tertiary",
+      "city": "Locality not recorded",
+      "relicDescription": "Prathat (cristalized bone)",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Buddhist holdings",
+      "rationale": "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city.",
+      "reviewNotes": [
+        "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.14285714285714285
+    },
+    {
+      "sourceId": "recZbwL1wz3gD9B70",
+      "saintId": "cms0w7k1809fo07qiabqvhoae",
+      "name": "Khandro Tsering Chödron",
+      "tier": "Tertiary",
+      "city": "Tibet",
+      "relicDescription": "Piece from the robe ",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Buddhist holdings",
+      "rationale": "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city.",
+      "reviewNotes": [
+        "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recaNtSLYQh5Fm4lN",
+      "saintId": "cms0w7dsb021707qiiyou77fv",
+      "name": "Sri Mahapurusha Sankardev",
+      "tier": "Tertiary",
+      "city": "Assam; Majuli/ Assam",
+      "relicDescription": "One of his tulsi beads, piece of his clothes",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Sankardev & Madhavdev",
+      "rationale": "Teacher–disciple",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recOYRXmecpwN3Unl",
+      "saintId": "cms0w7h9x06fv07qioy54x3o8",
+      "name": "Sri Mahapurusha Madhavdev",
+      "tier": "Tertiary",
+      "city": "Assam; Majuli/ Assam; Barpeta, India; Sundaridiya, India; Ganakkuchi, India",
+      "relicDescription": "One of his tulsi beads",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Sankardev & Madhavdev",
+      "rationale": "Teacher–disciple",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recpyhIScDxJbDdE1",
+      "saintId": "cms0w7hid06pu07qixhc35ehi",
+      "name": "Sri Kamaal Darvesh Dargaah",
+      "tier": "Tertiary",
+      "city": "Shivpuri (locality under review)",
+      "relicDescription": "vibhuti",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Shivpuri · identity review",
+      "rationale": "The imported Nepal association is unverified; no city point is assigned.",
+      "reviewNotes": [
+        "The imported Nepal association is unverified; no city point is assigned."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recsmno4Rquvfnth2",
+      "saintId": "cmus3rxpn008h07o57vl7ryun",
+      "name": "Sri Gajanan Maharaj",
+      "tier": "Tertiary",
+      "city": "Shivpuri (locality under review)",
+      "relicDescription": "dhoti",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Shivpuri · identity review",
+      "rationale": "The imported Nepal association is unverified; no city point is assigned.",
+      "reviewNotes": [
+        "The imported Nepal association is unverified; no city point is assigned."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "rec1iHJEqLnLP7ImA",
+      "saintId": "cms0w7cet009z07qioc6yud18",
+      "name": "Mahant of Bodhgaya",
+      "tier": "Tertiary",
+      "city": "Bodhgaya, Bihar, India",
+      "relicDescription": "thread",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Bodhgaya",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.08333333333333333
+    },
+    {
+      "sourceId": "recrR2rQ8fUgEKiDR",
+      "saintId": "cmus3rxle007q07o5q7fzz09q",
+      "name": "Sri Sitaram Baba",
+      "tier": "Tertiary",
+      "city": "Bodhgaya, Bihar, India",
+      "relicDescription": "hair",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Bodhgaya",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.08333333333333333
+    },
+    {
+      "sourceId": "recEIaqG3AkCmP6mS",
+      "saintId": "cms0w7er603az07qi1zah564g",
+      "name": "Sri 108 Sri Narayan Das ji Bhakta Mali Mamaji",
+      "tier": "Tertiary",
+      "city": "Patna, Bihar, India; Kadamkunha",
+      "relicDescription": "Bell, pen, thread from clothes ",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Patna",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.16666666666666666
+    },
+    {
+      "sourceId": "recV9C9kIiVVqlPpw",
+      "saintId": "cms0w7ivr088x07qikymkkncn",
+      "name": "Sri Maharshri Sahi Swami ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Patna, Bihar, India; Bihar Ram Lakhan Path; Ashok Nagar; Lohia Nagar",
+      "relicDescription": "Ashes from his body",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Patna",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.16666666666666666
+    },
+    {
+      "sourceId": "recycW2GnQ4n8xXV0",
+      "saintId": "cms0w7jrj095m07qix6z2lizh",
+      "name": "Sri Dashrath Manjhi",
+      "tier": "Tertiary",
+      "city": "Gaya, Bihar, India",
+      "relicDescription": "",
+      "destination": "73",
+      "section": "Northeast devotional, Buddhist & Bihar",
+      "family": "Gaya",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recbdw5UUfTtrzYtA",
+      "saintId": "cms0w7dx4027m07qic4cs8yy7",
+      "name": "Sri Shrimad Swami Paramananda",
+      "tier": "Tertiary",
+      "city": "Bardwan, West Bengal, India; Raina; Burdwan; Banagram, Bardhaman, India",
+      "relicDescription": "Footpad from his shoes and ash",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Bardhaman",
+      "rationale": "Includes both Ram Thakur observations; preserve them as separate holdings.",
+      "reviewNotes": [
+        "Includes both Ram Thakur observations; preserve them as separate holdings."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.16666666666666666
+    },
+    {
+      "sourceId": "recEl1aeAqZWFDMSu",
+      "saintId": "cms0w7esh03cq07qia2tm3c8o",
+      "name": "Sri Ram Thakur Maharaj",
+      "tier": "Tertiary",
+      "city": "Burdwaan, West Bengal, India; Burdwan",
+      "relicDescription": "",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Bardhaman",
+      "rationale": "Includes both Ram Thakur observations; preserve them as separate holdings.",
+      "reviewNotes": [
+        "Includes both Ram Thakur observations; preserve them as separate holdings."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.16666666666666666
+    },
+    {
+      "sourceId": "recFwJWKusgV51Uso",
+      "saintId": "cms0w7f4c03s807qip8fhy8oo",
+      "name": "Sri Haridas Dey",
+      "tier": "Tertiary",
+      "city": "Burdwaan, West Bengal, India; Bardwan, West Bengal, India",
+      "relicDescription": "Clothes from his materialized deity ",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Bardhaman",
+      "rationale": "Includes both Ram Thakur observations; preserve them as separate holdings.",
+      "reviewNotes": [
+        "Includes both Ram Thakur observations; preserve them as separate holdings."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "recfzhFIVbBPDkCYS",
+      "saintId": "cms0w7f4v03sw07qis8k6570z",
+      "name": "Sri Shrimad Swami Abhayanand Giri Paramahamsa Dev",
+      "tier": "Tertiary",
+      "city": "Khaja Anowar Berh, Bardwan, West Bengal, India; Om kleem Ashram",
+      "relicDescription": "Piece from the padukas ",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Bardhaman",
+      "rationale": "Includes both Ram Thakur observations; preserve them as separate holdings.",
+      "reviewNotes": [
+        "Includes both Ram Thakur observations; preserve them as separate holdings."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.16666666666666666
+    },
+    {
+      "sourceId": "recSYEInZCyvDPkGk",
+      "saintId": "cms0w7i8g07jr07qixjwk5ig7",
+      "name": "Sri Abhijeet Roy",
+      "tier": "Tertiary",
+      "city": "Bardwan, West Bengal, India; Khashbagan; Loknath Ashram; Burdwan",
+      "relicDescription": "Peacock feather from his Gopal, thread from his asan and sheet ",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Bardhaman",
+      "rationale": "Includes both Ram Thakur observations; preserve them as separate holdings.",
+      "reviewNotes": [
+        "Includes both Ram Thakur observations; preserve them as separate holdings."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.16666666666666666
+    },
+    {
+      "sourceId": "recX9wYe8fUdPLhPX",
+      "saintId": "cms0w7jfk08t607qiursu89q6",
+      "name": "Sri Rām Thakur",
+      "tier": "Tertiary",
+      "city": "Bardwan, West Bengal, India; Mirchoba; Chotonilpur",
+      "relicDescription": "Piece from his mattress",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Bardhaman",
+      "rationale": "Includes both Ram Thakur observations; preserve them as separate holdings.",
+      "reviewNotes": [
+        "Includes both Ram Thakur observations; preserve them as separate holdings."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": null
+    },
+    {
+      "sourceId": "rec0SGXTdsSl2P73u",
+      "saintId": "cms0w7caz005p07qid7kttbkz",
+      "name": "Sri Srimad Balaananda Brahmachari Maharaj",
+      "tier": "Tertiary",
+      "city": "Rishra, West Bengal, India; Premashram in Rishra; Ujjain; Narmada Region",
+      "relicDescription": "Sichel=kind of knife he used to cut his way during his wanderings..3 times parikram in Narmada region",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Rishra",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.2
+    },
+    {
+      "sourceId": "recx5AJ8L5CdLzJJy",
+      "saintId": "cms0w7jdz08rk07qiiy0vbbpm",
+      "name": "Sri Srimad Tarananda Bramachari",
+      "tier": "Tertiary",
+      "city": "Rishra, West Bengal, India; Premashram in Rishra; Ujjain; Narmada Region",
+      "relicDescription": "japa mala\n",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Rishra",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.08333333333333333
+    },
+    {
+      "sourceId": "rec7Jp1JDp4Vm9470",
+      "saintId": "cms0w7dag01da07qi4y8fjeqm",
+      "name": "Sri Govindanand Giri Maharaj",
+      "tier": "Tertiary",
+      "city": "West Bengal; Bongram Ashram",
+      "relicDescription": "",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Bongram",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.1111111111111111
+    },
+    {
+      "sourceId": "recrYgHIIdcjcxN2N",
+      "saintId": "cms0w7hza079x07qi6m901wnc",
+      "name": "Sri Shrimad Sadhanand Giri Maharaj",
+      "tier": "Tertiary",
+      "city": "West Bengal; Bongram Ashram",
+      "relicDescription": "Hair (Jata)",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Bongram",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.1111111111111111
+    },
+    {
+      "sourceId": "recdMxyeocl1lyD6a",
+      "saintId": "cms0w7eja030907qiox5whv7r",
+      "name": "Sri Lokanath Baba",
+      "tier": "Tertiary",
+      "city": "Bangladesh",
+      "relicDescription": "Piece from his asan and kamandalu ",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Bangladesh",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recRivuJkmJR7uYVc",
+      "saintId": "cms0w7hvc075a07qicrrinmr3",
+      "name": "Sri Paramahamsa Guruji Sri 108 Mangal Das ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Siliguri, West Bengal, India; Siliguri Pranaami Road; Pranaami Mandir",
+      "relicDescription": "Book covers ",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Siliguri",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recSZ8Fcf0kN0uvm4",
+      "saintId": "cms0w7i9i07kx07qidw4jhbye",
+      "name": "Sri Bhakti Vedanta Tridandi Goswami Maharaj",
+      "tier": "Tertiary",
+      "city": "Siliguri, West Bengal, India; Siliguri Sri Keshava Goswami Gaudiya Math",
+      "relicDescription": "Shoe soles and Mala bead ",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Siliguri",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.2
+    },
+    {
+      "sourceId": "recVcmAKuNX8Dpp54",
+      "saintId": "cms0w7iww08a007qikhranewb",
+      "name": "Brahmachari Sri Anilananda Maharaj",
+      "tier": "Tertiary",
+      "city": "Serampur, West Bengal, India",
+      "relicDescription": "his mirror (only, frame is new)",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Serampur",
+      "rationale": "City / locality group",
+      "reviewNotes": [],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": 0.14285714285714285
+    },
+    {
+      "sourceId": "rec0UdBlKfO9mbpZD",
+      "saintId": "cms0w7cb8006207qix8q1aash",
+      "name": "Sri Mokshada Sundari Devi",
+      "tier": "Tertiary",
+      "city": "Bangladesh; Kheora",
+      "relicDescription": "clothes (her sannyas clothes) and blessed picture from her (she blessed) and",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Anandamayi Ma · household & disciples",
+      "rationale": "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed.",
+      "reviewNotes": [
+        "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed."
+      ],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "rec41qsOfiZMDpPHZ",
+      "saintId": "cms0w7cpr00o107qillguaaa6",
+      "name": "Sri Swami Shudanshu Maharaj",
+      "tier": "Secondary",
+      "city": "Serampur, West Bengal, India",
+      "relicDescription": "thread of robe",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Anandamayi Ma · household & disciples",
+      "rationale": "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed.",
+      "reviewNotes": [
+        "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed."
+      ],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": 0.0625
+    },
+    {
+      "sourceId": "recBVn7Vp9onOO9Bh",
+      "saintId": "cms0w7e2q02f407qie0yjy7xe",
+      "name": "Sri Anandamayi Ma",
+      "tier": "Primary",
+      "city": "Bangladesh",
+      "relicDescription": "Her hair and shawl, Sari she put on herself, piece from her clothes, 2 Rudrakshas",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Anandamayi Ma · household & disciples",
+      "rationale": "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed.",
+      "reviewNotes": [
+        "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed."
+      ],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recCIuQTzNZY1KNsQ",
+      "saintId": "cms0w7e8c02m507qihab2pdoc",
+      "name": "Sri Baba Bolanath",
+      "tier": "Secondary",
+      "city": "Bangladesh",
+      "relicDescription": "Hair",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Anandamayi Ma · household & disciples",
+      "rationale": "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed.",
+      "reviewNotes": [
+        "Separate collection entry; correspondence with Ma’s husband remains under review. The source records discipleship; no identity merge."
+      ],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recgWx4aYAekvRxg1",
+      "saintId": "cms0w7fbp041v07qin8sforua",
+      "name": "Sri Ramani Mohan Chakrabarti (Bholanath)",
+      "tier": "Secondary",
+      "city": "Haridwar, Uttarakhand, India; Uttarkhand; Dehradun",
+      "relicDescription": "Piece of paper with his handwriting ",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Anandamayi Ma · household & disciples",
+      "rationale": "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed.",
+      "reviewNotes": [
+        "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed."
+      ],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": 0.25
+    },
+    {
+      "sourceId": "recSp8gOh0CJjhDej",
+      "saintId": "cms0w7i4t07g507qibr708u2a",
+      "name": "Sri Swami Kedarnath Maharaj",
+      "tier": "Secondary",
+      "city": "Locality not recorded",
+      "relicDescription": "hair",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Anandamayi Ma · household & disciples",
+      "rationale": "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed.",
+      "reviewNotes": [
+        "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.08333333333333333
+    },
+    {
+      "sourceId": "recdHeSKJd6wfLiaq",
+      "saintId": "cms0w7eh402xm07qi26e8l4xg",
+      "name": "Sri SitaRamDas Omkarnath",
+      "tier": "Primary",
+      "city": "Puri, Odisha, India; Navadwip, West Bengal, India; Puri/Navadwip",
+      "relicDescription": "Hair, Hari naam shawl, wood from his bed, piece from his Padukas, piece from his robe (Anga Vastra)",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Omkarnath & Parankush Ramanuj",
+      "rationale": "Keep the Jaiguru context distinct from Ma’s household. Ma and Omkarnath exchanged visits; this is not a guru edge.",
+      "reviewNotes": [
+        "Keep the Jaiguru context distinct from Ma’s household. Ma and Omkarnath exchanged visits; this is not a guru edge."
+      ],
+      "reportedOrigin": null,
+      "knownShelfProxy": 0.2
+    },
+    {
+      "sourceId": "recich5ddJOLsUnVm",
+      "saintId": "cms0w7foe04i107qiwkkjtma8",
+      "name": "Sri Srimad Swami Parang Kush Ramanuj",
+      "tier": "Secondary",
+      "city": "Kolkata, West Bengal, India; Calcutta; Talandu, India; Triveni, Hooghly, India",
+      "relicDescription": "his Asan, dhoti, shawl, bag from dandha",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Omkarnath & Parankush Ramanuj",
+      "rationale": "Keep the Jaiguru context distinct from Ma’s household. Ma and Omkarnath exchanged visits; this is not a guru edge.",
+      "reviewNotes": [
+        "Keep the Jaiguru context distinct from Ma’s household. Ma and Omkarnath exchanged visits; this is not a guru edge."
+      ],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": 0.3333333333333333
+    },
+    {
+      "sourceId": "recjfGeU4OqaBqtZ2",
+      "saintId": "cms0w7fvw04r307qik4ikz6ak",
+      "name": "Sri Srijivasharan Das",
+      "tier": "Tertiary",
+      "city": "West Bengal, India\nBangladesh",
+      "relicDescription": "Sock",
+      "destination": "23",
+      "section": "Bengal",
+      "family": "Bengal · locality only",
+      "rationale": "Srijivasharan’s source gives West Bengal and Bangladesh, without a town or verified personal connection. No Jaiguru affiliation is asserted.",
+      "reviewNotes": [
+        "Srijivasharan’s source gives West Bengal and Bangladesh, without a town or verified personal connection. No Jaiguru affiliation is asserted."
+      ],
+      "reportedOrigin": "Staging area · reported by curator",
+      "knownShelfProxy": 0.25
+    }
+  ],
+  "groups": [
+    {
+      "id": "ramakrishna-circle-75",
+      "title": "Ramakrishna’s circle",
+      "vitrine": "75",
+      "sourceIds": [
+        "reckV8sJXL5cq978J",
+        "recqrHsjXJuayrZml",
+        "recSUU4X56pAqF1JC",
+        "recXa1fpOwmlwQ4YH",
+        "recgjan7BxjyG7CeZ"
+      ],
+      "rationale": "Reviewed personal circle. Source-specific display connections; canonical identity review remains separate.",
+      "edges": [
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recqrHsjXJuayrZml",
+          "label": "disciple"
+        },
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recXa1fpOwmlwQ4YH",
+          "label": "disciple · recorder"
+        },
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recSUU4X56pAqF1JC",
+          "label": "niece"
+        },
+        {
+          "fromSourceId": "reckV8sJXL5cq978J",
+          "toSourceId": "recgjan7BxjyG7CeZ",
+          "label": "host at Panihati"
+        }
+      ],
+      "kind": "family"
+    },
+    {
+      "id": "addyapeeth-75",
+      "title": "Addyapeeth",
+      "vitrine": "75",
+      "sourceIds": [
+        "recbZIJBveOYqWWs5",
+        "recZPkXeFQBUFoa19"
+      ],
+      "rationale": "Institutional association; keep these two entries distinct.",
+      "edges": [],
+      "kind": "family"
+    },
+    {
+      "id": "kolkata-associates-75",
+      "title": "Other associated displays",
+      "vitrine": "75",
+      "sourceIds": [
+        "rec896V7fs1lwnSkY",
+        "reciI9fE7xVYFuN4u",
+        "recrWjhRIBpUX7A6J",
+        "rectvEBy833q3i4L6"
+      ],
+      "rationale": "Keep each display distinct. Totapuri and Bhagwan Das retain their identity qualifications.",
+      "edges": [],
+      "kind": "family"
+    },
+    {
+      "id": "fill-first-g14",
+      "title": "Buddhist holdings",
+      "vitrine": "73",
+      "sourceIds": [
+        "rec4V2uLs4HP4Ps3d",
+        "recBnLw7Q3ZLCbck4",
+        "recC3zchheU7N9g2E",
+        "recSUaw6o0jRfF08q",
+        "recv7xsxOB32vlFNE",
+        "recX2VUC6rvHjV8Fe",
+        "recZbwL1wz3gD9B70"
+      ],
+      "rationale": "Distinct early and modern traditions; this card does not imply a single teacher tree. Broad Tibet labels are not pinned to an invented city.",
+      "edges": [],
+      "kind": "family"
+    },
+    {
+      "id": "fill-first-g15",
+      "title": "Sankardev & Madhavdev",
+      "vitrine": "73",
+      "sourceIds": [
+        "recaNtSLYQh5Fm4lN",
+        "recOYRXmecpwN3Unl"
+      ],
+      "rationale": "Teacher–disciple",
+      "edges": [
+        {
+          "fromSourceId": "recaNtSLYQh5Fm4lN",
+          "toSourceId": "recOYRXmecpwN3Unl",
+          "label": "disciple · source-recorded"
+        }
+      ],
+      "kind": "family"
+    },
+    {
+      "id": "fill-first-g16",
+      "title": "Shivpuri · identity review",
+      "vitrine": "73",
+      "sourceIds": [
+        "recpyhIScDxJbDdE1",
+        "recsmno4Rquvfnth2"
+      ],
+      "rationale": "The imported Nepal association is unverified; no city point is assigned.",
+      "edges": [],
+      "kind": "family"
+    },
+    {
+      "id": "fill-first-g17",
+      "title": "Bodhgaya",
+      "vitrine": "73",
+      "sourceIds": [
+        "rec1iHJEqLnLP7ImA",
+        "recrR2rQ8fUgEKiDR"
+      ],
+      "rationale": "City / locality group",
+      "edges": [],
+      "kind": "city"
+    },
+    {
+      "id": "fill-first-g18",
+      "title": "Patna",
+      "vitrine": "73",
+      "sourceIds": [
+        "recEIaqG3AkCmP6mS",
+        "recV9C9kIiVVqlPpw"
+      ],
+      "rationale": "City / locality group",
+      "edges": [],
+      "kind": "city"
+    },
+    {
+      "id": "fill-first-g19",
+      "title": "Gaya",
+      "vitrine": "73",
+      "sourceIds": [
+        "recycW2GnQ4n8xXV0"
+      ],
+      "rationale": "City / locality group",
+      "edges": [],
+      "kind": "city"
+    },
+    {
+      "id": "fill-first-g20",
+      "title": "Bardhaman",
+      "vitrine": "23",
+      "sourceIds": [
+        "recbdw5UUfTtrzYtA",
+        "recEl1aeAqZWFDMSu",
+        "recFwJWKusgV51Uso",
+        "recfzhFIVbBPDkCYS",
+        "recSYEInZCyvDPkGk",
+        "recX9wYe8fUdPLhPX"
+      ],
+      "rationale": "Includes both Ram Thakur observations; preserve them as separate holdings.",
+      "edges": [],
+      "kind": "city"
+    },
+    {
+      "id": "fill-first-g21",
+      "title": "Rishra",
+      "vitrine": "23",
+      "sourceIds": [
+        "rec0SGXTdsSl2P73u",
+        "recx5AJ8L5CdLzJJy"
+      ],
+      "rationale": "City / locality group",
+      "edges": [],
+      "kind": "city"
+    },
+    {
+      "id": "fill-first-g22",
+      "title": "Bongram",
+      "vitrine": "23",
+      "sourceIds": [
+        "rec7Jp1JDp4Vm9470",
+        "recrYgHIIdcjcxN2N"
+      ],
+      "rationale": "City / locality group",
+      "edges": [],
+      "kind": "city"
+    },
+    {
+      "id": "fill-first-g23",
+      "title": "Bangladesh",
+      "vitrine": "23",
+      "sourceIds": [
+        "recdMxyeocl1lyD6a"
+      ],
+      "rationale": "City / locality group",
+      "edges": [],
+      "kind": "city"
+    },
+    {
+      "id": "fill-first-g24",
+      "title": "Siliguri",
+      "vitrine": "23",
+      "sourceIds": [
+        "recRivuJkmJR7uYVc",
+        "recSZ8Fcf0kN0uvm4"
+      ],
+      "rationale": "City / locality group",
+      "edges": [],
+      "kind": "city"
+    },
+    {
+      "id": "fill-first-g25",
+      "title": "Serampur",
+      "vitrine": "23",
+      "sourceIds": [
+        "recVcmAKuNX8Dpp54"
+      ],
+      "rationale": "City / locality group",
+      "edges": [],
+      "kind": "city"
+    },
+    {
+      "id": "fill-first-g35",
+      "title": "Anandamayi Ma · household & disciples",
+      "vitrine": "23",
+      "sourceIds": [
+        "rec0UdBlKfO9mbpZD",
+        "rec41qsOfiZMDpPHZ",
+        "recBVn7Vp9onOO9Bh",
+        "recCIuQTzNZY1KNsQ",
+        "recgWx4aYAekvRxg1",
+        "recSp8gOh0CJjhDej"
+      ],
+      "rationale": "Mokshada is Ma’s mother; Ramani Mohan (Bholanath) is her husband. Shudanshu and Kedarnath are source-recorded disciples. Baba Bolanath is a separate collection entry; its correspondence with the husband remains under review.",
+      "edges": [
+        {
+          "fromSourceId": "recBVn7Vp9onOO9Bh",
+          "toSourceId": "rec0UdBlKfO9mbpZD",
+          "label": "mother"
+        },
+        {
+          "fromSourceId": "recBVn7Vp9onOO9Bh",
+          "toSourceId": "recgWx4aYAekvRxg1",
+          "label": "husband"
+        },
+        {
+          "fromSourceId": "recBVn7Vp9onOO9Bh",
+          "toSourceId": "rec41qsOfiZMDpPHZ",
+          "label": "disciple · source-recorded"
+        },
+        {
+          "fromSourceId": "recBVn7Vp9onOO9Bh",
+          "toSourceId": "recSp8gOh0CJjhDej",
+          "label": "disciple · source-recorded"
+        }
+      ],
+      "kind": "family"
+    },
+    {
+      "id": "fill-first-g36",
+      "title": "Omkarnath & Parankush Ramanuj",
+      "vitrine": "23",
+      "sourceIds": [
+        "recdHeSKJd6wfLiaq",
+        "recich5ddJOLsUnVm"
+      ],
+      "rationale": "Keep the Jaiguru context distinct from Ma’s household. Ma and Omkarnath exchanged visits; this is not a guru edge.",
+      "edges": [],
+      "kind": "family"
+    },
+    {
+      "id": "fill-first-g37",
+      "title": "Bengal · locality only",
+      "vitrine": "23",
+      "sourceIds": [
+        "recjfGeU4OqaBqtZ2"
+      ],
+      "rationale": "Srijivasharan’s source gives West Bengal and Bangladesh, without a town or verified personal connection. No Jaiguru affiliation is asserted.",
+      "edges": [],
+      "kind": "city"
+    }
+  ],
+  "space": {
+    "75": {
+      "known": 3.319047619047619,
+      "unknown": 0
+    },
+    "23": {
+      "known": 3.9442460317460317,
+      "unknown": 2
+    },
+    "73": {
+      "known": 2.9285714285714284,
+      "unknown": 1
+    }
+  },
+  "assignmentDigest": "246dc5c974f3879a12f8f8f254e016d4cc535cf6c01549366d828b102d3648f3",
+  "contentDigest": "42eaf603b8e37ca9d9957c47c45b055e4c0002655e74e3523b7a160bfa9c30b7"
+}
