@@ -9,7 +9,7 @@ export function SpnLinkedLocalityMap({points, selected, onSelect, vitrine}: {
   onSelect: (id: string | null) => void;
   vitrine: string;
 }) {
-  const [fit, setFit] = useState<'region' | 'places'>('region');
+  const [fit, setFit] = useState<'region' | 'places'>('places');
   const [zoom, setZoom] = useState(1);
   const [offset,setOffset] = useState([0,0]);
   const drag = useRef<{x:number;y:number;offset:number[]}|null>(null);
