@@ -33,3 +33,7 @@
 - Pushed to `main`: no
 - Merged to `deploy`: pending
 - Production workflow: pending
+
+## Phase ordering follow-up
+
+Tabs: Starter row, East Phase 1, Vraj Phase 1, Ram bhakti, Datta. East and Vraj are promoted based on current receiving work; order is guidance, not a prerequisite chain. Existing guide contracts and all clearing/availability gates are unchanged. The order-only adjustment passed the companion and navigation browser checks again.
