@@ -7,7 +7,7 @@ import {projectScopedMoveGuide} from "./spn-datta-guide";
 import {spnMovementBlockedReason} from "./spn-movement-holds";
 import type {GuideDefinition} from "./spn-starter-guide-registry";
 import type {StarterMoveGuide,PhysicalState,GuideEntry,GuideGroup} from "./spn-move-guide";
-const codes=["74","72","22","21","20","19","11","36","68"];
+const codes=["74","72","68","36","11","21","22","19","20"];
 const clearCodes=["19","20","21","22"];
 const captured=new Map([...east.assignments,...northernVoyage.assignments].map(row=>[row.sourceId,row]));
 const entries:GuideEntry[]=cardsPacket.cards.flatMap(card=>card.rows.map(row=>{

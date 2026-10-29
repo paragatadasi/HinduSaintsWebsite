@@ -13,7 +13,7 @@ test("reviewer combines confirmed East cohort and Nepal without obsolete Bengal 
  for(const id of northernVoyage.pendingReceiverSourceIds){assert.ok(!review.rows.some(r=>r.sourceId===id));assert.ok(review.proposal.pendingPlacements.some(r=>r.sourceId===id));}
 });
 test("Northern guide preserves story coverage, excludes holds and never asserts physical moves",()=>{
- assert.deepEqual(northernMoveGuide.vitrines.map(v=>v.code),["74","72","22","21","20","19","11","36","68"]);
+ assert.deepEqual(northernMoveGuide.vitrines.map(v=>v.code),["74","72","68","36","11","21","22","19","20"]);
  const ids=northernMoveGuide.vitrines.flatMap(v=>[...v.families,...v.cityGroups].flatMap(g=>g.sourceIds));
  assert.equal(ids.length,111);assert.equal(new Set(ids).size,111);
  assert.equal(northernMoveGuide.entries.filter(r=>r.destination==="74").length,23);
