@@ -29,6 +29,7 @@ async function main(){
  await assert.rejects(confirm(await input(incoming.sourceId,"23"),actor,loader),/outgoing objects/);
  const uniform=await input(transfers[1].sourceId,"70");
  const saved=await confirm(uniform,actor,loader);
+ assert.ok(saved.receipt);
  assert.equal((await confirm(uniform,actor,loader)).replayed,true);
  assert.equal(rows[1].destination.code,"18");
  let current=(await read()).rows.find(r=>r.sourceId===transfers[1].sourceId)!;

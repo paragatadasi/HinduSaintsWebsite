@@ -713,3 +713,16 @@ keyboard navigation. Keep phase switching disabled while records are saving.
 The companion room layout stays open. Reviewer rotations start with the cave up;
 compact turn controls share a single row with the map lenses. Place context lives
 quietly below each saint name instead of repeating a separate contextual list.
+
+### Shared curator progress
+
+Keep the companion phase, vitrine and workspace tab in the URL. Background
+progress updates preserve that view and any open form. Use a lightweight ledger
+refresh for remote checks, invalidate stale undo offers, and discard reads that
+cross a local write. Show immediate checkbox feedback with “Saving…”; reserve
+“Saved” for server confirmation and restore the prior state on failure.
+Museum-wide search uses the same quiet search/filter row and standard detail
+dialog. “Proposed” changes the exact source record's destination; “Already moved”
+also requests a guarded physical confirmation. Show partial-save failures plainly.
+Curator additions appear in the overall proposal and receiving phase without
+rewriting the frozen guide or other relics attached to the same saint.

@@ -1,0 +1,43 @@
+"use client";
+import {useEffect,useRef,useState} from "react";
+import type {readCompanionCatalog} from "@/lib/museum-companion-catalog";
+import type {CompanionAddition} from "@/lib/museum-companion-additions-state";
+import {currentLocationLabel,type CompanionRow} from "@/lib/spn-move-guide";
+import {MuseumDetailDialog} from "./museum-detail-dialog";
+type Catalog=Awaited<ReturnType<typeof readCompanionCatalog>>;
+export type CompanionSearchEntry=Catalog["entries"][number];
+export function MuseumCompanionSearch({rows,canManage,disabled,onOpen,onAdd,onCatalog,isPrepared,onPrepare}:{rows:CompanionRow[];canManage:boolean;disabled:boolean;isPrepared:(code:string)=>boolean;onPrepare:(code:string)=>Promise<boolean>;onCatalog:(catalog:Catalog)=>void;onOpen:(id:string,target:string)=>void;onAdd:(addition:CompanionAddition,entry:CompanionSearchEntry,moved:boolean)=>Promise<boolean>}){
+ const [catalog,setCatalog]=useState<Catalog|null>(null),[error,setError]=useState("");
+ const [query,setQuery]=useState(""),[start,setStart]=useState(""),[end,setEnd]=useState(""),[limit,setLimit]=useState(30);
+ const [selected,setSelected]=useState<CompanionSearchEntry|null>(null),[target,setTarget]=useState(""),[shelf,setShelf]=useState("");
+ const [ready,setReady]=useState(false);
+ const [intent,setIntent]=useState("proposed"),[busy,setBusy]=useState(false),[saveError,setSaveError]=useState("");
+ const requestId=useRef<string|null>(null),saving=useRef(false),catalogEpoch=useRef(0);
+ const selectedRef=useRef(selected);selectedRef.current=selected;
+ async function load(){const epoch=++catalogEpoch.current;try{const r=await fetch("/api/admin/museum-companion-catalog",{cache:"no-store"});const data=await r.json();if(!r.ok)throw new Error(data.error||"Could not load museum search.");if(epoch===catalogEpoch.current){setCatalog(data);onCatalog(data);setError("");}return data as Catalog;}catch(e){setError(e instanceof Error?e.message:"Could not load museum search.");}}
+ useEffect(()=>{void load();const refresh=()=>{if(!saving.current&&!selectedRef.current&&document.visibilityState==="visible")void load();};const timer=window.setInterval(refresh,60000);window.addEventListener("focus",refresh);return()=>{window.clearInterval(timer);window.removeEventListener("focus",refresh);};},[]);
+ useEffect(()=>setLimit(30),[query,start,end]);
+ const codes=[...new Set(catalog?.entries.flatMap(e=>e.original?.kind==="vitrine"?[e.original.code]:[])??[])].sort((a,b)=>Number(a)-Number(b));
+ const found=catalog?.entries.filter(e=>(!query.trim()||[e.name,...e.searchNames].some(n=>n.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase())))&&(!start||(start==="unknown"?!e.original:e.original?.kind==="vitrine"&&e.original.code===start))&&(!end||(end==="unknown"?!e.destination:e.destination===end)))??[];
+ function open(entry:CompanionSearchEntry){setSelected(entry);setTarget(entry.destination);setShelf(entry.destinationShelf??"");setIntent("proposed");setReady(false);setSaveError("");requestId.current=null;}
+ async function save(){
+  if(!selected||!target||saving.current||(intent==="moved"&&!isPrepared(target)&&!ready))return;
+  saving.current=true;catalogEpoch.current+=1;setBusy(true);setSaveError("");requestId.current??=crypto.randomUUID();
+  try{
+   if(intent==="moved"&&!isPrepared(target)&&!await onPrepare(target))throw new Error("Readiness could not be saved. Review the message on the page.");
+   const response=await fetch("/api/admin/museum-companion-catalog",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({museumId:"museum-spn",sourceId:selected.sourceId,expectedSourceRevision:selected.sourceRevision,expectedVersion:selected.additionVersion,vitrine:target,shelf,clientRequestId:requestId.current})});
+   const result=await response.json();if(!response.ok){if(response.status<500)requestId.current=null;if(response.status===409){const fresh=await load();const updated=fresh?.entries.find(e=>e.sourceId===selected.sourceId);if(updated)setSelected(updated);}throw new Error(result.error||"Could not save the destination.");}
+   setCatalog(previous=>previous?{...previous,entries:previous.entries.map(e=>e.sourceId===selected.sourceId?{...e,destination:target,additionVersion:result.addition.version}:e)}:previous);
+   const complete=await onAdd(result.addition,selected,intent==="moved");
+   if(complete)setSelected(null);else setSaveError("Destination saved as proposed. The physical move was not confirmed; check the message on the page before retrying.");
+  }catch(e){setSaveError(e instanceof Error?e.message:"Could not save. Your details are still here.");}finally{saving.current=false;setBusy(false);}
+ }
+ return <section className="museum-companion__search" aria-label="Museum-wide saint search"><div className="museum-guide-search">
+ <label className="admin-field"><span>Find a saint</span><input type="search" value={query} onChange={e=>setQuery(e.target.value)}/></label>
+ <label className="admin-field"><span>Starting vitrine</span><select aria-label="Starting vitrine" value={start} onChange={e=>setStart(e.target.value)}><option value="">All</option>{codes.map(c=><option key={c}>{c}</option>)}<option value="unknown">Not recorded</option></select></label>
+ <label className="admin-field"><span>Destination vitrine</span><select aria-label="Destination vitrine" value={end} onChange={e=>setEnd(e.target.value)}><option value="">All</option>{catalog?.vitrines.map(c=><option key={c}>{c}</option>)}<option value="unknown">Not assigned</option></select></label></div>
+ {error?<p role="alert">{error} <button type="button" onClick={()=>void load()}>Retry</button></p>:null}
+ {query.trim()||start||end?<div className="museum-companion__search-results"><p role="status">{catalog?`${found.length} ${found.length===1?"entry":"entries"}`:"Loading museum records…"}</p>{found.slice(0,limit).map(entry=>{const live=rows.find(r=>r.sourceId===entry.sourceId)??entry;return <article className="museum-guide-narrative" key={entry.sourceId}><strong>{entry.name}</strong><p className="muted">{entry.region||"Region not assigned"} · {entry.section||"Section not assigned"}</p><small>From: {currentLocationLabel(live.original)} · Proposed: {entry.destination?`Vitrine ${entry.destination}`:"Not assigned"}</small><p className="muted">Current: {currentLocationLabel(live.current)}</p><div className="review-actions">{entry.destination?<button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>onOpen(entry.sourceId,entry.destination)}>Vitrine {entry.destination}</button>:null}{canManage?<button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={disabled||entry.identityChanged||!entry.saintId||entry.fixedHousing||!!entry.verifiedItemIds.length||!!entry.movementBlockedReason} onClick={()=>open(entry)}>Add to vitrine</button>:null}</div></article>})}{found.length>limit?<button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>setLimit(n=>n+30)}>Show more</button>:null}</div>:null}
+ {selected?<MuseumDetailDialog titleId="addition-title" kicker="Destination" closeLabel="Close destination" onClose={()=>{if(!busy)setSelected(null);}}><h2 id="addition-title">{selected.name}</h2><form onSubmit={event=>{event.preventDefault();void save();}}><label className="admin-field"><span>Vitrine</span><select aria-label="Vitrine" required disabled={busy} value={target} onChange={e=>{setTarget(e.target.value);setReady(false);requestId.current=null;}}><option value="">Choose a vitrine</option>{catalog?.vitrines.map(c=><option key={c}>{c}</option>)}</select></label><label className="admin-field"><span>Shelf (optional)</span><input disabled={busy} value={shelf} onChange={e=>{setShelf(e.target.value);requestId.current=null;}}/></label><fieldset disabled={busy}><legend>Placement</legend><label className="room-move__check"><input type="radio" name="addition-intent" checked={intent==="proposed"} onChange={()=>setIntent("proposed")}/>Proposed</label><label className="room-move__check"><input type="radio" name="addition-intent" checked={intent==="moved"} onChange={()=>setIntent("moved")}/>Already moved</label></fieldset>{intent==="moved"&&!isPrepared(target)&&target?<label className="room-move__check"><input type="checkbox" required checked={ready} onChange={event=>setReady(event.target.checked)} disabled={busy}/>I have checked Vitrine {target}; it is available for this display.</label>:null}{saveError?<p role="alert">{saveError}</p>:null}<button className="museum-admin-button" disabled={busy||disabled||!target}>{busy?"Saving…":intent==="moved"?"Save and confirm moved":"Save proposed destination"}</button></form></MuseumDetailDialog>:null}
+ </section>;
+}
