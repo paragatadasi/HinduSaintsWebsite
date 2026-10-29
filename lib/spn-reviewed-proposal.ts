@@ -1,4 +1,4 @@
-import vraj from "../data/museum/spn-vraj-approved-v17.json";
+import rawVraj from "../data/museum/spn-vraj-approved-v17.json";
 import {vrajMoveGuide} from "./spn-vraj-guide";
 import overlay from "../data/museum/spn-approved-proposal-overlay-v1.json";
 import {currentSpnProposalRelease} from "./spn-current-proposal";
@@ -9,6 +9,13 @@ import {gosaijiSaiMoveGuide} from "./spn-gosaiji-sai-guide";
 import {dattaMoveGuide} from "./spn-datta-guide";
 import {starterMoveGuide} from "./spn-starter-move-guide";
 import {ramBhaktiMoveGuide} from "./spn-ram-bhakti-guide";
+import type {ProposalObservation} from "./spn-room-proposal";
+const vraj: {
+ version:string;
+ assignments:{sourceId:string;saintId:string|null;destination:string;capturedTier:string;capturedBaseline:ProposalObservation["baseline"];spaceEstimate:number|null}[];
+ caseStories:Record<string,string>;
+ topPlacement:Record<string,{sourceIds:string[];label:string}>;
+} = rawVraj;
 import type {MuseumSaintPlacement} from "./museum-proposals";
 
 export const latestSpnReviewVersion=vraj.version;
@@ -21,7 +28,7 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[]){
   tier:change.capturedTier??row.tier,baseline:change.capturedBaseline??row.baseline}:row;});
  const vrajById=new Map(vraj.assignments.map(row=>[row.sourceId,row]));
  if(vrajById.size!==167||vraj.assignments.some(change=>!originals.some(row=>row.sourceId===change.sourceId&&row.saintId===change.saintId)))throw new Error("The approved Vraj source identities changed.");
- const scoped=amended.map(row=>{const change=vrajById.get(row.sourceId);return change?{...row,vitrine:change.destination,tier:change.capturedTier,baseline:change.capturedBaseline??row.baseline}:row;});
+ const scoped:ProposalObservation[]=amended.map(row=>{const change=vrajById.get(row.sourceId);return change?{...row,vitrine:change.destination,tier:change.capturedTier,baseline:change.capturedBaseline??row.baseline}:row;});
  const reconciled=reconcileSpnRoomProposal(scoped,current,{acceptedBaseline:true});
  const privateIds=new Set(overlay.excludedFromMuseumDisplay.map(row=>row.sourceId));
  const pendingIds=new Set(overlay.pendingReceiverSourceIds);
