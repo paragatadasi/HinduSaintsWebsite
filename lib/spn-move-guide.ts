@@ -13,7 +13,8 @@ export type GuideGroup = {
 };
 export type StarterMoveGuide = {
  version:string;contentDigest:string;proposalVersion:string;assignmentDigest:string;title:string;entries:GuideEntry[];
- proposalLabel?:string;allowClear?:boolean;phaseLabel?:string;requiredClearVitrines?:string[];clearanceRequiredDestinations?:string[];preparationVitrines?:string[];
+ proposalLabel?:string;allowClear?:boolean;phaseLabel?:string;requiredClearVitrines?:string[];clearanceRequiredDestinations?:string[];preparationVitrines?:string[];previousClearanceVersions?:string[];
+ preparatoryTransfers?:{sourceId:string;name:string;fromVitrine:string;toVitrine:string;finalDestination:string;requiredBefore:string[]}[];
  outgoingDependencies?:{sourceId:string;name:string;previousProposedVitrine:string;proposedDestination:null|string;state:string}[];
  transitionSourceIds?:string[];
  vitrines:{code:string;summary:string;families:GuideGroup[];cityGroups:GuideGroup[]}[];

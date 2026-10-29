@@ -1,4 +1,5 @@
 import { clearCorrectionInput, clearCorrectionOffers, clearCorrectionShelfApplies } from "./museum-clear-correction-domain";
+import { allowsPreparedFixedHousingTransfer, assertPreparatoryTransfers } from "./museum-preparatory-transfers";
 import { preparationInput, projectPreparations, assertSafeCaseClear, projectPhaseClearances, assertPhaseClearance, phaseNeedsClearance, assertPhasePreparation } from "./museum-preparation-domain";
 import { memoizePhysicalSnapshot } from "./museum-physical-snapshot-cache";
 import { physicalUndoInput, physicalUndoOffer } from "./museum-physical-undo-domain";
@@ -134,13 +135,16 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     }
     if(input.guideContext && readStarterGuideDefinition(input.guideContext.guideVersion).readOnly)
       throw new MuseumMoveSessionError(409,"This guide is historical. Reload the current guide before recording a new physical move.");
-    const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length ? undefined : input.records.map(row => row.sourceId));
-    if (input.clearedVitrines?.some(code => !current.vitrineCodes.includes(code))) throw new MuseumMoveSessionError(400, "Choose cleared vitrines in this museum's layout.");
     const phase = input.guideContext ? readStarterGuideDefinition(input.guideContext.guideVersion) : null;
+    const transfers = phase?.physicalScope?.preparatoryTransfers ?? [];
+    const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length ? undefined : [...new Set([...input.records.map(row => row.sourceId), ...transfers.map(row => row.sourceId)])]);
+    if (input.clearedVitrines?.some(code => !current.vitrineCodes.includes(code))) throw new MuseumMoveSessionError(400, "Choose cleared vitrines in this museum's layout.");
+    assertPreparatoryTransfers(input.records, transfers, current.rows);
     const initialCases=phase?.physicalScope?.allowClear ? phase.physicalScope.clearVitrines ?? [] : [];
     if(initialCases.length && (input.clearedVitrines?.length || phaseNeedsClearance(input.records,phase?.physicalScope?.clearanceRequiredDestinations)))
-      assertPhaseClearance(input,initialCases,phase?.context.guideVersion ?? "",await readMuseumPhaseClearances(tx),current.rows,input.records);
-    if(phase?.physicalScope?.preparationVitrines?.length)assertPhasePreparation(input.records,phase.physicalScope.preparationVitrines,await readMuseumPreparations(tx));
+      assertPhaseClearance(input,initialCases,phase?.context.guideVersion ?? "",(await readMuseumPhaseClearances(tx)).map(c=>phase?.physicalScope?.previousClearanceVersions?.includes(c.guideVersion)?{...c,guideVersion:phase.context.guideVersion}:c),current.rows,input.records);
+    const preparationVitrines = [...new Set([...(phase?.physicalScope?.preparationVitrines ?? []), ...transfers.map(row => row.toVitrine)])];
+    if(preparationVitrines.length)assertPhasePreparation(input.records,preparationVitrines,await readMuseumPreparations(tx));
     if (input.clearedVitrines?.length && !initialCases.length) assertSafeCaseClear(input.clearedVitrines, [...current.rows, ...current.unmappedCurrentLocations.map(row=>({currentBasis:"confirmed",current:row.location}))]);
     if (input.clearedVitrines?.length) assertWholeCaseClearing(input.clearedVitrines, [...current.rows.map(row => ({ sourceId: row.sourceId, current: row.current })), ...current.unmappedCurrentLocations.map(row => ({ sourceId: row.sourceId, current: row.location }))], input.records);
     const changes = input.records.map(record => {
@@ -158,7 +162,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         to = { ...to, label: `Vitrine ${to.code}` };
       }
       assertSpnMovementAllowed(row.sourceId, row.current, to);
-      if (row.fixedHousing && !sameMoveLocation(row.current, to)) throw new MuseumMoveSessionError(409, "This display has fixed or special housing. Review that restriction before moving it.");
+      if (row.fixedHousing && !sameMoveLocation(row.current, to) && !allowsPreparedFixedHousingTransfer(row.sourceId, row.current, to, transfers)) throw new MuseumMoveSessionError(409, "This display has fixed or special housing. Review that restriction before moving it.");
       return { sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, name: row.name, original: row.original,
         previous: row.current, previousState: { basis: row.currentBasis, location: row.current, effectiveConfirmedAt: row.currentConfirmed?.confirmedAt ?? null }, location: to, version: row.currentVersion + 1 };
     });

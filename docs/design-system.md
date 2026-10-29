@@ -677,3 +677,11 @@ Clearing is a preparation card, not another tab. Its persisted result must remai
 Family-tree guide entries align relationship captions with the name card, keeping the placement checkbox in a separate column. Per-entry defer/decline and restore controls use the checklist decision state and quiet secondary actions below the card; confirmed placements retain undo rather than suggestion actions.
 
 Approved proposal refinements are a new reviewer option, preserving earlier studies. Map anchors, rosters, family diagrams, place groups and space estimates use the same effective source assignments after current curator choices are reconciled. Unsettled receivers and privately held observations remain in a separate visible review list, outside core counts. Reviewer trees omit physical-location controls; companion trees retain them.
+
+### Phase-aware museum room navigation
+
+The shared room plan accepts an optional list of vitrines with guides and region tones. Available vitrines use the proposal region palette; unavailable ones are faded and disabled. A selected outline remains separate from region color. Choosing an available case selects its phase and vitrine without reloading the companion. Navigation is disabled during pending saves. Current location, preparation acknowledgements and to-dos remain museum-wide.
+
+### Versioned Vraj guide
+
+The 29 October Vraj refinement is a scoped, read-only proposal overlay. Newer curator arrangements take precedence over its captured revisions. The 79/77 fill phase requires an individual availability acknowledgement before placement; no publication action clears or moves holdings. Tradition and locality cohorts are not drawn as unsupported family trees. Explicit top-anchor labels apply only to reviewed source IDs.

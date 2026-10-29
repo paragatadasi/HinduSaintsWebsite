@@ -1,0 +1,830 @@
+{
+  "version": "spn-vraj-fill-guide-2026-10-29-v1",
+  "proposalVersion": "spn-vraj-locked-2026-10-29-v17",
+  "title": "Vraj · 79 & 77",
+  "proposalLabel": "Approved Vraj arrangement",
+  "rows": [
+    {
+      "sourceId": "rec4vALRSNwodo5aX",
+      "saintId": "cms0w7cv700uz07qic04ogje9",
+      "name": "Sri Kishori Babaji",
+      "tier": "Tertiary",
+      "city": "Barsana, Uttar Pradesh, India",
+      "relicDescription": "Perfume, towel and box he uses for this daily service/ puja",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Nimbarka–Kathia",
+      "rationale": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "rec8gBJsufVbExGIk",
+      "saintId": "cms0w7de801i607qiw7dxwlc1",
+      "name": "Sri Mukund Sharan ji",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India; Barsana, Uttar Pradesh, India",
+      "relicDescription": "Shawl",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Nimbarka–Kathia",
+      "rationale": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "recBOFf000fRxR9xB",
+      "saintId": "cms0w7e0i02cg07qin7zpef70",
+      "name": "Sri Haripriya Dasi",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India; Sant Colony",
+      "relicDescription": "Mala, Mala Bag",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Nimbarka–Kathia",
+      "rationale": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "recElWSGbSjVni5mI",
+      "saintId": "cms0w7esv03d907qihdz5iumz",
+      "name": "Pandit Sri Jagannath Das Bhaktmaliji Maharaj",
+      "tier": "Tertiary",
+      "city": "Locality not recorded",
+      "relicDescription": "piece of his blanket?",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Nimbarka–Kathia",
+      "rationale": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recS2SB8Um7wmJ8Rd",
+      "saintId": "cms0w7hzz07ap07qihkasn7jn",
+      "name": "Sri Bhagavati Dasi",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India; Sant Colony",
+      "relicDescription": "Mala, Mala Bag",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Nimbarka–Kathia",
+      "rationale": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "recUBrbp6hmJFTL7p",
+      "saintId": "cms0w7ilj07y307qi887qc5yr",
+      "name": "Sri Bhagawat Sharan Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India; Govardhana",
+      "relicDescription": "white clothes\n",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Nimbarka–Kathia",
+      "rationale": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "recV5620566xzDihs",
+      "saintId": "cms0w7its086u07qi4y6vjo22",
+      "name": "Sri Rupkishor Das Babaji",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "relicDescription": "",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Nimbarka–Kathia",
+      "rationale": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "recags4oiqcsaGmPc",
+      "saintId": "cms0w7dpn01xo07qi29eba46n",
+      "name": "Anant Sri Sampann Sadgurudev Sri Govind Sharan Ji Mahraj",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "relicDescription": "Karava (sadhu water pot) he used for 15 years ",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Nimbarka–Kathia",
+      "rationale": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recwnoNniYdyJ2hAP",
+      "saintId": "cms0w7j9x08o107qia8z35gix",
+      "name": "Sri Dhananjaydas Kathia Baba Maharaj",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India; Brindavan",
+      "relicDescription": "his Asan (yellow/red)",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Nimbarka–Kathia",
+      "rationale": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recwwvwL4vgUnVTCO",
+      "saintId": "cms0w7jb308p907qieh721rb0",
+      "name": "Mahandaleshwar Sri Mahant Tyagi Brijwasi Sri Sarveshwar Das Kathia Babaji Maharaj",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India; 232; Durgapuram Colony; Panighat Vrindavan inside the parikama marg",
+      "relicDescription": "Mala",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Nimbarka–Kathia",
+      "rationale": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "recJf1dK9RiDcD2sE",
+      "saintId": "cms0w7fvs04qy07qi80lcl7jq",
+      "name": "Mata Sri Bhagwati Devi Sharma",
+      "tier": "Tertiary",
+      "city": "Gayatri Pariwar",
+      "relicDescription": "bone",
+      "destination": "79",
+      "section": "Needs Research",
+      "family": "Mathura · Gayatri Pariwar & locality group",
+      "rationale": "Leads: Shriram Sharma Acharya and Bhagwati Devi Sharma, through Gayatri Tapobhumi and Akhand Jyoti. Keep the couple together. Other listed saints share Mathura locality; no mission membership or family link inferred.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recmXwcymGPlpQ7sY",
+      "saintId": "cms0w7gtq05wo07qis37cvfs1",
+      "name": "Sri Ram Sharma Acharya",
+      "tier": "Tertiary",
+      "city": "Gayatri Pariwar",
+      "relicDescription": "bone",
+      "destination": "79",
+      "section": "Needs Research",
+      "family": "Mathura · Gayatri Pariwar & locality group",
+      "rationale": "Leads: Shriram Sharma Acharya and Bhagwati Devi Sharma, through Gayatri Tapobhumi and Akhand Jyoti. Keep the couple together. Other listed saints share Mathura locality; no mission membership or family link inferred.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "rec4X5zisKGrxiShz",
+      "saintId": "cms0w7cvj00ve07qi27q3kzvq",
+      "name": "Sri Narayan Maharaj",
+      "tier": "Tertiary",
+      "city": "Mathura, Uttar Pradesh, India",
+      "relicDescription": "Hand Mala, big Mala bead",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Mathura · Gayatri Pariwar & locality group",
+      "rationale": "Leads: Shriram Sharma Acharya and Bhagwati Devi Sharma, through Gayatri Tapobhumi and Akhand Jyoti. Keep the couple together. Other listed saints share Mathura locality; no mission membership or family link inferred.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recqhQyifno0E9FZt",
+      "saintId": "cms0w7hlq06tt07qiywa0ebx2",
+      "name": "Sri Ramdas Baba",
+      "tier": "Tertiary",
+      "city": "Mathura, Uttar Pradesh, India",
+      "relicDescription": "Mala, Bhagavad Gita ",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Mathura · Gayatri Pariwar & locality group",
+      "rationale": "Leads: Shriram Sharma Acharya and Bhagwati Devi Sharma, through Gayatri Tapobhumi and Akhand Jyoti. Keep the couple together. Other listed saints share Mathura locality; no mission membership or family link inferred.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recTHrXspmkdeNlxT",
+      "saintId": "cms0w7ibp07na07qi9rljadex",
+      "name": "Sri Lakshman Das Tyagi Maharaj (Birjo Baba)",
+      "tier": "Tertiary",
+      "city": "Mathura, Uttar Pradesh, India; Hathkauli",
+      "relicDescription": "Japa Mala ",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Mathura · Gayatri Pariwar & locality group",
+      "rationale": "Leads: Shriram Sharma Acharya and Bhagwati Devi Sharma, through Gayatri Tapobhumi and Akhand Jyoti. Keep the couple together. Other listed saints share Mathura locality; no mission membership or family link inferred.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recYLCU4NbKXK09Yf",
+      "saintId": "cms0w7jub098m07qio8zfbssm",
+      "name": "Sri Bihari Das ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Mathura, Uttar Pradesh, India; Radhe Baba Gaulok Dham Samiti",
+      "relicDescription": "Asan and ash from the dhuni",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "Mathura · Gayatri Pariwar & locality group",
+      "rationale": "Leads: Shriram Sharma Acharya and Bhagwati Devi Sharma, through Gayatri Tapobhumi and Akhand Jyoti. Keep the couple together. Other listed saints share Mathura locality; no mission membership or family link inferred.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "rec5uQS2pz9kEuGon",
+      "saintId": "cms0w7d1k012f07qiy9dm6d33",
+      "name": "Sri Prashant Das Baba",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "relicDescription": "Shawl",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "rec6YZs1zGqm2SaxC",
+      "saintId": "cms0w7d8901a507qitq8nuuso",
+      "name": "Sri Tyagi Baba",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "relicDescription": "Eating Bowl",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "rec82hFqcoW0N6dUe",
+      "saintId": "cms0w7dcu01gf07qi3g0yyb60",
+      "name": "Sri Kunja Bihari Das",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "relicDescription": "Tulsi Necklace",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recA3nxFhZ0PDaF78",
+      "saintId": "cms0w7dm301sp07qinzs7t98h",
+      "name": "Sri Gyaandas ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India; Bihar Kunj; U P",
+      "relicDescription": "Tulsi necklace ",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recAEx5Op0jFyV4JI",
+      "saintId": "cms0w7doq01wg07qi73rsljkf",
+      "name": "Sri Gauranga Das Babaji",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "relicDescription": "Paduka",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recArd2WMWc2wQbcJ",
+      "saintId": "cms0w7dsu021w07qivhvppoa4",
+      "name": "Sri Panduranga (deity)",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "relicDescription": "2 peacock feathers",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recjniR3isfH2T1Bc",
+      "saintId": "cms0w7fy304tq07qixt2tn5pr",
+      "name": "Sri Pagal Babaji Maharaj",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "relicDescription": "his doti",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "reckJqVswMXRwc2uA",
+      "saintId": "cms0w7g78055107qivimmaiie",
+      "name": "Sri Lala Babu",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India; Brindavan",
+      "relicDescription": "Piece of cloth which his Padukas were on",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recL6pd3mneBukCEb",
+      "saintId": "cms0w7ge905ds07qi1lmo9lws",
+      "name": "Sri Usha Mataji",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "relicDescription": "",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recTIvmCmSVHWspHM",
+      "saintId": "cms0w7icl07oa07qiocwf3n4n",
+      "name": "Sri Atul Krishna Das Maharaj",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India; Shanti Padma Ashram; Brindavan 8 A",
+      "relicDescription": "orange shawl\n",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recYhFy1wEWE4YN6A",
+      "saintId": "cms0w7jsb096f07qitqv7e103",
+      "name": "Sri Mahadev",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "relicDescription": "Hair ",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recxHe0WZ1ulo1Quh",
+      "saintId": "cms0w7jie08w207qiu4hz6h1r",
+      "name": "Ramtal, Vrindavan (Brick 2700yrs old)",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India; Mathura, Uttar Pradesh, India",
+      "relicDescription": "Brick",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recyyiy9MkoJX6hJx",
+      "saintId": "cms0w7jzg09e107qidcff1yty",
+      "name": "Sri Priyasharan Baba",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "relicDescription": "",
+      "destination": "77",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "reccicav89HsNJlCr",
+      "saintId": "cms0w7e8302ls07qi2tmvqd96",
+      "name": "Sri Ramdas Babaji",
+      "tier": "Tertiary",
+      "city": "Vrindavan, Uttar Pradesh, India; Charan Pahadi, Barsana, Uttar Pradesh, India",
+      "relicDescription": "green clothes\n",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "reccSd9i0y1gwYVsN",
+      "saintId": "cms0w7ebv02qw07qiejju8u7b",
+      "name": "Sri Brijpaldas",
+      "tier": "Tertiary",
+      "city": "Barsana, Uttar Pradesh, India",
+      "relicDescription": "His shawl and flute ",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "recCSq1SKGyVRlhYK",
+      "saintId": "cms0w7ec202r307qi38fn60n3",
+      "name": "Sri Haridas ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Barsana, Uttar Pradesh, India",
+      "relicDescription": "Towel he was wearing on his head",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "rec6mcBjrRieSiRZx",
+      "saintId": "cms0w7d4h015r07qixmycgwmm",
+      "name": "Sri Baba Ragavindra Das (Australian Baba)",
+      "tier": "Tertiary",
+      "city": "Barsana, Uttar Pradesh, India; Sri Radha Sarovar Gahvar Kund",
+      "relicDescription": "Hair (jata) ",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "recx23ZlxPwkU5ZYy",
+      "saintId": "cms0w7jce08qg07qibi36nbg9",
+      "name": "Sri Ananta Das Babaji",
+      "tier": "Tertiary",
+      "city": "Barsana, Uttar Pradesh, India; Sri Radha Sarovar Gahvar Kund",
+      "relicDescription": "Tulsi Mala he wore for many years on his neck ",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "recAODr4cE5dA0DTg",
+      "saintId": "cms0w7dsj021h07qi0q2rwkix",
+      "name": "Sri Rasheshwari Baba",
+      "tier": "Tertiary",
+      "city": "Barsana, Uttar Pradesh, India; Surya Kund at village Dhawara",
+      "relicDescription": "His favorite book ",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "reccJXiq8YBXjpayo",
+      "saintId": "cms0w7e8u02ms07qisqi3gr41",
+      "name": "Sri Shyamdas Baba",
+      "tier": "Tertiary",
+      "city": "Vraj Bhoomi, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Barsana, Uttar Pradesh, India; Nandgaon, Uttar Pradesh, India; the fields Domilivan",
+      "relicDescription": "Dhoti",
+      "destination": "79",
+      "section": "Gaudiya Vaishnava",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "reck86EKve5tFAi6R",
+      "saintId": "cms0w7g3504zx07qigfcnvy6p",
+      "name": "Sri Ramdas Tyagi Baba",
+      "tier": "Tertiary",
+      "city": "Barsana, Uttar Pradesh, India; Barsana near Barsana Parikrama road",
+      "relicDescription": "Stick",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "recuqae8tso98J177",
+      "saintId": "cms0w7iq8083507qi2xg09t54",
+      "name": "Sri Gargi Mataji",
+      "tier": "Tertiary",
+      "city": "Barsana, Uttar Pradesh, India; Barsana Parikrama Marg",
+      "relicDescription": "Blanket ",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    },
+    {
+      "sourceId": "recWdITS0bLJSxgVM",
+      "saintId": "cms0w7j6j08kk07qif7znjoxx",
+      "name": "Sri Raja Ram Baba",
+      "tier": "Tertiary",
+      "city": "Barsana, Uttar Pradesh, India; Barsana Parikrama Marg",
+      "relicDescription": "Asan ",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [
+        "Keep below the top pending a current living-status check."
+      ],
+      "lifeStatus": {
+        "tag": "May be alive",
+        "basis": "Positive living status in the source record; current status needs checking."
+      }
+    },
+    {
+      "sourceId": "recrJuM5i9L9T7hui",
+      "saintId": "cms0w7hvl075l07qi8rm3k5d6",
+      "name": "Sri Sri 108 Kishor Das Maharaj",
+      "tier": "Tertiary",
+      "city": "Gokul, Uttar Pradesh, India; Vrindavan, Uttar Pradesh, India; Chintaharan Mahadev",
+      "relicDescription": "Scarf, peacock feather book marker",
+      "destination": "79",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "reviewNotes": [],
+      "lifeStatus": {
+        "tag": null,
+        "basis": ""
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "nimbarka-kathia-combined",
+      "vitrine": "77",
+      "title": "Nimbarka–Kathia",
+      "kind": "family",
+      "sourceIds": [
+        "rec4vALRSNwodo5aX",
+        "rec8gBJsufVbExGIk",
+        "recBOFf000fRxR9xB",
+        "recElWSGbSjVni5mI",
+        "recS2SB8Um7wmJ8Rd",
+        "recUBrbp6hmJFTL7p",
+        "recV5620566xzDihs",
+        "recags4oiqcsaGmPc",
+        "recwnoNniYdyJ2hAP",
+        "recwwvwL4vgUnVTCO"
+      ],
+      "rationale": "Eight explicit source-labelled Nimbarka members plus Dhananjaydas (institutionally documented Kathia succession) and Sarveshwar Das (source-named Kathia ashram). One display group, not a verified ten-person guru tree. Keep the Sant Colony pair together. Individual localities retained.",
+      "edges": []
+    },
+    {
+      "id": "vraj27",
+      "vitrine": "79",
+      "title": "Mathura · Gayatri Pariwar & locality group",
+      "kind": "family",
+      "sourceIds": [
+        "recJf1dK9RiDcD2sE",
+        "recmXwcymGPlpQ7sY",
+        "rec4X5zisKGrxiShz",
+        "recqhQyifno0E9FZt",
+        "recTHrXspmkdeNlxT",
+        "recYLCU4NbKXK09Yf"
+      ],
+      "rationale": "Leads: Shriram Sharma Acharya and Bhagwati Devi Sharma, through Gayatri Tapobhumi and Akhand Jyoti. Keep the couple together. Other listed saints share Mathura locality; no mission membership or family link inferred.",
+      "edges": [
+        {
+          "fromSourceId": "recmXwcymGPlpQ7sY",
+          "toSourceId": "recJf1dK9RiDcD2sE",
+          "label": "wife · Gayatri Pariwar"
+        }
+      ]
+    },
+    {
+      "id": "vraj7-5",
+      "vitrine": "77",
+      "title": "Vrindavan",
+      "kind": "city",
+      "sourceIds": [
+        "rec5uQS2pz9kEuGon",
+        "rec6YZs1zGqm2SaxC",
+        "rec82hFqcoW0N6dUe",
+        "recA3nxFhZ0PDaF78",
+        "recAEx5Op0jFyV4JI",
+        "recArd2WMWc2wQbcJ",
+        "recjniR3isfH2T1Bc",
+        "reckJqVswMXRwc2uA",
+        "recL6pd3mneBukCEb",
+        "recTIvmCmSVHWspHM",
+        "recYhFy1wEWE4YN6A",
+        "recxHe0WZ1ulo1Quh",
+        "recyyiy9MkoJX6hJx"
+      ],
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "edges": []
+    },
+    {
+      "id": "vraj7-7",
+      "vitrine": "79",
+      "title": "Barsana",
+      "kind": "city",
+      "sourceIds": [
+        "reccicav89HsNJlCr",
+        "reccSd9i0y1gwYVsN",
+        "recCSq1SKGyVRlhYK",
+        "rec6mcBjrRieSiRZx",
+        "recx23ZlxPwkU5ZYy",
+        "recAODr4cE5dA0DTg",
+        "reccJXiq8YBXjpayo",
+        "reck86EKve5tFAi6R",
+        "recuqae8tso98J177",
+        "recWdITS0bLJSxgVM"
+      ],
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "edges": []
+    },
+    {
+      "id": "vraj14-22",
+      "vitrine": "79",
+      "title": "Gokul–Mahavan",
+      "kind": "city",
+      "sourceIds": [
+        "recrJuM5i9L9T7hui"
+      ],
+      "rationale": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details.",
+      "edges": []
+    }
+  ],
+  "space": {
+    "79": {
+      "entries": 17,
+      "known": 3.6083333333333334,
+      "unknown": 0
+    },
+    "77": {
+      "entries": 23,
+      "known": 4.746428571428571,
+      "unknown": 0
+    }
+  },
+  "assignmentDigest": "3489fa6d142bcefc530063b1e61fc9e72c562b60be745cc782796ab9625e63dd",
+  "contentDigest": "3e6ecaaa8e735078f5a9f1b23cfe8fff844d9f1f56c92aec4e21b00af8468fc5"
+}
