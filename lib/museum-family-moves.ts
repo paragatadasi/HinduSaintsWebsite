@@ -5,30 +5,40 @@ import { Prisma } from "@/lib/generated/prisma/client";
 import { getMuseumProposalData, museumSectionSlug } from "@/lib/museum-proposals";
 import { applyFamilyProposalMoves, familyMoveRevision, proposalFamilyKey } from "@/lib/museum-family-move-domain";
 import { MuseumConflict } from "@/lib/museum-service";
-import { resolveSnapshotIdentity } from "@/lib/museum-domain";
+import { createSnapshotIdentityResolver, resolveSnapshotIdentity } from "@/lib/museum-domain";
 import { applyAcceptedLocalityProposal } from "@/lib/museum-locality-proposals";
 import { buildMuseumView } from "@/lib/museum-proposals";
 import { airtableIdentity } from "@/lib/museum-domain";
 
-export async function getEditableMuseumProposalData(client: Prisma.TransactionClient = db) {
+export async function getEditableMuseumProposalData(client: Prisma.TransactionClient = db, options: {indexSourceIdentities?:boolean;onTiming?:(timing:{phase:string;milliseconds:number;records?:number})=>void} = {}) {
+  let started=performance.now();
+  const measure=(phase:string,records?:number)=>{const now=performance.now();options.onTiming?.({phase,milliseconds:now-started,records});started=now;};
   const original=getMuseumProposalData();
+  measure("editable_baseline_files",original.placements.length);
   const decisions=await readReviewedMuseumDecisions(client);
+  measure("editable_reviewed_decisions",decisions.length);
   const [moves,saints,links,membership]=await Promise.all([
    client.museumFamilyProposalMove.findMany(),
    client.saint.findMany({where:{status:{not:"archived"}},select:{id:true,places:{where:{placeType:"primary"},select:{placeId:true}},visitPlaces:{orderBy:{acceptedAt:"desc"},select:{locality:true,region:true,country:true,localityPlaceId:true}},museumSectionAssignments:{where:{status:"published"},select:{id:true}}}}),
    client.externalRecord.findMany({where:{sourceType:"airtable",entityType:"Saint"},select:{id:true,externalId:true,entityId:true}}),
    client.museumDisplayMembership.findMany({where:{museumId:"museum-spn"}})
   ]);
+  measure("editable_data_queries",saints.length);
   const editable=applyFamilyProposalMoves(original,moves,membership);
+  measure("editable_family_moves",editable.placements.length);
   const bySaint=new Map(saints.map(s=>[s.id,s]));const active=new Set(bySaint.keys());
+  const resolveIdentity=options.indexSourceIdentities===false
+   ? (recordId:string)=>resolveSnapshotIdentity(recordId,links,active)
+   : createSnapshotIdentityResolver(links,active);
   const placements=editable.placements.map(row=>{
-   const resolved=resolveSnapshotIdentity(row.id,links,active);
+   const resolved=resolveIdentity(row.id);
    const saint=resolved.record?.entityId?bySaint.get(resolved.record.entityId):null;
    const visit=saint?.visitPlaces.find(v=>v.localityPlaceId&&saint.places.some(p=>p.placeId===v.localityPlaceId))??null;
    const decision=decisions.find(d=>d.saintId===saint?.id);
    if(decision?.section)return applyReviewedMuseumProposal(row,decision);
    return applyAcceptedLocalityProposal(row,saint?.museumSectionAssignments.length?null:visit,Boolean(row.displayMembership?.detached) || moves.some(m=>m.familyKey===proposalFamilyKey(row)));
   });
+  measure("editable_identity_projection",placements.length);
   const labels=new Map(editable.sections.flatMap(s=>s.families.map(f=>[f.key,f.label] as const)));
   const trees=new Map(editable.sections.flatMap(s=>s.families.filter(f=>f.treeFile).map(f=>[f.key,f.treeFile!] as const)));
   const view=buildMuseumView(placements,editable.membersById,labels,trees,new Set(placements.filter(p=>p.needsResearch).map(p=>p.id)));
@@ -37,6 +47,7 @@ export async function getEditableMuseumProposalData(client: Prisma.TransactionCl
    const empty={...section,total:0,featured:0,secondary:0,tertiary:0,confidence:{high:0,medium:0,low:0},rows:[],families:[],primaryGroups:[],secondaryOnlyGroups:[],secondaryUngrouped:[],tertiaryGroups:[],tertiaryUngrouped:[],geography:[],health:[]};
    view.sections.push(empty);view.sectionBySlug.set(empty.slug,empty);
   }
+  measure("editable_build_view",view.placements.length);
   return {...view,familyMoveOptions:editable.familyMoveOptions};
 }
 

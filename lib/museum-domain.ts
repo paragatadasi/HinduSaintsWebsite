@@ -60,6 +60,21 @@ export function resolveSnapshotIdentity(
   return { reason: "", record };
 }
 
+export function createSnapshotIdentityResolver(
+  records: Parameters<typeof resolveSnapshotIdentity>[1],
+  existingSaintIds: Set<string>
+) {
+  const byRecordId = new Map<string, typeof records>();
+  for (const record of records) {
+    const identity = airtableIdentity(record.externalId);
+    if (identity?.table !== "Saints") continue;
+    const candidates = byRecordId.get(identity.recordId) ?? [];
+    candidates.push(record);
+    byRecordId.set(identity.recordId, candidates);
+  }
+  return (recordId: string) => resolveSnapshotIdentity(recordId, byRecordId.get(recordId) ?? [], existingSaintIds);
+}
+
 export function airtableSourceLink(externalId: string, payload: unknown) {
   const identity = airtableIdentity(externalId);
   if (!identity) return null;

@@ -4,7 +4,7 @@ import { type Prisma } from "./generated/prisma/client";
 import { correctSpnProposal } from "./spn-proposal-corrections";
 import { reconcileSpnRoomProposal } from "./spn-room-proposal";
 import { SPN_WEBSITE_AIRTABLE_BASE_ID } from "./museum-vitrine-source";
-import { readMuseumData } from "./museum-working-data";
+import { readMuseumData,type MuseumReadTiming } from "./museum-working-data";
 import {applyBilashFollowup} from "./spn-bilash-followup";
 import {applyParamanandObjectProposal,paramanandObjectReview} from "./spn-paramanand-reviewed-object";
 import { moveLocation, moveSnapshot, MuseumMoveSessionError, type MoveLocation } from "./museum-move-session-domain";
@@ -13,15 +13,21 @@ export const registeredMoveProposal = { version: proposalData.version, title: pr
 function vitrine(code: string, shelf = ""): MoveLocation | null {
   return code.trim() ? { kind: "vitrine", code: code.trim(), label: `Vitrine ${code.trim()}`, ...(shelf ? { shelf } : {}) } : null;
 }
-export async function readMuseumMoveSessionSource(proposalVersion: string, tx: Prisma.TransactionClient) {
+export async function readMuseumMoveSessionSource(proposalVersion: string, tx: Prisma.TransactionClient,options:{indexSourceIdentities?:boolean;onTiming?:(timing:MuseumReadTiming)=>void}={}) {
+  let started=performance.now();
+  const measure=(phase:string,records?:number)=>{const now=performance.now();options.onTiming?.({phase,milliseconds:now-started,records});started=now;};
   if (proposalVersion !== registeredMoveProposal.version) throw new MuseumMoveSessionError(409, "This proposal version is not registered. Reload the current proposal.");
   const { proposal } = correctSpnProposal({ proposal: proposalData, designData });
-  const working = await readMuseumData(tx);
+  measure("source_baseline",proposal.rows.length);
+  const working = await readMuseumData(tx,options);
+  measure("working_total",working.placements.length);
   const housingEvidenceRevision=working.placements.find(row=>row.sourceRecordId===paramanandObjectReview.sourceId)?.sourceHousingEvidenceRevision;
   const rows = reconcileSpnRoomProposal(applyParamanandObjectProposal(applyBilashFollowup(proposal.rows,working.placements),working.placements), working.placements, {acceptedBaseline:currentSpnProposalRelease.acceptedBaseline});
+  measure("source_reconciliation",rows.length);
   const ids = [...new Set(rows.flatMap(row => [row.sourceId, row.baseline?.placementId].filter((id): id is string => Boolean(id))))];
   const events = await tx.auditEvent.findMany({ where: { entityType: "MuseumArrangement", entityId: { in: ids }, action: { in: ["museum.arrangement.updated", "museum.move.confirmed"] } }, orderBy: [{ createdAt: "desc" }, { id: "desc" }], select: { entityId: true, afterJson: true } });
   const legacy = legacyMoveConfirmations(rows, events);
+  measure("legacy_receipts",events.length);
   const itemImports = await tx.museumCollectionImport.findMany({where:{museumId:"museum-spn",sourceKey:{in:rows.map(row=>`${SPN_WEBSITE_AIRTABLE_BASE_ID}:Saints:${row.sourceId}`)},item:{catalogMuseumId:"museum-spn",status:"verified",catalogMuseum:{archivedAt:null}}},select:{sourceKey:true,itemId:true}});
   const exactItems = new Map<string,string[]>();
   for(const imported of itemImports)if(imported.itemId)exactItems.set(imported.sourceKey,[...new Set([...(exactItems.get(imported.sourceKey)??[]),imported.itemId])]);
