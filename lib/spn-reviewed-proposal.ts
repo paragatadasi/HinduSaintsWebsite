@@ -1,4 +1,5 @@
 import v5 from "../data/museum/spn-vitrine5-addon-v1.json";
+import {applyBilashFollowup} from "./spn-bilash-followup";
 import {projectNorthernPendingReview} from "./spn-pending-review-projection";
 import {northernMoveGuide} from "./spn-northern-guide";
 import eastBaseline from "../data/museum/spn-east-fill-reviewed-baseline-v1.json";
@@ -42,7 +43,7 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
  if(eastById.size!==50||eastBaseline.assignments.some(change=>!vrajScoped.some(row=>row.sourceId===change.sourceId&&row.saintId===change.saintId)))throw new Error("The approved East source identities need reconciliation.");
  const eastScoped=vrajScoped.map(row=>{const change=eastById.get(row.sourceId);return change?{...row,vitrine:change.destination,baseline:change.capturedBaseline}:row;});
  const scoped=applyNorthernVoyage(eastScoped).map(row=>{const change=v5.rows.find(r=>r.sourceId===row.sourceId&&r.saintId===row.saintId);return change?{...row,vitrine:"5",baseline:change.capturedBaseline,tier:change.capturedTier}:row;});
- const reconciled=reconcileSpnRoomProposal(scoped,current,{acceptedBaseline:true}).map(row=>{const alternative=alternatives.find(a=>a.sourceId===row.sourceId);return alternative?{...row,effectiveVitrine:alternative.vitrine,reviewReason:"Curator alternative destination"}:row;});
+ const reconciled=reconcileSpnRoomProposal(applyBilashFollowup(scoped,current),current,{acceptedBaseline:true}).map(row=>{const alternative=alternatives.find(a=>a.sourceId===row.sourceId);return alternative?{...row,effectiveVitrine:alternative.vitrine,reviewReason:"Curator alternative destination"}:row;});
  const privateIds=new Set(overlay.excludedFromMuseumDisplay.map(row=>row.sourceId));
  const pendingIds=new Set([...overlay.pendingReceiverSourceIds,...eastBaseline.heldSourceIds]);
  const pendingPlacements=reconciled.filter(row=>privateIds.has(row.sourceId)||pendingIds.has(row.sourceId)&&!alternatives.some(a=>a.sourceId===row.sourceId)&&row.effectiveVitrine===row.vitrine&&!current.some(record=>record.id===row.baseline?.placementId&&record.arrangement?.vitrine&&["Planned","Implemented"].includes(record.arrangement.status)&&record.arrangement.revision!==row.baseline?.revision)).map(row=>({sourceId:row.sourceId,name:row.name,previousVitrine:row.effectiveVitrine,reason:privateIds.has(row.sourceId)?"Privately held; excluded from museum display":"Outside the approved core; destination still to review"}));

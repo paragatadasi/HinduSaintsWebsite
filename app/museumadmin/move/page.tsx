@@ -1,3 +1,4 @@
+import {projectBilashGuideFollowup} from "@/lib/spn-bilash-followup";
 import {projectNorthernGuide,removeSupersededNorthernSuggestions} from "@/lib/spn-northern-guide";
 import {readGuideAlternativeDestinations} from "@/lib/museum-guide-alternatives";
 import {buildLatestSpnReview} from "@/lib/spn-reviewed-proposal";
@@ -21,7 +22,7 @@ export default async function SpnMoveCompanionPage({searchParams}:{searchParams:
  const [physical,current]=await Promise.all([readMuseumPhysicalLocations(tx=>readMuseumMoveSessionSource(registeredMoveProposal.version,tx)),getMuseumData()]);
  const requested=(await searchParams).phase;
  const phase=requested==="north"||requested==="vraj"||requested==="gosaiji-sai"||requested==="datta"||requested==="ram-bhakti"?requested:"starter";
- const phaseGuides:Record<"starter"|"datta"|"ram-bhakti"|"gosaiji-sai"|"vraj"|"north",StarterMoveGuide>={north:projectNorthernGuide(current.placements,physical),vraj:projectVrajGuide(current.placements,physical),starter:projectStarterDisplayTiers(starterMoveGuide,current.placements),datta:projectDattaGuide(current.placements,physical),"ram-bhakti":projectRamBhaktiGuide(current.placements,physical),"gosaiji-sai":projectRamakrishnaGuide(current.placements,physical)};
+ const phaseGuides:Record<"starter"|"datta"|"ram-bhakti"|"gosaiji-sai"|"vraj"|"north",StarterMoveGuide>={north:projectNorthernGuide(current.placements,physical),vraj:projectVrajGuide(current.placements,physical),starter:projectBilashGuideFollowup(projectStarterDisplayTiers(starterMoveGuide,current.placements),current.placements),datta:projectDattaGuide(current.placements,physical),"ram-bhakti":projectRamBhaktiGuide(current.placements,physical),"gosaiji-sai":projectRamakrishnaGuide(current.placements,physical)};
  for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj"] as const)phaseGuides[key]=removeSupersededNorthernSuggestions(phaseGuides[key]);
  for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj","north"] as const)phaseGuides[key]=projectCurrentGuideLifeStatus(phaseGuides[key],current);
  const alternatives=await readGuideAlternativeDestinations();

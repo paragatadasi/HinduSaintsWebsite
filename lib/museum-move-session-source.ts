@@ -5,6 +5,7 @@ import { correctSpnProposal } from "./spn-proposal-corrections";
 import { reconcileSpnRoomProposal } from "./spn-room-proposal";
 import { SPN_WEBSITE_AIRTABLE_BASE_ID } from "./museum-vitrine-source";
 import { readMuseumData } from "./museum-working-data";
+import {applyBilashFollowup} from "./spn-bilash-followup";
 import { moveLocation, moveSnapshot, MuseumMoveSessionError, type MoveLocation } from "./museum-move-session-domain";
 
 export const registeredMoveProposal = { version: proposalData.version, title: proposalData.title };
@@ -15,7 +16,7 @@ export async function readMuseumMoveSessionSource(proposalVersion: string, tx: P
   if (proposalVersion !== registeredMoveProposal.version) throw new MuseumMoveSessionError(409, "This proposal version is not registered. Reload the current proposal.");
   const { proposal } = correctSpnProposal({ proposal: proposalData, designData });
   const working = await readMuseumData(tx);
-  const rows = reconcileSpnRoomProposal(proposal.rows, working.placements, {acceptedBaseline:currentSpnProposalRelease.acceptedBaseline});
+  const rows = reconcileSpnRoomProposal(applyBilashFollowup(proposal.rows,working.placements), working.placements, {acceptedBaseline:currentSpnProposalRelease.acceptedBaseline});
   const ids = [...new Set(rows.flatMap(row => [row.sourceId, row.baseline?.placementId].filter((id): id is string => Boolean(id))))];
   const events = await tx.auditEvent.findMany({ where: { entityType: "MuseumArrangement", entityId: { in: ids }, action: { in: ["museum.arrangement.updated", "museum.move.confirmed"] } }, orderBy: [{ createdAt: "desc" }, { id: "desc" }], select: { entityId: true, afterJson: true } });
   const legacy = legacyMoveConfirmations(rows, events);
