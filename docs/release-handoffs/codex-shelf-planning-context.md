@@ -19,6 +19,7 @@
 - `npm test`: 757 passed, 1 skipped, 0 failed
 - Focused adapter tests: 8 passed
 - Private captured full-roster projection: 347 accounted for (345 active, Gaudi Das Pandit and Maa Moni explicitly held for changed curator baselines); all 18 cases retained
+- Final packet revision 5: exact-source review refreshed only those two captured baselines while retaining their original history; runtime projection now 347 active, zero changed/pending, no guard relaxation or database writes. Packet SHA256 `0956406b2c20871fb81712ffa933e19129e2861d76012eb9b9f1aeb5e4d1b240`.
 
 ## Deploy Notes
 
