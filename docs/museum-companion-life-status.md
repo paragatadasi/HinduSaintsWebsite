@@ -8,4 +8,6 @@ The century rule is a presentation rule, not a death determination. Only uncerta
 
 Current member text is the current stored record, not fresh verification that someone is living. SamadhiDate prioritizes raw text in the existing museum reader; resolving a raw/numeric canonical contradiction requires a separate exact evidence review rather than assuming this display projection audited it.
 
+The protected SPN tier snapshot includes `canonicalLifeEvidence`, keyed by canonical `saintId`, with `birthYear`, `birthDateRaw`, `samadhiYear` and `samadhiDateRaw`. These are current website fields, separate from imported source assertions. Read a newly generated production snapshot after deploying this export addition; an older export or local database does not establish current canonical dates. This adds audit evidence only, with no date or placement writes.
+
 Tests cover starter metadata retention, exact boundary, year-only ambiguity, range crossing, unknown/narrative birth, explicit living, recorded samadhi, unchanged raw guide, and ambiguous identity. No proposal, physical placement, canonical date or source record is changed.
