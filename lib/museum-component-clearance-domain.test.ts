@@ -23,7 +23,7 @@ test("identity, item, housing and changed-origin protections still apply",()=>{
    assert.throws(()=>isComponentClearance(input,{...row,...changed}));
  assert.equal(isComponentClearance({...input,componentStagingAcknowledgements:[]},row),false);
  assert.throws(()=>assertSpnMovementAllowed(row.sourceId,staging,{...origin,code:"26"}),/stick housing/);
- assert.throws(()=>assertSpnMovementAllowed(v20ComponentSourceIds[1],staging,{...origin,code:"37"}),/stick housing/);
+ assert.throws(()=>assertSpnMovementAllowed(v20ComponentSourceIds[1],staging,{...origin,code:"37"}),/arm-support.*housing/);
 });
 test("partial projection records no whole-source location or walking-stick location",()=>{
  const original={current:origin,currentBasis:"source",currentConfirmed:null,currentVersion:0,currentRevision:"before",sourceRevision:"source"};
