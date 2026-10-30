@@ -12,11 +12,14 @@ import { db } from "@/lib/db";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import { getMuseumProposalData, type MuseumSaintPlacement } from "@/lib/museum-proposals";
 import { getEditableMuseumProposalData } from "@/lib/museum-family-moves";
-import { resolveSnapshotIdentity } from "@/lib/museum-domain";
+import { createSnapshotIdentityResolver, resolveSnapshotIdentity } from "@/lib/museum-domain";
 import { buildWorkingMuseumView, museumRelationshipDetails, type CurrentMuseumSaint } from "@/lib/museum-working-view";
 
 // Private data reader; route entry points must enforce access_museum before calling.
-export async function readMuseumData(client: Prisma.TransactionClient = db, options: {reconcileFamilies?:boolean;applyScopedProposals?:boolean} = {}) {
+export type MuseumReadTiming={phase:string;milliseconds:number;records?:number};
+export async function readMuseumData(client: Prisma.TransactionClient = db, options: {reconcileFamilies?:boolean;applyScopedProposals?:boolean;indexSourceIdentities?:boolean;onTiming?:(timing:MuseumReadTiming)=>void} = {}) {
+  let started=performance.now();
+  const measure=(phase:string,records?:number)=>{const now=performance.now();options.onTiming?.({phase,milliseconds:now-started,records});started=now;};
   const [mirrorLocations, collections, saints, links, definitions, membership, arrangements] = await Promise.all([
     client.airtableMirrorRecord.findMany({
       where: { baseId: SPN_WEBSITE_AIRTABLE_BASE_ID, tableIdOrName: "Saints" },
@@ -63,6 +66,7 @@ export async function readMuseumData(client: Prisma.TransactionClient = db, opti
     client.museumDisplayMembership.findMany({where:{museumId:"museum-spn"}}),
     client.museumArrangement.findMany({where:{museumId:"museum-spn"}})
   ]);
+  measure("data_queries",saints.length);
   const vitrines = projectSourceVitrines(mirrorLocations, links, new Set(saints.map(s => s.id)));
   const current: CurrentMuseumSaint[] = saints.map(s => ({
     collectionItems: collections.get(s.id) || [],
@@ -94,9 +98,13 @@ export async function readMuseumData(client: Prisma.TransactionClient = db, opti
       sampradaya: "", normalizedPlaces: [], needsResearch: a.confidence === "low"
     }))
   }));
+  measure("canonical_projection",current.length);
   const original = getMuseumProposalData();
-  const editable = await getEditableMuseumProposalData(client);
-  let view = buildWorkingMuseumView(editable, current, links, definitions);
+  measure("baseline_files",original.placements.length);
+  const editable = await getEditableMuseumProposalData(client,options);
+  measure("editable_sources",editable.placements.length);
+  let view = buildWorkingMuseumView(editable, current, links, definitions,options);
+  measure("working_view",view.placements.length);
   for (const row of view.placements) {
     row.adminSaintSlug=saints.find(s=>s.id===row.saintId)?.slug;
     if (!row.saintId || row.sourceRecordId) continue;
@@ -115,6 +123,7 @@ export async function readMuseumData(client: Prisma.TransactionClient = db, opti
       family:editable.familyMoveOptions.find(f=>f.key===familyKey)?.revision||null
     });
   }
+  measure("arrangements",view.placements.length);
   if(options.reconcileFamilies!==false){
     const placements=reconcileMuseumFamilies(view.placements.filter(row=>isActiveSpnObservation(row.sourceRecordId??row.id)),saints.flatMap(s=>s.relationshipsFrom));
     const labels=new Map(view.sections.flatMap(s=>s.families.map(f=>[f.key,f.label] as const)));
@@ -128,6 +137,7 @@ export async function readMuseumData(client: Prisma.TransactionClient = db, opti
     rebuilt.sectionBySlug=new Map(rebuilt.sections.map(s=>[s.slug,s]));
     view=rebuilt;
   }
+  measure("family_reconciliation",view.placements.length);
   // Vrindavan deliberately requests the unprojected baseline. SPN decisions
   // never enter that shared inheritance path or update global saint versions.
   if(options.reconcileFamilies!==false&&options.applyScopedProposals!==false){
@@ -147,10 +157,15 @@ export async function readMuseumData(client: Prisma.TransactionClient = db, opti
       rebuilt.sectionBySlug=new Map(rebuilt.sections.map(s=>[s.slug,s]));view=rebuilt;
     }
   }
+  measure("scoped_proposals",view.placements.length);
   const activeIds = new Set(current.map(s => s.id));
+  const resolveIdentity=options.indexSourceIdentities===false
+    ? (recordId:string)=>resolveSnapshotIdentity(recordId,links,activeIds)
+    : createSnapshotIdentityResolver(links,activeIds);
   for (const row of original.placements) {
-    row.saintId = resolveSnapshotIdentity(row.id, links, activeIds).record?.entityId || undefined;
+    row.saintId = resolveIdentity(row.id).record?.entityId || undefined;
   }
+  measure("original_identity_projection",original.placements.length);
   const familyMoveOptions=editable.familyMoveOptions.map(option=>({...option,moveUnavailable:view.placements.some(row=>row.familyReconciliation?.state==="applied"&&[(row.curatorialFamily||row.familyId),row.familyReconciliation.previousFamilyKey].includes(option.key)),arrangement:familyArrangementControl(view.placements.filter(row=>(row.curatorialFamily||row.familyId)===option.key))}));
   const canonicalKeys=[...new Set(view.placements.filter(p=>p.familyId.startsWith("exhibit:")).map(p=>p.familyId))];
   for(const key of canonicalKeys) {
@@ -161,5 +176,6 @@ export async function readMuseumData(client: Prisma.TransactionClient = db, opti
   for(const option of familyMoveOptions)if(view.placements.some(row=>row.spnProposal?.state==="applied"&&[(row.curatorialFamily||row.familyId),row.spnProposal.baselineFamilyKey].includes(option.key)))option.moveUnavailable=true;
   const housingSource=mirrorLocations.find(row=>row.recordId===paramanandObjectReview.sourceId);
   for(const row of view.placements)if(row.sourceRecordId===paramanandObjectReview.sourceId)row.sourceHousingEvidenceRevision=paramanandHousingEvidence(housingSource?.rawFieldsJson);
+  measure("finalize",view.placements.length);
   return { ...view, original, familyMoveOptions };
 }
