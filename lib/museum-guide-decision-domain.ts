@@ -4,8 +4,9 @@ const optionalPlace = z.string().trim().max(100).nullable().optional().transform
 export const guideDecisionInput = z.object({ museumId: z.literal("museum-spn"), guideVersion: z.string().min(1).max(200),
  contentDigest: z.string().regex(/^[a-f0-9]{64}$/), assignmentDigest: z.string().regex(/^[a-f0-9]{64}$/),
  suggestionId: z.string().min(1).max(300), expectedVersion: z.number().int().nonnegative(), clientRequestId: z.string().uuid(),
- decision: z.enum(["pending","deferred","declined"]), note: z.string().trim().max(2000).optional(),
+ decision: z.enum(["pending","deferred","declined","not_on_display"]), note: z.string().trim().max(2000).optional(),
  alternativeVitrine: optionalPlace, alternativeShelf: optionalPlace }).strict().superRefine((value,ctx)=>{
+ if(value.decision==="not_on_display"&&!value.suggestionId.startsWith("row:"))ctx.addIssue({code:"custom",path:["suggestionId"],message:"Mark individual relic records as not on display."});
  if(value.alternativeShelf && !value.alternativeVitrine)ctx.addIssue({code:"custom",path:["alternativeShelf"],message:"Choose an alternative vitrine before adding its shelf."});
  if(value.decision!=="declined" && (value.alternativeVitrine || value.alternativeShelf))ctx.addIssue({code:"custom",path:["decision"],message:"An alternative destination belongs to a declined suggestion."});
 });

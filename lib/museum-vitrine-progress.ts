@@ -8,7 +8,7 @@ export function vitrineProgress(code:string,groups:GuideGroup[],rows:CompanionRo
   const own=decisions.find(d=>d.suggestionId==="row:"+id);
   const inherited=groups.filter(g=>g.sourceIds.includes(id)).map(g=>decisions.find(d=>d.suggestionId===g.id)?.decision);
   const decision=own?.decision??(inherited.includes("declined")?"declined":inherited.includes("deferred")?"deferred":"pending");
-  if(decision==="declined")addressed++;
+  if(decision==="declined"||decision==="not_on_display")addressed++;
   else if(decision==="deferred")deferred++;
  }
  return {total:ids.length,addressed,deferred};

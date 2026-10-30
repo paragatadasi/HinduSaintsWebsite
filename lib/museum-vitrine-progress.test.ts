@@ -16,3 +16,10 @@ test('Northern draft preserves provisional precision and exact source coverage',
  for(const a of allocations){assert.ok(a.suggestedShelfIndex>=1&&a.suggestedShelfIndex<=5);assert.equal(a.actualShelfId,null);assert.equal(a.provisional,true);}
  for(const v of packet.vitrines){const ids=new Set(v.allocations.map(a=>a.sourceId));for(const e of v.relationships){assert.ok(ids.has(e.fromSourceId)&&ids.has(e.toSourceId));}}
 });
+
+test('not on display counts as addressed and restoring reopens the assignment',()=>{
+ const groups=[{id:'family',sourceIds:['a']}] as GuideGroup[];
+ const decision={suggestionId:'row:a',decision:'not_on_display',note:null,version:1} as GuideDecision;
+ assert.deepEqual(vitrineProgress('20',groups,[],[decision]),{total:1,addressed:1,deferred:0});
+ assert.deepEqual(vitrineProgress('20',groups,[],[{...decision,decision:'pending'}]),{total:1,addressed:0,deferred:0});
+});
