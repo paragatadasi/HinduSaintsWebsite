@@ -3,7 +3,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {paramanandObjectReview as review,isReviewedParamanandArmSupport,paramanandProposalResolution,applyParamanandObjectProposal} from "./spn-paramanand-reviewed-object";
 import {spnMovementBlockedReason,assertSpnMovementAllowed} from "./spn-movement-holds";
-import {isComponentClearance} from "./museum-component-clearance-domain";
+import {isComponentClearance,projectComponentPlacement,type ComponentPlacement} from "./museum-component-clearance-domain";
 import type {MuseumSaintPlacement} from "./museum-proposals";
 import type {ProposalObservation} from "./spn-room-proposal";
 const source={sourceId:review.sourceId,saintId:review.saintId,sourceRevision:review.sourceRevision,housingEvidenceRevision:review.housingEvidenceRevision,identityChanged:false};
@@ -35,4 +35,16 @@ test("reviewed whole object cannot acquire a new partial V20 component receipt",
  const input={clearedVitrines:["20"],initialCaseClearAcknowledged:true as const,componentStagingAcknowledgements:[{sourceId:review.sourceId as "recVN6Ty3682Uz2g4",scope:"vitrine_20_contents_only" as const,allOriginPiecesStaged:true as const,walkingSticksNotInVitrine:true as const}],records:[{sourceId:review.sourceId,to:staging}]};
  assert.throws(()=>isComponentClearance(input,{...source,current:origin,fixedHousing:false,verifiedItemIds:[]}),/one complete arm-support/);
  assert.equal(isComponentClearance({...input,componentStagingAcknowledgements:[]},{...source,current:origin,fixedHousing:false,verifiedItemIds:[]}),false);
+});
+
+test("reviewed whole-object staging supersedes partial projection without mutating its receipt",()=>{
+ const receipt:ComponentPlacement={sourceId:review.sourceId,receiptId:"partial-receipt",recordedAt:"2026-10-30T13:43:54Z",revision:"partial-revision",origin,location:staging,scope:"vitrine_20_contents_only",excludedWalkingSticks:{location:null,status:"unverified"},expectedSourceRevision:source.sourceRevision,previousCurrentRevision:"original-revision",previousLocationVersion:0};
+ const saved=structuredClone(receipt);
+ const before=projectComponentPlacement({...source,currentVersion:0,currentRevision:"original-revision",current:origin,currentBasis:"source",currentConfirmed:null,fixedHousing:false,verifiedItemIds:[]},receipt);
+ assert.equal(before.current,null);assert.equal(before.componentPlacement?.receiptId,receipt.receiptId);
+ assert.doesNotThrow(()=>assertSpnMovementAllowed(source.sourceId,before.current,staging,before));
+ assert.equal(isComponentClearance({records:[{sourceId:source.sourceId,to:staging}]},before),false);
+ const after=projectComponentPlacement({...before,currentVersion:1,currentRevision:"whole-revision",current:staging,currentBasis:"confirmed",currentConfirmed:{confirmedAt:"2026-10-30T12:00:00Z"}},receipt);
+ assert.equal(after.componentPlacement,null);assert.deepEqual(after.current,staging);assert.equal(after.currentBasis,"confirmed");assert.equal(after.housingEvidenceRevision,source.housingEvidenceRevision);assert.deepEqual(receipt,saved);
+ for(const housingEvidenceRevision of [undefined,"changed"])assert.throws(()=>assertSpnMovementAllowed(source.sourceId,before.current,staging,{...before,housingEvidenceRevision}),/arm-support/);
 });
