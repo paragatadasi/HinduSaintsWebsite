@@ -1,3 +1,4 @@
+import {readVrajRemainderGuide} from "@/lib/spn-vraj-remainder-source";
 import {projectBilashGuideFollowup} from "@/lib/spn-bilash-followup";
 import {projectNorthernGuide,removeSupersededNorthernSuggestions} from "@/lib/spn-northern-guide";
 import {readGuideAlternativeDestinations} from "@/lib/museum-guide-alternatives";
@@ -21,11 +22,11 @@ export default async function SpnMoveCompanionPage({searchParams}:{searchParams:
  const user=await requireCapability("view_museum_catalog");
  const [physical,current]=await Promise.all([readMuseumPhysicalLocations(tx=>readMuseumMoveSessionSource(registeredMoveProposal.version,tx)),getMuseumData()]);
  const requested=(await searchParams).phase;
- const phase=requested==="north"||requested==="vraj"||requested==="gosaiji-sai"||requested==="datta"||requested==="ram-bhakti"?requested:"starter";
- const phaseGuides:Record<"starter"|"datta"|"ram-bhakti"|"gosaiji-sai"|"vraj"|"north",StarterMoveGuide>={north:projectNorthernGuide(current.placements,physical),vraj:projectVrajGuide(current.placements,physical),starter:projectBilashGuideFollowup(projectStarterDisplayTiers(starterMoveGuide,current.placements),current.placements),datta:projectDattaGuide(current.placements,physical),"ram-bhakti":projectRamBhaktiGuide(current.placements,physical),"gosaiji-sai":projectRamakrishnaGuide(current.placements,physical)};
- for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj"] as const)phaseGuides[key]=removeSupersededNorthernSuggestions(phaseGuides[key]);
- for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj","north"] as const)phaseGuides[key]=projectCurrentGuideLifeStatus(phaseGuides[key],current);
+ const phase=requested==="vraj2"||requested==="north"||requested==="vraj"||requested==="gosaiji-sai"||requested==="datta"||requested==="ram-bhakti"?requested:"starter";
  const alternatives=await readGuideAlternativeDestinations();
+ const phaseGuides:Record<"starter"|"datta"|"ram-bhakti"|"gosaiji-sai"|"vraj"|"vraj2"|"north",StarterMoveGuide>={vraj2:await readVrajRemainderGuide(current,physical,alternatives),north:projectNorthernGuide(current.placements,physical),vraj:projectVrajGuide(current.placements,physical),starter:projectBilashGuideFollowup(projectStarterDisplayTiers(starterMoveGuide,current.placements),current.placements),datta:projectDattaGuide(current.placements,physical),"ram-bhakti":projectRamBhaktiGuide(current.placements,physical),"gosaiji-sai":projectRamakrishnaGuide(current.placements,physical)};
+ for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj"] as const)phaseGuides[key]=removeSupersededNorthernSuggestions(phaseGuides[key]);
+ for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj","vraj2","north"] as const)phaseGuides[key]=projectCurrentGuideLifeStatus(phaseGuides[key],current);
  const guide=phaseGuides[phase];
  return <SpnRoomMoveCompanion initialAlternatives={alternatives} roomTones={{...Object.fromEntries(buildLatestSpnReview(current.placements).designData.options[0].assignments.map(a=>[a.number,a.group])),"23":"E","73":"E","75":"E","79":"B","77":"B"}} phaseGuides={phaseGuides} guide={guide} initialPhysical={physical} allowClear={guide.allowClear??phase==="starter"} phaseLabel={guide.phaseLabel??"Starter row"} phase={phase} canManage={hasCapability(user.roles,"manage_museum")}/>;
 }

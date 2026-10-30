@@ -193,6 +193,10 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     }
     const transfers = [...(phase?.physicalScope?.preparatoryTransfers ?? []), ...additionPhases.flatMap(row => row.physicalScope?.preparatoryTransfers ?? [])];
     const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length ? undefined : [...new Set([...input.records.map(row => row.sourceId), ...transfers.map(row => row.sourceId)])], false);
+    if(input.guideContext?.guideVersion==="spn-vraj-remainder-2026-10-30-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
+      const [{readVrajRemainderGuide},{assertVrajRemainderRecords}]=await Promise.all([import("./spn-vraj-remainder-source"),import("./spn-vraj-remainder-guide")]);
+      assertVrajRemainderRecords(input.records,await readVrajRemainderGuide(await readMuseumData(tx),current,undefined,tx));
+    }
     if (input.clearedVitrines?.some(code => !current.vitrineCodes.includes(code))) throw new MuseumMoveSessionError(400, "Choose cleared vitrines in this museum's layout.");
     assertPreparatoryTransfers(input.records, transfers, current.rows);
     if (input.curatorAddition) {

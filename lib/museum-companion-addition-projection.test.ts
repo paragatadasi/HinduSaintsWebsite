@@ -60,3 +60,13 @@ test("catalog additions preserve explicit and deliberately suppressed life statu
   assert.deepEqual(result.starter.entries[0].lifeStatus,lifeStatus);
  }
 });
+
+test("Vraj remainder owns its cases without borrowing the original phase or a receiving stub",()=>{
+ const guides={north:base("32"),vraj:base("79"),vraj2:base("32")};
+ const result=projectCompanionAdditions(guides,[{...addition,vitrine:"32"}],[entry]);
+ assert.deepEqual(result.vraj2.vitrines[0].cityGroups[0].sourceIds,[entry.sourceId]);
+ assert.equal(result.north.entries.length,0);
+ assert.equal(result.vraj.entries.length,0);
+ assert.equal(result.vraj.contentDigest,guides.vraj.contentDigest);
+ assert.equal(result.vraj2.entries[0].destination,"32");
+});

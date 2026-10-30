@@ -3,6 +3,7 @@ import {northernGuideContext,northernGuideDefinition} from "./spn-northern-guide
 import {ramakrishnaGuideContext,ramakrishnaGuideDefinition} from "./spn-ramakrishna-guide";
 import {fillFirstGuideContext, fillFirstGuideDefinition} from "./spn-fill-first-guide";
 import {vrajGuideContext, vrajGuideDefinition} from "./spn-vraj-guide";
+import {vrajRemainderGuideContext,vrajRemainderGuideDefinition} from "./spn-vraj-remainder-guide";
 import { gosaijiSaiGuideContext, gosaijiSaiGuideDefinition } from "./spn-gosaiji-sai-guide";
 import { readStarterGuideDefinition as readV4, starterGuideContext as v4Context } from "./spn-starter-guide-v4";
 import { ramBhaktiGuideContext, ramBhaktiGuideDefinition } from "./spn-ram-bhakti-guide";
@@ -60,12 +61,13 @@ const cityAlternatives = guide.cityAlternatives.map(cohort => {
 if (new Set(suggestions.map(row => row.id)).size !== suggestions.length) throw new Error("Duplicate registered suggestion identifiers.");
 export const registeredStarterGuide = { ...guide, cityAlternatives, guideContext: starterGuideContext };
 export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinition[] {
-  return [northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,
+  return [northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,
     ramBhaktiGuideContext, dattaGuideContext, starterGuideContext].map(context => readStarterGuideDefinition(context.guideVersion))
     .filter(definition => !definition.readOnly && (definition.suggestions.some(row => row.targetVitrine === vitrine) ||
       Object.values(definition.physicalScope?.destinations ?? {}).includes(vitrine)));
 }
 export function readStarterGuideDefinition(version: string): GuideDefinition {
+  if(version===vrajRemainderGuideContext.guideVersion)return vrajRemainderGuideDefinition;
   if(version===northernGuideContext.guideVersion)return northernGuideDefinition;
   if(version===priorNorthernContext.guideVersion)return {...priorNorthernDefinition,readOnly:true};
   if (version === ramakrishnaGuideContext.guideVersion) return ramakrishnaGuideDefinition;
