@@ -743,3 +743,5 @@ Vitrine navigation uses `museum-vitrine-progress`: muted green fill for confirme
 Shelf cards keep the checkbox and tier in a compact top row, with the name and location using the full width below. Use small secondary text actions rather than outlined buttons; action words and tier labels do not break. Keep the five aligned bands horizontally scrollable when the available width cannot fit readable cards.
 
 Peers in a single family shelf band may form a compact grid instead of a tall stack. Keep family color and conceptual row alignment; wrapping peers never asserts a new relationship or physical shelf measurement. Context-only tree links remain labelled and undirected, with no placement control.
+
+Individual companion declines offer “Not on display” with an optional note. Keep these records in a collapsed, restorable list outside the active checklist; count them as addressed. This decision never sets a storage location or changes physical history.
