@@ -1,3 +1,4 @@
+import v5 from "../data/museum/spn-vitrine5-addon-v1.json";
 import {projectNorthernPendingReview} from "./spn-pending-review-projection";
 import {northernMoveGuide} from "./spn-northern-guide";
 import eastBaseline from "../data/museum/spn-east-fill-reviewed-baseline-v1.json";
@@ -40,7 +41,7 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
  const eastById=new Map(eastBaseline.assignments.map(row=>[row.sourceId,row]));
  if(eastById.size!==50||eastBaseline.assignments.some(change=>!vrajScoped.some(row=>row.sourceId===change.sourceId&&row.saintId===change.saintId)))throw new Error("The approved East source identities need reconciliation.");
  const eastScoped=vrajScoped.map(row=>{const change=eastById.get(row.sourceId);return change?{...row,vitrine:change.destination,baseline:change.capturedBaseline}:row;});
- const scoped=applyNorthernVoyage(eastScoped);
+ const scoped=applyNorthernVoyage(eastScoped).map(row=>{const change=v5.rows.find(r=>r.sourceId===row.sourceId&&r.saintId===row.saintId);return change?{...row,vitrine:"5",baseline:change.capturedBaseline,tier:change.capturedTier}:row;});
  const reconciled=reconcileSpnRoomProposal(scoped,current,{acceptedBaseline:true}).map(row=>{const alternative=alternatives.find(a=>a.sourceId===row.sourceId);return alternative?{...row,effectiveVitrine:alternative.vitrine,reviewReason:"Curator alternative destination"}:row;});
  const privateIds=new Set(overlay.excludedFromMuseumDisplay.map(row=>row.sourceId));
  const pendingIds=new Set([...overlay.pendingReceiverSourceIds,...eastBaseline.heldSourceIds]);

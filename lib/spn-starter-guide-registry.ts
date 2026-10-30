@@ -1,3 +1,4 @@
+import {northernGuideContext as priorNorthernContext,northernGuideDefinition as priorNorthernDefinition} from "./spn-northern-guide-v1";
 import {northernGuideContext,northernGuideDefinition} from "./spn-northern-guide";
 import {ramakrishnaGuideContext,ramakrishnaGuideDefinition} from "./spn-ramakrishna-guide";
 import {fillFirstGuideContext, fillFirstGuideDefinition} from "./spn-fill-first-guide";
@@ -66,6 +67,7 @@ export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinitio
 }
 export function readStarterGuideDefinition(version: string): GuideDefinition {
   if(version===northernGuideContext.guideVersion)return northernGuideDefinition;
+  if(version===priorNorthernContext.guideVersion)return {...priorNorthernDefinition,readOnly:true};
   if (version === ramakrishnaGuideContext.guideVersion) return ramakrishnaGuideDefinition;
   if (version === fillFirstGuideContext.guideVersion) return fillFirstGuideDefinition;
   if (version === vrajGuideContext.guideVersion) return vrajGuideDefinition;

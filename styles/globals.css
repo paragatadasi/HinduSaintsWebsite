@@ -12266,3 +12266,5 @@ select:not([multiple]) {
 .museum-shelf__member .museum-guide-decision__status { white-space:normal; font-size:var(--font-size-companion-small); }
 .museum-shelf__bands { overflow-x:auto; }
 .museum-shelf__band { min-width:28rem; }
+
+.museum-shelf__column { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr)); align-content:start; }

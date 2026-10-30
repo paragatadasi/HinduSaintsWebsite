@@ -1,9 +1,12 @@
 "use client";
 import {useState,useRef,useLayoutEffect,type ReactNode} from "react";
+import addon from "@/data/museum/spn-vitrine5-shelves-v1.json";
 import packet from "@/data/museum/spn-northern-shelves-v1.json";
 import {currentLocationLabel,isPlaced,type CompanionRow,type GuideEntry} from "@/lib/spn-move-guide";
 
-type Allocation=(typeof packet.vitrines)[number]["allocations"][number] & {isContextOnly?:boolean};
+type Allocation={sourceId:string;name:string;tier?:string;capturedTier?:string;groupId:string;suggestedShelfIndex:number|null;isContextOnly?:boolean;reviewAlerts:{message:string}[]};
+type ShelfPlan={code:string;groups:{id:string;title:string;kind:string}[];allocations:Allocation[];relationships:{fromSourceId:string;toSourceId:string;label:string;direction:string;uncertain:boolean}[];contextNodes?:{id:string;label:string;physicalHolding:boolean}[]};
+const plans:ShelfPlan[]=[...packet.vitrines,...addon.vitrines];
 function TreeLines({children,wide,edges}:{children:ReactNode;wide:boolean;edges:{fromSourceId:string;toSourceId:string;uncertain:boolean}[]}){
  const root=useRef<HTMLDivElement>(null);
  const [paths,setPaths]=useState<{d:string;uncertain:boolean}[]>([]);
@@ -16,7 +19,7 @@ function TreeLines({children,wide,edges}:{children:ReactNode;wide:boolean;edges:
 }
 export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,renderActions}:{vitrine:string;entries:Map<string,GuideEntry>;rows:CompanionRow[];sourceIds:string[];renderControl:(id:string)=>ReactNode;renderActions:(id:string)=>ReactNode}){
  const [expanded,setExpanded]=useState<string|null>(null);
- const plan=packet.vitrines.find(v=>v.code===vitrine);
+ const plan=plans.find(v=>v.code===vitrine);
  if(!plan)return null;
  const allowed=new Set(sourceIds);
  const allocations=plan.allocations.filter(a=>allowed.has(a.sourceId)&&entries.get(a.sourceId)?.destination===vitrine);
@@ -28,7 +31,7 @@ export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,r
   const entry=entries.get(a.sourceId),row=rows.find(r=>r.sourceId===a.sourceId);
   const placed=row&&isPlaced(row,vitrine);
   return <div className="museum-shelf__member" data-group-color={color(a)} key={a.sourceId}>
-   <div className="museum-shelf__card-header">{controls&&!a.isContextOnly?renderControl(a.sourceId):null}<span className="museum-guide-tier">{entry?.tier??a.tier}</span></div><div className="museum-shelf__card-content"><strong>{entry?.name??a.name}</strong>{a.isContextOnly?<small>Context only · no recorded relic</small>:null}
+   <div className="museum-shelf__card-header">{controls&&!a.isContextOnly?renderControl(a.sourceId):null}<span className="museum-guide-tier">{entry?.tier??a.tier??a.capturedTier}</span></div><div className="museum-shelf__card-content"><strong>{entry?.name??a.name}</strong>{a.isContextOnly?<small>Context only · no recorded relic</small>:null}
    <small>{placed?"Placed · ":""}{currentLocationLabel(row?.current??null)}{row?.current&&row.currentBasis!=="confirmed"?" · source-reported":""}</small>
    {entry?.lifeStatus?.tag?<small>{entry.lifeStatus.tag}</small>:null}
    {a.reviewAlerts.length?<details className="museum-shelf__alert"><summary aria-label={`Review placement notes for ${a.name}`}>!</summary>{a.reviewAlerts.map((alert,i)=><p key={i}>{alert.message}</p>)}</details>:null}
@@ -37,7 +40,8 @@ export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,r
  }
  function tree(groupId:string){
   const members=allocations.filter(a=>a.groupId===groupId),memberIds=new Set(members.map(a=>a.sourceId));
-  const edges=(plan?.relationships??[]).filter(e=>memberIds.has(e.fromSourceId)&&memberIds.has(e.toSourceId));
+  const contextIds=new Set(plan?.contextNodes?.map(n=>n.id)??[]);
+  const edges=(plan?.relationships??[]).filter(e=>(memberIds.has(e.fromSourceId)||contextIds.has(e.fromSourceId))&&(memberIds.has(e.toSourceId)||contextIds.has(e.toSourceId)));
   const directed=edges.filter(e=>e.direction!=="none");
   const depths=new Map(members.map(a=>[a.sourceId,0]));
   // A bounded traversal keeps a malformed cycle from hanging the operational view.
@@ -50,7 +54,7 @@ export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,r
   const levels=[...new Set(depths.values())].sort((a,b)=>a-b);
   return <TreeLines wide={wide} edges={directed}>{levels.map(depth=><div className="museum-shelf__generation" key={depth}>{members.filter(a=>depths.get(a.sourceId)===depth).map(a=><div key={a.sourceId} className="museum-shelf__branch">
    {directed.filter(e=>e.toSourceId===a.sourceId).map(e=><small className="museum-shelf__relation" data-uncertain={e.uncertain} key={e.fromSourceId+e.label}>{entries.get(e.fromSourceId)?.name} · {e.label}</small>)}<div data-tree-node={a.sourceId}>{member(a,false)}</div>
-  </div>)}</div>)}{edges.filter(e=>e.direction==="none").map(e=><p className="museum-shelf__relation" data-uncertain={e.uncertain} key={e.fromSourceId+e.toSourceId}>{entries.get(e.fromSourceId)?.name} — {entries.get(e.toSourceId)?.name}: {e.label}</p>)}</TreeLines>;
+  </div>)}</div>)}{edges.filter(e=>e.direction==="none").map(e=><p className="museum-shelf__relation" data-uncertain={e.uncertain} key={e.fromSourceId+e.toSourceId}>{entries.get(e.fromSourceId)?.name??plan?.contextNodes?.find(n=>n.id===e.fromSourceId)?.label} — {entries.get(e.toSourceId)?.name??plan?.contextNodes?.find(n=>n.id===e.toSourceId)?.label}: {e.label}</p>)}</TreeLines>;
  }
  return <section className="museum-shelf" aria-label="Suggested shelf arrangement"><h3>Shelf arrangement</h3><p className="muted">Suggested positions · confirm shelf spacing on site</p>
  <div className="museum-shelf__legend">{groups.map((g,i)=><span data-group-color={i%6} key={g.id}>{g.title} · {g.kind}</span>)}</div>
