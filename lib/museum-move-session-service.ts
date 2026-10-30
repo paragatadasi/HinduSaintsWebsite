@@ -4,6 +4,8 @@ import { db } from "./db";
 import { resolveMuseumPhysicalCurrent, storedPhysicalLocation } from "./museum-physical-location-current";
 import { readLegacyCurrentForSnapshot } from "./museum-move-session-source";
 import { assertSpnMovementAllowed } from "./spn-movement-holds";
+import {assertBilashGuideTarget,bilashFollowup} from "./spn-bilash-followup";
+import {readMuseumData} from "./museum-working-data";
 import { createMoveSession, moveSessionAction, moveSnapshot, moveLocation, sameMoveLocation, assertDistinctMoveSources, assertWholeCaseClearing, MuseumMoveSessionError, type MoveSnapshot, type MoveLocation } from "./museum-move-session-domain";
 export type MoveSessionActor = { id: string; canManage: boolean };
 export type MoveSnapshotLoader = (version: string, tx: Prisma.TransactionClient) => Promise<MoveSnapshot>;
@@ -72,6 +74,8 @@ export async function updateMuseumMoveSession(raw: unknown, actor: MoveSessionAc
     let before: unknown = { version: session.version }, after: unknown;
     if (input.action === "move") {
       assertDistinctMoveSources(input.moves);
+      if(!input.clearedVitrines?.length&&input.moves.some(move=>move.sourceId===bilashFollowup.sourceId&&move.to.kind==="vitrine"&&move.to.code==="57"))
+        assertBilashGuideTarget(input.moves,(await readMuseumData(tx)).placements);
       if (!input.moves.length && !input.clearedVitrines?.length) throw new MuseumMoveSessionError(400, "Choose displays or confirm a cleared vitrine.");
       if (input.clearedVitrines?.some(code => !snapshot.vitrineCodes.includes(code))) throw new MuseumMoveSessionError(400, "Choose vitrines in this registered layout.");
       const currentView = await present(session, tx);

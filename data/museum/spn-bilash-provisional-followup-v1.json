@@ -1,0 +1,20 @@
+{
+  "version": "spn-bilash-provisional-followup-2026-10-30-v1",
+  "sourceId": "recPXP5H1JT02Vdhm",
+  "saintId": "cms0w7hhz06pf07qingfm8o3x",
+  "name": "Sri Shreemad Bhakti Bhilash Bharati",
+  "destination": "29",
+  "capturedBaseline": {
+    "placementId": "recPXP5H1JT02Vdhm",
+    "section": "Needs Research",
+    "tier": "Tertiary",
+    "familyKey": "",
+    "regionTags": [],
+    "revision": "4e2ec14de1c6e2e6582c5b1c1097b336063877cf8b311f91c3fa1343f7f64c2a",
+    "proposalRevision": "7eaa0dda795479d02bb8b23bd14d757cf40a500a0b3ec5f7e8fcc59fc167c567"
+  },
+  "qualifier": "Provisional Gaudiya Math display context; exact historical identity/teacher unresolved. No new lineage edge.",
+  "physicalWrites": false,
+  "historicalRelationshipWrites": false,
+  "provenancePacketSha256": "12BB6CA52E4CD96F66F4A4D3E5FFD1E6908EDA6844DBA01DF79DE868481DE289"
+}

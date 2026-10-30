@@ -2,6 +2,8 @@ import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
 import {readGuideAlternativeDestinations} from "./museum-guide-alternatives";
 import { readEffectiveCompanionAdditions } from "./museum-companion-additions-state";
 import { assertCurrentNorthernGuideTargets } from "./spn-northern-voyage";
+import {assertBilashGuideTarget,bilashFollowup} from "./spn-bilash-followup";
+import {readMuseumData} from "./museum-working-data";
 import { currentReceiverGuideDefinitions } from "./spn-starter-guide-registry";
 import {spnDuplicateObservations} from "./spn-observation-suppression";
 import { clearCorrectionInput, clearCorrectionOffers, clearCorrectionShelfApplies } from "./museum-clear-correction-domain";
@@ -154,6 +156,9 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     if(input.guideContext && readStarterGuideDefinition(input.guideContext.guideVersion).readOnly)
       throw new MuseumMoveSessionError(409,"This guide is historical. Reload the current guide before recording a new physical move.");
     assertCurrentNorthernGuideTargets(input);
+    if(input.guideContext&&!input.alternativeDecision&&!input.curatorAddition&&!input.clearedVitrines?.length&&
+       input.records.some(row=>row.sourceId===bilashFollowup.sourceId&&row.to.kind==="vitrine"&&row.to.code==="57"))
+      assertBilashGuideTarget(input.records,(await readMuseumData(tx)).placements);
     if(input.alternativeDecision){
       if(!input.guideContext||input.clearedVitrines?.length)throw new MuseumMoveSessionError(400,"Reload the alternative destination before confirming it.");
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
