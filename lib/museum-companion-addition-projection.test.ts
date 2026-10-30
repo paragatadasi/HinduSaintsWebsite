@@ -40,3 +40,15 @@ test("removed and changed source additions are ignored while current additions s
  const result=currentCompanionAdditions([addition,{...addition,sourceId:"removed"},{...addition,sourceId:"changed"}],[valid,{...valid,sourceId:"changed",sourceRevision:"new revision"}]);
  assert.deepEqual(result,[addition]);
 });
+
+test("starter destination wins over a northern receiving stub regardless of insertion order",()=>{
+ const north=base("36");north.entries=[{...entry,destination:"36"}];north.vitrines[0].cityGroups=[{id:"transfer",title:"Transfer",sourceIds:[entry.sourceId],rationale:"",suggestedVitrines:["36"]}];
+ const starter=base("36");
+ const original=JSON.stringify(north);
+ const result=projectCompanionAdditions({north,starter},[{...addition,vitrine:"36"}],[entry]);
+ assert.deepEqual(result.starter.vitrines[0].cityGroups[0].sourceIds,[entry.sourceId]);
+ assert.equal(result.north.vitrines.length,0);
+ assert.equal(JSON.stringify(north),original);
+ const again=projectCompanionAdditions(result,[{...addition,vitrine:"36"}],[entry]);
+ assert.deepEqual(again.starter.vitrines[0].cityGroups[0].sourceIds,[entry.sourceId]);
+});
