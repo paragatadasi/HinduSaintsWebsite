@@ -13,6 +13,7 @@ export type GuideGroup = {
  edges?:{fromSourceId:string;toSourceId:string;label:string;basis?:string}[];
 };
 export type StarterMoveGuide = {
+ bilashFollowup?:{sourceId:string;saintId:string;destination:string|null;status:"provisional"|"newer_curator_destination_retained"|"needs_review";reason:string;qualifier:string};
  version:string;contentDigest:string;proposalVersion:string;assignmentDigest:string;title:string;entries:GuideEntry[];
  proposalLabel?:string;allowClear?:boolean;clearancePerDestination?:boolean;phaseLabel?:string;requiredClearVitrines?:string[];clearanceRequiredDestinations?:string[];preparationVitrines?:string[];previousClearanceVersions?:string[];
  preparatoryTransfers?:{sourceId:string;name:string;fromVitrine:string;toVitrine:string;finalDestination:string;requiredBefore:string[]}[];
