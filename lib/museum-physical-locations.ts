@@ -20,7 +20,7 @@ import { moveSnapshot, moveLocation, sameMoveLocation, assertDistinctMoveSources
 import { readStarterGuideDefinition, registeredStarterGuide, starterGuideContext } from "./spn-starter-guide-registry";
 import { physicalFingerprint, resolveMuseumPhysicalCurrent, storedPhysicalLocation } from "./museum-physical-location-current";
 import type { MoveSessionActor } from "./museum-move-session-service";
-import { componentStagingAcknowledgements, assertComponentClearanceScope, isComponentClearance, projectComponentPlacement } from "./museum-component-clearance-domain";
+import { v20ComponentSourceIds, componentStagingAcknowledgements, assertComponentClearanceScope, isComponentClearance, projectComponentPlacement } from "./museum-component-clearance-domain";
 import { readComponentPlacements, readComponentCorrections } from "./museum-component-clearances";
 import { hasOnlySpnHousingReviewHold } from "./spn-movement-holds";
 
@@ -54,7 +54,7 @@ export async function readPhysicalLocationView(loader: PhysicalSnapshotLoader, t
   const [positions, links, components] = await Promise.all([
     tx.museumMoveCurrentLocation.findMany({ where: { museumId: "museum-spn", ...(sourceIds ? { sourceId: { in: sourceIds } } : {}) } }),
     tx.externalRecord.findMany({ where: { sourceType: "airtable", externalId: { in: selected.flatMap(row => row.sourceKey ? [row.sourceKey] : []) } }, select: { externalId: true, entityType: true, entityId: true } }),
-    readComponentPlacements(tx)
+    selected.some(row=>v20ComponentSourceIds.some(id=>id===row.sourceId))?readComponentPlacements(tx):Promise.resolve([])
   ]);
   const rows = selected.map(row => {
     const link = links.find(link => link.externalId === row.sourceKey);
@@ -375,8 +375,9 @@ export async function correctMuseumClear(raw:unknown,actor:MoveSessionActor,load
 }
 
 export async function readMuseumPhaseClearances(tx:Prisma.TransactionClient=db,loader?:PhysicalSnapshotLoader){
+ const correctionsRead=readComponentCorrections(tx);
  const [events,corrections,components]=await Promise.all([tx.auditEvent.findMany({where:{action,entityType:receiptType,entityId:{startsWith:"museum-spn:"},
-  afterJson:{path:["clearedVitrines"],not:[]}},select:{id:true,createdAt:true,afterJson:true}}),readComponentCorrections(tx),readComponentPlacements(tx)]);
+  afterJson:{path:["clearedVitrines"],not:[]}},select:{id:true,createdAt:true,afterJson:true}}),correctionsRead,readComponentPlacements(tx,correctionsRead)]);
  const validComponents=new Set<string>();
  if(components.length){
   if(!loader){const source=await import("./museum-move-session-source");loader=transaction=>source.readMuseumMoveSessionSource(source.registeredMoveProposal.version,transaction);}
