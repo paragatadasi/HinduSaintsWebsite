@@ -1,0 +1,292 @@
+{
+  "version": "spn-vitrine5-approved-integration-2026-10-30-v1",
+  "rows": [
+    {
+      "sourceId": "rec0H3FSQUnqIH95X",
+      "saintId": "cms0w7c7v002x07qisdxohvxv",
+      "name": "Sri Yogi Ramaiah",
+      "destination": "5",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "rec0H3FSQUnqIH95X",
+        "section": "Shaiva Siddhanta & Tamil Traditions",
+        "tier": "Secondary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "31b483d52e841d98a9b7bf519994c9c3c6000d030e082d16c518e6b484c53a83",
+        "proposalRevision": "c6969c82a70258542fee8c1dccbb4960e220826c9db813a93a22866a6cefbee3"
+      },
+      "city": "Chettinad, Tamil Nadu, India",
+      "description": "hair",
+      "spaceEstimate": 0.08333333333333333
+    },
+    {
+      "sourceId": "rec6S1CQt0w8YmPjm",
+      "saintId": "cms0w7d5x017b07qis69tnmlg",
+      "name": "Sri Swami Keshavanandji",
+      "destination": "5",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "rec6S1CQt0w8YmPjm",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "0dc1023390379e6881a72f74de8f7e980ee773f6fed523b20fca3329037b685f",
+        "proposalRevision": "31ae3ce743c2b995f9c677104412fd750c3df528d0f7fa95ce7710399a887d84"
+      },
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "description": "Padukas",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "rec9T6tpXGtrCWdxV",
+      "saintId": "cms0w7dkz01r407qiwpvn2sa1",
+      "name": "Sri Hariharananda Giri",
+      "destination": "5",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "rec9T6tpXGtrCWdxV",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "7e3d234ffba7196cfb6d08ee1b0f382f5426f37770fd0a9780377294c949d01a",
+        "proposalRevision": "ec8109d9aec175a2103ef9ac3815c71f984d2055fb8aa39f568767720fc0f22b"
+      },
+      "city": "Mayapur, West Bengal, India",
+      "description": "Towel (rest in Temple Vitrine 6 A)",
+      "spaceEstimate": 0.16666666666666666
+    },
+    {
+      "sourceId": "recD6sS3ZtGRPqxjs",
+      "saintId": "cms0w7eec02tx07qike1mkz5q",
+      "name": "Sri Yogi S.A.A.Ramaiah",
+      "destination": "5",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recD6sS3ZtGRPqxjs",
+        "section": "Shaiva Siddhanta & Tamil Traditions",
+        "tier": "Secondary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "225d9971214002cea0a415eaed3de708bdc21965669c2ce1034bb7c0d1893608",
+        "proposalRevision": "8aa80606bbe943524b05ec65b8ac15ba5842e9db12d953c2d90c2c1d98e4d32d"
+      },
+      "city": "Chettinad, Tamil Nadu, India",
+      "description": "white dhoti",
+      "spaceEstimate": 0.2
+    },
+    {
+      "sourceId": "recH8o102sJ3mQ7aT",
+      "saintId": "cms0w7fey046507qi4z4gcbti",
+      "name": "Sri Swami SriYukteshwar Giri",
+      "destination": "5",
+      "capturedTier": "Featured",
+      "capturedBaseline": {
+        "placementId": "recH8o102sJ3mQ7aT",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Featured",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "c0dd4704f1f257ecf5dc9f5326142a577134f38e2995fafa3eab6d608ccd380d",
+        "proposalRevision": "919a23cf188c4167812c0e2e4197f469fdacbbe4c0b5ed26de9ed8f9f14eeb1b"
+      },
+      "city": "Serampur, West Bengal, India; Pune, Maharashtra, India",
+      "description": "",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recIc9E1BwdIFc4OD",
+      "saintId": "cms0w7fnu04hc07qit9nwaudj",
+      "name": "Sri Durga Mata",
+      "destination": "5",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recIc9E1BwdIFc4OD",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "006b25dc03684926fb2b811408325d16851876624dfcebb913c362c71bb63822",
+        "proposalRevision": "86d8de64dcc2aebe5f35dca30c6da632606b069245f06e51d97ab5e9c965236c"
+      },
+      "city": "USA",
+      "description": "Robe, her bed linen",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "reciPBtb5T1Js7Lqz",
+      "saintId": "cms0w7fr004ld07qidykpxgm1",
+      "name": "Sri Paramahamsa Yogananda",
+      "destination": "5",
+      "capturedTier": "Featured",
+      "capturedBaseline": {
+        "placementId": "reciPBtb5T1Js7Lqz",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Featured",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "fb081b064fbd4a9721b2ba04d14634cc4e21e55084c4093b16337b3f4663a25a",
+        "proposalRevision": "5605ce37e4a0b99e44566be26ea31a1fcf216f3f554402fec774310166c2cad6"
+      },
+      "city": "Gorakpur, Uttar Pradesh, India",
+      "description": "his hair, stone from his birthplace ",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recLVwMPBTBcxHJG1",
+      "saintId": "cms0w7gjd05kd07qixd7gbv4h",
+      "name": "Sri Sri Bhupendranath Sanyal",
+      "destination": "5",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recLVwMPBTBcxHJG1",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "c60bbce360e9fbc584b21acbadbaf71a156f1c3cc27b1dcafb50c51e75e6e86f",
+        "proposalRevision": "9c3e11bbf39ecd461e6b71a7049524e9f94e607e8cdf3eb8e3123b1b4b6b6806"
+      },
+      "city": "Puri, Odisha, India",
+      "description": "Shunk nad Saligram ",
+      "spaceEstimate": 0.125
+    },
+    {
+      "sourceId": "recoRltXupeZas8zP",
+      "saintId": "cms0w7h8206dj07qiyvrcuecq",
+      "name": "Mahavatar Kriya Babaji",
+      "destination": "5",
+      "capturedTier": "Featured",
+      "capturedBaseline": {
+        "placementId": "recoRltXupeZas8zP",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Featured",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "67feaec9bce535e58c8e966bcdb669713b1086428f3565a5ca8ea25dc25f106b",
+        "proposalRevision": "dcf6c1d070d7d662d635dd27df650c6d1cf32478efbe4e7b23c962f6ad605d12"
+      },
+      "city": "Badrinath, Uttarakhand, India",
+      "description": "Blessed stone from him, stones and leaves from his cave ",
+      "spaceEstimate": 1.25
+    },
+    {
+      "sourceId": "recu5aN4OfzptkLFs",
+      "saintId": "cms0w7ijz07wd07qi8o570rx3",
+      "name": "Sri Swami 108 Vidyanand ji Maharaj",
+      "destination": "5",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recu5aN4OfzptkLFs",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "1f76807fbd7ee6807089a5f30e0fe421a0963cd2e9a6d87dcdf445d5830e2c5d",
+        "proposalRevision": "a5341636f3ab993b79765687cd6a3b2ddac7f00ab31b2ff908ee3758821f46f3"
+      },
+      "city": "Vrindavan, Uttar Pradesh, India",
+      "description": "Kurta, kitchen apron, bones  ",
+      "spaceEstimate": 0.3333333333333333
+    },
+    {
+      "sourceId": "recUCW4T6Le8f3ZdX",
+      "saintId": "cms0w7ils07yc07qi08agtyap",
+      "name": "Sri Daya Mata",
+      "destination": "5",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recUCW4T6Le8f3ZdX",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "c723ba5920c06a81926ff6ea53b5bfd7a507ef8bfe0924708e7c53e457356241",
+        "proposalRevision": "d9015245200ec0036de053d1e6e262e120b17e6b64e9d498098c87c5ee206259"
+      },
+      "city": "USA",
+      "description": "robe",
+      "spaceEstimate": 0.25
+    },
+    {
+      "sourceId": "recUTlwjCvniL1hEv",
+      "saintId": "cms0w7ir2084007qi1cuzm66g",
+      "name": "Sri Swami Kriyananda",
+      "destination": "5",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recUTlwjCvniL1hEv",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "f1e8db5cc60abdd5fddc12ecade23bd26d6a51372f411b3877ffc71c8182f774",
+        "proposalRevision": "39408af3f7517871738250a17091836d5a987be895d75222d0354b2c90e9767f"
+      },
+      "city": "Azuga, Romania; Assisi, Italy",
+      "description": "",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recwX7dFfmlq9FfAh",
+      "saintId": "cms0w7jbl08pr07qi8w9i43tn",
+      "name": "Sri Motilal Mukhabadhyay, Mukarji",
+      "destination": "5",
+      "capturedTier": "Secondary",
+      "capturedBaseline": {
+        "placementId": "recwX7dFfmlq9FfAh",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Secondary",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "2574824238143fd61eb2455a2c28f7770065269f54053eb3679f1ea040a5d2eb",
+        "proposalRevision": "cf51866a08017d8355c430551ebf0c02823002aceee6887ac0204458f89d6fbe"
+      },
+      "city": "Serampur, West Bengal, India",
+      "description": "piece from his Asan",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recx6n6mmw1tEEnFF",
+      "saintId": "cms0w7jew08si07qiu6p8lh4q",
+      "name": "Sri Lahiri Mahasaya",
+      "destination": "5",
+      "capturedTier": "Featured",
+      "capturedBaseline": {
+        "placementId": "recx6n6mmw1tEEnFF",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Featured",
+        "familyKey": "FAM-004",
+        "regionTags": [],
+        "revision": "f7f7c388950221556d48cd20636337acf9b49046b7a93f931bf2a5270baded9d",
+        "proposalRevision": "1b00ab75ab70c97bf66df65ef6c1f3181c663e6000c5ff7d7cc2833011c816bd"
+      },
+      "city": "Varanasi, Uttar Pradesh, India",
+      "description": "Piece of his asan, Wood from doorframe of his room in Varanasi; Toilet seat",
+      "spaceEstimate": 0.14285714285714285
+    },
+    {
+      "sourceId": "recxiIGSVaGfnTRC8",
+      "saintId": "cms0w7jj908x007qiofxet4qo",
+      "name": "Sri Kanaya Baba",
+      "destination": "5",
+      "capturedTier": "Tertiary",
+      "capturedBaseline": {
+        "placementId": "recxiIGSVaGfnTRC8",
+        "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "875900393f90eff4e53c8b4936f121ed395f87602caf2bc7f8bbaba8c4734fa2",
+        "proposalRevision": "fcd40d254994826b4766d39ad00d657e430c9ceabfd5453ca1e17ab943807064"
+      },
+      "city": "Puri, Odisha, India",
+      "description": "dhoti",
+      "spaceEstimate": 0.16666666666666666
+    }
+  ],
+  "summary": "Babaji’s Kriya family and its branches",
+  "physicalWrites": false
+}

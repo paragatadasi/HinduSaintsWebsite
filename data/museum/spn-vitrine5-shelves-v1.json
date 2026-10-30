@@ -1,0 +1,779 @@
+{
+  "version": "spn-vitrine5-approved-addon-2026-10-30-v1",
+  "status": "roster-approved-shelf-provisional",
+  "approval": "Human finalized V5 and authorized addition to Northern phase with shelf allocation, family branches and uncertainty notes.",
+  "physicalWrites": false,
+  "proposalCase": "5",
+  "geometryVerified": false,
+  "shelfCount": null,
+  "referenceHeightSpaces": 5,
+  "shelfOrder": "conceptual1top–5bottom, physical labels not verified",
+  "vitrines": [
+    {
+      "code": "5",
+      "mode": "whole-case-exchange",
+      "groups": [
+        {
+          "id": "kriya-family",
+          "title": "Babaji’s Kriya family and its branches",
+          "kind": "family",
+          "rationale": "One connected display tree, with distinct teaching, institutional and traditional branches; qualified links do not imply identical kinds of relationship."
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recoRltXupeZas8zP",
+          "saintId": "cms0w7h8206dj07qiyvrcuecq",
+          "name": "Mahavatar Kriya Babaji",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "core",
+          "knownFootprint": 1.25,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Origin master leads at the top. Latest reviewer estimate is1.25 reference height-spaces; actual assembly geometry must be checked and may span conceptual bands.",
+          "reviewAlerts": [
+            {
+              "symbol": "!",
+              "kind": "shelf-fit",
+              "message": "Latest footprint estimate1.25 exceeds one standard height-space comparison. Starting shelf1 is provisional: check actual mount, width and clear height; allow spanning into the next band if needed, while keeping core lineage together."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasisSnapshot": "confirmed",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Featured",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "recx6n6mmw1tEEnFF",
+          "saintId": "cms0w7jew08si07qiu6p8lh4q",
+          "name": "Sri Lahiri Mahasaya",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "lahiri",
+          "knownFootprint": 0.14285714285714285,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Core lineage and its first branches occupy the next upper shelf, directly beneath Babaji.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasisSnapshot": "confirmed",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Featured",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "recH8o102sJ3mQ7aT",
+          "saintId": "cms0w7fey046507qi4z4gcbti",
+          "name": "Sri Swami SriYukteshwar Giri",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "yukteswar",
+          "knownFootprint": 0.14285714285714285,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Core lineage and its first branches occupy the next upper shelf, directly beneath Babaji.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasisSnapshot": "confirmed",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Featured",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "reciPBtb5T1Js7Lqz",
+          "saintId": "cms0w7fr004ld07qidykpxgm1",
+          "name": "Sri Paramahamsa Yogananda",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "yogananda",
+          "knownFootprint": 0.14285714285714285,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Core lineage and its first branches occupy the next upper shelf, directly beneath Babaji.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasisSnapshot": "confirmed",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Featured",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "rec6S1CQt0w8YmPjm",
+          "saintId": "cms0w7d5x017b07qis69tnmlg",
+          "name": "Sri Swami Keshavanandji",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "katyayani",
+          "knownFootprint": 0.25,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Core lineage and its first branches occupy the next upper shelf, directly beneath Babaji.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentSnapshot": {
+            "code": "45",
+            "kind": "vitrine",
+            "label": "Vitrine 45",
+            "shelf": "C"
+          },
+          "currentBasisSnapshot": "source",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Secondary",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "recLVwMPBTBcxHJG1",
+          "saintId": "cms0w7gjd05kd07qixd7gbv4h",
+          "name": "Sri Sri Bhupendranath Sanyal",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "sanyal",
+          "knownFootprint": 0.125,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Core lineage and its first branches occupy the next upper shelf, directly beneath Babaji.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentSnapshot": {
+            "code": "19",
+            "kind": "vitrine",
+            "label": "Vitrine 19",
+            "shelf": "B"
+          },
+          "currentBasisSnapshot": "source",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Secondary",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "rec9T6tpXGtrCWdxV",
+          "saintId": "cms0w7dkz01r407qiwpvn2sa1",
+          "name": "Sri Hariharananda Giri",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "sanyal-yukteswar",
+          "knownFootprint": 0.16666666666666666,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Keep disciples in their teacher’s vertical story column.",
+          "reviewAlerts": [
+            {
+              "symbol": "!",
+              "kind": "source-metadata",
+              "message": "Raw Mayapur / Gaudiya labels do not describe this Karar Ashram Kriya story. Retain source text separately; do not infer Gaudiya identity."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentSnapshot": {
+            "code": "19",
+            "kind": "vitrine",
+            "label": "Vitrine 19",
+            "shelf": "A"
+          },
+          "currentBasisSnapshot": "source",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Secondary",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "recwX7dFfmlq9FfAh",
+          "saintId": "cms0w7jbl08pr07qi8w9i43tn",
+          "name": "Sri Motilal Mukhabadhyay, Mukarji",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "yukteswar",
+          "knownFootprint": 0.14285714285714285,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Keep disciples in their teacher’s vertical story column.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasisSnapshot": "confirmed",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Secondary",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "recIc9E1BwdIFc4OD",
+          "saintId": "cms0w7fnu04hc07qit9nwaudj",
+          "name": "Sri Durga Mata",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "yogananda",
+          "knownFootprint": 0.25,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Keep disciples in their teacher’s vertical story column.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasisSnapshot": "confirmed",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Secondary",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "recUCW4T6Le8f3ZdX",
+          "saintId": "cms0w7ils07yc07qi08agtyap",
+          "name": "Sri Daya Mata",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "yogananda",
+          "knownFootprint": 0.25,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Keep disciples in their teacher’s vertical story column.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasisSnapshot": "confirmed",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Secondary",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "recUTlwjCvniL1hEv",
+          "saintId": "cms0w7ir2084007qi1cuzm66g",
+          "name": "Sri Swami Kriyananda",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "yogananda",
+          "knownFootprint": 0.14285714285714285,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Keep disciples in their teacher’s vertical story column.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasisSnapshot": "confirmed",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Secondary",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "recu5aN4OfzptkLFs",
+          "saintId": "cms0w7ijz07wd07qi8o570rx3",
+          "name": "Sri Swami 108 Vidyanand ji Maharaj",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "lower",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "katyayani",
+          "knownFootprint": 0.3333333333333333,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Keep this separate branch together; align Katyayani succession under Keshavananda.",
+          "reviewAlerts": [
+            {
+              "symbol": "!",
+              "kind": "relationship",
+              "message": "Later Katyayani Peeth succession with intervening heads, not a direct Keshavananda discipleship claim."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentSnapshot": {
+            "code": "45",
+            "kind": "vitrine",
+            "label": "Vitrine 45",
+            "shelf": "B"
+          },
+          "currentBasisSnapshot": "source",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Tertiary",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "rec0H3FSQUnqIH95X",
+          "saintId": "cms0w7c7v002x07qisdxohvxv",
+          "name": "Sri Yogi Ramaiah",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "lower",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "ramaiah",
+          "knownFootprint": 0.08333333333333333,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Keep this separate branch together; align Katyayani succession under Keshavananda.",
+          "reviewAlerts": [
+            {
+              "symbol": "!",
+              "kind": "identity",
+              "message": "User-confirmed same saint; two source holdings and two canonical profiles retained. Keep together; no automatic record merge."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentSnapshot": {
+            "code": "25",
+            "kind": "vitrine",
+            "label": "Vitrine 25",
+            "shelf": "E"
+          },
+          "currentBasisSnapshot": "source",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Secondary",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "recD6sS3ZtGRPqxjs",
+          "saintId": "cms0w7eec02tx07qike1mkz5q",
+          "name": "Sri Yogi S.A.A.Ramaiah",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "lower",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "ramaiah",
+          "knownFootprint": 0.2,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Keep this separate branch together; align Katyayani succession under Keshavananda.",
+          "reviewAlerts": [
+            {
+              "symbol": "!",
+              "kind": "identity",
+              "message": "User-confirmed same saint; two source holdings and two canonical profiles retained. Keep together; no automatic record merge."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentSnapshot": {
+            "code": "8",
+            "kind": "vitrine",
+            "label": "Vitrine 8",
+            "shelf": "B"
+          },
+          "currentBasisSnapshot": "source",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Secondary",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        },
+        {
+          "sourceId": "recxiIGSVaGfnTRC8",
+          "saintId": "cms0w7jj908x007qiofxet4qo",
+          "name": "Sri Kanaya Baba",
+          "groupId": "kriya-family",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "columnKey": "kanaya",
+          "knownFootprint": 0.16666666666666666,
+          "provisional": true,
+          "reviewState": "draft",
+          "reason": "Provisional bottom starting shelf; uncertain teacher and life status stay visible.",
+          "reviewAlerts": [
+            {
+              "symbol": "!",
+              "kind": "relationship",
+              "message": "Recorded as Kriya Yoga; precise teacher connection remains unresolved. Do not show a direct guru arrow to a named teacher."
+            },
+            {
+              "symbol": "!",
+              "kind": "life-status",
+              "message": "Older source says still alive. Current life status needs checking; retain May be alive and bottom placement."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentSnapshot": {
+            "code": "19",
+            "kind": "vitrine",
+            "label": "Vitrine 19",
+            "shelf": "D"
+          },
+          "currentBasisSnapshot": "source",
+          "originMustRefreshBeforeExecution": true,
+          "capturedTier": "Tertiary",
+          "tierPolicy": "Use current live tier; captured tier is an audit snapshot, not a promotion or demotion."
+        }
+      ],
+      "relationships": [
+        {
+          "fromSourceId": "recoRltXupeZas8zP",
+          "toSourceId": "recx6n6mmw1tEEnFF",
+          "label": "Guru–disciple",
+          "kind": "guru",
+          "basis": "Existing published canonical relationship; traditional Babaji link retained as recorded.",
+          "uncertain": false,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "solid",
+            "opacity": 1
+          },
+          "sourceReferences": []
+        },
+        {
+          "fromSourceId": "recx6n6mmw1tEEnFF",
+          "toSourceId": "recH8o102sJ3mQ7aT",
+          "label": "Guru–disciple",
+          "kind": "guru",
+          "basis": "Existing published canonical relationship; traditional Babaji link retained as recorded.",
+          "uncertain": false,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "solid",
+            "opacity": 1
+          },
+          "sourceReferences": []
+        },
+        {
+          "fromSourceId": "recH8o102sJ3mQ7aT",
+          "toSourceId": "reciPBtb5T1Js7Lqz",
+          "label": "Guru–disciple",
+          "kind": "guru",
+          "basis": "Existing published canonical relationship; traditional Babaji link retained as recorded.",
+          "uncertain": false,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "solid",
+            "opacity": 1
+          },
+          "sourceReferences": []
+        },
+        {
+          "fromSourceId": "reciPBtb5T1Js7Lqz",
+          "toSourceId": "recIc9E1BwdIFc4OD",
+          "label": "Guru–disciple",
+          "kind": "guru",
+          "basis": "Existing published canonical relationship; traditional Babaji link retained as recorded.",
+          "uncertain": false,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "solid",
+            "opacity": 1
+          },
+          "sourceReferences": []
+        },
+        {
+          "fromSourceId": "recx6n6mmw1tEEnFF",
+          "toSourceId": "rec6S1CQt0w8YmPjm",
+          "label": "Guru–disciple",
+          "kind": "guru",
+          "basis": "Existing published canonical relationship; traditional Babaji link retained as recorded.",
+          "uncertain": false,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "solid",
+            "opacity": 1
+          },
+          "sourceReferences": []
+        },
+        {
+          "fromSourceId": "reciPBtb5T1Js7Lqz",
+          "toSourceId": "recUCW4T6Le8f3ZdX",
+          "label": "Recorded guru link",
+          "kind": "source-guru",
+          "basis": "Preserved source-family claim; qualifier retained, not a new CMS relationship.",
+          "uncertain": true,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "dashed",
+            "opacity": 0.45
+          },
+          "sourceReferences": []
+        },
+        {
+          "fromSourceId": "reciPBtb5T1Js7Lqz",
+          "toSourceId": "recUTlwjCvniL1hEv",
+          "label": "Recorded guru link",
+          "kind": "source-guru",
+          "basis": "Preserved source-family claim; qualifier retained, not a new CMS relationship.",
+          "uncertain": true,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "dashed",
+            "opacity": 0.45
+          },
+          "sourceReferences": []
+        },
+        {
+          "fromSourceId": "recH8o102sJ3mQ7aT",
+          "toSourceId": "recwX7dFfmlq9FfAh",
+          "label": "Recorded guru link",
+          "kind": "source-guru",
+          "basis": "Preserved source-family claim; qualifier retained, not a new CMS relationship.",
+          "uncertain": true,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "dashed",
+            "opacity": 0.45
+          },
+          "sourceReferences": []
+        },
+        {
+          "fromSourceId": "recH8o102sJ3mQ7aT",
+          "toSourceId": "rec9T6tpXGtrCWdxV",
+          "label": "Recorded guru link",
+          "kind": "source-guru",
+          "basis": "Preserved source-family claim; qualifier retained, not a new CMS relationship.",
+          "uncertain": true,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "dashed",
+            "opacity": 0.45
+          },
+          "sourceReferences": []
+        },
+        {
+          "fromSourceId": "recx6n6mmw1tEEnFF",
+          "toSourceId": "recLVwMPBTBcxHJG1",
+          "label": "Recorded guru link",
+          "kind": "source-guru",
+          "basis": "Preserved source-family claim; qualifier retained, not a new CMS relationship.",
+          "uncertain": true,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "dashed",
+            "opacity": 0.45
+          },
+          "sourceReferences": []
+        },
+        {
+          "fromSourceId": "recLVwMPBTBcxHJG1",
+          "toSourceId": "rec9T6tpXGtrCWdxV",
+          "label": "Higher Kriya instruction",
+          "kind": "teaching",
+          "basis": "Hariharananda institution documents Sanyal’s higher initiations1943–45.",
+          "uncertain": false,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "solid",
+            "opacity": 1
+          },
+          "sourceReferences": [
+            "https://blog.kriya.org/guru/paramahamsa-hariharananda/en"
+          ]
+        },
+        {
+          "fromSourceId": "reciPBtb5T1Js7Lqz",
+          "toSourceId": "rec9T6tpXGtrCWdxV",
+          "label": "Kriya instruction / authorization",
+          "kind": "teaching",
+          "basis": "Distinct from his initial initiation under Yukteswar.",
+          "uncertain": false,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "solid",
+            "opacity": 1
+          },
+          "sourceReferences": [
+            "https://blog.kriya.org/guru/paramahamsa-hariharananda/en"
+          ]
+        },
+        {
+          "fromSourceId": "rec6S1CQt0w8YmPjm",
+          "toSourceId": "recu5aN4OfzptkLFs",
+          "label": "Later institutional succession · intervening heads",
+          "kind": "institutional-succession",
+          "basis": "Katyayani Trust documents succession through Satyanand, Nityanand and Rani Ma. Not direct discipleship.",
+          "uncertain": true,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "dashed",
+            "opacity": 0.45
+          },
+          "sourceReferences": [
+            "https://www.katyayanipeeth.org.in/untitled-mainpage"
+          ]
+        },
+        {
+          "fromSourceId": "recoRltXupeZas8zP",
+          "toSourceId": "rec0H3FSQUnqIH95X",
+          "label": "Babaji branch · tradition’s account",
+          "kind": "traditional-guru",
+          "basis": "Ramaiah’s own institution describes direct discipleship of Babaji. This is a distinct branch, not under Yogananda.",
+          "uncertain": true,
+          "direction": "teacher-to-student",
+          "style": {
+            "line": "dashed",
+            "opacity": 0.45
+          },
+          "sourceReferences": [
+            "https://www.kriyayoga.org/about"
+          ]
+        },
+        {
+          "fromSourceId": "rec0H3FSQUnqIH95X",
+          "toSourceId": "recD6sS3ZtGRPqxjs",
+          "label": "Same saint · separate relic holdings",
+          "kind": "same-person",
+          "basis": "Explicit user confirmation; identities not merged.",
+          "uncertain": true,
+          "direction": "none",
+          "style": {
+            "line": "dashed",
+            "opacity": 0.45
+          },
+          "sourceReferences": []
+        },
+        {
+          "fromSourceId": "context:kriya-tradition",
+          "toSourceId": "recxiIGSVaGfnTRC8",
+          "label": "Recorded Kriya affiliation · teacher unresolved",
+          "kind": "affiliation",
+          "basis": "Raw source explicitly Kriya Yoga; no direct teacher identified.",
+          "uncertain": true,
+          "direction": "none",
+          "style": {
+            "line": "dashed",
+            "opacity": 0.45
+          },
+          "sourceReferences": [],
+          "fromExternalContext": true
+        },
+        {
+          "fromSourceId": "context:kriya-tradition",
+          "toSourceId": "recoRltXupeZas8zP",
+          "fromExternalContext": true,
+          "label": "Kriya display context",
+          "kind": "display-context",
+          "basis": "Curatorial tree root only; no initiating-guru assertion.",
+          "direction": "none",
+          "uncertain": false,
+          "style": {
+            "line": "solid",
+            "opacity": 1
+          },
+          "sourceReferences": []
+        }
+      ],
+      "contextNodes": [
+        {
+          "id": "context:kriya-tradition",
+          "label": "Kriya tradition",
+          "physicalHolding": false
+        }
+      ],
+      "conceptualAssignedLoads": {
+        "1": 1.25,
+        "2": 0.8035714285714286,
+        "3": 0.9523809523809523,
+        "4": 0.6166666666666667,
+        "5": 0.16666666666666666
+      },
+      "notes": [
+        "Latest Babaji estimate1.25 makes first-band load exceed one reference space. All15 keep starting shelves with!fit caveat; this does not certify one-shelf fit or physical five-shelf geometry. Core anchors remain together in upper display; adjust on site if mount spans bands.",
+        "All15holdings have provisional starting shelves; actual widths/heights/assembly fit need checking.",
+        "Keep Yogananda disciples aligned under Yogananda; Motilal under Yukteswar; Sanyal/Hariharananda branch separate; Keshavananda/Vidyanand aligned; both Ramaiah holdings adjacent.",
+        "Kanaya bottom with uncertainty!; no invented initiating teacher.",
+        "No automatic shelf or physical confirmations."
+      ],
+      "columnLanes": [
+        {
+          "id": "core",
+          "title": "Babaji · origin"
+        },
+        {
+          "id": "lahiri",
+          "title": "Lahiri Mahasaya"
+        },
+        {
+          "id": "yukteswar",
+          "title": "Sri Yukteswar’s branch"
+        },
+        {
+          "id": "yogananda",
+          "title": "Yogananda and disciples"
+        },
+        {
+          "id": "sanyal",
+          "title": "Bhupendranath Sanyal"
+        },
+        {
+          "id": "sanyal-yukteswar",
+          "title": "Hariharananda · teaching connections"
+        },
+        {
+          "id": "katyayani",
+          "title": "Keshavananda · Katyayani Peeth succession"
+        },
+        {
+          "id": "ramaiah",
+          "title": "Yogi Ramaiah · separate Babaji branch"
+        },
+        {
+          "id": "kanaya",
+          "title": "Kanaya Baba · affiliation under review"
+        }
+      ],
+      "treeGroupId": "kriya-family",
+      "knownFootprintTotal": 3.789285714285714
+    }
+  ],
+  "snapshotRosterBasis": "Fresh Nadi approved integration packet,30October2026, snapshot46 +current reviewer footprint",
+  "clearingContract": "Use Nadi fresh physical/receiver-readiness packet; this file is not an origin ledger or a clearance authorization override.",
+  "draftRevision": 3
+}
