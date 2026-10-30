@@ -1,14 +1,8 @@
 import packet from "../data/museum/spn-paramanand-reviewed-arm-support-v1.json";
-import {createHash} from "node:crypto";
 import type {MuseumSaintPlacement} from "./museum-proposals";
 import {reconcileSpnRoomProposal,type ProposalObservation} from "./spn-room-proposal";
 export const paramanandObjectReview=packet;
 export type ReviewedHousingSource={sourceId:string;saintId:string|null;sourceRevision:string;identityChanged:boolean;housingEvidenceRevision?:string};
-export function paramanandHousingEvidence(raw:unknown):string|undefined{
- if(!raw||typeof raw!=="object"||Array.isArray(raw))return;
- const description=(raw as Record<string,unknown>)["Relics Description (move to other table)"];
- return typeof description==="string"?createHash("sha256").update(description.trim().replace(/\s+/g," ").toLowerCase()).digest("hex"):undefined;
-}
 export function isReviewedParamanandArmSupport(source?:ReviewedHousingSource){
  return !!source&&source.sourceId===packet.sourceId&&source.saintId===packet.saintId&&source.sourceRevision===packet.sourceRevision&&source.housingEvidenceRevision===packet.housingEvidenceRevision&&!source.identityChanged;
 }

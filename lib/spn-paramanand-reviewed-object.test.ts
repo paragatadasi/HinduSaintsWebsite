@@ -1,6 +1,7 @@
+import {paramanandHousingEvidence} from "./spn-paramanand-housing-evidence";
 import test from "node:test";
 import assert from "node:assert/strict";
-import {paramanandObjectReview as review,isReviewedParamanandArmSupport,paramanandHousingEvidence,paramanandProposalResolution,applyParamanandObjectProposal} from "./spn-paramanand-reviewed-object";
+import {paramanandObjectReview as review,isReviewedParamanandArmSupport,paramanandProposalResolution,applyParamanandObjectProposal} from "./spn-paramanand-reviewed-object";
 import {spnMovementBlockedReason,assertSpnMovementAllowed} from "./spn-movement-holds";
 import {isComponentClearance} from "./museum-component-clearance-domain";
 import type {MuseumSaintPlacement} from "./museum-proposals";

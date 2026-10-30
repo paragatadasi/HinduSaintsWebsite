@@ -1,5 +1,6 @@
 import {isActiveSpnObservation} from "./spn-observation-suppression";
-import {paramanandHousingEvidence,paramanandObjectReview} from "./spn-paramanand-reviewed-object";
+import {paramanandHousingEvidence} from "./spn-paramanand-housing-evidence";
+import {paramanandObjectReview} from "./spn-paramanand-reviewed-object";
 import {reconcileMuseumFamilies} from "./museum-family-reconciliation";
 import {projectSpnProposal} from "./spn-proposal-domain";
 import {buildMuseumView} from "./museum-proposals";
