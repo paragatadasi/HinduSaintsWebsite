@@ -1,9 +1,11 @@
 import type { CompanionRow, PhysicalLocation } from "./spn-move-guide";
+import type { ComponentPlacement } from "./museum-component-clearance-domain";
 
 export type ProgressPosition = {
   sourceId: string; recordedAt: string; current: PhysicalLocation | null; currentBasis: string;
   currentVersion: number; currentRevision: string;
   currentConfirmed: { location: PhysicalLocation; confirmedAt: string; version: number } | null;
+  componentPlacement?: ComponentPlacement | null;
 };
 
 export function mergeMuseumPhysicalProgress<T extends CompanionRow & {
@@ -13,7 +15,16 @@ export function mergeMuseumPhysicalProgress<T extends CompanionRow & {
   let needsFullRefresh = false;
   const merged = rows.map(row => {
     const position = saved.get(row.sourceId);
-    if (!position || position.currentRevision === row.currentRevision) return row;
+    const previousComponent=(row as {componentPlacement?:ComponentPlacement|null}).componentPlacement;
+    if (!position) {
+      if(previousComponent)needsFullRefresh=true;
+      return row;
+    }
+    if (position.currentRevision === row.currentRevision) return row;
+    if (position.componentPlacement && position.componentPlacement.expectedSourceRevision !== row.sourceRevision) {
+      if(previousComponent)needsFullRefresh = true;
+      return row;
+    }
     // The fast ledger cannot replace a newer confirmation from the legacy arrangement workflow.
     if (row.legacyConfirmed && Date.parse(row.legacyConfirmed.confirmedAt) >
       Date.parse(position.currentConfirmed?.confirmedAt ?? position.recordedAt)) {
@@ -22,7 +33,7 @@ export function mergeMuseumPhysicalProgress<T extends CompanionRow & {
     }
     return { ...row, current: position.current, currentBasis: position.currentBasis,
       currentVersion: position.currentVersion, currentRevision: position.currentRevision,
-      currentConfirmed: position.currentConfirmed,
+      currentConfirmed: position.currentConfirmed, componentPlacement: position.componentPlacement ?? null,
       undo: { available: false, previous: null, previousBasis: null, reason: "Refresh this record before undoing its latest placement." } };
   });
   return { rows: merged, needsFullRefresh };
