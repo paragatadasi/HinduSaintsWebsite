@@ -6,7 +6,7 @@ export const moveSnapshot = z.object({
   sourceSnapshotAt: z.string().max(200).optional(),
   initialEmptyVitrines: z.array(z.object({ code: z.string().min(1).max(100), asOfDate: z.string(), basis: z.string() })).optional(),
   guidance: z.object({ version: z.string().max(200), reviewStatus: z.string().max(200) }),
-  rows: z.array(z.object({ sourceId: z.string().min(1).max(200), sourceKey: z.string().max(500).optional(), legacyPlacementId: z.string().max(200).optional(), itemId: z.string().cuid().nullable().optional(), itemIds: z.array(z.string().cuid()).optional(), name: z.string().max(500), saintId: z.string().nullable(),
+  rows: z.array(z.object({ sourceId: z.string().min(1).max(200), sourceKey: z.string().max(500).optional(), legacyPlacementId: z.string().max(200).optional(), housingEvidenceRevision:z.string().regex(/^[a-f0-9]{64}$/).optional(), itemId: z.string().cuid().nullable().optional(), itemIds: z.array(z.string().cuid()).optional(), name: z.string().max(500), saintId: z.string().nullable(),
     sourceReported: moveLocation.nullable(), legacyConfirmed: z.object({ location: moveLocation, confirmedAt: z.string().datetime(), scope: z.string().max(200) }).nullable().optional(),
     destination: moveLocation.nullable(), holdReason: z.string().max(2000), fixedHousing: z.boolean()
   })).min(1).max(10000)
