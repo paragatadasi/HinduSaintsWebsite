@@ -28,7 +28,7 @@ export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,r
   const entry=entries.get(a.sourceId),row=rows.find(r=>r.sourceId===a.sourceId);
   const placed=row&&isPlaced(row,vitrine);
   return <div className="museum-shelf__member" data-group-color={color(a)} key={a.sourceId}>
-   {controls&&!a.isContextOnly?renderControl(a.sourceId):null}<div><strong>{entry?.name??a.name}</strong>{a.isContextOnly?<small>Context only · no recorded relic</small>:null}<span className="museum-guide-tier">{entry?.tier??a.tier}</span>
+   <div className="museum-shelf__card-header">{controls&&!a.isContextOnly?renderControl(a.sourceId):null}<span className="museum-guide-tier">{entry?.tier??a.tier}</span></div><div className="museum-shelf__card-content"><strong>{entry?.name??a.name}</strong>{a.isContextOnly?<small>Context only · no recorded relic</small>:null}
    <small>{placed?"Placed · ":""}{currentLocationLabel(row?.current??null)}{row?.current&&row.currentBasis!=="confirmed"?" · source-reported":""}</small>
    {entry?.lifeStatus?.tag?<small>{entry.lifeStatus.tag}</small>:null}
    {a.reviewAlerts.length?<details className="museum-shelf__alert"><summary aria-label={`Review placement notes for ${a.name}`}>!</summary>{a.reviewAlerts.map((alert,i)=><p key={i}>{alert.message}</p>)}</details>:null}
