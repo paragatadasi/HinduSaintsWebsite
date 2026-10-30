@@ -2,7 +2,7 @@ import { rankMuseumPlacementSearchResults } from "./museum-search";
 import type { MuseumSourceVitrine } from "./museum-vitrine-source";
 import type { MuseumCollectionCardItem } from "./museum-collection-domain";
 import { buildMuseumView, museumSectionSlug, type MuseumSaintPlacement } from "./museum-proposals";
-import { resolveSnapshotIdentity } from "./museum-domain";
+import { createSnapshotIdentityResolver, resolveSnapshotIdentity } from "./museum-domain";
 
 export type CurrentMuseumSaint = {
   sourceVitrine?: MuseumSourceVitrine;
@@ -25,10 +25,14 @@ export function buildWorkingMuseumView(
   original: ProposalView,
   saints: CurrentMuseumSaint[],
   links: SourceLink[],
-  definitions: SectionDefinition[]
+  definitions: SectionDefinition[],
+  options: {indexSourceIdentities?: boolean} = {}
 ) {
   const bySaint = new Map(saints.map(s => [s.id, s]));
   const activeIds = new Set(bySaint.keys());
+  const resolveIdentity = options.indexSourceIdentities === false
+    ? (recordId: string) => resolveSnapshotIdentity(recordId, links, activeIds)
+    : createSnapshotIdentityResolver(links, activeIds);
   const members = new Map<string, Record<string, string>>();
   const labels = new Map<string, string>();
   const trees = new Map<string, string>();
@@ -39,7 +43,7 @@ export function buildWorkingMuseumView(
   const pending = new Map<string, MuseumSaintPlacement[]>();
   const placements: MuseumSaintPlacement[] = [];
   for (const source of original.placements) {
-    const resolved = resolveSnapshotIdentity(source.id, links, activeIds);
+    const resolved = resolveIdentity(source.id);
     const saint = resolved.record?.entityId ? bySaint.get(resolved.record.entityId) : undefined;
     if (!saint) {
       placements.push({ ...source, placementState: "Unlinked", sourceRecordId: source.id, linkIssue: resolved.reason });

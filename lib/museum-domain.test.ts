@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
   airtableIdentity,
+  createSnapshotIdentityResolver,
   airtableSourceLink,
   museumFields,
   museumPlacementSchema,
@@ -60,4 +61,32 @@ test("source links use real table IDs and fall back honestly when only a name is
     airtableSourceLink("appOne:Saints:recOne", { tableId: "https://evil.invalid" })?.direct,
     false
   );
+});
+
+test("indexed identities preserve missing, inactive, malformed and cross-base ambiguous sources", () => {
+  const records = [
+    {id:"one",externalId:"appOne:Saints:recOne",entityId:"active"},
+    {id:"two",externalId:"appOne:Saints:recTwo",entityId:"active"},
+    {id:"twoOtherBase",externalId:"appTwo:Saints:recTwo",entityId:"active"},
+    {id:"inactive",externalId:"appOne:Saints:recInactive",entityId:"archived"},
+    {id:"unbound",externalId:"appOne:Saints:recUnbound",entityId:null},
+    {id:"relic",externalId:"appOne:Relics:recOne",entityId:"other"},
+    {id:"malformed",externalId:"invalid:Saints:recMalformed",entityId:"active"}
+  ];
+  const active=new Set(["active"]);
+  const indexed=createSnapshotIdentityResolver(records,active);
+  for(const id of ["recOne","recTwo","recInactive","recUnbound","recMalformed","recMissing"])
+    assert.deepEqual(indexed(id),resolveSnapshotIdentity(id,records,active));
+  assert.equal(indexed("recTwo").reason,"Ambiguous source identity");
+  assert.equal(indexed("recOne").record?.id,"one");
+});
+
+test("a fresh identity index observes a changed source binding without cross-request caching", () => {
+  const records=[{id:"one",externalId:"appOne:Saints:recOne",entityId:"first"}];
+  const active=new Set(["first","second"]);
+  assert.equal(createSnapshotIdentityResolver(records,active)("recOne").record?.entityId,"first");
+  records[0]={...records[0],entityId:"second"};
+  assert.equal(createSnapshotIdentityResolver(records,active)("recOne").record?.entityId,"second");
+  records.push({id:"duplicate",externalId:"appTwo:Saints:recOne",entityId:"second"});
+  assert.equal(createSnapshotIdentityResolver(records,active)("recOne").record,null);
 });
