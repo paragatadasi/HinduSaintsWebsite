@@ -11,7 +11,7 @@ export async function readSpnTierAudit() {
   const sources=bindings.filter(binding=>binding.entityType==="Saint");
   const ids=[...new Set([...baseline.placements.flatMap(row=>row.saintId?[row.saintId]:[]),...sources.flatMap(source=>source.entityId?[source.entityId]:[])])];
   const [identities,relationships,mirrors,decisions,familyMoves,memberships,storedArrangements,duplicateCandidates]=await Promise.all([
-   tx.saint.findMany({where:{id:{in:ids},status:{not:"archived"}},select:{id:true,slug:true,displayName:true,status:true,publicationStatus:true,shortDescription:true,biographySummary:true,aliases:{select:{alias:true}},biographies:{where:{status:"published"},select:{id:true,title:true,bodyMarkdown:true,status:true}}},orderBy:{id:"asc"}}),
+   tx.saint.findMany({where:{id:{in:ids},status:{not:"archived"}},select:{id:true,slug:true,displayName:true,status:true,publicationStatus:true,birthYear:true,birthDateRaw:true,samadhiYear:true,samadhiDateRaw:true,shortDescription:true,biographySummary:true,aliases:{select:{alias:true}},biographies:{where:{status:"published"},select:{id:true,title:true,bodyMarkdown:true,status:true}}},orderBy:{id:"asc"}}),
    tx.saintRelationship.findMany({where:{status:{not:"archived"},fromSaint:{status:{not:"archived"}},toSaint:{status:{not:"archived"}}},select:{id:true,fromSaintId:true,toSaintId:true,relationshipType:true,status:true,evidenceStatus:true,confidence:true,publicNote:true,sourceId:true},orderBy:{id:"asc"}}),
    tx.airtableMirrorRecord.findMany({where:{baseId:SPN_WEBSITE_AIRTABLE_BASE_ID,tableIdOrName:"Saints"},select:{recordId:true,rawFieldsJson:true,importedAt:true,lastSeenAt:true},orderBy:{recordId:"asc"}}),
    tx.auditEvent.findMany({where:{entityType:"Saint",entityId:{in:ids},action:{in:["museum.placement.saved","museum.proposal.accept","museum.proposal.ignore","museum.spn_proposal.saved"]}},select:{id:true,action:true,entityId:true,createdAt:true,beforeJson:true,afterJson:true},orderBy:[{createdAt:"asc"},{id:"asc"}]}),
@@ -33,6 +33,7 @@ export async function readSpnTierAudit() {
     importedAt:mirror.importedAt,lastSeenAt:mirror.lastSeenAt,rawSourceFields:Object.fromEntries(evidenceFields.filter(key=>Object.hasOwn(fields,key)).map(key=>[key,fields[key]]))};
   });
   return {...buildSpnTierAudit(baseline.placements,effective,identities,sources),generatedAt:new Date().toISOString(),
+   canonicalLifeEvidence:identities.map(person=>({saintId:person.id,birthYear:person.birthYear,birthDateRaw:person.birthDateRaw,samadhiYear:person.samadhiYear,samadhiDateRaw:person.samadhiDateRaw})),
    sourceObservations,sourceCoverage:{mirroredRows:sourceObservations.length,withoutActiveCanonicalIdentity:sourceObservations.filter(row=>!row.hasActiveCanonicalIdentity).length},
    relationships,decisions,familyMoves,memberships,storedArrangements,duplicateCandidates,
    affiliationPolicy:"Research direct personal affiliation separately. The existing effective tree projection may traverse five general relationship hops and ten succession hops; that is not proof of direct affiliation. Same tradition, influence and generic association do not qualify automatically. Explicit curator decisions and physical arrangements are preserved."};
