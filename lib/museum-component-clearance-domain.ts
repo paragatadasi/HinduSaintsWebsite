@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { MuseumMoveSessionError, type MoveLocation } from "./museum-move-session-domain";
+import {isReviewedParamanandArmSupport} from "./spn-paramanand-reviewed-object";
 
 export const v20ComponentSourceIds = ["rec9vEn5oj7QZTXl0", "recVN6Ty3682Uz2g4"] as const;
 export const isV20ComponentSourceId = (sourceId: string) => v20ComponentSourceIds.some(id => id === sourceId);
@@ -34,9 +35,12 @@ export function assertComponentClearanceScope(input: ComponentClearanceInput) {
 export function isComponentClearance(input: ComponentClearanceInput, row: {
   sourceId: string; current: MoveLocation | null; fixedHousing: boolean;
   verifiedItemIds: string[]; identityChanged: boolean;
+  saintId?:string|null;sourceRevision?:string;housingEvidenceRevision?:string;
 }) {
   const acknowledged = input.componentStagingAcknowledgements?.some(ack => ack.sourceId === row.sourceId);
   if (!acknowledged) return false;
+  if(row.saintId!==undefined&&row.sourceRevision&&isReviewedParamanandArmSupport({...row,saintId:row.saintId,sourceRevision:row.sourceRevision}))
+    throw new MuseumMoveSessionError(409,"This source is reviewed as one complete arm-support. Reload and record its ordinary whole-object location, not a partial component confirmation.");
   assertComponentClearanceScope(input);
   if (!isV20ComponentSourceId(row.sourceId) || row.current?.kind !== "vitrine" || row.current.code !== "20" ||
       row.fixedHousing || row.verifiedItemIds.length || row.identityChanged)

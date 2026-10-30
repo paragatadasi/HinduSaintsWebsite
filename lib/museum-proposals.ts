@@ -17,6 +17,7 @@ const cleanupFlagsPath = path.join(museumDataDir, "airtable-museum-section-clean
 export type MuseumTier = "Featured" | "Secondary" | "Tertiary";
 
 export type MuseumSaintPlacement = {
+  sourceHousingEvidenceRevision?:string;
   spnProposal?: import("./spn-proposal-domain").SpnProposalReview;
   spnRegionTags?: string[];
   proposalReviewed?: boolean;

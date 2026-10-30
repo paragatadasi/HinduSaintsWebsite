@@ -1,4 +1,5 @@
 import {isActiveSpnObservation} from "./spn-observation-suppression";
+import {paramanandHousingEvidence,paramanandObjectReview} from "./spn-paramanand-reviewed-object";
 import {reconcileMuseumFamilies} from "./museum-family-reconciliation";
 import {projectSpnProposal} from "./spn-proposal-domain";
 import {buildMuseumView} from "./museum-proposals";
@@ -157,5 +158,7 @@ export async function readMuseumData(client: Prisma.TransactionClient = db, opti
   }
   for(const option of familyMoveOptions)option.count=view.placements.filter(row=>(row.curatorialFamily||row.familyId)===option.key).length;
   for(const option of familyMoveOptions)if(view.placements.some(row=>row.spnProposal?.state==="applied"&&[(row.curatorialFamily||row.familyId),row.spnProposal.baselineFamilyKey].includes(option.key)))option.moveUnavailable=true;
+  const housingSource=mirrorLocations.find(row=>row.recordId===paramanandObjectReview.sourceId);
+  for(const row of view.placements)if(row.sourceRecordId===paramanandObjectReview.sourceId)row.sourceHousingEvidenceRevision=paramanandHousingEvidence(housingSource?.rawFieldsJson);
   return { ...view, original, familyMoveOptions };
 }
