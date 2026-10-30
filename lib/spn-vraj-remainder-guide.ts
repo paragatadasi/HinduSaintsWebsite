@@ -1,5 +1,6 @@
 import {createHash} from "node:crypto";
 import packet from "../data/museum/spn-vraj-remainder-guide-v1.json";
+import approvedProposal from "../data/museum/spn-vraj-approved-v17.json";
 import type {MuseumSaintPlacement} from "./museum-proposals";
 import type {ShelfPlanningContext} from "./museum-shelf-planning-context";
 import type {GuideDefinition} from "./spn-starter-guide-registry";
@@ -17,7 +18,7 @@ const hash=(value:string)=>createHash("sha256").update(value).digest("hex");
 const {contentDigest:unusedDigest,...content}=packet;
 const pairs=packet.rows.map(row=>[row.sourceId,row.destination]).sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0);
 const grouped=packet.groups.flatMap(group=>group.sourceIds);
-if(hash(canonical(content))!==packet.contentDigest||hash(JSON.stringify(pairs))!==packet.assignmentDigest||
+if(packet.proposalVersion!==approvedProposal.version||hash(canonical(content))!==packet.contentDigest||hash(JSON.stringify(pairs))!==packet.assignmentDigest||
  packet.rows.length!==98||new Set(grouped).size!==98||grouped.length!==98||packet.vitrines.join(",")!=="32,33,34,35,38"||
  packet.groups.some(group=>group.sourceIds.some(id=>!packet.rows.some(row=>row.sourceId===id&&row.destination===group.vitrine))||group.edges.some(edge=>!group.sourceIds.includes(edge.fromSourceId)||!group.sourceIds.includes(edge.toSourceId))))
  throw new Error("The reviewed Vraj remainder guide changed.");

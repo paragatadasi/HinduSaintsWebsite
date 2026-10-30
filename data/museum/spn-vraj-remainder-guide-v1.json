@@ -1,7 +1,7 @@
 {
   "version": "spn-vraj-remainder-2026-10-30-v1",
   "title": "Remaining Vraj displays",
-  "proposalVersion": "spn-vraj-approved-v17",
+  "proposalVersion": "spn-vraj-locked-2026-10-29-v17",
   "proposalLabel": "Approved Vraj continuation",
   "sourceShelfVersion": "spn-vraj-east-shelves-2026-10-30-v1",
   "sourceShelfRevision": 5,
@@ -2994,5 +2994,5 @@
     }
   ],
   "assignmentDigest": "fc3475de593b137388394eddaa45f0eb9ccf16b302bfd7348f3f945c9d42ac1b",
-  "contentDigest": "e8bb68ec51e4b7535cdc8712d4387310f6265329b3cef38bea1045e98903d5a2"
+  "contentDigest": "0cf9f78a6217165b025035f89fe04303a2c446c9cefbc1998695c1a2b2610d03"
 }
