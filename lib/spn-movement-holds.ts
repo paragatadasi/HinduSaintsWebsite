@@ -2,6 +2,7 @@ import {spnDuplicateObservations} from "./spn-observation-suppression";
 import adjustments from "../data/museum/spn-starter-curator-adjustments-v1.json";
 import { MuseumMoveSessionError, sameMoveLocation, type MoveLocation } from "./museum-move-session-domain";
 import proposal from "../data/museum/spn-starter-reviewed-proposal-v16.json";
+import {paramanandReview} from "./spn-paramanand-planning-context";
 
 // These source observations may combine a complete stick with other relics.
 // A saint-level destination does not establish which objects can move together.
@@ -13,6 +14,7 @@ export function hasOnlySpnHousingReviewHold(sourceId: string) {
 export function spnMovementBlockedReason(sourceId: string): string | undefined {
   if(spnDuplicateObservations[sourceId])return spnDuplicateObservations[sourceId].reason;
   if(adjustments.privateSourceIds.includes(sourceId))return adjustments.privateHoldReason;
+  if(sourceId===paramanandReview.sourceId&&housingReviewSources.has(sourceId))return paramanandReview.housingReason;
   return housingReviewSources.has(sourceId)
     ? "Confirm this source's separate objects and stick housing before recording a move of the whole display."
     : undefined;

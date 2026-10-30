@@ -6,10 +6,17 @@ const original = { kind: "vitrine" as const, code: "42", label: "Vitrine 42", sh
 const destination = { kind: "vitrine" as const, code: "35", label: "Vitrine 35" };
 
 test("mixed stick observations cannot move as whole displays, including old session snapshots", () => {
-  for (const id of ["reck86EKve5tFAi6R", "rec9vEn5oj7QZTXl0", "recVN6Ty3682Uz2g4", "recsm43oeUdKNUMqs", "rec7GxgNvmubmTvMM"]) {
+  for (const id of ["reck86EKve5tFAi6R", "rec9vEn5oj7QZTXl0", "recsm43oeUdKNUMqs", "rec7GxgNvmubmTvMM"]) {
     assert.throws(() => assertSpnMovementAllowed(id, original, destination), /separate objects and stick housing/);
     assert.doesNotThrow(() => assertSpnMovementAllowed(id, original, original));
   }
+});
+
+test("Paramanand retains a housing hold without asserting multiple objects or a separate staff",()=>{
+ const id="recVN6Ty3682Uz2g4";
+ assert.throws(()=>assertSpnMovementAllowed(id,original,destination),/arm-support.*housing/);
+ assert.doesNotThrow(()=>assertSpnMovementAllowed(id,original,original));
+ assert.doesNotMatch(spnMovementBlockedReason(id)!,/separate objects|walking staff/);
 });
 
 test("fragments and covers do not inherit a complete-stick restriction", () => {
