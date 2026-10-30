@@ -19,6 +19,7 @@ test("read-only context exposes a case without an executable move guide and reta
  const {packet,input}=fixture();const before=structuredClone(input.physical);
  const result=projectShelfPlanningContext(packet,input);
  assert.equal(result.mode,"recommendations_only");assert.equal(result.physicalActionsEnabled,false);
+ assert.equal(result.cases[0].allocations[0].sourceRevision,input.physical.rows[0].sourceRevision);
  assert.equal(result.cases[0].allocations.length,1);assert.equal(result.cases[0].entries[0].name,"Current name");
  assert.equal(result.cases[0].entries[0].currentLocation?.code,"staging-area");
  assert.equal(result.cases[0].entries[0].movementBlockedReason,"Component hold");

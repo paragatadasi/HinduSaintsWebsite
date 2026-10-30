@@ -1,44 +1,22 @@
 "use client";
 import {useEffect,useState} from "react";
-import type {ShelfPlanningContext} from "@/lib/museum-shelf-planning-context";
+import {useMuseumShelfPlans} from "./use-museum-shelf-plans";
 import type {CompanionRow} from "@/lib/spn-move-guide";
 import {MuseumShelfGuide} from "./museum-shelf-guide";
 import {AdminViewTabs} from "./admin-view-tabs";
 
 export function MuseumShelfPlans({rows,availableGuides,onOpenGuide}:{rows:CompanionRow[];availableGuides:string[];onOpenGuide:(code:string)=>void}){
- const [context,setContext]=useState<ShelfPlanningContext|null>(null);
+ const {context,error,refresh}=useMuseumShelfPlans();
  const [selected,setSelected]=useState("2");
- const [error,setError]=useState("");
- const [retry,setRetry]=useState(0);
+
  useEffect(()=>{
   const saved=new URL(window.location.href).searchParams.get("shelfVitrine");
   if(saved)setSelected(saved);
  },[]);
- useEffect(()=>{
-  let stopped=false,inFlight=false;
-  let controller:AbortController|null=null;
-  async function refresh(){
-   if(inFlight||document.visibilityState==="hidden")return;
-   inFlight=true;controller=new AbortController();
-   const timeout=window.setTimeout(()=>controller?.abort(),20000);
-   try{
-    const response=await fetch("/api/admin/museum-shelf-plans",{cache:"no-store",signal:controller.signal});
-    const data=await response.json();
-    if(!response.ok||data.mode!=="recommendations_only"||data.physicalActionsEnabled!==false||!Array.isArray(data.cases))throw new Error("Shelf plans could not be refreshed. Try again.");
-    if(!stopped){setContext(data);setError("");}
-   }catch{if(!stopped)setError("Shelf plans could not be refreshed. Try again.");}
-   finally{window.clearTimeout(timeout);inFlight=false;}
-  }
-  void refresh();
-  const timer=window.setInterval(()=>void refresh(),30000);
-  const resume=()=>void refresh();
-  window.addEventListener("focus",resume);
-  return()=>{stopped=true;controller?.abort();window.clearInterval(timer);window.removeEventListener("focus",resume);};
- },[retry]);
  const plan=context?.cases.find(item=>item.code===selected)??context?.cases[0];
  function select(code:string){setSelected(code);const url=new URL(window.location.href);url.searchParams.set("shelfVitrine",code);window.history.replaceState(window.history.state,"",url);}
  return <section className="museum-admin-panel" aria-label="Shelf plans">
-  <header className="section-heading"><div><p className="museum-guide-kicker">Vraj & East</p><h2>Shelf plans</h2></div><button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>setRetry(value=>value+1)}>Refresh plans</button></header>
+  <header className="section-heading"><div><p className="museum-guide-kicker">Vraj & East</p><h2>Shelf plans</h2></div><button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={refresh}>Refresh plans</button></header>
   <p>Suggested shelf positions. Use the move guide to record placements.</p>
   {error?<p role="alert">{error}</p>:null}
   {!context&&!error?<p role="status">Loading shelf plans…</p>:null}

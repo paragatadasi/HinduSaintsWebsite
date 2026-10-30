@@ -81,7 +81,7 @@ export function projectShelfPlanningContext(packet:ShelfPlanningPacket,input:{cu
    const name=placement?.name??physicalRow?.name??row?.name??captured.name;
    const alerts=captured.reviewAlerts.filter(a=>!a.message.includes("is asserted by the current CMS record"));
    if(physicalRow?.movementBlockedReason&&!alerts.some(a=>a.message===physicalRow.movementBlockedReason))alerts.push({message:physicalRow.movementBlockedReason});
-   allocations.push({...captured,name,tier,reviewAlerts:alerts});
+   allocations.push({...captured,name,tier,sourceRevision:physicalRow?.sourceRevision,reviewAlerts:alerts});
    entries.push({sourceId:captured.sourceId,saintId:expectedSaint,name,tier,city:placement?.normalizedPlaces.join(" · ")??"",relicDescription:current.membersById.get(placement?.id??"")?.RelicsDescription??"",destination:plan.code,section:placement?.section??row?.section??"",family:placement?.curatorialFamily??"",rationale:"Shelf recommendation only",lifeStatus:undefined,currentLocation:physicalRow?.current??null,currentLocationBasis:physicalRow?.currentBasis,movementBlockedReason:physicalRow?.movementBlockedReason??undefined});
   }
   const lifeGuide:StarterMoveGuide={version:packet.version,title:"Shelf recommendations",contentDigest:"",assignmentDigest:"",proposalVersion:"",entries,vitrines:[],alternatives:[],reportedPlacements:[]};
