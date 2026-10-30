@@ -28,3 +28,12 @@ test("older callers cannot silently erase an existing declined preference by omi
  assert.deepEqual(declineAlternativeValues(omitted,previous,true),{alternativeVitrine:null,alternativeShelf:null});
  assert.deepEqual(declineAlternativeValues({...omitted,decision:"pending"},previous,false),{alternativeVitrine:null,alternativeShelf:null});
 });
+
+test("not on display is a reversible row decision without a destination",()=>{
+ const parsed=guideDecisionInput.parse({...input,decision:"not_on_display",note:"In the archive"});
+ assert.equal(parsed.note,"In the archive");
+ assert.equal(guideDecisionInput.safeParse({...input,decision:"not_on_display",alternativeVitrine:"4"}).success,false);
+ assert.equal(guideDecisionInput.safeParse({...input,decision:"not_on_display",suggestionId:"family:a"}).success,false);
+ assert.deepEqual(declineAlternativeValues(parsed,{alternativeVitrine:"4",alternativeShelf:"D"},false),{alternativeVitrine:null,alternativeShelf:null});
+ assert.equal(guideDecisionInput.parse({...input,decision:"pending"}).decision,"pending");
+});
