@@ -4,8 +4,8 @@ import addon from "@/data/museum/spn-vitrine5-shelves-v1.json";
 import packet from "@/data/museum/spn-northern-shelves-v1.json";
 import {companionLocationLabel,isPlaced,type CompanionRow,type GuideEntry} from "@/lib/spn-move-guide";
 
-type Allocation={sourceId:string;name:string;tier?:string;capturedTier?:string;groupId:string;suggestedShelfIndex:number|null;isContextOnly?:boolean;reviewAlerts:{message:string}[]};
-type ShelfPlan={code:string;groups:{id:string;title:string;kind:string}[];allocations:Allocation[];relationships:{fromSourceId:string;toSourceId:string;label:string;direction:string;uncertain:boolean}[];contextNodes?:{id:string;label:string;physicalHolding:boolean}[]};
+type Allocation={sourceId:string;name:string;tier?:string;capturedTier?:string;groupId:string;suggestedShelfIndex:number|null;isContextOnly?:boolean;knownFootprint?:number|null;projectedLifeStatus?:{tag:string|null;basis:string}|null;reviewAlerts:{message:string}[]};
+export type ShelfPlan={code:string;notes?:string[];refinedBandExceptions?:{shelfIndex:number;knownLoad:number}[];groups:{id:string;title:string;kind:string}[];allocations:Allocation[];relationships:{fromSourceId:string;toSourceId:string;label:string;direction:string;uncertain:boolean}[];contextNodes?:{id:string;label:string;physicalHolding:boolean}[]};
 const plans:ShelfPlan[]=[...packet.vitrines,...addon.vitrines];
 function TreeLines({children,wide,edges}:{children:ReactNode;wide:boolean;edges:{fromSourceId:string;toSourceId:string;uncertain:boolean}[]}){
  const root=useRef<HTMLDivElement>(null);
@@ -17,23 +17,25 @@ function TreeLines({children,wide,edges}:{children:ReactNode;wide:boolean;edges:
  },[edges,wide]);
  return <div ref={root} className={wide?"museum-shelf__tree museum-shelf__tree--wide":"museum-shelf__tree"}><svg aria-hidden="true" className="museum-shelf__lines">{paths.map((path,i)=><path key={i} d={path.d} data-uncertain={path.uncertain}/>)}</svg>{children}</div>;
 }
-export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,renderActions}:{vitrine:string;entries:Map<string,GuideEntry>;rows:CompanionRow[];sourceIds:string[];renderControl:(id:string)=>ReactNode;renderActions:(id:string)=>ReactNode}){
+export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,renderActions,plan:providedPlan}:{plan?:ShelfPlan;vitrine:string;entries:Map<string,GuideEntry>;rows:CompanionRow[];sourceIds:string[];renderControl:(id:string)=>ReactNode;renderActions:(id:string)=>ReactNode}){
  const [expanded,setExpanded]=useState<string|null>(null);
- const plan=plans.find(v=>v.code===vitrine);
+ const plan=providedPlan??plans.find(v=>v.code===vitrine);
  if(!plan)return null;
  const allowed=new Set(sourceIds);
  const allocations=plan.allocations.filter(a=>allowed.has(a.sourceId)&&entries.get(a.sourceId)?.destination===vitrine);
  const ids=new Set(allocations.map(a=>a.sourceId));
+ const unknownBands=[1,2,3,4,5].map(index=>({index,count:allocations.filter(a=>a.suggestedShelfIndex===index&&a.knownFootprint===null).length})).filter(row=>row.count>0);
  const groups=plan.groups.filter(g=>allocations.some(a=>a.groupId===g.id));
  const familyGroups=groups.filter(g=>g.kind==="family");
  const color=(a:Allocation)=>groups.findIndex(g=>g.id===a.groupId)%6;
  function member(a:Allocation,controls=true){
   const entry=entries.get(a.sourceId),row=rows.find(r=>r.sourceId===a.sourceId);
   const placed=row&&isPlaced(row,vitrine);
+  const life=entry?.lifeStatus===undefined?a.projectedLifeStatus?.tag:entry.lifeStatus?.tag;
   return <div className="museum-shelf__member" data-group-color={color(a)} key={a.sourceId}>
-   <div className="museum-shelf__card-header">{controls&&!a.isContextOnly?renderControl(a.sourceId):null}<span className="museum-guide-tier">{entry?.tier??a.tier??a.capturedTier}</span></div><div className="museum-shelf__card-content"><strong>{entry?.name??a.name}</strong>{a.isContextOnly?<small>Context only · no recorded relic</small>:null}
+   <div className="museum-shelf__card-header">{controls&&!a.isContextOnly?renderControl(a.sourceId):null}<span className="museum-guide-tier">{entry?.tier??a.tier??a.capturedTier}</span></div><div className="museum-shelf__card-content"><strong>{/^rec[A-Za-z0-9]{14}$/.test(entry?.name??a.name)?"Unlabelled inventory entry":entry?.name??a.name}</strong>{a.isContextOnly?<small>Context only · no recorded relic</small>:null}
    <small>{placed?"Placed · ":""}{companionLocationLabel(row)}{row?.current&&row.currentBasis!=="confirmed"?" · source-reported":""}</small>
-   {entry?.lifeStatus?.tag?<small>{entry.lifeStatus.tag}</small>:null}
+   {life?<small>{life==="Still alive"?"Living":life}</small>:null}
    {a.reviewAlerts.length?<details className="museum-shelf__alert"><summary aria-label={`Review placement notes for ${a.name}`}>!</summary>{a.reviewAlerts.map((alert,i)=><p key={i}>{alert.message}</p>)}</details>:null}
    {controls&&!a.isContextOnly?renderActions(a.sourceId):null}</div>
   </div>;
@@ -57,6 +59,7 @@ export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,r
   </div>)}</div>)}{edges.filter(e=>e.direction==="none").map(e=><p className="museum-shelf__relation" data-uncertain={e.uncertain} key={e.fromSourceId+e.toSourceId}>{entries.get(e.fromSourceId)?.name??plan?.contextNodes?.find(n=>n.id===e.fromSourceId)?.label} — {entries.get(e.toSourceId)?.name??plan?.contextNodes?.find(n=>n.id===e.toSourceId)?.label}: {e.label}</p>)}</TreeLines>;
  }
  return <section className="museum-shelf" aria-label="Suggested shelf arrangement"><h3>Shelf arrangement</h3><p className="muted">Suggested positions · confirm shelf spacing on site</p>
+ {plan.notes?.length||plan.refinedBandExceptions?.length||unknownBands.length?<details className="museum-shelf__alert"><summary>{plan.refinedBandExceptions?.length||unknownBands.length?"Shelf fit review":"Fit notes"}</summary>{plan.notes?.map(note=><p key={note}>{note}</p>)}{plan.refinedBandExceptions?.map(item=><p key={item.shelfIndex}>Row {item.shelfIndex}: {item.knownLoad.toFixed(2)} reference spaces. Review spacing on site.</p>)}{unknownBands.map(row=><p key={row.index}>Row {row.index}: {row.count} {row.count===1?"holding has":"holdings have"} an unknown size, in addition to the known load.</p>)}</details>:null}
  <div className="museum-shelf__legend">{groups.map((g,i)=><span data-group-color={i%6} key={g.id}>{g.title} · {g.kind}</span>)}</div>
  <div className="museum-shelf__workspace" data-expanded={expanded!==null}><div className="museum-shelf__bands">{[1,2,3,4,5].map(index=><section className="museum-shelf__band" key={index}><small>{index===1?"Top":index===5?"Bottom":`Row ${index}`}</small><div>{familyGroups.map(g=><div className="museum-shelf__column" key={g.id}>{allocations.filter(a=>a.suggestedShelfIndex===index&&a.groupId===g.id).map(a=>member(a))}</div>)}<div className="museum-shelf__locality">{allocations.filter(a=>a.suggestedShelfIndex===index&&!familyGroups.some(g=>g.id===a.groupId)).map(a=>member(a))}</div></div></section>)}
  {allocations.some(a=>a.suggestedShelfIndex===null)?<section><h4>Position to confirm</h4>{allocations.filter(a=>a.suggestedShelfIndex===null).map(a=>member(a))}</section>:null}
