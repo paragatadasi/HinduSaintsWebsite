@@ -32,7 +32,8 @@
 - Shared areas touched: physical source/view/hold checks, optional snapshot evidence field, current proposal overlay, working data evidence stamp, planning contract and docs. No extra database query for the description hash.
 - Expected conflicts: base includes prior readonly context61f5bf7 (already cherry-picked by Citra). Integrate code6653dae only into the matching UI branch; do not duplicate prior shelf/Bilash work. Citra's confirmation-read optimization touches different physical-reader query lines; preserve both changes.
 - Integrated production build: release captain/Citra owns the combined build; this Windows worktree uses the previously documented dependency junction.
-- Skill review: existing exact-source/evidence/review-precaution rules cover this confirmation; no additional reusable rule change. The earlier housing-interpretation skill correction is retained.
+- Skill review: museum-data-interpretation now also requires checking which fields a source revision hashes before treating it as freshness evidence. Description-dependent classifications need fresh raw evidence or a separate scoped digest. Structural checks and changed/missing-description counterexamples passed; identity skill unchanged.
+- Browser integration requirement: Citra splits description hashing into a server-only helper because the pure reviewed predicate is reachable through client hold/component modules. Do not deploy code6653dae alone; use her tested combined branch with the browser-safe split and native single-source staging action.
 - Rollback notes: revert `6653dae` and any dependent release commits
 
 ## Release Captain Notes
