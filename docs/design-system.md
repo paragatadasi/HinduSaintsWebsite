@@ -747,3 +747,5 @@ Peers in a single family shelf band may form a compact grid instead of a tall st
 Individual companion declines offer “Not on display” with an optional note. Keep these records in a collapsed, restorable list outside the active checklist; count them as addressed. This decision never sets a storage location or changes physical history.
 
 Component-scoped clearing keeps separately housed pieces explicit: use a second acknowledgement beside case clearing, name the affected records, and show the staged scope in staging and placement views. A partial record must never enable a whole-source placement checkbox. Reuse the existing check-row and panel styles.
+
+Photo follow-ups use concise narrative cards with the photographed piece, qualified target, live recorded location and a link to an available receiving guide. Keep already-confirmed assemblies distinct from remaining-piece checks; do not duplicate their placement checkbox or replace their physical confirmation. Display newer curator targets alongside the original photo guidance when they differ.
