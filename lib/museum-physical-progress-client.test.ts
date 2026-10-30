@@ -10,6 +10,19 @@ const row: CompanionRow = { sourceId: "source", saintId: "saint", name: "Saint",
 const position: ProgressPosition = { sourceId: "source", current: original, currentBasis: "source", currentVersion: 2,
   currentRevision: "restored", currentConfirmed: null, recordedAt: "2026-10-29T14:00:00Z" };
 
+test("component correction or stale source evidence requests authoritative refresh",()=>{
+ const component={sourceId:"source",receiptId:"receipt",recordedAt:position.recordedAt,revision:"partial",origin:original,
+   location:{kind:"table" as const,code:"staging-area",label:"Staging area"},scope:"vitrine_20_contents_only" as const,
+   excludedWalkingSticks:{location:null,status:"unverified" as const},expectedSourceRevision:row.sourceRevision,previousCurrentRevision:row.currentRevision,previousLocationVersion:0};
+ const partial={...row,current:null,componentPlacement:component};
+ assert.equal(mergeMuseumPhysicalProgress([partial],[]).needsFullRefresh,true);
+ const update={...position,current:null,currentRevision:"partial",currentBasis:"unknown",componentPlacement:component};
+ const merged=mergeMuseumPhysicalProgress([row],[update]);
+ assert.equal(merged.rows[0].current,null);
+ assert.equal((merged.rows[0] as typeof partial).componentPlacement?.scope,"vitrine_20_contents_only");
+ assert.equal(mergeMuseumPhysicalProgress([{...partial,sourceRevision:"new-source"}],[update]).needsFullRefresh,true);
+});
+
 test("remote undo restores source basis and invalidates the old undo offer without replacing identity evidence", () => {
   const merged = mergeMuseumPhysicalProgress([{ ...row, currentBasis: "confirmed", undo: { available: true, previous: original, previousBasis: "source" } }], [position]);
   assert.equal(merged.rows[0].currentBasis, "source");
