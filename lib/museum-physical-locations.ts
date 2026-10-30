@@ -23,6 +23,7 @@ import type { MoveSessionActor } from "./museum-move-session-service";
 import { v20ComponentSourceIds, componentStagingAcknowledgements, assertComponentClearanceScope, isComponentClearance, projectComponentPlacement } from "./museum-component-clearance-domain";
 import { readComponentPlacements, readComponentCorrections } from "./museum-component-clearances";
 import { hasOnlySpnHousingReviewHold } from "./spn-movement-holds";
+import {isReviewedParamanandArmSupport,paramanandObjectReview,paramanandProposalResolution} from "./spn-paramanand-reviewed-object";
 
 export type PhysicalSnapshotLoader = (tx: Prisma.TransactionClient) => Promise<MoveSnapshot>;
 const confirmedDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(value => {
@@ -60,11 +61,13 @@ export async function readPhysicalLocationView(loader: PhysicalSnapshotLoader, t
     const link = links.find(link => link.externalId === row.sourceKey);
     const identityChanged = Boolean(row.saintId && (!link || link.entityType !== "Saint" || link.entityId !== row.saintId));
     const current = resolveMuseumPhysicalCurrent(row.sourceReported, positions.find(position => position.sourceId === row.sourceId), row.legacyConfirmed);
+    const sourceRevision=physicalFingerprint({ sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, original: row.sourceReported, link, itemIds: row.itemIds ?? [], fixedHousing: row.fixedHousing });
+    const reviewedSource={sourceId:row.sourceId,saintId:row.saintId,sourceRevision,identityChanged,housingEvidenceRevision:row.housingEvidenceRevision};
     return projectComponentPlacement({ sourceId: row.sourceId, sourceKey: row.sourceKey ?? null, saintId: row.saintId, name: row.name,
       original: row.sourceReported, legacyConfirmed: row.legacyConfirmed ?? null, proposalDestination: row.destination, proposalVersion: snapshot.proposalVersion,
       duplicateOfSourceId: spnDuplicateObservations[row.sourceId]?.duplicateOfSourceId ?? null,
-      fixedHousing: row.fixedHousing, movementBlockedReason: spnMovementBlockedReason(row.sourceId), verifiedItemIds: [...new Set([...(row.itemIds ?? []), ...(row.itemId ? [row.itemId] : [])])], identityChanged,
-      sourceRevision: physicalFingerprint({ sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, original: row.sourceReported, link, itemIds: row.itemIds ?? [], fixedHousing: row.fixedHousing }),
+      fixedHousing: row.fixedHousing, movementBlockedReason: spnMovementBlockedReason(row.sourceId,reviewedSource), verifiedItemIds: [...new Set([...(row.itemIds ?? []), ...(row.itemId ? [row.itemId] : [])])], identityChanged,
+      sourceRevision,housingEvidenceRevision:row.housingEvidenceRevision,...(isReviewedParamanandArmSupport(reviewedSource)?{reviewedHousing:{classification:paramanandObjectReview.classification,reviewedDate:paramanandObjectReview.reviewedDate,fitNote:paramanandObjectReview.fitNote}}:{}),
       ...current }, components.find(component => component.sourceId === row.sourceId));
   });
   const confirmedRows = (includeUndo ? rows : []).filter(row => row.currentBasis === "confirmed" && row.currentConfirmed && !row.identityChanged && !row.verifiedItemIds.length);
@@ -156,6 +159,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     if(input.guideContext && readStarterGuideDefinition(input.guideContext.guideVersion).readOnly)
       throw new MuseumMoveSessionError(409,"This guide is historical. Reload the current guide before recording a new physical move.");
     assertCurrentNorthernGuideTargets(input);
+    if(input.guideContext&&!input.alternativeDecision&&!input.curatorAddition&&!input.clearedVitrines?.length&&input.records.some(r=>r.sourceId===paramanandObjectReview.sourceId&&r.to.kind==="vitrine"&&r.to.code==="37")&&paramanandProposalResolution((await readMuseumData(tx)).placements).destination!=="37")
+      throw new MuseumMoveSessionError(409,"This captured Vitrine 37 destination is superseded. Review the complete arm-support's current Puri proposal before recording a move.");
     if(input.guideContext&&!input.alternativeDecision&&!input.curatorAddition&&!input.clearedVitrines?.length&&
        input.records.some(row=>row.sourceId===bilashFollowup.sourceId&&row.to.kind==="vitrine"&&row.to.code==="57"))
       assertBilashGuideTarget(input.records,(await readMuseumData(tx)).placements);
@@ -226,7 +231,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       const componentOnly = isComponentClearance(input, row);
       if (componentOnly && !hasOnlySpnHousingReviewHold(row.sourceId))
         throw new MuseumMoveSessionError(409,"This record has a different movement restriction. Review its own workflow.");
-      if (!componentOnly) assertSpnMovementAllowed(row.sourceId, row.current, to);
+      if (!componentOnly) assertSpnMovementAllowed(row.sourceId, row.current, to,row);
       if (row.fixedHousing && !sameMoveLocation(row.current, to) && !allowsPreparedFixedHousingTransfer(row.sourceId, row.current, to, transfers)) throw new MuseumMoveSessionError(409, "This display has fixed or special housing. Review that restriction before moving it.");
       if (row.currentVersion !== record.expectedLocationVersion || row.currentRevision !== record.expectedCurrentRevision) {
         if (!input.clearedVitrines?.length && row.currentBasis === "confirmed" && sameMoveLocation(row.current, to)) return null;

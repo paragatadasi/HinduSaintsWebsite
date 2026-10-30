@@ -1,0 +1,18 @@
+{
+ "version":"spn-paramanand-reviewed-arm-support-2026-10-30-v1",
+ "sourceId":"recVN6Ty3682Uz2g4",
+ "saintId":"cms0w7izk08cz07qi2x8scsz2",
+ "sourceRevision":"b85fd5572b7ebdb950d32378d23ed132690590d391fbb0c3c727153325defb52",
+ "housingEvidenceRevision":"05f1d29089a6051a20e27e462ee3310a8824e0b58e8ce75a30d652f3539d84d8",
+ "classification":"one_complete_japa_arm_support",
+ "destination":"26",
+ "reviewedDate":"2026-10-30",
+ "confirmation":"Yes—only the pictured arm support",
+ "confirmationScope":"Complete pictured arm-support, with no additional relics elsewhere belonging to this source record.",
+ "confirmationUserMessageId":"01a18d18-d421-75e0-a64e-9ff8e1d0359a",
+ "stagingReportUserMessageId":"01a18d19-9ef2-7452-832a-6b3753c7dd61",
+ "stagingReport":"Great, it's actually in staging now, so can you update that also?",
+ "physicalConfirmationWritten":false,
+ "fitNote":"Check the complete arm-support's dimensions and housing against the receiving display before placing it.",
+ "capturedBaseline":{"placementId":"recVN6Ty3682Uz2g4","section":"Gaudiya Vaishnava","tier":"Tertiary","familyKey":"","regionTags":[],"revision":"32daa3813adf6a2b7d31f2e42565668c764d3f4e72f7b89e0083b7b6580042cf","proposalRevision":"aab76483bb9dcda0e7da07d239c74fe4373722329879434e472bdb8e002dff15"}
+}
