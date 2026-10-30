@@ -35,7 +35,7 @@ export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,r
   return <div className="museum-shelf__member" data-group-color={color(a)} key={a.sourceId}>
    <div className="museum-shelf__card-header">{controls&&!a.isContextOnly?renderControl(a.sourceId):null}<span className="museum-guide-tier">{entry?.tier??a.tier??a.capturedTier}</span></div><div className="museum-shelf__card-content"><strong>{/^rec[A-Za-z0-9]{14}$/.test(entry?.name??a.name)?"Unlabelled inventory entry":entry?.name??a.name}</strong>{a.isContextOnly?<small>Context only · no recorded relic</small>:null}
    <small>{placed?"Placed · ":""}{companionLocationLabel(row)}{row?.current&&row.currentBasis!=="confirmed"?" · source-reported":""}</small>
-   {life?<small>{life==="Still alive"?"Living":life}</small>:null}
+   {life?<small className="museum-guide-tier">{life}</small>:null}
    {a.reviewAlerts.length?<details className="museum-shelf__alert"><summary aria-label={`Review placement notes for ${a.name}`}>!</summary>{a.reviewAlerts.map((alert,i)=><p key={i}>{alert.message}</p>)}</details>:null}
    {controls&&!a.isContextOnly?renderActions(a.sourceId):null}</div>
   </div>;

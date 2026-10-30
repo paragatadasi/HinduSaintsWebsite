@@ -52,3 +52,11 @@ test("starter destination wins over a northern receiving stub regardless of inse
  const again=projectCompanionAdditions(result,[{...addition,vitrine:"36"}],[entry]);
  assert.deepEqual(again.starter.vitrines[0].cityGroups[0].sourceIds,[entry.sourceId]);
 });
+
+test("catalog additions preserve explicit and deliberately suppressed life status",()=>{
+ for(const tag of ["Still alive","May be alive",null]){
+  const lifeStatus={tag,basis:"Current evidence"};
+  const result=projectCompanionAdditions({starter:base("73")},[addition],[{...entry,lifeStatus}]);
+  assert.deepEqual(result.starter.entries[0].lifeStatus,lifeStatus);
+ }
+});

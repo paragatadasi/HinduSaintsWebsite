@@ -1,6 +1,6 @@
 import {parseImportedDate} from "./import-dates";
 import type {MuseumSaintPlacement} from "./museum-proposals";
-import type { StarterMoveGuide } from "./spn-move-guide";
+import type { GuideEntry } from "./spn-move-guide";
 export type GuideLifeEvidence={id:string;birthYear:number|null;birthYearEnd?:number|null;birthMonth?:number|null;birthDay?:number|null;samadhiYear:number|null;samadhiDateRaw:string|null};
 export function bornOverCenturyAgo(person:GuideLifeEvidence,now:Date){
  const year=person.birthYearEnd??person.birthYear;if(year===null)return false;
@@ -11,7 +11,7 @@ export function bornOverCenturyAgo(person:GuideLifeEvidence,now:Date){
  if(person.birthMonth!==now.getUTCMonth()+1)return person.birthMonth<now.getUTCMonth()+1;
  return !!person.birthDay&&person.birthDay<now.getUTCDate();
 }
-export function projectGuideLifeStatus(guide:StarterMoveGuide,evidence:GuideLifeEvidence[],now=new Date()):StarterMoveGuide{
+export function projectGuideLifeStatus<T extends {entries:GuideEntry[]}>(guide:T,evidence:GuideLifeEvidence[],now=new Date()):Omit<T,"entries">&{entries:GuideEntry[]}{
  const people=new Map(evidence.map(person=>[person.id,person]));
  return {...guide,entries:guide.entries.map(entry=>{
   const person=people.get(entry.sourceId);
@@ -25,7 +25,7 @@ export function projectGuideLifeStatus(guide:StarterMoveGuide,evidence:GuideLife
  })};
 }
 
-export function projectCurrentGuideLifeStatus(guide:StarterMoveGuide,current:{placements:MuseumSaintPlacement[];membersById:Map<string,Record<string,string>>},now=new Date()){
+export function projectCurrentGuideLifeStatus<T extends {entries:GuideEntry[]}>(guide:T,current:{placements:MuseumSaintPlacement[];membersById:Map<string,Record<string,string>>},now=new Date()){
  const bySaint=new Map<string,MuseumSaintPlacement[]>();
  for(const row of current.placements)if(row.saintId)bySaint.set(row.saintId,[...(bySaint.get(row.saintId)??[]),row]);
  const evidence:GuideLifeEvidence[]=guide.entries.flatMap(entry=>{
