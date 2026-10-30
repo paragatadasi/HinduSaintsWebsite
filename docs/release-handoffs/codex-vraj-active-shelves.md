@@ -2,7 +2,7 @@
 
 - Status: `ready`
 - Branch: `codex/vraj-active-shelves`
-- Commit: `ca0f67fe5af8c27ab3d22fbfd12d7531d6e90767`
+- Commit: `3820cf66ce0e1503ef4ed0b5bc68ebfd571c06ca`
 - Owner/agent: Citra, with Nadi backend
 - Bundle priority: immediate release candidate
 
@@ -19,6 +19,8 @@
 - `npm test`: 778 passed, 1 skipped, 0 failed.
 - Actual component browser checks: V35/V33 shelf cards, failed-load retry, no refetch on case switching, stale-source suppression; Vraj Phase 2 mocked placement saves V32 without shelf and immediate pending feedback (30ms observed fixture, not production latency).
 - Nadi actual captured production snapshot preflight: 98 active, 0 held, 0 changed; counts 18/22/19/19/20. Runtime guards re-evaluate newer data.
+
+- Final provenance correction: exact upstream `spn-vraj-locked-2026-10-29-v17`, canonical content digest regenerated; seven focused tests and dev:check passed again. Runtime assertion prevents proposal-version drift. Assignment digest and all 98 rows unchanged.
 
 ## Deploy Notes
 
