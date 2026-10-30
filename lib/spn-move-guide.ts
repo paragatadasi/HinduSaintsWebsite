@@ -1,3 +1,4 @@
+import type {ComponentPlacement} from "./museum-component-clearance-domain";
 export type GuideEntry = {
  sourceId:string;saintId:string|null;name:string;tier:string;city:string;relicDescription:string;
  destination:string;section:string;family:string;rationale:string;
@@ -22,6 +23,7 @@ export type StarterMoveGuide = {
 };
 export type PhysicalLocation={kind:"vitrine"|"table";code:string;label:string;shelf?:string|null};
 export type CompanionRow={
+ componentPlacement?:ComponentPlacement|null;
  undo?:{available:boolean;receiptId?:string|null;previous:PhysicalLocation|null;previousBasis:string|null;previousConfirmedAt?:string|null;reason?:string|null};
  sourceId:string;name:string;saintId:string|null;original:PhysicalLocation|null;current:PhysicalLocation|null;
  currentBasis:string;currentVersion:number;currentRevision:string;sourceRevision:string;
@@ -33,6 +35,8 @@ export type ClearCorrection={receiptId:string;vitrine:string;excludedCount:numbe
 export type PhysicalState={phaseClearances?:{guideVersion:string;vitrine:string;receiptId:string;recordedAt:string}[];clearCorrections?:ClearCorrection[];preparations?:VitrinePreparation[];reportedPlacementReceipts?:{guideContext:{guideVersion:string;contentDigest:string;assignmentDigest:string};complete:boolean};confirmationHistory?:{afterJson:unknown}[];rows:CompanionRow[];unmappedCurrentLocations:{sourceId:string;location:PhysicalLocation;version:number}[]};
 export function isPlaced(row:CompanionRow,destination:string){return row.currentBasis==="confirmed"&&row.current?.kind==="vitrine"&&row.current.code===destination;}
 export function currentLocationLabel(location:PhysicalLocation|null){return location?location.label+(location.shelf?` · Shelf ${location.shelf}`:""):"Location not recorded";}
+
+export function companionLocationLabel(row?:Pick<CompanionRow,"current"|"componentPlacement">|null){return row?.componentPlacement?"Staging area · Vitrine 20 pieces only":currentLocationLabel(row?.current??null);}
 
 export type GuideDecision={suggestionId:string;decision:"pending"|"deferred"|"declined"|"not_on_display";note:string|null;version:number;alternativeVitrine?:string|null;alternativeShelf?:string|null};
 

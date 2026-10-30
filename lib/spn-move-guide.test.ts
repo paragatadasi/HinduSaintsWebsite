@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {starterMoveGuide as guide} from "./spn-starter-move-guide";
-import {cityFitsStarterCase,isPlaced,type CompanionRow,type GuideGroup} from "./spn-move-guide";
+import {companionLocationLabel,cityFitsStarterCase,isPlaced,type CompanionRow,type GuideGroup} from "./spn-move-guide";
 
 test("starter guide covers each row once in family or city phase",()=>{
  assert.deepEqual(guide.vitrines.map(v=>v.code),["2","78","36","29","76","28","27"]);
@@ -42,4 +42,11 @@ test("reported placement receipts remain recognized after a later move",()=>{
  const state={rows:[],unmappedCurrentLocations:[],confirmationHistory:[{afterJson:{moves:[{sourceId:"a",location:{kind:"vitrine",code:"28"}}]}},{afterJson:{moves:[{sourceId:"a",location:{kind:"vitrine",code:"27"}}]}}]};
  assert.equal(reportedPlacementsRecorded(state,reported),true);
  assert.equal(reportedPlacementsRecorded({...state,confirmationHistory:state.confirmationHistory.slice(0,1)},reported),false);
+});
+
+test("partial staging is labelled without treating the whole source as placed",()=>{
+ const row:CompanionRow={sourceId:"partial",name:"Partial assembly",saintId:null,original:{kind:"vitrine",code:"20",label:"Vitrine 20"},current:null,currentBasis:"unknown",currentVersion:0,currentRevision:"component",sourceRevision:"source",fixedHousing:false,verifiedItemIds:[],identityChanged:false,componentPlacement:{sourceId:"partial",receiptId:"receipt",recordedAt:"2026-10-30",revision:"component",origin:{kind:"vitrine",code:"20",label:"Vitrine 20"},location:{kind:"table",code:"staging-area",label:"Staging area"},scope:"vitrine_20_contents_only",excludedWalkingSticks:{location:null,status:"unverified"},expectedSourceRevision:"source",previousCurrentRevision:"previous",previousLocationVersion:0}};
+ assert.equal(companionLocationLabel(row),"Staging area · Vitrine 20 pieces only");
+ assert.equal(isPlaced(row,"20"),false);
+ assert.equal(companionLocationLabel({...row,componentPlacement:null}),"Location not recorded");
 });
