@@ -749,3 +749,5 @@ Individual companion declines offer “Not on display” with an optional note. 
 Component-scoped clearing keeps separately housed pieces explicit: use a second acknowledgement beside case clearing, name the affected records, and show the staged scope in staging and placement views. A partial record must never enable a whole-source placement checkbox. Reuse the existing check-row and panel styles.
 
 Photo follow-ups use concise narrative cards with the photographed piece, qualified target, live recorded location and a link to an available receiving guide. Keep already-confirmed assemblies distinct from remaining-piece checks; do not duplicate their placement checkbox or replace their physical confirmation. Display newer curator targets alongside the original photo guidance when they differ.
+
+Shelf fit information uses a compact disclosure above the shelf grid, identifying affected conceptual rows; this preserves the narrow row-label column. Show unknown sizes separately from known loads, never as zero capacity. Life-status labels use Living or May be alive; missing historical death information is not itself a living label.

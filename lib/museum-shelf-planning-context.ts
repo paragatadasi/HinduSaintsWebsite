@@ -8,7 +8,7 @@ export type ShelfPlanningAllocation={
  sourceId:string;saintId?:string|null;name:string;tier?:string;capturedTier?:string;groupId:string;
  suggestedShelfIndex:number|null;reviewAlerts:{message:string}[];isContextOnly?:boolean;
  capturedBaseline?:ProposalObservation["baseline"];sourceRevision?:string|null;
- projectedLifeStatus?:GuideEntry["lifeStatus"];
+ projectedLifeStatus?:GuideEntry["lifeStatus"]|null;
 };
 export type ShelfPlanningCase={
  code:string;groups:{id:string;title:string;kind:string}[];allocations:ShelfPlanningAllocation[];
@@ -21,7 +21,7 @@ type CurrentMuseum={placements:MuseumSaintPlacement[];membersById:Map<string,Rec
 type Destination={sourceId:string;vitrine:string;shelf:string|null};
 type Addition=Destination&{saintId:string|null;sourceRevision:string};
 type Review={rows:ExplorerObservation[];pendingPlacements:{sourceId:string;reason:string}[]};
-export type ShelfPlanningChange={sourceId:string;name:string;capturedDestination:string;effectiveDestination:string|null;reason:string;visibility:"changed"|"pending"};
+export type ShelfPlanningChange={sourceId:string;name:string;capturedDestination:string;capturedShelfIndex?:number|null;effectiveDestination:string|null;reason:string;visibility:"changed"|"pending"};
 export type ShelfPlanningContext={
  version:string;mode:"recommendations_only";physicalActionsEnabled:false;
  cases:(ShelfPlanningCase&{title:string;entries:GuideEntry[];reviewedChanges:ShelfPlanningChange[];bandExceptions:NonNullable<ShelfPlanningPacket["exceptions"]>})[];
@@ -76,7 +76,7 @@ export function projectShelfPlanningContext(packet:ShelfPlanningPacket,input:{cu
     if(reconciled?.reviewReason&&reconciled.reviewReason!=="Current curator destination retained")reason=reconciled.reviewReason;
    }
    if(!reason&&destination!==plan.code)reason="The current curator destination differs from this captured shelf plan.";
-   if(reason){reviewedChanges.push({sourceId:captured.sourceId,name:placement?.name??physicalRow?.name??captured.name,capturedDestination:plan.code,effectiveDestination:destination,reason,visibility:destination&&destination!==plan.code?"changed":"pending"});continue;}
+   if(reason){reviewedChanges.push({sourceId:captured.sourceId,name:placement?.name??physicalRow?.name??captured.name,capturedDestination:plan.code,capturedShelfIndex:captured.suggestedShelfIndex,effectiveDestination:destination,reason,visibility:destination&&destination!==plan.code?"changed":"pending"});continue;}
    const tier=placement?(placement.tier==="Featured"?"Primary":placement.tier):row?.tier??captured.tier??captured.capturedTier??"Tertiary";
    const name=placement?.name??physicalRow?.name??row?.name??captured.name;
    const alerts=captured.reviewAlerts.filter(a=>!a.message.includes("is asserted by the current CMS record"));
@@ -92,7 +92,7 @@ export function projectShelfPlanningContext(packet:ShelfPlanningPacket,input:{cu
    const life=lifeById.get(a.sourceId);
    if(life?.tag&&a.suggestedShelfIndex===1){
     lifeConflicts.add(a.sourceId);
-    reviewedChanges.push({sourceId:a.sourceId,name:a.name,capturedDestination:plan.code,effectiveDestination:plan.code,visibility:"pending",reason:"Current living-status evidence conflicts with the captured top position; review the starting shelf."});
+    reviewedChanges.push({sourceId:a.sourceId,name:a.name,capturedDestination:plan.code,capturedShelfIndex:a.suggestedShelfIndex,effectiveDestination:plan.code,visibility:"pending",reason:"Current living-status evidence conflicts with the captured top position; review the starting shelf."});
     return [];
    }
    return [{...a,projectedLifeStatus:life}];
