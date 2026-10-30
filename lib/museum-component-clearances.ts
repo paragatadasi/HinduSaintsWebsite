@@ -10,10 +10,10 @@ export async function readComponentCorrections(tx: Prisma.TransactionClient = db
     typeof value.targetReceiptId==="string"&&typeof value.sourceId==="string"?[{receiptId:value.targetReceiptId,sourceId:value.sourceId}]:[]);
 }
 
-export async function readComponentPlacements(tx: Prisma.TransactionClient = db): Promise<ComponentPlacement[]> {
+export async function readComponentPlacements(tx: Prisma.TransactionClient = db, correctionsRead?: ReturnType<typeof readComponentCorrections>): Promise<ComponentPlacement[]> {
   const [events,corrections] = await Promise.all([tx.auditEvent.findMany({ where: { action: "museum.physical_location.confirmed",
     entityType: "MuseumPhysicalConfirmation", afterJson: { path: ["scope"], equals: "source_observation_with_components" } },
-    orderBy: [{ createdAt: "desc" }, { id: "desc" }], select: { id: true, createdAt: true, afterJson: true } }),readComponentCorrections(tx)]);
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }], select: { id: true, createdAt: true, afterJson: true } }),correctionsRead??readComponentCorrections(tx)]);
   const found = new Map<string, ComponentPlacement>();
   for (const event of events) {
     const value = event.afterJson;
