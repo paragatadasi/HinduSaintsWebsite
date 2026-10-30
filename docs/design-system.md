@@ -733,3 +733,9 @@ The shared guide tree supports `basis: "source"` edges. These use dashed
 connectors alongside explicit source-recorded labels; verified edges remain
 solid. Keep historical corroboration caveats visible in the group context.
 A display grouping alone must not generate a relationship edge.
+
+## Museum shelf companion
+
+Use `MuseumShelfGuide` for five aligned conceptual shelf bands beside a compact family rail. An integrated left/right disclosure expands a family into horizontal relationship levels in place. Colors identify named display groups; labels preserve whether a connection is lineage, locality, or unresolved. Undirected connections never establish tree depth. Unknown positions remain outside the five bands. Placement controls reuse the companion physical-state workflow and never save a suggested shelf as a confirmed shelf. Family and city reference checklists collapse below this view; the full checklist remains open.
+
+Vitrine navigation uses `museum-vitrine-progress`: muted green fill for confirmed placements or declined assignments, amber for deferred assignments, deduplicated by source ID. Keep the name and active border stable; expose counts in the accessible label and tooltip, with a visible swatch legend. A new destination remains pending until confirmed there.
