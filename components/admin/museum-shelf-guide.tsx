@@ -2,7 +2,7 @@
 import {useState,useRef,useLayoutEffect,type ReactNode} from "react";
 import addon from "@/data/museum/spn-vitrine5-shelves-v1.json";
 import packet from "@/data/museum/spn-northern-shelves-v1.json";
-import {currentLocationLabel,isPlaced,type CompanionRow,type GuideEntry} from "@/lib/spn-move-guide";
+import {companionLocationLabel,isPlaced,type CompanionRow,type GuideEntry} from "@/lib/spn-move-guide";
 
 type Allocation={sourceId:string;name:string;tier?:string;capturedTier?:string;groupId:string;suggestedShelfIndex:number|null;isContextOnly?:boolean;reviewAlerts:{message:string}[]};
 type ShelfPlan={code:string;groups:{id:string;title:string;kind:string}[];allocations:Allocation[];relationships:{fromSourceId:string;toSourceId:string;label:string;direction:string;uncertain:boolean}[];contextNodes?:{id:string;label:string;physicalHolding:boolean}[]};
@@ -32,7 +32,7 @@ export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,r
   const placed=row&&isPlaced(row,vitrine);
   return <div className="museum-shelf__member" data-group-color={color(a)} key={a.sourceId}>
    <div className="museum-shelf__card-header">{controls&&!a.isContextOnly?renderControl(a.sourceId):null}<span className="museum-guide-tier">{entry?.tier??a.tier??a.capturedTier}</span></div><div className="museum-shelf__card-content"><strong>{entry?.name??a.name}</strong>{a.isContextOnly?<small>Context only · no recorded relic</small>:null}
-   <small>{placed?"Placed · ":""}{currentLocationLabel(row?.current??null)}{row?.current&&row.currentBasis!=="confirmed"?" · source-reported":""}</small>
+   <small>{placed?"Placed · ":""}{companionLocationLabel(row)}{row?.current&&row.currentBasis!=="confirmed"?" · source-reported":""}</small>
    {entry?.lifeStatus?.tag?<small>{entry.lifeStatus.tag}</small>:null}
    {a.reviewAlerts.length?<details className="museum-shelf__alert"><summary aria-label={`Review placement notes for ${a.name}`}>!</summary>{a.reviewAlerts.map((alert,i)=><p key={i}>{alert.message}</p>)}</details>:null}
    {controls&&!a.isContextOnly?renderActions(a.sourceId):null}</div>

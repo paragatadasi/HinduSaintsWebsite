@@ -18,6 +18,9 @@ import { moveSnapshot, moveLocation, sameMoveLocation, assertDistinctMoveSources
 import { readStarterGuideDefinition, registeredStarterGuide, starterGuideContext } from "./spn-starter-guide-registry";
 import { physicalFingerprint, resolveMuseumPhysicalCurrent, storedPhysicalLocation } from "./museum-physical-location-current";
 import type { MoveSessionActor } from "./museum-move-session-service";
+import { componentStagingAcknowledgements, assertComponentClearanceScope, isComponentClearance, projectComponentPlacement } from "./museum-component-clearance-domain";
+import { readComponentPlacements, readComponentCorrections } from "./museum-component-clearances";
+import { hasOnlySpnHousingReviewHold } from "./spn-movement-holds";
 
 export type PhysicalSnapshotLoader = (tx: Prisma.TransactionClient) => Promise<MoveSnapshot>;
 const confirmedDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(value => {
@@ -31,6 +34,7 @@ export const physicalConfirmationInput = z.object({ museumId: z.literal("museum-
   alternativeDecision:z.object({guideVersion:z.string().min(1).max(200),suggestionId:z.string().min(1).max(300),version:z.number().int().positive()}).strict().optional(),
   guideContext: z.object({ guideVersion: z.string().min(1).max(200), contentDigest: z.string().regex(/^[a-f0-9]{64}$/), assignmentDigest: z.string().regex(/^[a-f0-9]{64}$/) }).strict().optional(),
   initialCaseClearAcknowledged: z.literal(true).optional(),
+  componentStagingAcknowledgements: componentStagingAcknowledgements.optional(),
   clearedVitrines: z.array(z.string().min(1).max(100)).max(100).optional(),
   records: z.array(z.object({ sourceId: z.string().min(1).max(200), saintId: z.string().nullable(),
     expectedCurrentRevision: z.string().regex(/^[a-f0-9]{64}$/), expectedSourceRevision: z.string().regex(/^[a-f0-9]{64}$/),
@@ -45,20 +49,21 @@ export async function readPhysicalLocationView(loader: PhysicalSnapshotLoader, t
   const snapshot = moveSnapshot.parse(await loader(tx));
   const selected = sourceIds ? snapshot.rows.filter(row => sourceIds.includes(row.sourceId)) : snapshot.rows;
   if (sourceIds?.some(id => !selected.some(row => row.sourceId === id))) throw new MuseumMoveSessionError(409, "A source record changed. Reload the inventory before recording its location.");
-  const [positions, links] = await Promise.all([
+  const [positions, links, components] = await Promise.all([
     tx.museumMoveCurrentLocation.findMany({ where: { museumId: "museum-spn", ...(sourceIds ? { sourceId: { in: sourceIds } } : {}) } }),
-    tx.externalRecord.findMany({ where: { sourceType: "airtable", externalId: { in: selected.flatMap(row => row.sourceKey ? [row.sourceKey] : []) } }, select: { externalId: true, entityType: true, entityId: true } })
+    tx.externalRecord.findMany({ where: { sourceType: "airtable", externalId: { in: selected.flatMap(row => row.sourceKey ? [row.sourceKey] : []) } }, select: { externalId: true, entityType: true, entityId: true } }),
+    readComponentPlacements(tx)
   ]);
   const rows = selected.map(row => {
     const link = links.find(link => link.externalId === row.sourceKey);
     const identityChanged = Boolean(row.saintId && (!link || link.entityType !== "Saint" || link.entityId !== row.saintId));
     const current = resolveMuseumPhysicalCurrent(row.sourceReported, positions.find(position => position.sourceId === row.sourceId), row.legacyConfirmed);
-    return { sourceId: row.sourceId, sourceKey: row.sourceKey ?? null, saintId: row.saintId, name: row.name,
+    return projectComponentPlacement({ sourceId: row.sourceId, sourceKey: row.sourceKey ?? null, saintId: row.saintId, name: row.name,
       original: row.sourceReported, legacyConfirmed: row.legacyConfirmed ?? null, proposalDestination: row.destination, proposalVersion: snapshot.proposalVersion,
       duplicateOfSourceId: spnDuplicateObservations[row.sourceId]?.duplicateOfSourceId ?? null,
       fixedHousing: row.fixedHousing, movementBlockedReason: spnMovementBlockedReason(row.sourceId), verifiedItemIds: [...new Set([...(row.itemIds ?? []), ...(row.itemId ? [row.itemId] : [])])], identityChanged,
       sourceRevision: physicalFingerprint({ sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, original: row.sourceReported, link, itemIds: row.itemIds ?? [], fixedHousing: row.fixedHousing }),
-      ...current };
+      ...current }, components.find(component => component.sourceId === row.sourceId));
   });
   const confirmedRows = (includeUndo ? rows : []).filter(row => row.currentBasis === "confirmed" && row.currentConfirmed && !row.identityChanged && !row.verifiedItemIds.length);
   const expectedReceipts = confirmedRows.length ? Prisma.join(confirmedRows.map(row =>
@@ -72,7 +77,10 @@ export async function readPhysicalLocationView(loader: PhysicalSnapshotLoader, t
     WHERE event.action=${action} AND event."entityType"=${receiptType}
       AND event."afterJson"->>'museumId'='museum-spn'
   `) : [];
-  return { museumId: "museum-spn" as const, sourceSnapshotAt: snapshot.sourceSnapshotAt ?? null, rows: rows.map(row => ({ ...row, undo: physicalUndoOffer(row, undoReceipts) })), vitrineCodes: snapshot.vitrineCodes,
+  return { museumId: "museum-spn" as const, sourceSnapshotAt: snapshot.sourceSnapshotAt ?? null, rows: rows.map(row => ({ ...row, undo: row.componentPlacement ? {
+    available:true,receiptId:row.componentPlacement.receiptId,previous:null,previousBasis:null,previousConfirmedAt:null,
+    reason:"Correct only the Vitrine 20 component record; this does not confirm a physical return."
+  } : physicalUndoOffer(row, undoReceipts) })), vitrineCodes: snapshot.vitrineCodes,
     unmappedCurrentLocations: positions.filter(position => !spnDuplicateObservations[position.sourceId] && !snapshot.rows.some(row => row.sourceId === position.sourceId)).flatMap(position => { const location = storedPhysicalLocation(position.location); return location ? [{ sourceId: position.sourceId, location, version: position.version, recordedAt: position.confirmedAt }] : []; }) };
 }
 
@@ -93,7 +101,7 @@ export async function readMuseumPhysicalLocations(loader: PhysicalSnapshotLoader
     if (!value || typeof value !== "object" || Array.isArray(value) || !Array.isArray(value.moves)) return event;
     return { ...event, afterJson: { ...value, moves: value.moves.filter(move => !move || typeof move !== "object" || Array.isArray(move) || !corrected.some(c => c.receiptId === event.id && c.sourceId === move.sourceId)) } };
   });
-  return { ...current, confirmationHistory: activeHistory, clearCorrections: clearCorrectionOffers(current.rows, confirmationHistory), reportedPlacementReceipts, preparations: await readMuseumPreparations(), phaseClearances: await readMuseumPhaseClearances() };
+  return { ...current, confirmationHistory: activeHistory, clearCorrections: clearCorrectionOffers(current.rows, confirmationHistory), reportedPlacementReceipts, preparations: await readMuseumPreparations(), phaseClearances: await readMuseumPhaseClearances(db,loader) };
 }
 
 export async function readReportedPlacementReceipts(tx: Prisma.TransactionClient = db,
@@ -125,6 +133,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
   if (!actor.canManage) throw new MuseumMoveSessionError(403, "A museum curator must record physical locations.");
   loader = memoizePhysicalSnapshot(loader);
   const input = physicalConfirmationInput.parse(raw);
+  assertComponentClearanceScope(input);
   assertDistinctMoveSources(input.records);
   if (input.guideContext) {
     const definition = readStarterGuideDefinition(input.guideContext.guideVersion);
@@ -140,7 +149,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     if (retry) {
       const receipt = retry.afterJson as { fingerprint?: string } | null;
       if (receipt?.fingerprint !== fingerprint) throw new MuseumMoveSessionError(409, "This request already recorded different locations. Reload before recording another confirmation.");
-      return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx), receipt: retry, replayed: true, alreadyRecorded: [] as string[] };
+      return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt: retry, replayed: true, alreadyRecorded: [] as string[] };
     }
     if(input.guideContext && readStarterGuideDefinition(input.guideContext.guideVersion).readOnly)
       throw new MuseumMoveSessionError(409,"This guide is historical. Reload the current guide before recording a new physical move.");
@@ -179,7 +188,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     if (input.curatorAddition) {
       const preparations = await readMuseumPreparations(tx);
       assertPhasePreparation(input.records, [input.records[0].to.code], preparations);
-      const clearances = await readMuseumPhaseClearances(tx);
+      const clearances = await readMuseumPhaseClearances(tx,loader);
       for (const receiver of additionPhases) {
         const scope = receiver.physicalScope;
         if (scope?.allowClear && scope.clearVitrines?.length && phaseNeedsClearance(input.records, scope.clearanceRequiredDestinations))
@@ -190,11 +199,12 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     }
     const initialCases=phase?.physicalScope?.allowClear ? phase.physicalScope.clearVitrines ?? [] : [];
     if(initialCases.length && (input.clearedVitrines?.length || phaseNeedsClearance(input.records,phase?.physicalScope?.clearanceRequiredDestinations)))
-      assertPhaseClearance(input,input.clearedVitrines?.length ? initialCases : phaseClearanceRequirements(input.records, initialCases, phase?.physicalScope?.clearancePerDestination),phase?.context.guideVersion ?? "",(await readMuseumPhaseClearances(tx)).map(c=>phase?.physicalScope?.previousClearanceVersions?.includes(c.guideVersion)?{...c,guideVersion:phase.context.guideVersion}:c),current.rows,input.records);
+      assertPhaseClearance(input,input.clearedVitrines?.length ? initialCases : phaseClearanceRequirements(input.records, initialCases, phase?.physicalScope?.clearancePerDestination),phase?.context.guideVersion ?? "",(await readMuseumPhaseClearances(tx,loader)).map(c=>phase?.physicalScope?.previousClearanceVersions?.includes(c.guideVersion)?{...c,guideVersion:phase.context.guideVersion}:c),current.rows,input.records);
     const preparationVitrines = [...new Set([...(phase?.physicalScope?.preparationVitrines ?? []), ...transfers.map(row => row.toVitrine)])];
     if(preparationVitrines.length)assertPhasePreparation(input.records,preparationVitrines,await readMuseumPreparations(tx));
     if (input.clearedVitrines?.length && !initialCases.length) assertSafeCaseClear(input.clearedVitrines, [...current.rows, ...current.unmappedCurrentLocations.map(row=>({currentBasis:"confirmed",current:row.location}))]);
     if (input.clearedVitrines?.length) assertWholeCaseClearing(input.clearedVitrines, [...current.rows.map(row => ({ sourceId: row.sourceId, current: row.current })), ...current.unmappedCurrentLocations.map(row => ({ sourceId: row.sourceId, current: row.location }))], input.records);
+    const componentMoves: {sourceId:string; origin: import("./museum-move-session-domain").MoveLocation; location: import("./museum-move-session-domain").MoveLocation; scope:"vitrine_20_contents_only"; expectedSourceRevision:string; previousCurrentRevision:string; previousLocationVersion:number; revision:string}[] = [];
     const changes = input.records.map(record => {
       const row = current.rows.find(row => row.sourceId === record.sourceId);
       if (!row) throw new MuseumMoveSessionError(409, "This source is not in the current inventory snapshot. Reload before confirming it.");
@@ -208,18 +218,27 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         if (!current.vitrineCodes.includes(to.code)) throw new MuseumMoveSessionError(400, "Choose a vitrine in this museum's layout.");
         to = { ...to, label: `Vitrine ${to.code}` };
       }
-      assertSpnMovementAllowed(row.sourceId, row.current, to);
+      const componentOnly = isComponentClearance(input, row);
+      if (componentOnly && !hasOnlySpnHousingReviewHold(row.sourceId))
+        throw new MuseumMoveSessionError(409,"This record has a different movement restriction. Review its own workflow.");
+      if (!componentOnly) assertSpnMovementAllowed(row.sourceId, row.current, to);
       if (row.fixedHousing && !sameMoveLocation(row.current, to) && !allowsPreparedFixedHousingTransfer(row.sourceId, row.current, to, transfers)) throw new MuseumMoveSessionError(409, "This display has fixed or special housing. Review that restriction before moving it.");
       if (row.currentVersion !== record.expectedLocationVersion || row.currentRevision !== record.expectedCurrentRevision) {
         if (!input.clearedVitrines?.length && row.currentBasis === "confirmed" && sameMoveLocation(row.current, to)) return null;
         throw new MuseumMoveSessionError(409, "A physical location changed. Reload it before recording this confirmation.");
       }
+      if (componentOnly) {
+        componentMoves.push({sourceId:row.sourceId,origin:row.current!,location:to,scope:"vitrine_20_contents_only",
+          expectedSourceRevision:row.sourceRevision,previousCurrentRevision:row.currentRevision,previousLocationVersion:row.currentVersion,
+          revision:physicalFingerprint({clientRequestId:input.clientRequestId,sourceId:row.sourceId,scope:"vitrine_20_contents_only",previousCurrentRevision:row.currentRevision})});
+        return null;
+      }
       return { sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, name: row.name, original: row.original,
         previous: row.current, previousState: { basis: row.currentBasis, location: row.current, effectiveConfirmedAt: row.currentConfirmed?.confirmedAt ?? null }, location: to, version: row.currentVersion + 1 };
     }).filter(change => change !== null);
-    const alreadyRecorded = input.records.filter(record => !changes.some(change => change.sourceId === record.sourceId)).map(record => record.sourceId);
-    if (!changes.length && alreadyRecorded.length) return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)),
-      preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx), receipt: null, replayed: false, alreadyRecorded };
+    const alreadyRecorded = input.records.filter(record => !changes.some(change => change.sourceId === record.sourceId) && !componentMoves.some(change => change.sourceId === record.sourceId)).map(record => record.sourceId);
+    if (!changes.length && !componentMoves.length && alreadyRecorded.length) return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)),
+      preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt: null, replayed: false, alreadyRecorded };
     const recordedAt = new Date();
     for (const change of changes) await tx.museumMoveCurrentLocation.upsert({
       where: { museumId_sourceId: { museumId: input.museumId, sourceId: change.sourceId } },
@@ -229,10 +248,11 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     const receipt = await tx.auditEvent.create({ data: { userId: actor.id, action, entityType: receiptType, entityId,
       beforeJson: json(current.rows.map(row => ({ sourceId: row.sourceId, current: row.current, version: row.currentVersion }))),
       afterJson: json({ museumId: input.museumId, fingerprint, clientRequestId: input.clientRequestId, confirmedDate: input.confirmedDate,
-        datePrecision: input.datePrecision, recordedAt: recordedAt.toISOString(), evidence: input.evidence, scope: "source_observation", moves: changes,
+        datePrecision: input.datePrecision, recordedAt: recordedAt.toISOString(), evidence: input.evidence, scope: componentMoves.length ? "source_observation_with_components" : "source_observation", moves: changes,
+        ...(componentMoves.length ? {componentMoves, componentStagingAcknowledgements:input.componentStagingAcknowledgements} : {}),
         guideContext: input.guideContext ?? null, curatorAddition: input.curatorAddition ?? null, clearedVitrines: input.clearedVitrines ?? [], inventoryCompleteness: "unverified",
         emptyCaseClaim: input.clearedVitrines?.length ? "curator_confirmed_at_event_time" : "none", proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
-    return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx), receipt, replayed: false, alreadyRecorded };
+    return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt, replayed: false, alreadyRecorded };
   }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 60_000 });
 }
 
@@ -247,7 +267,7 @@ export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionAc
     const retry = await tx.auditEvent.findFirst({ where: { action: undoAction, entityType: "MuseumPhysicalCheckUndo", entityId }, select: { id: true, afterJson: true } });
     if (retry) {
       if ((retry.afterJson as { fingerprint?: string } | null)?.fingerprint !== fingerprint) throw new MuseumMoveSessionError(409, "This request already corrected a different check. Reload before trying again.");
-      return { ...await readPhysicalLocationView(loader, tx), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx), receipt: retry, replayed: true };
+      return { ...await readPhysicalLocationView(loader, tx), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt: retry, replayed: true };
     }
     const state = await readPhysicalLocationView(loader, tx, [input.sourceId]);
     const row = state.rows[0];
@@ -256,6 +276,14 @@ export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionAc
       throw new MuseumMoveSessionError(409, "This source or its physical location changed. Reload before undoing the check.");
     const offer = row.undo;
     if (!offer.available || offer.receiptId !== input.receiptId) throw new MuseumMoveSessionError(409, offer.reason ?? "This confirmation can no longer be undone.");
+    if (row.componentPlacement) {
+      const receipt=await tx.auditEvent.create({data:{userId:actor.id,action:undoAction,entityType:"MuseumPhysicalCheckUndo",entityId,
+        afterJson:json({museumId:input.museumId,fingerprint,targetReceiptId:input.receiptId,sourceId:row.sourceId,
+          scope:"vitrine_20_contents_only",correctionOnly:true,physicalReturnClaim:false,recordedAt:new Date().toISOString(),
+          proposalChanged:false,sourceChanged:false})},select:{id:true,afterJson:true}});
+      return {...await readPhysicalLocationView(loader,tx),preparations:await readMuseumPreparations(tx),
+        phaseClearances:await readMuseumPhaseClearances(tx,loader),receipt,replayed:false};
+    }
     const restored = { kind: "restored_recorded_state", basis: offer.previousBasis, location: offer.previous, effectiveConfirmedAt: offer.previousConfirmedAt };
     const recordedAt = new Date();
     const changed = await tx.museumMoveCurrentLocation.updateMany({ where: { museumId: input.museumId, sourceId: input.sourceId, version: input.expectedLocationVersion },
@@ -266,7 +294,7 @@ export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionAc
       afterJson: json({ museumId: input.museumId, fingerprint, targetReceiptId: input.receiptId, sourceId: row.sourceId, saintId: row.saintId,
         restored, version: row.currentVersion + 1, recordedAt: recordedAt.toISOString(), correctionOnly: true, physicalReturnClaim: false,
         proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
-    return { ...await readPhysicalLocationView(loader, tx), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx), receipt, replayed: false };
+    return { ...await readPhysicalLocationView(loader, tx), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt, replayed: false };
   }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 60_000 });
 }
 
@@ -341,7 +369,21 @@ export async function correctMuseumClear(raw:unknown,actor:MoveSessionActor,load
  },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable,timeout:60_000});
 }
 
-export async function readMuseumPhaseClearances(tx:Prisma.TransactionClient=db){
- return projectPhaseClearances(await tx.auditEvent.findMany({where:{action,entityType:receiptType,entityId:{startsWith:"museum-spn:"},
-  afterJson:{path:["clearedVitrines"],not:[]}},select:{id:true,createdAt:true,afterJson:true}}));
+export async function readMuseumPhaseClearances(tx:Prisma.TransactionClient=db,loader?:PhysicalSnapshotLoader){
+ const [events,corrections,components]=await Promise.all([tx.auditEvent.findMany({where:{action,entityType:receiptType,entityId:{startsWith:"museum-spn:"},
+  afterJson:{path:["clearedVitrines"],not:[]}},select:{id:true,createdAt:true,afterJson:true}}),readComponentCorrections(tx),readComponentPlacements(tx)]);
+ const validComponents=new Set<string>();
+ if(components.length){
+  if(!loader){const source=await import("./museum-move-session-source");loader=transaction=>source.readMuseumMoveSessionSource(source.registeredMoveProposal.version,transaction);}
+  const current=await readPhysicalLocationView(loader,tx,components.map(row=>row.sourceId),false);
+  for(const row of current.rows)if(row.componentPlacement)validComponents.add(row.componentPlacement.receiptId+":"+row.sourceId);
+ }
+ return projectPhaseClearances(events.filter(event=>{
+  if(corrections.some(c=>c.receiptId===event.id))return false;
+  const value=event.afterJson;
+  if(value&&typeof value==="object"&&!Array.isArray(value)&&value.scope==="source_observation_with_components")
+   return Array.isArray(value.componentMoves)&&value.componentMoves.length>0&&value.componentMoves.every(row=>
+    row&&typeof row==="object"&&!Array.isArray(row)&&typeof row.sourceId==="string"&&validComponents.has(event.id+":"+row.sourceId));
+  return true;
+ }));
 }

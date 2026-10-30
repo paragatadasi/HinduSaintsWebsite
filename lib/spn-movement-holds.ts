@@ -6,6 +6,9 @@ import proposal from "../data/museum/spn-starter-reviewed-proposal-v16.json";
 // These source observations may combine a complete stick with other relics.
 // A saint-level destination does not establish which objects can move together.
 const housingReviewSources = new Set(proposal.rows.filter(row => row.movementBlockedReason).map(row => row.sourceId));
+export function hasOnlySpnHousingReviewHold(sourceId: string) {
+  return housingReviewSources.has(sourceId) && !spnDuplicateObservations[sourceId] && !adjustments.privateSourceIds.includes(sourceId);
+}
 
 export function spnMovementBlockedReason(sourceId: string): string | undefined {
   if(spnDuplicateObservations[sourceId])return spnDuplicateObservations[sourceId].reason;

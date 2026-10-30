@@ -745,3 +745,5 @@ Shelf cards keep the checkbox and tier in a compact top row, with the name and l
 Peers in a single family shelf band may form a compact grid instead of a tall stack. Keep family color and conceptual row alignment; wrapping peers never asserts a new relationship or physical shelf measurement. Context-only tree links remain labelled and undirected, with no placement control.
 
 Individual companion declines offer “Not on display” with an optional note. Keep these records in a collapsed, restorable list outside the active checklist; count them as addressed. This decision never sets a storage location or changes physical history.
+
+Component-scoped clearing keeps separately housed pieces explicit: use a second acknowledgement beside case clearing, name the affected records, and show the staged scope in staging and placement views. A partial record must never enable a whole-source placement checkbox. Reuse the existing check-row and panel styles.
