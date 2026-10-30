@@ -741,3 +741,5 @@ Use `MuseumShelfGuide` for five aligned conceptual shelf bands beside a compact 
 Vitrine navigation uses `museum-vitrine-progress`: muted green fill for confirmed placements or declined assignments, amber for deferred assignments, deduplicated by source ID. Keep the name and active border stable; expose counts in the accessible label and tooltip, with a visible swatch legend. A new destination remains pending until confirmed there.
 
 Shelf cards keep the checkbox and tier in a compact top row, with the name and location using the full width below. Use small secondary text actions rather than outlined buttons; action words and tier labels do not break. Keep the five aligned bands horizontally scrollable when the available width cannot fit readable cards.
+
+Peers in a single family shelf band may form a compact grid instead of a tall stack. Keep family color and conceptual row alignment; wrapping peers never asserts a new relationship or physical shelf measurement. Context-only tree links remain labelled and undirected, with no placement control.
