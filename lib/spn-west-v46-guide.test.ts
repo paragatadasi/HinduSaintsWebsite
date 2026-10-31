@@ -50,17 +50,16 @@ test("changed evidence, identity, pending review and item restrictions block sta
 });
 test("V46 shelf projection keeps approved living shelf2, live tiers and qualified family edges",()=>{
  const {physical}=fixture();
- const placements=packet.rows.map(r=>({id:r.sourceId,sourceRecordId:r.sourceId,saintId:r.saintId,name:r.name,tier:r.tier,section:r.section,curatorialFamily:r.family,familySize:1,alternatives:[],confidence:"high",rationale:"",note:"",spiritualRegions:[],normalizedPlaces:[r.city],sampradaya:"",needsResearch:false} as MuseumSaintPlacement));
+ const placements:MuseumSaintPlacement[]=packet.rows.map(r=>({id:r.sourceId,sourceRecordId:r.sourceId,saintId:r.saintId,name:r.name,tier:r.tier==="Primary"?"Featured":r.tier==="Secondary"?"Secondary":"Tertiary",section:r.section,familyId:r.family,curatorialFamily:r.family,familySize:1,alternatives:[],confidence:"high",rationale:"",note:"",spiritualRegions:[],normalizedPlaces:[r.city],sampradaya:"",needsResearch:false}));
  const current={placements,membersById:new Map(packet.rows.map(r=>[r.sourceId,{SamadhiDate:r.lifeStatus.tag?"Living":""}]))};
- const review={rows:packet.rows.map(r=>({...r,effectiveVitrine:"46",reviewReason:""})),pendingPlacements:[]};
- // Use the complete review projection shape only at the public function boundary.
- const context=projectShelfPlanningContext(shelves,{current,physical,review:review as Parameters<typeof projectShelfPlanningContext>[1]["review"]});
+ const review:NonNullable<Parameters<typeof projectShelfPlanningContext>[1]["review"]>={rows:packet.rows.map(r=>({...r,vitrine:"46",sourceVitrine:"49",sourceShelf:"C",unresolved:false,allocationKind:"Approved",share:null,state:"proposed",baseline:null,currentVitrine:"",currentShelf:"",currentStatus:"Proposed",regions:[],effectiveVitrine:"46",reviewReason:""})),pendingPlacements:[]};
+ const context=projectShelfPlanningContext(shelves,{current,physical,review});
  assert.equal(context.cases[0].allocations.length,18);
  for(const r of packet.rows.filter(r=>r.lifeStatus.tag))assert.equal(context.cases[0].allocations.find(a=>a.sourceId===r.sourceId)?.suggestedShelfIndex,2);
  assert.ok(context.cases[0].relationships.every(e=>e.uncertain));
  assert.equal(context.cases[0].entries.find(e=>e.sourceId==="recW5CJHvadVzJNYy")?.tier,"Tertiary");
  physical.rows[0].sourceRevision="changed";
- const changed=projectShelfPlanningContext(shelves,{current,physical,review:review as Parameters<typeof projectShelfPlanningContext>[1]["review"]});
+ const changed=projectShelfPlanningContext(shelves,{current,physical,review});
  assert.equal(changed.cases[0].allocations.length,17);
  assert.match(changed.reviewedChanges[0].reason,/Source data changed/);
 });
