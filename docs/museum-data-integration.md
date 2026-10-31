@@ -1160,3 +1160,8 @@ The six regional headings are visible in the section palette and use matching
 categorical colors. Source-reported frame summaries are available on section,
 family, selection, family-tree and mobile move-day views via the shared packaging
 contract. Reference data: `data/museum/vrindavan-connected-traditions.json`.
+# Approved regional transfers awaiting a case
+
+The scoped packet `data/museum/spn-approved-regional-pending-transfers-v1.json` records the 31 October 2026 approved South/Andhra transfer. It supersedes a proposal only when the source row, canonical saint, source revision and captured arrangement/proposal revisions still match. An explicit destination or newer curator arrangement takes precedence. Changed or missing identity evidence does not activate the projection.
+
+The reviewer lists the transfer as pending. The companion catalog exposes `proposalTransfer` with an empty effective numeric destination and shelf; search and staging show its region/cohort label. Shelf planning and move-guide membership omit the superseded numeric proposal. Recorded physical location, source origin, actual shelves and historical move reports remain unchanged. A future receiving-case decision uses the existing explicit destination workflow; this packet does not authorize a physical move.

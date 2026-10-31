@@ -49,7 +49,7 @@ function bamanDestination(allocation:ShelfPlanningAllocation,placement:MuseumSai
 
 export function projectShelfPlanningContext(packet:ShelfPlanningPacket,input:{current:CurrentMuseum;physical:PhysicalState;alternatives?:Destination[];additions?:Addition[];review?:Review;now?:Date}):ShelfPlanningContext{
  const {current,physical}=input;
- const built=input.review??(()=>{const result=buildLatestSpnReview(current.placements,input.alternatives??[]);return {rows:result.rows,pendingPlacements:result.proposal.pendingPlacements};})();
+ const built=input.review??(()=>{const result=buildLatestSpnReview(current.placements,input.alternatives??[],physical.rows);return {rows:result.rows,pendingPlacements:result.proposal.pendingPlacements};})();
  const active=new Map(built.rows.map(r=>[r.sourceId,r]));
  const pending=new Map(built.pendingPlacements.map(r=>[r.sourceId,r.reason]));
  const physicalById=new Map(physical.rows.map(r=>[r.sourceId,r]));
