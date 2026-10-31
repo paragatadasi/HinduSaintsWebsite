@@ -1,0 +1,17 @@
+{
+  "sourceId": "recsm43oeUdKNUMqs",
+  "saintId": "cms0w7i3s07f307qiuaezle9f",
+  "sourceRevision": "4aa5af436e0b66276924c3731632d93eb9ead023178f915737a17179123f4329",
+  "housingEvidenceRevision": "022aa97b0cd79331cf13afd9fe2fd934468e8cead8dcb956b0548daf96e72467",
+  "reviewedDate": "2026-11-01",
+  "confirmationUserMessageId": "01a19431-84ae-7431-83cf-d730e7de29de",
+  "confirmation": "Yoga stick and prayer book are currently together in64E, so they will move together - this stick is not in a stick vitrine",
+  "objects": [
+    "yoga support stick",
+    "prayer book with handwriting"
+  ],
+  "origin": "64",
+  "originShelf": "E",
+  "destination": "40",
+  "physicalConfirmationWritten": false
+}
