@@ -1936,6 +1936,46 @@
   },
   {
     "selector": ":root",
+    "name": "--color-museum-shelf-group-1",
+    "value": "oklch(0.6 0.13 10)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-museum-shelf-group-2",
+    "value": "oklch(0.6 0.12 245)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-museum-shelf-group-3",
+    "value": "oklch(0.6 0.12 115)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-museum-shelf-group-4",
+    "value": "oklch(0.6 0.13 300)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-museum-shelf-group-5",
+    "value": "oklch(0.6 0.1 175)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-museum-shelf-group-6",
+    "value": "oklch(0.65 0.13 60)"
+  },
+  {
+    "selector": ":root",
+    "name": "--opacity-museum-shelf-tint",
+    "value": "18%"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-museum-shelf-muted",
+    "value": "oklch(0.8 0.015 90)"
+  },
+  {
+    "selector": ":root",
     "name": "--color-museum-region-1",
     "value": "#cb9fae"
   },
@@ -2318,6 +2358,11 @@
     "selector": "[data-intake-theme=\"dark\"]",
     "name": "--color-accent",
     "value": "var(--color-gold)"
+  },
+  {
+    "selector": "[data-museum-companion-theme=\"parchment\"]",
+    "name": "--color-museum-shelf-muted",
+    "value": "oklch(0.43 0.015 75)"
   },
   {
     "selector": "[data-museum-companion-theme=\"parchment\"]",

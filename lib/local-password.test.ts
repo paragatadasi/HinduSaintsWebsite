@@ -11,7 +11,7 @@ test("username accounts normalize identity and cannot choose privileged roles", 
   assert.equal(isExclusiveMuseumAssistant(["museum_assistant", "site_admin"]), false);
   assert.equal(isExclusiveMuseumAssistant(["museum_assistant"]), true);
 });
-test("assistant access permits museum reads without editorial or museum mutation capabilities", () => {
+test("assistant access permits museum reads without editorial or broad museum mutation capabilities", () => {
   assert.equal(hasCapability(["museum_assistant"], "access_museum"), true);
   assert.equal(hasCapability(["museum_assistant"], "view_museum_catalog"), true);
   for (const capability of ["view_content", "view_full_saint_catalog", "edit_content", "manage_museum", "manage_users", "run_imports", "publish_content", "manage_saint_team_visibility"] as const) {
