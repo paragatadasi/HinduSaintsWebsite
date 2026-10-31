@@ -99,3 +99,8 @@ a newer explicit curator decision; do not infer its expiry from an empty list.
 database to verify blocked batches, preparation, legacy sessions, undo, clearing
 corrections and legacy implementation. It also checks unrelated moves, retries,
 future planning and the Vrindavan exception, then drops its test database.
+
+
+### Reviewed Gajanan display relationship (31 October 2026)
+
+After live destination projection, the Datta guide may append the Shivpuri/Akkalkot Gajanan source to Gangadhara's existing family in Vitrine 3. Both exact source/canonical bindings, visible membership and destination 3 must match; a changed destination or identity suppresses the display relationship. The institutional biography supports the label “Initiation / succession” (11 March 1938). This is a display projection, not a canonical relationship write. It preserves existing family ancestors, physical history, tiers and shelf values; origin remains live. Gajanan of Shegaon is a distinct record. The evidence artifact is `spn-shivpuri-western-evidence-2026-10-31-v1.json` in Saarthi's dated outputs. Kamaal is outside this change.
