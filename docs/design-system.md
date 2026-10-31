@@ -755,3 +755,8 @@ Photo follow-ups use concise narrative cards with the photographed piece, qualif
 Shelf fit information uses a compact disclosure above the shelf grid, identifying affected conceptual rows; this preserves the narrow row-label column. Show unknown sizes separately from known loads, never as zero capacity. Life-status labels use Living or May be alive; missing historical death information is not itself a living label.
 
 Museum companion navigation groups registered guides by museum row using `museum-companion-navigation`: Gaudiya East, East and Vraj remain visually consolidated across releases. Vitrine selection retains its registered guide for save validation and history; navigation grouping never merges mutation contexts. Reuse horizontal AdminViewTabs and existing vitrine progress buttons.
+
+
+### Clearing inventory groups
+
+`MuseumClearContents` is the shared clearing-card inventory pattern. Show proposed destination headings in numeric order with display-entry counts, then compact name and shelf rows. Keep unassigned destinations and unlinked records separate; do not repeat the current vitrine or source provenance on every row. Handling restrictions remain adjacent to their entry. Counts describe recorded entries, not an inferred count of separate relic objects. Shared `.museum-clear-contents` classes use theme tokens in both companion clearing paths.
