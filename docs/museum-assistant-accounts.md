@@ -1,5 +1,10 @@
 # Museum Assistant accounts
 
+## Current access — 31 October 2026
+
+At the user’s request, Museum Assistants now have `manage_museum` across both museums, including planning, clearing, moves, corrections, tasks, intake review and approvals. Earlier read-only and check-off-only restrictions below are historical and superseded. Main-site administration, user management, public editorial changes, publishing and imports remain restricted. Username/password eligibility remains the Museum Assistant role; no role or credential migration is needed. Existing safety acknowledgements, revision checks and inventory restrictions still apply. Airtable delivery remains disabled. This is an explicit temporary policy with no automatic expiry.
+
+
 27 October 2026. Site Admins can create username/password accounts for museum intake teams without supplying an email address. These accounts have exactly one role, `museum_assistant`. Existing email accounts retain their additive role behavior.
 
 ## Access boundary
