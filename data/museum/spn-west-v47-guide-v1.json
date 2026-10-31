@@ -1,0 +1,487 @@
+{
+  "version": "spn-west-v47-2026-10-31-v1",
+  "proposalVersion": "spn-v47-approved-gujarat-2026-10-31-v1",
+  "title": "Gujarat · Vitrine 47",
+  "proposalLabel": "Approved Gujarat arrangement",
+  "rows": [
+    {
+      "sourceId": "rectstnyeoHpy3tw0",
+      "saintId": "cms0w7igz07t507qirhcuts9u",
+      "name": "Sri Imam Shah Bawa",
+      "tier": "Tertiary",
+      "city": "Ahmedabad",
+      "relicDescription": "Flowers from his Samadhi",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Ahmedabad.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "c9ee75930d3b8e81c9a5760708cb0d7171e75d48d914bdfd3ff9ac18d74fd065",
+      "capturedProposalDestination": "46",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "recCe1pp7RiYrw7QV",
+      "saintId": "cms0w7e7502kk07qikkpzcpb0",
+      "name": "Sri Swami Adhyatmananda",
+      "tier": "Tertiary",
+      "city": "Gujarat; Ahmedabad",
+      "relicDescription": "Clothes, towel, Mala (Rudraksha)",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Ahmedabad.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "a9f77acff1dd09ca14a470053489bd59d3858bb34033c2d752c05c3b57924af0",
+      "capturedProposalDestination": "46",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "recCLGzF1cjge7Hcj",
+      "saintId": "cms0w7e9j02np07qijdnewmpr",
+      "name": "Sant Sri Muni Bapu",
+      "tier": "Tertiary",
+      "city": "Muni Ashram; Sanand; Gujarat",
+      "relicDescription": "Dhoti",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Muni Ashram; Sanand; Gujarat.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "accdcf1408cdd7396959a493d9b3fc1970659162a42592a8e53e5cdd83024f3c",
+      "capturedProposalDestination": "41",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "recL9d14BW4lGbceX",
+      "saintId": "cms0w7geq05ee07qiqdnj7f4l",
+      "name": "Sri Purnanand Maharaj",
+      "tier": "Tertiary",
+      "city": "Purnanand Ashram, Ahmedabad, Gujrat; Ahmedbad; Gujarat",
+      "relicDescription": "Rudraksha Mala",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Purnanand Ashram, Ahmedabad, Gujrat; Ahmedbad; Gujarat.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "34e514c24048dc7062b034d9bf41d599e4cbc2d823d32f00925b95a28c8f31d3",
+      "capturedProposalDestination": "81",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "recoSglxVm7GRDlIY",
+      "saintId": "cms0w7h8n06e707qir8geipne",
+      "name": "Sri Vastabapa",
+      "tier": "Tertiary",
+      "city": "Gujarat; Vasana; Dhandhuka",
+      "relicDescription": "Paduka",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Vasana; Dhandhuka.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "3800ba2ca7e5af1dc6d6b8cb5372495a24c1601c5489202bf669ecd157b37277",
+      "capturedProposalDestination": "1",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "recta8rHPR0QNSTYX",
+      "saintId": "cms0w7ia507lo07qip4pvl5qa",
+      "name": "Sri Kailash Giri Maharaj",
+      "tier": "Tertiary",
+      "city": "Kailash Ashram; Dholwa; Gujarat",
+      "relicDescription": "Ancient lotus lamp",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Kailash Ashram; Dholwa; Gujarat.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "51549826f602723db5a16848dfc46d636dd3c49c18ed30d6a65cbb7f12089dfe",
+      "capturedProposalDestination": "48",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "recOOvysi3zaV9A79",
+      "saintId": "cms0w7h6v06c807qic32om9jk",
+      "name": "Sri Rajarshi Muni Ji",
+      "tier": "Tertiary",
+      "city": "Gujarat; Kayavarohan",
+      "relicDescription": "Shoes, Asan",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Kayavarohan.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "9bb8ac91b76eb806d98f20207bb1e66ec6387f565ea5b23d9d29889bd0d1078e",
+      "capturedProposalDestination": "81",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "rece34TYnCSTMBlDs",
+      "saintId": "cms0w7eok037c07qiw4r52vso",
+      "name": "Sri Nirgundasji",
+      "tier": "Tertiary",
+      "city": "Gujarat; Sautram Ashram; Nadiad",
+      "relicDescription": "Chadar ",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Sautram Ashram; Nadiad.",
+      "reviewNotes": [
+        "Living saints: fill the bottom shelf first; use the second-from-bottom shelf only for overflow."
+      ],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "f89f0928011dcf79d0eee0d51a504df1f7c67377f45eaa63d225753704126417",
+      "capturedProposalDestination": "39",
+      "lifeStatus": {
+        "tag": "Living",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recSb8nqYS1St0kW4",
+      "saintId": "cms0w7i1s07cz07qibozppv8p",
+      "name": "Swami Sri Nityanandji",
+      "tier": "Tertiary",
+      "city": "Gujarat; Pithadia",
+      "relicDescription": "Lid of Kamandalu, piece of Paduka, page from Book/Scripture",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Pithadia.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "1b5167cabf7c7423404fc5e504d9e725d8ff26e3d6b105942b9495ef8188ed5b",
+      "capturedProposalDestination": "39",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "recFhYGswI9RIDbzO",
+      "saintId": "cms0w7f0803mw07qi9thlyoe0",
+      "name": "Sri Pritam Das Swami",
+      "tier": "Tertiary",
+      "city": "Gujarat; Anand",
+      "relicDescription": "Scripture/ handwritten page",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Anand.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "0ff8da0c8e9dde9b3054d6d7a3fbcb944861f9db2cdc7d84614d790e38da0b92",
+      "capturedProposalDestination": "50",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "rechWq2ziY5Eh6NQG",
+      "saintId": "cms0w7fko04de07qixbah6hh2",
+      "name": "Sri Swami Vimalananda",
+      "tier": "Tertiary",
+      "city": "Gujarat; Madhavananda Ashram; Mahemdavad",
+      "relicDescription": "Dhoti, conch",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Madhavananda Ashram; Mahemdavad.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "94597ce2eb37319d6c7f8151888384ab889721aa2493e432a9b42d1b91c6becb",
+      "capturedProposalDestination": "50",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "recGYSHIkMAhit8bp",
+      "saintId": "cms0w7fco043807qigsoqqqth",
+      "name": "Sri Mahamandaleshwar Swami Ravisharmanand Giri",
+      "tier": "Tertiary",
+      "city": "Gujarat; Sri Ram Kutir Gau Seva Ashram; Palapur",
+      "relicDescription": "Padukas",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Sri Ram Kutir Gau Seva Ashram; Palapur.",
+      "reviewNotes": [
+        "Living saints: fill the bottom shelf first; use the second-from-bottom shelf only for overflow."
+      ],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "72c0911a6f7a0ca63e02de10f0fa2a7b043dd5d8850426e27c5dfab83bf99ed7",
+      "capturedProposalDestination": "43",
+      "lifeStatus": {
+        "tag": "Living",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recnABPJRzA9Rf8dM",
+      "saintId": "cms0w7gvk05z007qiba4tl26c",
+      "name": "Sri Avadhoot Yogi Dala Bapa",
+      "tier": "Tertiary",
+      "city": "Gujarat; Nadiad",
+      "relicDescription": "Dhoti",
+      "destination": "47",
+      "section": "Girnar & Nath Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Nadiad.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.4166666666666667,
+      "sourceRevision": "d03bce4e1b1538c15acd71031b1ac81bba0e8ff0b8b31cd9e27f735959ae054a",
+      "capturedProposalDestination": "48",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "recje6Oq3RT0VyXyh",
+      "saintId": "cms0w7fv404q607qiwm0i8i3r",
+      "name": "Sri Vishwanath Avadhoot Maharaj",
+      "tier": "Tertiary",
+      "city": "Surat; Rander",
+      "relicDescription": "Saligram",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Surat; Rander.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "6924f2d236a75a2fa71bc91564041e1257d83d415a087fa964ee2e8fc53d9b17",
+      "capturedProposalDestination": "47",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "rec4mKdPo0WMlM9Sw",
+      "saintId": "cms0w7csn00rr07qiywbdvkap",
+      "name": "Mahant Sri Ramdasji",
+      "tier": "Tertiary",
+      "city": "Gujarat; Tapovan Dham; Nareshwar",
+      "relicDescription": "Dhoti",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Tapovan Dham; Nareshwar.",
+      "reviewNotes": [
+        "Living saints: fill the bottom shelf first; use the second-from-bottom shelf only for overflow."
+      ],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "60e4d58b36982bbad85ba42a22ff8117bf58b3ffec1ef8ca415dec267d03346d",
+      "capturedProposalDestination": "39",
+      "lifeStatus": {
+        "tag": "Living",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recBMlvHWJJajHMnM",
+      "saintId": "cms0w7dzc02au07qi4i6bh8dm",
+      "name": "Sri Shrimat Sacchidanand Swami Maharaj",
+      "tier": "Tertiary",
+      "city": "Shinor",
+      "relicDescription": "Shawl,piece from his Padukas",
+      "destination": "47",
+      "section": "Needs Research",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Shinor.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.41666666666666663,
+      "sourceRevision": "03787305fd483e7d3a0c0022873e085a2eb212eee4034cd6543380a04ebe6e27",
+      "capturedProposalDestination": "61",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    },
+    {
+      "sourceId": "recnBAcdpQmbz9c8u",
+      "saintId": "cms0w7gvt05za07qiwumjiczw",
+      "name": "Sri Maheshgiri Bapu",
+      "tier": "Tertiary",
+      "city": "Gujarat; Lilod; Vadodara",
+      "relicDescription": "Dhoti, oil lamp",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Lilod; Vadodara.",
+      "reviewNotes": [
+        "Living saints: fill the bottom shelf first; use the second-from-bottom shelf only for overflow."
+      ],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "8edda150114bcef3b61720870066601796e935cda89ba3505d9ff21b950d6464",
+      "capturedProposalDestination": "1",
+      "lifeStatus": {
+        "tag": "Living",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recO6kv4aA4wVIeUZ",
+      "saintId": "cms0w7h2s067k07qi2ey77zwv",
+      "name": "Sri Ramanand Das Bapu",
+      "tier": "Tertiary",
+      "city": "Gujarat; Tapovan Dham; Nareshwar",
+      "relicDescription": "Kamandalu ",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Gujarat; Tapovan Dham; Nareshwar.",
+      "reviewNotes": [
+        "Living saints: fill the bottom shelf first; use the second-from-bottom shelf only for overflow."
+      ],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "fe285e545d96b155e36cf01ae8b2607df54487f7caf81012672512cb9c1850e6",
+      "capturedProposalDestination": "44",
+      "lifeStatus": {
+        "tag": "Living",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recVVLS0iE5Xc8jg1",
+      "saintId": "cms0w7j2n08ge07qinmsst9at",
+      "name": "Sri Sadguru Brahmachari Swami Maharaj",
+      "tier": "Tertiary",
+      "city": "Baroda",
+      "relicDescription": "Piece from his clothes, letter written by him, silver pot, wood dust from his swing, snuff",
+      "destination": "47",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Recorded Gujarat locality: Baroda.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.41666666666666663,
+      "sourceRevision": "2392c1307aaa2cf3012fecdc0917440640c6cc7192a73af15fe4f721da70d6ad",
+      "capturedProposalDestination": "82",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No living status recorded."
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "v47:west-123-part0",
+      "title": "Ahmedabad",
+      "kind": "city",
+      "vitrine": "47",
+      "sourceIds": [
+        "rectstnyeoHpy3tw0",
+        "recCe1pp7RiYrw7QV",
+        "recCLGzF1cjge7Hcj",
+        "recL9d14BW4lGbceX",
+        "recoSglxVm7GRDlIY"
+      ],
+      "rationale": "Grouped by recorded locality; no personal relationship implied.",
+      "edges": []
+    },
+    {
+      "id": "v47:west-194-part0",
+      "title": "Dholwa",
+      "kind": "city",
+      "vitrine": "47",
+      "sourceIds": [
+        "recta8rHPR0QNSTYX"
+      ],
+      "rationale": "Grouped by recorded locality; no personal relationship implied.",
+      "edges": []
+    },
+    {
+      "id": "v47:west-178-part0",
+      "title": "Kayavarohan",
+      "kind": "city",
+      "vitrine": "47",
+      "sourceIds": [
+        "recOOvysi3zaV9A79"
+      ],
+      "rationale": "Grouped by recorded locality; no personal relationship implied.",
+      "edges": []
+    },
+    {
+      "id": "v47:west-132-part0",
+      "title": "Nadiad / Anand & other recorded Gujarat localities",
+      "kind": "city",
+      "vitrine": "47",
+      "sourceIds": [
+        "rece34TYnCSTMBlDs",
+        "recSb8nqYS1St0kW4",
+        "recFhYGswI9RIDbzO",
+        "rechWq2ziY5Eh6NQG",
+        "recGYSHIkMAhit8bp",
+        "recnABPJRzA9Rf8dM"
+      ],
+      "rationale": "Grouped by recorded locality; no personal relationship implied.",
+      "edges": []
+    },
+    {
+      "id": "v47:west-155-part0",
+      "title": "Surat",
+      "kind": "city",
+      "vitrine": "47",
+      "sourceIds": [
+        "recje6Oq3RT0VyXyh"
+      ],
+      "rationale": "Grouped by recorded locality; no personal relationship implied.",
+      "edges": []
+    },
+    {
+      "id": "v47:west-76-part0",
+      "title": "Vadodara / Nareshwar",
+      "kind": "city",
+      "vitrine": "47",
+      "sourceIds": [
+        "rec4mKdPo0WMlM9Sw",
+        "recBMlvHWJJajHMnM",
+        "recnBAcdpQmbz9c8u",
+        "recO6kv4aA4wVIeUZ",
+        "recVVLS0iE5Xc8jg1"
+      ],
+      "rationale": "Grouped by recorded locality; no personal relationship implied.",
+      "edges": []
+    }
+  ],
+  "fit": {
+    "knownShelfProxy": 5.1119047619047615,
+    "unknownFootprints": 0,
+    "fitCertified": false
+  },
+  "sourcePacket": "spn-joint24-regional-wrap-review-2026-10-31-v2:47",
+  "assignmentDigest": "3a60e906c3caf7a7288e9b7391a47af443f023bf52f6e0421e19432e3e7214ec",
+  "contentDigest": "3226b69b7c66548791daa407e1cd58f35a69054817bb1f3d9109a6490f5c0db3"
+}
