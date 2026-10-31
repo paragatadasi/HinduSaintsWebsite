@@ -40,7 +40,11 @@ export type PhysicalState={phaseClearances?:{guideVersion:string;vitrine:string;
 export function isPlaced(row:CompanionRow,destination:string){return row.currentBasis==="confirmed"&&row.current?.kind==="vitrine"&&row.current.code===destination;}
 export function currentLocationLabel(location:PhysicalLocation|null){return location?location.label+(location.shelf?` · Shelf ${location.shelf}`:""):"Location not recorded";}
 
-export function companionLocationLabel(row?:Pick<CompanionRow,"current"|"componentPlacement">|null){return row?.componentPlacement?"Staging area · Vitrine 20 pieces only":currentLocationLabel(row?.current??null);}
+export function companionLocationLabel(row?:(Pick<CompanionRow,"current"|"componentPlacement"> & Partial<Pick<CompanionRow,"original">>)|null){
+ if(row?.componentPlacement)return "Staging area · Vitrine 20 pieces only";
+ const label=currentLocationLabel(row?.current??null);
+ return row?.current?.kind==="table"&&row.original?.kind==="vitrine"?`${label} · originally Vitrine ${row.original.code}`:label;
+}
 
 export type GuideDecision={suggestionId:string;decision:"pending"|"deferred"|"declined"|"not_on_display";note:string|null;version:number;alternativeVitrine?:string|null;alternativeShelf?:string|null};
 

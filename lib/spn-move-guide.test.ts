@@ -50,3 +50,11 @@ test("partial staging is labelled without treating the whole source as placed",(
  assert.equal(isPlaced(row,"20"),false);
  assert.equal(companionLocationLabel({...row,componentPlacement:null}),"Location not recorded");
 });
+
+
+test("staged location includes the original vitrine without implying it is still there",()=>{
+ const current={kind:"table" as const,code:"staging-area",label:"Staging area"};
+ assert.equal(companionLocationLabel({current,original:{kind:"vitrine",code:"19",label:"Vitrine 19",shelf:"A"}}),"Staging area · originally Vitrine 19");
+ assert.equal(companionLocationLabel({current,original:null}),"Staging area");
+ assert.equal(companionLocationLabel({current:{kind:"vitrine",code:"36",label:"Vitrine 36"},original:{kind:"vitrine",code:"19",label:"Vitrine 19"}}),"Vitrine 36");
+});
