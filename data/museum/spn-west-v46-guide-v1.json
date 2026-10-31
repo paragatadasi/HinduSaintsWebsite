@@ -348,7 +348,7 @@
       "family": "Jayatirtha · Madhva anchor",
       "rationale": "A separate Madhva anchor; no Varkari lineage is implied.",
       "reviewNotes": [
-        "Mangalwedha/Madhva anchor, not a Varkari-lineage claim. Primary tier recommended; native tier save requires supported identity review."
+        "Mangalwedha/Madhva anchor, not a Varkari-lineage claim."
       ],
       "knownShelfProxy": 0.25,
       "sourceRevision": "826f36b3d1f5155070adf27c312c70c394d35e942def67654859764ade0794c5",
@@ -488,5 +488,5 @@
   },
   "sourcePacketHash": "f6f21df5239c38b0c52817aee24fc289ab353bd1bdffde8badb0de94e6319541",
   "assignmentDigest": "3725de9b62cfa6507c353045f71bb80ff498bc775494676bb37ed93a47595ab3",
-  "contentDigest": "15b4a09dfd8c4585323b75ff7cf40b1f400b6cbb9b95ed4fb61e8f192d787595"
+  "contentDigest": "df8e1c9e2d8c62ecd52dddb0c154b42a7bcce7519f33b7144dc0f9c86ad98d13"
 }

@@ -17,7 +17,7 @@ const {contentDigest:unusedDigest,...content}=packet;
 const holdings=packet.rows;
 const pairs=holdings.map(row=>[row.sourceId,row.destination]).sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0);
 const members=packet.groups.flatMap(group=>group.sourceIds);
-if(packet.contentDigest!=="15b4a09dfd8c4585323b75ff7cf40b1f400b6cbb9b95ed4fb61e8f192d787595"||hash(canonical(content))!==packet.contentDigest||hash(JSON.stringify(pairs))!==packet.assignmentDigest||
+if(packet.contentDigest!=="df8e1c9e2d8c62ecd52dddb0c154b42a7bcce7519f33b7144dc0f9c86ad98d13"||hash(canonical(content))!==packet.contentDigest||hash(JSON.stringify(pairs))!==packet.assignmentDigest||
  packet.rows.length!==18||holdings.filter(row=>row.saintId).length!==18||members.length!==18||new Set(members).size!==18||
  packet.groups.some(group=>group.sourceIds.some(id=>!packet.rows.some(row=>row.sourceId===id&&row.destination===group.vitrine))||group.edges.some(edge=>!group.sourceIds.includes(edge.fromSourceId)||!group.sourceIds.includes(edge.toSourceId))))
  throw new Error("The approved Vitrine 46 roster changed.");
