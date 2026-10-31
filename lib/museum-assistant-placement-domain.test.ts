@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {assertAssistantGuidePlacement,assertAssistantEffectiveDestination} from "./museum-assistant-placement-domain";
+import {assertAssistantGuidePlacement,assertAssistantEffectiveDestination,assertSavedAdditionPlacement} from "./museum-assistant-placement-domain";
+import {assertPhasePreparation} from "./museum-preparation-domain";
 import {confirmMuseumPhysicalLocations} from "./museum-physical-locations";
 const context={guideVersion:"current",contentDigest:"digest",assignmentDigest:"assignments"};
 const guide={context,readOnly:false,physicalScope:{allowClear:false,destinations:{source:"45"}}};
@@ -37,4 +38,34 @@ test("direct domain callers without either capability fail before any database r
  let reads=0;
  await assert.rejects(()=>confirmMuseumPhysicalLocations({}, {id:"viewer",canManage:false},async()=>{reads++;throw new Error("Unexpected database read");}),/curator or assistant/);
  assert.equal(reads,0);
+});
+
+test("saved additions can authorize one existing receiving-guide placement outside the frozen roster",()=>{
+ const added={...input,records:[{...record,sourceId:"added"}],curatorAddition:{sourceId:"added",version:1}};
+ assert.doesNotThrow(()=>assertAssistantGuidePlacement(added,guide));
+ assert.doesNotThrow(()=>assertAssistantGuidePlacement({...input,curatorAddition:{sourceId:"source",version:1}},guide));
+ for(const change of [{curatorAddition:{sourceId:"different",version:1}},{curatorAddition:{sourceId:"added",version:0}},{curatorAddition:{sourceId:"added",version:1,vitrine:"1"}},{records:[{...record,sourceId:"added",to:{kind:"vitrine",code:"1"}}]}])assert.throws(()=>assertAssistantGuidePlacement({...added,...change},guide));
+ assert.throws(()=>assertAssistantGuidePlacement(added,{...guide,readOnly:true}));
+ assert.throws(()=>assertAssistantGuidePlacement(added,{context}));
+});
+
+test("actual saved source, saint, revision, version, destination and shelf remain authoritative",()=>{
+ const reference={sourceId:"added",version:1},saved={sourceId:"added",saintId:"saint",sourceRevision:"source-revision",vitrine:"45",shelf:null,version:1};
+ const added={sourceId:"added",saintId:"saint",expectedSourceRevision:"source-revision",to:{kind:"vitrine",code:"45"}};
+ assert.doesNotThrow(()=>assertSavedAdditionPlacement(reference,added,saved));
+ assert.throws(()=>assertSavedAdditionPlacement(reference,added,undefined));
+ for(const change of [{version:2},{sourceId:"other"},{saintId:"other"},{sourceRevision:"updated"},{vitrine:"1"},{shelf:"B"}])assert.throws(()=>assertSavedAdditionPlacement(reference,added,{...saved,...change}),/destination changed/);
+ const shelved={...added,to:{...added.to,shelf:"B"}};
+ assert.doesNotThrow(()=>assertSavedAdditionPlacement(reference,shelved,{...saved,shelf:"B"}));
+ assert.throws(()=>assertSavedAdditionPlacement(reference,{...shelved,to:{...shelved.to,shelf:"A"}},{...saved,shelf:"B"}));
+ assert.throws(()=>assertSavedAdditionPlacement(reference,{...added,to:{kind:"table",code:"staging-area"}},saved));
+});
+
+test("saved-addition references do not waive current review or preparation requirements",()=>{
+ const added={...input,curatorAddition:{sourceId:"source",version:1}};
+ assert.throws(()=>assertAssistantEffectiveDestination(added,[]),/needs review/);
+ assert.throws(()=>assertAssistantEffectiveDestination(added,[{sourceId:"source",saintId:"saint",effectiveVitrine:"1"}]),/needs review/);
+ assert.throws(()=>assertPhasePreparation(added.records,["45"],[]),/prepared/);
+ assert.doesNotThrow(()=>assertPhasePreparation(added.records,["45"],[{vitrine:"45",prepared:true}]));
+ for(const extra of [{caseContentsStaging:{}},{initialCaseClearAcknowledged:true as const},{alternativeDecision:{}},{componentStagingAcknowledgements:[]},{retainedCaseClearanceAcknowledgement:{}}])assert.throws(()=>assertAssistantGuidePlacement({...added,...extra},guide));
 });
