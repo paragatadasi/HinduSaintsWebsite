@@ -1,0 +1,301 @@
+{
+  "generatedAt": "2026-10-31T11:50:28.711154+00:00",
+  "vitrine": "77",
+  "livingAllowedBands": [
+    4,
+    5
+  ],
+  "bandLoads": [
+    {
+      "band": 1,
+      "loadExact": "69/70",
+      "load": 0.9857142857142858,
+      "headroomExact": "1/70"
+    },
+    {
+      "band": 2,
+      "loadExact": "131/140",
+      "load": 0.9357142857142857,
+      "headroomExact": "9/140"
+    },
+    {
+      "band": 3,
+      "loadExact": "1",
+      "load": 1.0,
+      "headroomExact": "0"
+    },
+    {
+      "band": 4,
+      "loadExact": "271/280",
+      "load": 0.9678571428571429,
+      "headroomExact": "9/280"
+    },
+    {
+      "band": 5,
+      "loadExact": "1",
+      "load": 1.0,
+      "headroomExact": "0"
+    }
+  ],
+  "knownLoadExact": "1369/280",
+  "sourceRecordedPair": {
+    "groupId": "source-family:ramashray-tyagi",
+    "sourceIds": [
+      "recJHxAHzd7oNrbfR",
+      "rec6YZs1zGqm2SaxC"
+    ],
+    "recommendedBand": 4,
+    "adjacency": "side by side subject to fit",
+    "relationshipType": "source-recorded teacher/disciple claim; no canonical relationship write"
+  },
+  "limitations": [
+    "This is a recommendation artifact, not a production import or physical confirmation.",
+    "Native shelf reader still lists23rows and omits the valid Ramashray addition; integration must include that24th source.",
+    "Shelves3and5reach1.0in the comparison model; geometry is not verified and actual shelf labels remain unassigned.",
+    "Ten old draft recommendations change, including Kishori1to5 and Gyaandas4to1; these are not physical move instructions.",
+    "Recheck source bindings, curator edits, physical versions and actual shelves before integration."
+  ],
+  "version": "spn-v77-bottom-two-2026-10-31-v1",
+  "rows": [
+    {
+      "sourceId": "reckJqVswMXRwc2uA",
+      "saintId": "cms0w7g78055107qivimmaiie",
+      "name": "Sri Lala Babu",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 1,
+      "recommendedBand": 1,
+      "knownFootprint": 0.14285714285714285,
+      "sourceRevision": "27ff3991a6cedeb2564b1812b47b9027245faaa8344ad6f7abcdea8e39189c03"
+    },
+    {
+      "sourceId": "rec4vALRSNwodo5aX",
+      "saintId": "cms0w7cv700uz07qic04ogje9",
+      "name": "Sri Kishori Babaji",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 1,
+      "recommendedBand": 5,
+      "knownFootprint": 0.16666666666666666,
+      "sourceRevision": "76c9801b405f927114f0538c32a1b1f5697da7f43ba1eb76c019dbda4c7a12b5"
+    },
+    {
+      "sourceId": "recElWSGbSjVni5mI",
+      "saintId": "cms0w7esv03d907qihdz5iumz",
+      "name": "Pandit Sri Jagannath Das Bhaktmaliji Maharaj",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 1,
+      "recommendedBand": 1,
+      "knownFootprint": 0.14285714285714285,
+      "sourceRevision": "5abb5cad8a988e28fb4669752aafad0b7581ac401834c8f7b5483e04f0361e14"
+    },
+    {
+      "sourceId": "recags4oiqcsaGmPc",
+      "saintId": "cms0w7dpn01xo07qi29eba46n",
+      "name": "Anant Sri Sampann Sadgurudev Sri Govind Sharan Ji Mahraj",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 1,
+      "recommendedBand": 1,
+      "knownFootprint": 0.25,
+      "sourceRevision": "9c8c55ea585d69e247b104e6d4232a6f8d2f74dbda86b5987064c3e9466cce79"
+    },
+    {
+      "sourceId": "recwnoNniYdyJ2hAP",
+      "saintId": "cms0w7j9x08o107qia8z35gix",
+      "name": "Sri Dhananjaydas Kathia Baba Maharaj",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 1,
+      "recommendedBand": 1,
+      "knownFootprint": 0.2,
+      "sourceRevision": "00ca531026b3f178b713685793b22b907ee6922b97f5b282ddeaf9cf6df03402"
+    },
+    {
+      "sourceId": "rec5uQS2pz9kEuGon",
+      "saintId": "cms0w7d1k012f07qiy9dm6d33",
+      "name": "Sri Prashant Das Baba",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 2,
+      "recommendedBand": 2,
+      "knownFootprint": 0.2,
+      "sourceRevision": "5451c19f0b3cdcba575aa25393f2bf28678d094b0e0dc37658cc6e4cd285c381"
+    },
+    {
+      "sourceId": "rec82hFqcoW0N6dUe",
+      "saintId": "cms0w7dcu01gf07qi3g0yyb60",
+      "name": "Sri Kunja Bihari Das",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 2,
+      "recommendedBand": 2,
+      "knownFootprint": 0.14285714285714285,
+      "sourceRevision": "e39d1078f2225c883bd3e554b8e7023de382a4cce206b726425a142e35e6de6a"
+    },
+    {
+      "sourceId": "recTIvmCmSVHWspHM",
+      "saintId": "cms0w7icl07oa07qiocwf3n4n",
+      "name": "Sri Atul Krishna Das Maharaj",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 2,
+      "recommendedBand": 2,
+      "knownFootprint": 0.2,
+      "sourceRevision": "258a3157d5f0f17b11fa0e17009e488fa201a1b6fd2143d11a694f6d85808ac4"
+    },
+    {
+      "sourceId": "recjniR3isfH2T1Bc",
+      "saintId": "cms0w7fy304tq07qixt2tn5pr",
+      "name": "Sri Pagal Babaji Maharaj",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 2,
+      "recommendedBand": 2,
+      "knownFootprint": 0.14285714285714285,
+      "sourceRevision": "70fba77179501a624bc37dc5b89e8abcd44e64a62e99498dca6be56514064fae"
+    },
+    {
+      "sourceId": "recyyiy9MkoJX6hJx",
+      "saintId": "cms0w7jzg09e107qidcff1yty",
+      "name": "Sri Priyasharan Baba",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 2,
+      "recommendedBand": 2,
+      "knownFootprint": 0.25,
+      "sourceRevision": "48cd7d959ab58db95010f40f2b4c756fa48afe297e9c49b8d73f8ba4ad2609a8"
+    },
+    {
+      "sourceId": "rec8gBJsufVbExGIk",
+      "saintId": "cms0w7de801i607qiw7dxwlc1",
+      "name": "Sri Mukund Sharan ji",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 3,
+      "recommendedBand": 4,
+      "knownFootprint": 0.25,
+      "sourceRevision": "c43a9df60c91e16a9176abee84206bf585fdeaed2ea14afaf293d48208887cea"
+    },
+    {
+      "sourceId": "recS2SB8Um7wmJ8Rd",
+      "saintId": "cms0w7hzz07ap07qihkasn7jn",
+      "name": "Sri Bhagavati Dasi",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 3,
+      "recommendedBand": 4,
+      "knownFootprint": 0.125,
+      "sourceRevision": "8aff95007a293b61e8098e2799924353d10176c5f3d61e63ce1937cb01fa3218"
+    },
+    {
+      "sourceId": "recUBrbp6hmJFTL7p",
+      "saintId": "cms0w7ilj07y307qi887qc5yr",
+      "name": "Sri Bhagawat Sharan Ji Maharaj",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 3,
+      "recommendedBand": 5,
+      "knownFootprint": 0.16666666666666666,
+      "sourceRevision": "bb447380d8d8dd34047b3f8cb76a99e9ef30d9276b6e7d7e5d7edb89c1cfd58b"
+    },
+    {
+      "sourceId": "recV5620566xzDihs",
+      "saintId": "cms0w7its086u07qi4y6vjo22",
+      "name": "Sri Rupkishor Das Babaji",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 3,
+      "recommendedBand": 4,
+      "knownFootprint": 0.2,
+      "sourceRevision": "d9cd49cbe24dd0cf235d5c9924cfcfe04c700e0c0da3f8039011fa67d36683a8"
+    },
+    {
+      "sourceId": "recwwvwL4vgUnVTCO",
+      "saintId": "cms0w7jb308p907qieh721rb0",
+      "name": "Mahandaleshwar Sri Mahant Tyagi Brijwasi Sri Sarveshwar Das Kathia Babaji Maharaj",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 3,
+      "recommendedBand": 5,
+      "knownFootprint": 0.16666666666666666,
+      "sourceRevision": "71843449da981605b48d9f126b0dfc6dd41b5f3d357579ef35322ed483d6bd9d"
+    },
+    {
+      "sourceId": "rec6YZs1zGqm2SaxC",
+      "saintId": "cms0w7d8901a507qitq8nuuso",
+      "name": "Sri Tyagi Baba",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 4,
+      "recommendedBand": 4,
+      "knownFootprint": 0.125,
+      "sourceRevision": "ef58e2ac3dbf973181296a46a85ea050ccc1fbc18c7314f2049e9992c1e33726"
+    },
+    {
+      "sourceId": "recA3nxFhZ0PDaF78",
+      "saintId": "cms0w7dm301sp07qinzs7t98h",
+      "name": "Sri Gyaandas ji Maharaj",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 4,
+      "recommendedBand": 1,
+      "knownFootprint": 0.25,
+      "sourceRevision": "e1703df1ea03fcf23d163cfe8836890c3c3ed0bd2c232e68078d325bc729f0c0"
+    },
+    {
+      "sourceId": "recxHe0WZ1ulo1Quh",
+      "saintId": "cms0w7jie08w207qiu4hz6h1r",
+      "name": "Ramtal, Vrindavan (Brick 2700yrs old)",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 4,
+      "recommendedBand": 3,
+      "knownFootprint": 0.5,
+      "sourceRevision": "32b1bfdae3595d10b297818e87d0d03e2dfc377f39d9de92b8a179d8b1bb6b55"
+    },
+    {
+      "sourceId": "recBOFf000fRxR9xB",
+      "saintId": "cms0w7e0i02cg07qin7zpef70",
+      "name": "Sri Haripriya Dasi",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 4,
+      "recommendedBand": 4,
+      "knownFootprint": 0.125,
+      "sourceRevision": "1f566ec3bb7af8e173bbbc3dbd0628ae64d2f59c83bc2322e824d385f912c2be"
+    },
+    {
+      "sourceId": "recAEx5Op0jFyV4JI",
+      "saintId": "cms0w7doq01wg07qi73rsljkf",
+      "name": "Sri Gauranga Das Babaji",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 5,
+      "recommendedBand": 3,
+      "knownFootprint": 0.25,
+      "sourceRevision": "5db65ddb238d5cc08eae84f5c857481e3b377289244c577ed001e7d4f68dd0a5"
+    },
+    {
+      "sourceId": "recArd2WMWc2wQbcJ",
+      "saintId": "cms0w7dsu021w07qivhvppoa4",
+      "name": "Sri Panduranga (deity)",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 5,
+      "recommendedBand": 3,
+      "knownFootprint": 0.25,
+      "sourceRevision": "65a76469b04cb85d48f422f4c72b0134e2246490391ce62fe9ad37cdbfe59199"
+    },
+    {
+      "sourceId": "recL6pd3mneBukCEb",
+      "saintId": "cms0w7ge905ds07qi1lmo9lws",
+      "name": "Sri Usha Mataji",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 5,
+      "recommendedBand": 5,
+      "knownFootprint": 0.25,
+      "sourceRevision": "92567392edb9adac98c2bebdd5f455910eb4d77a6ef5835fec1edb4d382e8695"
+    },
+    {
+      "sourceId": "recYhFy1wEWE4YN6A",
+      "saintId": "cms0w7jsb096f07qitqv7e103",
+      "name": "Sri Mahadev",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": 5,
+      "recommendedBand": 5,
+      "knownFootprint": 0.25,
+      "sourceRevision": "615c1dc8053850ae23c6d9fd0beb24076a9fadd66592648530ad96ae6994f617"
+    },
+    {
+      "sourceId": "recJHxAHzd7oNrbfR",
+      "saintId": "cms0w7fws04s707qie3wepp3x",
+      "name": "Sri Ramashray Ji Maharaj Singhasta Bhushan",
+      "tierAtCapture": "Tertiary",
+      "previousSuggestedBand": null,
+      "recommendedBand": 4,
+      "knownFootprint": 0.14285714285714285,
+      "sourceRevision": "06991dc39314e725c94ee2dac97b5db2f8c1de3dab24b003dc447f4dffe60188"
+    }
+  ]
+}
