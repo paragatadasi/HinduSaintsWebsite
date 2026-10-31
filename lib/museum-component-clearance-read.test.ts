@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readPhysicalLocationView, readMuseumPhaseClearances } from "./museum-physical-locations";
-import { v20ComponentSourceIds,v19ComponentBinding,v42ComponentBinding,componentScopeForOrigin } from "./museum-component-clearance-domain";
+import { v20ComponentSourceIds,v19ComponentBinding,v42ComponentBinding,v64ComponentBinding,componentScopeForOrigin } from "./museum-component-clearance-domain";
 
-for(const [sourceId,code] of [[v20ComponentSourceIds[0],"20"],[v19ComponentBinding.sourceId,"19"],[v42ComponentBinding.sourceId,"42"]])test(`V${code} component receipt projects staged parts without a whole-source ledger row; correcting it revokes clearance`,async()=>{
+for(const [sourceId,code] of [[v20ComponentSourceIds[0],"20"],[v19ComponentBinding.sourceId,"19"],[v42ComponentBinding.sourceId,"42"],[v64ComponentBinding.sourceId,"64"]])test(`V${code} component receipt projects staged parts without a whole-source ledger row; correcting it revokes clearance`,async()=>{
  const origin={kind:"vitrine" as const,code,label:`Vitrine ${code}`,shelf:"A"},scope=componentScopeForOrigin(code)!;
  const snapshot={proposalVersion:"test",title:"test",vitrineCodes:[code],guidance:{version:"test",reviewStatus:"test"},
    rows:[{sourceId,sourceKey:"source:key",name:"Held display",saintId:"saint",sourceReported:origin,destination:null,holdReason:"",fixedHousing:false}]};
@@ -14,13 +14,14 @@ for(const [sourceId,code] of [[v20ComponentSourceIds[0],"20"],[v19ComponentBindi
  const initial=await readPhysicalLocationView(loader,tx as never,[sourceId],false);
  const before=initial.rows[0];assert.equal(before.current?.code,code);
  events=[{id:"receipt",createdAt:new Date("2026-10-30T12:00:00Z"),afterJson:{museumId:"museum-spn",scope:"source_observation_with_components",
-   guideContext:{guideVersion:"guide"},clearedVitrines:[code],componentMoves:[{sourceId,scope,origin,
+   guideContext:{guideVersion:"guide"},clearedVitrines:[code],componentMoves:[{sourceId,scope,origin,...(code==="64"?{includedWalkingSticks:true}:{}),
      location:{kind:"table",code:"staging-area",label:"Staging area"},revision:"new-component-revision",expectedSourceRevision:before.sourceRevision,
      previousCurrentRevision:before.currentRevision,previousLocationVersion:0}]}}];
  const partial=await readPhysicalLocationView(loader,tx as never,[sourceId],false);
  const row=partial.rows[0];assert.equal(row.current,null);assert.equal(row.currentConfirmed,null);
  assert.deepEqual(row.original,origin);assert.equal(row.currentVersion,0);
  assert.equal(row.componentPlacement?.location.code,"staging-area");assert.equal(row.componentPlacement?.excludedWalkingSticks.location,null);
+ assert.equal(row.componentPlacement?.includedWalkingSticks,code==="64"?true:undefined);
  assert.ok(row.movementBlockedReason);assert.equal(row.undo.available,true);
  assert.equal((await readMuseumPhaseClearances(tx as never,loader)).length,1);
  snapshot.rows[0].sourceReported={...origin,shelf:"B"};
