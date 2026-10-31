@@ -47,7 +47,7 @@ try{
  const request=confirmation([record(free,vitrine("77"))]);
  const saved=await service.confirmMuseumPhysicalLocations(request,curator,loader);
  const replay=await service.confirmMuseumPhysicalLocations(request,curator,loader);
- assert.equal(replay.replayed,true);assert.equal(replay.receipt.id,saved.receipt.id);
+ assert.equal(replay.replayed,true);assert.ok(replay.receipt);assert.ok(saved.receipt);assert.equal(replay.receipt.id,saved.receipt.id);
  await service.saveMuseumPreparation({action:"preparation.update",museumId:"museum-spn",clientRequestId:randomUUID(),vitrine:"5",prepared:true,expectedVersion:0},curator,loader);
  const session=await sessions.startMuseumMoveSession({museumId:"museum-spn",proposalVersion:snapshot.proposalVersion,clientRequestId:randomUUID()},curator,async()=>snapshot);
  const heldSession=session.session.rows.find(r=>r.sourceId==="held64")!;

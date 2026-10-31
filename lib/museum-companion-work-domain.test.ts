@@ -24,5 +24,5 @@ test("task text and scope validated; completion requires version and explicit de
 });
 
 test("a retained Sikh display cannot acquire a new final shelf annotation",()=>{
- assert.throws(()=>assertShelfContext({...physical,current:{kind:"vitrine",code:"68"}},{...shelf,vitrine:"68"}),/Sikh display retained here/);
+ assert.throws(()=>assertShelfContext({...physical,current:{kind:"vitrine",code:"68"}},{...shelf,vitrine:"68",museumId:"museum-spn"}),/Sikh display retained here/);
 });
