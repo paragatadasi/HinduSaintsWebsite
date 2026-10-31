@@ -28,6 +28,7 @@ const references = packet.cityAlternatives.flatMap(cohort => cohort.sourceIds.fi
 }));
 
 export const starterMoveGuide: StarterMoveGuide = {
+ optionalClearVitrines:["36"],
  version: packet.version, contentDigest: packet.contentDigest, proposalVersion: packet.proposalVersion,
  assignmentDigest: packet.assignmentDigest, title: packet.title, proposalLabel: currentSpnConceptLabel,
  transitionSourceIds: transitions.map(row => row.sourceId),

@@ -7,6 +7,7 @@ import { boundedIntakeBody } from "./museum-intake-api";
 import { MuseumMoveSessionError } from "./museum-move-session-domain";
 import type { PhysicalSnapshotLoader } from "./museum-physical-locations";
 import { readHistoricalStaging, reconcileHistoricalStaging } from "./museum-historical-staging";
+import {readCaseContentsPreview,readCaseClearingAudit,reconcileCaseStaging} from "./museum-case-contents";
 
 export async function historicalStagingHttp(request: Request, loader: PhysicalSnapshotLoader) {
   try {
@@ -15,13 +16,17 @@ export async function historicalStagingHttp(request: Request, loader: PhysicalSn
     if (!(["access_museum", "view_museum_catalog", "manage_museum"] as const).every(capability => hasCapability(user.roles, capability)))
       throw new MuseumMoveSessionError(403, "A museum curator must review staging corrections.");
     let result;
-    if (request.method === "GET") result = await readHistoricalStaging(loader);
+    if (request.method === "GET") {
+      const query=new URL(request.url).searchParams;
+      if(query.has("museumId")&&query.get("museumId")!=="museum-spn")throw new MuseumMoveSessionError(400,"Choose the SPN museum.");
+      result=query.get("mode")==="audit"?await readCaseClearingAudit(loader):query.has("vitrine")?await readCaseContentsPreview(loader,{vitrine:z.string().min(1).max(20).parse(query.get("vitrine")),mode:query.get("mode")==="contents"?"selected_contents":"historical",preparationReceiptId:query.get("preparationReceiptId")??undefined}):await readHistoricalStaging(loader);
+    }
     else if (request.method === "POST") {
       if (!intakeWriteOriginAllowed(request.url, request.headers.get("origin"), request.headers.get("host"), process.env.AUTH_URL || process.env.NEXTAUTH_URL))
         throw new MuseumMoveSessionError(403, "Reload before recording the correction.");
       if (!request.headers.get("content-type")?.startsWith("application/json")) throw new MuseumMoveSessionError(415, "Send the correction as JSON.");
       const body: unknown = JSON.parse((await boundedIntakeBody(request, 512 * 1024)).toString("utf8"));
-      result = await reconcileHistoricalStaging(body, { id: user.id, canManage: true }, loader);
+      result = body&&typeof body==="object"&&"action" in body&&body.action==="case.staging.reconcile"?await reconcileCaseStaging(body,{id:user.id,canManage:true},loader):await reconcileHistoricalStaging(body, { id: user.id, canManage: true }, loader);
     } else throw new MuseumMoveSessionError(405, "This action is unavailable.");
     return NextResponse.json(result, { headers: { "Cache-Control": "private, no-store" } });
   } catch (error) {
