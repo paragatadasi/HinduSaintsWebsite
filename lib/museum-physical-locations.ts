@@ -1,5 +1,9 @@
 import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
 import {spnCaseExecutionHold, spnPhysicalExecutionHold} from "./museum-case-execution-holds";
+import {assertAssistantGuidePlacement,assertAssistantEffectiveDestination} from "./museum-assistant-placement-domain";
+import {currentCompanionAdditions} from "./museum-companion-addition-validation";
+import {buildLatestSpnReview} from "./spn-reviewed-proposal";
+import {currentSpnProposalRelease} from "./spn-current-proposal";
 import {retainedCaseClearanceAcknowledgement,retainedCaseClearanceAllowed,assertRetainedCaseClearance} from "./spn-retained-case-clearance";
 import {readGuideAlternativeDestinations} from "./museum-guide-alternatives";
 import { readEffectiveCompanionAdditions } from "./museum-companion-additions-state";
@@ -137,10 +141,12 @@ export async function readReportedPlacementReceipts(tx: Prisma.TransactionClient
     matched, outstandingSourceIds: reported.filter(row => !ids.has(row.sourceId)).map(row => row.sourceId) };
 }
 
-export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSessionActor, loader: PhysicalSnapshotLoader) {
-  if (!actor.canManage) throw new MuseumMoveSessionError(403, "A museum curator must record physical locations.");
+export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSessionActor & {canConfirmPlacements?:boolean}, loader: PhysicalSnapshotLoader) {
+  if (!actor.canManage&&!actor.canConfirmPlacements) throw new MuseumMoveSessionError(403, "A museum curator or assistant must record physical locations.");
   loader = memoizePhysicalSnapshot(loader);
   const input = physicalConfirmationInput.parse(raw);
+  const assistantOnly=!actor.canManage;
+  if(assistantOnly)assertAssistantGuidePlacement(input,input.guideContext?readStarterGuideDefinition(input.guideContext.guideVersion):undefined);
   assertRetainedCaseClearance(input);
   assertComponentClearanceScope(input);
   assertDistinctMoveSources(input.records);
@@ -201,6 +207,19 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     }
     const transfers = [...(phase?.physicalScope?.preparatoryTransfers ?? []), ...additionPhases.flatMap(row => row.physicalScope?.preparatoryTransfers ?? [])];
     const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length ? undefined : [...new Set([...input.records.map(row => row.sourceId), ...transfers.map(row => row.sourceId)])], false);
+    if(assistantOnly){
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      const sourceId=input.records[0].sourceId;
+      const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===sourceId);
+      for(const placementId of [...new Set([sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id))].sort())
+        await tx.$queryRaw(Prisma.sql`SELECT true FROM pg_advisory_xact_lock(hashtextextended(${"museum-arrangement:spn:"+placementId},0))`);
+      const [museum,additions,alternatives]=await Promise.all([readMuseumData(tx),readEffectiveCompanionAdditions(tx),readGuideAlternativeDestinations(tx)]);
+      const valid=currentCompanionAdditions(additions,current.rows);
+      const review=buildLatestSpnReview(museum.placements,[...valid,...alternatives.filter(row=>!valid.some(addition=>addition.sourceId===row.sourceId))],current.rows);
+      assertAssistantGuidePlacement(input,readStarterGuideDefinition(input.guideContext!.guideVersion));
+      assertAssistantEffectiveDestination(input,review.rows);
+    }
     assertRetainedCaseClearance(input,current.rows);
     if(input.guideContext?.guideVersion==="spn-east-remainder-2026-10-31-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
       const [{readEastRemainderGuide},{assertEastRemainderRecords}]=await Promise.all([import("./spn-east-remainder-source"),import("./spn-east-remainder-guide")]);
