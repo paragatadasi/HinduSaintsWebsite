@@ -1,5 +1,5 @@
 {
-  "version": "spn-west-v46-shelves-2026-10-31-v1",
+  "version": "spn-west-v46-shelves-2026-10-31-v2",
   "vitrines": [
     {
       "code": "46",
@@ -42,11 +42,11 @@
           "name": "Sri Badve Mahajan",
           "tier": "Tertiary",
           "groupId": "west-v46-ramabai",
-          "suggestedShelfIndex": 2,
+          "suggestedShelfIndex": 5,
           "sourceRevision": "a3530dd1bd9f3f9377c35e94cbcd1d286dbc210b386791e762fef162c4dc3035",
           "reviewAlerts": [
             {
-              "message": "Possible overlap with Balkrishna Badve. Keep source observations and relics labelled; do not count automatically as two different people."
+              "message": "Possible overlap with living Balkrishna Badve: keep these observations together on the bottom shelf pending identity review. Do not count automatically as two different people."
             }
           ]
         },
@@ -56,7 +56,7 @@
           "name": "Sri Balkrishna Digamber Mahajan Badve",
           "tier": "Tertiary",
           "groupId": "west-v46-ramabai",
-          "suggestedShelfIndex": 2,
+          "suggestedShelfIndex": 5,
           "sourceRevision": "3c8ae773b28e75534724bb5e0aa1f0194cb762be891645fe474c4182d642ac4c",
           "reviewAlerts": [
             {
@@ -94,11 +94,11 @@
           "name": "Sri Gunda Narayan Maharaj",
           "tier": "Secondary",
           "groupId": "west-v46-gunda",
-          "suggestedShelfIndex": 2,
+          "suggestedShelfIndex": 5,
           "sourceRevision": "6c82bb18034ba24b92788bec4ae46afdb4b88e69e52a12ecbadc264c712b477c",
           "reviewAlerts": [
             {
-              "message": "Living. Keep below the top, aligned under Gunda Maharaj. Relationship is recorded in reciprocal inventory links."
+              "message": "Living. Bottom shelf only, aligned under Gunda Maharaj where possible. Relationship is recorded in reciprocal inventory links."
             }
           ]
         },
@@ -128,7 +128,7 @@
           "name": "Sri Ambar Das",
           "tier": "Tertiary",
           "groupId": "west-v46-pandharpur",
-          "suggestedShelfIndex": 2,
+          "suggestedShelfIndex": 5,
           "sourceRevision": "d7539e87152ec0b0ac5237c0048ae46799bd0f9df6b6664b284752fdb4ebb65b",
           "reviewAlerts": []
         },
@@ -148,11 +148,11 @@
           "name": "Sri Sankali Babaji",
           "tier": "Tertiary",
           "groupId": "west-v46-pandharpur",
-          "suggestedShelfIndex": 5,
+          "suggestedShelfIndex": 2,
           "sourceRevision": "4aa09d5239ce631b41804253e1165dc673228985da35f9b8355e697e3fef757e",
           "reviewAlerts": [
             {
-              "message": "Pandharpur source-place; biography says samadhi near Bengaluru. Temporary lower placement pending locality clarification."
+              "message": "Pandharpur source-place; biography says samadhi near Bengaluru. Temporary shelf2 placement pending locality clarification."
             }
           ]
         },
@@ -212,7 +212,7 @@
           "name": "Sri DhaamJi",
           "tier": "Tertiary",
           "groupId": "west-v46-pandharpur",
-          "suggestedShelfIndex": 5,
+          "suggestedShelfIndex": 2,
           "sourceRevision": "6d59806b049c753a724ef622aaaf4d864f1da736f176380e4f692794f2ad95f7",
           "reviewAlerts": [
             {
@@ -230,7 +230,7 @@
           "sourceRevision": "826f36b3d1f5155070adf27c312c70c394d35e942def67654859764ade0794c5",
           "reviewAlerts": [
             {
-              "message": "Mangalwedha/Madhva anchor, not a Varkari-lineage claim."
+              "message": "Mangalwedha/Madhva anchor, not a Varkari-lineage claim. Primary tier saved and verified in the SPN proposal. Madhva identity remains distinct from Varkari tradition."
             }
           ]
         },
@@ -240,7 +240,7 @@
           "name": "Sri Bhaijan Baba",
           "tier": "Tertiary",
           "groupId": "west-v46-pandharpur",
-          "suggestedShelfIndex": 5,
+          "suggestedShelfIndex": 2,
           "sourceRevision": "f370084a0e6a7dba92fbe6ce322e549828b00e9586192b13df9874d1c55598e1",
           "reviewAlerts": [
             {
@@ -274,12 +274,10 @@
       ],
       "notes": [
         "4.49 known shelf spaces plus two unmeasured holdings. Check fit on site.",
-        "Living saints stay below the top; shelf 2 preserves the approved branch alignment."
+        "Living saints belong on the bottom shelf, even when their family is split vertically.",
+        "Bottom shelf: about 1.03 known shelf spaces plus an unmeasured Badve holding. Check fit; do not use higher shelves as overflow."
       ],
       "livingAllowedBands": [
-        2,
-        3,
-        4,
         5
       ]
     }

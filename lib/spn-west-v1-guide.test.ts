@@ -20,11 +20,11 @@ test("V1 locks the approved4BAPS,8Gondal,7Amreli source partition",()=>{
  assert.equal(readStarterGuideDefinition(westV1GuideContext.guideVersion),westV1GuideDefinition);
  assert.ok(currentReceiverGuideDefinitions("1").includes(westV1GuideDefinition));
 });
-test("Mahant shelf2 exception is explicit guidance without fabricated shelf assignments",()=>{
- assert.deepEqual(westV1LayoutGuidance.bapsShelves,[1,2]);assert.equal(westV1LayoutGuidance.mahantShelf,2);
+test("Mahant bottom-shelf correction is explicit guidance without fabricated shelf assignments",()=>{
+ assert.deepEqual(westV1LayoutGuidance.bapsShelves,[1,2]);assert.equal(westV1LayoutGuidance.mahantShelf,5);
  assert.deepEqual(westV1LayoutGuidance.geographicShelves,[3,4,5]);assert.equal(westV1LayoutGuidance.physicalShelfWrites,false);
  const mahant=westV1MoveGuide.entries.find(e=>e.sourceId===westV1LayoutGuidance.mahantSourceId)!;
- assert.equal(mahant.lifeStatus?.tag,"Living");assert.equal(mahant.tier,"Tertiary");assert.match(mahant.reviewNotes?.join(" ")??"",/never the top shelf/);
+ assert.equal(mahant.lifeStatus?.tag,"Living");assert.equal(mahant.tier,"Tertiary");assert.match(mahant.reviewNotes?.join(" ")??"",/bottom shelf/);
  const {physical,review}=fixture();const guide=projectWestV1Guide([],physical,review);
  assert.equal(guide.entries.find(e=>e.sourceId===mahant.sourceId)?.currentLocation?.shelf,undefined);
  assert.throws(()=>assertWestV1Records([{sourceId:mahant.sourceId,to:{kind:"vitrine",code:"1",shelf:"1"}}],guide),/shelf workflow/);

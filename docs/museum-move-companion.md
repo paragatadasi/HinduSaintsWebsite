@@ -126,7 +126,7 @@ Workflow learning review found no new reusable skill rules: the existing museum 
 
 `readWestV1Guide` validates exact source revisions and canonical bindings against current physical and reviewed proposal data, respecting later curator destinations and pending review. The physical-write transaction repeats this check under the existing addition, decision and arrangement locks. Separately validated curator additions and alternatives use their existing workflows; assistants cannot invoke those exceptions. The unlinked Gondal observation's exact approved guide scope does not alter the global proposal or canonical identity; it remains curator-only while the shared assistant reviewer gate still sees destination 62.
 
-Vitrine 1 requires an availability acknowledgement, with no whole-case clearing or empty-case claim. Shelf guidance is explicitly recommendations only: BAPS occupy shelves 1–2, living Mahant Swami shelf 2, Gondal and Amreli geographic groups below. No personal BAPS lineage is implied for those geographic groups. Ordinary guide confirmations record the vitrine without writing an exact shelf; an explicit shelf uses the separate shelf workflow. Current locations and confirmation basis come from the live physical ledger, not the captured draft.
+Vitrine 1 requires an availability acknowledgement, with no whole-case clearing or empty-case claim. Shelf guidance is explicitly recommendations only: BAPS occupy shelves 1–2, living Mahant Swami on the bottom shelf, Gondal and Amreli geographic groups below. No personal BAPS lineage is implied for those geographic groups. Ordinary guide confirmations record the vitrine without writing an exact shelf; an explicit shelf uses the separate shelf workflow. Current locations and confirmation basis come from the live physical ledger, not the captured draft.
 
 The known comparison load is 4.966667 / 5 based on source-observation shelf shares, including possible overlaps. It is not measured or certified fit. This release records no physical moves, shelf assignments, canonical relationships or tier corrections. The workflow learning review found no new reusable skill rules; the existing interpretation and planning skills already cover uncertain observations, geographic grouping, living-status constraints and live placement precedence.
 
@@ -170,3 +170,19 @@ not assert provenance or a teacher relationship.
 Fresh read-only verification found 99 visible guide entries and 97 active shelf
 allocations, with two pre-existing identity holds in 32. No reusable skill rule
 changed; these are scoped reviewed placements, not new identity evidence.
+
+
+## SPN living-saint shelf guidance — 31 October 2026
+
+Living saints belong on the bottom shelf, even when this splits a family vertically
+within the same vitrine. Shelf 5 means bottom only for established five-shelf cases.
+This supersedes earlier shelf-2 / merely below-top guidance. V46 uses the revised
+reviewed shelf packet; its bottom load is about 1.03 known shelf spaces plus an
+unmeasured holding, requiring an on-site fit check rather than upper-shelf overflow.
+The source-only Badve observation remains unmerged and has no new life-status claim.
+Mahant Swami and the Datta Vedananda / Polai entries receive bottom-shelf guidance.
+The explicitly approved V77 bottom-two exception remains scoped to that case.
+
+These are recommendation changes only: preserve guide identities and assignment
+receipts, later curator destinations, physical locations and explicit actual shelf
+records. A vitrine checkbox still confirms only the vitrine, never a suggested shelf.
