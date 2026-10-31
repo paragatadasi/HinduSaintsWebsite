@@ -1,0 +1,1360 @@
+{
+  "version": "spn-east-remainder-2026-10-31-v1",
+  "title": "Remaining Eastern displays",
+  "proposalVersion": "spn-northern-voyage-2026-10-29-v19",
+  "proposalLabel": "Approved Eastern continuation",
+  "sourceShelfVersion": "spn-vraj-east-shelves-2026-10-30-v1",
+  "sourceShelfRevision": 5,
+  "sourceShelfSha256": "0956406b2c20871fb81712ffa933e19129e2861d76012eb9b9f1aeb5e4d1b240",
+  "reviewedObjectVersion": "spn-paramanand-reviewed-arm-support-2026-10-30-v1",
+  "vitrines": [
+    "26",
+    "24"
+  ],
+  "rows": [
+    {
+      "sourceId": "rec9vEn5oj7QZTXl0",
+      "saintId": "cms0w7dlg01rr07qiw0uiao3u",
+      "name": "Paramahamsa Sri Srimat Durgaprasad Saraswati",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Bhubaneswar",
+      "relicDescription": "",
+      "family": "Bhubaneswar",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [
+        "Confirm this source's separate objects and stick housing before recording a move of the whole display."
+      ],
+      "baseline": {
+        "placementId": "rec9vEn5oj7QZTXl0",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "bc87d3c3c95bc5979cc6e895e4055337ec534e8ff1ee84a7b0b08ccadf3fa51b",
+        "proposalRevision": "783104c316d7e5a74c887db4b78e0ba7721dbedc333c9d053514d9cd4658db36"
+      },
+      "sourceRevision": "a850f45afafc86f927586c55bda9f5653c48150679e7f0921945ec0637322cfc",
+      "suggestedShelfIndex": 1,
+      "movementBlockedReason": "Confirm this source's separate objects and stick housing before recording a move of the whole display."
+    },
+    {
+      "sourceId": "recbCsiExuW8dTUUM",
+      "saintId": "cms0w7dww027907qils07847h",
+      "name": "Sri Mahapurusha Achyutanand",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Nemalo",
+      "relicDescription": "",
+      "family": "Nemalo",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recbCsiExuW8dTUUM",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a2c69e4b899f9ad7f8b90b2c4e6c1b48518d5ad112a1a384ffb47c9de44151d8",
+        "proposalRevision": "8ec90a36d81f2c958ce96fd44df800888981a07a7aea66d8c8a7486f38012f1b"
+      },
+      "sourceRevision": "9660341a8e654056b73d4675232de43e3430817e9baea75a914067aa308e34e9",
+      "suggestedShelfIndex": 1,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recQAmbNSmfWIrzHz",
+      "saintId": "cms0w7hjw06rn07qikqu70rkq",
+      "name": "Sri Radhakant Das",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Bhadrak",
+      "relicDescription": "",
+      "family": "Bhadrak",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recQAmbNSmfWIrzHz",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "97ccca74e1ea8005be34761d326a2c95ff51727fefac16548ea2584dda5669b8",
+        "proposalRevision": "1340030170ee1c248842e888a652628280ae9c426c6b080e9c07d30557d4ea44"
+      },
+      "sourceRevision": "2e1b99ed6003cc4c7c8edd3ef097b6a9fade09f3fb0100b4a7934d177d24f28d",
+      "suggestedShelfIndex": 1,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "reccEWyFY8dMC4ZGN",
+      "saintId": "cms0w7e7a02kr07qi8bu1uum5",
+      "name": "Sri Nanda Dulal Goswami",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Bhadrak",
+      "relicDescription": "",
+      "family": "Bhadrak",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "reccEWyFY8dMC4ZGN",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c9de7dcc75fd0c8d86ba56493fa07c4676c01e62eeb15a82b94b2816023dd0d5",
+        "proposalRevision": "fb8496cb68a3591308d6dbe76d85d89bea8891638a1694600f81dbaee0967129"
+      },
+      "sourceRevision": "a96935aab47d229b6a5b174b097401327d2f9b80fbc06321483ffb752814e900",
+      "suggestedShelfIndex": 1,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recRc97ygtRl5l7Kr",
+      "saintId": "cms0w7hsz072j07qi6mubq683",
+      "name": "Sri Achyutananda Das Maharaj",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Gaudiya Vaishnava",
+      "city": "Jagatsinghpur",
+      "relicDescription": "",
+      "family": "Jagatsinghpur",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recRc97ygtRl5l7Kr",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "7c5f963e5940482760051ccb6d89c92aed59e670dde350c6e9269900f014f8bb",
+        "proposalRevision": "2b8e15d40d3674502396dcd8219da2c7dbff27812678b310ba6a694ce5d1d76a"
+      },
+      "sourceRevision": "6855be187603ccadd56c1af7688160dc90f599aa92012336c87c3fc97bd28c65",
+      "suggestedShelfIndex": 1,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "rec37kfAtkuXhvjd8",
+      "saintId": "cms0w7cmc00jk07qi1r7no4of",
+      "name": "Sri Vishwaguru Baya Baba",
+      "tier": "Secondary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "family": "Baya Baba & Pagal Baba",
+      "rationale": "Keep this branch aligned with its anchor and companions.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "rec37kfAtkuXhvjd8",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Secondary",
+        "familyKey": "FAM-079",
+        "regionTags": [],
+        "revision": "084b3453ba35db25cfaca308b17fb0b26e4080cd7c24a2b2361d0fd3552c3312",
+        "proposalRevision": "72f7401c916e6c5ec7868db5aae4208e2fdd54f23486de1d750df15dc810905c"
+      },
+      "sourceRevision": "c93ca9e41ecde07fa45280457c36307aef87bcec59fcf3c343e356f5ef17df09",
+      "suggestedShelfIndex": 2,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "rec7GxgNvmubmTvMM",
+      "saintId": "cms0w7d9s01cb07qil8lvv2z0",
+      "name": "Sri Vishwaguru Avaduth Pagal Baba",
+      "tier": "Secondary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "family": "Baya Baba & Pagal Baba",
+      "rationale": "Keep this branch aligned with its anchor and companions.",
+      "reviewNotes": [
+        "Confirm this source's separate objects and stick housing before recording a move of the whole display."
+      ],
+      "baseline": {
+        "placementId": "rec7GxgNvmubmTvMM",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Secondary",
+        "familyKey": "FAM-079",
+        "regionTags": [],
+        "revision": "1af2cd453f9cfbfa06c609b7a3752af46a6dc35ef489ed6c4828b6d7cfd1bc17",
+        "proposalRevision": "9f8f3ab48933edb2386fa24312b05f63ad80636889085892d9a90a0884fdecd3"
+      },
+      "sourceRevision": "8f4127e3ad3fd2150a20e59caf8f7d9893276c046b506857ebd11161683155fc",
+      "suggestedShelfIndex": 2,
+      "movementBlockedReason": "Confirm this source's separate objects and stick housing before recording a move of the whole display."
+    },
+    {
+      "sourceId": "recKEsKy2qc2E0bGP",
+      "saintId": "cms0w7g5c052m07qid9g47f5p",
+      "name": "Sri Sri 108 Chakradhar Das Maharaj",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Gaudiya Vaishnava",
+      "city": "Cuttack",
+      "relicDescription": "",
+      "family": "Cuttack",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recKEsKy2qc2E0bGP",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "16d80832a01704f9823677b338e6c2031b16345a06c9e9533ed5ad367734bc57",
+        "proposalRevision": "1e281f197564be3780f96661524c9d22c0b6f28df3cc706457e34c7f38d68334"
+      },
+      "sourceRevision": "90c9707f41327682807554693486ba44a9fa3695b3e7b0f62b7bc07ef4fc8068",
+      "suggestedShelfIndex": 2,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recoo9vvxZy22Ss3v",
+      "saintId": "cmus3rxbx006f07o529kdswpo",
+      "name": "Sri Nityananda Das Babaji",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Cuttack",
+      "relicDescription": "",
+      "family": "Cuttack",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recoo9vvxZy22Ss3v",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "deffdc58f4db1cc8233de3da13a42d20b853f1cf70a166ce05eed9bff2bc71d9",
+        "proposalRevision": "418d50eb47e789363f0d4b7aff934699ec702bff8a368ca0d3466689bc6f201d"
+      },
+      "sourceRevision": "6882e42e3034a8daca03d94d68493b94d0f44127ece19e0e2787515cc08b7511",
+      "suggestedShelfIndex": 2,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "rec5r3QLGKrjYa5y6",
+      "saintId": "cms0w7d17011z07qiwewg7t11",
+      "name": "Mahant Sri Bhakticharandas Maharaj",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Gaudiya Vaishnava",
+      "city": "Balasore",
+      "relicDescription": "",
+      "family": "Balasore",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "rec5r3QLGKrjYa5y6",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ce6fb4e34d0cc0034cd34999b4ffa2f87d5191af35e7dcff95bdd5898550268f",
+        "proposalRevision": "2eca8bfee4a2d0552b22b65373d2ba77c688e15c31b435608d7d519eacfb42d6"
+      },
+      "sourceRevision": "5cd84e33d97f3a62d0b5bba8f4f20ae9e541598ccb705f8be95bece069be0cd9",
+      "suggestedShelfIndex": 2,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recIktBD8n1j13qh9",
+      "saintId": "cmus3rwyf004607o5xg22vbrr",
+      "name": "Sri Brahmananda Ji Maharaj",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "family": "Brahmananda · Puri",
+      "rationale": "Keep this branch aligned with its anchor and companions.",
+      "reviewNotes": [
+        "Still alive is asserted by the current CMS record; keep lower. This is not fresh historical verification.",
+        "Keep below the top shelf. The recorded living-status assertion needs an individual check; prominence does not waive this restriction."
+      ],
+      "baseline": {
+        "placementId": "recIktBD8n1j13qh9",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "c053e333dca90bad2ca7e38dbcb70873ce8b2339dd658483251add9624a441e7",
+        "proposalRevision": "0fa2efac22331267f69384ee39bd4fde104054151d1a5b897190b20f38d5ac08"
+      },
+      "sourceRevision": "4b7da7ced5456ab417e88cd3b8bc0e9a5dbbf9504e4b761ec61f64dee0a386b3",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recpno7QmMS0oXg1e",
+      "saintId": null,
+      "name": "Sri Swami Brahmananda ji Maharaj of Puri, Orissa",
+      "tier": "Unclassified",
+      "destination": "26",
+      "section": "",
+      "city": "",
+      "relicDescription": "",
+      "family": "Brahmananda · Puri",
+      "rationale": "Keep this branch aligned with its anchor and companions.",
+      "reviewNotes": [
+        "Source/identity interpretation needs review; no new saint or identity link is created."
+      ],
+      "baseline": null,
+      "sourceRevision": "1732daea0e04c662d492f8d3e5277c49e4bb89dee37ed94aacc43b3216b0da9a",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "rec0PdixvLE8VQU5H",
+      "saintId": "cms0w7c9w004m07qij2yi87zw",
+      "name": "Sri Bal Krishna Das",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Puri",
+      "relicDescription": "",
+      "family": "Puri",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "rec0PdixvLE8VQU5H",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "368bc880b551bade13c2d2261eb0d510d579965f4fdbed15c7c470ccd18da6d1",
+        "proposalRevision": "1ad488da9ee899306b3b441fc9a5d194dfdb19149051ad6379a756cf5f88d258"
+      },
+      "sourceRevision": "902aaa721cfc464bebb29c0e16a899be5dd572bd2ef171aa536cfea1ceebed1b",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recb7oJ5FTsyEzb5S",
+      "saintId": "cms0w7dwe026j07qinr61rr8m",
+      "name": "Sri Dharmananda Saraswati",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Puri",
+      "relicDescription": "",
+      "family": "Puri",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [
+        "Still alive is asserted by the current CMS record; keep lower. This is not fresh historical verification.",
+        "Keep below the top shelf. The recorded living-status assertion needs an individual check; prominence does not waive this restriction."
+      ],
+      "baseline": {
+        "placementId": "recb7oJ5FTsyEzb5S",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b32862fc3fcc652f33067e94e16327cffceb21c7b7cc89211b94b1beb38e25b8",
+        "proposalRevision": "eeedfe9379397f165999ff9fe4fc7182df4d1e269e13a40824e52e78969d3acf"
+      },
+      "sourceRevision": "22d2b66850f6105c3eb70c5f5507ff4a1023c1865e4c26a048117cf7d8cbcdcb",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recs8Ecg4alHn3Y0J",
+      "saintId": "cms0w7i1607c507qiqxzzej28",
+      "name": "Sri Bhaskara Ramanuj Das",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Sri Vaishnava & South Indian Vaishnava Traditions",
+      "city": "Puri",
+      "relicDescription": "",
+      "family": "Puri",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [
+        "Still alive is asserted by the current CMS record; keep lower. This is not fresh historical verification.",
+        "Keep below the top shelf. The recorded living-status assertion needs an individual check; prominence does not waive this restriction."
+      ],
+      "baseline": {
+        "placementId": "recs8Ecg4alHn3Y0J",
+        "section": "Sri Vaishnava & South Indian Vaishnava Traditions",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "92d7c5cf56be274007ebc76bef7b8d87c638d8cad12fe49224fa19dd60dc0900",
+        "proposalRevision": "a872a482750252ee5de72a4bd7558898bacf19edc9f8c2045df783950c7df76b"
+      },
+      "sourceRevision": "6b44e73f2bb1835f73ade1655842995f7fe98b9e77e6e419ab1090e0d4dfcae7",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recjurnDBumDkXXA3",
+      "saintId": "cms0w7g0904wd07qixixe7lr5",
+      "name": "Sri Chhota Achyutanand",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Balasore",
+      "relicDescription": "",
+      "family": "Balasore",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [
+        "Still alive is asserted by the current CMS record; keep lower. This is not fresh historical verification.",
+        "Keep below the top shelf. The recorded living-status assertion needs an individual check; prominence does not waive this restriction."
+      ],
+      "baseline": {
+        "placementId": "recjurnDBumDkXXA3",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "a9a8251ff1b5a6e1b68e61468a9ca569ef4fdf8717bc77769cf7f18d03e4431d",
+        "proposalRevision": "aebc50b4ed4dbc9ea91749adf48509cee3eff6c63df9304edfa137b01ff90adb"
+      },
+      "sourceRevision": "557ce25e9f1718b1492376f509edaedac6094c20a11135e6577057d45498ff7a",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recldDwQSp2LBlkV8",
+      "saintId": "cms0w7gfb05f507qiztki54e9",
+      "name": "Sri Krishna Mohan Das (Ghutiya Baba)",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Balasore",
+      "relicDescription": "",
+      "family": "Balasore",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [
+        "Still alive is asserted by the current CMS record; keep lower. This is not fresh historical verification.",
+        "Keep below the top shelf. The recorded living-status assertion needs an individual check; prominence does not waive this restriction."
+      ],
+      "baseline": {
+        "placementId": "recldDwQSp2LBlkV8",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "d440b1f3d09cd301f86e2d1f66557971dc88a216ecb29ad5a29b409871d0edaf",
+        "proposalRevision": "5c7ca17583699b0172d08194a17d37125c59b86371e0b17aeeabcead2b151963"
+      },
+      "sourceRevision": "be274282fbc6042452b21d24a90abb35423d063688a9d2359d5b2e436cf80c3d",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recje6xb9KoUwRpQL",
+      "saintId": "cms0w7fvd04qf07qiv5qdw9i4",
+      "name": "Tota Gopinath (deity)",
+      "tier": "Secondary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "family": "Jagannath & Tota Gopinath",
+      "rationale": "Keep this branch aligned with its anchor and companions.",
+      "reviewNotes": [
+        "Footprint unknown; not counted as zero physical size.",
+        "Size unknown: this starting position needs an on-site fit check."
+      ],
+      "baseline": {
+        "placementId": "recje6xb9KoUwRpQL",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Secondary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "3fef120cd4e69f879425bc1ad75903993afcf79e12879dd96d6a95b9b3a3cfc9",
+        "proposalRevision": "7a25abf8ef290332a800f3f38b2a61fe121e8e70bbdc4994ce764560e619f6da"
+      },
+      "sourceRevision": "47a90eb82f4e5702689624386b5c6258e1132eefc5caf334dff0866449aec987",
+      "suggestedShelfIndex": 4,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "reclyIPFpFR6q67Bx",
+      "saintId": "cms0w7gk705ld07qiwpx3nk8v",
+      "name": "Lord Jagannath (deity)",
+      "tier": "Primary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "",
+      "relicDescription": "",
+      "family": "Jagannath & Tota Gopinath",
+      "rationale": "Keep this branch aligned with its anchor and companions.",
+      "reviewNotes": [
+        "Footprint unknown; not counted as zero physical size.",
+        "Size unknown: this starting position needs an on-site fit check."
+      ],
+      "baseline": {
+        "placementId": "reclyIPFpFR6q67Bx",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Featured",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5863e5510473652873a818cd80154e70972a633e05cd7ffa188939d304eb8cbd",
+        "proposalRevision": "29d3575455bd5ca8a29a4f6d547e42cb7307e298380cbb66c9e86ee5cf2debbf"
+      },
+      "sourceRevision": "70fe950c8efb2d5f70a90d66b399e2812c62850fe5c902e702cf91da43452c4f",
+      "suggestedShelfIndex": 4,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recGAt9Q8JBRM7pdT",
+      "saintId": "cms0w7f6503um07qixqdtjzw6",
+      "name": "Sri Gopinath Das Babaji",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Puri",
+      "relicDescription": "",
+      "family": "Puri",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recGAt9Q8JBRM7pdT",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "53d5d1c84a8750a1f5b2f84779c52cde9cbf3d6f07c69af57f6a8eca80214810",
+        "proposalRevision": "f16e3febbbbc6e9ce4559c63f83a084214c3937d54e0c5a8909b57785006dc38"
+      },
+      "sourceRevision": "e168170973d7a8c1ca8f54d5eca2210ebb264102b74c37e41fdce4d7844db066",
+      "suggestedShelfIndex": 4,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recHNlgpOtSsWlIfl",
+      "saintId": "cms0w7fha049507qii84kot6m",
+      "name": "Mahant Sri Dhyanachandra Das Goswami",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Puri",
+      "relicDescription": "",
+      "family": "Puri",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recHNlgpOtSsWlIfl",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "0efa07e13479d7b64160bc30d26afa81b3b08233bbeccdbed69f1eaebb8b1bee",
+        "proposalRevision": "2b93da81a663a0fd1923f6cc06f08138825718e7886e8ae2d7ca8d45d384fabf"
+      },
+      "sourceRevision": "d6eae096f8b90558ab3725df983b95caa8f6aaae03cde33c03dea6cc25da5d27",
+      "suggestedShelfIndex": 4,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recmA5lAnLb6Ql0UP",
+      "saintId": "cms0w7gll05mv07qijpqmmlix",
+      "name": "Sri Srimati Parameshwari Dasi",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Puri",
+      "relicDescription": "",
+      "family": "Puri",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recmA5lAnLb6Ql0UP",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "b9b8e6d3318ba8524dc9f61e6f19b432bd9e8cc864336d7cb3f001884f9cf214",
+        "proposalRevision": "7d3e00483063661d71a384256cdecf36bcd7ab0cb44b48d958d3e44c6ee5a286"
+      },
+      "sourceRevision": "099658ba1b9c14463879245c937a38e43729cea3e1ff8acd382ab0c4afab2688",
+      "suggestedShelfIndex": 4,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recpr4hxyt5vPYnPq",
+      "saintId": "cms0w7hfg06mf07qih2tzr0k5",
+      "name": "Sri Natawor Das Brahmachari (Jungli Baba)",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Sri Vaishnava & South Indian Vaishnava Traditions",
+      "city": "Puri",
+      "relicDescription": "",
+      "family": "Puri",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recpr4hxyt5vPYnPq",
+        "section": "Sri Vaishnava & South Indian Vaishnava Traditions",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "713f79657bc04582783d18042461338440f569f82622299b88fa80a8a25d2ded",
+        "proposalRevision": "9162d95adfd4d4d9916e88a6d1715dcd1c0531bdb6d9d0e09c7ff7dcf8e1dc16"
+      },
+      "sourceRevision": "2ff4690536ff58e35409d278d3148db47183da9a5f4da44feeabe0c0e966cec9",
+      "suggestedShelfIndex": 4,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recuVyG6skE6qQ0aS",
+      "saintId": "cms0w7is4085607qi4y6jkkyr",
+      "name": "Sri Swami Digeshananda Saraswati",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Puri",
+      "relicDescription": "",
+      "family": "Puri",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recuVyG6skE6qQ0aS",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "ebcaae72eea3c45be059c4640525b710d8f086837c34e77c46a1bd611140dd50",
+        "proposalRevision": "653469f0385307b058cbbd2d82ea9fe4f85f50a467a1e8c1e5d6a7121c1f337d"
+      },
+      "sourceRevision": "cac39235e908cd5521c239f1c9a14026a1b45c9b4c417c5a1bc0980eadcbb875",
+      "suggestedShelfIndex": 4,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recGZ3OaouJRobeRl",
+      "saintId": "cms0w7fd5043u07qin2wotqqh",
+      "name": "Sri Guru Ayodhya Dash (Rendhagarh Baba)",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Puri",
+      "relicDescription": "",
+      "family": "Puri",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recGZ3OaouJRobeRl",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "23ee009dd5af30fdb8f17399bcac0f077bd4f79cd1381c99e67065dffc30dac9",
+        "proposalRevision": "dbd6e4439cd6751188c0568f31cbd5fbd41264b89efbc7775533b737ffe0caa9"
+      },
+      "sourceRevision": "5e938a38e10d0f7c0678a9f96ce3e0180063e4005279f404f18113194d4468ea",
+      "suggestedShelfIndex": 5,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "rec1mXGzzcIe1YtQv",
+      "saintId": "cms0w7cfj00av07qitjtadoue",
+      "name": "Sri Advaita Babaji Maharaj",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Gaudiya Vaishnava",
+      "city": "Cuttack",
+      "relicDescription": "",
+      "family": "Cuttack",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "rec1mXGzzcIe1YtQv",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "208fd78ca0209d7b8e71830cda8249b304dded706809b2b82f95389cdd4c7295",
+        "proposalRevision": "8022e4f514ca4a4b6a0ce13492faaadbdf4cb5972998180186dc4ee227a5b1da"
+      },
+      "sourceRevision": "84bdfecac75d90980846cac2a91b113342a0a29db9a8ea4747089427f6fe7b96",
+      "suggestedShelfIndex": 5,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "rec7h3JfBcXTcy24U",
+      "saintId": "cms0w7d9y01cm07qi7hx5ofuv",
+      "name": "Sri Subarh Chandra Bose",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Cuttack",
+      "relicDescription": "",
+      "family": "Cuttack",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "rec7h3JfBcXTcy24U",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "159b0fae1843467ea14c32880d5c6afdded6e604473c34df5add3dd8aef808ed",
+        "proposalRevision": "707b85c177a846009adf12adafb16c4abbe6449a28ce4c71d5c5bf4aa4e2f792"
+      },
+      "sourceRevision": "65e268dbc120ef2b8a225a7bf72c17aa9685328e70f8888b7767e0facc123e4f",
+      "suggestedShelfIndex": 5,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recGbe48WW1t6DqUz",
+      "saintId": "cms0w7f6903ur07qinum44a6z",
+      "name": "Sri Abiram Paramahamsa Dev",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Cuttack",
+      "relicDescription": "",
+      "family": "Cuttack",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recGbe48WW1t6DqUz",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e20cdaa5f5656f7e80f6acd75e2a71784d9a26c8398dbd00ade377d98df41bd7",
+        "proposalRevision": "3ae0344e952c37f2581a2e4978d5cd743f3ba741abec870f2720840cd0ed0387"
+      },
+      "sourceRevision": "690d4d8f83ecd8a4b2b9322694fd41296bba525518607e8f37dc288472be1963",
+      "suggestedShelfIndex": 5,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recZ1zqo37l0KYw1G",
+      "saintId": "cms0w7k0509ep07qiu8fjozuz",
+      "name": "Sri Kali Mata",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Jagannath-Puri & Odisha",
+      "city": "Cuttack",
+      "relicDescription": "",
+      "family": "Cuttack",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recZ1zqo37l0KYw1G",
+        "section": "Jagannath-Puri & Odisha",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "88372e2670cd71d91b5abc1107ce9c1e6e64bd3dd7319a943428dd3bf170ba60",
+        "proposalRevision": "2ec7a33fe179e06d2c2cd9d6aaaa7cee8eda3b9568e7b8e506bf5c9fde351c74"
+      },
+      "sourceRevision": "2f5b20c148fb84ac917a451135629626511dc07389d98e66461a9af299099996",
+      "suggestedShelfIndex": 5,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recVN6Ty3682Uz2g4",
+      "saintId": "cms0w7izk08cz07qi2x8scsz2",
+      "name": "Sri Paramanand Das",
+      "tier": "Tertiary",
+      "destination": "26",
+      "section": "Gaudiya Vaishnava",
+      "city": "Puri",
+      "relicDescription": "",
+      "family": "Puri",
+      "rationale": "Approved complete arm-support in the Puri locality group; provisional lower starting position.",
+      "reviewNotes": [
+        "Provisional lower Puri position: check the complete arm-support width, housing and fit on site. Its unknown footprint is additional to the existing band 5 comparison load of 0.892; no fit is certified."
+      ],
+      "baseline": {
+        "placementId": "recVN6Ty3682Uz2g4",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "32daa3813adf6a2b7d31f2e42565668c764d3f4e72f7b89e0083b7b6580042cf",
+        "proposalRevision": "aab76483bb9dcda0e7da07d239c74fe4373722329879434e472bdb8e002dff15"
+      },
+      "sourceRevision": "b85fd5572b7ebdb950d32378d23ed132690590d391fbb0c3c727153325defb52",
+      "suggestedShelfIndex": 5,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "rec093BrDsvyYbvhP",
+      "saintId": "cms0w7c6e001h07qi248w64am",
+      "name": "Sri Bamakhepa Baba",
+      "tier": "Secondary",
+      "destination": "24",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "",
+      "relicDescription": "",
+      "family": "Bamakhepa–Nigamananda",
+      "rationale": "Keep this branch aligned with its anchor and companions.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "rec093BrDsvyYbvhP",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-031",
+        "regionTags": [],
+        "revision": "95df7f0f41f73660cc0811be87594f569e64f60bc54ceb43357b54f84fb54d41",
+        "proposalRevision": "a98b4d6b940a3b86be7096c4f5e2f7cab9e459fb30d2587881990134db7a48ca"
+      },
+      "sourceRevision": "8a4f9e5640dad65c102edc2a4f0b8c3c9e7d438ab98c418c1e4779449a60398e",
+      "suggestedShelfIndex": 1,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "rec2Xmz15pP16n1dR",
+      "saintId": "cms0w7cl800i707qi368teg2q",
+      "name": "Paramahamsa Sri Swami Nigammananda ji Saraswati Deva",
+      "tier": "Secondary",
+      "destination": "24",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "",
+      "relicDescription": "",
+      "family": "Bamakhepa–Nigamananda",
+      "rationale": "Keep this branch aligned with its anchor and companions.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "rec2Xmz15pP16n1dR",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-031",
+        "regionTags": [],
+        "revision": "7ab6484e6e8c50e34be8e2a18b996aeeb4b917025af3c509eba0a9ae4e9bbc57",
+        "proposalRevision": "45d22253c49e65f7766feeb1c42e86b9eb92717651ff69050b13be376412a8e0"
+      },
+      "sourceRevision": "5ce332ce9f593e7084e6e485892d903553a406e0b19b2b4d5bb28d690628a5b2",
+      "suggestedShelfIndex": 1,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recQjButx9sSHerz2",
+      "saintId": "cms0w7hm206u607qitl93mst5",
+      "name": "Sri Sadak Ramprasad",
+      "tier": "Tertiary",
+      "destination": "24",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Halisahar",
+      "relicDescription": "",
+      "family": "Halisahar",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recQjButx9sSHerz2",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "10df226be8a65e37092f46b2c3c6eb325ed11fc27b0c44d856c165908897c05f",
+        "proposalRevision": "8655fedd1172d17c2c3e065dca7925e8ecc685854e2fcfee459ff8b51ab63351"
+      },
+      "sourceRevision": "579ae9238ac23fdecc2d38e03f93a47a80ded72f3d0adeb3613d227956c5350c",
+      "suggestedShelfIndex": 1,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "rec7pUhtDroFBKYZ9",
+      "saintId": "cms0w7das01dt07qipz07mguu",
+      "name": "Sri Ravi Gopalam Nair",
+      "tier": "Secondary",
+      "destination": "24",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "",
+      "relicDescription": "",
+      "family": "Baul teaching and household group",
+      "rationale": "Keep this branch aligned with its anchor and companions.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "rec7pUhtDroFBKYZ9",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-026",
+        "regionTags": [],
+        "revision": "6f836c04efd2a35bea03e5867dcda34f5d90d703a9d9ef08e4383133bee95b3e",
+        "proposalRevision": "4803103fae33f17708c9655b91b8a9933ecdbdf13e517ed1d5b494c6df06098a"
+      },
+      "sourceRevision": "92b13a490e5298c3ce96ef60ec5a9dbaebb40d86d86bed67ca4aeab7bd2b7ce2",
+      "suggestedShelfIndex": 2,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "reci9HfgQoLxj6igt",
+      "saintId": "cms0w7fm104f807qijdbd4m4w",
+      "name": "Sri Shashanko Goshai",
+      "tier": "Secondary",
+      "destination": "24",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "",
+      "relicDescription": "",
+      "family": "Baul teaching and household group",
+      "rationale": "Keep this branch aligned with its anchor and companions.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "reci9HfgQoLxj6igt",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-026",
+        "regionTags": [],
+        "revision": "243b5a639dbd5bb1e4d3c36e904197c96a395022fa05c8fb092c16277cec88e4",
+        "proposalRevision": "d094572adac95afa5a527d45f8a3a30d672ec12a7c5048752eb5ad1a7d52e264"
+      },
+      "sourceRevision": "abec7dfead62997c2c1f8bf86c3421b5c8046682fed977072e70d7448d12835f",
+      "suggestedShelfIndex": 2,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recS8S1NXfk8NgRoq",
+      "saintId": "cms0w7i1e07ch07qiyfk56n11",
+      "name": "Sri Parvathy Baul",
+      "tier": "Secondary",
+      "destination": "24",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "",
+      "relicDescription": "",
+      "family": "Baul teaching and household group",
+      "rationale": "Keep this branch aligned with its anchor and companions.",
+      "reviewNotes": [
+        "Still alive is asserted by the current CMS record; keep lower. This is not fresh historical verification.",
+        "Keep below the top shelf. The recorded living-status assertion needs an individual check; prominence does not waive this restriction."
+      ],
+      "baseline": {
+        "placementId": "recS8S1NXfk8NgRoq",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Secondary",
+        "familyKey": "FAM-026",
+        "regionTags": [],
+        "revision": "d6edc84d6f2f9711b37b0fb05bb3a183e9c1a881879e4e5823d7d49f8c537451",
+        "proposalRevision": "7e510f743c256efd075d1c6047399fb246f2c68c1115eacc6f291f2806b43b28"
+      },
+      "sourceRevision": "b6fd17f50ae588d2f34ecb97500c1f8b375af00eed97ec1ac47220ad80d6dab3",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recBBzVFXryCUzuSy",
+      "saintId": "cms0w7dws027407qi68ueo5ur",
+      "name": "Sri Shiv Baba",
+      "tier": "Tertiary",
+      "destination": "24",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Tarapith",
+      "relicDescription": "",
+      "family": "Tarapith",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recBBzVFXryCUzuSy",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e32196713fbd8e29a7270ef8373678fc3e6ec6b1207abec4a9dde40ce730a558",
+        "proposalRevision": "fb62b1144777fbd56cc05d7a1840f2df241122b480a9d8ed835ec2fd5e335268"
+      },
+      "sourceRevision": "ac0623f24121ffa481753efc412593375f2a3d75ee1d534eafb9662774473dfd",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recvvFRsuylwBC0r3",
+      "saintId": "cms0w7j2i08g907qinozeh7lk",
+      "name": "Sri Kali Shankar Chattapaday",
+      "tier": "Tertiary",
+      "destination": "24",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Tarapith",
+      "relicDescription": "",
+      "family": "Tarapith",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recvvFRsuylwBC0r3",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "5a8aa7d441e7ee7c7411c4bc3daaf3249e6dc9ee5b7f7a667738096a56ab45ff",
+        "proposalRevision": "64a37cc2e5539946bf987867bd0659c6fae5c5ad59a881274f0887e7a444ec82"
+      },
+      "sourceRevision": "bee8a4d4347dacbeb26457fa09e152d68f23ffbe65efaa02591de82dd529796d",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recMJ0KxfPz2L55qj",
+      "saintId": "cms0w7go305pu07qi5z10nfo0",
+      "name": "Sri Bankim Karnkar",
+      "tier": "Tertiary",
+      "destination": "24",
+      "section": "Needs Research",
+      "city": "Jharkhand",
+      "relicDescription": "",
+      "family": "Jharkhand",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [
+        "Still alive is asserted by the current CMS record; keep lower. This is not fresh historical verification.",
+        "Keep below the top shelf. The recorded living-status assertion needs an individual check; prominence does not waive this restriction."
+      ],
+      "baseline": {
+        "placementId": "recMJ0KxfPz2L55qj",
+        "section": "Needs Research",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "e0e2c469973d75003d864fd0278531dd61d5e9ce817ade64cb887a1f315bdb1e",
+        "proposalRevision": "c527329a7d9a175de320955710d8f3367beab2b32e9c54d9197bf0cf1f80ad64"
+      },
+      "sourceRevision": "1ee036ecba65e4c13bdc2536c481ac84da297b12aa991833f7644610c0ef260c",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recO2Oq0MmSBpw5QK",
+      "saintId": "cms0w7h27066x07qittaslhq9",
+      "name": "Sri Paramahamsa Tibbeti Baba",
+      "tier": "Tertiary",
+      "destination": "24",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Bangladesh",
+      "relicDescription": "",
+      "family": "Bangladesh",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recO2Oq0MmSBpw5QK",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "d2f92a9dc9efa8b14f5c78f7982c94288ceeee89b2046ca8fa1f4883c9e3fd8c",
+        "proposalRevision": "0b3536800287bcbbe225b381570657b7f813d4c22c5c99bd8087d3aa7b2f9a56"
+      },
+      "sourceRevision": "76ff420b9ef433074953d5c0b95bc1ede23e320548eae5b0ea4bb947b38938c8",
+      "suggestedShelfIndex": 3,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recGTQ2TC1ssjCdZE",
+      "saintId": "cms0w7fau040r07qiy3uhpucp",
+      "name": "Sri Mithai Baba",
+      "tier": "Tertiary",
+      "destination": "24",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Bakreshwar",
+      "relicDescription": "",
+      "family": "Bakreshwar",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recGTQ2TC1ssjCdZE",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "6b61b9c0c94e3bc8bf04c1169bc34382b6b97b752b76e660c57e54b27e84aa65",
+        "proposalRevision": "a0f714b4f6e99fdc2ce499d58947d4d64ad9db7830d686688112796c984f2bd5"
+      },
+      "sourceRevision": "65f630bf9a2b0414987fd80e61be65c2443be4dd5bc641ddb8df678bb6454be2",
+      "suggestedShelfIndex": 4,
+      "movementBlockedReason": null
+    },
+    {
+      "sourceId": "recuxjz5o7wTClAy5",
+      "saintId": "cms0w7isl085p07qim96fd5wi",
+      "name": "Sri Pandit Mahaveer Prasad Saraswat",
+      "tier": "Tertiary",
+      "destination": "24",
+      "section": "Bengal Shakta, Baul & Modern Saints",
+      "city": "Kalimpong",
+      "relicDescription": "",
+      "family": "Kalimpong",
+      "rationale": "Keep this locality cohort together, separate from the named family groups.",
+      "reviewNotes": [],
+      "baseline": {
+        "placementId": "recuxjz5o7wTClAy5",
+        "section": "Bengal Shakta, Baul & Modern Saints",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "dd610236b20a295c02a35ceb2db1b36769fd57e225b5b2d7e76cace873c3fb5f",
+        "proposalRevision": "febfa146fa3ed3c4c68fc6b4183d499e2b1e26076a12b1b99673e6d35d36b3bc"
+      },
+      "sourceRevision": "f7b82c91b81159534343978d52099a0c7e5a9c31fd334822d0c530842e470d82",
+      "suggestedShelfIndex": 4,
+      "movementBlockedReason": null
+    }
+  ],
+  "groups": [
+    {
+      "id": "east2:shelf:26:card12",
+      "title": "Jagannath & Tota Gopinath",
+      "kind": "family",
+      "vitrine": "26",
+      "sourceIds": [
+        "reclyIPFpFR6q67Bx",
+        "recje6xb9KoUwRpQL"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:26:card13",
+      "title": "Baya Baba & Pagal Baba",
+      "kind": "family",
+      "vitrine": "26",
+      "sourceIds": [
+        "rec37kfAtkuXhvjd8",
+        "rec7GxgNvmubmTvMM"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:26:card14",
+      "title": "Brahmananda · Puri",
+      "kind": "family",
+      "vitrine": "26",
+      "sourceIds": [
+        "recIktBD8n1j13qh9",
+        "recpno7QmMS0oXg1e"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:26:card40",
+      "title": "Puri",
+      "kind": "locality",
+      "vitrine": "26",
+      "sourceIds": [
+        "rec0PdixvLE8VQU5H",
+        "recb7oJ5FTsyEzb5S",
+        "recGZ3OaouJRobeRl",
+        "recmA5lAnLb6Ql0UP",
+        "recpr4hxyt5vPYnPq",
+        "recs8Ecg4alHn3Y0J",
+        "recuVyG6skE6qQ0aS",
+        "recGAt9Q8JBRM7pdT",
+        "recHNlgpOtSsWlIfl",
+        "recVN6Ty3682Uz2g4"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:26:card41",
+      "title": "Cuttack",
+      "kind": "locality",
+      "vitrine": "26",
+      "sourceIds": [
+        "rec1mXGzzcIe1YtQv",
+        "rec7h3JfBcXTcy24U",
+        "recGbe48WW1t6DqUz",
+        "recKEsKy2qc2E0bGP",
+        "recoo9vvxZy22Ss3v",
+        "recZ1zqo37l0KYw1G"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:26:card42",
+      "title": "Balasore",
+      "kind": "locality",
+      "vitrine": "26",
+      "sourceIds": [
+        "rec5r3QLGKrjYa5y6",
+        "recjurnDBumDkXXA3",
+        "recldDwQSp2LBlkV8"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:26:card43",
+      "title": "Bhubaneswar",
+      "kind": "locality",
+      "vitrine": "26",
+      "sourceIds": [
+        "rec9vEn5oj7QZTXl0"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:26:card44",
+      "title": "Nemalo",
+      "kind": "locality",
+      "vitrine": "26",
+      "sourceIds": [
+        "recbCsiExuW8dTUUM"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:26:card45",
+      "title": "Bhadrak",
+      "kind": "locality",
+      "vitrine": "26",
+      "sourceIds": [
+        "reccEWyFY8dMC4ZGN",
+        "recQAmbNSmfWIrzHz"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:26:card46",
+      "title": "Jagatsinghpur",
+      "kind": "locality",
+      "vitrine": "26",
+      "sourceIds": [
+        "recRc97ygtRl5l7Kr"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:24:card17",
+      "title": "Bamakhepa–Nigamananda",
+      "kind": "family",
+      "vitrine": "24",
+      "sourceIds": [
+        "rec093BrDsvyYbvhP",
+        "rec2Xmz15pP16n1dR"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:24:card18",
+      "title": "Baul teaching and household group",
+      "kind": "family",
+      "vitrine": "24",
+      "sourceIds": [
+        "rec7pUhtDroFBKYZ9",
+        "reci9HfgQoLxj6igt",
+        "recS8S1NXfk8NgRoq"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:24:card57",
+      "title": "Tarapith",
+      "kind": "locality",
+      "vitrine": "24",
+      "sourceIds": [
+        "recBBzVFXryCUzuSy",
+        "recvvFRsuylwBC0r3"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:24:card58",
+      "title": "Bakreshwar",
+      "kind": "locality",
+      "vitrine": "24",
+      "sourceIds": [
+        "recGTQ2TC1ssjCdZE"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:24:card59",
+      "title": "Jharkhand",
+      "kind": "locality",
+      "vitrine": "24",
+      "sourceIds": [
+        "recMJ0KxfPz2L55qj"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:24:card61",
+      "title": "Bangladesh",
+      "kind": "locality",
+      "vitrine": "24",
+      "sourceIds": [
+        "recO2Oq0MmSBpw5QK"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:24:card62",
+      "title": "Halisahar",
+      "kind": "locality",
+      "vitrine": "24",
+      "sourceIds": [
+        "recQjButx9sSHerz2"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    },
+    {
+      "id": "east2:shelf:24:card63",
+      "title": "Kalimpong",
+      "kind": "locality",
+      "vitrine": "24",
+      "sourceIds": [
+        "recuxjz5o7wTClAy5"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty.",
+      "edges": []
+    }
+  ],
+  "fitWarnings": [
+    {
+      "code": "26",
+      "band": 5,
+      "knownLoad": 0.8916666666666667,
+      "warning": "Provisional lower Puri position: check the complete arm-support width, housing and fit on site. Its unknown footprint is additional to the existing band 5 comparison load of 0.892; no fit is certified."
+    }
+  ],
+  "supplementalShelfAllocations": [
+    {
+      "code": "26",
+      "sourceId": "recVN6Ty3682Uz2g4",
+      "saintId": "cms0w7izk08cz07qi2x8scsz2",
+      "name": "Sri Paramanand Das",
+      "tier": "Tertiary",
+      "groupId": "shelf:26:card40",
+      "suggestedShelfIndex": 5,
+      "suggestedVerticalBand": "bottom",
+      "suggestedShelfLabel": null,
+      "actualShelfId": null,
+      "reason": "Approved complete arm-support in the Puri locality group; provisional lower starting position.",
+      "reviewAlerts": [
+        {
+          "message": "Provisional lower Puri position: check the complete arm-support width, housing and fit on site. Its unknown footprint is additional to the existing band 5 comparison load of 0.892; no fit is certified."
+        }
+      ],
+      "sourceRevision": "b85fd5572b7ebdb950d32378d23ed132690590d391fbb0c3c727153325defb52",
+      "capturedBaseline": {
+        "placementId": "recVN6Ty3682Uz2g4",
+        "section": "Gaudiya Vaishnava",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "32daa3813adf6a2b7d31f2e42565668c764d3f4e72f7b89e0083b7b6580042cf",
+        "proposalRevision": "aab76483bb9dcda0e7da07d239c74fe4373722329879434e472bdb8e002dff15"
+      },
+      "knownFootprint": null,
+      "provisional": true,
+      "isContextOnly": false
+    }
+  ],
+  "assignmentDigest": "4aed3a97fde3428c108bbe84a6ab899827cfb9869d649019abf77e5c3c64d3fd",
+  "contentDigest": "e71c8a26d501662423a4a94c3c368afac7d1113f9e029a36415e63e1453ae1f7"
+}
