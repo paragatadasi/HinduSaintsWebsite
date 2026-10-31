@@ -1,4 +1,5 @@
 import {createHash} from "node:crypto";
+import shelves from "../data/museum/spn-west-v46-shelves-v1.json";
 import packet from "../data/museum/spn-west-v46-guide-v1.json";
 import {projectScopedMoveGuide} from "./spn-datta-guide";
 import {MuseumMoveSessionError} from "./museum-move-session-domain";
@@ -28,10 +29,10 @@ export const westV46GuideDefinition:GuideDefinition={context:westV46GuideContext
  ...holdings.map(row=>({id:`row:${row.sourceId}`,kind:"row" as const,sourceIds:[row.sourceId],targetVitrine:"46"}))],
  physicalScope:{allowClear:false,preparationVitrines:["46"],destinations:Object.fromEntries(pairs)}};
 const holdingIds=new Set(holdings.map(row=>row.sourceId));
-const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,sourceIds:g.sourceIds.filter(id=>holdingIds.has(id)),suggestedVitrines:["46"],allowedTargetVitrines:[]});
+const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,rationale:g.rationale.replace("below the top", "on the bottom shelf"),sourceIds:g.sourceIds.filter(id=>holdingIds.has(id)),suggestedVitrines:["46"],allowedTargetVitrines:[]});
 export const westV46MoveGuide:StarterMoveGuide={version:packet.version,...westV46GuideContext,proposalVersion:packet.proposalVersion,title:packet.title,proposalLabel:packet.proposalLabel,
  phaseLabel:"Pandharpur–Alandi · 46",allowClear:false,preparationVitrines:["46"],
- entries:holdings.map(row=>({...row,movementBlockedReason:spnMovementBlockedReason(row.sourceId)})),
+ entries:holdings.map(row=>({...row,rationale:row.rationale.replace("below the top", "on the bottom shelf"),reviewNotes:shelves.vitrines[0].allocations.find(a=>a.sourceId===row.sourceId)?.reviewAlerts.map(a=>a.message)??row.reviewNotes,movementBlockedReason:spnMovementBlockedReason(row.sourceId)})),
  vitrines:[{code:"46",summary:"18 entries · about 4.49 shelf spaces, plus two unmeasured holdings. Keep living saints below the top.",families:packet.groups.filter(g=>g.kind==="family").map(group),cityGroups:packet.groups.filter(g=>g.kind!=="family").map(group)}],alternatives:[],reportedPlacements:[]};
 
 type Review={rows:Pick<ReturnType<typeof buildLatestSpnReview>["rows"][number],"sourceId"|"saintId"|"effectiveVitrine"|"reviewReason">[];proposal:{pendingPlacements:{sourceId:string;reason:string}[]}};

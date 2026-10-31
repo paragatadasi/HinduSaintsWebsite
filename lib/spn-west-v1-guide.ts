@@ -27,13 +27,17 @@ export const westV1GuideDefinition:GuideDefinition={context:westV1GuideContext,
  suggestions:[...packet.groups.map(group=>({id:group.id,kind:group.kind==="family"?"family" as const:"city" as const,sourceIds:group.sourceIds.filter(id=>holdings.some(row=>row.sourceId===id)),targetVitrine:"1"})),
  ...holdings.map(row=>({id:`row:${row.sourceId}`,kind:"row" as const,sourceIds:[row.sourceId],targetVitrine:"1"}))],
  physicalScope:{allowClear:false,preparationVitrines:["1"],destinations:Object.fromEntries(pairs)}};
-export const westV1LayoutGuidance=packet.layoutGuidance;
+export const westV1LayoutGuidance={...packet.layoutGuidance,mahantShelf:5};
+const bottomGuidance=(text:string)=>text
+ .replaceAll("Living Mahant Swami belongs on shelf 2, never the top.","Living Mahant Swami belongs on the bottom shelf.")
+ .replaceAll("Living: assign shelf 2, never the top shelf.","Living: use the bottom shelf.")
+ .replaceAll("Source-marked living; shelf 2, never the top.","Source-marked living; bottom shelf.");
 const holdingIds=new Set(holdings.map(row=>row.sourceId));
-const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,sourceIds:g.sourceIds.filter(id=>holdingIds.has(id)),suggestedVitrines:["1"],allowedTargetVitrines:[]});
+const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,rationale:bottomGuidance(g.rationale),sourceIds:g.sourceIds.filter(id=>holdingIds.has(id)),suggestedVitrines:["1"],allowedTargetVitrines:[]});
 export const westV1MoveGuide:StarterMoveGuide={version:packet.version,...westV1GuideContext,proposalVersion:packet.proposalVersion,title:packet.title,proposalLabel:packet.proposalLabel,
  phaseLabel:"BAPS, Gondal & Amreli · 1",allowClear:false,preparationVitrines:["1"],optionalClearVitrines:["1"],
- entries:holdings.map(row=>({...row,movementBlockedReason:spnMovementBlockedReason(row.sourceId)})),
- vitrines:[{code:"1",summary:"Known load: about 4.97 / 5 shelf spaces, with possible overlaps still under review. BAPS on shelves 1–2, living Mahant Swami on shelf 2; Gondal and Amreli below. Check the fit on site.",families:packet.groups.filter(g=>g.kind==="family").map(group),cityGroups:packet.groups.filter(g=>g.kind!=="family").map(group)}],alternatives:[],reportedPlacements:[]};
+ entries:holdings.map(row=>({...row,rationale:bottomGuidance(row.rationale),reviewNotes:row.reviewNotes.map(bottomGuidance),lifeStatus:{...row.lifeStatus,basis:bottomGuidance(row.lifeStatus.basis)},movementBlockedReason:spnMovementBlockedReason(row.sourceId)})),
+ vitrines:[{code:"1",summary:"Known load: about 4.97 / 5 shelf spaces, with possible overlaps still under review. BAPS on shelves 1–2, living Mahant Swami on the bottom shelf; Gondal and Amreli in the remaining space. Check the fit on site.",families:packet.groups.filter(g=>g.kind==="family").map(group),cityGroups:packet.groups.filter(g=>g.kind!=="family").map(group)}],alternatives:[],reportedPlacements:[]};
 
 type Review={rows:Pick<ReturnType<typeof buildLatestSpnReview>["rows"][number],"sourceId"|"saintId"|"effectiveVitrine"|"reviewReason">[];proposal:{pendingPlacements:{sourceId:string;reason:string}[]}};
 export function projectWestV1Guide(current:Parameters<typeof projectScopedMoveGuide>[1],physical:PhysicalState,review:Review):StarterMoveGuide & {layoutGuidance:typeof westV1LayoutGuidance} {
