@@ -5,7 +5,7 @@ import {getMuseumData} from "@/lib/museum-data";
 import {readMuseumPhysicalLocations} from "@/lib/museum-physical-locations";
 import {readMuseumMoveSessionSource,registeredMoveProposal} from "@/lib/museum-move-session-source";
 import {readShelfPlanningContext} from "@/lib/museum-shelf-planning-source";
-import {operationalSpnShelfPacket as packet} from "@/lib/spn-east-remainder-shelves";
+import {allOperationalSpnShelves as packet} from "@/lib/spn-operational-shelves";
 
 export const runtime="nodejs";
 const headers={"Cache-Control":"private, no-store"};

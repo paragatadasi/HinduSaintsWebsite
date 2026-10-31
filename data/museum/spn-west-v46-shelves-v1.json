@@ -1,0 +1,287 @@
+{
+  "version": "spn-west-v46-shelves-2026-10-31-v1",
+  "vitrines": [
+    {
+      "code": "46",
+      "groups": [
+        {
+          "id": "west-v46-ramabai",
+          "title": "Ramabai & Badve family",
+          "kind": "family"
+        },
+        {
+          "id": "west-v46-gunda",
+          "title": "Gunda branch",
+          "kind": "family"
+        },
+        {
+          "id": "west-v46-jayatirtha",
+          "title": "Jayatirtha · Madhva anchor",
+          "kind": "city"
+        },
+        {
+          "id": "west-v46-alandi",
+          "title": "Alandi",
+          "kind": "city"
+        },
+        {
+          "id": "west-v46-karkamb",
+          "title": "Karkamb & Yewati",
+          "kind": "city"
+        },
+        {
+          "id": "west-v46-pandharpur",
+          "title": "Pandharpur & nearby places",
+          "kind": "city"
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recGRE4SrIKHmJqPs",
+          "saintId": "cms0w7f9y03zo07qi2bgwladl",
+          "name": "Sri Badve Mahajan",
+          "tier": "Tertiary",
+          "groupId": "west-v46-ramabai",
+          "suggestedShelfIndex": 2,
+          "sourceRevision": "a3530dd1bd9f3f9377c35e94cbcd1d286dbc210b386791e762fef162c4dc3035",
+          "reviewAlerts": [
+            {
+              "message": "Possible overlap with Balkrishna Badve. Keep source observations and relics labelled; do not count automatically as two different people."
+            }
+          ]
+        },
+        {
+          "sourceId": "recnQSZEOmAjgCiCO",
+          "saintId": "cms0w7gz5063d07qi3980b83n",
+          "name": "Sri Balkrishna Digamber Mahajan Badve",
+          "tier": "Tertiary",
+          "groupId": "west-v46-ramabai",
+          "suggestedShelfIndex": 2,
+          "sourceRevision": "3c8ae773b28e75534724bb5e0aa1f0194cb762be891645fe474c4182d642ac4c",
+          "reviewAlerts": [
+            {
+              "message": "Living. Possible overlap with the other Badve record; no automatic merge."
+            }
+          ]
+        },
+        {
+          "sourceId": "recL4SuWW6DiQPmxo",
+          "saintId": "cms0w7gdn05cv07qiyym1q9mp",
+          "name": "Sri Ramabai Mahajan",
+          "tier": "Tertiary",
+          "groupId": "west-v46-ramabai",
+          "suggestedShelfIndex": 1,
+          "sourceRevision": "9a9e4a386216dceb2a32e7a6e99f1a2bc87798693cb8e9a42ad5c55c6c10d6f8",
+          "reviewAlerts": []
+        },
+        {
+          "sourceId": "recgLw2yBtYPzYLhV",
+          "saintId": "cms0w7f8e03xr07qiwz3ca277",
+          "name": "Sri Gunda Maharaj",
+          "tier": "Secondary",
+          "groupId": "west-v46-gunda",
+          "suggestedShelfIndex": 1,
+          "sourceRevision": "94247cab718364b49f15760c5e07ce4da98f8afdb3914c76f3d99e0ab58dc66f",
+          "reviewAlerts": [
+            {
+              "message": "Gunda branch anchor. Confirm identity/life status before using the top shelf; move the branch down together if necessary."
+            }
+          ]
+        },
+        {
+          "sourceId": "recAtq7P7l6ZxatKD",
+          "saintId": "cms0w7dtu023707qic4dy3rqu",
+          "name": "Sri Gunda Narayan Maharaj",
+          "tier": "Secondary",
+          "groupId": "west-v46-gunda",
+          "suggestedShelfIndex": 2,
+          "sourceRevision": "6c82bb18034ba24b92788bec4ae46afdb4b88e69e52a12ecbadc264c712b477c",
+          "reviewAlerts": [
+            {
+              "message": "Living. Keep below the top, aligned under Gunda Maharaj. Relationship is recorded in reciprocal inventory links."
+            }
+          ]
+        },
+        {
+          "sourceId": "recgLNDt6Cm8j1CEs",
+          "saintId": "cms0w7f7y03x507qi77za1l5y",
+          "name": "Sri Digambar Swāmi",
+          "tier": "Tertiary",
+          "groupId": "west-v46-alandi",
+          "suggestedShelfIndex": 3,
+          "sourceRevision": "8bcac2d5dae9b789b319c0b61912696c6207925dce4430199e97347577b436d3",
+          "reviewAlerts": []
+        },
+        {
+          "sourceId": "recolnVsxWIfcvGSp",
+          "saintId": "cms0w7h6406bh07qic9jttbk2",
+          "name": "Sri Ragunath Baba",
+          "tier": "Tertiary",
+          "groupId": "west-v46-alandi",
+          "suggestedShelfIndex": 3,
+          "sourceRevision": "8d724a3b40f318a16d8c3efe0699e84161b0fb8a03f18e0137a5b0ab22c2053c",
+          "reviewAlerts": []
+        },
+        {
+          "sourceId": "recmwxAkZ78N0ELSd",
+          "saintId": "cms0w7gt905w007qiu23nthie",
+          "name": "Sri Ambar Das",
+          "tier": "Tertiary",
+          "groupId": "west-v46-pandharpur",
+          "suggestedShelfIndex": 2,
+          "sourceRevision": "d7539e87152ec0b0ac5237c0048ae46799bd0f9df6b6664b284752fdb4ebb65b",
+          "reviewAlerts": []
+        },
+        {
+          "sourceId": "recgya1bpDO7GnfXR",
+          "saintId": "cms0w7fc9042o07qiclgk6xow",
+          "name": "Sri Dhondopanth Dada Maharaj",
+          "tier": "Tertiary",
+          "groupId": "west-v46-pandharpur",
+          "suggestedShelfIndex": 3,
+          "sourceRevision": "46c82741d2b37eef8fd11f818e3f1a2fee36f1a5ab6e178743c04595c37b6b3c",
+          "reviewAlerts": []
+        },
+        {
+          "sourceId": "rec22Ac7vT7uMvSnx",
+          "saintId": "cms0w7cib00ej07qiuig2nt6d",
+          "name": "Sri Sankali Babaji",
+          "tier": "Tertiary",
+          "groupId": "west-v46-pandharpur",
+          "suggestedShelfIndex": 5,
+          "sourceRevision": "4aa09d5239ce631b41804253e1165dc673228985da35f9b8355e697e3fef757e",
+          "reviewAlerts": [
+            {
+              "message": "Pandharpur source-place; biography says samadhi near Bengaluru. Temporary lower placement pending locality clarification."
+            }
+          ]
+        },
+        {
+          "sourceId": "recrDQqKe8QchSUwH",
+          "saintId": "cms0w7hth073207qiziv6c88s",
+          "name": "Sri Sadguru Dattatreya Shit Sagar Maharaj Yewati",
+          "tier": "Tertiary",
+          "groupId": "west-v46-karkamb",
+          "suggestedShelfIndex": 4,
+          "sourceRevision": "4e2fd98690759350674dfec7823ef3d9a30ba4a99065dab3862555eb3bd7dd6a",
+          "reviewAlerts": []
+        },
+        {
+          "sourceId": "rec6a3D8Fdn3qoexV",
+          "saintId": "cms0w7d2x014107qikjbdad8i",
+          "name": "Sri Gajanan Baba",
+          "tier": "Tertiary",
+          "groupId": "west-v46-karkamb",
+          "suggestedShelfIndex": 4,
+          "sourceRevision": "20cadc3c4e52ab962f291f16e5912ea620795e0748732fc8938bd4e87f871a62",
+          "reviewAlerts": []
+        },
+        {
+          "sourceId": "recjktPFaK4eUFgb2",
+          "saintId": "cms0w7fxm04t607qisb7cilzq",
+          "name": "Sri Meerabai Maharaj",
+          "tier": "Tertiary",
+          "groupId": "west-v46-pandharpur",
+          "suggestedShelfIndex": 3,
+          "sourceRevision": "5e21276ec461b49a9304dce7fd852281b13b784a9f4b8be1e9911dd92883b425",
+          "reviewAlerts": []
+        },
+        {
+          "sourceId": "reczMaJfp4ST2ePBd",
+          "saintId": "cms0w7k5o09k607qi6qbghkfh",
+          "name": "Sri Bhajalinga Maharaj",
+          "tier": "Tertiary",
+          "groupId": "west-v46-karkamb",
+          "suggestedShelfIndex": 4,
+          "sourceRevision": "0e2db2e2d4beab73cc64350d210dc35adf38f86d305874eeaa85cecdeaa7ddc1",
+          "reviewAlerts": []
+        },
+        {
+          "sourceId": "recR7ywQQ9iQeOC6m",
+          "saintId": "cms0w7hs5071l07qis3fix1ou",
+          "name": "Sri Swami Narayanand Saraswati",
+          "tier": "Tertiary",
+          "groupId": "west-v46-pandharpur",
+          "suggestedShelfIndex": 4,
+          "sourceRevision": "861c524d4e5ad82dbd29c7209a47fcc1e7f42a66f105516472eca67db1863b8f",
+          "reviewAlerts": []
+        },
+        {
+          "sourceId": "recbZply12Z8dpGqc",
+          "saintId": "cms0w7e4002gl07qiroggvvld",
+          "name": "Sri DhaamJi",
+          "tier": "Tertiary",
+          "groupId": "west-v46-pandharpur",
+          "suggestedShelfIndex": 5,
+          "sourceRevision": "6d59806b049c753a724ef622aaaf4d864f1da736f176380e4f692794f2ad95f7",
+          "reviewAlerts": [
+            {
+              "message": "Identity unresolved. Do not conflate DhaamJi with Damaji Pant already in45."
+            }
+          ]
+        },
+        {
+          "sourceId": "recW5CJHvadVzJNYy",
+          "saintId": "cms0w7j4c08i707qiptpjbcul",
+          "name": "Sri Jayatirtha (Teekacharya)",
+          "tier": "Tertiary",
+          "groupId": "west-v46-jayatirtha",
+          "suggestedShelfIndex": 1,
+          "sourceRevision": "826f36b3d1f5155070adf27c312c70c394d35e942def67654859764ade0794c5",
+          "reviewAlerts": [
+            {
+              "message": "Mangalwedha/Madhva anchor, not a Varkari-lineage claim."
+            }
+          ]
+        },
+        {
+          "sourceId": "recf1xnDk8dJTlUXG",
+          "saintId": "cms0w7ex203ir07qiu0rc8gok",
+          "name": "Sri Bhaijan Baba",
+          "tier": "Tertiary",
+          "groupId": "west-v46-pandharpur",
+          "suggestedShelfIndex": 5,
+          "sourceRevision": "f370084a0e6a7dba92fbe6ce322e549828b00e9586192b13df9874d1c55598e1",
+          "reviewAlerts": [
+            {
+              "message": "Source biography says disciple of Shafi Baba. Retain this relationship note; no Varkari membership inferred from locality."
+            }
+          ]
+        }
+      ],
+      "relationships": [
+        {
+          "fromSourceId": "recL4SuWW6DiQPmxo",
+          "toSourceId": "recGRE4SrIKHmJqPs",
+          "label": "Recorded family descent",
+          "direction": "directed",
+          "uncertain": true
+        },
+        {
+          "fromSourceId": "recL4SuWW6DiQPmxo",
+          "toSourceId": "recnQSZEOmAjgCiCO",
+          "label": "Recorded family descent",
+          "direction": "directed",
+          "uncertain": true
+        },
+        {
+          "fromSourceId": "recgLw2yBtYPzYLhV",
+          "toSourceId": "recAtq7P7l6ZxatKD",
+          "label": "Source-recorded disciple",
+          "direction": "directed",
+          "uncertain": true
+        }
+      ],
+      "notes": [
+        "4.49 known shelf spaces plus two unmeasured holdings. Check fit on site.",
+        "Living saints stay below the top; shelf 2 preserves the approved branch alignment."
+      ],
+      "livingAllowedBands": [
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ]
+}

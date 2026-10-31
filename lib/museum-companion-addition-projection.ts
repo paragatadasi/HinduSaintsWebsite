@@ -1,7 +1,7 @@
 import type {StarterMoveGuide,GuideEntry,GuideGroup} from "./spn-move-guide";
 import type {CompanionAddition} from "./museum-companion-additions-state";
-import {projectSourceFamilyReunion,projectGajananDisplayRelationship} from "./spn-source-family-reunion";
-const phaseOrder=["starter","datta","ram-bhakti","gosaiji-sai","east2","vraj","vraj2","north","west45","west1"];
+import {projectSourceFamilyReunion,projectGajananDisplayRelationship,projectVitthalVedanandaFamily} from "./spn-source-family-reunion";
+const phaseOrder=["starter","datta","ram-bhakti","gosaiji-sai","east2","vraj","vraj2","north","west45","west46","west1"];
 export function companionVitrineOwner<T extends string>(guides:Record<T,StarterMoveGuide>,code:string):T|undefined{
  const keys=Object.keys(guides) as T[];
  const rank=(key:string)=>{const index=phaseOrder.indexOf(key);return index<0?phaseOrder.length:index;};
@@ -39,6 +39,6 @@ export function projectCompanionAdditions<T extends string>(guides:Record<T,Star
    const sourceIds=group.sourceIds.filter(id=>!pending.has(id));
    return sourceIds.length===group.sourceIds.length?group:{...group,sourceIds,edges:group.edges?.filter(edge=>sourceIds.includes(edge.fromSourceId)&&sourceIds.includes(edge.toSourceId)),saintCount:undefined,spaceEstimate:undefined};
   }).filter(group=>group.sourceIds.length);
-  return [key,projectGajananDisplayRelationship(projectSourceFamilyReunion({...guide,vitrines:visibleVitrines,alternatives,entries:[...updated.values()]}))];
+  return [key,projectVitthalVedanandaFamily(projectGajananDisplayRelationship(projectSourceFamilyReunion({...guide,vitrines:visibleVitrines,alternatives,entries:[...updated.values()]})))];
  })) as Record<T,StarterMoveGuide>;
 }

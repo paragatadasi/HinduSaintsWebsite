@@ -65,3 +65,28 @@ export function projectGajananDisplayRelationship(guide: StarterMoveGuide): Star
           {fromSourceId: relation.parent.sourceId, toSourceId: childId, label: "Initiation / succession", basis: relation.basis}]}),
       cityGroups: removeChild(v.cityGroups)})};
 }
+
+export const vitthalVedanandaRelationship = {
+  vitrine: "3",
+  teacher: {sourceId: "rec6XzopLLlm06Rtt", saintId: "cms0w7d7m019b07qixffb0upm"},
+  disciple: {sourceId: "recyokcxEvhxvtyPk", saintId: "cms0w7jvq09a707qiha1bb3et"},
+} as const;
+
+export function projectVitthalVedanandaFamily(guide: StarterMoveGuide): StarterMoveGuide {
+  const relation=vitthalVedanandaRelationship;
+  const vitrine=guide.vitrines.find(v=>v.code===relation.vitrine);
+  if(!vitrine)return guide;
+  const members=[relation.teacher,relation.disciple];
+  const visible=new Set([...vitrine.families,...vitrine.cityGroups].flatMap(g=>g.sourceIds));
+  if(!members.every(member=>visible.has(member.sourceId)&&guide.entries.some(entry=>entry.sourceId===member.sourceId&&entry.saintId===member.saintId&&entry.destination===relation.vitrine)))return guide;
+  const sourceIds:string[]=members.map(m=>m.sourceId);
+  const withoutPair=(groups:GuideGroup[])=>groups.flatMap(group=>{
+    const remaining=group.sourceIds.filter(id=>!sourceIds.includes(id));
+    if(remaining.length===group.sourceIds.length)return [group];
+    return remaining.length?[{...group,sourceIds:remaining,saintCount:undefined,spaceEstimate:undefined,edges:group.edges?.filter(e=>remaining.includes(e.fromSourceId)&&remaining.includes(e.toSourceId))}]:[];
+  });
+  const family:GuideGroup={id:"source-family:vitthal-vedananda",title:"Vitthal Babaji & Vedananda",sourceIds,suggestedVitrines:[relation.vitrine],
+    rationale:"Reciprocal source-recorded guru–disciple links. Keep the pair together below the top; Vedananda is living.",
+    edges:[{fromSourceId:relation.teacher.sourceId,toSourceId:relation.disciple.sourceId,label:"Source-recorded disciple",basis:"source"}]};
+  return {...guide,vitrines:guide.vitrines.map(v=>v!==vitrine?v:{...v,families:[...withoutPair(v.families),family],cityGroups:withoutPair(v.cityGroups)})};
+}

@@ -1,0 +1,492 @@
+{
+  "version": "spn-west-v46-2026-10-31-v1",
+  "proposalVersion": "spn-v46-approved-core-2026-10-31-v1",
+  "title": "Pandharpur–Alandi · Vitrine 46",
+  "proposalLabel": "Approved Pandharpur–Alandi arrangement",
+  "rows": [
+    {
+      "sourceId": "recGRE4SrIKHmJqPs",
+      "saintId": "cms0w7f9y03zo07qi2bgwladl",
+      "name": "Sri Badve Mahajan",
+      "tier": "Tertiary",
+      "city": "Pandharpur; Maharashtra; Taakpeeth",
+      "relicDescription": "Kurta, 2 white dhotis and 1 blue dhoti, Narayan picture (is a relic?)",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Ramabai & Badve family",
+      "rationale": "Recorded family descent; the two Badve observations may overlap. Keep their labels separate.",
+      "reviewNotes": [
+        "Possible overlap with Balkrishna Badve. Keep source observations and relics labelled; do not count automatically as two different people."
+      ],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "a3530dd1bd9f3f9377c35e94cbcd1d286dbc210b386791e762fef162c4dc3035",
+      "capturedProposalDestination": "41",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recnQSZEOmAjgCiCO",
+      "saintId": "cms0w7gz5063d07qi3980b83n",
+      "name": "Sri Balkrishna Digamber Mahajan Badve",
+      "tier": "Tertiary",
+      "city": "Pandharpur; Maharashtra",
+      "relicDescription": "His clothes ",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Ramabai & Badve family",
+      "rationale": "Recorded family descent; the two Badve observations may overlap. Keep their labels separate.",
+      "reviewNotes": [
+        "Living. Possible overlap with the other Badve record; no automatic merge."
+      ],
+      "knownShelfProxy": null,
+      "sourceRevision": "3c8ae773b28e75534724bb5e0aa1f0194cb762be891645fe474c4182d642ac4c",
+      "capturedProposalDestination": "41",
+      "lifeStatus": {
+        "tag": "Living",
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recL4SuWW6DiQPmxo",
+      "saintId": "cms0w7gdn05cv07qiyym1q9mp",
+      "name": "Sri Ramabai Mahajan",
+      "tier": "Tertiary",
+      "city": "Pandharpur; Maharashtra",
+      "relicDescription": "Piece of her sari, water from which he was feeding Krishna, clothes from Murti ",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Ramabai & Badve family",
+      "rationale": "Recorded family descent; the two Badve observations may overlap. Keep their labels separate.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "9a9e4a386216dceb2a32e7a6e99f1a2bc87798693cb8e9a42ad5c55c6c10d6f8",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recgLw2yBtYPzYLhV",
+      "saintId": "cms0w7f8e03xr07qiwz3ca277",
+      "name": "Sri Gunda Maharaj",
+      "tier": "Secondary",
+      "city": "Pandharpur; Pandharpur Siddha Sihasan Peetha",
+      "relicDescription": "Hair; Asan; Bell from palanquin used by him for processions given by the king of Hyderabad. ",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Gunda branch",
+      "rationale": "Keep Gunda Narayan below the top, aligned beneath Gunda Maharaj.",
+      "reviewNotes": [
+        "Gunda branch anchor. Confirm identity/life status before using the top shelf; move the branch down together if necessary."
+      ],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "94247cab718364b49f15760c5e07ce4da98f8afdb3914c76f3d99e0ab58dc66f",
+      "capturedProposalDestination": "44",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recAtq7P7l6ZxatKD",
+      "saintId": "cms0w7dtu023707qic4dy3rqu",
+      "name": "Sri Gunda Narayan Maharaj",
+      "tier": "Secondary",
+      "city": "Pandharpur",
+      "relicDescription": "Asan and Hair ",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Gunda branch",
+      "rationale": "Keep Gunda Narayan below the top, aligned beneath Gunda Maharaj.",
+      "reviewNotes": [
+        "Living. Keep below the top, aligned under Gunda Maharaj. Relationship is recorded in reciprocal inventory links."
+      ],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "6c82bb18034ba24b92788bec4ae46afdb4b88e69e52a12ecbadc264c712b477c",
+      "capturedProposalDestination": "44",
+      "lifeStatus": {
+        "tag": "Living",
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recgLNDt6Cm8j1CEs",
+      "saintId": "cms0w7f7y03x507qi77za1l5y",
+      "name": "Sri Digambar Swāmi",
+      "tier": "Tertiary",
+      "city": "Alandi; Maharashtra",
+      "relicDescription": "",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Alandi",
+      "rationale": "Shared locality.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "8bcac2d5dae9b789b319c0b61912696c6207925dce4430199e97347577b436d3",
+      "capturedProposalDestination": "43",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recolnVsxWIfcvGSp",
+      "saintId": "cms0w7h6406bh07qic9jttbk2",
+      "name": "Sri Ragunath Baba",
+      "tier": "Tertiary",
+      "city": "Alandi; Maharashtra",
+      "relicDescription": "",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Alandi",
+      "rationale": "Shared locality.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "8d724a3b40f318a16d8c3efe0699e84161b0fb8a03f18e0137a5b0ab22c2053c",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recmwxAkZ78N0ELSd",
+      "saintId": "cms0w7gt905w007qiu23nthie",
+      "name": "Sri Ambar Das",
+      "tier": "Tertiary",
+      "city": "Pandharpur; Kasegaon",
+      "relicDescription": "Dhoti",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Pandharpur & nearby places",
+      "rationale": "Keep locality and identity review notes with the affected holdings.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.5,
+      "sourceRevision": "d7539e87152ec0b0ac5237c0048ae46799bd0f9df6b6664b284752fdb4ebb65b",
+      "capturedProposalDestination": "41",
+      "lifeStatus": {
+        "tag": "Living",
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recgya1bpDO7GnfXR",
+      "saintId": "cms0w7fc9042o07qiclgk6xow",
+      "name": "Sri Dhondopanth Dada Maharaj",
+      "tier": "Tertiary",
+      "city": "Pandharpur",
+      "relicDescription": "",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Pandharpur & nearby places",
+      "rationale": "Keep locality and identity review notes with the affected holdings.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "46c82741d2b37eef8fd11f818e3f1a2fee36f1a5ab6e178743c04595c37b6b3c",
+      "capturedProposalDestination": "41",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "rec22Ac7vT7uMvSnx",
+      "saintId": "cms0w7cib00ej07qiuig2nt6d",
+      "name": "Sri Sankali Babaji",
+      "tier": "Tertiary",
+      "city": "Pandharpur",
+      "relicDescription": "his ring",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Pandharpur & nearby places",
+      "rationale": "Keep locality and identity review notes with the affected holdings.",
+      "reviewNotes": [
+        "Pandharpur source-place; biography says samadhi near Bengaluru. Temporary lower placement pending locality clarification."
+      ],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "4aa09d5239ce631b41804253e1165dc673228985da35f9b8355e697e3fef757e",
+      "capturedProposalDestination": "41",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recrDQqKe8QchSUwH",
+      "saintId": "cms0w7hth073207qiziv6c88s",
+      "name": "Sri Sadguru Dattatreya Shit Sagar Maharaj Yewati",
+      "tier": "Tertiary",
+      "city": "Pandharpur; Karkamb",
+      "relicDescription": "his turban and shawl",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Karkamb & Yewati",
+      "rationale": "Locality group; no personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3125,
+      "sourceRevision": "4e2fd98690759350674dfec7823ef3d9a30ba4a99065dab3862555eb3bd7dd6a",
+      "capturedProposalDestination": "41",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "rec6a3D8Fdn3qoexV",
+      "saintId": "cms0w7d2x014107qikjbdad8i",
+      "name": "Sri Gajanan Baba",
+      "tier": "Tertiary",
+      "city": "Pandharpur; Karkamb Close to Pandharpur",
+      "relicDescription": "pink turban and Dhoti, Rudrakshas,",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Karkamb & Yewati",
+      "rationale": "Locality group; no personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3125,
+      "sourceRevision": "20cadc3c4e52ab962f291f16e5912ea620795e0748732fc8938bd4e87f871a62",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recjktPFaK4eUFgb2",
+      "saintId": "cms0w7fxm04t607qisb7cilzq",
+      "name": "Sri Meerabai Maharaj",
+      "tier": "Tertiary",
+      "city": "Pandharpur",
+      "relicDescription": "her personal Baby Krishna Murti",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Pandharpur & nearby places",
+      "rationale": "Keep locality and identity review notes with the affected holdings.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "5e21276ec461b49a9304dce7fd852281b13b784a9f4b8be1e9911dd92883b425",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "reczMaJfp4ST2ePBd",
+      "saintId": "cms0w7k5o09k607qi6qbghkfh",
+      "name": "Sri Bhajalinga Maharaj",
+      "tier": "Tertiary",
+      "city": "Pandharpur; Karkamb",
+      "relicDescription": "his Rudraksha (1)\n",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Karkamb & Yewati",
+      "rationale": "Locality group; no personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3125,
+      "sourceRevision": "0e2db2e2d4beab73cc64350d210dc35adf38f86d305874eeaa85cecdeaa7ddc1",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recR7ywQQ9iQeOC6m",
+      "saintId": "cms0w7hs5071l07qis3fix1ou",
+      "name": "Sri Swami Narayanand Saraswati",
+      "tier": "Tertiary",
+      "city": "Pandharpur; Pandharpur or Balyogi Maharaj",
+      "relicDescription": "Mala",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Pandharpur & nearby places",
+      "rationale": "Keep locality and identity review notes with the affected holdings.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "861c524d4e5ad82dbd29c7209a47fcc1e7f42a66f105516472eca67db1863b8f",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recbZply12Z8dpGqc",
+      "saintId": "cms0w7e4002gl07qiroggvvld",
+      "name": "Sri DhaamJi",
+      "tier": "Tertiary",
+      "city": "Mangalveda; Pandharpur",
+      "relicDescription": "green cloth\n",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Pandharpur & nearby places",
+      "rationale": "Keep locality and identity review notes with the affected holdings.",
+      "reviewNotes": [
+        "Identity unresolved. Do not conflate DhaamJi with Damaji Pant already in45."
+      ],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "6d59806b049c753a724ef622aaaf4d864f1da736f176380e4f692794f2ad95f7",
+      "capturedProposalDestination": "42",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recW5CJHvadVzJNYy",
+      "saintId": "cms0w7j4c08i707qiptpjbcul",
+      "name": "Sri Jayatirtha (Teekacharya)",
+      "tier": "Tertiary",
+      "city": "Maharashtra; Mangalwedha",
+      "relicDescription": "Piece from the doorframe ",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Jayatirtha · Madhva anchor",
+      "rationale": "A separate Madhva anchor; no Varkari lineage is implied.",
+      "reviewNotes": [
+        "Mangalwedha/Madhva anchor, not a Varkari-lineage claim."
+      ],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "826f36b3d1f5155070adf27c312c70c394d35e942def67654859764ade0794c5",
+      "capturedProposalDestination": "42",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    },
+    {
+      "sourceId": "recf1xnDk8dJTlUXG",
+      "saintId": "cms0w7ex203ir07qiu0rc8gok",
+      "name": "Sri Bhaijan Baba",
+      "tier": "Tertiary",
+      "city": "Kasegaon; Pandharpur",
+      "relicDescription": "Kurta",
+      "destination": "46",
+      "section": "Pandharpur–Alandi",
+      "family": "Pandharpur & nearby places",
+      "rationale": "Keep locality and identity review notes with the affected holdings.",
+      "reviewNotes": [
+        "Source biography says disciple of Shafi Baba. Retain this relationship note; no Varkari membership inferred from locality."
+      ],
+      "knownShelfProxy": null,
+      "sourceRevision": "f370084a0e6a7dba92fbe6ce322e549828b00e9586192b13df9874d1c55598e1",
+      "capturedProposalDestination": "62",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Reviewed source life status."
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "west-v46-ramabai",
+      "title": "Ramabai & Badve family",
+      "kind": "family",
+      "vitrine": "46",
+      "sourceIds": [
+        "recL4SuWW6DiQPmxo",
+        "recGRE4SrIKHmJqPs",
+        "recnQSZEOmAjgCiCO"
+      ],
+      "rationale": "Recorded family descent; the two Badve observations may overlap. Keep their labels separate.",
+      "edges": [
+        {
+          "fromSourceId": "recL4SuWW6DiQPmxo",
+          "toSourceId": "recGRE4SrIKHmJqPs",
+          "label": "Recorded family descent",
+          "basis": "source"
+        },
+        {
+          "fromSourceId": "recL4SuWW6DiQPmxo",
+          "toSourceId": "recnQSZEOmAjgCiCO",
+          "label": "Recorded family descent",
+          "basis": "source"
+        }
+      ]
+    },
+    {
+      "id": "west-v46-gunda",
+      "title": "Gunda branch",
+      "kind": "family",
+      "vitrine": "46",
+      "sourceIds": [
+        "recgLw2yBtYPzYLhV",
+        "recAtq7P7l6ZxatKD"
+      ],
+      "rationale": "Keep Gunda Narayan below the top, aligned beneath Gunda Maharaj.",
+      "edges": [
+        {
+          "fromSourceId": "recgLw2yBtYPzYLhV",
+          "toSourceId": "recAtq7P7l6ZxatKD",
+          "label": "Source-recorded disciple",
+          "basis": "source"
+        }
+      ]
+    },
+    {
+      "id": "west-v46-jayatirtha",
+      "title": "Jayatirtha · Madhva anchor",
+      "kind": "city",
+      "vitrine": "46",
+      "sourceIds": [
+        "recW5CJHvadVzJNYy"
+      ],
+      "rationale": "A separate Madhva anchor; no Varkari lineage is implied.",
+      "edges": []
+    },
+    {
+      "id": "west-v46-alandi",
+      "title": "Alandi",
+      "kind": "city",
+      "vitrine": "46",
+      "sourceIds": [
+        "recgLNDt6Cm8j1CEs",
+        "recolnVsxWIfcvGSp"
+      ],
+      "rationale": "Shared locality.",
+      "edges": []
+    },
+    {
+      "id": "west-v46-karkamb",
+      "title": "Karkamb & Yewati",
+      "kind": "city",
+      "vitrine": "46",
+      "sourceIds": [
+        "recrDQqKe8QchSUwH",
+        "rec6a3D8Fdn3qoexV",
+        "reczMaJfp4ST2ePBd"
+      ],
+      "rationale": "Locality group; no personal lineage is implied.",
+      "edges": []
+    },
+    {
+      "id": "west-v46-pandharpur",
+      "title": "Pandharpur & nearby places",
+      "kind": "city",
+      "vitrine": "46",
+      "sourceIds": [
+        "recmwxAkZ78N0ELSd",
+        "recgya1bpDO7GnfXR",
+        "rec22Ac7vT7uMvSnx",
+        "recjktPFaK4eUFgb2",
+        "recR7ywQQ9iQeOC6m",
+        "recbZply12Z8dpGqc",
+        "recf1xnDk8dJTlUXG"
+      ],
+      "rationale": "Keep locality and identity review notes with the affected holdings.",
+      "edges": []
+    }
+  ],
+  "fit": {
+    "knownShelfProxy": 4.4875,
+    "unknownFootprints": 2,
+    "fitCertified": false
+  },
+  "sourcePacketHash": "f6f21df5239c38b0c52817aee24fc289ab353bd1bdffde8badb0de94e6319541",
+  "assignmentDigest": "3725de9b62cfa6507c353045f71bb80ff498bc775494676bb37ed93a47595ab3",
+  "contentDigest": "df8e1c9e2d8c62ecd52dddb0c154b42a7bcce7519f33b7144dc0f9c86ad98d13"
+}
