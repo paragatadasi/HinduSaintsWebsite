@@ -1,0 +1,494 @@
+{
+  "version": "spn-west-v1-2026-10-31-v1",
+  "proposalVersion": "spn-western-stories-and-cities-2026-10-31-v9",
+  "title": "BAPS, Gondal & Amreli · Vitrine 1",
+  "proposalLabel": "Approved BAPS core and geographic groups",
+  "sourcePacketHash": "407e53cf84aeda34dfb69181b143244161679d6c5ef3dd55ba22bfac654572b4",
+  "rows": [
+    {
+      "sourceId": "recasMrurmAu0iQ8J",
+      "saintId": "cms0w7dto023307qix4qkc24c",
+      "name": "Sri Bhagavan Sri Swaminarayan",
+      "tier": "Primary",
+      "city": "Nadiad / Anand",
+      "relicDescription": "Bowl he fed his deities in, scripture, deity, soil from his birthplace, branch from the place where he was born",
+      "destination": "1",
+      "section": "Swaminarayan",
+      "family": "BAPS gurus",
+      "rationale": "BAPS on shelves 1–2. Living Mahant Swami belongs on shelf 2, never the top. Institutional lineage does not imply that every intervening guru has a holding.",
+      "reviewNotes": [],
+      "knownShelfProxy": 1,
+      "sourceRevision": "91d687f134a0c34a583ca2e97319bec6d41412d61cbdc969542c576567eacddf",
+      "capturedProposalDestination": "1",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recotj9QaQaUUzAbE",
+      "saintId": "cms0w7h9206et07qi30ghmqdh",
+      "name": "Sri Pramukh Swami Maharaj",
+      "tier": "Primary",
+      "city": "Locality under review",
+      "relicDescription": "Thread from Robe, his ash, hair",
+      "destination": "1",
+      "section": "Swaminarayan",
+      "family": "BAPS gurus",
+      "rationale": "BAPS on shelves 1–2. Living Mahant Swami belongs on shelf 2, never the top. Institutional lineage does not imply that every intervening guru has a holding.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "d050715ce0e3e0a154f562f51894b1e43ff033e8dbbfd3c1a110b8678f939d5a",
+      "capturedProposalDestination": "1",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recjvIW2squH6mA0M",
+      "saintId": "cms0w7g0k04wm07qiuvvqm241",
+      "name": "Sri Yogiji Maharaj(BAPS-4th Guru after Swaminarayn)",
+      "tier": "Primary",
+      "city": "Gondal",
+      "relicDescription": "piece of paduka",
+      "destination": "1",
+      "section": "Swaminarayan",
+      "family": "BAPS gurus",
+      "rationale": "BAPS on shelves 1–2. Living Mahant Swami belongs on shelf 2, never the top. Institutional lineage does not imply that every intervening guru has a holding.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "1936e2d503af57113b37705f537bde3adefafe3a453291c98206fd82fc4c0cc2",
+      "capturedProposalDestination": "1",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "reczx1iWGifmtF62m",
+      "saintId": "cms0w7k9i09o107qiu16ccrgi",
+      "name": "Mahant Sri Keshavjivandas Swami Maharaj",
+      "tier": "Tertiary",
+      "city": "Jabalpur",
+      "relicDescription": "Mala, nadachhadi (auspicious thread), kanthi Mala sanctified by him",
+      "destination": "1",
+      "section": "Swaminarayan",
+      "family": "BAPS gurus",
+      "rationale": "BAPS on shelves 1–2. Living Mahant Swami belongs on shelf 2, never the top. Institutional lineage does not imply that every intervening guru has a holding.",
+      "reviewNotes": [
+        "Keshavjivandas matches Mahant Swami Maharaj in the BAPS official biography. Living: assign shelf 2, never the top shelf. Canonical identity/tier correction remains a separate review."
+      ],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "483e999674b8daad901fddc3dcb028cc7fe2707fb033ac349415909fe0533ab2",
+      "capturedProposalDestination": "1",
+      "lifeStatus": {
+        "tag": "Living",
+        "basis": "Source-marked living; shelf 2, never the top."
+      }
+    },
+    {
+      "sourceId": "recGmhLN8uiqGdeGT",
+      "saintId": "cms0w7f8p03y307qi5exhmzog",
+      "name": "Sri Jivandas Bapa",
+      "tier": "Tertiary",
+      "city": "Gondal",
+      "relicDescription": "Japa Mala, Dhoti, Turban cloth, wood from Kutia (room), piece of horse saddle",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Gondal",
+      "rationale": "Gondal geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [
+        "Possible Jivandas / Jivan Das overlap remains for review; retain the separate source observation and identity."
+      ],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "02c8511b89b1d3d226ffb941206c00df289514fa76750da39cda9bcaf7c07f76",
+      "capturedProposalDestination": "42",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recARnsJgkr5gYRIc",
+      "saintId": "cms0w7dt6022c07qizkl12v8s",
+      "name": "Sri Khimdas Bapu",
+      "tier": "Tertiary",
+      "city": "Gondal",
+      "relicDescription": "Conch, pieces from Banyan Tree",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Gondal",
+      "rationale": "Gondal geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "531661e32cb113eb9c4bef6c9b4b1d8b0b98c55793650ed34a87476e2883915c",
+      "capturedProposalDestination": "42",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recL3xbVbqYVORNdr",
+      "saintId": "cms0w7gd405ca07qie7z67tzf",
+      "name": "Sri Lohlangari Bapu",
+      "tier": "Tertiary",
+      "city": "Gondal",
+      "relicDescription": "Vibhuti from the dhuni, piece of bark from the banyan tree",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Gondal",
+      "rationale": "Gondal geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "4d80d8d09dcc461b45a5748cf32db723fec3cd573b44c315f2ee45c2188e21e2",
+      "capturedProposalDestination": "42",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "rec0p2iAsQrXkS1ff",
+      "saintId": "cms0w7c9l004b07qiyc0t896a",
+      "name": "Sri Nathji Dada",
+      "tier": "Tertiary",
+      "city": "Gondal",
+      "relicDescription": "Chillum, Kamandalu, Tiny piece from his Paduka",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Gondal",
+      "rationale": "Gondal geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "28e8f56eddf9c25e04f637942780ecd8b0ed4312b9893c498472894c215100d8",
+      "capturedProposalDestination": "42",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recWn354z1XpTG7PP",
+      "saintId": "cms0w7j9g08nk07qiv6sx9y20",
+      "name": "Sri Ugaram Bapa",
+      "tier": "Tertiary",
+      "city": "Gondal",
+      "relicDescription": "Chai Saucer",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Gondal",
+      "rationale": "Gondal geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "980c28d3461be27518b57e91e2918f0303e53812ff5c56dab255904bb480386f",
+      "capturedProposalDestination": "42",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "rec1tPVW49CFN7PCZ",
+      "saintId": "cms0w7ch900d207qi6sgil42g",
+      "name": "Sri Purushottamdas Bapu",
+      "tier": "Tertiary",
+      "city": "Amreli",
+      "relicDescription": "Dhoti",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Amreli",
+      "rationale": "Amreli geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "62dfed493bacb23f21d70d152ca7fb74fb2ec4d73df0ab3a4269077b4488eb4d",
+      "capturedProposalDestination": "39",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recCKbcXl6TUFJmjF",
+      "saintId": "cms0w7e9602n907qi21dpjtnz",
+      "name": "Bhagat Sri Raghavdas",
+      "tier": "Tertiary",
+      "city": "Amreli",
+      "relicDescription": "Piece from the turban",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Amreli",
+      "rationale": "Amreli geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "87098990468c6998b09aa9a04989e20dab978b533ca0686f908563011c61071a",
+      "capturedProposalDestination": "48",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "reczhviI4f7yj7X95",
+      "saintId": "cms0w7k3009hi07qiu1wrtu2r",
+      "name": "Sri Nanuram Bapu",
+      "tier": "Tertiary",
+      "city": "Amreli",
+      "relicDescription": "Dhoti",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Amreli",
+      "rationale": "Amreli geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "c5368ffc2ba3d5f23547d36cdf300f42d3cb7faebdfedada6dc2dc6494bc3140",
+      "capturedProposalDestination": "48",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "reclMwdsv0ra6oOc0",
+      "saintId": "cms0w7gge05gj07qi60drx0wd",
+      "name": "Sri Nijanand Swami",
+      "tier": "Tertiary",
+      "city": "Amreli",
+      "relicDescription": "Cloth and dish used for food",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Amreli",
+      "rationale": "Amreli geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "9852660653bb56aee0368cc07014db47839bfc225332f5e0575e05441876c39a",
+      "capturedProposalDestination": "48",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "rec6YWtFxWBe7WkMY",
+      "saintId": "cms0w7d83019w07qiv7ez6n20",
+      "name": "Sri Yogi Nithyananda",
+      "tier": "Tertiary",
+      "city": "Amreli",
+      "relicDescription": "Lid of Kamandalu",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Amreli",
+      "rationale": "Amreli geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "a72c449880b853bbfcc4a6d679b834c63c14022a7cd49c7212b31ad6c155d062",
+      "capturedProposalDestination": "48",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "rec8yNPDOHj7Ho4wt",
+      "saintId": "cms0w7dgm01l707qiprruiaik",
+      "name": "Sri Ughesh Giri Bapu",
+      "tier": "Tertiary",
+      "city": "Amreli",
+      "relicDescription": "Shirt and pants",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Amreli",
+      "rationale": "Amreli geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "b184a86a18c215b3240554a38d531369f29f9958db82846fc728ffdd84175a7b",
+      "capturedProposalDestination": "81",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recc9XeXFSQLZB0AJ",
+      "saintId": "cms0w7e6102j807qiar8knstm",
+      "name": "Sri Dasnam Goswami Keshavpuri Gurmohanpuri Tarathiya Hanuman Mathi Derikumbaji",
+      "tier": "Tertiary",
+      "city": "Gondal",
+      "relicDescription": "Shirt, Beads, Seeds, (Prasad - chilli, lime, sugar?)",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Gondal",
+      "rationale": "Gondal geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [
+        "Possible overlapping Keshavpuri observations at the same source shelf. Check the labels together; these records do not establish an additional object or a canonical merge."
+      ],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "ab86b5720db47cba480c29cb9beb370cce0834a301acf7fb1555982b42af1bb5",
+      "capturedProposalDestination": "46",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recGMV4dvSAGu429G",
+      "saintId": null,
+      "name": "Sri Dasnam Goswami Keshavpuri Gurmohanpuri Tarathiya Hanuman Mathi Derikumbaji of Gondal, Gujarat",
+      "tier": "Unclassified",
+      "city": "Gondal",
+      "relicDescription": "Shirt, beads, seeds, Prasad",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Gondal",
+      "rationale": "Gondal geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [
+        "Possible overlapping Keshavpuri observations at the same source shelf. Check the labels together; these records do not establish an additional object or a canonical merge."
+      ],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "a1ee37d35a4c2b03f47dd63cf104f0b4f7be76d0f2de528a2ab7538b79cd88f2",
+      "capturedProposalDestination": "62",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recU4QL6snqbvXMhv",
+      "saintId": "cms0w7ijq07w207qiguay8bp0",
+      "name": "Sri Mooldasji",
+      "tier": "Tertiary",
+      "city": "Amreli",
+      "relicDescription": "Bark from the peepal tree he planted; sindhur from Hanumanji he installed",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Amreli",
+      "rationale": "Amreli geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "dc50a73075f5b16c2ce2aad28a1054966b793bc6fb3bf4a2e4cb819fe78fc878",
+      "capturedProposalDestination": "44",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recUAtOOXXZARwgGC",
+      "saintId": "cms0w7il807xs07qinv3vn18h",
+      "name": "Sri Jivan Das",
+      "tier": "Tertiary",
+      "city": "Gondal",
+      "relicDescription": "Wood and water …",
+      "destination": "1",
+      "section": "Saurashtra regional context",
+      "family": "Gondal",
+      "rationale": "Gondal geographic group below BAPS; no BAPS personal lineage is implied.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family.",
+        "Possible Jivandas / Jivan Das overlap remains for review; retain the separate source observation and identity."
+      ],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "ed6fa7be803d105e3eafd71e8db06537ebbf93be83ea6f4126515df5c23b9071",
+      "capturedProposalDestination": "82",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "west-v1-baps-gurus",
+      "title": "BAPS gurus",
+      "kind": "family",
+      "vitrine": "1",
+      "rationale": "BAPS on shelves 1–2. Living Mahant Swami belongs on shelf 2, never the top. Institutional lineage does not imply that every intervening guru has a holding.",
+      "sourceIds": [
+        "recasMrurmAu0iQ8J",
+        "recotj9QaQaUUzAbE",
+        "recjvIW2squH6mA0M",
+        "reczx1iWGifmtF62m"
+      ],
+      "edges": []
+    },
+    {
+      "id": "west-v1-gondal",
+      "title": "Gondal",
+      "kind": "city",
+      "vitrine": "1",
+      "rationale": "Gondal geographic group below BAPS; no BAPS personal lineage is implied.",
+      "sourceIds": [
+        "recGmhLN8uiqGdeGT",
+        "recARnsJgkr5gYRIc",
+        "recL3xbVbqYVORNdr",
+        "rec0p2iAsQrXkS1ff",
+        "recWn354z1XpTG7PP",
+        "recc9XeXFSQLZB0AJ",
+        "recGMV4dvSAGu429G",
+        "recUAtOOXXZARwgGC"
+      ],
+      "edges": []
+    },
+    {
+      "id": "west-v1-amreli",
+      "title": "Amreli",
+      "kind": "city",
+      "vitrine": "1",
+      "rationale": "Amreli geographic group below BAPS; no BAPS personal lineage is implied.",
+      "sourceIds": [
+        "rec1tPVW49CFN7PCZ",
+        "recCKbcXl6TUFJmjF",
+        "reczhviI4f7yj7X95",
+        "reclMwdsv0ra6oOc0",
+        "rec6YWtFxWBe7WkMY",
+        "rec8yNPDOHj7Ho4wt",
+        "recU4QL6snqbvXMhv"
+      ],
+      "edges": []
+    }
+  ],
+  "fit": {
+    "knownShelfProxy": 4.966666666666667,
+    "comparison": 5,
+    "fitCertified": false,
+    "basis": "Source observation shelf-share comparisons; possible overlapping observations are retained, not counted as verified separate objects."
+  },
+  "layoutGuidance": {
+    "bapsSourceIds": [
+      "recasMrurmAu0iQ8J",
+      "recotj9QaQaUUzAbE",
+      "recjvIW2squH6mA0M",
+      "reczx1iWGifmtF62m"
+    ],
+    "bapsShelves": [
+      1,
+      2
+    ],
+    "mahantSourceId": "reczx1iWGifmtF62m",
+    "mahantShelf": 2,
+    "geographicShelves": [
+      3,
+      4,
+      5
+    ],
+    "physicalShelfWrites": false
+  },
+  "excludedCohorts": {
+    "retained60SourceIds": [
+      "rec5bMBZLbIgDKTi3",
+      "recmNqjW54MTnx5oZ",
+      "recc1CC82GbnM5dJt",
+      "recEnD8tEMbdNXtbQ",
+      "recmtsRvLYP37610P",
+      "reccKKvB9Ep8ilaYM",
+      "reci5j0k7U8Ha2f2m",
+      "recTqpJdgwHXGebdi"
+    ],
+    "brahmaKumaris": "Main Western area; exact vitrine pending"
+  },
+  "assignmentDigest": "d63ae8024ed21338a0a2e081f144a0bb583a45b2e391560ed8bae92cb5d1c9b5",
+  "contentDigest": "abc3451cd33ccccb3f92ba655ef966023e8024c52b50aa94da0d32e3a0599bbe"
+}
