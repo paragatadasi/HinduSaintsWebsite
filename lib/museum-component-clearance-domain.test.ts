@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { componentStagingAcknowledgements, assertComponentClearanceScope, isComponentClearance, projectComponentPlacement, v20ComponentSourceIds, type ComponentPlacement } from "./museum-component-clearance-domain";
 import { assertSpnMovementAllowed } from "./spn-movement-holds";
-import {componentClearanceScope,v19ComponentBinding} from "./museum-component-clearance-domain";
+import {componentClearanceScope,v19ComponentBinding,v42ComponentBinding} from "./museum-component-clearance-domain";
 const origin={kind:"vitrine" as const,code:"20",label:"Vitrine 20",shelf:"A"};
 const staging={kind:"table" as const,code:"staging-area",label:"Staging area"};
 const ack={sourceId:v20ComponentSourceIds[0],scope:"vitrine_20_contents_only" as const,allOriginPiecesStaged:true as const,walkingSticksNotInVitrine:true as const};
@@ -38,6 +38,17 @@ test("V19 partial receipt keeps whole collection and external sticks unknown",()
  assert.deepEqual(projected.componentPlacement?.excludedWalkingSticks,{location:null,status:"unverified"});
  assert.equal(source.current.code,"19");
  assert.equal(projectComponentPlacement({...source,currentRevision:"later-curator"},receipt).componentPlacement,null);
+});
+
+test("V42 captured source can stage only its origin contents after curator acknowledgement",()=>{
+ const source={...row,...v42ComponentBinding,current:{...origin,code:"42"}};
+ const scope="vitrine_42_contents_only" as const;
+ const scopedInput={...input,clearedVitrines:["42"],componentStagingAcknowledgements:[{...ack,sourceId:source.sourceId,scope}],records:[{sourceId:source.sourceId,to:staging}]};
+ assert.equal(componentClearanceScope(source),scope);assert.equal(isComponentClearance(scopedInput,source),true);
+ assert.ok(componentStagingAcknowledgements.safeParse(scopedInput.componentStagingAcknowledgements).success);
+ for(const mutation of [{saintId:"changed"},{sourceRevision:"changed"},{current:{...origin,code:"19"}}])assert.equal(componentClearanceScope({...source,...mutation}),null);
+ assert.throws(()=>assertComponentClearanceScope({...scopedInput,clearedVitrines:["64"]}));
+ assert.throws(()=>assertSpnMovementAllowed(source.sourceId,source.current,staging),/stick housing/);
 });
 
 test("only exact V20-held components can be acknowledged, never unnamed parts or other holdings",()=>{

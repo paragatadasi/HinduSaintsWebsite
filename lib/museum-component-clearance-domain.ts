@@ -5,18 +5,19 @@ import {isReviewedParamanandArmSupport} from "./spn-paramanand-reviewed-object";
 export const v20ComponentSourceIds = ["rec9vEn5oj7QZTXl0", "recVN6Ty3682Uz2g4"] as const;
 export const isV20ComponentSourceId = (sourceId: string) => v20ComponentSourceIds.some(id => id === sourceId);
 export const v19ComponentBinding={sourceId:"rec7GxgNvmubmTvMM",saintId:"cms0w7d9s01cb07qil8lvv2z0",sourceRevision:"8f4127e3ad3fd2150a20e59caf8f7d9893276c046b506857ebd11161683155fc"};
-export const componentSourceIds=[...v20ComponentSourceIds,v19ComponentBinding.sourceId];
-export type ComponentScope="vitrine_20_contents_only"|"vitrine_19_contents_only";
-export function componentOriginCode(sourceId:string):"19"|"20"|null {
-  return sourceId===v19ComponentBinding.sourceId?"19":isV20ComponentSourceId(sourceId)?"20":null;
+export const v42ComponentBinding={sourceId:"reck86EKve5tFAi6R",saintId:"cms0w7g3504zx07qigfcnvy6p",sourceRevision:"83a1a528d50d3f12c34f49b1582ae4cfcaa060e0fb97c962c6b48f5281435e33"};
+export const componentSourceIds=[...v20ComponentSourceIds,v19ComponentBinding.sourceId,v42ComponentBinding.sourceId];
+export type ComponentScope="vitrine_20_contents_only"|"vitrine_19_contents_only"|"vitrine_42_contents_only";
+export function componentOriginCode(sourceId:string):"19"|"20"|"42"|null {
+  return sourceId===v19ComponentBinding.sourceId?"19":sourceId===v42ComponentBinding.sourceId?"42":isV20ComponentSourceId(sourceId)?"20":null;
 }
 export function componentScopeForOrigin(code:string):ComponentScope|null {
-  return code==="19"?"vitrine_19_contents_only":code==="20"?"vitrine_20_contents_only":null;
+  return code==="19"?"vitrine_19_contents_only":code==="20"?"vitrine_20_contents_only":code==="42"?"vitrine_42_contents_only":null;
 }
 export const componentStagingAcknowledgements = z.array(z.object({
-  sourceId: z.string().refine(id=>componentSourceIds.includes(id)), scope: z.enum(["vitrine_20_contents_only","vitrine_19_contents_only"]),
+  sourceId: z.string().refine(id=>componentSourceIds.includes(id)), scope: z.enum(["vitrine_20_contents_only","vitrine_19_contents_only","vitrine_42_contents_only"]),
   allOriginPiecesStaged: z.literal(true), walkingSticksNotInVitrine: z.literal(true)
-}).strict().refine(row=>row.scope===componentScopeForOrigin(componentOriginCode(row.sourceId)??""),"Component source and origin do not match.")).max(3).refine(rows => new Set(rows.map(row => row.sourceId)).size === rows.length, "Repeated component acknowledgement.");
+}).strict().refine(row=>row.scope===componentScopeForOrigin(componentOriginCode(row.sourceId)??""),"Component source and origin do not match.")).max(4).refine(rows => new Set(rows.map(row => row.sourceId)).size === rows.length, "Repeated component acknowledgement.");
 export type ComponentPlacement = {
   sourceId: string; receiptId: string; recordedAt: string; revision: string;
   origin: MoveLocation; location: MoveLocation; scope: ComponentScope;
@@ -45,14 +46,15 @@ export function assertComponentClearanceScope(input: ComponentClearanceInput) {
 }
 
 type ComponentSource = {
-  sourceId: string; current: MoveLocation | null; fixedHousing: boolean;
+  sourceId: string; current: Pick<MoveLocation,"kind"|"code"> | null; fixedHousing: boolean;
   verifiedItemIds: string[]; identityChanged: boolean;
   saintId?:string|null;sourceRevision?:string;housingEvidenceRevision?:string;
 };
 export function componentClearanceScope(row:ComponentSource):ComponentScope|null {
   const origin=componentOriginCode(row.sourceId);
   if(!origin||row.current?.kind!=="vitrine"||row.current.code!==origin||row.fixedHousing||row.verifiedItemIds.length||row.identityChanged)return null;
-  if(origin==="19"&&(row.saintId!==v19ComponentBinding.saintId||row.sourceRevision!==v19ComponentBinding.sourceRevision))return null;
+  const binding=origin==="19"?v19ComponentBinding:origin==="42"?v42ComponentBinding:null;
+  if(binding&&(row.saintId!==binding.saintId||row.sourceRevision!==binding.sourceRevision))return null;
   if(row.saintId!==undefined&&row.sourceRevision&&isReviewedParamanandArmSupport({...row,saintId:row.saintId,sourceRevision:row.sourceRevision}))return null;
   return componentScopeForOrigin(origin);
 }
