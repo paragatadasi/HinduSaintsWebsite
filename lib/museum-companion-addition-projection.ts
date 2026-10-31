@@ -9,16 +9,17 @@ export function companionVitrineOwner<T extends string>(guides:Record<T,StarterM
 }
 export function projectCompanionAdditions<T extends string>(guides:Record<T,StarterMoveGuide>,additions:CompanionAddition[],catalog:GuideEntry[]):Record<T,StarterMoveGuide>{
  const entries=new Map(catalog.map(e=>[e.sourceId,e]));
- const byId=new Map(additions.filter(a=>entries.has(a.sourceId)).map(a=>[a.sourceId,a]));
+ const pending=new Set(catalog.filter(e=>e.proposalTransfer?.state==="approved_case_pending").map(e=>e.sourceId));
+ const byId=new Map(additions.filter(a=>entries.has(a.sourceId)&&!pending.has(a.sourceId)).map(a=>[a.sourceId,a]));
  const owners=new Map(additions.map(a=>[a.sourceId,companionVitrineOwner(guides,a.vitrine)]));
  return Object.fromEntries((Object.keys(guides) as T[]).map(key=>{
   const guide=guides[key];
   const trimGroup=(group:GuideGroup,code:string):GuideGroup=>{
-   const sourceIds=group.sourceIds.filter(id=>!byId.has(id)||(byId.get(id)!.vitrine===code&&owners.get(id)===key));
+   const sourceIds=group.sourceIds.filter(id=>!pending.has(id)&&(!byId.has(id)||(byId.get(id)!.vitrine===code&&owners.get(id)===key)));
    return {...group,sourceIds,edges:group.edges?.filter(edge=>sourceIds.includes(edge.fromSourceId)&&sourceIds.includes(edge.toSourceId)),...(sourceIds.length!==group.sourceIds.length?{saintCount:undefined,spaceEstimate:undefined}:{} )};
   };
   const vitrines=guide.vitrines.map(v=>({...v,families:v.families.map(g=>trimGroup(g,v.code)).filter(g=>g.sourceIds.length),cityGroups:v.cityGroups.map(g=>trimGroup(g,v.code)).filter(g=>g.sourceIds.length)}));
-  const updated=new Map(guide.entries.map(e=>[e.sourceId,byId.has(e.sourceId)?{...e,destination:byId.get(e.sourceId)!.vitrine}:e]));
+  const updated=new Map(guide.entries.filter(e=>!pending.has(e.sourceId)).map(e=>[e.sourceId,byId.has(e.sourceId)?{...e,destination:byId.get(e.sourceId)!.vitrine}:e]));
   for(const addition of byId.values()){
    if(owners.get(addition.sourceId)!==key)continue;
    const target=vitrines.find(v=>v.code===addition.vitrine)!;
@@ -34,6 +35,10 @@ export function projectCompanionAdditions<T extends string>(guides:Record<T,Star
    const transferred=[...original.families,...original.cityGroups].some(group=>group.sourceIds.some(id=>byId.get(id)?.vitrine===v.code&&owners.get(id)!==key));
    return !transferred;
   });
-  return [key,projectGajananDisplayRelationship(projectSourceFamilyReunion({...guide,vitrines:visibleVitrines,entries:[...updated.values()]}))];
+  const alternatives=guide.alternatives.map(group=>{
+   const sourceIds=group.sourceIds.filter(id=>!pending.has(id));
+   return sourceIds.length===group.sourceIds.length?group:{...group,sourceIds,edges:group.edges?.filter(edge=>sourceIds.includes(edge.fromSourceId)&&sourceIds.includes(edge.toSourceId)),saintCount:undefined,spaceEstimate:undefined};
+  }).filter(group=>group.sourceIds.length);
+  return [key,projectGajananDisplayRelationship(projectSourceFamilyReunion({...guide,vitrines:visibleVitrines,alternatives,entries:[...updated.values()]}))];
  })) as Record<T,StarterMoveGuide>;
 }

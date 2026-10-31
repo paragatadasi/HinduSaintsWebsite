@@ -41,7 +41,7 @@ test("approved sources retain two housing holds, source-only identity and provis
  assert.equal(guide.entries.filter(e=>e.movementBlockedReason).length,2);
  for(const e of guide.entries.filter(e=>!e.movementBlockedReason))assert.doesNotThrow(()=>assertEastRemainderRecords([{sourceId:e.sourceId,to:{kind:"vitrine",code:e.destination}}],guide));
  assert.deepEqual(f.physical,before);
- assert.equal(operationalSpnShelfPacket.vitrines.flatMap(v=>v.allocations).length,348);
+ assert.equal(operationalSpnShelfPacket.vitrines.flatMap(v=>v.allocations).length,349);
  const allocation=projectShelfPlanningContext(f.shelfPacket,f).cases.find(c=>c.code==="26")!.allocations.find(a=>a.sourceId===arm.sourceId)!;
  assert.equal(allocation.suggestedShelfIndex,5);
  assert.match(allocation.reviewAlerts[0].message,/unknown footprint/);

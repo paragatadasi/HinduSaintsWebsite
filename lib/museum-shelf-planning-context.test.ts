@@ -69,3 +69,17 @@ test("duplicate packet source rows fail explicitly",()=>{
  const {packet,input}=fixture();packet.vitrines.push(packet.vitrines[0]);
  assert.throws(()=>projectShelfPlanningContext(packet,input),/more than once/);
 });
+
+
+test("an approved lower-two exception accepts living shelves 4–5 and holds higher shelves",()=>{
+ const {packet,input}=fixture("source","saint","77");
+ packet.vitrines[0].livingAllowedBands=[4,5];
+ input.current.membersById.set("source",{SamadhiDate:"Still alive"});
+ for(const band of [4,5]){
+  packet.vitrines[0].allocations[0].suggestedShelfIndex=band;
+  assert.equal(projectShelfPlanningContext(packet,input).cases[0].allocations.length,1);
+ }
+ packet.vitrines[0].allocations[0].suggestedShelfIndex=3;
+ assert.equal(projectShelfPlanningContext(packet,input).cases[0].allocations.length,0);
+ assert.match(projectShelfPlanningContext(packet,input).reviewedChanges[0].reason,/approved lower shelves/);
+});
