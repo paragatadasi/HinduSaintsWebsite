@@ -1972,7 +1972,7 @@
   {
     "selector": ":root",
     "name": "--color-museum-shelf-muted",
-    "value": "color-mix(in srgb,var(--color-text) 15%,var(--color-muted))"
+    "value": "oklch(0.8 0.015 90)"
   },
   {
     "selector": ":root",
@@ -2358,6 +2358,11 @@
     "selector": "[data-intake-theme=\"dark\"]",
     "name": "--color-accent",
     "value": "var(--color-gold)"
+  },
+  {
+    "selector": "[data-museum-companion-theme=\"parchment\"]",
+    "name": "--color-museum-shelf-muted",
+    "value": "oklch(0.43 0.015 75)"
   },
   {
     "selector": "[data-museum-companion-theme=\"parchment\"]",

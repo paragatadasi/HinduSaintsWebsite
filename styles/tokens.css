@@ -434,7 +434,7 @@
  --color-museum-shelf-group-5:oklch(0.6 0.1 175);
  --color-museum-shelf-group-6:oklch(0.65 0.13 60);
  --opacity-museum-shelf-tint:18%;
- --color-museum-shelf-muted:color-mix(in srgb,var(--color-text) 15%,var(--color-muted));
+ --color-museum-shelf-muted:oklch(0.8 0.015 90);
  --color-museum-region-1:#cb9fae;
  --color-museum-region-2:#91acbf;
  --color-museum-region-3:#b4b88a;
@@ -534,6 +534,7 @@
 
 /* Approved room-companion prototype: scoped parchment, independent of admin theme. */
 [data-museum-companion-theme="parchment"] {
+  --color-museum-shelf-muted:oklch(0.43 0.015 75);
   color-scheme: light;
   --color-bg: #fbfaf6;
   --color-surface: #ffffff;
