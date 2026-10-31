@@ -1,4 +1,5 @@
 import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
+import {spnCaseExecutionHold, spnPhysicalExecutionHold} from "./museum-case-execution-holds";
 import {readGuideAlternativeDestinations} from "./museum-guide-alternatives";
 import { readEffectiveCompanionAdditions } from "./museum-companion-additions-state";
 import { assertCurrentNorthernGuideTargets } from "./spn-northern-voyage";
@@ -158,6 +159,10 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     }
     if(input.guideContext && readStarterGuideDefinition(input.guideContext.guideVersion).readOnly)
       throw new MuseumMoveSessionError(409,"This guide is historical. Reload the current guide before recording a new physical move.");
+    for (const code of input.clearedVitrines ?? []) {
+      const hold = spnCaseExecutionHold(code);
+      if (hold) throw new MuseumMoveSessionError(409, hold);
+    }
     assertCurrentNorthernGuideTargets(input);
     if(input.guideContext&&!input.alternativeDecision&&!input.curatorAddition&&!input.clearedVitrines?.length&&input.records.some(r=>r.sourceId===paramanandObjectReview.sourceId&&r.to.kind==="vitrine"&&r.to.code==="37")&&paramanandProposalResolution((await readMuseumData(tx)).placements).destination!=="37")
       throw new MuseumMoveSessionError(409,"This captured Vitrine 37 destination is superseded. Review the complete arm-support's current Puri proposal before recording a move.");
@@ -226,6 +231,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     const changes = input.records.map(record => {
       const row = current.rows.find(row => row.sourceId === record.sourceId);
       if (!row) throw new MuseumMoveSessionError(409, "This source is not in the current inventory snapshot. Reload before confirming it.");
+      const executionHold = spnPhysicalExecutionHold(row.current, record.to);
+      if (executionHold) throw new MuseumMoveSessionError(409, executionHold);
       if (row.identityChanged || row.saintId !== record.saintId || row.sourceRevision !== record.expectedSourceRevision) throw new MuseumMoveSessionError(409, "A source identity or its evidence changed. Reload and check the source before confirming.");
       if (row.verifiedItemIds.length) throw new MuseumMoveSessionError(409, "This source has verified inventory items. Record their moves through the item workflow.");
       let to = record.to;
@@ -294,6 +301,8 @@ export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionAc
       throw new MuseumMoveSessionError(409, "This source or its physical location changed. Reload before undoing the check.");
     const offer = row.undo;
     if (!offer.available || offer.receiptId !== input.receiptId) throw new MuseumMoveSessionError(409, offer.reason ?? "This confirmation can no longer be undone.");
+    const executionHold = spnPhysicalExecutionHold(row.current, offer.previous);
+    if (executionHold) throw new MuseumMoveSessionError(409, executionHold);
     if (row.componentPlacement) {
       const receipt=await tx.auditEvent.create({data:{userId:actor.id,action:undoAction,entityType:"MuseumPhysicalCheckUndo",entityId,
         afterJson:json({museumId:input.museumId,fingerprint,targetReceiptId:input.receiptId,sourceId:row.sourceId,
@@ -335,6 +344,8 @@ export async function saveMuseumPreparation(raw:unknown, actor:MoveSessionActor,
     }
     const snapshot=moveSnapshot.parse(await loader(tx));
     if(!snapshot.vitrineCodes.includes(input.vitrine))throw new MuseumMoveSessionError(400,"Choose a vitrine in this museum's layout.");
+    const executionHold=spnCaseExecutionHold(input.vitrine);
+    if(executionHold)throw new MuseumMoveSessionError(409,executionHold);
     const previous=(await readMuseumPreparations(tx)).find(row=>row.vitrine===input.vitrine);
     if((previous?.version??0)!==input.expectedVersion)throw new MuseumMoveSessionError(409,"Preparation changed. Reload its current status.");
     const receipt=await tx.auditEvent.create({data:{userId:actor.id,action:prepAction,entityType:"MuseumVitrinePreparation",entityId,
@@ -364,6 +375,8 @@ export async function correctMuseumClear(raw:unknown,actor:MoveSessionActor,load
    if(!offer || offer.saintId!==record.saintId || offer.expectedCurrentRevision!==record.expectedCurrentRevision ||
      offer.expectedSourceRevision!==record.expectedSourceRevision || offer.expectedLocationVersion!==record.expectedLocationVersion)
     throw new MuseumMoveSessionError(409,"A clearing entry or its source changed. Reload and review the correction again.");
+   const executionHold=spnPhysicalExecutionHold(current.rows.find(row=>row.sourceId===record.sourceId)?.current,offer.previous);
+   if(executionHold)throw new MuseumMoveSessionError(409,executionHold);
    return offer;
   });
   const recordedAt=new Date();

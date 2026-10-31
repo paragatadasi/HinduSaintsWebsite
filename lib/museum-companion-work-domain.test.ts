@@ -22,3 +22,7 @@ test("task text and scope validated; completion requires version and explicit de
  assert.equal(companionWorkInput.safeParse({...complete,expectedVersion:0}).success,false);
  assert.equal(companionWorkInput.safeParse({...complete,saintId:"injected"}).success,false);
 });
+
+test("a retained Sikh display cannot acquire a new final shelf annotation",()=>{
+ assert.throws(()=>assertShelfContext({...physical,current:{kind:"vitrine",code:"68"}},{...shelf,vitrine:"68"}),/Sikh display retained here/);
+});

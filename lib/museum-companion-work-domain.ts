@@ -1,4 +1,5 @@
 import { z } from "zod";
+import {spnPhysicalExecutionHold} from "./museum-case-execution-holds";
 import { MuseumMoveSessionError } from "./museum-move-session-domain";
 const base = { museumId: z.literal("museum-spn"), clientRequestId: z.string().uuid() };
 const source = { sourceId: z.string().min(1).max(200), saintId: z.string().nullable() };
@@ -11,6 +12,8 @@ export const companionWorkInput = z.discriminatedUnion("action", [
 ]);
 export function assertShelfContext(row: { currentBasis: string; current: {kind:string;code:string}|null; currentVersion:number; currentRevision:string; sourceRevision:string },
  input: Extract<z.infer<typeof companionWorkInput>, {action:"shelf.update"}>) {
+ const executionHold=spnPhysicalExecutionHold(row.current,{kind:"vitrine",code:input.vitrine});
+ if(executionHold)throw new MuseumMoveSessionError(409,executionHold);
  if (row.currentBasis !== "confirmed" || row.current?.kind !== "vitrine" || row.current.code !== input.vitrine)
   throw new MuseumMoveSessionError(409,"Confirm this relic's vitrine before recording its final shelf.");
  if(row.currentVersion !== input.expectedLocationVersion || row.currentRevision !== input.expectedCurrentRevision || row.sourceRevision !== input.expectedSourceRevision)

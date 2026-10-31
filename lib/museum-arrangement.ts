@@ -1,4 +1,7 @@
 import {db} from "@/lib/db";
+import {spnPhysicalExecutionHold} from "./museum-case-execution-holds";
+import {readPhysicalLocationView} from "./museum-physical-locations";
+import {readMuseumMoveSessionSource,registeredMoveProposal} from "./museum-move-session-source";
 import {planningVitrineAllowed} from "./museum-planning-constraints";
 import {Prisma} from "@/lib/generated/prisma/client";
 import {arrangementInput,familyArrangementControl} from "@/lib/museum-arrangement-domain";
@@ -20,7 +23,17 @@ export async function saveMuseumArrangement(raw:unknown,actorId:string) {
  },{isolationLevel:"Serializable",timeout:30000});}catch(error){if(error instanceof Prisma.PrismaClientKnownRequestError&&error.code==="P2034")throw new MuseumConflict("This proposal changed while saving. Reload and try again.");throw error;}
 }
 
-export async function writeMuseumArrangement(tx:Prisma.TransactionClient,museumId:string,row:MuseumSaintPlacement,input:ReturnType<typeof arrangementInput.parse>,actorId:string) {
+type ArrangementPhysicalRow = {sourceId:string;saintId:string|null;current:{kind:string;code:string}|null};
+export async function writeMuseumArrangement(tx:Prisma.TransactionClient,museumId:string,row:MuseumSaintPlacement,input:ReturnType<typeof arrangementInput.parse>,actorId:string,physicalRows?:ArrangementPhysicalRow[]) {
+  if(museumId==="museum-spn"&&input.status==="Implemented"){
+   const to=input.vitrine?{kind:"vitrine",code:input.vitrine}:null;
+   const targetHold=spnPhysicalExecutionHold(null,to);
+   if(targetHold)throw new MuseumConflict(targetHold);
+   const current=physicalRows??(await readPhysicalLocationView(sourceTx=>readMuseumMoveSessionSource(registeredMoveProposal.version,sourceTx),tx,undefined,false)).rows;
+   const matching=current.filter(physical=>row.sourceRecordId?physical.sourceId===row.sourceRecordId:physical.saintId===row.saintId);
+   const origins=matching.length?matching.map(physical=>physical.current):[row.sourceVitrine?{kind:"vitrine",code:row.sourceVitrine.vitrine}:null];
+   for(const from of origins){const hold=spnPhysicalExecutionHold(from,to);if(hold)throw new MuseumConflict(hold);}
+  }
   if(input.status === "Planned" && !planningVitrineAllowed(museumId,row.section,input.vitrine || ""))throw new MuseumConflict("The Sikh section must remain in Vitrine 11 because a relic is permanently fixed there.");
   const before=await tx.museumArrangement.findUnique({where:{museumId_placementId:{museumId,placementId:row.id}}});
   const values={proposalRevision:row.arrangement!.proposalRevision,status:input.status,vitrine:input.status==="Proposed"?null:input.vitrine||null,shelf:input.status==="Proposed"?null:input.shelf||null,
@@ -40,7 +53,8 @@ export async function saveMuseumFamilyArrangement(raw:unknown,actorId:string) {
   const rows=members(await readMuseumData(tx));const control=familyArrangementControl(rows);
   if(control.revision!==input.revision)throw new MuseumConflict("This family's membership, proposal or arrangement changed. Reload before saving.");
   if(!control.eligible)throw new MuseumConflict("Resolve missing saint links or competing placements before updating the whole family. Linked saints can still be updated individually.");
-  for(const row of rows)await writeMuseumArrangement(tx,"museum-spn",row,input,actorId);
+  const physicalRows=input.status==="Implemented"?(await readPhysicalLocationView(sourceTx=>readMuseumMoveSessionSource(registeredMoveProposal.version,sourceTx),tx,undefined,false)).rows:undefined;
+  for(const row of rows)await writeMuseumArrangement(tx,"museum-spn",row,input,actorId,physicalRows);
   return {name:rows[0].name,count:rows.length};
  },{isolationLevel:"Serializable",timeout:30000});}catch(error){if(error instanceof Prisma.PrismaClientKnownRequestError&&error.code==="P2034")throw new MuseumConflict("The family changed while saving. Reload and try again.");throw error;}
 }

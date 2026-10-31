@@ -20,3 +20,10 @@ test("unrelated cases and non-vitrine location codes remain unaffected", () => {
   assert.equal(spnPhysicalExecutionHold({kind: "table", code: "64"}, undefined), null);
   assert.equal(spnPhysicalExecutionHold(undefined, null), null);
 });
+
+test("verified item shelves resolve to their SPN case without affecting another museum", () => {
+  assert.ok(spnPhysicalExecutionHold({kind:"shelf",code:"64/A",museumId:"museum-spn"},null));
+  assert.ok(spnPhysicalExecutionHold(null,{kind:"shelf",code:"68/3",museumId:"museum-spn"}));
+  assert.equal(spnPhysicalExecutionHold({kind:"shelf",code:"64/A",museumId:"museum-vrindavan"},null),null);
+  assert.equal(spnPhysicalExecutionHold(null,{kind:"vitrine",code:"68",museumId:"museum-vrindavan"}),null);
+});

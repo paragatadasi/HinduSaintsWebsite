@@ -1,4 +1,5 @@
 import { db } from "./db";
+import {spnPhysicalExecutionHold} from "./museum-case-execution-holds";
 import { Prisma } from "./generated/prisma/client";
 import { MuseumMoveSessionError } from "./museum-move-session-domain";
 import { physicalFingerprint } from "./museum-physical-location-current";
@@ -35,6 +36,8 @@ export async function reconcileHistoricalStaging(raw: unknown, actor: MoveSessio
     const location = { kind: "table" as const, code: "staging-area", label: "Staging area" };
     const moves = preview.eligible.map(record => {
       const row = current.rows.find(row => row.sourceId === record.sourceId)!;
+      const hold = spnPhysicalExecutionHold(row.current, location);
+      if (hold) throw new MuseumMoveSessionError(409, hold);
       return { sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, name: row.name,
         original: row.original, previous: row.current,
         previousState: { basis: row.currentBasis, location: row.current, effectiveConfirmedAt: null },

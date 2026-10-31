@@ -76,3 +76,26 @@ The group appears only when both exact source/canonical pairs remain members of
 Vitrine 77 in the effective guide. Later destinations or identity changes prevent
 the grouping. Grouping changes neither guide decision versions nor physical
 confirmation records, and never implies that a suggested shelf is confirmed.
+
+## Temporary SPN Sikh display execution hold
+
+The curator's 31 October 2026 instruction retains physical cases 64–68 until the
+new Sikh room is ready. This overrides earlier preparation flags, even where the
+current ledger has no entries. It does not clear cases or change proposals.
+
+`museum-case-execution-holds.ts` supplies the shared case and physical-location
+checks. Server workflows reject new clearing, preparation, incoming/outgoing
+physical confirmations, final shelf changes, and undo/correction restorations
+involving those cases. Legacy sessions and Implemented arrangements, including
+family batches, use the same rule. Verified item moves and source reconciliation
+cannot bypass it. New mirrored items with a held source location stay pending.
+
+Future Proposed/Planned destinations, item plans/cancellation, research tasks and
+historical readbacks remain available. Successful request retries return their
+existing receipts. Vrindavan is unaffected. Remove or revise the hold only after
+a newer explicit curator decision; do not infer its expiry from an empty list.
+
+`verify-museum-case-execution-holds-local.ts` creates a disposable localhost test
+database to verify blocked batches, preparation, legacy sessions, undo, clearing
+corrections and legacy implementation. It also checks unrelated moves, retries,
+future planning and the Vrindavan exception, then drops its test database.
