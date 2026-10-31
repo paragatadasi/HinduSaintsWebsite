@@ -5,7 +5,7 @@ export const companionRows = [
  {value:"east",label:"East",phases:["gosaiji-sai","east2"]},
  {value:"vraj",label:"Vraj",phases:["vraj","vraj2"]},
  {value:"north",label:"Northern journey",phases:["north"]},
- {value:"west",label:"West",phases:["west45"]},
+ {value:"west",label:"West",phases:["west45","west1"]},
 ] as const;
 export type CompanionPhase = typeof companionRows[number]["phases"][number];
 export type CompanionRowKey = typeof companionRows[number]["value"];
