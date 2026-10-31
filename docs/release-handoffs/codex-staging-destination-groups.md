@@ -2,7 +2,7 @@
 
 - Status: `queued`
 - Branch: `codex/staging-destination-groups`
-- Commit: `a3e4e3b7e80ad870aa1282fae7232042abed6f7e`
+- Commit: `2af7957`
 - Owner/agent: Citra
 - Bundle priority: next compatible deployment
 
@@ -10,10 +10,14 @@
 
 Staging entries grouped by proposed destination vitrine, numerically sorted, with count-and-jump controls at the top. Unassigned and unlinked records remain separate. Uses the current catalog, alternatives and additions across phases, preserving component-specific notices and correction actions.
 
+Includes Nadi regional-transfer branch c533aac; merge preserves catalogEntry proposalTransfer and the quiet pending-cohort label in grouped staging.
+
 ## Verification
 
 - `npm run queue:deployment`: passed (dev:check and queued handoff).
-- Destination grouping test: passed.
+- Combined branch dev:check: passed.
+- 25 focused regional-transfer, guide-projection, shelf-context and grouping tests passed.
+- Browser fixture also verifies South / Andhra · case pending remains visible in the unassigned group.
 - Real-component browser fixture: counts, unassigned/unlinked groups, open-and-focus jump controls, component notes, empty state and 390px overflow checks passed; desktop screenshot reviewed.
 - `git diff --check`: passed.
 
