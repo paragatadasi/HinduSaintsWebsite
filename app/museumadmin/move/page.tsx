@@ -1,3 +1,4 @@
+import {readWestV46Guide} from "@/lib/spn-west-v46-source";
 import {readWestV1Guide} from "@/lib/spn-west-v1-source";
 import {readWestV45Guide} from "@/lib/spn-west-v45-source";
 import {readEastRemainderGuide} from "@/lib/spn-east-remainder-source";
@@ -25,12 +26,12 @@ export default async function SpnMoveCompanionPage({searchParams}:{searchParams:
  const user=await requireCapability("view_museum_catalog");
  const [physical,current]=await Promise.all([readMuseumPhysicalLocations(tx=>readMuseumMoveSessionSource(registeredMoveProposal.version,tx)),getMuseumData()]);
  const requested=(await searchParams).phase;
- const phase=requested==="west1"||requested==="west45"||requested==="east2"||requested==="vraj2"||requested==="north"||requested==="vraj"||requested==="gosaiji-sai"||requested==="datta"||requested==="ram-bhakti"?requested:"starter";
+ const phase=requested==="west46"||requested==="west1"||requested==="west45"||requested==="east2"||requested==="vraj2"||requested==="north"||requested==="vraj"||requested==="gosaiji-sai"||requested==="datta"||requested==="ram-bhakti"?requested:"starter";
  const alternatives=await readGuideAlternativeDestinations();
- const [eastRemainder,vrajRemainder,westV45,westV1]=await Promise.all([readEastRemainderGuide(current,physical,alternatives),readVrajRemainderGuide(current,physical,alternatives),readWestV45Guide(current,physical,alternatives),readWestV1Guide(current,physical,alternatives)]);
- const phaseGuides:Record<"starter"|"datta"|"ram-bhakti"|"gosaiji-sai"|"east2"|"vraj"|"vraj2"|"north"|"west45"|"west1",StarterMoveGuide>={west1:westV1,west45:westV45,east2:eastRemainder,vraj2:vrajRemainder,north:projectNorthernGuide(current.placements,physical),vraj:projectVrajGuide(current.placements,physical),starter:projectBilashGuideFollowup(projectStarterDisplayTiers(starterMoveGuide,current.placements),current.placements),datta:projectDattaGuide(current.placements,physical),"ram-bhakti":projectRamBhaktiGuide(current.placements,physical),"gosaiji-sai":projectRamakrishnaGuide(current.placements,physical)};
+ const [eastRemainder,vrajRemainder,westV45,westV1,westV46]=await Promise.all([readEastRemainderGuide(current,physical,alternatives),readVrajRemainderGuide(current,physical,alternatives),readWestV45Guide(current,physical,alternatives),readWestV1Guide(current,physical,alternatives),readWestV46Guide(current,physical,alternatives)]);
+ const phaseGuides:Record<"starter"|"datta"|"ram-bhakti"|"gosaiji-sai"|"east2"|"vraj"|"vraj2"|"north"|"west45"|"west1"|"west46",StarterMoveGuide>={west46:westV46,west1:westV1,west45:westV45,east2:eastRemainder,vraj2:vrajRemainder,north:projectNorthernGuide(current.placements,physical),vraj:projectVrajGuide(current.placements,physical),starter:projectBilashGuideFollowup(projectStarterDisplayTiers(starterMoveGuide,current.placements),current.placements),datta:projectDattaGuide(current.placements,physical),"ram-bhakti":projectRamBhaktiGuide(current.placements,physical),"gosaiji-sai":projectRamakrishnaGuide(current.placements,physical)};
  for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj"] as const)phaseGuides[key]=removeSupersededNorthernSuggestions(phaseGuides[key]);
- for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj","vraj2","east2","north","west45","west1"] as const)phaseGuides[key]=projectCurrentGuideLifeStatus(phaseGuides[key],current);
+ for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj","vraj2","east2","north","west45","west1","west46"] as const)phaseGuides[key]=projectCurrentGuideLifeStatus(phaseGuides[key],current);
  const guide=phaseGuides[phase];
  return <SpnRoomMoveCompanion initialAlternatives={alternatives} roomTones={{...Object.fromEntries(buildLatestSpnReview(current.placements).designData.options[0].assignments.map(a=>[a.number,a.group])),"23":"E","73":"E","75":"E","79":"B","77":"B"}} phaseGuides={phaseGuides} guide={guide} initialPhysical={physical} allowClear={guide.allowClear??phase==="starter"} phaseLabel={guide.phaseLabel??"Starter row"} phase={phase} canConfirmPlacements={hasCapability(user.roles,"confirm_museum_placements")} canManage={hasCapability(user.roles,"manage_museum")}/>;
 }
