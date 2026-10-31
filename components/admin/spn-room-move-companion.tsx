@@ -269,7 +269,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   if(hold){setError(hold);return;}
   const alternative=items.length===1&&!clearedVitrines?alternatives.find(a=>a.sourceId===items[0].sourceId&&to.kind==="vitrine"&&a.vitrine===to.code):undefined;
   const addition=items.length===1&&!clearedVitrines&&to.kind==="vitrine"?additions.find(a=>a.sourceId===items[0].sourceId&&a.vitrine===to.code):undefined;
-  if(addition)to={...to,shelf:addition.shelf};
+  if(addition)to={...to,...(addition.shelf?{shelf:addition.shelf}:{})};
   else if(alternative)to={...to,...(alternative.shelf?{shelf:alternative.shelf}:{})};
   const authorizationGuide=addition?(capturedPhaseGuides?Object.values(capturedPhaseGuides):[initialGuide]).find(g=>g.vitrines.some(v=>v.code===to.code)):guide;
   const now=new Date();const confirmedDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
@@ -419,7 +419,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   const hold=spnCaseExecutionHold(addition.vitrine)||(row.current?.kind==="vitrine"?spnCaseExecutionHold(row.current.code):null);
   if(hold)throw new Error(hold);
   const now=new Date();const confirmedDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
-  const result=await send("POST",{museumId:"museum-spn",clientRequestId:crypto.randomUUID(),confirmedDate,datePrecision:"date",physicalConfirmation:true,inventoryAcknowledged:true,evidence:"Curator confirmed a museum-search addition as already moved.",curatorAddition:{sourceId:addition.sourceId,version:addition.version},...(receiver?{guideContext:{guideVersion:receiver.version,contentDigest:receiver.contentDigest,assignmentDigest:receiver.assignmentDigest}}:{}),records:[{sourceId:row.sourceId,saintId:row.saintId,expectedLocationVersion:row.currentVersion,expectedCurrentRevision:row.currentRevision,expectedSourceRevision:row.sourceRevision,to:{kind:"vitrine",code:addition.vitrine,label:"Vitrine "+addition.vitrine,shelf:addition.shelf}}]},"/api/admin/museum-physical-locations",true);
+  const result=await send("POST",{museumId:"museum-spn",clientRequestId:crypto.randomUUID(),confirmedDate,datePrecision:"date",physicalConfirmation:true,inventoryAcknowledged:true,evidence:"Curator confirmed a museum-search addition as already moved.",curatorAddition:{sourceId:addition.sourceId,version:addition.version},...(receiver?{guideContext:{guideVersion:receiver.version,contentDigest:receiver.contentDigest,assignmentDigest:receiver.assignmentDigest}}:{}),records:[{sourceId:row.sourceId,saintId:row.saintId,expectedLocationVersion:row.currentVersion,expectedCurrentRevision:row.currentRevision,expectedSourceRevision:row.sourceRevision,to:{kind:"vitrine",code:addition.vitrine,label:"Vitrine "+addition.vitrine,...(addition.shelf?{shelf:addition.shelf}:{})}}]},"/api/admin/museum-physical-locations",true);
   return !!result;
  }
  function placementControl(id:string){
