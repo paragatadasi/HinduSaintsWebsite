@@ -19,7 +19,7 @@ const originOnlyAcknowledgement=z.object({
   sourceId: z.string().refine(id=>componentSourceIds.includes(id)), scope: z.enum(["vitrine_20_contents_only","vitrine_19_contents_only","vitrine_42_contents_only"]),
   allOriginPiecesStaged: z.literal(true), walkingSticksNotInVitrine: z.literal(true)
 }).strict();
-const includingSticksAcknowledgement=z.object({sourceId:z.literal("recsm43oeUdKNUMqs"),scope:z.literal("vitrine_64_contents_including_sticks"),allOriginPiecesStaged:z.literal(true),walkingSticksInVitrineStaged:z.literal(true)}).strict();
+const includingSticksAcknowledgement=z.object({sourceId:z.string().refine(id=>id===v64ComponentBinding.sourceId),scope:z.literal("vitrine_64_contents_including_sticks"),allOriginPiecesStaged:z.literal(true),walkingSticksInVitrineStaged:z.literal(true)}).strict();
 export const componentStagingAcknowledgements=z.array(z.union([originOnlyAcknowledgement,includingSticksAcknowledgement]).refine(row=>row.scope===componentScopeForOrigin(componentOriginCode(row.sourceId)??""),"Component source and origin do not match.")).max(5).refine(rows=>new Set(rows.map(row=>row.sourceId)).size===rows.length,"Repeated component acknowledgement.");
 export type ComponentPlacement = {
   sourceId: string; receiptId: string; recordedAt: string; revision: string;
