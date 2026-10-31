@@ -70,3 +70,12 @@ test("Vraj remainder owns its cases without borrowing the original phase or a re
  assert.equal(result.vraj.contentDigest,guides.vraj.contentDigest);
  assert.equal(result.vraj2.entries[0].destination,"32");
 });
+
+test("East remainder receives additions without duplicating the existing Eastern phase",()=>{
+ const guides={north:base("26"),"gosaiji-sai":base("37"),east2:base("26")};
+ const result=projectCompanionAdditions(guides,[{...addition,vitrine:"26"}],[entry]);
+ assert.deepEqual(result.east2.vitrines[0].cityGroups[0].sourceIds,[entry.sourceId]);
+ assert.equal(result.north.entries.length,0);
+ assert.equal(result["gosaiji-sai"].entries.length,0);
+ assert.equal(result["gosaiji-sai"].contentDigest,guides["gosaiji-sai"].contentDigest);
+});

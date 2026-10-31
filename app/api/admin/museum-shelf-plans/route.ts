@@ -5,7 +5,7 @@ import {getMuseumData} from "@/lib/museum-data";
 import {readMuseumPhysicalLocations} from "@/lib/museum-physical-locations";
 import {readMuseumMoveSessionSource,registeredMoveProposal} from "@/lib/museum-move-session-source";
 import {readShelfPlanningContext} from "@/lib/museum-shelf-planning-source";
-import packet from "@/data/museum/spn-vraj-east-shelves-v1.json";
+import {operationalSpnShelfPacket as packet} from "@/lib/spn-east-remainder-shelves";
 
 export const runtime="nodejs";
 const headers={"Cache-Control":"private, no-store"};

@@ -1,3 +1,4 @@
+import {eastRemainderGuideContext,eastRemainderGuideDefinition} from "./spn-east-remainder-guide";
 import {northernGuideContext as priorNorthernContext,northernGuideDefinition as priorNorthernDefinition} from "./spn-northern-guide-v1";
 import {northernGuideContext,northernGuideDefinition} from "./spn-northern-guide";
 import {ramakrishnaGuideContext,ramakrishnaGuideDefinition} from "./spn-ramakrishna-guide";
@@ -61,12 +62,13 @@ const cityAlternatives = guide.cityAlternatives.map(cohort => {
 if (new Set(suggestions.map(row => row.id)).size !== suggestions.length) throw new Error("Duplicate registered suggestion identifiers.");
 export const registeredStarterGuide = { ...guide, cityAlternatives, guideContext: starterGuideContext };
 export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinition[] {
-  return [northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,
+  return [eastRemainderGuideContext,northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,
     ramBhaktiGuideContext, dattaGuideContext, starterGuideContext].map(context => readStarterGuideDefinition(context.guideVersion))
     .filter(definition => !definition.readOnly && (definition.suggestions.some(row => row.targetVitrine === vitrine) ||
       Object.values(definition.physicalScope?.destinations ?? {}).includes(vitrine)));
 }
 export function readStarterGuideDefinition(version: string): GuideDefinition {
+  if(version===eastRemainderGuideContext.guideVersion)return eastRemainderGuideDefinition;
   if(version===vrajRemainderGuideContext.guideVersion)return vrajRemainderGuideDefinition;
   if(version===northernGuideContext.guideVersion)return northernGuideDefinition;
   if(version===priorNorthernContext.guideVersion)return {...priorNorthernDefinition,readOnly:true};
