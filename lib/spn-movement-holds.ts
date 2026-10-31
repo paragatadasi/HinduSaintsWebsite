@@ -1,3 +1,4 @@
+import {isReviewedBimalAssembly} from "./spn-bimal-reviewed-assembly";
 import {spnDuplicateObservations} from "./spn-observation-suppression";
 import adjustments from "../data/museum/spn-starter-curator-adjustments-v1.json";
 import { MuseumMoveSessionError, sameMoveLocation, type MoveLocation } from "./museum-move-session-domain";
@@ -16,6 +17,7 @@ export function spnMovementBlockedReason(sourceId: string,evidence?:ReviewedHous
   if(spnDuplicateObservations[sourceId])return spnDuplicateObservations[sourceId].reason;
   if(adjustments.privateSourceIds.includes(sourceId))return adjustments.privateHoldReason;
   if(sourceId===paramanandReview.sourceId&&housingReviewSources.has(sourceId))return isReviewedParamanandArmSupport(evidence)?undefined:paramanandReview.housingReason;
+  if(evidence?.sourceId===sourceId && isReviewedBimalAssembly(evidence))return undefined;
   return housingReviewSources.has(sourceId)
     ? "Confirm this source's separate objects and stick housing before recording a move of the whole display."
     : undefined;

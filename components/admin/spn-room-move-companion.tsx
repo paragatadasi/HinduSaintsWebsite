@@ -2,6 +2,7 @@
 import {MuseumStagingContents} from "./museum-staging-contents";
 import {MuseumCaseStagingReview} from "./museum-case-staging-review";
 import {MuseumClearContents} from "./museum-clear-contents";
+import {isReviewedBimalTransfer} from "@/lib/spn-bimal-reviewed-assembly";
 import {spnCaseExecutionHold} from "@/lib/museum-case-execution-holds";
 import {componentClearanceScope} from "@/lib/museum-component-clearance-domain";
 import {companionRows,companionRowForPhase,type CompanionPhase,type CompanionRowKey} from "@/lib/museum-companion-navigation";
@@ -246,7 +247,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   if(notOnDisplay){await decide(declineSource,"not_on_display",declineNote);return;}
   const sourceId=declineSource.startsWith("row:")?declineSource.slice(4):null;
   const row=sourceId?rows.find(r=>r.sourceId===sourceId):null;
-  const hold=spnCaseExecutionHold(alternativeVitrine)||(row?.current?.kind==="vitrine"?spnCaseExecutionHold(row.current.code):null);
+  const hold=spnCaseExecutionHold(alternativeVitrine)||(row?.current?.kind==="vitrine"&&!isReviewedBimalTransfer(row,row.current,{kind:"vitrine",code:alternativeVitrine})?spnCaseExecutionHold(row.current.code):null);
   if(alternativeIntent==="moved"&&hold){setError(hold);return;}
   if(alternativeIntent==="moved"&&(!row||!alternativeVitrine||blocked(row)))return;
   const result=await decide(declineSource,"declined",declineNote);
@@ -268,7 +269,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  }
  function move(items:CompanionRow[],to:PhysicalLocation,clearedVitrines?:string[],componentSources:string[]=[]){
   if(!editable&&!(placementEditable&&items.length===1&&to.kind==="vitrine"&&!clearedVitrines&&!componentSources.length))return;
-  const hold=(to.kind==="vitrine"?spnCaseExecutionHold(to.code):null)||items.map(row=>row.current?.kind==="vitrine"?spnCaseExecutionHold(row.current.code):null).find(Boolean)||(clearedVitrines??[]).map(spnCaseExecutionHold).find(Boolean);
+  const hold=(to.kind==="vitrine"?spnCaseExecutionHold(to.code):null)||items.map(row=>row.current?.kind==="vitrine"&&!isReviewedBimalTransfer(row,row.current,to)?spnCaseExecutionHold(row.current.code):null).find(Boolean)||(clearedVitrines??[]).map(spnCaseExecutionHold).find(Boolean);
   if(hold){setError(hold);return;}
   const alternative=items.length===1&&!clearedVitrines?alternatives.find(a=>a.sourceId===items[0].sourceId&&to.kind==="vitrine"&&a.vitrine===to.code):undefined;
   const addition=items.length===1&&!clearedVitrines&&to.kind==="vitrine"?additions.find(a=>a.sourceId===items[0].sourceId&&a.vitrine===to.code):undefined;
