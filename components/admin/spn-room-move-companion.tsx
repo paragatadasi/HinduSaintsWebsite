@@ -249,7 +249,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   const row=sourceId?rows.find(r=>r.sourceId===sourceId):null;
   const hold=spnCaseExecutionHold(alternativeVitrine)||(row?.current?.kind==="vitrine"&&!isReviewedBimalTransfer(row,row.current,{kind:"vitrine",code:alternativeVitrine})?spnCaseExecutionHold(row.current.code):null);
   if(alternativeIntent==="moved"&&hold){setError(hold);return;}
-  if(alternativeIntent==="moved"&&(!row||!alternativeVitrine||blocked(row)))return;
+  if(alternativeIntent==="moved"&&(!row||!alternativeVitrine||blocked(row,alternativeVitrine)))return;
   const result=await decide(declineSource,"declined",declineNote);
   if(!result?.decision||alternativeIntent!=="moved"||!row)return;
   if(isPlaced(row,alternativeVitrine)&&(row.current?.shelf??"")===alternativeShelf.trim()){setMessage("Alternative saved. This location is already confirmed.");return;}
@@ -302,14 +302,14 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   void send("POST",{action:"undo",museumId:"museum-spn",clientRequestId:crypto.randomUUID(),receiptId:undoRow.undo.receiptId,sourceId:undoRow.sourceId,saintId:undoRow.saintId,expectedCurrentRevision:undoRow.currentRevision,expectedSourceRevision:undoRow.sourceRevision,expectedLocationVersion:undoRow.currentVersion,mistakenCheckAcknowledged:true});
   setUndoSource(null);
  }
- function blocked(row:CompanionRow){return !!(row.current?.kind==="vitrine"&&spnCaseExecutionHold(row.current.code))||!!row.componentPlacement||row.verifiedItemIds.length>0||row.fixedHousing||row.identityChanged||!!row.movementBlockedReason;}
+ function blocked(row:CompanionRow,target=selected){return !!(row.current?.kind==="vitrine"&&spnCaseExecutionHold(row.current.code)&&!isReviewedBimalTransfer(row,row.current,{kind:"vitrine",code:target}))||!!row.componentPlacement||row.verifiedItemIds.length>0||row.fixedHousing||row.identityChanged||!!row.movementBlockedReason;}
  function isNotOnDisplay(id:string){return decisions.some(d=>d.suggestionId==="row:"+id&&d.decision==="not_on_display");}
  function display(sourceId:string,target=selected,allowMove=true,compact=false,showWork=false){
   const row=rows.find(r=>r.sourceId===sourceId),entry=guideById.get(sourceId);
   if(!row)return <p key={sourceId} role="note">{entry?.name??sourceId}: current record unavailable. Reload before recording a move.</p>;
   if(isNotOnDisplay(sourceId))return <div className="museum-guide-narrative" key={sourceId}><strong>{entry?.name??row.name}</strong>{decisionControls("row:"+sourceId)}</div>;
   const placed=isPlaced(row,target);
-  const reviewBlock=spnCaseExecutionHold(target)||(row.current?.kind==="vitrine"?spnCaseExecutionHold(row.current.code):null)||row.movementBlockedReason||(row.reviewedHousing?undefined:entry?.movementBlockedReason);
+  const reviewBlock=spnCaseExecutionHold(target)||(row.current?.kind==="vitrine"&&!isReviewedBimalTransfer(row,row.current,{kind:"vitrine",code:target})?spnCaseExecutionHold(row.current.code):null)||row.movementBlockedReason||(row.reviewedHousing?undefined:entry?.movementBlockedReason);
   if(workflow==="guided")return <div className="museum-guide-check" key={sourceId} id={compact?undefined:`move-${sourceId}`}>
    <input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${target}`} checked={placed||savingTargets[sourceId]===target} disabled={!placementEditable||blocked(row)||!target||!allowMove||!!reviewBlock} onChange={()=>togglePlacement(row,target)}/>
    <div className="museum-guide-check__body"><details><summary>{entry?.name??row.name}{compact&&entry?<span className="museum-guide-tier">{entry.tier}</span>:null}</summary><p>{entry?.relicDescription}</p><p>Original: {currentLocationLabel(row.original)}</p><p>{entry?.rationale}</p></details>

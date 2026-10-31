@@ -1,7 +1,7 @@
 import type {ComponentPlacement} from "./museum-component-clearance-domain";
 export type GuideEntry = {
  proposalTransfer?:import("./spn-regional-pending-transfers").RegionalPendingTransfer|null;
- optionalAddition?:boolean;displayRoleTier?:string|null;
+ reviewOnly?:boolean;optionalAddition?:boolean;displayRoleTier?:string|null;
  sourceId:string;saintId:string|null;name:string;tier:string;city:string;relicDescription:string;
  destination:string;section:string;family:string;rationale:string;
  reviewNotes?:string[];movementBlockedReason?:string;reportedOrigin?:string|null;
