@@ -84,6 +84,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  const [vitrineSearch,setVitrineSearch]=useState("");
  const [savingSources,setSavingSources]=useState<string[]>([]);
  const [savingTargets,setSavingTargets]=useState<Record<string,string>>({});
+ const [placementErrors,setPlacementErrors]=useState<Record<string,string>>({});
  useEffect(()=>{setVitrineSearch("");setClearConfirmed(false);setComponentClearConfirmed(false);},[selected]);
  const displayWork=useMuseumDisplayWork();
  const allGuides=useMemo(()=>phaseGuides?Object.values(phaseGuides):[guide],[phaseGuides,guide]);
@@ -179,6 +180,8 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  async function send(method:string,body:RequestBody,url="/api/admin/museum-physical-locations",propagateError=false){
   if(pending.current){if(propagateError)throw new Error("Another save is in progress. Try again when it finishes.");return;}
   pending.current=true;mutationEpoch.current+=1;setBusy(true);setError("");setMessage("");
+  const affectedSources=Array.isArray(body.records)?body.records.map((record:{sourceId:string})=>record.sourceId):[];
+  setPlacementErrors(previous=>Object.fromEntries(Object.entries(previous).filter(([id])=>!affectedSources.includes(id))));
   setSavingSources(Array.isArray(body.records)?body.records.map((record:{sourceId:string})=>record.sourceId):typeof body.sourceId==="string"?[body.sourceId]:[]);
   setSavingTargets(Object.fromEntries((Array.isArray(body.records)?body.records:[]).filter(record=>record.to?.kind==="vitrine").map(record=>[record.sourceId,record.to.code])));
   retry.current={method,body,url};
@@ -207,7 +210,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
    if(Array.isArray(result.alternativeDestinations))setAlternatives(result.alternativeDestinations);
    if(result.decision){setRowDecisions(previous=>({...previous,[guide.version]:[...(previous[guide.version]??[]).filter(d=>d.suggestionId!==result.decision.suggestionId),result.decision]}));setDecisions(previous=>[...previous.filter(d=>d.suggestionId!==result.decision.suggestionId),result.decision]);if(body.decision==="declined"||body.decision==="not_on_display")setDeclineSource(null);}
    else setPhysical(previous=>previous?{...previous,...(Array.isArray(result.preparations)?{preparations:result.preparations}:{}),...(Array.isArray(result.phaseClearances)?{phaseClearances:result.phaseClearances}:{}),confirmationHistory:result.receipt?[result.receipt,...(previous.confirmationHistory??[])]:previous.confirmationHistory,rows:previous.rows.map(row=>result.rows.find((next:CompanionRow)=>next.sourceId===row.sourceId)??row)}:result);retry.current=null;setMessage(result.alreadyRecorded?.length?"Already recorded by another curator. Progress updated.":"Saved.");setClearConfirmed(false);setComponentClearConfirmed(false);return result;
-  }catch(e){const message=e instanceof Error?e.message:"Could not save. Retry the same action or reload to check its status.";setError(message);if(propagateError)throw new Error(message);}
+  }catch(e){const message=e instanceof Error?e.message:"Could not save. Retry the same action or reload to check its status.";setError(message);setPlacementErrors(previous=>({...previous,...Object.fromEntries(affectedSources.map((id:string)=>[id,message]))}));if(propagateError)throw new Error(message);}
   finally{pending.current=false;setBusy(false);setSavingSources([]);setSavingTargets({});}
  }
  async function reload(){
@@ -279,12 +282,19 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
    ...(componentSources.length?{componentStagingAcknowledgements:componentSources.map(sourceId=>({sourceId,scope:componentClearanceScope(items.find(row=>row.sourceId===sourceId)!),allOriginPiecesStaged:true,walkingSticksNotInVitrine:true}))}:{}),
    records:items.map(r=>({sourceId:r.sourceId,saintId:r.saintId,expectedLocationVersion:r.currentVersion,expectedCurrentRevision:r.currentRevision,expectedSourceRevision:r.sourceRevision,to})),...(clearedVitrines?{clearedVitrines,...((guide.requiredClearVitrines?.length||componentSources.length)?{initialCaseClearAcknowledged:true}:{})}:{})});
  }
+ function placementFeedback(sourceId:string){
+  const message=placementErrors[sourceId];
+  if(!message)return null;
+  const sameSave=Array.isArray(retry.current?.body.records)&&retry.current.body.records.some((record:{sourceId:string})=>record.sourceId===sourceId);
+  return <span role="alert" className="admin-notice">{message}{sameSave?<button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={busy} onClick={()=>{const request=retry.current;if(request)void send(request.method,request.body,request.url);}}>Retry same save</button>:null}</span>;
+ }
  function togglePlacement(row:CompanionRow,target:string){
   const hold=spnCaseExecutionHold(target)||(row.current?.kind==="vitrine"?spnCaseExecutionHold(row.current.code):null);
   if(hold){setError(hold);return;}
   if(isPlaced(row,target)){if(!canManage){setError("This placement is already saved. Ask a curator to correct a mistaken check.");return;}setUndoSource(row.sourceId);return;}
-  if(!preparationReady){setReadinessAttempts(value=>value+1);return;}
-  move([row],{kind:"vitrine",code:target,label:`Vitrine ${target}`});
+  if(!preparationReady){setPlacementErrors(previous=>({...previous,[row.sourceId]:`Complete the preparation for Vitrine ${target} above before recording this placement.`}));setReadinessAttempts(value=>value+1);return;}
+  try{move([row],{kind:"vitrine",code:target,label:`Vitrine ${target}`});}
+  catch(error){setPlacementErrors(previous=>({...previous,[row.sourceId]:error instanceof Error?error.message:"The save could not start. Reload the guide and try again."}));}
  }
  function undoPlacement(){
   if(!undoRow?.undo?.available||!undoRow.undo.receiptId||!editable)return;
@@ -302,7 +312,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   if(workflow==="guided")return <div className="museum-guide-check" key={sourceId} id={compact?undefined:`move-${sourceId}`}>
    <input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${target}`} checked={placed||savingTargets[sourceId]===target} disabled={!placementEditable||blocked(row)||!target||!allowMove||!!reviewBlock} onChange={()=>togglePlacement(row,target)}/>
    <div className="museum-guide-check__body"><details><summary>{entry?.name??row.name}{compact&&entry?<span className="museum-guide-tier">{entry.tier}</span>:null}</summary><p>{entry?.relicDescription}</p><p>Original: {currentLocationLabel(row.original)}</p><p>{entry?.rationale}</p></details>
-    {starterCleanupPartial(sourceId)?<small className="museum-guide-tier">Partially moved · remaining pieces to bring</small>:null}{savingSources.includes(sourceId)?<small role="status">Saving…</small>:null}<small>{placed?"Placed · saved":row.componentPlacement?"Partly staged":row.currentBasis==="confirmed"?"Current":"Last recorded"}: {companionLocationLabel(row)}{target!==selected?` → Vitrine ${target}`:""}</small>
+    {starterCleanupPartial(sourceId)?<small className="museum-guide-tier">Partially moved · remaining pieces to bring</small>:null}{savingSources.includes(sourceId)?<small role="status">Saving…</small>:null}{placementFeedback(sourceId)}<small>{placed?"Placed · saved":row.componentPlacement?"Partly staged":row.currentBasis==="confirmed"?"Current":"Last recorded"}: {companionLocationLabel(row)}{target!==selected?` → Vitrine ${target}`:""}</small>
     {entry?.reportedOrigin&&row.currentBasis!=="confirmed"?<small>{entry.reportedOrigin}</small>:null}{entry?.city?<small>{entry.city}</small>:null}{entry?.optionalAddition?<small className="museum-guide-tier">Optional · place last</small>:null}{entry?.lifeStatus?.tag?<small className="museum-guide-tier">{entry.lifeStatus.tag}</small>:null}{row.identityChanged?<small>Identity changed. Reload and review before recording a move.</small>:!reviewBlock&&blocked(row)?<small>Fixed housing or a verified inventory item needs its existing item-move workflow.</small>:null}{reviewBlock?<p role="note">{reviewBlock}</p>:null}{entry?.reviewNotes?.map(note=><small key={note}>{note}</small>)}{showWork&&allowMove?<MuseumDisplayWork tasks={displayWork.tasks.filter(task=>task.sourceId===sourceId)} name={entry?.name??row.name} shelf={displayWork.shelf(row)} canEditShelf={placed} canManage={editable&&displayWork.loaded} onShelfSave={value=>displayWork.saveShelf(row,value)} onTaskAdd={title=>displayWork.addTask(row,title)}/>:null}
    </div>{!placed&&canManage&&allowMove&&pilotIds.has(sourceId)?decisionControls("row:"+sourceId):null}
   </div>;
@@ -427,7 +437,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   if(!row||!selectedIds.includes(id))return null;
   if(isNotOnDisplay(id))return <small>Not on display</small>;
   const placed=isPlaced(row,selected);
-  return <span className="museum-guide-tree__check"><input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${selected}`} checked={placed||savingTargets[id]===selected} disabled={!placementEditable||!!executionHold||blocked(row)||(!row.reviewedHousing&&!!entry?.movementBlockedReason)} onChange={()=>togglePlacement(row,selected)}/>{savingSources.includes(id)?<small role="status">Saving…</small>:null}</span>;
+  return <span className="museum-guide-tree__check"><input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${selected}`} checked={placed||savingTargets[id]===selected} disabled={!placementEditable||!!executionHold||blocked(row)||(!row.reviewedHousing&&!!entry?.movementBlockedReason)} onChange={()=>togglePlacement(row,selected)}/>{savingSources.includes(id)?<small role="status">Saving…</small>:null}{placementFeedback(id)}</span>;
  }
  function sorted(ids:string[]){const rank=(id:string)=>{const n=["Primary","Secondary","Tertiary"].indexOf(guideById.get(id)?.tier??"");return n<0?3:n;};return [...new Set(ids)].sort((a,b)=>rank(a)-rank(b));}
  function matchesVitrine(id:string){const entry=guideById.get(id);return !vitrineSearch.trim()||`${entry?.name??""} ${entry?.city??""}`.toLocaleLowerCase().includes(vitrineSearch.trim().toLocaleLowerCase());}

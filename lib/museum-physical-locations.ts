@@ -1,7 +1,7 @@
 import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
 import {caseContentsStaging,assertSelectedCaseContents} from "./museum-case-contents-domain";
 import {spnCaseExecutionHold, spnPhysicalExecutionHold} from "./museum-case-execution-holds";
-import {assertAssistantGuidePlacement,assertAssistantEffectiveDestination} from "./museum-assistant-placement-domain";
+import {assertAssistantGuidePlacement,assertAssistantEffectiveDestination,assertSavedAdditionPlacement} from "./museum-assistant-placement-domain";
 import {currentCompanionAdditions} from "./museum-companion-addition-validation";
 import {buildLatestSpnReview} from "./spn-reviewed-proposal";
 import {currentSpnProposalRelease} from "./spn-current-proposal";
@@ -201,10 +201,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
       const addition = (await readEffectiveCompanionAdditions(tx)).find(row => row.sourceId === input.curatorAddition!.sourceId);
       const record = input.records[0];
-      if (!addition || addition.version !== input.curatorAddition.version || addition.sourceId !== record.sourceId ||
-        addition.saintId !== record.saintId || addition.sourceRevision !== record.expectedSourceRevision ||
-        record.to.kind !== "vitrine" || record.to.code !== addition.vitrine || (record.to.shelf ?? null) !== addition.shelf)
-        throw new MuseumMoveSessionError(409, "The added destination changed. Reload it before recording the move.");
+      assertSavedAdditionPlacement(input.curatorAddition,record,addition);
       additionPhases = currentReceiverGuideDefinitions(addition.vitrine);
       if (input.guideContext ? !additionPhases.some(row => row.context.guideVersion === input.guideContext!.guideVersion) : additionPhases.length > 0)
         throw new MuseumMoveSessionError(409, "Open this destination's current move guide before recording its added relic.");
