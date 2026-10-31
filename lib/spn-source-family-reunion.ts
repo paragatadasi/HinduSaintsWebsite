@@ -32,3 +32,36 @@ export function projectSourceFamilyReunion(guide: StarterMoveGuide): StarterMove
   return {...guide, vitrines: guide.vitrines.map(v => v !== vitrine ? v : {...v,
     families: [...withoutPair(v.families), family], cityGroups: withoutPair(v.cityGroups)})};
 }
+
+export const gajananGangadharaRelationship = {
+  vitrine: "3",
+  parent: {sourceId: "recWCBILl4t5fUT1c", saintId: "cms0w7j6708k807qiw00mx7vx"},
+  child: {sourceId: "recsmno4Rquvfnth2", saintId: "cmus3rxpn008h07o57vl7ryun"},
+  basis: "The institutional biography records Gangadhar Maharaj transmitting the Mahamool Mantra and symbols of office to Gajanan Maharaj on 11 March 1938. https://paramsadguru.vishwaglobal.com/early-life.php",
+} as const;
+
+export function projectGajananDisplayRelationship(guide: StarterMoveGuide): StarterMoveGuide {
+  const relation = gajananGangadharaRelationship;
+  const vitrine = guide.vitrines.find(v => v.code === relation.vitrine);
+  if (!vitrine) return guide;
+  const visible = new Set([...vitrine.families, ...vitrine.cityGroups].flatMap(g => g.sourceIds));
+  if (![relation.parent, relation.child].every(member => visible.has(member.sourceId) && guide.entries.some(entry =>
+    entry.sourceId === member.sourceId && entry.saintId === member.saintId && entry.destination === relation.vitrine))) return guide;
+  const parentFamily = vitrine.families.find(group => group.sourceIds.includes(relation.parent.sourceId));
+  if (!parentFamily) return guide;
+  const childId = relation.child.sourceId;
+  const removeChild = (groups: GuideGroup[]) => groups.flatMap(group => {
+    if (group === parentFamily || !group.sourceIds.includes(childId)) return [group];
+    const sourceIds = group.sourceIds.filter(id => id !== childId);
+    return sourceIds.length ? [{...group, sourceIds, saintCount: undefined, spaceEstimate: undefined,
+      edges: group.edges?.filter(edge => edge.fromSourceId !== childId && edge.toSourceId !== childId)}] : [];
+  });
+  return {...guide,
+    entries: guide.entries.map(entry => entry.sourceId === childId ? {...entry, city: "Shivpuri, Akkalkot"} : entry),
+    vitrines: guide.vitrines.map(v => v !== vitrine ? v : {...v,
+      families: removeChild(v.families).map(group => group !== parentFamily ? group : {...group,
+        sourceIds: [...new Set([...group.sourceIds, childId])], saintCount: undefined, spaceEstimate: undefined,
+        edges: [...(group.edges ?? []).filter(edge => !(edge.fromSourceId === relation.parent.sourceId && edge.toSourceId === childId)),
+          {fromSourceId: relation.parent.sourceId, toSourceId: childId, label: "Initiation / succession", basis: relation.basis}]}),
+      cityGroups: removeChild(v.cityGroups)})};
+}

@@ -1,6 +1,6 @@
 import type {StarterMoveGuide,GuideEntry,GuideGroup} from "./spn-move-guide";
 import type {CompanionAddition} from "./museum-companion-additions-state";
-import {projectSourceFamilyReunion} from "./spn-source-family-reunion";
+import {projectSourceFamilyReunion,projectGajananDisplayRelationship} from "./spn-source-family-reunion";
 const phaseOrder=["starter","datta","ram-bhakti","gosaiji-sai","east2","vraj","vraj2","north"];
 export function companionVitrineOwner<T extends string>(guides:Record<T,StarterMoveGuide>,code:string):T|undefined{
  const keys=Object.keys(guides) as T[];
@@ -34,6 +34,6 @@ export function projectCompanionAdditions<T extends string>(guides:Record<T,Star
    const transferred=[...original.families,...original.cityGroups].some(group=>group.sourceIds.some(id=>byId.get(id)?.vitrine===v.code&&owners.get(id)!==key));
    return !transferred;
   });
-  return [key,projectSourceFamilyReunion({...guide,vitrines:visibleVitrines,entries:[...updated.values()]})];
+  return [key,projectGajananDisplayRelationship(projectSourceFamilyReunion({...guide,vitrines:visibleVitrines,entries:[...updated.values()]}))];
  })) as Record<T,StarterMoveGuide>;
 }
