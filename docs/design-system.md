@@ -606,7 +606,7 @@ See [relic intake guidance](design-system/shared-museum-workspaces.md#relic-inta
 
 Use the shared admin sign-in panel and stacked form fields for username sign-in. Keep Google/email options unchanged, with the username option in an integrated disclosure. Use persistent labels, password-manager autocomplete on sign-in, inline field errors, and a busy submit state. Account creation and password reset live in Users & Access using existing collapsible review cards; never display or retain saved passwords. Password-reset copy must explain that existing sessions end.
 
-Museum assistants see museum navigation and read-only summaries. Hide unavailable editing controls and Main admin navigation, retain exploration/search/expand controls, and provide Sign out in the museum shell. Permissions must also be enforced by server actions and APIs; visual restrictions alone are insufficient.
+Museum assistants see museum navigation and summaries. In the move companion they may check off individual reviewed placements; proposal changes, clearing, and corrections remain curator controls. Hide unavailable editing controls and Main admin navigation, retain exploration/search/expand controls, and provide Sign out in the museum shell. Permissions must also be enforced by server actions and APIs; visual restrictions alone are insufficient.
 
 ### Stacked museum intake
 
@@ -764,3 +764,5 @@ Museum companion navigation groups registered guides by museum row using `museum
 ### Staging destination groups
 
 `MuseumStagingContents` reuses the clearing-card destination groups. Its compact summary buttons show recorded entry counts by proposed vitrine and open the matching group in place. Sort numbered destinations naturally, followed by unassigned entries and records awaiting an inventory match. Use the companion's current effective destinations, including curator alternatives and additions, across all phases. Preserve component-specific staging notes and correction actions. Counts refer to recorded entries, not individual pieces within a display.
+
+Shelf recommendation groups use the dedicated `--color-museum-shelf-group-*` palette, distinct from regional map colors. A stronger leading border, tinted surface and named legend repeat the same group cue in shelf cards and their trees. Preserve the labels so relationships do not rely on color alone.
