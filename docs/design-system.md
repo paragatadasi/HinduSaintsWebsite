@@ -764,3 +764,5 @@ Museum companion navigation groups registered guides by museum row using `museum
 ### Staging destination groups
 
 `MuseumStagingContents` reuses the clearing-card destination groups. Its compact summary buttons show recorded entry counts by proposed vitrine and open the matching group in place. Sort numbered destinations naturally, followed by unassigned entries and records awaiting an inventory match. Use the companion's current effective destinations, including curator alternatives and additions, across all phases. Preserve component-specific staging notes and correction actions. Counts refer to recorded entries, not individual pieces within a display.
+
+Shelf recommendation groups use the dedicated `--color-museum-shelf-group-*` palette, distinct from regional map colors. A stronger leading border, tinted surface and named legend repeat the same group cue in shelf cards and their trees. Preserve the labels so relationships do not rely on color alone.
