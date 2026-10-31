@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { readMuseumPhysicalProgress } from "./museum-physical-progress";
 import { getAdminUser } from "./admin-access";
+import {canConfirmMuseumPlacement,museumPhysicalWriteAllowed} from "./museum-placement-access";
 import { hasCapability } from "./permissions";
 import { intakeWriteOriginAllowed } from "./museum-intake-domain";
 import { boundedIntakeBody } from "./museum-intake-api";
@@ -28,17 +29,18 @@ export async function museumPhysicalLocationsHttp(request: Request, loader: Phys
       const ids = z.array(z.string().min(1).max(200)).max(2000).parse(query.getAll("sourceId"));
       result = await readMuseumPhysicalLocations(loader, ids.length ? [...new Set(ids)] : undefined);
     } else if (request.method === "POST") {
-      if (!hasCapability(user.roles, "manage_museum")) throw new MuseumMoveSessionError(403, "A museum curator must record physical locations.");
+      if (!canConfirmMuseumPlacement(user.roles)) throw new MuseumMoveSessionError(403, "A museum curator must record physical locations.");
       if (!intakeWriteOriginAllowed(request.url, request.headers.get("origin"), request.headers.get("host"), process.env.AUTH_URL || process.env.NEXTAUTH_URL)) throw new MuseumMoveSessionError(403, "Reload this page before recording a location.");
       if (!request.headers.get("content-type")?.startsWith("application/json")) throw new MuseumMoveSessionError(415, "Send this confirmation as JSON.");
       const body: unknown = JSON.parse((await boundedIntakeBody(request, 512 * 1024)).toString("utf8"));
+      if (!museumPhysicalWriteAllowed(user.roles,body)) throw new MuseumMoveSessionError(403, "Museum Assistants can check off individual placements. A curator must change plans, clear vitrines or correct previous confirmations.");
       result = body && typeof body === "object" && "action" in body && body.action === "clear.correct"
         ? await correctMuseumClear(body, { id: user.id, canManage: true }, loader)
         : body && typeof body === "object" && "action" in body && body.action === "preparation.update"
         ? await saveMuseumPreparation(body, { id: user.id, canManage: true }, loader)
         : body && typeof body === "object" && "action" in body && body.action === "undo"
         ? await undoMuseumPhysicalCheck(body, { id: user.id, canManage: true }, loader)
-        : await confirmMuseumPhysicalLocations(body, { id: user.id, canManage: true }, loader);
+        : await confirmMuseumPhysicalLocations(body, { id: user.id, canManage: hasCapability(user.roles,"manage_museum"), canConfirmPlacements: hasCapability(user.roles,"confirm_museum_placements") }, loader);
     } else throw new MuseumMoveSessionError(405, "This action is unavailable.");
     return NextResponse.json(result, { headers: { "Cache-Control": "private, no-store", "Server-Timing": `museum;dur=${(performance.now() - started).toFixed(1)}` } });
   } catch (error) {
