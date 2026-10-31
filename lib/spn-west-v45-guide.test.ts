@@ -66,7 +66,7 @@ test("source-only approval retains Dhunda null identity and rejects a newer alte
 test("optional infill, living restriction, unknown footprints and qualified relationships remain explicit",()=>{
  assert.equal(packet.fit.optionalAdditionIds.length,3);assert.equal(packet.fit.unmeasuredHoldingIds.length,2);
  assert.ok(Math.abs(packet.fit.knownShelfProxy-5.366666666666666)<1e-10);
- assert.match(westV45MoveGuide.vitrines[0].summary,/5.37 \/ 5/);
+ assert.match(westV45MoveGuide.vitrines[0].summary,/5\.37 of 5/);
  assert.equal(westV45MoveGuide.entries.find(row=>row.sourceId==="recY3qLwMZxTLFh4x")?.lifeStatus?.tag,"Living");
  const dhunda=westV45MoveGuide.vitrines[0].families.flatMap(g=>g.edges??[]).find(e=>e.toSourceId==="recoGHUjw3ejyIp10");
  assert.match(dhunda?.label??"",/lineage association/);assert.match(dhunda?.basis??"",/not a direct/);

@@ -28,12 +28,13 @@ export const westV45GuideDefinition:GuideDefinition={context:westV45GuideContext
  ...holdings.map(row=>({id:`row:${row.sourceId}`,kind:"row" as const,sourceIds:[row.sourceId],targetVitrine:"45"}))],
  physicalScope:{allowClear:false,preparationVitrines:["45"],destinations:Object.fromEntries(pairs)}};
 export const westV45ContextAnchors=packet.rows.filter(row=>row.anchorOnly);
+const displayText=(value:string)=>value.replaceAll("\uFFFD","·");
 const holdingIds=new Set(holdings.map(row=>row.sourceId));
-const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,sourceIds:g.sourceIds.filter(id=>holdingIds.has(id)),suggestedVitrines:["45"],allowedTargetVitrines:[]});
+const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,title:displayText(g.title),sourceIds:g.sourceIds.filter(id=>holdingIds.has(id)),suggestedVitrines:["45"],allowedTargetVitrines:[]});
 export const westV45MoveGuide:StarterMoveGuide={version:packet.version,...westV45GuideContext,proposalVersion:packet.proposalVersion,title:packet.title,proposalLabel:packet.proposalLabel,
  phaseLabel:"Varkari · 45",allowClear:false,preparationVitrines:["45"],
- entries:holdings.map(row=>({...row,movementBlockedReason:spnMovementBlockedReason(row.sourceId)})),
- vitrines:[{code:"45",summary:"22 display entries: 21 holding observations and one anchor only. Known comparison load 5.37 / 5 plus two unmeasured holdings. Place the three optional additions last; decline any that do not fit. Check available space on site; no whole-case clearing is required.",families:packet.groups.filter(g=>g.kind==="family").map(group),cityGroups:packet.groups.filter(g=>g.kind!=="family").map(group)}],alternatives:[],reportedPlacements:[]};
+ entries:holdings.map(row=>({...row,family:displayText(row.family),movementBlockedReason:spnMovementBlockedReason(row.sourceId)})),
+ vitrines:[{code:"45",summary:"Known load: about 5.37 of 5 shelf spaces, plus two unmeasured holdings. Place optional additions last; decline any that do not fit.",families:packet.groups.filter(g=>g.kind==="family").map(group),cityGroups:packet.groups.filter(g=>g.kind!=="family").map(group)}],alternatives:[],reportedPlacements:[]};
 
 type Review={rows:Pick<ReturnType<typeof buildLatestSpnReview>["rows"][number],"sourceId"|"saintId"|"effectiveVitrine"|"reviewReason">[];proposal:{pendingPlacements:{sourceId:string;reason:string}[]}};
 export function projectWestV45Guide(current:Parameters<typeof projectScopedMoveGuide>[1],physical:PhysicalState,review:Review):StarterMoveGuide & {contextAnchors:typeof westV45ContextAnchors} {
@@ -57,7 +58,7 @@ export function projectWestV45Guide(current:Parameters<typeof projectScopedMoveG
   return [{...entry,movementBlockedReason:reason}];
  });
  const ids=new Set(entries.map(entry=>entry.sourceId));
- const filter=(groups:GuideGroup[])=>groups.map(g=>({...g,sourceIds:g.sourceIds.filter(id=>ids.has(id)),edges:g.edges?.filter(e=>ids.has(e.fromSourceId)&&ids.has(e.toSourceId))})).filter(g=>g.sourceIds.length);
+ const filter=(groups:GuideGroup[])=>groups.map(g=>({...g,title:displayText(g.title),sourceIds:g.sourceIds.filter(id=>ids.has(id)),edges:g.edges?.filter(e=>ids.has(e.fromSourceId)&&ids.has(e.toSourceId))})).filter(g=>g.sourceIds.length);
  return {...guide,entries,contextAnchors:westV45ContextAnchors,outgoingDependencies:outgoing,vitrines:guide.vitrines.map(v=>({...v,families:filter(v.families),cityGroups:filter(v.cityGroups)}))};
 }
 

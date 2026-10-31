@@ -221,7 +221,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertAssistantEffectiveDestination(input,review.rows);
     }
     assertRetainedCaseClearance(input,current.rows);
-    if(input.guideContext?.guideVersion==="spn-west-v45-2026-10-31-v1"&&!input.clearedVitrines?.length){
+    if(input.guideContext?.guideVersion==="spn-west-v45-2026-10-31-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
