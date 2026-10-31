@@ -52,7 +52,7 @@ export function MuseumCaseStagingReview({vitrine, preparation, entries, disabled
  const destinations=new Map(entries.map(entry=>[entry.sourceId,entry.destination]));
  return <details className="museum-display-work">
   <summary>Record contents moved to staging</summary>
-  <p>Select only pieces moved out of Vitrine {vitrine}. Confirmed placements are kept unchanged; this does not mark the whole vitrine empty.</p>
+  <p>Select only pieces moved out of Vitrine {vitrine}. Other entries stay unchanged; this does not mark the whole vitrine empty.</p>
   <div className="review-actions">
    <button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={busy||disabled} onClick={()=>void load("contents")}>Review current contents</button>
    {preparation?.basis==="preparation"?<button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={busy||disabled} onClick={()=>void load("historical")}>Review earlier clearing</button>:null}

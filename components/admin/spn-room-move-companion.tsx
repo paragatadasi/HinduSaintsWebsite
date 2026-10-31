@@ -39,7 +39,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  const phaseGuides=useMemo(()=>basePhaseGuides?projectCompanionAdditions(basePhaseGuides,additions,additionEntries):undefined,[basePhaseGuides,additions,additionEntries]);
  const [phase,setPhase]=useState<Phase>(initialPhase);
  const fallbackGuide=useMemo(()=>projectGuideAlternatives(initialGuide,alternatives),[initialGuide,alternatives]);
- const guide:StarterMoveGuide & {optionalClearVitrines?:string[]}=phaseGuides?.[phase]??fallbackGuide;
+ const guide=phaseGuides?.[phase]??fallbackGuide;
  const allowClear=guide.allowClear??(phaseGuides?phase==="starter":initialAllowClear);
  const navigationRow=companionRowForPhase(phase);
  const phaseLabel=navigationRow.label;
