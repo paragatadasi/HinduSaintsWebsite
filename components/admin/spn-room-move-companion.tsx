@@ -352,7 +352,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   </section>;
  }
  function clearingDestinations(){
-  const entries=new Map([...additionEntries,...allEntries.values()].map(entry=>[entry.sourceId,entry]));
+  const entries=new Map([...allEntries.values(),...additionEntries].map(entry=>[entry.sourceId,entry]));
   for(const alternative of alternatives){const entry=entries.get(alternative.sourceId);if(entry)entries.set(entry.sourceId,{...entry,destination:alternative.vitrine});}
   for(const addition of additions){const entry=entries.get(addition.sourceId);if(entry)entries.set(entry.sourceId,{...entry,destination:addition.vitrine});}
   return [...entries.values()];
