@@ -96,3 +96,14 @@ test("East remainder receives additions without duplicating the existing Eastern
  assert.equal(result["gosaiji-sai"].entries.length,0);
  assert.equal(result["gosaiji-sai"].contentDigest,guides["gosaiji-sai"].contentDigest);
 });
+
+
+test("West additions use V45's guide instead of creating a receiving case in another row",()=>{
+ const north=base("19");north.entries=[entry];north.vitrines[0].families=[{id:"north",title:"Family",sourceIds:[entry.sourceId],rationale:"",suggestedVitrines:["19"]}];
+ const west45=base("45");
+ const result=projectCompanionAdditions({north,west45},[{...addition,vitrine:"45"}],[entry]);
+ assert.deepEqual(result.north.vitrines.map(v=>v.code),["19"]);
+ assert.equal(result.north.vitrines[0].families.length,0);
+ assert.deepEqual(result.west45.vitrines[0].cityGroups[0].sourceIds,[entry.sourceId]);
+ assert.equal(result.west45.entries[0].destination,"45");
+});

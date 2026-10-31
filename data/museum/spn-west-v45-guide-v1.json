@@ -1,0 +1,677 @@
+{
+  "version": "spn-west-v45-2026-10-31-v1",
+  "proposalVersion": "spn-western-stories-and-cities-2026-10-31-v9",
+  "title": "Varkari saints · Vitrine 45",
+  "proposalLabel": "Approved Varkari core and Pandharpur context",
+  "sourcePacketHash": "407e53cf84aeda34dfb69181b143244161679d6c5ef3dd55ba22bfac654572b4",
+  "rows": [
+    {
+      "sourceId": "recwaqzrPJ8GnzVjC",
+      "saintId": "cms0w7j5y08jw07qibdjr75jv",
+      "name": "Sri Dnyaneshwar",
+      "tier": "Primary",
+      "displayRoleTier": null,
+      "city": "Alandi",
+      "relicDescription": "Script written by him (12canton), Piece of wood from the tree which strangled him; appeared in his dream; came up from his samadhi",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Dnyaneshwar · recorded Dhunda branch",
+      "rationale": "Dnyaneshwar is a main anchor. Dhunda is retained as a recorded devotional branch; the shared display does not assert an ordinary in-person initiation across centuries.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "b42f0c6459feed82a362195543b8aaa9084f6a3e0fd79e0ebfdc8cf26c444f7a",
+      "capturedProposalDestination": "41",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recoGHUjw3ejyIp10",
+      "saintId": null,
+      "name": "Sri Dhunda Maharaj of Pandharpur (Deglurkar)",
+      "tier": "Secondary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "Shawl",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Dnyaneshwar · recorded Dhunda branch",
+      "rationale": "Dnyaneshwar is a main anchor. Dhunda is retained as a recorded devotional branch; the shared display does not assert an ordinary in-person initiation across centuries.",
+      "reviewNotes": [
+        "Catalogue match remains pending. Keep this source-labelled relic in its approved group; no saint link or physical placement is inferred."
+      ],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "96b8a6e3803c894ff34269d739af34be95535ca19c8949835f4c1557f552146d",
+      "capturedProposalDestination": "41",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recf7vlRhEe9AnHT8",
+      "saintId": "cms0w7eyj03kp07qiwtmla1pm",
+      "name": "Namdev (13th century)",
+      "tier": "Primary",
+      "displayRoleTier": null,
+      "city": "Hingoli",
+      "relicDescription": "",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Namdev & Janabai · Pandharpur devotion",
+      "rationale": "Medieval Namdev and Janabai are brought together. The household/devotional association is distinct from an asserted initiation chain. Separate Namdev source records remain separate.",
+      "reviewNotes": [
+        "Explicit 13th-century identity. No relic description or original position is recorded: do not infer an additional located object from this entry alone."
+      ],
+      "anchorOnly": true,
+      "optionalAddition": false,
+      "knownShelfProxy": null,
+      "sourceRevision": "be2a9837389b90555d2d057195e4e6a103ffe134842a6bdd61cc2ae5d74d07c9",
+      "capturedProposalDestination": "44",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "rec8MNKAu5qm4Mk94",
+      "saintId": "cms0w7dfm01jv07qi6o8h7rvx",
+      "name": "Sri Janabai",
+      "tier": "Primary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "cow dung turned to stone with her hand print, piece from her quilt",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Namdev & Janabai · Pandharpur devotion",
+      "rationale": "Medieval Namdev and Janabai are brought together. The household/devotional association is distinct from an asserted initiation chain. Separate Namdev source records remain separate.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.41666666666666663,
+      "sourceRevision": "e00fcd228d7d2c5aa2e2f6451b11e2021aa8a65950a28c008776db7ce9d4f794",
+      "capturedProposalDestination": "44",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recoFDxvENFFnNBOo",
+      "saintId": "cms0w7h4q069s07qit83ly1f8",
+      "name": "Sri Bhagat Namdev",
+      "tier": "Primary",
+      "displayRoleTier": null,
+      "city": "Punjab",
+      "relicDescription": "Padukas",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Namdev & Janabai · Pandharpur devotion",
+      "rationale": "Medieval Namdev and Janabai are brought together. The household/devotional association is distinct from an asserted initiation chain. Separate Namdev source records remain separate.",
+      "reviewNotes": [
+        "Medieval Bhagat Namdev identity is supported by the recorded 1270–1350dates and Ghoman context. The current native location is not recorded;67/E is attributed to the official source, not a confirmed move.",
+        "Curator found the relics and approved joining the Varkaris in V45 on31October2026, superseding the briefly suggested no-relic exclusion. This is destination approval, not confirmation of a completed move; verify the retrieval location on site."
+      ],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": null,
+      "sourceRevision": "03b397f15d86311754d1c08d21b3dacace33eef912399d5906666f9a67dff897",
+      "capturedProposalDestination": "44",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recwbU7HkK8kDlaFq",
+      "saintId": "cmus3ry2d00a707o5m197adsz",
+      "name": "Sri Naamdevji Maharaj",
+      "tier": "Tertiary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "from the Palki that he used for Dindiyatra",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Namdev & Janabai · Pandharpur devotion",
+      "rationale": "Medieval Namdev and Janabai are brought together. The household/devotional association is distinct from an asserted initiation chain. Separate Namdev source records remain separate.",
+      "reviewNotes": [
+        "Same-name records require identity review; separate relic entries are preserved and have not been merged.",
+        "Pandharpur palki observation: proposed beside the medieval Namdev display; no canonical merge or change to relic attribution has been made."
+      ],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "f111d09ee348f2d970328265bb2f069f0f03fc5d1f74b00998e3cd280d538518",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "rec4Gy3pnr5aPNZn6",
+      "saintId": "cms0w7crt00qt07qipbgpwjdd",
+      "name": "Sant Sri Gora Kumbhar",
+      "tier": "Primary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "Piece from the clothes (?)",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Varkari devotion · Gora, Savata, Kanopatra, Narahari & Damaji",
+      "rationale": "Keep the distinct saints clearly named around their devotion to Vitthala. This is a shared devotional story across generations, not a guru–disciple chain. Damaji is a supporting Mangalwedha/Varkari addition.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.41666666666666663,
+      "sourceRevision": "6c5f58b849095d55139c13db0ed141cd0c2d00368bd9ae424837db7cfe1ee4f6",
+      "capturedProposalDestination": "43",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recVXtvEukZGghvSl",
+      "saintId": "cms0w7j3208gu07qici7ogvko",
+      "name": "Sri Savata Mali",
+      "tier": "Primary",
+      "displayRoleTier": null,
+      "city": "Aran",
+      "relicDescription": "Soil from under the stone and from the temple in Aran",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Varkari devotion · Gora, Savata, Kanopatra, Narahari & Damaji",
+      "rationale": "Keep the distinct saints clearly named around their devotion to Vitthala. This is a shared devotional story across generations, not a guru–disciple chain. Damaji is a supporting Mangalwedha/Varkari addition.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "cc35cf792883bbcd5b8ba6a1dd15ae174fbc2388ffd1fc472027c9db92f548fb",
+      "capturedProposalDestination": "43",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "rec5uKfAgf1pXTKbY",
+      "saintId": "cms0w7d1f012707qi8tvlke40",
+      "name": "Sri Kanopathra",
+      "tier": "Primary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "wood piece from the tree which grew from her samadhi; its considered to be her body",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Varkari devotion · Gora, Savata, Kanopatra, Narahari & Damaji",
+      "rationale": "Keep the distinct saints clearly named around their devotion to Vitthala. This is a shared devotional story across generations, not a guru–disciple chain. Damaji is a supporting Mangalwedha/Varkari addition.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.41666666666666663,
+      "sourceRevision": "3c0141312244b22948d2c3f86c2de573277d17abcfbb9bf2ce4ce3b89bf52eb0",
+      "capturedProposalDestination": "43",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recyneffGvOQBsKXb",
+      "saintId": "cms0w7jv6099k07qi5gayofwp",
+      "name": "Sri Narahari Sonar Maharaj",
+      "tier": "Primary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "piece of Granth written by his disciple",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Varkari devotion · Gora, Savata, Kanopatra, Narahari & Damaji",
+      "rationale": "Keep the distinct saints clearly named around their devotion to Vitthala. This is a shared devotional story across generations, not a guru–disciple chain. Damaji is a supporting Mangalwedha/Varkari addition.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "4a3c1608b845dc3917d8cf0c23ae5a7c5b2b787e97fa3d1254ce1242e07828f2",
+      "capturedProposalDestination": "42",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recfyfpQPlY8zQM2U",
+      "saintId": "cms0w7f4k03si07qizl6e5n20",
+      "name": "Sant Sri Damaji Pant",
+      "tier": "Tertiary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "Kartals, crown from vitthala and damaji temple in Mangalwedha, soil from under the tree and bark from the tree under which he used to sit",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Varkari devotion · Gora, Savata, Kanopatra, Narahari & Damaji",
+      "rationale": "Keep the distinct saints clearly named around their devotion to Vitthala. This is a shared devotional story across generations, not a guru–disciple chain. Damaji is a supporting Mangalwedha/Varkari addition.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "6e6bda8ccf61d426c8a81866995fc28d7795a58b077377d8ef576284d9926df2",
+      "capturedProposalDestination": "42",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recVaCcbHUvx8FlnC",
+      "saintId": "cms0w7iw4089c07qizzm9l5ji",
+      "name": "Sri Eknath Maharaj",
+      "tier": "Primary",
+      "displayRoleTier": null,
+      "city": "Paithan",
+      "relicDescription": "Iron piece from the window from the house where he used to live until age 12; stone from place where a Muslim spat on him 108 times when he was returning from the river bathing",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Eknath · Varkari anchor",
+      "rationale": "Eknath carries a distinct later Varkari story. No direct teacher arrow to Dnyaneshwar, Namdev or Tukaram is implied.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "5150acc74415fe654e62ff9e3f0cfd810be9341f0610fdaccb03bbb7a6f8ce8c",
+      "capturedProposalDestination": "42",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recka2nXCe1N5AZHn",
+      "saintId": "cms0w7g3e050607qiljgurms1",
+      "name": "Sri Bahina Bai",
+      "tier": "Secondary",
+      "displayRoleTier": null,
+      "city": "Shivoori",
+      "relicDescription": "Piece from paper of a scripture she wrote, and piece of stone where she grinded Chandan",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Tukaram · Bahinabai & Jaganade",
+      "rationale": "Keep the reviewed branch together. Bahinabai’s recorded teacher link and Jaganade’s association retain their individual meanings; this is not a three-person succession chain.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "bb5fc4146084a6cb385eaedeb2d33f472af7715297b5df4c0891e0975d616036",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recAGoqcP2Mxt4alb",
+      "saintId": "cms0w7dpf01xd07qidu28zilh",
+      "name": "Sri Jaganade Maharaj",
+      "tier": "Secondary",
+      "displayRoleTier": null,
+      "city": "Pune",
+      "relicDescription": "his shank",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Tukaram · Bahinabai & Jaganade",
+      "rationale": "Keep the reviewed branch together. Bahinabai’s recorded teacher link and Jaganade’s association retain their individual meanings; this is not a three-person succession chain.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "a26f3e2b303990288c8a2522a3237fb14eb75535f202d88e06122e37f0a595c7",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recnGc8AjeiSKvU0F",
+      "saintId": null,
+      "name": "Sri Tukaram Maharaj of Dehru, Pune",
+      "tier": "Unclassified",
+      "displayRoleTier": "Primary",
+      "city": "Dehu / Pune",
+      "relicDescription": "Shawl used to cover the Shila on which he used to meditate, wood from the tree which witnessed the ascension of Thukaramji to heaven; every year on that day the tree shakes; the threat from his Veena found in Pandharpur",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Tukaram · Bahinabai & Jaganade",
+      "rationale": "Keep the reviewed branch together. Bahinabai’s recorded teacher link and Jaganade’s association retain their individual meanings; this is not a three-person succession chain.",
+      "reviewNotes": [
+        "Primary display-role recommendation for Tukaram. The source entry is currently unclassified/unlinked; this display proposal does not alter the website record."
+      ],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "1dc68505a962d50d0d8b3be6115654468e9791ef29b45f06f359a644241bb961",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recg5a1VDEaKp6X0T",
+      "saintId": "cms0w7f5h03tm07qidhceo2ge",
+      "name": "Sri Hari Bhakti Parayan Sadguru Sri Baba Maharaj Satarkar",
+      "tier": "Tertiary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "2 white dhotis",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Modern Pandharpur voices · Satarkar & Waskar",
+      "rationale": "Two separate Pandharpur teachers. The collection biography identifies Baba Satarkar’s kirtan/pravachan role; their shared display does not assert a personal lineage. Place after the main anchors.",
+      "reviewNotes": [
+        "Two white dhotis recorded; their current location and individual footprint are unrecorded. Fit-check after the main groups. The source biography records his death in2023."
+      ],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": null,
+      "sourceRevision": "0f6460c527f174b3adc50c2f3685f205fedd2347152e97631cf8dd781de874e1",
+      "capturedProposalDestination": "41",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recug7GcLwKoKstZy",
+      "saintId": "cms0w7im907yu07qiyxvrcyjb",
+      "name": "Sri Vivekanand Waskar Maharaj",
+      "tier": "Tertiary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "Sweater",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Modern Pandharpur voices · Satarkar & Waskar",
+      "rationale": "Two separate Pandharpur teachers. The collection biography identifies Baba Satarkar’s kirtan/pravachan role; their shared display does not assert a personal lineage. Place after the main anchors.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "7fe6bd30fbefec90bbdd689a357ba7700be01acc91c9426a83d705299f23a56f",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recFKbDXNfxYKWbk3",
+      "saintId": "cms0w7f1703o407qi4iyewk84",
+      "name": "Sri Hari Das Maharaj",
+      "tier": "Tertiary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "Chandan",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Pandharpur · Kaikadi & Hari Das",
+      "rationale": "Locality infill below the named main groups. No personal relationship between these two saints is asserted. Hari Das is currently recorded in staging.",
+      "reviewNotes": [
+        "Source supports Pandharpur locality; no life dates or personal-family link are recorded. Use the lower city group rather than a top anchor position."
+      ],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "34663e41ba03cee43acb3218674db5d662cb8016d82b7f5d035f3f9e5a34609f",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recdu33HWMmoZfdQQ",
+      "saintId": "cms0w7em5034507qi2wb34h9s",
+      "name": "Sri Kaikadi Maharaj",
+      "tier": "Tertiary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "piece from his Asan",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Pandharpur · Kaikadi & Hari Das",
+      "rationale": "Locality infill below the named main groups. No personal relationship between these two saints is asserted. Hari Das is currently recorded in staging.",
+      "reviewNotes": [],
+      "anchorOnly": false,
+      "optionalAddition": false,
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "e5c7b2173bd2e037479bbea55e8d14e059c7e08f3ec15c869a3f3f3fe737cf89",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recLSMfzN6MGscqe5",
+      "saintId": "cms0w7ghw05ig07qiny27f7av",
+      "name": "Sri Sakharam Maharaj",
+      "tier": "Tertiary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "His Kartalas, clothes from his self manifested deities",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Pandharpur · optional additions",
+      "rationale": "Sakharam, Prasad and Tampure: Pandharpur context, without asserting a personal lineage. Place last; decline any that do not fit. Prasad is source-marked living and must stay below the top shelf.",
+      "reviewNotes": [
+        "User approved as optional V45 infill. Keep below the main groups; the curator may decline if it does not fit."
+      ],
+      "anchorOnly": false,
+      "optionalAddition": true,
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "e1fced0427555d51d5ea7e4dc0a155f105a1a045657fe579d7671eba80411417",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    },
+    {
+      "sourceId": "recY3qLwMZxTLFh4x",
+      "saintId": "cms0w7jq3094107qiww91u1sx",
+      "name": "Sri Prasad Maharaj Amalnerkar",
+      "tier": "Tertiary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "Plate used by him",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Pandharpur · optional additions",
+      "rationale": "Sakharam, Prasad and Tampure: Pandharpur context, without asserting a personal lineage. Place last; decline any that do not fit. Prasad is source-marked living and must stay below the top shelf.",
+      "reviewNotes": [
+        "User approved as optional V45 infill. Keep below the main groups; the curator may decline if it does not fit."
+      ],
+      "anchorOnly": false,
+      "optionalAddition": true,
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "2715f6250bce839b487e2376651d07a847a225df5e0e1ebd62c6f1eb6338691e",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": "Living",
+        "basis": "Source-marked living; place below the top shelf."
+      }
+    },
+    {
+      "sourceId": "recWgvLbWAL1hMY40",
+      "saintId": "cms0w7j7208l307qih1r41dad",
+      "name": "Sri Tampure Maharaj",
+      "tier": "Tertiary",
+      "displayRoleTier": null,
+      "city": "Pandharpur",
+      "relicDescription": "Blanket",
+      "destination": "45",
+      "section": "Varkari",
+      "family": "Pandharpur · optional additions",
+      "rationale": "Sakharam, Prasad and Tampure: Pandharpur context, without asserting a personal lineage. Place last; decline any that do not fit. Prasad is source-marked living and must stay below the top shelf.",
+      "reviewNotes": [
+        "User approved as optional V45 infill. Keep below the main groups; the curator may decline if it does not fit."
+      ],
+      "anchorOnly": false,
+      "optionalAddition": true,
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "a8a21cdb861305e423ab8d521cfceffdd870a19ad42c8b97eff1a937869ac69b",
+      "capturedProposalDestination": "45",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "No positive living-status assertion in the reviewed packet."
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "west-v45-group-0",
+      "title": "Dnyaneshwar · recorded Dhunda branch",
+      "kind": "family",
+      "vitrine": "45",
+      "rationale": "Dnyaneshwar is a main anchor. Dhunda is retained as a recorded devotional branch; the shared display does not assert an ordinary in-person initiation across centuries.",
+      "sourceIds": [
+        "recwaqzrPJ8GnzVjC",
+        "recoGHUjw3ejyIp10"
+      ],
+      "edges": [
+        {
+          "fromSourceId": "recwaqzrPJ8GnzVjC",
+          "toSourceId": "recoGHUjw3ejyIp10",
+          "label": "source-recorded lineage association",
+          "basis": "source; Master(s) and paramguru wording differ; not a direct historical initiation"
+        }
+      ]
+    },
+    {
+      "id": "west-v45-group-1",
+      "title": "Namdev & Janabai · Pandharpur devotion",
+      "kind": "family",
+      "vitrine": "45",
+      "rationale": "Medieval Namdev and Janabai are brought together. The household/devotional association is distinct from an asserted initiation chain. Separate Namdev source records remain separate.",
+      "sourceIds": [
+        "recf7vlRhEe9AnHT8",
+        "rec8MNKAu5qm4Mk94",
+        "recoFDxvENFFnNBOo",
+        "recwbU7HkK8kDlaFq"
+      ],
+      "edges": []
+    },
+    {
+      "id": "west-v45-group-2",
+      "title": "Varkari devotion · Gora, Savata, Kanopatra, Narahari & Damaji",
+      "kind": "family",
+      "vitrine": "45",
+      "rationale": "Keep the distinct saints clearly named around their devotion to Vitthala. This is a shared devotional story across generations, not a guru–disciple chain. Damaji is a supporting Mangalwedha/Varkari addition.",
+      "sourceIds": [
+        "rec4Gy3pnr5aPNZn6",
+        "recVXtvEukZGghvSl",
+        "rec5uKfAgf1pXTKbY",
+        "recyneffGvOQBsKXb",
+        "recfyfpQPlY8zQM2U"
+      ],
+      "edges": []
+    },
+    {
+      "id": "west-v45-group-3",
+      "title": "Eknath · Varkari anchor",
+      "kind": "family",
+      "vitrine": "45",
+      "rationale": "Eknath carries a distinct later Varkari story. No direct teacher arrow to Dnyaneshwar, Namdev or Tukaram is implied.",
+      "sourceIds": [
+        "recVaCcbHUvx8FlnC"
+      ],
+      "edges": []
+    },
+    {
+      "id": "west-v45-group-4",
+      "title": "Tukaram · Bahinabai & Jaganade",
+      "kind": "family",
+      "vitrine": "45",
+      "rationale": "Keep the reviewed branch together. Bahinabai’s recorded teacher link and Jaganade’s association retain their individual meanings; this is not a three-person succession chain.",
+      "sourceIds": [
+        "recka2nXCe1N5AZHn",
+        "recAGoqcP2Mxt4alb",
+        "recnGc8AjeiSKvU0F"
+      ],
+      "edges": [
+        {
+          "fromSourceId": "recnGc8AjeiSKvU0F",
+          "toSourceId": "recka2nXCe1N5AZHn",
+          "label": "source-recorded teacher association",
+          "basis": "source; canonical Tukaram identity remains unlinked"
+        },
+        {
+          "fromSourceId": "recnGc8AjeiSKvU0F",
+          "toSourceId": "recAGoqcP2Mxt4alb",
+          "label": "source-recorded teacher association",
+          "basis": "source; canonical Tukaram identity remains unlinked"
+        }
+      ]
+    },
+    {
+      "id": "west-v45-group-5",
+      "title": "Modern Pandharpur voices · Satarkar & Waskar",
+      "kind": "family",
+      "vitrine": "45",
+      "rationale": "Two separate Pandharpur teachers. The collection biography identifies Baba Satarkar’s kirtan/pravachan role; their shared display does not assert a personal lineage. Place after the main anchors.",
+      "sourceIds": [
+        "recg5a1VDEaKp6X0T",
+        "recug7GcLwKoKstZy"
+      ],
+      "edges": []
+    },
+    {
+      "id": "west-v45-group-6",
+      "title": "Pandharpur · Kaikadi & Hari Das",
+      "kind": "city",
+      "vitrine": "45",
+      "rationale": "Locality infill below the named main groups. No personal relationship between these two saints is asserted. Hari Das is currently recorded in staging.",
+      "sourceIds": [
+        "recFKbDXNfxYKWbk3",
+        "recdu33HWMmoZfdQQ"
+      ],
+      "edges": []
+    },
+    {
+      "id": "west-v45-group-8",
+      "title": "Pandharpur · optional additions",
+      "kind": "city",
+      "vitrine": "45",
+      "rationale": "Sakharam, Prasad and Tampure: Pandharpur context, without asserting a personal lineage. Place last; decline any that do not fit. Prasad is source-marked living and must stay below the top shelf.",
+      "sourceIds": [
+        "recLSMfzN6MGscqe5",
+        "recY3qLwMZxTLFh4x",
+        "recWgvLbWAL1hMY40"
+      ],
+      "edges": []
+    }
+  ],
+  "fit": {
+    "knownShelfProxy": 5.366666666666666,
+    "comparison": 5,
+    "unmeasuredHoldingIds": [
+      "recoFDxvENFFnNBOo",
+      "recg5a1VDEaKp6X0T"
+    ],
+    "optionalAdditionIds": [
+      "recLSMfzN6MGscqe5",
+      "recWgvLbWAL1hMY40",
+      "recY3qLwMZxTLFh4x"
+    ]
+  },
+  "occupancyNote": "Curator reports V45 almost empty. The14 source-reported legacy origins are unconfirmed and must not be treated as proof that all 14 remain. Check the actual residuals on site.",
+  "assignmentDigest": "808be99d8828b6c5cada1489aa509ea61a3d6643af454ad3653d3283b7e32a96",
+  "contentDigest": "5fcaafa98adccbabee235069d56294446356d667bbd342f1ee905b3b48deb89b"
+}
