@@ -64,4 +64,3 @@ development `DATABASE_URL` to verify persistence. The verifier creates and remov
 its own empty test database, reproduces the old constraint failure, applies the
 migration, and checks save, idempotent retry, readback, reset, stale-version
 rejection, preserved history and unrelated alternatives. It rejects remote hosts.
-
