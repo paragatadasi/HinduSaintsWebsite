@@ -41,7 +41,7 @@ export function isPlaced(row:CompanionRow,destination:string){return row.current
 export function currentLocationLabel(location:PhysicalLocation|null){return location?location.label+(location.shelf?` · Shelf ${location.shelf}`:""):"Location not recorded";}
 
 export function companionLocationLabel(row?:(Pick<CompanionRow,"current"|"componentPlacement"> & Partial<Pick<CompanionRow,"original">>)|null){
- if(row?.componentPlacement)return "Staging area · Vitrine 20 pieces only";
+ if(row?.componentPlacement)return `Staging area · Vitrine ${row.componentPlacement.origin.code} pieces only`;
  const label=currentLocationLabel(row?.current??null);
  return row?.current?.kind==="table"&&row.original?.kind==="vitrine"?`${label} · originally Vitrine ${row.original.code}`:label;
 }
