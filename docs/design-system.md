@@ -760,3 +760,7 @@ Museum companion navigation groups registered guides by museum row using `museum
 ### Clearing inventory groups
 
 `MuseumClearContents` is the shared clearing-card inventory pattern. Show proposed destination headings in numeric order with display-entry counts, then compact name and shelf rows. Keep unassigned destinations and unlinked records separate; do not repeat the current vitrine or source provenance on every row. Handling restrictions remain adjacent to their entry. Counts describe recorded entries, not an inferred count of separate relic objects. Shared `.museum-clear-contents` classes use theme tokens in both companion clearing paths.
+
+### Staging destination groups
+
+`MuseumStagingContents` reuses the clearing-card destination groups. Its compact summary buttons show recorded entry counts by proposed vitrine and open the matching group in place. Sort numbered destinations naturally, followed by unassigned entries and records awaiting an inventory match. Use the companion's current effective destinations, including curator alternatives and additions, across all phases. Preserve component-specific staging notes and correction actions. Counts refer to recorded entries, not individual pieces within a display.
