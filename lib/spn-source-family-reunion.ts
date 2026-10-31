@@ -86,7 +86,7 @@ export function projectVitthalVedanandaFamily(guide: StarterMoveGuide): StarterM
     return remaining.length?[{...group,sourceIds:remaining,saintCount:undefined,spaceEstimate:undefined,edges:group.edges?.filter(e=>remaining.includes(e.fromSourceId)&&remaining.includes(e.toSourceId))}]:[];
   });
   const family:GuideGroup={id:"source-family:vitthal-vedananda",title:"Vitthal Babaji & Vedananda",sourceIds,suggestedVitrines:[relation.vitrine],
-    rationale:"Reciprocal source-recorded guru–disciple links. Keep the pair together below the top; Vedananda is living.",
+    rationale:"Reciprocal source-recorded guru–disciple links. Keep the pair in this vitrine; living Vedananda belongs on the bottom shelf.",
     edges:[{fromSourceId:relation.teacher.sourceId,toSourceId:relation.disciple.sourceId,label:"Source-recorded disciple",basis:"source"}]};
   return {...guide,vitrines:guide.vitrines.map(v=>v!==vitrine?v:{...v,families:[...withoutPair(v.families),family],cityGroups:withoutPair(v.cityGroups)})};
 }

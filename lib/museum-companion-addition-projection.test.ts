@@ -107,3 +107,19 @@ test("West additions use V45's guide instead of creating a receiving case in ano
  assert.deepEqual(result.west45.vitrines[0].cityGroups[0].sourceIds,[entry.sourceId]);
  assert.equal(result.west45.entries[0].destination,"45");
 });
+
+test("living Datta guidance preserves actual shelves and later destinations",()=>{
+ for(const [sourceId,saintId] of [["recyokcxEvhxvtyPk","cms0w7jvq09a707qiha1bb3et"],["rec6IMLj9eDVWGP71","cms0w7d42015d07qieuyk6nfb"]]){
+  const source:GuideEntry={...entry,sourceId,saintId,lifeStatus:{tag:"Living",basis:"Current"},currentLocation:{kind:"vitrine",code:"22",shelf:"B",label:"Vitrine 22"}};
+  const guide=base("3");guide.entries=[source];
+  const before=JSON.stringify(guide);
+  const result=projectCompanionAdditions({datta:guide},[],[source]).datta;
+  assert.match(result.entries[0].reviewNotes?.join(" ")??"",/bottom shelf/);
+  assert.deepEqual(result.entries[0].currentLocation,source.currentLocation);
+  assert.equal(result.entries[0].destination,source.destination);
+  assert.equal(JSON.stringify(guide),before);
+  assert.deepEqual(projectCompanionAdditions({datta:result},[],[source]).datta,result);
+  guide.entries=[{...source,lifeStatus:{tag:null,basis:"Later evidence"}}];
+  assert.equal(projectCompanionAdditions({datta:guide},[],[]).datta.entries[0].reviewNotes,undefined);
+ }
+});

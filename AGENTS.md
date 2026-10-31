@@ -77,6 +77,10 @@ Data workflow learning and skill maintenance:
 - Before changing a rule, check it against the current implementation and supporting evidence, preserving explicit curator decisions. Validate edited skills and check representative cases, including an ambiguous case or counterexample when it affects the rule.
 - Briefly report which skills changed and why, or that the review found no reusable changes. If a skill is unavailable or cannot be updated, record the proposed correction in the workflow handoff and report the limitation without blocking otherwise completed work.
 
+Cross-chat collaboration:
+- Do not specify model or reasoning settings when sending messages to another Codex chat. Leave those options unspecified so the receiving chat keeps its own configured settings.
+- Only provide a model or reasoning override when the user explicitly requests that override for the destination chat.
+
 Worktree and branch hygiene:
 - Treat the repository root as the canonical working tree for `main`. Do not leave `main` checked out in long-lived Codex task worktrees.
 - Treat `deploy` as a release target only. Do not develop directly on `deploy`, and do not leave `deploy` checked out in stale worktrees after a release.
