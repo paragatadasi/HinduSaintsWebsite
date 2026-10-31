@@ -31,7 +31,7 @@ export const westV1LayoutGuidance=packet.layoutGuidance;
 const holdingIds=new Set(holdings.map(row=>row.sourceId));
 const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,sourceIds:g.sourceIds.filter(id=>holdingIds.has(id)),suggestedVitrines:["1"],allowedTargetVitrines:[]});
 export const westV1MoveGuide:StarterMoveGuide={version:packet.version,...westV1GuideContext,proposalVersion:packet.proposalVersion,title:packet.title,proposalLabel:packet.proposalLabel,
- phaseLabel:"BAPS, Gondal & Amreli · 1",allowClear:false,preparationVitrines:["1"],
+ phaseLabel:"BAPS, Gondal & Amreli · 1",allowClear:false,preparationVitrines:["1"],optionalClearVitrines:["1"],
  entries:holdings.map(row=>({...row,movementBlockedReason:spnMovementBlockedReason(row.sourceId)})),
  vitrines:[{code:"1",summary:"Known load: about 4.97 / 5 shelf spaces, with possible overlaps still under review. BAPS on shelves 1–2, living Mahant Swami on shelf 2; Gondal and Amreli below. Check the fit on site.",families:packet.groups.filter(g=>g.kind==="family").map(group),cityGroups:packet.groups.filter(g=>g.kind!=="family").map(group)}],alternatives:[],reportedPlacements:[]};
 
