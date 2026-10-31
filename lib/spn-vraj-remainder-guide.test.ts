@@ -27,7 +27,8 @@ test("remainder registers exactly98 reviewed sources and five independently clea
  assert.equal(definition.physicalScope?.clearancePerDestination,true);
  assert.deepEqual(definition.physicalScope?.clearanceRequiredDestinations,packet.vitrines);
  assert.equal(readStarterGuideDefinition(vrajGuideContext.guideVersion).suggestions.filter(s=>s.kind==="row").length,40);
- assert.ok(currentReceiverGuideDefinitions("32").some(d=>d.context.guideVersion===captured.version));
+ assert.equal(definition.readOnly,true);
+ assert.ok(!currentReceiverGuideDefinitions("32").some(d=>d.context.guideVersion===captured.version));
  assert.ok(!currentReceiverGuideDefinitions("79").some(d=>d.context.guideVersion===captured.version));
  assert.throws(()=>assertGuidePhysicalScope(definition,[],["79"]),/Clear only/);
  assert.throws(()=>assertGuidePhysicalScope(definition,[{sourceId:captured.entries[0].sourceId,to:{kind:"vitrine",code:"79"}}]),/locked phase/);

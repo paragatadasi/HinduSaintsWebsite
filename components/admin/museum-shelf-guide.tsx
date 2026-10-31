@@ -4,7 +4,8 @@ import addon from "@/data/museum/spn-vitrine5-shelves-v1.json";
 import packet from "@/data/museum/spn-northern-shelves-v1.json";
 import {companionLocationLabel,isPlaced,type CompanionRow,type GuideEntry} from "@/lib/spn-move-guide";
 
-type Allocation={sourceId:string;name:string;tier?:string;capturedTier?:string;groupId:string;suggestedShelfIndex:number|null;isContextOnly?:boolean;knownFootprint?:number|null;projectedLifeStatus?:{tag:string|null;basis:string}|null;reviewAlerts:{message:string}[]};
+const bandLabels:Record<string,string>={story:"Main story · exact shelf to confirm","below-top":"Below top · exact shelf to confirm",lower:"Lower display · exact shelf to confirm"};
+type Allocation={sourceId:string;name:string;tier?:string;capturedTier?:string;groupId:string;suggestedShelfIndex:number|null;suggestedBand?:string;isContextOnly?:boolean;knownFootprint?:number|null;projectedLifeStatus?:{tag:string|null;basis:string}|null;reviewAlerts:{message:string}[]};
 export type ShelfPlan={code:string;notes?:string[];refinedBandExceptions?:{shelfIndex:number;knownLoad:number}[];groups:{id:string;title:string;kind:string}[];allocations:Allocation[];relationships:{fromSourceId:string;toSourceId:string;label:string;direction:string;uncertain:boolean}[];contextNodes?:{id:string;label:string;physicalHolding:boolean}[]};
 const plans:ShelfPlan[]=[...packet.vitrines,...addon.vitrines];
 function TreeLines({children,wide,edges}:{children:ReactNode;wide:boolean;edges:{fromSourceId:string;toSourceId:string;uncertain:boolean}[]}){
@@ -40,6 +41,10 @@ export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,r
    {controls&&!a.isContextOnly?renderActions(a.sourceId):null}</div>
   </div>;
  }
+ function pendingBand(band:string){
+  const pending=allocations.filter(a=>a.suggestedShelfIndex===null&&(a.suggestedBand??"unspecified")===band);
+  return pending.length?<section key={band}><h4>{bandLabels[band]??"Position to confirm"}</h4><div className="museum-shelf__locality">{pending.map(a=>member(a))}</div></section>:null;
+ }
  function tree(groupId:string){
   const members=allocations.filter(a=>a.groupId===groupId),memberIds=new Set(members.map(a=>a.sourceId));
   const contextIds=new Set(plan?.contextNodes?.map(n=>n.id)??[]);
@@ -61,8 +66,8 @@ export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,r
  return <section className="museum-shelf" aria-label="Suggested shelf arrangement"><h3>Shelf arrangement</h3><p className="muted">Suggested positions · confirm shelf spacing on site</p>
  {plan.notes?.length||plan.refinedBandExceptions?.length||unknownBands.length?<details className="museum-shelf__alert"><summary>{plan.refinedBandExceptions?.length||unknownBands.length?"Shelf fit review":"Fit notes"}</summary>{plan.notes?.map(note=><p key={note}>{note}</p>)}{plan.refinedBandExceptions?.map(item=><p key={item.shelfIndex}>Row {item.shelfIndex}: {item.knownLoad.toFixed(2)} reference spaces. Review spacing on site.</p>)}{unknownBands.map(row=><p key={row.index}>Row {row.index}: {row.count} {row.count===1?"holding has":"holdings have"} an unknown size, in addition to the known load.</p>)}</details>:null}
  <div className="museum-shelf__legend">{groups.map((g,i)=><span data-group-color={i%6} key={g.id}>{g.title} · {g.kind}</span>)}</div>
- <div className="museum-shelf__workspace" data-expanded={expanded!==null}><div className="museum-shelf__bands">{[1,2,3,4,5].map(index=><section className="museum-shelf__band" key={index}><small>{index===1?"Top":index===5?"Bottom":`Row ${index}`}</small><div>{familyGroups.map(g=><div className="museum-shelf__column" key={g.id}>{allocations.filter(a=>a.suggestedShelfIndex===index&&a.groupId===g.id).map(a=>member(a))}</div>)}<div className="museum-shelf__locality">{allocations.filter(a=>a.suggestedShelfIndex===index&&!familyGroups.some(g=>g.id===a.groupId)).map(a=>member(a))}</div></div></section>)}
- {allocations.some(a=>a.suggestedShelfIndex===null)?<section><h4>Position to confirm</h4>{allocations.filter(a=>a.suggestedShelfIndex===null).map(a=>member(a))}</section>:null}
+ <div className="museum-shelf__workspace" data-expanded={expanded!==null}><div className="museum-shelf__bands">{pendingBand("story")}{pendingBand("below-top")}{[1,2,3,4,5].filter(index=>!allocations.some(a=>a.suggestedBand)||allocations.some(a=>a.suggestedShelfIndex===index)).map(index=><section className="museum-shelf__band" key={index}><small>{index===1?"Top":index===5?"Bottom":`Row ${index}`}</small><div>{familyGroups.map(g=><div className="museum-shelf__column" key={g.id}>{allocations.filter(a=>a.suggestedShelfIndex===index&&a.groupId===g.id).map(a=>member(a))}</div>)}<div className="museum-shelf__locality">{allocations.filter(a=>a.suggestedShelfIndex===index&&!familyGroups.some(g=>g.id===a.groupId)).map(a=>member(a))}</div></div></section>)}
+ {pendingBand("lower")}{pendingBand("unspecified")}
  {sourceIds.some(id=>!ids.has(id))?<p className="muted">Other current assignments are in the complete checklist below.</p>:null}</div>
  <aside aria-label="Connections">{familyGroups.map(g=><section key={g.id}><button type="button" className="museum-shelf__disclosure" aria-expanded={expanded===g.id} onClick={()=>setExpanded(expanded===g.id?null:g.id)}><span aria-hidden="true">{expanded===g.id?"▸":"◂"}</span>{g.title}</button>{tree(g.id)}</section>)}</aside></div></section>;
 }

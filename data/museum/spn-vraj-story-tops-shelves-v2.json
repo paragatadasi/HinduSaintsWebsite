@@ -1,0 +1,1419 @@
+{
+  "version": "spn-vraj-remainder-2026-10-31-v2",
+  "vitrines": [
+    {
+      "code": "32",
+      "groups": [
+        {
+          "id": "vraj-stories:vraj6-4",
+          "title": "Govardhan",
+          "kind": "city"
+        },
+        {
+          "id": "vraj-stories:govardhan-object-context",
+          "title": "Govardhan shila · attribution under review",
+          "kind": "city"
+        },
+        {
+          "id": "vraj-stories:vraj12",
+          "title": "Pushtimarg · Vallabha, Surdas & Radhavallabha Baba",
+          "kind": "city"
+        },
+        {
+          "id": "vraj-stories:lower-review-32",
+          "title": "Lower-shelf review holdings",
+          "kind": "city"
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "rec1rC2Ds0JSWSMt7",
+          "saintId": "cms0w7cgj00c407qi2g8xw9yz",
+          "name": "Sri Advaita Das",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj6-4",
+          "suggestedShelfIndex": 3,
+          "suggestedBand": "below-top",
+          "sourceRevision": "ab5c0f6701f1df72187c4dd14a113203cc0b734335ee89c47d2407bc5610eb71",
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recjCHsWkWsKvE0UI",
+          "saintId": "cms0w7fuj04pf07qiwo4vzccu",
+          "name": "Sri Priya Charan Das Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj6-4",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "story",
+          "sourceRevision": "8b722259422b6db009185524272cb37e8f0ad0f7edafcb174c5931701e2c704e",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recr59tNcv8rnvu0n",
+          "saintId": "cms0w7hrs071407qi7k1e0g2w",
+          "name": "Sri Giriraj Das Babaji",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj6-4",
+          "suggestedShelfIndex": 3,
+          "suggestedBand": "below-top",
+          "sourceRevision": "d8b7bc48b6ed7f6893f925068cde86183d86042b27da3ebb8abcd3da78dc1c4e",
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "rechNsZrAAHvPvA8L",
+          "saintId": null,
+          "name": "Sri Krishna Dasji Maharaj of Govardhana",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj6-4",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "story",
+          "sourceRevision": "376767d339a9a84aebe165336e2794595d3f6d8ddab4196c02daba12a359a049",
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            },
+            {
+              "message": "Identity under review; this is a source inventory entry, not a confirmed saint identity."
+            }
+          ]
+        },
+        {
+          "sourceId": "recYz0sAfOqxGX3xd",
+          "saintId": "cms0w7jzn09e707qihmpt7adk",
+          "name": "Sri Chaitan Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj6-4",
+          "suggestedShelfIndex": 3,
+          "suggestedBand": "below-top",
+          "sourceRevision": "c1181e508c981fd043eb5701ca76c33980d46e896eef6b559ed5c5e112738c92",
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recW7KxJ0OxE6NQUZ",
+          "saintId": "cms0w7j4z08ix07qij6jeneac",
+          "name": "Sri Yamuna Jivan Prabhu",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj6-4",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "story",
+          "sourceRevision": "1c538d84f82ba3c4c1c5573dc308ab990cd787944a92dd61ce90f650e86f33e1",
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recZDpbsnZYFhwjOp",
+          "saintId": "cms0w7k2709gn07qinwal664r",
+          "name": "Govardhan Shila supposedly",
+          "tier": "Featured",
+          "groupId": "vraj-stories:govardhan-object-context",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "992a4652f0a5a84f0b248092ad1557ae8b2719089d1fc1f729a08101c7197437",
+          "knownFootprint": 0.5,
+          "reviewAlerts": [
+            {
+              "message": "Govardhan object context only. Source explicitly rejects the Advaita Acharya attribution; no teacher link or saint-prominence claim."
+            },
+            {
+              "message": "Source explicitly says the claimed Advaita Acharya provenance was rejected by Guruji. Do not attribute it to Advaita Acharya; even the shila identification remains qualified."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec7uMJLec4SDErel",
+          "saintId": "cms0w7dbl01ew07qilb8grwqs",
+          "name": "Sri Vallabhacharya",
+          "tier": "Featured",
+          "groupId": "vraj-stories:vraj12",
+          "suggestedShelfIndex": 1,
+          "suggestedBand": "story",
+          "sourceRevision": "95cb9eaeaad9b4caf19592d82a0fa4d2cf8c2a87ea487b591be6fb5f6e3962c2",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Vallabha–Surdas: Shrinathji seva at Govardhan. Radhavallabha Baba joins by curator direction following the source label Vallabha Sampradaya; Kadam Kandi locality retained. No direct teacher link to him is asserted."
+            }
+          ]
+        },
+        {
+          "sourceId": "reca69ZkG7n2a7yYY",
+          "saintId": "cms0w7dmj01tf07qiin8e9ha3",
+          "name": "Sri Surdasji",
+          "tier": "Featured",
+          "groupId": "vraj-stories:vraj12",
+          "suggestedShelfIndex": 1,
+          "suggestedBand": "story",
+          "sourceRevision": "1ba519c9c9e57781425d01a21b768c6ac8c0246d4d57c1d4314504c841a70352",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Vallabha–Surdas: Shrinathji seva at Govardhan. Radhavallabha Baba joins by curator direction following the source label Vallabha Sampradaya; Kadam Kandi locality retained. No direct teacher link to him is asserted."
+            }
+          ]
+        },
+        {
+          "sourceId": "recMSoLuciPELbyyu",
+          "saintId": "cms0w7grf05tu07qilpf3eul6",
+          "name": "Sri Radhavallabha Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj12",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "below-top",
+          "sourceRevision": "544deea8529d5d6702388b1cf2e09f46b01ca5c46ef2869c8d780d450dbf8a2e",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Vallabha–Surdas: Shrinathji seva at Govardhan. Radhavallabha Baba joins by curator direction following the source label Vallabha Sampradaya; Kadam Kandi locality retained. No direct teacher link to him is asserted."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec2nk9yAQbf5ni72",
+          "saintId": "cms0w7cjn00g607qisnqk6oov",
+          "name": "Pandavas",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-32",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "489c08bd3324ba387236f928ca208ae0a78393aa34cd77ca832d97a7286ce81c",
+          "knownFootprint": 0.5,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec7YA7eCwApr1I5y",
+          "saintId": "cms0w7dcf01fv07qidu50w8dy",
+          "name": "Sri Ram Mangal Dasji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-32",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "6f08899a91c75ea0169e631833fdadd7514199eeaac0ef5a1380ff1cec5c6b60",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "recd0cjF8Py7tpDfI",
+          "saintId": "cms0w7edu02tc07qippep856m",
+          "name": "Sri Girijanandaji Saraswati Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-32",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "b23d2679ccf94c97907dfaac49b0d8d833bed958d87592036bdf77718e540b1a",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "recBMTxwzsTVoDiOk",
+          "saintId": "cms0w7dzi02b107qi33zxkcn3",
+          "name": "Sri Swami Bidhyanand ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-32",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "666eb2674f9d46d38434db2ab89f06d1acbdd0f5e113dd95c3c86c7ac2487f25",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "recESP6UwZFGSwKxe",
+          "saintId": "cms0w7eut03fs07qi1qqlrejh",
+          "name": "Sri Asaram Bapu",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-32",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "dab3d760ced27b9b0904786fa59e4566fa5dc9779fe647ef9b7860c8773d3b47",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "recZmfYhZM1sxjJ8O",
+          "saintId": "cms0w7k5v09ke07qiwqfgjfqj",
+          "name": "Sri Sri Swami Atamram Nand Puriji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-32",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "491ee0005785468e04246873fb90400ae536fe6e1ddbf6086fe3a9a444fc3d8e",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "recPWVPc3i5A0KH7h",
+          "saintId": null,
+          "name": "Unidentified source record",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-32",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "d6f3ead315ed77f26d820566a70ee24a5bb33813476c9c7b432d6ce80e247517",
+          "knownFootprint": 0.08333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            },
+            {
+              "message": "Identity under review; this is a source inventory entry, not a confirmed saint identity."
+            }
+          ]
+        }
+      ],
+      "relationships": [],
+      "notes": [
+        "Story groups above lower review holdings. Exact positions remain suggestions; preserve already placed holdings."
+      ]
+    },
+    {
+      "code": "33",
+      "groups": [
+        {
+          "id": "vraj-stories:vraj5",
+          "title": "Hit Kinkar · Radhavallabha background",
+          "kind": "city"
+        },
+        {
+          "id": "vraj-stories:vraj7-6",
+          "title": "Vrindavan",
+          "kind": "city"
+        },
+        {
+          "id": "vraj-stories:kamavan-pair-v9",
+          "title": "Kamavan / wider Vraj",
+          "kind": "city"
+        },
+        {
+          "id": "vraj-stories:haridasi-combined33",
+          "title": "Haridasi · Banke Bihari & Madan Mohan Das",
+          "kind": "city"
+        },
+        {
+          "id": "vraj-stories:fresh-recwINghGOFp5uPKh",
+          "title": "Deeg / wider Vraj",
+          "kind": "city"
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recyCtOnmOZwhVgTI",
+          "saintId": "cms0w7jr7095907qi7sfxzjyb",
+          "name": "Sri Hit Kinkar Sewak Sharanji Maharaj",
+          "tier": "Secondary",
+          "groupId": "vraj-stories:vraj5",
+          "suggestedShelfIndex": 1,
+          "suggestedBand": "story",
+          "sourceRevision": "a0109418bee025900aa0bc250025f61cb1906f04e73bee1490278370c70e1632",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Published biography describes early Radhavallabha affiliation and a later broader approach. No additional member inferred from a similar name."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec5kC0WPXiXYelqp",
+          "saintId": "cms0w7d0p011e07qiz6gu5acv",
+          "name": "Sri Nar Hari Das ji",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "story",
+          "sourceRevision": "d90bda746d29aeef68cabbb70bcd7660a774722ab162f37813bcaae779429583",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recf5TVTPdhQ9I3fG",
+          "saintId": "cms0w7exu03jr07qi2nleo3zx",
+          "name": "Sri Venodanandji Maharaj (also known as Langta Baba)",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 2,
+          "suggestedBand": "story",
+          "sourceRevision": "7fc441f56db8890dc76256188d7ccdee42072b8547daa61158b3e29c1b2efe1e",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "rechEgcxIpn8wJYwn",
+          "saintId": "cms0w7fga047v07qi19qjfvh2",
+          "name": "Sri Ramdevanand Saraswati",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "story",
+          "sourceRevision": "050de5bba33afb90ee9bcce7ae2cf4d9249d6839b9e75981cfd0ae696a19690a",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recnGWguvlWIIZYaa",
+          "saintId": "cms0w7gx8061107qias11p4fq",
+          "name": "Sri Parampujya Sri Sri 1008 Sri Hridayananda Das Babaji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 1,
+          "suggestedBand": "story",
+          "sourceRevision": "90983a5f152a357bad166c8fd317f0ad4b65e1924d61784c1f8221cc4d924f71",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recSNYGyyw23mVVfE",
+          "saintId": "cms0w7i4m07fy07qi0zrlxesg",
+          "name": "Sri Gaya Prasadji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 1,
+          "suggestedBand": "story",
+          "sourceRevision": "41468e215292a9154dcf6c63ee1016b3b3c8406e44b186ac58649b35f5a1b386",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "rectJk81omsOqa2cD",
+          "saintId": "cms0w7icz07os07qiwkva1zz0",
+          "name": "Sri Deepanand Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 3,
+          "suggestedBand": "below-top",
+          "sourceRevision": "8fe3961b36b6db27f882de55724d40cde5b9e59d333a2f2c22fa0922dd1f5e08",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "rectt7X59r1jM3LQ6",
+          "saintId": "cms0w7ih507ta07qii8ar5m5v",
+          "name": "Sri Sushila Mataji",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 2,
+          "suggestedBand": "story",
+          "sourceRevision": "42cb2fe93fe6de9325e46f01c235a03a1e262f7c5787b77a1679535537cbcf0f",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recXjMRI0bmYSqq5M",
+          "saintId": "cms0w7jjt08xk07qi9i1vcz37",
+          "name": "Sri Ganshyamdas Babaji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "story",
+          "sourceRevision": "39d75b1d750025c200590692fd4b3d66e1aff9cfe6f9fe21d2f55f5fd8be0d69",
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recXPuLdP5ogPQGKS",
+          "saintId": "cms0w7jly08zt07qi9wrpgxhe",
+          "name": "Sri Sita Didi",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 3,
+          "suggestedBand": "below-top",
+          "sourceRevision": "5b2527e898dad90f58aed95ac5fceb3fcd0e71f2f4e641ccb12112de340d8819",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recyyGtf6Nn5dWTyW",
+          "saintId": "cms0w7jz209dn07qivw3qpja5",
+          "name": "Sri Siddhanath Chinnakunjammal",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "below-top",
+          "sourceRevision": "8fbbfece9b0d5c3ff88f297605d47c9212a37dbd4349c5b609598339d732d23a",
+          "knownFootprint": 0.125,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec5b3yl4uTKsznpm",
+          "saintId": "cms0w7cyd00yt07qidjvt7ssn",
+          "name": "Sri Balakrishna Dasji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "story",
+          "sourceRevision": "ca1779142aa0d2390b88511e3464743a17ded0f6a67464f3bc56273ef5c1d946",
+          "knownFootprint": 0.3333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec6wVN98kz7D9Sup",
+          "saintId": "cms0w7d7c018z07qifjpr7sop",
+          "name": "Mahamandaleshwar 1008 Sri Parmeshwar Das Tyagi ji",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 3,
+          "suggestedBand": "below-top",
+          "sourceRevision": "07e5c4f6c6d4643e3543d5dfb7a81ef3e9eb6116c4d4296dba0c66b352da604f",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recDGMad2d2BHUE0r",
+          "saintId": "cms0w7egw02x807qik7em5i5l",
+          "name": "Sri Sri 108 Madhav Dasji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 2,
+          "suggestedBand": "story",
+          "sourceRevision": "138f23f37629ad02a6b4a1935082c190a8482aca4e0b15666c73555c159e8e7c",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recG9Kk2TZrIalKaT",
+          "saintId": "cms0w7f5z03ud07qi4nsy0jaq",
+          "name": "Sri Bhatimati Nathia Bai",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "story",
+          "sourceRevision": "f05f60edc125c62344d626b5d33e3294c95dd13daf1e01b13758c6de03c448a2",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recLf7ixrMj4BUke5",
+          "saintId": "cms0w7gfi05fe07qimptzkx0u",
+          "name": "Sri Krishnapriya Kishori",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 3,
+          "suggestedBand": "below-top",
+          "sourceRevision": "c84fe28bb350349586c0e9cdf907976c71f92d877193d42ac81725a7f7c5344e",
+          "knownFootprint": 0.3333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recuVJid8KgYXPf01",
+          "saintId": "cms0w7irk084j07qinyhaevac",
+          "name": "Sri Goswami Ballabh Lal Dev",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj7-6",
+          "suggestedShelfIndex": 2,
+          "suggestedBand": "story",
+          "sourceRevision": "58f50e461a3693c5554e2cdc932eb067169bf0956bba70f362155a17b67d41ee",
+          "knownFootprint": 0.3333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recDC1QAGrFX5MCh0",
+          "saintId": "cms0w7efg02vc07qi8r0yxc84",
+          "name": "Sri Sri 108 Sri Kishori Das ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:kamavan-pair-v9",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "story",
+          "sourceRevision": "a7a075d5a7916ee5e1bd522d59207741e0ca203af8ae9f4da9c94aa22b8c9e70",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Kishori Das: Vimala Kund, Kamavan. Sukadev Das: Braj Kedarnath Dham, Bilond/Kaman, Rajasthan. Shared locality context; no personal relationship asserted."
+            }
+          ]
+        },
+        {
+          "sourceId": "recYIE2g8p2NxItsz",
+          "saintId": "cms0w7jsv097007qi5ec4iz5f",
+          "name": "Sri Sri 108 Mahant Sukadev Das ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:kamavan-pair-v9",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "below-top",
+          "sourceRevision": "2c0acc8e277db06917524f7ada64a0344a2c293fecb1dc4a13fd119b72d3c10b",
+          "knownFootprint": 0.125,
+          "reviewAlerts": [
+            {
+              "message": "Kishori Das: Vimala Kund, Kamavan. Sukadev Das: Braj Kedarnath Dham, Bilond/Kaman, Rajasthan. Shared locality context; no personal relationship asserted."
+            }
+          ]
+        },
+        {
+          "sourceId": "recaclOvEWZldL4On",
+          "saintId": "cms0w7dnq01v107qiqqmvt9wb",
+          "name": "Sri Bhutiya Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:kamavan-pair-v9",
+          "suggestedShelfIndex": 3,
+          "suggestedBand": "story",
+          "sourceRevision": "5d86fe927cb41ea6037212d7e3640c909d86274cc8324f49344fe98fae02d9c6",
+          "knownFootprint": null,
+          "reviewAlerts": [
+            {
+              "message": "Kishori Das: Vimala Kund, Kamavan. Sukadev Das: Braj Kedarnath Dham, Bilond/Kaman, Rajasthan. Shared locality context; no personal relationship asserted."
+            },
+            {
+              "message": "Size unknown; check physical fit."
+            }
+          ]
+        },
+        {
+          "sourceId": "recNYNzrzpmXr2lbV",
+          "saintId": "cms0w7h1u066i07qixhx7s9br",
+          "name": "Banke Bihariji",
+          "tier": "Featured",
+          "groupId": "vraj-stories:haridasi-combined33",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "story",
+          "sourceRevision": "aeb9e7f6a62d1e0fda9618917a743338006180a079b27f19a0bfdfc9dd843e28",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Banke Bihari: Swami Haridas–Nidhivan tradition. Madan Mohan Das of Bihari Van: explicit source label Sri Haridas Sampradaya. Shared tradition; no new direct guru relationship asserted."
+            }
+          ]
+        },
+        {
+          "sourceId": "reclOBBadwRlyUAwc",
+          "saintId": "cms0w7ggr05gx07qi387lyaj3",
+          "name": "Sri Madan Mohan Dasji",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:haridasi-combined33",
+          "suggestedShelfIndex": 1,
+          "suggestedBand": "story",
+          "sourceRevision": "3d0703c95ed243af5146224e2ce337b74d982bb7f03cc2d492d09408c5088d00",
+          "knownFootprint": 0.3333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "Banke Bihari: Swami Haridas–Nidhivan tradition. Madan Mohan Das of Bihari Van: explicit source label Sri Haridas Sampradaya. Shared tradition; no new direct guru relationship asserted."
+            }
+          ]
+        },
+        {
+          "sourceId": "recwINghGOFp5uPKh",
+          "saintId": "cms0w7j8708m907qi7ily677y",
+          "name": "Sri Sri 1008 Ramgulam Das Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:fresh-recwINghGOFp5uPKh",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "story",
+          "sourceRevision": "dbf5485dffc85f31a7399a9cbb7dd9bee9307ba95ffbcd1d7f8ee3be0b02ca90",
+          "knownFootprint": null,
+          "reviewAlerts": [
+            {
+              "message": "Later locality transfer retained from the effective proposal. Footprint absent in the older Vraj snapshot; do not treat it as zero."
+            },
+            {
+              "message": "Size unknown; check physical fit."
+            }
+          ]
+        }
+      ],
+      "relationships": [],
+      "notes": [
+        "Story groups above lower review holdings. Exact positions remain suggestions; preserve already placed holdings.",
+        "2 holdings have an unknown footprint, in addition to the known comparison load."
+      ]
+    },
+    {
+      "code": "34",
+      "groups": [
+        {
+          "id": "vraj-stories:vraj14-19",
+          "title": "Vrindavan",
+          "kind": "city"
+        },
+        {
+          "id": "vraj-stories:vraj15-23",
+          "title": "Vraj Bhoomi",
+          "kind": "city"
+        },
+        {
+          "id": "vraj-stories:vraj36",
+          "title": "Vamshi Vat community",
+          "kind": "city"
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recarvbfUWSXTbPPM",
+          "saintId": "cms0w7dte022n07qi7yw1zdkc",
+          "name": "Sri Sri 1008 Acharya Goswami Sri Milan Bihari Ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj14-19",
+          "suggestedShelfIndex": 1,
+          "suggestedBand": "story",
+          "sourceRevision": "813481016729c1614f49a57b558dc9af051f5edcd3919cc14013d18385174323",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recy20QZ2gHuWbLpE",
+          "saintId": "cms0w7jpt093r07qi7fg96xi3",
+          "name": "Sri Gopi Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj14-19",
+          "suggestedShelfIndex": 1,
+          "suggestedBand": "story",
+          "sourceRevision": "6cd6eccbc606620f801612c44514ccb35337efad592d381073895d75eb9243d2",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recTlXdHu57FHcvh6",
+          "saintId": "cms0w7idr07pp07qizln9430x",
+          "name": "Sri Anurag Das Baba (Sakhi)",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj14-19",
+          "suggestedShelfIndex": 2,
+          "suggestedBand": "story",
+          "sourceRevision": "1e004bd3060b07f2819cdddeafb836b62e480832c4dc17756e4dad97eba58392",
+          "knownFootprint": 0.3333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recMD8r2e4y1I5cfU",
+          "saintId": "cms0w7gmk05o007qine59vp4w",
+          "name": "Sri Hathi Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj14-19",
+          "suggestedShelfIndex": 1,
+          "suggestedBand": "story",
+          "sourceRevision": "247ce78c273901f76a374526fbee921e3d5430e1331c6286cdde6c56810a60f9",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec59TlK0U02yKqC9",
+          "saintId": "cms0w7cxd00xl07qiemcd50pn",
+          "name": "Sri Albeli Sharan ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj14-19",
+          "suggestedShelfIndex": 3,
+          "suggestedBand": "below-top",
+          "sourceRevision": "e94aab4b60ef6736754072142c48b63c0666128d79ea6e7c16c27432b25fc797",
+          "knownFootprint": 0.3333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recnk1IXIvGI54Mll",
+          "saintId": "cms0w7gxg061c07qidqdfm6ec",
+          "name": "Sri Swami Ishwar Puriji",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj14-19",
+          "suggestedShelfIndex": 2,
+          "suggestedBand": "story",
+          "sourceRevision": "80a81b9b824696274ba4245c4863c19d4ae6d06baf261224e9fe5d1a4c39d109",
+          "knownFootprint": 0.3333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recKFP79mZ8Fyhvao",
+          "saintId": "cms0w7g5k052y07qigeldl38i",
+          "name": "Sri Sri Hanuman Das Babaji",
+          "tier": "Secondary",
+          "groupId": "vraj-stories:vraj14-19",
+          "suggestedShelfIndex": 2,
+          "suggestedBand": "story",
+          "sourceRevision": "e2902483a574e10ffbfb7a7d49cf7a8efc47bdbe72ad237ead139fa93d9d9fed",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec4kdIIun9ooUz82",
+          "saintId": "cms0w7csb00rb07qixbs0714a",
+          "name": "Sri Gopinath Das Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj14-19",
+          "suggestedShelfIndex": 3,
+          "suggestedBand": "below-top",
+          "sourceRevision": "d38f35eb0e1124c0458119e951eefc32ab5fc92b56186d6b07a0cac561a14e7d",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recUha5G2Ph73NiGe",
+          "saintId": "cms0w7inq080e07qiuy2ad92t",
+          "name": "Sri Shanilalta Baba Aghori",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj14-19",
+          "suggestedShelfIndex": 3,
+          "suggestedBand": "below-top",
+          "sourceRevision": "ec527f0a68e80414261c9cea7f25cb9f1b5c2b3287392d3bc56a5c365a9c39a4",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recpT01HyezKTKppi",
+          "saintId": "cms0w7hg406n407qiojrmweun",
+          "name": "Sri Sri 1008 Vishudhanand Puriji Maharaj (Hanuman Baba)",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj14-19",
+          "suggestedShelfIndex": 1,
+          "suggestedBand": "story",
+          "sourceRevision": "89eb61eecd7aa1c4a171d09ac035e379395683d4aefd5e1cbe260f299a38e915",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "recDT8u9BBJyXriUu",
+          "saintId": "cmus3rwn1002007o5xkgonm9d",
+          "name": "Sri Siyaram Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj15-23",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "below-top",
+          "sourceRevision": "367096a19fe052eb0d18f87e8b154fb7eb61d5a8f2ed90d3c52c7c042270fbbc",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec2tNtwJKLv2hxcj",
+          "saintId": "cms0w7ckx00hs07qi11u8usbi",
+          "name": "Sri Jugal Das Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj36",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "below-top",
+          "sourceRevision": "bcb2cc9a065747896a072a365660183065c911625dd7a0a6cab0d993d76c4942",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Keep this Vrindavan community separate from Devraha’s family. Shared Vamshi Vat locality alone does not establish a guru relationship."
+            }
+          ]
+        },
+        {
+          "sourceId": "recC5TOgPfNAHTvAh",
+          "saintId": "cms0w7e5702i207qime68pr69",
+          "name": "Sri Gaur Hari Das",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj36",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "below-top",
+          "sourceRevision": "32528ca90d00c79aefd9302eb906da5a69734323ee40c06e6c2b5397fe5d66d9",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Keep this Vrindavan community separate from Devraha’s family. Shared Vamshi Vat locality alone does not establish a guru relationship."
+            }
+          ]
+        },
+        {
+          "sourceId": "recd8RpQYPYNsQ1XA",
+          "saintId": "cms0w7eeu02ul07qiwb1gnrp7",
+          "name": "Sri Radhikadas ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj36",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "below-top",
+          "sourceRevision": "1133f7725e28c5bcfd886bf0a433428c278832daabdc26630883ee473ed1b91c",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Keep this Vrindavan community separate from Devraha’s family. Shared Vamshi Vat locality alone does not establish a guru relationship."
+            }
+          ]
+        },
+        {
+          "sourceId": "recILaP0Ev8VszgWL",
+          "saintId": "cms0w7fqi04kp07qip4ndsuqr",
+          "name": "Sri Sri Raghav das ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj36",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "below-top",
+          "sourceRevision": "015da40af2de8a04f375622f20a84c5ecce11cfcb35ab6e30eeabf29e2c1dc6c",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Keep this Vrindavan community separate from Devraha’s family. Shared Vamshi Vat locality alone does not establish a guru relationship."
+            }
+          ]
+        },
+        {
+          "sourceId": "recltmpQpPqJARXr6",
+          "saintId": "cms0w7gii05j607qi6niwcg60",
+          "name": "Sri Lal Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj36",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "below-top",
+          "sourceRevision": "c0500a7dc7d87d5bfa8f567570d753a225c089bfaf2cfe59925aa49d1e679c1f",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Keep this Vrindavan community separate from Devraha’s family. Shared Vamshi Vat locality alone does not establish a guru relationship."
+            }
+          ]
+        },
+        {
+          "sourceId": "recorynJGbwBdQWvr",
+          "saintId": "cms0w7h8a06dr07qi0gofzl2v",
+          "name": "Sri Sadhananda Das",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj36",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "below-top",
+          "sourceRevision": "9eae7c32f4cf7dc2ea41097768a05acc13dd8c0b6bca8d4b741e2ffcc3784b38",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Keep this Vrindavan community separate from Devraha’s family. Shared Vamshi Vat locality alone does not establish a guru relationship."
+            }
+          ]
+        },
+        {
+          "sourceId": "recQl9WkwYiow0BRF",
+          "saintId": "cmus3rxht007a07o5rynn1o0u",
+          "name": "Sri Ramdas Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj36",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "below-top",
+          "sourceRevision": "7925a0217e9b886f1e11c38fb0fcb3262e0462ad6b1bdffee880ba6d70905bec",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Keep this Vrindavan community separate from Devraha’s family. Shared Vamshi Vat locality alone does not establish a guru relationship."
+            }
+          ]
+        },
+        {
+          "sourceId": "recUcPmjGo7mUDsSK",
+          "saintId": "cmus3rxsl009107o5nih54n5n",
+          "name": "Sri Ramdas ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj36",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "below-top",
+          "sourceRevision": "0eb3b96e1eaf4bef621e39b9c827402bed852aeb3845bc5236fae143fe256a67",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Keep this Vrindavan community separate from Devraha’s family. Shared Vamshi Vat locality alone does not establish a guru relationship."
+            }
+          ]
+        }
+      ],
+      "relationships": [],
+      "notes": [
+        "Story groups above lower review holdings. Exact positions remain suggestions; preserve already placed holdings."
+      ]
+    },
+    {
+      "code": "35",
+      "groups": [
+        {
+          "id": "vraj-stories:vraj24-36",
+          "title": "Radha Kund",
+          "kind": "city"
+        },
+        {
+          "id": "vraj-stories:placed35-context",
+          "title": "Already placed · retained review holdings",
+          "kind": "city"
+        },
+        {
+          "id": "vraj-stories:lower-review-35",
+          "title": "Lower-shelf review holdings",
+          "kind": "city"
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recOh5YsioR2xo9uv",
+          "saintId": "cms0w7h5c06ah07qie1lflrrj",
+          "name": "Sri Raghunath Das Goswami",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj24-36",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "story",
+          "sourceRevision": "04fb1c9b236e533d0d537b496119a0278db115c61f8d4a2f5be7e9b7bf7a7ace",
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details. Complete nine-record locality group proposed together in35. No new direct lineage implied."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec6eQFL3MESDRCxm",
+          "saintId": "cms0w7d3g014l07qiekamzik0",
+          "name": "Pandit Sri Ananta Das Babaji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj24-36",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "story",
+          "sourceRevision": "dcfe598120d40960ae45656597668db3641d2d90c8d5211133e5d8d6f60260b0",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details. Complete nine-record locality group proposed together in35. No new direct lineage implied."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec6tqmpxSSstOnAr",
+          "saintId": "cms0w7d6j018007qijiatyytf",
+          "name": "Sri Nanda Lal Baba Dasji",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj24-36",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "story",
+          "sourceRevision": "fd87a49d80387deb6ba389ab74ac6300806f7d4c2f4904f8e37e73e17f9e3dd5",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details. Complete nine-record locality group proposed together in35. No new direct lineage implied."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec7zbeymH6f0hJH1",
+          "saintId": "cms0w7dco01g607qixj5jwt3p",
+          "name": "Sri Sri Krishna Dasji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj24-36",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "story",
+          "sourceRevision": "36265c80fe1256614bbe2a2067b6889da08aaa57c63686f300dbe503af119604",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details. Complete nine-record locality group proposed together in35. No new direct lineage implied."
+            }
+          ]
+        },
+        {
+          "sourceId": "recC8pT2zrt13T629",
+          "saintId": "cms0w7e5h02ih07qihm2zj9z0",
+          "name": "Sri Prankrishna Das Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj24-36",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "below-top",
+          "sourceRevision": "e78fabc16b8c888c455bd7c919e63a20216c91c884dd53d61b753cd3e0ab53ab",
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details. Complete nine-record locality group proposed together in35. No new direct lineage implied."
+            }
+          ]
+        },
+        {
+          "sourceId": "recCAwBjWoFjwHeow",
+          "saintId": "cms0w7e6602jf07qit68agan1",
+          "name": "Sri Sri 108 Mahatyagi Baba Mangal Das ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj24-36",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "story",
+          "sourceRevision": "bb23b5559510cebb1052924015126e2a4a2b69928022ab60b954c52e4b7e7495",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details. Complete nine-record locality group proposed together in35. No new direct lineage implied."
+            }
+          ]
+        },
+        {
+          "sourceId": "reccbl2L3o0VG1vF2",
+          "saintId": "cms0w7e6e02jp07qi68jaqjyo",
+          "name": "Sri 108 Sadguru Mastram Saheb",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj24-36",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "story",
+          "sourceRevision": "6b4b393a74654eec7c79765b377ea944bdc62d99ce8d6e8a6c0b836dad31db51",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details. Complete nine-record locality group proposed together in35. No new direct lineage implied."
+            }
+          ]
+        },
+        {
+          "sourceId": "recQMK24q4pZThT4d",
+          "saintId": "cms0w7hmy06v807qilari6n9d",
+          "name": "Sri Uma Kumar",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj24-36",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "below-top",
+          "sourceRevision": "2d873e42db6440489f78cbebc862054ea911d8e6e0c8df7ee1203695c90d67e2",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details. Complete nine-record locality group proposed together in35. No new direct lineage implied."
+            }
+          ]
+        },
+        {
+          "sourceId": "recTMiPzRn7lSQwey",
+          "saintId": "cms0w7ie207q207qibnjladhk",
+          "name": "Sri Pagal Das Babaji",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:vraj24-36",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "below-top",
+          "sourceRevision": "1bfef0ea748030b862489ead23a9e32b662213ab23547b0cf4c8d5df66f879d5",
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [
+            {
+              "message": "Grouped by the locality driving placement. Specific sites remain in each entry’s locality details. Complete nine-record locality group proposed together in35. No new direct lineage implied."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec4h3DhRd94Ee8yz",
+          "saintId": "cms0w7cs000r207qic8gbijob",
+          "name": "Sri Mataji Nirmala Devi",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:placed35-context",
+          "suggestedShelfIndex": 4,
+          "suggestedBand": "lower",
+          "sourceRevision": "408937db729c042b34fb742ba4d8fc9db3fefc5f394d2b239638f88ef0428251",
+          "knownFootprint": 0.08333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "All four physical placements retained. Hihtdasji has provisional Vrindavan context from curator recollection; the other identities/localities remain separate review questions."
+            },
+            {
+              "message": "Already confirmed in V35: retained in place in this trial."
+            }
+          ]
+        },
+        {
+          "sourceId": "reciyrgOojXeOfKz7",
+          "saintId": "cms0w7fsb04mu07qi2tp6m0st",
+          "name": "Acharya Sri Nirmal Saga Ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:placed35-context",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "lower",
+          "sourceRevision": "46268907e1dbc1bbb4c6e10318e09a11366f9841986aa0f9e5b7b84135a0cad1",
+          "knownFootprint": 0.08333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "All four physical placements retained. Hihtdasji has provisional Vrindavan context from curator recollection; the other identities/localities remain separate review questions."
+            },
+            {
+              "message": "Already confirmed in V35: retained in place in this trial."
+            }
+          ]
+        },
+        {
+          "sourceId": "recjA6M4REhXbtb1Z",
+          "saintId": "cms0w7ftv04ok07qije4e0vfo",
+          "name": "Sri Hihtdasji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:placed35-context",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "lower",
+          "sourceRevision": "642209e286141769f4e0408e06728810df4f568ab7d13862b3cf48e67acc659d",
+          "knownFootprint": 0.14285714285714285,
+          "reviewAlerts": [
+            {
+              "message": "All four physical placements retained. Hihtdasji has provisional Vrindavan context from curator recollection; the other identities/localities remain separate review questions."
+            },
+            {
+              "message": "Already confirmed in V35: retained in place in this trial."
+            },
+            {
+              "message": "User recalls Vrindavan. Exported source has yellow towel and12/C, without locality/teacher/biography. No Radhavallabha relationship inferred."
+            }
+          ]
+        },
+        {
+          "sourceId": "rec0wJK2U7kBE9S7o",
+          "saintId": "cms0w7cc7006z07qitfqqp5q3",
+          "name": "Sri Swami Maheshanand ji",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:placed35-context",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "lower",
+          "sourceRevision": "33c21707ce4ee4dcab63f1269dcb9336c6e47069de4040b48948e529aa779d62",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "All four physical placements retained. Hihtdasji has provisional Vrindavan context from curator recollection; the other identities/localities remain separate review questions."
+            },
+            {
+              "message": "Already confirmed in V35: retained in place in this trial."
+            }
+          ]
+        },
+        {
+          "sourceId": "recK9i0V5dVwDqzaF",
+          "saintId": "cms0w7g3b050407qib6euj0o0",
+          "name": "Unknown Saint White cloth and photo (man and cow) with tree under which Shiva Meditated",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-35",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "lower",
+          "sourceRevision": "54d15301f6595f96270ceec43078ffed954e06cd838b3bf01a6922349c619c0d",
+          "knownFootprint": 0.3333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "recdhv8TXHDxqefjq",
+          "saintId": "cms0w7ehc02xt07qi0tq7uot8",
+          "name": "Nadege of Paris",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-35",
+          "suggestedShelfIndex": 5,
+          "suggestedBand": "lower",
+          "sourceRevision": "3e799cd1cd3993f49c98a12056e947fcef8c4de87239a70231826790661491ef",
+          "knownFootprint": 0.3333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "recQq1sZzwupfjFYm",
+          "saintId": "cms0w7hnl06vy07qiexxmzj8w",
+          "name": "Sri Vishwatmanand Giriji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-35",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "8b46c5737eeb9b22d96e6dee6353eab7e34f4ff98dd33810262c5b75b0bb0240",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "recMVtEp0VnYTwZWC",
+          "saintId": "cms0w7gsu05vn07qi224c6h2e",
+          "name": "Sri Florea Baba",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-35",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "c4b9d7677451ea81f7db66ab49e7f7ba09956d264cced679aa499e074a60a64e",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "reclWuYOI3Vpeyh0S",
+          "saintId": "cms0w7gjm05kq07qi0082dp9r",
+          "name": "Prabhupadacharya Sri Phanilal Goswami",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-35",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "034644ba5d336fad2ffa2525028f7aab74f2b342c234c7672ac663e318859d1d",
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "recr2CTcUbP13CgUQ",
+          "saintId": "cms0w7hr0070507qiicx68pb3",
+          "name": "Sri Swami Ganesh Dasji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-35",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "ee5f4c3e3309d8827c15fd19095b982176ea37f11dcd621130d8f9e74cdd6f60",
+          "knownFootprint": 0.2,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        },
+        {
+          "sourceId": "recaUBzuJUeWPZghI",
+          "saintId": "cms0w7du5023j07qi1vnn2o88",
+          "name": "Sri Baba Khehar Singh",
+          "tier": "Tertiary",
+          "groupId": "vraj-stories:lower-review-35",
+          "suggestedShelfIndex": null,
+          "suggestedBand": "lower",
+          "sourceRevision": "f23d999e2a75416b9c730390f8f12aa1a8266816c76664a9cbcde11cd8c4cdf1",
+          "knownFootprint": 0.08333333333333333,
+          "reviewAlerts": [
+            {
+              "message": "Unplaced holdings only, distributed around the regional stories. No local or family affiliation inferred. Inspect each identity and fit before moving."
+            }
+          ]
+        }
+      ],
+      "relationships": [],
+      "notes": [
+        "Story groups above lower review holdings. Exact positions remain suggestions; preserve already placed holdings."
+      ]
+    }
+  ]
+}

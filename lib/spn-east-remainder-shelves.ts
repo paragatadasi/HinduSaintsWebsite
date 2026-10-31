@@ -1,3 +1,4 @@
+import storyTops from "../data/museum/spn-vraj-story-tops-shelves-v2.json";
 import {applyV77BottomTwoRecommendations} from "./spn-v77-bottom-two-shelves";
 import captured from "../data/museum/spn-vraj-east-shelves-v1.json";
 import packet from "../data/museum/spn-east-remainder-guide-v1.json";
@@ -17,6 +18,7 @@ if(!puriSources||packet.sourceShelfVersion!==captured.version||packet.sourceShel
 const easternSupplement:ShelfPlanningPacket={...captured,version:"spn-vraj-east-shelves-2026-10-31-v2",vitrines:captured.vitrines.map(v=>v.code!==extra.code?v:{...v,
  groups:v.groups.map(g=>g.id!==extra.groupId?g:{...g,sourceIds:[...puriSources,extra.sourceId]}),
  allocations:[...v.allocations,extra],notes:[...(v.notes??[]),extra.reviewAlerts[0].message]})};
-export const operationalSpnShelfPacket=applyV77BottomTwoRecommendations(easternSupplement);
+const revisedVraj:ShelfPlanningPacket={...easternSupplement,version:easternSupplement.version+":"+storyTops.version,vitrines:easternSupplement.vitrines.map(v=>storyTops.vitrines.find(updated=>updated.code===v.code)??v)};
+export const operationalSpnShelfPacket=applyV77BottomTwoRecommendations(revisedVraj);
 export const eastRemainderShelfPacket:ShelfPlanningPacket={...operationalSpnShelfPacket,
  vitrines:operationalSpnShelfPacket.vitrines.filter(v=>packet.vitrines.includes(v.code))};
