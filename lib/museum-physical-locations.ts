@@ -1,4 +1,5 @@
 import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
+import {caseContentsStaging,assertSelectedCaseContents} from "./museum-case-contents-domain";
 import {spnCaseExecutionHold, spnPhysicalExecutionHold} from "./museum-case-execution-holds";
 import {assertAssistantGuidePlacement,assertAssistantEffectiveDestination} from "./museum-assistant-placement-domain";
 import {currentCompanionAdditions} from "./museum-companion-addition-validation";
@@ -45,6 +46,7 @@ export const physicalConfirmationInput = z.object({ museumId: z.literal("museum-
   initialCaseClearAcknowledged: z.literal(true).optional(),
   componentStagingAcknowledgements: componentStagingAcknowledgements.optional(),
   retainedCaseClearanceAcknowledgement:retainedCaseClearanceAcknowledgement.optional(),
+  caseContentsStaging:caseContentsStaging.optional(),
   clearedVitrines: z.array(z.string().min(1).max(100)).max(100).optional(),
   records: z.array(z.object({ sourceId: z.string().min(1).max(200), saintId: z.string().nullable(),
     expectedCurrentRevision: z.string().regex(/^[a-f0-9]{64}$/), expectedSourceRevision: z.string().regex(/^[a-f0-9]{64}$/),
@@ -146,6 +148,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
   loader = memoizePhysicalSnapshot(loader);
   const input = physicalConfirmationInput.parse(raw);
   const assistantOnly=!actor.canManage;
+  if(input.caseContentsStaging&&(!actor.canManage||input.guideContext||input.clearedVitrines?.length||input.initialCaseClearAcknowledged||input.curatorAddition||input.alternativeDecision||input.componentStagingAcknowledgements||input.retainedCaseClearanceAcknowledgement||input.records.some(row=>row.to.kind!=="table"||row.to.code!=="staging-area")))
+    throw new MuseumMoveSessionError(403,"A curator must confirm selected origin contents separately from guide placements or whole-case clearing.");
   if(assistantOnly)assertAssistantGuidePlacement(input,input.guideContext?readStarterGuideDefinition(input.guideContext.guideVersion):undefined);
   assertRetainedCaseClearance(input);
   assertComponentClearanceScope(input);
@@ -206,7 +210,16 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         throw new MuseumMoveSessionError(409, "Open this destination's current move guide before recording its added relic.");
     }
     const transfers = [...(phase?.physicalScope?.preparatoryTransfers ?? []), ...additionPhases.flatMap(row => row.physicalScope?.preparatoryTransfers ?? [])];
-    const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length ? undefined : [...new Set([...input.records.map(row => row.sourceId), ...transfers.map(row => row.sourceId)])], false);
+    const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length||input.caseContentsStaging ? undefined : [...new Set([...input.records.map(row => row.sourceId), ...transfers.map(row => row.sourceId)])], false);
+    if(input.caseContentsStaging){
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      const ids=input.records.flatMap(record=>{const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);});
+      for(const id of [...new Set(ids)].sort())await tx.$queryRaw(Prisma.sql`SELECT true FROM pg_advisory_xact_lock(hashtextextended(${"museum-arrangement:spn:"+id},0))`);
+      const {readCaseContentsPreview}=await import("./museum-case-contents");
+      const preview=await readCaseContentsPreview(loader,{vitrine:input.caseContentsStaging.vitrine,mode:"selected_contents"},tx);
+      assertSelectedCaseContents(input.records.map(({to,...record})=>record),input.caseContentsStaging.expectedRevision,preview);
+    }
     if(assistantOnly){
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
@@ -323,6 +336,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         datePrecision: input.datePrecision, recordedAt: recordedAt.toISOString(), evidence: input.evidence, scope: componentMoves.length ? "source_observation_with_components" : "source_observation", moves: changes,
         ...(componentMoves.length ? {componentMoves, componentStagingAcknowledgements:input.componentStagingAcknowledgements} : {}),
         ...(input.retainedCaseClearanceAcknowledgement?{retainedCaseClearanceAcknowledgement:input.retainedCaseClearanceAcknowledgement}:{}),
+        ...(input.caseContentsStaging?{caseContentsStaging:input.caseContentsStaging}:{}),
         guideContext: input.guideContext ?? null, curatorAddition: input.curatorAddition ?? null, clearedVitrines: input.clearedVitrines ?? [], inventoryCompleteness: "unverified",
         emptyCaseClaim: input.clearedVitrines?.length ? "curator_confirmed_at_event_time" : "none", proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
     return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt, replayed: false, alreadyRecorded };
