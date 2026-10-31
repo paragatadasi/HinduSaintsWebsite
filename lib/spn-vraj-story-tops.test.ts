@@ -1,16 +1,17 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import packet from "../data/museum/spn-vraj-story-tops-guide-v2.json";
-import shelves from "../data/museum/spn-vraj-story-tops-shelves-v2.json";
+import capturedShelves from "../data/museum/spn-vraj-story-tops-shelves-v2.json";
 import previous from "../data/museum/spn-vraj-remainder-guide-v1.json";
 import {vrajStoryTopsMoveGuide,vrajStoryTopsGuideDefinition} from "./spn-vraj-story-tops-guide";
 import {projectVrajRemainderGuide,assertVrajRemainderRecords} from "./spn-vraj-remainder-guide";
-import {projectShelfPlanningContext} from "./museum-shelf-planning-context";
+import {projectShelfPlanningContext,type ShelfPlanningPacket} from "./museum-shelf-planning-context";
 import {inheritGuideDecisions} from "./museum-guide-decision-inheritance";
 import {readStarterGuideDefinition} from "./spn-starter-guide-registry";
 import type {MuseumSaintPlacement} from "./museum-proposals";
 import type {PhysicalState} from "./spn-move-guide";
 import type {ExplorerObservation} from "./spn-room-proposal";
+const shelves:ShelfPlanningPacket=capturedShelves;
 function fixture(){
  const rows=packet.rows.filter(r=>r.destination!=="38");
  const placements:MuseumSaintPlacement[]=rows.flatMap(r=>r.saintId?[{id:r.sourceId,sourceRecordId:r.sourceId,saintId:r.saintId,name:r.name,tier:r.tier==="Primary"?"Featured":r.tier==="Secondary"?"Secondary":"Tertiary",section:r.section,familyId:"",curatorialFamily:"",familySize:1,alternatives:[],confidence:"",rationale:"",note:"",spiritualRegions:[],normalizedPlaces:[r.city],sampradaya:"",needsResearch:false}]:[]);
