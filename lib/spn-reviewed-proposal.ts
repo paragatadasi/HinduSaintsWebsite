@@ -27,10 +27,12 @@ const vraj: {
  topPlacement:Record<string,{sourceIds:string[];label:string}>;
 } = rawVraj;
 import type {MuseumSaintPlacement} from "./museum-proposals";
+import type {CompanionRow} from "./spn-move-guide";
+import {regionalPendingTransfer,regionalPendingSourceIds} from "./spn-regional-pending-transfers";
 
 const currentCaseNotes: Record<string, string | null> = reviewedCaseNotes;
 export const latestSpnReviewVersion=northernVoyage.version;
-export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternatives:{sourceId:string;vitrine:string;shelf:string|null}[]=[]){
+export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternatives:{sourceId:string;vitrine:string;shelf:string|null}[]=[], sources:Pick<CompanionRow,"sourceId"|"saintId"|"sourceRevision"|"identityChanged">[]=[]){
  const base=correctSpnProposal(currentSpnProposalRelease);
  const overrides=new Map(overlay.overrides.map(row=>[row.sourceId,row]));
  const originals=[...base.proposal.rows,...base.proposal.namedOnly];
@@ -49,6 +51,11 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
  const pendingIds=new Set([...overlay.pendingReceiverSourceIds,...eastBaseline.heldSourceIds]);
  if(paramanandProposalResolution(current).destination)pendingIds.delete(paramanandObjectReview.sourceId);
  const pendingPlacements=reconciled.filter(row=>privateIds.has(row.sourceId)||pendingIds.has(row.sourceId)&&!alternatives.some(a=>a.sourceId===row.sourceId)&&row.effectiveVitrine===row.vitrine&&!current.some(record=>record.id===row.baseline?.placementId&&record.arrangement?.vitrine&&["Planned","Implemented"].includes(record.arrangement.status)&&record.arrangement.revision!==row.baseline?.revision)).map(row=>({sourceId:row.sourceId,name:row.name,previousVitrine:row.effectiveVitrine,reason:privateIds.has(row.sourceId)?"Privately held; excluded from museum display":"Outside the approved core; destination still to review"}));
+ for(const sourceId of regionalPendingSourceIds){
+  const row=reconciled.find(item=>item.sourceId===sourceId);
+  const transfer=regionalPendingTransfer(current,sources,alternatives,row?.effectiveVitrine);
+  if(row&&transfer)pendingPlacements.push({sourceId,name:row.name,previousVitrine:row.effectiveVitrine,reason:`${transfer.label}. ${transfer.reason}`});
+ }
  pendingPlacements.push(...scoped.filter(row=>spnDuplicateObservations[row.sourceId]).map(row=>({sourceId:row.sourceId,name:row.name,previousVitrine:row.vitrine,reason:spnDuplicateObservations[row.sourceId].reason})));
  for(const pending of projectNorthernPendingReview(reconciled,current,alternatives).pendingPlacements)if(!pendingPlacements.some(p=>p.sourceId===pending.sourceId))pendingPlacements.push(pending);
  const withheld=new Set(pendingPlacements.map(row=>row.sourceId));

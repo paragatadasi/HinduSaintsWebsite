@@ -5,6 +5,23 @@ import type {StarterMoveGuide,GuideEntry} from "./spn-move-guide";
 const entry:GuideEntry={sourceId:"extra",saintId:"saint",name:"Extra saint",tier:"Secondary",city:"City",relicDescription:"Relic",destination:"",section:"Section",family:"",rationale:""};
 const base=(code:string):StarterMoveGuide=>({version:"v1",contentDigest:"digest",proposalVersion:"proposal",assignmentDigest:"assignments",title:"Guide",entries:[],vitrines:[{code,summary:"",families:[],cityGroups:[]}],alternatives:[],reportedPlacements:[]});
 const addition={sourceId:"extra",saintId:"saint",sourceRevision:"revision",vitrine:"73",shelf:null,version:1,updatedAt:"2026-10-29T12:00:00Z",clientRequestId:"id"};
+
+test("regional case pending removes stale guide membership while preserving physical reports",()=>{
+ const guide=base("82");
+ const other={...entry,sourceId:"other"};
+ guide.entries=[entry,other];
+ const group={id:"group",title:"Group",sourceIds:["extra","other"],rationale:"",suggestedVitrines:["82"]};
+ guide.vitrines[0].families=[group];guide.vitrines[0].cityGroups=[group];guide.alternatives=[group];
+ guide.reportedPlacements=[{sourceId:"extra",destination:"82",date:"2026-10-31"}];
+ const before=JSON.stringify(guide);
+ const proposalTransfer={version:"v1",sourceId:"extra",state:"approved_case_pending" as const,region:"South",cohort:"Andhra",label:"South / Andhra · case pending",reason:"Approved",approvedDate:"2026-10-31",supersededDestination:"82"};
+ const result=projectCompanionAdditions({starter:guide},[],[{...entry,proposalTransfer},other]).starter;
+ assert.deepEqual(result.entries.map(e=>e.sourceId),["other"]);
+ for(const retained of [result.vitrines[0].families[0],result.vitrines[0].cityGroups[0],result.alternatives[0]])assert.deepEqual(retained.sourceIds,["other"]);
+ assert.deepEqual(result.reportedPlacements,guide.reportedPlacements);
+ assert.equal(result.contentDigest,guide.contentDigest);
+ assert.equal(JSON.stringify(guide),before);
+});
 test("outside-phase source joins only its receiving guide without mutating frozen data",()=>{
  const guides={starter:base("2"),east:base("73")};const result=projectCompanionAdditions(guides,[addition],[entry]);
  assert.deepEqual(result.east.vitrines[0].cityGroups[0].sourceIds,["extra"]);assert.equal(result.east.entries[0].destination,"73");assert.equal(result.starter.entries.length,0);assert.equal(guides.east.entries.length,0);assert.equal(result.east.contentDigest,"digest");
