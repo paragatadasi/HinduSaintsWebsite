@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import {spnCaseExecutionHold, spnPhysicalExecutionHold} from "./museum-case-execution-holds";
 import { Prisma } from "./generated/prisma/client";
 import { db } from "./db";
 import { resolveMuseumPhysicalCurrent, storedPhysicalLocation } from "./museum-physical-location-current";
@@ -73,6 +74,10 @@ export async function updateMuseumMoveSession(raw: unknown, actor: MoveSessionAc
     const tables = session.tables as { id: string; label: string }[];
     let before: unknown = { version: session.version }, after: unknown;
     if (input.action === "move") {
+      for (const code of input.clearedVitrines ?? []) {
+        const hold = spnCaseExecutionHold(code);
+        if (hold) throw new MuseumMoveSessionError(409, hold);
+      }
       assertDistinctMoveSources(input.moves);
       if(!input.clearedVitrines?.length&&input.moves.some(move=>move.sourceId===bilashFollowup.sourceId&&move.to.kind==="vitrine"&&move.to.code==="57"))
         assertBilashGuideTarget(input.moves,(await readMuseumData(tx)).placements);
@@ -92,6 +97,8 @@ export async function updateMuseumMoveSession(raw: unknown, actor: MoveSessionAc
         const currentRow = currentView.rows.find(current => current.sourceId === row.sourceId)!;
         if (currentRow.currentRevision !== move.expectedCurrentRevision) throw new MuseumMoveSessionError(409, "A recorded physical location changed. Reload before confirming this move.");
         const from = currentRow.current;
+        const executionHold = spnPhysicalExecutionHold(from, move.to);
+        if (executionHold) throw new MuseumMoveSessionError(409, executionHold);
         let to = move.to;
         if (to.kind === "table") {
           const table = tables.find(table => table.id === to.code);

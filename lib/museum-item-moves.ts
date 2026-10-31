@@ -1,4 +1,5 @@
 import { z } from "zod";
+import {spnPhysicalExecutionHold} from "./museum-case-execution-holds";
 import { db } from "./db";
 import { Prisma } from "./generated/prisma/client";
 export const planItemMoveSchema=z.object({
@@ -40,6 +41,8 @@ export async function resolveItemMove(actorId:string,input:z.infer<typeof resolv
       const current=item.placements[0];
       const target=await tx.museumLocation.findUniqueOrThrow({where:{id:plan.targetLocationId},include:{museum:true}});
       if(item.version!==plan.expectedItemVersion || (current?.locationId ?? null)!==plan.fromLocationId || item.status==="archived" || item.catalogMuseumId!=="museum-spn" || item.catalogMuseum.archivedAt || target.museumId!=="museum-spn" || target.archivedAt || target.museum.archivedAt || (current && (current.location.archivedAt || current.location.museumId!=="museum-spn"))) throw Error("Item or location changed; cancel and replan");
+      const executionHold=spnPhysicalExecutionHold(current?.location,target);
+      if(executionHold)throw Error(executionHold);
       const now=new Date();
       if(current) await tx.museumItemPlacement.update({where:{id:current.id},data:{endedAt:now}});
       await tx.museumItemPlacement.create({data:{itemId:item.id,locationId:target.id,startedAt:now,note:input.note}});

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import {spnPhysicalExecutionHold} from "./museum-case-execution-holds";
 import { db } from "./db";
 import { Prisma } from "./generated/prisma/client";
 import { fingerprint, sourceKey } from "./museum-update-domain";
@@ -32,7 +33,7 @@ export async function stageMirroredRelics(actorId:string) {
       if(latest && ["pending","deferred"].includes(latest.status)) await tx.museumCollectionImport.update({where:{id:latest.id},data:{status:"superseded"}});
       let itemId=latest?.itemId ?? null;
       let status="pending";
-      if(!itemId && !proposal.blockers.length) {
+      if(!itemId && !proposal.blockers.length && !spnPhysicalExecutionHold(null,proposal.normalized.location)) {
         const item=await tx.museumCollectionItem.create({data:{catalogMuseumId:museumId,label:proposal.normalized.label,status:"verified",
           saints:{create:proposal.normalized.saintIds.map(saintId=>({saintId}))}}});
         itemId=item.id;
@@ -89,6 +90,8 @@ export async function decideRelic(actorId:string,input:z.infer<typeof relicDecis
         if(!input.vitrine && input.unknown!=="on") throw Error("Confirm unknown location explicitly");
         if(input.shelf && !input.vitrine) throw Error("Shelf needs a vitrine");
         if(input.vitrine && input.unknown) throw Error("Choose a location or unknown, not both");
+        const executionHold=spnPhysicalExecutionHold(item?.placements[0]?.location,input.vitrine?{kind:"vitrine",code:input.vitrine}:null);
+        if(executionHold)throw Error(executionHold);
         const normalized=collectionObservationSchema.parse(row.normalizedJson);
         before={status:row.status,itemId:item?.id ?? null,label:item?.label ?? null,placements:item?.placements.map(p=>({id:p.id,locationId:p.locationId})) ?? []};
         let locationId:string|null=null;
