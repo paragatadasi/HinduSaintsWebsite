@@ -64,3 +64,15 @@ development `DATABASE_URL` to verify persistence. The verifier creates and remov
 its own empty test database, reproduces the old constraint failure, applies the
 migration, and checks save, idempotent retry, readback, reset, stale-version
 rejection, preserved history and unrelated alternatives. It rejects remote hosts.
+
+## Source-recorded reunion groups
+
+The Ramashray–Tyagi display group uses the reviewed 31 October 2026 source
+biography, which names Ramashray of Chitrakoot as Tyagi's guru. The companion
+labels the connection as source-recorded and keeps it separate from the
+Nimbarka–Kathia family. It does not write a canonical relationship.
+
+The group appears only when both exact source/canonical pairs remain members of
+Vitrine 77 in the effective guide. Later destinations or identity changes prevent
+the grouping. Grouping changes neither guide decision versions nor physical
+confirmation records, and never implies that a suggested shelf is confirmed.
