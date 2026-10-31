@@ -5,7 +5,7 @@ import { moveLocation } from "./museum-move-session-domain";
 
 export async function readComponentCorrections(tx: Prisma.TransactionClient = db) {
   const events=await tx.auditEvent.findMany({where:{action:"museum.physical_location.check_undone",entityType:"MuseumPhysicalCheckUndo",
-    OR:[{afterJson:{path:["scope"],equals:"vitrine_20_contents_only"}},{afterJson:{path:["scope"],equals:"vitrine_19_contents_only"}}]},select:{afterJson:true}});
+    OR:[{afterJson:{path:["scope"],equals:"vitrine_20_contents_only"}},{afterJson:{path:["scope"],equals:"vitrine_19_contents_only"}},{afterJson:{path:["scope"],equals:"vitrine_42_contents_only"}}]},select:{afterJson:true}});
   return events.flatMap(({afterJson:value})=>value&&typeof value==="object"&&!Array.isArray(value)&&value.museumId==="museum-spn"&&
     typeof value.targetReceiptId==="string"&&typeof value.sourceId==="string"?[{receiptId:value.targetReceiptId,sourceId:value.sourceId}]:[]);
 }

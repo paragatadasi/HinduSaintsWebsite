@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readPhysicalLocationView, readMuseumPhaseClearances } from "./museum-physical-locations";
-import { v20ComponentSourceIds,v19ComponentBinding,componentScopeForOrigin } from "./museum-component-clearance-domain";
+import { v20ComponentSourceIds,v19ComponentBinding,v42ComponentBinding,componentScopeForOrigin } from "./museum-component-clearance-domain";
 
-for(const [sourceId,code] of [[v20ComponentSourceIds[0],"20"],[v19ComponentBinding.sourceId,"19"]])test(`V${code} component receipt projects staged parts without a whole-source ledger row; correcting it revokes clearance`,async()=>{
+for(const [sourceId,code] of [[v20ComponentSourceIds[0],"20"],[v19ComponentBinding.sourceId,"19"],[v42ComponentBinding.sourceId,"42"]])test(`V${code} component receipt projects staged parts without a whole-source ledger row; correcting it revokes clearance`,async()=>{
  const origin={kind:"vitrine" as const,code,label:`Vitrine ${code}`,shelf:"A"},scope=componentScopeForOrigin(code)!;
  const snapshot={proposalVersion:"test",title:"test",vitrineCodes:[code],guidance:{version:"test",reviewStatus:"test"},
    rows:[{sourceId,sourceKey:"source:key",name:"Held display",saintId:"saint",sourceReported:origin,destination:null,holdReason:"",fixedHousing:false}]};
