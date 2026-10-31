@@ -1,3 +1,23 @@
+# Remaining Eastern displays
+
+The `east2` phase registers only receiving cases 26 and 24: 42 source observations,
+including the later reviewed Paramanand arm-support recommendation. Existing Eastern,
+Vraj and Northern contexts and their saved receipts remain independently registered.
+This phase does not reactivate the superseded Northeast destination 73.
+
+`readEastRemainderGuide` projects current identities, source revisions, arrangements,
+curator additions, alternatives and living-status evidence through the guarded shelf
+context. Ordinary placement submissions repeat that projection inside the existing
+physical-location transaction. Each receiving case needs its own clearance and
+preparation; loading the phase records no physical moves.
+
+The operational shelf reader overlays Paramanand onto the immutable 347-source
+revision-5 packet, yielding 348 source recommendations across the same 18 cases.
+His provisional lower Puri band carries an explicit width/fit warning and unknown
+footprint. The fresh housing-evidence digest must still match the exact complete
+arm-support review; a matching identity/location fingerprint alone cannot release
+the housing hold. Suggested bands never populate actual confirmed shelves.
+
 # Move companion refinement
 
 The Vrindavan move companion separates search/sort from starting-vitrine,
