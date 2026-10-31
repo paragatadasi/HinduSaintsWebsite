@@ -660,6 +660,9 @@
           "reviewAlerts": [
             {
               "message": "Kishori Das: Vimala Kund, Kamavan. Sukadev Das: Braj Kedarnath Dham, Bilond/Kaman, Rajasthan. Shared locality context; no personal relationship asserted."
+            },
+            {
+              "message": "Size unknown; check physical fit."
             }
           ]
         },
@@ -708,13 +711,17 @@
           "reviewAlerts": [
             {
               "message": "Later locality transfer retained from the effective proposal. Footprint absent in the older Vraj snapshot; do not treat it as zero."
+            },
+            {
+              "message": "Size unknown; check physical fit."
             }
           ]
         }
       ],
       "relationships": [],
       "notes": [
-        "Story groups above lower review holdings. Exact positions remain suggestions; preserve already placed holdings."
+        "Story groups above lower review holdings. Exact positions remain suggestions; preserve already placed holdings.",
+        "2 holdings have an unknown footprint, in addition to the known comparison load."
       ]
     },
     {
