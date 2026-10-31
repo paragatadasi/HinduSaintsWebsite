@@ -46,7 +46,7 @@ export function assertComponentClearanceScope(input: ComponentClearanceInput) {
 }
 
 type ComponentSource = {
-  sourceId: string; current: MoveLocation | null; fixedHousing: boolean;
+  sourceId: string; current: Pick<MoveLocation,"kind"|"code"> | null; fixedHousing: boolean;
   verifiedItemIds: string[]; identityChanged: boolean;
   saintId?:string|null;sourceRevision?:string;housingEvidenceRevision?:string;
 };
