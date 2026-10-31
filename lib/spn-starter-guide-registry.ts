@@ -1,3 +1,4 @@
+import {west40To44GuideContext,west40To44GuideDefinition} from "./spn-west40-44-guide";
 import {junagadhGuideContext,junagadhGuideDefinition} from "./spn-junagadh-guide";
 import {westV47GuideContext,westV47GuideDefinition} from "./spn-west-v47-guide";
 import {westV46GuideContext,westV46GuideDefinition} from "./spn-west-v46-guide";
@@ -68,12 +69,13 @@ const cityAlternatives = guide.cityAlternatives.map(cohort => {
 if (new Set(suggestions.map(row => row.id)).size !== suggestions.length) throw new Error("Duplicate registered suggestion identifiers.");
 export const registeredStarterGuide = { ...guide, cityAlternatives, guideContext: starterGuideContext };
 export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinition[] {
-  return [junagadhGuideContext,westV47GuideContext,westV46GuideContext,westV45GuideContext,westV1GuideContext,eastRemainderGuideContext,northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,vrajStoryTopsGuideContext,
+  return [west40To44GuideContext,junagadhGuideContext,westV47GuideContext,westV46GuideContext,westV45GuideContext,westV1GuideContext,eastRemainderGuideContext,northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,vrajStoryTopsGuideContext,
     ramBhaktiGuideContext, dattaGuideContext, starterGuideContext].map(context => readStarterGuideDefinition(context.guideVersion))
     .filter(definition => !definition.readOnly && (definition.suggestions.some(row => row.targetVitrine === vitrine) ||
       Object.values(definition.physicalScope?.destinations ?? {}).includes(vitrine)));
 }
 export function readStarterGuideDefinition(version: string): GuideDefinition {
+  if(version===west40To44GuideContext.guideVersion)return west40To44GuideDefinition;
   if(version===junagadhGuideContext.guideVersion)return junagadhGuideDefinition;
   if(version===westV47GuideContext.guideVersion)return westV47GuideDefinition;
   if(version===westV46GuideContext.guideVersion)return westV46GuideDefinition;

@@ -1,0 +1,2822 @@
+{
+  "version": "spn-west40-44-2026-11-01-v1",
+  "proposalVersion": "spn-saurashtra-rajasthan40-44-review-2026-10-31-v2",
+  "title": "Saurashtra & Rajasthan",
+  "proposalLabel": "Reviewed Saurashtra and Rajasthan arrangement",
+  "rows": [
+    {
+      "sourceId": "recXr00H5P0KlYhAO",
+      "saintId": "cms0w7jmh090b07qiobabt47p",
+      "name": "Sri 1008 Bhikhi Bai Ji Maharaj",
+      "tier": "Secondary",
+      "city": "Pushkar · Rajasthan · Behind Gorakhnath Ashram",
+      "relicDescription": "Her photo of her Guru (Anuvrat Swāmi)",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "286232beecb828f46bc011bccecb25fb786c493b7a5013a4989ef131380068a8",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec1MAZOzdCRybJGN",
+      "saintId": "cms0w7cfb00aj07qisbuppvqo",
+      "name": "Sri Sri 1008 Sri Anuvrat Swami Ji",
+      "tier": "Secondary",
+      "city": "Pushkar · Rajasthan · Behind Gorakhnath Mandir",
+      "relicDescription": "evil eye remover (peacock broom)",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "19876bd9ee124f51d810e50fb82f4ce9d89523e30369eb0d778af5803a32a80a",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recxUEG6Dr1cErcNq",
+      "saintId": "cms0w7jn9091507qiq8vn6qk3",
+      "name": "Sri Dada Lekhraj (or Brahma Baba or Shiva Baba)",
+      "tier": "Tertiary",
+      "city": "Mount Abu",
+      "relicDescription": "",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Curator requests the complete Brahma Kumaris group in the main Western area. Keep this display group together.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.0625,
+      "sourceRevision": "6a57b3780d2c407073864bad666abc6d41f81930f382d925d9d2b8e3c1d8f589",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rechuanXWbFyugaqd",
+      "saintId": "cms0w7fk804cw07qiqhh9p4a4",
+      "name": "Sri Dadi Janki",
+      "tier": "Tertiary",
+      "city": "Mount Abu",
+      "relicDescription": "cloth",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Curator requests the complete Brahma Kumaris group in the main Western area. Keep this display group together.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.0625,
+      "sourceRevision": "925b1e6360216dd53604fffb2eee9134c60f80fc27cd96afc1cf2f2de55edb1f",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recqLYxJHUYVnoU7Q",
+      "saintId": "cms0w7hmr06v007qiogpetle1",
+      "name": "Sri Dadi Nirmala Shanta",
+      "tier": "Tertiary",
+      "city": "Mount Abu · Brahma Kumaris",
+      "relicDescription": "tooth",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Curator requests the complete Brahma Kumaris group in the main Western area. Keep this display group together.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.0625,
+      "sourceRevision": "88f87ebf0b8d2bd36d67c2e013a69e82b0f337ce5f123fc47c9b0bf738d78ff1",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recjA6zCEVozbTcwK",
+      "saintId": "cms0w7fu504ow07qijyvm9tj0",
+      "name": "Sri Dadi Prakashmani",
+      "tier": "Tertiary",
+      "city": "Mount Abu · Brahma Kumari",
+      "relicDescription": "thread of robe",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Curator requests the complete Brahma Kumaris group in the main Western area. Keep this display group together.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.0625,
+      "sourceRevision": "11f5b45b5cd97ceccd9cf0b2bd9aab8caf515cffce4fca469eb2cda76c3ad7c7",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recSjxSEQTJJiG5Xf",
+      "saintId": "cms0w7i3e07eo07qihv6zoxls",
+      "name": "Sri Dadi Ratan Mohini",
+      "tier": "Tertiary",
+      "city": "Mount Abu · Brahma Kumari",
+      "relicDescription": "hair",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Curator requests the complete Brahma Kumaris group in the main Western area. Keep this display group together.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.0625,
+      "sourceRevision": "36c7ae57a88d7a91e80ffe2c898038a1f1d64ac36a2f36dadaa2a2cb3c5def0b",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recf8bQTi2i9L3qr4",
+      "saintId": "cms0w7eyp03kz07qie8f5kucx",
+      "name": "Sri Didi Sudesh",
+      "tier": "Tertiary",
+      "city": "Mount Abu · Brahma Kumari",
+      "relicDescription": "hair",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Curator requests the complete Brahma Kumaris group in the main Western area. Keep this display group together.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.0625,
+      "sourceRevision": "49bb85944da35861e297b30ef3018c24acb7e8e9e08f70183c4418906f247cf3",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rech7wuJ9bGG0N7Th",
+      "saintId": "cms0w7feo045v07qiym3gcoyc",
+      "name": "Sri Narayan Dada",
+      "tier": "Tertiary",
+      "city": "Mount Abu",
+      "relicDescription": "",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Curator requests the complete Brahma Kumaris group in the main Western area. Keep this display group together.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.0625,
+      "sourceRevision": "e5cf4632aa17885366a2dcb9ad44eec0e1fe2bd0e30392ca74b9d1ee47210f58",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rech80UeXCXC0g3kc",
+      "saintId": "cms0w7fes045z07qi76aco0af",
+      "name": "Sri Puttu Dadi",
+      "tier": "Tertiary",
+      "city": "Mount Abu",
+      "relicDescription": "bone",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Curator requests the complete Brahma Kumaris group in the main Western area. Keep this display group together.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.0625,
+      "sourceRevision": "d665edff27797b73c7bd019e2856ad5a2fe01d08678f683d36eadb9eae63d987",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec27yePMb0DBtY69",
+      "saintId": "cms0w7ciq00f007qina5rw35p",
+      "name": "Sri Shreya Didi",
+      "tier": "Tertiary",
+      "city": "Mount Abu",
+      "relicDescription": "hair",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Curator requests the complete Brahma Kumaris group in the main Western area. Keep this display group together.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.0625,
+      "sourceRevision": "960022417937b8284abf92bf887a7022f3f0a4702c1ff721d0d3bdfb06f56c35",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recsMylAeFSJtM7mM",
+      "saintId": "cms0w7i4h07fv07qixzcfcrmf",
+      "name": "Sri Dr. Nirmala Didi (Brahma Kumari)",
+      "tier": "Tertiary",
+      "city": "Locality under review",
+      "relicDescription": "hair\n",
+      "destination": "41",
+      "section": "Needs Research",
+      "family": "",
+      "rationale": "Curator requests the complete Brahma Kumaris group in the main Western area. Keep this display group together.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.0625,
+      "sourceRevision": "7f1bf07cb4a2b38b213c7db5a41c4c79d5f8a918387a2c660b790cfca58d948a",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recCC420vYWEjA1ZK",
+      "saintId": "cms0w7e6j02jv07qithu0nm2a",
+      "name": "Sri Dadu Dayal ji",
+      "tier": "Featured",
+      "city": "Rajasthan · Naraina",
+      "relicDescription": "Padukas (400 years old); Branch/ twig",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "reviewNotes": [],
+      "knownShelfProxy": 1,
+      "sourceRevision": "07fb0aef8c56f96486b9f99cbf38ec61c1aeceb319e9ba744ad3d6a957031ead",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec2bbFehLglJVIEe",
+      "saintId": "cms0w7civ00f707qiz16btwyg",
+      "name": "Sri Garib Das ji",
+      "tier": "Secondary",
+      "city": "Gujarat · Naraina",
+      "relicDescription": "Tree bark from the tree under which he meditated ",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "297df5fb8162b57badcbbccb7210a4badd0023c70a714e6d7fad10a84792554e",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recEQQYgmuQftTjJl",
+      "saintId": "cms0w7euf03f907qihl19wn38",
+      "name": "Sri Mahamandaleshwar 1008 Someshwar Giri Maharaj",
+      "tier": "Secondary",
+      "city": "Jodhpur · Rajasthan · Bijolai Ashram",
+      "relicDescription": "Hair",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.125,
+      "sourceRevision": "eb2928efe011b4f76284f4f88ed1fddcfc8a2d87a329ac89d112e693a395950d",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recqFP7HP0TK5Q0xE",
+      "saintId": "cms0w7hl106sx07qicpmkb3u9",
+      "name": "Sri Sri 1008 Paramahamsa Kishan Giri Maharaj",
+      "tier": "Secondary",
+      "city": "Jodhpur · Rajasthan · Bijolai Ashram · Kailana Lake",
+      "relicDescription": "Rudraksha and little trident from his Maa deity",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.125,
+      "sourceRevision": "ff883d97c27045d1e4b141e4851d3171f094ae798a7ce4600a3dc8b3434183eb",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recaeoWdBMpV6js3e",
+      "saintId": "cms0w7doh01w307qis3zm2p07",
+      "name": "Sri Gori Shankar Giri (Nepal Baba - Chota Dadaji)",
+      "tier": "Secondary",
+      "city": "Jodhpur · Rajasthan · Sri Dada Darbar Sidhnat temple",
+      "relicDescription": "Rudraksha",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.125,
+      "sourceRevision": "6c656a5921c9d6e184c51e3930e8f752c2fccdee9dde6c1641b46a1b23f4e1bf",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recGiFrjeMnduqdeu",
+      "saintId": "cms0w7f6u03vl07qibxtq9swm",
+      "name": "Sri Swami Narayan Barah Dadaji Siddha Purushadas",
+      "tier": "Secondary",
+      "city": "Jodhpur · Rajasthan · Sri Dada Darbar Sidhnath temple",
+      "relicDescription": "Rudraksha",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.125,
+      "sourceRevision": "5e8fcf0fa6cfd65c6c77c9216fcaaecfcdb0b11a9a3b72a7c9915213281fb1e9",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recnthhKz3ywaXM8Q",
+      "saintId": "cms0w7h0d064v07qi219gu6xi",
+      "name": "Sri Shanteshwar Maharaj ji Babaji",
+      "tier": "Secondary",
+      "city": "Jodhpur · Rajasthan · Sri Sri 1008 Ajneshwar Maharaj Ashram",
+      "relicDescription": "Japa bag and Mala",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "4433a0cf94511e1c7d635dc4a8ac55ea18e1a08617b9cdf20829b03808d65b9f",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recLfl2CGYJTNN55c",
+      "saintId": "cms0w7gfr05fp07qilasx6wgy",
+      "name": "Sri Tulsidas ji Maharaj",
+      "tier": "Secondary",
+      "city": "Jodhpur · Rajasthan",
+      "relicDescription": "blanket",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "f7cbc8b8701c513fe7daa80da589663012bc9f85c2374360a390df64eeb61599",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec66gnHbtkholMkg",
+      "saintId": "cms0w7d2r013u07qiix2gr865",
+      "name": "Sri Sri 108 Sri Baba Laldas Ji",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Alwar",
+      "relicDescription": "Samadhi cloth",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "63cd49dffaaf342197cd000f10a86d456fb487b74fa670286974fb1bb2d43fe2",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rech71dbwgDjSXrXC",
+      "saintId": "cms0w7feg045k07qipkf8pgij",
+      "name": "Sri Sri 1008 Sri Pragnath ji",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Chanchal Prag Math · Barmer",
+      "relicDescription": "Rudraksha from the tree he planted",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "5df2d1ce954080951bb7748eebecebc80cce12168cb6369debfad5bde0cac868",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recLALdvz3213jSPb",
+      "saintId": "cms0w7gew05en07qi88q83tok",
+      "name": "Sri Sri 1008 Sri Chanchalnathji",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Chanchal Prag Math · Bormer",
+      "relicDescription": "Wooden water pot",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "106da5d1c3a464ef972924824c635df79276628f5258100875208882f8f7a3f4",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recqypCoigbH3X8cR",
+      "saintId": "cms0w7hq006yu07qi3s7m1xpe",
+      "name": "Sri 1008 Satguru Swami Teoon Ramji Maharaj",
+      "tier": "Tertiary",
+      "city": "Jaipur · Rajasthan",
+      "relicDescription": "Kurta believed to have been worn by 4 generations of Gurus starting from him",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "e48e452dd72510fe31d4e30908628c51056a41a150bfd7555359c822ad46dffd",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recDOBzriwy6mnddl",
+      "saintId": "cms0w7ejx031507qirjqvm7zj",
+      "name": "Sri Krishnadas Falhari Rishi",
+      "tier": "Tertiary",
+      "city": "Jaipur · Rajasthan",
+      "relicDescription": "Piece from his Padukas ",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "82d97d5206d508f9ec3fcd31b4c54d9ee78652e240cec889c215478b1d7c7678",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec7pgsaA6Wi288cj",
+      "saintId": "cms0w7dan01dl07qi7fqvvqox",
+      "name": "Sri Lakshmananda Acharya",
+      "tier": "Tertiary",
+      "city": "Jaipur · Balananda Math",
+      "relicDescription": "(small) Asan",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.5,
+      "sourceRevision": "53bbd9abad0b25031512c589710060d58b1e5748713ba3673edb08aa34aa4a09",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recAmCsRatjIKPDGg",
+      "saintId": "cms0w7ds3020v07qin3plkjvk",
+      "name": "Sri Satguru Bhagat Prakash ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Jaipur · Rajasthan",
+      "relicDescription": "Sandals, hat, towel",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "294236687487fd5ea0fe39fa437fe65935336300e90952457ff682a3c059b41f",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recTOHNPK6sqmU0zq",
+      "saintId": "cms0w7ifc07rd07qi4ik8p974",
+      "name": "Sri Sri 1008 Brahmachari Bengali Baba",
+      "tier": "Tertiary",
+      "city": "Jaipur · Rajasthan",
+      "relicDescription": "Japa Mala",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "01a17aa3ca0a2796109f3779a0be855c210efedf6d392b8d5ae7271219bf00c8",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recgYUiLIMUzFX6fn",
+      "saintId": "cms0w7fcz043n07qi622w2bq3",
+      "name": "Sri Sri 1008 Brahmlin Tapasvi Baba",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Sanganer",
+      "relicDescription": "Padukas",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "17ee457060e9d82762be4ef1c42e2d9e3bfa368d5f95a158163b065fa5dc8cb4",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recXfCH80LDGxFvg9",
+      "saintId": "cms0w7jho08v807qi56c5cewt",
+      "name": "Sri Ramcharanananda Acharya",
+      "tier": "Tertiary",
+      "city": "Jaipur · Balananda Math",
+      "relicDescription": "(big) Asan",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "89583cf726cdb71473c6e72b8fc81247dec55151fd8856e6e68b18d6ac3610e7",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "reccw2vxTbeGsIJ1x",
+      "saintId": "cms0w7eco02rt07qi1jz0kkqb",
+      "name": "Sri Tapasvi Baba",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Sanganer",
+      "relicDescription": "Kurta ",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "049b03ebde56dbedc1f4048e2df1676282deb6aecae611683466e799fc12ae87",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "receCbIjIoMadEX8E",
+      "saintId": "cms0w7epm038v07qif78p29gu",
+      "name": "Sri Sukhdev Das Ji Maharaj",
+      "tier": "Secondary",
+      "city": "Jaipur",
+      "relicDescription": "blanket",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.5,
+      "sourceRevision": "9b75c5be570821cb0f2421678215482c7cdf0559f280c857ba782184a990ad3f",
+      "capturedProposalDestination": "39",
+      "movementBlockedReason": "Held: review the recorded Ramcharan family link before moving. Current proposed destination remains Vitrine 39.",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recqbV4fEbe5S2a3r",
+      "saintId": "cms0w7hkb06s407qiqsjxzzg6",
+      "name": "Sri Gulap Giriji Maharaj",
+      "tier": "Tertiary",
+      "city": "Jhunjhunu · Bibasar · Bibasar near Jhunjhunu",
+      "relicDescription": "Handbag (jhola)",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "85443bd711ce23314ef0355a2cb35ae81a7d4602a699211b8b718cd5269157cd",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recmNoHLsJMMGqsch",
+      "saintId": "cms0w7gpk05rl07qi81hjw8p7",
+      "name": "Sri Nepali Baba",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Jodhpur · Nepali Baba Mandir",
+      "relicDescription": "Ash from Dhuni",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "6cac62659717c7a99753fb0a459b0453e9c9b889071d01bc5ec28fcd74117357",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recNXEfLXZgZ1sXX7",
+      "saintId": "cms0w7h1i066407qiojx8dc2e",
+      "name": "Sri Rishigiri ji",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Siddnath temple · Jodhpur",
+      "relicDescription": "Hand bag ",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "70087f6332eed4ceece5db62ec14e8e87a7921ec1378c1081ee79700b782a860",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recv7Koa6d8uoW92S",
+      "saintId": "cms0w7iuq087t07qipij3vndz",
+      "name": "Sri Bhagwan Das ji",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Benami Ashram · Madhavgarh",
+      "relicDescription": "Rudraksha Mala ",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "18e95276254d5215d6bb5d4b866926b25bec09003c1e991331970fa38f0d761f",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recuJRn66FXBWfG5e",
+      "saintId": "cms0w7ip6081y07qixmu7ii5k",
+      "name": "Sri Sri 1008 Sri Kishandas ji",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Benami Ashram · Madhavgarh",
+      "relicDescription": "Mala",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "c7af09486d8713e01b4546feabe4601b8506d77ede4b2f8fb61ffb581fdd23dc",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recrC9U16Vn5vP9Fn",
+      "saintId": "cms0w7ht8072r07qilnv4xzsy",
+      "name": "Sri Badridasji",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Mount Abu · Gyaan Gufa",
+      "relicDescription": "Hat, scarf",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Proposed shared highlight with BAPS: separate institutional and locality blocks, without implying a personal connection between the traditions.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "c0a638dbb87e11a188b3d28cc056109435b2c48cde560cead29315a2c6086b4a",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recmGHWXiRWRyqNCz",
+      "saintId": "cms0w7gnf05p107qik0azuezt",
+      "name": "Sri Bharatdasji",
+      "tier": "Tertiary",
+      "city": "Mount Abu · Gujarat · Gyaan Goofa · Rajasthan",
+      "relicDescription": "Tampura",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Proposed shared highlight with BAPS: separate institutional and locality blocks, without implying a personal connection between the traditions.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.8333333333333333,
+      "sourceRevision": "82aae68e355a7ee6bfc5f7df8c84f3299fb29cd44b94da3361cb9e6e7358cfa7",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recmPZzMUEZjUowj5",
+      "saintId": "cms0w7gqo05sy07qibs4cdfjo",
+      "name": "Sri Baba Ramdev Pir ji",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Ramdevrah",
+      "relicDescription": "Samadhi cloth, Charan Amrit",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "f2a0d81d1afafea6a01ab0e2c39f16daf3fd699e586473b0a743c956d9b04257",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recZc9KpAaqKZvtxN",
+      "saintId": "cms0w7k1g09fv07qi3dskklz2",
+      "name": "Sri Dali Bai",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Ramdevrah",
+      "relicDescription": "Samadhi Cloth",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "f072eb9d062fa6b148d3b99c71f1a3242b3942313032ef7f93b24c320d62c5b7",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recCz6sIHu6BniUdw",
+      "saintId": "cms0w7edo02t307qijd97erou",
+      "name": "Same!!! Sri Mekhran Dada",
+      "tier": "Tertiary",
+      "city": "Bhuj · Gujarat",
+      "relicDescription": "Thread of hat, piece form pot, ash/sand?, deity clothes?!",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "555382b1a6eb832e92bddb833437fd330afbcd95167303615beab4a9d4838e4f",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recAJ0dmE9ty7xQmP",
+      "saintId": "cms0w7dqf01yn07qitfipppjj",
+      "name": "Sri Valji Dada",
+      "tier": "Tertiary",
+      "city": "Bhuj · Gujarat · Pragat Pani Ashram · Kotai",
+      "relicDescription": "Clothes (dhoti)",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "cd3023f44994d8ac0bc99c1d8cc8ef1206c7c4bea0bb34bde96cc4e0024bf67e",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recjtrqGSGg72x6Fs",
+      "saintId": "cms0w7fzs04vs07qiz8qvuce6",
+      "name": "Sri Mekan Dada",
+      "tier": "Tertiary",
+      "city": "Gujarat · Dhrang · Kutch-Bhuj",
+      "relicDescription": "Stone and ashes from the dhuni",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "a10b8a06bef767ced3a4a1b0bd8e942b092f9194c570083fcea8ff8ba1245c0b",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recodCOSnNUM3ABwM",
+      "saintId": "cms0w7h3y068y07qiis9ng6h2",
+      "name": "Sri Jesal Toral",
+      "tier": "Tertiary",
+      "city": "Gujarat · Kutch",
+      "relicDescription": "Samadhi cloth",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": null,
+      "sourceRevision": "5adae9946cf783f9368716804bed94278f2c2addcb7e7f7b59c75e740d532aac",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec7aLLgDa0jXhEKc",
+      "saintId": "cms0w7d9701bh07qieuy2yyp5",
+      "name": "Sri Baldev Das Ji",
+      "tier": "Tertiary",
+      "city": "Dwaraka",
+      "relicDescription": "piece from the Padukas",
+      "destination": "40",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.2777777777777778,
+      "sourceRevision": "407366f0f46867e5e10769fec92693881703fc74dbe7bdb6e563232f7c8fd84b",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recjA6O6snsRrdlUA",
+      "saintId": "cms0w7ftx04om07qi7pv9agbp",
+      "name": "Sri Kandas Bapuji",
+      "tier": "Tertiary",
+      "city": "Dwaraka · Kandas Bapuji Ashram",
+      "relicDescription": "piece from the bag he used for his musical reparation tools.BOX: 7,8cmx7,8cm",
+      "destination": "40",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.23809523809523808,
+      "sourceRevision": "58ffc66b7bbb40157ad4a7e50255af174e42d2b9abf93f334b914b97964673e6",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec6hHwCPZlG7imPh",
+      "saintId": "cms0w7d3p014w07qit94pgvyq",
+      "name": "Sri Nityanand Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Dwaraka · Sanyasi Ashram · Gujarat",
+      "relicDescription": "one bead from his Rudraksha.BOX: 4cmx4cm",
+      "destination": "40",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.23809523809523808,
+      "sourceRevision": "71bb259e625fa3d64662273d7c2cfeef5b455abbe80c0a2af5c6722e30c364ab",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rece8TkBogU3sVpwc",
+      "saintId": "cms0w7ep4038607qidbf8r0yv",
+      "name": "Sri Ramdas ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Dwaraka · Khuk Chowk · Gomati Ghat",
+      "relicDescription": "Ramayana he read and piece of wood from his cupboard. BOX INSIDE: 5cm x 5cm; BOX OUTSIDE: 9cm lang x 2,5cm hoch",
+      "destination": "40",
+      "section": "Ramanandi",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.23809523809523808,
+      "sourceRevision": "889a9aef8a5b9063c993b0683bf375401725249d80562100616ea5803e1a7d3c",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recGwFSR5sfdlhTMT",
+      "saintId": "cms0w7fbh041l07qib7xge5jx",
+      "name": "Sri Rami Mataji",
+      "tier": "Tertiary",
+      "city": "Dwaraka · Dwaraka near Kandas Bapuji Ashram",
+      "relicDescription": "hair\n",
+      "destination": "40",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.23809523809523808,
+      "sourceRevision": "7956c8c3263dfb496db5f547cf7e281cfa68c0a285bfe5150e73f5277f0f6fbd",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec6RzhtQGKjyWUu0",
+      "saintId": "cms0w7d5m016y07qiwzwe10uf",
+      "name": "Sri Tokhra Swami",
+      "tier": "Tertiary",
+      "city": "Dwaraka · Dakshineshwar Mandir · Gomti Ghat",
+      "relicDescription": "pieces from his Padukas.BOX INSIDE: 2,5 x 2,5 cm\n",
+      "destination": "40",
+      "section": "Sri Vaishnava & South Indian Vaishnava Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.23809523809523808,
+      "sourceRevision": "1cd9924ec7c26b82f2e7e8bc78387c98038ab0f5d073fb41e2bc7b78d88e7ce0",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recvtWm0B1R3MVPxd",
+      "saintId": "cms0w7j2608fy07qik9ntnke5",
+      "name": "Sri Abba Babu",
+      "tier": "Tertiary",
+      "city": "Dwaraka · Abba Babu Ashram",
+      "relicDescription": "Piece from umbrella, pieces from the tree under which he meditated, cup which he used, cloth from his tomb. BOX INSIDE: 19x19; BOX OUTSIDE: 12breit x 5cm hoch (brown box)",
+      "destination": "40",
+      "section": "Ramanandi",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.2777777777777778,
+      "sourceRevision": "851616a521dae574aacb549bb4c916fc934e6e46c6bb5c6a25bafb0b58675991",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recp9Qd482IPagFW7",
+      "saintId": "cms0w7hc806ii07qieqcpeimy",
+      "name": "Sri Gangadas Guru Changadas Kabir Saheb",
+      "tier": "Tertiary",
+      "city": "Dwaraka · Ravara Hanuman",
+      "relicDescription": "Trishul. 28cm hoch x 21cm breit",
+      "destination": "40",
+      "section": "Ramanandi",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.2777777777777778,
+      "sourceRevision": "7b1cfb54e1681b4b3bac7b083d9c494f54b6d85cf7bcb6017963315094b6305f",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recvtg4qmPTrKNB5c",
+      "saintId": "cms0w7j1k08f607qi0ys6bonk",
+      "name": "Sri Gurusri Tapasui Bapu (Tapsi Bapu)",
+      "tier": "Tertiary",
+      "city": "Dwaraka · Tulsi Chaura · Bhet Dwaraka · Gujarat",
+      "relicDescription": "Root from the tree he planted and where he prayed. BOX INSIDE: 18cm breit x 13cm hoch\n",
+      "destination": "40",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.2777777777777778,
+      "sourceRevision": "2c91d19a02998c1312527fbcab21eec253689e85e9553340834aefbca338086e",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recoJDmYfi6mW01ol",
+      "saintId": "cms0w7h5j06ar07qi4nnomum6",
+      "name": "Sri Purushottam Bapu",
+      "tier": "Tertiary",
+      "city": "Dwaraka · Harihar Ashram · Chaurasi dhuni · Bhet Dwaraka · Gujarat",
+      "relicDescription": "janeu and ash \n.",
+      "destination": "40",
+      "section": "Ramanandi",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.2777777777777778,
+      "sourceRevision": "b59ffada5f877486ba92f82cbea29ac17568d2532880a94003cb8fd22e55a0c6",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recr0IW26sqLI5tHu",
+      "saintId": "cms0w7hqr06zt07qioqb171h8",
+      "name": "Sri Sitaram Kabir Das Bapu (Lakhar Das)",
+      "tier": "Tertiary",
+      "city": "Dwaraka · Panch Mukhi Hanuman Mandir",
+      "relicDescription": "bowl\n",
+      "destination": "40",
+      "section": "Braj & Krishna Bhakti",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.2777777777777778,
+      "sourceRevision": "06004b704dc0115a0338d27c61c305f43544971aa5545c4b5a76f31b0526e406",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec4flFdn49zlG3MN",
+      "saintId": "cms0w7crm00qk07qinybtwgl5",
+      "name": "Sri Ramswarup Das ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Gujarat · Jamnagar",
+      "relicDescription": "Bead from Tulsi Mala (small broken piece send to Vrindavan)",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "aa0a2c88128006253643aaa7e60a6b30c9624dd87798bcb03710b218591dd126",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec9FDEOQPK0UUKYG",
+      "saintId": "cms0w7di101n107qigc35eibg",
+      "name": "Sri Jagadishdas Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Gujarat · Jamnagar",
+      "relicDescription": "Coat",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "11d8c34d40ff2bbdf2b6032b6b32fbf4ee4ca6d4854385321fa3004363986ffc",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec9aszYqp47s9GJs",
+      "saintId": "cms0w7dh701lx07qiuvfs8fg0",
+      "name": "Sri Swami Bhairavanandji",
+      "tier": "Tertiary",
+      "city": "Gujarat · Jamnagar",
+      "relicDescription": "Shoe",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "bd969a91045b5b49b876afddf1294e8168f2caff69e7f4760b56783306b7419a",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recHoYYCEHJtcqV4n",
+      "saintId": "cms0w7fie04am07qi8zroftsb",
+      "name": "Sri Shambhu Giri",
+      "tier": "Tertiary",
+      "city": "Gujarat · Jamnagar",
+      "relicDescription": "Tulsi bead",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "ad3876b027d2385325d7bb56a1da545da7f25dc29b60bb2b7a158d3ba5cee33c",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec9ueDuwGgl2LxLu",
+      "saintId": "cms0w7dl901ri07qithkny6e6",
+      "name": "Sri Swami Rameshwaranand",
+      "tier": "Tertiary",
+      "city": "Gujarat · Lalpur bypass Jamnagar",
+      "relicDescription": "Kurta, piece from Asan",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "e39781b7061480997b56dcb06a8dab778ee459cb9e7b2a62ca95a38093dfd0a3",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec1G18VHatva4b4n",
+      "saintId": "cms0w7ce9009b07qi9ivshqng",
+      "name": "Sant Sri Bhim Saheb",
+      "tier": "Tertiary",
+      "city": "Gujarat · Amran · Morbi",
+      "relicDescription": "Mala, Bangle and wool from his mattress",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "0323a0eb04c3ce30c186950a47d9f4ebe58c3a50b204172ec498feafa209b835",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recc1CC82GbnM5dJt",
+      "saintId": "cms0w7e4j02hb07qirifvqylv",
+      "name": "Sri Pawan Giri Maharaj",
+      "tier": "Tertiary",
+      "city": "Rajkot · Gujarat",
+      "relicDescription": "Skull Mala",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "94bd0c404cba3cf0d16581210074d62c141fef4f4b33dcb66c3152e7e349a711",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recEnD8tEMbdNXtbQ",
+      "saintId": "cms0w7eta03do07qiti81b4w0",
+      "name": "Mahant Sri Kuldeep Bharatiji Maharaj",
+      "tier": "Tertiary",
+      "city": "Rajkot / Virpur · Sri Trivenishwar Mahadev Mandir · Virpur 9 E",
+      "relicDescription": "his Rudraksha Mala",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.18518518518518517,
+      "sourceRevision": "1083eaeb2d9fd60083244deed9e7b37ec505fc6be9f0c4991f533cbe53ebc681",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recmtsRvLYP37610P",
+      "saintId": "cms0w7grs05uc07qiji2jzt5o",
+      "name": "Sri Balak Giri",
+      "tier": "Tertiary",
+      "city": "Rajkot · Gujarat · Chotila Ashram",
+      "relicDescription": "Bracelet",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "1d13d406a582ffe07d7a04fd5bb5f70b88786cc1455c6d7766d760102dfa8921",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "reccKKvB9Ep8ilaYM",
+      "saintId": "cms0w7e9c02ng07qi7mr7779j",
+      "name": "Sri Hirsagar Bapa",
+      "tier": "Tertiary",
+      "city": "Rajkot · Gujarat",
+      "relicDescription": "Plate he ate from",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "d4b82a38fbe0e87790f5813e91952eee7981d50e38f9c32b89d8967ec324905c",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "reci5j0k7U8Ha2f2m",
+      "saintId": "cms0w7flv04f007qix5jrk3p9",
+      "name": "Sri Ranchordasji Maharaj",
+      "tier": "Tertiary",
+      "city": "Rajkot / Virpur · Rajkot",
+      "relicDescription": "Piece of bed and bedcover",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "9a54b01662f1e0f063cb2e9bdd2d46fc49fda0e8bd42561cd75a071ac44edd38",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recTqpJdgwHXGebdi",
+      "saintId": "cms0w7ig307s507qi8jjbqa70",
+      "name": "Sant Sri Jayshankar Dada",
+      "tier": "Tertiary",
+      "city": "Gujarat · Sultanpur · Virpur",
+      "relicDescription": "Kurta, Langot",
+      "destination": "41",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "d98eff2ed02466c0038b37dcf7d399cf50b4d4f2319bc46a660f7a217ed21bff",
+      "capturedProposalDestination": "41",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec0seKELLdLi5H7H",
+      "saintId": "cms0w7car005g07qiabbp4uea",
+      "name": "Sri Mahant Ganeshpuri Bapu",
+      "tier": "Tertiary",
+      "city": "Gujarat · Annapurna Ashram · Dhokadva",
+      "relicDescription": "Rudraksha Mala ",
+      "destination": "40",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "5ccda34c448915a9fd48f82adb9c8bbbeafc50c34aa3d11deb4db6799496c04f",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec7jgASNs4kecXXf",
+      "saintId": "cms0w7da701cx07qifk1tc6ri",
+      "name": "Param Pujya Sri Prakash Giri",
+      "tier": "Tertiary",
+      "city": "Gujarat · Ningala · Khamba · Gir",
+      "relicDescription": "Rudraksha bead",
+      "destination": "40",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "86a5400df4e13358ef29b9b62fac51adc3ce8a3cf4af1239fa33a0c8b8efe9fb",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recQ6Y27YqDsA8o3L",
+      "saintId": "cms0w7hji06r807qidcxtnvt3",
+      "name": "Sri Avadhoot (?)",
+      "tier": "Tertiary",
+      "city": "Gujarat · Satadhar",
+      "relicDescription": "Beedi (Indian cigarette)",
+      "destination": "40",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "10686532c9450067912b20d758c604a1e361434012792369fd6e4a01464c341a",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recPARJ5ejag2tilh",
+      "saintId": "cms0w7hcp06j307qi5pkdytl0",
+      "name": "Sri Apa Giga",
+      "tier": "Tertiary",
+      "city": "Amreli · Gujarat · Satadhar · Amba · Gujarat Shamjibapu?",
+      "relicDescription": "2 Mala beads, cotton from mattress, Amulet ",
+      "destination": "40",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "c67ef2b80b037ddedbc5e0e7f96f014360908946a6ff2d1543d5d1b5386630df",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recSsNj3vJzGFFgll",
+      "saintId": "cms0w7i6707hk07qikq1fjbq2",
+      "name": "Sri Aditya Das ji",
+      "tier": "Tertiary",
+      "city": "Sasan Gir · Gujarat",
+      "relicDescription": "Sri yantra that he used for puja ",
+      "destination": "40",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.4166666666666667,
+      "sourceRevision": "21334a489007bb89cd11fa6876f87977015c7b0b7e89ed032b50b4724e32e465",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "Collection from Vitrine 64 needs a scoped object check; leave the Sikh display and mounts undisturbed.",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recS5zrdh9CsIcTZU",
+      "saintId": "cms0w7i0y07bw07qichj73yeu",
+      "name": "Sri Nathuram Sharama Acharya Maharaj",
+      "tier": "Tertiary",
+      "city": "Gujarat · Bilkha",
+      "relicDescription": "Dhoti/ clothes",
+      "destination": "40",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "571b7b76e5d6c29c0acf684413fd64ac7e15df61df7a887530b94397a8f0dc38",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recszQw56XJNkJ7Ms",
+      "saintId": "cms0w7i9q07l607qiatblke7a",
+      "name": "Sri Triloknathji",
+      "tier": "Tertiary",
+      "city": "Gujarat · Somnathji Ashram",
+      "relicDescription": "shawl\n",
+      "destination": "40",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "56125aac5cd09ba478c217fa76535a406db37df9be9b5ae2dc6dd9372afcb3ab",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recsm43oeUdKNUMqs",
+      "saintId": "cms0w7i3s07f307qiuaezle9f",
+      "name": "Sri Bimal Das Bapu",
+      "tier": "Tertiary",
+      "city": "Gujarat · Sasan Gir",
+      "relicDescription": "Yoga stick He uses for Dhyaana and Prayer book with Hadwriting",
+      "destination": "40",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [
+        "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+      ],
+      "knownShelfProxy": 0.4166666666666667,
+      "sourceRevision": "4aa5af436e0b66276924c3731632d93eb9ead023178f915737a17179123f4329",
+      "capturedProposalDestination": "81",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recTAvhZnozTlJRko",
+      "saintId": "cms0w7iad07lx07qiyw61tclm",
+      "name": "Sri Mahant Sri Raj Giri Bapu",
+      "tier": "Tertiary",
+      "city": "Somnath · Gujarat · Mocha",
+      "relicDescription": "Ash from his Dhuni which has been running for 50 years",
+      "destination": "40",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.4166666666666667,
+      "sourceRevision": "45847e7d98a9c470a695fc6e9ac6074390d3d755f40450afd2f55636883664a3",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "Collection from Vitrine 64 needs a scoped object check; leave the Sikh display and mounts undisturbed.",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recVJcxLhwAMqNOpT",
+      "saintId": "cms0w7iyh08bq07qia90zmfrp",
+      "name": "Sri Sri 1008 Mahamandaleshwar Sri Ramroopdas Ji",
+      "tier": "Tertiary",
+      "city": "Girnar · Gujarat · Chelaiya Dham · Bilkha",
+      "relicDescription": "shawl",
+      "destination": "40",
+      "section": "Girnar & Nath Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "43f7bbcc4b575fabcd9cca0c7c58f59fa25c6240f56f28ae08742edfb26a8436",
+      "capturedProposalDestination": "40",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "receXeBatQqUN9Tfw",
+      "saintId": "cms0w7ew303hh07qi9olw81qv",
+      "name": "Sri Bhagat Nagji Bapu",
+      "tier": "Tertiary",
+      "city": "Gujarat · Naklank · Ranuja",
+      "relicDescription": "Piece of asan and pair of tongs",
+      "destination": "42",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Provisional lower-shelf review block only. No regional affiliation implied; check identity, housing and individual fit before execution.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "819ada6e5c65a31b04dd71be419f921f7241de2b202245a0fa5bdf99dc114225",
+      "capturedProposalDestination": "42",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recHaH4vCPuzQfYjX",
+      "saintId": "cms0w7ffc046m07qifc9u2wme",
+      "name": "Sri Sri 1008 Sri Mahant Bhishma Das Ji Maharaj Tyagi",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Sri Bhishma Das Ji Ashram · Varaha Ghat",
+      "relicDescription": "pieces from tiger (skin and teeth) and ash from dhuni",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "4e8c7ea798d7196a83a41225917ed86af96b892c05cb12f2cc2ef821bfe65b7a",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recNrnCbFSc9fZ2yN",
+      "saintId": "cms0w7gzl063x07qi3agdpmk2",
+      "name": "Sri Maalik Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Varaha Ghat",
+      "relicDescription": "pieces of his wooden chair",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "3c6f00c93ac5e3f03aeba8a444ad951af889f66550b731dc4735c7d23f361627",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recyn09Qjn3Xlfm4Y",
+      "saintId": "cms0w7juj098t07qifz4tmpsy",
+      "name": "Sri Laal Babaji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Shivji Mandir · Varaha Ghat",
+      "relicDescription": "Chimta",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "04e46012db59b302de6e5897a3dc4f6eb27d42a7fc5007952b3ed742924628c5",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rechyCs2mWztexXfF",
+      "saintId": "cms0w7fla04e907qigkwyvl8x",
+      "name": "Sri Sri Ramkishun Das Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Kanbay Temple · Suraj Kund",
+      "relicDescription": "Chimta",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "8b6df6161906850fdd6e4b5510dc8aae3655277b88e4783d4ca367e6b4d4a1bf",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recGYo15kva4Wic4D",
+      "saintId": "cms0w7fce042u07qi8g5bvp5j",
+      "name": "Mahant Sri Sri 1008 Swami Sri Mangal Das Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Kanbay Temple · Suraj Kund",
+      "relicDescription": "piece from his drum, his pot to keep Gangajal (Ganga water)",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "eac0c11b68555f1cf81dd9416b99bffcffe291d340b8e68d51346e1cf73861e8",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec1QqhICMFBtQj5A",
+      "saintId": "cms0w7cfs00b707qis6unyr25",
+      "name": "Sri Sri 1008 Sri Ramswaroopsharan Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Ramsakha Ashram",
+      "relicDescription": "piece from his Asan",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "a79cba3a29364321f64ff47d5f459344db93778d746597bc5946abb1ada3e0a8",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recrfXQmBtI7KHtm3",
+      "saintId": "cms0w7hu4073v07qi694zvwpt",
+      "name": "Sri 108 Sri Swami Siyasharan Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Ramsakha Ashram",
+      "relicDescription": "Kamandalu",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "4670f00dfc881fc96918a4ff2ac2c477e39f268943bae1a681eb2e4817e3b0b0",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recRWM4AUfyZKTYhX",
+      "saintId": "cms0w7hyg078x07qi251p5gc7",
+      "name": "Sri Sri 108 Mahant Sri Nandramsharan Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Ram Sakha Ashram",
+      "relicDescription": "Upavastram worn by him during 126 kathas",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "a9b2dd189942e571959f01e0159f693e700c986b8673733c7ee3ed191990fa83",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recxnvPUj8a2yOr5k",
+      "saintId": "cms0w7jkv08yn07qitqo4foda",
+      "name": "Sant Sri Mirabai Maankala Ji (Maan Das Ji)",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Ramsakha Ashram",
+      "relicDescription": "Padukas",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "917acb463af59b11eac487e80b33caf4178869cb1397b46e8aa3a2b120501b5b",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recBiNVX3OFLjOi6B",
+      "saintId": "cms0w7dy4029307qikj9etgsw",
+      "name": "Sri Sri 1008 Swami Sri Swanand Ji",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Behind Gorakhnath Temple",
+      "relicDescription": "shankh, picture of his deity",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "6ea6d68c27e961dfb2f5d939d16645af09585cc4c06f1a4bc862d4576221e5bb",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recKA3SQQEw4kBRHm",
+      "saintId": "cms0w7g3n050f07qi0ixa1rtj",
+      "name": "Sri Kishan Bhagwan Maharaj Ji",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Behind Gorakhnath Ashram",
+      "relicDescription": "Piece of wood from the tree on his samadhi",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "a5051de329bf1e3487301e84b5fb6eb7ce846f2ac428209a9b2af1b595420123",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "reciFCVKbvU8jZLB5",
+      "saintId": "cms0w7fpc04j607qiicitepx6",
+      "name": "Sri Sri 1008 Sri Lacchiramji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Ramrai Mandir",
+      "relicDescription": "Piece from his Tampura and drum",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "75df0a52fcbfbbf12117f97ec97e99b05a2e19a5d99d1035d9c78d687ae81085",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recx91dvPplqsQoSv",
+      "saintId": "cms0w7jf908su07qi1s836diy",
+      "name": "Mahant Sri 1008 Haridas Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Ramrai Mandir",
+      "relicDescription": "thread from his rudraksha mala",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "2ab860e47633627260064d6db5e8505286aa31e9f07b5d971caa92c1102c1a27",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recBJm0GXEQdSnxdX",
+      "saintId": "cms0w7dys02a007qig9hyv7c9",
+      "name": "Pujaniya Sri Sri 1008 Sita Ram Aghori Baba",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan",
+      "relicDescription": "piece from the murti he made, ash from dhuni, piece from his chair, metal bracelet",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "760ab05fb985d1c5a498b60f2b5da50ac0c258f60b461b322f70676f36886569",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recUixTPfpixTRMRW",
+      "saintId": "cms0w7iou081k07qi2s3dabuk",
+      "name": "Sri (Sri Ji) Maharaj Sri Radhasarveshwarsharan Devacharya",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Nimbarka Math · Rajashtan",
+      "relicDescription": "beads from 1008 Japa Mala",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "d015782934d2a7aeaddd8822b83b006da42b88619593a8a26430953c61395513",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recyIFyZ0KTE3ROZk",
+      "saintId": "cms0w7jta097g07qi6j1ar7oa",
+      "name": "Swami Sri Atmanand Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Anand Kutir Ashram",
+      "relicDescription": "Saligram",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "538daeab700fb97ff1ce58d9bfb17acf49d3b9ae61e1d2f2d2a36d264dff1c86",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec5AerEYeHDF4ntd",
+      "saintId": "cms0w7cxm00xv07qi3nrqb002",
+      "name": "Sri Rayibai Ji",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Prachin Sri Santoshi Mata Mandir",
+      "relicDescription": "Sari",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "d49dc8f23c681d315f511b8a0ac8238aea63ca4ad6f8c3f02dc1088a58b9c44c",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec4sQIfi3eQ6htF4",
+      "saintId": "cms0w7cub00ty07qihp3ontog",
+      "name": "Sri Thakur Lekhraj Ratanlal Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan",
+      "relicDescription": "handwriting behind photograph",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "933c3752812eb6f73399fb1be5db2ec4c76e9e248051c06bca1995fb09c09eb8",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "reckx4eycMx5ANNAu",
+      "saintId": "cms0w7gc105aw07qi6vq2ow57",
+      "name": "Sri Sri 1008 Sri Dayalnath Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Lakshmi Narayan Mandir",
+      "relicDescription": "chimta, piece from bed",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "6f123707f4936982fc04057f85c936a23cdb6ac24433b5ec0cd096791bd05caa",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recOQhwGvleb65Mqd",
+      "saintId": "cms0w7h7t06d707qibtjubjxt",
+      "name": "Sri Digambar Niranjan Giri Maharaj (Mouni Bapu)",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Mouni Bapu Ashram",
+      "relicDescription": "hand towel",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "8bf081ea8018cacf03b19188802bfd6aa7c3bbde69431b4249f1da5df752fed6",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recP57LKD7oNwsMsO",
+      "saintId": "cms0w7hb806hc07qisrwso56f",
+      "name": "Sri Mahayogiraj Goswami Sant Sri Nirbhaypuri Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Nirbhay Ashram",
+      "relicDescription": "Photo frame from his time",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "88bbb7d635e8d40818e08996a2a83fef4aa3a028ece6ea321f0903cadc845ec0",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recU2EVkXi0BiPCyj",
+      "saintId": "cms0w7ije07vo07qiz0sb5hk1",
+      "name": "Sri Digambar Omendrapuri Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Manivedic Shakti Peeth · Chamunda Mata Temple",
+      "relicDescription": "Kalawa/ red thread",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "8c9e2711b0fce73976685039fbbb27186ea4513fefead238aaa6a7c30ee41c29",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "recVKiqOCdqsgGRbE",
+      "saintId": "cms0w7iz108cd07qinzm6a08k",
+      "name": "Sri Swami Pragyanand Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Baldau Mandir · Rajasthan / Gore Pay Mandir Vrindavan",
+      "relicDescription": "hair",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "176939af14fd0cf8c506f406abd7375133f59276bfdf4b7c0a3036029f8e25f6",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "reczx3vjziBqyguwP",
+      "saintId": "cms0w7k9u09od07qi1nsi5php",
+      "name": "Sri 108 Paramahamsa Swami Brahmanand ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Rangji Mandir",
+      "relicDescription": "piece of clothes and rudraksha",
+      "destination": "43",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "6cbf13e283d3d19cb341f2537fe84b4c72cbacda3373ee09be04e4ae60188ddc",
+      "capturedProposalDestination": "43",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recdNqG8o5GNgVfbL",
+      "saintId": "cms0w7ejn030q07qi5n2v0hjl",
+      "name": "Sri Aloo Baba Sri Chandan Giri",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Aloo Baba Ashram · Ajaysar",
+      "relicDescription": "piece of Jatha (hair?), piece of beard, Japa mala",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "c7815ae7c0df005160cb25133d2a762cb575c363789afe0efef77b5522d15748",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "rec0bOAYNqmpEYZ5H",
+      "saintId": "cms0w7c72001z07qi9buvdma7",
+      "name": "Sri Karmayogi Shivananda Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Shivanand Ji Ashram · Pushkarni",
+      "relicDescription": "pieces from Rudraksha, ash from dhuni",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.14285714285714285,
+      "sourceRevision": "c109968f55a32fb4031e27d2e809e5ef5c6a5c79730b19354e4b56b77f5b34f9",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rec4e9r4nLG2LJfUI",
+      "saintId": "cms0w7cr500pv07qir2ekk6k4",
+      "name": "Sri Digambar Baba Naag Baba Harivansh Giri",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Kapaleshwar Mahadev · Motisar · Ganehera",
+      "relicDescription": "Rudraksha Mala",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "b0cb5193a90a01dedfb5aa36ab1a190924a5a480611be3bec5487b8d7f1643a7",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": "Still alive",
+        "basis": "Explicit living status in the current saint record."
+      }
+    },
+    {
+      "sourceId": "receXAx0CQQFwgjbh",
+      "saintId": "cms0w7evv03h507qipua2iaqv",
+      "name": "Sri Sri 1008 Swami Sri Devaanath Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Choti Basti",
+      "relicDescription": "shank (to be verified by Guruji)",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "4833a28f677e4edb4fe699e00a384752482c9d09a8a1f3fef7b40e6782d439a6",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recJVyEGZQ3PdhXGN",
+      "saintId": "cms0w7g0o04wp07qiwm2yjsl5",
+      "name": "Sri 1008 Baba Vankhandi Rishi Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Pushkar of Pushkar",
+      "relicDescription": "Kamandalu",
+      "destination": "44",
+      "section": "Ramanandi",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.16666666666666666,
+      "sourceRevision": "7048b8279bc9ed57eef8fb03d096edf8484c9185f5a4b0da542442b026068c2b",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recPNGkHyQVT3hbOb",
+      "saintId": "cms0w7hed06l607qiqzkhoc6p",
+      "name": "Sri Bhagwan Ramsa Peer Baba",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Sri Baba Ramsa Peer Dham Ashram",
+      "relicDescription": "Chimta",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.25,
+      "sourceRevision": "9bbf44e6a7947f12a3cd2349a03f8b78eebeeadbf6ffebf89eef14d4acabfa60",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recrMotrBmcVRnEgx",
+      "saintId": "cms0w7hwc076f07qimzv81wyf",
+      "name": "Sri Sri 1008 Bengali Baba (Arjun Baba)",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan",
+      "relicDescription": "picture frame",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.3333333333333333,
+      "sourceRevision": "022d8faf678e36d15ac2f211e555544dd72b904d15deab7d0d5724c1b4ed04d6",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "rectELlRzsDIChmDJ",
+      "saintId": "cms0w7ib607mp07qidgh8ns8m",
+      "name": "Sri Mahamahim Sant Shiromani Sri Avdhoot Ji Maharaj",
+      "tier": "Tertiary",
+      "city": "Pushkar · Rajasthan · Balkund Ashram · Panchkund Road",
+      "relicDescription": "Lota, (with extra photo frame of him)",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": null,
+      "sourceRevision": "a1ff114c4121aafedccd39c33b43387f46c21a7040c0c1626f1d3bfac9667b92",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    },
+    {
+      "sourceId": "recYnMDX2zACvtMWv",
+      "saintId": "cms0w7jvf099t07qijc7bu9ld",
+      "name": "Sri Sri 1008 Paramahans Yoganandji (Am Wale Baba)",
+      "tier": "Tertiary",
+      "city": "Rajasthan · Pushkar · Am Vale Baba Ashram · Jamani Kund Road",
+      "relicDescription": "Medicine Box",
+      "destination": "44",
+      "section": "Gujarat & Swaminarayan Traditions",
+      "family": "",
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "reviewNotes": [],
+      "knownShelfProxy": 0.2,
+      "sourceRevision": "c4c68528603cc15c8f89f530e7a770b82737c14480f9645767040514e755bf93",
+      "capturedProposalDestination": "44",
+      "movementBlockedReason": "",
+      "lifeStatus": {
+        "tag": null,
+        "basis": "Current life status is projected at read time."
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "west40-44:west-5",
+      "title": "Anuvrat Swami & Bhikhi Bai",
+      "vitrine": "44",
+      "kind": "family",
+      "sourceIds": [
+        "recXr00H5P0KlYhAO",
+        "rec1MAZOzdCRybJGN"
+      ],
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:mekan",
+      "title": "Mekan Dada · two source entries",
+      "vitrine": "41",
+      "kind": "family",
+      "sourceIds": [
+        "recCz6sIHu6BniUdw",
+        "recjtrqGSGg72x6Fs"
+      ],
+      "rationale": "Two source observations retained; do not merge identities or assume two distinct relic assemblies.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-30",
+      "title": "Brahma Kumaris · Mount Abu",
+      "vitrine": "41",
+      "kind": "family",
+      "sourceIds": [
+        "recxUEG6Dr1cErcNq",
+        "rechuanXWbFyugaqd",
+        "recqLYxJHUYVnoU7Q",
+        "recjA6zCEVozbTcwK",
+        "recSjxSEQTJJiG5Xf",
+        "recf8bQTi2i9L3qr4",
+        "rech7wuJ9bGG0N7Th",
+        "rech80UeXCXC0g3kc",
+        "rec27yePMb0DBtY69",
+        "recsMylAeFSJtM7mM"
+      ],
+      "rationale": "Curator requests the complete Brahma Kumaris group in the main Western area. Keep this display group together.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-6",
+      "title": "Dadu Dayal & Garib Das",
+      "vitrine": "42",
+      "kind": "family",
+      "sourceIds": [
+        "recCC420vYWEjA1ZK",
+        "rec2bbFehLglJVIEe"
+      ],
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-18",
+      "title": "Jodhpur · Bijolai branch",
+      "vitrine": "42",
+      "kind": "family",
+      "sourceIds": [
+        "recEQQYgmuQftTjJl",
+        "recqFP7HP0TK5Q0xE"
+      ],
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-14",
+      "title": "Jodhpur · Dadaji succession",
+      "vitrine": "42",
+      "kind": "family",
+      "sourceIds": [
+        "recaeoWdBMpV6js3e",
+        "recGiFrjeMnduqdeu"
+      ],
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-25",
+      "title": "Sri Tulsidas ji Maharaj & Sri Shanteshwar Maharaj ji Babaji",
+      "vitrine": "42",
+      "kind": "family",
+      "sourceIds": [
+        "recnthhKz3ywaXM8Q",
+        "recLfl2CGYJTNN55c"
+      ],
+      "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-78-part0",
+      "title": "Alwar",
+      "vitrine": "42",
+      "kind": "city",
+      "sourceIds": [
+        "rec66gnHbtkholMkg"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-147-part0",
+      "title": "Barmer",
+      "vitrine": "42",
+      "kind": "city",
+      "sourceIds": [
+        "rech71dbwgDjSXrXC",
+        "recLALdvz3213jSPb"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-91-part0",
+      "title": "Jaipur",
+      "vitrine": "43",
+      "kind": "city",
+      "sourceIds": [
+        "recqypCoigbH3X8cR",
+        "recDOBzriwy6mnddl",
+        "rec7pgsaA6Wi288cj",
+        "recAmCsRatjIKPDGg",
+        "recTOHNPK6sqmU0zq",
+        "recgYUiLIMUzFX6fn",
+        "recXfCH80LDGxFvg9",
+        "reccw2vxTbeGsIJ1x",
+        "receCbIjIoMadEX8E"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-186-part0",
+      "title": "Jhunjhunu",
+      "vitrine": "42",
+      "kind": "city",
+      "sourceIds": [
+        "recqbV4fEbe5S2a3r"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-166-part0",
+      "title": "Jodhpur",
+      "vitrine": "42",
+      "kind": "city",
+      "sourceIds": [
+        "recmNoHLsJMMGqsch",
+        "recNXEfLXZgZ1sXX7"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-202-part0",
+      "title": "Madhavgarh",
+      "vitrine": "42",
+      "kind": "city",
+      "sourceIds": [
+        "recv7Koa6d8uoW92S",
+        "recuJRn66FXBWfG5e"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-164-part0",
+      "title": "Mount Abu",
+      "vitrine": "41",
+      "kind": "city",
+      "sourceIds": [
+        "recrC9U16Vn5vP9Fn",
+        "recmGHWXiRWRyqNCz"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Proposed shared highlight with BAPS: separate institutional and locality blocks, without implying a personal connection between the traditions.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-167-part0",
+      "title": "Ramdev Pir & Dali Bai",
+      "vitrine": "42",
+      "kind": "family",
+      "sourceIds": [
+        "recmPZzMUEZjUowj5",
+        "recZc9KpAaqKZvtxN"
+      ],
+      "rationale": "Reviewed display group; retain the individual source records.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-110-part0",
+      "title": "Kutch / Bhuj",
+      "vitrine": "41",
+      "kind": "city",
+      "sourceIds": [
+        "recAJ0dmE9ty7xQmP",
+        "recodCOSnNUM3ABwM"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-81-part0",
+      "title": "Dwarka",
+      "vitrine": "40",
+      "kind": "city",
+      "sourceIds": [
+        "rec7aLLgDa0jXhEKc",
+        "recjA6O6snsRrdlUA",
+        "rec6hHwCPZlG7imPh",
+        "rece8TkBogU3sVpwc",
+        "recGwFSR5sfdlhTMT",
+        "rec6RzhtQGKjyWUu0",
+        "recvtWm0B1R3MVPxd",
+        "recp9Qd482IPagFW7",
+        "recvtg4qmPTrKNB5c",
+        "recoJDmYfi6mW01ol",
+        "recr0IW26sqLI5tHu"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-74-part0",
+      "title": "Jamnagar",
+      "vitrine": "41",
+      "kind": "city",
+      "sourceIds": [
+        "rec4flFdn49zlG3MN",
+        "rec9FDEOQPK0UUKYG",
+        "rec9aszYqp47s9GJs",
+        "recHoYYCEHJtcqV4n",
+        "rec9ueDuwGgl2LxLu"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-61-part0",
+      "title": "Morbi",
+      "vitrine": "41",
+      "kind": "city",
+      "sourceIds": [
+        "rec1G18VHatva4b4n"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-120-part0",
+      "title": "Rajkot / Virpur",
+      "vitrine": "41",
+      "kind": "city",
+      "sourceIds": [
+        "recc1CC82GbnM5dJt",
+        "recEnD8tEMbdNXtbQ",
+        "recmtsRvLYP37610P",
+        "reccKKvB9Ep8ilaYM",
+        "reci5j0k7U8Ha2f2m",
+        "recTqpJdgwHXGebdi"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-58-part0",
+      "title": "Somnath / Gir coast",
+      "vitrine": "40",
+      "kind": "city",
+      "sourceIds": [
+        "rec0seKELLdLi5H7H",
+        "rec7jgASNs4kecXXf",
+        "recQ6Y27YqDsA8o3L",
+        "recPARJ5ejag2tilh",
+        "recSsNj3vJzGFFgll",
+        "recS5zrdh9CsIcTZU",
+        "recszQw56XJNkJ7Ms",
+        "recsm43oeUdKNUMqs",
+        "recTAvhZnozTlJRko",
+        "recVJcxLhwAMqNOpT"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:west-135",
+      "title": "Naklank",
+      "vitrine": "42",
+      "kind": "city",
+      "sourceIds": [
+        "receXeBatQqUN9Tfw"
+      ],
+      "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Provisional lower-shelf review block only. No regional affiliation implied; check identity, housing and individual fit before execution.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:pushkar-ashram-254",
+      "title": "Pushkar · Varaha Ghat",
+      "vitrine": "44",
+      "kind": "city",
+      "sourceIds": [
+        "recHaH4vCPuzQfYjX",
+        "recNrnCbFSc9fZ2yN",
+        "recyn09Qjn3Xlfm4Y"
+      ],
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:pushkar-ashram-255",
+      "title": "Pushkar · Kanbay Temple / Suraj Kund",
+      "vitrine": "44",
+      "kind": "city",
+      "sourceIds": [
+        "rechyCs2mWztexXfF",
+        "recGYo15kva4Wic4D"
+      ],
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:pushkar-ashram-256",
+      "title": "Pushkar · Ramsakha Ashram",
+      "vitrine": "44",
+      "kind": "city",
+      "sourceIds": [
+        "rec1QqhICMFBtQj5A",
+        "recrfXQmBtI7KHtm3",
+        "recRWM4AUfyZKTYhX",
+        "recxnvPUj8a2yOr5k"
+      ],
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:pushkar-ashram-257",
+      "title": "Pushkar · Gorakhnath area",
+      "vitrine": "44",
+      "kind": "city",
+      "sourceIds": [
+        "recBiNVX3OFLjOi6B",
+        "recKA3SQQEw4kBRHm"
+      ],
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:pushkar-ashram-258",
+      "title": "Pushkar · Ramrai Mandir",
+      "vitrine": "44",
+      "kind": "city",
+      "sourceIds": [
+        "reciFCVKbvU8jZLB5",
+        "recx91dvPplqsQoSv"
+      ],
+      "rationale": "Supported shared locality/ashram; no direct guru relationship inferred.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:pushkar-other-43",
+      "title": "Pushkar · other ashrams and local saints",
+      "vitrine": "43",
+      "kind": "city",
+      "sourceIds": [
+        "recBJm0GXEQdSnxdX",
+        "recUixTPfpixTRMRW",
+        "recyIFyZ0KTE3ROZk",
+        "rec5AerEYeHDF4ntd",
+        "rec4sQIfi3eQ6htF4",
+        "reckx4eycMx5ANNAu",
+        "recOQhwGvleb65Mqd",
+        "recP57LKD7oNwsMsO",
+        "recU2EVkXi0BiPCyj",
+        "recVKiqOCdqsgGRbE",
+        "reczx3vjziBqyguwP"
+      ],
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "edges": []
+    },
+    {
+      "id": "west40-44:pushkar-other-44",
+      "title": "Pushkar · other ashrams and local saints",
+      "vitrine": "44",
+      "kind": "city",
+      "sourceIds": [
+        "recdNqG8o5GNgVfbL",
+        "rec0bOAYNqmpEYZ5H",
+        "rec4e9r4nLG2LJfUI",
+        "receXAx0CQQFwgjbh",
+        "recJVyEGZQ3PdhXGN",
+        "recPNGkHyQVT3hbOb",
+        "recrMotrBmcVRnEgx",
+        "rectELlRzsDIChmDJ",
+        "recYnMDX2zACvtMWv"
+      ],
+      "rationale": "Individual supported Pushkar localities; identity/family audit pending. Keep specific temple labels on objects.",
+      "edges": []
+    }
+  ],
+  "vitrines": [
+    {
+      "code": "40",
+      "summary": "Dwarka · Somnath and the Gir coast"
+    },
+    {
+      "code": "41",
+      "summary": "North Saurashtra · Kutch · Brahma Kumaris, Mount Abu"
+    },
+    {
+      "code": "42",
+      "summary": "Dadu Dayal · Jodhpur · Ramdevra and Barmer"
+    },
+    {
+      "code": "43",
+      "summary": "Jaipur · Pushkar"
+    },
+    {
+      "code": "44",
+      "summary": "Pushkar ashrams and local saints"
+    }
+  ],
+  "assignmentDigest": "6fc667a4338ab221a4cc032f6be45e3816fba3aec68dce72cba8013ace0378e4",
+  "contentDigest": "46d0b952f8b3c032a980d4fbb58c838e45c81051c5309f9e78cfda79769ded6a"
+}
