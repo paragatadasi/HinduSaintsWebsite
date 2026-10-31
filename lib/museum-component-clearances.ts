@@ -5,7 +5,7 @@ import { moveLocation } from "./museum-move-session-domain";
 
 export async function readComponentCorrections(tx: Prisma.TransactionClient = db) {
   const events=await tx.auditEvent.findMany({where:{action:"museum.physical_location.check_undone",entityType:"MuseumPhysicalCheckUndo",
-    OR:[{afterJson:{path:["scope"],equals:"vitrine_20_contents_only"}},{afterJson:{path:["scope"],equals:"vitrine_19_contents_only"}},{afterJson:{path:["scope"],equals:"vitrine_42_contents_only"}}]},select:{afterJson:true}});
+    OR:[{afterJson:{path:["scope"],equals:"vitrine_20_contents_only"}},{afterJson:{path:["scope"],equals:"vitrine_19_contents_only"}},{afterJson:{path:["scope"],equals:"vitrine_42_contents_only"}},{afterJson:{path:["scope"],equals:"vitrine_64_contents_including_sticks"}}]},select:{afterJson:true}});
   return events.flatMap(({afterJson:value})=>value&&typeof value==="object"&&!Array.isArray(value)&&value.museumId==="museum-spn"&&
     typeof value.targetReceiptId==="string"&&typeof value.sourceId==="string"?[{receiptId:value.targetReceiptId,sourceId:value.sourceId}]:[]);
 }
@@ -27,10 +27,11 @@ export async function readComponentPlacements(tx: Prisma.TransactionClient = db,
       if (!code||!origin.success || !location.success || origin.data.kind !== "vitrine" || origin.data.code !== code ||
           location.data.kind !== "table" || location.data.code !== "staging-area" || raw.scope !== componentScopeForOrigin(code) ||
           typeof raw.revision !== "string" || typeof raw.expectedSourceRevision !== "string" ||
-          typeof raw.previousCurrentRevision !== "string" || typeof raw.previousLocationVersion !== "number") continue;
+          typeof raw.previousCurrentRevision !== "string" || typeof raw.previousLocationVersion !== "number" || code==="64"&&raw.includedWalkingSticks!==true) continue;
       found.set(raw.sourceId, { sourceId: raw.sourceId, receiptId: event.id, recordedAt: event.createdAt.toISOString(),
         revision: raw.revision, origin: origin.data, location: location.data, scope: componentScopeForOrigin(code)!,
         excludedWalkingSticks: { location: null, status: "unverified" }, expectedSourceRevision: raw.expectedSourceRevision,
+        ...(code==="64"?{includedWalkingSticks:true as const}:{}),
         previousCurrentRevision: raw.previousCurrentRevision, previousLocationVersion: raw.previousLocationVersion });
     }
   }
