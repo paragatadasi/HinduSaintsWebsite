@@ -1,4 +1,5 @@
 "use client";
+import {MuseumStagingContents} from "./museum-staging-contents";
 import {MuseumClearContents} from "./museum-clear-contents";
 import {spnCaseExecutionHold} from "@/lib/museum-case-execution-holds";
 import {v20ComponentSourceIds} from "@/lib/museum-component-clearance-domain";
@@ -367,14 +368,22 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   void send("POST",{action:"clear.correct",museumId:"museum-spn",clientRequestId:crypto.randomUUID(),receiptId:clearCorrection.receiptId,mistakenClearAcknowledged:true,records:clearCorrection.records.map(({sourceId,saintId,expectedCurrentRevision,expectedSourceRevision,expectedLocationVersion})=>({sourceId,saintId,expectedCurrentRevision,expectedSourceRevision,expectedLocationVersion}))});
  }
  function clearingCorrections(){return canManage&&physical?.clearCorrections?.length?<details className="museum-guide-help"><summary>Correct a mistaken clearing</summary>{physical.clearCorrections.map(item=><div className="review-actions" key={item.receiptId}><span>Vitrine {item.vitrine} · {item.records.length} previously placed entries</span><button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!editable} onClick={()=>{setClearCorrectionId(item.receiptId);setCorrectionAcknowledged(false);}}>Review correction</button></div>)}</details>:null;}
- function stagingList(){return <>{clearingCorrections()}{staged.length?staged.map(row=>{const entry=guideById.get(row.sourceId);const inGuide=entry&&allGuides.some(item=>item.vitrines.some(v=>v.code===entry.destination&&[...v.families,...v.cityGroups].some(g=>g.sourceIds.includes(row.sourceId))));return <article className="museum-guide-check" key={row.sourceId}><div className="museum-guide-check__body"><strong>{entry?.name??row.name}</strong>{row.componentPlacement?<><small>Vitrine 20 pieces only · staged</small><small>Walking sticks elsewhere · location unverified</small></>:<small>Source start: {currentLocationLabel(row.original)}</small>}<small>{entry?.destination?'Proposed: Vitrine '+entry.destination:'Destination not assigned'}</small></div>{row.componentPlacement&&row.undo?.available?<button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!editable} onClick={()=>setUndoSource(row.sourceId)}>Correct staging record</button>:null}{inGuide?<button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>openDestination(row.sourceId,entry.destination)}>Vitrine {entry.destination}</button>:null}</article>;}):<p>No displays recorded in the staging area.</p>}{physical?.unmappedCurrentLocations.filter(row=>row.location.kind==="table").map(row=><p key={row.sourceId}>{row.sourceId} · Staged record awaiting an inventory match</p>)}</>;}
+ function stagingList(){
+  const destinations=clearingDestinations();
+  const bySource=new Map(destinations.map(entry=>[entry.sourceId,entry]));
+  return <>{clearingCorrections()}<MuseumStagingContents rows={staged} entries={destinations} missing={physical?.unmappedCurrentLocations.filter(row=>row.location.kind==="table")??[]} renderRow={row=>{
+   const entry=bySource.get(row.sourceId);
+   const inGuide=entry&&allGuides.some(item=>item.vitrines.some(v=>v.code===entry.destination&&[...v.families,...v.cityGroups].some(g=>g.sourceIds.includes(row.sourceId))));
+   return <article className="museum-guide-check" key={row.sourceId}><div className="museum-guide-check__body"><strong>{entry?.name??row.name}</strong>{row.componentPlacement?<><small>Vitrine 20 pieces only · staged</small><small>Walking sticks elsewhere · location unverified</small></>:<small>Source start: {currentLocationLabel(row.original)}</small>}{entry?.proposalTransfer?<small>{entry.proposalTransfer.label}</small>:null}</div>{row.componentPlacement&&row.undo?.available?<button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!editable} onClick={()=>setUndoSource(row.sourceId)}>Correct staging record</button>:null}{inGuide?<button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>openDestination(row.sourceId,entry.destination)}>Vitrine {entry.destination}</button>:null}</article>;
+  }}/></>;
+ }
  function tiered(ids:string[]){
   return ["Primary","Secondary","Tertiary","Other"].map(tier=>{
    const matches=ids.filter(id=>{const value=guideById.get(id)?.tier;return tier==="Other"?!["Primary","Secondary","Tertiary"].includes(value??""):value===tier;});
    return matches.length?<section key={tier}><h3 className="museum-guide-stage">{tier} · {matches.length}</h3>{matches.map(id=>display(id,selected,true,false,true))}</section>:null;
   });
  }
- function catalogEntry(entry:CompanionSearchEntry){return {sourceId:entry.sourceId,saintId:entry.saintId,name:entry.name,tier:entry.tier,city:entry.city,relicDescription:allEntries.get(entry.sourceId)?.relicDescription??"",destination:entry.destination,section:entry.section,family:"",lifeStatus:entry.lifeStatus??allEntries.get(entry.sourceId)?.lifeStatus,rationale:"Curator-added destination"};}
+ function catalogEntry(entry:CompanionSearchEntry){return {sourceId:entry.sourceId,saintId:entry.saintId,name:entry.name,tier:entry.tier,city:entry.city,relicDescription:allEntries.get(entry.sourceId)?.relicDescription??"",destination:entry.destination,proposalTransfer:entry.proposalTransfer,section:entry.section,family:"",lifeStatus:entry.lifeStatus??allEntries.get(entry.sourceId)?.lifeStatus,rationale:"Curator-added destination"};}
  function retryAddition(){
   const value=retry.current?.body.curatorAddition;
   return value&&typeof value==="object"&&"sourceId" in value&&typeof value.sourceId==="string"&&"version" in value&&typeof value.version==="number"?{sourceId:value.sourceId,version:value.version}:null;

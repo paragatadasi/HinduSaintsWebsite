@@ -12280,3 +12280,13 @@ select:not([multiple]) {
 .museum-clear-contents__group li + li {border-top:var(--border-width-default) solid var(--color-border)}
 .museum-clear-contents__group small {color:var(--color-muted);font-size:var(--font-size-companion-small)}
 .museum-clear-contents__warning {margin:0;font-size:var(--font-size-companion-small);color:var(--color-muted)}
+
+/* Destination summaries share the clearing-card grouping in the staging workspace. */
+.museum-destination-summary {display:flex;flex-wrap:wrap;gap:var(--space-2);margin-block-end:var(--space-2)}
+.museum-destination-summary .museum-admin-button {display:flex;align-items:center;gap:var(--space-2);font-size:var(--font-size-review-field);text-align:start}
+.museum-destination-summary__count {font-size:var(--font-size-companion-small);font-weight:400;color:var(--color-muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.museum-staging-contents__rows {padding-inline:var(--space-4)}
+.museum-staging-contents__rows .museum-guide-check {margin:0}
+.museum-staging-contents__rows > div:first-child .museum-guide-check {border-top:0}
+
+.museum-staging-contents__rows > div:last-child .museum-guide-check {border-bottom:0}
