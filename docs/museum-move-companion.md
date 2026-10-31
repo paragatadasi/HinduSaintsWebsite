@@ -147,3 +147,26 @@ Skill review found no new interpretation rule: existing guidance already separat
 The placement capability includes confirming one destination already saved by a curator. The assistant request carries only the saved addition's source ID and version, a current registered receiving-guide context, and the normal physical confirmation references. It does not create or edit a proposal. The HTTP envelope and domain guard reject unrelated sources, historical or mismatched guides, unregistered receiving cases, multiple records, alternatives, staging, preparation, corrections and clearing.
 
 Inside the physical-write transaction, the saved addition must still exist with the same source, canonical identity, source revision, version, destination and shelf. An assistant can confirm an exact previously approved shelf on this path; any different shelf is rejected. Guide-only confirmations retain their no-shelf boundary. Current effective destination, physical/source revisions, readiness, execution holds, verified items, fixed housing and component safeguards are unchanged. Curator management permission is not granted. No import, source or public editorial data is modified by enabling this check-off path.
+
+## Vraj story tops revision, 31 October 2026
+
+The active remainder guide is `spn-vraj-remainder-2026-10-31-v2`: exactly 79
+approved observations across 32–35 plus the unchanged 20 in 38. The prior guide
+remains registered read-only. Equivalent decisions and prior clearances carry
+forward; later destinations and all physical receipts remain authoritative.
+
+The new packet retains compatible same-case shelf recommendations. Changed groups
+have band-only positions rather than invented shelf numbers. Living members remain
+below the top. The four already placed observations in 35 retain their physical
+state. No loading or deployment step confirms a move or an actual shelf.
+
+The exact unlinked `recPWVPc3i5A0KH7h` proposal can project from captured 35 to
+approved 32 only while its null identity, source revision and unchanged prior
+destination match and no newer alternative/addition exists. This does not waive
+identity-review holds or create a canonical saint. The separate Govardhan object
+retains the source's rejected Advaita Acharya attribution; locality grouping does
+not assert provenance or a teacher relationship.
+
+Fresh read-only verification found 99 visible guide entries and 97 active shelf
+allocations, with two pre-existing identity holds in 32. No reusable skill rule
+changed; these are scoped reviewed placements, not new identity evidence.

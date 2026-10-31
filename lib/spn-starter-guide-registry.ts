@@ -1,3 +1,4 @@
+import {vrajStoryTopsGuideContext,vrajStoryTopsGuideDefinition} from "./spn-vraj-story-tops-guide";
 import {westV45GuideContext,westV45GuideDefinition} from "./spn-west-v45-guide";
 import {westV1GuideContext,westV1GuideDefinition} from "./spn-west-v1-guide";
 import {eastRemainderGuideContext,eastRemainderGuideDefinition} from "./spn-east-remainder-guide";
@@ -64,7 +65,7 @@ const cityAlternatives = guide.cityAlternatives.map(cohort => {
 if (new Set(suggestions.map(row => row.id)).size !== suggestions.length) throw new Error("Duplicate registered suggestion identifiers.");
 export const registeredStarterGuide = { ...guide, cityAlternatives, guideContext: starterGuideContext };
 export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinition[] {
-  return [westV45GuideContext,westV1GuideContext,eastRemainderGuideContext,northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,
+  return [westV45GuideContext,westV1GuideContext,eastRemainderGuideContext,northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajStoryTopsGuideContext,
     ramBhaktiGuideContext, dattaGuideContext, starterGuideContext].map(context => readStarterGuideDefinition(context.guideVersion))
     .filter(definition => !definition.readOnly && (definition.suggestions.some(row => row.targetVitrine === vitrine) ||
       Object.values(definition.physicalScope?.destinations ?? {}).includes(vitrine)));
@@ -73,7 +74,8 @@ export function readStarterGuideDefinition(version: string): GuideDefinition {
   if(version===westV45GuideContext.guideVersion)return westV45GuideDefinition;
   if(version===westV1GuideContext.guideVersion)return westV1GuideDefinition;
   if(version===eastRemainderGuideContext.guideVersion)return eastRemainderGuideDefinition;
-  if(version===vrajRemainderGuideContext.guideVersion)return vrajRemainderGuideDefinition;
+  if(version===vrajStoryTopsGuideContext.guideVersion)return vrajStoryTopsGuideDefinition;
+  if(version===vrajRemainderGuideContext.guideVersion)return {...vrajRemainderGuideDefinition,readOnly:true};
   if(version===northernGuideContext.guideVersion)return northernGuideDefinition;
   if(version===priorNorthernContext.guideVersion)return {...priorNorthernDefinition,readOnly:true};
   if (version === ramakrishnaGuideContext.guideVersion) return ramakrishnaGuideDefinition;
