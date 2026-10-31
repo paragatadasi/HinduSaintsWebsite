@@ -29,7 +29,7 @@ export async function museumPhysicalLocationsHttp(request: Request, loader: Phys
       const ids = z.array(z.string().min(1).max(200)).max(2000).parse(query.getAll("sourceId"));
       result = await readMuseumPhysicalLocations(loader, ids.length ? [...new Set(ids)] : undefined);
     } else if (request.method === "POST") {
-      if (!canConfirmMuseumPlacement(user.roles)) throw new MuseumMoveSessionError(403, "A museum curator must record physical locations.");
+      if (!canConfirmMuseumPlacement(user.roles)) throw new MuseumMoveSessionError(403, "You need museum placement permission to record a move.");
       if (!intakeWriteOriginAllowed(request.url, request.headers.get("origin"), request.headers.get("host"), process.env.AUTH_URL || process.env.NEXTAUTH_URL)) throw new MuseumMoveSessionError(403, "Reload this page before recording a location.");
       if (!request.headers.get("content-type")?.startsWith("application/json")) throw new MuseumMoveSessionError(415, "Send this confirmation as JSON.");
       const body: unknown = JSON.parse((await boundedIntakeBody(request, 512 * 1024)).toString("utf8"));
