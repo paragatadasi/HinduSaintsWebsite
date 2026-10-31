@@ -48,5 +48,14 @@ test("partial staging is labelled without treating the whole source as placed",(
  const row:CompanionRow={sourceId:"partial",name:"Partial assembly",saintId:null,original:{kind:"vitrine",code:"20",label:"Vitrine 20"},current:null,currentBasis:"unknown",currentVersion:0,currentRevision:"component",sourceRevision:"source",fixedHousing:false,verifiedItemIds:[],identityChanged:false,componentPlacement:{sourceId:"partial",receiptId:"receipt",recordedAt:"2026-10-30",revision:"component",origin:{kind:"vitrine",code:"20",label:"Vitrine 20"},location:{kind:"table",code:"staging-area",label:"Staging area"},scope:"vitrine_20_contents_only",excludedWalkingSticks:{location:null,status:"unverified"},expectedSourceRevision:"source",previousCurrentRevision:"previous",previousLocationVersion:0}};
  assert.equal(companionLocationLabel(row),"Staging area · Vitrine 20 pieces only");
  assert.equal(isPlaced(row,"20"),false);
+ assert.equal(companionLocationLabel({...row,componentPlacement:{...row.componentPlacement!,origin:{kind:"vitrine",code:"19",label:"Vitrine 19"}}}),"Staging area · Vitrine 19 pieces only");
  assert.equal(companionLocationLabel({...row,componentPlacement:null}),"Location not recorded");
+});
+
+
+test("staged location includes the original vitrine without implying it is still there",()=>{
+ const current={kind:"table" as const,code:"staging-area",label:"Staging area"};
+ assert.equal(companionLocationLabel({current,original:{kind:"vitrine",code:"19",label:"Vitrine 19",shelf:"A"}}),"Staging area · originally Vitrine 19");
+ assert.equal(companionLocationLabel({current,original:null}),"Staging area");
+ assert.equal(companionLocationLabel({current:{kind:"vitrine",code:"36",label:"Vitrine 36"},original:{kind:"vitrine",code:"19",label:"Vitrine 19"}}),"Vitrine 36");
 });

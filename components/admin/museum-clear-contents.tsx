@@ -25,7 +25,7 @@ export function MuseumClearContents({rows, missing, entries, sourceVitrine, part
       <ul>{group.entries.map(row => <li key={row.sourceId}>
         <span className="museum-clear-contents__name">{row.name}</span>
         {row.current?.shelf ? <small>Shelf {row.current.shelf}</small> : null}
-        {partialIds.includes(row.sourceId) ? <p className="museum-clear-contents__warning">Only the pieces held in Vitrine 20 will be recorded as staged.</p> : row.movementBlockedReason ? <p className="museum-clear-contents__warning">{row.movementBlockedReason}</p> : null}
+        {partialIds.includes(row.sourceId) ? <p className="museum-clear-contents__warning">Only the pieces held in Vitrine {sourceVitrine} will be recorded as staged.</p> : row.movementBlockedReason ? <p className="museum-clear-contents__warning">{row.movementBlockedReason}</p> : null}
       </li>)}</ul>
     </details>)}
     {missing.length ? <details open className="museum-clear-contents__group"><summary><span>Records to identify</span><span className="museum-clear-contents__count">{missing.length} {missing.length === 1 ? "entry" : "entries"}</span></summary><ul>{missing.map(row => <li key={row.sourceId}><span>{row.sourceId}</span>{row.location.shelf ? <small>Shelf {row.location.shelf}</small> : null}<p className="museum-clear-contents__warning">Unlinked record: review before clearing.</p></li>)}</ul></details> : null}
