@@ -14,7 +14,7 @@ export type ShelfPlanningCase={
  code:string;groups:{id:string;title:string;kind:string}[];allocations:ShelfPlanningAllocation[];
  relationships:{fromSourceId:string;toSourceId:string;label:string;direction:string;uncertain:boolean}[];
  contextNodes?:{id:string;label:string;physicalHolding:boolean}[];notes?:string[];
- conceptualAssignedLoads?:Record<string,number>;
+ conceptualAssignedLoads?:Record<string,number>;livingAllowedBands?:number[];
 };
 export type ShelfPlanningPacket={version:string;vitrines:ShelfPlanningCase[];exceptions?:{code:string;band:number;knownLoad:number;warning:string}[]};
 type CurrentMuseum={placements:MuseumSaintPlacement[];membersById:Map<string,Record<string,string>>};
@@ -90,9 +90,9 @@ export function projectShelfPlanningContext(packet:ShelfPlanningPacket,input:{cu
   const lifeConflicts=new Set<string>();
   const currentAllocations=allocations.flatMap(a=>{
    const life=lifeById.get(a.sourceId);
-   if(life?.tag&&a.suggestedShelfIndex===1){
+   if(life?.tag&&(plan.livingAllowedBands ? !plan.livingAllowedBands.includes(a.suggestedShelfIndex??0) : a.suggestedShelfIndex===1)){
     lifeConflicts.add(a.sourceId);
-    reviewedChanges.push({sourceId:a.sourceId,name:a.name,capturedDestination:plan.code,capturedShelfIndex:a.suggestedShelfIndex,effectiveDestination:plan.code,visibility:"pending",reason:"Current living-status evidence conflicts with the captured top position; review the starting shelf."});
+    reviewedChanges.push({sourceId:a.sourceId,name:a.name,capturedDestination:plan.code,capturedShelfIndex:a.suggestedShelfIndex,effectiveDestination:plan.code,visibility:"pending",reason:plan.livingAllowedBands?"Current living-status evidence requires a recommendation on one of the approved lower shelves.":"Current living-status evidence conflicts with the captured top position; review the starting shelf."});
     return [];
    }
    return [{...a,projectedLifeStatus:life}];

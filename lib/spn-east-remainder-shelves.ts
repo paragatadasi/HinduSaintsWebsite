@@ -1,3 +1,4 @@
+import {applyV77BottomTwoRecommendations} from "./spn-v77-bottom-two-shelves";
 import captured from "../data/museum/spn-vraj-east-shelves-v1.json";
 import packet from "../data/museum/spn-east-remainder-guide-v1.json";
 import {paramanandObjectReview} from "./spn-paramanand-reviewed-object";
@@ -13,8 +14,9 @@ if(!puriSources||packet.sourceShelfVersion!==captured.version||packet.sourceShel
  throw new Error("The reviewed Eastern shelf supplement changed.");
 
 // Keep the captured 347-source packet intact; the reviewed arm-support is a later, scoped recommendation.
-export const operationalSpnShelfPacket:ShelfPlanningPacket={...captured,version:"spn-vraj-east-shelves-2026-10-31-v2",vitrines:captured.vitrines.map(v=>v.code!==extra.code?v:{...v,
+const easternSupplement:ShelfPlanningPacket={...captured,version:"spn-vraj-east-shelves-2026-10-31-v2",vitrines:captured.vitrines.map(v=>v.code!==extra.code?v:{...v,
  groups:v.groups.map(g=>g.id!==extra.groupId?g:{...g,sourceIds:[...puriSources,extra.sourceId]}),
  allocations:[...v.allocations,extra],notes:[...(v.notes??[]),extra.reviewAlerts[0].message]})};
+export const operationalSpnShelfPacket=applyV77BottomTwoRecommendations(easternSupplement);
 export const eastRemainderShelfPacket:ShelfPlanningPacket={...operationalSpnShelfPacket,
  vitrines:operationalSpnShelfPacket.vitrines.filter(v=>packet.vitrines.includes(v.code))};
