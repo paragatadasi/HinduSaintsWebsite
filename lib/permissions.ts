@@ -64,7 +64,7 @@ const roleCapabilities: Record<UserRole, readonly Capability[]> = {
   fact_checker: structuredEditor,
   writer: longFormEditor,
   curator: ["access_museum", "view_museum_catalog", "manage_museum", "view_full_saint_catalog", "manage_saint_team_visibility", ...workflowParticipant],
-  museum_assistant: ["access_museum", "view_museum_catalog", "confirm_museum_placements"],
+  museum_assistant: ["access_museum", "view_museum_catalog", "manage_museum", "confirm_museum_placements"],
   translator: ["view_content", ...workflowParticipant]
 };
 

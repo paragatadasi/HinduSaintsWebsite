@@ -40,9 +40,9 @@ test("historical subset requires receipt, valid date and both explicit acknowled
  assert.ok(caseStagingReconciliation.safeParse(request).success);
  for(const change of [{preparationReceiptId:undefined},{historicalClearanceAcknowledged:false},{currentStagingAcknowledged:false},{reportedDate:"2026-02-30"},{clearedVitrines:["45"]}])assert.equal(caseStagingReconciliation.safeParse({...request,...change}).success,false);
 });
-test("contents acknowledgement stays curator-only and separate from assistant placements",()=>{
+test("museum managers can stage contents while required acknowledgement remains enforced",()=>{
  const ack=caseContentsStaging.parse({vitrine:"45",expectedRevision:"a".repeat(64),selectedContentsPhysicallyStaged:true,confirmedTargetPlacementsPreserved:true});
  const body={museumId:"museum-spn",guideContext:{guideVersion:"guide",contentDigest:"d",assignmentDigest:"a"},records:[{to:{kind:"vitrine",code:"45"}}],caseContentsStaging:ack};
- assert.equal(museumPhysicalWriteAllowed(["museum_assistant"],body),false);assert.equal(museumPhysicalWriteAllowed(["curator"],body),true);
+ assert.equal(museumPhysicalWriteAllowed(["museum_assistant"],body),true);assert.equal(museumPhysicalWriteAllowed(["curator"],body),true);
  assert.equal(caseContentsStaging.safeParse({...ack,confirmedTargetPlacementsPreserved:false}).success,false);
 });
