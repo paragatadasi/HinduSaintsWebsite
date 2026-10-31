@@ -32,7 +32,7 @@ const displayText=(value:string)=>value.replaceAll("\uFFFD","·");
 const holdingIds=new Set(holdings.map(row=>row.sourceId));
 const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,title:displayText(g.title),sourceIds:g.sourceIds.filter(id=>holdingIds.has(id)),suggestedVitrines:["45"],allowedTargetVitrines:[]});
 export const westV45MoveGuide:StarterMoveGuide={version:packet.version,...westV45GuideContext,proposalVersion:packet.proposalVersion,title:packet.title,proposalLabel:packet.proposalLabel,
- phaseLabel:"Varkari · 45",allowClear:false,preparationVitrines:["45"],
+ phaseLabel:"Varkari · 45",allowClear:false,preparationVitrines:["45"],optionalClearVitrines:["45"],
  entries:holdings.map(row=>({...row,family:displayText(row.family),movementBlockedReason:spnMovementBlockedReason(row.sourceId)})),
  vitrines:[{code:"45",summary:"Known load: about 5.37 of 5 shelf spaces, plus two unmeasured holdings. Place optional additions last; decline any that do not fit.",families:packet.groups.filter(g=>g.kind==="family").map(group),cityGroups:packet.groups.filter(g=>g.kind!=="family").map(group)}],alternatives:[],reportedPlacements:[]};
 

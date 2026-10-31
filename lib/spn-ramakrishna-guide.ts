@@ -14,6 +14,6 @@ export const ramakrishnaGuideDefinition:GuideDefinition={context:ramakrishnaGuid
  suggestions:[...fillFirstGuideDefinition.suggestions,...gosaijiSaiGuideDefinition.suggestions.filter(s=>s.targetVitrine!=="75")],
  physicalScope:{...gosaijiSaiGuideDefinition.physicalScope!,previousClearanceVersions:[gosaijiSaiMoveGuide.version],preparationVitrines:["75","23","73"],preparatoryTransfers:fillFirstGuideDefinition.physicalScope!.preparatoryTransfers,
  destinations:{...gosaijiSaiGuideDefinition.physicalScope!.destinations,...fillFirstGuideDefinition.physicalScope!.destinations}}};
-export const ramakrishnaMoveGuide:StarterMoveGuide={...gosaijiSaiMoveGuide,...ramakrishnaGuideContext,version:ramakrishnaGuideContext.guideVersion,
+export const ramakrishnaMoveGuide:StarterMoveGuide={...gosaijiSaiMoveGuide,...ramakrishnaGuideContext,version:ramakrishnaGuideContext.guideVersion,optionalClearVitrines:["4","23","73"],
  title:"Ramakrishna, Bengal, Gosaiji & Sai",proposalLabel:"East–North connections · approved groups",entries,vitrines,previousClearanceVersions:[gosaijiSaiMoveGuide.version],preparationVitrines:["75","23","73"],preparatoryTransfers:fillFirstMoveGuide.preparatoryTransfers,phaseLabel:"Ramakrishna, Bengal, Gosaiji & Sai"};
 export function projectRamakrishnaGuide(current:Parameters<typeof projectScopedMoveGuide>[1],physical:PhysicalState){return projectScopedMoveGuide(ramakrishnaMoveGuide,current,physical);}
