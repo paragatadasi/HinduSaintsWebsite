@@ -35,8 +35,8 @@ export const vrajRemainderMoveGuide:StarterMoveGuide={...vrajRemainderGuideConte
  vitrines:packet.vitrines.map(code=>({code,summary:[...packet.groups.filter(g=>g.vitrine===code).map(g=>g.title),...new Set(packet.fitWarnings.filter(w=>w.code===code).map(w=>w.warning)),...(code==="33"?["Known comparison load 4.9 plus an unknown footprint; confirm actual fit."]:[])].join(" · "),
  families:packet.groups.filter(g=>g.vitrine===code&&g.kind==="family").map(group),cityGroups:packet.groups.filter(g=>g.vitrine===code&&g.kind!=="family").map(group)})),alternatives:[],reportedPlacements:[]};
 
-export function projectVrajRemainderGuide(current:MuseumSaintPlacement[],physical:PhysicalState,context:ShelfPlanningContext):StarterMoveGuide {
- const guide=projectScopedMoveGuide(vrajRemainderMoveGuide,current,physical);
+export function projectVrajRemainderGuide(current:MuseumSaintPlacement[],physical:PhysicalState,context:ShelfPlanningContext,capturedGuide:StarterMoveGuide=vrajRemainderMoveGuide):StarterMoveGuide {
+ const guide=projectScopedMoveGuide(capturedGuide,current,physical);
  const active=new Map(context.cases.flatMap(c=>c.entries.map(entry=>[entry.sourceId,entry] as const)));
  const changes=new Map(context.reviewedChanges.map(change=>[change.sourceId,change]));
  const changed=guide.entries.filter(entry=>{const change=changes.get(entry.sourceId);return change?.visibility==="changed"&&change.effectiveDestination!==entry.destination;});

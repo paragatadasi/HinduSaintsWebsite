@@ -6,7 +6,7 @@ import {buildLatestSpnReview} from "./spn-reviewed-proposal";
 
 export type ShelfPlanningAllocation={
  sourceId:string;saintId?:string|null;name:string;tier?:string;capturedTier?:string;groupId:string;
- suggestedShelfIndex:number|null;reviewAlerts:{message:string}[];isContextOnly?:boolean;
+ suggestedShelfIndex:number|null;suggestedBand?:string;reviewAlerts:{message:string}[];isContextOnly?:boolean;
  capturedBaseline?:ProposalObservation["baseline"];sourceRevision?:string|null;
  projectedLifeStatus?:GuideEntry["lifeStatus"]|null;
 };
@@ -63,6 +63,8 @@ export function projectShelfPlanningContext(packet:ShelfPlanningPacket,input:{cu
    const alternative=input.alternatives?.find(a=>a.sourceId===captured.sourceId);
    const addition=input.additions?.find(a=>a.sourceId===captured.sourceId&&a.saintId===(captured.saintId??null)&&a.sourceRevision===physicalRow?.sourceRevision&&!physicalRow.identityChanged);
    let destination=addition?.vitrine??alternative?.vitrine??row?.effectiveVitrine??null;
+   // Approved source-only relocation: retain the null identity and all independent review holds.
+   if(!addition&&!alternative&&plan.code==="32"&&captured.sourceId==="recPWVPc3i5A0KH7h"&&captured.sourceRevision==="d6f3ead315ed77f26d820566a70ee24a5bb33813476c9c7b432d6ce80e247517"&&physicalRow?.sourceRevision===captured.sourceRevision&&!physicalRow.saintId&&!physicalRow.identityChanged&&!row?.saintId&&row?.effectiveVitrine==="35"&&!row.reviewReason)destination="32";
    if(!addition&&!alternative&&row&&plan.code==="78")destination=bamanDestination(captured,placement,current)??destination;
    let reason=pending.get(captured.sourceId)??"";
    const expectedSaint=captured.saintId??null;

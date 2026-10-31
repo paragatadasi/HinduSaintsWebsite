@@ -268,7 +268,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       const [{readEastRemainderGuide},{assertEastRemainderRecords}]=await Promise.all([import("./spn-east-remainder-source"),import("./spn-east-remainder-guide")]);
       assertEastRemainderRecords(input.records,await readEastRemainderGuide(await readMuseumData(tx),current,undefined,tx));
     }
-    if(input.guideContext?.guideVersion==="spn-vraj-remainder-2026-10-30-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
+    if(input.guideContext?.guideVersion==="spn-vraj-remainder-2026-10-31-v2"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
       const [{readVrajRemainderGuide},{assertVrajRemainderRecords}]=await Promise.all([import("./spn-vraj-remainder-source"),import("./spn-vraj-remainder-guide")]);
       assertVrajRemainderRecords(input.records,await readVrajRemainderGuide(await readMuseumData(tx),current,undefined,tx));
     }

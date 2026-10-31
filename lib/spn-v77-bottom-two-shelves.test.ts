@@ -33,7 +33,7 @@ test("V77 includes Ramashray, retains existing records and scopes the lower-two 
   for (const other of captured.vitrines.filter(v => v.code !== "77"))
     assert.deepEqual(updated.vitrines.find(v => v.code === other.code), other);
   assert.deepEqual(captured, before);
-  assert.equal(operationalSpnShelfPacket.vitrines.flatMap(v => v.allocations).length, 349);
+  assert.equal(operationalSpnShelfPacket.vitrines.flatMap(v => v.allocations).length, 350);
 });
 
 test("changed captured recommendations require a fresh review", () => {
