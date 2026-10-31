@@ -52,3 +52,15 @@ Each receiver requires its own complete current-content clearance and preparatio
 Two observations have no canonical saint binding. They remain source-scoped inventory entries and acquire no identity link. Original locations, saved proposed destinations, suggested shelf bands and curator-confirmed physical placements remain distinct. Case 33 retains its unknown footprint; case 35 retains the lower-band comparison warnings. These are fit checks, not certified dimensions or capacity.
 
 Server callers use `readVrajRemainderGuide(currentData, physical, alternatives?)`; the pure `projectVrajRemainderGuide` requires an evaluated shelf context. The backend registry owns physical scope; the companion owns phase and shelf rendering. The rollout performs no database migration, backfill or physical confirmation. Workflow review found no new evidence or identity policy requiring a skill change.
+## Not-on-display decision persistence
+
+The `not_on_display` row decision is a guide review state, separate from a
+confirmed physical move. Migration `20261031000000_museum_not_on_display_decision`
+adds it to the database check constraint already used by the application domain.
+It changes no saved decisions, alternative destinations or physical placements.
+
+Run `tsx scripts/verify-museum-guide-decisions-local.ts` with a localhost
+development `DATABASE_URL` to verify persistence. The verifier creates and removes
+its own empty test database, reproduces the old constraint failure, applies the
+migration, and checks save, idempotent retry, readback, reset, stale-version
+rejection, preserved history and unrelated alternatives. It rejects remote hosts.
