@@ -1,5 +1,6 @@
 import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
 import {caseContentsStaging,assertSelectedCaseContents} from "./museum-case-contents-domain";
+import {isReviewedBimalTransfer} from "./spn-bimal-reviewed-assembly";
 import {spnCaseExecutionHold, spnPhysicalExecutionHold} from "./museum-case-execution-holds";
 import {assertAssistantGuidePlacement,assertAssistantEffectiveDestination,assertSavedAdditionPlacement} from "./museum-assistant-placement-domain";
 import {currentCompanionAdditions} from "./museum-companion-addition-validation";
@@ -320,7 +321,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       const row = current.rows.find(row => row.sourceId === record.sourceId);
       if (!row) throw new MuseumMoveSessionError(409, "This source is not in the current inventory snapshot. Reload before confirming it.");
       const executionHold = spnPhysicalExecutionHold(row.current, record.to);
-      if (executionHold&&!(retainedCaseClearanceAllowed(input)&&row.current?.kind==="vitrine"&&row.current.code==="64")) throw new MuseumMoveSessionError(409, executionHold);
+      if (executionHold&&!isReviewedBimalTransfer(row,row.current,record.to)&&!(retainedCaseClearanceAllowed(input)&&row.current?.kind==="vitrine"&&row.current.code==="64")) throw new MuseumMoveSessionError(409, executionHold);
       if (row.identityChanged || row.saintId !== record.saintId || row.sourceRevision !== record.expectedSourceRevision) throw new MuseumMoveSessionError(409, "A source identity or its evidence changed. Reload and check the source before confirming.");
       if (row.verifiedItemIds.length) throw new MuseumMoveSessionError(409, "This source has verified inventory items. Record their moves through the item workflow.");
       let to = record.to;
@@ -394,7 +395,7 @@ export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionAc
     const offer = row.undo;
     if (!offer.available || offer.receiptId !== input.receiptId) throw new MuseumMoveSessionError(409, offer.reason ?? "This confirmation can no longer be undone.");
     const executionHold = spnPhysicalExecutionHold(row.current, offer.previous);
-    if (executionHold) throw new MuseumMoveSessionError(409, executionHold);
+    if (executionHold && !isReviewedBimalTransfer(row,offer.previous,row.current)) throw new MuseumMoveSessionError(409, executionHold);
     if (row.componentPlacement) {
       const receipt=await tx.auditEvent.create({data:{userId:actor.id,action:undoAction,entityType:"MuseumPhysicalCheckUndo",entityId,
         afterJson:json({museumId:input.museumId,fingerprint,targetReceiptId:input.receiptId,sourceId:row.sourceId,
