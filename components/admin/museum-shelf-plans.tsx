@@ -16,7 +16,7 @@ export function MuseumShelfPlans({rows,availableGuides,onOpenGuide}:{rows:Compan
  const plan=context?.cases.find(item=>item.code===selected)??context?.cases[0];
  function select(code:string){setSelected(code);const url=new URL(window.location.href);url.searchParams.set("shelfVitrine",code);window.history.replaceState(window.history.state,"",url);}
  return <section className="museum-admin-panel" aria-label="Shelf plans">
-  <header className="section-heading"><div><p className="museum-guide-kicker">Vraj & East</p><h2>Shelf plans</h2></div><button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={refresh}>Refresh plans</button></header>
+  <header className="section-heading"><div><p className="museum-guide-kicker">Museum shelves</p><h2>Shelf plans</h2></div><button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={refresh}>Refresh plans</button></header>
   <p>Suggested shelf positions. Use the move guide to record placements.</p>
   {error?<p role="alert">{error}</p>:null}
   {!context&&!error?<p role="status">Loading shelf plans…</p>:null}

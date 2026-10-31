@@ -1,0 +1,1187 @@
+{
+  "version": "spn-junagadh-saurashtra-shelves-2026-10-31-v1",
+  "physicalWrites": false,
+  "vitrines": [
+    {
+      "code": "48",
+      "groups": [
+        {
+          "id": "saurashtra:focused-0",
+          "title": "Narsinh Mehta · Junagadh devotional gateway",
+          "kind": "city"
+        },
+        {
+          "id": "saurashtra:focused-1",
+          "title": "Radhikadas & Rameshwardas",
+          "kind": "family"
+        },
+        {
+          "id": "saurashtra:focused-2",
+          "title": "Ram Badhi / Godariya community",
+          "kind": "family"
+        },
+        {
+          "id": "saurashtra:focused-3",
+          "title": "Junagadh devotional localities",
+          "kind": "city"
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recs0TaB50MQxIRlc",
+          "saintId": "cms0w7hzp07ae07qikal8aq2i",
+          "name": "Sri Narsi Meta",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-0",
+          "suggestedShelfIndex": 1,
+          "reviewAlerts": [
+            {
+              "message": "Narsinh Mehta is the proposed story lead; recorded tier remains Tertiary. These are altar/Murti-associated objects, not asserted personal possessions. Source estimate1.25shelf-height shares: allow the upper two-shelf zone if required."
+            }
+          ],
+          "sourceRevision": "3c6ce7fab393387e7764749481a1e03e1081bc3d54c09bd4caffb99d253ccd71",
+          "knownFootprint": 1.25
+        },
+        {
+          "sourceId": "recGZmNHXYJFpPf9e",
+          "saintId": "cms0w7fdd044707qik7jv37kj",
+          "name": "Sri Radhikadasji Maharaj",
+          "tier": "Secondary",
+          "groupId": "saurashtra:focused-1",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "d7391cdf3ac3344253afd784a7b62cdcf4746fd37dd206811fb40c72abbc4d1c",
+          "knownFootprint": 0.25
+        },
+        {
+          "sourceId": "recTJ9SOWK0p8ClDn",
+          "saintId": "cms0w7ics07ok07qidebac214",
+          "name": "Sri Tyagi Rameshwardasji Maharaj",
+          "tier": "Secondary",
+          "groupId": "saurashtra:focused-1",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "ea798e7ad6bb94746a9ef022a9ff12cfdb6d74d8fdb1c6fc8605b54bd7c0128c",
+          "knownFootprint": 0.25
+        },
+        {
+          "sourceId": "recfNuy36Ma2NHii6",
+          "saintId": "cms0w7f2r03q507qiz2z4jlk8",
+          "name": "Sri Bhola Ramdas Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-3",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "98a8c4ae65841b817df61669bf4015d384fe2f8f42dd6d3df41b17ac908579a3",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recVDOQnAEulK3L93",
+          "saintId": "cms0w7ix208a607qid51zpyfo",
+          "name": "Sri Keshavanand Das Bapu Ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-3",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "ba7e8dc06ef62e86639af94fce85ebca9209e35c20aea37d0349a29de3c96eae",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "sourceId": "rechRhz7WMZt6XwOs",
+          "saintId": "cms0w7fix04bb07qiyammuqjr",
+          "name": "Sri Param Pujya Sri Ramdas Bapa Godariya",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-2",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "The source explicitly says this mala relic belonged to both Ramdas and Premdas. Collect/check the shared assembly once; retain both saints and source labels. Do not automatically subtract the estimated footprint."
+            }
+          ],
+          "sourceRevision": "0c3f892b45867092b25506353dc63e3a0e546e1befa828e81a546e7d6f64f424",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "sourceId": "recfp0TO6xg18vbCM",
+          "saintId": "cms0w7f2z03qf07qi0nfduri5",
+          "name": "Sri Param Pujya Sri Premdas Bapa Godariya",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-2",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Shared-mala cross-reference to Ramdas: verify the actual assembly; do not collect the same object twice."
+            }
+          ],
+          "sourceRevision": "99ed809625406da355b3b1278011a0d3b229323c84f3863358357fbe13c976e6",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "receUZdN0cUAGNVnb",
+          "saintId": "cms0w7eve03gk07qio592j5t4",
+          "name": "Sri Samarth Sri Prata Smaranga Param Pujya Pragdas Ji Guru Sri Premdas Bapa Godariya",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-2",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "da5946bdeac55b3b80c7b8b24bb1a95b8d51adb7fee6ce0d05338e54b53374be",
+          "knownFootprint": 0.1111111111111111
+        },
+        {
+          "sourceId": "recMDf1mRUIu0Fp1G",
+          "saintId": "cms0w7gmq05o807qi85k3nv23",
+          "name": "Sri Param Pujya Sri Hariram Bapa Godariya",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-2",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "9cb124342d172652efe9e85ec4a2ea80b19d10ca45b90fdba52cc8b4bfc21f08",
+          "knownFootprint": 0.1111111111111111
+        },
+        {
+          "sourceId": "recCReazh8ZSdbDt4",
+          "saintId": "cms0w7ebh02qb07qilxgvhyu0",
+          "name": "Sri Param Pujya Sri Pata Bapu Godariya",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-2",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "973d31c817851c7f667ce98502914fe4af80cdc62923588b71a6b42428f8fb95",
+          "knownFootprint": 0.1111111111111111
+        },
+        {
+          "sourceId": "recE7eJE8BwMZU4Pq",
+          "saintId": "cms0w7eox037u07qiqi05jlre",
+          "name": "Sri Kapildas Maharaj",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-3",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "33793f1ce5acf16a92ba791745207545c6321adf392553c9293d74921a85ba0d",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "sourceId": "rec0qrw5sFsUtxeiC",
+          "saintId": "cms0w7cac005507qie3ib6h6x",
+          "name": "Sri Pujya Sri Ramji Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-3",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "a97ce8cc0d0398acae538ecf0f0920e13b7c6304dcfe154245b179ef7fbd74d0",
+          "knownFootprint": 0.1111111111111111
+        },
+        {
+          "sourceId": "recbNB7lVGdOwxR5D",
+          "saintId": "cms0w7dzv02bl07qimn3jlqgl",
+          "name": "Sri Omkardas Ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-3",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "40f18ad1d096e3f75eaa687678208965f9fe016d46628a2d93f1df6ed975ee72",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "sourceId": "rec8gNP2jANPzuFqA",
+          "saintId": "cms0w7deh01ih07qiz4xlxt6c",
+          "name": "Sri Sri 108 Ramkishan Das Ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-3",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "95efdd7751c77af922086f924e290d59bc9bba2ce606595c40afb1be5406ac03",
+          "knownFootprint": 0.1111111111111111
+        },
+        {
+          "sourceId": "recjfoM9WMPaLTuZm",
+          "saintId": "cms0w7fw204ra07qixg0osmhc",
+          "name": "Mahant Sri Balak Das Ji Guru Lakshman Das Ji",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-3",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "6160a771648a2a85395870b6c351e582b1cc9fc33f6c08bc8d92824ab59b214c",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "sourceId": "recpPTHvqjZYOGaDK",
+          "saintId": "cms0w7hf606m207qixjecoay8",
+          "name": "Sri Mahant Ram Lakhan das Ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-3",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "5652448d2f51236de44b6e38e379b125859f5a89ed8aed43cdbe7dab5132a512",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "sourceId": "recv4ebn8z8as4EJk",
+          "saintId": "cms0w7iti086m07qivcofq46m",
+          "name": "Sri Punit Acharya",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-3",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "b60de678e0b1235e928be841f2babd6979684ffbabc3bc81891a903121fbd3b0",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "sourceId": "recDTjEtD0aOMIAcd",
+          "saintId": "cms0w7elr033n07qi1txhw46s",
+          "name": "Sri Swami Balaram Das Ji",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-3",
+          "suggestedShelfIndex": 5,
+          "reviewAlerts": [
+            {
+              "message": "Living; bottom shelf first. Kurta footprint unmeasured. Source shelf code R is retained verbatim and needs an on-site check."
+            }
+          ],
+          "sourceRevision": "c7b43c16be3ce1ace2d8ef0a0216eb36644f63371c130637ae93bf72b4ea1eb1",
+          "knownFootprint": null
+        }
+      ],
+      "relationships": [],
+      "notes": [
+        "18 entries · about 4.04 shelf spaces, plus one unmeasured holding. Balaram: bottom shelf first; reserve the bottom two shelves if needed."
+      ],
+      "livingAllowedBands": [
+        4,
+        5
+      ]
+    },
+    {
+      "code": "49",
+      "groups": [
+        {
+          "id": "saurashtra:focused-4",
+          "title": "Manmast Mahesh Giri & Mahakal Giri",
+          "kind": "family"
+        },
+        {
+          "id": "saurashtra:focused-5",
+          "title": "Muchukunda cave · Umed Giri & Komalanand",
+          "kind": "family"
+        },
+        {
+          "id": "saurashtra:focused-6",
+          "title": "Girnar ascetics and sacred-place holdings",
+          "kind": "city"
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recrRhd31Aeu5IjXn",
+          "saintId": "cms0w7hy1078h07qipfurwneu",
+          "name": "Sri Digambar Manmast Mahesh Giri Maharaj",
+          "tier": "Secondary",
+          "groupId": "saurashtra:focused-4",
+          "suggestedShelfIndex": 1,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "b236bb2cb49fab41a4a4064c9ef6174fa5501618e5958080781259aebdfda173",
+          "knownFootprint": 0.1111111111111111
+        },
+        {
+          "sourceId": "recCS06A5SE7baG0N",
+          "saintId": "cms0w7ebr02qq07qixfm28uea",
+          "name": "Mahant Sri Mahakal Giriji Maharaj",
+          "tier": "Secondary",
+          "groupId": "saurashtra:focused-4",
+          "suggestedShelfIndex": 1,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "830d4bc5bc9c49f96acc0324d0097d3bbaecbb95b242fd3adec6c3741a126621",
+          "knownFootprint": 0.1111111111111111
+        },
+        {
+          "sourceId": "recnR9BtC1LF5bWsh",
+          "saintId": "cms0w7gze063p07qiiz0vf2mk",
+          "name": "Sri Umed Giri Maharaj",
+          "tier": "Secondary",
+          "groupId": "saurashtra:focused-5",
+          "suggestedShelfIndex": 1,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "aeb7f44e3658bf1b23d73cdc6908b994b3acb3127a1157439b2f322ea3623247",
+          "knownFootprint": 0.25
+        },
+        {
+          "sourceId": "rec041caipfsm61E9",
+          "saintId": "cms0w7c58000f07qi4de2l0oj",
+          "name": "Mahant Sri Komalanand Giriji Maharaj",
+          "tier": "Secondary",
+          "groupId": "saurashtra:focused-5",
+          "suggestedShelfIndex": 1,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "f90ddccce1b5f17d93db6dd7eec33e19d76d33b74692db50f2440e9fc6bbd3e2",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "sourceId": "recm2UJnehrS3dpMO",
+          "saintId": "cms0w7gkx05m607qif4ko0ses",
+          "name": "Sri Shrimad Paramhamsa Parivrajakacharya Kshotriya Brahmanishtha Anant Shri Vibhushit Shri Vishwagayatri Brahmapithacharya Mahamandaleshwar Sri Sri Sri Swami Alkhagiriji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "17f7093107e709d686b38273c1276e5f16294a12b9af102ef26c72a9373b58b2",
+          "knownFootprint": 0.125
+        },
+        {
+          "sourceId": "rec8fWLMWo7Wb1nBQ",
+          "saintId": "cms0w7de001hw07qirhu0p3w8",
+          "name": "Sri Vishweshwar Giri",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "4e104ad030d7012ac6a492ffe84a32a6bb361928cd9ff98df330050f5eca134b",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "reckcSgfFkGseVhhC",
+          "saintId": "cms0w7g49051907qi2p6a9gkp",
+          "name": "Mahant Sri Madhu Giri",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "dc71cb5213ee582ce9863f7693fd258ea5884734ffa871cff5b0ad527fde1b2f",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "recLTwwwdFUirpVjg",
+          "saintId": "cms0w7git05jl07qillxq5s6n",
+          "name": "Sri Gopal Girnar",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "b11f5f807f77fc46f6d62983937fd7d2fa1fb476e645dc9734c451e9cd6c7328",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "recW6X0bCtTKEJnYI",
+          "saintId": "cms0w7j4r08in07qiorfcw03j",
+          "name": "Mahant Sri Hardev Giri",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "cefc402dfdac5fd0d2d85e4f32225dfea0ba572a8e5dd36c7c83b32cd3fa579f",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "recM7Xp5Vw9pFy2Hs",
+          "saintId": "cms0w7gl405me07qiwuxzuumm",
+          "name": "Girnar",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Place-associated cave beads, not an identified saint."
+            }
+          ],
+          "sourceRevision": "f70ac908a174c528bae50def23db7c5111574f039c2f9d82bd6b445716e4be2a",
+          "knownFootprint": 0.18518518518518517
+        },
+        {
+          "sourceId": "recUsNTBWXrHbLso2",
+          "saintId": "cms0w7iqo083k07qikm04agpt",
+          "name": "Nameless Saint",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Saint unidentified; source supports Junagadh. Keep the source label and do not invent identity."
+            }
+          ],
+          "sourceRevision": "cb7cf2023ac95226b8f4ec80da8ed6f957b9e621f88772a16662a9b16136d7c7",
+          "knownFootprint": 0.25
+        },
+        {
+          "sourceId": "recchxj8aJvKexawg",
+          "saintId": "cms0w7e7w02lh07qi8bf7in9s",
+          "name": "Sri Girnarnath",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "d525bac10eebb4f437c510663d0c672a6e486fbe51391fde145b5e4ec60cc808",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "reciCgTBOFewUOtUD",
+          "saintId": "cms0w7fo704ht07qic8rgy486",
+          "name": "Mahant Sri Brahma Gyaniji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "ef18013cdb7a09faf7d23f93e43a6911e9219db0eae169be128f1800733f99cb",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "sourceId": "reckYkidRReyAg1HG",
+          "saintId": "cms0w7gcj05bk07qi09rv3idc",
+          "name": "Sri Jai Shambho Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "a68f610bf1197d0883b682dfd27eb9116ed39e5e4ef6c50737ed10e64f0c2687",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "recxHvesG2c4jpvBa",
+          "saintId": "cms0w7jiy08wo07qik5f39vgq",
+          "name": "Sri Datgiri",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "db2bc7739df44b0a3a89a46b78ee86363d6885fff650faebf335f43e78a0d210",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recafvsdVucjFGLHy",
+          "saintId": "cms0w7dp301wy07qig3v08g2b",
+          "name": "Sri Jagdishgiri Maharaj",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "d43366f529efe8fd5213caf4d73a659369679c05023d534c49522055619e2e28",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "sourceId": "recBodJgdOAUrhgjj",
+          "saintId": "cms0w7e0b02c507qirruftyyl",
+          "name": "Sri Mahatma Girir",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "2c3f4bda530a62467060e26312c0acdaaf7081f0eb992dc231f860e6b8bc5864",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "recJGqy3zMEsLAArY",
+          "saintId": "cms0w7fwc04ro07qiama3pt23",
+          "name": "Sri Vijaya Maa",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "5559303b101dbc278d79e9d818ff6a62c098f1e4203f6acd82c53a1cecb13fdd",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recN5QXwf85xcAdKS",
+          "saintId": "cms0w7gv405ye07qivq96acce",
+          "name": "Sri Bhrahmleem Param Pujya Mahant Sri Amrit Giri Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "d739aad77508c502ade89044ced4313d9b3f0a89b6f956e563e55146e8d05d15",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recLXYz0AB3UpKs0f",
+          "saintId": "cms0w7gjw05kz07qim9uzkrzl",
+          "name": "Sri Rameshwar Giri",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "6b97c606d95b91084fb9b335900eaa72a31af9ec47265bfefdcf7ef171caf854",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "recRrujNB3LR5G2XM",
+          "saintId": "cms0w7hy6078n07qi9z6afek8",
+          "name": "Sri Harpal Giri",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "2506c12891cab81598895f7eb740964441f16a2623ab5fb22516f245c6725abc",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "rectUKjbXmy98h6Ri",
+          "saintId": "cms0w7ihp07ty07qi9t4gqqo9",
+          "name": "Ambaji Temple, Girnar (prasad)",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-6",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Ambaji Temple prasad: place-associated holding, not an additional saint."
+            }
+          ],
+          "sourceRevision": "460d1ed4cebc3825635895998e7b6eb0dfc80f20a2d3affb334af6e35e8fa534",
+          "knownFootprint": 0.18518518518518517
+        }
+      ],
+      "relationships": [],
+      "notes": [
+        "22 entries · about 4.05 shelf spaces."
+      ],
+      "livingAllowedBands": [
+        4,
+        5
+      ]
+    },
+    {
+      "code": "50",
+      "groups": [
+        {
+          "id": "saurashtra:focused-7",
+          "title": "Kashmiri Bapu",
+          "kind": "city"
+        },
+        {
+          "id": "saurashtra:focused-8",
+          "title": "Bharti Ashram · two records together",
+          "kind": "family"
+        },
+        {
+          "id": "saurashtra:focused-9",
+          "title": "Bhavnath and Girnar ashrams",
+          "kind": "city"
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "rec7CR2qx4C8gkMYV",
+          "saintId": "cms0w7d9c01bp07qigxybcgco",
+          "name": "Sant Sri Kashmiri Bapu",
+          "tier": "Primary",
+          "groupId": "saurashtra:focused-7",
+          "suggestedShelfIndex": 1,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "bb60d39f6445b4ac373c23c3f4fdf206eae6e41f30765c7a9b43e59b0bf3ed8e",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recZimTKJr9W8RRTR",
+          "saintId": "cms0w7k3m09i507qiqx9tm8ti",
+          "name": "Sri Bharti Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-8",
+          "suggestedShelfIndex": 1,
+          "reviewAlerts": [
+            {
+              "message": "Possible same saint as the Mahamandaleshwar Bharti Bapu record. Keep both records/relic descriptions together; no identity merge."
+            }
+          ],
+          "sourceRevision": "47c7ec4d719486cc2387c0f9678280ab00a0fb34d19ca2ee012b74c602ec85af",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recxO64bVWAOMHVHq",
+          "saintId": "cms0w7jl508yz07qij2yt6whe",
+          "name": "Sri Mahamandaleshwar Bharti Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-8",
+          "suggestedShelfIndex": 1,
+          "reviewAlerts": [
+            {
+              "message": "Possible overlap with the other Bharti Bapu record. Separate source entry describes flowers from fresh samadhi."
+            }
+          ],
+          "sourceRevision": "c17557193d19122e33200cbd71c7cca8a4fe8e597430bcc3bcaae8b2704a50e4",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "rec60UWZAcoGY1LeT",
+          "saintId": "cms0w7d2i013j07qigk14eylz",
+          "name": "Sri Param Pujya Sri Mangal Nath Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "4e0977f69eb7db3f5359e67191d13935f9bd6fa4e9af89aff327e6d2dd21e08f",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "rec9bs6bIpAFLCeqR",
+          "saintId": "cms0w7dhf01m807qiz15r8vyg",
+          "name": "Sri Sevanath Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "a6b200df791394cd9a120fada58ad9fc0d074f69a09a5b315fe88fc3e0811c0f",
+          "knownFootprint": 0.16666666666666666
+        },
+        {
+          "sourceId": "recboMF9NVJkTqy5M",
+          "saintId": "cms0w7e0r02cu07qicusds7fo",
+          "name": "Mahant Sri Kanbharti",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "03dc02408ac632156ef3054160541f1b02bb2caf492fba6db575648f152c9ba2",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "recuNQ3hYf3afUPv8",
+          "saintId": "cms0w7ipr082m07qi2d57xv3g",
+          "name": "Sri Naga Baba Chetanpuri Maharaj",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "e5c80b82f64cedc8d379b4ecc73718f8828e5a863d61917d234f186f78b19bc5",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "rectkQuhmbjMUZGg7",
+          "saintId": "cms0w7idg07pc07qilzyrq3yt",
+          "name": "Sri Narmada Puri Mataji",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "e67cdd1691d58624f1e088dc67f35fd35f84b55391739f04176986375e24734e",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recmBuVf2uS0EeLvv",
+          "saintId": "cms0w7gm505nh07qibi5wcmof",
+          "name": "Sri Velnath Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "1f83caff164bec368ee4f6a63393645dd2274d69a2b8599e8eb5ef0effbe5122",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "rec9Ff2pFmBSgxj7y",
+          "saintId": "cms0w7di801na07qixwsdn3pl",
+          "name": "Sri Mahant Nilkantanandji",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "dd5709b5b57946192cd125bca077f5422146a33a39e37c3d50152cc5b5f4f740",
+          "knownFootprint": 0.25
+        },
+        {
+          "sourceId": "rec9kRlcXAXxX6OOj",
+          "saintId": "cms0w7dje01ox07qie3j0up5r",
+          "name": "Sri Ambapurji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "5c18702819adea0e4e66cee5424e73f1f511b23028b2e7e13b06e721b685bd4e",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "recgZUWjWNtgmRoBA",
+          "saintId": "cms0w7fdj044h07qieppjkemc",
+          "name": "Sri Param Pujya Gopalnath Maharaj",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "b6cb8a12c4e0504667d676cae3c0973c7fc186e36bbbc52bfa260718c5718116",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recBtymRccp1iFneW",
+          "saintId": "cms0w7e1x02ea07qiu8w3pod6",
+          "name": "Sri Brahmachari Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Non-Sikh Ajab/Junagadh holding, source64/D. Collect only the identified two shawls, leaving Sikh holdings/mounting undisturbed."
+            },
+            {
+              "message": "Collection from Vitrine 64 needs a scoped object check before moving; leave the Sikh display and mounts undisturbed."
+            }
+          ],
+          "sourceRevision": "0fdac107efb6f61824cb5e3e5cd6d35bb5e55c21ec9fb4d6bb3594d1d439dbfd",
+          "knownFootprint": 0.4166666666666667
+        },
+        {
+          "sourceId": "recl5F6mcn6G1mALf",
+          "saintId": "cms0w7gdt05d307qiobziauof",
+          "name": "Sri Heera Bhagat Govind Bhagat",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "a9293026e42ed3d63f103c3c6812e6b4dae66cd9c69a1cecff3dc8c5a665d858",
+          "knownFootprint": 0.1111111111111111
+        },
+        {
+          "sourceId": "recs4va1LWRhT0O6F",
+          "saintId": "cms0w7i0b07b307qiac0q8771",
+          "name": "Sri Param Pujya Sant Sri Gulab Giri Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Large jhola/handbag: source estimate1.25shelf-height shares. Reserve a vertically generous middle zone; adjust adjoining shelves after inspecting it. Distinct from Gulap Baba of Shegaon."
+            }
+          ],
+          "sourceRevision": "3415318ab09b80494c43af19fbe2ab7052427d329c2db87bbbb8bc7b54cdb12c",
+          "knownFootprint": 1.25
+        },
+        {
+          "sourceId": "rechxwV6llmYQM8qd",
+          "saintId": "cms0w7fkw04dp07qirdcaqllp",
+          "name": "Sri Amritgiri Bapu (Chakachak Bapu)",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 5,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "4576922078ab4eb27fbafac0c5cd926a22b451857a08f911766008af53541113",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "sourceId": "recxuracQJPPryYKc",
+          "saintId": "cms0w7jnh091b07qi1y6cgrbe",
+          "name": "Sri Nag Baba",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-9",
+          "suggestedShelfIndex": 5,
+          "reviewAlerts": [
+            {
+              "message": "Non-Sikh Junagadh holding, source64/E. User approved moving these regional holdings; collect only the identified Nag Baba objects without disturbing Sikh holdings/mounting. Living: bottom shelf first."
+            },
+            {
+              "message": "Collection from Vitrine 64 needs a scoped object check before moving; leave the Sikh display and mounts undisturbed."
+            }
+          ],
+          "sourceRevision": "85048879600492e27cb87a7bf5d4700087be42bcbb34e5dc1c35919442fab2eb",
+          "knownFootprint": 0.4166666666666667
+        }
+      ],
+      "relationships": [],
+      "notes": [
+        "17 entries · about 4.83 shelf spaces. Allow extra height for Gulab Giri’s bag; check the fit on site. Two holdings remain on hold."
+      ],
+      "livingAllowedBands": [
+        4,
+        5
+      ]
+    },
+    {
+      "code": "39",
+      "groups": [
+        {
+          "id": "saurashtra:focused-10",
+          "title": "Bhoja Bhagat & Jalaram",
+          "kind": "family"
+        },
+        {
+          "id": "saurashtra:focused-11",
+          "title": "Bhavnagar / Botad",
+          "kind": "city"
+        },
+        {
+          "id": "saurashtra:focused-12",
+          "title": "Kabir Tekri",
+          "kind": "city"
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "rec5bMBZLbIgDKTi3",
+          "saintId": "cms0w7cyk00z107qii6760lkx",
+          "name": "Sri Jalaram Babaji",
+          "tier": "Primary",
+          "groupId": "saurashtra:focused-10",
+          "suggestedShelfIndex": 1,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "9dda0c03e7e819a40134ed6095679fa9cc8ba39875ed5ba29afd2f2ebfb50473",
+          "knownFootprint": 0.25
+        },
+        {
+          "sourceId": "recmNqjW54MTnx5oZ",
+          "saintId": "cms0w7gpu05rz07qisc53dyx7",
+          "name": "Sant Sri Bhoja Bhagat",
+          "tier": "Secondary",
+          "groupId": "saurashtra:focused-10",
+          "suggestedShelfIndex": 1,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "05b2470aa6b52aab45314271b0e41d7b6d74620ba7f82cc77d7f1b654a95ebc8",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recDLP5EHZlE5vMqr",
+          "saintId": "cms0w7eie02z707qiwragje64",
+          "name": "Sri Bapa Sitaram",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-11",
+          "suggestedShelfIndex": 1,
+          "reviewAlerts": [
+            {
+              "message": "Bagdana Bapa Sitaram is the local story anchor. Preserve this record; do not merge with the separate Bajrang Das of Rameshwaram."
+            }
+          ],
+          "sourceRevision": "48207d7cd862b9963ebfd55eee25d051db3eb7651dc8db5650693276893f17f0",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recBiuGXStrJWEtln",
+          "saintId": "cms0w7dyc029f07qiiey4cjst",
+          "name": "Sant Sri Chaturbapa",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-11",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "4718310f37ce7630674b2c9761a33e9c5d596002c4a165ced52217331e0875ef",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "recXShqVBITXHevvg",
+          "saintId": "cms0w7jn2090y07qiz7m48urv",
+          "name": "Sri Balakdasji Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-11",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "9a14a2dc25f9ee94eff0de5ed2e06c50c5072c8e8d478fc6c0abdb54c64ae2e0",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "reckdVud6NWQxexjT",
+          "saintId": "cms0w7g56052d07qi033zxj1z",
+          "name": "Sri Giga Bapa",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-11",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "b1fb85aac25406e4896fc2748d6fe82356e90b4dd110435eb54512562cea3e73",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "recVzUfFbQrS7Kx1h",
+          "saintId": "cms0w7j3d08h507qi7hdh2tja",
+          "name": "Sri Siddhayogi Fakdanath",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-11",
+          "suggestedShelfIndex": 2,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "8d7ef84488f15c0e5129043da63dc3befb35140ef6b6859b839f126c3ea51def",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recjT5Upm7602ZMk5",
+          "saintId": "cms0w7fzk04vj07qiblmtcz36",
+          "name": "Sant Sri Dhana Bapa",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-11",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "93b6d0789b6221e5ee892e6620e1390a684904532b0f3acbb8f0004531ba797a",
+          "knownFootprint": 0.14285714285714285
+        },
+        {
+          "sourceId": "recF0t6pLVTnvxUhh",
+          "saintId": "cms0w7ewh03i007qigei9b8nl",
+          "name": "Sant Sri Savaiyanath",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-11",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "74579aba7422eaad67a8347f69c54d7518f5118af31736b8771e6b4ded2ac28a",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "sourceId": "recOu0IN1AvJXrywl",
+          "saintId": "cms0w7h9906f007qi6ybx4kl1",
+          "name": "Sri Ramgarh Swami",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-11",
+          "suggestedShelfIndex": 3,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "1b97c91c50c796421356357277faa4995f85c8794b19e9418c6240ef695a0f02",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "recc3LvwfAsmpcyVs",
+          "saintId": "cms0w7e4t02hn07qimn4blwg0",
+          "name": "Ai Sri Moghal Dham Targhara, Botad, Gujarat (it’s a place not a saint !)",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-11",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "d456fc57e3290fd8ec7a3f1f67d705d215af9cfc4bad3a640c80906dc8c772c4",
+          "knownFootprint": 0.3333333333333333
+        },
+        {
+          "sourceId": "recHoGtxIQttRWu0m",
+          "saintId": "cms0w7fhz04a107qi2x4lesi1",
+          "name": "Sant Sri Govind Das Bapu",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-11",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "1063797cb4ecf0028f53e191bb73d109b46d00f9a0a190f46791eb6f7900daf8",
+          "knownFootprint": 0.2
+        },
+        {
+          "sourceId": "rec3r1Nb5ETFp6peP",
+          "saintId": "cms0w7cot00mq07qirjbxfdda",
+          "name": "Sri Satyanam Saheb Sant Sri Sevadas Saheb",
+          "tier": "Tertiary",
+          "groupId": "saurashtra:focused-12",
+          "suggestedShelfIndex": 4,
+          "reviewAlerts": [
+            {
+              "message": "Locality/community grouping; no direct discipleship is inferred from sharing the case."
+            }
+          ],
+          "sourceRevision": "5964860b79d6a1ce31ee4b3ecaedd9365ac6233f2901ca3b5b264b8f910e91d6",
+          "knownFootprint": 0.3333333333333333
+        }
+      ],
+      "relationships": [],
+      "notes": [
+        "13 entries · about 2.88 shelf spaces."
+      ],
+      "livingAllowedBands": [
+        4,
+        5
+      ]
+    }
+  ]
+}
