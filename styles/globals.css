@@ -12268,3 +12268,15 @@ select:not([multiple]) {
 .museum-shelf__band { min-width:28rem; }
 
 .museum-shelf__column { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr)); align-content:start; }
+
+/* Shared clearing inventory: quiet rows grouped by their planned destination. */
+.museum-clear-contents {display:grid;gap:var(--space-3);margin-block:var(--space-4)}
+.museum-clear-contents__summary {color:var(--color-muted);font-size:var(--font-size-companion-small);margin:0}
+.museum-clear-contents__group {border:var(--border-width-default) solid var(--color-border);border-radius:var(--radius-sm);overflow:hidden}
+.museum-clear-contents__group > summary {padding:var(--space-3) var(--space-4);background:var(--color-surface-muted);font-size:var(--font-size-review-field);font-weight:600;cursor:pointer}
+.museum-clear-contents__count {float:right;margin-inline-start:var(--space-3);font-size:var(--font-size-companion-small);font-weight:400;color:var(--color-muted);font-variant-numeric:tabular-nums}
+.museum-clear-contents__group ul {list-style:none;padding:0 var(--space-4);margin:0}
+.museum-clear-contents__group li {display:grid;gap:var(--space-1);padding-block:var(--space-3);font-size:var(--font-size-review-field)}
+.museum-clear-contents__group li + li {border-top:var(--border-width-default) solid var(--color-border)}
+.museum-clear-contents__group small {color:var(--color-muted);font-size:var(--font-size-companion-small)}
+.museum-clear-contents__warning {margin:0;font-size:var(--font-size-companion-small);color:var(--color-muted)}
