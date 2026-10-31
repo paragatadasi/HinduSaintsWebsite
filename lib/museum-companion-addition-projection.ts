@@ -1,7 +1,7 @@
 import type {StarterMoveGuide,GuideEntry,GuideGroup} from "./spn-move-guide";
 import type {CompanionAddition} from "./museum-companion-additions-state";
 import {projectSourceFamilyReunion,projectGajananDisplayRelationship} from "./spn-source-family-reunion";
-const phaseOrder=["starter","datta","ram-bhakti","gosaiji-sai","east2","vraj","vraj2","north","west45"];
+const phaseOrder=["starter","datta","ram-bhakti","gosaiji-sai","east2","vraj","vraj2","north","west45","west1"];
 export function companionVitrineOwner<T extends string>(guides:Record<T,StarterMoveGuide>,code:string):T|undefined{
  const keys=Object.keys(guides) as T[];
  const rank=(key:string)=>{const index=phaseOrder.indexOf(key);return index<0?phaseOrder.length:index;};

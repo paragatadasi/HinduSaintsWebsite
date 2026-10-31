@@ -33,7 +33,7 @@ const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,sourceIds:g.sour
 export const westV1MoveGuide:StarterMoveGuide={version:packet.version,...westV1GuideContext,proposalVersion:packet.proposalVersion,title:packet.title,proposalLabel:packet.proposalLabel,
  phaseLabel:"BAPS, Gondal & Amreli · 1",allowClear:false,preparationVitrines:["1"],
  entries:holdings.map(row=>({...row,movementBlockedReason:spnMovementBlockedReason(row.sourceId)})),
- vitrines:[{code:"1",summary:"19 source observations: 18 linked and one source-only, with possible overlaps retained for review. Known comparison load 4.97 / 5; actual fit is not certified. BAPS on shelves 1–2, living Mahant on shelf 2; Gondal and Amreli below as geographic groups. Check available space on site; no whole-case clearing is required.",families:packet.groups.filter(g=>g.kind==="family").map(group),cityGroups:packet.groups.filter(g=>g.kind!=="family").map(group)}],alternatives:[],reportedPlacements:[]};
+ vitrines:[{code:"1",summary:"Known load: about 4.97 / 5 shelf spaces, with possible overlaps still under review. BAPS on shelves 1–2, living Mahant Swami on shelf 2; Gondal and Amreli below. Check the fit on site.",families:packet.groups.filter(g=>g.kind==="family").map(group),cityGroups:packet.groups.filter(g=>g.kind!=="family").map(group)}],alternatives:[],reportedPlacements:[]};
 
 type Review={rows:Pick<ReturnType<typeof buildLatestSpnReview>["rows"][number],"sourceId"|"saintId"|"effectiveVitrine"|"reviewReason">[];proposal:{pendingPlacements:{sourceId:string;reason:string}[]}};
 export function projectWestV1Guide(current:Parameters<typeof projectScopedMoveGuide>[1],physical:PhysicalState,review:Review):StarterMoveGuide & {layoutGuidance:typeof westV1LayoutGuidance} {
