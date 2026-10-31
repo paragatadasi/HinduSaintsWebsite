@@ -3,7 +3,7 @@ import type {ComponentProps} from "react";
 import {MuseumShelfGuide} from "./museum-shelf-guide";
 import {useMuseumShelfPlans} from "./use-museum-shelf-plans";
 
-const reviewedCases=new Set(["2","28","78","36","29","76","37","26","24","23","75","79","32","33","77","34","35","38"]);
+const reviewedCases=new Set(["46","2","28","78","36","29","76","37","26","24","23","75","79","32","33","77","34","35","38"]);
 
 export function MuseumActiveShelfGuide(props:ComponentProps<typeof MuseumShelfGuide>){
  const reviewed=reviewedCases.has(props.vitrine);
