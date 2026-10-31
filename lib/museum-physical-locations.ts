@@ -1,5 +1,6 @@
 import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
 import {spnCaseExecutionHold, spnPhysicalExecutionHold} from "./museum-case-execution-holds";
+import {retainedCaseClearanceAcknowledgement,retainedCaseClearanceAllowed,assertRetainedCaseClearance} from "./spn-retained-case-clearance";
 import {readGuideAlternativeDestinations} from "./museum-guide-alternatives";
 import { readEffectiveCompanionAdditions } from "./museum-companion-additions-state";
 import { assertCurrentNorthernGuideTargets } from "./spn-northern-voyage";
@@ -39,6 +40,7 @@ export const physicalConfirmationInput = z.object({ museumId: z.literal("museum-
   guideContext: z.object({ guideVersion: z.string().min(1).max(200), contentDigest: z.string().regex(/^[a-f0-9]{64}$/), assignmentDigest: z.string().regex(/^[a-f0-9]{64}$/) }).strict().optional(),
   initialCaseClearAcknowledged: z.literal(true).optional(),
   componentStagingAcknowledgements: componentStagingAcknowledgements.optional(),
+  retainedCaseClearanceAcknowledgement:retainedCaseClearanceAcknowledgement.optional(),
   clearedVitrines: z.array(z.string().min(1).max(100)).max(100).optional(),
   records: z.array(z.object({ sourceId: z.string().min(1).max(200), saintId: z.string().nullable(),
     expectedCurrentRevision: z.string().regex(/^[a-f0-9]{64}$/), expectedSourceRevision: z.string().regex(/^[a-f0-9]{64}$/),
@@ -139,6 +141,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
   if (!actor.canManage) throw new MuseumMoveSessionError(403, "A museum curator must record physical locations.");
   loader = memoizePhysicalSnapshot(loader);
   const input = physicalConfirmationInput.parse(raw);
+  assertRetainedCaseClearance(input);
   assertComponentClearanceScope(input);
   assertDistinctMoveSources(input.records);
   if (input.guideContext) {
@@ -161,7 +164,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       throw new MuseumMoveSessionError(409,"This guide is historical. Reload the current guide before recording a new physical move.");
     for (const code of input.clearedVitrines ?? []) {
       const hold = spnCaseExecutionHold(code);
-      if (hold) throw new MuseumMoveSessionError(409, hold);
+      if (hold&&!(code==="64"&&retainedCaseClearanceAllowed(input))) throw new MuseumMoveSessionError(409, hold);
     }
     assertCurrentNorthernGuideTargets(input);
     if(input.guideContext&&!input.alternativeDecision&&!input.curatorAddition&&!input.clearedVitrines?.length&&input.records.some(r=>r.sourceId===paramanandObjectReview.sourceId&&r.to.kind==="vitrine"&&r.to.code==="37")&&paramanandProposalResolution((await readMuseumData(tx)).placements).destination!=="37")
@@ -198,6 +201,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     }
     const transfers = [...(phase?.physicalScope?.preparatoryTransfers ?? []), ...additionPhases.flatMap(row => row.physicalScope?.preparatoryTransfers ?? [])];
     const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length ? undefined : [...new Set([...input.records.map(row => row.sourceId), ...transfers.map(row => row.sourceId)])], false);
+    assertRetainedCaseClearance(input,current.rows);
     if(input.guideContext?.guideVersion==="spn-east-remainder-2026-10-31-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
       const [{readEastRemainderGuide},{assertEastRemainderRecords}]=await Promise.all([import("./spn-east-remainder-source"),import("./spn-east-remainder-guide")]);
       assertEastRemainderRecords(input.records,await readEastRemainderGuide(await readMuseumData(tx),current,undefined,tx));
@@ -227,12 +231,12 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     if(preparationVitrines.length)assertPhasePreparation(input.records,preparationVitrines,await readMuseumPreparations(tx));
     if (input.clearedVitrines?.length && !initialCases.length) assertSafeCaseClear(input.clearedVitrines, [...current.rows, ...current.unmappedCurrentLocations.map(row=>({currentBasis:"confirmed",current:row.location}))]);
     if (input.clearedVitrines?.length) assertWholeCaseClearing(input.clearedVitrines, [...current.rows.map(row => ({ sourceId: row.sourceId, current: row.current })), ...current.unmappedCurrentLocations.map(row => ({ sourceId: row.sourceId, current: row.location }))], input.records);
-    const componentMoves: {sourceId:string; origin: import("./museum-move-session-domain").MoveLocation; location: import("./museum-move-session-domain").MoveLocation; scope:ComponentScope; expectedSourceRevision:string; previousCurrentRevision:string; previousLocationVersion:number; revision:string}[] = [];
+    const componentMoves: {sourceId:string; origin: import("./museum-move-session-domain").MoveLocation; location: import("./museum-move-session-domain").MoveLocation; scope:ComponentScope;includedWalkingSticks?:true; expectedSourceRevision:string; previousCurrentRevision:string; previousLocationVersion:number; revision:string}[] = [];
     const changes = input.records.map(record => {
       const row = current.rows.find(row => row.sourceId === record.sourceId);
       if (!row) throw new MuseumMoveSessionError(409, "This source is not in the current inventory snapshot. Reload before confirming it.");
       const executionHold = spnPhysicalExecutionHold(row.current, record.to);
-      if (executionHold) throw new MuseumMoveSessionError(409, executionHold);
+      if (executionHold&&!(retainedCaseClearanceAllowed(input)&&row.current?.kind==="vitrine"&&row.current.code==="64")) throw new MuseumMoveSessionError(409, executionHold);
       if (row.identityChanged || row.saintId !== record.saintId || row.sourceRevision !== record.expectedSourceRevision) throw new MuseumMoveSessionError(409, "A source identity or its evidence changed. Reload and check the source before confirming.");
       if (row.verifiedItemIds.length) throw new MuseumMoveSessionError(409, "This source has verified inventory items. Record their moves through the item workflow.");
       let to = record.to;
@@ -255,6 +259,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       if (componentOnly) {
         const scope=componentClearanceScope(row)!;
         componentMoves.push({sourceId:row.sourceId,origin:row.current!,location:to,scope,
+          ...(scope==="vitrine_64_contents_including_sticks"?{includedWalkingSticks:true as const}:{}),
           expectedSourceRevision:row.sourceRevision,previousCurrentRevision:row.currentRevision,previousLocationVersion:row.currentVersion,
           revision:physicalFingerprint({clientRequestId:input.clientRequestId,sourceId:row.sourceId,scope,previousCurrentRevision:row.currentRevision})});
         return null;
@@ -276,6 +281,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       afterJson: json({ museumId: input.museumId, fingerprint, clientRequestId: input.clientRequestId, confirmedDate: input.confirmedDate,
         datePrecision: input.datePrecision, recordedAt: recordedAt.toISOString(), evidence: input.evidence, scope: componentMoves.length ? "source_observation_with_components" : "source_observation", moves: changes,
         ...(componentMoves.length ? {componentMoves, componentStagingAcknowledgements:input.componentStagingAcknowledgements} : {}),
+        ...(input.retainedCaseClearanceAcknowledgement?{retainedCaseClearanceAcknowledgement:input.retainedCaseClearanceAcknowledgement}:{}),
         guideContext: input.guideContext ?? null, curatorAddition: input.curatorAddition ?? null, clearedVitrines: input.clearedVitrines ?? [], inventoryCompleteness: "unverified",
         emptyCaseClaim: input.clearedVitrines?.length ? "curator_confirmed_at_event_time" : "none", proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
     return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt, replayed: false, alreadyRecorded };
