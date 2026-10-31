@@ -221,6 +221,17 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertAssistantEffectiveDestination(input,review.rows);
     }
     assertRetainedCaseClearance(input,current.rows);
+    if(input.guideContext?.guideVersion==="spn-west-v45-2026-10-31-v1"&&!input.clearedVitrines?.length){
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      const ids=input.records.flatMap(record=>{
+        const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);
+        return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);
+      });
+      for(const id of [...new Set(ids)].sort())await tx.$queryRaw(Prisma.sql`SELECT true FROM pg_advisory_xact_lock(hashtextextended(${"museum-arrangement:spn:"+id},0))`);
+      const [{readWestV45Guide},{assertWestV45Records}]=await Promise.all([import("./spn-west-v45-source"),import("./spn-west-v45-guide")]);
+      assertWestV45Records(input.records,await readWestV45Guide(await readMuseumData(tx),current,undefined,tx));
+    }
     if(input.guideContext?.guideVersion==="spn-east-remainder-2026-10-31-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
       const [{readEastRemainderGuide},{assertEastRemainderRecords}]=await Promise.all([import("./spn-east-remainder-source"),import("./spn-east-remainder-guide")]);
       assertEastRemainderRecords(input.records,await readEastRemainderGuide(await readMuseumData(tx),current,undefined,tx));
