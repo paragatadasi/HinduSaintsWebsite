@@ -21,7 +21,7 @@ import { moveSnapshot, moveLocation, sameMoveLocation, assertDistinctMoveSources
 import { readStarterGuideDefinition, registeredStarterGuide, starterGuideContext } from "./spn-starter-guide-registry";
 import { physicalFingerprint, resolveMuseumPhysicalCurrent, storedPhysicalLocation } from "./museum-physical-location-current";
 import type { MoveSessionActor } from "./museum-move-session-service";
-import { v20ComponentSourceIds, componentStagingAcknowledgements, assertComponentClearanceScope, isComponentClearance, projectComponentPlacement } from "./museum-component-clearance-domain";
+import { componentSourceIds,componentClearanceScope,type ComponentScope, componentStagingAcknowledgements, assertComponentClearanceScope, isComponentClearance, projectComponentPlacement } from "./museum-component-clearance-domain";
 import { readComponentPlacements, readComponentCorrections } from "./museum-component-clearances";
 import { hasOnlySpnHousingReviewHold } from "./spn-movement-holds";
 import {isReviewedParamanandArmSupport,paramanandObjectReview,paramanandProposalResolution} from "./spn-paramanand-reviewed-object";
@@ -56,7 +56,7 @@ export async function readPhysicalLocationView(loader: PhysicalSnapshotLoader, t
   const [positions, links, components] = await Promise.all([
     tx.museumMoveCurrentLocation.findMany({ where: { museumId: "museum-spn", ...(sourceIds ? { sourceId: { in: sourceIds } } : {}) } }),
     tx.externalRecord.findMany({ where: { sourceType: "airtable", externalId: { in: selected.flatMap(row => row.sourceKey ? [row.sourceKey] : []) } }, select: { externalId: true, entityType: true, entityId: true } }),
-    selected.some(row=>v20ComponentSourceIds.some(id=>id===row.sourceId))?readComponentPlacements(tx):Promise.resolve([])
+    selected.some(row=>componentSourceIds.some(id=>id===row.sourceId))?readComponentPlacements(tx):Promise.resolve([])
   ]);
   const rows = selected.map(row => {
     const link = links.find(link => link.externalId === row.sourceKey);
@@ -85,7 +85,7 @@ export async function readPhysicalLocationView(loader: PhysicalSnapshotLoader, t
   `) : [];
   return { museumId: "museum-spn" as const, sourceSnapshotAt: snapshot.sourceSnapshotAt ?? null, rows: rows.map(row => ({ ...row, undo: row.componentPlacement ? {
     available:true,receiptId:row.componentPlacement.receiptId,previous:null,previousBasis:null,previousConfirmedAt:null,
-    reason:"Correct only the Vitrine 20 component record; this does not confirm a physical return."
+    reason:`Correct only the Vitrine ${row.componentPlacement.origin.code} component record; this does not confirm a physical return.`
   } : physicalUndoOffer(row, undoReceipts) })), vitrineCodes: snapshot.vitrineCodes,
     unmappedCurrentLocations: positions.filter(position => !spnDuplicateObservations[position.sourceId] && !snapshot.rows.some(row => row.sourceId === position.sourceId)).flatMap(position => { const location = storedPhysicalLocation(position.location); return location ? [{ sourceId: position.sourceId, location, version: position.version, recordedAt: position.confirmedAt }] : []; }) };
 }
@@ -227,7 +227,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     if(preparationVitrines.length)assertPhasePreparation(input.records,preparationVitrines,await readMuseumPreparations(tx));
     if (input.clearedVitrines?.length && !initialCases.length) assertSafeCaseClear(input.clearedVitrines, [...current.rows, ...current.unmappedCurrentLocations.map(row=>({currentBasis:"confirmed",current:row.location}))]);
     if (input.clearedVitrines?.length) assertWholeCaseClearing(input.clearedVitrines, [...current.rows.map(row => ({ sourceId: row.sourceId, current: row.current })), ...current.unmappedCurrentLocations.map(row => ({ sourceId: row.sourceId, current: row.location }))], input.records);
-    const componentMoves: {sourceId:string; origin: import("./museum-move-session-domain").MoveLocation; location: import("./museum-move-session-domain").MoveLocation; scope:"vitrine_20_contents_only"; expectedSourceRevision:string; previousCurrentRevision:string; previousLocationVersion:number; revision:string}[] = [];
+    const componentMoves: {sourceId:string; origin: import("./museum-move-session-domain").MoveLocation; location: import("./museum-move-session-domain").MoveLocation; scope:ComponentScope; expectedSourceRevision:string; previousCurrentRevision:string; previousLocationVersion:number; revision:string}[] = [];
     const changes = input.records.map(record => {
       const row = current.rows.find(row => row.sourceId === record.sourceId);
       if (!row) throw new MuseumMoveSessionError(409, "This source is not in the current inventory snapshot. Reload before confirming it.");
@@ -253,9 +253,10 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         throw new MuseumMoveSessionError(409, "A physical location changed. Reload it before recording this confirmation.");
       }
       if (componentOnly) {
-        componentMoves.push({sourceId:row.sourceId,origin:row.current!,location:to,scope:"vitrine_20_contents_only",
+        const scope=componentClearanceScope(row)!;
+        componentMoves.push({sourceId:row.sourceId,origin:row.current!,location:to,scope,
           expectedSourceRevision:row.sourceRevision,previousCurrentRevision:row.currentRevision,previousLocationVersion:row.currentVersion,
-          revision:physicalFingerprint({clientRequestId:input.clientRequestId,sourceId:row.sourceId,scope:"vitrine_20_contents_only",previousCurrentRevision:row.currentRevision})});
+          revision:physicalFingerprint({clientRequestId:input.clientRequestId,sourceId:row.sourceId,scope,previousCurrentRevision:row.currentRevision})});
         return null;
       }
       return { sourceId: row.sourceId, sourceKey: row.sourceKey, saintId: row.saintId, name: row.name, original: row.original,
@@ -306,7 +307,7 @@ export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionAc
     if (row.componentPlacement) {
       const receipt=await tx.auditEvent.create({data:{userId:actor.id,action:undoAction,entityType:"MuseumPhysicalCheckUndo",entityId,
         afterJson:json({museumId:input.museumId,fingerprint,targetReceiptId:input.receiptId,sourceId:row.sourceId,
-          scope:"vitrine_20_contents_only",correctionOnly:true,physicalReturnClaim:false,recordedAt:new Date().toISOString(),
+          scope:row.componentPlacement.scope,correctionOnly:true,physicalReturnClaim:false,recordedAt:new Date().toISOString(),
           proposalChanged:false,sourceChanged:false})},select:{id:true,afterJson:true}});
       return {...await readPhysicalLocationView(loader,tx),preparations:await readMuseumPreparations(tx),
         phaseClearances:await readMuseumPhaseClearances(tx,loader),receipt,replayed:false};

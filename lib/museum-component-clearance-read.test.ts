@@ -1,20 +1,20 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readPhysicalLocationView, readMuseumPhaseClearances } from "./museum-physical-locations";
-import { v20ComponentSourceIds } from "./museum-component-clearance-domain";
+import { v20ComponentSourceIds,v19ComponentBinding,componentScopeForOrigin } from "./museum-component-clearance-domain";
 
-test("component receipt projects staged parts without a whole-source ledger row; correcting it revokes clearance",async()=>{
- const sourceId=v20ComponentSourceIds[0],origin={kind:"vitrine" as const,code:"20",label:"Vitrine 20",shelf:"A"};
- const snapshot={proposalVersion:"test",title:"test",vitrineCodes:["20"],guidance:{version:"test",reviewStatus:"test"},
+for(const [sourceId,code] of [[v20ComponentSourceIds[0],"20"],[v19ComponentBinding.sourceId,"19"]])test(`V${code} component receipt projects staged parts without a whole-source ledger row; correcting it revokes clearance`,async()=>{
+ const origin={kind:"vitrine" as const,code,label:`Vitrine ${code}`,shelf:"A"},scope=componentScopeForOrigin(code)!;
+ const snapshot={proposalVersion:"test",title:"test",vitrineCodes:[code],guidance:{version:"test",reviewStatus:"test"},
    rows:[{sourceId,sourceKey:"source:key",name:"Held display",saintId:"saint",sourceReported:origin,destination:null,holdReason:"",fixedHousing:false}]};
  let events: {id:string;createdAt:Date;afterJson:unknown}[]=[],corrections: {afterJson:unknown}[]=[];
  const tx={museumMoveCurrentLocation:{findMany:async()=>[]},externalRecord:{findMany:async()=>[{externalId:"source:key",entityType:"Saint",entityId:"saint"}]},
    auditEvent:{findMany:async(args:{where:{action:string}})=>args.where.action==="museum.physical_location.check_undone"?corrections:events}};
  const loader=async()=>snapshot;
  const initial=await readPhysicalLocationView(loader,tx as never,[sourceId],false);
- const before=initial.rows[0];assert.equal(before.current?.code,"20");
+ const before=initial.rows[0];assert.equal(before.current?.code,code);
  events=[{id:"receipt",createdAt:new Date("2026-10-30T12:00:00Z"),afterJson:{museumId:"museum-spn",scope:"source_observation_with_components",
-   guideContext:{guideVersion:"guide"},clearedVitrines:["20"],componentMoves:[{sourceId,scope:"vitrine_20_contents_only",origin,
+   guideContext:{guideVersion:"guide"},clearedVitrines:[code],componentMoves:[{sourceId,scope,origin,
      location:{kind:"table",code:"staging-area",label:"Staging area"},revision:"new-component-revision",expectedSourceRevision:before.sourceRevision,
      previousCurrentRevision:before.currentRevision,previousLocationVersion:0}]}}];
  const partial=await readPhysicalLocationView(loader,tx as never,[sourceId],false);
@@ -26,9 +26,9 @@ test("component receipt projects staged parts without a whole-source ledger row;
  snapshot.rows[0].sourceReported={...origin,shelf:"B"};
  assert.equal((await readMuseumPhaseClearances(tx as never,loader)).length,0,"stale component evidence cannot keep a case ready");
  snapshot.rows[0].sourceReported=origin;
- corrections=[{afterJson:{museumId:"museum-spn",sourceId,targetReceiptId:"receipt",scope:"vitrine_20_contents_only"}}];
+ corrections=[{afterJson:{museumId:"museum-spn",sourceId,targetReceiptId:"receipt",scope}}];
  const restored=await readPhysicalLocationView(loader,tx as never,[sourceId],false);
- assert.equal(restored.rows[0].componentPlacement,null);assert.equal(restored.rows[0].current?.code,"20");
+ assert.equal(restored.rows[0].componentPlacement,null);assert.equal(restored.rows[0].current?.code,code);
  assert.equal((await readMuseumPhaseClearances(tx as never,loader)).length,0);
 });
 
