@@ -265,6 +265,17 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       const [{readWestV47Guide},{assertWestV47Records}]=await Promise.all([import("./spn-west-v47-source"),import("./spn-west-v47-guide")]);
       assertWestV47Records(input.records,await readWestV47Guide(await readMuseumData(tx),current,undefined,tx));
     }
+    if(input.guideContext?.guideVersion==="spn-southern-2026-11-01-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      const ids=input.records.flatMap(record=>{
+        const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);
+        return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);
+      });
+      for(const id of [...new Set(ids)].sort())await tx.$queryRaw(Prisma.sql`SELECT true FROM pg_advisory_xact_lock(hashtextextended(${"museum-arrangement:spn:"+id},0))`);
+      const [{readSouthernGuide},{assertSouthernRecords}]=await Promise.all([import("./spn-southern-source"),import("./spn-southern-guide")]);
+      assertSouthernRecords(input.records,await readSouthernGuide(await readMuseumData(tx),current,undefined,tx));
+    }
     if(input.guideContext?.guideVersion==="spn-west40-44-2026-11-01-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
