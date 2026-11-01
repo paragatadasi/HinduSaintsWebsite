@@ -26,7 +26,7 @@ export const junagadhGuideContext={guideVersion:packet.version,contentDigest:pac
 export const junagadhGuideDefinition:GuideDefinition={context:junagadhGuideContext,
  suggestions:[...packet.groups.map(group=>({id:group.id,kind:group.kind==="family"?"family" as const:"city" as const,sourceIds:group.sourceIds.filter(id=>holdings.some(row=>row.sourceId===id)),targetVitrine:group.vitrine})),
  ...holdings.map(row=>({id:`row:${row.sourceId}`,kind:"row" as const,sourceIds:[row.sourceId],targetVitrine:row.destination}))],
- physicalScope:{allowClear:true,clearVitrines:packet.vitrines.map(v=>v.code),destinations:Object.fromEntries(pairs)}};
+ physicalScope:{allowClear:true,clearancePerDestination:true,clearVitrines:packet.vitrines.map(v=>v.code),destinations:Object.fromEntries(pairs)}};
 const holdingIds=new Set(holdings.map(row=>row.sourceId));
 const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,rationale:g.rationale,sourceIds:g.sourceIds.filter(id=>holdingIds.has(id)),suggestedVitrines:[g.vitrine],allowedTargetVitrines:[]});
 export const junagadhMoveGuide:StarterMoveGuide={version:packet.version,...junagadhGuideContext,proposalVersion:packet.proposalVersion,title:packet.title,proposalLabel:packet.proposalLabel,

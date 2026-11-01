@@ -1,7 +1,7 @@
 import {readSouthernGuide} from "@/lib/spn-southern-source";
 import {readWest40To44Guide} from "@/lib/spn-west40-44-source";
 import {readJunagadhGuide} from "@/lib/spn-junagadh-source";
-import {readWestV47Guide} from "@/lib/spn-west-v47-source";
+import {readWestV59Guide} from "@/lib/spn-west-v59-source";
 import {readWestV46Guide} from "@/lib/spn-west-v46-source";
 import {readWestV1Guide} from "@/lib/spn-west-v1-source";
 import {readWestV45Guide} from "@/lib/spn-west-v45-source";
@@ -32,7 +32,7 @@ export default async function SpnMoveCompanionPage({searchParams}:{searchParams:
  const requested=(await searchParams).phase;
  const phase=requested==="south"||requested==="west40-44"||requested==="saurashtra"||requested==="west47"||requested==="west46"||requested==="west1"||requested==="west45"||requested==="east2"||requested==="vraj2"||requested==="north"||requested==="vraj"||requested==="gosaiji-sai"||requested==="datta"||requested==="ram-bhakti"?requested:"starter";
  const alternatives=await readGuideAlternativeDestinations();
- const [eastRemainder,vrajRemainder,westV45,westV1,westV46,westV47,junagadh,west40To44,southern]=await Promise.all([readEastRemainderGuide(current,physical,alternatives),readVrajRemainderGuide(current,physical,alternatives),readWestV45Guide(current,physical,alternatives),readWestV1Guide(current,physical,alternatives),readWestV46Guide(current,physical,alternatives),readWestV47Guide(current,physical,alternatives),readJunagadhGuide(current,physical,alternatives),readWest40To44Guide(current,physical,alternatives),readSouthernGuide(current,physical,alternatives)]);
+ const [eastRemainder,vrajRemainder,westV45,westV1,westV46,westV47,junagadh,west40To44,southern]=await Promise.all([readEastRemainderGuide(current,physical,alternatives),readVrajRemainderGuide(current,physical,alternatives),readWestV45Guide(current,physical,alternatives),readWestV1Guide(current,physical,alternatives),readWestV46Guide(current,physical,alternatives),readWestV59Guide(current,physical,alternatives),readJunagadhGuide(current,physical,alternatives),readWest40To44Guide(current,physical,alternatives),readSouthernGuide(current,physical,alternatives)]);
  const phaseGuides:Record<"south"|"starter"|"datta"|"ram-bhakti"|"gosaiji-sai"|"east2"|"vraj"|"vraj2"|"north"|"west45"|"west1"|"west46"|"west47"|"saurashtra"|"west40-44",StarterMoveGuide>={south:southern,"west40-44":west40To44,saurashtra:junagadh,west47:westV47,west46:westV46,west1:westV1,west45:westV45,east2:eastRemainder,vraj2:vrajRemainder,north:projectNorthernGuide(current.placements,physical),vraj:projectVrajGuide(current.placements,physical),starter:projectBilashGuideFollowup(projectStarterDisplayTiers(starterMoveGuide,current.placements),current.placements),datta:projectDattaGuide(current.placements,physical),"ram-bhakti":projectRamBhaktiGuide(current.placements,physical),"gosaiji-sai":projectRamakrishnaGuide(current.placements,physical)};
  for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj"] as const)phaseGuides[key]=removeSupersededNorthernSuggestions(phaseGuides[key]);
  for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj","vraj2","east2","north","west45","west1","west46","west47","saurashtra","west40-44","south"] as const)phaseGuides[key]=projectCurrentGuideLifeStatus(phaseGuides[key],current);

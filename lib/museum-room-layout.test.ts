@@ -30,11 +30,11 @@ test("confirmed new island and future spaces match the sketch",()=>{
  assert.equal(get(85).column,get(30).column);assert.equal(get(85).row,get(30).row+get(30).rowSpan);
  assert.equal(get(85).restriction,"walking_sticks");
 });
-test("entrance-room islands retain the alternating row numbering",()=>{
+test("entrance-room positions preserve the confirmed 47/59 swap",()=>{
  const at=(r:number)=>layout.vitrines.filter(v=>v.row===r&&v.column>=5&&v.column<20).sort((a,b)=>a.column-b.column).map(v=>v.number);
  assert.deepEqual(at(28),["40","41","42","43","44"]);
- assert.deepEqual(at(30),["50","49","48","47","46"]);
- assert.deepEqual(at(34),["62","61","60","59","58"]);
+ assert.deepEqual(at(30),["50","49","48","59","46"]);
+ assert.deepEqual(at(34),["62","61","60","47","58"]);
  assert.deepEqual(at(36),["52","53","54","55","56"]);
 });
 test("provisional collision checks include shelves without matching another museum implicitly",()=>{

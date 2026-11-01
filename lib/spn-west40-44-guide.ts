@@ -27,7 +27,7 @@ export const west40To44GuideContext={guideVersion:packet.version,contentDigest:p
 export const west40To44GuideDefinition:GuideDefinition={context:west40To44GuideContext,
  suggestions:[...packet.groups.map(group=>({id:group.id,kind:group.kind==="family"?"family" as const:"city" as const,sourceIds:group.sourceIds.filter(id=>holdings.some(row=>row.sourceId===id)),targetVitrine:group.vitrine})),
  ...holdings.map(row=>({id:`row:${row.sourceId}`,kind:"row" as const,sourceIds:[row.sourceId],targetVitrine:row.destination}))],
- physicalScope:{allowClear:true,clearVitrines:packet.vitrines.map(v=>v.code),destinations:Object.fromEntries(pairs)}};
+ physicalScope:{allowClear:true,clearancePerDestination:true,clearVitrines:packet.vitrines.map(v=>v.code),destinations:Object.fromEntries(pairs)}};
 const holdingIds=new Set(holdings.map(row=>row.sourceId));
 const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,rationale:g.rationale,sourceIds:g.sourceIds.filter(id=>holdingIds.has(id)),suggestedVitrines:[g.vitrine],allowedTargetVitrines:[]});
 export const west40To44MoveGuide:StarterMoveGuide={version:packet.version,...west40To44GuideContext,proposalVersion:packet.proposalVersion,title:packet.title,proposalLabel:packet.proposalLabel,

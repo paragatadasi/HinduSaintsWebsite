@@ -34,13 +34,13 @@ export function projectPhaseClearances(events:{id:string;createdAt:Date;afterJso
  });
 }
 export function assertPhaseClearance(input:{clearedVitrines?:string[];initialCaseClearAcknowledged?:true},required:string[],guideVersion:string,
- clearances:PhaseClearance[],rows:{sourceId:string;current:{kind:string;code:string}|null}[],records:{sourceId:string}[]){
+ clearances:PhaseClearance[],rows:{sourceId:string;current:{kind:string;code:string}|null}[],records:{sourceId:string}[],availableVitrines:string[]=[]){
  if(input.clearedVitrines?.length){
   if(!input.initialCaseClearAcknowledged)throw new MuseumMoveSessionError(400,"Confirm that this initial clearing physically moves the listed contents to staging.");
   if(clearances.some(c=>c.guideVersion===guideVersion && input.clearedVitrines!.includes(c.vitrine)))throw new MuseumMoveSessionError(409,"This phase already recorded its initial clearing. Review individual moves instead.");
   if(records.some(record=>!rows.some(row=>row.sourceId===record.sourceId && row.current?.kind==="vitrine" && input.clearedVitrines!.includes(row.current.code))))
    throw new MuseumMoveSessionError(409,"The clearing list changed. Include only the current occupants of the selected vitrine.");
- }else if(required.some(code=>!clearances.some(c=>c.guideVersion===guideVersion && c.vitrine===code)))
+ }else if(required.some(code=>!availableVitrines.includes(code)&&!clearances.some(c=>c.guideVersion===guideVersion && c.vitrine===code)))
   throw new MuseumMoveSessionError(409,"Complete this phase's initial vitrine clearing before recording placements.");
 }
 

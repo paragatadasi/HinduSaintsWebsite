@@ -1,3 +1,4 @@
+import currentRoomLayout from "../data/museum/layouts/spn-layout-2026-10-23.json";
 import v5 from "../data/museum/spn-vitrine5-addon-v1.json";
 import {applyBilashFollowup} from "./spn-bilash-followup";
 import {applyParamanandObjectProposal,paramanandProposalResolution,paramanandObjectReview} from "./spn-paramanand-reviewed-object";
@@ -80,12 +81,12 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
  for(const [code,title] of Object.entries({...vraj.caseStories,...northernVoyage.caseStories}))caseTitles.set(code,title);
  const options=base.designData.options.map(original=>{
   const option=projectCurrentPrimaryAnchors(original,rows);
-  const assignments=option.assignments.map(a=>({...a,subsection:caseTitles.get(a.number)??a.subsection}));
+  const assignments=option.assignments.map(a=>{const positioned=(a.number==="47"||a.number==="59")?option.assignments.find(other=>other.number===(a.number==="47"?"59":"47"))??a:a;return {...positioned,number:a.number,subsection:caseTitles.get(a.number)??positioned.subsection};});
   return {...option,id:latestSpnReviewVersion,title:"Eastâ€“North connections Â· current refinements",summary:"",assignments,
    displayPackets:assignments.map(a=>({unitId:`current-case-${a.number}`,label:a.subsection,group:a.group,cases:[Number(a.number)],navigationKind:"neighborhood"})),
    drivers:option.drivers.filter(d=>!d.places.some(n=>caseTitles.has(String(n)))).concat(reviewedFamilies.map(v=>({connection:caseTitles.get(v.code)??v.summary,places:[Number(v.code)],reason:v.summary}))) };
  });
  const tertiaryCityClusters=base.proposal.layout.vitrines.map(vitrine=>{const cities=new Map<string,{saintId:string;name:string}[]>();for(const row of rows.filter(r=>r.effectiveVitrine===vitrine.number)){const record=current.find(p=>p.sourceRecordId===row.sourceId||p.id===row.sourceId);const city=record?.normalizedPlaces[0];if(city&&row.saintId)cities.set(city,[...(cities.get(city)??[]),{saintId:row.saintId,name:row.name}]);}return {vitrine:Number(vitrine.number),groups:[...cities].map(([city,members])=>({city,members:[...new Map(members.map(m=>[m.saintId,m])).values()]}))};});
- return {proposal:{...base.proposal,version:latestSpnReviewVersion,title:"Eastâ€“North connections Â· current refinements",reviewStatus:"Approved Northern journey Â· 29 October",reviewNote:"Newer curator destinations take precedence. Pending city placements and privately held records are listed separately.",indicators,tertiaryCityClusters,reviewedFamilies,pendingPlacements,topPlacement:vraj.topPlacement,liveEstimates:true},
+ return {proposal:{...base.proposal,layout:currentRoomLayout,version:latestSpnReviewVersion,title:"Eastâ€“North connections Â· current refinements",reviewStatus:"Approved Northern journey Â· 29 October",reviewNote:"Newer curator destinations take precedence. Pending city placements and privately held records are listed separately.",indicators,tertiaryCityClusters,reviewedFamilies,pendingPlacements,topPlacement:vraj.topPlacement,liveEstimates:true},
   designData:{...base.designData,options,placements:rows.flatMap(row=>row.saintId?[{saintId:row.saintId,vitrine:row.effectiveVitrine,rationale:row.reviewReason||row.allocationKind}]:[])},rows};
 }
