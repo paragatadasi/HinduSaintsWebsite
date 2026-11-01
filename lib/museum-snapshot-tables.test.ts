@@ -4,8 +4,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { MUSEUM_SNAPSHOT_ENTRY_POINTS, MUSEUM_SNAPSHOT_TABLES } from "./museum-snapshot-tables";
 
-// Static guard for the revision-keyed museum snapshot cache. If snapshot code starts reading a table that has no
-// revision trigger, cached snapshots would go stale silently; this test fails first.
+// Conservative static dependency heuristic, supplemented by runtime SQL coverage
+// and installed-trigger checks in the disposable database verifier.
 const root = process.cwd();
 const schema = fs.readFileSync(path.join(root, "prisma/schema.prisma"), "utf8");
 const models = new Map([...schema.matchAll(/^model (\w+) \{([\s\S]*?)^\}/gm)].map(match => [match[1], match[2]]));
@@ -60,7 +60,7 @@ function tracedTables() {
   return { tables, files: seen.size };
 }
 
-test("every table read by the cached museum snapshot has a revision trigger", () => {
+test("statically discovered snapshot dependencies are listed for revision triggers", () => {
   const { tables, files } = tracedTables();
   assert.ok(files > 10, "the import trace should reach the snapshot's helper modules");
   const listed = new Set<string>([...MUSEUM_SNAPSHOT_TABLES, "MuseumDataRevision"]);

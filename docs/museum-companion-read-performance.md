@@ -1,42 +1,46 @@
 # Shared museum companion reads
 
-The shelf-plan and catalog GET endpoints share a private server read model. Authorization runs before revision/cache lookup. Mutation services do not consume this cache: physical moves, shelf updates, planning changes and identity links continue to validate current data in their own transactions.
+Shelf-plan and catalog GET endpoints share a private server read model. Authorization runs before cache lookup. Mutation services validate fresh data in their own transactions.
 
 ## API contract
 
-- `GET /api/admin/museum-shelf-plans` retains the full `ShelfPlanningContext` response.
-- Optional `?vitrine=CODE` returns the same shape with only that case in `cases`. A valid layout case without a recommendation returns an empty `cases` array. Unknown layout codes return 400 before a museum-data read.
-- Shelf responses add `availableVitrines` (the unfiltered recommendation-case codes) and `revision` (the shared base revision).
-- `GET /api/admin/museum-companion-catalog` retains catalog fields and adds the same base `revision`.
-- Optional catalog `?view=revision` returns only `{museumId: "museum-spn", revision}` without building the snapshot.
-- GET responses provide private, revalidated ETags and Server-Timing. Send each resource's ETag in `If-None-Match`; an unchanged resource returns 304 before a source/model rebuild. ETags include resource and selected-case scope; a catalog tag cannot suppress a shelf response. The revision-only response uses the shared base tag.
-- Existing POST and save payloads are unchanged. Client writes must invalidate their local GET cache and use fresh server validation; a cached response never authorizes a move.
+- Shelf GET retains ShelfPlanningContext. Optional `?vitrine=CODE` selects one case; unknown layout codes return 400. A valid empty case returns no recommendations.
+- Shelf responses include availableVitrines and revision. Catalog responses include the same base revision; `?view=revision` returns only the museum identifier and revision.
+- Private ETags include resource and selected-case scope. An unchanged request returns 304 before rebuilding. Server-Timing exposes request work.
+- POST payloads are unchanged. Client writes invalidate local GET state; cached responses never authorize physical moves.
 
 ## Revision and consistency
 
-`museum-companion-read-revision.ts` lists every current database dependency of the working model, physical/source projection, collection links, source identities, family/section/locality decisions and shelf/catalog projections. A single PostgreSQL query hashes visible MVCC tuple versions and tuple identities for those tables. It reads tuple headers, not every private JSON payload. This detects updates made without parent timestamps, relation-only edits, source relinks and deletions. It intentionally invalidates conservatively for other rows in the listed tables. Authentication/session and public traffic counters are excluded.
+MuseumDataRevision is a PostgreSQL counter maintained by triggers on the 34 tables in museum-snapshot-tables.ts. A commit affecting these tables increments it once; rollback leaves it unchanged. Row triggers are deferred to commit. TRUNCATE triggers run immediately and hold the counter lock until transaction end. The single counter conservatively invalidates all variants, including unrelated audit writes. Authentication/session and public traffic counters are excluded.
 
-The revision also includes a process-wide epoch and UTC day; deployments invalidate prior code's tags and date-based life-status projections refresh. Audit new reader dependencies against this manifest whenever changing the read model. New source tables must be added before they participate in these cached views. Static source/packet changes take effect with a process restart. These revisions are private cache identities, not record versions or evidence of physical placement.
+The API revision includes a process-wide epoch and UTC day so deployments and date-based projections refresh. Add dependencies to both manifest and trigger migration before caching them. Static source changes require a process restart. These cache identities are not record versions or physical-placement evidence.
 
-One process-wide in-flight revision check is shared by simultaneous readers. A bounded two-revision snapshot cache serializes heavy builds across resources. Each build captures its own revision and data inside one RepeatableRead transaction. Transaction-scoped working-model reuse avoids the catalog's separate duplicate model read. A reader asking for a newer revision waits for a fresh build instead of receiving an older in-flight snapshot. Errors are not cached. Derived catalog and selected-case shelf projections are reused only for their exact snapshot object.
+All three models use museum-snapshot-cache.ts. Shared reuse requires database-enforced READ ONLY RepeatableRead or Serializable transactions. Ordinary database calls create such a transaction. Supplied read-write transactions bypass shared reuse even before their first write, preserving underlying reads for Serializable conflict detection. Mutation services retain fresh validation and transaction-local reuse. This does not promise cross-request source-cache savings for POST requests.
 
-## Measured local comparison · 1 November 2026
+Builds capture counter and data in one snapshot. Producer and waiting-reader transaction state is checked before returning shared data. Errors and unshareable builds are removed. Every caller receives an independent structured clone, including Map, Set and Date values. The bounded cache retains two revision/variant entries per model name, not two per variant; cycling variants can rebuild them. Same-key readers share work. Newer revisions build separately and cannot receive older in-flight snapshots. Revision checks are also deduplicated in process.
 
-The disposable database verifier compares against the integrated incident baseline `88cedab`, using the full static museum inventory, two linked canonical saints and one receiver-space receipt. This is a controlled local fixture, not a production load test. Query counts include transaction statements; the full-source counter counts the working model's mirror reads and excludes lightweight revision SQL.
+The dependency scanner is a heuristic, not proof of complete coverage. The database verifier checks enabled installed triggers and captures representative runtime reads across every working-data and source-index variant. New conditional paths still require review. The global counter can serialize commits; concurrent-user fixtures passed, but production contention and cache hit rate require monitoring.
 
-| Read | Queries | Full working-model loads | Local elapsed |
+## Measured local comparison - 1 November 2026
+
+The disposable database verifier compares baseline 88cedab using the full static inventory, two linked canonical saints and one receiver-space receipt. This run overlapped local verification workloads; elapsed times are not isolated benchmarks or production promises. Counts include transaction statements.
+
+| Read | Queries | Working-model loads | Elapsed |
 | --- | ---: | ---: | ---: |
-| Previous catalog | 85 | 2 | 1,305 ms |
-| Previous full shelves | 137 | 3 | 1,553 ms |
-| New concurrent catalog + selected shelves | 48 | 1 | 633 ms |
-| Warm full shelves | 1 | 0 | 150 ms |
-| Unchanged catalog | 1 | 0 | 26 ms |
-| Unchanged selected shelves | 1 | 0 | 6 ms |
+| Previous catalog | 85 | 2 | 2,222 ms |
+| Previous full shelves | 137 | 3 | 2,775 ms |
+| Cold concurrent catalog + selected shelves | 59 | 1 | 2,773 ms |
+| Warm full shelves | 5 | 0 | 772 ms |
+| Unchanged catalog | 1 | 0 | 5 ms |
+| Unchanged selected shelves | 1 | 0 | 4 ms |
 
-The two cold requests used 48 queries rather than 222 and one working-model load rather than five. A selected-case shelf payload was 14,207 bytes versus 750,329 bytes for all cases (98.1% smaller in this fixture). Conditional HTTP responses carry no JSON body. Wall times vary with hardware, warm-up and real data; verify production Server-Timing and overall request load after release.
+The cold pair loaded one working model rather than five. Selected-case payload was 14,207 bytes versus 750,329 bytes for all cases (98.1% smaller). The verifier's revision-only object is 95 bytes; actual HTTP 304 responses have no JSON body. Full warm responses still incur copying and projection cost. Monitor production Server-Timing, memory, hit rate and overall request load.
 
-## Verification
+## Verification and deployment
 
-Run `scripts/verify-museum-read-performance.ts` only against a fresh disposable localhost `museum_read_test_...` database. It applies migrations only there and temporarily loads the baseline catalog reader from Git history. It checks strict old/new catalog and full-shelf value equality; selected-case equality; one build across concurrent resource readers; lightweight unchanged reads; source edits without timestamps; alias deletion; identity relinks; cached stale location/identity write rejection; and a controlled source edit while an older snapshot is in flight. Its temporary baseline module is removed afterward.
+- verify-museum-read-performance.ts uses a fresh disposable localhost museum_read_test_ database. It checks baseline/full/selected value equality, concurrent reuse, unchanged reads, raw edits without timestamps, alias deletion, source relinks, stale-write rejection and an in-flight revision race. Temporary baseline modules are removed afterward.
+- verify-museum-data-revision-local.ts uses an owned localhost museum_revision_test database. It checks installed triggers, commit/rollback/TRUNCATE, concurrent commits, isolated mutable values, read-only reuse, read-write bypass, warmed-cache Serializable write-skew on an untriggered guard table, real model equality and runtime dependency coverage.
+- verify-museum-save-concurrency.ts checks 22 physical/shelf/task/component scenarios with the migration installed in a fresh localhost museum_physical_test_concurrency_ database.
+- Unit tests cover mutable-value isolation, late/waiting writers, read-committed and read-write bypass, and revision/resource scopes. Full tests, development check and production build remain release gates.
 
-Pure regressions cover in-flight build deduplication, newer revisions, retry after failure, bounded cache entries, actual-revision cache keys and revision/resource scopes. The normal full test suite and production verification remain release gates. Production testing should use two curator devices and confirm that shelf/catalog conditional requests avoid repeated snapshot work, alongside the already optimized progress poll.
+Apply migration 20261102000000_museum_data_revision in the release/migrate phase before promoting this code. Never add database access to the web build. No environment changes or content backfill. Roll back application code without dropping the additive table/triggers during an incident. On production, verify two curator devices, unchanged conditional responses, progress polling and independent saves.

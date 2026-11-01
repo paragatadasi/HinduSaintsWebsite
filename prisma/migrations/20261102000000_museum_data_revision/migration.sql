@@ -13,8 +13,9 @@ CREATE TABLE "MuseumDataRevision" (
 );
 INSERT INTO "MuseumDataRevision" ("id") VALUES (1);
 
--- Bumps once per transaction. Deferred to COMMIT, so the counter row is locked only briefly at commit,
--- never for the length of a long import. Rolled-back transactions never bump.
+-- Bumps once per transaction. Row triggers are initially deferred to COMMIT.
+-- TRUNCATE or SET CONSTRAINTS IMMEDIATE can lock the counter earlier until transaction end.
+-- Rolled-back transactions never bump.
 CREATE FUNCTION museum_bump_revision() RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
   UPDATE "MuseumDataRevision"
@@ -31,7 +32,9 @@ BEGIN
     'MuseumDisplayMembership','MuseumExhibitGroup','MuseumFamilyProposalMove','MuseumImportProposal',
     'MuseumItemSaint','MuseumSection','Place','Saint','SaintMuseumSection','SaintPlace',
     'MuseumCollectionItem','MuseumItemPlacement','MuseumLocation','MuseumSaintState','PlaceRelationship',
-    'SaintAlias','SaintFamily','SaintFamilyMember','SaintRelationship','SaintTradition','SaintVisitPlace','Tradition'
+    'SaintAlias','SaintFamily','SaintFamilyMember','SaintRelationship','SaintTradition','SaintVisitPlace','Tradition',
+    'MuseumCompanionShelf','MuseumCompanionTask','MuseumGuideSuggestionDecision',
+    'MuseumMoveCurrentLocation','MuseumMoveSession','MuseumMoveSessionEvent'
   ] LOOP
     EXECUTE format('CREATE CONSTRAINT TRIGGER museum_revision AFTER INSERT OR UPDATE OR DELETE ON %I
                     DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION museum_bump_revision()', t);

@@ -25,8 +25,8 @@ export async function readMuseumData(client: Prisma.TransactionClient = db, opti
   const key = JSON.stringify(["museum-working-data", options.reconcileFamilies !== false, options.applyScopedProposals !== false, options.indexSourceIdentities !== false]);
   // Timing callers (verifiers) measure a real load, so they bypass the shared cache.
   if (options.onTiming) return readInMuseumTransaction(client, key, () => loadMuseumData(client, options));
-  return cachedByMuseumRevision("museum-working-data", key, client,
-    transaction => readInMuseumTransaction(transaction, key, () => loadMuseumData(transaction, options)));
+  return readInMuseumTransaction(client,key,()=>cachedByMuseumRevision("museum-working-data",key,client,
+    transaction=>loadMuseumData(transaction,options)));
 }
 
 async function loadMuseumData(client: Prisma.TransactionClient, options: MuseumReadOptions = {}) {

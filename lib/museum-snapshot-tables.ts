@@ -9,8 +9,11 @@ export const MUSEUM_SNAPSHOT_TABLES = [
   "MuseumItemSaint", "MuseumSection", "Place", "Saint", "SaintMuseumSection", "SaintPlace",
   // read through include/select relations
   "MuseumCollectionItem", "MuseumItemPlacement", "MuseumLocation", "MuseumSaintState", "PlaceRelationship",
-  "SaintAlias", "SaintFamily", "SaintFamilyMember", "SaintRelationship", "SaintTradition", "SaintVisitPlace", "Tradition"
+  "SaintAlias", "SaintFamily", "SaintFamilyMember", "SaintRelationship", "SaintTradition", "SaintVisitPlace", "Tradition",
+  // operational views included in the same revisioned read-model contract
+  "MuseumCompanionShelf", "MuseumCompanionTask", "MuseumGuideSuggestionDecision",
+  "MuseumMoveCurrentLocation", "MuseumMoveSession", "MuseumMoveSessionEvent"
 ] as const;
 
 // Functions whose results are cached by revision. Everything they can reach must read only listed tables.
-export const MUSEUM_SNAPSHOT_ENTRY_POINTS = ["lib/museum-working-data.ts", "lib/museum-move-session-source.ts"] as const;
+export const MUSEUM_SNAPSHOT_ENTRY_POINTS = ["lib/museum-working-data.ts", "lib/museum-move-session-source.ts", "lib/museum-companion-read-snapshot.ts"] as const;
