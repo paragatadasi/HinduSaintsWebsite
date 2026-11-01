@@ -1,4 +1,3 @@
-import {isPagalComponentPlaced} from "./spn-pagal-component-placement";
 import type {ComponentPlacement} from "./museum-component-clearance-domain";
 export type GuideEntry = {
  proposalTransfer?:import("./spn-regional-pending-transfers").RegionalPendingTransfer|null;
@@ -42,7 +41,7 @@ export type CompanionRow={
 export type VitrinePreparation={vitrine:string;prepared:boolean;version:number;recordedAt:string;receiptId:string;basis:"preparation"|"legacy_clear"};
 export type ClearCorrection={receiptId:string;vitrine:string;excludedCount:number;records:{sourceId:string;saintId:string|null;name:string;expectedCurrentRevision:string;expectedSourceRevision:string;expectedLocationVersion:number;previous:PhysicalLocation;previousConfirmedAt:string}[]};
 export type PhysicalState={phaseClearances?:{guideVersion:string;vitrine:string;receiptId:string;recordedAt:string}[];clearCorrections?:ClearCorrection[];preparations?:VitrinePreparation[];reportedPlacementReceipts?:{guideContext:{guideVersion:string;contentDigest:string;assignmentDigest:string};complete:boolean};confirmationHistory?:{afterJson:unknown}[];rows:CompanionRow[];unmappedCurrentLocations:{sourceId:string;location:PhysicalLocation;version:number}[]};
-export function isPlaced(row:CompanionRow,destination:string){return isPagalComponentPlaced(row,destination)||(row.currentBasis==="confirmed"&&row.current?.kind==="vitrine"&&row.current.code===destination);}
+export function isPlaced(row:CompanionRow,destination:string){const location=row.componentPlacement?.location??row.current;return (!!row.componentPlacement||row.currentBasis==="confirmed")&&location?.kind==="vitrine"&&location.code===destination;}
 export function currentLocationLabel(location:PhysicalLocation|null){return location?location.label+(location.shelf?` · Shelf ${location.shelf}`:""):"Location not recorded";}
 
 export function companionLocationLabel(row?:(Pick<CompanionRow,"current"|"componentPlacement"> & Partial<Pick<CompanionRow,"original">>)|null){
