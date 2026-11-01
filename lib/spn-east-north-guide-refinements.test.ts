@@ -63,6 +63,7 @@ test("the full approved set appears once across real guides, including the limit
   const {eastRemainderMoveGuide} = await import("./spn-east-remainder-guide");
   const {vrajRemainderMoveGuide} = await import("./spn-vraj-remainder-guide");
   const {hingeAdditionsMoveGuide, hingeAdditionsGuideDefinition, hingeAdditionsGuideContext} = await import("./spn-hinge-additions-guide");
+  const {approvedHingeGuide} = await import("./spn-approved-hinge-guide");
   const {readStarterGuideDefinition, currentReceiverGuideDefinitions} = await import("./spn-starter-guide-registry");
   const result = projectCompanionAdditions({starter: starterMoveGuide, north: northernMoveGuide, "gosaiji-sai": ramakrishnaMoveGuide, east2: eastRemainderMoveGuide, vraj2: vrajRemainderMoveGuide, hinge: hingeAdditionsMoveGuide}, eastNorthReadyRows.map(addition), eastNorthReadyRows.map(entry));
   for (const row of eastNorthReadyRows) {
@@ -75,9 +76,9 @@ test("the full approved set appears once across real guides, including the limit
   assert.equal(result.hinge.receivingOnly, true);
   assert.equal(result.hinge.requiredClearVitrines, undefined);
   assert.equal(Object.keys(hingeAdditionsGuideDefinition.physicalScope!.destinations).length, 3);
-  assert.equal(readStarterGuideDefinition(hingeAdditionsGuideContext.guideVersion), hingeAdditionsGuideDefinition);
-  assert.ok(currentReceiverGuideDefinitions("8").includes(hingeAdditionsGuideDefinition));
-  assert.ok(currentReceiverGuideDefinitions("9").includes(hingeAdditionsGuideDefinition));
+  assert.equal(readStarterGuideDefinition(hingeAdditionsGuideContext.guideVersion).readOnly, true);
+  assert.ok(currentReceiverGuideDefinitions("8").some(definition => definition.context.guideVersion === approvedHingeGuide.context.guideVersion));
+  assert.ok(currentReceiverGuideDefinitions("9").some(definition => definition.context.guideVersion === approvedHingeGuide.context.guideVersion));
   const kriya = result.north.vitrines.find(v => v.code === "5")!.families.find(group => group.sourceIds.includes(anil.sourceId))!;
   assert.ok(kriya.edges?.some(edge => edge.fromSourceId === "recwX7dFfmlq9FfAh" && edge.toSourceId === anil.sourceId && edge.basis === "source"));
   assert.equal(result.north.entries.find(row => row.sourceId === anil.sourceId)?.currentLocation?.code, "23");
