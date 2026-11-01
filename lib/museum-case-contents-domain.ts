@@ -31,3 +31,12 @@ export function assertSelectedCaseContents(records:z.infer<typeof historicalStag
  if(!records.length||ids.size!==records.length||revision!==preview.revision||records.some(record=>{const match=preview.eligible.find(row=>row.sourceId===record.sourceId);return !match||Object.entries(record).some(([key,value])=>key in match&&match[key as keyof typeof match]!==value);}))
   throw new MuseumMoveSessionError(409,"These contents or destinations changed. Reload the preview and check the selected records again.");
 }
+
+export function preservedBulkClearSources(codes:string[],rows:Pick<CompanionRow,"sourceId"|"current"|"currentBasis">[],destinations:{sourceId:string;vitrine:string}[],records:{sourceId:string}[]){
+ const targets=new Map(destinations.map(row=>[row.sourceId,row.vitrine]));
+ const selected=new Set(records.map(row=>row.sourceId));
+ return rows.filter(row=>row.currentBasis==="confirmed"&&row.current&&(
+   row.current.kind==="vitrine"&&codes.includes(row.current.code)&&(!targets.has(row.sourceId)||targets.get(row.sourceId)===row.current.code)||
+   selected.has(row.sourceId)&&!(row.current.kind==="vitrine"&&codes.includes(row.current.code))
+ )).map(row=>row.sourceId).sort();
+}

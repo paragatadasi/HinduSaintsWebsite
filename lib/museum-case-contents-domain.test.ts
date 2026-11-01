@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {caseContentsPreview,assertSelectedCaseContents,caseStagingReconciliation,caseContentsStaging} from "./museum-case-contents-domain";
+import {caseContentsPreview,assertSelectedCaseContents,caseStagingReconciliation,caseContentsStaging,preservedBulkClearSources} from "./museum-case-contents-domain";
 import {museumPhysicalWriteAllowed} from "./museum-placement-access";
 import type {CompanionRow} from "./spn-move-guide";
 const loc=(code:string)=>({kind:"vitrine" as const,code,label:`Vitrine ${code}`});
@@ -12,6 +12,26 @@ test("selected contents preserves confirmed target placements and permits an exa
  assert.deepEqual(preview.eligible.map(r=>r.sourceId),["one","two"]);assert.deepEqual(preview.preservedSourceIds,["target"]);
  assertSelectedCaseContents([refs(preview.eligible[0])],preview.revision,preview);
  assert.throws(()=>assertSelectedCaseContents([{...refs(preview.eligible[0]),sourceId:"target"}],preview.revision,preview));
+});
+
+test("bulk clearing preserves effective-target placements and later moves, while outgoing holdings remain eligible",()=>{
+ const placed={...row("placed"),currentBasis:"confirmed",currentVersion:2};
+ const outgoing={...row("outgoing"),currentBasis:"confirmed"};
+ const elsewhere={...row("elsewhere"),currentBasis:"confirmed",current:loc("46")};
+ const staged={...row("staged"),currentBasis:"confirmed",current:{kind:"table" as const,code:"staging-area",label:"Staging area"}};
+ const targets=[{sourceId:"placed",vitrine:"45"},{sourceId:"outgoing",vitrine:"46"}];
+ assert.deepEqual(preservedBulkClearSources(["45"],[placed,outgoing,elsewhere,staged],targets,[{sourceId:"placed"},{sourceId:"outgoing"},{sourceId:"elsewhere"},{sourceId:"staged"}]),["elsewhere","placed","staged"]);
+ assert.deepEqual(preservedBulkClearSources(["45"],[placed,outgoing],targets,[{sourceId:"outgoing"}]),["placed"]);
+ assert.deepEqual(preservedBulkClearSources(["45"],[placed],[],[]),["placed"]);
+ assert.deepEqual(preservedBulkClearSources(["45"],[row("source")],[{sourceId:"source",vitrine:"45"}],[{sourceId:"source"}]),[]);
+});
+
+test("a later confirmed target invalidates an earlier selected-contents preview",()=>{
+ const original=caseContentsPreview([row("placed"),row("outgoing")],[{sourceId:"placed",vitrine:"45"}],"45","selected_contents");
+ const records=original.eligible.map(refs);
+ const now=caseContentsPreview([{...row("placed"),currentBasis:"confirmed",currentVersion:1,currentRevision:"c".repeat(64)},row("outgoing")],[{sourceId:"placed",vitrine:"45"}],"45","selected_contents");
+ assert.throws(()=>assertSelectedCaseContents(records,original.revision,now));
+ assert.deepEqual(now.preservedSourceIds,["placed"]);
 });
 test("partial staging accepts registered receivers but preserves housing and historical restrictions",()=>{
  const rows=[{...row("one"),current:loc("59")},{...row("two"),current:loc("59")},{...row("fixed"),current:loc("59"),fixedHousing:true}];

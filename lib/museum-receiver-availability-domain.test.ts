@@ -19,6 +19,22 @@ test("unexpected arrival, removal, undo, source or proposal changes invalidate s
  const saved=snap();
  for(const current of [snap([...initial,row("outsider")]),snap([initial[1]]),snap([initial[0],{...initial[1],currentRevision:"undo",currentVersion:2}]),snap([initial[0],{...initial[1],sourceRevision:"changed"}]),snap(initial,[]),{...snap(),guideContext:{...context,assignmentDigest:"c".repeat(64)}}])assert.equal(receiverAvailabilityValid(saved,at,current),false);
 });
+
+test("confirming an approved existing source in place preserves its space acknowledgement",()=>{
+ const saved=snap(initial,["retained","incoming"]);
+ const confirmed={...initial[0],currentRevision:"confirmed",currentVersion:1,currentBasis:"confirmed",currentConfirmed:{confirmedAt:"2026-11-01T00:01:00Z"}};
+ assert.equal(receiverAvailabilityValid(saved,at,snap([confirmed,initial[1]],["retained","incoming"])),true);
+ for(const invalid of [
+  {...confirmed,sourceRevision:"changed"},
+  {...confirmed,currentVersion:2},
+  {...confirmed,currentBasis:"source"},
+  {...confirmed,current:{kind:"vitrine",code:"20"}},
+  {...confirmed,currentConfirmed:{confirmedAt:"2026-10-30T00:00:00Z"}}
+ ])assert.equal(receiverAvailabilityValid(saved,at,snap([invalid,initial[1]],["retained","incoming"])),false);
+ assert.equal(receiverAvailabilityValid(snap(),at,snap([confirmed,initial[1]])),false,"Unplanned occupants cannot gain the exception");
+ const alreadyConfirmed={...initial[0],currentBasis:"confirmed",currentConfirmed:{confirmedAt:at}};
+ assert.equal(receiverAvailabilityValid(snap([alreadyConfirmed,initial[1]],["retained","incoming"]),at,snap([confirmed,initial[1]],["retained","incoming"])),false);
+});
 test("stale contents and preparation versions reject acknowledgement",()=>{
  const current={...snap(),expectedPreparationVersion:2};
  assert.doesNotThrow(()=>assertReceiverAvailabilityRevision(current.revision,2,current));

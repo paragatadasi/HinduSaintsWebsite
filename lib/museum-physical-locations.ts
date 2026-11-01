@@ -2,7 +2,7 @@ import {withMuseumTransactionReads} from "./museum-transaction-reads";
 import {lockMuseumPlacement,retryMuseumSerialization} from "./museum-write-concurrency";
 import {pagalComponentAcknowledgement,canPlacePagalComponent,canConfirmPagalComponentDestination,pagalComponentReceiptId} from "./spn-pagal-component-placement";
 import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
-import {caseContentsStaging,assertSelectedCaseContents} from "./museum-case-contents-domain";
+import {caseContentsStaging,assertSelectedCaseContents,preservedBulkClearSources} from "./museum-case-contents-domain";
 import {readReceiverAvailabilities} from "./museum-receiver-availability";
 import {assertReceiverReadiness} from "./museum-receiver-availability-domain";
 import {isReviewedBimalTransfer} from "./spn-bimal-reviewed-assembly";
@@ -168,7 +168,9 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     const registered = definition.context;
     if (registered.contentDigest !== input.guideContext.contentDigest || registered.assignmentDigest !== input.guideContext.assignmentDigest) throw new MuseumMoveSessionError(409, "The guide content changed. Reload it before recording a placement.");
   }
+  const submitted = input;
   return retryMuseumSerialization(() => db.$transaction(async tx => withMuseumTransactionReads(tx, async () => {
+    const input = {...submitted, records:[...submitted.records]};
     const definition = input.guideContext ? readStarterGuideDefinition(input.guideContext.guideVersion) : null;
     const dependencyIds = [
       ...[...(definition ? [definition] : []), ...input.records.flatMap(row => row.to.kind === "vitrine" ? currentReceiverGuideDefinitions(row.to.code) : [])]
@@ -190,7 +192,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     if (retry) {
       const receipt = retry.afterJson as { fingerprint?: string } | null;
       if (receipt?.fingerprint !== fingerprint) throw new MuseumMoveSessionError(409, "This request already recorded different locations. Reload before recording another confirmation.");
-      return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt: retry, replayed: true, alreadyRecorded: [] as string[] };
+      return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt: retry, replayed: true, alreadyRecorded: [] as string[], residualClearing: (retry.afterJson as {residualClearing?:{stagedCount:number;preservedCount:number;preservedSourceIds:string[];emptyCaseClaim:false}}|null)?.residualClearing };
     }
     if(input.guideContext && readStarterGuideDefinition(input.guideContext.guideVersion).readOnly)
       throw new MuseumMoveSessionError(409,"This guide is historical. Reload the current guide before recording a new physical move.");
@@ -230,6 +232,27 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     }
     const transfers = [...(phase?.physicalScope?.preparatoryTransfers ?? []), ...additionPhases.flatMap(row => row.physicalScope?.preparatoryTransfers ?? [])];
     const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length||input.caseContentsStaging ? undefined : [...new Set([...input.records.map(row => row.sourceId), ...transfers.map(row => row.sourceId), ...(input.records.some(row=>row.to.kind==="vitrine"&&row.to.code==="9")?["recHatM8WlLSqKeyy"]:[])])], false);
+    let preservedSourceIds:string[]=[];
+    const bulkClearing=Boolean(input.clearedVitrines?.length&&!input.componentStagingAcknowledgements?.length&&!input.retainedCaseClearanceAcknowledgement);
+    if(bulkClearing){
+      if(input.records.some(record=>record.to.kind!=="table"||record.to.code!=="staging-area"))throw new MuseumMoveSessionError(400,"Bulk clearing only moves remaining contents to staging.");
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
+      const [museum,additions,alternatives]=await Promise.all([readMuseumData(tx),readEffectiveCompanionAdditions(tx),readGuideAlternativeDestinations(tx)]);
+      const valid=currentCompanionAdditions(additions,current.rows);
+      const review=buildLatestSpnReview(museum.placements,[...valid,...alternatives.filter(row=>!valid.some(addition=>addition.sourceId===row.sourceId))],current.rows);
+      preservedSourceIds=preservedBulkClearSources(input.clearedVitrines!,current.rows,review.rows.map(row=>({sourceId:row.sourceId,vitrine:row.effectiveVitrine})),input.records);
+      for(const record of input.records.filter(record=>preservedSourceIds.includes(record.sourceId))){
+        const row=current.rows.find(row=>row.sourceId===record.sourceId)!;
+        if(row.identityChanged||row.saintId!==record.saintId||row.sourceRevision!==record.expectedSourceRevision)
+          throw new MuseumMoveSessionError(409,"A source identity or its evidence changed. Reload and check the source before confirming.");
+        if(row.verifiedItemIds.length||row.fixedHousing||row.componentPlacement||row.movementBlockedReason)
+          throw new MuseumMoveSessionError(409,"A protected holding has an inventory or housing restriction. Review its own workflow.");
+      }
+      input.records=input.records.filter(record=>!preservedSourceIds.includes(record.sourceId));
+      if(input.records.some(record=>!current.rows.some(row=>row.sourceId===record.sourceId&&row.current?.kind==="vitrine"&&input.clearedVitrines!.includes(row.current.code))))
+        throw new MuseumMoveSessionError(409,"The clearing list changed. Include only remaining contents of the starting vitrine.");
+    }
     if(input.caseContentsStaging){
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
@@ -388,8 +411,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertPhaseClearance(input,input.clearedVitrines?.length ? initialCases : phaseClearanceRequirements(input.records, initialCases, phase?.physicalScope?.clearancePerDestination),phase?.context.guideVersion ?? "",(await readMuseumPhaseClearances(tx,loader)).map(c=>phase?.physicalScope?.previousClearanceVersions?.includes(c.guideVersion)?{...c,guideVersion:phase.context.guideVersion}:c),current.rows,input.records,availableFor(phase?.context.guideVersion??""));
     const preparationVitrines = [...new Set([...(phase?.physicalScope?.preparationVitrines ?? []), ...transfers.map(row => row.toVitrine)])];
     if(preparationVitrines.length)assertPhasePreparation(input.records,preparationVitrines,await readMuseumPreparations(tx));
-    if (input.clearedVitrines?.length && !initialCases.length) assertSafeCaseClear(input.clearedVitrines, [...current.rows, ...current.unmappedCurrentLocations.map(row=>({currentBasis:"confirmed",current:row.location}))]);
-    if (input.clearedVitrines?.length) assertWholeCaseClearing(input.clearedVitrines, [...current.rows.map(row => ({ sourceId: row.sourceId, current: row.current })), ...current.unmappedCurrentLocations.map(row => ({ sourceId: row.sourceId, current: row.location }))], input.records);
+    if (input.clearedVitrines?.length && !initialCases.length && !bulkClearing) assertSafeCaseClear(input.clearedVitrines, [...current.rows.filter(row=>!preservedSourceIds.includes(row.sourceId)), ...current.unmappedCurrentLocations.map(row=>({currentBasis:"confirmed",current:row.location}))]);
+    if (input.clearedVitrines?.length) assertWholeCaseClearing(input.clearedVitrines, [...current.rows.filter(row=>!preservedSourceIds.includes(row.sourceId)).map(row => ({ sourceId: row.sourceId, current: row.current })), ...current.unmappedCurrentLocations.map(row => ({ sourceId: row.sourceId, current: row.location }))], input.records);
     const componentMoves: {sourceId:string; origin: import("./museum-move-session-domain").MoveLocation; location: import("./museum-move-session-domain").MoveLocation; scope:ComponentScope;clearanceReceiptId?:string;previousComponentReceiptId?:string;previousComponentRevision?:string;includedWalkingSticks?:true; expectedSourceRevision:string; previousCurrentRevision:string; previousLocationVersion:number; revision:string}[] = [];
     const changes = input.records.map(record => {
       const row = current.rows.find(row => row.sourceId === record.sourceId);
@@ -433,8 +456,9 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         previous: row.current, previousState: { basis: row.currentBasis, location: row.current, effectiveConfirmedAt: row.currentConfirmed?.confirmedAt ?? null }, location: to, version: row.currentVersion + 1 };
     }).filter(change => change !== null);
     const alreadyRecorded = input.records.filter(record => !changes.some(change => change.sourceId === record.sourceId) && !componentMoves.some(change => change.sourceId === record.sourceId)).map(record => record.sourceId);
-    if (!changes.length && !componentMoves.length && alreadyRecorded.length) return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)),
-      preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt: null, replayed: false, alreadyRecorded };
+    if (!input.clearedVitrines?.length && !changes.length && !componentMoves.length && alreadyRecorded.length) return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)),
+      preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt: null, replayed: false, alreadyRecorded, residualClearing: undefined };
+    const residualClearing=bulkClearing?{stagedCount:changes.length,preservedCount:preservedSourceIds.length,preservedSourceIds,emptyCaseClaim:false as const}:undefined;
     const recordedAt = new Date();
     for (const change of changes) await tx.museumMoveCurrentLocation.upsert({
       where: { museumId_sourceId: { museumId: input.museumId, sourceId: change.sourceId } },
@@ -449,8 +473,9 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         ...(input.retainedCaseClearanceAcknowledgement?{retainedCaseClearanceAcknowledgement:input.retainedCaseClearanceAcknowledgement}:{}),
         ...(input.caseContentsStaging?{caseContentsStaging:input.caseContentsStaging}:{}),
         guideContext: input.guideContext ?? null, curatorAddition: input.curatorAddition ?? null, clearedVitrines: input.clearedVitrines ?? [], inventoryCompleteness: "unverified",
-        emptyCaseClaim: input.clearedVitrines?.length ? "curator_confirmed_at_event_time" : "none", proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
-    return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt, replayed: false, alreadyRecorded };
+        ...(residualClearing?{residualClearing}:{}),
+        emptyCaseClaim: input.clearedVitrines?.length&&!bulkClearing ? "curator_confirmed_at_event_time" : "none", proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
+    return { ...await readPhysicalLocationView(loader, tx, submitted.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt, replayed: false, alreadyRecorded, residualClearing };
   }), { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 60_000 }));
 }
 

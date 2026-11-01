@@ -1,0 +1,11 @@
+# Residual vitrine clearing and receiver availability
+
+Bulk clearing keeps confirmed placements intact while staging the remaining current contents. The server reads current physical state and effective proposals inside the serializable save transaction, with the existing clearing barrier and proposal-read locks.
+
+For ordinary bulk clearing, preserve confirmed occupants at their effective destination, conservatively preserve confirmed occupants whose destination is missing, and preserve submitted records already confirmed elsewhere or in staging. This applies even when a stale client submitted those records for staging. Source identity/evidence conflicts, verified items, housing restrictions and stale versions of genuinely outgoing records remain errors. Every remaining current occupant must be included; unrelated unlinked physical holdings cannot be silently ignored. Scoped component clearances retain their separate explicit workflow.
+
+The existing request fields `clearedVitrines` and `initialCaseClearAcknowledged` remain supported. A phase still requires its acknowledgement. The result and audit receipt add `residualClearing`: `stagedCount`, `preservedCount`, `preservedSourceIds`, and `emptyCaseClaim: false`. Preserved IDs include protected occupants omitted by the client. A zero-residual acknowledgement records preparation/readiness without changing a location. A repeated request returns the original summary. Ordinary residual-clear receipts have top-level `emptyCaseClaim: "none"`; readiness does not establish an empty case or dimensional capacity.
+
+Receiver space acknowledgements may survive the source-to-confirmed transition of an approved incoming record already physically present in that case. It must be in the saved incoming set, retain its source/identity revision, advance exactly one location version, and be confirmed after the acknowledgement. Departures, undo, unrelated arrivals and other source/version changes still invalidate the acknowledgement.
+
+Verification: domain regressions plus the disposable-localhost service verifier cover retained target placements, later moves, zero-residual acknowledgements, replay, source conflicts, both clearing/placement race orders and existing independent-save/shelf concurrency checks. No production location repair or data backfill is part of this change.

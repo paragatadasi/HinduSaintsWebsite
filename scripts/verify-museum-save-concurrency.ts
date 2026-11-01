@@ -22,15 +22,18 @@ const {saveCompanionWork} = await import("../lib/museum-companion-work");
 const {SPN_WEBSITE_AIRTABLE_BASE_ID} = await import("../lib/museum-vitrine-source");
 const {withMuseumTransactionReads} = await import("../lib/museum-transaction-reads");
 const {readMuseumData} = await import("../lib/museum-working-data");
+const {buildLatestSpnReview} = await import("../lib/spn-reviewed-proposal");
+const approvedTarget=buildLatestSpnReview([]).rows.find(row=>row.effectiveVitrine==="50"&&row.saintId)!;
+assert.ok(approvedTarget,"A current approved V50 target is required for this fixture");
 const actor = {id: "concurrency-curator", canManage: true};
 const vitrine = (code: string) => ({kind: "vitrine" as const, code, label: `Vitrine ${code}`});
-const ids = ["a","b","c","d","same","replay","incoming","outgoing","shelf-a","shelf-b","clear-a","incoming-a","clear-b","incoming-b"];
+const ids = ["a","b","c","d","same","replay","incoming","outgoing","shelf-a","shelf-b","clear-a","incoming-a","clear-b","incoming-b","residual","later-move","not-in-case",approvedTarget.sourceId];
 const snapshot: MoveSnapshot = {
-  proposalVersion: "concurrency-test", title: "Local concurrency fixture", vitrineCodes: ["1","2","3","4","5","6"],
+  proposalVersion: "concurrency-test", title: "Local concurrency fixture", vitrineCodes: ["1","2","3","4","5","6","50"],
   guidance: {version: "test", reviewStatus: "local fixture"},
-  rows: ids.map(sourceId => ({sourceId, saintId: "fixture-saint", name: sourceId,
+  rows: ids.map(sourceId => ({sourceId, saintId: sourceId===approvedTarget.sourceId?approvedTarget.saintId:"fixture-saint", name: sourceId,
     sourceKey: `${SPN_WEBSITE_AIRTABLE_BASE_ID}:Saints:${sourceId}`,
-    sourceReported: vitrine(sourceId === "outgoing" ? "3" : sourceId === "clear-a" ? "5" : sourceId === "clear-b" ? "6" : "1"), destination: vitrine("2"), holdReason: "", fixedHousing: false}))
+    sourceReported: vitrine(["residual","later-move",approvedTarget.sourceId].includes(sourceId)?"50":sourceId === "outgoing" ? "3" : sourceId === "clear-a" ? "5" : sourceId === "clear-b" ? "6" : "1"), destination: vitrine("2"), holdReason: "", fixedHousing: false}))
 };
 let active = 0, peak = 0, loaderCalls = 0;
 const loader = async () => {
@@ -49,7 +52,7 @@ const isConflict = (result: PromiseSettledResult<unknown>) => result.status === 
   result.reason && typeof result.reason === "object" && result.reason.status === 409;
 try {
   await db.externalRecord.createMany({data: ids.map(id => ({sourceType: "airtable", externalId: `${SPN_WEBSITE_AIRTABLE_BASE_ID}:Saints:${id}`,
-    entityType: "Saint", entityId: "fixture-saint", rawPayloadJson: {fixture: true}}))});
+    entityType: "Saint", entityId: id===approvedTarget.sourceId?approvedTarget.saintId!:"fixture-saint", rawPayloadJson: {fixture: true}}))});
   const independent = await Promise.all([request("a","2"),request("b","4"),request("c","2"),request("d","4")]);
   peak = 0; loaderCalls = 0;
   let started = performance.now();
@@ -106,11 +109,38 @@ try {
     const ordered=await Promise.allSettled([leading,trailing]);
     assert.equal(ordered[0].status,"fulfilled");
     if(clearFirst)assert.equal(ordered[1].status,"fulfilled");
-    else assert.ok(isConflict(ordered[1]),"A waiting clear must reject the now-incomplete contents list");
+    else assert.equal(ordered[1].status,"fulfilled","A waiting residual clear preserves the new confirmed occupant");
     const checked=await api.readPhysicalLocationView(loader,db,[`incoming-${suffix}`,`clear-${suffix}`],false);
     assert.equal(checked.rows.find(r=>r.sourceId===`incoming-${suffix}`)?.current?.code,code);
-    assert.equal(checked.rows.find(r=>r.sourceId===`clear-${suffix}`)?.current?.code,clearFirst?"staging-area":code);
+    assert.equal(checked.rows.find(r=>r.sourceId===`clear-${suffix}`)?.current?.code,"staging-area");
   }
+
+  // A stale whole-case request must preserve both a confirmed target in this
+  // case and an occupant placed elsewhere after the request was prepared.
+  const initial=await api.readPhysicalLocationView(loader,db,[approvedTarget.sourceId,"residual","later-move"],false);
+  const clearRecords=initial.rows.map(row=>({sourceId:row.sourceId,saintId:row.saintId,expectedCurrentRevision:row.currentRevision,
+    expectedSourceRevision:row.sourceRevision,expectedLocationVersion:row.currentVersion,to:{kind:"table" as const,code:"staging-area",label:"Staging area"}}));
+  await api.confirmMuseumPhysicalLocations(await request(approvedTarget.sourceId,"50"),actor,loader);
+  await api.confirmMuseumPhysicalLocations(await request("later-move","4"),actor,loader);
+  const beforeProtected=await db.museumMoveCurrentLocation.findMany({where:{sourceId:{in:[approvedTarget.sourceId,"later-move"]}},orderBy:{sourceId:"asc"}});
+  const residualRequest={...await request("residual","2"),clearedVitrines:["50"],records:clearRecords};
+  const residualResult=await api.confirmMuseumPhysicalLocations(residualRequest,actor,loader);
+  assert.equal(residualResult.residualClearing?.stagedCount,1);
+  assert.deepEqual(residualResult.residualClearing?.preservedSourceIds,[approvedTarget.sourceId,"later-move"].sort());
+  assert.equal((residualResult.receipt?.afterJson as {emptyCaseClaim:string}).emptyCaseClaim,"none");
+  assert.deepEqual(await db.museumMoveCurrentLocation.findMany({where:{sourceId:{in:[approvedTarget.sourceId,"later-move"]}},orderBy:{sourceId:"asc"}}),beforeProtected);
+  const residualReplay=await api.confirmMuseumPhysicalLocations(residualRequest,actor,loader);
+  assert.equal(residualReplay.receipt?.id,residualResult.receipt?.id);
+  assert.deepEqual(residualReplay.residualClearing,residualResult.residualClearing);
+  const zero=await api.confirmMuseumPhysicalLocations({...residualRequest,clientRequestId:randomUUID(),records:[]},actor,loader);
+  assert.equal(zero.residualClearing?.stagedCount,0);
+  assert.equal(zero.residualClearing?.preservedCount,1);
+  assert.ok(zero.receipt);
+  const unrelated=await request("not-in-case","2");
+  await assert.rejects(api.confirmMuseumPhysicalLocations({...unrelated,clearedVitrines:["50"],records:unrelated.records.map(record=>({...record,to:{kind:"table",code:"staging-area",label:"Staging area"}}))},actor,loader),/starting vitrine/);
+  await assert.rejects(api.confirmMuseumPhysicalLocations({...unrelated,clearedVitrines:["50"]},actor,loader),/only moves remaining contents to staging/);
+  const badSource={...residualRequest,clientRequestId:randomUUID(),records:[{...clearRecords.find(row=>row.sourceId===approvedTarget.sourceId)!,expectedSourceRevision:"0".repeat(64)}]};
+  await assert.rejects(api.confirmMuseumPhysicalLocations(badSource,actor,loader),/identity or its evidence changed/);
 
   const tasks = await Promise.all(["a","b"].map(sourceId=>saveCompanionWork({action:"task.create",museumId:"museum-spn",clientRequestId:randomUUID(),sourceId,saintId:"fixture-saint",title:"Check label"},actor,loader)));
   assert.ok(tasks.every(r=>r.tasks.length===1));
@@ -157,5 +187,5 @@ try {
   }
   assert.deepEqual(timings.map(t=>t.loads),[3,1]);
   console.log(JSON.stringify({passed:true,independentMs,distinctPeak,readModelTimings:timings,
-    checks:["independent saves overlap","same-source conflict","same-request replay","changed replay rejected","clear versus incoming placement","clear first then incoming","incoming first then waiting clear","independent tasks","task replay","independent shelf saves","waiting shelf versus physical move","stale shelf after physical move"]},null,2));
+    checks:["independent saves overlap","same-source conflict","same-request replay","changed replay rejected","clear versus incoming placement","clear first then incoming","incoming first then waiting clear","independent tasks","task replay","independent shelf saves","waiting shelf versus physical move","stale shelf after physical move","bulk clear preserves in-place targets and later moves","residual receipt replay","zero-residual readiness","protected source conflict rejected"]},null,2));
 } finally { await db.$disconnect(); }
