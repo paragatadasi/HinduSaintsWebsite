@@ -10,6 +10,7 @@ import {physicalFingerprint} from "./museum-physical-location-current";
 import {MuseumMoveSessionError} from "./museum-move-session-domain";
 import {assertSelectedCaseContents,caseContentsPreview,caseStagingReconciliation,type CasePreparationEvidence} from "./museum-case-contents-domain";
 import type {MoveSessionActor} from "./museum-move-session-service";
+import {currentReceiverGuideDefinitions} from "./spn-starter-guide-registry";
 
 const json=(value:unknown)=>JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 type PreviewOptions={vitrine:string;mode:"selected_contents"|"historical";preparationReceiptId?:string};
@@ -23,7 +24,7 @@ export async function readCaseContentsPreview(loader:PhysicalSnapshotLoader,opti
  }
  const valid=currentCompanionAdditions(additions,physical.rows);
  const review=buildLatestSpnReview(current.placements,[...valid,...alternatives.filter(row=>!valid.some(a=>a.sourceId===row.sourceId))],physical.rows);
- return caseContentsPreview(physical.rows,review.rows.map(row=>({sourceId:row.sourceId,vitrine:row.effectiveVitrine})),options.vitrine,options.mode,preparation);
+ return caseContentsPreview(physical.rows,review.rows.map(row=>({sourceId:row.sourceId,vitrine:row.effectiveVitrine})),options.vitrine,options.mode,preparation,currentReceiverGuideDefinitions(options.vitrine).length>0);
 }
 
 export async function reconcileCaseStaging(raw:unknown,actor:MoveSessionActor,loader:PhysicalSnapshotLoader){

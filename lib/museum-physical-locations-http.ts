@@ -7,6 +7,7 @@ import { hasCapability } from "./permissions";
 import { intakeWriteOriginAllowed } from "./museum-intake-domain";
 import { boundedIntakeBody } from "./museum-intake-api";
 import { MuseumMoveSessionError } from "./museum-move-session-domain";
+import {readReceiverAvailabilityPreview,saveReceiverAvailability} from "./museum-receiver-availability";
 import { correctMuseumClear, saveMuseumPreparation, confirmMuseumPhysicalLocations, undoMuseumPhysicalCheck, readMuseumPhysicalLocations, type PhysicalSnapshotLoader } from "./museum-physical-locations";
 
 export async function museumPhysicalLocationsHttp(request: Request, loader: PhysicalSnapshotLoader) {
@@ -20,21 +21,25 @@ export async function museumPhysicalLocationsHttp(request: Request, loader: Phys
       const query = new URL(request.url).searchParams;
       if ((query.get("museumId") ?? "museum-spn") !== "museum-spn") throw new MuseumMoveSessionError(400, "Choose the SPN museum.");
       if (query.get("view") === "progress") {
-        const progress = await readMuseumPhysicalProgress();
+        const progress = await readMuseumPhysicalProgress(loader);
         const headers = { "Cache-Control": "private, no-cache", ETag: `"${progress.progressRevision}"`,
           "Server-Timing": `museum;dur=${(performance.now() - started).toFixed(1)}` };
         return request.headers.get("if-none-match") === headers.ETag
           ? new Response(null, { status: 304, headers }) : NextResponse.json(progress, { headers });
       }
       const ids = z.array(z.string().min(1).max(200)).max(2000).parse(query.getAll("sourceId"));
-      result = await readMuseumPhysicalLocations(loader, ids.length ? [...new Set(ids)] : undefined);
+      result = query.get("view")==="receiver-availability"
+        ? await readReceiverAvailabilityPreview(loader,z.string().min(1).max(20).parse(query.get("vitrine")),z.string().min(1).max(200).parse(query.get("guideVersion")))
+        : await readMuseumPhysicalLocations(loader, ids.length ? [...new Set(ids)] : undefined);
     } else if (request.method === "POST") {
       if (!canConfirmMuseumPlacement(user.roles)) throw new MuseumMoveSessionError(403, "You need museum placement permission to record a move.");
       if (!intakeWriteOriginAllowed(request.url, request.headers.get("origin"), request.headers.get("host"), process.env.AUTH_URL || process.env.NEXTAUTH_URL)) throw new MuseumMoveSessionError(403, "Reload this page before recording a location.");
       if (!request.headers.get("content-type")?.startsWith("application/json")) throw new MuseumMoveSessionError(415, "Send this confirmation as JSON.");
       const body: unknown = JSON.parse((await boundedIntakeBody(request, 512 * 1024)).toString("utf8"));
       if (!museumPhysicalWriteAllowed(user.roles,body)) throw new MuseumMoveSessionError(403, "Museum Assistants can check off individual placements. A curator must change plans, clear vitrines or correct previous confirmations.");
-      result = body && typeof body === "object" && "action" in body && body.action === "clear.correct"
+      result = body && typeof body === "object" && "action" in body && body.action === "receiver.availability"
+        ? await saveReceiverAvailability(body,{id:user.id,canManage:hasCapability(user.roles,"manage_museum")},loader)
+        : body && typeof body === "object" && "action" in body && body.action === "clear.correct"
         ? await correctMuseumClear(body, { id: user.id, canManage: true }, loader)
         : body && typeof body === "object" && "action" in body && body.action === "preparation.update"
         ? await saveMuseumPreparation(body, { id: user.id, canManage: true }, loader)
