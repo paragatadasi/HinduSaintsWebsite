@@ -13,7 +13,7 @@ import {readVrajRemainderGuide} from "@/lib/spn-vraj-remainder-source";
 import {projectBilashGuideFollowup} from "@/lib/spn-bilash-followup";
 import {projectNorthernGuide,removeSupersededNorthernSuggestions} from "@/lib/spn-northern-guide";
 import {readGuideAlternativeDestinations} from "@/lib/museum-guide-alternatives";
-import {buildLatestSpnReview} from "@/lib/spn-reviewed-proposal";
+import {spnDisplayTones} from "@/lib/spn-display-regions";
 import {projectVrajGuide} from "@/lib/spn-vraj-guide";
 import {projectRamakrishnaGuide} from "@/lib/spn-ramakrishna-guide";
 import type {StarterMoveGuide} from "@/lib/spn-move-guide";
@@ -40,5 +40,5 @@ export default async function SpnMoveCompanionPage({searchParams}:{searchParams:
  for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj"] as const)phaseGuides[key]=removeSupersededNorthernSuggestions(phaseGuides[key]);
  for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj","vraj2","east2","north","west45","west1","west46","west47","saurashtra","west40-44","south","hinge","maharashtra"] as const)phaseGuides[key]=projectCurrentGuideLifeStatus(phaseGuides[key],current);
  const guide=phaseGuides[phase];
- return <SpnRoomMoveCompanion initialAlternatives={alternatives} roomTones={{...Object.fromEntries(buildLatestSpnReview(current.placements).designData.options[0].assignments.map(a=>[a.number,a.group])),"23":"E","73":"E","75":"E","79":"B","77":"B"}} phaseGuides={phaseGuides} guide={guide} initialPhysical={physical} allowClear={guide.allowClear??phase==="starter"} phaseLabel={guide.phaseLabel??"Starter row"} phase={phase} canConfirmPlacements={hasCapability(user.roles,"confirm_museum_placements")} canManage={hasCapability(user.roles,"manage_museum")}/>;
+ return <SpnRoomMoveCompanion initialAlternatives={alternatives} roomTones={spnDisplayTones} phaseGuides={phaseGuides} guide={guide} initialPhysical={physical} allowClear={guide.allowClear??phase==="starter"} phaseLabel={guide.phaseLabel??"Starter row"} phase={phase} canConfirmPlacements={hasCapability(user.roles,"confirm_museum_placements")} canManage={hasCapability(user.roles,"manage_museum")}/>;
 }
