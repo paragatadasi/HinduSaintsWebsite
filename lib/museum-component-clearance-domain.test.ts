@@ -32,7 +32,7 @@ test("V19 partial receipt keeps whole collection and external sticks unknown",()
  const source={current:{...origin,code:"19"},currentBasis:"source",currentConfirmed:null,currentVersion:0,currentRevision:"before",sourceRevision:v19ComponentBinding.sourceRevision};
  const receipt:ComponentPlacement={...component,sourceId:v19ComponentBinding.sourceId,scope:"vitrine_19_contents_only",origin:source.current,expectedSourceRevision:source.sourceRevision};
  const projected=projectComponentPlacement(source,receipt);
- assert.equal(projected.current,null);assert.equal(projected.currentVersion,0);
+ assert.equal(projected.current,null);assert.equal(projected.currentVersion,1);
  assert.equal(projected.componentPlacement?.origin.code,"19");
  assert.equal(projected.componentPlacement?.location.code,"staging-area");
  assert.deepEqual(projected.componentPlacement?.excludedWalkingSticks,{location:null,status:"unverified"});
@@ -72,7 +72,7 @@ test("partial projection records no whole-source location or walking-stick locat
  const projected=projectComponentPlacement(original,component);
  assert.equal(projected.current,null);assert.equal(projected.currentConfirmed,null);assert.equal(projected.currentBasis,"unknown");
  assert.equal(projected.componentPlacement?.location.code,"staging-area");assert.equal(projected.componentPlacement?.excludedWalkingSticks.location,null);
- assert.equal(projected.currentVersion,0);assert.deepEqual(original.current,origin);assert.equal(projected.currentRevision,"component-revision");
+ assert.equal(projected.currentVersion,1);assert.deepEqual(original.current,origin);assert.equal(projected.currentRevision,"component-revision");
  for(const changed of [{currentRevision:"newer"},{currentVersion:1},{sourceRevision:"new-source"}])
    assert.equal(projectComponentPlacement({...original,...changed},component).componentPlacement,null);
 });

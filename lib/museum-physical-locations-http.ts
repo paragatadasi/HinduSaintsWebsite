@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { readMuseumPhysicalProgress } from "./museum-physical-progress";
+import { readMuseumPhysicalProgressIfChanged } from "./museum-physical-progress";
+import { parseIfNoneMatch } from "./museum-physical-progress-revision";
 import { getAdminUser } from "./admin-access";
 import {canConfirmMuseumPlacement,museumPhysicalWriteAllowed} from "./museum-placement-access";
 import { hasCapability } from "./permissions";
@@ -21,11 +22,12 @@ export async function museumPhysicalLocationsHttp(request: Request, loader: Phys
       const query = new URL(request.url).searchParams;
       if ((query.get("museumId") ?? "museum-spn") !== "museum-spn") throw new MuseumMoveSessionError(400, "Choose the SPN museum.");
       if (query.get("view") === "progress") {
-        const progress = await readMuseumPhysicalProgress(loader);
-        const headers = { "Cache-Control": "private, no-cache", ETag: `"${progress.progressRevision}"`,
+        // The revision comes from cheap ledger reads; a match skips the source snapshot entirely.
+        const result = await readMuseumPhysicalProgressIfChanged(loader, parseIfNoneMatch(request.headers.get("if-none-match")));
+        const revision = result.changed ? result.progress.progressRevision : result.progressRevision;
+        const headers = { "Cache-Control": "private, no-cache", ETag: `"${revision}"`,
           "Server-Timing": `museum;dur=${(performance.now() - started).toFixed(1)}` };
-        return request.headers.get("if-none-match") === headers.ETag
-          ? new Response(null, { status: 304, headers }) : NextResponse.json(progress, { headers });
+        return result.changed ? NextResponse.json(result.progress, { headers }) : new Response(null, { status: 304, headers });
       }
       const ids = z.array(z.string().min(1).max(200)).max(2000).parse(query.getAll("sourceId"));
       result = query.get("view")==="receiver-availability"

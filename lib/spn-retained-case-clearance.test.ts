@@ -22,10 +22,10 @@ test("64 component includes its housed stick and requires exact source binding",
  assert.throws(()=>isComponentClearance({...input,retainedCaseClearanceAcknowledgement:undefined},source));
  for(const mutation of [{saintId:"other"},{sourceRevision:"changed"},{identityChanged:true},{fixedHousing:true},{verifiedItemIds:["item"]}])assert.equal(componentClearanceScope({...source,...mutation}),null);
 });
-test("ordinary retained-case movement and preparation holds remain intact",()=>{
+test("ordinary curator moves and preparation no longer require retained-case exceptions",()=>{
  for(const code of ["64","65","66","67","68"]){
-  assert.ok(spnCaseExecutionHold(code));
-  assert.ok(spnPhysicalExecutionHold({kind:"vitrine",code},staging));
-  assert.ok(spnPhysicalExecutionHold(staging,{kind:"vitrine",code}));
+  assert.equal(spnCaseExecutionHold(code),null);
+  assert.equal(spnPhysicalExecutionHold({kind:"vitrine",code},staging),null);
+  assert.equal(spnPhysicalExecutionHold(staging,{kind:"vitrine",code}),null);
  }
 });

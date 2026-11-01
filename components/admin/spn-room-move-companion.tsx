@@ -1,5 +1,5 @@
 "use client";
-
+import {mergeSavedRows} from "@/lib/museum-save-receipts";
 import {clearingPreview,clearingSavedMessage} from "@/lib/museum-clearing-preview";
 import {spnDisplayRegions,spnDisplayShortLabels,spnDisplayLabel,spnDisplayMatches} from "@/lib/spn-display-regions";
 import {curatedVitrineHeadline} from "@/lib/museum-curated-headlines";
@@ -76,7 +76,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   window.history.replaceState(window.history.state,"",url);
  },[viewRestored,phase,selected,sessionView]);
  const [clearingVitrine,setClearingVitrine]=useState<string|null>(null);
- const [busy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState("");
+ const [exclusiveBusy,setBusy]=useState(false),[error,setError]=useState(""),[message,setMessage]=useState("");
  const [saintSearch,setSaintSearch]=useState(""),[startFilter,setStartFilter]=useState(""),[endFilter,setEndFilter]=useState("");
  const [alternativeOptions,setAlternativeOptions]=useState<string[]>([]);
  const [declineSource,setDeclineSource]=useState<string|null>(null);
@@ -91,6 +91,13 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  const [vitrineSearch,setVitrineSearch]=useState("");
  const [savingSources,setSavingSources]=useState<string[]>([]);
  const [savingTargets,setSavingTargets]=useState<Record<string,string>>({});
+ const activePlacements=useRef(new Set<string>());
+ const failedPlacements=useRef(new Map<string,RequestBody>());
+ const busy=exclusiveBusy||savingSources.length>0;
+ useEffect(()=>{
+  const warn=(event:BeforeUnloadEvent)=>{if(activePlacements.current.size||failedPlacements.current.size){event.preventDefault();event.returnValue="";}};
+  window.addEventListener("beforeunload",warn);return()=>window.removeEventListener("beforeunload",warn);
+ },[]);
  const [placementErrors,setPlacementErrors]=useState<Record<string,string>>({});
  useEffect(()=>{setVitrineSearch("");setClearConfirmed(false);},[selected]);
  const displayWork=useMuseumDisplayWork();
@@ -100,7 +107,8 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   for(const item of allGuides){const byId=new Map(item.entries.map(entry=>[entry.sourceId,entry]));for(const vitrine of item.vitrines)for(const group of [...vitrine.families,...vitrine.cityGroups])for(const id of group.sourceIds){const entry=byId.get(id);if(entry)entries.set(id,entry);}}
   return entries;
  },[allGuides]);
- const [taskBusy,setTaskBusy]=useState<string|null>(null);
+ const [taskTargets,setTaskTargets]=useState<Record<string,boolean>>({});
+ const taskBusy=Object.keys(taskTargets)[0]??null;
  const [taskError,setTaskError]=useState("");
  const [clearConfirmed,setClearConfirmed]=useState(false);
  const [rowDecisions,setRowDecisions]=useState<Record<string,GuideDecision[]>>({});
@@ -114,7 +122,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   let stopped=false,inFlight=false,lastFull=Date.now(),etag="";
   let controller:AbortController|null=null;
   const refresh=async()=>{
-   if(stopped||inFlight||pending.current||retry.current||document.visibilityState!=="visible")return;
+   if(stopped||inFlight||pending.current||activePlacements.current.size>0||retry.current||document.visibilityState!=="visible")return;
    inFlight=true;const epoch=mutationEpoch.current;controller=new AbortController();
    const timeout=window.setTimeout(()=>controller?.abort(),20000);
    try{
@@ -124,11 +132,13 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
     if(response.status===304){if(!stopped)setSyncError("");return;}
     const data=await response.json();
     if(!response.ok||!(full?Array.isArray(data.rows):Array.isArray(data.positions)))throw new Error("Live updates paused. Refresh progress to reconnect.");
-    if(stopped||pending.current||epoch!==mutationEpoch.current)return;
+    if(stopped||pending.current||activePlacements.current.size>0||epoch!==mutationEpoch.current)return;
     if(full){setPhysical(data);}else if(physicalRef.current){
      const merged=mergeMuseumPhysicalProgress(physicalRef.current.rows,data.positions);
      if(merged.needsFullRefresh)lastFull=0;
-     setPhysical(previous=>previous?{...previous,rows:merged.rows,preparations:data.preparations,phaseClearances:data.phaseClearances,receiverAvailabilities:data.receiverAvailabilities}:previous);
+     // Progress omits receiver availabilities; keep the last full value and refresh it after a ledger change.
+     setPhysical(previous=>previous?{...previous,rows:merged.rows,preparations:data.preparations,phaseClearances:data.phaseClearances,receiverAvailabilities:data.receiverAvailabilities??(previous as {receiverAvailabilities?:unknown}).receiverAvailabilities}:previous);
+     if(etag)lastFull=0;
      etag=response.headers.get("ETag")??"";
     }
     setSyncError("");
@@ -145,8 +155,8 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   const owner=companionVitrineOwner(phaseGuides,selected);
   if(owner&&owner!==phase){switchPhase(owner);setSelected(selected);}
  },[viewRestored,phaseGuides,view,busy,displayWork.busy,phase,selected]);
- const editable=canManage&&!!physical&&!busy&&!displayWork.busy&&!retry.current;
- const placementEditable=(canManage||canConfirmPlacements)&&!!physical&&!busy&&!displayWork.busy&&!retry.current;
+ const editable=canManage&&!!physical&&!busy&&!displayWork.busy&&!retry.current&&!failedPlacements.current.size;
+ const placementEditable=(canManage||canConfirmPlacements)&&!!physical&&!exclusiveBusy&&!retry.current;
  const rows=(physical?.rows??[]).map(row=>row.currentBasis==="confirmed"&&row.current?{...row,current:{...row.current,shelf:displayWork.shelf(row)}}:row);
  const occupants=rows.filter(r=>{const location=r.componentPlacement?.location??r.current;return location?.kind==="vitrine"&&location.code===selected;});
  const unmapped=physical?.unmappedCurrentLocations.filter(r=>r.location.kind==="vitrine"&&r.location.code===selected)??[];
@@ -184,7 +194,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   if(window.location.protocol!=="file:"){const url=new URL(window.location.href);if(next==="starter")url.searchParams.delete("phase");else url.searchParams.set("phase",next);window.history.replaceState(null,"",url);}
  }
  async function send(method:string,body:RequestBody,url="/api/admin/museum-physical-locations",propagateError=false){
-  if(pending.current){if(propagateError)throw new Error("Another save is in progress. Try again when it finishes.");return;}
+  if(pending.current||activePlacements.current.size){if(propagateError)throw new Error("Another save is in progress. Try again when it finishes.");return;}
   pending.current=true;mutationEpoch.current+=1;setBusy(true);setError("");setMessage("");
   const affectedSources=Array.isArray(body.records)?body.records.map((record:{sourceId:string})=>record.sourceId):[];
   setPlacementErrors(previous=>Object.fromEntries(Object.entries(previous).filter(([id])=>!affectedSources.includes(id))));
@@ -219,10 +229,42 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   }catch(e){const message=e instanceof Error?e.message:"Could not save. Retry the same action or reload to check its status.";setError(message);setPlacementErrors(previous=>({...previous,...Object.fromEntries(affectedSources.map((id:string)=>[id,message]))}));if(propagateError)throw new Error(message);}
   finally{pending.current=false;setBusy(false);setSavingSources([]);setSavingTargets({});}
  }
- async function reload(){
-  if(pending.current)return;pending.current=true;mutationEpoch.current+=1;setBusy(true);setError("");
+ async function savePlacement(body:RequestBody){
+  const records=Array.isArray(body.records)?body.records:[];
+  const sourceId=records[0]?.sourceId;
+  if(!sourceId||pending.current||activePlacements.current.has(sourceId)||displayWork.isSaving(sourceId))return;
+  activePlacements.current.add(sourceId);mutationEpoch.current+=1;
+  failedPlacements.current.set(sourceId,body);
+  setSavingSources(previous=>[...previous,sourceId]);
+  setSavingTargets(previous=>({...previous,[sourceId]:records[0].to.code}));
+  setPlacementErrors(previous=>({...previous,[sourceId]:""}));
   const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),30000);
-  try{const response=await fetch("/api/admin/museum-physical-locations?museumId=museum-spn",{cache:"no-store",signal:controller.signal});const data=await response.json();if(!response.ok)throw new Error(data.error||"Could not load current locations.");setPhysical(data);await Promise.all([loadDecisions(controller.signal),displayWork.reload(controller.signal)]);retry.current=null;setMessage("Current progress loaded.");setSyncError("");}
+  try{
+   const response=await fetch("/api/admin/museum-physical-locations",{method:"POST",signal:controller.signal,headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+   const result=await response.json();
+   if(!response.ok){
+    if(response.status<500)failedPlacements.current.delete(sourceId);
+    if(response.status===409){
+     const refresh=await fetch("/api/admin/museum-physical-locations?museumId=museum-spn&sourceId="+encodeURIComponent(sourceId),{cache:"no-store",signal:controller.signal});
+     const snapshot=await refresh.json();
+     if(refresh.ok&&Array.isArray(snapshot.rows))setPhysical(previous=>previous?{...previous,rows:mergeSavedRows(previous.rows,snapshot.rows.filter((row:CompanionRow)=>row.sourceId===sourceId))}:previous);
+    }
+    throw new Error(result.error||"Could not save this placement. Retry the same save.");
+   }
+   if(!Array.isArray(result.rows))throw new Error("The save could not be confirmed. Retry the same save.");
+   setPhysical(previous=>previous?{...previous,confirmationHistory:result.receipt?[result.receipt,...(previous.confirmationHistory??[])]:previous.confirmationHistory,rows:mergeSavedRows(previous.rows,result.rows)}:result);
+   failedPlacements.current.delete(sourceId);
+  }catch(error){setPlacementErrors(previous=>({...previous,[sourceId]:error instanceof Error&&error.name!=="AbortError"?error.message:"The save has not been confirmed. Retry the same save."}));}
+  finally{
+   window.clearTimeout(timeout);activePlacements.current.delete(sourceId);mutationEpoch.current+=1;
+   setSavingSources(previous=>previous.filter(id=>id!==sourceId));
+   setSavingTargets(previous=>Object.fromEntries(Object.entries(previous).filter(([id])=>id!==sourceId)));
+  }
+ }
+ async function reload(){
+  if(pending.current||activePlacements.current.size)return;pending.current=true;mutationEpoch.current+=1;setBusy(true);setError("");
+  const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),30000);
+  try{const response=await fetch("/api/admin/museum-physical-locations?museumId=museum-spn",{cache:"no-store",signal:controller.signal});const data=await response.json();if(!response.ok)throw new Error(data.error||"Could not load current locations.");setPhysical(data);await Promise.all([loadDecisions(controller.signal),displayWork.reload(controller.signal)]);retry.current=null;failedPlacements.current.clear();setMessage("Current progress loaded.");setSyncError("");}
   catch(e){controller.abort();setError(e instanceof Error&&e.name!=="AbortError"?e.message:"Progress took too long to load. Try Refresh progress again.");}finally{window.clearTimeout(timeout);pending.current=false;setBusy(false);setSavingSources([]);setSavingTargets({});}
  }
  async function loadDecisions(signal?:AbortSignal){
@@ -284,7 +326,8 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   else if(alternative)to={...to,...(alternative.shelf?{shelf:alternative.shelf}:{})};
   const authorizationGuide=addition?(capturedPhaseGuides?Object.values(capturedPhaseGuides):[initialGuide]).find(g=>g.vitrines.some(v=>v.code===to.code)):guide;
   const now=new Date();const confirmedDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
-  void send("POST",{museumId:"museum-spn",clientRequestId:crypto.randomUUID(),confirmedDate,datePrecision:"date",evidence:"Curator confirmed this physical move in the starter-row companion.",physicalConfirmation:true,inventoryAcknowledged:true,...(authorizationGuide?{guideContext:{guideVersion:authorizationGuide.version,contentDigest:authorizationGuide.contentDigest,assignmentDigest:authorizationGuide.assignmentDigest}}:{}),
+  const submit=items.length===1&&to.kind==="vitrine"&&!clearedVitrines?(body:RequestBody)=>savePlacement(body):(body:RequestBody)=>send("POST",body);
+  void submit({museumId:"museum-spn",clientRequestId:crypto.randomUUID(),confirmedDate,datePrecision:"date",evidence:"Curator confirmed this physical move in the starter-row companion.",physicalConfirmation:true,inventoryAcknowledged:true,...(authorizationGuide?{guideContext:{guideVersion:authorizationGuide.version,contentDigest:authorizationGuide.contentDigest,assignmentDigest:authorizationGuide.assignmentDigest}}:{}),
    ...(additions.find(a=>items.length===1&&a.sourceId===items[0].sourceId&&a.vitrine===to.code)?{curatorAddition:{sourceId:items[0].sourceId,version:additions.find(a=>a.sourceId===items[0].sourceId)!.version}}:{}),
    ...(alternative&&!additions.some(a=>items.length===1&&a.sourceId===items[0].sourceId&&a.vitrine===to.code)?{alternativeDecision:{guideVersion:alternative.guideVersion,suggestionId:alternative.suggestionId,version:alternative.version}}:{}),
    records:items.map(r=>({sourceId:r.sourceId,saintId:r.saintId,expectedLocationVersion:r.currentVersion,expectedCurrentRevision:r.currentRevision,expectedSourceRevision:r.sourceRevision,to})),...companionClearFields(clearedVitrines)});
@@ -292,12 +335,15 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  function placementFeedback(sourceId:string){
   const message=placementErrors[sourceId];
   if(!message)return null;
+  const failed=failedPlacements.current.get(sourceId);
+  if(failed)return <span role="alert" className="admin-notice">{message}<button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={savingSources.includes(sourceId)||exclusiveBusy} onClick={()=>void savePlacement(failed)}>Retry same save</button></span>;
   const sameSave=Array.isArray(retry.current?.body.records)&&retry.current.body.records.some((record:{sourceId:string})=>record.sourceId===sourceId);
   return <span role="alert" className="admin-notice">{message}{sameSave?<button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={busy} onClick={()=>{const request=retry.current;if(request)void send(request.method,request.body,request.url);}}>Retry same save</button>:null}</span>;
  }
  function togglePlacement(row:CompanionRow,target:string){
   const hold=spnCaseExecutionHold(target)||(row.current?.kind==="vitrine"?spnCaseExecutionHold(row.current.code):null);
   if(hold){setError(hold);return;}
+  if(activePlacements.current.has(row.sourceId)||failedPlacements.current.has(row.sourceId)||displayWork.isSaving(row.sourceId))return;
   if(isPlaced(row,target)){if(!canManage){setError("This placement is already saved. Ask a curator to correct a mistaken check.");return;}setUndoSource(row.sourceId);return;}
   try{move([row],{kind:"vitrine",code:target,label:`Vitrine ${target}`});}
   catch(error){setPlacementErrors(previous=>({...previous,[row.sourceId]:error instanceof Error?error.message:"The save could not start. Reload the guide and try again."}));}
@@ -332,8 +378,8 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   </article>;
  }
  async function completeTask(task:DisplayTask,completed:boolean){
-  if(taskBusy)return;setTaskBusy(task.id);setTaskError("");
-  try{await displayWork.completeTask(task,completed);}catch(error){setTaskError(error instanceof Error?error.message:"Could not update this to-do.");}finally{setTaskBusy(null);}
+  if(displayWork.isSaving(task.sourceId))return;setTaskTargets(previous=>({...previous,[task.id]:completed}));setTaskError("");
+  try{await displayWork.completeTask(task,completed);}catch(error){setTaskError(error instanceof Error?error.message:"Could not update this to-do.");}finally{setTaskTargets(previous=>Object.fromEntries(Object.entries(previous).filter(([id])=>id!==task.id)));}
  }
  function openDestination(sourceId:string,target:string){
   if(busy||displayWork.busy||retry.current)return;
@@ -345,7 +391,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  function taskList(){
   const groups=new Map<string,DisplayTask[]>();
   for(const task of displayWork.tasks){const row=rows.find(r=>r.sourceId===task.sourceId),entry=guideById.get(task.sourceId);const code=row?.currentBasis==="confirmed"&&row.current?.kind==="vitrine"?row.current.code:entry?.destination??"";groups.set(code,[...(groups.get(code)??[]),task]);}
-  return <>{displayWork.error?<p role="alert">{displayWork.error} <button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>void displayWork.reload().catch(error=>setTaskError(error.message))}>Retry</button></p>:null}{taskError?<p role="alert">{taskError}</p>:null}{!displayWork.loaded?<p>Loading to-dos…</p>:!displayWork.tasks.length?<p>No to-dos yet. Add one from a saint’s final checklist entry.</p>:[...groups].sort(([a],[b])=>(Number(a)||Infinity)-(Number(b)||Infinity)).map(([code,tasks])=><section className="museum-companion__task-group" key={code}><h3>{code?'Vitrine '+code:'Vitrine not assigned'}</h3>{tasks.sort((a,b)=>Number(a.status==="completed")-Number(b.status==="completed")).map(task=>{const entry=guideById.get(task.sourceId),row=rows.find(r=>r.sourceId===task.sourceId);return <label className="museum-guide-check" key={task.id}><input type="checkbox" checked={task.status==="completed"} disabled={!canManage||taskBusy!==null} onChange={event=>void completeTask(task,event.target.checked)}/><span className="museum-guide-check__body"><strong>{task.title}</strong><small>{entry?.name??row?.name??task.sourceId}</small>{taskBusy===task.id?<small role="status">Saving…</small>:null}</span></label>;})}</section>)}</>;
+  return <>{displayWork.error?<p role="alert">{displayWork.error} <button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>void displayWork.reload().catch(error=>setTaskError(error.message))}>Retry</button></p>:null}{taskError?<p role="alert">{taskError}</p>:null}{!displayWork.loaded?<p>Loading to-dos…</p>:!displayWork.tasks.length?<p>No to-dos yet. Add one from a saint’s final checklist entry.</p>:[...groups].sort(([a],[b])=>(Number(a)||Infinity)-(Number(b)||Infinity)).map(([code,tasks])=><section className="museum-companion__task-group" key={code}><h3>{code?'Vitrine '+code:'Vitrine not assigned'}</h3>{tasks.sort((a,b)=>Number(a.status==="completed")-Number(b.status==="completed")).map(task=>{const entry=guideById.get(task.sourceId),row=rows.find(r=>r.sourceId===task.sourceId);return <label className="museum-guide-check" key={task.id}><input type="checkbox" checked={taskTargets[task.id]??(task.status==="completed")} disabled={!canManage||displayWork.isSaving(task.sourceId)} onChange={event=>void completeTask(task,event.target.checked)}/><span className="museum-guide-check__body"><strong>{task.title}</strong><small>{entry?.name??row?.name??task.sourceId}</small>{task.id in taskTargets?<small role="status">Saving…</small>:null}</span></label>;})}</section>)}</>;
  }
  function preparatoryTransfersCard(){
   if(!guide.preparatoryTransfers?.length)return null;
@@ -434,7 +480,7 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
   if(!row||!selectedIds.includes(id))return null;
   if(isNotOnDisplay(id))return <small>Not on display</small>;
   const placed=isPlaced(row,selected);
-  return <span className="museum-guide-tree__check"><input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${selected}`} checked={placed||savingTargets[id]===selected} disabled={!placementEditable||!!executionHold||blocked(row)} onChange={()=>togglePlacement(row,selected)}/>{savingSources.includes(id)?<small role="status">Saving…</small>:null}{placementFeedback(id)}</span>;
+  return <span className="museum-guide-tree__check"><input type="checkbox" aria-label={`Mark ${entry?.name??row.name} placed in Vitrine ${selected}`} checked={placed||savingTargets[id]===selected} disabled={!placementEditable||savingSources.includes(id)||displayWork.isSaving(id)||failedPlacements.current.has(id)||!!executionHold||blocked(row)} onChange={()=>togglePlacement(row,selected)}/>{savingSources.includes(id)?<small role="status">Saving…</small>:null}{placementFeedback(id)}</span>;
  }
  function sorted(ids:string[]){const rank=(id:string)=>{const n=["Primary","Secondary","Tertiary"].indexOf(guideById.get(id)?.tier??"");return n<0?3:n;};return [...new Set(ids)].sort((a,b)=>rank(a)-rank(b));}
  function matchesVitrine(id:string){const entry=guideById.get(id);return !vitrineSearch.trim()||`${entry?.name??""} ${entry?.city??""}`.toLocaleLowerCase().includes(vitrineSearch.trim().toLocaleLowerCase());}

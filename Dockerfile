@@ -36,6 +36,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
+# Next.js writes optimized images and prerender output here at runtime. Production may override the
+# runtime uid (the Strato compose runs as 1000:1000), so make it writable like /tmp rather than by owner only.
+RUN mkdir -p /app/.next/cache && chown nextjs:nodejs /app/.next/cache && chmod 1777 /app/.next/cache
 USER nextjs
 EXPOSE 3000
 ENV PORT=3000
