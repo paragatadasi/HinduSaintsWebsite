@@ -575,3 +575,40 @@
 .museum-companion--guide {--width-companion:65rem;--font-size-companion-title:1.8rem;--font-size-companion-heading:1.45rem;--font-size-companion-subheading:1.05rem}
 
 .museum-companion--guide {--width-companion:90rem;--width-companion-map:35rem}
+
+/* Reviewed SPN display regions; independent of canonical tradition colors. */
+:root {
+  --color-spn-display-n-fill: oklch(0.95 0.024 285);
+  --color-spn-display-n-edge: oklch(0.65 0.070 285);
+  --color-spn-display-n-solid: oklch(0.55 0.100 285);
+  --color-spn-display-b-fill: oklch(0.95 0.025 145);
+  --color-spn-display-b-edge: oklch(0.65 0.070 145);
+  --color-spn-display-b-solid: oklch(0.55 0.100 145);
+  --color-spn-display-e-fill: oklch(0.95 0.025 220);
+  --color-spn-display-e-edge: oklch(0.65 0.070 220);
+  --color-spn-display-e-solid: oklch(0.55 0.100 220);
+  --color-spn-display-w-fill: oklch(0.95 0.025 75);
+  --color-spn-display-w-edge: oklch(0.65 0.070 75);
+  --color-spn-display-w-solid: oklch(0.55 0.100 75);
+  --color-spn-display-s-fill: oklch(0.95 0.024 25);
+  --color-spn-display-s-edge: oklch(0.65 0.070 25);
+  --color-spn-display-s-solid: oklch(0.55 0.100 25);
+  --color-spn-display-k-fill: oklch(.95 0 0);
+  --color-spn-display-k-edge: oklch(.65 0 0);
+  --color-spn-display-k-solid: oklch(.55 0 0);
+  --color-spn-display-c-fill: oklch(.95 0 0);
+  --color-spn-display-c-edge: oklch(.65 0 0);
+  --color-spn-display-c-solid: oklch(.55 0 0);
+  --color-spn-display-be-fill: oklch(0.95 0.025 182.5);
+  --color-spn-display-be-edge: oklch(0.65 0.070 182.5);
+  --color-spn-display-be-solid: oklch(0.55 0.098 182.5);
+  --color-spn-display-en-fill: oklch(0.95 0.024 252.5);
+  --color-spn-display-en-edge: oklch(0.65 0.070 252.5);
+  --color-spn-display-en-solid: oklch(0.55 0.100 252.5);
+  --color-spn-display-sw-fill: oklch(0.95 0.025 50);
+  --color-spn-display-sw-edge: oklch(0.65 0.070 50);
+  --color-spn-display-sw-solid: oklch(0.55 0.100 50);
+  --color-spn-display-r-fill: oklch(.95 0 0);
+  --color-spn-display-r-edge: oklch(.65 0 0);
+  --color-spn-display-r-solid: oklch(.55 0 0);
+}

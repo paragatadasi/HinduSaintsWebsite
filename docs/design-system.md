@@ -788,3 +788,22 @@ A move-guide vitrine may include a short `placementGuidance` paragraph directly 
 Confirmed placements without recorded shelves appear under **Retain current arrangement** in shelf recommendations. Keep them outside proposed row bands; do not infer an actual shelf from the suggested layout. The physical move checkbox continues to confirm only the vitrine.
 
 Museum vitrine headlines may name reviewed anchors only while their exact source records remain assigned to that vitrine. Use a neutral locality or tradition fallback when membership changes; do not infer matches from names.
+
+## SPN display-region presentation
+
+The current proposal reviewer and move companion use `lib/spn-display-regions.ts`
+for physical-case colors and labels, backed by the approved 1 November v4 review.
+These are display regions, not canonical saint traditions or recorded locations.
+Earlier proposal studies retain their captured groupings. Keep Vraj & Ganga and
+Himalaya & the North intact; geographic research subfilters are not move phases.
+
+Use `--color-spn-display-*-fill/edge/solid` for the muted spectrum. Sikh and Bhakti
+Marga are both gray but retain separate labels and filters. Bridge cases 2, 5, 74,
+61 and 62 use a single midpoint hue and match both region filters; 80 retains
+West color and also matches North. Region filters emphasize the room map without
+changing destinations, readiness, or recorded moves. Superseded 27/73 stay neutral.
+
+See [dated museum placement learning](museum-placement-learning-2026-11-01.md)
+for placement-driver roles, physical ID discipline, and release verification.
+
+[SPN display palette audit](design/spn-display-palette.md) lists the shared color declarations.
