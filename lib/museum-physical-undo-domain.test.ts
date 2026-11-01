@@ -38,3 +38,14 @@ test("undo requires explicit mistake acknowledgement and rejects target-location
  const input={action:"undo",museumId:"museum-spn",clientRequestId:"a9230f9a-f7ba-4c60-864a-c3b462c4f1dd",receiptId:"receipt",sourceId:"source",saintId:"saint",expectedCurrentRevision:"a".repeat(64),expectedSourceRevision:"b".repeat(64),expectedLocationVersion:1,mistakenCheckAcknowledged:true};
  assert.equal(physicalUndoInput.safeParse(input).success,true);assert.equal(physicalUndoInput.safeParse({...input,mistakenCheckAcknowledged:false}).success,false);assert.equal(physicalUndoInput.safeParse({...input,to}).success,false);
 });
+
+test("rows sharing one receipt list each find their own receipt, in receipt order",()=>{
+ const other={...row,sourceId:"other",sourceKey:"base:other",saintId:"other-saint"};
+ const otherMove={sourceId:"other",sourceKey:"base:other",saintId:"other-saint",original:from,previous:from,location:to,version:1};
+ const both={id:"both",afterJson:{...event.afterJson,moves:[...event.afterJson.moves,otherMove]}};
+ const malformed={id:"malformed",afterJson:{museumId:"museum-spn"}};
+ const receipts=[malformed,{...event,id:"newer"},both];
+ assert.equal(physicalUndoOffer(row,receipts).receiptId,"newer");
+ assert.equal(physicalUndoOffer(other,receipts).receiptId,"both");
+ assert.equal(physicalUndoOffer({...row,sourceId:"missing"},receipts).available,false);
+});
