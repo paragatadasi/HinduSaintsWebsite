@@ -1,0 +1,62 @@
+{
+  "version": "spn-jamnagar-receiver-2026-11-01-v1",
+  "destination": "49",
+  "group": {
+    "id": "jamnagar:49",
+    "title": "Jamnagar · Saurashtra",
+    "kind": "city"
+  },
+  "fitNote": "Keep the Jamnagar pair together on the bottom shelf; check actual fit before placing.",
+  "allocations": [
+    {
+      "sourceId": "recPXA2z64STAw7mj",
+      "saintId": "cms0w7hhp06p607qiogzl2o5r",
+      "name": "Sri Mahant Chaitanya Das Bapu, Jamnagar, Gujarat",
+      "tier": "Tertiary",
+      "sourceRevision": "dc0335d797f138c3cf2530069bc5fd77b1172b2ad37c937233cbd8d09eea4204",
+      "capturedBaseline": {
+        "placementId": "recPXA2z64STAw7mj",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "dc1473a005e0e7b6ae614f21e28a340c0a64f254e5112690303c0c3f47cb2fc1",
+        "proposalRevision": "3eb41f34540b4e5ea54799c21136798911f716e6fd5a717243e2ef4f729aaa28"
+      },
+      "knownFootprint": 0.4166666666666667,
+      "groupId": "jamnagar:49",
+      "suggestedShelfIndex": 5,
+      "suggestedBand": "bottom",
+      "reviewAlerts": [
+        {
+          "message": "Keep the Jamnagar pair together on the bottom shelf; check actual fit before placing."
+        }
+      ]
+    },
+    {
+      "sourceId": "rec0qNQ06e49fFCVU",
+      "saintId": "cms0w7ca2004u07qi796nhugc",
+      "name": "Sri Natha Bapa",
+      "tier": "Tertiary",
+      "sourceRevision": "2f4c9f614b76d8aec3d826a2640ff9a8fc5e20348a6f4a256a27622b85f8323d",
+      "capturedBaseline": {
+        "placementId": "rec0qNQ06e49fFCVU",
+        "section": "Braj & Krishna Bhakti",
+        "tier": "Tertiary",
+        "familyKey": "",
+        "regionTags": [],
+        "revision": "9a1e9315ac83ab861fe6d5bb88d405c187a8e9a4ef047910aca4f7e6d0297bb0",
+        "proposalRevision": "c6ee7e8c10528fdf8c5a6dac35ebbdf5c0a5c3cbfdbe00a585a8000a3d2ff9ce"
+      },
+      "knownFootprint": 0.4166666666666667,
+      "groupId": "jamnagar:49",
+      "suggestedShelfIndex": 5,
+      "suggestedBand": "bottom",
+      "reviewAlerts": [
+        {
+          "message": "Keep the Jamnagar pair together on the bottom shelf; check actual fit before placing."
+        }
+      ]
+    }
+  ]
+}
