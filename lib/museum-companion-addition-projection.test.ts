@@ -45,10 +45,11 @@ test("curator addition appears in the overall proposal and removes the pending r
  assert.equal(after.rows.find(row=>row.sourceId===pending.sourceId)?.effectiveVitrine,"73");
  assert.equal(after.proposal.pendingPlacements.some(row=>row.sourceId===pending.sourceId),false);
 });
-test("a private holding remains excluded from the overall proposal",()=>{
+test("a private holding remains excluded until a curator explicitly chooses a new destination",()=>{
  const held=overlay.excludedFromMuseumDisplay[0];assert.ok(held);
+ assert.equal(buildLatestSpnReview([]).rows.some(row=>row.sourceId===held.sourceId),false);
  const after=buildLatestSpnReview([],[{sourceId:held.sourceId,vitrine:"73",shelf:null}]);
- assert.equal(after.rows.some(row=>row.sourceId===held.sourceId),false);
+ assert.equal(after.rows.find(row=>row.sourceId===held.sourceId)?.effectiveVitrine,"73");
 });
 
 import {currentCompanionAdditions} from "./museum-companion-addition-validation";

@@ -2,10 +2,10 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {spnCaseExecutionHold, spnPhysicalExecutionHold} from "./museum-case-execution-holds";
 
-test("all five retained Sikh cases block preparation, incoming and outgoing physical records", () => {
+test("Sikh cases allow curator preparation and incoming or outgoing physical records", () => {
   for (const code of ["64", "65", "66", "67", "68"]) {
     const hold = spnCaseExecutionHold(code);
-    assert.ok(hold);
+    assert.equal(hold,null);
     const vitrine = {kind: "vitrine", code};
     assert.equal(spnPhysicalExecutionHold(vitrine, {kind: "table", code: "staging-area"}), hold);
     assert.equal(spnPhysicalExecutionHold({kind: "vitrine", code: "77"}, vitrine), hold);
@@ -22,8 +22,8 @@ test("unrelated cases and non-vitrine location codes remain unaffected", () => {
 });
 
 test("verified item shelves resolve to their SPN case without affecting another museum", () => {
-  assert.ok(spnPhysicalExecutionHold({kind:"shelf",code:"64/A",museumId:"museum-spn"},null));
-  assert.ok(spnPhysicalExecutionHold(null,{kind:"shelf",code:"68/3",museumId:"museum-spn"}));
+  assert.equal(spnPhysicalExecutionHold({kind:"shelf",code:"64/A",museumId:"museum-spn"},null),null);
+  assert.equal(spnPhysicalExecutionHold(null,{kind:"shelf",code:"68/3",museumId:"museum-spn"}),null);
   assert.equal(spnPhysicalExecutionHold({kind:"shelf",code:"64/A",museumId:"museum-vrindavan"},null),null);
   assert.equal(spnPhysicalExecutionHold(null,{kind:"vitrine",code:"68",museumId:"museum-vrindavan"}),null);
 });

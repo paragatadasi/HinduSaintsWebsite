@@ -15,11 +15,11 @@ test("Bimal whole-assembly review requires exact fresh identity and housing evid
  assert.ok(spnMovementBlockedReason(source.sourceId,{...source,housingEvidenceRevision:undefined}));
  assert.ok(spnMovementBlockedReason("rec9vEn5oj7QZTXl0",source));
 });
-test("Bimal exception authorizes only the reviewed64/E to40 route, never blanket64 clearing",()=>{
+test("Bimal research remains route-specific while curator execution is independent",()=>{
  assert.equal(isReviewedBimalTransfer(source,from,to),true);
  for(const destination of [{kind:"table",code:"staging-area"},{kind:"vitrine",code:"41"},{...to,museumId:"museum-vrindavan"}])assert.equal(isReviewedBimalTransfer(source,from,destination),false);
  for(const origin of [{...from,shelf:"D"},{...from,shelf:undefined},{...from,code:"65"},{...from,museumId:"museum-vrindavan"}])assert.equal(isReviewedBimalTransfer(source,origin,to),false);
  assert.equal(isReviewedBimalTransfer({...source,sourceId:"other"},from,to),false);
- assert.ok(spnPhysicalExecutionHold(from,to));
+ assert.equal(spnPhysicalExecutionHold(from,to),null);
  assert.equal(review.physicalConfirmationWritten,false);
 });

@@ -17,7 +17,14 @@ export function receiverAvailabilityValid(saved:ReceiverAvailability,recordedAt:
  const roster=(rows:ReceiverAvailability["incoming"])=>rows.map(({sourceId,sourceRevision})=>({sourceId,sourceRevision}));
  if(saved.vitrine!==current.vitrine||JSON.stringify(saved.guideContext)!==JSON.stringify(current.guideContext)||JSON.stringify(roster(saved.incoming))!==JSON.stringify(roster(current.incoming)))return false;
  if(saved.incoming.some(old=>{const row=current.incoming.find(r=>r.sourceId===old.sourceId);return !row||(row.currentRevision!==old.currentRevision&&!(row.currentVersion===old.currentVersion+1&&current.occupants.some(o=>o.sourceId===row.sourceId)));}))return false;
- if(saved.occupants.some(old=>!current.occupants.some(row=>row.sourceId===old.sourceId&&row.currentRevision===old.currentRevision)))return false;
+ if(saved.occupants.some(old=>!current.occupants.some(row=>{
+  if(row.sourceId!==old.sourceId)return false;
+  if(row.currentRevision===old.currentRevision)return true;
+  const before=saved.incoming.find(r=>r.sourceId===old.sourceId),after=current.incoming.find(r=>r.sourceId===old.sourceId);
+  return old.basis==="source"&&row.basis==="confirmed"&&before!==undefined&&after!==undefined&&before.currentRevision===old.currentRevision&&
+   after.sourceRevision===before.sourceRevision&&after.currentVersion===before.currentVersion+1&&
+   row.confirmedAt!==null&&Date.parse(row.confirmedAt)>=Date.parse(recordedAt);
+ })))return false;
  return current.occupants.every(row=>saved.occupants.some(old=>old.sourceId===row.sourceId)||(current.incoming.some(incoming=>incoming.sourceId===row.sourceId)&&row.basis==="confirmed"&&row.confirmedAt!==null&&Date.parse(row.confirmedAt)>=Date.parse(recordedAt)))&&Number.isFinite(Date.parse(recordedAt));
 }
 export function assertReceiverAvailabilityRevision(expectedRevision:string,expectedVersion:number,current:{revision:string;expectedPreparationVersion:number}){

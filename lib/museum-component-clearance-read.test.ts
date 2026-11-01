@@ -19,7 +19,7 @@ for(const [sourceId,code] of [[v20ComponentSourceIds[0],"20"],[v19ComponentBindi
      previousCurrentRevision:before.currentRevision,previousLocationVersion:0}]}}];
  const partial=await readPhysicalLocationView(loader,tx as never,[sourceId],false);
  const row=partial.rows[0];assert.equal(row.current,null);assert.equal(row.currentConfirmed,null);
- assert.deepEqual(row.original,origin);assert.equal(row.currentVersion,0);
+ assert.deepEqual(row.original,origin);assert.equal(row.currentVersion,1);
  assert.equal(row.componentPlacement?.location.code,"staging-area");assert.equal(row.componentPlacement?.excludedWalkingSticks.location,null);
  assert.equal(row.componentPlacement?.includedWalkingSticks,code==="64"?true:undefined);
  assert.ok(row.movementBlockedReason);assert.equal(row.undo.available,true);
