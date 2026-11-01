@@ -1,3 +1,5 @@
+import {withMuseumTransactionReads} from "./museum-transaction-reads";
+import {lockMuseumPlacement,retryMuseumSerialization} from "./museum-write-concurrency";
 import {pagalComponentAcknowledgement,canPlacePagalComponent,canConfirmPagalComponentDestination,pagalComponentReceiptId} from "./spn-pagal-component-placement";
 import {assertAlternativeGuideContext} from "./museum-guide-alternative-domain";
 import {caseContentsStaging,assertSelectedCaseContents} from "./museum-case-contents-domain";
@@ -166,9 +168,23 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     const registered = definition.context;
     if (registered.contentDigest !== input.guideContext.contentDigest || registered.assignmentDigest !== input.guideContext.assignmentDigest) throw new MuseumMoveSessionError(409, "The guide content changed. Reload it before recording a placement.");
   }
-  return db.$transaction(async tx => {
-    // Share the session lock: both workflows update the same source-current ledger.
-    await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-move-session:spn'))`;
+  return retryMuseumSerialization(() => db.$transaction(async tx => withMuseumTransactionReads(tx, async () => {
+    const definition = input.guideContext ? readStarterGuideDefinition(input.guideContext.guideVersion) : null;
+    const dependencyIds = [
+      ...[...(definition ? [definition] : []), ...input.records.flatMap(row => row.to.kind === "vitrine" ? currentReceiverGuideDefinitions(row.to.code) : [])]
+        .flatMap(guide => guide.physicalScope?.preparatoryTransfers ?? [])
+        .filter(transfer => input.records.some(row => row.to.kind === "vitrine" && transfer.requiredBefore.includes(row.to.code)))
+        .map(transfer => transfer.sourceId),
+      ...(input.records.some(row => row.to.kind === "vitrine" && row.to.code === "9") ? ["recHatM8WlLSqKeyy"] : [])
+    ];
+    await lockMuseumPlacement(tx, input.clientRequestId, [...input.records.map(row => row.sourceId), ...dependencyIds],
+      Boolean(input.clearedVitrines?.length || input.caseContentsStaging || input.componentStagingAcknowledgements?.length || input.componentPlacementAcknowledgement));
+    if (input.clearedVitrines?.length) {
+      // An advisory-lock wait can predate the serializable snapshot. Reading all
+      // confirmations pairs with placement reads of clearance receipts, forcing
+      // a retry if a placement committed while this clear waited for the barrier.
+      await tx.auditEvent.findMany({where:{action,entityType:receiptType,entityId:{startsWith:"museum-spn:"}},select:{id:true}});
+    }
     const entityId = `${input.museumId}:${input.clientRequestId}`, fingerprint = physicalFingerprint(input);
     const retry = await tx.auditEvent.findFirst({ where: { action, entityType: receiptType, entityId }, select: { id: true, afterJson: true } });
     if (retry) {
@@ -190,7 +206,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertBilashGuideTarget(input.records,(await readMuseumData(tx)).placements);
     if(input.alternativeDecision){
       if(!input.guideContext||input.clearedVitrines?.length)throw new MuseumMoveSessionError(400,"Reload the alternative destination before confirming it.");
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const key={museumId:"museum-spn",guideVersion:input.alternativeDecision.guideVersion,suggestionId:input.alternativeDecision.suggestionId};
       const decision=await tx.museumGuideSuggestionDecision.findUnique({where:{museumId_guideVersion_suggestionId:key}});
       const suggestion=assertAlternativeGuideContext(readStarterGuideDefinition(input.guideContext.guideVersion),readStarterGuideDefinition(key.guideVersion),key.suggestionId);
@@ -204,7 +220,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     if (input.curatorAddition) {
       if (input.alternativeDecision || input.clearedVitrines?.length || input.records.length !== 1)
         throw new MuseumMoveSessionError(400, "Confirm one added record without clearing a vitrine.");
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
       const addition = (await readEffectiveCompanionAdditions(tx)).find(row => row.sourceId === input.curatorAddition!.sourceId);
       const record = input.records[0];
       assertSavedAdditionPlacement(input.curatorAddition,record,addition);
@@ -215,8 +231,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     const transfers = [...(phase?.physicalScope?.preparatoryTransfers ?? []), ...additionPhases.flatMap(row => row.physicalScope?.preparatoryTransfers ?? [])];
     const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length||input.caseContentsStaging ? undefined : [...new Set([...input.records.map(row => row.sourceId), ...transfers.map(row => row.sourceId), ...(input.records.some(row=>row.to.kind==="vitrine"&&row.to.code==="9")?["recHatM8WlLSqKeyy"]:[])])], false);
     if(input.caseContentsStaging){
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);});
       for(const id of [...new Set(ids)].sort())await tx.$queryRaw(Prisma.sql`SELECT true FROM pg_advisory_xact_lock(hashtextextended(${"museum-arrangement:spn:"+id},0))`);
       const {readCaseContentsPreview}=await import("./museum-case-contents");
@@ -224,8 +240,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertSelectedCaseContents(input.records.map(({to,...record})=>record),input.caseContentsStaging.expectedRevision,preview);
     }
     if(assistantOnly){
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const sourceId=input.records[0].sourceId;
       const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===sourceId);
       for(const placementId of [...new Set([sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id))].sort())
@@ -239,8 +255,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     }
     assertRetainedCaseClearance(input,current.rows);
     if(input.guideContext?.guideVersion==="spn-west-v45-2026-10-31-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
         const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);
         return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);
@@ -250,8 +266,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertWestV45Records(input.records,await readWestV45Guide(await readMuseumData(tx),current,undefined,tx));
     }
     if(input.guideContext?.guideVersion==="spn-west-v46-2026-10-31-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
         const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);
         return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);
@@ -261,8 +277,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertWestV46Records(input.records,await readWestV46Guide(await readMuseumData(tx),current,undefined,tx));
     }
     if(input.guideContext?.guideVersion==="spn-west-v59-2026-11-01-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
         const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);
         return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);
@@ -272,8 +288,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertWestV59Records(input.records,await readWestV59Guide(await readMuseumData(tx),current,undefined,tx));
     }
     if(input.guideContext?.guideVersion==="spn-west-v47-2026-10-31-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
         const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);
         return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);
@@ -286,8 +302,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       (await import("./spn-approved-hinge-guide")).approvedHingeGuide.assertRelocationDependencies(input.records,current);
     }
     if(["spn-missing-receivers-2026-11-01-v1","spn-hinge-approved-2026-11-01-v2"].includes(input.guideContext?.guideVersion??"")&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
         const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);
         return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);
@@ -298,8 +314,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       adapter.assertRecords(input.records,await readApprovedReceivingGuide(adapter,await readMuseumData(tx),current,undefined,tx));
     }
     if(input.guideContext?.guideVersion==="spn-southern-2026-11-01-v2"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
         const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);
         return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);
@@ -309,8 +325,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertSouthernRecords(input.records,await readSouthernGuide(await readMuseumData(tx),current,undefined,tx));
     }
     if(input.guideContext?.guideVersion==="spn-west40-44-2026-11-01-v2"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
         const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);
         return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);
@@ -320,8 +336,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertWest40To44Records(input.records,await readWest40To44Guide(await readMuseumData(tx),current,undefined,tx));
     }
     if(input.guideContext?.guideVersion==="spn-junagadh-saurashtra-2026-10-31-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
         const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);
         return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);
@@ -331,8 +347,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       assertJunagadhRecords(input.records,await readJunagadhGuide(await readMuseumData(tx),current,undefined,tx));
     }
     if(input.guideContext?.guideVersion==="spn-west-v1-2026-10-31-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
-      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-companion-additions:spn'))`;
+      await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock_shared(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
         const baseline=[...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].find(row=>row.sourceId===record.sourceId);
         return [record.sourceId,baseline?.baseline?.placementId].filter((id):id is string=>!!id);
@@ -435,7 +451,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         guideContext: input.guideContext ?? null, curatorAddition: input.curatorAddition ?? null, clearedVitrines: input.clearedVitrines ?? [], inventoryCompleteness: "unverified",
         emptyCaseClaim: input.clearedVitrines?.length ? "curator_confirmed_at_event_time" : "none", proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
     return { ...await readPhysicalLocationView(loader, tx, input.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt, replayed: false, alreadyRecorded };
-  }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 60_000 });
+  }), { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 60_000 }));
 }
 
 export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionActor, loader: PhysicalSnapshotLoader) {
