@@ -104,6 +104,9 @@ must never replace production recommendation logic.
 
 ## Admin review UX direction
 
+Apply [Admin interface performance](design/admin-performance.md) and the shared
+`emil-performance` skill when building or reviewing interactive admin workflows.
+
 Museum move-guide cards place the reviewed display story directly below the vitrine
 heading, before search and progress controls. Reuse `museum-guide-stage` for the
 story heading; keep fit and identity qualifications beside the relevant guidance.

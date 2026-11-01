@@ -6,8 +6,8 @@ import {MuseumShelfGuide} from "./museum-shelf-guide";
 import {AdminViewTabs} from "./admin-view-tabs";
 
 export function MuseumShelfPlans({rows,availableGuides,onOpenGuide}:{rows:CompanionRow[];availableGuides:string[];onOpenGuide:(code:string)=>void}){
- const {context,error,refresh}=useMuseumShelfPlans();
  const [selected,setSelected]=useState("2");
+ const {context,error,refresh}=useMuseumShelfPlans(true,selected);
 
  useEffect(()=>{
   const saved=new URL(window.location.href).searchParams.get("shelfVitrine");
@@ -20,7 +20,7 @@ export function MuseumShelfPlans({rows,availableGuides,onOpenGuide}:{rows:Compan
   <p>Suggested shelf positions. Use the move guide to record placements.</p>
   {error?<p role="alert">{error}</p>:null}
   {!context&&!error?<p role="status">Loading shelf plans…</p>:null}
-  {context?<AdminViewTabs label="Shelf plan vitrine" scrollable value={plan?.code??selected} onChange={select} options={context.cases.map(item=>({value:item.code,label:`Vitrine ${item.code}`}))}/>:null}
+  {context?<AdminViewTabs label="Shelf plan vitrine" scrollable value={plan?.code??selected} onChange={select} options={(context.availableVitrines??context.cases.map(item=>item.code)).map(code=>({value:code,label:`Vitrine ${code}`}))}/>:null}
   {plan?<><header className="section-heading"><div><h3>Vitrine {plan.code}</h3><small>{plan.allocations.length} recommendations{plan.reviewedChanges.length?` · ${plan.reviewedChanges.length} to review`:""}</small></div>{availableGuides.includes(plan.code)?<button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>onOpenGuide(plan.code)}>Open move guide</button>:null}</header>
    <MuseumShelfGuide key={plan.code} plan={{...plan,refinedBandExceptions:plan.bandExceptions.map(item=>({shelfIndex:item.band,knownLoad:item.knownLoad}))}} vitrine={plan.code} entries={new Map(plan.entries.map(entry=>[entry.sourceId,entry]))} rows={rows} sourceIds={plan.allocations.map(item=>item.sourceId)} renderControl={()=>null} renderActions={()=>null}/>
    {plan.reviewedChanges.length?<section aria-label="Shelf recommendations to review"><h3>Changed since this shelf plan</h3>{plan.reviewedChanges.map(item=><article className="museum-guide-check" key={item.sourceId}><div className="museum-guide-check__body"><strong>{/^rec[A-Za-z0-9]{14}$/.test(item.name)?"Unlabelled inventory entry":item.name}</strong><small>{item.reason}</small>{item.capturedShelfIndex?<small>Earlier suggestion: row {item.capturedShelfIndex} · awaiting review</small>:null}<small>{item.effectiveDestination?`Current proposal: Vitrine ${item.effectiveDestination}`:"Destination to review"}</small></div></article>)}</section>:null}

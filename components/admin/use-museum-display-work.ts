@@ -1,6 +1,6 @@
 "use client";
 import {mergeSourceWork} from "@/lib/museum-save-receipts";
-import {useCallback,useEffect,useRef,useState} from "react";
+import {useCallback,useEffect,useMemo,useRef,useState} from "react";
 import type {CompanionRow} from "@/lib/spn-move-guide";
 
 type Shelf={sourceId:string;saintId:string|null;vitrine:string;shelf:string|null;physicalVersion:number;version:number};
@@ -48,10 +48,11 @@ export function useMuseumDisplayWork(sourceIds?:string[]){
   if(currentScope.current===scope)setWork(previous=>mergeSourceWork(previous,result));
   }catch(error){if(error instanceof Error&&error.name==="AbortError")throw new Error("The save has not been confirmed. Try saving the same details again.");throw error;}finally{window.clearTimeout(timeout);active.current.delete(sourceId);epoch.current+=1;setSavingSources(previous=>previous.filter(id=>id!==sourceId));}
  }
- function annotation(row:CompanionRow){const location=row.componentPlacement?.location??row.current;return work.shelves.find(s=>s.sourceId===row.sourceId&&s.saintId===row.saintId&&location?.kind==="vitrine"&&s.vitrine===location.code&&s.physicalVersion===row.currentVersion);}
+ const shelvesBySource=useMemo(()=>new Map(work.shelves.map(shelf=>[shelf.sourceId,shelf])),[work.shelves]);
+ function annotation(row:CompanionRow){const location=row.componentPlacement?.location??row.current,s=shelvesBySource.get(row.sourceId);return s&&s.saintId===row.saintId&&location?.kind==="vitrine"&&s.vitrine===location.code&&s.physicalVersion===row.currentVersion?s:undefined;}
  return {tasks:work.tasks,loaded,error,reload,busy,isSaving:(sourceId:string)=>active.current.has(sourceId),
   shelf:(row:CompanionRow)=>(row.componentPlacement||row.currentBasis==="confirmed")?(annotation(row)?annotation(row)!.shelf:(row.componentPlacement?.location??row.current)?.shelf??null):null,
-  saveShelf:(row:CompanionRow,shelf:string)=>write({action:"shelf.update",sourceId:row.sourceId,saintId:row.saintId,vitrine:(row.componentPlacement?.location??row.current)?.code,shelf,expectedVersion:work.shelves.find(s=>s.sourceId===row.sourceId)?.version??0,expectedCurrentRevision:row.currentRevision,expectedSourceRevision:row.sourceRevision,expectedLocationVersion:row.currentVersion}),
+  saveShelf:(row:CompanionRow,shelf:string)=>write({action:"shelf.update",sourceId:row.sourceId,saintId:row.saintId,vitrine:(row.componentPlacement?.location??row.current)?.code,shelf,expectedVersion:shelvesBySource.get(row.sourceId)?.version??0,expectedCurrentRevision:row.currentRevision,expectedSourceRevision:row.sourceRevision,expectedLocationVersion:row.currentVersion}),
   addTask:(row:CompanionRow,title:string)=>write({action:"task.create",sourceId:row.sourceId,saintId:row.saintId,title}),
   completeTask:(task:DisplayTask,completed:boolean)=>write({action:"task.complete",taskId:task.id,expectedVersion:task.version,completed})};
 }
