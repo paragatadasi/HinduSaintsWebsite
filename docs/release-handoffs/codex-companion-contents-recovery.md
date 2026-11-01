@@ -2,11 +2,13 @@
 
 - Status: ready
 - Branch: `codex/companion-contents-recovery`
-- Commit: `24c0969`
+- Commit: `ef97693`
 - Owner/agent: `Citra`
 - Bundle priority: Bundle with Nadi readiness and clearing protection fix
 
 ## Summary
+
+- Manual refresh aborts its read requests after30seconds and releases loading with retry guidance; no POST changes. Latest dev:check passed after this addition. Keep paired workflow release; incident performance PR3 may release independently first.
 
 - User-authorized museum workflow blocker removal: housing, verified-item and component restrictions no longer disable move/search controls; no extra component acknowledgement; search no longer forces destination25 or preparation. Requires Nadi central hold removal and automatic scoped component ledger support. Identity binding, permissions and concurrency remain.
 - Generic component placement/clearing preview and shelf annotations follow the component location, preserving separately housed pieces.
