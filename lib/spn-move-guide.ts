@@ -4,7 +4,7 @@ export type GuideEntry = {
  reviewOnly?:boolean;optionalAddition?:boolean;displayRoleTier?:string|null;
  sourceId:string;saintId:string|null;name:string;tier:string;city:string;relicDescription:string;
  destination:string;section:string;family:string;rationale:string;
- reviewNotes?:string[];movementBlockedReason?:string;reportedOrigin?:string|null;
+ reviewNotesCollapsible?:boolean;reviewNotes?:string[];movementBlockedReason?:string;reportedOrigin?:string|null;
  lifeStatus?:{tag:string|null;basis:string};currentLocation?:PhysicalLocation|null;currentLocationBasis?:string;
 };
 export type GuideGroup = {
@@ -15,6 +15,7 @@ export type GuideGroup = {
  edges?:{fromSourceId:string;toSourceId:string;label:string;basis?:string}[];
 };
 export type StarterMoveGuide = {
+ receivingOnly?:boolean;
  optionalClearVitrines?:string[];
  contextAnchors?:{sourceId:string;name:string;destination:string;rationale:string;reviewNotes:string[]}[];
  bilashFollowup?:{sourceId:string;saintId:string;destination:string|null;status:"provisional"|"newer_curator_destination_retained"|"needs_review";reason:string;qualifier:string};

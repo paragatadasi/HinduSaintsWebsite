@@ -1,8 +1,9 @@
+import {applyEastNorthGuideRefinements} from "./spn-east-north-guide-refinements";
 import {applyWesternGuideRefinements} from "./spn-western-guide-refinements";
 import type {StarterMoveGuide,GuideEntry,GuideGroup} from "./spn-move-guide";
 import type {CompanionAddition} from "./museum-companion-additions-state";
 import {projectSourceFamilyReunion,projectGajananDisplayRelationship,projectVitthalVedanandaFamily} from "./spn-source-family-reunion";
-const phaseOrder=["starter","datta","ram-bhakti","gosaiji-sai","east2","vraj","vraj2","north","west45","west46","west47","saurashtra","west40-44","west1","south"];
+const phaseOrder=["starter","datta","ram-bhakti","gosaiji-sai","east2","vraj","vraj2","hinge","north","west45","west46","west47","saurashtra","west40-44","west1","south"];
 export function companionVitrineOwner<T extends string>(guides:Record<T,StarterMoveGuide>,code:string):T|undefined{
  const keys=Object.keys(guides) as T[];
  const rank=(key:string)=>{const index=phaseOrder.indexOf(key);return index<0?phaseOrder.length:index;};
@@ -42,11 +43,11 @@ export function projectCompanionAdditions<T extends string>(guides:Record<T,Star
    const sourceIds=group.sourceIds.filter(id=>!pending.has(id));
    return sourceIds.length===group.sourceIds.length?group:{...group,sourceIds,edges:group.edges?.filter(edge=>sourceIds.includes(edge.fromSourceId)&&sourceIds.includes(edge.toSourceId)),saintCount:undefined,spaceEstimate:undefined};
   }).filter(group=>group.sourceIds.length);
-  return [key,applyWesternGuideRefinements(projectVitthalVedanandaFamily(projectGajananDisplayRelationship(projectSourceFamilyReunion({...guide,vitrines:visibleVitrines,alternatives,entries:[...updated.values()].map(entry=>{
+  return [key,applyEastNorthGuideRefinements(applyWesternGuideRefinements(projectVitthalVedanandaFamily(projectGajananDisplayRelationship(projectSourceFamilyReunion({...guide,vitrines:visibleVitrines,alternatives,entries:[...updated.values()].map(entry=>{
    const livingDatta=(entry.sourceId==="recyokcxEvhxvtyPk"&&entry.saintId==="cms0w7jvq09a707qiha1bb3et")||(entry.sourceId==="rec6IMLj9eDVWGP71"&&entry.saintId==="cms0w7d42015d07qieuyk6nfb");
    if(!livingDatta||entry.lifeStatus?.tag!=="Living")return entry;
    const note="Living: use the bottom shelf. Keep related saints in the same vitrine where possible.";
    return {...entry,reviewNotes:[...new Set([...(entry.reviewNotes??[]),note])]};
-  })}))))];
+  })})))), additions)];
  })) as Record<T,StarterMoveGuide>;
 }
