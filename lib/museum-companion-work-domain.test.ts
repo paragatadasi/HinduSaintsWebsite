@@ -23,6 +23,6 @@ test("task text and scope validated; completion requires version and explicit de
  assert.equal(companionWorkInput.safeParse({...complete,saintId:"injected"}).success,false);
 });
 
-test("a retained Sikh display cannot acquire a new final shelf annotation",()=>{
- assert.throws(()=>assertShelfContext({...physical,current:{kind:"vitrine",code:"68"}},{...shelf,vitrine:"68",museumId:"museum-spn"}),/Sikh display retained here/);
+test("a confirmed Sikh display supports the ordinary shelf workflow",()=>{
+ assert.doesNotThrow(()=>assertShelfContext({...physical,current:{kind:"vitrine",code:"68"}},{...shelf,vitrine:"68",museumId:"museum-spn"}));
 });

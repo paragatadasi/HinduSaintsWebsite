@@ -20,7 +20,7 @@ export type UndoOffer = {available:boolean;receiptId:string|null;previous:MoveLo
   previousConfirmedAt:string|null;reason:string|null};
 export function physicalUndoOffer(row:UndoRow, events:{id:string;afterJson:unknown}[]):UndoOffer {
   const unavailable = (reason:string):UndoOffer => ({available:false,receiptId:null,previous:null,previousBasis:null,previousConfirmedAt:null,reason});
-  if(row.identityChanged || row.verifiedItemIds.length) return unavailable("This source changed or has verified items. Review its inventory history.");
+  if(row.identityChanged) return unavailable("This source changed. Review its inventory history.");
   if(row.currentBasis!=="confirmed") return unavailable("There is no current placement check to undo.");
   for(const event of events) {
     const parsed=physicalConfirmationReceipt.safeParse(event.afterJson);if(!parsed.success)continue;

@@ -18,10 +18,10 @@ export function useMuseumDisplayWork(sourceIds?:string[]){
  const [savingSources,setSavingSources]=useState<string[]>([]);
  const busy=savingSources.length>0;
  const [loaded,setLoaded]=useState(false),[error,setError]=useState("");
- const reload=useCallback(async()=>{
+ const reload=useCallback(async(signal?:AbortSignal)=>{
   const started=epoch.current,sequence=++readSequence.current;
   const params=new URLSearchParams({museumId:"museum-spn"});scope.split(",").filter(Boolean).forEach(id=>params.append("sourceId",id));
-  const response=await fetch(`${endpoint}?${params}`,{cache:"no-store"});const result=await response.json();
+  const response=await fetch(`${endpoint}?${params}`,{cache:"no-store",signal});const result=await response.json();
   if(!response.ok)throw new Error(result.error||"Could not load shelves and to-dos.");
   if(!Array.isArray(result.shelves)||!Array.isArray(result.tasks))throw new Error("Could not load shelves and to-dos.");
   if(currentScope.current===scope&&started===epoch.current&&sequence===readSequence.current&&active.current.size===0){setWork(result);setLoaded(true);setError("");}
@@ -48,10 +48,10 @@ export function useMuseumDisplayWork(sourceIds?:string[]){
   if(currentScope.current===scope)setWork(previous=>mergeSourceWork(previous,result));
   }catch(error){if(error instanceof Error&&error.name==="AbortError")throw new Error("The save has not been confirmed. Try saving the same details again.");throw error;}finally{window.clearTimeout(timeout);active.current.delete(sourceId);epoch.current+=1;setSavingSources(previous=>previous.filter(id=>id!==sourceId));}
  }
- function annotation(row:CompanionRow){return work.shelves.find(s=>s.sourceId===row.sourceId&&s.saintId===row.saintId&&row.current?.kind==="vitrine"&&s.vitrine===row.current.code&&s.physicalVersion===row.currentVersion);}
+ function annotation(row:CompanionRow){const location=row.componentPlacement?.location??row.current;return work.shelves.find(s=>s.sourceId===row.sourceId&&s.saintId===row.saintId&&location?.kind==="vitrine"&&s.vitrine===location.code&&s.physicalVersion===row.currentVersion);}
  return {tasks:work.tasks,loaded,error,reload,busy,isSaving:(sourceId:string)=>active.current.has(sourceId),
-  shelf:(row:CompanionRow)=>row.currentBasis==="confirmed"?(annotation(row)?annotation(row)!.shelf:row.current?.shelf??null):null,
-  saveShelf:(row:CompanionRow,shelf:string)=>write({action:"shelf.update",sourceId:row.sourceId,saintId:row.saintId,vitrine:row.current?.code,shelf,expectedVersion:work.shelves.find(s=>s.sourceId===row.sourceId)?.version??0,expectedCurrentRevision:row.currentRevision,expectedSourceRevision:row.sourceRevision,expectedLocationVersion:row.currentVersion}),
+  shelf:(row:CompanionRow)=>(row.componentPlacement||row.currentBasis==="confirmed")?(annotation(row)?annotation(row)!.shelf:(row.componentPlacement?.location??row.current)?.shelf??null):null,
+  saveShelf:(row:CompanionRow,shelf:string)=>write({action:"shelf.update",sourceId:row.sourceId,saintId:row.saintId,vitrine:(row.componentPlacement?.location??row.current)?.code,shelf,expectedVersion:work.shelves.find(s=>s.sourceId===row.sourceId)?.version??0,expectedCurrentRevision:row.currentRevision,expectedSourceRevision:row.sourceRevision,expectedLocationVersion:row.currentVersion}),
   addTask:(row:CompanionRow,title:string)=>write({action:"task.create",sourceId:row.sourceId,saintId:row.saintId,title}),
   completeTask:(task:DisplayTask,completed:boolean)=>write({action:"task.complete",taskId:task.id,expectedVersion:task.version,completed})};
 }

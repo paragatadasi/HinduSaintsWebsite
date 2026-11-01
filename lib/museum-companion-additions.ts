@@ -1,7 +1,6 @@
 import {canPlacePagalComponent,isPagalComponentPlaced,pagalComponentReceiptId} from "./spn-pagal-component-placement";
 import {hasOnlySpnHousingReviewHold} from "./spn-movement-holds";
 import {currentCompanionAdditions} from "./museum-companion-addition-validation";
-import proposalOverlay from "../data/museum/spn-approved-proposal-overlay-v1.json";
 import {z} from "zod";
 import {db} from "./db";
 import {readPhysicalLocationView} from "./museum-physical-locations";
@@ -17,7 +16,6 @@ const action="museum.companion.addition.planned";
 export const additionInput=z.object({museumId:z.literal("museum-spn"),sourceId:z.string().min(1).max(200),expectedSourceRevision:z.string().min(1),expectedVersion:z.number().int().nonnegative(),vitrine:z.string().min(1).max(20),shelf:z.string().trim().max(100).default(""),clientRequestId:z.string().uuid()}).strict();
 export async function saveCompanionAddition(raw:unknown,actorId:string){
  const input=additionInput.parse(raw);
- if(proposalOverlay.excludedFromMuseumDisplay.some(row=>row.sourceId===input.sourceId))throw new MuseumMoveSessionError(409,"This holding is excluded from the museum display.");
  if(!availableDeclineAlternatives(currentSpnProposalRelease.proposal.layout.vitrines).includes(input.vitrine))throw new MuseumMoveSessionError(400,"Choose an available display vitrine.");
  return db.$transaction(async tx=>{
   await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-move-session:spn'))`;
@@ -29,7 +27,6 @@ export async function saveCompanionAddition(raw:unknown,actorId:string){
   const row=state.rows[0];
   if(!row||!row.saintId||row.identityChanged||row.sourceRevision!==input.expectedSourceRevision||!isActiveSpnObservation(input.sourceId))throw new MuseumMoveSessionError(409,"The source identity changed or needs review. Reload before adding this record.");
   const componentScoped=(canPlacePagalComponent(row,input.vitrine)||isPagalComponentPlaced(row,input.vitrine))&&hasOnlySpnHousingReviewHold(row.sourceId);
-  if(row.fixedHousing||row.verifiedItemIds.length||row.movementBlockedReason&&!componentScoped)throw new MuseumMoveSessionError(409,"This record needs its existing item or fixed-display workflow.");
   const addition:CompanionAddition={...(componentScoped?{componentScope:"vitrine_19_contents_only" as const,componentReceiptId:pagalComponentReceiptId}:{}),sourceId:input.sourceId,saintId:row.saintId,sourceRevision:row.sourceRevision,vitrine:input.vitrine,shelf:input.shelf||null,version:(previous?.version??0)+1,updatedAt:new Date().toISOString(),clientRequestId:input.clientRequestId};
   await tx.auditEvent.create({data:{userId:actorId,action,entityType:"MuseumCompanionAddition",entityId:"museum-spn:"+input.sourceId,afterJson:addition}});
   return addition;

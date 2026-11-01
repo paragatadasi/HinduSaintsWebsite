@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {caseContentsPreview,assertSelectedCaseContents,caseStagingReconciliation,caseContentsStaging} from "./museum-case-contents-domain";
+import {caseContentsPreview,assertSelectedCaseContents,caseStagingReconciliation,caseContentsStaging,preservedBulkClearSources} from "./museum-case-contents-domain";
 import {museumPhysicalWriteAllowed} from "./museum-placement-access";
 import type {CompanionRow} from "./spn-move-guide";
 const loc=(code:string)=>({kind:"vitrine" as const,code,label:`Vitrine ${code}`});
@@ -13,15 +13,34 @@ test("selected contents preserves confirmed target placements and permits an exa
  assertSelectedCaseContents([refs(preview.eligible[0])],preview.revision,preview);
  assert.throws(()=>assertSelectedCaseContents([{...refs(preview.eligible[0]),sourceId:"target"}],preview.revision,preview));
 });
-test("partial staging accepts registered receivers but preserves housing and historical restrictions",()=>{
- const rows=[{...row("one"),current:loc("59")},{...row("two"),current:loc("59")},{...row("fixed"),current:loc("59"),fixedHousing:true}];
- assert.throws(()=>caseContentsPreview(rows,[],"59","selected_contents"));
- const preview=caseContentsPreview(rows,[],"59","selected_contents",undefined,true);
- assert.deepEqual(preview.eligible.map(r=>r.sourceId),["one","two"]);
- assert.deepEqual(preview.blocked.map(r=>r.sourceId),["fixed"]);
- assertSelectedCaseContents([refs(preview.eligible[0])],preview.revision,preview);
- assert.throws(()=>caseContentsPreview(rows,[],"59","historical",undefined,true));
+
+test("bulk clearing preserves effective-target placements and later moves, while outgoing holdings remain eligible",()=>{
+ const placed={...row("placed"),currentBasis:"confirmed",currentVersion:2};
+ const outgoing={...row("outgoing"),currentBasis:"confirmed"};
+ const elsewhere={...row("elsewhere"),currentBasis:"confirmed",current:loc("46")};
+ const staged={...row("staged"),currentBasis:"confirmed",current:{kind:"table" as const,code:"staging-area",label:"Staging area"}};
+ const targets=[{sourceId:"placed",vitrine:"45"},{sourceId:"outgoing",vitrine:"46"}];
+ assert.deepEqual(preservedBulkClearSources(["45"],[placed,outgoing,elsewhere,staged],targets,[{sourceId:"placed"},{sourceId:"outgoing"},{sourceId:"elsewhere"},{sourceId:"staged"}]),["elsewhere","placed","staged"]);
+ assert.deepEqual(preservedBulkClearSources(["45"],[placed,outgoing],targets,[{sourceId:"outgoing"}]),["placed"]);
+ assert.deepEqual(preservedBulkClearSources(["45"],[placed],[],[]),["placed"]);
+ assert.deepEqual(preservedBulkClearSources(["45"],[row("source")],[{sourceId:"source",vitrine:"45"}],[{sourceId:"source"}]),[]);
 });
+
+test("a later confirmed target invalidates an earlier selected-contents preview",()=>{
+ const original=caseContentsPreview([row("placed"),row("outgoing")],[{sourceId:"placed",vitrine:"45"}],"45","selected_contents");
+ const records=original.eligible.map(refs);
+ const now=caseContentsPreview([{...row("placed"),currentBasis:"confirmed",currentVersion:1,currentRevision:"c".repeat(64)},row("outgoing")],[{sourceId:"placed",vitrine:"45"}],"45","selected_contents");
+ assert.throws(()=>assertSelectedCaseContents(records,original.revision,now));
+ assert.deepEqual(now.preservedSourceIds,["placed"]);
+});
+test("partial staging permits any museum case and preserves current record versions",()=>{
+ const rows=[{...row("one"),current:loc("59")},{...row("two"),current:loc("59")},{...row("fixed"),current:loc("59"),fixedHousing:true}];
+ const preview=caseContentsPreview(rows,[],"59","selected_contents");
+ assert.deepEqual(preview.eligible.map(r=>r.sourceId),["fixed","one","two"]);
+ assert.deepEqual(preview.blocked,[]);
+ assertSelectedCaseContents([refs(preview.eligible[0])],preview.revision,preview);
+});
+
 test("historical correction preserves every later confirmation, even an outgoing destination",()=>{
  const moved={...row("moved"),current:loc("1"),currentBasis:"confirmed",currentVersion:3};
  const staged={...row("staged"),current:{kind:"table" as const,code:"staging-area",label:"Staging area"},currentBasis:"confirmed",currentVersion:1};
@@ -29,10 +48,10 @@ test("historical correction preserves every later confirmation, even an outgoing
  const preview=caseContentsPreview([row("residual"),moved,staged,inCase],[{sourceId:"placed",vitrine:"60"}],"45","historical");
  assert.deepEqual(preview.eligible.map(r=>r.sourceId),["residual"]);assert.equal(preview.preservedConfirmedCount,3);assert.equal(preview.alreadyStagedCount,1);
 });
-test("fixed, component housing, identity and verified item restrictions are never waived",()=>{
+test("housing and verified-item notes do not block clearing; changed identity still does",()=>{
  const preview=caseContentsPreview([{...row("fixed"),fixedHousing:true},{...row("identity"),identityChanged:true},{...row("item"),verifiedItemIds:["item"]},{...row("compound"),movementBlockedReason:"Use scoped components"}],[],"45","selected_contents");
- assert.equal(preview.eligible.length,0);assert.equal(preview.blocked.length,4);
- assert.throws(()=>caseContentsPreview([row("held")],[],"68","selected_contents"));
+ assert.equal(preview.eligible.length,3);assert.deepEqual(preview.blocked.map(row=>row.sourceId),["identity"]);
+ assert.doesNotThrow(()=>caseContentsPreview([row("held")],[],"68","selected_contents"));
 });
 test("stale revisions, duplicates and changed sources reject the entire selected batch",()=>{
  const original=caseContentsPreview([row("one"),row("two")],[],"45","selected_contents"),record=refs(original.eligible[0]);

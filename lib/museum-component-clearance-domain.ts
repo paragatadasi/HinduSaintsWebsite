@@ -8,7 +8,7 @@ export const v19ComponentBinding={sourceId:"rec7GxgNvmubmTvMM",saintId:"cms0w7d9
 export const v42ComponentBinding={sourceId:"reck86EKve5tFAi6R",saintId:"cms0w7g3504zx07qigfcnvy6p",sourceRevision:"83a1a528d50d3f12c34f49b1582ae4cfcaa060e0fb97c962c6b48f5281435e33"};
 export const v64ComponentBinding={sourceId:"recsm43oeUdKNUMqs",saintId:"cms0w7i3s07f307qiuaezle9f",sourceRevision:"4aa5af436e0b66276924c3731632d93eb9ead023178f915737a17179123f4329"};
 export const componentSourceIds=[...v20ComponentSourceIds,v19ComponentBinding.sourceId,v42ComponentBinding.sourceId,v64ComponentBinding.sourceId];
-export type ComponentScope="vitrine_20_contents_only"|"vitrine_19_contents_only"|"vitrine_42_contents_only"|"vitrine_64_contents_including_sticks";
+export type ComponentScope="vitrine_20_contents_only"|"vitrine_19_contents_only"|"vitrine_42_contents_only"|"vitrine_64_contents_including_sticks"|"vitrine_64_contents_only";
 export function componentOriginCode(sourceId:string):"19"|"20"|"42"|"64"|null {
   return sourceId===v19ComponentBinding.sourceId?"19":sourceId===v42ComponentBinding.sourceId?"42":sourceId===v64ComponentBinding.sourceId?"64":isV20ComponentSourceId(sourceId)?"20":null;
 }
@@ -22,7 +22,7 @@ const originOnlyAcknowledgement=z.object({
 const includingSticksAcknowledgement=z.object({sourceId:z.string().refine(id=>id===v64ComponentBinding.sourceId),scope:z.literal("vitrine_64_contents_including_sticks"),allOriginPiecesStaged:z.literal(true),walkingSticksInVitrineStaged:z.literal(true)}).strict();
 export const componentStagingAcknowledgements=z.array(z.union([originOnlyAcknowledgement,includingSticksAcknowledgement]).refine(row=>row.scope===componentScopeForOrigin(componentOriginCode(row.sourceId)??""),"Component source and origin do not match.")).max(5).refine(rows=>new Set(rows.map(row=>row.sourceId)).size===rows.length,"Repeated component acknowledgement.");
 export type ComponentPlacement = {
-  sourceId: string; receiptId: string; clearanceReceiptId?:string; recordedAt: string; revision: string;
+  sourceId: string; receiptId: string; clearanceReceiptId?:string; recordedAt: string; revision: string; locationVersion?:number;
   origin: MoveLocation; location: MoveLocation; scope: ComponentScope;
   excludedWalkingSticks: { location: null; status: "unverified" };
   includedWalkingSticks?:true;
@@ -83,6 +83,17 @@ export function projectComponentPlacement<T extends {
   if (!component || row.currentVersion !== component.previousLocationVersion || row.currentRevision !== component.previousCurrentRevision ||
       (row.sourceRevision !== undefined && row.sourceRevision !== component.expectedSourceRevision))
     return { ...row, componentPlacement: null as ComponentPlacement | null };
-  return { ...row, current: null, currentBasis: "unknown" as const, currentConfirmed: null,
+  return { ...row, currentVersion:component.locationVersion??component.previousLocationVersion+1, current: null, currentBasis: "unknown" as const, currentConfirmed: null,
     currentRevision: component.revision, componentPlacement: component };
+}
+
+export function selectedHoldingLocation<T extends {kind:string;code:string}>(row:{current:T|null;componentPlacement?:ComponentPlacement|null}){
+ return row.componentPlacement?.location??row.current;
+}
+export function ordinaryComponentScope(row:ComponentSource&{componentPlacement?:ComponentPlacement|null}):ComponentScope|null{
+ if(row.componentPlacement)return row.componentPlacement.scope;
+ const origin=componentOriginCode(row.sourceId);
+ if(!origin)return null;
+ if(row.saintId!==undefined&&row.sourceRevision&&isReviewedParamanandArmSupport({...row,saintId:row.saintId,sourceRevision:row.sourceRevision}))return null;
+ return origin==="64"?"vitrine_64_contents_only":componentScopeForOrigin(origin);
 }
