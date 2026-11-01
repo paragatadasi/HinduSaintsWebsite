@@ -1,3 +1,4 @@
+import {west40To44GuideContext as oldWestContext,west40To44GuideDefinition as oldWestDefinition} from "./spn-west40-44-guide-v1";
 import {westV59GuideContext,westV59GuideDefinition} from "./spn-west-v59-guide";
 import {southernGuideContext,southernGuideDefinition} from "./spn-southern-guide";
 import {west40To44GuideContext,west40To44GuideDefinition} from "./spn-west40-44-guide";
@@ -78,6 +79,7 @@ export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinitio
 }
 export function readStarterGuideDefinition(version: string): GuideDefinition {
   if(version===southernGuideContext.guideVersion)return southernGuideDefinition;
+  if(version===oldWestContext.guideVersion)return {...oldWestDefinition,readOnly:true};
   if(version===west40To44GuideContext.guideVersion)return west40To44GuideDefinition;
   if(version===junagadhGuideContext.guideVersion)return junagadhGuideDefinition;
   if(version===westV59GuideContext.guideVersion)return westV59GuideDefinition;
