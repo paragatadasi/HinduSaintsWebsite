@@ -17,14 +17,25 @@ export function MuseumPartialClearingController({vitrine, guideContext, rows, mi
   const [error,setError]=useState("");
   const lock=useRef(false);
   const pending=useRef<{kind:"stage"|"space"; body:Record<string,unknown>}|null>(null);
+  const loadingRequest=useRef<AbortController|null>(null);
   async function load() {
-    const query=new URLSearchParams({museumId:"museum-spn",vitrine,mode:"contents"});
-    const response=await fetch(`/api/admin/museum-historical-staging?${query}`,{cache:"no-store"});
-    const data=await response.json();
-    if(!response.ok)throw new Error(data.error||"Could not load contents. Refresh and try again.");
-    setPreview(data as Preview);
+    loadingRequest.current?.abort();
+    const request=new AbortController();loadingRequest.current=request;setError("");
+    const timeout=setTimeout(()=>request.abort(),30000);
+    try {
+      const query=new URLSearchParams({museumId:"museum-spn",vitrine,mode:"contents"});
+      const response=await fetch(`/api/admin/museum-historical-staging?${query}`,{cache:"no-store",signal:request.signal});
+      const data=await response.json();
+      if(!response.ok)throw new Error(data.error||"Could not load contents. Refresh and try again.");
+      if(loadingRequest.current===request)setPreview(data as Preview);
+    } catch(e) {
+      if(loadingRequest.current===request)setError(request.signal.aborted?"Loading contents took too long. Refresh contents to try again.":e instanceof Error?e.message:"Could not load contents. Refresh and try again.");
+    } finally {
+      clearTimeout(timeout);
+      if(loadingRequest.current===request)loadingRequest.current=null;
+    }
   }
-  useEffect(()=>{let active=true; void load().catch(e=>{if(active)setError(e.message);});return()=>{active=false;};},[vitrine]);
+  useEffect(()=>{void load();return()=>{const request=loadingRequest.current;loadingRequest.current=null;request?.abort();};},[vitrine]);
   async function save(kind:"stage"|"space", ids:string[]=[]):Promise<boolean> {
     if(lock.current||disabled||!preview)return false;
     if(pending.current&&pending.current.kind!==kind){setError("Retry the previous save or refresh its status before another action.");return false;}

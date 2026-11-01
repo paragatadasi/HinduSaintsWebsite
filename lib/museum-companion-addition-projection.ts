@@ -1,3 +1,4 @@
+import {reconcileCompanionMembership} from "./museum-companion-membership";
 import {applyEasternHeadlines} from "./spn-eastern-headlines";
 import {applyJamnagarGuideRefinement} from "./spn-jamnagar-receiver";
 import {applyEastNorthGuideRefinements} from "./spn-east-north-guide-refinements";
@@ -18,13 +19,14 @@ export function projectCompanionAdditions<T extends string>(guides:Record<T,Star
  const pending=new Set(catalog.filter(e=>e.proposalTransfer?.state==="approved_case_pending").map(e=>e.sourceId));
  const byId=new Map(additions.filter(a=>entries.has(a.sourceId)&&!pending.has(a.sourceId)).map(a=>[a.sourceId,a]));
  const owners=new Map(additions.map(a=>[a.sourceId,companionVitrineOwner(guides,a.vitrine)]));
- return Object.fromEntries((Object.keys(guides) as T[]).map(key=>{
+ const projected=Object.fromEntries((Object.keys(guides) as T[]).map(key=>{
   const guide=guides[key];
   const reviewOnly=new Set(guide.entries.filter(e=>e.reviewOnly||e.componentScope).map(e=>e.sourceId));
   const phaseAdditions=new Map([...byId].filter(([id])=>!reviewOnly.has(id)));
   const trimGroup=(group:GuideGroup,code:string):GuideGroup=>{
    const sourceIds=group.sourceIds.filter(id=>!pending.has(id)&&(!phaseAdditions.has(id)||(phaseAdditions.get(id)!.vitrine===code&&owners.get(id)===key)));
-   return {...group,sourceIds,edges:group.edges?.filter(edge=>sourceIds.includes(edge.fromSourceId)&&sourceIds.includes(edge.toSourceId)),...(sourceIds.length!==group.sourceIds.length?{saintCount:undefined,spaceEstimate:undefined}:{} )};
+   const removed=new Set(group.sourceIds.filter(id=>!sourceIds.includes(id)));
+   return {...group,sourceIds,edges:group.edges?.filter(edge=>!removed.has(edge.fromSourceId)&&!removed.has(edge.toSourceId)),...(removed.size?{saintCount:undefined,spaceEstimate:undefined}:{} )};
   };
   const vitrines=guide.vitrines.map(v=>({...v,families:v.families.map(g=>trimGroup(g,v.code)).filter(g=>g.sourceIds.length),cityGroups:v.cityGroups.map(g=>trimGroup(g,v.code)).filter(g=>g.sourceIds.length)}));
   const updated=new Map(guide.entries.filter(e=>!pending.has(e.sourceId)).map(e=>[e.sourceId,phaseAdditions.has(e.sourceId)?{...e,destination:phaseAdditions.get(e.sourceId)!.vitrine}:e]));
@@ -54,4 +56,5 @@ export function projectCompanionAdditions<T extends string>(guides:Record<T,Star
    return {...entry,reviewNotes:[...new Set([...(entry.reviewNotes??[]),note])]};
   })})))), additions),additions),catalog.map(e=>byId.has(e.sourceId)?{...e,destination:byId.get(e.sourceId)!.vitrine}:e))];
  })) as Record<T,StarterMoveGuide>;
+ return reconcileCompanionMembership(projected,catalog.map(entry=>byId.has(entry.sourceId)?{...entry,destination:byId.get(entry.sourceId)!.vitrine}:entry));
 }
