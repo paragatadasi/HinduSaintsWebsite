@@ -5,7 +5,7 @@ import {allOperationalSpnShelves} from "./spn-operational-shelves";
 
 test("reviewed West and South shelves replace old cases without duplicate sources or cases",()=>{
  assert.equal(packet.vitrines.length,21);
- const rows=packet.vitrines.flatMap(v=>v.allocations);
+ const rows=packet.vitrines.flatMap<(typeof packet.vitrines)[number]["allocations"][number]>(v=>v.allocations);
  assert.equal(rows.length,416);assert.equal(new Set(rows.map(r=>r.sourceId)).size,416);
  assert.equal(new Set(allOperationalSpnShelves.vitrines.map(v=>v.code)).size,allOperationalSpnShelves.vitrines.length);
  for(const code of ["47","58","60","61"])assert.ok(!packet.vitrines.some(v=>v.code===code));
@@ -17,7 +17,7 @@ test("reviewed West and South shelves replace old cases without duplicate source
 });
 
 test("living reserves and recorded shelf notes remain qualified recommendations",()=>{
- const rows=packet.vitrines.flatMap(v=>v.allocations);
+ const rows=packet.vitrines.flatMap<(typeof packet.vitrines)[number]["allocations"][number]>(v=>v.allocations);
  assert.equal(rows.filter(r=>r.confirmedShelfToProtect).length,13);
  assert.equal(rows.find(r=>r.sourceId==="rec1WWN7Xb1ZRGGhA")?.suggestedShelfIndex,5);
  const bottom=packet.vitrines.find(v=>v.code==="44")!.allocations.filter(a=>a.suggestedShelfIndex===5);
@@ -26,3 +26,4 @@ test("living reserves and recorded shelf notes remain qualified recommendations"
  assert.equal(packet.physicalWrites,false);assert.equal(packet.nativeDestinationWrites,false);
  assert.ok(packet.vitrines.every(v=>v.geometryVerified===false&&v.shelfLabelsVerified===false));
 });
+
