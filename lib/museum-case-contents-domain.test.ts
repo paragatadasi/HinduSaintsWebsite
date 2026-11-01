@@ -13,6 +13,15 @@ test("selected contents preserves confirmed target placements and permits an exa
  assertSelectedCaseContents([refs(preview.eligible[0])],preview.revision,preview);
  assert.throws(()=>assertSelectedCaseContents([{...refs(preview.eligible[0]),sourceId:"target"}],preview.revision,preview));
 });
+test("partial staging accepts registered receivers but preserves housing and historical restrictions",()=>{
+ const rows=[{...row("one"),current:loc("59")},{...row("two"),current:loc("59")},{...row("fixed"),current:loc("59"),fixedHousing:true}];
+ assert.throws(()=>caseContentsPreview(rows,[],"59","selected_contents"));
+ const preview=caseContentsPreview(rows,[],"59","selected_contents",undefined,true);
+ assert.deepEqual(preview.eligible.map(r=>r.sourceId),["one","two"]);
+ assert.deepEqual(preview.blocked.map(r=>r.sourceId),["fixed"]);
+ assertSelectedCaseContents([refs(preview.eligible[0])],preview.revision,preview);
+ assert.throws(()=>caseContentsPreview(rows,[],"59","historical",undefined,true));
+});
 test("historical correction preserves every later confirmation, even an outgoing destination",()=>{
  const moved={...row("moved"),current:loc("1"),currentBasis:"confirmed",currentVersion:3};
  const staged={...row("staged"),current:{kind:"table" as const,code:"staging-area",label:"Staging area"},currentBasis:"confirmed",currentVersion:1};

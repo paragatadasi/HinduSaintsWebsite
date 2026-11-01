@@ -1,3 +1,4 @@
+import {westV59GuideContext,westV59GuideDefinition} from "./spn-west-v59-guide";
 import {southernGuideContext,southernGuideDefinition} from "./spn-southern-guide";
 import {west40To44GuideContext,west40To44GuideDefinition} from "./spn-west40-44-guide";
 import {junagadhGuideContext,junagadhGuideDefinition} from "./spn-junagadh-guide";
@@ -70,7 +71,7 @@ const cityAlternatives = guide.cityAlternatives.map(cohort => {
 if (new Set(suggestions.map(row => row.id)).size !== suggestions.length) throw new Error("Duplicate registered suggestion identifiers.");
 export const registeredStarterGuide = { ...guide, cityAlternatives, guideContext: starterGuideContext };
 export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinition[] {
-  return [southernGuideContext,west40To44GuideContext,junagadhGuideContext,westV47GuideContext,westV46GuideContext,westV45GuideContext,westV1GuideContext,eastRemainderGuideContext,northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,vrajStoryTopsGuideContext,
+  return [southernGuideContext,west40To44GuideContext,junagadhGuideContext,westV59GuideContext,westV46GuideContext,westV45GuideContext,westV1GuideContext,eastRemainderGuideContext,northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,vrajStoryTopsGuideContext,
     ramBhaktiGuideContext, dattaGuideContext, starterGuideContext].map(context => readStarterGuideDefinition(context.guideVersion))
     .filter(definition => !definition.readOnly && (definition.suggestions.some(row => row.targetVitrine === vitrine) ||
       Object.values(definition.physicalScope?.destinations ?? {}).includes(vitrine)));
@@ -79,7 +80,8 @@ export function readStarterGuideDefinition(version: string): GuideDefinition {
   if(version===southernGuideContext.guideVersion)return southernGuideDefinition;
   if(version===west40To44GuideContext.guideVersion)return west40To44GuideDefinition;
   if(version===junagadhGuideContext.guideVersion)return junagadhGuideDefinition;
-  if(version===westV47GuideContext.guideVersion)return westV47GuideDefinition;
+  if(version===westV59GuideContext.guideVersion)return westV59GuideDefinition;
+  if(version===westV47GuideContext.guideVersion)return {...westV47GuideDefinition,readOnly:true};
   if(version===westV46GuideContext.guideVersion)return westV46GuideDefinition;
   if(version===westV45GuideContext.guideVersion)return westV45GuideDefinition;
   if(version===westV1GuideContext.guideVersion)return westV1GuideDefinition;
