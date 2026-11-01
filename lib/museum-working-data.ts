@@ -1,4 +1,5 @@
 import {isActiveSpnObservation} from "./spn-observation-suppression";
+import {readInMuseumTransaction} from "./museum-transaction-reads";
 import {bimalAssemblyReview} from "./spn-bimal-reviewed-assembly";
 import {paramanandHousingEvidence} from "./spn-paramanand-housing-evidence";
 import {paramanandObjectReview} from "./spn-paramanand-reviewed-object";
@@ -18,7 +19,13 @@ import { buildWorkingMuseumView, museumRelationshipDetails, type CurrentMuseumSa
 
 // Private data reader; route entry points must enforce access_museum before calling.
 export type MuseumReadTiming={phase:string;milliseconds:number;records?:number};
-export async function readMuseumData(client: Prisma.TransactionClient = db, options: {reconcileFamilies?:boolean;applyScopedProposals?:boolean;indexSourceIdentities?:boolean;onTiming?:(timing:MuseumReadTiming)=>void} = {}) {
+export type MuseumReadOptions = {reconcileFamilies?:boolean;applyScopedProposals?:boolean;indexSourceIdentities?:boolean;onTiming?:(timing:MuseumReadTiming)=>void};
+export async function readMuseumData(client: Prisma.TransactionClient = db, options: MuseumReadOptions = {}) {
+  const key = JSON.stringify(["museum-working-data", options.reconcileFamilies !== false, options.applyScopedProposals !== false, options.indexSourceIdentities !== false]);
+  return readInMuseumTransaction(client, key, () => loadMuseumData(client, options));
+}
+
+async function loadMuseumData(client: Prisma.TransactionClient, options: MuseumReadOptions = {}) {
   let started=performance.now();
   const measure=(phase:string,records?:number)=>{const now=performance.now();options.onTiming?.({phase,milliseconds:now-started,records});started=now;};
   const [mirrorLocations, collections, saints, links, definitions, membership, arrangements] = await Promise.all([

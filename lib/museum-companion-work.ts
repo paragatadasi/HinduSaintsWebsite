@@ -1,3 +1,4 @@
+import {lockMuseumPlacement,retryMuseumSerialization} from "./museum-write-concurrency";
 import { db } from "./db";
 import { Prisma } from "./generated/prisma/client";
 import { companionWorkInput, assertShelfContext } from "./museum-companion-work-domain";
@@ -22,8 +23,8 @@ async function assertSource(tx: Prisma.TransactionClient, sourceId:string, saint
 export async function saveCompanionWork(raw:unknown, actor:MoveSessionActor, loader:PhysicalSnapshotLoader) {
  if(!actor.canManage)throw new MuseumMoveSessionError(403,"A museum curator must save display work.");
  const input=companionWorkInput.parse(raw);
- return db.$transaction(async tx=>{
-  await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-move-session:spn'))`;
+ return retryMuseumSerialization(() => db.$transaction(async tx=>{
+  await lockMuseumPlacement(tx,"work:"+input.clientRequestId,[input.action==="task.complete"?"task:"+input.taskId:input.sourceId]);
   const fingerprint=physicalFingerprint(input), entityId=`museum-spn:${input.clientRequestId}`;
   const retry=await tx.auditEvent.findFirst({where:{action:"museum.companion.work.updated",entityType:"MuseumCompanionWork",entityId},select:{id:true,afterJson:true}});
   if(retry){
@@ -43,6 +44,8 @@ export async function saveCompanionWork(raw:unknown, actor:MoveSessionActor, loa
    sourceId=input.sourceId;await assertSource(tx,sourceId,input.saintId);
    if(input.action==="task.create") after=await tx.museumCompanionTask.create({data:{museumId:input.museumId,sourceId,saintId:input.saintId,title:input.title,createdById:actor.id,updatedById:actor.id}});
    else{
+    // A waiting annotation must not use a snapshot from before a physical move.
+    await tx.$queryRaw(Prisma.sql`SELECT "sourceId" FROM "MuseumMoveCurrentLocation" WHERE "museumId"=${input.museumId} AND "sourceId"=${sourceId} FOR UPDATE`);
     const physical=await readPhysicalLocationView(loader,tx,[sourceId],false);const row=physical.rows[0];
     if(!row || row.identityChanged || row.saintId!==input.saintId)throw new MuseumMoveSessionError(409,"This source changed. Reload before saving its shelf.");
     assertShelfContext(row,input);
@@ -56,5 +59,5 @@ export async function saveCompanionWork(raw:unknown, actor:MoveSessionActor, loa
   const receipt=await tx.auditEvent.create({data:{userId:actor.id,action:"museum.companion.work.updated",entityType:"MuseumCompanionWork",entityId,beforeJson:before?json(before):Prisma.JsonNull,
    afterJson:json({fingerprint,sourceId,operation:input.action,value:after,physicalMoveClaim:false,proposalChanged:false,editorialChanged:false})},select:{id:true,afterJson:true}});
   return {...await readCompanionWork([sourceId],tx),receipt,replayed:false};
- },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable,timeout:60_000});
+ },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable,timeout:60_000}));
 }
