@@ -1,3 +1,6 @@
+import {createHash} from "node:crypto";
+import {pagalComponentReceiptId,pagalComponentDestination,pagalComponentAcknowledgement} from "./spn-pagal-component-placement";
+import {v19ComponentBinding} from "./museum-component-clearance-domain";
 import { db } from "./db";
 import type { Prisma } from "./generated/prisma/client";
 import { componentSourceIds,componentOriginCode,componentScopeForOrigin, type ComponentPlacement } from "./museum-component-clearance-domain";
@@ -7,7 +10,7 @@ export async function readComponentCorrections(tx: Prisma.TransactionClient = db
   const events=await tx.auditEvent.findMany({where:{action:"museum.physical_location.check_undone",entityType:"MuseumPhysicalCheckUndo",
     OR:[{afterJson:{path:["scope"],equals:"vitrine_20_contents_only"}},{afterJson:{path:["scope"],equals:"vitrine_19_contents_only"}},{afterJson:{path:["scope"],equals:"vitrine_42_contents_only"}},{afterJson:{path:["scope"],equals:"vitrine_64_contents_including_sticks"}}]},select:{afterJson:true}});
   return events.flatMap(({afterJson:value})=>value&&typeof value==="object"&&!Array.isArray(value)&&value.museumId==="museum-spn"&&
-    typeof value.targetReceiptId==="string"&&typeof value.sourceId==="string"?[{receiptId:value.targetReceiptId,sourceId:value.sourceId}]:[]);
+    typeof value.targetReceiptId==="string"&&typeof value.sourceId==="string"?[{receiptId:value.targetReceiptId,sourceId:value.sourceId,revision:createHash("sha256").update(JSON.stringify(value)).digest("hex")}]:[]);
 }
 
 export async function readComponentPlacements(tx: Prisma.TransactionClient = db, correctionsRead?: ReturnType<typeof readComponentCorrections>): Promise<ComponentPlacement[]> {
@@ -33,6 +36,18 @@ export async function readComponentPlacements(tx: Prisma.TransactionClient = db,
         excludedWalkingSticks: { location: null, status: "unverified" }, expectedSourceRevision: raw.expectedSourceRevision,
         ...(code==="64"?{includedWalkingSticks:true as const}:{}),
         previousCurrentRevision: raw.previousCurrentRevision, previousLocationVersion: raw.previousLocationVersion });
+    }
+  }
+  // Continuations change only the explicitly staged component; the source ledger remains untouched.
+  for(const event of [...events].reverse()){
+    const value=event.afterJson;if(!value||typeof value!=="object"||Array.isArray(value)||value.museumId!=="museum-spn"||!Array.isArray(value.componentMoves))continue;
+    for(const raw of value.componentMoves){
+      if(!raw||typeof raw!=="object"||Array.isArray(raw)||raw.sourceId!==v19ComponentBinding.sourceId||raw.clearanceReceiptId!==pagalComponentReceiptId)continue;
+      const previous=found.get(raw.sourceId),location=moveLocation.safeParse(raw.location);
+      if(!pagalComponentAcknowledgement.safeParse(value.componentPlacementAcknowledgement).success||!previous||previous.receiptId!==pagalComponentReceiptId||raw.previousComponentReceiptId!==previous.receiptId||raw.previousComponentRevision!==previous.revision||raw.scope!==previous.scope||raw.expectedSourceRevision!==previous.expectedSourceRevision||raw.previousCurrentRevision!==previous.previousCurrentRevision||raw.previousLocationVersion!==previous.previousLocationVersion||typeof raw.revision!=="string"||!location.success||location.data.kind!=="vitrine"||location.data.code!==pagalComponentDestination)continue;
+      const correction=corrections.find(c=>c.receiptId===event.id&&c.sourceId===raw.sourceId);
+      if(correction){found.set(raw.sourceId,{...previous,revision:createHash("sha256").update(JSON.stringify({previousRevision:previous.revision,correction:correction.revision})).digest("hex")});continue;}
+      found.set(raw.sourceId,{...previous,receiptId:event.id,clearanceReceiptId:pagalComponentReceiptId,recordedAt:event.createdAt.toISOString(),revision:raw.revision,location:location.data});
     }
   }
   return [...found.values()];

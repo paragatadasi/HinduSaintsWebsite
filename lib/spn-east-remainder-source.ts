@@ -1,3 +1,5 @@
+import {currentCompanionAdditions} from "./museum-companion-addition-validation";
+import {buildLatestSpnReview} from "./spn-reviewed-proposal";
 import {eastRemainderShelfPacket} from "./spn-east-remainder-shelves";
 import {db} from "./db";
 import type {Prisma} from "./generated/prisma/client";
@@ -13,5 +15,7 @@ export async function readEastRemainderGuide(current:Awaited<ReturnType<typeof r
  const [savedAlternatives,additions]=await Promise.all([alternatives??readAlternatives(client),readEffectiveCompanionAdditions(client)]);
  const packet=eastRemainderShelfPacket;
  const context=projectShelfPlanningContext(packet,{current,physical,alternatives:savedAlternatives,additions});
- return projectEastRemainderGuide(current.placements,physical,context);
+ const valid=currentCompanionAdditions(additions,physical.rows);
+ const review=buildLatestSpnReview(current.placements,[...valid,...savedAlternatives.filter(row=>!valid.some(addition=>addition.sourceId===row.sourceId))],physical.rows);
+ return projectEastRemainderGuide(current.placements,physical,context,review);
 }

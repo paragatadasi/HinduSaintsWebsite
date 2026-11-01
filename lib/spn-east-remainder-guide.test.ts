@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import packet from "../data/museum/spn-east-remainder-guide-v1.json";
 import {eastRemainderShelfPacket as shelves,operationalSpnShelfPacket} from "./spn-east-remainder-shelves";
 import {paramanandObjectReview as arm} from "./spn-paramanand-reviewed-object";
-import {eastRemainderMoveGuide as captured,eastRemainderGuideContext,projectEastRemainderGuide,assertEastRemainderRecords} from "./spn-east-remainder-guide";
+import {eastRemainderMoveGuide as captured,eastRemainderGuideContext,projectEastRemainderGuide,assertEastRemainderRecords} from "./spn-east-remainder-guide-v1";
 import {readStarterGuideDefinition,currentReceiverGuideDefinitions} from "./spn-starter-guide-registry";
 import {vrajGuideContext} from "./spn-vraj-guide";
 import {assertGuidePhysicalScope} from "./spn-datta-guide";
@@ -28,17 +28,18 @@ test("remainder registers exactly42 reviewed sources and two independently clear
  assert.equal(definition.physicalScope?.clearancePerDestination,true);
  assert.deepEqual(definition.physicalScope?.clearanceRequiredDestinations,packet.vitrines);
  assert.equal(readStarterGuideDefinition(vrajGuideContext.guideVersion).suggestions.filter(s=>s.kind==="row").length,40);
- assert.ok(currentReceiverGuideDefinitions("26").some(d=>d.context.guideVersion===captured.version));
+ assert.equal(definition.readOnly,true);
+ assert.ok(!currentReceiverGuideDefinitions("26").some(d=>d.context.guideVersion===captured.version));
  assert.ok(!currentReceiverGuideDefinitions("79").some(d=>d.context.guideVersion===captured.version));
  assert.throws(()=>assertGuidePhysicalScope(definition,[],["79"]),/Clear only/);
  assert.throws(()=>assertGuidePhysicalScope(definition,[{sourceId:captured.entries[0].sourceId,to:{kind:"vitrine",code:"79"}}]),/locked phase/);
 });
 
-test("approved sources retain two housing holds, source-only identity and provisional shelf precision",()=>{
+test("archived sources retain housing and unconfirmed-holding guards",()=>{
  const f=fixture(),before=structuredClone(f.physical),guide=project(f);
  assert.equal(guide.entries.length,42);
  assert.equal(guide.entries.filter(e=>e.saintId===null).length,1);
- assert.equal(guide.entries.filter(e=>e.movementBlockedReason).length,2);
+ assert.equal(guide.entries.filter(e=>e.movementBlockedReason).length,4);
  for(const e of guide.entries.filter(e=>!e.movementBlockedReason))assert.doesNotThrow(()=>assertEastRemainderRecords([{sourceId:e.sourceId,to:{kind:"vitrine",code:e.destination}}],guide));
  assert.deepEqual(f.physical,before);
  assert.equal(operationalSpnShelfPacket.vitrines.flatMap(v=>v.allocations).length,350);

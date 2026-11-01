@@ -14,6 +14,7 @@ export function hasOnlySpnHousingReviewHold(sourceId: string) {
 }
 
 export function spnMovementBlockedReason(sourceId: string,evidence?:ReviewedHousingSource): string | undefined {
+  if(sourceId==="recje6xb9KoUwRpQL"||sourceId==="reclyIPFpFR6q67Bx")return "Display context only. Confirm an actual museum holding and its location before recording a move.";
   if(sourceId==="recI0X02xdySqEQru")return "Confirm that this source has a museum holding and identify its current location before recording a move.";
   if(spnDuplicateObservations[sourceId])return spnDuplicateObservations[sourceId].reason;
   if(adjustments.privateSourceIds.includes(sourceId))return adjustments.privateHoldReason;
