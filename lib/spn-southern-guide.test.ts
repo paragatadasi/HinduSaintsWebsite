@@ -1,7 +1,8 @@
+import previousPacket from "../data/museum/spn-southern-guide-v1.json";
 import test from "node:test";
 import assert from "node:assert/strict";
-import packet from "../data/museum/spn-southern-guide-v1.json";
-import {southernGuideContext,southernGuideDefinition,southernMoveGuide,projectSouthernGuide,assertSouthernRecords} from "./spn-southern-guide";
+import packet from "../data/museum/spn-southern-guide-v2.json";
+import {southernGuideContext,southernGuideDefinition,southernMoveGuide,projectSouthernGuide,assertSouthernRecords,applySouthernLivingReview} from "./spn-southern-guide";
 import {readStarterGuideDefinition,currentReceiverGuideDefinitions} from "./spn-starter-guide-registry";
 import {assertGuidePhysicalScope} from "./spn-datta-guide";
 import {projectCompanionAdditions} from "./museum-companion-addition-projection";
@@ -16,9 +17,9 @@ function fixture(){
 }
 
 test("Southern guide registers only the eight approved receiving cases",()=>{
- assert.equal(southernMoveGuide.entries.length,145);
+ assert.equal(southernMoveGuide.entries.length,146);
  assert.deepEqual(southernMoveGuide.vitrines.map(v=>v.code),["56","55","54","53","52","51","62","57"]);
- assert.deepEqual(["51","52","53","54","55","56","57","62"].map(code=>packet.rows.filter(r=>r.destination===code).length),[27,22,18,16,14,15,8,25]);
+ assert.deepEqual(["51","52","53","54","55","56","57","62"].map(code=>packet.rows.filter(r=>r.destination===code).length),[27,20,16,11,14,16,17,25]);
  assert.equal(readStarterGuideDefinition(southernGuideContext.guideVersion),southernGuideDefinition);
  for(const v of southernMoveGuide.vitrines){
   assert.ok(currentReceiverGuideDefinitions(v.code).includes(southernGuideDefinition));
@@ -75,4 +76,48 @@ test("Manick holding verification applies even outside the Southern guide",()=>{
  assert.throws(()=>assertSpnMovementAllowed(id,null,{kind:"vitrine",code:"55",label:"Vitrine 55"}),/museum holding/);
  assert.equal(packet.rows.find(r=>r.sourceId==="recPoRUcHgwzVLQaQ")?.city,"Thailand?");
  assert.equal(packet.rows.find(r=>r.sourceId==="recQtg0xeQPQa16wA")?.city,"Country under review");
+});
+
+
+test("Southern refresh preserves prior clearances and makes the old guide read-only",()=>{
+ assert.equal(readStarterGuideDefinition("spn-southern-2026-11-01-v1").readOnly,true);
+ assert.deepEqual(southernGuideDefinition.physicalScope?.previousClearanceVersions,["spn-southern-2026-11-01-v1"]);
+ assert.ok(southernMoveGuide.vitrines.every(v=>v.placementGuidance&&v.fitGuidance));
+});
+
+test("Chandra living review survives general life-status projection without changing physical state",()=>{
+ const {physical,review}=fixture();const before=JSON.stringify(physical);
+ const guide=projectSouthernGuide([],physical,review);
+ guide.entries.find(e=>e.sourceId==="rec1WWN7Xb1ZRGGhA")!.lifeStatus={tag:null,basis:"Unknown"};
+ const updated=applySouthernLivingReview(guide);
+ assert.equal(updated.entries.find(e=>e.sourceId==="rec1WWN7Xb1ZRGGhA")?.lifeStatus?.tag,"Still alive");
+ assert.equal(guide.entries.find(e=>e.sourceId==="rec1WWN7Xb1ZRGGhA")?.lifeStatus?.tag,null);
+ assert.equal(JSON.stringify(physical),before);
+ assert.equal(updated.entries.find(e=>e.sourceId==="rec2YQrUqUzdITsHZ")?.currentLocation?.kind,"table");
+});
+
+
+test("only the approved sixteen proposal changes alter the Southern roster",()=>{
+ const before=new Map(previousPacket.rows.map(row=>[row.sourceId,row]));
+ const changed=packet.rows.filter(row=>before.get(row.sourceId)?.destination!==row.destination);
+ assert.equal(changed.length,16);
+ assert.deepEqual(["54","57","53","56"].map(code=>changed.filter(row=>row.destination===code).length),[4,9,2,1]);
+ assert.deepEqual(packet.rows.filter(row=>!before.has(row.sourceId)).map(row=>row.sourceId),["rec2YQrUqUzdITsHZ"]);
+ for(const row of previousPacket.rows){
+  const updated=packet.rows.find(candidate=>candidate.sourceId===row.sourceId)!;
+  assert.equal(updated.saintId,row.saintId);
+  assert.equal(updated.sourceRevision,row.sourceRevision);
+  assert.equal(updated.movementBlockedReason,row.movementBlockedReason);
+  if(row.destination==="57")assert.equal(updated.destination,"57");
+ }
+});
+
+
+test("unlocated holdings cannot be checked off until their presence is verified",()=>{
+ const {physical,review}=fixture();
+ for(const id of ["recxP4lgXzCTsJ95J","recOFEIOFhdTwZXa1"]){
+  physical.rows.find(r=>r.sourceId===id)!.current=null;
+  const guide=projectSouthernGuide([],physical,review);
+  assert.match(guide.entries.find(e=>e.sourceId===id)!.movementBlockedReason!,/Locate and verify/);
+ }
 });
