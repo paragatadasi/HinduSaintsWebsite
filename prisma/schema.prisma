@@ -1913,3 +1913,12 @@ model MuseumCompanionTask {
   updatedById String
   @@index([museumId, sourceId, status])
 }
+
+// Single-row counter moved by triggers on every table the cached museum snapshot reads
+// (migration 20261102000000_museum_data_revision, lib/museum-snapshot-tables.ts). Never write it from app code.
+model MuseumDataRevision {
+  id        Int                  @id @default(1)
+  revision  BigInt               @default(0)
+  lastXid   Unsupported("xid8")?
+  changedAt DateTime             @default(now())
+}
