@@ -172,8 +172,8 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  const needsAvailability=guide.preparationVitrines?.includes(selected)===true||(hasAddedRecords&&!needsPhaseClear&&!allowClear);
  const transferReady=(transfer:NonNullable<StarterMoveGuide["preparatoryTransfers"]>[number])=>preparatoryTransfersComplete([transfer],rows);
  const transfersReady=(guide.preparatoryTransfers??[]).filter(t=>t.requiredBefore.includes(selected)).every(transferReady);
- const receiverAvailability=(physical as (PhysicalState & {receiverAvailabilities?:{vitrine:string;guideVersion:string;valid:boolean}[]})|null)?.receiverAvailabilities?.find(item=>item.vitrine===selected&&item.guideVersion===guide.version);
- const spaceReady=receiverAvailability?.valid===true;
+ const receiverAvailability=(physical as (PhysicalState & {receiverAvailabilities?:{vitrine:string;guideVersion:string;valid:boolean;recordedAt:string}[]})|null)?.receiverAvailabilities?.find(item=>item.vitrine===selected&&item.guideVersion===guide.version);
+ const spaceReady=receiverAvailability?.valid===true||!!(receiverAvailability&&physical?.phaseClearances?.some(clear=>clear.vitrine===selected&&clear.guideVersion===guide.version&&Date.parse(clear.recordedAt)>=Date.parse(receiverAvailability.recordedAt)));
  const preparationReady=transfersReady&&(receiverAvailability?spaceReady:((!needsPhaseClear||!requiredClear)&&(!hasAddedRecords||preparation?.prepared===true)&&(needsAvailability?preparation?.prepared===true:needsPhaseClear?!requiredClear:!allowClear||preparation?.prepared===true||selectedPlaced>0)));
  const guideById=allEntries;
  function switchPhase(next:Phase){

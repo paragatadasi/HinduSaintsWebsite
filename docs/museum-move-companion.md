@@ -186,3 +186,12 @@ The explicitly approved V77 bottom-two exception remains scoped to that case.
 These are recommendation changes only: preserve guide identities and assignment
 receipts, later curator destinations, physical locations and explicit actual shelf
 records. A vitrine checkbox still confirms only the vitrine, never a suggested shelf.
+
+
+## Partial clearing
+
+The receiving vitrine can be prepared without declaring it empty. `MuseumPartialClearing` reuses the destination-grouped `MuseumClearContents` rows and existing museum form controls. Selection starts empty. Record only the selected, eligible entries as staged; preserve unselected entries and already confirmed target placements. Keep saving errors beside the action and retain selection on failure.
+
+“Confirm space available” is a separate acknowledgement, bound to the current guide and remaining contents. It does not record a physical move or full clearing. A stale acknowledgement cannot fall back to a previous generic prepared flag. The whole-vitrine clearing workflow remains in a secondary disclosure, including its scoped-component acknowledgements.
+
+The controller uses exact preview revisions and per-record versions. Network retries retain the request ID and selection. Refresh after a conflict before trying again. Live progress includes receiver availability so another curator’s changes invalidate the visible readiness. See `museum-partial-clearing-contract.md` for the backend contract.
