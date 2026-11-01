@@ -7,6 +7,7 @@ export const companionRows = [
  {value:"hinge",label:"Hinge additions",phases:["hinge"]},
  {value:"north",label:"Northern journey",phases:["north"]},
  {value:"west",label:"West",phases:["west45","west46","west47","saurashtra","west40-44","west1"]},
+ {value:"maharashtra",label:"Maharashtra",phases:["maharashtra"]},
  {value:"south",label:"South",phases:["south"]},
 ] as const;
 export type CompanionPhase = typeof companionRows[number]["phases"][number];

@@ -3,7 +3,7 @@ import {applyWesternGuideRefinements} from "./spn-western-guide-refinements";
 import type {StarterMoveGuide,GuideEntry,GuideGroup} from "./spn-move-guide";
 import type {CompanionAddition} from "./museum-companion-additions-state";
 import {projectSourceFamilyReunion,projectGajananDisplayRelationship,projectVitthalVedanandaFamily} from "./spn-source-family-reunion";
-const phaseOrder=["starter","datta","ram-bhakti","gosaiji-sai","east2","vraj","vraj2","hinge","north","west45","west46","west47","saurashtra","west40-44","west1","south"];
+const phaseOrder=["starter","datta","ram-bhakti","gosaiji-sai","east2","vraj","vraj2","hinge","north","west45","west46","west47","saurashtra","west40-44","west1","maharashtra","south"];
 export function companionVitrineOwner<T extends string>(guides:Record<T,StarterMoveGuide>,code:string):T|undefined{
  const keys=Object.keys(guides) as T[];
  const rank=(key:string)=>{const index=phaseOrder.indexOf(key);return index<0?phaseOrder.length:index;};
