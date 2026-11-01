@@ -21,7 +21,7 @@ export const hingeAdditionsGuideDefinition: GuideDefinition = {
 export const hingeAdditionsMoveGuide: StarterMoveGuide = {
   version: hingeAdditionsGuideContext.guideVersion,
   ...hingeAdditionsGuideContext,
-  proposalVersion: "spn-east-north-accepted-additions-2026-11-01-v4",
+  proposalVersion: packet.version,
   title: "Hinge additions",
   phaseLabel: "Hinge additions",
   allowClear: false,
