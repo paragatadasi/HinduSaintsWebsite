@@ -770,3 +770,7 @@ Shelf recommendation groups use the dedicated `--color-museum-shelf-group-*` pal
 ### Museum shelf recommendations without exact positions
 
 The shared shelf guide supports band-only recommendations alongside the five exact rows. Group these as Main story, Below top, and Lower display, each with “exact shelf to confirm”. Reuse the existing colored member cards, origin labels and checkbox controls; a band must never imply an actual shelf number. Recorded positions and physical confirmation remain independent.
+
+### Reviewed vitrine headline guidance
+
+A move-guide vitrine may include a short `placementGuidance` paragraph directly below its theme, before the checklist. Keep fit qualifications in the shared `museum-guide-help` disclosure labeled **Space & placement notes**. These explain reviewed priorities without presenting unreviewed shelf allocations or implying that a placement check confirms a shelf. Preserve physical state when replacing a guide roster.
