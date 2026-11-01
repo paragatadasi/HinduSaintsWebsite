@@ -14,8 +14,8 @@ export async function readCompanionAdditions(tx:Prisma.TransactionClient=db){
  return [...latest.values()];
 }
 
-export async function readEffectiveCompanionAdditions(tx:Prisma.TransactionClient=db){
- const [additions,alternatives]=await Promise.all([readCompanionAdditions(tx),readGuideAlternativeDestinations(tx)]);
+export async function readEffectiveCompanionAdditions(tx:Prisma.TransactionClient=db,preloaded?:{additions:CompanionAddition[];alternatives:Awaited<ReturnType<typeof readGuideAlternativeDestinations>>}){
+ const [additions,alternatives]=await Promise.all([preloaded?.additions??readCompanionAdditions(tx),preloaded?.alternatives??readGuideAlternativeDestinations(tx)]);
  if(!additions.length)return [];
  const baseline=new Map([...currentSpnProposalRelease.proposal.rows,...currentSpnProposalRelease.proposal.namedOnly].map(row=>[row.sourceId,row.baseline?.placementId]));
  const events=await tx.auditEvent.findMany({where:{action:"museum.arrangement.updated",entityType:"MuseumArrangement",entityId:{in:additions.flatMap(a=>[a.sourceId,baseline.get(a.sourceId)].filter((id):id is string=>!!id))},afterJson:{path:["museumId"],equals:"museum-spn"}},select:{entityId:true,createdAt:true}});
