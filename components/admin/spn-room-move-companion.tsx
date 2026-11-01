@@ -140,7 +140,9 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
     if(full){setPhysical(data);}else if(physicalRef.current){
      const merged=mergeMuseumPhysicalProgress(physicalRef.current.rows,data.positions);
      if(merged.needsFullRefresh)lastFull=0;
-     setPhysical(previous=>previous?{...previous,rows:merged.rows,preparations:data.preparations,phaseClearances:data.phaseClearances,receiverAvailabilities:data.receiverAvailabilities}:previous);
+     // Progress omits receiver availabilities; keep the last full value and refresh it after a ledger change.
+     setPhysical(previous=>previous?{...previous,rows:merged.rows,preparations:data.preparations,phaseClearances:data.phaseClearances,receiverAvailabilities:data.receiverAvailabilities??(previous as {receiverAvailabilities?:unknown}).receiverAvailabilities}:previous);
+     if(etag)lastFull=0;
      etag=response.headers.get("ETag")??"";
     }
     setSyncError("");

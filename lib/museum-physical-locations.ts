@@ -101,6 +101,8 @@ export async function readPhysicalLocationView(loader: PhysicalSnapshotLoader, t
 }
 
 export async function readMuseumPhysicalLocations(loader: PhysicalSnapshotLoader, sourceIds?: string[]) {
+  // The view, phase clearances and receiver availabilities each read the source snapshot; share one load per request.
+  loader = memoizePhysicalSnapshot(loader);
   const current = await readPhysicalLocationView(loader, db, sourceIds);
   const [confirmationHistory, reportedPlacementReceipts] = await Promise.all([
     db.auditEvent.findMany({ where: { action, entityType: receiptType, entityId: { startsWith: "museum-spn:" } }, orderBy: [{ createdAt: "desc" }, { id: "desc" }], take: 100, select: { id: true, createdAt: true, afterJson: true } }),
