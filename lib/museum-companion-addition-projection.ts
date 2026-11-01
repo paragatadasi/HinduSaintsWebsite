@@ -1,3 +1,4 @@
+import {applyEasternHeadlines} from "./spn-eastern-headlines";
 import {applyJamnagarGuideRefinement} from "./spn-jamnagar-receiver";
 import {applyEastNorthGuideRefinements} from "./spn-east-north-guide-refinements";
 import {applyWesternGuideRefinements} from "./spn-western-guide-refinements";
@@ -46,11 +47,11 @@ export function projectCompanionAdditions<T extends string>(guides:Record<T,Star
    const sourceIds=group.sourceIds.filter(id=>!pending.has(id));
    return sourceIds.length===group.sourceIds.length?group:{...group,sourceIds,edges:group.edges?.filter(edge=>sourceIds.includes(edge.fromSourceId)&&sourceIds.includes(edge.toSourceId)),saintCount:undefined,spaceEstimate:undefined};
   }).filter(group=>group.sourceIds.length);
-  return [key,applyJamnagarGuideRefinement(applyEastNorthGuideRefinements(applyWesternGuideRefinements(projectVitthalVedanandaFamily(projectGajananDisplayRelationship(projectSourceFamilyReunion({...guide,vitrines:visibleVitrines,alternatives,entries:[...updated.values()].map(entry=>{
+  return [key,applyEasternHeadlines(applyJamnagarGuideRefinement(applyEastNorthGuideRefinements(applyWesternGuideRefinements(projectVitthalVedanandaFamily(projectGajananDisplayRelationship(projectSourceFamilyReunion({...guide,vitrines:visibleVitrines,alternatives,entries:[...updated.values()].map(entry=>{
    const livingDatta=(entry.sourceId==="recyokcxEvhxvtyPk"&&entry.saintId==="cms0w7jvq09a707qiha1bb3et")||(entry.sourceId==="rec6IMLj9eDVWGP71"&&entry.saintId==="cms0w7d42015d07qieuyk6nfb");
    if(!livingDatta||entry.lifeStatus?.tag!=="Living")return entry;
    const note="Living: use the bottom shelf. Keep related saints in the same vitrine where possible.";
    return {...entry,reviewNotes:[...new Set([...(entry.reviewNotes??[]),note])]};
-  })})))), additions),additions)];
+  })})))), additions),additions),catalog.map(e=>byId.has(e.sourceId)?{...e,destination:byId.get(e.sourceId)!.vitrine}:e))];
  })) as Record<T,StarterMoveGuide>;
 }

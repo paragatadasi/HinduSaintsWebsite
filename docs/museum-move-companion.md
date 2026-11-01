@@ -195,3 +195,11 @@ The receiving vitrine can be prepared without declaring it empty. `MuseumPartial
 “Confirm space available” is a separate acknowledgement, bound to the current guide and remaining contents. It does not record a physical move or full clearing. A stale acknowledgement cannot fall back to a previous generic prepared flag. The whole-vitrine clearing workflow remains in a secondary disclosure, including its scoped-component acknowledgements.
 
 The controller uses exact preview revisions and per-record versions. Network retries retain the request ID and selection. Refresh after a conflict before trying again. Live progress includes receiver availability so another curator’s changes invalidate the visible readiness. See `museum-partial-clearing-contract.md` for the backend contract.
+
+## Approved Eastern headlines, 1 November 2026
+
+The current presentation overlays the approved 35-source Eastern roster: Vitrine 23 (Anandamayi Ma, 12), 24 (Omkarnath and regional Bengal, 12), and 73 (Bamakhepa, Nigamananda and Bauls, 11). Native destinations were saved separately by Nadi; this overlay writes no locations or clearance state. Current catalog destinations remove superseded membership, and later additions remain visible.
+
+Shelf recommendations retain distinct family and locality blocks, use shelf 5 for the three explicitly living entries, and flag the three unknown footprints in 24. Existing physical confirmations retain their arrangements through the shared shelf-context projection. Source identity/revision and newer curator decisions remain guarded. Existing attributed relationship edges are retained; unnamed edges are not invented. Minati remains a qualified locality entry, not a Jaiguru family member.
+
+Vitrine 73 now uses the shared Eastern presentation color and filter membership. Earlier frozen proposal packets and their action digests remain unchanged. Individual move decisions and source IDs are preserved.

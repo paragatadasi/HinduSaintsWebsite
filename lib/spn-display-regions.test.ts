@@ -5,8 +5,8 @@ import layout from '../data/museum/layouts/spn-layout-2026-10-23.json';
 
 test('reviewed presentation covers physical cases without renumbering',()=>{
  assert.deepEqual(Object.keys(spnDisplayTones).sort(),layout.vitrines.map(v=>v.number).sort());
- for(const n of ['27','73']) assert.equal(spnDisplayTones[n],'R');
- for(const n of ['23','24','37']) assert.equal(spnDisplayTones[n],'E');
+ for(const n of ['27']) assert.equal(spnDisplayTones[n],'R');
+ for(const n of ['23','24','37','73']) assert.equal(spnDisplayTones[n],'E');
  for(const n of ['64','65','66','67','68']) assert.equal(spnDisplayTones[n],'K');
  for(const n of ['17','18']) assert.equal(spnDisplayTones[n],'C');
 });
@@ -23,6 +23,6 @@ test('gray groups remain separately named and filterable',()=>{
  assert.notEqual(spnDisplayLabel('17'),spnDisplayLabel('64'));
  assert.equal(spnDisplayMatches('17','K'),false);
  assert.equal(spnDisplayMatches('64','C'),false);
- assert.equal(spnDisplayMatches('73','E'),false);
+ assert.equal(spnDisplayMatches('73','E'),true);
  assert.equal(spnDisplayMatches('73',null),true);
 });

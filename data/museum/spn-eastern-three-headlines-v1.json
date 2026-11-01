@@ -1,0 +1,1126 @@
+{
+  "version": "spn-eastern-three-headlines-2026-11-01-v1",
+  "sourceVersion": "spn-eastern-three-headlines-trial-2026-11-01-v7",
+  "approvedAt": "2026-11-01",
+  "vitrines": [
+    {
+      "code": "23",
+      "summary": "Anandamayi Ma",
+      "groups": [
+        {
+          "id": "east-retained-g35",
+          "title": "Anandamayi Ma · household & disciples",
+          "kind": "family",
+          "sourceIds": [
+            "rec0UdBlKfO9mbpZD",
+            "rec41qsOfiZMDpPHZ",
+            "recBVn7Vp9onOO9Bh",
+            "recCIuQTzNZY1KNsQ",
+            "recgWx4aYAekvRxg1",
+            "recSp8gOh0CJjhDej"
+          ],
+          "rationale": "Mokshada is Ma’s mother. Both Bholanath observations retained; no object or identity merge. Shudanshu and Kedarnath discipleship is collection-attributed.",
+          "edges": [
+            {
+              "fromSourceId": "recBVn7Vp9onOO9Bh",
+              "toSourceId": "rec0UdBlKfO9mbpZD",
+              "label": "mother"
+            },
+            {
+              "fromSourceId": "recBVn7Vp9onOO9Bh",
+              "toSourceId": "recgWx4aYAekvRxg1",
+              "label": "husband"
+            },
+            {
+              "fromSourceId": "recBVn7Vp9onOO9Bh",
+              "toSourceId": "rec41qsOfiZMDpPHZ",
+              "label": "disciple · source-recorded"
+            },
+            {
+              "fromSourceId": "recBVn7Vp9onOO9Bh",
+              "toSourceId": "recSp8gOh0CJjhDej",
+              "label": "disciple · source-recorded"
+            }
+          ]
+        },
+        {
+          "id": "east-retained-g21",
+          "title": "Rishra",
+          "kind": "city",
+          "sourceIds": [
+            "rec0SGXTdsSl2P73u",
+            "recx5AJ8L5CdLzJJy"
+          ],
+          "rationale": "",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g24",
+          "title": "Siliguri",
+          "kind": "city",
+          "sourceIds": [
+            "recRivuJkmJR7uYVc",
+            "recSZ8Fcf0kN0uvm4"
+          ],
+          "rationale": "",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g34",
+          "title": "Kalimpong",
+          "kind": "city",
+          "sourceIds": [
+            "recuxjz5o7wTClAy5"
+          ],
+          "rationale": "",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g37",
+          "title": "Bengal · locality only",
+          "kind": "city",
+          "sourceIds": [
+            "recjfGeU4OqaBqtZ2"
+          ],
+          "rationale": "Srijivasharan’s source gives West Bengal and Bangladesh, without a town or verified personal connection. No Jaiguru affiliation is asserted.",
+          "edges": []
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "rec0UdBlKfO9mbpZD",
+          "saintId": "cms0w7cb8006207qix8q1aash",
+          "name": "Sri Mokshada Sundari Devi",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g35",
+          "sourceRevision": "804b0621e19c9588f8da1bbe6fdd66a4d75a4952e3cb9822de123a454f90d910",
+          "capturedBaseline": {
+            "placementId": "rec0UdBlKfO9mbpZD",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "9991070546bdd5c91c12332aa61e00709c293ad3442a5c2d6e2a7108dd021f79",
+            "proposalRevision": "702bd1e8f761a01dd8b38745705cdd596eff5f3f1a265c8fac666b80a0ca3175"
+          },
+          "suggestedShelfIndex": 2,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "Bangladesh; Kheora",
+          "relicDescription": "clothes (her sannyas clothes) and blessed picture from her (she blessed) and",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "rec41qsOfiZMDpPHZ",
+          "saintId": "cms0w7cpr00o107qillguaaa6",
+          "name": "Sri Swami Shudanshu Maharaj",
+          "tier": "Secondary",
+          "groupId": "east-retained-g35",
+          "sourceRevision": "9d268fcbcb481603267ec0aeecc0e4cf346bff20f5e898505ab5ba7fb64143b3",
+          "capturedBaseline": {
+            "placementId": "rec41qsOfiZMDpPHZ",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Secondary",
+            "familyKey": "FAM-010",
+            "regionTags": [],
+            "revision": "025937a1be88d633f0864ccff4788b3f1f48f1a4068d73c4c2de5e432dec9bf9",
+            "proposalRevision": "0a09c81a730528b9f7896a162009042630cb86c75bd64af871d3fada25f0e66b"
+          },
+          "suggestedShelfIndex": 2,
+          "knownFootprint": 0.0625,
+          "reviewAlerts": [],
+          "city": "Serampur, West Bengal, India",
+          "relicDescription": "thread of robe",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recBVn7Vp9onOO9Bh",
+          "saintId": "cms0w7e2q02f407qie0yjy7xe",
+          "name": "Sri Anandamayi Ma",
+          "tier": "Primary",
+          "groupId": "east-retained-g35",
+          "sourceRevision": "31133424606c4867d472f1c2f4059c34738f3e29c4a41cd299dc1bbfd26e3b7a",
+          "capturedBaseline": {
+            "placementId": "recBVn7Vp9onOO9Bh",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Primary",
+            "familyKey": "FAM-010",
+            "regionTags": [],
+            "revision": "5beb4f5419a97e3fdbeb8eb4eb5aa1e5c5d2b7c8471e69cc0fd354c0bdc6fb21",
+            "proposalRevision": "edbbc5b27ff3f7c2a39973a2a47c24ead269c3fc91cb465df832d77c25d11346"
+          },
+          "suggestedShelfIndex": 1,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "Bangladesh",
+          "relicDescription": "Her hair and shawl, Sari she put on herself, piece from her clothes, 2 Rudrakshas",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recCIuQTzNZY1KNsQ",
+          "saintId": "cms0w7e8c02m507qihab2pdoc",
+          "name": "Sri Baba Bolanath",
+          "tier": "Secondary",
+          "groupId": "east-retained-g35",
+          "sourceRevision": "2937dd557a94c37b43542f531c25f81106ac22ebd8a914a6323e77eb32e05eb0",
+          "capturedBaseline": {
+            "placementId": "recCIuQTzNZY1KNsQ",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Secondary",
+            "familyKey": "FAM-010",
+            "regionTags": [],
+            "revision": "507f09842d224c8e17ed66838e3cdc3333dd81fa78b3e94db606cb362045025c",
+            "proposalRevision": "5af08901e29db6052d40b9b1b2472ae3aea07174ce2008679554c0cfb6b4a602"
+          },
+          "suggestedShelfIndex": 1,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "Bangladesh",
+          "relicDescription": "Hair",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recgWx4aYAekvRxg1",
+          "saintId": "cms0w7fbp041v07qin8sforua",
+          "name": "Sri Ramani Mohan Chakrabarti (Bholanath)",
+          "tier": "Secondary",
+          "groupId": "east-retained-g35",
+          "sourceRevision": "4bfa6a6766db21f99e052650d9071cdb994829d80870665c259746549eb2174f",
+          "capturedBaseline": {
+            "placementId": "recgWx4aYAekvRxg1",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Secondary",
+            "familyKey": "FAM-010",
+            "regionTags": [],
+            "revision": "5dc683b99ad82038cf37282f7c95d34556a8bb62271179a9d470b477514c8c5c",
+            "proposalRevision": "353160b54bbec81d56ece5e6b8b44dc9aa48a43608757e8d2d2f9d0212e3856b"
+          },
+          "suggestedShelfIndex": 1,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "Haridwar, Uttarakhand, India; Uttarkhand; Dehradun",
+          "relicDescription": "Piece of paper with his handwriting ",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recSp8gOh0CJjhDej",
+          "saintId": "cms0w7i4t07g507qibr708u2a",
+          "name": "Sri Swami Kedarnath Maharaj",
+          "tier": "Secondary",
+          "groupId": "east-retained-g35",
+          "sourceRevision": "8eeed7b6f435856a3600c4f7be5c5ccbe295c4e0e5a5b48b1c5cf66eb3c9a24c",
+          "capturedBaseline": {
+            "placementId": "recSp8gOh0CJjhDej",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Secondary",
+            "familyKey": "FAM-010",
+            "regionTags": [],
+            "revision": "27f924ac092db9b78ace4bb5c167f076cfe757aa0f72bd2822bf75481506c693",
+            "proposalRevision": "9ecd01a3e11d9917e7aff68c239a1b804037f0683c310153b12570c4838075d5"
+          },
+          "suggestedShelfIndex": 2,
+          "knownFootprint": 0.08333333333333333,
+          "reviewAlerts": [],
+          "city": "Locality not recorded",
+          "relicDescription": "hair",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "rec0SGXTdsSl2P73u",
+          "saintId": "cms0w7caz005p07qid7kttbkz",
+          "name": "Sri Srimad Balaananda Brahmachari Maharaj",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g21",
+          "sourceRevision": "82ae7de3fcb0d378627c92ddbeb4a18094671772d8f389fdf5bc57f8bccaec4d",
+          "capturedBaseline": {
+            "placementId": "rec0SGXTdsSl2P73u",
+            "section": "Gaudiya Vaishnava",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "9a15be05ecb0b27b00be6a1f28fcfe45757d6f7830c0a757b3275df015c81e1b",
+            "proposalRevision": "b3cb318765b5572a851e24fc148335325d95f4783bc99b3349b0087b24e108e8"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": 0.2,
+          "reviewAlerts": [],
+          "city": "Rishra, West Bengal, India; Premashram in Rishra; Ujjain; Narmada Region",
+          "relicDescription": "Sichel=kind of knife he used to cut his way during his wanderings..3 times parikram in Narmada region",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recx5AJ8L5CdLzJJy",
+          "saintId": "cms0w7jdz08rk07qiiy0vbbpm",
+          "name": "Sri Srimad Tarananda Bramachari",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g21",
+          "sourceRevision": "a73a7340ef32a52a06df54f1b97d973200ad3cbc83803ccf6e7e9aae59818cbe",
+          "capturedBaseline": {
+            "placementId": "recx5AJ8L5CdLzJJy",
+            "section": "Gaudiya Vaishnava",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "168f09b9b3166502d95bcc753ec1273e83c7cc54921d6f059687a8123c6bd8cb",
+            "proposalRevision": "6ce0fdaebf598697575cdaaf23feca52f03a36718e88a72a711015f4f603933d"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": 0.08333333333333333,
+          "reviewAlerts": [],
+          "city": "Rishra, West Bengal, India; Premashram in Rishra; Ujjain; Narmada Region",
+          "relicDescription": "japa mala\n",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recRivuJkmJR7uYVc",
+          "saintId": "cms0w7hvc075a07qicrrinmr3",
+          "name": "Sri Paramahamsa Guruji Sri 108 Mangal Das ji Maharaj",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g24",
+          "sourceRevision": "e03ba571a984f4668a8afd4e8983fd2c4d34fd96f8209e5a42b9cae1c7d945fd",
+          "capturedBaseline": {
+            "placementId": "recRivuJkmJR7uYVc",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "2fa75c496125e02a75fdfb9c4fd0baa3e9e0747b33014c144a1d6abb0167ef68",
+            "proposalRevision": "f27d78a597497fdcf2a63b2fd79f194fd7e872024b9bc37ea0c8704f4cd6c289"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "Siliguri, West Bengal, India; Siliguri Pranaami Road; Pranaami Mandir",
+          "relicDescription": "Book covers ",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recSZ8Fcf0kN0uvm4",
+          "saintId": "cms0w7i9i07kx07qidw4jhbye",
+          "name": "Sri Bhakti Vedanta Tridandi Goswami Maharaj",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g24",
+          "sourceRevision": "6ece2046e15277f3c0adfc11155878a0f0f0f09ca4e79489545067e0bef16eba",
+          "capturedBaseline": {
+            "placementId": "recSZ8Fcf0kN0uvm4",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "3e04bed38df89d91ab0b11d12b3995c3ab810fbc490b1af10b269083ee22cb53",
+            "proposalRevision": "52c063313f97fc2ea423488d3ef0715c6c1146db73a52eb7052fdc984bbc4f7d"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": 0.2,
+          "reviewAlerts": [],
+          "city": "Siliguri, West Bengal, India; Siliguri Sri Keshava Goswami Gaudiya Math",
+          "relicDescription": "Shoe soles and Mala bead ",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recuxjz5o7wTClAy5",
+          "saintId": "cms0w7isl085p07qim96fd5wi",
+          "name": "Sri Pandit Mahaveer Prasad Saraswat",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g34",
+          "sourceRevision": "f7b82c91b81159534343978d52099a0c7e5a9c31fd334822d0c530842e470d82",
+          "capturedBaseline": {
+            "placementId": "recuxjz5o7wTClAy5",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "dd610236b20a295c02a35ceb2db1b36769fd57e225b5b2d7e76cace873c3fb5f",
+            "proposalRevision": "febfa146fa3ed3c4c68fc6b4183d499e2b1e26076a12b1b99673e6d35d36b3bc"
+          },
+          "suggestedShelfIndex": 4,
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [],
+          "city": "Kalimpong, West Bengal, India; Kalimpong Jagadish Mandir; Strawberry",
+          "relicDescription": "Hat, Mala holder, Mala ",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recjfGeU4OqaBqtZ2",
+          "saintId": "cms0w7fvw04r307qik4ikz6ak",
+          "name": "Sri Srijivasharan Das",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g37",
+          "sourceRevision": "8d9984616f885ad62cbe6cb9de6e66115689146823e80af3124ab4acbfef71e5",
+          "capturedBaseline": {
+            "placementId": "recjfGeU4OqaBqtZ2",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "ca4e5170bf826949ea66e156f95c01c3e15cffb9bcc70d110ca4b401f52a0f67",
+            "proposalRevision": "5d1c1fe9362b97a64cfe1d3128b99076228ed215e0068d7cc81696e58b4d62df"
+          },
+          "suggestedShelfIndex": 4,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "West Bengal, India\nBangladesh",
+          "relicDescription": "Sock",
+          "lifeTag": null
+        }
+      ],
+      "relationships": [
+        {
+          "fromSourceId": "recBVn7Vp9onOO9Bh",
+          "toSourceId": "rec0UdBlKfO9mbpZD",
+          "label": "mother",
+          "direction": "forward",
+          "uncertain": false
+        },
+        {
+          "fromSourceId": "recBVn7Vp9onOO9Bh",
+          "toSourceId": "recgWx4aYAekvRxg1",
+          "label": "husband",
+          "direction": "forward",
+          "uncertain": false
+        },
+        {
+          "fromSourceId": "recBVn7Vp9onOO9Bh",
+          "toSourceId": "rec41qsOfiZMDpPHZ",
+          "label": "disciple · source-recorded",
+          "direction": "forward",
+          "uncertain": true
+        },
+        {
+          "fromSourceId": "recBVn7Vp9onOO9Bh",
+          "toSourceId": "recSp8gOh0CJjhDej",
+          "label": "disciple · source-recorded",
+          "direction": "forward",
+          "uncertain": true
+        }
+      ],
+      "livingAllowedBands": [
+        5
+      ],
+      "conceptualAssignedLoads": {
+        "1": 0.75,
+        "2": 0.3958333333333333,
+        "3": 0.7333333333333334,
+        "4": 0.41666666666666663,
+        "5": 0
+      },
+      "notes": [
+        "Suggested shelves; check actual fit on site."
+      ]
+    },
+    {
+      "code": "24",
+      "summary": "Omkarnath & regional Bengal",
+      "groups": [
+        {
+          "id": "east-retained-g36",
+          "title": "Omkarnath & Parankush Ramanuj",
+          "kind": "family",
+          "sourceIds": [
+            "recdHeSKJd6wfLiaq",
+            "recich5ddJOLsUnVm"
+          ],
+          "rationale": "Keep the Jaiguru context distinct from Ma’s household. Ma and Omkarnath exchanged visits; this is not a guru edge.",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g20",
+          "title": "Bardhaman",
+          "kind": "city",
+          "sourceIds": [
+            "recbdw5UUfTtrzYtA",
+            "recEl1aeAqZWFDMSu",
+            "recFwJWKusgV51Uso",
+            "recfzhFIVbBPDkCYS",
+            "recSYEInZCyvDPkGk",
+            "recX9wYe8fUdPLhPX"
+          ],
+          "rationale": "Includes both Ram Thakur observations; preserve them as separate holdings.",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g22",
+          "title": "Bongram",
+          "kind": "city",
+          "sourceIds": [
+            "rec7Jp1JDp4Vm9470",
+            "recrYgHIIdcjcxN2N"
+          ],
+          "rationale": "",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g31",
+          "title": "Ambika Kalna",
+          "kind": "city",
+          "sourceIds": [
+            "recMmZ5qGtbPiHxJz"
+          ],
+          "rationale": "",
+          "edges": []
+        },
+        {
+          "id": "east-added-recdMdwOnTHhwbwFI",
+          "title": "Minati Patra · Tarakeshwar / Kolkata",
+          "kind": "city",
+          "sourceIds": [
+            "recdMdwOnTHhwbwFI"
+          ],
+          "rationale": "Existing saved24 proposal. Retain source-recorded family affiliation; holding description is not recorded in this export.",
+          "edges": []
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recdHeSKJd6wfLiaq",
+          "saintId": "cms0w7eh402xm07qi26e8l4xg",
+          "name": "Sri SitaRamDas Omkarnath",
+          "tier": "Primary",
+          "groupId": "east-retained-g36",
+          "sourceRevision": "5c703a0e77c5ea12c673e6218d1c7a514ed87311fc2fed8224fab7aa3aac037f",
+          "capturedBaseline": {
+            "placementId": "recdHeSKJd6wfLiaq",
+            "section": "Gaudiya Vaishnava",
+            "tier": "Primary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "356042609ecfe0bc4fccd4b4ab22a1b43370cf2d0c5ae1e8bba43a13f6fdeda2",
+            "proposalRevision": "750c1dd5a796136d8733265bc8d833e9616b5b844cccfaf65292d216ee6eaaef"
+          },
+          "suggestedShelfIndex": 1,
+          "knownFootprint": 0.2,
+          "reviewAlerts": [],
+          "city": "Puri, Odisha, India; Navadwip, West Bengal, India; Puri/Navadwip",
+          "relicDescription": "Hair, Hari naam shawl, wood from his bed, piece from his Padukas, piece from his robe (Anga Vastra)",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recich5ddJOLsUnVm",
+          "saintId": "cms0w7foe04i107qiwkkjtma8",
+          "name": "Sri Srimad Swami Parang Kush Ramanuj",
+          "tier": "Secondary",
+          "groupId": "east-retained-g36",
+          "sourceRevision": "45db130c1f46f0ad7399ed16eeacf9cde8e842ad1300c2cfe46a6d67a8fe8377",
+          "capturedBaseline": {
+            "placementId": "recich5ddJOLsUnVm",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Secondary",
+            "familyKey": "FAM-075",
+            "regionTags": [],
+            "revision": "1494fc6498515d6da10a6bba7d83de3c36eca1ed6bfcc8826fa45eaeaa98e139",
+            "proposalRevision": "78fe06076f0e19e283a1b90a2135399ec2d459cc277fefc8c20447f340d2254e"
+          },
+          "suggestedShelfIndex": 1,
+          "knownFootprint": 0.3333333333333333,
+          "reviewAlerts": [],
+          "city": "Kolkata, West Bengal, India; Calcutta; Talandu, India; Triveni, Hooghly, India",
+          "relicDescription": "his Asan, dhoti, shawl, bag from dandha",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recbdw5UUfTtrzYtA",
+          "saintId": "cms0w7dx4027m07qic4cs8yy7",
+          "name": "Sri Shrimad Swami Paramananda",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g20",
+          "sourceRevision": "b59dddb5314865581d633b9ad11c0b7907f9a2b51f4f172bd419b1a7469b4ec6",
+          "capturedBaseline": {
+            "placementId": "recbdw5UUfTtrzYtA",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "9db298245cbd07768dc402871e848a998fa1582c35d6a58d49ce364a90b9f3ba",
+            "proposalRevision": "fd23325399b3816dc3faebd2d5f511e44d0365a656235bff731776b351ace828"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [],
+          "city": "Bardwan, West Bengal, India; Raina; Burdwan; Banagram, Bardhaman, India",
+          "relicDescription": "Footpad from his shoes and ash",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recEl1aeAqZWFDMSu",
+          "saintId": "cms0w7esh03cq07qia2tm3c8o",
+          "name": "Sri Ram Thakur Maharaj",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g20",
+          "sourceRevision": "ab71eb8064cfcd32c7b52a3b72888a174dae69f230e9f91d4491477358195598",
+          "capturedBaseline": {
+            "placementId": "recEl1aeAqZWFDMSu",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "1faa3fbfab66027d7af257b2b75f90343227d0c67e7baee12b4ba6f2aa0a51ff",
+            "proposalRevision": "740e11fc90227c707f68a2f83e20ec8c030e89935c2bd2db4a3c4a4d388c17c4"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [],
+          "city": "Burdwaan, West Bengal, India; Burdwan",
+          "relicDescription": "",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recFwJWKusgV51Uso",
+          "saintId": "cms0w7f4c03s807qip8fhy8oo",
+          "name": "Sri Haridas Dey",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g20",
+          "sourceRevision": "bd4394005ad83a3dbc0bc3b11e20e1beddb352dea1cec3a9b475db1ffd66ae6d",
+          "capturedBaseline": {
+            "placementId": "recFwJWKusgV51Uso",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "7d38cbb2233aa5879dddc592853a4b44b2238d5c4c7235fd9b608d65f0be905e",
+            "proposalRevision": "e3d7bd9ce1ed80e1e21581112945a768d98c0d0c723a9ffb849b618ecb1a0023"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": null,
+          "reviewAlerts": [
+            {
+              "message": "Size unmeasured; check fit before using this suggested shelf."
+            }
+          ],
+          "city": "Burdwaan, West Bengal, India; Bardwan, West Bengal, India",
+          "relicDescription": "Clothes from his materialized deity ",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recfzhFIVbBPDkCYS",
+          "saintId": "cms0w7f4v03sw07qis8k6570z",
+          "name": "Sri Shrimad Swami Abhayanand Giri Paramahamsa Dev",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g20",
+          "sourceRevision": "ae5e1bbf066964cfc192c50735d82119bda02beae166d4c351af310a28eedcac",
+          "capturedBaseline": {
+            "placementId": "recfzhFIVbBPDkCYS",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "7f3f34b36ead681954a0ac45970d03a910022149712490bc478b98b2d4028b72",
+            "proposalRevision": "ee7c5cbfc12c50ea33e87d1ebf4f2ddec14c3fa5839ea3437998b1e350e8fb13"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [],
+          "city": "Khaja Anowar Berh, Bardwan, West Bengal, India; Om kleem Ashram",
+          "relicDescription": "Piece from the padukas ",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recSYEInZCyvDPkGk",
+          "saintId": "cms0w7i8g07jr07qixjwk5ig7",
+          "name": "Sri Abhijeet Roy",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g20",
+          "sourceRevision": "344b97a29e3f53834bba79cbed45be416d2bc2a15fc5ce79409156deb3acd382",
+          "capturedBaseline": {
+            "placementId": "recSYEInZCyvDPkGk",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "2d365dbb19875e811ee2225ddd5f5a2f6c65e57a40440e9f00c880e06a58fde4",
+            "proposalRevision": "7b980f549f01df8e91c3785f26081872d97adfcc0ecdc218778e8ebf5c89b788"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [],
+          "city": "Bardwan, West Bengal, India; Khashbagan; Loknath Ashram; Burdwan",
+          "relicDescription": "Peacock feather from his Gopal, thread from his asan and sheet ",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recX9wYe8fUdPLhPX",
+          "saintId": "cms0w7jfk08t607qiursu89q6",
+          "name": "Sri Rām Thakur",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g20",
+          "sourceRevision": "aa7fff9c09f3e636c1d5e0c9253f12039d6ef88cc83f0f5b5c887ae001e25b87",
+          "capturedBaseline": {
+            "placementId": "recX9wYe8fUdPLhPX",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "bdfaa484fde2862f79ffda07eda5f02509e44e36cbfa2b85d754d287c4ba90aa",
+            "proposalRevision": "05f222f74e4bcf4200058642e8b7d5a75d09ca9f7caffbad430170d36c95a783"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": null,
+          "reviewAlerts": [
+            {
+              "message": "Size unmeasured; check fit before using this suggested shelf."
+            }
+          ],
+          "city": "Bardwan, West Bengal, India; Mirchoba; Chotonilpur",
+          "relicDescription": "Piece from his mattress",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "rec7Jp1JDp4Vm9470",
+          "saintId": "cms0w7dag01da07qi4y8fjeqm",
+          "name": "Sri Govindanand Giri Maharaj",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g22",
+          "sourceRevision": "f5cccf8c2c5cafa1343c503c61e378d86ad5e1c898d609c3b04d0e500adaa72f",
+          "capturedBaseline": {
+            "placementId": "rec7Jp1JDp4Vm9470",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "26490e776e437777779e977358263adfac6a08abf2229d52ead8b6b2eb255ef8",
+            "proposalRevision": "5754007ea0baa8644cb426e170bb7c9e744a9d0021fbd7f7db59e75421c1921d"
+          },
+          "suggestedShelfIndex": 5,
+          "knownFootprint": 0.1111111111111111,
+          "reviewAlerts": [],
+          "city": "West Bengal; Bongram Ashram",
+          "relicDescription": "",
+          "lifeTag": "Living"
+        },
+        {
+          "sourceId": "recrYgHIIdcjcxN2N",
+          "saintId": "cms0w7hza079x07qi6m901wnc",
+          "name": "Sri Shrimad Sadhanand Giri Maharaj",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g22",
+          "sourceRevision": "a942f08f38ebceec0aad30f3536ae153792a0fb5e582f9c178a88af03f7ae24a",
+          "capturedBaseline": {
+            "placementId": "recrYgHIIdcjcxN2N",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "b89a7d1aaaa80541dcfd190f3a9157abaa7ddde3861579e79b899ea55766ddd2",
+            "proposalRevision": "86810248612f9ad7c1307524d33b20b8c8593eb2a6fbd4d55fa8a75e448f6e54"
+          },
+          "suggestedShelfIndex": 5,
+          "knownFootprint": 0.1111111111111111,
+          "reviewAlerts": [],
+          "city": "West Bengal; Bongram Ashram",
+          "relicDescription": "Hair (Jata)",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recMmZ5qGtbPiHxJz",
+          "saintId": "cms0w7gpe05re07qibfo24tql",
+          "name": "Sri Baba Pagla",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g31",
+          "sourceRevision": "13aa6997644308a355d954b38bf69245d2850968968a8636727f144065f1753d",
+          "capturedBaseline": {
+            "placementId": "recMmZ5qGtbPiHxJz",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "032d105bc4c096ef24b06f53a9cebf4d095f51e0b01e076f80ce8ff34ab245a8",
+            "proposalRevision": "94559a653cf6a089cbea0a413dc11f1c5d5d3d8c6fcba25ba1f59191f1937c17"
+          },
+          "suggestedShelfIndex": 4,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [
+            {
+              "message": "Proposal discrepancy: this earlier Eastern visualization used24, while the current native fallback is75. This trial recommends24; no save has been made."
+            }
+          ],
+          "city": "West Bengal; Ambika Kalna",
+          "relicDescription": "Upper clothes",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recdMdwOnTHhwbwFI",
+          "saintId": "cms0w7eiz02zw07qi1x0uknd9",
+          "name": "Sri Minati Patra Brahmacharini",
+          "tier": "Secondary",
+          "groupId": "east-added-recdMdwOnTHhwbwFI",
+          "sourceRevision": "31a7762d00712e3b9f9d10311922a5bf91814ba832d87412fe6bec9c8d8fc65c",
+          "suggestedShelfIndex": 2,
+          "knownFootprint": null,
+          "reviewAlerts": [
+            {
+              "message": "Keep the recorded Amritananda Natha family / holding review separate. This is not a Jaiguru affiliation or confirmation of an identified relic."
+            },
+            {
+              "message": "Size unmeasured; check fit before using this suggested shelf."
+            }
+          ],
+          "city": "Tarkeshwar, West Bengal, India",
+          "relicDescription": "",
+          "lifeTag": null
+        }
+      ],
+      "relationships": [],
+      "livingAllowedBands": [
+        5
+      ],
+      "conceptualAssignedLoads": {
+        "1": 0.5333333333333333,
+        "2": 0,
+        "3": 0.6666666666666666,
+        "4": 0.25,
+        "5": 0.2222222222222222
+      },
+      "notes": [
+        "Three entries have unmeasured footprints; shelf positions require a fit check."
+      ]
+    },
+    {
+      "code": "73",
+      "summary": "Bamakhepa, Nigamananda & Bauls",
+      "groups": [
+        {
+          "id": "east-retained-g26",
+          "title": "Bamakhepa–Nigamananda",
+          "kind": "family",
+          "sourceIds": [
+            "rec093BrDsvyYbvhP",
+            "rec2Xmz15pP16n1dR"
+          ],
+          "rationale": "",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g27",
+          "title": "Baul teaching and household group",
+          "kind": "family",
+          "sourceIds": [
+            "rec7pUhtDroFBKYZ9",
+            "reci9HfgQoLxj6igt",
+            "recS8S1NXfk8NgRoq"
+          ],
+          "rationale": "Parvathy stays with teacher Shashanko and partner Ravi; Kerala locality does not split the group.",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g28",
+          "title": "Tarapith",
+          "kind": "city",
+          "sourceIds": [
+            "recBBzVFXryCUzuSy",
+            "recvvFRsuylwBC0r3"
+          ],
+          "rationale": "",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g29",
+          "title": "Bakreshwar",
+          "kind": "city",
+          "sourceIds": [
+            "recGTQ2TC1ssjCdZE"
+          ],
+          "rationale": "",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g30",
+          "title": "Jharkhand",
+          "kind": "city",
+          "sourceIds": [
+            "recMJ0KxfPz2L55qj"
+          ],
+          "rationale": "",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g32",
+          "title": "Bangladesh",
+          "kind": "city",
+          "sourceIds": [
+            "recO2Oq0MmSBpw5QK"
+          ],
+          "rationale": "",
+          "edges": []
+        },
+        {
+          "id": "east-retained-g33",
+          "title": "Halisahar",
+          "kind": "city",
+          "sourceIds": [
+            "recQjButx9sSHerz2"
+          ],
+          "rationale": "",
+          "edges": []
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "rec093BrDsvyYbvhP",
+          "saintId": "cms0w7c6e001h07qi248w64am",
+          "name": "Sri Bamakhepa Baba",
+          "tier": "Secondary",
+          "groupId": "east-retained-g26",
+          "sourceRevision": "8a4f9e5640dad65c102edc2a4f0b8c3c9e7d438ab98c418c1e4779449a60398e",
+          "capturedBaseline": {
+            "placementId": "rec093BrDsvyYbvhP",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Secondary",
+            "familyKey": "FAM-031",
+            "regionTags": [],
+            "revision": "95df7f0f41f73660cc0811be87594f569e64f60bc54ceb43357b54f84fb54d41",
+            "proposalRevision": "a98b4d6b940a3b86be7096c4f5e2f7cab9e459fb30d2587881990134db7a48ca"
+          },
+          "suggestedShelfIndex": 1,
+          "knownFootprint": 0.2,
+          "reviewAlerts": [],
+          "city": "Tarapith, West Bengal, India",
+          "relicDescription": "Hukka, Pieces/ string from his clothes, ring from chimta, rudraksha beads, strings from shawl, hair from Tara",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "rec2Xmz15pP16n1dR",
+          "saintId": "cms0w7cl800i707qi368teg2q",
+          "name": "Paramahamsa Sri Swami Nigammananda ji Saraswati Deva",
+          "tier": "Secondary",
+          "groupId": "east-retained-g26",
+          "sourceRevision": "5ce332ce9f593e7084e6e485892d903553a406e0b19b2b4d5bb28d690628a5b2",
+          "capturedBaseline": {
+            "placementId": "rec2Xmz15pP16n1dR",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Secondary",
+            "familyKey": "FAM-031",
+            "regionTags": [],
+            "revision": "7ab6484e6e8c50e34be8e2a18b996aeeb4b917025af3c509eba0a9ae4e9bbc57",
+            "proposalRevision": "45d22253c49e65f7766feeb1c42e86b9eb92717651ff69050b13be376412a8e0"
+          },
+          "suggestedShelfIndex": 1,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "Kolkata, West Bengal, India; Nilachal Math, Puri, Odisha, India; Kutabpur, Bangladesh; Calcutta",
+          "relicDescription": "Padukas and dhoti",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "rec7pUhtDroFBKYZ9",
+          "saintId": "cms0w7das01dt07qipz07mguu",
+          "name": "Sri Ravi Gopalam Nair",
+          "tier": "Secondary",
+          "groupId": "east-retained-g27",
+          "sourceRevision": "92b13a490e5298c3ce96ef60ec5a9dbaebb40d86d86bed67ca4aeab7bd2b7ce2",
+          "capturedBaseline": {
+            "placementId": "rec7pUhtDroFBKYZ9",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Secondary",
+            "familyKey": "FAM-026",
+            "regionTags": [],
+            "revision": "6f836c04efd2a35bea03e5867dcda34f5d90d703a9d9ef08e4383133bee95b3e",
+            "proposalRevision": "4803103fae33f17708c9655b91b8a9933ecdbdf13e517ed1d5b494c6df06098a"
+          },
+          "suggestedShelfIndex": 2,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "Thiruvananthapuram, Kerala, India; Trivandrum; Nedumangad",
+          "relicDescription": "Dhoti",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "reci9HfgQoLxj6igt",
+          "saintId": "cms0w7fm104f807qijdbd4m4w",
+          "name": "Sri Shashanko Goshai",
+          "tier": "Secondary",
+          "groupId": "east-retained-g27",
+          "sourceRevision": "abec7dfead62997c2c1f8bf86c3421b5c8046682fed977072e70d7448d12835f",
+          "capturedBaseline": {
+            "placementId": "reci9HfgQoLxj6igt",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Secondary",
+            "familyKey": "FAM-026",
+            "regionTags": [],
+            "revision": "243b5a639dbd5bb1e4d3c36e904197c96a395022fa05c8fb092c16277cec88e4",
+            "proposalRevision": "d094572adac95afa5a527d45f8a3a30d672ec12a7c5048752eb5ad1a7d52e264"
+          },
+          "suggestedShelfIndex": 2,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "West Bengal; Shingar Village of Murshidabad District",
+          "relicDescription": "Kurta (he only had 2 sets of clothes)",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recS8S1NXfk8NgRoq",
+          "saintId": "cms0w7i1e07ch07qiyfk56n11",
+          "name": "Sri Parvathy Baul",
+          "tier": "Secondary",
+          "groupId": "east-retained-g27",
+          "sourceRevision": "b6fd17f50ae588d2f34ecb97500c1f8b375af00eed97ec1ac47220ad80d6dab3",
+          "capturedBaseline": {
+            "placementId": "recS8S1NXfk8NgRoq",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Secondary",
+            "familyKey": "FAM-026",
+            "regionTags": [],
+            "revision": "d6edc84d6f2f9711b37b0fb05bb3a183e9c1a881879e4e5823d7d49f8c537451",
+            "proposalRevision": "7e510f743c256efd075d1c6047399fb246f2c68c1115eacc6f291f2806b43b28"
+          },
+          "suggestedShelfIndex": 5,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "West Bengal, India\nKerala, India; Thiruvananthapuram; Kerala originally from Bengal",
+          "relicDescription": "Hair; guruji has: Rudraksh and Tulsi necklace/Mala with Kavach which was given to her by her Guru and she never took it off until she gave it to Gurudev (29/07/2023), broken instrument (2024)",
+          "lifeTag": "Living"
+        },
+        {
+          "sourceId": "recBBzVFXryCUzuSy",
+          "saintId": "cms0w7dws027407qi68ueo5ur",
+          "name": "Sri Shiv Baba",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g28",
+          "sourceRevision": "ac0623f24121ffa481753efc412593375f2a3d75ee1d534eafb9662774473dfd",
+          "capturedBaseline": {
+            "placementId": "recBBzVFXryCUzuSy",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "e32196713fbd8e29a7270ef8373678fc3e6ec6b1207abec4a9dde40ce730a558",
+            "proposalRevision": "fb62b1144777fbd56cc05d7a1840f2df241122b480a9d8ed835ec2fd5e335268"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": 0.2,
+          "reviewAlerts": [],
+          "city": "Tarapith, West Bengal, India",
+          "relicDescription": "his pot",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recvvFRsuylwBC0r3",
+          "saintId": "cms0w7j2i08g907qinozeh7lk",
+          "name": "Sri Kali Shankar Chattapaday",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g28",
+          "sourceRevision": "bee8a4d4347dacbeb26457fa09e152d68f23ffbe65efaa02591de82dd529796d",
+          "capturedBaseline": {
+            "placementId": "recvvFRsuylwBC0r3",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "5a8aa7d441e7ee7c7411c4bc3daaf3249e6dc9ee5b7f7a667738096a56ab45ff",
+            "proposalRevision": "64a37cc2e5539946bf987867bd0659c6fae5c5ad59a881274f0887e7a444ec82"
+          },
+          "suggestedShelfIndex": 3,
+          "knownFootprint": 0.2,
+          "reviewAlerts": [],
+          "city": "Tarapith, West Bengal, India",
+          "relicDescription": "His shawl and dhoti",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recGTQ2TC1ssjCdZE",
+          "saintId": "cms0w7fau040r07qiy3uhpucp",
+          "name": "Sri Mithai Baba",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g29",
+          "sourceRevision": "65f630bf9a2b0414987fd80e61be65c2443be4dd5bc641ddb8df678bb6454be2",
+          "capturedBaseline": {
+            "placementId": "recGTQ2TC1ssjCdZE",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "6b61b9c0c94e3bc8bf04c1169bc34382b6b97b752b76e660c57e54b27e84aa65",
+            "proposalRevision": "a0f714b4f6e99fdc2ce499d58947d4d64ad9db7830d686688112796c984f2bd5"
+          },
+          "suggestedShelfIndex": 4,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "West Bengal; Bakreshwar",
+          "relicDescription": "Hand Towel",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recMJ0KxfPz2L55qj",
+          "saintId": "cms0w7go305pu07qi5z10nfo0",
+          "name": "Sri Bankim Karnkar",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g30",
+          "sourceRevision": "1ee036ecba65e4c13bdc2536c481ac84da297b12aa991833f7644610c0ef260c",
+          "capturedBaseline": {
+            "placementId": "recMJ0KxfPz2L55qj",
+            "section": "Needs Research",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "e0e2c469973d75003d864fd0278531dd61d5e9ce817ade64cb887a1f315bdb1e",
+            "proposalRevision": "c527329a7d9a175de320955710d8f3367beab2b32e9c54d9197bf0cf1f80ad64"
+          },
+          "suggestedShelfIndex": 5,
+          "knownFootprint": 0.125,
+          "reviewAlerts": [],
+          "city": "Jharkhand; Potaka",
+          "relicDescription": "Shawl and hair",
+          "lifeTag": "Living"
+        },
+        {
+          "sourceId": "recO2Oq0MmSBpw5QK",
+          "saintId": "cms0w7h27066x07qittaslhq9",
+          "name": "Sri Paramahamsa Tibbeti Baba",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g32",
+          "sourceRevision": "76ff420b9ef433074953d5c0b95bc1ede23e320548eae5b0ea4bb947b38938c8",
+          "capturedBaseline": {
+            "placementId": "recO2Oq0MmSBpw5QK",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "d2f92a9dc9efa8b14f5c78f7982c94288ceeee89b2046ca8fa1f4883c9e3fd8c",
+            "proposalRevision": "0b3536800287bcbbe225b381570657b7f813d4c22c5c99bd8087d3aa7b2f9a56"
+          },
+          "suggestedShelfIndex": 4,
+          "knownFootprint": 0.16666666666666666,
+          "reviewAlerts": [],
+          "city": "Bangladesh; Syhlet",
+          "relicDescription": "100 year old note book, piece of wood from his bed, some bark and leaves from the place where he took Mahasamdhi,",
+          "lifeTag": null
+        },
+        {
+          "sourceId": "recQjButx9sSHerz2",
+          "saintId": "cms0w7hm206u607qitl93mst5",
+          "name": "Sri Sadak Ramprasad",
+          "tier": "Tertiary",
+          "groupId": "east-retained-g33",
+          "sourceRevision": "579ae9238ac23fdecc2d38e03f93a47a80ded72f3d0adeb3613d227956c5350c",
+          "capturedBaseline": {
+            "placementId": "recQjButx9sSHerz2",
+            "section": "Bengal Shakta, Baul & Modern Saints",
+            "tier": "Tertiary",
+            "familyKey": "",
+            "regionTags": [],
+            "revision": "10df226be8a65e37092f46b2c3c6eb325ed11fc27b0c44d856c165908897c05f",
+            "proposalRevision": "8655fedd1172d17c2c3e065dca7925e8ecc685854e2fcfee459ff8b51ab63351"
+          },
+          "suggestedShelfIndex": 4,
+          "knownFootprint": 0.25,
+          "reviewAlerts": [],
+          "city": "Halisahar, West Bengal, India; Smriti Mandir",
+          "relicDescription": "Wood from the tree under which he used to meditate - and leaves from the banyan tree",
+          "lifeTag": null
+        }
+      ],
+      "relationships": [],
+      "livingAllowedBands": [
+        5
+      ],
+      "conceptualAssignedLoads": {
+        "1": 0.45,
+        "2": 0.5,
+        "3": 0.4,
+        "4": 0.6666666666666666,
+        "5": 0.375
+      },
+      "notes": [
+        "Suggested shelves; check actual fit on site."
+      ]
+    }
+  ]
+}
