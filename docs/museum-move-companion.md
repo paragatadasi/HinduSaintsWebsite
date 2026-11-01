@@ -203,3 +203,17 @@ The current presentation overlays the approved 35-source Eastern roster: Vitrine
 Shelf recommendations retain distinct family and locality blocks, use shelf 5 for the three explicitly living entries, and flag the three unknown footprints in 24. Existing physical confirmations retain their arrangements through the shared shelf-context projection. Source identity/revision and newer curator decisions remain guarded. Existing attributed relationship edges are retained; unnamed edges are not invented. Minati remains a qualified locality entry, not a Jaiguru family member.
 
 Vitrine 73 now uses the shared Eastern presentation color and filter membership. Earlier frozen proposal packets and their action digests remain unchanged. Individual move decisions and source IDs are preserved.
+
+
+### Concurrent companion saves
+
+Single placement checks save independently by source record. A pending check appears
+immediately with “Saving…”; only its own checkbox is locked. Confirmed locations are
+patched from the server receipt, not from the optimistic check. Shelf and to-do writes
+also lock only their source record. Bulk clearing, preparation and undo continue to
+wait for pending placements. Unknown-outcome retries retain the original request ID.
+A failed placement shows its recovery action beside every copy of that record.
+
+Out-of-order receipts merge by source and physical version. Stale polling responses
+cannot replace in-flight changes. Shelves and to-dos refresh on focus and periodically,
+so another curator’s work becomes visible without reloading the entire companion.
