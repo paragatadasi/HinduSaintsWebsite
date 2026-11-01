@@ -1,3 +1,4 @@
+import {hingeAdditionsGuideContext,hingeAdditionsGuideDefinition} from "./spn-hinge-additions-guide";
 import {southernGuideContext as oldSouthernContext,southernGuideDefinition as oldSouthernDefinition} from "./spn-southern-guide-v1";
 import {west40To44GuideContext as oldWestContext,west40To44GuideDefinition as oldWestDefinition} from "./spn-west40-44-guide-v1";
 import {westV59GuideContext,westV59GuideDefinition} from "./spn-west-v59-guide";
@@ -73,12 +74,13 @@ const cityAlternatives = guide.cityAlternatives.map(cohort => {
 if (new Set(suggestions.map(row => row.id)).size !== suggestions.length) throw new Error("Duplicate registered suggestion identifiers.");
 export const registeredStarterGuide = { ...guide, cityAlternatives, guideContext: starterGuideContext };
 export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinition[] {
-  return [southernGuideContext,west40To44GuideContext,junagadhGuideContext,westV59GuideContext,westV46GuideContext,westV45GuideContext,westV1GuideContext,eastRemainderGuideContext,northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,vrajStoryTopsGuideContext,
+  return [hingeAdditionsGuideContext,southernGuideContext,west40To44GuideContext,junagadhGuideContext,westV59GuideContext,westV46GuideContext,westV45GuideContext,westV1GuideContext,eastRemainderGuideContext,northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,vrajStoryTopsGuideContext,
     ramBhaktiGuideContext, dattaGuideContext, starterGuideContext].map(context => readStarterGuideDefinition(context.guideVersion))
     .filter(definition => !definition.readOnly && (definition.suggestions.some(row => row.targetVitrine === vitrine) ||
       Object.values(definition.physicalScope?.destinations ?? {}).includes(vitrine)));
 }
 export function readStarterGuideDefinition(version: string): GuideDefinition {
+  if(version===hingeAdditionsGuideContext.guideVersion)return hingeAdditionsGuideDefinition;
   if(version===oldSouthernContext.guideVersion)return {...oldSouthernDefinition,readOnly:true};
   if(version===southernGuideContext.guideVersion)return southernGuideDefinition;
   if(version===oldWestContext.guideVersion)return {...oldWestDefinition,readOnly:true};

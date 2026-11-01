@@ -104,6 +104,12 @@ must never replace production recommendation logic.
 
 ## Admin review UX direction
 
+Museum guide rows may use `MuseumGuideReviewNotes` for qualified placement context.
+Its `!` disclosure reuses the shelf-note treatment in both family trees and the
+full checklist; the accessible label names the saint. Blocking errors remain
+visible outside the disclosure. Current locations and checkboxes stay visible.
+
+
 Admin review screens should feel calm, editorial, and structured. They are for
 human judgment over imported or draft material, so the design should reduce
 visual noise while making the next decision obvious.
