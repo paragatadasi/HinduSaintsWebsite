@@ -1,0 +1,57 @@
+{
+  "version": "spn-solapur-kerala-refinement-2026-11-01-v1",
+  "status": "native-readback-verified-2026-11-01",
+  "allocations": [
+    {
+      "sourceId": "recTMKSBlJDAsP1xq",
+      "saintId": "cms0w7ied07qb07qi38ndrp3a",
+      "name": "Sri Adi Shankara Acharya",
+      "sourceRevision": "b68d9d6e934d87c5ff3c3e58b8c335cd0eb2cc3e4a2d500b5f5a1062e1eab824",
+      "destination": "56",
+      "tier": "Primary",
+      "groupId": "kalady-shankara",
+      "suggestedShelfIndex": 1,
+      "knownFootprint": 0.25,
+      "reviewAlerts": [
+        {
+          "message": "Kalady / Kerala birthplace connection; source relic places Nashik and Varanasi remain separate. Cloth attribution is uncertain."
+        }
+      ]
+    },
+    {
+      "sourceId": "rec6wFtDN5bu69pIB",
+      "saintId": "cms0w7d72018o07qib45j8x3d",
+      "name": "Sant Sri Kumardas",
+      "sourceRevision": "640b6beecb5cd94d635ffed94ac25477c4ec8430a8682caa8ebfbd272c414da5",
+      "destination": "47",
+      "tier": "Tertiary",
+      "groupId": "laul-nazare-solapur",
+      "suggestedShelfIndex": 3,
+      "knownFootprint": 0.2,
+      "reviewAlerts": [
+        {
+          "message": "Laul / Solapur-region locality connection; precise historical identity remains provisional."
+        }
+      ]
+    },
+    {
+      "sourceId": "recdIJbhgX9MwqP9W",
+      "saintId": "cms0w7ehn02y607qi9wpp0ebe",
+      "name": "Sri Sanjivan Swami",
+      "sourceRevision": "a6f36a8fbc8cbc66c7b25ad473cde0110c445521dbc11147abb5d60ac0ff1660",
+      "destination": "47",
+      "tier": "Tertiary",
+      "groupId": "laul-nazare-solapur",
+      "suggestedShelfIndex": 2,
+      "knownFootprint": 0.3333333333333333,
+      "reviewAlerts": [
+        {
+          "message": "Nazare / Solapur-region locality connection; precise identity remains unresolved. No asserted guru relationship."
+        },
+        {
+          "message": "Shelf 2 fit needs checking: Nagraj has an unknown footprint. Preserve actual placements and living saints on lower shelves."
+        }
+      ]
+    }
+  ]
+}

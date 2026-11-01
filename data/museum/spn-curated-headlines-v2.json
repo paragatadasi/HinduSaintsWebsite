@@ -290,22 +290,15 @@
       ]
     },
     "56": {
-      "headline": "Kerala · Shivaprabhakara Brahmananda & Chattampi",
-      "fallback": "Kerala",
+      "headline": "Adi Shankara · Southern traditions",
+      "fallback": "Southern traditions",
       "anchorClauses": [
         {
-          "text": "Shivaprabhakara Brahmananda",
+          "text": "Adi Shankara",
           "sourceIds": [
-            "recelwEuCC6ZnY62Y"
+            "recTMKSBlJDAsP1xq"
           ],
-          "match": "all"
-        },
-        {
-          "text": "Chattampi",
-          "sourceIds": [
-            "rec2YQrUqUzdITsHZ"
-          ],
-          "match": "all"
+          "match": "any"
         }
       ]
     },
@@ -368,6 +361,49 @@
           "match": "all"
         }
       ]
+    },
+    "27": {
+      "headline": "Radharaman–Ramdas–Pathbari · Jagad Bandhu–Mahanambrata",
+      "fallback": "Gaudiya display",
+      "anchorClauses": [
+        {
+          "text": "Radharaman–Ramdas–Pathbari",
+          "sourceIds": [
+            "reco84eCakzUdrmmP",
+            "rec7cV8OOW6dYau1K",
+            "recNmKsCz7Kg7x7Dr",
+            "rec1bOVrWmAFek7Tn",
+            "recZQoZ10WJGCQxUR",
+            "recvIK4EYJwVrkvk5",
+            "recFh4kJRO5WJaJKW",
+            "recmJs0NX4r3MNORL",
+            "rec0OP1dCSvyKBTCm",
+            "rec72DZPKexDMty7G",
+            "recT2VuCD6lF7YwX0",
+            "recqPwPML5FbWMvaV",
+            "rec1r3rtk9HfJiU4d",
+            "recsygmC7mtnPPp1W",
+            "recSLQO2o5c8gbzEc",
+            "recyL3SDKfJkAJ073",
+            "recOs3jGNyfMlakIB",
+            "reczpRoU3454ShsPN"
+          ],
+          "match": "any"
+        },
+        {
+          "text": "Jagad Bandhu–Mahanambrata",
+          "sourceIds": [
+            "recKh2RvgoYZimvdt",
+            "recsYELxoJkSd4fJB"
+          ],
+          "match": "any"
+        }
+      ]
+    },
+    "28": {
+      "headline": "Unallocated",
+      "fallback": "Curator additions",
+      "anchorClauses": []
     }
   }
 }

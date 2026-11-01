@@ -1,0 +1,66 @@
+{
+  "version": "spn-27-28-low-disruption-approved-2026-11-01-v1",
+  "approvedDate": "2026-11-01",
+  "sourceIds": [
+    "rec0OP1dCSvyKBTCm",
+    "rec1bOVrWmAFek7Tn",
+    "rec1r3rtk9HfJiU4d",
+    "rec72DZPKexDMty7G",
+    "rec7cV8OOW6dYau1K",
+    "recFh4kJRO5WJaJKW",
+    "recKh2RvgoYZimvdt",
+    "recmJs0NX4r3MNORL",
+    "recNmKsCz7Kg7x7Dr",
+    "reco84eCakzUdrmmP",
+    "recOs3jGNyfMlakIB",
+    "recqPwPML5FbWMvaV",
+    "recSLQO2o5c8gbzEc",
+    "recsYELxoJkSd4fJB",
+    "recsygmC7mtnPPp1W",
+    "recT2VuCD6lF7YwX0",
+    "recvIK4EYJwVrkvk5",
+    "recyL3SDKfJkAJ073",
+    "reczpRoU3454ShsPN",
+    "recZQoZ10WJGCQxUR"
+  ],
+  "headline": "Radharaman–Ramdas–Pathbari · Jagad Bandhu–Mahanambrata",
+  "groups": [
+    {
+      "id": "shelf:28:reco84eCakzUdrmmP",
+      "title": "Radharaman–Ramdas–Pathbari",
+      "kind": "family",
+      "sourceIds": [
+        "reco84eCakzUdrmmP",
+        "rec7cV8OOW6dYau1K",
+        "recNmKsCz7Kg7x7Dr",
+        "rec1bOVrWmAFek7Tn",
+        "recZQoZ10WJGCQxUR",
+        "recvIK4EYJwVrkvk5",
+        "recFh4kJRO5WJaJKW",
+        "recmJs0NX4r3MNORL",
+        "rec0OP1dCSvyKBTCm",
+        "rec72DZPKexDMty7G",
+        "recT2VuCD6lF7YwX0",
+        "recqPwPML5FbWMvaV",
+        "rec1r3rtk9HfJiU4d",
+        "recsygmC7mtnPPp1W",
+        "recSLQO2o5c8gbzEc",
+        "recyL3SDKfJkAJ073",
+        "recOs3jGNyfMlakIB",
+        "reczpRoU3454ShsPN"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty."
+    },
+    {
+      "id": "shelf:28:recKh2RvgoYZimvdt",
+      "title": "Jagad Bandhu–Mahanambrata",
+      "kind": "family",
+      "sourceIds": [
+        "recKh2RvgoYZimvdt",
+        "recsYELxoJkSd4fJB"
+      ],
+      "rationale": "Preserved approved display cohort; relationship labels retain their individual evidence and uncertainty."
+    }
+  ],
+  "physicalWrites": false
+}
