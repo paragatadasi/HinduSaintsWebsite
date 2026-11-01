@@ -20,6 +20,12 @@ For save and refresh work, compare before and after request timings, query count
 
 Live placements and private museum records must remain authenticated and current. The skill's static-content advice applies to truly static presentation assets, not live location data or authorization decisions. Never place personalized or private data in a shared public cache.
 
+## Validate cached reads against all their inputs
+
+A move-ledger revision alone does not prove that source or CMS data is unchanged. Before caching a derived view, audit its dependencies, including relationship edits, identity relinks, deletions, and changes made outside the move workflow. Keep that dependency manifest with the implementation and extend it whenever the view gains another input.
+
+Build a snapshot and its revision from consistent data. Test an out-of-ledger source edit, a relationship deletion or relink, and a newer read arriving while an older snapshot is still building. Every mutation must validate fresh authoritative records; test that a stale cached view cannot authorize a write. For the museum implementation and controlled measurements, see [Companion read performance](../museum-companion-read-performance.md).
+
 ## Keep rendering proportional to visible work
 
 Profile long lists and repeated map/tree renders before optimizing. Prefer pagination, progressive disclosure with deferred mounting, or virtualization for large lists. A collapsed disclosure can still mount all of its children. Preserve keyboard navigation, browser find needs, checkbox state, and accessible reading order when choosing an approach.
