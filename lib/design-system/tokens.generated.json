@@ -2553,5 +2553,170 @@
     "selector": ".museum-companion--guide",
     "name": "--width-companion",
     "value": "90rem"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-n-fill",
+    "value": "oklch(0.95 0.024 285)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-n-edge",
+    "value": "oklch(0.65 0.070 285)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-n-solid",
+    "value": "oklch(0.55 0.100 285)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-b-fill",
+    "value": "oklch(0.95 0.025 145)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-b-edge",
+    "value": "oklch(0.65 0.070 145)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-b-solid",
+    "value": "oklch(0.55 0.100 145)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-e-fill",
+    "value": "oklch(0.95 0.025 220)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-e-edge",
+    "value": "oklch(0.65 0.070 220)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-e-solid",
+    "value": "oklch(0.55 0.100 220)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-w-fill",
+    "value": "oklch(0.95 0.025 75)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-w-edge",
+    "value": "oklch(0.65 0.070 75)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-w-solid",
+    "value": "oklch(0.55 0.100 75)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-s-fill",
+    "value": "oklch(0.95 0.024 25)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-s-edge",
+    "value": "oklch(0.65 0.070 25)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-s-solid",
+    "value": "oklch(0.55 0.100 25)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-k-fill",
+    "value": "oklch(.95 0 0)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-k-edge",
+    "value": "oklch(.65 0 0)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-k-solid",
+    "value": "oklch(.55 0 0)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-c-fill",
+    "value": "oklch(.95 0 0)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-c-edge",
+    "value": "oklch(.65 0 0)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-c-solid",
+    "value": "oklch(.55 0 0)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-be-fill",
+    "value": "oklch(0.95 0.025 182.5)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-be-edge",
+    "value": "oklch(0.65 0.070 182.5)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-be-solid",
+    "value": "oklch(0.55 0.098 182.5)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-en-fill",
+    "value": "oklch(0.95 0.024 252.5)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-en-edge",
+    "value": "oklch(0.65 0.070 252.5)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-en-solid",
+    "value": "oklch(0.55 0.100 252.5)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-sw-fill",
+    "value": "oklch(0.95 0.025 50)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-sw-edge",
+    "value": "oklch(0.65 0.070 50)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-sw-solid",
+    "value": "oklch(0.55 0.100 50)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-r-fill",
+    "value": "oklch(.95 0 0)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-r-edge",
+    "value": "oklch(.65 0 0)"
+  },
+  {
+    "selector": ":root",
+    "name": "--color-spn-display-r-solid",
+    "value": "oklch(.55 0 0)"
   }
 ]

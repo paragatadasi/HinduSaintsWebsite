@@ -12290,3 +12290,26 @@ select:not([multiple]) {
 .museum-staging-contents__rows > div:first-child .museum-guide-check {border-top:0}
 
 .museum-staging-contents__rows > div:last-child .museum-guide-check {border-bottom:0}
+
+/* Current physical-case presentation shared by reviewer and companion. */
+.spn-room-explorer.spn-display-regions .tone-N, .spn-room-explorer.spn-display-regions.tone-N, .museum-region-legend .tone-N, .museum-companion__region-card.tone-N, .museum-room__vitrine[data-region-tone="N"] { --tone:var(--color-spn-display-n-edge); --room-region:var(--color-spn-display-n-edge); --display-fill:var(--color-spn-display-n-fill); }
+.spn-room-explorer.spn-display-regions .tone-B, .spn-room-explorer.spn-display-regions.tone-B, .museum-region-legend .tone-B, .museum-companion__region-card.tone-B, .museum-room__vitrine[data-region-tone="B"] { --tone:var(--color-spn-display-b-edge); --room-region:var(--color-spn-display-b-edge); --display-fill:var(--color-spn-display-b-fill); }
+.spn-room-explorer.spn-display-regions .tone-E, .spn-room-explorer.spn-display-regions.tone-E, .museum-region-legend .tone-E, .museum-companion__region-card.tone-E, .museum-room__vitrine[data-region-tone="E"] { --tone:var(--color-spn-display-e-edge); --room-region:var(--color-spn-display-e-edge); --display-fill:var(--color-spn-display-e-fill); }
+.spn-room-explorer.spn-display-regions .tone-W, .spn-room-explorer.spn-display-regions.tone-W, .museum-region-legend .tone-W, .museum-companion__region-card.tone-W, .museum-room__vitrine[data-region-tone="W"] { --tone:var(--color-spn-display-w-edge); --room-region:var(--color-spn-display-w-edge); --display-fill:var(--color-spn-display-w-fill); }
+.spn-room-explorer.spn-display-regions .tone-S, .spn-room-explorer.spn-display-regions.tone-S, .museum-region-legend .tone-S, .museum-companion__region-card.tone-S, .museum-room__vitrine[data-region-tone="S"] { --tone:var(--color-spn-display-s-edge); --room-region:var(--color-spn-display-s-edge); --display-fill:var(--color-spn-display-s-fill); }
+.spn-room-explorer.spn-display-regions .tone-K, .spn-room-explorer.spn-display-regions.tone-K, .museum-region-legend .tone-K, .museum-companion__region-card.tone-K, .museum-room__vitrine[data-region-tone="K"] { --tone:var(--color-spn-display-k-edge); --room-region:var(--color-spn-display-k-edge); --display-fill:var(--color-spn-display-k-fill); }
+.spn-room-explorer.spn-display-regions .tone-C, .spn-room-explorer.spn-display-regions.tone-C, .museum-region-legend .tone-C, .museum-companion__region-card.tone-C, .museum-room__vitrine[data-region-tone="C"] { --tone:var(--color-spn-display-c-edge); --room-region:var(--color-spn-display-c-edge); --display-fill:var(--color-spn-display-c-fill); }
+.spn-room-explorer.spn-display-regions .tone-BE, .spn-room-explorer.spn-display-regions.tone-BE, .museum-region-legend .tone-BE, .museum-companion__region-card.tone-BE, .museum-room__vitrine[data-region-tone="BE"] { --tone:var(--color-spn-display-be-edge); --room-region:var(--color-spn-display-be-edge); --display-fill:var(--color-spn-display-be-fill); }
+.spn-room-explorer.spn-display-regions .tone-EN, .spn-room-explorer.spn-display-regions.tone-EN, .museum-region-legend .tone-EN, .museum-companion__region-card.tone-EN, .museum-room__vitrine[data-region-tone="EN"] { --tone:var(--color-spn-display-en-edge); --room-region:var(--color-spn-display-en-edge); --display-fill:var(--color-spn-display-en-fill); }
+.spn-room-explorer.spn-display-regions .tone-SW, .spn-room-explorer.spn-display-regions.tone-SW, .museum-region-legend .tone-SW, .museum-companion__region-card.tone-SW, .museum-room__vitrine[data-region-tone="SW"] { --tone:var(--color-spn-display-sw-edge); --room-region:var(--color-spn-display-sw-edge); --display-fill:var(--color-spn-display-sw-fill); }
+.spn-room-explorer.spn-display-regions .tone-R, .spn-room-explorer.spn-display-regions.tone-R, .museum-region-legend .tone-R, .museum-companion__region-card.tone-R, .museum-room__vitrine[data-region-tone="R"] { --tone:var(--color-spn-display-r-edge); --room-region:var(--color-spn-display-r-edge); --display-fill:var(--color-spn-display-r-fill); }
+.spn-display-regions .inspector > .eyebrow {color:var(--color-text);}
+.spn-display-regions .legend button[aria-pressed="true"] {color:var(--color-text);text-decoration:underline;text-underline-offset:var(--space-1);}
+[data-museum-companion-theme="parchment"] .museum-room__vitrine[data-guide-available="true"] {background:var(--display-fill,var(--color-surface));}
+.museum-region-legend {display:flex;flex-wrap:wrap;gap:var(--space-2);margin-block:var(--space-3);}
+.museum-region-legend button {display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--font-size-companion-small);}
+.museum-region-legend i {width:var(--space-2);height:var(--space-2);background:var(--tone);border-radius:var(--radius-pill);}
+
+.museum-room__vitrine[data-region-highlighted="false"] {opacity:var(--opacity-control-disabled);}
+
+.museum-companion__region-card {border-top-color:var(--tone,var(--color-border));}
