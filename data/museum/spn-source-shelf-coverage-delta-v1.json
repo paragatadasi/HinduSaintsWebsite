@@ -1,0 +1,1034 @@
+{
+  "version": "spn-source-shelf-coverage-delta-2026-11-01-v1",
+  "basis": "C:\\Users\\aporu\\.codex\\visualizations\\2026\\09\\08\\01a08075-8a60-7603-adb1-c380dff548d8\\source-shelf-coverage-gaps-2026-11-01.json",
+  "nativeDestinationWrites": false,
+  "physicalWrites": false,
+  "geometryVerified": false,
+  "vitrines": [
+    {
+      "code": "2",
+      "allocations": [
+        {
+          "sourceId": "recmpyNSROVuJxdEs",
+          "saintId": "cms0w7gqk05st07qi5bauq4a0",
+          "name": "Sri Kancha Bhagavan Das",
+          "tier": "Tertiary",
+          "destination": "2",
+          "sourceRevision": "06c5e090697fc7c4a28b722cc766a62b94301e3edb764ed7de90aa4c4abc52c1",
+          "groupId": "east-north:2:Chaitanya circle: source-attributed objects",
+          "columnKey": "east-north:2:Chaitanya circle: source-attributed objects",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "lower",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [
+            {
+              "message": "Size is not recorded. Check fit before placing this relic."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "3",
+            "label": "Vitrine 3",
+            "shelf": "A"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "9963229849920a2d5ab0120c6de741dc6c68a15011c26a0c9f3f2aa4f2f389a4",
+          "projectedLifeStatus": null,
+          "knownFootprint": null,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        },
+        {
+          "sourceId": "recKz1I0AWfV45lRm",
+          "saintId": "cms0w7gcs05bw07qiflze8ltk",
+          "name": "Sri Swarup Damodhar",
+          "tier": "Tertiary",
+          "destination": "2",
+          "sourceRevision": "b7add3cf10532dbad7e825420a84e03a754ba65dda6034536deb4799c8831b97",
+          "groupId": "east-north:2:Chaitanya circle: source-attributed objects",
+          "columnKey": "east-north:2:Chaitanya circle: source-attributed objects",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "lower",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [
+            {
+              "message": "Size is not recorded. Check fit before placing this relic."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "3",
+            "label": "Vitrine 3",
+            "shelf": "A"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "9963229849920a2d5ab0120c6de741dc6c68a15011c26a0c9f3f2aa4f2f389a4",
+          "projectedLifeStatus": null,
+          "knownFootprint": null,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        }
+      ],
+      "groups": [
+        {
+          "id": "east-north:2:Chaitanya circle: source-attributed objects",
+          "title": "Chaitanya circle: source-attributed objects",
+          "sourceIds": [
+            "recmpyNSROVuJxdEs",
+            "recKz1I0AWfV45lRm"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "2"
+          ],
+          "kind": "city"
+        }
+      ],
+      "relationships": [],
+      "reviewAlerts": [
+        {
+          "message": "Starting shelves are recommendations. Preserve recorded placements and check unknown sizes; apply current Living restrictions first."
+        }
+      ]
+    },
+    {
+      "code": "29",
+      "allocations": [
+        {
+          "sourceId": "recF52jndG5wSaY9c",
+          "saintId": "cms0w7exp03jl07qicixobts0",
+          "name": "Sri Sri Bhaktivedanta Baman Goswami Maharaj",
+          "tier": "Featured",
+          "destination": "29",
+          "sourceRevision": "d9150ae8fd1017f3b01c8a8a45a216ceeb75d473e5fcea6d48878654069a02c3",
+          "groupId": "v3-keshava",
+          "columnKey": "v3-keshava",
+          "suggestedShelfIndex": null,
+          "suggestedVerticalBand": "retain-current",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Retain the confirmed placement.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "29",
+            "label": "Vitrine 29"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "d9dc44b32e7a95be00d4516c01d9ab39e6b063addeb1d90ab1b4c5930baa4ca4",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Source/reviewed status; an absent tag does not confirm death."
+          },
+          "knownFootprint": 0.16666666666666666,
+          "preserveCurrentPlacement": true,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "retain-current-placement"
+        },
+        {
+          "sourceId": "recqTSYY3AZJelvNJ",
+          "saintId": "cms0w7hoe06wv07qih1czy3eu",
+          "name": "Sri Bhakti Vedanta Narayan Maharaj",
+          "tier": "Tertiary",
+          "destination": "29",
+          "sourceRevision": "2d784570dfd4d3797108a064aa9d0002c32b319f05f7dff1cccd0c41d17b1929",
+          "groupId": "east-north:29:Keshava–Vamana–Narayana branch",
+          "columnKey": "east-north:29:Keshava–Vamana–Narayana branch",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [
+            {
+              "message": "Size is not recorded. Check fit before placing this relic."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "5080401318078ae8da022c115e7ea934007cfab38712cf6a4f0a07861af215ce",
+          "projectedLifeStatus": null,
+          "knownFootprint": null,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        }
+      ],
+      "groups": [
+        {
+          "id": "v3-keshava",
+          "title": "Keshava–Vamana–Narayana branch",
+          "rationale": "Keep this branch intact beside the main family in76. Siliguri Vaman/Baman co-location is provisional; preserve both records.",
+          "sourceIds": [
+            "rec5R2rIVB6cYMOxN",
+            "recv7456zY968qEFJ",
+            "recF52jndG5wSaY9c",
+            "rec3J8BiVe9xTnSWx"
+          ],
+          "edges": [],
+          "suggestedVitrines": [
+            "29"
+          ],
+          "kind": "family"
+        },
+        {
+          "id": "east-north:29:Keshava–Vamana–Narayana branch",
+          "title": "Keshava–Vamana–Narayana branch",
+          "sourceIds": [
+            "recqTSYY3AZJelvNJ"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "29"
+          ],
+          "kind": "city"
+        }
+      ],
+      "relationships": [],
+      "reviewAlerts": [
+        {
+          "message": "Starting shelves are recommendations. Preserve recorded placements and check unknown sizes; apply current Living restrictions first."
+        }
+      ]
+    },
+    {
+      "code": "75",
+      "allocations": [
+        {
+          "sourceId": "recb8yxIdz5mxzCD1",
+          "saintId": "cms0w7dwk026u07qinv8udasf",
+          "name": "Sri Maharshi Nagendranath - Sri Bhaduri Mahasaya (Nagendranath Bhaduri) SAME? 7 D",
+          "tier": "Tertiary",
+          "destination": "75",
+          "sourceRevision": "b4d10df4e4bc357dee0f146c4863d2e28f4a1f9853026b522708c1e31ccd45eb",
+          "groupId": "east-north:75:Kolkata: Bhaduri Mahasaya",
+          "columnKey": "east-north:75:Kolkata: Bhaduri Mahasaya",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "lower",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [
+            {
+              "message": "Size is not recorded. Check fit before placing this relic."
+            },
+            {
+              "message": "The Bhaduri name match remains qualified; retain the source identity."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f78f7178a922d0f26469316fdf4abd6e629338285d71c14fff3f7994c2da6606",
+          "projectedLifeStatus": null,
+          "knownFootprint": null,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        }
+      ],
+      "groups": [
+        {
+          "id": "east-north:75:Kolkata: Bhaduri Mahasaya",
+          "title": "Kolkata: Bhaduri Mahasaya",
+          "sourceIds": [
+            "recb8yxIdz5mxzCD1"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "75"
+          ],
+          "kind": "city"
+        }
+      ],
+      "relationships": [],
+      "reviewAlerts": [
+        {
+          "message": "Starting shelves are recommendations. Preserve recorded placements and check unknown sizes; apply current Living restrictions first."
+        }
+      ]
+    },
+    {
+      "code": "24",
+      "allocations": [
+        {
+          "sourceId": "recdMdwOnTHhwbwFI",
+          "saintId": "cms0w7eiz02zw07qi1x0uknd9",
+          "name": "Sri Minati Patra Brahmacharini",
+          "tier": "Secondary",
+          "destination": "24",
+          "sourceRevision": "31a7762d00712e3b9f9d10311922a5bf91814ba832d87412fe6bec9c8d8fc65c",
+          "groupId": "curator-additions:24:Curator additions",
+          "columnKey": "curator-additions:24:Curator additions",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [
+            {
+              "message": "Size is not recorded. Check fit before placing this relic."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "a9153ff075196e3846c82a7aecadbb3aff1d12b24082ca19f1c291ac437bfc5a",
+          "projectedLifeStatus": null,
+          "knownFootprint": null,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        }
+      ],
+      "groups": [
+        {
+          "id": "curator-additions:24:Curator additions",
+          "title": "Curator additions",
+          "sourceIds": [
+            "recdMdwOnTHhwbwFI"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "24"
+          ],
+          "kind": "city"
+        }
+      ],
+      "relationships": [],
+      "reviewAlerts": [
+        {
+          "message": "Starting shelves are recommendations. Preserve recorded placements and check unknown sizes; apply current Living restrictions first."
+        }
+      ]
+    },
+    {
+      "code": "79",
+      "allocations": [
+        {
+          "sourceId": "recoYxF3da5VWPjwt",
+          "saintId": "cms0w7ha306g307qikvy0d4v7",
+          "name": "Sri Sri 1008 Brajshiromani Paramahamsa Yogiraj Tatambari Baba",
+          "tier": "Tertiary",
+          "destination": "79",
+          "sourceRevision": "f23743672c2a9a5ec272dace4372245db68c28813ea0f9d8dc1e4a9b3a38d2f9",
+          "groupId": "curator-additions:79:Curator additions",
+          "columnKey": "curator-additions:79:Curator additions",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [
+            {
+              "message": "Size is not recorded. Check fit before placing this relic."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "e3efa004aa90cf2c7b9ad9ac8749a599aeba19575d431d417484791011ba7364",
+          "projectedLifeStatus": null,
+          "knownFootprint": null,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        }
+      ],
+      "groups": [
+        {
+          "id": "curator-additions:79:Curator additions",
+          "title": "Curator additions",
+          "sourceIds": [
+            "recoYxF3da5VWPjwt"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "79"
+          ],
+          "kind": "city"
+        }
+      ],
+      "relationships": [],
+      "reviewAlerts": [
+        {
+          "message": "Starting shelves are recommendations. Preserve recorded placements and check unknown sizes; apply current Living restrictions first."
+        }
+      ]
+    },
+    {
+      "code": "74",
+      "allocations": [
+        {
+          "sourceId": "recmWirQlF3WoLTYk",
+          "saintId": "cms0w7gt005vs07qi1fugt3lm",
+          "name": "Sri Rishi Vashishta (+ Vashishta and Sita cave Devghat Triben Nepal",
+          "tier": "Tertiary",
+          "destination": "74",
+          "sourceRevision": "65cb1d509653b6bd8ea8192abcae8da7cc51c42d4c852f7ece7ff6c605a2c3fa",
+          "groupId": "east-north:74:Nepal sacred-place material",
+          "columnKey": "east-north:74:Nepal sacred-place material",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "lower",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [
+            {
+              "message": "Size is not recorded. Check fit before placing this relic."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "43",
+            "label": "Vitrine 43",
+            "shelf": "E"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "282e2724651453b3228153600832a6d6a66c7c76f7844e0641a01b19bfbe68d0",
+          "projectedLifeStatus": null,
+          "knownFootprint": null,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        }
+      ],
+      "groups": [
+        {
+          "id": "east-north:74:Nepal sacred-place material",
+          "title": "Nepal sacred-place material",
+          "sourceIds": [
+            "recmWirQlF3WoLTYk"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "74"
+          ],
+          "kind": "city"
+        }
+      ],
+      "relationships": [],
+      "reviewAlerts": [
+        {
+          "message": "Starting shelves are recommendations. Preserve recorded placements and check unknown sizes; apply current Living restrictions first."
+        }
+      ]
+    },
+    {
+      "code": "72",
+      "allocations": [
+        {
+          "sourceId": "recA0piOobiqZ3KfG",
+          "saintId": "cms0w7dlq01s407qi94owuyrr",
+          "name": "Sri Swami Shukdevanand ji",
+          "tier": "Tertiary",
+          "destination": "72",
+          "sourceRevision": "7aae378c9383b6e119f5c2a5fe8fb76307e0c005f400047519510e8e15c6c599",
+          "groupId": "curator-additions:72:Curator additions",
+          "columnKey": "curator-additions:72:Curator additions",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [
+            {
+              "message": "Size is not recorded. Check fit before placing this relic."
+            },
+            {
+              "message": "Parmarth identity remains qualified; show separately from the Sivananda lineage."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "16",
+            "label": "Vitrine 16",
+            "shelf": "B"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "fa29154f47b3854b0a135d97a689815d7fe5a4a3280a6524c3c70ad6d7ab8ff6",
+          "projectedLifeStatus": null,
+          "knownFootprint": null,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        }
+      ],
+      "groups": [
+        {
+          "id": "curator-additions:72:Curator additions",
+          "title": "Curator additions",
+          "sourceIds": [
+            "recA0piOobiqZ3KfG"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "72"
+          ],
+          "kind": "city"
+        }
+      ],
+      "relationships": [],
+      "reviewAlerts": [
+        {
+          "message": "Starting shelves are recommendations. Preserve recorded placements and check unknown sizes; apply current Living restrictions first."
+        }
+      ]
+    },
+    {
+      "code": "20",
+      "allocations": [
+        {
+          "sourceId": "recridc3rHHt53itd",
+          "saintId": "cms0w7huw074s07qiq6re1hfg",
+          "name": "Sri Swami Rama",
+          "tier": "Tertiary",
+          "destination": "20",
+          "sourceRevision": "6309500cad6c42cf0122e4b42a99a964f5840abf367a3d21b3934298442dc6ab",
+          "groupId": "curator-additions:20:Curator additions",
+          "columnKey": "curator-additions:20:Curator additions",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "25",
+            "label": "Vitrine 25",
+            "shelf": "D"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "0fc3821b5e357391136e459301ef1015956df1a8b46679507e0e355e2eac11a8",
+          "projectedLifeStatus": null,
+          "knownFootprint": 0.14285714285714285,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        }
+      ],
+      "groups": [
+        {
+          "id": "curator-additions:20:Curator additions",
+          "title": "Curator additions",
+          "sourceIds": [
+            "recridc3rHHt53itd"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "20"
+          ],
+          "kind": "city"
+        }
+      ],
+      "relationships": [],
+      "reviewAlerts": [
+        {
+          "message": "Starting shelves are recommendations. Preserve recorded placements and check unknown sizes; apply current Living restrictions first."
+        }
+      ]
+    },
+    {
+      "code": "5",
+      "allocations": [
+        {
+          "sourceId": "recVcmAKuNX8Dpp54",
+          "saintId": "cms0w7iww08a007qikhranewb",
+          "name": "Brahmachari Sri Anilananda Maharaj",
+          "tier": "Tertiary",
+          "destination": "5",
+          "sourceRevision": "2c98b647f9b3ba2b13ba91e03ca23933b4d8938495ddfbbb3669557674aff5e1",
+          "groupId": "northern:v5-kriya",
+          "columnKey": "northern:v5-kriya",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "23",
+            "label": "Vitrine 23"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "dba0290c28c018368a041c3133613369db4d5a84c851a45ed2fd4c495525115e",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Collection record gives samadhi: 18 October 1992."
+          },
+          "knownFootprint": 0.14285714285714285,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        },
+        {
+          "sourceId": "reckSOP93swGpRjsT",
+          "saintId": "cms0w7ga3058l07qi7l1z5qfw",
+          "name": "Sri Ganesh Baba (Shri Mahant Ganesh Giriji Maharaj",
+          "tier": "Tertiary",
+          "destination": "5",
+          "sourceRevision": "9e2a6045b7227eca4922a77a704320ea2b476474075658510c93c367ec1afd1b",
+          "groupId": "east-north:5:Kriya: Ganesh Baba, qualified associations",
+          "columnKey": "east-north:5:Kriya: Ganesh Baba, qualified associations",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "lower",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [
+            {
+              "message": "Size is not recorded. Check fit before placing this relic."
+            },
+            {
+              "message": "Kriya associations are qualified; this placement does not assert a direct initiation."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "25",
+            "label": "Vitrine 25",
+            "shelf": "D"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "0fc3821b5e357391136e459301ef1015956df1a8b46679507e0e355e2eac11a8",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Collection record gives samadhi: 19 November 1987."
+          },
+          "knownFootprint": null,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        }
+      ],
+      "groups": [
+        {
+          "id": "northern:v5-kriya",
+          "title": "Babaji’s Kriya family and its branches",
+          "sourceIds": [
+            "rec0H3FSQUnqIH95X",
+            "rec6S1CQt0w8YmPjm",
+            "rec9T6tpXGtrCWdxV",
+            "recD6sS3ZtGRPqxjs",
+            "recH8o102sJ3mQ7aT",
+            "recIc9E1BwdIFc4OD",
+            "reciPBtb5T1Js7Lqz",
+            "recLVwMPBTBcxHJG1",
+            "recoRltXupeZas8zP",
+            "recu5aN4OfzptkLFs",
+            "recUCW4T6Le8f3ZdX",
+            "recUTlwjCvniL1hEv",
+            "recwX7dFfmlq9FfAh",
+            "recx6n6mmw1tEEnFF",
+            "recxiIGSVaGfnTRC8",
+            "recVcmAKuNX8Dpp54"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "5"
+          ],
+          "edges": [
+            {
+              "fromSourceId": "recoRltXupeZas8zP",
+              "toSourceId": "recx6n6mmw1tEEnFF",
+              "label": "Guru–disciple",
+              "kind": "guru",
+              "basis": "reviewed",
+              "uncertain": false,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "solid",
+                "opacity": 1
+              },
+              "sourceReferences": []
+            },
+            {
+              "fromSourceId": "recx6n6mmw1tEEnFF",
+              "toSourceId": "recH8o102sJ3mQ7aT",
+              "label": "Guru–disciple",
+              "kind": "guru",
+              "basis": "reviewed",
+              "uncertain": false,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "solid",
+                "opacity": 1
+              },
+              "sourceReferences": []
+            },
+            {
+              "fromSourceId": "recH8o102sJ3mQ7aT",
+              "toSourceId": "reciPBtb5T1Js7Lqz",
+              "label": "Guru–disciple",
+              "kind": "guru",
+              "basis": "reviewed",
+              "uncertain": false,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "solid",
+                "opacity": 1
+              },
+              "sourceReferences": []
+            },
+            {
+              "fromSourceId": "reciPBtb5T1Js7Lqz",
+              "toSourceId": "recIc9E1BwdIFc4OD",
+              "label": "Guru–disciple",
+              "kind": "guru",
+              "basis": "reviewed",
+              "uncertain": false,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "solid",
+                "opacity": 1
+              },
+              "sourceReferences": []
+            },
+            {
+              "fromSourceId": "recx6n6mmw1tEEnFF",
+              "toSourceId": "rec6S1CQt0w8YmPjm",
+              "label": "Guru–disciple",
+              "kind": "guru",
+              "basis": "reviewed",
+              "uncertain": false,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "solid",
+                "opacity": 1
+              },
+              "sourceReferences": []
+            },
+            {
+              "fromSourceId": "reciPBtb5T1Js7Lqz",
+              "toSourceId": "recUCW4T6Le8f3ZdX",
+              "label": "Recorded guru link",
+              "kind": "source-guru",
+              "basis": "source",
+              "uncertain": true,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "dashed",
+                "opacity": 0.45
+              },
+              "sourceReferences": []
+            },
+            {
+              "fromSourceId": "reciPBtb5T1Js7Lqz",
+              "toSourceId": "recUTlwjCvniL1hEv",
+              "label": "Recorded guru link",
+              "kind": "source-guru",
+              "basis": "source",
+              "uncertain": true,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "dashed",
+                "opacity": 0.45
+              },
+              "sourceReferences": []
+            },
+            {
+              "fromSourceId": "recH8o102sJ3mQ7aT",
+              "toSourceId": "recwX7dFfmlq9FfAh",
+              "label": "Recorded guru link",
+              "kind": "source-guru",
+              "basis": "source",
+              "uncertain": true,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "dashed",
+                "opacity": 0.45
+              },
+              "sourceReferences": []
+            },
+            {
+              "fromSourceId": "recH8o102sJ3mQ7aT",
+              "toSourceId": "rec9T6tpXGtrCWdxV",
+              "label": "Recorded guru link",
+              "kind": "source-guru",
+              "basis": "source",
+              "uncertain": true,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "dashed",
+                "opacity": 0.45
+              },
+              "sourceReferences": []
+            },
+            {
+              "fromSourceId": "recx6n6mmw1tEEnFF",
+              "toSourceId": "recLVwMPBTBcxHJG1",
+              "label": "Recorded guru link",
+              "kind": "source-guru",
+              "basis": "source",
+              "uncertain": true,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "dashed",
+                "opacity": 0.45
+              },
+              "sourceReferences": []
+            },
+            {
+              "fromSourceId": "recLVwMPBTBcxHJG1",
+              "toSourceId": "rec9T6tpXGtrCWdxV",
+              "label": "Higher Kriya instruction",
+              "kind": "teaching",
+              "basis": "reviewed",
+              "uncertain": false,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "solid",
+                "opacity": 1
+              },
+              "sourceReferences": [
+                "https://blog.kriya.org/guru/paramahamsa-hariharananda/en"
+              ]
+            },
+            {
+              "fromSourceId": "reciPBtb5T1Js7Lqz",
+              "toSourceId": "rec9T6tpXGtrCWdxV",
+              "label": "Kriya instruction / authorization",
+              "kind": "teaching",
+              "basis": "reviewed",
+              "uncertain": false,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "solid",
+                "opacity": 1
+              },
+              "sourceReferences": [
+                "https://blog.kriya.org/guru/paramahamsa-hariharananda/en"
+              ]
+            },
+            {
+              "fromSourceId": "rec6S1CQt0w8YmPjm",
+              "toSourceId": "recu5aN4OfzptkLFs",
+              "label": "Later institutional succession · intervening heads",
+              "kind": "institutional-succession",
+              "basis": "source",
+              "uncertain": true,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "dashed",
+                "opacity": 0.45
+              },
+              "sourceReferences": [
+                "https://www.katyayanipeeth.org.in/untitled-mainpage"
+              ]
+            },
+            {
+              "fromSourceId": "recoRltXupeZas8zP",
+              "toSourceId": "rec0H3FSQUnqIH95X",
+              "label": "Babaji branch · tradition’s account",
+              "kind": "traditional-guru",
+              "basis": "source",
+              "uncertain": true,
+              "direction": "teacher-to-student",
+              "style": {
+                "line": "dashed",
+                "opacity": 0.45
+              },
+              "sourceReferences": [
+                "https://www.kriyayoga.org/about"
+              ]
+            },
+            {
+              "fromSourceId": "recwX7dFfmlq9FfAh",
+              "toSourceId": "recVcmAKuNX8Dpp54",
+              "label": "Matilal → Anilananda · identity qualified",
+              "basis": "source"
+            }
+          ],
+          "kind": "family"
+        },
+        {
+          "id": "east-north:5:Kriya: Ganesh Baba, qualified associations",
+          "title": "Kriya: Ganesh Baba, qualified associations",
+          "sourceIds": [
+            "reckSOP93swGpRjsT"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "5"
+          ],
+          "kind": "city"
+        }
+      ],
+      "relationships": [],
+      "reviewAlerts": [
+        {
+          "message": "Starting shelves are recommendations. Preserve recorded placements and check unknown sizes; apply current Living restrictions first."
+        }
+      ]
+    },
+    {
+      "code": "46",
+      "allocations": [
+        {
+          "sourceId": "rec8QbPLpAjtQSu4Q",
+          "saintId": "cms0w7dfw01k807qi17jmjty3",
+          "name": "Sri Gopal Das Baba",
+          "tier": "Tertiary",
+          "destination": "46",
+          "sourceRevision": "355955547bbb0910bc6e8ecde2a6bde059300b5e17685518d3a1941c5412c55c",
+          "groupId": "curator-additions:46:Curator additions",
+          "columnKey": "curator-additions:46:Curator additions",
+          "suggestedShelfIndex": null,
+          "suggestedVerticalBand": "retain-current",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Retain the confirmed placement.",
+          "reviewAlerts": [
+            {
+              "message": "Size is not recorded. Check fit before placing this relic."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "46",
+            "label": "Vitrine 46"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "cbc2f02b2650f724f3b5b111d7613707ed0acf392c11ee66cdc43b75ef7c8396",
+          "projectedLifeStatus": null,
+          "knownFootprint": null,
+          "preserveCurrentPlacement": true,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "retain-current-placement"
+        }
+      ],
+      "groups": [
+        {
+          "id": "curator-additions:46:Curator additions",
+          "title": "Curator additions",
+          "sourceIds": [
+            "rec8QbPLpAjtQSu4Q"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "46"
+          ],
+          "kind": "city"
+        }
+      ],
+      "relationships": [],
+      "reviewAlerts": [
+        {
+          "message": "Starting shelves are recommendations. Preserve recorded placements and check unknown sizes; apply current Living restrictions first."
+        }
+      ]
+    },
+    {
+      "code": "62",
+      "allocations": [
+        {
+          "sourceId": "recpyhIScDxJbDdE1",
+          "saintId": "cms0w7hid06pu07qixhc35ehi",
+          "name": "Sri Kamaal Darvesh Dargaah",
+          "tier": "Tertiary",
+          "destination": "62",
+          "sourceRevision": "61517b918e65289ba01b09ca4e38d0a825acda2dddd661795e07482a3337ad9b",
+          "groupId": "curator-additions:62:Curator additions",
+          "columnKey": "curator-additions:62:Curator additions",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "lower",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this holding with its approved group; confirm the starting position on site.",
+          "reviewAlerts": [
+            {
+              "message": "Size is not recorded. Check fit before placing this relic."
+            }
+          ],
+          "hasReviewAlert": true,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "18",
+            "label": "Vitrine 18",
+            "shelf": "B"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "41eea3252430372de4b2e716ed1012a703866b609596567fef74f13312a92c2a",
+          "projectedLifeStatus": null,
+          "knownFootprint": null,
+          "preserveCurrentPlacement": false,
+          "provisional": true,
+          "optional": false,
+          "reviewState": "recommended-starting-shelf"
+        }
+      ],
+      "groups": [
+        {
+          "id": "curator-additions:62:Curator additions",
+          "title": "Curator additions",
+          "sourceIds": [
+            "recpyhIScDxJbDdE1"
+          ],
+          "rationale": "",
+          "suggestedVitrines": [
+            "62"
+          ],
+          "kind": "city"
+        }
+      ],
+      "relationships": [],
+      "reviewAlerts": [
+        {
+          "message": "Starting shelves are recommendations. Preserve recorded placements and check unknown sizes; apply current Living restrictions first."
+        }
+      ]
+    }
+  ],
+  "excludedSources": [
+    "recRnVf9eR7izgH7r",
+    "recPWVPc3i5A0KH7h"
+  ],
+  "sourceCount": 14
+}

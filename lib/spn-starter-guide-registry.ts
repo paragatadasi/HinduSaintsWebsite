@@ -1,3 +1,4 @@
+import {approvedHingeGuide} from "./spn-approved-hinge-guide";
 import {maharashtraReceivingGuide} from "./spn-maharashtra-receiving-guide";
 import {eastRemainderGuideContext as priorEastContext,eastRemainderGuideDefinition as priorEastDefinition} from "./spn-east-remainder-guide-v1";
 import {hingeAdditionsGuideContext,hingeAdditionsGuideDefinition} from "./spn-hinge-additions-guide";
@@ -76,14 +77,15 @@ const cityAlternatives = guide.cityAlternatives.map(cohort => {
 if (new Set(suggestions.map(row => row.id)).size !== suggestions.length) throw new Error("Duplicate registered suggestion identifiers.");
 export const registeredStarterGuide = { ...guide, cityAlternatives, guideContext: starterGuideContext };
 export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinition[] {
-  return [maharashtraReceivingGuide.context,hingeAdditionsGuideContext,southernGuideContext,west40To44GuideContext,junagadhGuideContext,westV59GuideContext,westV46GuideContext,westV45GuideContext,westV1GuideContext,eastRemainderGuideContext,northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,vrajStoryTopsGuideContext,
+  return [maharashtraReceivingGuide.context,approvedHingeGuide.context,southernGuideContext,west40To44GuideContext,junagadhGuideContext,westV59GuideContext,westV46GuideContext,westV45GuideContext,westV1GuideContext,eastRemainderGuideContext,northernGuideContext,ramakrishnaGuideContext, vrajGuideContext,vrajRemainderGuideContext,vrajStoryTopsGuideContext,
     ramBhaktiGuideContext, dattaGuideContext, starterGuideContext].map(context => readStarterGuideDefinition(context.guideVersion))
     .filter(definition => !definition.readOnly && (definition.suggestions.some(row => row.targetVitrine === vitrine) ||
       Object.values(definition.physicalScope?.destinations ?? {}).includes(vitrine)));
 }
 export function readStarterGuideDefinition(version: string): GuideDefinition {
   if(version===maharashtraReceivingGuide.context.guideVersion)return maharashtraReceivingGuide.definition;
-  if(version===hingeAdditionsGuideContext.guideVersion)return hingeAdditionsGuideDefinition;
+  if(version===approvedHingeGuide.context.guideVersion)return approvedHingeGuide.definition;
+  if(version===hingeAdditionsGuideContext.guideVersion)return {...hingeAdditionsGuideDefinition,readOnly:true};
   if(version===oldSouthernContext.guideVersion)return {...oldSouthernDefinition,readOnly:true};
   if(version===southernGuideContext.guideVersion)return southernGuideDefinition;
   if(version===oldWestContext.guideVersion)return {...oldWestDefinition,readOnly:true};

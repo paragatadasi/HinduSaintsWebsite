@@ -213,7 +213,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         throw new MuseumMoveSessionError(409, "Open this destination's current move guide before recording its added relic.");
     }
     const transfers = [...(phase?.physicalScope?.preparatoryTransfers ?? []), ...additionPhases.flatMap(row => row.physicalScope?.preparatoryTransfers ?? [])];
-    const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length||input.caseContentsStaging ? undefined : [...new Set([...input.records.map(row => row.sourceId), ...transfers.map(row => row.sourceId)])], false);
+    const current = await readPhysicalLocationView(loader, tx, input.clearedVitrines?.length||input.caseContentsStaging ? undefined : [...new Set([...input.records.map(row => row.sourceId), ...transfers.map(row => row.sourceId), ...(input.records.some(row=>row.to.kind==="vitrine"&&row.to.code==="9")?["recHatM8WlLSqKeyy"]:[])])], false);
     if(input.caseContentsStaging){
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
@@ -282,7 +282,10 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       const [{readWestV47Guide},{assertWestV47Records}]=await Promise.all([import("./spn-west-v47-source"),import("./spn-west-v47-guide")]);
       assertWestV47Records(input.records,await readWestV47Guide(await readMuseumData(tx),current,undefined,tx));
     }
-    if(input.guideContext?.guideVersion==="spn-missing-receivers-2026-11-01-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
+    if(input.records.some(record=>record.to.kind==="vitrine"&&record.to.code==="9")){
+      (await import("./spn-approved-hinge-guide")).approvedHingeGuide.assertRelocationDependencies(input.records,current);
+    }
+    if(["spn-missing-receivers-2026-11-01-v1","spn-hinge-approved-2026-11-01-v2"].includes(input.guideContext?.guideVersion??"")&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
@@ -291,7 +294,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       });
       for(const id of [...new Set(ids)].sort())await tx.$queryRaw(Prisma.sql`SELECT true FROM pg_advisory_xact_lock(hashtextextended(${"museum-arrangement:spn:"+id},0))`);
       const [{readApprovedReceivingGuide},{maharashtraReceivingGuide}]=await Promise.all([import("./museum-approved-receiving-source"),import("./spn-maharashtra-receiving-guide")]);
-      maharashtraReceivingGuide.assertRecords(input.records,await readApprovedReceivingGuide(maharashtraReceivingGuide,await readMuseumData(tx),current,undefined,tx));
+      const adapter=input.guideContext?.guideVersion==="spn-hinge-approved-2026-11-01-v2"?(await import("./spn-approved-hinge-guide")).approvedHingeGuide:maharashtraReceivingGuide;
+      adapter.assertRecords(input.records,await readApprovedReceivingGuide(adapter,await readMuseumData(tx),current,undefined,tx));
     }
     if(input.guideContext?.guideVersion==="spn-southern-2026-11-01-v2"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;

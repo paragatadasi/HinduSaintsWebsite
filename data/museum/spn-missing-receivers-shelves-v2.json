@@ -1,0 +1,3651 @@
+{
+  "version": "spn-missing-receivers-shelves-2026-11-01-v2",
+  "vitrines": [
+    {
+      "code": "47",
+      "mode": "user-approved-roster-shelf-recommendations",
+      "shelfCount": null,
+      "referenceHeightSpaces": 5,
+      "geometryVerified": false,
+      "shelfLabelsVerified": false,
+      "shelfOrder": "top-to-bottom conceptual; verify actual physical shelf labels",
+      "headline": "Inland Maharashtra · Jaganath Das, Nashik and regional saints",
+      "groups": [
+        {
+          "id": "receiving-47-west-39",
+          "title": "Sri Jaganath Das Ji Maharaj",
+          "kind": "family",
+          "vitrine": "47",
+          "sourceIds": [
+            "recLUMkn9nchq6xSn"
+          ],
+          "rationale": "Current anchor and its recorded localities. Prominence and personal affiliation are separate decisions. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-47-west-119-part0",
+          "title": "Aurangabad / Ellora",
+          "kind": "locality",
+          "vitrine": "47",
+          "sourceIds": [
+            "recxpxbK3WtB5qNJR",
+            "recrBWJhp5tKPlAgm",
+            "recbVJyIpBv0QzhYT"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-47-west-112-part0",
+          "title": "Devgaon Rangari",
+          "kind": "locality",
+          "vitrine": "47",
+          "sourceIds": [
+            "recAriDLsmc6YkbHp",
+            "recyqDSlI3kLiKlQm"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-47-west-62-part0",
+          "title": "Nashik / Trimbakeshwar",
+          "kind": "locality",
+          "vitrine": "47",
+          "sourceIds": [
+            "recTMKSBlJDAsP1xq",
+            "recTSGIp6evFQxMPz",
+            "reciEdN6T8SZYRsQZ",
+            "rec1JNVZnk25o8hWT",
+            "reckie5VzL3xAAyUR"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-47-west-85-part0",
+          "title": "Satara / Pusegaon",
+          "kind": "locality",
+          "vitrine": "47",
+          "sourceIds": [
+            "rec6U9l7JTPzzg7FW",
+            "reciCL7qa0nHMpwAS"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Supporting locality cohort beside the Varkari anchor display; locality alone does not establish Varkari affiliation. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-47-west-84-part0",
+          "title": "Solapur",
+          "kind": "locality",
+          "vitrine": "47",
+          "sourceIds": [
+            "rec6PS5ijxeNhR01A",
+            "recUlVLZdIKi5abyf"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Supporting locality cohort beside the Varkari anchor display; locality alone does not establish Varkari affiliation. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-47-split-recU0W9UAWA4dfJsd",
+          "title": "Ahmednagar",
+          "kind": "locality",
+          "vitrine": "47",
+          "sourceIds": [
+            "recU0W9UAWA4dfJsd"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-47-split-belapur",
+          "title": "Belapur · Vidhyanand Maharaj",
+          "kind": "locality",
+          "vitrine": "47",
+          "sourceIds": [
+            "reckIAnRCfjle4JRW"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recLUMkn9nchq6xSn",
+          "saintId": "cms0w7gj005jw07qih5nadowj",
+          "name": "Sri Jaganath Das Ji Maharaj",
+          "tier": "Primary",
+          "destination": "47",
+          "groupId": "receiving-47-west-39",
+          "columnKey": "receiving-47-west-39",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Lead story in the upper display, with its named branch aligned below; subject to actual fit.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "5390e8ea79da039ddb55dec659df080f3ca86d490fc017fc7d28a9c5a0d3efe7",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7gj005jw07qih5nadowj",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "11",
+            "label": "Vitrine 11",
+            "shelf": "B"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "0dcddd7003297b69bcbf1387c9fe2bd016580fe64ad0bddef4ba1d011879f3f8",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "piece from the Asan of the cave he stayed in"
+        },
+        {
+          "sourceId": "recxpxbK3WtB5qNJR",
+          "saintId": "cms0w7jm8090407qik0eemfup",
+          "name": "Mahant Sri Nagaraj Baba Kalpate",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-119-part0",
+          "columnKey": "receiving-47-west-119-part0",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "316560ee24117977b833b2ba990b17ee658d9ec00025cb08781393fb7186e3fe",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7jm8090407qik0eemfup",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.3333333333333333,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "33",
+            "label": "Vitrine 33",
+            "shelf": "D"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "56f612e0f5b221bfeb29e478ccd2268c65b33a86f7253c78bf8830479dff05d3",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Box, pages from manuscript, coin"
+        },
+        {
+          "sourceId": "recrBWJhp5tKPlAgm",
+          "saintId": "cms0w7hsu072e07qisiwso2kj",
+          "name": "Mahant Sri Nagraj Baba Kalpate",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-119-part0",
+          "columnKey": "receiving-47-west-119-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Footprint unknown; the ordering allowance is not a size estimate or fit confirmation."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "eb22bea998cbaee5cc30fa634915009b1b4758dc3bb5f877a38e5d575e0bcf23",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7hsu072e07qisiwso2kj",
+            "birthYear": 1934,
+            "birthDateRaw": "1934-03-16",
+            "samadhiYear": 2005,
+            "samadhiDateRaw": "2005-05-10"
+          },
+          "knownFootprint": null,
+          "currentPhysical": null,
+          "currentPhysicalBasis": "unknown",
+          "currentRevision": "56393c8ea160a7fe7da4c8894c86f3155dc94dce1f6adb481bce8102b42e523d",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "recbVJyIpBv0QzhYT",
+          "saintId": "cms0w7e2l02ez07qi8m9e2wzu",
+          "name": "Sri Tapaswini Subhadra Tai Kapate",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-119-part0",
+          "columnKey": "receiving-47-west-119-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "1e8e9f6dcc3b0d61f28ee87bba5f3c30964666feda2afb09472b3c335215aed0",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7e2l02ez07qi8m9e2wzu",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.3333333333333333,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "33",
+            "label": "Vitrine 33",
+            "shelf": "D"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "56f612e0f5b221bfeb29e478ccd2268c65b33a86f7253c78bf8830479dff05d3",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "recAriDLsmc6YkbHp",
+          "saintId": "cms0w7dt0022507qikschq8uj",
+          "name": "Sri Sadguru Vyankatnath Maharaj",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-112-part0",
+          "columnKey": "receiving-47-west-112-part0",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "dc70dc5884f0aa53aa6ebcc7bb3138111dfffb46d1f74095b28ac866ed7a2058",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7dt0022507qikschq8uj",
+            "birthYear": 1903,
+            "birthDateRaw": "1903-02-02",
+            "samadhiYear": 1993,
+            "samadhiDateRaw": "1993"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "41",
+            "label": "Vitrine 41",
+            "shelf": "C"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "ae4cf45bbc921569bbc6d069b352d5efa6bc7044c3513bc7633640ef028e7302",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Piece from the Asan"
+        },
+        {
+          "sourceId": "recyqDSlI3kLiKlQm",
+          "saintId": "cms0w7jwa09at07qiuynne7bn",
+          "name": "Sri Sadguru Satyanath Maharaj",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-112-part0",
+          "columnKey": "receiving-47-west-112-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "3d51cd8defb728fd50cbcc1d841b05af4406fe6b8560e2937924c6b7a76e9285",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7jwa09at07qiuynne7bn",
+            "birthYear": 1923,
+            "birthDateRaw": "1923",
+            "samadhiYear": 2001,
+            "samadhiDateRaw": "2001"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "41",
+            "label": "Vitrine 41",
+            "shelf": "C"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "ae4cf45bbc921569bbc6d069b352d5efa6bc7044c3513bc7633640ef028e7302",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "White Kurta"
+        },
+        {
+          "sourceId": "recTMKSBlJDAsP1xq",
+          "saintId": "cms0w7ied07qb07qi38ndrp3a",
+          "name": "Sri Adi Shankara Acharya",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-62-part0",
+          "columnKey": "receiving-47-west-62-part0",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "b68d9d6e934d87c5ff3c3e58b8c335cd0eb2cc3e4a2d500b5f5a1062e1eab824",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7ied07qb07qi38ndrp3a",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "520c6917571dd380c3e1c5267af68ce7102dbb4c073df69497f369f49ee91c32",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Wood from the cave where Ādi Shankaracharya and Mataji - sister of Babaji used to meditate in Varanasi; ashes from the dhuni of  AdiShankaracharya at Neelparvat, Triyambhakeshwar, Nashik ; piece of clothes (not sure if is real) "
+        },
+        {
+          "sourceId": "recTSGIp6evFQxMPz",
+          "saintId": "cms0w7igb07se07qi2lwfd39e",
+          "name": "Sri Jagadguru Ramanujacharya Paramahamsa Swāmi Sri Padmanabhacharya ji Phalhari Tridandi Maharaj",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-62-part0",
+          "columnKey": "receiving-47-west-62-part0",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "49308b5adcda84c1ba2f3353aab6b629e6af2eea41850fec632884c1fb4da999",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7igb07se07qi2lwfd39e",
+            "birthYear": 1910,
+            "birthDateRaw": "1910",
+            "samadhiYear": 2018,
+            "samadhiDateRaw": "2018-10-8"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "32",
+            "label": "Vitrine 32",
+            "shelf": "D"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "6677248905247aa7c79617967ff4c94237e9c3e2972aa3fbfa49d9d0c48b44ce",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "reciEdN6T8SZYRsQZ",
+          "saintId": "cms0w7fp404iv07qiddz81laf",
+          "name": "Sri Madhavgiri Maharaj",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-62-part0",
+          "columnKey": "receiving-47-west-62-part0",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "adea26c47bb2a5f7ba871e5c8c477460fe3f717f904b6f288d1f83ed0362b2c5",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7fp404iv07qiddz81laf",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "6bf505d5879835b4bef6590ceed2199676d7022da1faaf42965640d9365fc177",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Chalk slate, plaster form his drip"
+        },
+        {
+          "sourceId": "rec1JNVZnk25o8hWT",
+          "saintId": "cms0w7cex00a307qirkh7ywux",
+          "name": "Sri Swami Janardhan Moungiri Maharaj",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-62-part0",
+          "columnKey": "receiving-47-west-62-part0",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "second-from-bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "c7a51c98b301ad6df8f04a469b78b5ca4118198ebff63c071c4d75367335a2e6",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7cex00a307qirkh7ywux",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.20833333333333331,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "37918a3c53302ecdb50a50ffed1f07fb40adaa9b545a400b606cae201ccb1ba4",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "piece of mattress from the place where he used to lie down; Coconut cup; (coins and Vibhuti were there but not mentioned as relics)"
+        },
+        {
+          "sourceId": "reckie5VzL3xAAyUR",
+          "saintId": "cms0w7g6w054o07qide00kyig",
+          "name": "Sri Yogi Yashnath",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-62-part0",
+          "columnKey": "receiving-47-west-62-part0",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Living: bottom shelf first; second-from-bottom only when bottom capacity is used. Align beneath the related branch.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "7e316f714c1e2f45bc719a8b9a3d18b5f614e71e2aab07e25ffc85b7d731d0b3",
+          "projectedLifeStatus": {
+            "tag": "Living",
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7g6w054o07qide00kyig",
+            "birthYear": null,
+            "birthDateRaw": "Unknown",
+            "samadhiYear": null,
+            "samadhiDateRaw": "Still alive"
+          },
+          "knownFootprint": 0.16666666666666666,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "16",
+            "label": "Vitrine 16",
+            "shelf": "E"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "be163f3c441be71f089fb9e04f02f90b476faab30b21a75bafda19edde1ee8fb",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "rec6U9l7JTPzzg7FW",
+          "saintId": "cms0w7d6s018b07qi6o4j32t1",
+          "name": "Sri Sundargiri Maharaj",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-85-part0",
+          "columnKey": "receiving-47-west-85-part0",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Living: bottom shelf first; second-from-bottom only when bottom capacity is used. Align beneath the related branch.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "682a0dc3fca8dc92b6e2a7fb2babd14c675351cf5d0a72ac9f0b72e3fea6e3b5",
+          "projectedLifeStatus": {
+            "tag": "Living",
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7d6s018b07qi6o4j32t1",
+            "birthYear": 1968,
+            "birthDateRaw": "1968-07-01",
+            "samadhiYear": null,
+            "samadhiDateRaw": "Still alive"
+          },
+          "knownFootprint": 0.16666666666666666,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "6bf505d5879835b4bef6590ceed2199676d7022da1faaf42965640d9365fc177",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Mala, kurta, ashes from the dhuni which Sevagiri (guru) lit"
+        },
+        {
+          "sourceId": "reciCL7qa0nHMpwAS",
+          "saintId": "cms0w7foi04i707qir5ojpdoy",
+          "name": "Sri Sevagiri Maharaj",
+          "tier": "Primary",
+          "destination": "47",
+          "groupId": "receiving-47-west-85-part0",
+          "columnKey": "receiving-47-west-85-part0",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Lead story in the upper display, with its named branch aligned below; subject to actual fit.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "caeb4b93e1a4abf603481f14a386785fd12ae4872d7ba3d08389f46bc7aa5157",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7foi04i707qir5ojpdoy",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": 1948,
+            "samadhiDateRaw": "1948-01-10"
+          },
+          "knownFootprint": 0.16666666666666666,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f578866ef9c9ce6230e7ed1631e0af4a17ef430877130fc03b7e7274baafd394",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Rudraksha, wood, prasad (?)"
+        },
+        {
+          "sourceId": "rec6PS5ijxeNhR01A",
+          "saintId": "cms0w7d5a016k07qif9lpugdj",
+          "name": "Sri Kiriteshwar Maharaj",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-84-part0",
+          "columnKey": "receiving-47-west-84-part0",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "second-from-bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "40f8d70c162c33907acb8c99afdc13cfaccf39fc50fbc5db091852db0ef7ee61",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7d5a016k07qif9lpugdj",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.3333333333333333,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "10",
+            "label": "Vitrine 10",
+            "shelf": "A"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "9dc2d11f76d014bf99fe85d99fc7d989fc731338e76ac88b2623a283a02bcdcb",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "1 rudraksha\n"
+        },
+        {
+          "sourceId": "recUlVLZdIKi5abyf",
+          "saintId": "cmus3rxye009v07o5yg9lxs1r",
+          "name": "Sri Siddheshwar Maharaj",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-west-84-part0",
+          "columnKey": "receiving-47-west-84-part0",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "second-from-bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Same-name records require identity review; separate relic entries are preserved and have not been merged."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "1e8fa3cb224a6d362587047986cf36fb43bb5ca2d9ee829215e69f7fdf223c5b",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cmus3rxye009v07o5yg9lxs1r",
+            "birthYear": 1733,
+            "birthDateRaw": "1733-03-13",
+            "samadhiYear": 1801,
+            "samadhiDateRaw": "1801-05-04"
+          },
+          "knownFootprint": 0.3333333333333333,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "10",
+            "label": "Vitrine 10",
+            "shelf": "A"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "9dc2d11f76d014bf99fe85d99fc7d989fc731338e76ac88b2623a283a02bcdcb",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Saligram, dust pieces from his Dandha - 1000yrs old"
+        },
+        {
+          "sourceId": "recU0W9UAWA4dfJsd",
+          "saintId": "cms0w7iiy07v807qi833qdi5o",
+          "name": "Sri Anandrishi ji Maharaj",
+          "tier": "Primary",
+          "destination": "47",
+          "groupId": "receiving-47-split-recU0W9UAWA4dfJsd",
+          "columnKey": "receiving-47-split-recU0W9UAWA4dfJsd",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Lead story in the upper display, with its named branch aligned below; subject to actual fit.",
+          "reviewAlerts": [
+            {
+              "message": "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "b347e86f9529b0bbabdf2586d8856c2ce680a989162c249f66839715ee65bfd7",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7iiy07v807qi833qdi5o",
+            "birthYear": 1900,
+            "birthDateRaw": "1900-07-27",
+            "samadhiYear": 1992,
+            "samadhiDateRaw": "1992-03-28"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "41",
+            "label": "Vitrine 41",
+            "shelf": "D"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "2edc4d08dfaa5dbaaa9f79ad873e1ad7f834fe4f6cc4bcabd558bc2a72538ed8",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Asan (white cloth)"
+        },
+        {
+          "sourceId": "reckIAnRCfjle4JRW",
+          "saintId": "cms0w7g6j054907qi8m0sd72t",
+          "name": "Sri Vidhyanand Maharaj",
+          "tier": "Tertiary",
+          "destination": "47",
+          "groupId": "receiving-47-split-belapur",
+          "columnKey": "receiving-47-split-belapur",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "f19c66950e4e7f246ed148f1156f91ddb870686ca8c908b1f198028f98cad665",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7g6j054907qi8m0sd72t",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": 1905,
+            "samadhiDateRaw": "1905"
+          },
+          "knownFootprint": 0.5,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "10",
+            "label": "Vitrine 10",
+            "shelf": "B"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "97c5960317ae949a3f0d14c2249c5babc97ce6ca5e7ee6bdb77575c3b94a0dea",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Rudraksh Mala, Padukas, Kamandalu, (Veel?) - like a big bowl or shield "
+        }
+      ],
+      "relationships": [],
+      "livingAllowedBands": [
+        5,
+        4
+      ],
+      "conceptualAssignedLoads": {
+        "1": 0.95,
+        "2": 0.8333333333333333,
+        "3": 1.0,
+        "4": 0.875,
+        "5": 0.8333333333333333
+      },
+      "conceptualKnownLoads": [
+        0.95,
+        0.5833333333333333,
+        1.0,
+        0.875,
+        0.8333333333333333
+      ],
+      "capturedKnownLoad": 4.241666666666666,
+      "capturedUnknownRows": 1,
+      "notes": [
+        "Unknown-size ordering allowance0.25 is used only to suggest an order, not to certify capacity.",
+        "These recommendations do not change recorded shelves or confirm physical moves."
+      ]
+    },
+    {
+      "code": "58",
+      "mode": "user-approved-roster-shelf-recommendations",
+      "shelfCount": null,
+      "referenceHeightSpaces": 5,
+      "geometryVerified": false,
+      "shelfLabelsVerified": false,
+      "shelfOrder": "top-to-bottom conceptual; verify actual physical shelf labels",
+      "headline": "Hingoli & inland Maharashtra · Nange Baba and recorded branch",
+      "groups": [
+        {
+          "id": "receiving-58-west-213-part0",
+          "title": "Deulgaon Raja",
+          "kind": "locality",
+          "vitrine": "58",
+          "sourceIds": [
+            "recYv5XmYhIGNPVAM"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-58-west-211-part0",
+          "title": "Dhamangaon",
+          "kind": "locality",
+          "vitrine": "58",
+          "sourceIds": [
+            "recy6Rv2XKYBOv5Rx"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-58-west-106-part0",
+          "title": "Hingoli",
+          "kind": "locality",
+          "vitrine": "58",
+          "sourceIds": [
+            "reclOg5Z7B3xh3C9H",
+            "rec9sve39Yd4CwToG",
+            "recBRjhdw2jf5P23S",
+            "recsiJRnO1JLLOxow"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged. Reviewed geographic grouping: Maharashtra teal, without implying Varkari membership. Preserve the Nange branch as distinct from the locality group.",
+          "edges": []
+        },
+        {
+          "id": "receiving-58-west-60-part0",
+          "title": "Mahurgad",
+          "kind": "locality",
+          "vitrine": "58",
+          "sourceIds": [
+            "rec0yiz9d45vJ6cPc"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-58-west-23",
+          "title": "Nange Baba · Vishwanath · Adhbhangnath",
+          "kind": "family",
+          "vitrine": "58",
+          "sourceIds": [
+            "reckBOeFbqITjkppf",
+            "recZb2o8xbSZi6An4",
+            "recj1Kgc42NXnBTla"
+          ],
+          "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain. Provisional lower-shelf review block only. No regional affiliation implied; check identity, housing and individual fit before execution. Reviewed geographic grouping: Maharashtra teal, without implying Varkari membership. Preserve the Nange branch as distinct from the locality group.",
+          "edges": []
+        },
+        {
+          "id": "receiving-58-western-intake-248",
+          "title": "Maharashtra · precise locality under review",
+          "kind": "locality",
+          "vitrine": "58",
+          "sourceIds": [
+            "recqcXk64Jz6yzxsE",
+            "recMJmizofyPI3niv"
+          ],
+          "rationale": "Source supports Maharashtra; no specific Hingoli/Datta affiliation inferred. Separate localities pending, no family connection claimed.",
+          "edges": []
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recYv5XmYhIGNPVAM",
+          "saintId": "cms0w7jy709cr07qi6ptuoio3",
+          "name": "Sri Nara Hari Nath",
+          "tier": "Tertiary",
+          "destination": "58",
+          "groupId": "receiving-58-west-213-part0",
+          "columnKey": "receiving-58-west-213-part0",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "04c433d4afced35c0ffb4a4a5aad60c0b0d71b0a8eb4d3f56767ecbd7445dc85",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7jy709cr07qi6ptuoio3",
+            "birthYear": null,
+            "birthDateRaw": "-",
+            "samadhiYear": 1795,
+            "samadhiDateRaw": "Ca 1795"
+          },
+          "knownFootprint": 0.3333333333333333,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "47",
+            "label": "Vitrine 47",
+            "shelf": "C"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "b2150aeb7a5798811a5fd8a1f83a35e956fcb98080c481b035bb516c6b14ea25",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "recy6Rv2XKYBOv5Rx",
+          "saintId": "cmus3ry6g00aw07o5nha2rqoz",
+          "name": "Sri Mungsaji Maharaj",
+          "tier": "Tertiary",
+          "destination": "58",
+          "groupId": "receiving-58-west-211-part0",
+          "columnKey": "receiving-58-west-211-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "9c201e38f9332241fd12098faf8560d3316550493aeb59793530c936ae9d5d96",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cmus3ry6g00aw07o5nha2rqoz",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "41",
+            "label": "Vitrine 41",
+            "shelf": "A"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "efe61a782746d23616b58c0c61a256b385c5fbce209dbaf47f09a2faac4f29bc",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Samadhi Robe"
+        },
+        {
+          "sourceId": "reclOg5Z7B3xh3C9H",
+          "saintId": "cms0w7ggz05h907qix1lq072y",
+          "name": "Sri Navaji Maharaj",
+          "tier": "Tertiary",
+          "destination": "58",
+          "groupId": "receiving-58-west-106-part0",
+          "columnKey": "receiving-58-west-106-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "8313b1954e8afc68261f5b9e692cc4f4e6bd9a568b315d9c94ea020230a86d98",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7ggz05h907qix1lq072y",
+            "birthYear": 1852,
+            "birthDateRaw": "1852",
+            "samadhiYear": 1977,
+            "samadhiDateRaw": "1977-11-01"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "33",
+            "label": "Vitrine 33",
+            "shelf": "C"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "7870956bd32230d1998c17088667ebf96cb2ef918444526dceee92028cf3b307",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "His Saigrama, bark from the tree he planted "
+        },
+        {
+          "sourceId": "rec9sve39Yd4CwToG",
+          "saintId": "cms0w7dks01qv07qind7689nq",
+          "name": "Sri Sagar Giri Maharaj",
+          "tier": "Tertiary",
+          "destination": "58",
+          "groupId": "receiving-58-west-106-part0",
+          "columnKey": "receiving-58-west-106-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "3bf28dbeae792dcf6588a487573773cbada60edf1a2f42480a10495c233372fe",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7dks01qv07qind7689nq",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "14",
+            "label": "Vitrine 14",
+            "shelf": "E"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "7667b1bffa4ead0a548b0fe83b02d4c7f0b928af9cc998d84ba68c90214bf5be",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Rudraksha "
+        },
+        {
+          "sourceId": "recBRjhdw2jf5P23S",
+          "saintId": "cms0w7e1e02dp07qiui5g4oar",
+          "name": "Sri Namdev Baba",
+          "tier": "Tertiary",
+          "destination": "58",
+          "groupId": "receiving-58-west-106-part0",
+          "columnKey": "receiving-58-west-106-part0",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "6973b295d1fe9bafee3968d5de61742cb98bb5391e36322ded0cdb9816de7d84",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7e1e02dp07qiui5g4oar",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "14",
+            "label": "Vitrine 14",
+            "shelf": "E"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "7667b1bffa4ead0a548b0fe83b02d4c7f0b928af9cc998d84ba68c90214bf5be",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "recsiJRnO1JLLOxow",
+          "saintId": "cms0w7i3507ef07qiff1cnsdg",
+          "name": "Sri Swami Balanand Giri",
+          "tier": "Tertiary",
+          "destination": "58",
+          "groupId": "receiving-58-west-106-part0",
+          "columnKey": "receiving-58-west-106-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "26277613ab5810da8c9438e20bf07b1b48f3eec97892ff2acbb15530fef38612",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7i3507ef07qiff1cnsdg",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "14",
+            "label": "Vitrine 14",
+            "shelf": "E"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "7667b1bffa4ead0a548b0fe83b02d4c7f0b928af9cc998d84ba68c90214bf5be",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "rec0yiz9d45vJ6cPc",
+          "saintId": "cms0w7cd0007w07qityrvlfh5",
+          "name": "Sri Visnudas Maharaj",
+          "tier": "Tertiary",
+          "destination": "58",
+          "groupId": "receiving-58-west-60-part0",
+          "columnKey": "receiving-58-west-60-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "f7cc5167b91d9c7da401409bc401501579dc1345fafa6e1a7fad2822fbc81b00",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7cd0007w07qityrvlfh5",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.08333333333333333,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "25",
+            "label": "Vitrine 25",
+            "shelf": "E"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "517b2ab8cafbc69f54ba215ef4b372869de561fd513db174c0ae3dec3483565a",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Rudraksha Mala"
+        },
+        {
+          "sourceId": "reckBOeFbqITjkppf",
+          "saintId": "cms0w7g3w050r07qitchv31cp",
+          "name": "Sri Adhbhangnath Maharaj (Arjun Baba)",
+          "tier": "Secondary",
+          "destination": "58",
+          "groupId": "receiving-58-west-23",
+          "columnKey": "receiving-58-west-23",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Lead story in the upper display, with its named branch aligned below; subject to actual fit.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "9177d6e555b830268a6d7e2c149413267003e4d341b6ed0e387bbe17a8d0d1d4",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7g3w050r07qitchv31cp",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "14",
+            "label": "Vitrine 14",
+            "shelf": "E"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "7667b1bffa4ead0a548b0fe83b02d4c7f0b928af9cc998d84ba68c90214bf5be",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "recZb2o8xbSZi6An4",
+          "saintId": "cms0w7k1109fk07qi0z5yk9rm",
+          "name": "Nange Baba",
+          "tier": "Tertiary",
+          "destination": "58",
+          "groupId": "receiving-58-west-23",
+          "columnKey": "receiving-58-west-23",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Lead story in the upper display, with its named branch aligned below; subject to actual fit.",
+          "reviewAlerts": [
+            {
+              "message": "Footprint unknown; the ordering allowance is not a size estimate or fit confirmation."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "28a1b3dd6a42235794a27421fc6f7417e48caf6fec958a6116fc232127509688",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7k1109fk07qi0z5yk9rm",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": null,
+          "currentPhysical": null,
+          "currentPhysicalBasis": "unknown",
+          "currentRevision": "56393c8ea160a7fe7da4c8894c86f3155dc94dce1f6adb481bce8102b42e523d",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "recj1Kgc42NXnBTla",
+          "saintId": "cms0w7fsv04ng07qi9ec5waay",
+          "name": "Vidurdas Maharaj (Vishwanath Baba)",
+          "tier": "Tertiary",
+          "destination": "58",
+          "groupId": "receiving-58-west-23",
+          "columnKey": "receiving-58-west-23",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Footprint unknown; the ordering allowance is not a size estimate or fit confirmation."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "fd1fe48f1bed02abcf4a6534ffa9a8720542ede7cf0b70561970d33f08e57693",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7fsv04ng07qi9ec5waay",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": null,
+          "currentPhysical": null,
+          "currentPhysicalBasis": "unknown",
+          "currentRevision": "56393c8ea160a7fe7da4c8894c86f3155dc94dce1f6adb481bce8102b42e523d",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "recqcXk64Jz6yzxsE",
+          "saintId": "cms0w7hkk06sf07qiajpfoh18",
+          "name": "Sri Kedu Bapu Warni",
+          "tier": "Tertiary",
+          "destination": "58",
+          "groupId": "receiving-58-western-intake-248",
+          "columnKey": "receiving-58-western-intake-248",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "800e774f79a45678e57f106b08933c083e6deb9140fba36561ba67b5ce135895",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7hkk06sf07qiajpfoh18",
+            "birthYear": 1943,
+            "birthDateRaw": "1943-02-05",
+            "samadhiYear": 2016,
+            "samadhiDateRaw": "2016-01-06"
+          },
+          "knownFootprint": 0.16666666666666666,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "16",
+            "label": "Vitrine 16",
+            "shelf": "E"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "be163f3c441be71f089fb9e04f02f90b476faab30b21a75bafda19edde1ee8fb",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Japa Mala "
+        },
+        {
+          "sourceId": "recMJmizofyPI3niv",
+          "saintId": "cms0w7go805q107qiaokaqq1j",
+          "name": "Sri Bansi Das Baba",
+          "tier": "Tertiary",
+          "destination": "58",
+          "groupId": "receiving-58-western-intake-248",
+          "columnKey": "receiving-58-western-intake-248",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "9dcf3103d3e2f33a55fe78be2f6d041e0df6aecd56baa9a0b6c5c9a9765c9591",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7go805q107qiaokaqq1j",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "50",
+            "label": "Vitrine 50",
+            "shelf": "D"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "21978b36392eca80bf74729ebbcac7b4315a45383f0e81a6c33cec52866ff824",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Rudraksha Mala and peacock fan"
+        }
+      ],
+      "relationships": [],
+      "livingAllowedBands": [
+        5,
+        4
+      ],
+      "conceptualAssignedLoads": {
+        "1": 0.9833333333333334,
+        "2": 0.9833333333333333,
+        "3": 0.6666666666666666,
+        "4": 0.0,
+        "5": 0.0
+      },
+      "conceptualKnownLoads": [
+        0.7333333333333334,
+        0.9833333333333333,
+        0.41666666666666663,
+        0.0,
+        0.0
+      ],
+      "capturedKnownLoad": 2.1333333333333333,
+      "capturedUnknownRows": 2,
+      "notes": [
+        "Unknown-size ordering allowance0.25 is used only to suggest an order, not to certify capacity.",
+        "These recommendations do not change recorded shelves or confirm physical moves."
+      ]
+    },
+    {
+      "code": "60",
+      "mode": "user-approved-roster-shelf-recommendations",
+      "shelfCount": null,
+      "referenceHeightSpaces": 5,
+      "geometryVerified": false,
+      "shelfLabelsVerified": false,
+      "shelfOrder": "top-to-bottom conceptual; verify actual physical shelf labels",
+      "headline": "Mumbai & Maharashtra branches · Shivgiri and the coastal transition",
+      "groups": [
+        {
+          "id": "receiving-60-west-7",
+          "title": "Shivgiri · Bhagat Giri · Sukhdev Giri",
+          "kind": "family",
+          "vitrine": "60",
+          "sourceIds": [
+            "recSqiUbE2a6zrjgf",
+            "rec3D6iohFPg7iNya",
+            "recDUrDJEvXGc72TG"
+          ],
+          "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-60-west-208-part0",
+          "title": "Ahmednagar / Parner",
+          "kind": "locality",
+          "vitrine": "60",
+          "sourceIds": [
+            "recwjVQBr8ZnvZgap",
+            "recZnqb1WnXsGOQSU"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-60-west-134-part0",
+          "title": "Shirdi / Sakori",
+          "kind": "locality",
+          "vitrine": "60",
+          "sourceIds": [
+            "recJQ2iCWUEbKv6h5",
+            "receOlzYXYfMbA94n",
+            "rechOfsSXMM1IK31M"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-60-west-26",
+          "title": "Pachale Gaonkar & Kashi Nath Gagare",
+          "kind": "family",
+          "vitrine": "60",
+          "sourceIds": [
+            "recn1M2JOkfv9RJ4h",
+            "recW7laXHVOzMRFpg"
+          ],
+          "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-60-west-48-part0",
+          "title": "Mumbai",
+          "kind": "locality",
+          "vitrine": "60",
+          "sourceIds": [
+            "recjP8UEdrqzbmS49",
+            "reccpvrpWa7fzEvK1",
+            "rechEcLuXGdjEaQqv",
+            "rechHQDagDzmqLCU1",
+            "rec0a2AfZNYHPpM9U",
+            "recBoVUB4hxdIIb1Q",
+            "recZNrH2MWmQ8P6ly",
+            "recOLX82JkUZWZ9JI",
+            "recQ8mCttJwdIeilt",
+            "recQUXaZbAiVO4e7P"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-60-west-48-part1",
+          "title": "Mumbai",
+          "kind": "locality",
+          "vitrine": "60",
+          "sourceIds": [
+            "recJXZNx2WpNhxM8f"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recSqiUbE2a6zrjgf",
+          "saintId": "cms0w7i5607gg07qivq1n2dr3",
+          "name": "Sri Sri 108 Sri Bhagat Giri Bacchu Maharaj",
+          "tier": "Secondary",
+          "destination": "60",
+          "groupId": "receiving-60-west-7",
+          "columnKey": "receiving-60-west-7",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Lead story in the upper display, with its named branch aligned below; subject to actual fit.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "868faee38daf83b9a298c4ab5de7a8533f92bb558f029a6d77eaba444b411f69",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7i5607gg07qivq1n2dr3",
+            "birthYear": null,
+            "birthDateRaw": "Unknown",
+            "samadhiYear": null,
+            "samadhiDateRaw": "Still alive (62+)"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "6bf505d5879835b4bef6590ceed2199676d7022da1faaf42965640d9365fc177",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Tiger skin Asan"
+        },
+        {
+          "sourceId": "rec3D6iohFPg7iNya",
+          "saintId": "cms0w7cmr00k607qifrdenom7",
+          "name": "Sri Thanapati Sukhdev Giri",
+          "tier": "Secondary",
+          "destination": "60",
+          "groupId": "receiving-60-west-7",
+          "columnKey": "receiving-60-west-7",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Living: bottom shelf first; second-from-bottom only when bottom capacity is used. Align beneath the related branch.",
+          "reviewAlerts": [
+            {
+              "message": "Shelf5 exceeds one reference share in this draft; check actual fit before moving."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "fb559e0b43f5fbc78ab6b81a70e43a9d4a9879f15adb863089039bced16eadc1",
+          "projectedLifeStatus": {
+            "tag": "Living",
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7cmr00k607qifrdenom7",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": "Still alive"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "6bf505d5879835b4bef6590ceed2199676d7022da1faaf42965640d9365fc177",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Rudraksha Mala"
+        },
+        {
+          "sourceId": "recDUrDJEvXGc72TG",
+          "saintId": "cms0w7emi034l07qitebzkshe",
+          "name": "Sri Mahantji 108 Shivgiriji Maharaj",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-7",
+          "columnKey": "receiving-60-west-7",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "957b44cea559bd74f39e859b85d846c81b8c909929c9ca10888605297337a601",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7emi034l07qitebzkshe",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": 1984,
+            "samadhiDateRaw": "1984"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "6bf505d5879835b4bef6590ceed2199676d7022da1faaf42965640d9365fc177",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Piece from his chair "
+        },
+        {
+          "sourceId": "recwjVQBr8ZnvZgap",
+          "saintId": "cms0w7j8k08mn07qi6cxra4ip",
+          "name": "Parampuja Sri Bhagvan Narayan Pokrhe",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-208-part0",
+          "columnKey": "receiving-60-west-208-part0",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "d54d35389388f8b53164500511a8072dd94f077c5b4b5dc58d1e5db612b92f3d",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7j8k08mn07qi6cxra4ip",
+            "birthYear": 1909,
+            "birthDateRaw": "1909",
+            "samadhiYear": 1993,
+            "samadhiDateRaw": "1993"
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f578866ef9c9ce6230e7ed1631e0af4a17ef430877130fc03b7e7274baafd394",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Kamandalu "
+        },
+        {
+          "sourceId": "recZnqb1WnXsGOQSU",
+          "saintId": "cms0w7k5z09kg07qi1p487uz7",
+          "name": "Sri Poornawad Vardishnu Adv Sri Vishnu Maharaj Parnerkar",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-208-part0",
+          "columnKey": "receiving-60-west-208-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Draft move from an island display: preserve the named core; this entry moves for its own locality or family."
+            },
+            {
+              "message": "Shelf2 exceeds one reference share in this draft; check actual fit before moving."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "3a4a52ecce8083023777acb0bf9f5457f6ba9f05ca8416b820756177e7d94663",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7k5z09kg07qi1p487uz7",
+            "birthYear": 1939,
+            "birthDateRaw": "1939-06-29 Indore",
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.5,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f578866ef9c9ce6230e7ed1631e0af4a17ef430877130fc03b7e7274baafd394",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Cap, dhoti, glass padukas"
+        },
+        {
+          "sourceId": "recJQ2iCWUEbKv6h5",
+          "saintId": "cms0w7fz404v007qisvyazlb6",
+          "name": "Sri Cheta Baba",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-134-part0",
+          "columnKey": "receiving-60-west-134-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Shelf2 exceeds one reference share in this draft; check actual fit before moving."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "cea54118c4d9d8a437cddd409e1388583bafb16345bfd8229df9abaef6341494",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7fz404v007qisvyazlb6",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.3125,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "37918a3c53302ecdb50a50ffed1f07fb40adaa9b545a400b606cae201ccb1ba4",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "His samadhi cover"
+        },
+        {
+          "sourceId": "receOlzYXYfMbA94n",
+          "saintId": "cms0w7eto03e907qi137cxrcq",
+          "name": "Sri Ganga Giri Maharaj",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-134-part0",
+          "columnKey": "receiving-60-west-134-part0",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "a79b3c794a8cff867a6710574c5d3a9b093f8bc74bbe97c959b2bf1eadf08f0b",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7eto03e907qi137cxrcq",
+            "birthYear": 1814,
+            "birthDateRaw": "1814",
+            "samadhiYear": 1902,
+            "samadhiDateRaw": "1902"
+          },
+          "knownFootprint": 0.20833333333333331,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "37918a3c53302ecdb50a50ffed1f07fb40adaa9b545a400b606cae201ccb1ba4",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "his Kartas"
+        },
+        {
+          "sourceId": "rechOfsSXMM1IK31M",
+          "saintId": "cms0w7fhr049q07qiyiiuz8b9",
+          "name": "Sri Ramdasi Maharaj",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-134-part0",
+          "columnKey": "receiving-60-west-134-part0",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "f8c53132c47df168c001ebca838fd36a53b120e9b7c711a3426d8710d51d2d1d",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7fhr049q07qiyiiuz8b9",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.20833333333333331,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "37918a3c53302ecdb50a50ffed1f07fb40adaa9b545a400b606cae201ccb1ba4",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "his glasses, his Rama Charitamanas from which he used to read, piece from his walking stick "
+        },
+        {
+          "sourceId": "recn1M2JOkfv9RJ4h",
+          "saintId": "cms0w7gut05y207qinj09jgbw",
+          "name": "Sri Kashi Nath Gagare Maharaj Dada",
+          "tier": "Secondary",
+          "destination": "60",
+          "groupId": "receiving-60-west-26",
+          "columnKey": "receiving-60-west-26",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "6d088fee492df36cfcf482d17e1743917b6d0acdad9ebfe5d73ed73033e285b0",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7gut05y207qinj09jgbw",
+            "birthYear": 1924,
+            "birthDateRaw": "1924-11-16",
+            "samadhiYear": 2012,
+            "samadhiDateRaw": "2012-03-15"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "39",
+            "label": "Vitrine 39",
+            "shelf": "C"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "b337f859ccc522fff2605d1b5613bad9b6a227f34633d5353569825649e8bbf3",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Trouser, shirt and lunghi"
+        },
+        {
+          "sourceId": "recW7laXHVOzMRFpg",
+          "saintId": "cms0w7j5508j207qifgdydh93",
+          "name": "Sri Pachale Gaonkar Ji Maharaj",
+          "tier": "Secondary",
+          "destination": "60",
+          "groupId": "receiving-60-west-26",
+          "columnKey": "receiving-60-west-26",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "90cfbfb53b0aa1490857a9192f5b7b6eb5d455abacd1feab94cb5d7c727cd95b",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7j5508j207qifgdydh93",
+            "birthYear": 1908,
+            "birthDateRaw": "1908",
+            "samadhiYear": 1985,
+            "samadhiDateRaw": "1985"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "39",
+            "label": "Vitrine 39",
+            "shelf": "C"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "b337f859ccc522fff2605d1b5613bad9b6a227f34633d5353569825649e8bbf3",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Book, angavastram, cotton from his bed "
+        },
+        {
+          "sourceId": "recjP8UEdrqzbmS49",
+          "saintId": "cms0w7fyn04uh07qigpla5p8f",
+          "name": "Mahant Sri Nanak Giri Maharaj (Naga Baba)",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-48-part0",
+          "columnKey": "receiving-60-west-48-part0",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Living: bottom shelf first; second-from-bottom only when bottom capacity is used. Align beneath the related branch.",
+          "reviewAlerts": [
+            {
+              "message": "Shelf5 exceeds one reference share in this draft; check actual fit before moving."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "fe36a58222d0de41e39adbc8993c34f85c08d54ebcf708f954bb42d30247adef",
+          "projectedLifeStatus": {
+            "tag": "Living",
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7fyn04uh07qigpla5p8f",
+            "birthYear": 1963,
+            "birthDateRaw": "1963-08-14",
+            "samadhiYear": null,
+            "samadhiDateRaw": "Still Alive"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "39",
+            "label": "Vitrine 39",
+            "shelf": "E"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "1e93127f53fc312fd8f9d65e76b4a9c3c1dca535dd83e2b1a167cecadc3c1bd8",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Kurta, Dhoti, Chillum"
+        },
+        {
+          "sourceId": "reccpvrpWa7fzEvK1",
+          "saintId": "cms0w7eax02pl07qig080xu0a",
+          "name": "Sri Bachelors Gaokar Maharaj",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-48-part0",
+          "columnKey": "receiving-60-west-48-part0",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Footprint unknown; the ordering allowance is not a size estimate or fit confirmation."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "0a592ce29a94ff5a10dc919af5176ce891107c9dd8e3d6fffad6621bbfcf3fb1",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7eax02pl07qig080xu0a",
+            "birthYear": null,
+            "birthDateRaw": "?",
+            "samadhiYear": 1986,
+            "samadhiDateRaw": "1986"
+          },
+          "knownFootprint": null,
+          "currentPhysical": null,
+          "currentPhysicalBasis": "unknown",
+          "currentRevision": "56393c8ea160a7fe7da4c8894c86f3155dc94dce1f6adb481bce8102b42e523d",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Cotton from his bed/ langoot?"
+        },
+        {
+          "sourceId": "rechEcLuXGdjEaQqv",
+          "saintId": "cms0w7fg0047g07qi4f3v9iu6",
+          "name": "Sri Mai Swarup Mai Markand",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-48-part0",
+          "columnKey": "receiving-60-west-48-part0",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "second-from-bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "2634054392589df3746c49420a574d1aa3e827468d4abeee35c82473873a791b",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7fg0047g07qi4f3v9iu6",
+            "birthYear": 1885,
+            "birthDateRaw": "1885-12-23",
+            "samadhiYear": 1966,
+            "samadhiDateRaw": "1966-12-21"
+          },
+          "knownFootprint": 0.09090909090909091,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "60",
+            "label": "Vitrine 60",
+            "shelf": "D"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "aabd2138a64663a576781f1233cecbb34fc3be752766990ca2392d594d8c6c17",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Walking stick, hat and scarf"
+        },
+        {
+          "sourceId": "rechHQDagDzmqLCU1",
+          "saintId": "cms0w7fgs048j07qis3t8pe8z",
+          "name": "Sri Ram Maruti Maharaj",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-48-part0",
+          "columnKey": "receiving-60-west-48-part0",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "second-from-bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "d4ad360b7dc5624112ad163c97b42614562a013eae956a4a56bc40fd08864c86",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7fgs048j07qis3t8pe8z",
+            "birthYear": 1778,
+            "birthDateRaw": "1778",
+            "samadhiYear": 1918,
+            "samadhiDateRaw": "1918"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "39",
+            "label": "Vitrine 39",
+            "shelf": "C"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "b337f859ccc522fff2605d1b5613bad9b6a227f34633d5353569825649e8bbf3",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Shank"
+        },
+        {
+          "sourceId": "rec0a2AfZNYHPpM9U",
+          "saintId": "cms0w7c6o001m07qi2gjb6fs9",
+          "name": "Sri Swami Damodara Acharya",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-48-part0",
+          "columnKey": "receiving-60-west-48-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Shelf2 exceeds one reference share in this draft; check actual fit before moving."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "fd4b818c30f1501329454a1346d3d945f99a074c3e3b00885526d1480c4bdc7a",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7c6o001m07qi2gjb6fs9",
+            "birthYear": 1926,
+            "birthDateRaw": "1926",
+            "samadhiYear": 2004,
+            "samadhiDateRaw": "2004-09-19"
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "39",
+            "label": "Vitrine 39",
+            "shelf": "B"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "38d720ac33ea08182e63a5c916f2a3321bfde444d60332498007abe5732b7aef",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "2Doty & 1saligram"
+        },
+        {
+          "sourceId": "recBoVUB4hxdIIb1Q",
+          "saintId": "cms0w7e0y02d407qiy9r5w1fa",
+          "name": "Sri Yakobhu Sithar",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-48-part0",
+          "columnKey": "receiving-60-west-48-part0",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Living: bottom shelf first; second-from-bottom only when bottom capacity is used. Align beneath the related branch.",
+          "reviewAlerts": [
+            {
+              "message": "Shelf5 exceeds one reference share in this draft; check actual fit before moving."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "c4cbd2fef497d2a801f18e056408d5d69c1ca731ae029bea789b0ea9f16edac3",
+          "projectedLifeStatus": {
+            "tag": "Living",
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7e0y02d407qiy9r5w1fa",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": "Still alive"
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "32",
+            "label": "Vitrine 32",
+            "shelf": "E"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "d02fff839d3506835fb8039975e271036a514c39073b7c2a3cb2dd1a6dccfc6a",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "recZNrH2MWmQ8P6ly",
+          "saintId": "cms0w7k6c09kt07qi38tx4gko",
+          "name": "Sri Guru Ram Naresh Das",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-48-part0",
+          "columnKey": "receiving-60-west-48-part0",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "second-from-bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "730a5cbd8be596737a2a9a67e91e8b55b954abb1a283d13b82bc5093fec6da23",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7k6c09kt07qi38tx4gko",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": 2014,
+            "samadhiDateRaw": "2014-02-18"
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "16",
+            "label": "Vitrine 16",
+            "shelf": "B"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "fa29154f47b3854b0a135d97a689815d7fe5a4a3280a6524c3c70ad6d7ab8ff6",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "recOLX82JkUZWZ9JI",
+          "saintId": "cms0w7h6d06br07qi8dmkn5uq",
+          "name": "Sri Sahajanand Swami Maharaj",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-48-part0",
+          "columnKey": "receiving-60-west-48-part0",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "second-from-bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "107fb92c2b4fe6b2d71ae92e7c0d4b404566442a2bec0fd9d6f09b874043ee9b",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7h6d06br07qi8dmkn5uq",
+            "birthYear": null,
+            "birthDateRaw": "Unknown",
+            "samadhiYear": null,
+            "samadhiDateRaw": "Approximately 700 years ago"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "39",
+            "label": "Vitrine 39",
+            "shelf": "C"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "b337f859ccc522fff2605d1b5613bad9b6a227f34633d5353569825649e8bbf3",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Flowers from his sanjivansamdhi"
+        },
+        {
+          "sourceId": "recQ8mCttJwdIeilt",
+          "saintId": "cms0w7hjo06rf07qipukb1om1",
+          "name": "Sri Samarth Sadguru Khedekar Baba",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-48-part0",
+          "columnKey": "receiving-60-west-48-part0",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "second-from-bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "751173dd8dcea89cd124cd80c09f62652530ebb0e5977f4855860321df40a480",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7hjo06rf07qipukb1om1",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "39",
+            "label": "Vitrine 39",
+            "shelf": "B"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "38d720ac33ea08182e63a5c916f2a3321bfde444d60332498007abe5732b7aef",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "String from his manjiras "
+        },
+        {
+          "sourceId": "recQUXaZbAiVO4e7P",
+          "saintId": "cms0w7hp106xn07qi95ew798d",
+          "name": "Sri Samarth Sadguru Mauli Appa Maharaj",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-48-part0",
+          "columnKey": "receiving-60-west-48-part0",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Shelf5 exceeds one reference share in this draft; check actual fit before moving."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "441547a0f6ab8efa1a814fc36c52771c206e37953fc524b977551456fd6470f0",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7hp106xn07qi95ew798d",
+            "birthYear": 1933,
+            "birthDateRaw": "1933-06-16",
+            "samadhiYear": 2017,
+            "samadhiDateRaw": "2017-07-05"
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "39",
+            "label": "Vitrine 39",
+            "shelf": "B"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "38d720ac33ea08182e63a5c916f2a3321bfde444d60332498007abe5732b7aef",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Dhoti"
+        },
+        {
+          "sourceId": "recJXZNx2WpNhxM8f",
+          "saintId": "cms0w7g1i04xv07qi1ewdk25c",
+          "name": "Sri Vakildas Maharaj",
+          "tier": "Tertiary",
+          "destination": "60",
+          "groupId": "receiving-60-west-48-part1",
+          "columnKey": "receiving-60-west-48-part1",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Shelf5 exceeds one reference share in this draft; check actual fit before moving."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "379edb423d6a81e956bda76cb01ae4ee1083c96739794e46ee2e24f229549a71",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7g1i04xv07qi1ewdk25c",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "16",
+            "label": "Vitrine 16",
+            "shelf": "B"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "fa29154f47b3854b0a135d97a689815d7fe5a4a3280a6524c3c70ad6d7ab8ff6",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Ring"
+        }
+      ],
+      "relationships": [],
+      "livingAllowedBands": [
+        5,
+        4
+      ],
+      "conceptualAssignedLoads": {
+        "1": 0.9083333333333332,
+        "2": 1.0125,
+        "3": 0.9583333333333333,
+        "4": 0.990909090909091,
+        "5": 1.0999999999999999
+      },
+      "conceptualKnownLoads": [
+        0.9083333333333332,
+        1.0125,
+        0.7083333333333333,
+        0.990909090909091,
+        1.0999999999999999
+      ],
+      "capturedKnownLoad": 4.720075757575757,
+      "capturedUnknownRows": 1,
+      "notes": [
+        "Unknown-size ordering allowance0.25 is used only to suggest an order, not to certify capacity.",
+        "These recommendations do not change recorded shelves or confirm physical moves."
+      ]
+    },
+    {
+      "code": "61",
+      "mode": "user-approved-roster-shelf-recommendations",
+      "shelfCount": null,
+      "referenceHeightSpaces": 5,
+      "geometryVerified": false,
+      "shelfLabelsVerified": false,
+      "shelfOrder": "top-to-bottom conceptual; verify actual physical shelf labels",
+      "headline": "Pune · Vaswani family and Dilip Roy–Indira Devi",
+      "groups": [
+        {
+          "id": "receiving-61-south-compact-47-60-part0",
+          "title": "Pisawa woods",
+          "kind": "locality",
+          "vitrine": "61",
+          "sourceIds": [
+            "recMMZ1MhrZWeJQzR"
+          ],
+          "rationale": "Shared locality or country does not establish a personal relationship. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-61-west-28",
+          "title": "Sita Mai & Ganore Baba",
+          "kind": "family",
+          "vitrine": "61",
+          "sourceIds": [
+            "recZM3KMfTmphlQfL",
+            "recQvIm2NIXuAvutD"
+          ],
+          "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-61-west-22",
+          "title": "T. L. Vaswani & Dada Vaswani",
+          "kind": "family",
+          "vitrine": "61",
+          "sourceIds": [
+            "recj1Z8U2UixjGAOP",
+            "recijV9iaAVLbXW2F"
+          ],
+          "rationale": "Preserved reviewed display group. The family key alone is not proof of a single direct guru chain; namesake holds and source-recorded qualifications remain. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-61-west-45-part0",
+          "title": "Pune",
+          "kind": "locality",
+          "vitrine": "61",
+          "sourceIds": [
+            "rec02LkzDAU34bATt",
+            "rec5ZuMYq2bhOYc1x",
+            "rec6pWnu2V0k70rNU",
+            "rec4qEC7ulyTcyLkM",
+            "rec2PuNslTf3gc437",
+            "rec4rh937R1MnqVKY",
+            "reciTw1tOyOvy78Ln",
+            "recj0pvfoRB0aRYyx",
+            "recD87cmLZ5AdlVoC",
+            "recTIOdpMF3LdC5vs",
+            "reclumnW5MtrewhEz"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Locality block may continue into the next contiguous case; no personal story card was split. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-61-west-45-part1",
+          "title": "Pune",
+          "kind": "locality",
+          "vitrine": "61",
+          "sourceIds": [
+            "rec0H5f9DOSqBEYaf"
+          ],
+          "rationale": "Shared locality does not imply a personal relationship. Same-city blocks may span cases when capacity requires; individual source entries are retained. Joint 24-case trial: regional story placed first; reference assignments remain unchanged.",
+          "edges": []
+        },
+        {
+          "id": "receiving-61-pune-dilip-indira-bridge",
+          "title": "Dilip Kumar Roy & Indira Devi · Pune–Puducherry bridge",
+          "kind": "family",
+          "vitrine": "61",
+          "sourceIds": [
+            "recXXBTDJy7Tp8LoG",
+            "recXYK78omBVuEYQM"
+          ],
+          "rationale": "Keep the immediate pair together in Pune61, aligned back-to-back with Mirra Alfassa53. Relationship types remain as recorded; no new direct-guru edge inferred.",
+          "edges": []
+        }
+      ],
+      "allocations": [
+        {
+          "sourceId": "recMMZ1MhrZWeJQzR",
+          "saintId": "cms0w7gp805r707qifd3zux0u",
+          "name": "Sri Bhagavat Sharan Baba",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-south-compact-47-60-part0",
+          "columnKey": "receiving-61-south-compact-47-60-part0",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Living: bottom shelf first; second-from-bottom only when bottom capacity is used. Align beneath the related branch.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "5941d4f8ae30171e11582e764f8f6acf5cff4b8b643bf0de4ee740f66314edf7",
+          "projectedLifeStatus": {
+            "tag": "Living",
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7gp805r707qifd3zux0u",
+            "birthYear": 1969,
+            "birthDateRaw": "1969",
+            "samadhiYear": null,
+            "samadhiDateRaw": "Still alive"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "47",
+            "label": "Vitrine 47",
+            "shelf": "E"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "f1967ee3db33bd6b866df1969a8c065f5bc162b0e0c406876c9a587c2c503497",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "recZM3KMfTmphlQfL",
+          "saintId": "cms0w7k5d09jt07qiwj3mgbsb",
+          "name": "Sri Ganore Baba",
+          "tier": "Secondary",
+          "destination": "61",
+          "groupId": "receiving-61-west-28",
+          "columnKey": "receiving-61-west-28",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "5e1ac1bd968c89fb4a8a63bb0c0d91bed355a177fbf4262b9d16280693d9b392",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7k5d09jt07qiwj3mgbsb",
+            "birthYear": 1918,
+            "birthDateRaw": "1918-12-19",
+            "samadhiYear": 1978,
+            "samadhiDateRaw": "1978-11-07"
+          },
+          "knownFootprint": 0.16666666666666666,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f578866ef9c9ce6230e7ed1631e0af4a17ef430877130fc03b7e7274baafd394",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Piece from his bed "
+        },
+        {
+          "sourceId": "recQvIm2NIXuAvutD",
+          "saintId": "cms0w7hp806xv07qiyopxdl4k",
+          "name": "Sri Sita Mai",
+          "tier": "Secondary",
+          "destination": "61",
+          "groupId": "receiving-61-west-28",
+          "columnKey": "receiving-61-west-28",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "bb55f53b980b3dfd3cf12ae7bc4cf8320b8ab4e5f25d34b709ed0d7c87f428e6",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7hp806xv07qiyopxdl4k",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": 2006,
+            "samadhiDateRaw": "2006"
+          },
+          "knownFootprint": 0.16666666666666666,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f578866ef9c9ce6230e7ed1631e0af4a17ef430877130fc03b7e7274baafd394",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Piece of the bedsheet/ malabag "
+        },
+        {
+          "sourceId": "recj1Z8U2UixjGAOP",
+          "saintId": "cms0w7ft004nk07qi45hh7kfh",
+          "name": "Sadhu T.L. Vaswani",
+          "tier": "Primary",
+          "destination": "61",
+          "groupId": "receiving-61-west-22",
+          "columnKey": "receiving-61-west-22",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Lead story in the upper display, with its named branch aligned below; subject to actual fit.",
+          "reviewAlerts": [
+            {
+              "message": "Footprint unknown; the ordering allowance is not a size estimate or fit confirmation."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "2e05096371525e30d2cfc305f5ce931d71c7fac84310c71016b686ab22675aa0",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7ft004nk07qi45hh7kfh",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": null,
+          "currentPhysical": null,
+          "currentPhysicalBasis": "unknown",
+          "currentRevision": "56393c8ea160a7fe7da4c8894c86f3155dc94dce1f6adb481bce8102b42e523d",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "recijV9iaAVLbXW2F",
+          "saintId": "cms0w7fq904ke07qi0z8zm61c",
+          "name": "Sri Dada J.P. Vaswani",
+          "tier": "Primary",
+          "destination": "61",
+          "groupId": "receiving-61-west-22",
+          "columnKey": "receiving-61-west-22",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Lead story in the upper display, with its named branch aligned below; subject to actual fit.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "bc616fed2315910133b21dc7d393d30dbe738dce6e187f8b408df1595dc01083",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7fq904ke07qi0z8zm61c",
+            "birthYear": 1918,
+            "birthDateRaw": "1918-08-02",
+            "samadhiYear": 2018,
+            "samadhiDateRaw": "2018-07-12"
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f78f7178a922d0f26469316fdf4abd6e629338285d71c14fff3f7994c2da6606",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "rec02LkzDAU34bATt",
+          "saintId": "cms0w7c4g000207qi0cruvlou",
+          "name": "Sri Anil Maharaj Dikshit",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part0",
+          "columnKey": "receiving-61-west-45-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "b02e32fd502c0f8a004d6f549a4f42a10294b562c1192ec08c9e295c98a5bd9c",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7c4g000207qi0cruvlou",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.16666666666666666,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f578866ef9c9ce6230e7ed1631e0af4a17ef430877130fc03b7e7274baafd394",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Hair, Kurta and vest "
+        },
+        {
+          "sourceId": "rec5ZuMYq2bhOYc1x",
+          "saintId": "cms0w7d23013007qic0too63k",
+          "name": "Sri Dada Karve",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part0",
+          "columnKey": "receiving-61-west-45-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "5d7e511af3941a4f59f15fc165e7868c4af230489eacdedfb609b8ee954f63a3",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7d23013007qic0too63k",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "e21dac4b18e385edfc9eabe5fc950d5bdde432754f696877ca7064231d44059c",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "rec6pWnu2V0k70rNU",
+          "saintId": "cms0w7d5f016p07qi92erxd4d",
+          "name": "Sri Jangali Maharaj",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part0",
+          "columnKey": "receiving-61-west-45-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "5d0dfee4a1e7491f283d7ee9fad1164f05c3ea03826ff02b13f41108133056f3",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7d5f016p07qi92erxd4d",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f578866ef9c9ce6230e7ed1631e0af4a17ef430877130fc03b7e7274baafd394",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Piece from the shoe"
+        },
+        {
+          "sourceId": "rec4qEC7ulyTcyLkM",
+          "saintId": "cms0w7ctn00t107qizjyt3z4y",
+          "name": "Sri Param Pujya Annabua Kalgaonkar",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part0",
+          "columnKey": "receiving-61-west-45-part0",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "a28d5aa36706f3fe922a20d1f8fce2c8fcebc2b27608965b1f03196883cdd173",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7ctn00t107qizjyt3z4y",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f78f7178a922d0f26469316fdf4abd6e629338285d71c14fff3f7994c2da6606",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Shawl and pouch"
+        },
+        {
+          "sourceId": "rec2PuNslTf3gc437",
+          "saintId": "cms0w7ck700gs07qibkgierxn",
+          "name": "Sri Parama Pujya Sevakdas Maharaj",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part0",
+          "columnKey": "receiving-61-west-45-part0",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "ba490beffd346aa087969f9dcfb3fc0bf30a1ce598c85e768a4181923a39b02c",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7ck700gs07qibkgierxn",
+            "birthYear": 1931,
+            "birthDateRaw": "1931-06-21",
+            "samadhiYear": 2016,
+            "samadhiDateRaw": "2016-12-19"
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f578866ef9c9ce6230e7ed1631e0af4a17ef430877130fc03b7e7274baafd394",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "coin and chandan used by him"
+        },
+        {
+          "sourceId": "rec4rh937R1MnqVKY",
+          "saintId": "cms0w7ctx00tc07qijk9jggv3",
+          "name": "Sri Tai Maharaj",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part0",
+          "columnKey": "receiving-61-west-45-part0",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "325f3bd936ac290077615961482739ad7cf399194f707f857b73725ad2811ce7",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7ctx00tc07qijk9jggv3",
+            "birthYear": 1901,
+            "birthDateRaw": "1901",
+            "samadhiYear": 1996,
+            "samadhiDateRaw": "1996"
+          },
+          "knownFootprint": 0.3333333333333333,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "47",
+            "label": "Vitrine 47",
+            "shelf": "C"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "b2150aeb7a5798811a5fd8a1f83a35e956fcb98080c481b035bb516c6b14ea25",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Clothes, original and handwritten writing/ teachings "
+        },
+        {
+          "sourceId": "reciTw1tOyOvy78Ln",
+          "saintId": "cms0w7frd04lp07qi40v3p3x0",
+          "name": "Sri Acharya Rajneesh (Osho)",
+          "tier": "Primary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part0",
+          "columnKey": "receiving-61-west-45-part0",
+          "suggestedShelfIndex": 1,
+          "suggestedVerticalBand": "top",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Lead story in the upper display, with its named branch aligned below; subject to actual fit.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "fb566c5d360cc5c7a35d17dc5bade7d6a5f85015b08accbb2b1922a9c5c830c4",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7frd04lp07qi40v3p3x0",
+            "birthYear": 1931,
+            "birthDateRaw": "1931-12-11",
+            "samadhiYear": 1990,
+            "samadhiDateRaw": "1990-01-19"
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "44",
+            "label": "Vitrine 44",
+            "shelf": "B"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "7e44d4486d32d281c37112c065fd0040326ff55df333e1b1e5f8664af3a90161",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Piece of marble Stone from the floor of his ashram in Pune "
+        },
+        {
+          "sourceId": "recj0pvfoRB0aRYyx",
+          "saintId": "cms0w7fsp04n707qi3a2i7yf5",
+          "name": "Sri D.D. Rege",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part0",
+          "columnKey": "receiving-61-west-45-part0",
+          "suggestedShelfIndex": 2,
+          "suggestedVerticalBand": "upper",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "4937eba5471c3b52ad6c1ffa51ec3c77116babfac2d7a44bba3c521adc0bdbcd",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7fsp04n707qi3a2i7yf5",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.2,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f78f7178a922d0f26469316fdf4abd6e629338285d71c14fff3f7994c2da6606",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "his handkerchief"
+        },
+        {
+          "sourceId": "recD87cmLZ5AdlVoC",
+          "saintId": "cms0w7eem02ua07qi7g6tng2k",
+          "name": "Sri Gopal Padale",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part0",
+          "columnKey": "receiving-61-west-45-part0",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Living: bottom shelf first; second-from-bottom only when bottom capacity is used. Align beneath the related branch.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "516bffe5a4c5c68c0b82db36d6b6a749b4016ca240ebee53cfe7de77b8d52ed3",
+          "projectedLifeStatus": {
+            "tag": "Living",
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7eem02ua07qi7g6tng2k",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": "Still alive"
+          },
+          "knownFootprint": 0.16666666666666666,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f578866ef9c9ce6230e7ed1631e0af4a17ef430877130fc03b7e7274baafd394",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Hair and piece from his blanket/asan"
+        },
+        {
+          "sourceId": "recTIOdpMF3LdC5vs",
+          "saintId": "cms0w7iby07nj07qijvrnsybo",
+          "name": "Sri Sindhutai Sapkal",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part0",
+          "columnKey": "receiving-61-west-45-part0",
+          "suggestedShelfIndex": 3,
+          "suggestedVerticalBand": "middle",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "74943ca89e95af2e3a6b8145c2dbe2bd6e48cde3f3f0baeae2a50ab72353cf2a",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7iby07nj07qijvrnsybo",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.16666666666666666,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "f578866ef9c9ce6230e7ed1631e0af4a17ef430877130fc03b7e7274baafd394",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Hair and sari"
+        },
+        {
+          "sourceId": "reclumnW5MtrewhEz",
+          "saintId": "cms0w7gj305jy07qiu2xby13n",
+          "name": "Vidya Nilangekar",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part0",
+          "columnKey": "receiving-61-west-45-part0",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "second-from-bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Shelf4 exceeds one reference share in this draft; check actual fit before moving."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "8a2cc4cc23b3e396b1a5b1b6ed69f1758617f2fe4fe8aab9f660dd6639afb322",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7gj305jy07qiu2xby13n",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.3333333333333333,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "63",
+            "label": "Vitrine 63",
+            "shelf": "B"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "38fa1b63cccbcc3eeefc6179189764e539f0032ff131344ffe8a556eee88de71",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": ""
+        },
+        {
+          "sourceId": "rec0H5f9DOSqBEYaf",
+          "saintId": "cms0w7c7z002z07qiv6bi3ytn",
+          "name": "Param Pujya Sadguru Premanand Swami Maharaj",
+          "tier": "Tertiary",
+          "destination": "61",
+          "groupId": "receiving-61-west-45-part1",
+          "columnKey": "receiving-61-west-45-part1",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "35566bf7cff1f8f172900fb3584a6f891e712b45719c003a653edc59c2541285",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7c7z002z07qiv6bi3ytn",
+            "birthYear": null,
+            "birthDateRaw": null,
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.25,
+          "currentPhysical": {
+            "kind": "table",
+            "code": "staging-area",
+            "label": "Staging area"
+          },
+          "currentPhysicalBasis": "confirmed",
+          "currentRevision": "520c6917571dd380c3e1c5267af68ce7102dbb4c073df69497f369f49ee91c32",
+          "currentVersion": 1,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Kurta"
+        },
+        {
+          "sourceId": "recXXBTDJy7Tp8LoG",
+          "saintId": "cms0w7joi092a07qiqkyvnm8m",
+          "name": "Sri Dadaji Dilip Kumar Roy",
+          "tier": "Secondary",
+          "destination": "61",
+          "groupId": "receiving-61-pune-dilip-indira-bridge",
+          "columnKey": "receiving-61-pune-dilip-indira-bridge",
+          "suggestedShelfIndex": 5,
+          "suggestedVerticalBand": "bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [],
+          "hasReviewAlert": false,
+          "sourceRevision": "18e12d8d68337b1fe347186b9671ccf8891c8bcbc6b22ab543f1fd39bb787ecb",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7joi092a07qiqkyvnm8m",
+            "birthYear": 1897,
+            "birthDateRaw": "22 January 1897",
+            "samadhiYear": null,
+            "samadhiDateRaw": null
+          },
+          "knownFootprint": 0.3333333333333333,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "33",
+            "label": "Vitrine 33",
+            "shelf": "A"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "fb786bf68d280d14fd962d15ffca48b0a330becfda17cfa19cd5ac4c18e749a2",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Dhoti"
+        },
+        {
+          "sourceId": "recXYK78omBVuEYQM",
+          "saintId": "cms0w7jp4092z07qit35r6mx3",
+          "name": "Sri Indira Devi",
+          "tier": "Secondary",
+          "destination": "61",
+          "groupId": "receiving-61-pune-dilip-indira-bridge",
+          "columnKey": "receiving-61-pune-dilip-indira-bridge",
+          "suggestedShelfIndex": 4,
+          "suggestedVerticalBand": "second-from-bottom",
+          "suggestedShelfLabel": null,
+          "actualShelfId": null,
+          "reason": "Keep this named branch/locality block readable beside its companions. Conceptual starting shelf; verify actual clearance.",
+          "reviewAlerts": [
+            {
+              "message": "Shelf4 exceeds one reference share in this draft; check actual fit before moving."
+            }
+          ],
+          "hasReviewAlert": true,
+          "sourceRevision": "2f9115246ffcfaa404a66b22050ac00be881d3ef59bea4d2a49000b61c3aa53c",
+          "projectedLifeStatus": {
+            "tag": null,
+            "basis": "Captured explicit life-status assertion; missing death data is not treated as Living."
+          },
+          "canonicalLifeEvidence": {
+            "saintId": "cms0w7jp4092z07qit35r6mx3",
+            "birthYear": 1920,
+            "birthDateRaw": "1920-03-26",
+            "samadhiYear": 1997,
+            "samadhiDateRaw": "1997-12-31"
+          },
+          "knownFootprint": 0.3333333333333333,
+          "currentPhysical": {
+            "kind": "vitrine",
+            "code": "33",
+            "label": "Vitrine 33",
+            "shelf": "A"
+          },
+          "currentPhysicalBasis": "source",
+          "currentRevision": "fb786bf68d280d14fd962d15ffca48b0a330becfda17cfa19cd5ac4c18e749a2",
+          "currentVersion": 0,
+          "confirmedShelfToProtect": null,
+          "preserveCurrentPlacement": false,
+          "executionHolds": [],
+          "optional": false,
+          "provisional": true,
+          "reviewState": "recommended-starting-shelf",
+          "rawRelicDescription": "Her Sari"
+        }
+      ],
+      "relationships": [],
+      "livingAllowedBands": [
+        5,
+        4
+      ],
+      "conceptualAssignedLoads": {
+        "1": 0.6166666666666667,
+        "2": 0.9833333333333334,
+        "3": 0.9,
+        "4": 0.6666666666666666,
+        "5": 1.0
+      },
+      "conceptualKnownLoads": {
+        "1": 0.6166666666666667,
+        "2": 0.9833333333333334,
+        "3": 0.9,
+        "4": 0.6666666666666666,
+        "5": 1.0
+      },
+      "capturedKnownLoad": 4.166666666666667,
+      "capturedUnknownRows": 1,
+      "notes": [
+        "Unknown-size ordering allowance0.25 is used only to suggest an order, not to certify capacity.",
+        "These recommendations do not change recorded shelves or confirm physical moves.",
+        "Shankar Maharaj remains in82 under the specific Datta decision; excluded from this receiving case."
+      ]
+    }
+  ],
+  "sourceCount": 69,
+  "scope": "Physical47,58,60,61 only; preserve59 and the existing Southern guide.",
+  "physicalWrites": false,
+  "nativeDestinationWrites": false,
+  "geometryVerified": false,
+  "unknownOrderingAllowance": 0.25,
+  "guideContexts": [
+    {
+      "guideVersion": "spn-missing-receivers-2026-11-01-v1",
+      "assignmentDigest": "To be computed by the registered-guide builder"
+    }
+  ],
+  "laterOverride": {
+    "sourceId": "recRnVf9eR7izgH7r",
+    "destination": "82",
+    "basis": "Specific user-approved Datta allocation; verified native addition v2. Physical confirmed82 unchanged.",
+    "evidence": "shankar82-final-readback.json"
+  }
+}

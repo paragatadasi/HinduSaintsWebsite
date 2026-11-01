@@ -39,3 +39,64 @@ test("review-only and unlinked records remain visible, fit holds do not prohibit
  for(const change of ["unlinked","review-only","fit"]){let {packet,physical,review}=fixture();if(change==="unlinked")packet.rows[0].saintId=null;if(change==="review-only")packet.rows[0].reviewOnly=true;if(change==="fit")packet.vitrines[0].movementFitHold="Measure available space";packet=seal(packet);const adapter=createApprovedReceivingGuide(packet,packet.contentDigest);if(change!=="fit")review.rows[0].effectiveVitrine="61";const guide=adapter.project([],physical,review);assert.equal(guide.entries.length,1);assert.equal(guide.vitrines.length,1);if(change==="fit")assert.equal(guide.vitrines[0].fitGuidance,"Measure available space");assert.equal(adapter.definition.physicalScope?.allowClear,true);assert.deepEqual(adapter.definition.physicalScope?.clearVitrines,["58"]);assert.throws(()=>adapter.assertRecords(records,guide));}
 });
 
+test("receiving-only cases use preparation without enabling whole-case clearing",()=>{
+ let {packet}=fixture();packet.allowClear=false;packet=seal(packet);
+ const adapter=createApprovedReceivingGuide(packet,packet.contentDigest);
+ assert.equal(adapter.guide.receivingOnly,true);assert.equal(adapter.guide.clearancePerDestination,false);
+ assert.deepEqual(adapter.guide.preparationVitrines,["58"]);
+ assert.equal(adapter.definition.physicalScope?.allowClear,false);
+ assert.deepEqual(adapter.definition.physicalScope?.clearVitrines,[]);
+ assert.deepEqual(adapter.definition.physicalScope?.preparationVitrines,["58"]);
+ const original=fixture().packet,clearing=createApprovedReceivingGuide(original,original.contentDigest);
+ assert.equal(clearing.guide.clearancePerDestination,true);assert.equal(clearing.guide.preparationVitrines,undefined);
+});
+test("relocation dependency requires confirmed actual departure; it never changes physical state",()=>{
+ for(const scenario of ["missing","still-here","source-only","unconfirmed","unknown","duplicate","identity-changed","empty-code","staging","other-vitrine"]){
+  let {packet,physical,review}=fixture();packet.allowClear=false;
+  packet.vitrines[0].placementGuidance="Keep the family together.";
+  packet.vitrines[0].relocationDependency={sourceId:"dependency",fromVitrine:"58",reason:"Relocate the existing object first."};packet=seal(packet);
+  if(scenario!=="missing"){
+   const source={...physical.rows[0],sourceId:"dependency",saintId:"dependency-saint"};
+   source.current={kind:"vitrine",code:"58",label:"Vitrine 58"};
+   if(scenario==="staging")source.current={kind:"table",code:"staging-area",label:"Staging area"};
+   if(["other-vitrine","source-only","unconfirmed","identity-changed"].includes(scenario))source.current={kind:"vitrine",code:"61",label:"Vitrine 61"};
+   if(scenario==="source-only")source.currentBasis="source";
+   if(scenario==="unconfirmed")source.currentBasis="unknown";
+   if(scenario==="unknown")source.current=null;
+   if(scenario==="identity-changed")source.identityChanged=true;
+   if(scenario==="empty-code")source.current={kind:"table",code:"",label:"Unknown"};
+   physical.rows.push(source);if(scenario==="duplicate")physical.rows.push({...source});
+  }
+  const before=JSON.stringify(physical),adapter=createApprovedReceivingGuide(packet,packet.contentDigest),guide=adapter.project([],physical,review);
+  assert.equal(guide.entries.length,1);assert.ok(guide.vitrines[0].fitGuidance?.includes("Keep the family together."));
+  if(["staging","other-vitrine"].includes(scenario))adapter.assertRecords(records,guide);
+  else assert.throws(()=>adapter.assertRecords(records,guide),scenario);
+  assert.equal(JSON.stringify(physical),before);
+ }
+});
+test("invalid dependency scope is rejected and separate static fit holds survive relocation",()=>{
+ let {packet,physical,review}=fixture();packet.vitrines[0].relocationDependency={sourceId:"dependency",fromVitrine:"9",reason:"Move first"};packet=seal(packet);
+ assert.throws(()=>createApprovedReceivingGuide(packet,packet.contentDigest));
+ packet.vitrines[0].relocationDependency={sourceId:"dependency",fromVitrine:"58",reason:"Move first"};packet.vitrines[0].movementFitHold="Measure fit";packet=seal(packet);
+ physical.rows.push({...physical.rows[0],sourceId:"dependency",current:{kind:"table",code:"staging-area",label:"Staging area"}});
+ const adapter=createApprovedReceivingGuide(packet,packet.contentDigest),guide=adapter.project([],physical,review);
+ assert.equal(guide.entries[0].movementBlockedReason,"Measure fit");assert.throws(()=>adapter.assertRecords(records,guide));
+});
+
+test("destination dependency guard covers unlisted additions without blocking other targets or staging",()=>{
+ let {packet,physical}=fixture();
+ packet.vitrines[0].code="9";packet.rows[0].destination="9";packet.groups[0].vitrine="9";
+ packet.vitrines[0].relocationDependency={sourceId:"veena",fromVitrine:"9",reason:"Relocate the veena first."};packet=seal(packet);
+ const adapter=createApprovedReceivingGuide(packet,packet.contentDigest);
+ const incoming=[{sourceId:"unlisted-curator-addition",to:{kind:"vitrine",code:"9"}}];
+ const before=JSON.stringify(physical);
+ assert.throws(()=>adapter.assertRelocationDependencies(incoming,physical));
+ assert.equal(JSON.stringify(physical),before);
+ physical.rows.push({...physical.rows[0],sourceId:"veena",current:{kind:"vitrine",code:"9",label:"Vitrine 9"}});
+ assert.throws(()=>adapter.assertRelocationDependencies(incoming,physical));
+ adapter.assertRelocationDependencies([{to:{kind:"vitrine",code:"8"}},{to:{kind:"table",code:"staging-area"}}],physical);
+ const veena=physical.rows[1];veena.current={kind:"table",code:"staging-area",label:"Staging area"};veena.currentBasis="source";
+ assert.throws(()=>adapter.assertRelocationDependencies(incoming,physical));
+ veena.currentBasis="confirmed";const staged=JSON.stringify(physical);
+ adapter.assertRelocationDependencies(incoming,physical);assert.equal(JSON.stringify(physical),staged);
+});
