@@ -1,0 +1,122 @@
+[
+  {
+    "sourceId": "recrC9U16Vn5vP9Fn",
+    "saintId": "cms0w7ht8072r07qilnv4xzsy",
+    "destination": "42",
+    "city": "Mount Abu",
+    "title": "Mount Abu",
+    "note": ""
+  },
+  {
+    "sourceId": "recmGHWXiRWRyqNCz",
+    "saintId": "cms0w7gnf05p107qik0azuezt",
+    "destination": "42",
+    "city": "Mount Abu",
+    "title": "Mount Abu",
+    "note": ""
+  },
+  {
+    "sourceId": "recrnRwlcWV9vc8G4",
+    "saintId": "cms0w7hwl076p07qiruei1t2r",
+    "destination": "39",
+    "city": "Bhavnagar",
+    "title": "Bhavnagar · Mastrambapu",
+    "note": ""
+  },
+  {
+    "sourceId": "recDEU2gf3JfEq8Vu",
+    "saintId": "cms0w7eg102w307qi4kyjtgvp",
+    "destination": "39",
+    "city": "Mota Aankadiya",
+    "title": "Amreli / Mota Ankadiya · Narendra Giri",
+    "note": ""
+  },
+  {
+    "sourceId": "recVS1NIKUb5npoly",
+    "saintId": "cms0w7j1208eo07qip237ds46",
+    "destination": "59",
+    "city": "Bharuch",
+    "title": "Bharuch · Narayan Swami",
+    "note": ""
+  },
+  {
+    "sourceId": "recqcXk64Jz6yzxsE",
+    "saintId": "cms0w7hkk06sf07qiajpfoh18",
+    "destination": "58",
+    "city": "Locality under review",
+    "title": "Maharashtra · precise locality under review",
+    "note": "Optional infill after the named stories, if space allows. Precise locality remains under review; no family relationship is inferred."
+  },
+  {
+    "sourceId": "recMJmizofyPI3niv",
+    "saintId": "cms0w7go805q107qiaokaqq1j",
+    "destination": "58",
+    "city": "Locality under review",
+    "title": "Maharashtra · precise locality under review",
+    "note": "Optional infill after the named stories, if space allows. Precise locality remains under review; no family relationship is inferred."
+  },
+  {
+    "sourceId": "recic7dKaAtT15WXV",
+    "saintId": "cms0w7fnn04h507qibdgrx29m",
+    "destination": "39",
+    "city": "Locality under review",
+    "title": "Gujarat · locality review · optional additions",
+    "note": "Optional infill after the named stories, if space allows. Precise locality remains under review; no family relationship is inferred."
+  },
+  {
+    "sourceId": "recIdjy5HDFKA3Zu9",
+    "saintId": "cms0w7foq04ie07qi3n70mgdy",
+    "destination": "39",
+    "city": "Pipaliya",
+    "title": "Gujarat · locality review · optional additions",
+    "note": "Optional infill after the named stories, if space allows. Precise locality remains under review; no family relationship is inferred."
+  },
+  {
+    "sourceId": "recJxB8V6ELyj1f9A",
+    "saintId": "cms0w7g1a04xi07qikqkz6cvz",
+    "destination": "39",
+    "city": "Samdar",
+    "title": "Gujarat · locality review · optional additions",
+    "note": "Optional infill after the named stories, if space allows. Precise locality remains under review; no family relationship is inferred. Source country/locality qualification remains unresolved."
+  },
+  {
+    "sourceId": "recK6tqphQIk425FL",
+    "saintId": "cms0w7g2w04zk07qiediqneky",
+    "destination": "39",
+    "city": "Kuna",
+    "title": "Gujarat · locality review · optional additions",
+    "note": "Optional infill after the named stories, if space allows. Precise locality remains under review; no family relationship is inferred."
+  },
+  {
+    "sourceId": "recQUDUFnAGpc6hCA",
+    "saintId": "cms0w7hoi06wx07qip7rrnri3",
+    "destination": "39",
+    "city": "Drasen Vel",
+    "title": "Gujarat · locality review · optional additions",
+    "note": "Optional infill after the named stories, if space allows. Precise locality remains under review; no family relationship is inferred."
+  },
+  {
+    "sourceId": "recXea9CGfmGP4ywn",
+    "saintId": "cms0w7jgp08ub07qiba41sdtm",
+    "destination": "39",
+    "city": "Sachana",
+    "title": "Gujarat · locality review · optional additions",
+    "note": "Optional infill after the named stories, if space allows. Precise locality remains under review; no family relationship is inferred."
+  },
+  {
+    "sourceId": "recXoGywQkhXyMSrp",
+    "saintId": "cms0w7jlf08z907qi10frkbuw",
+    "destination": "41",
+    "city": "Khambhalida",
+    "title": "Jamnagar / Khambhalida · Morar Saheb",
+    "note": "Khambhalida / Nanovas source locality; source date conflict remains under review."
+  },
+  {
+    "sourceId": "recaIEj3pzuJ3ldHR",
+    "saintId": "cms0w7dq701ya07qidjikpzof",
+    "destination": "41",
+    "city": "Palanpur",
+    "title": "Palanpur · North Gujarat–Mount Abu context",
+    "note": ""
+  }
+]

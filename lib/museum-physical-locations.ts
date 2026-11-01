@@ -289,7 +289,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
       const [{readSouthernGuide},{assertSouthernRecords}]=await Promise.all([import("./spn-southern-source"),import("./spn-southern-guide")]);
       assertSouthernRecords(input.records,await readSouthernGuide(await readMuseumData(tx),current,undefined,tx));
     }
-    if(input.guideContext?.guideVersion==="spn-west40-44-2026-11-01-v1"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
+    if(input.guideContext?.guideVersion==="spn-west40-44-2026-11-01-v2"&&!input.clearedVitrines?.length&&!input.curatorAddition&&!input.alternativeDecision){
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
       await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
       const ids=input.records.flatMap(record=>{
