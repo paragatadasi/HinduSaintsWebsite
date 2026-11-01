@@ -5,6 +5,7 @@ import { correctSpnProposal } from "./spn-proposal-corrections";
 import { reconcileSpnRoomProposal } from "./spn-room-proposal";
 import { SPN_WEBSITE_AIRTABLE_BASE_ID } from "./museum-vitrine-source";
 import { readMuseumData,type MuseumReadTiming } from "./museum-working-data";
+import { cachedByMuseumRevision } from "./museum-snapshot-cache";
 import {applyBilashFollowup} from "./spn-bilash-followup";
 import {applyParamanandObjectProposal,paramanandObjectReview} from "./spn-paramanand-reviewed-object";
 import { moveLocation, moveSnapshot, MuseumMoveSessionError, type MoveLocation } from "./museum-move-session-domain";
@@ -13,7 +14,15 @@ export const registeredMoveProposal = { version: proposalData.version, title: pr
 function vitrine(code: string, shelf = ""): MoveLocation | null {
   return code.trim() ? { kind: "vitrine", code: code.trim(), label: `Vitrine ${code.trim()}`, ...(shelf ? { shelf } : {}) } : null;
 }
-export async function readMuseumMoveSessionSource(proposalVersion: string, tx: Prisma.TransactionClient,options:{indexSourceIdentities?:boolean;onTiming?:(timing:MuseumReadTiming)=>void}={}) {
+type MoveSessionSourceOptions={indexSourceIdentities?:boolean;onTiming?:(timing:MuseumReadTiming)=>void};
+export async function readMuseumMoveSessionSource(proposalVersion: string, tx: Prisma.TransactionClient,options:MoveSessionSourceOptions={}) {
+  // Timing callers (verifiers) measure a real load, so they bypass the shared cache.
+  if (options.onTiming) return buildMuseumMoveSessionSource(proposalVersion, tx, options);
+  return cachedByMuseumRevision("museum-move-session-source", JSON.stringify([proposalVersion, options.indexSourceIdentities !== false]), tx,
+    transaction => buildMuseumMoveSessionSource(proposalVersion, transaction, options));
+}
+
+async function buildMuseumMoveSessionSource(proposalVersion: string, tx: Prisma.TransactionClient,options:MoveSessionSourceOptions) {
   let started=performance.now();
   const measure=(phase:string,records?:number)=>{const now=performance.now();options.onTiming?.({phase,milliseconds:now-started,records});started=now;};
   if (proposalVersion !== registeredMoveProposal.version) throw new MuseumMoveSessionError(409, "This proposal version is not registered. Reload the current proposal.");

@@ -51,8 +51,9 @@ try{
  const {readMuseumMoveSessionSource,registeredMoveProposal}=await import("../lib/museum-move-session-source");
  const {readShelfPlanningContext}=await import("../lib/museum-shelf-planning-source");
  const loader=(tx:Parameters<typeof readMuseumMoveSessionSource>[1])=>readMuseumMoveSessionSource(registeredMoveProposal.version,tx);
- const baselineCatalog=await measure("baseline catalog",()=>legacy.readCompanionCatalog());
- const baselineShelves=await measure("baseline all shelves",async()=>{const [current,physical]=await Promise.all([readMuseumData(),readMuseumPhysicalLocations(loader)]);return readShelfPlanningContext(packet,current,physical);});
+ const {withFreshMuseumSnapshotReads}=await import("../lib/museum-snapshot-cache");
+ const baselineCatalog=await measure("baseline catalog",()=>withFreshMuseumSnapshotReads(()=>legacy.readCompanionCatalog()));
+ const baselineShelves=await measure("baseline all shelves",()=>withFreshMuseumSnapshotReads(async()=>{const [current,physical]=await Promise.all([readMuseumData(),readMuseumPhysicalLocations(loader)]);return readShelfPlanningContext(packet,current,physical);}));
  const {readCompanionCatalogIfChanged}=await import("../lib/museum-companion-catalog");
  const {readCompanionShelfPlans}=await import("../lib/museum-companion-shelf-read");
  const {readSharedMuseumCompanionRevision}=await import("../lib/museum-companion-read-snapshot");
@@ -92,5 +93,5 @@ try{
  await client.saintAlias.delete({where:{id:alias.id}});assert.notEqual(await readSharedMuseumCompanionRevision(),newer.data.revision);
  await client.externalRecord.update({where:{sourceType_externalId:{sourceType:"airtable",externalId:`${baseId}:Saints:${oldEntry.sourceId}`}},data:{entityId:fixtures[1].saintId!}});
  await assert.rejects(confirmMuseumPhysicalLocations({...body,clientRequestId:randomUUID()},{id:"read-fixture-curator",canManage:true},loader),/identity|source/i);
- console.log(JSON.stringify({passed:true,fixture:"Disposable local database; full static museum source, two canonical saints and one space receipt; timings are not production measurements",metrics,fullShelfBytes:Buffer.byteLength(JSON.stringify(all.data)),selectedShelfBytes:Buffer.byteLength(JSON.stringify(selected.data)),checks:["baseline catalog/shelf equivalence","one shared source build across concurrent resources","unchanged reads skip source loads","selected-case payload","unknown scope rejected before DB","fresh writes reject cached stale locations and relinks","raw source edits and alias deletes invalidate","newer revision waits for fresh snapshot"]},null,2));
+ console.log(JSON.stringify({passed:true,fixture:"Disposable local database; full static museum source, two canonical saints and one space receipt; timings are not production measurements",metrics,fullShelfBytes:Buffer.byteLength(JSON.stringify(all.data)),selectedShelfBytes:Buffer.byteLength(JSON.stringify(selected.data)),checks:["baseline catalog/shelf equivalence","one shared source build across concurrent resources","unchanged reads skip source loads","selected-case payload","unknown scope rejected before DB","fresh writes reject cached stale locations and relinks","raw source edits and alias deletes invalidate","newer revision never receives an older in-flight snapshot"]},null,2));
 }finally{release();await unlink(temporary);await client.$disconnect();}

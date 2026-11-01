@@ -16,7 +16,7 @@ export async function readCompanionShelfPlans(options:{vitrine?:string;knownRevi
  const revision=await readSharedMuseumCompanionRevision();
  const tag=companionResourceRevision(revision,scope);
  if(known.includes(tag))return {changed:false as const,revision:tag};
- const snapshot=await readSharedMuseumCompanionSnapshot(revision);
+ const snapshot=await readSharedMuseumCompanionSnapshot();
  const actualTag=companionResourceRevision(snapshot.revision,scope);
  if(known.includes(actualTag))return {changed:false as const,revision:actualTag};
  let byCase=contexts.get(snapshot);if(!byCase){byCase=new Map();contexts.set(snapshot,byCase);}

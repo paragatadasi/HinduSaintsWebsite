@@ -35,7 +35,7 @@ export async function readCompanionCatalogIfChanged(knownRevisions:string[]=[]){
  const revision=await readSharedMuseumCompanionRevision();
  const tag=companionResourceRevision(revision,"catalog");
  if(knownRevisions.includes(tag))return {changed:false as const,revision:tag};
- const snapshot=await readSharedMuseumCompanionSnapshot(revision);
+ const snapshot=await readSharedMuseumCompanionSnapshot();
  const actualTag=companionResourceRevision(snapshot.revision,"catalog");
  if(knownRevisions.includes(actualTag))return {changed:false as const,revision:actualTag};
  let data=catalogs.get(snapshot);if(!data){data=projectCatalog(snapshot);catalogs.set(snapshot,data);}

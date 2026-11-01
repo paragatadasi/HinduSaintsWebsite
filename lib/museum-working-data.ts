@@ -11,6 +11,7 @@ import { projectSourceVitrines, SPN_WEBSITE_AIRTABLE_BASE_ID } from "@/lib/museu
 import { readSaintCollectionItems } from "@/lib/museum-collections";
 import {membershipRevision} from "@/lib/museum-display-membership-domain";
 import { db } from "@/lib/db";
+import { cachedByMuseumRevision } from "@/lib/museum-snapshot-cache";
 import type { Prisma } from "@/lib/generated/prisma/client";
 import { getMuseumProposalData, type MuseumSaintPlacement } from "@/lib/museum-proposals";
 import { getEditableMuseumProposalData } from "@/lib/museum-family-moves";
@@ -22,7 +23,10 @@ export type MuseumReadTiming={phase:string;milliseconds:number;records?:number};
 export type MuseumReadOptions = {reconcileFamilies?:boolean;applyScopedProposals?:boolean;indexSourceIdentities?:boolean;onTiming?:(timing:MuseumReadTiming)=>void};
 export async function readMuseumData(client: Prisma.TransactionClient = db, options: MuseumReadOptions = {}) {
   const key = JSON.stringify(["museum-working-data", options.reconcileFamilies !== false, options.applyScopedProposals !== false, options.indexSourceIdentities !== false]);
-  return readInMuseumTransaction(client, key, () => loadMuseumData(client, options));
+  // Timing callers (verifiers) measure a real load, so they bypass the shared cache.
+  if (options.onTiming) return readInMuseumTransaction(client, key, () => loadMuseumData(client, options));
+  return readInMuseumTransaction(client,key,()=>cachedByMuseumRevision("museum-working-data",key,client,
+    transaction=>loadMuseumData(transaction,options)));
 }
 
 async function loadMuseumData(client: Prisma.TransactionClient, options: MuseumReadOptions = {}) {
