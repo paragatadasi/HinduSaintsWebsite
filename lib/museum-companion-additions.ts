@@ -1,3 +1,5 @@
+import {canPlacePagalComponent,isPagalComponentPlaced,pagalComponentReceiptId} from "./spn-pagal-component-placement";
+import {hasOnlySpnHousingReviewHold} from "./spn-movement-holds";
 import {currentCompanionAdditions} from "./museum-companion-addition-validation";
 import proposalOverlay from "../data/museum/spn-approved-proposal-overlay-v1.json";
 import {z} from "zod";
@@ -26,8 +28,9 @@ export async function saveCompanionAddition(raw:unknown,actorId:string){
   const state=await readPhysicalLocationView(tx=>readMuseumMoveSessionSource(registeredMoveProposal.version,tx),tx,[input.sourceId],false);
   const row=state.rows[0];
   if(!row||!row.saintId||row.identityChanged||row.sourceRevision!==input.expectedSourceRevision||!isActiveSpnObservation(input.sourceId))throw new MuseumMoveSessionError(409,"The source identity changed or needs review. Reload before adding this record.");
-  if(row.fixedHousing||row.verifiedItemIds.length||row.movementBlockedReason)throw new MuseumMoveSessionError(409,"This record needs its existing item or fixed-display workflow.");
-  const addition:CompanionAddition={sourceId:input.sourceId,saintId:row.saintId,sourceRevision:row.sourceRevision,vitrine:input.vitrine,shelf:input.shelf||null,version:(previous?.version??0)+1,updatedAt:new Date().toISOString(),clientRequestId:input.clientRequestId};
+  const componentScoped=(canPlacePagalComponent(row,input.vitrine)||isPagalComponentPlaced(row,input.vitrine))&&hasOnlySpnHousingReviewHold(row.sourceId);
+  if(row.fixedHousing||row.verifiedItemIds.length||row.movementBlockedReason&&!componentScoped)throw new MuseumMoveSessionError(409,"This record needs its existing item or fixed-display workflow.");
+  const addition:CompanionAddition={...(componentScoped?{componentScope:"vitrine_19_contents_only" as const,componentReceiptId:pagalComponentReceiptId}:{}),sourceId:input.sourceId,saintId:row.saintId,sourceRevision:row.sourceRevision,vitrine:input.vitrine,shelf:input.shelf||null,version:(previous?.version??0)+1,updatedAt:new Date().toISOString(),clientRequestId:input.clientRequestId};
   await tx.auditEvent.create({data:{userId:actorId,action,entityType:"MuseumCompanionAddition",entityId:"museum-spn:"+input.sourceId,afterJson:addition}});
   return addition;
  },{isolationLevel:"Serializable",timeout:60000});

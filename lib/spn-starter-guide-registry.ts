@@ -1,3 +1,4 @@
+import {eastRemainderGuideContext as priorEastContext,eastRemainderGuideDefinition as priorEastDefinition} from "./spn-east-remainder-guide-v1";
 import {hingeAdditionsGuideContext,hingeAdditionsGuideDefinition} from "./spn-hinge-additions-guide";
 import {southernGuideContext as oldSouthernContext,southernGuideDefinition as oldSouthernDefinition} from "./spn-southern-guide-v1";
 import {west40To44GuideContext as oldWestContext,west40To44GuideDefinition as oldWestDefinition} from "./spn-west40-44-guide-v1";
@@ -92,6 +93,7 @@ export function readStarterGuideDefinition(version: string): GuideDefinition {
   if(version===westV45GuideContext.guideVersion)return westV45GuideDefinition;
   if(version===westV1GuideContext.guideVersion)return westV1GuideDefinition;
   if(version===eastRemainderGuideContext.guideVersion)return eastRemainderGuideDefinition;
+  if(version===priorEastContext.guideVersion)return {...priorEastDefinition,readOnly:true};
   if(version===vrajStoryTopsGuideContext.guideVersion)return vrajStoryTopsGuideDefinition;
   if(version===vrajRemainderGuideContext.guideVersion)return {...vrajRemainderGuideDefinition,readOnly:true};
   if(version===northernGuideContext.guideVersion)return northernGuideDefinition;

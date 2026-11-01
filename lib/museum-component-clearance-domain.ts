@@ -22,7 +22,7 @@ const originOnlyAcknowledgement=z.object({
 const includingSticksAcknowledgement=z.object({sourceId:z.string().refine(id=>id===v64ComponentBinding.sourceId),scope:z.literal("vitrine_64_contents_including_sticks"),allOriginPiecesStaged:z.literal(true),walkingSticksInVitrineStaged:z.literal(true)}).strict();
 export const componentStagingAcknowledgements=z.array(z.union([originOnlyAcknowledgement,includingSticksAcknowledgement]).refine(row=>row.scope===componentScopeForOrigin(componentOriginCode(row.sourceId)??""),"Component source and origin do not match.")).max(5).refine(rows=>new Set(rows.map(row=>row.sourceId)).size===rows.length,"Repeated component acknowledgement.");
 export type ComponentPlacement = {
-  sourceId: string; receiptId: string; recordedAt: string; revision: string;
+  sourceId: string; receiptId: string; clearanceReceiptId?:string; recordedAt: string; revision: string;
   origin: MoveLocation; location: MoveLocation; scope: ComponentScope;
   excludedWalkingSticks: { location: null; status: "unverified" };
   includedWalkingSticks?:true;

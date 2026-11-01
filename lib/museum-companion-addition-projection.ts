@@ -16,7 +16,7 @@ export function projectCompanionAdditions<T extends string>(guides:Record<T,Star
  const owners=new Map(additions.map(a=>[a.sourceId,companionVitrineOwner(guides,a.vitrine)]));
  return Object.fromEntries((Object.keys(guides) as T[]).map(key=>{
   const guide=guides[key];
-  const reviewOnly=new Set(guide.entries.filter(e=>e.reviewOnly).map(e=>e.sourceId));
+  const reviewOnly=new Set(guide.entries.filter(e=>e.reviewOnly||e.componentScope).map(e=>e.sourceId));
   const phaseAdditions=new Map([...byId].filter(([id])=>!reviewOnly.has(id)));
   const trimGroup=(group:GuideGroup,code:string):GuideGroup=>{
    const sourceIds=group.sourceIds.filter(id=>!pending.has(id)&&(!phaseAdditions.has(id)||(phaseAdditions.get(id)!.vitrine===code&&owners.get(id)===key)));
