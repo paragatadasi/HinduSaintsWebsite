@@ -14,29 +14,38 @@ import {receiverAvailabilityInput,receiverAvailabilitySnapshot,receiverAvailabil
 import type {MoveSessionActor} from "./museum-move-session-service";
 
 const json=(value:unknown)=>JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
-export async function readReceiverAvailabilityPreview(loader:PhysicalSnapshotLoader,vitrine:string,guideVersion:string,tx:Prisma.TransactionClient=db){
+async function readAvailabilityState(loader:PhysicalSnapshotLoader,tx:Prisma.TransactionClient){
+ const [physical,museum,additions,alternatives,preparations]=await Promise.all([readPhysicalLocationView(loader,tx,undefined,false),readMuseumData(tx),readEffectiveCompanionAdditions(tx),readGuideAlternativeDestinations(tx),readMuseumPreparations(tx)]);
+ const valid=currentCompanionAdditions(additions,physical.rows);
+ const review=buildLatestSpnReview(museum.placements,[...valid,...alternatives.filter(r=>!valid.some(a=>a.sourceId===r.sourceId))],physical.rows);
+ return {physical,review,preparations};
+}
+function availabilityPreview(state:Awaited<ReturnType<typeof readAvailabilityState>>,vitrine:string,guideVersion:string){
  const guide=readStarterGuideDefinition(guideVersion);
  if(guide.readOnly||!currentReceiverGuideDefinitions(vitrine).some(d=>d.context.guideVersion===guideVersion))throw new MuseumMoveSessionError(409,"Open this vitrine's current receiving guide before confirming space.");
  const hold=spnCaseExecutionHold(vitrine);if(hold)throw new MuseumMoveSessionError(409,hold);
- const [physical,museum,additions,alternatives,preparations]=await Promise.all([readPhysicalLocationView(loader,tx,undefined,false),readMuseumData(tx),readEffectiveCompanionAdditions(tx),readGuideAlternativeDestinations(tx),readMuseumPreparations(tx)]);
+ const {physical,review,preparations}=state;
  if(!physical.vitrineCodes.includes(vitrine))throw new MuseumMoveSessionError(400,"Choose a current museum vitrine.");
  if(physical.unmappedCurrentLocations.some(r=>r.location.kind==="vitrine"&&r.location.code===vitrine))throw new MuseumMoveSessionError(409,"This vitrine has an unlinked recorded placement. Review it before confirming space.");
- const valid=currentCompanionAdditions(additions,physical.rows);
- const review=buildLatestSpnReview(museum.placements,[...valid,...alternatives.filter(r=>!valid.some(a=>a.sourceId===r.sourceId))],physical.rows);
  const incomingIds=review.rows.filter(r=>r.effectiveVitrine===vitrine).map(r=>r.sourceId);
  return {museumId:"museum-spn" as const,...receiverAvailabilitySnapshot(guide.context,vitrine,physical.rows,incomingIds),expectedPreparationVersion:preparations.find(r=>r.vitrine===vitrine)?.version??0,physicalMoveClaim:false as const,emptyCaseClaim:false as const};
 }
+export async function readReceiverAvailabilityPreview(loader:PhysicalSnapshotLoader,vitrine:string,guideVersion:string,tx:Prisma.TransactionClient=db){
+ return availabilityPreview(await readAvailabilityState(loader,tx),vitrine,guideVersion);
+}
 
 export async function readReceiverAvailabilities(loader:PhysicalSnapshotLoader,tx:Prisma.TransactionClient=db,vitrines?:string[]){
- const preparations=await readMuseumPreparations(tx);
  const events=await tx.auditEvent.findMany({where:{action:"museum.vitrine.preparation.updated",entityType:"MuseumVitrinePreparation",entityId:{startsWith:"museum-spn:"}},orderBy:[{createdAt:"desc"},{id:"desc"}],select:{id:true,createdAt:true,afterJson:true}});
+ const relevant=events.filter(event=>{const data=event.afterJson as {receiverAvailability?:unknown;vitrine?:string}|null;return data?.receiverAvailability&&data.vitrine&&(!vitrines||vitrines.includes(data.vitrine));});
+ if(!relevant.length)return [];
+ const state=await readAvailabilityState(loader,tx),preparations=state.preparations;
  const seen=new Set<string>();const result:{vitrine:string;guideVersion:string;receiptId:string;recordedAt:string;valid:boolean;reason:string|null}[]=[];
- for(const event of events){
+ for(const event of relevant){
   const data=event.afterJson as {museumId?:string;vitrine?:string;version?:number;receiverAvailability?:ReceiverAvailability}|null;
   if(data?.museumId!=="museum-spn"||!data.receiverAvailability||!data.vitrine||seen.has(data.vitrine)||(vitrines&&!vitrines.includes(data.vitrine)))continue;
   seen.add(data.vitrine);const saved=data.receiverAvailability;let valid=false;
   const prep=preparations.find(r=>r.vitrine===data.vitrine);
-  if(prep?.prepared&&prep.version===data.version)try{valid=receiverAvailabilityValid(saved,event.createdAt.toISOString(),await readReceiverAvailabilityPreview(loader,data.vitrine,saved.guideContext.guideVersion,tx));}catch(error){if(!(error instanceof MuseumMoveSessionError))throw error;}
+  if(prep?.prepared&&prep.version===data.version)try{valid=receiverAvailabilityValid(saved,event.createdAt.toISOString(),availabilityPreview(state,data.vitrine,saved.guideContext.guideVersion));}catch(error){if(!(error instanceof MuseumMoveSessionError))throw error;}
   result.push({vitrine:data.vitrine,guideVersion:saved.guideContext.guideVersion,receiptId:event.id,recordedAt:event.createdAt.toISOString(),valid,reason:valid?null:"The contents, proposal or preparation changed. Check the available space again."});
  }
  return result;
