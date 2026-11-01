@@ -1,0 +1,373 @@
+{
+  "version": "spn-curated-headlines-2026-11-01-v2",
+  "rules": {
+    "1": {
+      "headline": "BAPS guru lineage · Gondal & Amreli",
+      "fallback": "Gondal & Amreli",
+      "anchorClauses": [
+        {
+          "text": "BAPS guru lineage",
+          "sourceIds": [
+            "recasMrurmAu0iQ8J",
+            "recotj9QaQaUUzAbE",
+            "recjvIW2squH6mA0M",
+            "reczx1iWGifmtF62m"
+          ],
+          "match": "any"
+        }
+      ]
+    },
+    "39": {
+      "headline": "Jalaram–Bhoja & Bapa Sitaram · Saurashtra",
+      "fallback": "Saurashtra devotion",
+      "anchorClauses": [
+        {
+          "text": "Jalaram–Bhoja",
+          "sourceIds": [
+            "rec5bMBZLbIgDKTi3",
+            "recmNqjW54MTnx5oZ"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Bapa Sitaram",
+          "sourceIds": [
+            "recDLP5EHZlE5vMqr"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "40": {
+      "headline": "Somnath, the Gir coast & Dwarka",
+      "fallback": "Somnath, the Gir coast & Dwarka",
+      "anchorClauses": []
+    },
+    "41": {
+      "headline": "Brahma Kumaris & Mekan Dada · Mount Abu / Kutch",
+      "fallback": "Mount Abu / Kutch",
+      "anchorClauses": [
+        {
+          "text": "Brahma Kumaris",
+          "sourceIds": [
+            "recxUEG6Dr1cErcNq",
+            "rechuanXWbFyugaqd",
+            "recjA6zCEVozbTcwK"
+          ],
+          "match": "any"
+        },
+        {
+          "text": "Mekan Dada",
+          "sourceIds": [
+            "recCz6sIHu6BniUdw",
+            "recjtrqGSGg72x6Fs"
+          ],
+          "match": "any"
+        }
+      ]
+    },
+    "42": {
+      "headline": "Dadu Dayal & Ramdev Pir–Dali Bai · Rajasthan",
+      "fallback": "Rajasthan families",
+      "anchorClauses": [
+        {
+          "text": "Dadu Dayal",
+          "sourceIds": [
+            "recCC420vYWEjA1ZK"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Ramdev Pir–Dali Bai",
+          "sourceIds": [
+            "recmPZzMUEZjUowj5",
+            "recZc9KpAaqKZvtxN"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "43": {
+      "headline": "Pushkar ashrams · Anuvrat–Bhikhi Bai",
+      "fallback": "Pushkar ashrams",
+      "anchorClauses": [
+        {
+          "text": "Anuvrat–Bhikhi Bai",
+          "sourceIds": [
+            "recXr00H5P0KlYhAO",
+            "rec1MAZOzdCRybJGN"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "44": {
+      "headline": "Teoon Ram · Jaipur–Pushkar transition",
+      "fallback": "Jaipur–Pushkar transition",
+      "anchorClauses": [
+        {
+          "text": "Teoon Ram",
+          "sourceIds": [
+            "recqypCoigbH3X8cR"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "45": {
+      "headline": "Varkari bhakti · Dnyaneshwar, Namdev–Janabai, Eknath & Tukaram",
+      "fallback": "Varkari bhakti",
+      "anchorClauses": [
+        {
+          "text": "Dnyaneshwar",
+          "sourceIds": [
+            "recwaqzrPJ8GnzVjC"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Namdev–Janabai",
+          "sourceIds": [
+            "rec8MNKAu5qm4Mk94",
+            "recoFDxvENFFnNBOo",
+            "recwbU7HkK8kDlaFq"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Eknath",
+          "sourceIds": [
+            "recVaCcbHUvx8FlnC"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Tukaram",
+          "sourceIds": [
+            "recka2nXCe1N5AZHn"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "46": {
+      "headline": "Pandharpur–Alandi · devotional lineages",
+      "fallback": "Pandharpur–Alandi · devotional lineages",
+      "anchorClauses": []
+    },
+    "48": {
+      "headline": "Narsinh Mehta · Junagadh bhakti",
+      "fallback": "Junagadh bhakti",
+      "anchorClauses": [
+        {
+          "text": "Narsinh Mehta",
+          "sourceIds": [
+            "recs0TaB50MQxIRlc"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "49": {
+      "headline": "Girnar · ascetic lineages and caves",
+      "fallback": "Girnar · ascetic lineages and caves",
+      "anchorClauses": []
+    },
+    "50": {
+      "headline": "Kashmiri Bapu · Bhavnath & Bharti Ashram",
+      "fallback": "Bhavnath & Bharti Ashram",
+      "anchorClauses": [
+        {
+          "text": "Kashmiri Bapu",
+          "sourceIds": [
+            "rec7CR2qx4C8gkMYV"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "51": {
+      "headline": "Hathiram Baba & Sorakaya Swami · Tirupati",
+      "fallback": "Tirupati",
+      "anchorClauses": [
+        {
+          "text": "Hathiram Baba",
+          "sourceIds": [
+            "recNPByqGwt8AEDAr",
+            "recjmxp3rHz88F4Zz"
+          ],
+          "match": "any"
+        },
+        {
+          "text": "Sorakaya Swami",
+          "sourceIds": [
+            "reczVh0BQLhNLcXPe"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "52": {
+      "headline": "Andhra families · Siddheswarananda–Ramyananda & Devipuram",
+      "fallback": "Andhra families",
+      "anchorClauses": [
+        {
+          "text": "Siddheswarananda–Ramyananda",
+          "sourceIds": [
+            "recKXywibOANlUi7r",
+            "recds79Q1Tt4TrJeV"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Devipuram",
+          "sourceIds": [
+            "rec4bgn1KKkTDDEkG"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "53": {
+      "headline": "Veerabrahmendra–Siddhaiah & Mirra Alfassa · distinct traditions",
+      "fallback": "Northern Tamil Nadu / Andhra boundary",
+      "anchorClauses": [
+        {
+          "text": "Veerabrahmendra–Siddhaiah",
+          "sourceIds": [
+            "rec5GvGX2G8pL2JKX",
+            "rec1tbLaeSzcd2o2S"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Mirra Alfassa",
+          "sourceIds": [
+            "recvXsFbwopnW8RTA"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "54": {
+      "headline": "Gnanananda Giri & Ramalinga · Tamil interior",
+      "fallback": "Tamil interior",
+      "anchorClauses": [
+        {
+          "text": "Gnanananda Giri",
+          "sourceIds": [
+            "rec1Cv9Cob4e2CcPd"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Ramalinga",
+          "sourceIds": [
+            "rec0M1SY5zoFqTxVW"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "55": {
+      "headline": "Pamban Swamigal & Ramanujan · southern Tamil Nadu",
+      "fallback": "Southern Tamil Nadu",
+      "anchorClauses": [
+        {
+          "text": "Pamban Swamigal",
+          "sourceIds": [
+            "recIZYFwtqvfV8e8t"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Ramanujan",
+          "sourceIds": [
+            "recqJBz5vKGPhmb7p"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "56": {
+      "headline": "Kerala · Shivaprabhakara Brahmananda & Chattampi",
+      "fallback": "Kerala",
+      "anchorClauses": [
+        {
+          "text": "Shivaprabhakara Brahmananda",
+          "sourceIds": [
+            "recelwEuCC6ZnY62Y"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Chattampi",
+          "sourceIds": [
+            "rec2YQrUqUzdITsHZ"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "57": {
+      "headline": "Southern headline saints · Ramana, Nityananda & Ramanuja",
+      "fallback": "Southern headline traditions",
+      "anchorClauses": [
+        {
+          "text": "Ramana",
+          "sourceIds": [
+            "recnTSlt2x2pAPPAA"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Nityananda",
+          "sourceIds": [
+            "recR3GYnCgnZXfM5l"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Ramanuja",
+          "sourceIds": [
+            "rec8IrXY686AIc1rz"
+          ],
+          "match": "all"
+        }
+      ]
+    },
+    "59": {
+      "headline": "Gujarat · Ahmedabad, Kayavarohan & Nareshwar",
+      "fallback": "Gujarat · Ahmedabad, Kayavarohan & Nareshwar",
+      "anchorClauses": []
+    },
+    "62": {
+      "headline": "Karnataka · Siddharoodha, Tiruchi & Shivakumara",
+      "fallback": "Karnataka",
+      "anchorClauses": [
+        {
+          "text": "Siddharoodha",
+          "sourceIds": [
+            "recZWdPRcYYUN7pET",
+            "recNlyBE7yovFETmX"
+          ],
+          "match": "any"
+        },
+        {
+          "text": "Tiruchi",
+          "sourceIds": [
+            "recedh4xdQxgmUm1g"
+          ],
+          "match": "all"
+        },
+        {
+          "text": "Shivakumara",
+          "sourceIds": [
+            "reczWGQTnjOMWYSYl"
+          ],
+          "match": "all"
+        }
+      ]
+    }
+  }
+}

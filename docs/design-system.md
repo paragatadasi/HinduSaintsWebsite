@@ -786,3 +786,5 @@ The shared shelf guide supports band-only recommendations alongside the five exa
 A move-guide vitrine may include a short `placementGuidance` paragraph directly below its theme, before the checklist. Keep fit qualifications in the shared `museum-guide-help` disclosure labeled **Space & placement notes**. These explain reviewed priorities without presenting unreviewed shelf allocations or implying that a placement check confirms a shelf. Preserve physical state when replacing a guide roster.
 
 Confirmed placements without recorded shelves appear under **Retain current arrangement** in shelf recommendations. Keep them outside proposed row bands; do not infer an actual shelf from the suggested layout. The physical move checkbox continues to confirm only the vitrine.
+
+Museum vitrine headlines may name reviewed anchors only while their exact source records remain assigned to that vitrine. Use a neutral locality or tradition fallback when membership changes; do not infer matches from names.

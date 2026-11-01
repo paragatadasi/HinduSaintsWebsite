@@ -1,1 +1,1 @@
-export const spnDeferredShelfCases = new Set(["25", "26"]);
+export const spnDeferredShelfCases = new Set<string>();
