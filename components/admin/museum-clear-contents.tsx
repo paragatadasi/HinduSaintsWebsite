@@ -10,12 +10,18 @@ export function groupClearContents(rows: CompanionRow[], destinations: Map<strin
     .map(([destination, entries]) => ({destination, entries: entries.sort((a,b) => a.name.localeCompare(b.name))}));
 }
 
-export function MuseumClearContents({rows, missing, entries, sourceVitrine, partialIds = []}: {
+export function MuseumClearContents({rows, missing, entries, sourceVitrine, partialIds = [], selection}: {
   rows: CompanionRow[];
   missing: PhysicalState["unmappedCurrentLocations"];
   entries: Pick<GuideEntry, "sourceId" | "destination">[];
   sourceVitrine: string;
   partialIds?: string[];
+  selection?: {
+    selectedIds: ReadonlySet<string>;
+    disabled?: boolean;
+    blockedReason: (row: CompanionRow) => string | null;
+    onToggle: (sourceId: string, selected: boolean) => void;
+  };
 }) {
   const groups = groupClearContents(rows, new Map(entries.map(entry => [entry.sourceId, entry.destination])));
   return <div className="museum-clear-contents">
@@ -23,7 +29,13 @@ export function MuseumClearContents({rows, missing, entries, sourceVitrine, part
     {groups.map(group => <details open className="museum-clear-contents__group" key={group.destination || "pending"}>
       <summary><span>{group.destination ? `Vitrine ${group.destination}${group.destination === sourceVitrine ? " · returns here" : ""}` : "Destination not assigned"}</span><span className="museum-clear-contents__count">{group.entries.length} {group.entries.length === 1 ? "entry" : "entries"}</span></summary>
       <ul>{group.entries.map(row => <li key={row.sourceId}>
-        <span className="museum-clear-contents__name">{row.name}</span>
+        {selection ? <label className="room-move__check"><input type="checkbox"
+          checked={selection.selectedIds.has(row.sourceId)}
+          disabled={selection.disabled || !!selection.blockedReason(row)}
+          onChange={event => selection.onToggle(row.sourceId, event.target.checked)}/>
+          <span className="museum-clear-contents__name">{row.name}</span>
+        </label> : <span className="museum-clear-contents__name">{row.name}</span>}
+        {selection?.blockedReason(row) ? <small>{selection.blockedReason(row)}</small> : null}
         {row.current?.shelf ? <small>Shelf {row.current.shelf}</small> : null}
         {partialIds.includes(row.sourceId) ? <p className="museum-clear-contents__warning">Only the pieces held in Vitrine {sourceVitrine} will be recorded as staged.</p> : row.movementBlockedReason ? <p className="museum-clear-contents__warning">{row.movementBlockedReason}</p> : null}
       </li>)}</ul>

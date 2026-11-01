@@ -14,8 +14,8 @@ function fixture(){
 test("V47 registers only the approved 19 Gujarat sources and scoped clearing",()=>{
  assert.equal(westV47MoveGuide.entries.length,19);
  assert.equal(new Set(westV47MoveGuide.vitrines.flatMap(v=>[...v.families,...v.cityGroups].flatMap(g=>g.sourceIds))).size,19);
- assert.equal(readStarterGuideDefinition(westV47GuideContext.guideVersion),westV47GuideDefinition);
- assert.ok(currentReceiverGuideDefinitions("47").includes(westV47GuideDefinition));
+ assert.equal(readStarterGuideDefinition(westV47GuideContext.guideVersion).readOnly,true);
+ assert.ok(!currentReceiverGuideDefinitions("47").some(g=>g.context.guideVersion===westV47GuideContext.guideVersion));
  assert.equal(westV47MoveGuide.optionalClearVitrines,undefined);
  assert.deepEqual(westV47MoveGuide.reportedPlacements,[]);
  assert.equal(westV47MoveGuide.vitrines[0].cityGroups.length,6);
