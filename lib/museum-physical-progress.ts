@@ -3,8 +3,10 @@ import { physicalFingerprint, resolveMuseumPhysicalCurrent } from "./museum-phys
 import { readMuseumPreparations, readMuseumPhaseClearances } from "./museum-physical-locations";
 import { readComponentPlacements } from "./museum-component-clearances";
 import { projectComponentPlacement } from "./museum-component-clearance-domain";
+import {readReceiverAvailabilities} from "./museum-receiver-availability";
+import type {PhysicalSnapshotLoader} from "./museum-physical-locations";
 
-export async function readMuseumPhysicalProgress() {
+export async function readMuseumPhysicalProgress(loader:PhysicalSnapshotLoader) {
   return db.$transaction(async tx => {
     const [saved, preparations, phaseClearances, components] = await Promise.all([
       tx.museumMoveCurrentLocation.findMany({ where: { museumId: "museum-spn" }, orderBy: { sourceId: "asc" },
@@ -17,7 +19,8 @@ export async function readMuseumPhysicalProgress() {
       const state=projectComponentPlacement(resolveMuseumPhysicalCurrent(component?.origin??null,position,null),component);
       return {sourceId,recordedAt:state.componentPlacement?.recordedAt??component?.recordedAt??position!.confirmedAt.toISOString(),...state};
     });
-    return { museumId: "museum-spn" as const, progressRevision: physicalFingerprint({ positions, preparations, phaseClearances }),
-      positions, preparations, phaseClearances };
+    const receiverAvailabilities=await readReceiverAvailabilities(loader,tx);
+    return { museumId: "museum-spn" as const, progressRevision: physicalFingerprint({ positions, preparations, phaseClearances,receiverAvailabilities }),
+      positions, preparations, phaseClearances,receiverAvailabilities };
   }, { isolationLevel: "RepeatableRead", timeout: 15000 });
 }

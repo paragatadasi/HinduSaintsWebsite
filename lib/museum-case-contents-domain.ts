@@ -10,8 +10,8 @@ export const caseContentsStaging=z.object({vitrine:z.string().min(1).max(20),exp
 const reportDate=z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(value=>{const date=new Date(value+"T12:00:00Z");return Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)===value;});
 export const caseStagingReconciliation=z.object({action:z.literal("case.staging.reconcile"),museumId:z.literal("museum-spn"),clientRequestId:z.string().uuid(),vitrine:z.string().min(1).max(20),preparationReceiptId:z.string().min(1).max(200),expectedRevision:z.string().regex(/^[a-f0-9]{64}$/),records:z.array(historicalStagingRecord).min(1).max(200),reportedDate:reportDate,historicalClearanceAcknowledged:z.literal(true),currentStagingAcknowledged:z.literal(true)}).strict();
 export type CasePreparationEvidence={receiptId:string;vitrine:string;prepared:true;recordedAt:string;physicalMoveClaim:false;emptyCaseClaim:false};
-export function caseContentsPreview(rows:CompanionRow[],destinations:{sourceId:string;vitrine:string}[],vitrine:string,mode:"selected_contents"|"historical",preparation?:CasePreparationEvidence){
- if(!optionalContentsVitrines.includes(vitrine))throw new MuseumMoveSessionError(400,"Use this vitrine's existing clearing or item workflow.");
+export function caseContentsPreview(rows:CompanionRow[],destinations:{sourceId:string;vitrine:string}[],vitrine:string,mode:"selected_contents"|"historical",preparation?:CasePreparationEvidence,registeredReceiver=false){
+ if(!optionalContentsVitrines.includes(vitrine)&&!(mode==="selected_contents"&&registeredReceiver))throw new MuseumMoveSessionError(400,"Use this vitrine's current receiving or item workflow.");
  const eligible:(z.infer<typeof historicalStagingRecord>&{name:string;from:NonNullable<CompanionRow["current"]>})[]=[],blocked:{sourceId:string;name:string;reason:string}[]=[],preserved:string[]=[];
  const byId=new Map(destinations.map(row=>[row.sourceId,row.vitrine]));
  for(const row of rows){

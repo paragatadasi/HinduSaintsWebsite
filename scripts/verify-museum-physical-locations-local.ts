@@ -95,7 +95,7 @@ try {
   const confirmedAddition = await api.confirmMuseumPhysicalLocations(guided, curator, loader);
   assert.equal(confirmedAddition.rows[0].current?.code, "2");
   const { readMuseumPhysicalProgress } = await import("../lib/museum-physical-progress");
-  const progress = await readMuseumPhysicalProgress();
+  const progress = await readMuseumPhysicalProgress(loader);
   assert.equal(progress.positions.find(row => row.sourceId === "a")?.currentRevision, confirmedAddition.rows[0].currentRevision);
   await db.auditEvent.create({ data: { userId: curator.id, action: "museum.arrangement.updated", entityType: "MuseumArrangement", entityId: "a", afterJson: { museumId: "museum-spn" } } });
   await assert.rejects(api.confirmMuseumPhysicalLocations({ ...guided, clientRequestId: randomUUID() }, curator, loader), /added destination changed/);
