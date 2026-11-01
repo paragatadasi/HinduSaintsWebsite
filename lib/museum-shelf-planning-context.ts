@@ -9,6 +9,8 @@ export type ShelfPlanningAllocation={
  suggestedShelfIndex:number|null;suggestedBand?:string;reviewAlerts:{message:string}[];isContextOnly?:boolean;
  capturedBaseline?:ProposalObservation["baseline"];sourceRevision?:string|null;
  projectedLifeStatus?:GuideEntry["lifeStatus"]|null;
+ preserveCurrentPlacement?:boolean;currentRevision?:string;
+ confirmedShelfToProtect?:{vitrine:string;shelf:string;basis:string;version:number}|null;
 };
 export type ShelfPlanningCase={
  code:string;groups:{id:string;title:string;kind:string}[];allocations:ShelfPlanningAllocation[];
@@ -83,7 +85,10 @@ export function projectShelfPlanningContext(packet:ShelfPlanningPacket,input:{cu
    const name=placement?.name??physicalRow?.name??row?.name??captured.name;
    const alerts=captured.reviewAlerts.filter(a=>!a.message.includes("is asserted by the current CMS record"));
    if(physicalRow?.movementBlockedReason&&!alerts.some(a=>a.message===physicalRow.movementBlockedReason))alerts.push({message:physicalRow.movementBlockedReason});
-   allocations.push({...captured,name,tier,sourceRevision:physicalRow?.sourceRevision,reviewAlerts:alerts});
+   const retainCurrent=physicalRow?.currentBasis==="confirmed"&&physicalRow.current?.kind==="vitrine"&&physicalRow.current.code===plan.code;
+   allocations.push({...captured,name,tier,sourceRevision:physicalRow?.sourceRevision,reviewAlerts:alerts,
+    ...(retainCurrent?{suggestedShelfIndex:null,suggestedBand:"retain-current",preserveCurrentPlacement:true}:captured.preserveCurrentPlacement?{suggestedShelfIndex:null,suggestedBand:"unspecified",preserveCurrentPlacement:false}:{}),
+   });
    entries.push({sourceId:captured.sourceId,saintId:expectedSaint,name,tier,city:placement?.normalizedPlaces.join(" · ")??"",relicDescription:current.membersById.get(placement?.id??"")?.RelicsDescription??"",destination:plan.code,section:placement?.section??row?.section??"",family:placement?.curatorialFamily??"",rationale:"Shelf recommendation only",lifeStatus:undefined,currentLocation:physicalRow?.current??null,currentLocationBasis:physicalRow?.currentBasis,movementBlockedReason:physicalRow?.movementBlockedReason??undefined});
   }
   const lifeGuide:StarterMoveGuide={version:packet.version,title:"Shelf recommendations",contentDigest:"",assignmentDigest:"",proposalVersion:"",entries,vitrines:[],alternatives:[],reportedPlacements:[]};
@@ -92,12 +97,12 @@ export function projectShelfPlanningContext(packet:ShelfPlanningPacket,input:{cu
   const lifeConflicts=new Set<string>();
   const currentAllocations=allocations.flatMap(a=>{
    const life=lifeById.get(a.sourceId);
-   if(life?.tag&&(plan.livingAllowedBands ? !plan.livingAllowedBands.includes(a.suggestedShelfIndex??0) : a.suggestedShelfIndex===1)){
+   if(!a.preserveCurrentPlacement&&life?.tag&&(plan.livingAllowedBands ? !plan.livingAllowedBands.includes(a.suggestedShelfIndex??0) : a.suggestedShelfIndex===1)){
     lifeConflicts.add(a.sourceId);
     reviewedChanges.push({sourceId:a.sourceId,name:a.name,capturedDestination:plan.code,capturedShelfIndex:a.suggestedShelfIndex,effectiveDestination:plan.code,visibility:"pending",reason:plan.livingAllowedBands?"Current living-status evidence requires a recommendation on one of the approved lower shelves.":"Current living-status evidence conflicts with the captured top position; review the starting shelf."});
     return [];
    }
-   return [{...a,projectedLifeStatus:life}];
+   return [{...a,projectedLifeStatus:life,reviewAlerts:a.preserveCurrentPlacement&&life?.tag?[...a.reviewAlerts,{message:"Keep the current arrangement; check that this living saint is in the lower display."}]:a.reviewAlerts}];
   });
   const ids=new Set(currentAllocations.map(a=>a.sourceId));
   const nodes=plan.contextNodes?.map(n=>({...n,label:/\bcms[a-z0-9]+\b/.test(n.label)?"Related figure · name to confirm":n.label}));

@@ -16,7 +16,7 @@ export function projectGuideLifeStatus<T extends {entries:GuideEntry[]}>(guide:T
  return {...guide,entries:guide.entries.map(entry=>{
   const person=people.get(entry.sourceId);
   const raw=person?.samadhiDateRaw?.trim().toLowerCase();
-  let lifeStatus=entry.lifeStatus;
+  let lifeStatus=entry.sourceId==="rec1WWN7Xb1ZRGGhA"?{tag:"Still alive",basis:"Curator confirmed living on 1 November 2026; bottom-shelf placement."}:entry.lifeStatus;
   if(raw&&["still alive","alive","living"].includes(raw))lifeStatus={tag:"Still alive",basis:"Explicit living status in the current saint record."};
   else if(raw&&["may be alive","possibly alive"].includes(raw))lifeStatus={tag:"May be alive",basis:"Uncertain living status in the current saint record."};
   if(person?.samadhiYear!=null&&lifeStatus?.tag)lifeStatus={tag:null,basis:"A samadhi year is recorded; living-status tag withheld."};
