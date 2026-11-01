@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import packet from "../data/museum/spn-puri-odisha-approved-v4.json";
 import {eastRemainderMoveGuide as guide, eastRemainderGuideContext, projectEastRemainderGuide, assertEastRemainderRecords} from "./spn-east-remainder-guide";
 import {eastRemainderMoveGuide as prior} from "./spn-east-remainder-guide-v1";
+import {starterMoveGuide} from "./spn-starter-move-guide";
 import {allOperationalSpnShelves} from "./spn-operational-shelves";
 import {projectCompanionAdditions} from "./museum-companion-addition-projection";
 import {currentReceiverGuideDefinitions} from "./spn-starter-guide-registry";
@@ -48,14 +49,14 @@ test("native additions remove superseded starter instructions without moving phy
  const f=fixture();
  const live=projectEastRemainderGuide([],f.physical,context,f.review);
  const additions=packet.rows.map(row=>({sourceId:row.sourceId,saintId:row.saintId,sourceRevision:row.sourceRevision,vitrine:row.proposedVitrine,shelf:null,version:1,updatedAt:"2026-11-01T04:00:00Z",clientRequestId:"00000000-0000-4000-8000-000000000000"}));
- const starter={...live,vitrines:[{code:"28",summary:"Old starter grouping",families:[],cityGroups:[{id:"old",title:"Old",sourceIds:packet.rows.map(r=>r.sourceId),rationale:"",suggestedVitrines:["28"]}]}]};
+ const starter=starterMoveGuide;
  const output=projectCompanionAdditions({starter,east2:live},additions,live.entries);
  // The two contextual records are not active physical members of either guide.
  const visible=output.east2.vitrines.filter(v=>v.code!=="24").flatMap(v=>[...v.families,...v.cityGroups].flatMap(g=>g.sourceIds));
  assert.equal(visible.length,35);
  assert.equal(new Set(visible).size,35);
  const stale=output.starter.vitrines.flatMap(v=>[...v.families,...v.cityGroups].flatMap(g=>g.sourceIds));
- assert.ok(stale.every(id=>live.entries.find(e=>e.sourceId===id)?.reviewOnly));
+ assert.ok(stale.every(id=>!packet.rows.some(row=>row.sourceId===id)));
  assert.ok(output.east2.entries.filter(e=>e.destination!=="24").every(e=>e.currentLocation?.code==="28"));
 });
 
