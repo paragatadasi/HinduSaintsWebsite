@@ -1,6 +1,6 @@
 import {bimalAssemblyReview,isReviewedBimalAssembly} from "./spn-bimal-reviewed-assembly";
 import {createHash} from "node:crypto";
-import packet from "../data/museum/spn-west40-44-guide-v1.json";
+import packet from "../data/museum/spn-west40-44-guide-v2.json";
 import {projectScopedMoveGuide} from "./spn-datta-guide";
 import {MuseumMoveSessionError} from "./museum-move-session-domain";
 import {spnMovementBlockedReason} from "./spn-movement-holds";
@@ -18,7 +18,7 @@ const {contentDigest:unusedDigest,...content}=packet;
 const holdings=packet.rows;
 const pairs=holdings.map(row=>[row.sourceId,row.destination]).sort((a,b)=>a[0]<b[0]?-1:a[0]>b[0]?1:0);
 const members=packet.groups.flatMap(group=>group.sourceIds);
-if(packet.contentDigest!=="46d0b952f8b3c032a980d4fbb58c838e45c81051c5309f9e78cfda79769ded6a"||hash(canonical(content))!==packet.contentDigest||hash(JSON.stringify(pairs))!==packet.assignmentDigest||
+if(packet.contentDigest!=="52bd4aa4d547687b460bc4e710b531ee0eb71f40e4e72c70d06d460a66641521"||hash(canonical(content))!==packet.contentDigest||hash(JSON.stringify(pairs))!==packet.assignmentDigest||
  packet.rows.length!==112||holdings.filter(row=>row.saintId).length!==112||members.length!==112||new Set(members).size!==112||
  packet.groups.some(group=>group.sourceIds.some(id=>!packet.rows.some(row=>row.sourceId===id&&row.destination===group.vitrine))||group.edges.length!==0))
  throw new Error("The approved Saurashtra/Rajasthan roster changed.");
@@ -27,11 +27,11 @@ export const west40To44GuideContext={guideVersion:packet.version,contentDigest:p
 export const west40To44GuideDefinition:GuideDefinition={context:west40To44GuideContext,
  suggestions:[...packet.groups.map(group=>({id:group.id,kind:group.kind==="family"?"family" as const:"city" as const,sourceIds:group.sourceIds.filter(id=>holdings.some(row=>row.sourceId===id)),targetVitrine:group.vitrine})),
  ...holdings.map(row=>({id:`row:${row.sourceId}`,kind:"row" as const,sourceIds:[row.sourceId],targetVitrine:row.destination}))],
- physicalScope:{allowClear:true,clearancePerDestination:true,clearVitrines:packet.vitrines.map(v=>v.code),destinations:Object.fromEntries(pairs)}};
+ physicalScope:{allowClear:true,clearancePerDestination:true,previousClearanceVersions:["spn-west40-44-2026-11-01-v1"],clearVitrines:packet.vitrines.map(v=>v.code),destinations:Object.fromEntries(pairs)}};
 const holdingIds=new Set(holdings.map(row=>row.sourceId));
 const group=(g:typeof packet.groups[number]):GuideGroup=>({...g,rationale:g.rationale,sourceIds:g.sourceIds.filter(id=>holdingIds.has(id)),suggestedVitrines:[g.vitrine],allowedTargetVitrines:[]});
 export const west40To44MoveGuide:StarterMoveGuide={version:packet.version,...west40To44GuideContext,proposalVersion:packet.proposalVersion,title:packet.title,proposalLabel:packet.proposalLabel,
- phaseLabel:"Saurashtra & Rajasthan",allowClear:true,
+ phaseLabel:"Saurashtra & Rajasthan",allowClear:true,previousClearanceVersions:["spn-west40-44-2026-11-01-v1"],
  entries:holdings.map(row=>({...row,rationale:row.rationale,movementBlockedReason:row.movementBlockedReason||(row.sourceId===bimalAssemblyReview.sourceId?undefined:spnMovementBlockedReason(row.sourceId))})),
  vitrines:packet.vitrines.map(v=>({...v,families:packet.groups.filter(g=>g.vitrine===v.code&&g.kind==="family").map(group),cityGroups:packet.groups.filter(g=>g.vitrine===v.code&&g.kind!=="family").map(group)})),alternatives:[],reportedPlacements:[]};
 
