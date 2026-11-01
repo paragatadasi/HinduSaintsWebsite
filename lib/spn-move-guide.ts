@@ -23,7 +23,7 @@ export type StarterMoveGuide = {
  preparatoryTransfers?:{sourceId:string;name:string;fromVitrine:string;toVitrine:string;finalDestination:string;requiredBefore:string[]}[];
  outgoingDependencies?:{sourceId:string;name:string;previousProposedVitrine:string;proposedDestination:null|string;state:string}[];
  transitionSourceIds?:string[];
- vitrines:{code:string;summary:string;families:GuideGroup[];cityGroups:GuideGroup[]}[];
+ vitrines:{code:string;summary:string;placementGuidance?:string;fitGuidance?:string;families:GuideGroup[];cityGroups:GuideGroup[]}[];
  alternatives:GuideGroup[];reportedPlacements:{sourceId:string;destination:string;date:string}[];
 };
 export type PhysicalLocation={kind:"vitrine"|"table";code:string;label:string;shelf?:string|null};

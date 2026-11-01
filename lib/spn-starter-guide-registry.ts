@@ -1,3 +1,4 @@
+import {southernGuideContext as oldSouthernContext,southernGuideDefinition as oldSouthernDefinition} from "./spn-southern-guide-v1";
 import {west40To44GuideContext as oldWestContext,west40To44GuideDefinition as oldWestDefinition} from "./spn-west40-44-guide-v1";
 import {westV59GuideContext,westV59GuideDefinition} from "./spn-west-v59-guide";
 import {southernGuideContext,southernGuideDefinition} from "./spn-southern-guide";
@@ -78,6 +79,7 @@ export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinitio
       Object.values(definition.physicalScope?.destinations ?? {}).includes(vitrine)));
 }
 export function readStarterGuideDefinition(version: string): GuideDefinition {
+  if(version===oldSouthernContext.guideVersion)return {...oldSouthernDefinition,readOnly:true};
   if(version===southernGuideContext.guideVersion)return southernGuideDefinition;
   if(version===oldWestContext.guideVersion)return {...oldWestDefinition,readOnly:true};
   if(version===west40To44GuideContext.guideVersion)return west40To44GuideDefinition;

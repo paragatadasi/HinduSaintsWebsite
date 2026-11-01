@@ -5,7 +5,7 @@ import {readGuideAlternativeDestinations} from "./museum-guide-alternatives";
 import {readEffectiveCompanionAdditions} from "./museum-companion-additions-state";
 import {currentCompanionAdditions} from "./museum-companion-addition-validation";
 import {buildLatestSpnReview} from "./spn-reviewed-proposal";
-import {projectSouthernGuide} from "./spn-southern-guide";
+import {projectSouthernGuide,applySouthernLivingReview} from "./spn-southern-guide";
 import {projectCurrentGuideLifeStatus} from "./museum-guide-life-status";
 import type {PhysicalState} from "./spn-move-guide";
 
@@ -14,5 +14,5 @@ export async function readSouthernGuide(current:Awaited<ReturnType<typeof readMu
  const valid=currentCompanionAdditions(additions,physical.rows);
  const review=buildLatestSpnReview(current.placements,[...valid,...saved.filter(row=>!valid.some(addition=>addition.sourceId===row.sourceId))],physical.rows);
  const guide=projectSouthernGuide(current.placements,physical,review);
- return {...guide,entries:projectCurrentGuideLifeStatus(guide,current).entries};
+ return applySouthernLivingReview({...guide,entries:projectCurrentGuideLifeStatus(guide,current).entries});
 }
