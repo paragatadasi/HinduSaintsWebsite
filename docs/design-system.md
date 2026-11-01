@@ -810,3 +810,12 @@ See [dated museum placement learning](museum-placement-learning-2026-11-01.md)
 for placement-driver roles, physical ID discipline, and release verification.
 
 [SPN display palette audit](design/spn-display-palette.md) lists the shared color declarations.
+
+### Museum move progress
+
+The Progress workspace tab uses the companion's existing regional row groups and
+vitrine fill colors. Show overall and regional percentages with visible addressed /
+total counts, then clickable vitrine trackers. Addressed means placed, declined or
+not on display; deferred remains separate. Scope totals to available move guides,
+count each source once, and show loading/error states rather than incomplete totals.
+Use shared `museum-progress__*` classes and `museum-vitrine-progress` fills.

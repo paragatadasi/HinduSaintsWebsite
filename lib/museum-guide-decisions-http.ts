@@ -6,7 +6,7 @@ import { hasCapability } from "./permissions";
 import { boundedIntakeBody } from "./museum-intake-api";
 import { intakeWriteOriginAllowed } from "./museum-intake-domain";
 import { MuseumMoveSessionError } from "./museum-move-session-domain";
-import { readMuseumGuideDecisions, saveMuseumGuideDecision } from "./museum-guide-decisions";
+import { readMuseumGuideDecisions, readMuseumProgressDecisions, saveMuseumGuideDecision } from "./museum-guide-decisions";
 import { readStarterGuideDefinition, starterGuideContext } from "./spn-starter-guide-registry";
 
 export async function museumGuideDecisionsHttp(request: Request) {
@@ -18,6 +18,10 @@ export async function museumGuideDecisionsHttp(request: Request) {
     if (request.method === "GET") {
       const query = new URL(request.url).searchParams;
       if ((query.get("museumId") ?? "museum-spn") !== "museum-spn") throw new MuseumMoveSessionError(400, "Choose the SPN museum.");
+      if(query.get("view")==="progress"){
+        const versions=z.array(z.string().min(1).max(200)).min(1).max(32).parse(query.getAll("guideVersion"));
+        return NextResponse.json(await readMuseumProgressDecisions([...new Set(versions)],readStarterGuideDefinition),{headers:{"Cache-Control":"private, no-store"}});
+      }
       result = await readMuseumGuideDecisions(z.string().min(1).max(200).parse(query.get("guideVersion") ?? starterGuideContext.guideVersion), readStarterGuideDefinition);
     } else if (request.method === "POST") {
       if (!hasCapability(user.roles, "manage_museum")) throw new MuseumMoveSessionError(403, "A museum curator must review suggestions.");

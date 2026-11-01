@@ -21,6 +21,12 @@ export async function readMuseumGuideDecisions(guideVersion: string, loader: Gui
   return { museumId: "museum-spn", guideContext: guide.context, suggestions: guide.suggestions, alternativeVitrines: availableDeclineAlternatives(currentSpnProposalRelease.proposal.layout.vitrines),
     decisions: inheritGuideDecisions(guide, current, history) };
 }
+export async function readMuseumProgressDecisions(versions:string[],loader:GuideDefinitionLoader){
+ const guides=versions.map(loader);
+ const allVersions=[...new Set(guides.flatMap(g=>[g.context.guideVersion,...(g.previousVersions??[])]))];
+ const rows=await db.museumGuideSuggestionDecision.findMany({where:{museumId:"museum-spn",guideVersion:{in:allVersions}},select:{guideVersion:true,suggestionId:true,decision:true,note:true,alternativeVitrine:true,alternativeShelf:true,version:true,updatedAt:true}});
+ return {decisions:Object.fromEntries(guides.map(guide=>[guide.context.guideVersion,inheritGuideDecisions(guide,rows.filter(r=>r.guideVersion===guide.context.guideVersion),(guide.previousVersions??[]).map(version=>({guide:loader(version),decisions:rows.filter(r=>r.guideVersion===version)})))]))};
+}
 export async function saveMuseumGuideDecision(raw: unknown, actor: MoveSessionActor, loader: GuideDefinitionLoader) {
   if (!actor.canManage) throw new MuseumMoveSessionError(403, "A museum curator must review suggestions.");
   const input = guideDecisionInput.parse(raw), guide = loader(input.guideVersion);

@@ -12313,3 +12313,12 @@ select:not([multiple]) {
 .museum-room__vitrine[data-region-highlighted="false"] {opacity:var(--opacity-control-disabled);}
 
 .museum-companion__region-card {border-top-color:var(--tone,var(--color-border));}
+
+/* Shared companion progress summaries reuse the vitrine completion colors. */
+.museum-progress__summary { display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--space-2); }
+.museum-progress__percent { font-size:var(--font-size-companion-heading); font-variant-numeric:tabular-nums; }
+.museum-progress__bar { flex-basis:100%; height:var(--space-3); background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-sm); }
+.museum-progress__region { margin-top:var(--space-5); padding-top:var(--space-4); border-top:1px solid var(--color-border); }
+.museum-progress__region .room-move__phase { margin-top:var(--space-3); }
+.museum-progress__vitrine { display:flex; flex-direction:column; gap:var(--space-1); font-variant-numeric:tabular-nums; }
+.museum-progress__vitrine small { font-size:var(--font-size-review-hint); font-weight:normal; }
