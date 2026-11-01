@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {starterMoveGuide} from "./spn-starter-move-guide";
 import base from "../data/museum/spn-starter-move-guide-v3.json";
 import frozen from "../data/museum/spn-starter-move-guide-v4.json";
-import current from "../data/museum/spn-starter-move-guide-v5.json";
+import current from "../data/museum/spn-starter-move-guide-v6.json";
 import overlay from "../data/museum/spn-vitrine-two-tree-v1.json";
 test("Vitrine 2 presentation tree preserves roster and distinct relationships",()=>{
  const v=starterMoveGuide.vitrines.find(v=>v.code==="2")!;

@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {registeredStarterGuide as current,readStarterGuideDefinition} from "./spn-starter-guide-registry";
+import {registeredStarterGuide as current} from "./spn-starter-guide-v5";
+import {readStarterGuideDefinition} from "./spn-starter-guide-registry";
 import {registeredStarterGuide as previous} from "./spn-starter-guide-v4";
 import {starterMoveGuide} from "./spn-starter-move-guide";
 import {inheritGuideDecisions} from "./museum-guide-decision-inheritance";
@@ -23,7 +24,7 @@ test("private Hemalata is held without deleting historical membership or allowin
  assert.throws(()=>assertSpnMovementAllowed("rechBZw1LyW9TTX9L",null,{kind:"vitrine",code:"78",label:"Vitrine78"}),/Privately held/);
 });
 test("Harendranath joins exact Ramdas source branch; no namesake identity merge",()=>{
- const group=starterMoveGuide.vitrines.find(v=>v.code==="28")?.families.find(g=>g.id==="v3-radharaman-pathbari");
+ const group=starterMoveGuide.vitrines.find(v=>v.code==="27")?.families.find(g=>g.id==="v6-27-v3-radharaman-pathbari");
  assert.equal(group?.sourceIds.includes("rec1bOVrWmAFek7Tn"),true);
  assert.ok(group?.edges?.some(e=>e.fromSourceId==="recqPwPML5FbWMvaV"&&e.toSourceId==="rec1bOVrWmAFek7Tn"));
  assert.ok(group?.sourceIds.includes("recT2VuCD6lF7YwX0"));

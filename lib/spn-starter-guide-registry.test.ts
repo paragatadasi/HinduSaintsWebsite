@@ -3,13 +3,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { registeredStarterGuide as guide, readStarterGuideDefinition, starterGuideContext } from "./spn-starter-guide-registry";
 import oldGuide from "../data/museum/spn-starter-move-guide-v2.json";
-import { starterAmendedProposal as proposal } from "./spn-starter-amended-proposal";
+import {starterV6Proposal as proposal} from "./spn-starter-guide-v6";
 
 test("v16 guide has an exact source partition and matches all reviewed destinations", () => {
  assert.equal(guide.proposalVersion, proposal.version);
  assert.deepEqual(guide.vitrines.map(row => row.code), ["2", "78", "36", "29", "76", "28", "27"]);
  const ids = guide.vitrines.flatMap(v => [...v.families, ...v.cityGroups].flatMap(g => g.sourceIds));
- assert.equal(ids.length, 136); assert.equal(new Set(ids).size, 136);
+ assert.equal(ids.length, 123); assert.equal(new Set(ids).size, 123);
  for (const row of guide.rows) assert.equal(proposal.rows.find(p => p.sourceId === row.sourceId)?.vitrine, row.vitrine);
 });
 
@@ -18,7 +18,7 @@ test("historical guide definitions and reported physical facts survive version c
  assert.equal(historical.context.contentDigest, oldGuide.contentDigest);
  assert.deepEqual(guide.physicalConfirmations.moves, oldGuide.physicalConfirmations.moves);
  const extra = guide.rows.find(row => row.sourceId === "recOs3jGNyfMlakIB")!;
- assert.equal(extra.saintId, null); assert.equal(extra.vitrine, "28");
+ assert.equal(extra.saintId, null); assert.equal(extra.vitrine, "27");
  assert.throws(() => readStarterGuideDefinition("unknown"), /not registered/);
 });
 

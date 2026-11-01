@@ -3,12 +3,13 @@ import assert from "node:assert/strict";
 import {reconcileCompanionMembership} from "./museum-companion-membership";
 import {projectCompanionAdditions} from "./museum-companion-addition-projection";
 import {starterMoveGuide} from "./spn-starter-move-guide";
+import historicalStarter from "../data/museum/spn-starter-move-guide-v5.json";
 import {vrajRemainderMoveGuide} from "./spn-vraj-remainder-guide";
 import type {GuideEntry,StarterMoveGuide} from "./spn-move-guide";
 const entry:GuideEntry={sourceId:"a",saintId:"sa",name:"Saint",tier:"Primary",city:"",relicDescription:"Relic",destination:"27",section:"",family:"",rationale:""};
 function guide():StarterMoveGuide{return {version:"v",contentDigest:"content",assignmentDigest:"assignment",proposalVersion:"p",title:"Guide",entries:[entry],vitrines:[{code:"27",summary:"Story",families:[{id:"f",title:"Family",sourceIds:["a"],rationale:"",suggestedVitrines:["27"]}],cityGroups:[]}],alternatives:[],reportedPlacements:[{sourceId:"a",destination:"27",date:"2026-10-27"}],contextAnchors:[{sourceId:"outside",name:"Teacher",destination:"27",rationale:"Context",reviewNotes:[]}]};}
 test("approved Vraj destinations remove the stale Devraha starter allocation without touching packet digests or reports",()=>{
- const old=starterMoveGuide.vitrines.find(v=>v.code==="27")!.families.find(g=>g.title.includes("Devraha"))!;
+ const old=historicalStarter.vitrines.find(v=>v.code==="27")!.families.find(g=>g.title.includes("Devraha"))!;
  assert.equal(old.sourceIds.length,5);
  const catalog=vrajRemainderMoveGuide.entries.filter(e=>old.sourceIds.includes(e.sourceId));
  assert.equal(catalog.length,5);assert.ok(catalog.every(e=>e.destination==="38"));
