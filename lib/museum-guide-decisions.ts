@@ -1,4 +1,3 @@
-import {planningVitrineAllowed} from "./museum-planning-constraints";
 import { guideDecisionInput, assertDeclineAlternative, availableDeclineAlternatives, declineAlternativeValues } from "./museum-guide-decision-domain";
 export { guideDecisionInput } from "./museum-guide-decision-domain";
 import { currentSpnProposalRelease } from "./spn-current-proposal";
@@ -30,7 +29,6 @@ export async function saveMuseumGuideDecision(raw: unknown, actor: MoveSessionAc
   const suggestion = guide.suggestions.find(row => row.id === input.suggestionId);
   assertDeclineAlternative(input,currentSpnProposalRelease.proposal.layout.vitrines);
   if (!suggestion) throw new MuseumMoveSessionError(409, "This suggestion is not in the pinned guide. Reload the guide.");
-  if(input.alternativeVitrine&&suggestion.sourceIds.some(id=>!planningVitrineAllowed("museum-spn",currentSpnProposalRelease.proposal.rows.find(r=>r.sourceId===id)?.section??"",input.alternativeVitrine!)))throw new MuseumMoveSessionError(400,"This section has a fixed destination. Choose its required vitrine.");
   return db.$transaction(async tx => {
     await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-guide-decisions:spn'))`;
     const entityId = `${input.museumId}:${input.clientRequestId}`, fingerprint = physicalFingerprint(input);

@@ -14,8 +14,9 @@ test("historical first check can recover source basis only when original and pri
  assert.equal(physicalUndoOffer({...row,original:null},[event]).available,false);
 });
 test("stale receipt, changed identity, newer location and whole-clear event cannot be undone",()=>{
- for(const r of [{...row,currentVersion:2},{...row,identityChanged:true},{...row,saintId:"another"},{...row,current:from},{...row,verifiedItemIds:["item"]}]) assert.equal(physicalUndoOffer(r,[event]).available,false);
+ for(const r of [{...row,currentVersion:2},{...row,identityChanged:true},{...row,saintId:"another"},{...row,current:from}]) assert.equal(physicalUndoOffer(r,[event]).available,false);
  assert.equal(physicalUndoOffer(row,[{...event,afterJson:{...event.afterJson,clearedVitrines:["1"]}}]).available,false);
+ assert.equal(physicalUndoOffer({...row,verifiedItemIds:["item"]},[event]).available,true,"Undoing the source check does not relocate verified items");
 });
 test("new receipt restores exact prior confirmed metadata; older unprovable prior confirmations remain held",()=>{
  const prior="2026-10-27T10:00:00.000Z";

@@ -12,10 +12,10 @@ export const guideDecisionInput = z.object({ museumId: z.literal("museum-spn"), 
 });
 type LayoutVitrine={number:string;availability:string;restriction:string};
 export function availableDeclineAlternatives(layout:LayoutVitrine[]) {
- return [...new Set(layout.filter(v=>["existing","new"].includes(v.availability)&&v.restriction==="general").map(v=>v.number))];
+ return [...new Set(layout.map(v=>v.number))];
 }
 export function assertDeclineAlternative(input:{alternativeVitrine:string|null},layout:LayoutVitrine[]){
- if(input.alternativeVitrine && !availableDeclineAlternatives(layout).includes(input.alternativeVitrine))throw new MuseumMoveSessionError(400,"Choose an available general-display vitrine. Future and special-housing cases need separate review.");
+ if(input.alternativeVitrine && !availableDeclineAlternatives(layout).includes(input.alternativeVitrine))throw new MuseumMoveSessionError(400,"Choose a vitrine in the museum layout.");
 }
 
 export function declineAlternativeValues(input:{decision:string;alternativeVitrine:string|null;alternativeShelf:string|null},

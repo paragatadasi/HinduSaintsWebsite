@@ -33,15 +33,14 @@ test("a later confirmed target invalidates an earlier selected-contents preview"
  assert.throws(()=>assertSelectedCaseContents(records,original.revision,now));
  assert.deepEqual(now.preservedSourceIds,["placed"]);
 });
-test("partial staging accepts registered receivers but preserves housing and historical restrictions",()=>{
+test("partial staging permits any museum case and preserves current record versions",()=>{
  const rows=[{...row("one"),current:loc("59")},{...row("two"),current:loc("59")},{...row("fixed"),current:loc("59"),fixedHousing:true}];
- assert.throws(()=>caseContentsPreview(rows,[],"59","selected_contents"));
- const preview=caseContentsPreview(rows,[],"59","selected_contents",undefined,true);
- assert.deepEqual(preview.eligible.map(r=>r.sourceId),["one","two"]);
- assert.deepEqual(preview.blocked.map(r=>r.sourceId),["fixed"]);
+ const preview=caseContentsPreview(rows,[],"59","selected_contents");
+ assert.deepEqual(preview.eligible.map(r=>r.sourceId),["fixed","one","two"]);
+ assert.deepEqual(preview.blocked,[]);
  assertSelectedCaseContents([refs(preview.eligible[0])],preview.revision,preview);
- assert.throws(()=>caseContentsPreview(rows,[],"59","historical",undefined,true));
 });
+
 test("historical correction preserves every later confirmation, even an outgoing destination",()=>{
  const moved={...row("moved"),current:loc("1"),currentBasis:"confirmed",currentVersion:3};
  const staged={...row("staged"),current:{kind:"table" as const,code:"staging-area",label:"Staging area"},currentBasis:"confirmed",currentVersion:1};
@@ -49,10 +48,10 @@ test("historical correction preserves every later confirmation, even an outgoing
  const preview=caseContentsPreview([row("residual"),moved,staged,inCase],[{sourceId:"placed",vitrine:"60"}],"45","historical");
  assert.deepEqual(preview.eligible.map(r=>r.sourceId),["residual"]);assert.equal(preview.preservedConfirmedCount,3);assert.equal(preview.alreadyStagedCount,1);
 });
-test("fixed, component housing, identity and verified item restrictions are never waived",()=>{
+test("housing and verified-item notes do not block clearing; changed identity still does",()=>{
  const preview=caseContentsPreview([{...row("fixed"),fixedHousing:true},{...row("identity"),identityChanged:true},{...row("item"),verifiedItemIds:["item"]},{...row("compound"),movementBlockedReason:"Use scoped components"}],[],"45","selected_contents");
- assert.equal(preview.eligible.length,0);assert.equal(preview.blocked.length,4);
- assert.throws(()=>caseContentsPreview([row("held")],[],"68","selected_contents"));
+ assert.equal(preview.eligible.length,3);assert.deepEqual(preview.blocked.map(row=>row.sourceId),["identity"]);
+ assert.doesNotThrow(()=>caseContentsPreview([row("held")],[],"68","selected_contents"));
 });
 test("stale revisions, duplicates and changed sources reject the entire selected batch",()=>{
  const original=caseContentsPreview([row("one"),row("two")],[],"45","selected_contents"),record=refs(original.eligible[0]);

@@ -10,10 +10,11 @@ test("decline accepts optional text shelf, normalizes blank and rejects shelf wi
  for(const decision of ["pending","deferred"])assert.equal(guideDecisionInput.safeParse({...input,decision,alternativeVitrine:"80"}).success,false);
  assert.equal(guideDecisionInput.safeParse({...input,alternativeShelf:"x".repeat(101)}).success,false);
 });
-test("only available general-display vitrines can be preferred; future, special and unknown targets are rejected",()=>{
+test("all museum layout vitrines can be preferred; unknown targets remain invalid",()=>{
  const layout=[{number:"80",availability:"existing",restriction:"general"},{number:"78",availability:"new",restriction:"general"},{number:"99",availability:"future",restriction:"general"},{number:"30",availability:"existing",restriction:"walking_sticks"}];
  assert.doesNotThrow(()=>assertDeclineAlternative({alternativeVitrine:"80"},layout));assert.doesNotThrow(()=>assertDeclineAlternative({alternativeVitrine:"78"},layout));
- for(const alternativeVitrine of ["99","30","staging-area","missing"])assert.throws(()=>assertDeclineAlternative({alternativeVitrine},layout));
+ for(const alternativeVitrine of ["99","30"])assert.doesNotThrow(()=>assertDeclineAlternative({alternativeVitrine},layout));
+ for(const alternativeVitrine of ["staging-area","missing"])assert.throws(()=>assertDeclineAlternative({alternativeVitrine},layout));
 });
 test("exact inherited decision carries alternative metadata without altering its historical version",()=>{
  const suggestion={id:"old",kind:"row" as const,sourceIds:["a"],targetVitrine:"2"};const context={guideVersion:"old",contentDigest:"digest",assignmentDigest:"assignment"};
