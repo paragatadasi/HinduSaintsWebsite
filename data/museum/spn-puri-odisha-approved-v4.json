@@ -1,0 +1,2463 @@
+{
+  "version": "spn-puri-odisha-approved-2026-11-01-v4",
+  "status": "User-approved allocation and headline stories; native proposal load and companion release in progress",
+  "evidenceCapturedAt": "2026-11-01T02:59:42.686449+00:00",
+  "scopeBasis": "31 current native targets for26 (30 older guide entries plus Baba Balia), plus six held Odisha records;37 unique source observations.",
+  "cases": {
+    "25": {
+      "sourceRecords": 17,
+      "knownShelfShareComparison": 3.033333333333333,
+      "unknownFootprintSourceIds": [],
+      "contextHoldingUnconfirmed": 0,
+      "knownLivingLowerBandComparison": 0.45
+    },
+    "26": {
+      "sourceRecords": 20,
+      "knownShelfShareComparison": 2.794047619047619,
+      "unknownFootprintSourceIds": [
+        "rec9vEn5oj7QZTXl0",
+        "recje6xb9KoUwRpQL",
+        "reclyIPFpFR6q67Bx"
+      ],
+      "contextHoldingUnconfirmed": 2,
+      "knownLivingLowerBandComparison": 0.7833333333333333
+    }
+  },
+  "rows": [
+    {
+      "sourceId": "rec0PdixvLE8VQU5H",
+      "saintId": "cms0w7c9w004m07qij2yi87zw",
+      "name": "Sri Bal Krishna Das",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "A"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "his Japamala",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "902aaa721cfc464bebb29c0e16a899be5dd572bd2ef171aa536cfea1ceebed1b",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "rec1mXGzzcIe1YtQv",
+      "saintId": "cms0w7cfj00av07qitjtadoue",
+      "name": "Sri Advaita Babaji Maharaj",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Cuttack",
+      "city": "Cuttack, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "28",
+        "label": "Vitrine 28"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "C"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "his woolen cap (moneky hat)",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "84bdfecac75d90980846cac2a91b113342a0a29db9a8ea4747089427f6fe7b96",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "rec37kfAtkuXhvjd8",
+      "saintId": "cms0w7cmc00jk07qi1r7no4of",
+      "name": "Sri Vishwaguru Baya Baba",
+      "tier": "Secondary",
+      "proposedVitrine": "25",
+      "group": "Baya Baba & Pagal Baba",
+      "city": "Cuttack, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "D"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "yoga patta",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "c93ca9e41ecde07fa45280457c36307aef87bcec59fcf3c343e356f5ef17df09",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "rec3tCQCd95bdyD01",
+      "saintId": "cms0w7coz00mz07qiba99y88w",
+      "name": "Sri Baba Vaikunthanath Brahmachari",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Bhubaneswar",
+      "city": "Bhubaneswar, Odisha, India",
+      "current": {
+        "kind": "table",
+        "code": "staging-area",
+        "label": "Staging area"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "20",
+        "label": "Vitrine 20",
+        "shelf": "B"
+      },
+      "previousProposedDestination": "",
+      "relicDescription": "his dhoti",
+      "knownFootprint": 0.2,
+      "previousFootprintProxy": 0.2,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": true,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "32f32253a17cd312d75e84674cea7b718836ac327c1f018e82b749c02c3a8641",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "rec5r3QLGKrjYa5y6",
+      "saintId": "cms0w7d17011z07qiwewg7t11",
+      "name": "Mahant Sri Bhakticharandas Maharaj",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Balasore",
+      "city": "Baleshwar (Balasore), Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "20",
+        "label": "Vitrine 20",
+        "shelf": "E"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "his asan",
+      "knownFootprint": 0.2,
+      "previousFootprintProxy": 0.2,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "5cd84e33d97f3a62d0b5bba8f4f20ae9e541598ccb705f8be95bece069be0cd9",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "rec7GxgNvmubmTvMM",
+      "saintId": "cms0w7d9s01cb07qil8lvv2z0",
+      "name": "Sri Vishwaguru Avaduth Pagal Baba",
+      "tier": "Secondary",
+      "proposedVitrine": "25",
+      "group": "Baya Baba & Pagal Baba",
+      "city": "Cuttack, Odisha, India",
+      "current": null,
+      "currentBasis": "unknown",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "D"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "his Dreadlock, Dandha Yoga Patta",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": true,
+      "alerts": [
+        "Confirm ordinary objects and stick housing before executing a move. Do not move a whole mixed holding from this proposal alone."
+      ],
+      "sourceRevision": "8f4127e3ad3fd2150a20e59caf8f7d9893276c046b506857ebd11161683155fc",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "rec7h3JfBcXTcy24U",
+      "saintId": "cms0w7d9y01cm07qi7hx5ofuv",
+      "name": "Sri Subarh Chandra Bose",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Cuttack",
+      "city": "Cuttack, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26",
+        "shelf": "E"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Rudraksha Mals, Puja Cup, Wood from the door",
+      "knownFootprint": 0.2,
+      "previousFootprintProxy": 0.2,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [
+        "Keep as a distinct Cuttack historical/cultural contribution, not as a guru-lineage member. Source spells the name “Subarh”; confirm label before a name or prominence correction."
+      ],
+      "sourceRevision": "65e268dbc120ef2b8a225a7bf72c17aa9685328e70f8888b7767e0facc123e4f",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "rec9vEn5oj7QZTXl0",
+      "saintId": "cms0w7dlg01rr07qiw0uiao3u",
+      "name": "Paramahamsa Sri Srimat Durgaprasad Saraswati",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Bhubaneswar",
+      "city": "Bhubaneswar, Odisha, India",
+      "current": null,
+      "currentBasis": "unknown",
+      "original": {
+        "kind": "vitrine",
+        "code": "20",
+        "label": "Vitrine 20",
+        "shelf": "A"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "New: his walking stick; Piece of his dhoti",
+      "knownFootprint": null,
+      "previousFootprintProxy": 0.14285714285714285,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": true,
+      "alerts": [
+        "Confirm ordinary objects and stick housing before executing a move. Do not move a whole mixed holding from this proposal alone.",
+        "The raw name explicitly asks whether this is Durgaprasad of Bhubaneswar or Durga Prasanna of Varanasi. Bhubaneswar placement remains provisional; no identity merge. Curator confirms the relic is large: its previous0.143 source-occupancy estimate is superseded for fit planning. Measure the complete display before shelf allocation."
+      ],
+      "sourceRevision": "a850f45afafc86f927586c55bda9f5653c48150679e7f0921945ec0637322cfc",
+      "suggestedShelfIndex": null,
+      "headline": true
+    },
+    {
+      "sourceId": "recGAt9Q8JBRM7pdT",
+      "saintId": "cms0w7f6503um07qixqdtjzw6",
+      "name": "Sri Gopinath Das Babaji",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Haridas Thakur Math, Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "28",
+        "label": "Vitrine 28",
+        "shelf": "C"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "His shiva lingam, tulsi mala and his clothes",
+      "knownFootprint": 0.25,
+      "previousFootprintProxy": 0.25,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "e168170973d7a8c1ca8f54d5eca2210ebb264102b74c37e41fdce4d7844db066",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recGZ3OaouJRobeRl",
+      "saintId": "cms0w7fd5043u07qin2wotqqh",
+      "name": "Sri Guru Ayodhya Dash (Rendhagarh Baba)",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "B"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Japa mala, book stand",
+      "knownFootprint": 0.125,
+      "previousFootprintProxy": 0.125,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "5e938a38e10d0f7c0678a9f96ce3e0180063e4005279f404f18113194d4468ea",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recGbe48WW1t6DqUz",
+      "saintId": "cms0w7f6903ur07qinum44a6z",
+      "name": "Sri Abiram Paramahamsa Dev",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Cuttack",
+      "city": "Cuttack, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "E"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Dhoti and Chadar (one piece)",
+      "knownFootprint": 0.2,
+      "previousFootprintProxy": 0.2,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "690d4d8f83ecd8a4b2b9322694fd41296bba525518607e8f37dc288472be1963",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recHNlgpOtSsWlIfl",
+      "saintId": "cms0w7fha049507qii84kot6m",
+      "name": "Mahant Sri Dhyanachandra Das Goswami",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Gambhira Temple, Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "E"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "bedsheet",
+      "knownFootprint": 0.2,
+      "previousFootprintProxy": 0.2,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "d6eae096f8b90558ab3725df983b95caa8f6aaae03cde33c03dea6cc25da5d27",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recIktBD8n1j13qh9",
+      "saintId": "cmus3rwyf004607o5xg22vbrr",
+      "name": "Sri Brahmananda Ji Maharaj",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Brahmananda · Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "B"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Dhoti (cloth(es) ??written on label)\n\nclothes (dhoti?)",
+      "knownFootprint": 0.125,
+      "previousFootprintProxy": 0.125,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": "Living",
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [
+        "Keep both source records together. Similar source names and descriptions need identity/object-overlap review; two records do not prove two different saints or objects.",
+        "Bottom shelf first; only the second-from-bottom for living overflow. Preserve any already recorded actual placement; this is a recommendation, not a physical move."
+      ],
+      "sourceRevision": "4b7da7ced5456ab417e88cd3b8bc0e9a5dbbf9504e4b761ec61f64dee0a386b3",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recKEsKy2qc2E0bGP",
+      "saintId": "cms0w7g5c052m07qid9g47f5p",
+      "name": "Sri Sri 108 Chakradhar Das Maharaj",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Cuttack",
+      "city": "Cuttack, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "C"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "kartals\n",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "90c9707f41327682807554693486ba44a9fa3695b3e7b0f62b7bc07ef4fc8068",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recMajTBqEWnjz0II",
+      "saintId": "cms0w7gls05n307qi5yfv4cyi",
+      "name": "Sri Sripad Bimala Charandas",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "table",
+        "code": "staging-area",
+        "label": "Staging area"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "B"
+      },
+      "previousProposedDestination": "",
+      "relicDescription": "His white dhoti, cloth",
+      "knownFootprint": 0.125,
+      "previousFootprintProxy": 0.125,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": true,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "9801af1cc2770fe6e596815f72b6807752127219587466b759b70bb7b31cb6f4",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recQAmbNSmfWIrzHz",
+      "saintId": "cms0w7hjw06rn07qikqu70rkq",
+      "name": "Sri Radhakant Das",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Bhadrak",
+      "city": "Bhadrak, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "35",
+        "label": "Vitrine 35",
+        "shelf": "D"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Dhoti and bookmark ",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "2e1b99ed6003cc4c7c8edd3ef097b6a9fade09f3fb0100b4a7934d177d24f28d",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recRc97ygtRl5l7Kr",
+      "saintId": "cms0w7hsz072j07qi6mubq683",
+      "name": "Sri Achyutananda Das Maharaj",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Jagatsinghpur",
+      "city": "Jagatsinghpur, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "20",
+        "label": "Vitrine 20",
+        "shelf": "C"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "piece from his Namavali cloth",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "6855be187603ccadd56c1af7688160dc90f599aa92012336c87c3fc97bd28c65",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recRoVxSYIxoob8sJ",
+      "saintId": "cms0w7hx2077907qiql8e3nfe",
+      "name": "Sri Sri 108 Mahant Lakshman Das Ji",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "table",
+        "code": "staging-area",
+        "label": "Staging area"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "B"
+      },
+      "previousProposedDestination": "",
+      "relicDescription": "letter from him",
+      "knownFootprint": 0.125,
+      "previousFootprintProxy": 0.125,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": true,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "091c10210569214eb7a67cdd971f6a782f3af5a46453baf8ebc3a3d27968fb83",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recVN6Ty3682Uz2g4",
+      "saintId": "cms0w7izk08cz07qi2x8scsz2",
+      "name": "Sri Paramanand Das",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "20",
+        "label": "Vitrine 20",
+        "shelf": "B"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "yoga patta- bole baba stick (to rest the arm while doing Japa)",
+      "knownFootprint": 0.2,
+      "previousFootprintProxy": 0.2,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [
+        "Curator confirmed the complete yoga arm support, not a dedicated-stick-vitrine object. Width and mount fit remain unmeasured."
+      ],
+      "sourceRevision": "b85fd5572b7ebdb950d32378d23ed132690590d391fbb0c3c727153325defb52",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recYXl5vTquTix4E2",
+      "saintId": "cms0w7jyr09dc07qik7ayw8h4",
+      "name": "Paramahamsa Sri Srimat Baba Balia Ji Maharaj",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Arilo / Cuttack",
+      "city": "Arilo, Cuttack, Odisha, India",
+      "current": {
+        "kind": "table",
+        "code": "staging-area",
+        "label": "Staging area"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "E"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "his tulsi mala",
+      "knownFootprint": 0.2,
+      "previousFootprintProxy": 0.2,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": "May be alive",
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [
+        "Bottom shelf first; only the second-from-bottom for living overflow. Preserve any already recorded actual placement; this is a recommendation, not a physical move.",
+        "A saved addition to26 was missing from the older registered guide. Included here in the Arilo/Cuttack cohort; canonical tradition and tier remain unchanged."
+      ],
+      "sourceRevision": "51bbd8ebab6d73e8817f6cbbd0f6c6d82a74a0f2e7430b6d91c0402288c53819",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recZ1zqo37l0KYw1G",
+      "saintId": "cms0w7k0509ep07qiu8fjozuz",
+      "name": "Sri Kali Mata",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Cuttack",
+      "city": "Cuttack, Odisha, India; Nemalo, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26",
+        "shelf": "E"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Shawl",
+      "knownFootprint": 0.2,
+      "previousFootprintProxy": 0.2,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "2f5b20c148fb84ac917a451135629626511dc07389d98e66461a9af299099996",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recb7oJ5FTsyEzb5S",
+      "saintId": "cms0w7dwe026j07qinr61rr8m",
+      "name": "Sri Dharmananda Saraswati",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "D"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "letter written by him",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": "Living",
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [
+        "Bottom shelf first; only the second-from-bottom for living overflow. Preserve any already recorded actual placement; this is a recommendation, not a physical move."
+      ],
+      "sourceRevision": "22d2b66850f6105c3eb70c5f5507ff4a1023c1865e4c26a048117cf7d8cbcdcb",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recbCsiExuW8dTUUM",
+      "saintId": "cms0w7dww027907qils07847h",
+      "name": "Sri Mahapurusha Achyutanand",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Panchasakha · Jagannatha Das & Achyutananda",
+      "city": "Nemalo, Odisha, India; Cuttack, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26",
+        "shelf": "E"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Hand written script on a leaf ",
+      "knownFootprint": 0.2,
+      "previousFootprintProxy": 0.2,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [
+        "Propose Primary prominence as a Panchasakha anchor. Source dating “1600 century” needs correction; distinct from the modern Jagatsinghpur Achyutananda record. No tier/date write made."
+      ],
+      "sourceRevision": "9660341a8e654056b73d4675232de43e3430817e9baea75a914067aa308e34e9",
+      "suggestedShelfIndex": null,
+      "headline": true
+    },
+    {
+      "sourceId": "reccEWyFY8dMC4ZGN",
+      "saintId": "cms0w7e7a02kr07qi8bu1uum5",
+      "name": "Sri Nanda Dulal Goswami",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Bhadrak",
+      "city": "Bhadrak, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "35",
+        "label": "Vitrine 35",
+        "shelf": "D"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Glasses and bag for glasses",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "a96935aab47d229b6a5b174b097401327d2f9b80fbc06321483ffb752814e900",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recje6xb9KoUwRpQL",
+      "saintId": "cms0w7fvd04qf07qiv5qdw9i4",
+      "name": "Tota Gopinath (deity)",
+      "tier": "Secondary",
+      "proposedVitrine": "26",
+      "group": "Jagannath & Tota Gopinath · context / holding to confirm",
+      "city": "",
+      "current": null,
+      "currentBasis": "unknown",
+      "original": null,
+      "previousProposedDestination": "26",
+      "relicDescription": "",
+      "knownFootprint": null,
+      "previousFootprintProxy": null,
+      "contextOnlyUntilHoldingConfirmed": true,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": true,
+      "alerts": [
+        "No relic description or current physical location is recorded. Retain as display context until the curator confirms an actual holding; do not count this as a verified movable object."
+      ],
+      "sourceRevision": "47a90eb82f4e5702689624386b5c6258e1132eefc5caf334dff0866449aec987",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recjurnDBumDkXXA3",
+      "saintId": "cms0w7g0904wd07qixixe7lr5",
+      "name": "Sri Chhota Achyutanand",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Balasore",
+      "city": "Balasore, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "35",
+        "label": "Vitrine 35",
+        "shelf": "E"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Piece from his (under) clothes ",
+      "knownFootprint": 0.125,
+      "previousFootprintProxy": 0.125,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": "Living",
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [
+        "Bottom shelf first; only the second-from-bottom for living overflow. Preserve any already recorded actual placement; this is a recommendation, not a physical move."
+      ],
+      "sourceRevision": "557ce25e9f1718b1492376f509edaedac6094c20a11135e6577057d45498ff7a",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recldDwQSp2LBlkV8",
+      "saintId": "cms0w7gfb05f507qiztki54e9",
+      "name": "Sri Krishna Mohan Das (Ghutiya Baba)",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Balasore",
+      "city": "Balasore, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "35",
+        "label": "Vitrine 35",
+        "shelf": "E"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Angavastra",
+      "knownFootprint": 0.125,
+      "previousFootprintProxy": 0.125,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": "Living",
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [
+        "Bottom shelf first; only the second-from-bottom for living overflow. Preserve any already recorded actual placement; this is a recommendation, not a physical move."
+      ],
+      "sourceRevision": "be274282fbc6042452b21d24a90abb35423d063688a9d2359d5b2e436cf80c3d",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "reclyIPFpFR6q67Bx",
+      "saintId": "cms0w7gk705ld07qiwpx3nk8v",
+      "name": "Lord Jagannath (deity)",
+      "tier": "Featured",
+      "proposedVitrine": "26",
+      "group": "Jagannath & Tota Gopinath · context / holding to confirm",
+      "city": "Puri, Odisha, India",
+      "current": null,
+      "currentBasis": "unknown",
+      "original": null,
+      "previousProposedDestination": "26",
+      "relicDescription": "",
+      "knownFootprint": null,
+      "previousFootprintProxy": null,
+      "contextOnlyUntilHoldingConfirmed": true,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": true,
+      "alerts": [
+        "No relic description or current physical location is recorded. Retain as display context until the curator confirms an actual holding; do not count this as a verified movable object."
+      ],
+      "sourceRevision": "70fe950c8efb2d5f70a90d66b399e2812c62850fe5c902e702cf91da43452c4f",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recmA5lAnLb6Ql0UP",
+      "saintId": "cms0w7gll05mv07qijpqmmlix",
+      "name": "Sri Srimati Parameshwari Dasi",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "A"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Saligram, Conch with which she did abishekam to her gopal",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "099658ba1b9c14463879245c937a38e43729cea3e1ff8acd382ab0c4afab2688",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recoo9vvxZy22Ss3v",
+      "saintId": "cmus3rxbx006f07o529kdswpo",
+      "name": "Sri Nityananda Das Babaji",
+      "tier": "Tertiary",
+      "proposedVitrine": "25",
+      "group": "Cuttack",
+      "city": "Cuttack, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "C"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "his dhoti",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "6882e42e3034a8daca03d94d68493b94d0f44127ece19e0e2787515cc08b7511",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recpno7QmMS0oXg1e",
+      "saintId": null,
+      "name": "Sri Swami Brahmananda ji Maharaj of Puri, Orissa",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Brahmananda · Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "table",
+        "code": "staging-area",
+        "label": "Staging area"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "B"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "clothes (dhoti?)",
+      "knownFootprint": 0.125,
+      "previousFootprintProxy": 0.125,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": "Living",
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [
+        "Keep both source records together. Similar source names and descriptions need identity/object-overlap review; two records do not prove two different saints or objects.",
+        "Bottom shelf first; only the second-from-bottom for living overflow. Preserve any already recorded actual placement; this is a recommendation, not a physical move."
+      ],
+      "sourceRevision": "1732daea0e04c662d492f8d3e5277c49e4bb89dee37ed94aacc43b3216b0da9a",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recpr4hxyt5vPYnPq",
+      "saintId": "cms0w7hfg06mf07qih2tzr0k5",
+      "name": "Sri Natawor Das Brahmachari (Jungli Baba)",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "20",
+        "label": "Vitrine 20",
+        "shelf": "A"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Glass container where he kept his things; Namavali cloth",
+      "knownFootprint": 0.14285714285714285,
+      "previousFootprintProxy": 0.14285714285714285,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "2ff4690536ff58e35409d278d3148db47183da9a5f4da44feeabe0c0e966cec9",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recrlwdicIYg2eixj",
+      "saintId": "cms0w7hw0076307qikxlxro9h",
+      "name": "Sri Jagannatha Das",
+      "tier": "Featured",
+      "proposedVitrine": "25",
+      "group": "Panchasakha · Jagannatha Das & Achyutananda",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "28",
+        "label": "Vitrine 28"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "3",
+        "label": "Vitrine 3",
+        "shelf": "C"
+      },
+      "previousProposedDestination": "",
+      "relicDescription": "One page (palmleave) from the scripture he wrote. Probably bhaghavatam translated into oria.",
+      "knownFootprint": 0.25,
+      "previousFootprintProxy": 0.25,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": true,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "0ea1104bbfe6f7125f731092c5fe400d0ed42df778603065b426168393eb7036",
+      "suggestedShelfIndex": null,
+      "headline": true
+    },
+    {
+      "sourceId": "recs8Ecg4alHn3Y0J",
+      "saintId": "cms0w7i1607c507qiqxzzej28",
+      "name": "Sri Bhaskara Ramanuj Das",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "D"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "Chadar, piece of cloth",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": "Living",
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [
+        "Bottom shelf first; only the second-from-bottom for living overflow. Preserve any already recorded actual placement; this is a recommendation, not a physical move."
+      ],
+      "sourceRevision": "6b44e73f2bb1835f73ade1655842995f7fe98b9e77e6e419ab1090e0d4dfcae7",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recsRbIOXNQYU4GBd",
+      "saintId": "cms0w7i5k07gu07qi673y4253",
+      "name": "Sri Balabhadra Das Maharaj",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "28",
+        "label": "Vitrine 28"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "C"
+      },
+      "previousProposedDestination": "",
+      "relicDescription": "Japa bag, glasses and cover of glasses, rope",
+      "knownFootprint": 0.16666666666666666,
+      "previousFootprintProxy": 0.16666666666666666,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": true,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "4f5f991ac65efadc8d759e30402ba47b8791262e658c182fc5816fb1d96f46ae",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recuGDRayeoOlxRO9",
+      "saintId": "cms0w7iml07z807qib4t9h1q3",
+      "name": "Sri Chaitanya Charan Das",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "28",
+        "label": "Vitrine 28"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19",
+        "shelf": "E"
+      },
+      "previousProposedDestination": "",
+      "relicDescription": "Namavali Shawl",
+      "knownFootprint": 0.2,
+      "previousFootprintProxy": 0.2,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": "Living",
+      "fromHeldSix": true,
+      "executionReviewRequired": false,
+      "alerts": [
+        "Bottom shelf first; only the second-from-bottom for living overflow. Preserve any already recorded actual placement; this is a recommendation, not a physical move."
+      ],
+      "sourceRevision": "40cb451df2a9c05bcb00b280db4bf1b294bafb4a2ee6255f70efde0596a9cf52",
+      "suggestedShelfIndex": null,
+      "headline": false
+    },
+    {
+      "sourceId": "recuVyG6skE6qQ0aS",
+      "saintId": "cms0w7is4085607qi4y6jkkyr",
+      "name": "Sri Swami Digeshananda Saraswati",
+      "tier": "Tertiary",
+      "proposedVitrine": "26",
+      "group": "Puri",
+      "city": "Puri, Odisha, India",
+      "current": {
+        "kind": "vitrine",
+        "code": "26",
+        "label": "Vitrine 26"
+      },
+      "currentBasis": "confirmed",
+      "original": {
+        "kind": "vitrine",
+        "code": "20",
+        "label": "Vitrine 20",
+        "shelf": "A"
+      },
+      "previousProposedDestination": "26",
+      "relicDescription": "his book",
+      "knownFootprint": 0.14285714285714285,
+      "previousFootprintProxy": 0.14285714285714285,
+      "contextOnlyUntilHoldingConfirmed": false,
+      "lifeTag": null,
+      "fromHeldSix": false,
+      "executionReviewRequired": false,
+      "alerts": [],
+      "sourceRevision": "cac39235e908cd5521c239f1c9a14026a1b45c9b4c417c5a1bc0980eadcbb875",
+      "suggestedShelfIndex": null,
+      "headline": false
+    }
+  ],
+  "sourceIdsByVitrine": {
+    "25": [
+      "rec1mXGzzcIe1YtQv",
+      "rec37kfAtkuXhvjd8",
+      "rec5r3QLGKrjYa5y6",
+      "rec7GxgNvmubmTvMM",
+      "rec7h3JfBcXTcy24U",
+      "recGbe48WW1t6DqUz",
+      "recKEsKy2qc2E0bGP",
+      "recQAmbNSmfWIrzHz",
+      "recRc97ygtRl5l7Kr",
+      "recYXl5vTquTix4E2",
+      "recZ1zqo37l0KYw1G",
+      "recbCsiExuW8dTUUM",
+      "reccEWyFY8dMC4ZGN",
+      "recjurnDBumDkXXA3",
+      "recldDwQSp2LBlkV8",
+      "recoo9vvxZy22Ss3v",
+      "recrlwdicIYg2eixj"
+    ],
+    "26": [
+      "rec0PdixvLE8VQU5H",
+      "rec3tCQCd95bdyD01",
+      "rec9vEn5oj7QZTXl0",
+      "recGAt9Q8JBRM7pdT",
+      "recGZ3OaouJRobeRl",
+      "recHNlgpOtSsWlIfl",
+      "recIktBD8n1j13qh9",
+      "recMajTBqEWnjz0II",
+      "recRoVxSYIxoob8sJ",
+      "recVN6Ty3682Uz2g4",
+      "recb7oJ5FTsyEzb5S",
+      "recje6xb9KoUwRpQL",
+      "reclyIPFpFR6q67Bx",
+      "recmA5lAnLb6Ql0UP",
+      "recpno7QmMS0oXg1e",
+      "recpr4hxyt5vPYnPq",
+      "recs8Ecg4alHn3Y0J",
+      "recsRbIOXNQYU4GBd",
+      "recuGDRayeoOlxRO9",
+      "recuVyG6skE6qQ0aS"
+    ]
+  },
+  "outgoing25": [
+    {
+      "sourceId": "rec0yiz9d45vJ6cPc",
+      "sourceKey": "appMapiXrtNwnS9oZ:Saints:rec0yiz9d45vJ6cPc",
+      "saintId": "cms0w7cd0007w07qityrvlfh5",
+      "name": "Sri Visnudas Maharaj",
+      "original": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "E"
+      },
+      "legacyConfirmed": null,
+      "proposalDestination": {
+        "kind": "vitrine",
+        "code": "61",
+        "label": "Vitrine 61"
+      },
+      "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+      "duplicateOfSourceId": null,
+      "fixedHousing": false,
+      "verifiedItemIds": [],
+      "identityChanged": false,
+      "sourceRevision": "f7cc5167b91d9c7da401409bc401501579dc1345fafa6e1a7fad2822fbc81b00",
+      "currentConfirmed": null,
+      "current": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "E"
+      },
+      "currentBasis": "source",
+      "currentVersion": 0,
+      "currentRevision": "517b2ab8cafbc69f54ba215ef4b372869de561fd513db174c0ae3dec3483565a",
+      "componentPlacement": null,
+      "undo": {
+        "available": false,
+        "receiptId": null,
+        "previous": null,
+        "previousBasis": null,
+        "previousConfirmedAt": null,
+        "reason": "There is no current placement check to undo."
+      },
+      "proposalTransfer": null,
+      "section": "Maharashtra Guru Lineages",
+      "region": "Maharashtra & the West",
+      "tier": "Tertiary",
+      "city": "Mahurgad · Maharashtra",
+      "searchNames": [
+        "Visnudas Maharaj",
+        "Sri Visnudas Maharaj of Mahurgad, Maharashtra"
+      ],
+      "destination": "61",
+      "destinationShelf": "",
+      "additionVersion": 0,
+      "physical": {
+        "sourceId": "rec0yiz9d45vJ6cPc",
+        "sourceKey": "appMapiXrtNwnS9oZ:Saints:rec0yiz9d45vJ6cPc",
+        "saintId": "cms0w7cd0007w07qityrvlfh5",
+        "name": "Sri Visnudas Maharaj",
+        "original": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "E"
+        },
+        "legacyConfirmed": null,
+        "proposalDestination": {
+          "kind": "vitrine",
+          "code": "61",
+          "label": "Vitrine 61"
+        },
+        "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+        "duplicateOfSourceId": null,
+        "fixedHousing": false,
+        "verifiedItemIds": [],
+        "identityChanged": false,
+        "sourceRevision": "f7cc5167b91d9c7da401409bc401501579dc1345fafa6e1a7fad2822fbc81b00",
+        "currentConfirmed": null,
+        "current": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "E"
+        },
+        "currentBasis": "source",
+        "currentVersion": 0,
+        "currentRevision": "517b2ab8cafbc69f54ba215ef4b372869de561fd513db174c0ae3dec3483565a",
+        "componentPlacement": null,
+        "undo": {
+          "available": false,
+          "receiptId": null,
+          "previous": null,
+          "previousBasis": null,
+          "previousConfirmedAt": null,
+          "reason": "There is no current placement check to undo."
+        }
+      },
+      "rawSourceFields": {
+        "Name": "Sri Vishnudas Maharaj of Mahurgad, Maharashtra ",
+        "Normalized places": "Mahurgad, Maharashtra, India",
+        "Primary Museum Section": "Maharashtra Guru Lineages",
+        "Museum Section Tier": "Tertiary",
+        "Vitrine #": 25,
+        "Shelf": "E",
+        "Relics Description (move to other table)": "Rudraksha Mala"
+      },
+      "footprint": 0.08333333333333333,
+      "footprintState": "shelf_proxy",
+      "oldV16Destination": "61",
+      "capturedEastGuide26": null,
+      "storedPlacements": [
+        {
+          "placementId": "rec0yiz9d45vJ6cPc",
+          "saintId": "cms0w7cd0007w07qityrvlfh5",
+          "sourceRecordId": "rec0yiz9d45vJ6cPc",
+          "name": "Sri Visnudas Maharaj",
+          "section": "Maharashtra Guru Lineages",
+          "baselineTier": "Tertiary",
+          "effectiveTier": "Tertiary",
+          "state": "Proposed",
+          "linkIssue": null,
+          "confidence": "Medium",
+          "rationale": "Spiritual region maps to Maharashtra Guru Lineages. Tier proposed as Tertiary because placement is contextual, inferred, or lower-confidence.",
+          "note": "",
+          "familyKey": null,
+          "groupLabel": null,
+          "spnRegionTags": [],
+          "reviewed": false,
+          "familyReconciliation": null,
+          "spnProposal": null,
+          "displayMembership": null,
+          "arrangement": {
+            "proposalRevision": "b0a8fb11e2714f5e3c288115cbb2f1d117d58fd0430d5b0e42f27190133417cc",
+            "revision": "779641d2423e4e0828b2e54cb8408802192f03d66e6c54b49eb1769ea9e95064",
+            "familyKey": "",
+            "status": "Proposed",
+            "vitrine": "",
+            "shelf": "",
+            "confirmedAt": null,
+            "inventoryAcknowledged": false
+          },
+          "normalizedPlaces": [
+            "Mahurgad",
+            "Maharashtra"
+          ],
+          "tradition": "",
+          "sourceLocation": {
+            "museum": "SPN",
+            "vitrine": "25",
+            "shelf": "E"
+          }
+        }
+      ],
+      "sourceFieldLimitation": "Raw Bio/Info, Master(s), Disciples not available in whitelisted export; no absence inferred."
+    },
+    {
+      "sourceId": "recLn3bLLWAWw2Q0v",
+      "sourceKey": "appMapiXrtNwnS9oZ:Saints:recLn3bLLWAWw2Q0v",
+      "saintId": "cms0w7ggm05gs07qivc2m4atw",
+      "name": "Sri Madhusudan",
+      "original": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "E"
+      },
+      "legacyConfirmed": null,
+      "proposalDestination": {
+        "kind": "vitrine",
+        "code": "27",
+        "label": "Vitrine 27"
+      },
+      "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+      "duplicateOfSourceId": null,
+      "fixedHousing": false,
+      "verifiedItemIds": [],
+      "identityChanged": false,
+      "sourceRevision": "4a6191443ed901a04054bab17d235520ab9cc5750672d03a0696d9ca924f084b",
+      "currentConfirmed": null,
+      "current": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "E"
+      },
+      "currentBasis": "source",
+      "currentVersion": 0,
+      "currentRevision": "517b2ab8cafbc69f54ba215ef4b372869de561fd513db174c0ae3dec3483565a",
+      "componentPlacement": null,
+      "undo": {
+        "available": false,
+        "receiptId": null,
+        "previous": null,
+        "previousBasis": null,
+        "previousConfirmedAt": null,
+        "reason": "There is no current placement check to undo."
+      },
+      "proposalTransfer": null,
+      "section": "Ramanandi",
+      "region": "Braj & the Ganga",
+      "tier": "Secondary",
+      "city": "Bodhgaya",
+      "searchNames": [
+        "Madhusudan",
+        "Sri Madhusudan of Bodhgaya"
+      ],
+      "destination": "38",
+      "destinationShelf": "",
+      "additionVersion": 0,
+      "physical": {
+        "sourceId": "recLn3bLLWAWw2Q0v",
+        "sourceKey": "appMapiXrtNwnS9oZ:Saints:recLn3bLLWAWw2Q0v",
+        "saintId": "cms0w7ggm05gs07qivc2m4atw",
+        "name": "Sri Madhusudan",
+        "original": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "E"
+        },
+        "legacyConfirmed": null,
+        "proposalDestination": {
+          "kind": "vitrine",
+          "code": "27",
+          "label": "Vitrine 27"
+        },
+        "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+        "duplicateOfSourceId": null,
+        "fixedHousing": false,
+        "verifiedItemIds": [],
+        "identityChanged": false,
+        "sourceRevision": "4a6191443ed901a04054bab17d235520ab9cc5750672d03a0696d9ca924f084b",
+        "currentConfirmed": null,
+        "current": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "E"
+        },
+        "currentBasis": "source",
+        "currentVersion": 0,
+        "currentRevision": "517b2ab8cafbc69f54ba215ef4b372869de561fd513db174c0ae3dec3483565a",
+        "componentPlacement": null,
+        "undo": {
+          "available": false,
+          "receiptId": null,
+          "previous": null,
+          "previousBasis": null,
+          "previousConfirmedAt": null,
+          "reason": "There is no current placement check to undo."
+        }
+      },
+      "rawSourceFields": {
+        "Name": "Sri Madhusudan of Bodhgaya ",
+        "Normalized places": "Bodhgaya, Bihar, India",
+        "Primary Museum Section": "Ramanandi",
+        "Museum Section Tier": "Secondary",
+        "Vitrine #": 25,
+        "Shelf": "E",
+        "Relics Description (move to other table)": "hair"
+      },
+      "footprint": 0.08333333333333333,
+      "footprintState": "shelf_proxy",
+      "oldV16Destination": "27",
+      "capturedEastGuide26": null,
+      "storedPlacements": [
+        {
+          "placementId": "recLn3bLLWAWw2Q0v",
+          "saintId": "cms0w7ggm05gs07qivc2m4atw",
+          "sourceRecordId": "recLn3bLLWAWw2Q0v",
+          "name": "Sri Madhusudan",
+          "section": "Ramanandi",
+          "baselineTier": "Secondary",
+          "effectiveTier": "Secondary",
+          "state": "Proposed",
+          "linkIssue": null,
+          "confidence": "Medium",
+          "rationale": "Family override from FAM-017 (Sri DevRaha Baba Family); family placement takes priority over geography. Tier proposed as Secondary because the record is a close family/lineage member or direct section fit.",
+          "note": "Organize inside Ramanandi using FAM-017 family context before geography.",
+          "familyKey": "FAM-017",
+          "groupLabel": null,
+          "spnRegionTags": [],
+          "reviewed": false,
+          "familyReconciliation": null,
+          "spnProposal": null,
+          "displayMembership": {
+            "familyKey": "FAM-017",
+            "label": "Sri DevRaha Baba Family",
+            "detached": false,
+            "revision": "470f6e1f3c5b80ef4d55eb51f1dfc5f9319a3d94128abc323cdad705c34e30fb"
+          },
+          "arrangement": {
+            "proposalRevision": "7ec00dfc861f7fee41e17631238e6123b1ec8315e40aa9addd1a2dc96c2b5d0f",
+            "revision": "ac5b2202a49316d29ffaca7218d2157983fe69ffc3046c058b2bc66c55746500",
+            "familyKey": "FAM-017",
+            "status": "Proposed",
+            "vitrine": "",
+            "shelf": "",
+            "confirmedAt": null,
+            "inventoryAcknowledged": false
+          },
+          "normalizedPlaces": [
+            "Bodhgaya"
+          ],
+          "tradition": "",
+          "sourceLocation": {
+            "museum": "SPN",
+            "vitrine": "25",
+            "shelf": "E"
+          }
+        }
+      ],
+      "sourceFieldLimitation": "Raw Bio/Info, Master(s), Disciples not available in whitelisted export; no absence inferred."
+    },
+    {
+      "sourceId": "recMZz192pFJvWICf",
+      "sourceKey": "appMapiXrtNwnS9oZ:Saints:recMZz192pFJvWICf",
+      "saintId": "cms0w7gu705x707qiq26ygpb7",
+      "name": "Sri Ballu Mama",
+      "original": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "B"
+      },
+      "legacyConfirmed": null,
+      "proposalDestination": {
+        "kind": "vitrine",
+        "code": "44",
+        "label": "Vitrine 44"
+      },
+      "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+      "duplicateOfSourceId": null,
+      "fixedHousing": false,
+      "verifiedItemIds": [],
+      "identityChanged": false,
+      "sourceRevision": "12e7c9fdd4f0971f7b2e9a214bf5fa5c5f785b91d7847ad176a1291c9c110b99",
+      "currentConfirmed": null,
+      "current": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "B"
+      },
+      "currentBasis": "source",
+      "currentVersion": 0,
+      "currentRevision": "3c3b6c33f05d0a501bf436311134ad27045041c945834d56271cf5d4b924d5fc",
+      "componentPlacement": null,
+      "undo": {
+        "available": false,
+        "receiptId": null,
+        "previous": null,
+        "previousBasis": null,
+        "previousConfirmedAt": null,
+        "reason": "There is no current placement check to undo."
+      },
+      "proposalTransfer": null,
+      "section": "Needs Research",
+      "region": "",
+      "tier": "Featured",
+      "city": "Admapur, Kolhapur, Maharashtra · Admapur · Kolhapur · Maharashtra · Akkol, Belgaum · Adamapur, India · Akkol, India",
+      "searchNames": [
+        "Ballu Mama",
+        "Sri Ballu Mama of Admapur, Kolhapur, Maharashtra"
+      ],
+      "destination": "82",
+      "destinationShelf": "",
+      "additionVersion": 1,
+      "physical": {
+        "sourceId": "recMZz192pFJvWICf",
+        "sourceKey": "appMapiXrtNwnS9oZ:Saints:recMZz192pFJvWICf",
+        "saintId": "cms0w7gu705x707qiq26ygpb7",
+        "name": "Sri Ballu Mama",
+        "original": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "B"
+        },
+        "legacyConfirmed": null,
+        "proposalDestination": {
+          "kind": "vitrine",
+          "code": "44",
+          "label": "Vitrine 44"
+        },
+        "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+        "duplicateOfSourceId": null,
+        "fixedHousing": false,
+        "verifiedItemIds": [],
+        "identityChanged": false,
+        "sourceRevision": "12e7c9fdd4f0971f7b2e9a214bf5fa5c5f785b91d7847ad176a1291c9c110b99",
+        "currentConfirmed": null,
+        "current": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "B"
+        },
+        "currentBasis": "source",
+        "currentVersion": 0,
+        "currentRevision": "3c3b6c33f05d0a501bf436311134ad27045041c945834d56271cf5d4b924d5fc",
+        "componentPlacement": null,
+        "undo": {
+          "available": false,
+          "receiptId": null,
+          "previous": null,
+          "previousBasis": null,
+          "previousConfirmedAt": null,
+          "reason": "There is no current placement check to undo."
+        }
+      },
+      "rawSourceFields": {
+        "Name": "Sri Ballu Mama of Admapur, Kolhapur, Maharashtra",
+        "Place": [
+          "Akkol, Belgaum",
+          "Admapur, Kolhapur, Maharashtra"
+        ],
+        "Normalized places": "Akkol, Karnataka, India; Admapur, Maharashtra, India",
+        "Birth (YYYY-MM-DD)": "1892-10-03",
+        "Samadhi (YYYY-MM-DD)": "1966-09-04",
+        "Primary Museum Section": "Needs Research",
+        "Museum Section Tier": "Tertiary",
+        "Vitrine #": 25,
+        "Shelf": "B"
+      },
+      "footprint": 0.2,
+      "footprintState": "shelf_proxy",
+      "oldV16Destination": "44",
+      "capturedEastGuide26": null,
+      "storedPlacements": [
+        {
+          "placementId": "recMZz192pFJvWICf",
+          "saintId": "cms0w7gu705x707qiq26ygpb7",
+          "sourceRecordId": "recMZz192pFJvWICf",
+          "name": "Sri Ballu Mama",
+          "section": "Needs Research",
+          "baselineTier": "Tertiary",
+          "effectiveTier": "Featured",
+          "state": "Confirmed",
+          "linkIssue": null,
+          "confidence": "Low",
+          "rationale": "No strong family, sampradaya, or spiritual-region section could be inferred. Tier proposed as Tertiary because placement is contextual, inferred, or lower-confidence.",
+          "note": "",
+          "familyKey": null,
+          "groupLabel": "",
+          "spnRegionTags": [],
+          "reviewed": true,
+          "familyReconciliation": null,
+          "spnProposal": {
+            "eventId": "cmvx2yico001c07n8jrnaipqp",
+            "state": "applied",
+            "reason": "Western prominence review, 1 Nov 2026. Kolhapur tourism identifies Admapur Balumama as a major regional pilgrimage figure; source Akkol/Admapur context agrees. Holding details remain unverified. Evidence: https://www.kolhapurtourism.org/our-destination/admapur-kagal/ Curatorial default only; preserve family, section, all planned destinations and physical placements.",
+            "baselineRevision": "c716dc007eb407793ca4cf184f66f8605ba296f2ab87f6f359acd89147dc1d76",
+            "baselineFamilyKey": ""
+          },
+          "displayMembership": null,
+          "arrangement": {
+            "proposalRevision": "8d7d487a96623abcc74787acdde22ed33f906964495592488ba83d30e8abb6fa",
+            "revision": "0bb1c7d75ad6aa4d06a030f34d0d9380e45de8b99f0d2c07306ddea628a79752",
+            "familyKey": "",
+            "status": "Proposed",
+            "vitrine": "",
+            "shelf": "",
+            "confirmedAt": null,
+            "inventoryAcknowledged": false
+          },
+          "normalizedPlaces": [
+            "Admapur, Kolhapur, Maharashtra",
+            "Admapur",
+            "Kolhapur",
+            "Maharashtra",
+            "Akkol, Belgaum",
+            "Adamapur, India",
+            "Akkol, India"
+          ],
+          "tradition": "",
+          "sourceLocation": {
+            "museum": "SPN",
+            "vitrine": "25",
+            "shelf": "B"
+          }
+        }
+      ],
+      "sourceFieldLimitation": "Raw Bio/Info, Master(s), Disciples not available in whitelisted export; no absence inferred."
+    },
+    {
+      "sourceId": "recQtg0xeQPQa16wA",
+      "sourceKey": "appMapiXrtNwnS9oZ:Saints:recQtg0xeQPQa16wA",
+      "saintId": "cms0w7hob06wt07qicaf7ozxm",
+      "name": "Sri Rishi Bakka (Pa-Gang)",
+      "original": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "D"
+      },
+      "legacyConfirmed": null,
+      "proposalDestination": {
+        "kind": "vitrine",
+        "code": "52",
+        "label": "Vitrine 52"
+      },
+      "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+      "duplicateOfSourceId": null,
+      "fixedHousing": false,
+      "verifiedItemIds": [],
+      "identityChanged": false,
+      "sourceRevision": "e74d2bfbc172276a5abf7f7777a029111ed1068c2fe9f231f19eef0c0ffb6a3b",
+      "currentConfirmed": null,
+      "current": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "D"
+      },
+      "currentBasis": "source",
+      "currentVersion": 0,
+      "currentRevision": "0fc3821b5e357391136e459301ef1015956df1a8b46679507e0e355e2eac11a8",
+      "componentPlacement": null,
+      "undo": {
+        "available": false,
+        "receiptId": null,
+        "previous": null,
+        "previousBasis": null,
+        "previousConfirmedAt": null,
+        "reason": "There is no current placement check to undo."
+      },
+      "proposalTransfer": null,
+      "section": "Needs Research",
+      "region": "",
+      "tier": "Tertiary",
+      "city": "",
+      "searchNames": [
+        "Rishi Bakka (Pa-Gang)"
+      ],
+      "destination": "56",
+      "destinationShelf": "",
+      "additionVersion": 3,
+      "physical": {
+        "sourceId": "recQtg0xeQPQa16wA",
+        "sourceKey": "appMapiXrtNwnS9oZ:Saints:recQtg0xeQPQa16wA",
+        "saintId": "cms0w7hob06wt07qicaf7ozxm",
+        "name": "Sri Rishi Bakka (Pa-Gang)",
+        "original": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "D"
+        },
+        "legacyConfirmed": null,
+        "proposalDestination": {
+          "kind": "vitrine",
+          "code": "52",
+          "label": "Vitrine 52"
+        },
+        "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+        "duplicateOfSourceId": null,
+        "fixedHousing": false,
+        "verifiedItemIds": [],
+        "identityChanged": false,
+        "sourceRevision": "e74d2bfbc172276a5abf7f7777a029111ed1068c2fe9f231f19eef0c0ffb6a3b",
+        "currentConfirmed": null,
+        "current": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "D"
+        },
+        "currentBasis": "source",
+        "currentVersion": 0,
+        "currentRevision": "0fc3821b5e357391136e459301ef1015956df1a8b46679507e0e355e2eac11a8",
+        "componentPlacement": null,
+        "undo": {
+          "available": false,
+          "receiptId": null,
+          "previous": null,
+          "previousBasis": null,
+          "previousConfirmedAt": null,
+          "reason": "There is no current placement check to undo."
+        }
+      },
+      "rawSourceFields": {
+        "Name": "Sri Rishi Bakka (Pa-Gang) ",
+        "Primary Museum Section": "Needs Research",
+        "Museum Section Tier": "Tertiary",
+        "Vitrine #": 25,
+        "Shelf": "D",
+        "Relics Description (move to other table)": "bone"
+      },
+      "footprint": 0.14285714285714285,
+      "footprintState": "shelf_proxy",
+      "oldV16Destination": "52",
+      "capturedEastGuide26": null,
+      "storedPlacements": [
+        {
+          "placementId": "recQtg0xeQPQa16wA",
+          "saintId": "cms0w7hob06wt07qicaf7ozxm",
+          "sourceRecordId": "recQtg0xeQPQa16wA",
+          "name": "Sri Rishi Bakka (Pa-Gang)",
+          "section": "Needs Research",
+          "baselineTier": "Tertiary",
+          "effectiveTier": "Tertiary",
+          "state": "Proposed",
+          "linkIssue": null,
+          "confidence": "Low",
+          "rationale": "No strong family, sampradaya, or spiritual-region section could be inferred. Tier proposed as Tertiary because placement is contextual, inferred, or lower-confidence.",
+          "note": "",
+          "familyKey": null,
+          "groupLabel": null,
+          "spnRegionTags": [],
+          "reviewed": false,
+          "familyReconciliation": null,
+          "spnProposal": null,
+          "displayMembership": null,
+          "arrangement": {
+            "proposalRevision": "ba64767ecb0f75f9feaddf936df0d4036cc285794572dc516b02cc537222ced3",
+            "revision": "607d18a8b1a9c1cde5a6ed044c7ef4d0e643358bb7eb284d205ccf2dff38fba0",
+            "familyKey": "",
+            "status": "Proposed",
+            "vitrine": "",
+            "shelf": "",
+            "confirmedAt": null,
+            "inventoryAcknowledged": false
+          },
+          "normalizedPlaces": [],
+          "tradition": "",
+          "sourceLocation": {
+            "museum": "SPN",
+            "vitrine": "25",
+            "shelf": "D"
+          }
+        }
+      ],
+      "sourceFieldLimitation": "Raw Bio/Info, Master(s), Disciples not available in whitelisted export; no absence inferred."
+    },
+    {
+      "sourceId": "reckSOP93swGpRjsT",
+      "sourceKey": "appMapiXrtNwnS9oZ:Saints:reckSOP93swGpRjsT",
+      "saintId": "cms0w7ga3058l07qi7l1z5qfw",
+      "name": "Sri Ganesh Baba (Shri Mahant Ganesh Giriji Maharaj",
+      "original": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "D"
+      },
+      "legacyConfirmed": null,
+      "proposalDestination": {
+        "kind": "vitrine",
+        "code": "19",
+        "label": "Vitrine 19"
+      },
+      "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+      "duplicateOfSourceId": null,
+      "fixedHousing": false,
+      "verifiedItemIds": [],
+      "identityChanged": false,
+      "sourceRevision": "9e2a6045b7227eca4922a77a704320ea2b476474075658510c93c367ec1afd1b",
+      "currentConfirmed": null,
+      "current": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "D"
+      },
+      "currentBasis": "source",
+      "currentVersion": 0,
+      "currentRevision": "0fc3821b5e357391136e459301ef1015956df1a8b46679507e0e355e2eac11a8",
+      "componentPlacement": null,
+      "undo": {
+        "available": false,
+        "receiptId": null,
+        "previous": null,
+        "previousBasis": null,
+        "previousConfirmedAt": null,
+        "reason": "There is no current placement check to undo."
+      },
+      "proposalTransfer": null,
+      "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "region": "Himalaya & the North",
+      "tier": "Tertiary",
+      "city": "",
+      "searchNames": [
+        "Ganesh Baba (Shri Mahant Ganesh Giriji Maharaj"
+      ],
+      "destination": "5",
+      "destinationShelf": "",
+      "additionVersion": 1,
+      "physical": {
+        "sourceId": "reckSOP93swGpRjsT",
+        "sourceKey": "appMapiXrtNwnS9oZ:Saints:reckSOP93swGpRjsT",
+        "saintId": "cms0w7ga3058l07qi7l1z5qfw",
+        "name": "Sri Ganesh Baba (Shri Mahant Ganesh Giriji Maharaj",
+        "original": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "D"
+        },
+        "legacyConfirmed": null,
+        "proposalDestination": {
+          "kind": "vitrine",
+          "code": "19",
+          "label": "Vitrine 19"
+        },
+        "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+        "duplicateOfSourceId": null,
+        "fixedHousing": false,
+        "verifiedItemIds": [],
+        "identityChanged": false,
+        "sourceRevision": "9e2a6045b7227eca4922a77a704320ea2b476474075658510c93c367ec1afd1b",
+        "currentConfirmed": null,
+        "current": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "D"
+        },
+        "currentBasis": "source",
+        "currentVersion": 0,
+        "currentRevision": "0fc3821b5e357391136e459301ef1015956df1a8b46679507e0e355e2eac11a8",
+        "componentPlacement": null,
+        "undo": {
+          "available": false,
+          "receiptId": null,
+          "previous": null,
+          "previousBasis": null,
+          "previousConfirmedAt": null,
+          "reason": "There is no current placement check to undo."
+        }
+      },
+      "rawSourceFields": {
+        "Name": "Sri Ganesh Baba (Shri Mahant Ganesh Giriji Maharaj ",
+        "Sampradaya": [
+          "Kriya Yoga"
+        ],
+        "Birth (YYYY-MM-DD)": "1890",
+        "Samadhi (YYYY-MM-DD)": "1987-11-19",
+        "Primary Museum Section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "Museum Section Tier": "Tertiary",
+        "Vitrine #": 25,
+        "Shelf": "D",
+        "Relics Description (move to other table)": "hair"
+      },
+      "footprint": 0.14285714285714285,
+      "footprintState": "shelf_proxy",
+      "oldV16Destination": "19",
+      "capturedEastGuide26": null,
+      "storedPlacements": [
+        {
+          "placementId": "reckSOP93swGpRjsT",
+          "saintId": "cms0w7ga3058l07qi7l1z5qfw",
+          "sourceRecordId": "reckSOP93swGpRjsT",
+          "name": "Sri Ganesh Baba (Shri Mahant Ganesh Giriji Maharaj",
+          "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+          "baselineTier": "Tertiary",
+          "effectiveTier": "Tertiary",
+          "state": "Proposed",
+          "linkIssue": null,
+          "confidence": "High",
+          "rationale": "Sampradaya maps directly to Rishikesh-Haridwar & Himalayan Monastic Lineages. Tier proposed as Tertiary because placement is contextual, inferred, or lower-confidence.",
+          "note": "",
+          "familyKey": null,
+          "groupLabel": null,
+          "spnRegionTags": [],
+          "reviewed": false,
+          "familyReconciliation": null,
+          "spnProposal": null,
+          "displayMembership": null,
+          "arrangement": {
+            "proposalRevision": "be55ca8008597e829539e7d3bbefbee604615a406536451fb68bfd0212e0eaa3",
+            "revision": "15de8ac56edab46aa692ed27d3901ab5ef531ad46e612819c477a2c64432f54a",
+            "familyKey": "",
+            "status": "Proposed",
+            "vitrine": "",
+            "shelf": "",
+            "confirmedAt": null,
+            "inventoryAcknowledged": false
+          },
+          "normalizedPlaces": [],
+          "tradition": "Kriya Yoga",
+          "sourceLocation": {
+            "museum": "SPN",
+            "vitrine": "25",
+            "shelf": "D"
+          }
+        }
+      ],
+      "sourceFieldLimitation": "Raw Bio/Info, Master(s), Disciples not available in whitelisted export; no absence inferred."
+    },
+    {
+      "sourceId": "recridc3rHHt53itd",
+      "sourceKey": "appMapiXrtNwnS9oZ:Saints:recridc3rHHt53itd",
+      "saintId": "cms0w7huw074s07qiq6re1hfg",
+      "name": "Sri Swami Rama",
+      "original": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "D"
+      },
+      "legacyConfirmed": null,
+      "proposalDestination": {
+        "kind": "vitrine",
+        "code": "72",
+        "label": "Vitrine 72"
+      },
+      "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+      "duplicateOfSourceId": null,
+      "fixedHousing": false,
+      "verifiedItemIds": [],
+      "identityChanged": false,
+      "sourceRevision": "6309500cad6c42cf0122e4b42a99a964f5840abf367a3d21b3934298442dc6ab",
+      "currentConfirmed": null,
+      "current": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "D"
+      },
+      "currentBasis": "source",
+      "currentVersion": 0,
+      "currentRevision": "0fc3821b5e357391136e459301ef1015956df1a8b46679507e0e355e2eac11a8",
+      "componentPlacement": null,
+      "undo": {
+        "available": false,
+        "receiptId": null,
+        "previous": null,
+        "previousBasis": null,
+        "previousConfirmedAt": null,
+        "reason": "There is no current placement check to undo."
+      },
+      "proposalTransfer": null,
+      "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+      "region": "Himalaya & the North",
+      "tier": "Tertiary",
+      "city": "Rishikesh",
+      "searchNames": [
+        "Rama",
+        "Sri Swami Rama of Rishikesh"
+      ],
+      "destination": "20",
+      "destinationShelf": "",
+      "additionVersion": 1,
+      "physical": {
+        "sourceId": "recridc3rHHt53itd",
+        "sourceKey": "appMapiXrtNwnS9oZ:Saints:recridc3rHHt53itd",
+        "saintId": "cms0w7huw074s07qiq6re1hfg",
+        "name": "Sri Swami Rama",
+        "original": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "D"
+        },
+        "legacyConfirmed": null,
+        "proposalDestination": {
+          "kind": "vitrine",
+          "code": "72",
+          "label": "Vitrine 72"
+        },
+        "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+        "duplicateOfSourceId": null,
+        "fixedHousing": false,
+        "verifiedItemIds": [],
+        "identityChanged": false,
+        "sourceRevision": "6309500cad6c42cf0122e4b42a99a964f5840abf367a3d21b3934298442dc6ab",
+        "currentConfirmed": null,
+        "current": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "D"
+        },
+        "currentBasis": "source",
+        "currentVersion": 0,
+        "currentRevision": "0fc3821b5e357391136e459301ef1015956df1a8b46679507e0e355e2eac11a8",
+        "componentPlacement": null,
+        "undo": {
+          "available": false,
+          "receiptId": null,
+          "previous": null,
+          "previousBasis": null,
+          "previousConfirmedAt": null,
+          "reason": "There is no current placement check to undo."
+        }
+      },
+      "rawSourceFields": {
+        "Name": "Sri Swami Rama of Rishikesh ",
+        "Normalized places": "Rishikesh, Uttarakhand, India",
+        "Primary Museum Section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+        "Museum Section Tier": "Tertiary",
+        "Vitrine #": 25,
+        "Shelf": "D",
+        "Relics Description (move to other table)": "bone"
+      },
+      "footprint": 0.14285714285714285,
+      "footprintState": "shelf_proxy",
+      "oldV16Destination": "72",
+      "capturedEastGuide26": null,
+      "storedPlacements": [
+        {
+          "placementId": "recridc3rHHt53itd",
+          "saintId": "cms0w7huw074s07qiq6re1hfg",
+          "sourceRecordId": "recridc3rHHt53itd",
+          "name": "Sri Swami Rama",
+          "section": "Rishikesh-Haridwar & Himalayan Monastic Lineages",
+          "baselineTier": "Tertiary",
+          "effectiveTier": "Tertiary",
+          "state": "Proposed",
+          "linkIssue": null,
+          "confidence": "Medium",
+          "rationale": "Spiritual region maps to Rishikesh-Haridwar & Himalayan Monastic Lineages. Tier proposed as Tertiary because placement is contextual, inferred, or lower-confidence.",
+          "note": "",
+          "familyKey": null,
+          "groupLabel": null,
+          "spnRegionTags": [],
+          "reviewed": false,
+          "familyReconciliation": null,
+          "spnProposal": null,
+          "displayMembership": null,
+          "arrangement": {
+            "proposalRevision": "e486511d7d0432a85a5a372972d6275e2508323c46c65fdb8fa197110aa921e9",
+            "revision": "4f941485d8ef057d38f98e50848f954f6fe78ce66663a7452e41b662ce5b30ad",
+            "familyKey": "",
+            "status": "Proposed",
+            "vitrine": "",
+            "shelf": "",
+            "confirmedAt": null,
+            "inventoryAcknowledged": false
+          },
+          "normalizedPlaces": [
+            "Rishikesh"
+          ],
+          "tradition": "Bharati lineage (Himalayan Sages); Advaita Vedanta",
+          "sourceLocation": {
+            "museum": "SPN",
+            "vitrine": "25",
+            "shelf": "D"
+          }
+        }
+      ],
+      "sourceFieldLimitation": "Raw Bio/Info, Master(s), Disciples not available in whitelisted export; no absence inferred."
+    },
+    {
+      "sourceId": "rectoFoUzNw7N6tsf",
+      "sourceKey": "appMapiXrtNwnS9oZ:Saints:rectoFoUzNw7N6tsf",
+      "saintId": "cms0w7if707r807qixjsp4lzp",
+      "name": "Sri Rishi Gaew (Cristal Rishi)",
+      "original": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "D"
+      },
+      "legacyConfirmed": null,
+      "proposalDestination": {
+        "kind": "vitrine",
+        "code": "52",
+        "label": "Vitrine 52"
+      },
+      "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+      "duplicateOfSourceId": null,
+      "fixedHousing": false,
+      "verifiedItemIds": [],
+      "identityChanged": false,
+      "sourceRevision": "c43d5626cdf2834e45c389538c21a58d7f82c250017290b41a8337a96228e925",
+      "currentConfirmed": null,
+      "current": {
+        "kind": "vitrine",
+        "code": "25",
+        "label": "Vitrine 25",
+        "shelf": "D"
+      },
+      "currentBasis": "source",
+      "currentVersion": 0,
+      "currentRevision": "0fc3821b5e357391136e459301ef1015956df1a8b46679507e0e355e2eac11a8",
+      "componentPlacement": null,
+      "undo": {
+        "available": false,
+        "receiptId": null,
+        "previous": null,
+        "previousBasis": null,
+        "previousConfirmedAt": null,
+        "reason": "There is no current placement check to undo."
+      },
+      "proposalTransfer": null,
+      "section": "Needs Research",
+      "region": "",
+      "tier": "Tertiary",
+      "city": "Thailand?",
+      "searchNames": [
+        "Rishi Gaew (Cristal Rishi)",
+        "Sri Rishi Gaew (Cristal Rishi) of Thailand"
+      ],
+      "destination": "56",
+      "destinationShelf": "",
+      "additionVersion": 3,
+      "physical": {
+        "sourceId": "rectoFoUzNw7N6tsf",
+        "sourceKey": "appMapiXrtNwnS9oZ:Saints:rectoFoUzNw7N6tsf",
+        "saintId": "cms0w7if707r807qixjsp4lzp",
+        "name": "Sri Rishi Gaew (Cristal Rishi)",
+        "original": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "D"
+        },
+        "legacyConfirmed": null,
+        "proposalDestination": {
+          "kind": "vitrine",
+          "code": "52",
+          "label": "Vitrine 52"
+        },
+        "proposalVersion": "spn-highlighted-anchor-city-refinement-2026-10-27-v16",
+        "duplicateOfSourceId": null,
+        "fixedHousing": false,
+        "verifiedItemIds": [],
+        "identityChanged": false,
+        "sourceRevision": "c43d5626cdf2834e45c389538c21a58d7f82c250017290b41a8337a96228e925",
+        "currentConfirmed": null,
+        "current": {
+          "kind": "vitrine",
+          "code": "25",
+          "label": "Vitrine 25",
+          "shelf": "D"
+        },
+        "currentBasis": "source",
+        "currentVersion": 0,
+        "currentRevision": "0fc3821b5e357391136e459301ef1015956df1a8b46679507e0e355e2eac11a8",
+        "componentPlacement": null,
+        "undo": {
+          "available": false,
+          "receiptId": null,
+          "previous": null,
+          "previousBasis": null,
+          "previousConfirmedAt": null,
+          "reason": "There is no current placement check to undo."
+        }
+      },
+      "rawSourceFields": {
+        "Name": "Sri Rishi Gaew (Cristal Rishi) of Thailand ",
+        "Primary Museum Section": "Needs Research",
+        "Museum Section Tier": "Tertiary",
+        "Vitrine #": 25,
+        "Shelf": "D",
+        "Relics Description (move to other table)": "bone"
+      },
+      "footprint": 0.14285714285714285,
+      "footprintState": "shelf_proxy",
+      "oldV16Destination": "52",
+      "capturedEastGuide26": null,
+      "storedPlacements": [
+        {
+          "placementId": "rectoFoUzNw7N6tsf",
+          "saintId": "cms0w7if707r807qixjsp4lzp",
+          "sourceRecordId": "rectoFoUzNw7N6tsf",
+          "name": "Sri Rishi Gaew (Cristal Rishi)",
+          "section": "Needs Research",
+          "baselineTier": "Tertiary",
+          "effectiveTier": "Tertiary",
+          "state": "Proposed",
+          "linkIssue": null,
+          "confidence": "Low",
+          "rationale": "No strong family, sampradaya, or spiritual-region section could be inferred. Tier proposed as Tertiary because placement is contextual, inferred, or lower-confidence.",
+          "note": "",
+          "familyKey": null,
+          "groupLabel": null,
+          "spnRegionTags": [],
+          "reviewed": false,
+          "familyReconciliation": null,
+          "spnProposal": null,
+          "displayMembership": null,
+          "arrangement": {
+            "proposalRevision": "78a463349526aa193d8a4f9b3266b2e1849b90614ef96b6c061a4d29249a3f24",
+            "revision": "07364419251f3a032c606479bcc7da8f66b73ee360c7b08f33c04a5f88e2dc86",
+            "familyKey": "",
+            "status": "Proposed",
+            "vitrine": "",
+            "shelf": "",
+            "confirmedAt": null,
+            "inventoryAcknowledged": false
+          },
+          "normalizedPlaces": [
+            "Thailand?"
+          ],
+          "tradition": "",
+          "sourceLocation": {
+            "museum": "SPN",
+            "vitrine": "25",
+            "shelf": "D"
+          }
+        }
+      ],
+      "sourceFieldLimitation": "Raw Bio/Info, Master(s), Disciples not available in whitelisted export; no absence inferred."
+    }
+  ],
+  "headlines": {
+    "25": [
+      "recrlwdicIYg2eixj",
+      "recbCsiExuW8dTUUM"
+    ],
+    "26": [
+      "rec9vEn5oj7QZTXl0"
+    ]
+  },
+  "curatorLead26": "rec9vEn5oj7QZTXl0",
+  "storyConnection": {
+    "kind": "shared Panchasakha literary tradition",
+    "sourceIds": [
+      "recrlwdicIYg2eixj",
+      "recbCsiExuW8dTUUM"
+    ],
+    "guruEdge": false
+  },
+  "researchSources": [
+    {
+      "title": "Odisha Review: Chaitanya and the Panchasakha / Odia Bhagabata",
+      "url": "https://magazines.odisha.gov.in/orissareview/2018/Jun-July/engpdf/50-51.pdf"
+    },
+    {
+      "title": "Odisha Reference Annual: Achyutananda and the Panchasakha",
+      "url": "https://magazines.odisha.gov.in/orissaannualreference/ORA-2017/pdf/page-57-59.pdf"
+    },
+    {
+      "title": "Ananta Balia Trust: regional devotional and social-service context",
+      "url": "https://anantabaliatrust.in/en"
+    }
+  ],
+  "invariants": {
+    "uniqueSourceIds": 37,
+    "nativeWrites": false,
+    "physicalWrites": false,
+    "canonicalTierWrites": false,
+    "reviewedDisplayGroupsKeptTogether": true,
+    "historicalRelationshipAudit": "No canonical edges exported for this scope; raw Master/Disciples fields unavailable. No universal lineage-audit claim."
+  },
+  "approvalBasis": "User instruction1November2026: finalize25&26, loadupdatedEasternproposal includingheadlines; shelfallocationslater.",
+  "shelfAllocationPolicy": {
+    "newRecommendations": false,
+    "preserveRecordedPhysicalShelves": true,
+    "supersedeObsolete26PlanningShelves": true
+  },
+  "headlineStories": {
+    "25": {
+      "title": "Jagannatha Das & Achyutananda · Panchasakha",
+      "sourceIds": [
+        "recrlwdicIYg2eixj",
+        "recbCsiExuW8dTUUM"
+      ],
+      "relationship": "Shared saint-poet tradition, not a direct guru–disciple edge."
+    },
+    "26": {
+      "title": "Durgaprasad Saraswati · Bhubaneswar & Puri",
+      "sourceIds": [
+        "rec9vEn5oj7QZTXl0"
+      ],
+      "relationship": "Curator-selected lead. Vaikunthanath shares a Bhubaneswar locality group; no disciple relationship is asserted."
+    }
+  },
+  "assignmentDigest": "f2de87bc6bdd0589faafb1c105673e43c30ba789a634f41d7444cf6d583ac36e"
+}
