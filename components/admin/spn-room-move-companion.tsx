@@ -221,11 +221,12 @@ export function SpnRoomMoveCompanion({guide:initialGuide,initialPhysical,canMana
  }
  async function reload(){
   if(pending.current)return;pending.current=true;mutationEpoch.current+=1;setBusy(true);setError("");
-  try{const response=await fetch("/api/admin/museum-physical-locations?museumId=museum-spn",{cache:"no-store"});const data=await response.json();if(!response.ok)throw new Error(data.error||"Could not load current locations.");setPhysical(data);await Promise.all([loadDecisions(),displayWork.reload()]);retry.current=null;setMessage("Current progress loaded.");setSyncError("");}
-  catch(e){setError(e instanceof Error?e.message:"Could not load current progress.");}finally{pending.current=false;setBusy(false);setSavingSources([]);setSavingTargets({});}
+  const controller=new AbortController();const timeout=window.setTimeout(()=>controller.abort(),30000);
+  try{const response=await fetch("/api/admin/museum-physical-locations?museumId=museum-spn",{cache:"no-store",signal:controller.signal});const data=await response.json();if(!response.ok)throw new Error(data.error||"Could not load current locations.");setPhysical(data);await Promise.all([loadDecisions(controller.signal),displayWork.reload(controller.signal)]);retry.current=null;setMessage("Current progress loaded.");setSyncError("");}
+  catch(e){controller.abort();setError(e instanceof Error&&e.name!=="AbortError"?e.message:"Progress took too long to load. Try Refresh progress again.");}finally{window.clearTimeout(timeout);pending.current=false;setBusy(false);setSavingSources([]);setSavingTargets({});}
  }
- async function loadDecisions(){
-  const response=await fetch("/api/admin/museum-guide-decisions?museumId=museum-spn&guideVersion="+encodeURIComponent(guide.version),{cache:"no-store"});
+ async function loadDecisions(signal?:AbortSignal){
+  const response=await fetch("/api/admin/museum-guide-decisions?museumId=museum-spn&guideVersion="+encodeURIComponent(guide.version),{cache:"no-store",signal});
   const data=await response.json();if(!response.ok)throw new Error(data.error||"Could not load suggestion decisions.");
   setRowDecisions(previous=>({...previous,[guide.version]:data.decisions}));
   if(guideVersion.current===guide.version){setDecisions(data.decisions);if(Array.isArray(data.alternativeDestinations))setAlternatives(data.alternativeDestinations);setAlternativeOptions(Array.isArray(data.alternativeVitrines)?data.alternativeVitrines:[]);setDecisionsLoaded(true);}

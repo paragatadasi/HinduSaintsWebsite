@@ -13,9 +13,9 @@ export function useMuseumDisplayWork(sourceIds?:string[]){
  const [work,setWork]=useState<Work>({shelves:[],tasks:[]});
  const [busy,setBusy]=useState(false);
  const [loaded,setLoaded]=useState(false),[error,setError]=useState("");
- const reload=useCallback(async()=>{
+ const reload=useCallback(async(signal?:AbortSignal)=>{
   const params=new URLSearchParams({museumId:"museum-spn"});scope.split(",").filter(Boolean).forEach(id=>params.append("sourceId",id));
-  const response=await fetch(`${endpoint}?${params}`,{cache:"no-store"});const result=await response.json();
+  const response=await fetch(`${endpoint}?${params}`,{cache:"no-store",signal});const result=await response.json();
   if(!response.ok)throw new Error(result.error||"Could not load shelves and to-dos.");
   if(!Array.isArray(result.shelves)||!Array.isArray(result.tasks))throw new Error("Could not load shelves and to-dos.");
   if(currentScope.current===scope){setWork(result);setLoaded(true);setError("");}
