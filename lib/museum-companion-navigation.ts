@@ -4,7 +4,7 @@ export const companionRows = [
  {value:"ram-bhakti",label:"Ram bhakti",phases:["ram-bhakti"]},
  {value:"east",label:"East",phases:["gosaiji-sai","east2"]},
  {value:"vraj",label:"Vraj",phases:["vraj","vraj2"]},
- {value:"hinge",label:"Hinge additions",phases:["hinge"]},
+ {value:"hinge",label:"Central journey",phases:["hinge"]},
  {value:"north",label:"Northern journey",phases:["north"]},
  {value:"west",label:"West",phases:["west45","west46","west47","saurashtra","west40-44","west1"]},
  {value:"maharashtra",label:"Maharashtra",phases:["maharashtra"]},

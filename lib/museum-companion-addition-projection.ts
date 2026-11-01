@@ -6,6 +6,8 @@ import {projectSourceFamilyReunion,projectGajananDisplayRelationship,projectVitt
 const phaseOrder=["starter","datta","ram-bhakti","gosaiji-sai","east2","vraj","vraj2","hinge","north","west45","west46","west47","saurashtra","west40-44","west1","maharashtra","south"];
 export function companionVitrineOwner<T extends string>(guides:Record<T,StarterMoveGuide>,code:string):T|undefined{
  const keys=Object.keys(guides) as T[];
+ const approvedHinge=keys.find(key=>guides[key].version==="spn-hinge-approved-2026-11-01-v2"&&guides[key].vitrines.some(v=>v.code===code));
+ if(approvedHinge)return approvedHinge;
  const rank=(key:string)=>{const index=phaseOrder.indexOf(key);return index<0?phaseOrder.length:index;};
  return keys.sort((a,b)=>rank(a)-rank(b)).find(key=>guides[key].vitrines.some(v=>v.code===code));
 }

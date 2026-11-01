@@ -28,7 +28,8 @@ test("approved 37 form two qualified stories without invented relationships or s
  assert.equal(guide.entries.filter(e=>e.reviewOnly).length,2);
  assert.equal(guide.contextAnchors?.length,2);
  assert.deepEqual(guide.entries.filter(e=>e.destination==="24"),prior.entries.filter(e=>e.destination==="24"));
- assert.ok(!allOperationalSpnShelves.vitrines.some(v=>["25","26"].includes(v.code)));
+ assert.ok(allOperationalSpnShelves.vitrines.some(v=>v.code==="25"));
+ assert.ok(allOperationalSpnShelves.vitrines.some(v=>v.code==="26"));
  assert.ok(allOperationalSpnShelves.vitrines.some(v=>v.code==="24"));
  assert.equal(packet.rows.find(r=>r.sourceId==="rec9vEn5oj7QZTXl0")!.knownFootprint,null);
  assert.ok(currentReceiverGuideDefinitions("25").some(d=>d.context.guideVersion===eastRemainderGuideContext.guideVersion));
