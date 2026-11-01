@@ -23,7 +23,8 @@ import {hasCapability} from "@/lib/permissions";
 import {starterMoveGuide} from "@/lib/spn-starter-move-guide";
 import {readMuseumPhysicalLocations} from "@/lib/museum-physical-locations";
 import {readMuseumMoveSessionSource,registeredMoveProposal} from "@/lib/museum-move-session-source";
-import {SpnRoomMoveCompanion} from "@/components/admin/spn-room-move-companion";
+import {StreamedMoveCompanion,type GuideLoadResult} from "@/components/admin/streamed-move-companion";
+import type {CompanionPhase} from "@/lib/museum-companion-navigation";
 import {getMuseumData} from "@/lib/museum-data";
 import {projectStarterDisplayTiers} from "@/lib/spn-live-display-tiers";
 import {projectRamBhaktiGuide} from "@/lib/spn-ram-bhakti-guide";
@@ -31,14 +32,30 @@ import {projectDattaGuide} from "@/lib/spn-datta-guide";
 export default async function SpnMoveCompanionPage({searchParams}:{searchParams:Promise<{phase?:string}>}){
  await requireCapability("access_museum");
  const user=await requireCapability("view_museum_catalog");
- const [physical,current]=await Promise.all([readMuseumPhysicalLocations(tx=>readMuseumMoveSessionSource(registeredMoveProposal.version,tx)),getMuseumData()]);
+ const [physical,current,alternatives]=await Promise.all([readMuseumPhysicalLocations(tx=>readMuseumMoveSessionSource(registeredMoveProposal.version,tx)),getMuseumData(),readGuideAlternativeDestinations()]);
  const requested=(await searchParams).phase;
  const phase=requested==="maharashtra"||requested==="hinge"||requested==="south"||requested==="west40-44"||requested==="saurashtra"||requested==="west47"||requested==="west46"||requested==="west1"||requested==="west45"||requested==="east2"||requested==="vraj2"||requested==="north"||requested==="vraj"||requested==="gosaiji-sai"||requested==="datta"||requested==="ram-bhakti"?requested:"starter";
- const alternatives=await readGuideAlternativeDestinations();
- const [eastRemainder,vrajRemainder,westV45,westV1,westV46,westV47,junagadh,west40To44,southern,maharashtra,hinge]=await Promise.all([readEastRemainderGuide(current,physical,alternatives),readVrajRemainderGuide(current,physical,alternatives),readWestV45Guide(current,physical,alternatives),readWestV1Guide(current,physical,alternatives),readWestV46Guide(current,physical,alternatives),readWestV59Guide(current,physical,alternatives),readJunagadhGuide(current,physical,alternatives),readWest40To44Guide(current,physical,alternatives),readSouthernGuide(current,physical,alternatives),readApprovedReceivingGuide(maharashtraReceivingGuide,current,physical,alternatives),readApprovedReceivingGuide(approvedHingeGuide,current,physical,alternatives)]);
- const phaseGuides:Record<"maharashtra"|"hinge"|"south"|"starter"|"datta"|"ram-bhakti"|"gosaiji-sai"|"east2"|"vraj"|"vraj2"|"north"|"west45"|"west1"|"west46"|"west47"|"saurashtra"|"west40-44",StarterMoveGuide>= {maharashtra,hinge,south:southern,"west40-44":west40To44,saurashtra:junagadh,west47:westV47,west46:westV46,west1:westV1,west45:westV45,east2:eastRemainder,vraj2:vrajRemainder,north:projectNorthernGuide(current.placements,physical),vraj:projectVrajGuide(current.placements,physical),starter:projectBilashGuideFollowup(projectStarterDisplayTiers(starterMoveGuide,current.placements),current.placements),datta:projectDattaGuide(current.placements,physical),"ram-bhakti":projectRamBhaktiGuide(current.placements,physical),"gosaiji-sai":projectRamakrishnaGuide(current.placements,physical)};
- for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj"] as const)phaseGuides[key]=removeSupersededNorthernSuggestions(phaseGuides[key]);
- for(const key of ["starter","datta","ram-bhakti","gosaiji-sai","vraj","vraj2","east2","north","west45","west1","west46","west47","saurashtra","west40-44","south","hinge","maharashtra"] as const)phaseGuides[key]=projectCurrentGuideLifeStatus(phaseGuides[key],current);
- const guide=phaseGuides[phase];
- return <SpnRoomMoveCompanion initialAlternatives={alternatives} roomTones={spnDisplayTones} phaseGuides={phaseGuides} guide={guide} initialPhysical={physical} allowClear={guide.allowClear??phase==="starter"} phaseLabel={guide.phaseLabel??"Starter row"} phase={phase} canConfirmPlacements={hasCapability(user.roles,"confirm_museum_placements")} canManage={hasCapability(user.roles,"manage_museum")}/>;
+ const pending:Record<CompanionPhase,Promise<StarterMoveGuide>>={
+  maharashtra:readApprovedReceivingGuide(maharashtraReceivingGuide,current,physical,alternatives),
+  hinge:readApprovedReceivingGuide(approvedHingeGuide,current,physical,alternatives),
+  south:readSouthernGuide(current,physical,alternatives),
+  "west40-44":readWest40To44Guide(current,physical,alternatives),
+  saurashtra:readJunagadhGuide(current,physical,alternatives),west47:readWestV59Guide(current,physical,alternatives),
+  west46:readWestV46Guide(current,physical,alternatives),west1:readWestV1Guide(current,physical,alternatives),
+  west45:readWestV45Guide(current,physical,alternatives),east2:readEastRemainderGuide(current,physical,alternatives),
+  vraj2:readVrajRemainderGuide(current,physical,alternatives),
+  north:Promise.resolve(projectNorthernGuide(current.placements,physical)),
+  vraj:Promise.resolve(projectVrajGuide(current.placements,physical)),
+  starter:Promise.resolve(projectBilashGuideFollowup(projectStarterDisplayTiers(starterMoveGuide,current.placements),current.placements)),
+  datta:Promise.resolve(projectDattaGuide(current.placements,physical)),
+  "ram-bhakti":Promise.resolve(projectRamBhaktiGuide(current.placements,physical)),
+  "gosaiji-sai":Promise.resolve(projectRamakrishnaGuide(current.placements,physical))
+ };
+ for(const key of Object.keys(pending) as CompanionPhase[])pending[key]=pending[key].then(guide=>projectCurrentGuideLifeStatus(
+  ["starter","datta","ram-bhakti","gosaiji-sai","vraj"].includes(key)?removeSupersededNorthernSuggestions(guide):guide,current));
+ const pendingGuides:Promise<GuideLoadResult>=Promise.all(Object.entries(pending).map(async([key,value])=>[key,await value] as const))
+  .then(entries=>({guides:Object.fromEntries(entries) as Record<CompanionPhase,StarterMoveGuide>}))
+  .catch(error=>{console.error("Museum background guides failed",error);return {error:"Other museum rows could not load."};});
+ const guide=await pending[phase];
+ return <StreamedMoveCompanion pendingGuides={pendingGuides} initialAlternatives={alternatives} roomTones={spnDisplayTones} guide={guide} initialPhysical={physical} allowClear={guide.allowClear??phase==="starter"} phaseLabel={guide.phaseLabel??"Starter row"} phase={phase} canConfirmPlacements={hasCapability(user.roles,"confirm_museum_placements")} canManage={hasCapability(user.roles,"manage_museum")}/>;
 }

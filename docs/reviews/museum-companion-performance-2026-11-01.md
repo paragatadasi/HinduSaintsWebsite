@@ -30,3 +30,23 @@ Capture authenticated initial load, unchanged poll, changed poll, one checkbox, 
 Exercise same-record conflicts, independent-record saves, partial/bulk clearing concurrent with placement, and retry after an uncertain write. For read optimizations, verify a remote user's change reaches another client's visible checklist and does not reset local pending edits. Check that out-of-phase destinations and component-only locations remain correct.
 
 First follow-up after PR #3 should be the shelf/catalog refresh architecture, then initial loading. Rendering improvements follow measured browser evidence. Avoid broad component rewrites during the incident release.
+
+
+## Consolidated PR #3 fast follow
+
+Client branch: `codex/companion-performance-followup`, based on integrated `main` 88cedab. Bundle with Nadi's `codex/museum-read-performance`; the selected-vitrine contract must ship together.
+
+Implemented:
+- Page-scoped shelf/catalog read cache: simultaneous consumers share one request, conditional requests retain unchanged payloads, successful mutations invalidate cached reads. An in-flight response superseded by a write is retried for every subscriber. Read timeout is 20 seconds; cached values expire after 10 seconds. No writes use this cache.
+- Shelf panels request `?vitrine=CODE`; the shelf browser receives `availableVitrines` without transferring every case's allocations.
+- The server awaits only the requested guide after common inputs load. Remaining guide promises stream into the mounted companion, using those same inputs. Background failure leaves the selected guide usable. This does not eliminate initial museum/physical reads or all background guide work.
+- Row and saved-shelf indexes replace repeated linear scans in checklist, search and shelf rendering. No broad virtualization or tree-layout rewrite is included without browser profiling evidence.
+
+Local verification evidence:
+- Four cache tests cover request deduplication, expiry, ETag/304, invalidation during concurrent reads, retry and page isolation. Two concurrent consumers issue one request rather than two.
+- Existing three receipt tests retain independent-user placement/shelf/task merges and reject older placement receipts.
+- Headless Chrome: two shelf readers share one scoped request; switching from 2 to 76 ignores the late response for 2.
+- Headless Chrome: the selected-guide streaming wrapper renders before remaining guides resolve and retains its mounted editor and unsaved text when they arrive. The editor is a test probe; this is not an authenticated end-to-end production measurement.
+- Headless Chrome: actual search component can still add and confirm a holding without preparation gating.
+
+Server query counts, scoped payload sizes and database concurrency evidence belong to the matching backend handoff. Production save/initial-render latency remains to be measured after deployment; these local checks do not establish a production speedup.
