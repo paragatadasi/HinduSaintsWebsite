@@ -1,19 +1,21 @@
 # Release Handoff: codex/companion-contents-recovery
 
-- Status: queued
+- Status: ready
 - Branch: `codex/companion-contents-recovery`
-- Commit: `5a4e219`
+- Commit: `f664cab`
 - Owner/agent: `Citra`
 - Bundle priority: Bundle with Nadi readiness and clearing protection fix
 
 ## Summary
+
+- Urgent: placement checkboxes no longer require preparation/clearing readiness. Remove obsolete blocking notices. Requires matching backend decoupling; retain execution and record-specific guards.
 
 - Bulk clear lists only current residuals, preserves confirmed destination placements, and displays server staged/preserved counts. Requires Nadi residualClearing backend contract.
 - Cancel stuck contents reads after 30 seconds and display a retryable error. Ignore superseded responses and cancel reads on unmount.
 
 ## Verification
 
-- `npm run dev:check`: passed after bulk-clear changes; prepare:deployment verification passed, existing handoff updated manually.
+- `npm run dev:check`: passed after placement decoupling; prepare:deployment verification passed, existing handoff updated manually.
 - Actual React/browser regression with stalled GET and retry: passed
 - 19 clearance, historical staging and receiver availability domain tests: passed
 
@@ -22,7 +24,7 @@
 - Migrations: none
 - Environment variables: none
 - Data/backfill/release steps: none; no physical placements or readiness receipts changed.
-- Queue/deploy trigger: combine with Nadi residual-clearing and readiness fix; do not deploy UI alone.
+- Immediate release requested: combine with Nadi residual-clearing and readiness fix; do not deploy UI alone.
 
 ## Risk And Conflicts
 
