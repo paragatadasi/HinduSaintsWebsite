@@ -1,0 +1,31 @@
+{
+  "version": "spn-audited-pending-allocation-2026-11-02-v1",
+  "physicalWrites": false,
+  "sources": [
+    {
+      "sourceId": "rec2nZkEPSKUov5Tj",
+      "saintId": "cms0w7cjq00g807qiw146fm4p",
+      "sourceRevision": "751870595c19d457c9ba0a771352c2a334b124fdfe8087ea714b11f39217a25c"
+    },
+    {
+      "sourceId": "rec8CiqYCE8loBuDl",
+      "saintId": "cms0w7ddi01hb07qiucv9e9dn",
+      "sourceRevision": "bb237d9e5d2e35d8057172c217a8dc0b22683609e927ce04d9588f339482060a"
+    },
+    {
+      "sourceId": "recIE7h4k6e7GJnGa",
+      "saintId": "cms0w7fov04il07qi2wi9wtqb",
+      "sourceRevision": "c8d2e218a74036dbc929c690eeee33f309621c43090eaba9be90894af7f84694"
+    },
+    {
+      "sourceId": "recyk3KlMHvT4dYKJ",
+      "saintId": "cms0w7jtv098407qiq63nqvcz",
+      "sourceRevision": "55eefa2e07775c3bc26204970662b7c0124286ed1af162caad507847cd78cb3e"
+    },
+    {
+      "sourceId": "reczP3YscrJXar1R9",
+      "saintId": "cms0w7k6i09kz07qiuzaj6mh0",
+      "sourceRevision": "2010506ded9777b36c97e43d2f2e5e8135a74f656275ac69368d8545f4bc67f8"
+    }
+  ]
+}
