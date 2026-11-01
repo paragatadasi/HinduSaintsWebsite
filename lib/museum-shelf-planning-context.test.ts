@@ -83,3 +83,36 @@ test("an approved lower-two exception accepts living shelves 4–5 and holds hig
  assert.equal(projectShelfPlanningContext(packet,input).cases[0].allocations.length,0);
  assert.match(projectShelfPlanningContext(packet,input).reviewedChanges[0].reason,/approved lower shelves/);
 });
+
+
+test("confirmed receiving placements retain their arrangement even when a draft suggests another row",()=>{
+ const {packet,input}=fixture();
+ input.physical.rows[0].current={kind:"vitrine",code:"38",label:"Vitrine 38"};
+ input.current.membersById.set("source",{SamadhiDate:"Still alive"});
+ packet.vitrines[0].livingAllowedBands=[5];
+ const before=structuredClone(input.physical);
+ const result=projectShelfPlanningContext(packet,input);
+ assert.equal(result.cases[0].allocations[0].suggestedShelfIndex,null);
+ assert.equal(result.cases[0].allocations[0].suggestedBand,"retain-current");
+ assert.equal(result.cases[0].allocations[0].projectedLifeStatus?.tag,"Still alive");
+ assert.deepEqual(input.physical,before);
+});
+
+test("a previously retained placement moved elsewhere no longer claims retention",()=>{
+ const {packet,input}=fixture();
+ packet.vitrines[0].allocations[0].preserveCurrentPlacement=true;
+ const result=projectShelfPlanningContext(packet,input);
+ assert.equal(result.cases[0].allocations[0].preserveCurrentPlacement,false);
+ assert.equal(result.cases[0].allocations[0].suggestedShelfIndex,null);
+ assert.equal(result.cases[0].allocations[0].suggestedBand,"unspecified");
+});
+
+test("Chandra's dated living qualification reaches shelf context with no canonical rewrite",()=>{
+ const {packet,input}=fixture("rec1WWN7Xb1ZRGGhA");
+ input.current.membersById.set("rec1WWN7Xb1ZRGGhA",{SamadhiDate:""});
+ packet.vitrines[0].allocations[0].suggestedShelfIndex=5;
+ packet.vitrines[0].livingAllowedBands=[5];
+ const result=projectShelfPlanningContext(packet,input);
+ assert.equal(result.cases[0].entries[0].lifeStatus?.tag,"Still alive");
+ assert.equal(input.current.membersById.get("rec1WWN7Xb1ZRGGhA")?.SamadhiDate,"");
+});
