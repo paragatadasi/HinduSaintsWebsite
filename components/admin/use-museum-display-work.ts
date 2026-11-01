@@ -31,10 +31,10 @@ export function useMuseumDisplayWork(sourceIds?:string[]){
   if(currentScope.current===scope)setWork(previous=>({shelves:[...previous.shelves.filter(s=>!result.sourceIds.includes(s.sourceId)),...result.shelves],tasks:[...previous.tasks.filter(t=>!result.sourceIds.includes(t.sourceId)),...result.tasks]}));
   }finally{setBusy(false);}
  }
- function annotation(row:CompanionRow){return work.shelves.find(s=>s.sourceId===row.sourceId&&s.saintId===row.saintId&&row.current?.kind==="vitrine"&&s.vitrine===row.current.code&&s.physicalVersion===row.currentVersion);}
+ function annotation(row:CompanionRow){const location=row.componentPlacement?.location??row.current;return work.shelves.find(s=>s.sourceId===row.sourceId&&s.saintId===row.saintId&&location?.kind==="vitrine"&&s.vitrine===location.code&&s.physicalVersion===row.currentVersion);}
  return {tasks:work.tasks,loaded,error,reload,busy,
-  shelf:(row:CompanionRow)=>row.currentBasis==="confirmed"?(annotation(row)?annotation(row)!.shelf:row.current?.shelf??null):null,
-  saveShelf:(row:CompanionRow,shelf:string)=>write({action:"shelf.update",sourceId:row.sourceId,saintId:row.saintId,vitrine:row.current?.code,shelf,expectedVersion:work.shelves.find(s=>s.sourceId===row.sourceId)?.version??0,expectedCurrentRevision:row.currentRevision,expectedSourceRevision:row.sourceRevision,expectedLocationVersion:row.currentVersion}),
+  shelf:(row:CompanionRow)=>(row.componentPlacement||row.currentBasis==="confirmed")?(annotation(row)?annotation(row)!.shelf:(row.componentPlacement?.location??row.current)?.shelf??null):null,
+  saveShelf:(row:CompanionRow,shelf:string)=>write({action:"shelf.update",sourceId:row.sourceId,saintId:row.saintId,vitrine:(row.componentPlacement?.location??row.current)?.code,shelf,expectedVersion:work.shelves.find(s=>s.sourceId===row.sourceId)?.version??0,expectedCurrentRevision:row.currentRevision,expectedSourceRevision:row.sourceRevision,expectedLocationVersion:row.currentVersion}),
   addTask:(row:CompanionRow,title:string)=>write({action:"task.create",sourceId:row.sourceId,saintId:row.saintId,title}),
   completeTask:(task:DisplayTask,completed:boolean)=>write({action:"task.complete",taskId:task.id,expectedVersion:task.version,completed})};
 }
