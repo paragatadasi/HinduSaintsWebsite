@@ -1,5 +1,5 @@
 {
-  "version": "spn-display-regions-2026-11-01-v4",
+  "version": "spn-display-regions-2026-11-01-v5",
   "labels": {
     "N": "Himalaya & the North",
     "B": "Vraj & Ganga",
@@ -80,7 +80,8 @@
     "67": "K",
     "68": "K",
     "17": "C",
-    "18": "C"
+    "18": "C",
+    "73": "E"
   },
   "memberships": {
     "5": [
@@ -301,6 +302,9 @@
     ],
     "18": [
       "C"
+    ],
+    "73": [
+      "E"
     ]
   },
   "neutralCases": [
@@ -314,7 +318,6 @@
     "63",
     "69",
     "70",
-    "73",
     "83",
     "84",
     "85"

@@ -1,3 +1,4 @@
+import {applyEasternShelfRecommendations} from "./spn-eastern-headlines";
 import {applyJamnagarShelfRefinement} from "./spn-jamnagar-receiver";
 import hingeShelves from "../data/museum/spn-hinge-reviewed-shelves-v2.json";
 import northern from "../data/museum/spn-northern-shelves-v1.json";
@@ -28,4 +29,4 @@ const reviewedOperationalShelves:ShelfPlanningPacket={
  vitrines:[...revisedShelves,...receivingShelves.vitrines.map(v=>({...v,allocations:v.allocations.filter(a=>!latestReviewedIds.has(a.sourceId))})),...[...operationalSpnShelfPacket.vitrines,...westV46.vitrines,...junagadh.vitrines].filter(v=>!refreshedCodes.has(v.code)&&!spnDeferredShelfCases.has(v.code)).map(retainOtherAllocations),...westSouth.vitrines.map(v=>({...v,conceptualAssignedLoads:Object.fromEntries(v.conceptualAssignedLoads.map(b=>[String(b.shelfIndex),b.knownLoad]))})).map(retainOtherAllocations)]
 };
 
-export const allOperationalSpnShelves=applyJamnagarShelfRefinement(appendReviewedShelfSupplements(reviewedOperationalShelves,[...northern.vitrines,...kriya.vitrines],delta));
+export const allOperationalSpnShelves=applyEasternShelfRecommendations(applyJamnagarShelfRefinement(appendReviewedShelfSupplements(reviewedOperationalShelves,[...northern.vitrines,...kriya.vitrines],delta)));

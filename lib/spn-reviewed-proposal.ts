@@ -1,3 +1,4 @@
+import {easternHeadlines,easternCaseGroups} from "./spn-eastern-headlines";
 import {eastRemainderMoveGuide} from "./spn-east-remainder-guide";
 import puriOdisha from "../data/museum/spn-puri-odisha-approved-v4.json";
 import currentRoomLayout from "../data/museum/layouts/spn-layout-2026-10-23.json";
@@ -67,6 +68,7 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
  for(const change of overlay.overrides)if("spaceEstimate" in change)estimates.set(change.sourceId,change.spaceEstimate??null);
  for(const change of vraj.assignments)estimates.set(change.sourceId,change.spaceEstimate);
  for(const change of [...eastBaseline.assignments,...northernVoyage.assignments])estimates.set(change.sourceId,change.spaceEstimate);
+ for(const v of easternHeadlines.vitrines)for(const a of v.allocations)estimates.set(a.sourceId,a.knownFootprint);
  estimates.set("rec9vEn5oj7QZTXl0",null);
  const indicators=base.proposal.indicators.map(indicator=>{
   const occupants=rows.filter(row=>row.effectiveVitrine===indicator.vitrine);
@@ -80,9 +82,17 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
  });
  const guides=[{...eastRemainderMoveGuide,vitrines:eastRemainderMoveGuide.vitrines.filter(v=>v.code==="25"||v.code==="26")},{...starterMoveGuide,vitrines:starterMoveGuide.vitrines.filter(v=>v.code==="28")},dattaMoveGuide,ramBhaktiMoveGuide,{...gosaijiSaiMoveGuide,vitrines:gosaijiSaiMoveGuide.vitrines.filter(v=>v.code!=="75")},vrajMoveGuide,fillFirstMoveGuide,northernMoveGuide];
  const reviewedFamilies=guides.flatMap(guide=>guide.vitrines.map(v=>({...v,families:v.families.map(group=>{const present=new Set(rows.filter(row=>row.effectiveVitrine===v.code).map(row=>row.sourceId));return {...group,sourceIds:group.sourceIds.filter(id=>present.has(id)),edges:group.edges?.filter(edge=>present.has(edge.fromSourceId)&&present.has(edge.toSourceId))};}),entries:guide.entries.map(entry=>{const row=rows.find(row=>row.sourceId===entry.sourceId);return row?{...entry,name:row.name,tier:row.tier}:entry;})})));
+ for(const v of easternHeadlines.vitrines){
+  const entries=rows.filter(row=>row.effectiveVitrine===v.code).map(row=>({sourceId:row.sourceId,saintId:row.saintId,name:row.name,tier:row.tier,city:"",relicDescription:"",destination:v.code,section:row.section,family:"",rationale:""}));
+  const groups=easternCaseGroups(v.code,entries)!;
+  const index=reviewedFamilies.findIndex(caseRow=>caseRow.code===v.code);
+  const updated={code:v.code,...groups,entries};
+  if(index>=0)reviewedFamilies[index]=updated;else reviewedFamilies.push(updated);
+ }
  const caseTitles=new Map(reviewedFamilies.map(v=>[v.code,v.families.map(g=>g.title).join(" Â· ")]));
  for(const [code,title] of Object.entries({...vraj.caseStories,...northernVoyage.caseStories}))caseTitles.set(code,title);
  for(const [code,story] of Object.entries(puriOdisha.headlineStories))caseTitles.set(code,story.title);
+ for(const v of easternHeadlines.vitrines)caseTitles.set(v.code,v.summary);
  const options=base.designData.options.map(original=>{
   const option=projectCurrentPrimaryAnchors(original,rows);
   const assignments=option.assignments.map(a=>{const positioned=(a.number==="47"||a.number==="59")?option.assignments.find(other=>other.number===(a.number==="47"?"59":"47"))??a:a;return {...positioned,number:a.number,subsection:caseTitles.get(a.number)??positioned.subsection};});
