@@ -22,10 +22,12 @@ export function registerCombinedReceivers<T extends string>(guides: Record<T, St
 // Saved proposals determine membership; this packet only supplies the reviewed rationale.
 export function applyCombinedReviewedGuide(guide: StarterMoveGuide, additions: CompanionAddition[]): StarterMoveGuide {
   const saved = new Map(additions.map(addition => [addition.sourceId, addition]));
+  const incomingCases = new Set<string>();
   const entries = guide.entries.map(entry => {
     const source = sourceById.get(entry.sourceId), addition = saved.get(entry.sourceId);
     if (!source || !addition || source.saintId !== entry.saintId || addition.saintId !== source.saintId ||
       addition.sourceRevision !== source.sourceRevision || addition.vitrine !== source.draftVitrine || entry.destination !== source.draftVitrine) return entry;
+    incomingCases.add(entry.destination);
     return {...entry, reviewNotes: [...new Set([...(entry.reviewNotes ?? []), source.basis, source.shelfAdvice,
       ...("objectQualification" in source && source.objectQualification ? [source.objectQualification] : []),
       ...("groupQualification" in source && source.groupQualification ? [source.groupQualification] : []),
@@ -33,8 +35,7 @@ export function applyCombinedReviewedGuide(guide: StarterMoveGuide, additions: C
   });
   return {...guide, entries, vitrines: guide.vitrines.map(vitrine => {
     const review = packet.cases.find(v => v.code === vitrine.code);
-    const hasIncoming = entries.some(entry => entry.destination === vitrine.code && entry !== guide.entries.find(old => old.sourceId === entry.sourceId));
-    if (!review || !hasIncoming) return vitrine;
+    if (!review || !incomingCases.has(vitrine.code)) return vitrine;
     return {...vitrine, fitGuidance: [...new Set([vitrine.fitGuidance, ...review.notes].filter(Boolean))].join(" ")};
   })};
 }
