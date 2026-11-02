@@ -139,7 +139,7 @@ function SpnRoomMoveCompanionContent({guide:initialGuide,initialPhysical,canMana
  },()=>{reads.invalidate();});
  const reviewRecords=useMemo<FinalReviewRecord[]>(()=>finalReview.snapshot?.records.map(record=>({
   sourceId:record.sourceId,name:record.name,tier:record.tier,section:record.section,region:record.region,city:record.city,description:record.relicDescription,
-  row:record.physical.componentPlacement?{...record.physical,componentPlacement:{...record.physical.componentPlacement,location:{...record.physical.componentPlacement.location,shelf:displayWork.shelf(record.physical)}}}:record.physical.currentBasis==="confirmed"&&record.physical.current?{...record.physical,current:{...record.physical.current,shelf:displayWork.shelf(record.physical)}}:record.physical,destination:record.effectiveDestination?.vitrine??"",destinationShelf:record.effectiveDestination?.shelf??null,addressed:record.addressed,
+  row:record.physical.componentPlacement?{...record.physical,componentPlacement:{...record.physical.componentPlacement,location:{...record.physical.componentPlacement.location,shelf:displayWork.shelf(record.physical)??undefined}}}:record.physical.currentBasis==="confirmed"&&record.physical.current?{...record.physical,current:{...record.physical.current,shelf:displayWork.shelf(record.physical)}}:record.physical,destination:record.effectiveDestination?.vitrine??"",destinationShelf:record.effectiveDestination?.shelf??null,addressed:record.addressed,
   flag:record.flag?.status==="open"?{type:record.flag.kind,note:record.flag.note}:null,version:record.reviewVersion,hasFinalProposal:record.effectiveDestination?.basis==="final_review",
  }))??[],[finalReview.snapshot,displayWork.shelves]);
 
