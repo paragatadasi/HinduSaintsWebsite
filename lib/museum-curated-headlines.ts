@@ -15,6 +15,7 @@ export function curatedVitrineHeadline(
   const rule = rules[vitrine];
   if (!rule) return original;
   const active = new Set(entries.filter(entry => entry.destination === vitrine).map(entry => entry.sourceId));
+  if (!rule.anchorClauses.length) return active.size ? rule.fallback : rule.headline;
   const present = rule.anchorClauses.filter(clause => clause.match === "any"
     ? clause.sourceIds.some(id => active.has(id))
     : clause.sourceIds.every(id => active.has(id)));

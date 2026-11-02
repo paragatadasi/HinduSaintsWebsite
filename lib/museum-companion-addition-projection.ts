@@ -1,3 +1,4 @@
+import {applySolapurKeralaGuide} from "./spn-solapur-kerala-refinement";
 import {reconcileCompanionMembership} from "./museum-companion-membership";
 import {applyEasternHeadlines} from "./spn-eastern-headlines";
 import {applyJamnagarGuideRefinement} from "./spn-jamnagar-receiver";
@@ -56,5 +57,6 @@ export function projectCompanionAdditions<T extends string>(guides:Record<T,Star
    return {...entry,reviewNotes:[...new Set([...(entry.reviewNotes??[]),note])]};
   })})))), additions),additions),catalog.map(e=>byId.has(e.sourceId)?{...e,destination:byId.get(e.sourceId)!.vitrine}:e))];
  })) as Record<T,StarterMoveGuide>;
- return reconcileCompanionMembership(projected,catalog.map(entry=>byId.has(entry.sourceId)?{...entry,destination:byId.get(entry.sourceId)!.vitrine}:entry));
+ const refined=Object.fromEntries(Object.entries(projected).map(([key,value])=>[key,applySolapurKeralaGuide(value as StarterMoveGuide,additions,catalog)])) as Record<T,StarterMoveGuide>;
+ return reconcileCompanionMembership(refined,catalog.map(entry=>byId.has(entry.sourceId)?{...entry,destination:byId.get(entry.sourceId)!.vitrine}:entry));
 }

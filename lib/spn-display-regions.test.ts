@@ -5,8 +5,8 @@ import layout from '../data/museum/layouts/spn-layout-2026-10-23.json';
 
 test('reviewed presentation covers physical cases without renumbering',()=>{
  assert.deepEqual(Object.keys(spnDisplayTones).sort(),layout.vitrines.map(v=>v.number).sort());
- for(const n of ['27']) assert.equal(spnDisplayTones[n],'R');
- for(const n of ['23','24','37','73']) assert.equal(spnDisplayTones[n],'E');
+ for(const n of ['28']) assert.equal(spnDisplayTones[n],'R');
+ for(const n of ['23','24','27','37','73']) assert.equal(spnDisplayTones[n],'E');
  for(const n of ['64','65','66','67','68']) assert.equal(spnDisplayTones[n],'K');
  for(const n of ['17','18']) assert.equal(spnDisplayTones[n],'C');
 });
