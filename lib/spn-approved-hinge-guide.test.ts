@@ -3,7 +3,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {approvedHingeGuide as adapter} from "./spn-approved-hinge-guide";
 import {companionVitrineOwner} from "./museum-companion-addition-projection";
-import {allOperationalSpnShelves} from "./spn-operational-shelves";
+import {beforeCombinedShelves as allOperationalSpnShelves} from "./spn-operational-shelves";
 import {readStarterGuideDefinition} from "./spn-starter-guide-registry";
 import {hingeAdditionsGuideContext} from "./spn-hinge-additions-guide";
 import delta from "../data/museum/spn-source-shelf-coverage-delta-v1.json";
