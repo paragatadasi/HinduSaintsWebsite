@@ -1,8 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {activeSearchRoster,resolveSearchRoster} from './museum-search-roster';
-import type {StarterMoveGuide} from './spn-move-guide';
-const guide=(code:string,sourceId:string)=>({entries:[{sourceId,destination:code}],vitrines:[{code,families:[{sourceIds:[sourceId]}],cityGroups:[]}]}) as StarterMoveGuide;
+const guide=(code:string,sourceId:string)=>({entries:[{sourceId,destination:code}],vitrines:[{code,families:[{sourceIds:[sourceId]}],cityGroups:[]}]});
 test('search only offers destinations present in the current roster',()=>{
  const roster=activeSearchRoster([guide('47','assigned')]);
  assert.equal(resolveSearchRoster('assigned','61',roster).destination,'47');

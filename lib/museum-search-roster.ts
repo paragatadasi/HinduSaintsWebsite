@@ -1,6 +1,7 @@
 import type {StarterMoveGuide} from "./spn-move-guide";
 
-export function activeSearchRoster(guides:StarterMoveGuide[]){
+type SearchRosterGuide={entries:Pick<StarterMoveGuide["entries"][number],"sourceId"|"destination">[];vitrines:{code:string;families:{sourceIds:string[]}[];cityGroups:{sourceIds:string[]}[]} };
+export function activeSearchRoster(guides:SearchRosterGuide[]){
  const targets=new Map<string,Set<string>>();
  for(const guide of guides){
   const entries=new Map(guide.entries.map(entry=>[entry.sourceId,entry]));
