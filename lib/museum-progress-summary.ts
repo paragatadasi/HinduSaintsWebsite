@@ -1,10 +1,10 @@
 import {isCountedSpnProgressSource} from "./spn-progress-exclusions";
 import {companionRows,type CompanionPhase} from "./museum-companion-navigation";
 import {companionVitrineOwner} from "./museum-companion-addition-projection";
-import {vitrineProgress} from "./museum-vitrine-progress";
+import {vitrineProgress,type FinalReviewDecision} from "./museum-vitrine-progress";
 import type {StarterMoveGuide,CompanionRow,GuideDecision} from "./spn-move-guide";
 
-export function museumProgressSummary(guides:Record<CompanionPhase,StarterMoveGuide>,rows:CompanionRow[],decisions:Record<string,GuideDecision[]>){
+export function museumProgressSummary(guides:Record<CompanionPhase,StarterMoveGuide>,rows:CompanionRow[],decisions:Record<string,GuideDecision[]>,reviewDecisions:FinalReviewDecision[]=[]){
  const seen=new Set<string>();
  const regions=companionRows.map(region=>{
   const vitrines=region.phases.flatMap(owner=>{
@@ -15,7 +15,7 @@ export function museumProgressSummary(guides:Record<CompanionPhase,StarterMoveGu
     // Count each source once across the available guides, including overlapping families.
     const ownIds=new Set(groups.flatMap(g=>g.sourceIds).filter(id=>{const entry=entries.get(id);return !seen.has(id)&&isCountedSpnProgressSource(id)&&entry?.destination===v.code&&!entry.allocationPending&&entry.proposalTransfer?.state!=="approved_case_pending";}));
     for(const id of ownIds)seen.add(id);
-    const progress=vitrineProgress(v.code,groups.map(g=>({...g,sourceIds:g.sourceIds.filter(id=>ownIds.has(id))})),rows,decisions[guide.version]??[]);
+    const progress=vitrineProgress(v.code,groups.map(g=>({...g,sourceIds:g.sourceIds.filter(id=>ownIds.has(id))})),rows,decisions[guide.version]??[],reviewDecisions);
     return {code:v.code,owner,...progress};
    });
   });

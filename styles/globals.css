@@ -12155,6 +12155,17 @@ select:not([multiple]) {
 
 .museum-guide-search {display:grid;grid-template-columns:minmax(0,2fr) repeat(2,minmax(0,1fr));gap:var(--space-3);margin-block:var(--space-3)}
 .museum-guide-search__results {max-height:var(--width-companion-map);overflow-y:auto}
+.museum-review-filters {display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));gap:var(--space-3);margin-block:var(--space-3)}
+.museum-review-locations {display:grid;gap:var(--space-1);margin-block:var(--space-2);font-size:var(--font-size-companion-small);color:var(--color-muted)}
+.museum-review-locations>div {display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.museum-review-locations dt {font-weight:600}
+.museum-review-locations dd {margin:0}
+.museum-review-flag {border-left:var(--border-width-default) solid var(--color-accent);padding-left:var(--space-3);margin-block:var(--space-2);font-size:var(--font-size-companion-small)}
+.museum-review-flag p {margin-block:var(--space-1);white-space:pre-wrap}
+.museum-review-panels {display:grid;gap:var(--space-4)}
+.museum-final-review__record>.review-actions {flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:65rem){.museum-review-filters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:40rem){.museum-review-filters{grid-template-columns:minmax(0,1fr)}}
 .museum-companion .admin-tab-strip a {color:var(--color-muted);padding:var(--space-3) 0;text-decoration:none;border-bottom:var(--border-width-default) solid transparent}
 .museum-companion .admin-tab-strip a[aria-current="page"] {color:var(--color-text);border-bottom-color:var(--color-copper)}
 @media(max-width:45rem){.museum-guide-search{grid-template-columns:minmax(0,1fr)}}

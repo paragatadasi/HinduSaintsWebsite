@@ -50,7 +50,7 @@ export function useMuseumDisplayWork(sourceIds?:string[]){
  }
  const shelvesBySource=useMemo(()=>new Map(work.shelves.map(shelf=>[shelf.sourceId,shelf])),[work.shelves]);
  function annotation(row:CompanionRow){const location=row.componentPlacement?.location??row.current,s=shelvesBySource.get(row.sourceId);return s&&s.saintId===row.saintId&&location?.kind==="vitrine"&&s.vitrine===location.code&&s.physicalVersion===row.currentVersion?s:undefined;}
- return {tasks:work.tasks,loaded,error,reload,busy,isSaving:(sourceId:string)=>active.current.has(sourceId),
+ return {shelves:work.shelves,tasks:work.tasks,loaded,error,reload,busy,isSaving:(sourceId:string)=>active.current.has(sourceId),
   shelf:(row:CompanionRow)=>(row.componentPlacement||row.currentBasis==="confirmed")?(annotation(row)?annotation(row)!.shelf:(row.componentPlacement?.location??row.current)?.shelf??null):null,
   saveShelf:(row:CompanionRow,shelf:string)=>write({action:"shelf.update",sourceId:row.sourceId,saintId:row.saintId,vitrine:(row.componentPlacement?.location??row.current)?.code,shelf,expectedVersion:shelvesBySource.get(row.sourceId)?.version??0,expectedCurrentRevision:row.currentRevision,expectedSourceRevision:row.sourceRevision,expectedLocationVersion:row.currentVersion}),
   addTask:(row:CompanionRow,title:string)=>write({action:"task.create",sourceId:row.sourceId,saintId:row.saintId,title}),

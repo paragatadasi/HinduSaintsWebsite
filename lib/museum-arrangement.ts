@@ -1,3 +1,5 @@
+import {assertNoFinalReviewPlan} from "./museum-final-review-plans";
+import {MuseumMoveSessionError} from "./museum-move-session-domain";
 import {db} from "@/lib/db";
 import {spnPhysicalExecutionHold} from "./museum-case-execution-holds";
 import {readPhysicalLocationView} from "./museum-physical-locations";
@@ -25,6 +27,9 @@ export async function saveMuseumArrangement(raw:unknown,actorId:string) {
 
 type ArrangementPhysicalRow = {sourceId:string;saintId:string|null;current:{kind:string;code:string}|null};
 export async function writeMuseumArrangement(tx:Prisma.TransactionClient,museumId:string,row:MuseumSaintPlacement,input:ReturnType<typeof arrangementInput.parse>,actorId:string,physicalRows?:ArrangementPhysicalRow[]) {
+  if(museumId==="museum-spn"&&input.status==="Planned"){
+   try{await assertNoFinalReviewPlan(tx,row.sourceRecordId??row.id);}catch(error){if(error instanceof MuseumMoveSessionError)throw new MuseumConflict(error.message);throw error;}
+  }
   if(museumId==="museum-spn"&&input.status==="Implemented"){
    const to=input.vitrine?{kind:"vitrine",code:input.vitrine}:null;
    const targetHold=spnPhysicalExecutionHold(null,to);

@@ -1,3 +1,4 @@
+import {assertNoFinalReviewPlan} from "./museum-final-review-plans";
 import {canPlacePagalComponent,isPagalComponentPlaced,pagalComponentReceiptId} from "./spn-pagal-component-placement";
 import {hasOnlySpnHousingReviewHold} from "./spn-movement-holds";
 import {currentCompanionAdditions} from "./museum-companion-addition-validation";
@@ -22,6 +23,7 @@ export async function saveCompanionAddition(raw:unknown,actorId:string){
   await tx.$queryRaw`SELECT true FROM pg_advisory_xact_lock(hashtext('museum-companion-additions:spn'))`;
   const additions=await readCompanionAdditions(tx),previous=additions.find(item=>item.sourceId===input.sourceId);
   if(previous?.clientRequestId===input.clientRequestId){if(previous.vitrine!==input.vitrine||(previous.shelf??"")!==input.shelf)throw new MuseumMoveSessionError(409,"This request already saved a different destination.");return previous;}
+  await assertNoFinalReviewPlan(tx,input.sourceId);
   if((previous?.version??0)!==input.expectedVersion)throw new MuseumMoveSessionError(409,"Another curator changed this destination. Reload the result before saving.");
   const state=await readPhysicalLocationView(tx=>readMuseumMoveSessionSource(registeredMoveProposal.version,tx),tx,[input.sourceId],false);
   const row=state.rows[0];

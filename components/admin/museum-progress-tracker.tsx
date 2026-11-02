@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useMemo,useState} from "react";
+import type {FinalReviewDecision} from "@/lib/museum-vitrine-progress";
 import {museumProgressSummary} from "@/lib/museum-progress-summary";
 import type {CompanionPhase} from "@/lib/museum-companion-navigation";
 import type {StarterMoveGuide,CompanionRow,GuideDecision} from "@/lib/spn-move-guide";
@@ -15,7 +16,7 @@ function Fill({counts}: {counts:Counts}){
 function Summary({counts}:{counts:Counts}){
  return <><strong className="museum-progress__percent">{percent(counts)}%</strong><span>{counts.addressed} of {counts.total} records addressed · {counts.deferred} deferred</span><div className="museum-progress__bar museum-vitrine-progress"><Fill counts={counts}/></div></>;
 }
-export function MuseumProgressTracker({guides,rows,disabled,onOpen}:{guides?:Record<CompanionPhase,StarterMoveGuide>;rows:CompanionRow[];disabled:boolean;onOpen:(phase:CompanionPhase,code:string)=>void}){
+export function MuseumProgressTracker({guides,rows,disabled,onOpen,reviewDecisions=[]}:{guides?:Record<CompanionPhase,StarterMoveGuide>;rows:CompanionRow[];reviewDecisions?:FinalReviewDecision[];disabled:boolean;onOpen:(phase:CompanionPhase,code:string)=>void}){
  const reads=useMuseumReads();
  const [decisions,setDecisions]=useState<Record<string,GuideDecision[]>|null>(null);
  const [error,setError]=useState("");const [refresh,setRefresh]=useState(0);
@@ -28,7 +29,7 @@ export function MuseumProgressTracker({guides,rows,disabled,onOpen}:{guides?:Rec
   setDecisions(null);load();window.addEventListener("focus",load);
   return()=>{cancelled=true;window.removeEventListener("focus",load);};
  },[versions,reads,refresh,!!guides]);
- const progress=useMemo(()=>guides&&decisions?museumProgressSummary(guides,rows,decisions):null,[guides,rows,decisions]);
+ const progress=useMemo(()=>guides&&decisions?museumProgressSummary(guides,rows,decisions,reviewDecisions):null,[guides,rows,decisions,reviewDecisions]);
  return <section className="museum-admin-panel museum-progress" aria-label="Move progress">
   <div className="section-heading"><h2>Move progress</h2><button type="button" className="museum-admin-button museum-admin-button--secondary" onClick={()=>setRefresh(n=>n+1)}>Refresh progress</button></div>
   {error?<p role="alert">{error}</p>:null}

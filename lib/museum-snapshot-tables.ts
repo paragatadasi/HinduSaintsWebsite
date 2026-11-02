@@ -12,6 +12,8 @@ export const MUSEUM_SNAPSHOT_TABLES = [
   "SaintAlias", "SaintFamily", "SaintFamilyMember", "SaintRelationship", "SaintTradition", "SaintVisitPlace", "Tradition",
   // operational views included in the same revisioned read-model contract
   "MuseumCompanionShelf", "MuseumCompanionTask", "MuseumGuideSuggestionDecision",
+  // Only planning/decision fields are cached; selective triggers skip flag-only updates.
+  "MuseumFinalReviewState",
   "MuseumMoveCurrentLocation", "MuseumMoveSession", "MuseumMoveSessionEvent"
 ] as const;
 
