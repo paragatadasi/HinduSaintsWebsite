@@ -60,7 +60,9 @@ export function applyCombinedReviewedShelves(plan: ShelfPlanningPacket): ShelfPl
     target.notes = [...new Set([...(target.notes ?? []), ...review.notes])];
   }
   return {...plan, version: plan.version + ":" + packet.version, vitrines: vitrines.map(v => {
-    const ids = new Set(v.allocations.map(a => a.sourceId));
+    const removed = plan.vitrines.find(old => old.code === v.code)?.allocations.some(a => !v.allocations.some(current => current.sourceId === a.sourceId));
+    if (!removed) return v;
+    const ids = new Set([...v.allocations.map(a => a.sourceId), ...(v.contextNodes ?? []).map(node => node.id)]);
     return {...v, groups: v.groups.filter(g => v.allocations.some(a => a.groupId === g.id)),
       relationships: v.relationships.filter(r => ids.has(r.fromSourceId) && ids.has(r.toSourceId))};
   })};
