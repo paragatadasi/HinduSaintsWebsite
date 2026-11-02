@@ -84,3 +84,18 @@ test("final West composition relocates exactly the reviewed sources and preserve
  }
  for(const code of westMountAbu.protectedVitrines)assert.deepEqual(allOperationalSpnShelves.vitrines.find(v=>v.code===code),beforeWestShelves.vitrines.find(v=>v.code===code));
 });
+
+test("institution correction keeps whole Gyaan Gufa and Brahma Kumaris groups separate",()=>{
+ const at41=westMountAbu.vitrines.find(v=>v.code==="41")!;
+ const at42=westMountAbu.vitrines.find(v=>v.code==="42")!;
+ const gyaan=at41.groups.find(g=>g.id==="west-v6-42-7")!;
+ const bk=at42.groups.find(g=>g.id==="west-v6-41-1")!;
+ assert.deepEqual(gyaan.sources.map(s=>s.sourceId).sort(),["recrC9U16Vn5vP9Fn","recmGHWXiRWRyqNCz"].sort());
+ assert.equal(bk.sources.length,10);
+ assert.ok(!at41.groups.some(g=>g.id===bk.id));assert.ok(!at42.groups.some(g=>g.id===gyaan.id));
+ assert.ok(Math.abs(at41.knownFootprint+3-5.266666666666667)<0.00001);
+ assert.ok(Math.abs(at42.knownFootprint-4.241666666666667)<0.00001);
+ assert.match(at41.notes.join(" "),/living saints at the bottom/);
+ assert.match(at41.headline,/Gyaan Gufa/);assert.doesNotMatch(at41.headline,/Brahma Kumaris/);
+ assert.match(at42.headline,/Brahma Kumaris/);assert.doesNotMatch(at42.headline,/Gyaan Gufa/);
+});
