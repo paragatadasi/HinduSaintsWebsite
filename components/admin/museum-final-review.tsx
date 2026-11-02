@@ -1,14 +1,17 @@
 "use client";
 
 import React,{useEffect,useMemo,useState,type ReactNode} from "react";
-import {companionLocationLabel,currentLocationLabel,isPlaced} from "@/lib/spn-move-guide";
+import {companionLocationLabel,currentLocationLabel} from "@/lib/spn-move-guide";
 import {emptyReviewFilters,filterReviewRecords,partitionReviewRecords,sortReviewRecords,type FinalReviewRecord,type ReviewFilters,type ReviewFlag} from "@/lib/museum-final-review-view";
 import {spnMuseumLayout} from "@/lib/spn-museum-layout";
+import {finalReviewProgress} from "@/lib/museum-final-review-progress";
 import {MuseumRoomPlan} from "./museum-room-plan";
 import {MuseumDetailDialog} from "./museum-detail-dialog";
 
 export type FinalReviewAction =
   | {action:"place"}
+  | {action:"review"}
+  | {action:"unreview"}
   | {action:"undo"}
   | {action:"destination";vitrine:string;shelf:string;moved:boolean;note:string;notOnDisplay:boolean}
   | {action:"flag";type:ReviewFlag["type"];note:string}
@@ -62,6 +65,7 @@ export function MuseumFinalReview({mode,records,vitrines,selected,onSelect,tones
   const [target,setTarget]=useState(""),[shelf,setShelf]=useState(""),[moved,setMoved]=useState(false),[notOnDisplay,setNotOnDisplay]=useState(false);
   const [dialogError,setDialogError]=useState("");
   const groups=useMemo(()=>partitionReviewRecords(records),[records]);
+  const reviewProgress=useMemo(()=>finalReviewProgress(records),[records]);
   const counts=useMemo(()=>{const result:Record<string,number>={};for(const record of records)if(record.destination)result[record.destination]=(result[record.destination]??0)+1;return result;},[records]);
   const selectedRecords=useMemo(()=>sortReviewRecords(records.filter(record=>record.destination===selected)),[records,selected]);
   const shown=useMemo(()=>filterReviewRecords(selectedRecords,{...emptyReviewFilters,query}),[selectedRecords,query]);
@@ -76,9 +80,9 @@ export function MuseumFinalReview({mode,records,vitrines,selected,onSelect,tones
     try{if(pendingSources.has(dialog.record.sourceId))await onRetry(dialog.record.sourceId);else await onAction(dialog.record,action);setDialog(null);}catch(error){setDialogError(error instanceof Error?error.message:"Could not save. Your details are still here.");}
   }
   function row(record:FinalReviewRecord){
-    const saving=savingSources.has(record.sourceId),pending=pendingSources.has(record.sourceId),placed=!!record.destination&&isPlaced(record.row,record.destination);
+    const saving=savingSources.has(record.sourceId),pending=pendingSources.has(record.sourceId);
     return <article className="museum-guide-check museum-final-review__record" key={record.sourceId} aria-label={record.name}>
-      <input type="checkbox" aria-label={record.destination?`Confirm ${record.name} in Vitrine ${record.destination}`:`No destination for ${record.name}`} checked={placed} disabled={!canEdit||saving||pending||!record.destination||record.row.identityChanged} onChange={()=>placed?open(record,"undo"):void onAction(record,{action:"place"}).catch(()=>undefined)}/>
+      <input type="checkbox" aria-label={record.destination?`Finally review ${record.name} in Vitrine ${record.destination}`:`No destination for ${record.name}`} checked={record.finallyReviewed===true} disabled={!canEdit||saving||pending||!record.destination||record.row.identityChanged} onChange={()=>void onAction(record,{action:record.finallyReviewed?"unreview":"review"}).catch(()=>undefined)}/>
       <div className="museum-guide-check__body">
         <details><summary>{record.name}<span className="museum-guide-tier">{record.tier}</span></summary>{record.description?<p>{record.description}</p>:null}{record.section?<p className="muted">{record.region?record.region+" · ":""}{record.section}</p>:null}</details>
         <dl className="museum-review-locations"><div><dt>Starting</dt><dd>{currentLocationLabel(record.row.original)}</dd></div><div><dt>Proposed</dt><dd>{record.destination?`Vitrine ${record.destination}${record.destinationShelf?` · Shelf ${record.destinationShelf}`:""}`:"Not assigned"}</dd></div><div><dt>Current</dt><dd>{companionLocationLabel(record.row)}</dd></div></dl>
@@ -94,10 +98,10 @@ export function MuseumFinalReview({mode,records,vitrines,selected,onSelect,tones
   const dialogLocked=dialogBusy||!!dialog&&pendingSources.has(dialog.record.sourceId);
   return <>
     {mode==="unaddressed"?<div className="museum-companion__layout"><div className="museum-companion__main">
-      <section className="museum-admin-panel museum-companion__task"><div className="section-heading"><h2>Room layout</h2><button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!flaggedFilters.proposed&&!remainingFilters.proposed} onClick={()=>{setFlaggedFilters({...flaggedFilters,proposed:""});setRemainingFilters({...remainingFilters,proposed:""});}}>All vitrines</button></div><MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={[...new Set([flaggedFilters.proposed,remainingFilters.proposed].filter(Boolean))]} counts={counts} tones={tones} onSelect={code=>{onSelect(code);setFlaggedFilters({...flaggedFilters,proposed:code});setRemainingFilters({...remainingFilters,proposed:code});}}/></section>
+      <section className="museum-admin-panel museum-companion__task"><div className="section-heading"><h2>Room layout</h2><button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!flaggedFilters.proposed&&!remainingFilters.proposed} onClick={()=>{setFlaggedFilters({...flaggedFilters,proposed:""});setRemainingFilters({...remainingFilters,proposed:""});}}>All vitrines</button></div><MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={[...new Set([flaggedFilters.proposed,remainingFilters.proposed].filter(Boolean))]} counts={counts} tones={tones} progress={reviewProgress.vitrines} onSelect={code=>{onSelect(code);setFlaggedFilters({...flaggedFilters,proposed:code});setRemainingFilters({...remainingFilters,proposed:code});}}/></section>
       <div className="museum-companion__guide museum-review-panels"><ReviewPanel title="Flagged records" records={groups.flagged} vitrines={vitrines} renderRow={row} filters={flaggedFilters} setFilters={setFlaggedFilters}/><ReviewPanel title="Remaining unaddressed records" records={groups.unaddressed} vitrines={vitrines} renderRow={row} filters={remainingFilters} setFilters={setRemainingFilters}/></div>
     </div></div>:<div className="museum-companion__layout"><div className="museum-companion__main">
-      <section className="museum-admin-panel museum-companion__task"><h2>Room layout</h2><MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={[selected]} counts={counts} tones={tones} onSelect={onSelect}/></section>
+      <section className="museum-admin-panel museum-companion__task"><h2>Room layout</h2><MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={[selected]} counts={counts} tones={tones} progress={reviewProgress.vitrines} onSelect={onSelect}/></section>
       <div className="museum-companion__guide"><section className="museum-admin-panel"><div className="section-heading"><h2>Final review</h2><label className="admin-field"><span>Vitrine</span><select value={selected} onChange={event=>onSelect(event.target.value)}>{vitrines.map(code=><option key={code} value={code}>{code}</option>)}</select></label></div><h3>Complete vitrine checklist · {selectedRecords.length}</h3><label className="admin-field"><span>Find in this vitrine</span><input type="search" value={query} onChange={event=>setQuery(event.target.value)} placeholder="Saint or city"/></label>{shown.map(row)}{!shown.length?<p>{selectedRecords.length?"No matching saints.":"No records assigned to this vitrine."}</p>:null}</section></div>
     </div></div>}
     {dialog?<MuseumDetailDialog titleId="final-review-dialog-title" kicker="Final review" closeLabel="Close review" onClose={()=>{if(!dialogBusy)setDialog(null);}}><h2 id="final-review-dialog-title">{dialog.kind==="flag"?"Flag record":dialog.kind==="undo"?"Undo placement check?":"Change destination"}</h2><p>{dialog.record.name}</p><form onSubmit={event=>{event.preventDefault();void submit();}}>

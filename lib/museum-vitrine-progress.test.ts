@@ -23,3 +23,10 @@ test('not on display counts as addressed and restoring reopens the assignment',(
  assert.deepEqual(vitrineProgress('20',groups,[],[decision]),{total:1,addressed:1,deferred:0});
  assert.deepEqual(vitrineProgress('20',groups,[],[{...decision,decision:'pending'}]),{total:1,addressed:0,deferred:0});
 });
+
+test('final review supersedes an older deferred decision in move progress',()=>{
+ const groups=[{id:'family',sourceIds:['a']}] as GuideGroup[];
+ const decisions=[{suggestionId:'row:a',decision:'deferred'}] as GuideDecision[];
+ assert.deepEqual(vitrineProgress('20',groups,[],decisions,[{sourceId:'a',decision:'deferred',finallyReviewed:true}]),{total:1,addressed:1,deferred:0});
+ assert.deepEqual(vitrineProgress('20',groups,[],decisions,[{sourceId:'a',decision:'deferred',finallyReviewed:false}]),{total:1,addressed:0,deferred:1});
+});

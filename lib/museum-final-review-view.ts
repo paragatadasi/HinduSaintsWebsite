@@ -13,6 +13,7 @@ export type FinalReviewRecord = {
   destination:string;
   destinationShelf:string|null;
   addressed:boolean;
+  finallyReviewed?:boolean;
   flag:ReviewFlag|null;
   version:number;
   hasFinalProposal?:boolean;

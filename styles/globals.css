@@ -12340,3 +12340,7 @@ select:not([multiple]) {
 .museum-shelf__workspace[data-rail-collapsed="true"] .museum-shelf__band { min-width:0; }
 .museum-shelf__workspace[data-rail-collapsed="true"] .museum-shelf__member { min-width:0; overflow-wrap:anywhere; }
 .museum-shelf__workspace[data-rail-collapsed="true"] .museum-shelf__member > div { overflow-wrap:anywhere; }
+
+/* Review maps retain regional outlines while their fill records the second pass. */
+.museum-room__vitrine[data-progress="true"], [data-museum-companion-theme="parchment"] .museum-room__vitrine[data-progress="true"] { background:var(--color-surface); }
+.museum-room__progress-fill { fill:var(--display-fill,var(--color-museum-region-5)); }
