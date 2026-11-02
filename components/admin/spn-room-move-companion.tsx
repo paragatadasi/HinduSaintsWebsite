@@ -1,4 +1,5 @@
 "use client";
+import {projectConfirmedRosters,registerManualBhaktiMarga} from "@/lib/museum-confirmed-rosters";
 import {MuseumReadProvider,useMuseumReads} from "./museum-read-context";
 import type {ComponentProps} from "react";
 import {mergeSavedRows} from "@/lib/museum-save-receipts";
@@ -47,10 +48,11 @@ type RequestBody=Record<string,unknown>;
 export function SpnRoomMoveCompanion(props:ComponentProps<typeof SpnRoomMoveCompanionContent>){return <MuseumReadProvider><SpnRoomMoveCompanionContent {...props}/></MuseumReadProvider>;}
 function SpnRoomMoveCompanionContent({guide:initialGuide,initialPhysical,canManage,canConfirmPlacements=false,workflow="guided",allowClear:initialAllowClear=true,phaseLabel:initialPhaseLabel="Starter row",phase:initialPhase="starter",phaseGuides:capturedPhaseGuides,initialAlternatives=[],roomTones={}}:{initialAlternatives?:AlternativeDestination[];roomTones?:Record<string,string>;guide:StarterMoveGuide;initialPhysical:PhysicalState|null;canManage:boolean;canConfirmPlacements?:boolean;workflow?:"guided"|"room";allowClear?:boolean;phaseLabel?:string;phase?:Phase;phaseGuides?:Record<Phase,StarterMoveGuide>}){
  const reads=useMuseumReads();
+ const [physical,setPhysical]=useState(initialPhysical);
  const [alternatives,setAlternatives]=useState(initialAlternatives);
  const [additions,setAdditions]=useState<CompanionAddition[]>([]),[additionEntries,setAdditionEntries]=useState<import("@/lib/spn-move-guide").GuideEntry[]>([]);
- const basePhaseGuides=useMemo(()=>capturedPhaseGuides?Object.fromEntries(Object.entries(capturedPhaseGuides).map(([key,value])=>[key,projectGuideAlternatives(value,alternatives)])) as Record<Phase,StarterMoveGuide>:undefined,[capturedPhaseGuides,alternatives]);
- const phaseGuides=useMemo(()=>basePhaseGuides?projectCompanionAdditions(basePhaseGuides,additions,additionEntries):undefined,[basePhaseGuides,additions,additionEntries]);
+ const basePhaseGuides=useMemo(()=>capturedPhaseGuides?Object.fromEntries(Object.entries(registerManualBhaktiMarga(capturedPhaseGuides)).map(([key,value])=>[key,projectGuideAlternatives(value,alternatives)])) as Record<Phase,StarterMoveGuide>:undefined,[capturedPhaseGuides,alternatives]);
+ const phaseGuides=useMemo(()=>basePhaseGuides?projectConfirmedRosters(projectCompanionAdditions(basePhaseGuides,additions,additionEntries),additionEntries,physical?.rows??[]):undefined,[basePhaseGuides,additions,additionEntries,physical?.rows]);
  const [phase,setPhase]=useState<Phase>(initialPhase);
  const fallbackGuide=useMemo(()=>projectGuideAlternatives(initialGuide,alternatives),[initialGuide,alternatives]);
  const guide=phaseGuides?.[phase]??fallbackGuide;
@@ -59,7 +61,7 @@ function SpnRoomMoveCompanionContent({guide:initialGuide,initialPhysical,canMana
  const phaseLabel=navigationRow.label;
  const [displayRegion,setDisplayRegion]=useState<string|null>(null);
  const rowVitrines=phaseGuides?navigationRow.phases.flatMap(owner=>(phaseGuides[owner]?.vitrines??[]).filter(v=>companionVitrineOwner(phaseGuides,v.code)===owner).map(v=>({v,owner}))):guide.vitrines.map(v=>({v,owner:phase}));
- const [physical,setPhysical]=useState(initialPhysical),[sessionView,setSessionView]=useState<SessionView>("active"),[selected,setSelected]=useState(guide.vitrines[0]?.code??"2");
+ const [sessionView,setSessionView]=useState<SessionView>("active"),[selected,setSelected]=useState(guide.vitrines[0]?.code??"2");
  const [viewRestored,setViewRestored]=useState(false);
  useEffect(()=>{
   const url=new URL(window.location.href);
