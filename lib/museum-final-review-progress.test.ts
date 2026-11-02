@@ -13,3 +13,14 @@ test("review tracker retains unassigned work and excludes confirmed empty observ
  const summary=finalReviewProgress([row("a",""),row("recq8jg20kMAD2Erc","20",true),{...row("absent","20"),decision:"not_on_display"}]);
  assert.equal(summary.total,1);assert.equal(summary.complete,0);assert.equal(summary.regions[0].label,"No destination");
 });
+
+test("map coverage counts reviews or flags once while completion remains distinct",()=>{
+ const summary=finalReviewProgress([row("checked","19",true),{...row("flagged","19"),flag:{type:"missing",note:null}},{...row("both","19",true),flag:{type:"other",note:"Check label"}}]);
+ assert.equal(summary.vitrines["19"].total,3);
+ assert.equal(summary.vitrines["19"].addressed,3);
+ assert.equal(summary.vitrines["19"].flagged,2);
+ assert.equal(summary.complete,2);
+ const resolved=finalReviewProgress([row("flagged","19")]);
+ assert.equal(resolved.vitrines["19"].addressed,0);
+ assert.equal(resolved.vitrines["19"].flagged,0);
+});
