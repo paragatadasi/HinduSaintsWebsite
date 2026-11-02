@@ -38,10 +38,10 @@ function LocationFilters({value,onChange,vitrines}:{value:ReviewFilters;onChange
   </div>;
 }
 
-function ReviewPanel({title,records,vitrines,renderRow}:{title:string;records:FinalReviewRecord[];vitrines:string[];renderRow:(record:FinalReviewRecord)=>ReactNode}){
-  const [filters,setFilters]=useState(emptyReviewFilters);
+function ReviewPanel({title,records,vitrines,renderRow,filters,setFilters}:{title:string;records:FinalReviewRecord[];vitrines:string[];renderRow:(record:FinalReviewRecord)=>ReactNode;filters:ReviewFilters;setFilters:(value:ReviewFilters)=>void}){
   const [page,setPage]=useState(0);
   const filtered=useMemo(()=>sortReviewRecords(filterReviewRecords(records,filters)),[records,filters]);
+  useEffect(()=>setPage(0),[filters]);
   const lastPage=Math.max(0,Math.ceil(filtered.length/pageSize)-1),currentPage=Math.min(page,lastPage);
   return <section className="museum-admin-panel" aria-label={title}>
     <div className="section-heading"><h2>{title}</h2><span className="muted">{records.length}</span></div>
@@ -55,6 +55,8 @@ function ReviewPanel({title,records,vitrines,renderRow}:{title:string;records:Fi
 
 export function MuseumFinalReview({mode,records,vitrines,selected,onSelect,tones,canEdit,savingSources,pendingSources,errors,onRetry,onAction,renderWork}:Props){
   const [query,setQuery]=useState("");
+  const [flaggedFilters,setFlaggedFilters]=useState(emptyReviewFilters);
+  const [remainingFilters,setRemainingFilters]=useState(emptyReviewFilters);
   const [dialog,setDialog]=useState<{record:FinalReviewRecord;kind:"flag"|"destination"|"undo"}|null>(null);
   const [flagType,setFlagType]=useState<ReviewFlag["type"]>("missing"),[note,setNote]=useState("");
   const [target,setTarget]=useState(""),[shelf,setShelf]=useState(""),[moved,setMoved]=useState(false),[notOnDisplay,setNotOnDisplay]=useState(false);
@@ -91,7 +93,10 @@ export function MuseumFinalReview({mode,records,vitrines,selected,onSelect,tones
   const dialogBusy=!!dialog&&savingSources.has(dialog.record.sourceId);
   const dialogLocked=dialogBusy||!!dialog&&pendingSources.has(dialog.record.sourceId);
   return <>
-    {mode==="unaddressed"?<div className="museum-review-panels"><ReviewPanel title="Flagged records" records={groups.flagged} vitrines={vitrines} renderRow={row}/><ReviewPanel title="Remaining unaddressed records" records={groups.unaddressed} vitrines={vitrines} renderRow={row}/></div>:<div className="museum-companion__layout"><div className="museum-companion__main">
+    {mode==="unaddressed"?<div className="museum-companion__layout"><div className="museum-companion__main">
+      <section className="museum-admin-panel museum-companion__task"><div className="section-heading"><h2>Room layout</h2><button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!flaggedFilters.proposed&&!remainingFilters.proposed} onClick={()=>{setFlaggedFilters({...flaggedFilters,proposed:""});setRemainingFilters({...remainingFilters,proposed:""});}}>All vitrines</button></div><MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={[...new Set([flaggedFilters.proposed,remainingFilters.proposed].filter(Boolean))]} counts={counts} tones={tones} onSelect={code=>{onSelect(code);setFlaggedFilters({...flaggedFilters,proposed:code});setRemainingFilters({...remainingFilters,proposed:code});}}/></section>
+      <div className="museum-companion__guide museum-review-panels"><ReviewPanel title="Flagged records" records={groups.flagged} vitrines={vitrines} renderRow={row} filters={flaggedFilters} setFilters={setFlaggedFilters}/><ReviewPanel title="Remaining unaddressed records" records={groups.unaddressed} vitrines={vitrines} renderRow={row} filters={remainingFilters} setFilters={setRemainingFilters}/></div>
+    </div></div>:<div className="museum-companion__layout"><div className="museum-companion__main">
       <section className="museum-admin-panel museum-companion__task"><h2>Room layout</h2><MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={[selected]} counts={counts} tones={tones} onSelect={onSelect}/></section>
       <div className="museum-companion__guide"><section className="museum-admin-panel"><div className="section-heading"><h2>Final review</h2><label className="admin-field"><span>Vitrine</span><select value={selected} onChange={event=>onSelect(event.target.value)}>{vitrines.map(code=><option key={code} value={code}>{code}</option>)}</select></label></div><h3>Complete vitrine checklist · {selectedRecords.length}</h3><label className="admin-field"><span>Find in this vitrine</span><input type="search" value={query} onChange={event=>setQuery(event.target.value)} placeholder="Saint or city"/></label>{shown.map(row)}{!shown.length?<p>{selectedRecords.length?"No matching saints.":"No records assigned to this vitrine."}</p>:null}</section></div>
     </div></div>}
