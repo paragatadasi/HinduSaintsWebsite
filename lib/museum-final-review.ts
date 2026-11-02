@@ -86,12 +86,12 @@ export async function saveFinalReview(raw:unknown,actorId:string):Promise<FinalR
    if(previousReceipt){if(previousReceipt.fingerprint!==fingerprint)throw new MuseumMoveSessionError(409,"This request already saved a different review.");return {...previousReceipt.result as unknown as FinalReviewMutationResult,replayed:true};}
    const currentRevision=await readMuseumRevision(tx);
    if(currentRevision!==snapshot.dataRevision){
-    // Concurrent final-review plans do not change source or physical evidence.
+    // Final-review plans and physical moves on other sources leave this source unchanged.
     // Count only their committed transactions absent from the pinned PG snapshot;
     // any other inventory revision still requires a fresh source read.
     const xmin=BigInt(snapshot.transactionSnapshot.split(":")[0]);
     const [changes]=await tx.$queryRaw<{count:bigint}[]>`SELECT COUNT(*)::bigint AS count FROM "MuseumFinalReviewReceipt"
-     WHERE "museumId"=${museumId} AND "inventoryRevisionBumped"=true AND "sourceEvidenceUnchanged"=true AND "transactionId">=${xmin}
+     WHERE "museumId"=${museumId} AND "inventoryRevisionBumped"=true AND ("sourceEvidenceUnchanged"=true OR "sourceId"<>${input.sourceId}) AND "transactionId">=${xmin}
       AND NOT pg_visible_in_snapshot("transactionId"::text::xid8,${snapshot.transactionSnapshot}::pg_snapshot)`;
     if(BigInt(currentRevision)-BigInt(snapshot.dataRevision)!==changes.count)throw new SnapshotChanged();
    }
@@ -137,7 +137,9 @@ export async function saveFinalReview(raw:unknown,actorId:string):Promise<FinalR
    const [transaction]=await tx.$queryRaw<{id:string}[]>`SELECT pg_current_xact_id()::text AS id`;
    await tx.museumFinalReviewReceipt.create({data:{transactionId:BigInt(transaction.id),inventoryRevisionBumped,sourceEvidenceUnchanged:!physicalChanged,museumId,clientRequestId:input.clientRequestId,sourceId:input.sourceId,fingerprint,revision:counter.revision,result:json(result),createdById:actorId}});
    return result;
-  },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable,timeout:30000,maxWait:10000}),{maxRetries:10,maxDelayMs:300});return result.replayed?currentReplay(result):input.action==="review.confirm"||input.action==="review.clear"?{...await currentReplay(result),replayed:false}:result;}
+  },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable,timeout:30000,maxWait:10000}),{maxRetries:10,maxDelayMs:300});if(result.replayed)return currentReplay(result);
+   if(input.action==="review.confirm"||input.action==="review.clear")return {...result,revision:(await readFinalReviewHead()).revision};
+   return result;}
   catch(error){
    if(error instanceof SnapshotChanged)continue;
    if(error&&typeof error==="object"&&"code" in error&&error.code==="P2002"){
