@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import packet from "../data/museum/spn-missing-receivers-guide-v1.json";
 import {maharashtraReceivingGuide as adapter} from "./spn-maharashtra-receiving-guide";
-import {allOperationalSpnShelves} from "./spn-operational-shelves";
+import {beforeWestShelves as allOperationalSpnShelves} from "./spn-operational-shelves";
 import {currentReceiverGuideDefinitions} from "./spn-starter-guide-registry";
 import {companionVitrineOwner,projectCompanionAdditions} from "./museum-companion-addition-projection";
 import {westV59MoveGuide} from "./spn-west-v59-guide";

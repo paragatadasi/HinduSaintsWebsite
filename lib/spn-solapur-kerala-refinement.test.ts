@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {applySolapurKeralaGuide, solapurKeralaRefinement as packet} from "./spn-solapur-kerala-refinement";
-import {allOperationalSpnShelves} from "./spn-operational-shelves";
+import {beforeWestShelves as allOperationalSpnShelves} from "./spn-operational-shelves";
 import type {StarterMoveGuide} from "./spn-move-guide";
 const additions = packet.allocations.map(row => ({...row, vitrine: row.destination, shelf: null, version: 1, updatedAt: "2026-11-01T00:00:00Z", clientRequestId: "test"}));
 function guide(): StarterMoveGuide { return {version: "test", contentDigest: "frozen", assignmentDigest: "frozen", proposalVersion: "test", title: "Test", entries: packet.allocations.map(row => ({...row, city: "", relicDescription: "", section: "", family: "", rationale: ""})), vitrines: ["47", "56"].map(code => ({code, summary: "", families: [], cityGroups: [{id: "existing", title: "Existing", sourceIds: packet.allocations.filter(row => row.destination === code).map(row => row.sourceId), rationale: "", suggestedVitrines: [code]}]})), alternatives: [], reportedPlacements: []}; }

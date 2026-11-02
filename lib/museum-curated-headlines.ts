@@ -1,3 +1,4 @@
+import west from "../data/museum/spn-west-mount-abu-v6.json";
 import packet from "../data/museum/spn-curated-headlines-v2.json";
 
 type HeadlineRule = {
@@ -12,6 +13,8 @@ export function curatedVitrineHeadline(
   entries: readonly {sourceId: string; destination: string}[],
   original: string,
 ): string {
+  const reviewed=west.vitrines.find(v=>v.code===vitrine);
+  if(reviewed&&reviewed.groups[0]?.sources.every(s=>entries.some(e=>e.sourceId===s.sourceId&&e.destination===vitrine)))return reviewed.headline;
   const rule = rules[vitrine];
   if (!rule) return original;
   const active = new Set(entries.filter(entry => entry.destination === vitrine).map(entry => entry.sourceId));

@@ -5,7 +5,7 @@ import receiving from "../data/museum/spn-missing-receivers-shelves-v1.json";
 import test from "node:test";
 import assert from "node:assert/strict";
 import packet from "../data/museum/spn-west-south-shelves-v1.json";
-import {allOperationalSpnShelves} from "./spn-operational-shelves";
+import {beforeWestShelves as allOperationalSpnShelves} from "./spn-operational-shelves";
 import {jamnagarReceiver} from "./spn-jamnagar-receiver";
 
 test("reviewed West and South shelves replace old cases without duplicate sources or cases",()=>{
