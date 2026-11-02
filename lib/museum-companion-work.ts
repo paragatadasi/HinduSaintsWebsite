@@ -59,5 +59,5 @@ export async function saveCompanionWork(raw:unknown, actor:MoveSessionActor, loa
   const receipt=await tx.auditEvent.create({data:{userId:actor.id,action:"museum.companion.work.updated",entityType:"MuseumCompanionWork",entityId,beforeJson:before?json(before):Prisma.JsonNull,
    afterJson:json({fingerprint,sourceId,operation:input.action,value:after,physicalMoveClaim:false,proposalChanged:false,editorialChanged:false})},select:{id:true,afterJson:true}});
   return {...await readCompanionWork([sourceId],tx),receipt,replayed:false};
- },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable,timeout:60_000}));
+ },{isolationLevel:Prisma.TransactionIsolationLevel.Serializable,timeout:60_000}),{maxRetries:10,maxDelayMs:300});
 }

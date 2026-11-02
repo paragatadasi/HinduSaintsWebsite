@@ -23,7 +23,7 @@ export async function readCompanionShelfPlans(options:{vitrine?:string;knownRevi
  let data=byCase.get(scope);
  if(!data){
   const selected=options.vitrine?{...packet,vitrines:packet.vitrines.filter(row=>row.code===options.vitrine)}:packet;
-  data={...projectShelfPlanningContext(selected,{current:snapshot.current,physical:snapshot.physical,alternatives:[...snapshot.confirmedDestinations,...snapshot.alternatives.filter(row=>!snapshot.confirmedDestinations.some(confirmed=>confirmed.sourceId===row.sourceId))],additions:snapshot.valid.filter(row=>!snapshot.confirmedDestinations.some(confirmed=>confirmed.sourceId===row.sourceId)),review:{rows:snapshot.shelfReview.rows,pendingPlacements:snapshot.shelfReview.proposal.pendingPlacements}}),revision:snapshot.revision,availableVitrines};
+  data={...projectShelfPlanningContext(selected,{current:snapshot.current,physical:snapshot.physical,alternatives:[...snapshot.confirmedDestinations,...snapshot.finalReviewProposals.filter(row=>!snapshot.confirmedDestinations.some(confirmed=>confirmed.sourceId===row.sourceId)),...snapshot.alternatives.filter(row=>!snapshot.confirmedDestinations.some(confirmed=>confirmed.sourceId===row.sourceId)&&!snapshot.finalReviewProposals.some(plan=>plan.sourceId===row.sourceId))],additions:snapshot.valid.filter(row=>!snapshot.confirmedDestinations.some(confirmed=>confirmed.sourceId===row.sourceId)&&!snapshot.finalReviewProposals.some(plan=>plan.sourceId===row.sourceId)),review:{rows:snapshot.shelfReview.rows,pendingPlacements:snapshot.shelfReview.proposal.pendingPlacements}}),revision:snapshot.revision,availableVitrines};
   byCase.set(scope,data);
  }
  return {changed:true as const,revision:actualTag,data};
