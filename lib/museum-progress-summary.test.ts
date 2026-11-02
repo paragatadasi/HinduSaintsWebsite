@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {museumProgressSummary} from "./museum-progress-summary";
 import type {StarterMoveGuide,CompanionRow,GuideDecision} from "./spn-move-guide";
 import type {CompanionPhase} from "./museum-companion-navigation";
-function guide(version:string,code:string,ids:string[]){return {version,vitrines:[{code,families:[{id:"family",sourceIds:ids}],cityGroups:[{id:"city",sourceIds:ids.slice(0,1)}]}]} as StarterMoveGuide;}
+function guide(version:string,code:string,ids:string[]){return {version,entries:ids.map(sourceId=>({sourceId,destination:code})),vitrines:[{code,families:[{id:"family",sourceIds:ids}],cityGroups:[{id:"city",sourceIds:ids.slice(0,1)}]}]} as StarterMoveGuide;}
 test("progress weights regions by records, deduplicates overlapping guides and keeps deferrals separate",()=>{
  const guides={starter:guide("a","2",["a","b","c"]),east2:guide("b","24",["d"]),north:guide("c","2",["a","b","c"])} as Record<CompanionPhase,StarterMoveGuide>;
  const rows=[{sourceId:"a",currentBasis:"confirmed",current:{kind:"vitrine",code:"2"}}] as CompanionRow[];
@@ -17,4 +17,29 @@ test("empty guides and restored decisions do not imply completion",()=>{
  const guides={starter:guide("a","2",["a"])} as Record<CompanionPhase,StarterMoveGuide>;
  assert.equal(museumProgressSummary(guides,[],{a:[{suggestionId:"row:a",decision:"pending",note:null,version:1}] as GuideDecision[]}).addressed,0);
  assert.equal(museumProgressSummary({} as Record<CompanionPhase,StarterMoveGuide>,[],{}).total,0);
+});
+
+import {confirmedEmptyProgressSources} from "./spn-progress-exclusions";
+import {vitrineProgress} from "./museum-vitrine-progress";
+test("omitted empty, private and duplicate observations never count, but restored unknown collection does",()=>{
+ const omitted=[...confirmedEmptyProgressSources,"rechBZw1LyW9TTX9L","rec419YldTnqJc6lM"];
+ const restored="recaTTfjinlSVDk4n";
+ const g=guide("a","2",[...omitted,restored]);
+ const rows=omitted.map(sourceId=>({sourceId,currentBasis:"confirmed",current:{kind:"vitrine",code:"2"}})) as CompanionRow[];
+ const result=museumProgressSummary({starter:g} as Record<CompanionPhase,StarterMoveGuide>,rows,{});
+ assert.equal(result.total,1);assert.equal(result.addressed,0);
+ assert.deepEqual(vitrineProgress("2",g.vitrines[0].families,rows,[]),{total:1,addressed:0,deferred:0});
+ assert.equal(g.entries.length,omitted.length+1);
+});
+test("stale group references do not consume the source before its current destination",()=>{
+ const old=guide("a","2",["moved","missing"]);old.entries=[{sourceId:"moved",destination:"24"}] as StarterMoveGuide["entries"];
+ const target=guide("b","24",["moved"]);
+ const result=museumProgressSummary({starter:old,east2:target} as Record<CompanionPhase,StarterMoveGuide>,[{sourceId:"moved",currentBasis:"confirmed",current:{kind:"vitrine",code:"24"}}] as CompanionRow[],{});
+ assert.equal(result.total,1);assert.equal(result.addressed,1);
+ assert.equal(result.regions[0].total,0);assert.equal(result.regions[1].total,1);
+});
+test("loading genuinely new proposal members increases the denominator once",()=>{
+ const first=guide("a","2",["one"]),next=guide("a","2",["one","two"]);
+ assert.equal(museumProgressSummary({starter:first} as Record<CompanionPhase,StarterMoveGuide>,[],{}).total,1);
+ assert.equal(museumProgressSummary({starter:next} as Record<CompanionPhase,StarterMoveGuide>,[],{}).total,2);
 });

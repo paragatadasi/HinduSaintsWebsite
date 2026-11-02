@@ -1,6 +1,7 @@
+import {isCountedSpnProgressSource} from "./spn-progress-exclusions";
 import {isPlaced,type CompanionRow,type GuideDecision,type GuideGroup} from "./spn-move-guide";
 export function vitrineProgress(code:string,groups:GuideGroup[],rows:CompanionRow[],decisions:GuideDecision[]){
- const ids=[...new Set(groups.flatMap(g=>g.sourceIds))];
+ const ids=[...new Set(groups.flatMap(g=>g.sourceIds).filter(isCountedSpnProgressSource))];
  let addressed=0,deferred=0;
  for(const id of ids){
   const row=rows.find(r=>r.sourceId===id);
