@@ -178,10 +178,10 @@ function SpnRoomMoveCompanionContent({guide:initialGuide,initialPhysical,canMana
  },[]);
  const view=guide.vitrines.find(v=>v.code===selected);
  useEffect(()=>{
-  if(!viewRestored||!phaseGuides||view||busy||displayWork.busy||retry.current)return;
+  if(sessionView!=="active"||!viewRestored||!phaseGuides||view||busy||displayWork.busy||retry.current)return;
   const owner=companionVitrineOwner(phaseGuides,selected);
   if(owner&&owner!==phase){switchPhase(owner);setSelected(selected);}
- },[viewRestored,phaseGuides,view,busy,displayWork.busy,phase,selected]);
+ },[sessionView,viewRestored,phaseGuides,view,busy,displayWork.busy,phase,selected]);
  const editable=canManage&&!!physical&&!busy&&!displayWork.busy&&!retry.current&&!failedPlacements.current.size;
  const placementEditable=(canManage||canConfirmPlacements)&&!!physical&&!exclusiveBusy&&!retry.current;
  const rows=(physical?.rows??[]).map(row=>row.currentBasis==="confirmed"&&row.current?{...row,current:{...row.current,shelf:displayWork.shelf(row)}}:row);

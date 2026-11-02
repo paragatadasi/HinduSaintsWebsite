@@ -12203,7 +12203,7 @@ select:not([multiple]) {
 .museum-room__vitrine[data-region-tone="E"] { --room-region:var(--color-museum-region-4); }
 .museum-room__vitrine[data-region-tone="S"] { --room-region:var(--color-museum-region-5); }
 .museum-room__vitrine[data-region-tone="W"],.museum-room__vitrine[data-region-tone="C"] { --room-region:var(--color-museum-region-6); }
-.museum-room__vitrine[data-guide-available="true"] { background:color-mix(in srgb,var(--room-region,var(--color-gold)) 24%,var(--color-surface));border-color:var(--room-region,var(--color-border)); }
+.museum-room__vitrine[data-guide-available="true"], .museum-room__vitrine[data-region-tone]:not([data-guide-available="false"]) { background:color-mix(in srgb,var(--room-region,var(--color-gold)) 24%,var(--color-surface));border-color:var(--room-region,var(--color-border)); }
 .museum-room__vitrine[data-guide-available="false"] { opacity:var(--opacity-control-disabled); }
 
 .admin-tab-strip.admin-tab-strip--scrollable{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;min-width:0}
@@ -12316,7 +12316,7 @@ select:not([multiple]) {
 .spn-room-explorer.spn-display-regions .tone-R, .spn-room-explorer.spn-display-regions.tone-R, .museum-region-legend .tone-R, .museum-companion__region-card.tone-R, .museum-room__vitrine[data-region-tone="R"] { --tone:var(--color-spn-display-r-edge); --room-region:var(--color-spn-display-r-edge); --display-fill:var(--color-spn-display-r-fill); }
 .spn-display-regions .inspector > .eyebrow {color:var(--color-text);}
 .spn-display-regions .legend button[aria-pressed="true"] {color:var(--color-text);text-decoration:underline;text-underline-offset:var(--space-1);}
-[data-museum-companion-theme="parchment"] .museum-room__vitrine[data-guide-available="true"] {background:var(--display-fill,var(--color-surface));}
+[data-museum-companion-theme="parchment"] .museum-room__vitrine[data-guide-available="true"], [data-museum-companion-theme="parchment"] .museum-room__vitrine[data-region-tone]:not([data-guide-available="false"]) {background:var(--display-fill,var(--color-surface));}
 .museum-region-legend {display:flex;flex-wrap:wrap;gap:var(--space-2);margin-block:var(--space-3);}
 .museum-region-legend button {display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--font-size-companion-small);}
 .museum-region-legend i {width:var(--space-2);height:var(--space-2);background:var(--tone);border-radius:var(--radius-pill);}
