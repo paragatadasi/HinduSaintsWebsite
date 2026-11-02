@@ -12344,3 +12344,5 @@ select:not([multiple]) {
 /* Review maps retain regional outlines while their fill records the second pass. */
 .museum-room__vitrine[data-progress="true"], [data-museum-companion-theme="parchment"] .museum-room__vitrine[data-progress="true"] { background:var(--color-surface); }
 .museum-room__progress-fill { fill:var(--display-fill,var(--color-museum-region-5)); }
+
+.museum-room__vitrine[data-review-complete="true"] .museum-room__progress-fill { fill:color-mix(in oklch,var(--display-fill,var(--color-museum-region-5)) 60%,var(--room-region,var(--color-museum-region-5))); }

@@ -847,3 +847,5 @@ Use shared `museum-progress__*` classes and `museum-vitrine-progress` fills.
 ### Final placement review
 
 Final review checkboxes represent a separate, explicit second pass, independent of Active move confirmations. Existing moves never initialize them as checked. Clearing a review mark preserves the physical placement. Final review progress reuses the overall, region, and vitrine hierarchy in the Progress tab, separately from move progress. Shared room maps use region-colored proportional fills for review completion, retain visible vitrine numbers, and include completed/total counts in accessible labels. Keep this status on the shared review snapshot and revision polling rather than adding per-vitrine requests.
+
+Completed final-review vitrines use a stronger regional fill (shared room-map styling), while partial review retains its pale proportional fill. Completion requires a nonzero eligible roster with every entry finally reviewed; the accessible reviewed count remains the non-color cue.
