@@ -843,3 +843,7 @@ total counts, then clickable vitrine trackers. Addressed means placed, declined 
 not on display; deferred remains separate. Scope totals to available move guides,
 count each source once, and show loading/error states rather than incomplete totals.
 Use shared `museum-progress__*` classes and `museum-vitrine-progress` fills.
+
+### Final placement review
+
+Final review checkboxes represent a separate, explicit second pass, independent of Active move confirmations. Existing moves never initialize them as checked. Clearing a review mark preserves the physical placement. Final review progress reuses the overall, region, and vitrine hierarchy in the Progress tab, separately from move progress. Shared room maps use region-colored proportional fills for review completion, retain visible vitrine numbers, and include completed/total counts in accessible labels. Keep this status on the shared review snapshot and revision polling rather than adding per-vitrine requests.

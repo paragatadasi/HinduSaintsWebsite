@@ -8,7 +8,7 @@ import type {FinalReviewRecord} from "@/lib/museum-final-review-view";
 import type {FinalReviewAction} from "./museum-final-review";
 
 const endpoint="/api/admin/museum-final-review";
-type PendingSave={record:FinalReviewRecord;action:FinalReviewAction;requestId:string;proposalSaved?:Pick<ReviewRecord,"reviewVersion">;physicalBody?:Record<string,unknown>};
+type PendingSave={record:FinalReviewRecord;action:FinalReviewAction;requestId:string;proposalSaved?:Pick<ReviewRecord,"reviewVersion">;physicalBody?:Record<string,unknown>;reviewBody?:Record<string,unknown>};
 class SaveError extends Error{constructor(message:string,readonly status:number){super(message);}}
 
 export function useMuseumFinalReview(active:boolean,onPhysicalSaved:(rows:CompanionRow[])=>void,onChanged:()=>void){
@@ -74,12 +74,25 @@ export function useMuseumFinalReview(active:boolean,onPhysicalSaved:(rows:Compan
     saving.current.add(sourceId);epoch.current++;setSavingSources(new Set(saving.current));setErrors(previous=>({...previous,[sourceId]:""}));
     try{
       const common={museumId:"museum-spn",sourceId,saintId:record.row.saintId,expectedSourceRevision:record.row.sourceRevision,expectedReviewVersion:record.version,clientRequestId:save.requestId};
+      if(action.action==="review"||action.action==="unreview"){
+        const result=await post(endpoint,{...common,action:action.action==="review"?"review.confirm":"review.clear",expectedCurrentRevision:record.row.currentRevision,expectedLocationVersion:record.row.currentVersion,...(action.action==="review"?{vitrine:record.destination}:{})});
+        if(!result.record)throw new Error("The review has not been confirmed. Retry the same save.");
+        applyRecord(result.record);publishPhysical([result.record.physical]);callbacks.current.onChanged();
+        pending.current.delete(sourceId);etag.current="";return;
+      }
       let proposal=save.proposalSaved;
       if(!proposal&&action.action!=="undo"){
         const fields=action.action==="flag"?{action:"flag.set",kind:action.type,note:action.note}:action.action==="resolve"?{action:"flag.resolve"}:action.action==="destination"&&action.notOnDisplay?{action:"decision.set",decision:"not_on_display",note:action.note}:{action:"proposal.set",vitrine:action.action==="destination"?action.vitrine:record.destination,shelf:action.action==="destination"?action.shelf:record.destinationShelf??undefined,expectedCurrentRevision:record.row.currentRevision,expectedLocationVersion:record.row.currentVersion};
         const result=await post(endpoint,{...common,...fields});
         if(!result.record)throw new Error("The save has not been confirmed. Retry the same save.");
         proposal=result.record;save.proposalSaved=proposal;applyRecord(result.record);etag.current="";callbacks.current.onChanged();
+      }
+      if(action.action==="destination"&&action.moved&&!action.notOnDisplay&&!action.shelf.trim()&&proposal){
+        save.reviewBody??={...common,action:"review.confirm",clientRequestId:crypto.randomUUID(),expectedReviewVersion:proposal.reviewVersion,expectedCurrentRevision:record.row.currentRevision,expectedLocationVersion:record.row.currentVersion,vitrine:action.vitrine};
+        const result=await post(endpoint,save.reviewBody);
+        if(!result.record)throw new Error("The final review has not been confirmed. Retry the same save.");
+        applyRecord(result.record);publishPhysical([result.record.physical]);callbacks.current.onChanged();
+        pending.current.delete(sourceId);etag.current="";return;
       }
       if(action.action==="place"||(action.action==="destination"&&action.moved&&!action.notOnDisplay)||action.action==="undo"){
         if(!save.physicalBody){
@@ -98,11 +111,17 @@ export function useMuseumFinalReview(active:boolean,onPhysicalSaved:(rows:Compan
         publishPhysical(result.rows);callbacks.current.onChanged();
         const physical=result.rows.find((row:CompanionRow)=>row.sourceId===sourceId);
         if(physical)setSnapshot(previous=>previous?{...previous,records:previous.records.map(item=>item.sourceId===sourceId&&physical.currentVersion>=item.physical.currentVersion?{...item,physical,addressed:!!item.effectiveDestination&&isPlaced(physical,item.effectiveDestination.vitrine)}:item)}:previous);
+        if(physical&&action.action==="destination"&&action.moved&&proposal){
+          save.reviewBody??={...common,action:"review.confirm",clientRequestId:crypto.randomUUID(),expectedReviewVersion:proposal.reviewVersion,expectedCurrentRevision:physical.currentRevision,expectedLocationVersion:physical.currentVersion,vitrine:action.vitrine};
+          const reviewed=await post(endpoint,save.reviewBody);
+          if(!reviewed.record)throw new Error("The final review has not been confirmed. Retry the same save.");
+          applyRecord(reviewed.record);
+        }
       }
       pending.current.delete(sourceId);etag.current="";
     }catch(error){
       if(error instanceof SaveError&&error.status<500)pending.current.delete(sourceId);
-      const prefix=save.proposalSaved&&(action.action==="place"||action.action==="destination"&&action.moved)?"Proposal saved; move not confirmed. ":"";
+      const prefix=save.reviewBody&&save.physicalBody?"Placement saved; final review not confirmed. ":save.proposalSaved&&(action.action==="place"||action.action==="destination"&&action.moved)?"Proposal saved; move not confirmed. ":"";
       const message=prefix+(error instanceof Error&&error.name!=="AbortError"?error.message:"Save not yet confirmed. Retry the same save.")+(error instanceof SaveError&&error.status===409?" Close this form and review the updated record before trying again.":"");
       setErrors(previous=>({...previous,[sourceId]:message}));throw new Error(message);
     }finally{

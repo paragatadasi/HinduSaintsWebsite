@@ -14,7 +14,7 @@ test("final review keeps only the complete checklist and all three location labe
   assert.match(html,/Complete vitrine checklist/);
   for(const label of ["Starting","Proposed","Current","Vitrine 20","Vitrine 26","Staging area"])assert.ok(html.includes(label));
   assert.doesNotMatch(html,/Confirm cleared|Shelf arrangement|Place the key saints/);
-  assert.match(html,/aria-label="Confirm Test saint in Vitrine 26"/);
+  assert.match(html,/aria-label="Finally review Test saint in Vitrine 26"/);
 });
 test("unaddressed renders flagged records separately and limits long lists",()=>{
   const records=Array.from({length:80},(_,index)=>({...record,sourceId:String(index),name:`Test saint ${index}`,flag:index===0?{type:"missing" as const,note:"Check staging"}:null}));
@@ -26,4 +26,11 @@ test("unaddressed renders flagged records separately and limits long lists",()=>
   assert.ok(html.indexOf("Flagged records")<html.indexOf("Remaining unaddressed records"));
   assert.equal((html.match(/museum-final-review__record/g)??[]).length,31);
   assert.match(html,/Check staging/);assert.match(html,/Resolve flag/);assert.match(html,/Page 1 of 3/);
+});
+
+test("already placed records remain unchecked until separately finally reviewed",()=>{
+ const placed={...record,row:{...record.row,current:{kind:"vitrine" as const,code:"26",label:"Vitrine 26"}}};
+ assert.doesNotMatch(render([placed]),/type="checkbox"[^>]*checked=""/);
+ assert.match(render([{...placed,finallyReviewed:true}]),/type="checkbox"[^>]*checked=""/);
+ assert.match(render([{...placed,finallyReviewed:true}]),/1 of 1 finally reviewed/);
 });

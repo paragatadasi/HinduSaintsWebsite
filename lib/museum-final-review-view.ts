@@ -13,6 +13,8 @@ export type FinalReviewRecord = {
   destination:string;
   destinationShelf:string|null;
   addressed:boolean;
+  finallyReviewed?:boolean;
+  decision?:"pending"|"declined"|"not_on_display"|"deferred";
   flag:ReviewFlag|null;
   version:number;
   hasFinalProposal?:boolean;

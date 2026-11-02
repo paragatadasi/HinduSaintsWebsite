@@ -36,6 +36,7 @@ const common=(r:Awaited<ReturnType<typeof get>>)=>({museumId:"museum-spn",source
 const conflict=(r:PromiseSettledResult<unknown>)=>r.status==="rejected"&&r.reason instanceof MuseumMoveSessionError&&r.reason.status===409;
 try{
  const cold=await timed("cold source review read",()=>get(fixtures[0].sourceId));
+ assert.equal(cold.finallyReviewed,false,"Existing placements must not be backfilled as finally reviewed");
  const initial=await timed("warm six source review reads",()=>Promise.all(fixtures.map(row=>get(row.sourceId))));
  const base=await readMuseumRevision();
  const six=await timed("six concurrent flag saves",()=>Promise.allSettled(initial.map((r,i)=>saveFinalReview({...common(r),action:"flag.set",kind:i%2?"other":"missing",note:`reviewer ${i}`},actor.id))));
@@ -100,6 +101,68 @@ try{
  const forShelves=await Promise.all(fixtures.map(row=>get(row.sourceId)));
  const shelfSix=await timed("six concurrent shared shelf saves",()=>Promise.all(forShelves.map(r=>saveCompanionWork({action:"shelf.update",museumId:"museum-spn",clientRequestId:randomUUID(),sourceId:r.sourceId,saintId:r.saintId,vitrine:"16",shelf:"C",expectedVersion:work.shelves.find(s=>s.sourceId===r.sourceId)?.version??0,expectedCurrentRevision:r.physical.currentRevision,expectedSourceRevision:r.sourceRevision,expectedLocationVersion:r.physical.currentVersion},actor,loader))));
  assert.equal(shelfSix.length,6);
+ const reviewRequest=(r:Awaited<ReturnType<typeof get>>,action:"review.confirm"|"review.clear"="review.confirm")=>({...common(r),action,expectedCurrentRevision:r.physical.currentRevision,expectedLocationVersion:r.physical.currentVersion,...(action==="review.confirm"?{vitrine:r.effectiveDestination!.vitrine}:{})});
+ for(const fixture of fixtures){
+  const r=await get(fixture.sourceId);
+  if(r.flag?.kind==="missing"&&r.flag.status==="open"){
+   await assert.rejects(()=>saveFinalReview(reviewRequest(r),actor.id),e=>e instanceof MuseumMoveSessionError&&e.status===409);
+   await saveFinalReview({...common(r),action:"flag.resolve"},actor.id);
+  }
+ }
+ const beforeReviews=await Promise.all(fixtures.map(row=>get(row.sourceId)));
+ assert.ok(beforeReviews.every(r=>!r.finallyReviewed));
+ const moveEventsBefore=await db.auditEvent.count({where:{action:"museum.physical_location.confirmed"}});
+ const reviewedSix=await timed("six concurrent finally-reviewed confirmations without duplicate moves",()=>Promise.all(beforeReviews.map(r=>saveFinalReview(reviewRequest(r),actor.id))));
+ assert.ok(reviewedSix.every(r=>r.record.finallyReviewed&&r.record.addressed));
+ assert.equal(await db.auditEvent.count({where:{action:"museum.physical_location.confirmed"}}),moveEventsBefore);
+ const reviewedCatalog=await readCompanionCatalog();
+ assert.ok(fixtures.every(f=>reviewedCatalog.entries.find(r=>r.sourceId===f.sourceId)?.finallyReviewed));
+ assert.ok(fixtures.every(f=>reviewedCatalog.finalReviewDecisions.find(r=>r.sourceId===f.sourceId)?.finallyReviewed));
+ const staleReview=reviewRequest(beforeReviews[0]);
+ await assert.rejects(()=>saveFinalReview(staleReview,actor.id),e=>e instanceof MuseumMoveSessionError&&e.status===409);
+ const beforeClear=await get(fixtures[0].sourceId);
+ const clearRequest=reviewRequest(beforeClear,"review.clear");
+ const clearResults=await Promise.all(Array.from({length:6},()=>saveFinalReview(clearRequest,actor.id)));
+ assert.ok(clearResults.every(r=>!r.record.finallyReviewed));
+ assert.equal(clearResults.filter(r=>!r.replayed).length,1);
+ const afterClear=await get(beforeClear.sourceId);
+ assert.deepEqual(afterClear.physical.current,beforeClear.physical.current);
+ assert.equal(afterClear.physical.currentVersion,beforeClear.physical.currentVersion);
+ const shelfReviewed=await get(fixtures[1].sourceId);
+ const shelfState=(await readCompanionWork([shelfReviewed.sourceId])).shelves.find(s=>s.sourceId===shelfReviewed.sourceId)!;
+ await saveCompanionWork({action:"shelf.update",museumId:"museum-spn",clientRequestId:randomUUID(),sourceId:shelfReviewed.sourceId,saintId:shelfReviewed.saintId,vitrine:"16",shelf:"D",expectedVersion:shelfState.version,expectedCurrentRevision:shelfReviewed.physical.currentRevision,expectedSourceRevision:shelfReviewed.sourceRevision,expectedLocationVersion:shelfReviewed.physical.currentVersion},actor,loader);
+ assert.equal((await get(shelfReviewed.sourceId)).finallyReviewed,true,"Shelf notes must not revoke vitrine review");
+ const atomicBefore=await get(fixtures[2].sourceId);
+ const atomicPlan=await saveFinalReview({...common(atomicBefore),action:"proposal.set",vitrine:"17",shelf:"E",expectedCurrentRevision:atomicBefore.physical.currentRevision,expectedLocationVersion:atomicBefore.physical.currentVersion},actor.id);
+ assert.equal(atomicPlan.record.finallyReviewed,false,"An explicit proposal change clears review");
+ const atomic=await saveFinalReview(reviewRequest(atomicPlan.record),actor.id);
+ assert.equal(atomic.record.finallyReviewed,true);
+ assert.equal(atomic.record.physical.current?.code,"17");
+ assert.equal(atomic.record.physical.current?.shelf,undefined,"Review never accepts a recommended shelf");
+ assert.equal(atomic.record.physical.currentVersion,atomicBefore.physical.currentVersion+1);
+ const atomicReplay=await saveFinalReview(reviewRequest(atomicPlan.record),actor.id).catch(e=>e);
+ assert.ok(atomicReplay instanceof MuseumMoveSessionError&&atomicReplay.status===409);
+ const rollbackBefore=await get(fixtures[0].sourceId);
+ const rollbackPlan=await saveFinalReview({...common(rollbackBefore),action:"proposal.set",vitrine:"18",expectedCurrentRevision:rollbackBefore.physical.currentRevision,expectedLocationVersion:rollbackBefore.physical.currentVersion},actor.id);
+ const rollbackSql=new pg.Client({connectionString:url.href});await rollbackSql.connect();
+ await rollbackSql.query(`CREATE FUNCTION test_review_rollback() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF NEW."sourceId"='${rollbackBefore.sourceId}' AND NEW."reviewedAt" IS NOT NULL THEN RAISE EXCEPTION 'Disposable injected review failure'; END IF; RETURN NEW; END $$; CREATE TRIGGER test_review_rollback BEFORE UPDATE ON "MuseumFinalReviewState" FOR EACH ROW EXECUTE FUNCTION test_review_rollback()`);
+ const auditBeforeRollback=await db.auditEvent.count({where:{action:"museum.physical_location.confirmed"}});
+ try{await assert.rejects(()=>saveFinalReview(reviewRequest(rollbackPlan.record),actor.id));}
+ finally{await rollbackSql.query('DROP TRIGGER test_review_rollback ON "MuseumFinalReviewState"; DROP FUNCTION test_review_rollback()');await rollbackSql.end();}
+ const rollbackAfter=await get(rollbackBefore.sourceId);
+ assert.deepEqual(rollbackAfter.physical.current,rollbackBefore.physical.current,"A failed review must roll back its physical move");
+ assert.equal(rollbackAfter.physical.currentVersion,rollbackBefore.physical.currentVersion);
+ assert.equal(rollbackAfter.finallyReviewed,false);
+ assert.equal(await db.auditEvent.count({where:{action:"museum.physical_location.confirmed"}}),auditBeforeRollback);
+ const movedAway=await get(fixtures[1].sourceId);
+ await db.museumMoveCurrentLocation.update({where:{museumId_sourceId:{museumId:"museum-spn",sourceId:movedAway.sourceId}},data:{location:{kind:"vitrine",code:"18",label:"Vitrine 18"},version:{increment:1}}});
+ assert.equal((await get(movedAway.sourceId)).finallyReviewed,false,"Later actual move invalidates review");
+ await db.museumMoveCurrentLocation.update({where:{museumId_sourceId:{museumId:"museum-spn",sourceId:movedAway.sourceId}},data:{location:{kind:"vitrine",code:"16",label:"Vitrine 16"},version:{increment:1}}});
+ assert.equal((await get(movedAway.sourceId)).finallyReviewed,false,"Returning to the old vitrine must not resurrect review");
+ const reviewMoveRows=await Promise.all(fixtures.map(row=>get(row.sourceId)));
+ const reviewMovePlans=await Promise.all(reviewMoveRows.map(r=>saveFinalReview({...common(r),action:"proposal.set",vitrine:"19",expectedCurrentRevision:r.physical.currentRevision,expectedLocationVersion:r.physical.currentVersion},actor.id)));
+ const reviewMoves=await timed("six concurrent atomic final-review moves",()=>Promise.all(reviewMovePlans.map(r=>saveFinalReview(reviewRequest(r.record),actor.id))));
+ assert.ok(reviewMoves.every(r=>r.record.finallyReviewed&&r.record.physical.current?.code==="19"));
  const flagBeforeMove=await get(fixtures[4].sourceId);
  const flagGate=new pg.Client({connectionString:url.href});await flagGate.connect();await flagGate.query("BEGIN");
  await flagGate.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))",["museum-final-review:spn:"+flagBeforeMove.sourceId]);
