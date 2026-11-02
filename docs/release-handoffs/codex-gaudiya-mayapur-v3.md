@@ -8,6 +8,8 @@
 
 ## Summary
 
+- Follow-up: room-map coverage includes checked OR flagged records (deduplicated); fully addressed vitrines saturate, open flags show ! and accessible flag count. Numeric finally-reviewed completion remains distinct. Three progress tests and dev:check pass.
+
 - Register starter guide v7 for approved Mayapur v3: thirteen proposed destinations move to 28; historical guides and physical facts remain intact. Institutional/locality groups remain distinct from documented family edges. New shelf allocations remain unspecified for on-site choice.
 - Place checklist actions below text in narrow/tablet companion containers using shared CSS.
 - Restore museum-wide search/add in Final review and Unaddressed records. Destination edits use final-review proposal precedence, including the existing Already moved flow. Opening a search destination retains Final review rather than switching to Active move. Pending saves must be retried on their record.
