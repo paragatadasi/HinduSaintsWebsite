@@ -8,6 +8,6 @@ export async function lockFinalReviewSource(tx:Prisma.TransactionClient,sourceId
 }
 export async function assertNoFinalReviewPlan(tx:Prisma.TransactionClient,sourceId:string){
  await lockFinalReviewSource(tx,sourceId);
- const state=await tx.museumFinalReviewState.findUnique({where:{museumId_sourceId:{museumId:"museum-spn",sourceId}},select:{vitrine:true,plannedAt:true,decision:true}});
- if(state&&(state.vitrine&&state.plannedAt||state.decision!=="pending"))throw new MuseumMoveSessionError(409,"This destination has a final-review decision. Update it in Final review.");
+ const state=await tx.museumFinalReviewState.findUnique({where:{museumId_sourceId:{museumId:"museum-spn",sourceId}},select:{vitrine:true,plannedAt:true,decision:true,reviewedAt:true}});
+ if(state&&(state.vitrine&&state.plannedAt||state.decision!=="pending"||state.reviewedAt))throw new MuseumMoveSessionError(409,"This destination has a final-review decision. Update it in Final review.");
 }

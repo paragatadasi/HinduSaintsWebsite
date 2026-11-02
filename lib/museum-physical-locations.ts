@@ -149,7 +149,7 @@ export async function readReportedPlacementReceipts(tx: Prisma.TransactionClient
     matched, outstandingSourceIds: reported.filter(row => !ids.has(row.sourceId)).map(row => row.sourceId) };
 }
 
-export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSessionActor & {canConfirmPlacements?:boolean}, loader: PhysicalSnapshotLoader) {
+export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSessionActor & {canConfirmPlacements?:boolean}, loader: PhysicalSnapshotLoader, transaction?:Prisma.TransactionClient) {
   if (!actor.canManage&&!actor.canConfirmPlacements) throw new MuseumMoveSessionError(403, "A museum curator or assistant must record physical locations.");
   loader = memoizePhysicalSnapshot(loader);
   const input = physicalConfirmationInput.parse(raw);
@@ -165,7 +165,7 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
     if (registered.contentDigest !== input.guideContext.contentDigest || registered.assignmentDigest !== input.guideContext.assignmentDigest) throw new MuseumMoveSessionError(409, "The guide content changed. Reload it before recording a placement.");
   }
   const submitted = input;
-  return retryMuseumSerialization(() => db.$transaction(async tx => withMuseumTransactionReads(tx, async () => {
+  const write=async (tx:Prisma.TransactionClient) => withMuseumTransactionReads(tx, async () => {
     const input = {...submitted, records:[...submitted.records]};
     await lockMuseumPlacement(tx, input.clientRequestId, input.records.map(row => row.sourceId),
       Boolean(input.clearedVitrines?.length || input.caseContentsStaging || input.componentStagingAcknowledgements?.length || input.componentPlacementAcknowledgement||input.records.some(row=>componentSourceIds.includes(row.sourceId))));
@@ -309,7 +309,8 @@ export async function confirmMuseumPhysicalLocations(raw: unknown, actor: MoveSe
         ...(residualClearing?{residualClearing}:{}),
         emptyCaseClaim: input.clearedVitrines?.length&&!bulkClearing ? "curator_confirmed_at_event_time" : "none", proposalChanged: false, sourceChanged: false }) }, select: { id: true, afterJson: true } });
     return { ...await readPhysicalLocationView(loader, tx, submitted.records.map(row => row.sourceId)), preparations: await readMuseumPreparations(tx), phaseClearances: await readMuseumPhaseClearances(tx,loader), receipt, replayed: false, alreadyRecorded, residualClearing };
-  }), { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 60_000 }),{maxRetries:10,maxDelayMs:300});
+  });
+  return transaction?write(transaction):retryMuseumSerialization(()=>db.$transaction(write,{isolationLevel:Prisma.TransactionIsolationLevel.Serializable,timeout:60_000}),{maxRetries:10,maxDelayMs:300});
 }
 
 export async function undoMuseumPhysicalCheck(raw: unknown, actor: MoveSessionActor, loader: PhysicalSnapshotLoader) {
