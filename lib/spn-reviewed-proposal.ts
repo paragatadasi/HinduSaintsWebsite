@@ -1,3 +1,7 @@
+import {companionLocationLabel} from "./spn-move-guide";
+import {auditedPendingAllocations} from "./spn-audited-pending-allocation";
+import {projectAuditedPendingAllocations} from "./spn-audited-pending-allocation";
+import {curatedVitrineHeadline} from "./museum-curated-headlines";
 import {easternHeadlines,easternCaseGroups} from "./spn-eastern-headlines";
 import {eastRemainderMoveGuide} from "./spn-east-remainder-guide";
 import puriOdisha from "../data/museum/spn-puri-odisha-approved-v4.json";
@@ -36,7 +40,7 @@ import {regionalPendingTransfer,regionalPendingSourceIds} from "./spn-regional-p
 
 const currentCaseNotes: Record<string, string | null> = reviewedCaseNotes;
 export const latestSpnReviewVersion=northernVoyage.version;
-export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternatives:{sourceId:string;vitrine:string;shelf:string|null}[]=[], sources:Pick<CompanionRow,"sourceId"|"saintId"|"sourceRevision"|"identityChanged">[]=[]){
+export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternatives:{sourceId:string;vitrine:string;shelf:string|null}[]=[], sources:(Pick<CompanionRow,"sourceId"|"saintId"|"sourceRevision"|"identityChanged"> & Partial<Pick<CompanionRow,"current"|"original"|"componentPlacement">>)[]=[]){
  const base=correctSpnProposal(currentSpnProposalRelease);
  const overrides=new Map(overlay.overrides.map(row=>[row.sourceId,row]));
  const originals=[...base.proposal.rows,...base.proposal.namedOnly];
@@ -62,6 +66,7 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
  }
  pendingPlacements.push(...scoped.filter(row=>spnDuplicateObservations[row.sourceId]).map(row=>({sourceId:row.sourceId,name:row.name,previousVitrine:row.vitrine,reason:spnDuplicateObservations[row.sourceId].reason})));
  for(const pending of projectNorthernPendingReview(reconciled,current,alternatives).pendingPlacements)if(!pendingPlacements.some(p=>p.sourceId===pending.sourceId))pendingPlacements.push(pending);
+ for(const pending of projectAuditedPendingAllocations(reconciled,current,alternatives,sources))if(!pendingPlacements.some(p=>p.sourceId===pending.sourceId))pendingPlacements.push(pending);
  const withheld=new Set(pendingPlacements.map(row=>row.sourceId));
  const rows=reconciled.filter(row=>!withheld.has(row.sourceId));
  const estimates=new Map(base.proposal.rows.map(row=>[row.sourceId,row.planningShelfEstimate]));
@@ -80,7 +85,7 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
    hasUnresolvedHoldings:!!unresolved.length,unresolvedSourceObservationCount:unresolved.length,
    specialFitNote:indicator.vitrine==="26"?"Durgaprasad’s large display and the arm support remain unmeasured. Shelf recommendations are pending.":indicator.vitrine==="25"?"Shelf recommendations are pending.":Object.hasOwn(currentCaseNotes,indicator.vitrine)?currentCaseNotes[indicator.vitrine]:indicator.vitrine==="38"?null:indicator.vitrine==="4"?"Approved core: 15 source entries, estimated 5.47 / 5 shelf-height spaces. Check fit before filling. Other current occupants need separate review.":indicator.vitrine==="37"?"Approved core: 10 source entries, estimated 3.39 / 5 shelf-height spaces. Yogmayaâ€™s two observations retain a combined allowance of 1.5. Seven city entries await separate destinations.":indicator.specialFitNote};
  });
- const guides=[{...eastRemainderMoveGuide,vitrines:eastRemainderMoveGuide.vitrines.filter(v=>v.code==="25"||v.code==="26")},{...starterMoveGuide,vitrines:starterMoveGuide.vitrines.filter(v=>v.code==="28")},dattaMoveGuide,ramBhaktiMoveGuide,{...gosaijiSaiMoveGuide,vitrines:gosaijiSaiMoveGuide.vitrines.filter(v=>v.code!=="75")},vrajMoveGuide,fillFirstMoveGuide,northernMoveGuide];
+ const guides=[{...eastRemainderMoveGuide,vitrines:eastRemainderMoveGuide.vitrines.filter(v=>v.code==="25"||v.code==="26")},{...starterMoveGuide,vitrines:starterMoveGuide.vitrines.filter(v=>["27","28","29"].includes(v.code))},dattaMoveGuide,ramBhaktiMoveGuide,{...gosaijiSaiMoveGuide,vitrines:gosaijiSaiMoveGuide.vitrines.filter(v=>v.code!=="75")},vrajMoveGuide,fillFirstMoveGuide,northernMoveGuide];
  const reviewedFamilies=guides.flatMap(guide=>guide.vitrines.map(v=>({...v,families:v.families.map(group=>{const present=new Set(rows.filter(row=>row.effectiveVitrine===v.code).map(row=>row.sourceId));return {...group,sourceIds:group.sourceIds.filter(id=>present.has(id)),edges:group.edges?.filter(edge=>present.has(edge.fromSourceId)&&present.has(edge.toSourceId))};}),entries:guide.entries.map(entry=>{const row=rows.find(row=>row.sourceId===entry.sourceId);return row?{...entry,name:row.name,tier:row.tier}:entry;})})));
  for(const v of easternHeadlines.vitrines){
   const entries=rows.filter(row=>row.effectiveVitrine===v.code).map(row=>({sourceId:row.sourceId,saintId:row.saintId,name:row.name,tier:row.tier,city:"",relicDescription:"",destination:v.code,section:row.section,family:"",rationale:""}));
@@ -93,6 +98,7 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
  for(const [code,title] of Object.entries({...vraj.caseStories,...northernVoyage.caseStories}))caseTitles.set(code,title);
  for(const [code,story] of Object.entries(puriOdisha.headlineStories))caseTitles.set(code,story.title);
  for(const v of easternHeadlines.vitrines)caseTitles.set(v.code,v.summary);
+ for(const code of ["27","28","56"])caseTitles.set(code,curatedVitrineHeadline(code,rows.map(r=>({sourceId:r.sourceId,destination:r.effectiveVitrine??""})),caseTitles.get(code)??""));
  const options=base.designData.options.map(original=>{
   const option=projectCurrentPrimaryAnchors(original,rows);
   const assignments=option.assignments.map(a=>{const positioned=(a.number==="47"||a.number==="59")?option.assignments.find(other=>other.number===(a.number==="47"?"59":"47"))??a:a;return {...positioned,number:a.number,subsection:caseTitles.get(a.number)??positioned.subsection};});
@@ -101,6 +107,6 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
    drivers:option.drivers.filter(d=>!d.places.some(n=>caseTitles.has(String(n)))).concat(reviewedFamilies.map(v=>({connection:caseTitles.get(v.code)??v.summary,places:[Number(v.code)],reason:v.summary}))) };
  });
  const tertiaryCityClusters=base.proposal.layout.vitrines.map(vitrine=>{const cities=new Map<string,{saintId:string;name:string}[]>();for(const row of rows.filter(r=>r.effectiveVitrine===vitrine.number)){const record=current.find(p=>p.sourceRecordId===row.sourceId||p.id===row.sourceId);const city=record?.normalizedPlaces[0];if(city&&row.saintId)cities.set(city,[...(cities.get(city)??[]),{saintId:row.saintId,name:row.name}]);}return {vitrine:Number(vitrine.number),groups:[...cities].map(([city,members])=>({city,members:[...new Map(members.map(m=>[m.saintId,m])).values()]}))};});
- return {proposal:{...base.proposal,layout:currentRoomLayout,version:latestSpnReviewVersion,title:"Eastâ€“North connections Â· current refinements",reviewStatus:"Approved Northern journey Â· 29 October",reviewNote:"Newer curator destinations take precedence. Pending city placements and privately held records are listed separately.",indicators,tertiaryCityClusters,reviewedFamilies,pendingPlacements,topPlacement:vraj.topPlacement,liveEstimates:true},
+ return {proposal:{...base.proposal,layout:currentRoomLayout,version:latestSpnReviewVersion,title:"Eastâ€“North connections Â· current refinements",reviewStatus:"Approved Northern journey Â· 29 October",reviewNote:"Newer curator destinations take precedence. Pending city placements and privately held records are listed separately.",indicators,tertiaryCityClusters,reviewedFamilies,pendingPlacements,allocationPendingSearch:pendingPlacements.filter(p=>auditedPendingAllocations[p.sourceId]).map(p=>{const source=sources.find(s=>s.sourceId===p.sourceId);const record=current.find(r=>r.sourceRecordId===p.sourceId);return {...p,searchNames:record?.searchNames??[],currentLocation:companionLocationLabel({...source,current:source?.current??null})};}),topPlacement:vraj.topPlacement,liveEstimates:true},
   designData:{...base.designData,options,placements:rows.flatMap(row=>row.saintId?[{saintId:row.saintId,vitrine:row.effectiveVitrine,rationale:row.reviewReason||row.allocationKind}]:[])},rows};
 }

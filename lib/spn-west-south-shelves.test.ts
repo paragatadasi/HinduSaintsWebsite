@@ -1,3 +1,4 @@
+import refinement from "../data/museum/spn-solapur-kerala-refinement-v1.json";
 import delta from "../data/museum/spn-source-shelf-coverage-delta-v1.json";
 import reviewed from "../data/museum/spn-datta-odisha-reviewed-shelves-v2.json";
 import receiving from "../data/museum/spn-missing-receivers-shelves-v1.json";
@@ -16,7 +17,7 @@ test("reviewed West and South shelves replace old cases without duplicate source
  for(const v of packet.vitrines){
   const loaded=allOperationalSpnShelves.vitrines.find(c=>c.code===v.code)!;
   const transferred=new Set([...receiving.vitrines,...reviewed.vitrines,...delta.vitrines].flatMap(c=>c.allocations.map(a=>a.sourceId)));
-  assert.deepEqual(loaded.allocations.map(a=>a.sourceId),[...v.allocations.filter(a=>!transferred.has(a.sourceId)).map(a=>a.sourceId),...(v.code==="49"?jamnagarReceiver.allocations.map(a=>a.sourceId):[]),...(delta.vitrines.find(c=>c.code===v.code)?.allocations.map(a=>a.sourceId)??[])]);
+  assert.deepEqual(loaded.allocations.map(a=>a.sourceId),[...v.allocations.filter(a=>!transferred.has(a.sourceId)).map(a=>a.sourceId),...(v.code==="49"?jamnagarReceiver.allocations.map(a=>a.sourceId):[]),...(delta.vitrines.find(c=>c.code===v.code)?.allocations.map(a=>a.sourceId)??[]),...refinement.allocations.filter(a=>a.destination===v.code).map(a=>a.sourceId)]);
   assert.ok(v.allocations.every(a=>v.groups.some(g=>g.id===a.groupId)));
  }
 });

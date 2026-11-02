@@ -5,7 +5,7 @@ import baseline from "../data/museum/spn-starter-reviewed-proposal-v7.json";
 import { reconcileSpnRoomProposal } from "./spn-room-proposal";
 import type { MuseumSaintPlacement } from "./museum-proposals";
 import { currentSpnProposalRelease } from "./spn-current-proposal";
-import { registeredStarterGuide } from "./spn-starter-guide-registry";
+import { registeredStarterGuide } from "./spn-starter-guide-v5";
 import frozenGuide from "../data/museum/spn-starter-move-guide-v3.json";
 import { starterAmendedProposal } from "./spn-starter-amended-proposal";
 import { correctSpnProposal } from "./spn-proposal-corrections";

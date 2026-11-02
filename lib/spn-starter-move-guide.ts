@@ -1,6 +1,6 @@
 import treeBase from "@/data/museum/spn-starter-move-guide-v3.json";
 import treeOverlay from "@/data/museum/spn-vitrine-two-tree-v1.json";
-import { starterAmendedProposal as proposal } from "./spn-starter-amended-proposal";
+import { starterV6Proposal as proposal } from "./spn-starter-guide-v6";
 import { registeredStarterGuide as packet } from "./spn-starter-guide-registry";
 import { spnMovementBlockedReason } from "./spn-movement-holds";
 import { currentSpnConceptLabel } from "./spn-proposal-labels";
