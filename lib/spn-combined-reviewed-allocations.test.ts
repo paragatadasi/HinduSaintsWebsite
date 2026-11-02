@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {combinedReviewedAllocations as packet, applyCombinedReviewedGuide, applyCombinedReviewedShelves, registerCombinedReceivers} from "./spn-combined-reviewed-allocations";
 import {beforeCombinedShelves, allOperationalSpnShelves} from "./spn-operational-shelves";
+import {applyGaudiyaMayapurShelves} from "./spn-gaudiya-mayapur-presentation";
 import type {StarterMoveGuide} from "./spn-move-guide";
 const guide:StarterMoveGuide={version:"test",title:"North",contentDigest:"unchanged",assignmentDigest:"unchanged",proposalVersion:"test",entries:[],vitrines:[{code:"74",summary:"North",families:[],cityGroups:[]}],alternatives:[],reportedPlacements:[]};
 test("combined98 includes unique pinned sources, no physical state or excluded records",()=>{
@@ -26,7 +27,7 @@ test("all98 shelf contexts occur once and existing recommendations are preserved
  for(const s of packet.sources.filter(s=>!packet.preservedCuratorOverrides.some(o=>o.sourceId===s.sourceId))){const matches=rows.filter(r=>r.a.sourceId===s.sourceId);assert.equal(matches.length,1);assert.equal(matches[0].code,s.draftVitrine);if(!beforeCombinedShelves.vitrines.some(v=>v.allocations.some(a=>a.sourceId===s.sourceId)))assert.equal(matches[0].a.suggestedShelfIndex,s.sourceId==="recaTTfjinlSVDk4n"?5:null);}
  for(const v of beforeCombinedShelves.vitrines)for(const a of v.allocations){const source=packet.sources.find(s=>s.sourceId===a.sourceId);if(!source||source.draftVitrine===v.code)assert.deepEqual(rows.find(r=>r.a.sourceId===a.sourceId),{code:v.code,a});}
  for(const v of beforeCombinedShelves.vitrines){const updated=result.vitrines.find(c=>c.code===v.code)!;if(v.allocations.every(a=>updated.allocations.some(b=>b.sourceId===a.sourceId)))assert.deepEqual(updated.relationships,v.relationships);}
- assert.deepEqual(result,allOperationalSpnShelves);
+ assert.deepEqual(applyGaudiyaMayapurShelves(result),allOperationalSpnShelves);
 });
 test("guide notes require exact saved source pins and never replace later destinations",()=>{
  const s=packet.sources[0];const entry={sourceId:s.sourceId,saintId:s.saintId,name:s.name,tier:"Tertiary",city:"",relicDescription:"",destination:s.draftVitrine,section:"",family:"",rationale:""};

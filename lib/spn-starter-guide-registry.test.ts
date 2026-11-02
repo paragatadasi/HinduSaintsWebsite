@@ -3,7 +3,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { registeredStarterGuide as guide, readStarterGuideDefinition, starterGuideContext } from "./spn-starter-guide-registry";
 import oldGuide from "../data/museum/spn-starter-move-guide-v2.json";
-import {starterV6Proposal as proposal} from "./spn-starter-guide-v6";
+import {starterV7Proposal as proposal} from "./spn-starter-guide-v7";
 
 test("v16 guide has an exact source partition and matches all reviewed destinations", () => {
  assert.equal(guide.proposalVersion, proposal.version);

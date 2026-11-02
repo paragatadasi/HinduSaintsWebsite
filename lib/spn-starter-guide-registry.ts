@@ -1,4 +1,5 @@
-import {registeredStarterGuide,starterGuideContext,starterGuideDefinition} from "./spn-starter-guide-v6";
+import {starterGuideContext as v6Context,starterGuideDefinition as v6Definition} from "./spn-starter-guide-v6";
+import {registeredStarterGuide,starterGuideContext,starterGuideDefinition} from "./spn-starter-guide-v7";
 import {readStarterGuideDefinition as readV5,starterGuideContext as v5Context} from "./spn-starter-guide-v5";
 export {registeredStarterGuide,starterGuideContext};
 import {approvedHingeGuide} from "./spn-approved-hinge-guide";
@@ -41,6 +42,7 @@ export function currentReceiverGuideDefinitions(vitrine: string): GuideDefinitio
       Object.values(definition.physicalScope?.destinations ?? {}).includes(vitrine)));
 }
 export function readStarterGuideDefinition(version: string): GuideDefinition {
+  if(version===v6Context.guideVersion)return {...v6Definition,readOnly:true};
   if(version===v5Context.guideVersion)return {...readV5(version),readOnly:true};
   if(version===maharashtraReceivingGuide.context.guideVersion)return maharashtraReceivingGuide.definition;
   if(version===approvedHingeGuide.context.guideVersion)return approvedHingeGuide.definition;

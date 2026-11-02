@@ -10,7 +10,7 @@ import {MuseumDetailDialog} from "./museum-detail-dialog";
 import {useMuseumReads} from "./museum-read-context";
 type Catalog=Awaited<ReturnType<typeof readCompanionCatalog>>;
 export type CompanionSearchEntry=Catalog["entries"][number];
-export function MuseumCompanionSearch({rosterGuides,rows,canManage,disabled,retrySourceId,onOpen,onAdd,onCatalog,onStage}:{rosterGuides?:StarterMoveGuide[];onStage?:(row:CompanionRow,requestId:string,date:string)=>Promise<void>;retrySourceId?:string;rows:CompanionRow[];canManage:boolean;disabled:boolean;onCatalog:(catalog:Catalog)=>void;onOpen:(id:string,target:string)=>void;onAdd:(addition:CompanionAddition,entry:CompanionSearchEntry,moved:boolean)=>Promise<boolean>}){
+export function MuseumCompanionSearch({rosterGuides,rows,canManage,disabled,retrySourceId,onOpen,onAdd,onCatalog,onStage,onReviewDestination}:{onReviewDestination?:(entry:CompanionSearchEntry,target:string,shelf:string,moved:boolean)=>Promise<void>;rosterGuides?:StarterMoveGuide[];onStage?:(row:CompanionRow,requestId:string,date:string)=>Promise<void>;retrySourceId?:string;rows:CompanionRow[];canManage:boolean;disabled:boolean;onCatalog:(catalog:Catalog)=>void;onOpen:(id:string,target:string)=>void;onAdd:(addition:CompanionAddition,entry:CompanionSearchEntry,moved:boolean)=>Promise<boolean>}){
  const reads=useMuseumReads();
  const rowsById=useMemo(()=>new Map(rows.map(row=>[row.sourceId,row])),[rows]);
  const [catalog,setCatalog]=useState<Catalog|null>(null),[error,setError]=useState("");
@@ -38,6 +38,7 @@ export function MuseumCompanionSearch({rosterGuides,rows,canManage,disabled,retr
   let destinationSaved=false;
   saving.current=true;catalogEpoch.current+=1;setBusy(true);setSaveError("");requestId.current??=crypto.randomUUID();
   try{
+   if(onReviewDestination){await onReviewDestination(selected,target,shelf,intent==="moved");reads.invalidate();await load(true);setSelected(null);return;}
    if(ownRetry){if(!savedAddition.current)throw new Error("Close this dialog and retry the pending save.");destinationSaved=true;if(!await onAdd(savedAddition.current,selected,true))throw new Error("The move could not be confirmed. Try again.");setSelected(null);return;}
    const response=await fetch("/api/admin/museum-companion-catalog",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({museumId:"museum-spn",sourceId:selected.sourceId,expectedSourceRevision:selected.sourceRevision,expectedVersion:selected.additionVersion,vitrine:target,shelf,clientRequestId:requestId.current})});
    const result=await response.json();if(!response.ok){if(response.status<500)requestId.current=null;if(response.status===409){reads.invalidate();const fresh=await load(true);const updated=fresh?.entries.find(e=>e.sourceId===selected.sourceId);if(updated)setSelected(updated);}throw new Error(result.error||"Could not save the destination.");}
