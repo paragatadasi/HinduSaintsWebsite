@@ -14,6 +14,10 @@
 
 ## Verification
 
+- Follow-up compatibility tests preserve historical cohort/v6 assertions and check current Mayapur overlay composition.
+- Full `npm test`: 1,049 passed, 1 skipped, 0 failed (1,050 total).
+- Follow-up `npm run dev:check`: passed.
+
 - `npm run dev:check`: passed, including latest search changes.
 - 23 guide/registry/shelf/membership/alternative projection tests: passed.
 - `git diff --check`: passed.

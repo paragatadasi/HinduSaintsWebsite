@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import captured from "../data/museum/spn-vraj-east-shelves-v1.json";
 import {applyCohort27Shelves} from "./spn-cohort27-shelves";
+import {gaudiyaMayapurRebalance} from "./spn-gaudiya-mayapur-presentation";
 import {allOperationalSpnShelves} from "./spn-operational-shelves";
 import {spnDisplayTones,spnDisplayMatches} from "./spn-display-regions";
 
@@ -22,7 +23,11 @@ test("all twenty recommendations move to27 without modifying source, physical, t
 });
 test("operational shelves and room colors agree on the current case numbers",()=>{
  assert.equal(allOperationalSpnShelves.vitrines.find(v=>v.code==="27")?.allocations.length,20);
- assert.equal(allOperationalSpnShelves.vitrines.some(v=>v.code==="28"),false);
+ const mayapur=allOperationalSpnShelves.vitrines.find(v=>v.code==="28")!;
+ assert.deepEqual(mayapur.allocations.map(a=>a.sourceId).sort(),gaudiyaMayapurRebalance.changes.map(a=>a.sourceId).sort());
+ assert.ok(mayapur.allocations.every(a=>a.suggestedShelfIndex===null));
+ const cohort=new Set(allOperationalSpnShelves.vitrines.find(v=>v.code==="27")!.allocations.map(a=>a.sourceId));
+ assert.ok(mayapur.allocations.every(a=>!cohort.has(a.sourceId)));
  assert.equal(spnDisplayMatches("27","E"),true);
  assert.equal(spnDisplayTones["28"],"R");
 });
