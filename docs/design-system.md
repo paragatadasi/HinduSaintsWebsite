@@ -104,6 +104,11 @@ must never replace production recommendation logic.
 
 ## Admin review UX direction
 
+Confirmed holdings without shelf recommendations use the standard vitrine checklist
+under “Confirmed placements”. Manual receiving cases use the same room buttons and
+search destination dialog; opening a receiver does not assign or confirm any relic.
+
+
 Shelf recommendations with no exact row remain visible in the shared shelf
 workspace under “Shelf position to review”. Use the normal cards and controls;
 never imply that a fit-review placement is a confirmed shelf assignment.
