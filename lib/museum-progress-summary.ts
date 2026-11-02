@@ -1,3 +1,4 @@
+import {isCountedSpnProgressSource} from "./spn-progress-exclusions";
 import {companionRows,type CompanionPhase} from "./museum-companion-navigation";
 import {companionVitrineOwner} from "./museum-companion-addition-projection";
 import {vitrineProgress} from "./museum-vitrine-progress";
@@ -8,10 +9,11 @@ export function museumProgressSummary(guides:Record<CompanionPhase,StarterMoveGu
  const regions=companionRows.map(region=>{
   const vitrines=region.phases.flatMap(owner=>{
    const guide=guides[owner];
+   const entries=new Map((guide?.entries??[]).map(entry=>[entry.sourceId,entry]));
    return (guide?.vitrines??[]).filter(v=>companionVitrineOwner(guides,v.code)===owner).map(v=>{
     const groups=[...v.families,...v.cityGroups];
     // Count each source once across the available guides, including overlapping families.
-    const ownIds=new Set(groups.flatMap(g=>g.sourceIds).filter(id=>!seen.has(id)));
+    const ownIds=new Set(groups.flatMap(g=>g.sourceIds).filter(id=>{const entry=entries.get(id);return !seen.has(id)&&isCountedSpnProgressSource(id)&&entry?.destination===v.code&&!entry.allocationPending&&entry.proposalTransfer?.state!=="approved_case_pending";}));
     for(const id of ownIds)seen.add(id);
     const progress=vitrineProgress(v.code,groups.map(g=>({...g,sourceIds:g.sourceIds.filter(id=>ownIds.has(id))})),rows,decisions[guide.version]??[]);
     return {code:v.code,owner,...progress};
