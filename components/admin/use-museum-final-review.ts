@@ -87,6 +87,13 @@ export function useMuseumFinalReview(active:boolean,onPhysicalSaved:(rows:Compan
         if(!result.record)throw new Error("The save has not been confirmed. Retry the same save.");
         proposal=result.record;save.proposalSaved=proposal;applyRecord(result.record);etag.current="";callbacks.current.onChanged();
       }
+      if(action.action==="destination"&&action.moved&&!action.notOnDisplay&&!action.shelf.trim()&&proposal){
+        save.reviewBody??={...common,action:"review.confirm",clientRequestId:crypto.randomUUID(),expectedReviewVersion:proposal.reviewVersion,expectedCurrentRevision:record.row.currentRevision,expectedLocationVersion:record.row.currentVersion,vitrine:action.vitrine};
+        const result=await post(endpoint,save.reviewBody);
+        if(!result.record)throw new Error("The final review has not been confirmed. Retry the same save.");
+        applyRecord(result.record);publishPhysical([result.record.physical]);callbacks.current.onChanged();
+        pending.current.delete(sourceId);etag.current="";return;
+      }
       if(action.action==="place"||(action.action==="destination"&&action.moved&&!action.notOnDisplay)||action.action==="undo"){
         if(!save.physicalBody){
           if(action.action==="undo"){
@@ -114,7 +121,7 @@ export function useMuseumFinalReview(active:boolean,onPhysicalSaved:(rows:Compan
       pending.current.delete(sourceId);etag.current="";
     }catch(error){
       if(error instanceof SaveError&&error.status<500)pending.current.delete(sourceId);
-      const prefix=save.reviewBody?"Placement saved; final review not confirmed. ":save.proposalSaved&&(action.action==="place"||action.action==="destination"&&action.moved)?"Proposal saved; move not confirmed. ":"";
+      const prefix=save.reviewBody&&save.physicalBody?"Placement saved; final review not confirmed. ":save.proposalSaved&&(action.action==="place"||action.action==="destination"&&action.moved)?"Proposal saved; move not confirmed. ":"";
       const message=prefix+(error instanceof Error&&error.name!=="AbortError"?error.message:"Save not yet confirmed. Retry the same save.")+(error instanceof SaveError&&error.status===409?" Close this form and review the updated record before trying again.":"");
       setErrors(previous=>({...previous,[sourceId]:message}));throw new Error(message);
     }finally{

@@ -10,6 +10,6 @@ test("final review is independent of move completion and deduplicates source rec
  assert.equal(summary.regions.length,1);assert.equal(summary.vitrines["64"].complete,0);assert.equal(summary.vitrines["65"].complete,1);
 });
 test("review tracker retains unassigned work and excludes confirmed empty observations",()=>{
- const summary=finalReviewProgress([row("a",""),row("recq8jg20kMAD2Erc","20",true)]);
+ const summary=finalReviewProgress([row("a",""),row("recq8jg20kMAD2Erc","20",true),{...row("absent","20"),decision:"not_on_display"}]);
  assert.equal(summary.total,1);assert.equal(summary.complete,0);assert.equal(summary.regions[0].label,"No destination");
 });

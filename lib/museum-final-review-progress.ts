@@ -6,7 +6,7 @@ export function finalReviewProgress(records:FinalReviewRecord[]){
  const seen=new Set<string>();
  const cases=new Map<string,{code:string;total:number;complete:number}>();
  for(const record of records){
-  if(seen.has(record.sourceId)||!isCountedSpnProgressSource(record.sourceId))continue;
+  if(seen.has(record.sourceId)||record.decision==="not_on_display"||!isCountedSpnProgressSource(record.sourceId))continue;
   seen.add(record.sourceId);
   const code=record.destination;
   const counts=cases.get(code)??{code,total:0,complete:0};
