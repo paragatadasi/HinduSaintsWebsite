@@ -1922,3 +1922,47 @@ model MuseumDataRevision {
   lastXid   Unsupported("xid8")?
   changedAt DateTime             @default(now())
 }
+
+// Final review is source-scoped. Flags do not imply a physical move.
+model MuseumFinalReviewState {
+  museumId String
+  sourceId String
+  saintId String?
+  sourceRevision String
+  version Int @default(1)
+  planVersion Int @default(0)
+  vitrine String?
+  shelf String?
+  plannedAt DateTime?
+  decision String @default("pending")
+  decisionNote String?
+  decisionAt DateTime?
+  flagKind String?
+  flagNote String?
+  flagStatus String?
+  updatedAt DateTime @updatedAt
+  updatedById String
+  @@id([museumId, sourceId])
+  @@index([museumId, flagStatus, updatedAt])
+}
+
+model MuseumFinalReviewRevision {
+  museumId String @id
+  revision BigInt @default(0)
+}
+
+model MuseumFinalReviewReceipt {
+  museumId String
+  clientRequestId String
+  sourceId String
+  fingerprint String
+  revision BigInt
+  transactionId BigInt
+  inventoryRevisionBumped Boolean @default(false)
+  result Json
+  createdAt DateTime @default(now())
+  createdById String
+  @@id([museumId, clientRequestId])
+  @@index([museumId, revision])
+  @@index([museumId, inventoryRevisionBumped, transactionId])
+}

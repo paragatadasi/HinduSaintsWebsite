@@ -26,3 +26,34 @@ The verifier exercises the actual save services for four simultaneous requests o
 The fixture adds a 100 ms source-loader delay to observe overlapping transactions. Its read-model comparison measures three uncached reconstructions against three reads inside one opted-in transaction. These are local fixture timings, not production latency or a physical-fit claim. Unit tests separately cover cache scope, option separation, failed reads, retry classification and exhaustion.
 
 No migration, production backfill, environment variable or museum data change is required.
+
+
+## Final review (2 November 2026)
+
+Final-review decisions use one versioned `MuseumFinalReviewState` per museum/source observation. The independent review counter and uniquely keyed request receipts provide shared deltas and idempotency. Source identity, evidence revision and physical revision are checked before a proposal changes. Six competing edits to one version must produce one winner and five recoverable conflicts; six independent records can save concurrently.
+
+A final-review proposal supersedes ordinary suggestions. A later confirmed physical location remains physical truth; a deliberate later final-review proposal can describe a future move. Existing physical history is never rewritten by a flag or proposal. Checkbox confirmation records the vitrine only unless a shelf was explicitly supplied; a proposed shelf is not evidence of its physical placement.
+
+Flag-only updates do not bump `MuseumDataRevision`. Only the state table's planning/decision fields feed the heavy snapshot, guarded by selective deferred triggers. Catalogue proof versions and final-review deltas use indexed review state/counters outside that cache. Physical, shelf and to-do changes still invalidate their normal shared data revision. A matching final-review ETag returns before loading inventory.
+
+To avoid rebuilding source evidence for unrelated concurrent final plans, a write compares the inventory revision delta with committed final-review transactions not visible in its pinned PostgreSQL snapshot (`pg_visible_in_snapshot`). Every other inventory change requires a fresh snapshot. Receipt transaction IDs, the selective trigger condition and the recorded `inventoryRevisionBumped` value are one contract; change them together. Serialization retries remain bounded, idempotent and outside rolled-back transactions. Physical and shared-work writes use a larger bounded retry budget for six reviewers, without retrying stale-record conflicts.
+
+Run `scripts/verify-museum-final-review-local.ts` only with a new disposable localhost `museum_final_review_test_...` database. It applies all migrations, tests real concurrent reviewers, retries, stale source/physical evidence, shared work, and records cold/warm service timings. The verifier also changes source identity while a proposal is waiting for its source lock; the old proposal must fail. Local service timings exclude browser rendering, proxy latency and production load.
+
+
+The lightweight review counter is database-derived on state inserts, updates, deletes and truncation. A gap between that counter and request receipts forces a complete review-state refresh (using the cached inventory), covering maintenance edits without losing deltas. Physical proof reads lock the review row; review replies take their source-revision barrier after the shared review counter to avoid lock-order inversions. Request replays return the original receipt with the latest source record, so a retry cannot replace newer source/location data with an old receipt payload.
+
+Local service measurements during development (six simultaneous saves are batch completion times, not individual-save latency):
+
+| Operation | Observed local time |
+| --- | --- |
+| Cold source review read | 1.2–2.6 seconds |
+| Six warm scoped reads | 1.2–2.3 seconds per batch |
+| Six flags | 2.1–3.8 seconds per batch |
+| Six proposals, after avoiding unrelated source rebuilds | 2.7–3.9 seconds per batch |
+| First checkbox, proposal plus physical confirmation | 0.65–1.57 seconds |
+| Six physical checkboxes | 7.6–17.4 seconds per batch |
+| Six shelf saves | 6.9–12.5 seconds per batch |
+| Six to-do creates | 0.6–1.5 seconds per batch |
+
+These are disposable-localhost service measurements, with concurrent build checks affecting some runs. They exclude browser rendering and network/proxy latency; no per-request p50/p95 or production latency claim is implied. Existing Active move concurrency regressions also passed, including overlap, same-source conflicts, receipt replay, clearing races, shelf/physical races, component scope and undo.
