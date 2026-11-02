@@ -15,6 +15,7 @@ export type FinalReviewRecord = {
   addressed:boolean;
   flag:ReviewFlag|null;
   version:number;
+  hasFinalProposal?:boolean;
 };
 export type ReviewFilters = {query:string;starting:string;proposed:string;current:string};
 export const emptyReviewFilters:ReviewFilters={query:"",starting:"",proposed:"",current:""};

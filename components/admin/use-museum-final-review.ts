@@ -8,7 +8,7 @@ import type {FinalReviewRecord} from "@/lib/museum-final-review-view";
 import type {FinalReviewAction} from "./museum-final-review";
 
 const endpoint="/api/admin/museum-final-review";
-type PendingSave={record:FinalReviewRecord;action:FinalReviewAction;requestId:string;proposalSaved?:ReviewRecord;physicalBody?:Record<string,unknown>};
+type PendingSave={record:FinalReviewRecord;action:FinalReviewAction;requestId:string;proposalSaved?:Pick<ReviewRecord,"reviewVersion">;physicalBody?:Record<string,unknown>};
 class SaveError extends Error{constructor(message:string,readonly status:number){super(message);}}
 
 export function useMuseumFinalReview(active:boolean,onPhysicalSaved:(rows:CompanionRow[])=>void,onChanged:()=>void){
@@ -112,7 +112,7 @@ export function useMuseumFinalReview(active:boolean,onPhysicalSaved:(rows:Compan
   }
   async function act(record:FinalReviewRecord,action:FinalReviewAction){
     if(pending.current.has(record.sourceId))throw new Error("A previous save is unconfirmed. Retry that save first.");
-    const save={record,action,requestId:crypto.randomUUID()};pending.current.set(record.sourceId,save);setPendingSources(new Set(pending.current.keys()));await execute(save);
+    const save:PendingSave={record,action,requestId:crypto.randomUUID(),...(action.action==="place"&&record.hasFinalProposal?{proposalSaved:{reviewVersion:record.version}}:{})};pending.current.set(record.sourceId,save);setPendingSources(new Set(pending.current.keys()));await execute(save);
   }
   async function retry(sourceId:string){const save=pending.current.get(sourceId);if(save)await execute(save);}
   return {snapshot,error,errors,reload,act,retry,savingSources,pendingSources};

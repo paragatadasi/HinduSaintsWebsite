@@ -140,7 +140,7 @@ function SpnRoomMoveCompanionContent({guide:initialGuide,initialPhysical,canMana
  const reviewRecords=useMemo<FinalReviewRecord[]>(()=>finalReview.snapshot?.records.map(record=>({
   sourceId:record.sourceId,name:record.name,tier:record.tier,section:record.section,region:record.region,city:record.city,description:record.relicDescription,
   row:record.physical.componentPlacement?{...record.physical,componentPlacement:{...record.physical.componentPlacement,location:{...record.physical.componentPlacement.location,shelf:displayWork.shelf(record.physical)}}}:record.physical.currentBasis==="confirmed"&&record.physical.current?{...record.physical,current:{...record.physical.current,shelf:displayWork.shelf(record.physical)}}:record.physical,destination:record.effectiveDestination?.vitrine??"",destinationShelf:record.effectiveDestination?.shelf??null,addressed:record.addressed,
-  flag:record.flag?.status==="open"?{type:record.flag.kind,note:record.flag.note}:null,version:record.reviewVersion,
+  flag:record.flag?.status==="open"?{type:record.flag.kind,note:record.flag.note}:null,version:record.reviewVersion,hasFinalProposal:record.effectiveDestination?.basis==="final_review",
  }))??[],[finalReview.snapshot,displayWork.shelves]);
 
  const [syncError,setSyncError]=useState("");
@@ -354,7 +354,6 @@ function SpnRoomMoveCompanionContent({guide:initialGuide,initialPhysical,canMana
   const finalProposal=items.length===1&&!clearedVitrines&&to.kind==="vitrine"?finalProposals.find(p=>p.sourceId===items[0].sourceId&&p.vitrine===to.code):undefined;
   const alternative=items.length===1&&!clearedVitrines?alternatives.find(a=>a.sourceId===items[0].sourceId&&to.kind==="vitrine"&&a.vitrine===to.code):undefined;
   const addition=items.length===1&&!clearedVitrines&&to.kind==="vitrine"?additions.find(a=>a.sourceId===items[0].sourceId&&a.vitrine===to.code):undefined;
-  if(finalProposal)to={...to,...(finalProposal.shelf?{shelf:finalProposal.shelf}:{})};
   else if(addition)to={...to,...(addition.shelf?{shelf:addition.shelf}:{})};
   else if(alternative)to={...to,...(alternative.shelf?{shelf:alternative.shelf}:{})};
   const authorizationGuide=addition?(capturedPhaseGuides?Object.values(capturedPhaseGuides):[initialGuide]).find(g=>g.vitrines.some(v=>v.code===to.code)):guide;
