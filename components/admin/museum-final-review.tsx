@@ -18,6 +18,7 @@ export type FinalReviewAction =
   | {action:"resolve"};
 
 type Props={
+  emptyVitrines?:string[];
   mode:"final"|"unaddressed";
   records:FinalReviewRecord[];
   vitrines:string[];
@@ -56,7 +57,7 @@ function ReviewPanel({title,records,vitrines,renderRow,filters,setFilters}:{titl
   </section>;
 }
 
-export function MuseumFinalReview({mode,records,vitrines,selected,onSelect,tones,canEdit,savingSources,pendingSources,errors,onRetry,onAction,renderWork}:Props){
+export function MuseumFinalReview({emptyVitrines=[],mode,records,vitrines,selected,onSelect,tones,canEdit,savingSources,pendingSources,errors,onRetry,onAction,renderWork}:Props){
   const [query,setQuery]=useState("");
   const [flaggedFilters,setFlaggedFilters]=useState(emptyReviewFilters);
   const [remainingFilters,setRemainingFilters]=useState(emptyReviewFilters);
@@ -99,10 +100,10 @@ export function MuseumFinalReview({mode,records,vitrines,selected,onSelect,tones
   const dialogLocked=dialogBusy||!!dialog&&pendingSources.has(dialog.record.sourceId);
   return <>
     {mode==="unaddressed"?<div className="museum-companion__layout"><div className="museum-companion__main">
-      <section className="museum-admin-panel museum-companion__task"><div className="section-heading"><h2>Room layout</h2><button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!flaggedFilters.proposed&&!remainingFilters.proposed} onClick={()=>{setFlaggedFilters({...flaggedFilters,proposed:""});setRemainingFilters({...remainingFilters,proposed:""});}}>All vitrines</button></div><MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={[...new Set([flaggedFilters.proposed,remainingFilters.proposed].filter(Boolean))]} counts={counts} tones={tones} progress={reviewProgress.vitrines} onSelect={code=>{onSelect(code);setFlaggedFilters({...flaggedFilters,proposed:code});setRemainingFilters({...remainingFilters,proposed:code});}}/></section>
+      <section className="museum-admin-panel museum-companion__task"><div className="section-heading"><h2>Room layout</h2><button type="button" className="museum-admin-button museum-admin-button--secondary" disabled={!flaggedFilters.proposed&&!remainingFilters.proposed} onClick={()=>{setFlaggedFilters({...flaggedFilters,proposed:""});setRemainingFilters({...remainingFilters,proposed:""});}}>All vitrines</button></div><MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={[...new Set([flaggedFilters.proposed,remainingFilters.proposed].filter(Boolean))]} counts={counts} tones={tones} progress={reviewProgress.vitrines} emptyVitrines={emptyVitrines} onSelect={code=>{onSelect(code);setFlaggedFilters({...flaggedFilters,proposed:code});setRemainingFilters({...remainingFilters,proposed:code});}}/></section>
       <div className="museum-companion__guide museum-review-panels"><ReviewPanel title="Flagged records" records={groups.flagged} vitrines={vitrines} renderRow={row} filters={flaggedFilters} setFilters={setFlaggedFilters}/><ReviewPanel title="Remaining unaddressed records" records={groups.unaddressed} vitrines={vitrines} renderRow={row} filters={remainingFilters} setFilters={setRemainingFilters}/></div>
     </div></div>:<div className="museum-companion__layout"><div className="museum-companion__main">
-      <section className="museum-admin-panel museum-companion__task"><h2>Room layout</h2><MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={[selected]} counts={counts} tones={tones} progress={reviewProgress.vitrines} onSelect={onSelect}/></section>
+      <section className="museum-admin-panel museum-companion__task"><h2>Room layout</h2><MuseumRoomPlan layout={spnMuseumLayout} mode="browse" selected={[selected]} counts={counts} tones={tones} progress={reviewProgress.vitrines} emptyVitrines={emptyVitrines} onSelect={onSelect}/></section>
       <div className="museum-companion__guide"><section className="museum-admin-panel"><div className="section-heading"><h2>Final review</h2><label className="admin-field"><span>Vitrine</span><select value={selected} onChange={event=>onSelect(event.target.value)}>{vitrines.map(code=><option key={code} value={code}>{code}</option>)}</select></label></div><h3>Complete vitrine checklist · {selectedRecords.length}</h3><label className="admin-field"><span>Find in this vitrine</span><input type="search" value={query} onChange={event=>setQuery(event.target.value)} placeholder="Saint or city"/></label>{shown.map(row)}{!shown.length?<p>{selectedRecords.length?"No matching saints.":"No records assigned to this vitrine."}</p>:null}</section></div>
     </div></div>}
     {dialog?<MuseumDetailDialog titleId="final-review-dialog-title" kicker="Final review" closeLabel="Close review" onClose={()=>{if(!dialogBusy)setDialog(null);}}><h2 id="final-review-dialog-title">{dialog.kind==="flag"?"Flag record":dialog.kind==="undo"?"Undo placement check?":"Change destination"}</h2><p>{dialog.record.name}</p><form onSubmit={event=>{event.preventDefault();void submit();}}>

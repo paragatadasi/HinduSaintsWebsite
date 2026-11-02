@@ -8,6 +8,8 @@
 
 ## Summary
 
+- Empty-map follow-up: no assignments + no current/unlinked occupants + recorded clearing or new-vitrine status yields saturated fill. Unknown/future cases excluded; no progress denominator changes. Four focused progress tests pass.
+
 - Follow-up: room-map coverage includes checked OR flagged records (deduplicated); fully addressed vitrines saturate, open flags show ! and accessible flag count. Numeric finally-reviewed completion remains distinct. Three progress tests and dev:check pass.
 
 - Register starter guide v7 for approved Mayapur v3: thirteen proposed destinations move to 28; historical guides and physical facts remain intact. Institutional/locality groups remain distinct from documented family edges. New shelf allocations remain unspecified for on-site choice.
