@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import packet from "../data/museum/spn-datta-odisha-reviewed-shelves-v2.json";
-import {allOperationalSpnShelves} from "./spn-operational-shelves";
+import {beforeWestShelves as allOperationalSpnShelves} from "./spn-operational-shelves";
 
 test("reviewed shelf expansion covers seven cases without duplicating source observations", () => {
   assert.deepEqual(packet.vitrines.map(v => [v.code, v.allocations.length]), [["3",20],["81",17],["82",20],["80",8],["4",18],["25",17],["26",20]]);

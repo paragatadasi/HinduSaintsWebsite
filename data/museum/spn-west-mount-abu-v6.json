@@ -1,0 +1,2200 @@
+{
+  "version": "spn-west-mount-abu41-rebalanced-2026-11-02-v6",
+  "reviewedAt": "2026-11-02",
+  "sourceSnapshotRevision": "c62ff3d9d122cd6649c7cf2d7e18cde95cfb063c48446a619169455cad860b34",
+  "physicalWrites": false,
+  "protectedVitrines": [
+    "45",
+    "46",
+    "59"
+  ],
+  "vitrines": [
+    {
+      "code": "48",
+      "headline": "Narsinh Mehta · Junagadh devotion, Bharti Ashram & Jamnagar",
+      "knownFootprint": 4.976190476190476,
+      "unknownFootprints": 1,
+      "notes": [],
+      "groups": [
+        {
+          "id": "west-v6-48-1",
+          "title": "Narsinh Mehta · Junagadh devotional gateway",
+          "sources": [
+            {
+              "sourceId": "recs0TaB50MQxIRlc",
+              "saintId": "cms0w7hzp07ae07qikal8aq2i",
+              "sourceRevision": "3c6ce7fab393387e7764749481a1e03e1081bc3d54c09bd4caffb99d253ccd71",
+              "name": "Sri Narsi Meta",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 1.25
+            }
+          ]
+        },
+        {
+          "id": "west-v6-48-2",
+          "title": "Ram Badhi / Godariya community",
+          "sources": [
+            {
+              "sourceId": "rechRhz7WMZt6XwOs",
+              "saintId": "cms0w7fix04bb07qiyammuqjr",
+              "sourceRevision": "0c3f892b45867092b25506353dc63e3a0e546e1befa828e81a546e7d6f64f424",
+              "name": "Sri Param Pujya Sri Ramdas Bapa Godariya",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "recfp0TO6xg18vbCM",
+              "saintId": "cms0w7f2z03qf07qi0nfduri5",
+              "sourceRevision": "99ed809625406da355b3b1278011a0d3b229323c84f3863358357fbe13c976e6",
+              "name": "Sri Param Pujya Sri Premdas Bapa Godariya",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "receUZdN0cUAGNVnb",
+              "saintId": "cms0w7eve03gk07qio592j5t4",
+              "sourceRevision": "da5946bdeac55b3b80c7b8b24bb1a95b8d51adb7fee6ce0d05338e54b53374be",
+              "name": "Sri Samarth Sri Prata Smaranga Param Pujya Pragdas Ji Guru Sri Premdas Bapa Godariya",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.1111111111111111
+            },
+            {
+              "sourceId": "recMDf1mRUIu0Fp1G",
+              "saintId": "cms0w7gmq05o807qi85k3nv23",
+              "sourceRevision": "9cb124342d172652efe9e85ec4a2ea80b19d10ca45b90fdba52cc8b4bfc21f08",
+              "name": "Sri Param Pujya Sri Hariram Bapa Godariya",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.1111111111111111
+            },
+            {
+              "sourceId": "recCReazh8ZSdbDt4",
+              "saintId": "cms0w7ebh02qb07qilxgvhyu0",
+              "sourceRevision": "973d31c817851c7f667ce98502914fe4af80cdc62923588b71a6b42428f8fb95",
+              "name": "Sri Param Pujya Sri Pata Bapu Godariya",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.1111111111111111
+            }
+          ]
+        },
+        {
+          "id": "west-v6-48-3",
+          "title": "Junagadh devotional localities",
+          "sources": [
+            {
+              "sourceId": "rec0qrw5sFsUtxeiC",
+              "saintId": "cms0w7cac005507qie3ib6h6x",
+              "sourceRevision": "a97ce8cc0d0398acae538ecf0f0920e13b7c6304dcfe154245b179ef7fbd74d0",
+              "name": "Sri Pujya Sri Ramji Bapu",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.1111111111111111
+            },
+            {
+              "sourceId": "rec8gNP2jANPzuFqA",
+              "saintId": "cms0w7deh01ih07qiz4xlxt6c",
+              "sourceRevision": "95efdd7751c77af922086f924e290d59bc9bba2ce606595c40afb1be5406ac03",
+              "name": "Sri Sri 108 Ramkishan Das Ji Maharaj",
+              "previousDestination": "48",
+              "previousAdditionVersion": 0,
+              "knownFootprint": 0.1111111111111111
+            },
+            {
+              "sourceId": "recjfoM9WMPaLTuZm",
+              "saintId": "cms0w7fw204ra07qixg0osmhc",
+              "sourceRevision": "6160a771648a2a85395870b6c351e582b1cc9fc33f6c08bc8d92824ab59b214c",
+              "name": "Mahant Sri Balak Das Ji Guru Lakshman Das Ji",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "recfNuy36Ma2NHii6",
+              "saintId": "cms0w7f2r03q507qiz2z4jlk8",
+              "sourceRevision": "98a8c4ae65841b817df61669bf4015d384fe2f8f42dd6d3df41b17ac908579a3",
+              "name": "Sri Bhola Ramdas Bapu",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recpPTHvqjZYOGaDK",
+              "saintId": "cms0w7hf606m207qixjecoay8",
+              "sourceRevision": "5652448d2f51236de44b6e38e379b125859f5a89ed8aed43cdbe7dab5132a512",
+              "name": "Sri Mahant Ram Lakhan das Ji Maharaj",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "recVDOQnAEulK3L93",
+              "saintId": "cms0w7ix208a607qid51zpyfo",
+              "sourceRevision": "ba7e8dc06ef62e86639af94fce85ebca9209e35c20aea37d0349a29de3c96eae",
+              "name": "Sri Keshavanand Das Bapu Ji Maharaj",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "recDTjEtD0aOMIAcd",
+              "saintId": "cms0w7elr033n07qi1txhw46s",
+              "sourceRevision": "c7b43c16be3ce1ace2d8ef0a0216eb36644f63371c130637ae93bf72b4ea1eb1",
+              "name": "Sri Swami Balaram Das Ji",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": null
+            },
+            {
+              "sourceId": "recE7eJE8BwMZU4Pq",
+              "saintId": "cms0w7eox037u07qiqi05jlre",
+              "sourceRevision": "33793f1ce5acf16a92ba791745207545c6321adf392553c9293d74921a85ba0d",
+              "name": "Sri Kapildas Maharaj",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "recv4ebn8z8as4EJk",
+              "saintId": "cms0w7iti086m07qivcofq46m",
+              "sourceRevision": "b60de678e0b1235e928be841f2babd6979684ffbabc3bc81891a903121fbd3b0",
+              "name": "Sri Punit Acharya",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            }
+          ]
+        },
+        {
+          "id": "west-v6-48-4",
+          "title": "Jamnagar · five-saint locality cohort",
+          "sources": [
+            {
+              "sourceId": "rec4flFdn49zlG3MN",
+              "saintId": "cms0w7crm00qk07qinybtwgl5",
+              "sourceRevision": "aa0a2c88128006253643aaa7e60a6b30c9624dd87798bcb03710b218591dd126",
+              "name": "Sri Ramswarup Das ji Maharaj",
+              "previousDestination": "41",
+              "previousAdditionVersion": 0,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "rec9FDEOQPK0UUKYG",
+              "saintId": "cms0w7di101n107qigc35eibg",
+              "sourceRevision": "11d8c34d40ff2bbdf2b6032b6b32fbf4ee4ca6d4854385321fa3004363986ffc",
+              "name": "Sri Jagadishdas Ji Maharaj",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "rec9aszYqp47s9GJs",
+              "saintId": "cms0w7dh701lx07qiuvfs8fg0",
+              "sourceRevision": "bd969a91045b5b49b876afddf1294e8168f2caff69e7f4760b56783306b7419a",
+              "name": "Sri Swami Bhairavanandji",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "recHoYYCEHJtcqV4n",
+              "saintId": "cms0w7fie04am07qi8zroftsb",
+              "sourceRevision": "ad3876b027d2385325d7bb56a1da545da7f25dc29b60bb2b7a158d3ba5cee33c",
+              "name": "Sri Shambhu Giri",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "rec9ueDuwGgl2LxLu",
+              "saintId": "cms0w7dl901ri07qithkny6e6",
+              "sourceRevision": "e39781b7061480997b56dcb06a8dab778ee459cb9e7b2a62ca95a38093dfd0a3",
+              "name": "Sri Swami Rameshwaranand",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            }
+          ]
+        },
+        {
+          "id": "west-v6-48-5",
+          "title": "Bharti Ashram · two records together",
+          "sources": [
+            {
+              "sourceId": "recZimTKJr9W8RRTR",
+              "saintId": "cms0w7k3m09i507qiqx9tm8ti",
+              "sourceRevision": "47c7ec4d719486cc2387c0f9678280ab00a0fb34d19ca2ee012b74c602ec85af",
+              "name": "Sri Bharti Bapu",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recxO64bVWAOMHVHq",
+              "saintId": "cms0w7jl508yz07qij2yt6whe",
+              "sourceRevision": "c17557193d19122e33200cbd71c7cca8a4fe8e597430bcc3bcaae8b2704a50e4",
+              "name": "Sri Mahamandaleshwar Bharti Bapu",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-48-6",
+          "title": "Bhavnath / Junagadh · Heera Bhagat",
+          "sources": [
+            {
+              "sourceId": "recl5F6mcn6G1mALf",
+              "saintId": "cms0w7gdt05d307qiobziauof",
+              "sourceRevision": "a9293026e42ed3d63f103c3c6812e6b4dae66cd9c69a1cecff3dc8c5a665d858",
+              "name": "Sri Heera Bhagat Govind Bhagat",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.1111111111111111
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "49",
+      "headline": "Girnar & Junagadh · Radhikadas–Rameshwardas and Saurashtra companions",
+      "knownFootprint": 4.967592592592593,
+      "unknownFootprints": 0,
+      "notes": [],
+      "groups": [
+        {
+          "id": "west-v6-49-1",
+          "title": "Manmast Mahesh Giri & Mahakal Giri",
+          "sources": [
+            {
+              "sourceId": "recrRhd31Aeu5IjXn",
+              "saintId": "cms0w7hy1078h07qipfurwneu",
+              "sourceRevision": "b236bb2cb49fab41a4a4064c9ef6174fa5501618e5958080781259aebdfda173",
+              "name": "Sri Digambar Manmast Mahesh Giri Maharaj",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.1111111111111111
+            },
+            {
+              "sourceId": "recCS06A5SE7baG0N",
+              "saintId": "cms0w7ebr02qq07qixfm28uea",
+              "sourceRevision": "830d4bc5bc9c49f96acc0324d0097d3bbaecbb95b242fd3adec6c3741a126621",
+              "name": "Mahant Sri Mahakal Giriji Maharaj",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.1111111111111111
+            }
+          ]
+        },
+        {
+          "id": "west-v6-49-2",
+          "title": "Girnar ascetics and sacred-place holdings",
+          "sources": [
+            {
+              "sourceId": "recm2UJnehrS3dpMO",
+              "saintId": "cms0w7gkx05m607qif4ko0ses",
+              "sourceRevision": "17f7093107e709d686b38273c1276e5f16294a12b9af102ef26c72a9373b58b2",
+              "name": "Sri Shrimad Paramhamsa Parivrajakacharya Kshotriya Brahmanishtha Anant Shri Vibhushit Shri Vishwagayatri Brahmapithacharya Mahamandaleshwar Sri Sri Sri Swami Alkhagiriji Maharaj",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.125
+            },
+            {
+              "sourceId": "recchxj8aJvKexawg",
+              "saintId": "cms0w7e7w02lh07qi8bf7in9s",
+              "sourceRevision": "d525bac10eebb4f437c510663d0c672a6e486fbe51391fde145b5e4ec60cc808",
+              "name": "Sri Girnarnath",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recBodJgdOAUrhgjj",
+              "saintId": "cms0w7e0b02c507qirruftyyl",
+              "sourceRevision": "2c3f4bda530a62467060e26312c0acdaaf7081f0eb992dc231f860e6b8bc5864",
+              "name": "Sri Mahatma Girir",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "rec8fWLMWo7Wb1nBQ",
+              "saintId": "cms0w7de001hw07qirhu0p3w8",
+              "sourceRevision": "4e104ad030d7012ac6a492ffe84a32a6bb361928cd9ff98df330050f5eca134b",
+              "name": "Sri Vishweshwar Giri",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "reciCgTBOFewUOtUD",
+              "saintId": "cms0w7fo704ht07qic8rgy486",
+              "sourceRevision": "ef18013cdb7a09faf7d23f93e43a6911e9219db0eae169be128f1800733f99cb",
+              "name": "Mahant Sri Brahma Gyaniji Maharaj",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "recJGqy3zMEsLAArY",
+              "saintId": "cms0w7fwc04ro07qiama3pt23",
+              "sourceRevision": "5559303b101dbc278d79e9d818ff6a62c098f1e4203f6acd82c53a1cecb13fdd",
+              "name": "Sri Vijaya Maa",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "reckcSgfFkGseVhhC",
+              "saintId": "cms0w7g49051907qi2p6a9gkp",
+              "sourceRevision": "dc71cb5213ee582ce9863f7693fd258ea5884734ffa871cff5b0ad527fde1b2f",
+              "name": "Mahant Sri Madhu Giri",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recN5QXwf85xcAdKS",
+              "saintId": "cms0w7gv405ye07qivq96acce",
+              "sourceRevision": "d739aad77508c502ade89044ced4313d9b3f0a89b6f956e563e55146e8d05d15",
+              "name": "Sri Bhrahmleem Param Pujya Mahant Sri Amrit Giri Bapu",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recLTwwwdFUirpVjg",
+              "saintId": "cms0w7git05jl07qillxq5s6n",
+              "sourceRevision": "b11f5f807f77fc46f6d62983937fd7d2fa1fb476e645dc9734c451e9cd6c7328",
+              "name": "Sri Gopal Girnar",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "reckYkidRReyAg1HG",
+              "saintId": "cms0w7gcj05bk07qi09rv3idc",
+              "sourceRevision": "a68f610bf1197d0883b682dfd27eb9116ed39e5e4ef6c50737ed10e64f0c2687",
+              "name": "Sri Jai Shambho Bapu",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recLXYz0AB3UpKs0f",
+              "saintId": "cms0w7gjw05kz07qim9uzkrzl",
+              "sourceRevision": "6b97c606d95b91084fb9b335900eaa72a31af9ec47265bfefdcf7ef171caf854",
+              "name": "Sri Rameshwar Giri",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recW6X0bCtTKEJnYI",
+              "saintId": "cms0w7j4r08in07qiorfcw03j",
+              "sourceRevision": "cefc402dfdac5fd0d2d85e4f32225dfea0ba572a8e5dd36c7c83b32cd3fa579f",
+              "name": "Mahant Sri Hardev Giri",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recxHvesG2c4jpvBa",
+              "saintId": "cms0w7jiy08wo07qik5f39vgq",
+              "sourceRevision": "db2bc7739df44b0a3a89a46b78ee86363d6885fff650faebf335f43e78a0d210",
+              "name": "Sri Datgiri",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recRrujNB3LR5G2XM",
+              "saintId": "cms0w7hy6078n07qi9z6afek8",
+              "sourceRevision": "2506c12891cab81598895f7eb740964441f16a2623ab5fb22516f245c6725abc",
+              "name": "Sri Harpal Giri",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recM7Xp5Vw9pFy2Hs",
+              "saintId": "cms0w7gl405me07qiwuxzuumm",
+              "sourceRevision": "f70ac908a174c528bae50def23db7c5111574f039c2f9d82bd6b445716e4be2a",
+              "name": "Girnar",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.18518518518518517
+            },
+            {
+              "sourceId": "recafvsdVucjFGLHy",
+              "saintId": "cms0w7dp301wy07qig3v08g2b",
+              "sourceRevision": "d43366f529efe8fd5213caf4d73a659369679c05023d534c49522055619e2e28",
+              "name": "Sri Jagdishgiri Maharaj",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "rectUKjbXmy98h6Ri",
+              "saintId": "cms0w7ihp07ty07qi9t4gqqo9",
+              "sourceRevision": "460d1ed4cebc3825635895998e7b6eb0dfc80f20a2d3affb334af6e35e8fa534",
+              "name": "Ambaji Temple, Girnar (prasad)",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.18518518518518517
+            },
+            {
+              "sourceId": "recUsNTBWXrHbLso2",
+              "saintId": "cms0w7iqo083k07qikm04agpt",
+              "sourceRevision": "cb7cf2023ac95226b8f4ec80da8ed6f957b9e621f88772a16662a9b16136d7c7",
+              "name": "Nameless Saint",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            }
+          ]
+        },
+        {
+          "id": "west-v6-49-3",
+          "title": "Jamnagar · two regional observations",
+          "sources": [
+            {
+              "sourceId": "recPXA2z64STAw7mj",
+              "saintId": "cms0w7hhp06p607qiogzl2o5r",
+              "sourceRevision": "dc0335d797f138c3cf2530069bc5fd77b1172b2ad37c937233cbd8d09eea4204",
+              "name": "Sri Mahant Chaitanya Das Bapu, Jamnagar, Gujarat",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.4166666666666667
+            },
+            {
+              "sourceId": "rec0qNQ06e49fFCVU",
+              "saintId": "cms0w7ca2004u07qi796nhugc",
+              "sourceRevision": "2f4c9f614b76d8aec3d826a2640ff9a8fc5e20348a6f4a256a27622b85f8323d",
+              "name": "Sri Natha Bapa",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.4166666666666667
+            }
+          ]
+        },
+        {
+          "id": "west-v6-49-4",
+          "title": "Radhikadas & Rameshwardas",
+          "sources": [
+            {
+              "sourceId": "recGZmNHXYJFpPf9e",
+              "saintId": "cms0w7fdd044707qik7jv37kj",
+              "sourceRevision": "d7391cdf3ac3344253afd784a7b62cdcf4746fd37dd206811fb40c72abbc4d1c",
+              "name": "Sri Radhikadasji Maharaj",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "recTJ9SOWK0p8ClDn",
+              "saintId": "cms0w7ics07ok07qidebac214",
+              "sourceRevision": "ea798e7ad6bb94746a9ef022a9ff12cfdb6d74d8fdb1c6fc8605b54bd7c0128c",
+              "name": "Sri Tyagi Rameshwardasji Maharaj",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            }
+          ]
+        },
+        {
+          "id": "west-v6-49-5",
+          "title": "Lakshman Tekhri / Girnar · Omkardas",
+          "sources": [
+            {
+              "sourceId": "recbNB7lVGdOwxR5D",
+              "saintId": "cms0w7dzv02bl07qimn3jlqgl",
+              "sourceRevision": "40f18ad1d096e3f75eaa687678208965f9fe016d46628a2d93f1df6ed975ee72",
+              "name": "Sri Omkardas Ji Maharaj",
+              "previousDestination": "48",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.16666666666666666
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "50",
+      "headline": "Kashmiri Bapu · Bhavnath / Girnar & Muchukunda cave",
+      "knownFootprint": 4.902380952380953,
+      "unknownFootprints": 0,
+      "notes": [],
+      "groups": [
+        {
+          "id": "west-v6-50-1",
+          "title": "Kashmiri Bapu",
+          "sources": [
+            {
+              "sourceId": "rec7CR2qx4C8gkMYV",
+              "saintId": "cms0w7d9c01bp07qigxybcgco",
+              "sourceRevision": "bb60d39f6445b4ac373c23c3f4fdf206eae6e41f30765c7a9b43e59b0bf3ed8e",
+              "name": "Sant Sri Kashmiri Bapu",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-50-2",
+          "title": "Bhavnath and Girnar ashrams",
+          "sources": [
+            {
+              "sourceId": "rec60UWZAcoGY1LeT",
+              "saintId": "cms0w7d2i013j07qigk14eylz",
+              "sourceRevision": "4e0977f69eb7db3f5359e67191d13935f9bd6fa4e9af89aff327e6d2dd21e08f",
+              "name": "Sri Param Pujya Sri Mangal Nath Bapu",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recmBuVf2uS0EeLvv",
+              "saintId": "cms0w7gm505nh07qibi5wcmof",
+              "sourceRevision": "1f83caff164bec368ee4f6a63393645dd2274d69a2b8599e8eb5ef0effbe5122",
+              "name": "Sri Velnath Bapu",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recs4va1LWRhT0O6F",
+              "saintId": "cms0w7i0b07b307qiac0q8771",
+              "sourceRevision": "3415318ab09b80494c43af19fbe2ab7052427d329c2db87bbbb8bc7b54cdb12c",
+              "name": "Sri Param Pujya Sant Sri Gulab Giri Bapu",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 1.25
+            },
+            {
+              "sourceId": "rec9bs6bIpAFLCeqR",
+              "saintId": "cms0w7dhf01m807qiz15r8vyg",
+              "sourceRevision": "a6b200df791394cd9a120fada58ad9fc0d074f69a09a5b315fe88fc3e0811c0f",
+              "name": "Sri Sevanath Bapu",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "rec9Ff2pFmBSgxj7y",
+              "saintId": "cms0w7di801na07qixwsdn3pl",
+              "sourceRevision": "dd5709b5b57946192cd125bca077f5422146a33a39e37c3d50152cc5b5f4f740",
+              "name": "Sri Mahant Nilkantanandji",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "recboMF9NVJkTqy5M",
+              "saintId": "cms0w7e0r02cu07qicusds7fo",
+              "sourceRevision": "03dc02408ac632156ef3054160541f1b02bb2caf492fba6db575648f152c9ba2",
+              "name": "Mahant Sri Kanbharti",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "rec9kRlcXAXxX6OOj",
+              "saintId": "cms0w7dje01ox07qie3j0up5r",
+              "sourceRevision": "5c18702819adea0e4e66cee5424e73f1f511b23028b2e7e13b06e721b685bd4e",
+              "name": "Sri Ambapurji Maharaj",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recuNQ3hYf3afUPv8",
+              "saintId": "cms0w7ipr082m07qi2d57xv3g",
+              "sourceRevision": "e5c80b82f64cedc8d379b4ecc73718f8828e5a863d61917d234f186f78b19bc5",
+              "name": "Sri Naga Baba Chetanpuri Maharaj",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recgZUWjWNtgmRoBA",
+              "saintId": "cms0w7fdj044h07qieppjkemc",
+              "sourceRevision": "b6cb8a12c4e0504667d676cae3c0973c7fc186e36bbbc52bfa260718c5718116",
+              "name": "Sri Param Pujya Gopalnath Maharaj",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "rechxwV6llmYQM8qd",
+              "saintId": "cms0w7fkw04dp07qirdcaqllp",
+              "sourceRevision": "4576922078ab4eb27fbafac0c5cd926a22b451857a08f911766008af53541113",
+              "name": "Sri Amritgiri Bapu (Chakachak Bapu)",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "recxuracQJPPryYKc",
+              "saintId": "cms0w7jnh091b07qi1y6cgrbe",
+              "sourceRevision": "85048879600492e27cb87a7bf5d4700087be42bcbb34e5dc1c35919442fab2eb",
+              "name": "Sri Nag Baba",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.4166666666666667
+            },
+            {
+              "sourceId": "rectkQuhmbjMUZGg7",
+              "saintId": "cms0w7idg07pc07qilzyrq3yt",
+              "sourceRevision": "e67cdd1691d58624f1e088dc67f35fd35f84b55391739f04176986375e24734e",
+              "name": "Sri Narmada Puri Mataji",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recBtymRccp1iFneW",
+              "saintId": "cms0w7e1x02ea07qiu8w3pod6",
+              "sourceRevision": "0fdac107efb6f61824cb5e3e5cd6d35bb5e55c21ec9fb4d6bb3594d1d439dbfd",
+              "name": "Sri Brahmachari Bapu",
+              "previousDestination": "50",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.4166666666666667
+            }
+          ]
+        },
+        {
+          "id": "west-v6-50-3",
+          "title": "Muchukunda cave · Umed Giri & Komalanand",
+          "sources": [
+            {
+              "sourceId": "recnR9BtC1LF5bWsh",
+              "saintId": "cms0w7gze063p07qiiz0vf2mk",
+              "sourceRevision": "aeb7f44e3658bf1b23d73cdc6908b994b3acb3127a1157439b2f322ea3623247",
+              "name": "Sri Umed Giri Maharaj",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "rec041caipfsm61E9",
+              "saintId": "cms0w7c58000f07qi4de2l0oj",
+              "sourceRevision": "f90ddccce1b5f17d93db6dd7eec33e19d76d33b74692db50f2440e9fc6bbd3e2",
+              "name": "Mahant Sri Komalanand Giriji Maharaj",
+              "previousDestination": "49",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "39",
+      "headline": "Gujarat veenas · Jalaram & Bhoja Bhagat",
+      "knownFootprint": 1.1833333333333333,
+      "unknownFootprints": 0,
+      "notes": [
+        "Reserve space for four Gujarat veenas. Keep Jalaram and Bhoja visible above them. Instrument dimensions and separate clothing space need checking."
+      ],
+      "groups": [
+        {
+          "id": "west-v6-39-1",
+          "title": "Bhoja Bhagat & Jalaram",
+          "sources": [
+            {
+              "sourceId": "rec5bMBZLbIgDKTi3",
+              "saintId": "cms0w7cyk00z107qii6760lkx",
+              "sourceRevision": "9dda0c03e7e819a40134ed6095679fa9cc8ba39875ed5ba29afd2f2ebfb50473",
+              "name": "Sri Jalaram Babaji",
+              "previousDestination": "39",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "recmNqjW54MTnx5oZ",
+              "saintId": "cms0w7gpu05rz07qisc53dyx7",
+              "sourceRevision": "05b2470aa6b52aab45314271b0e41d7b6d74620ba7f82cc77d7f1b654a95ebc8",
+              "name": "Sant Sri Bhoja Bhagat",
+              "previousDestination": "39",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-39-2",
+          "title": "Kabir Tekri",
+          "sources": [
+            {
+              "sourceId": "rec3r1Nb5ETFp6peP",
+              "saintId": "cms0w7cot00mq07qirjbxfdda",
+              "sourceRevision": "5964860b79d6a1ce31ee4b3ecaedd9365ac6233f2901ca3b5b264b8f910e91d6",
+              "name": "Sri Satyanam Saheb Sant Sri Sevadas Saheb",
+              "previousDestination": "39",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            }
+          ]
+        },
+        {
+          "id": "west-v6-39-3",
+          "title": "Amreli / Mota Ankadiya · Narendra Giri",
+          "sources": [
+            {
+              "sourceId": "recDEU2gf3JfEq8Vu",
+              "saintId": "cms0w7eg102w307qi4kyjtgvp",
+              "sourceRevision": "40a134d7f0f4218d4a922c59212e952812559ed0b17243a37727c8ba524ebdfa",
+              "name": "Sri Narendra Giri Kailash Giri Bapu",
+              "previousDestination": "39",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-39-4",
+          "title": "Govind Das Bapu · veena reservation",
+          "sources": [
+            {
+              "sourceId": "recHoGtxIQttRWu0m",
+              "saintId": "cms0w7fhz04a107qi2x4lesi1",
+              "sourceRevision": "1063797cb4ecf0028f53e191bb73d109b46d00f9a0a190f46791eb6f7900daf8",
+              "name": "Sant Sri Govind Das Bapu",
+              "previousDestination": "39",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "40",
+      "headline": "Bapa Sitaram / Bagdana · Bhavnagar / Botad & Somnath coast",
+      "knownFootprint": 4.857142857142857,
+      "unknownFootprints": 0,
+      "notes": [],
+      "groups": [
+        {
+          "id": "west-v6-40-1",
+          "title": "Somnath / Gir coast",
+          "sources": [
+            {
+              "sourceId": "rec0seKELLdLi5H7H",
+              "saintId": "cms0w7car005g07qiabbp4uea",
+              "sourceRevision": "5ccda34c448915a9fd48f82adb9c8bbbeafc50c34aa3d11deb4db6799496c04f",
+              "name": "Sri Mahant Ganeshpuri Bapu",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "rec7jgASNs4kecXXf",
+              "saintId": "cms0w7da701cx07qifk1tc6ri",
+              "sourceRevision": "86a5400df4e13358ef29b9b62fac51adc3ce8a3cf4af1239fa33a0c8b8efe9fb",
+              "name": "Param Pujya Sri Prakash Giri",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recQ6Y27YqDsA8o3L",
+              "saintId": "cms0w7hji06r807qidcxtnvt3",
+              "sourceRevision": "10686532c9450067912b20d758c604a1e361434012792369fd6e4a01464c341a",
+              "name": "Sri Avadhoot (?)",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "recPARJ5ejag2tilh",
+              "saintId": "cms0w7hcp06j307qi5pkdytl0",
+              "sourceRevision": "c67ef2b80b037ddedbc5e0e7f96f014360908946a6ff2d1543d5d1b5386630df",
+              "name": "Sri Apa Giga",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recSsNj3vJzGFFgll",
+              "saintId": "cms0w7i6707hk07qikq1fjbq2",
+              "sourceRevision": "21334a489007bb89cd11fa6876f87977015c7b0b7e89ed032b50b4724e32e465",
+              "name": "Sri Aditya Das ji",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.4166666666666667
+            },
+            {
+              "sourceId": "recS5zrdh9CsIcTZU",
+              "saintId": "cms0w7i0y07bw07qichj73yeu",
+              "sourceRevision": "571b7b76e5d6c29c0acf684413fd64ac7e15df61df7a887530b94397a8f0dc38",
+              "name": "Sri Nathuram Sharama Acharya Maharaj",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "recszQw56XJNkJ7Ms",
+              "saintId": "cms0w7i9q07l607qiatblke7a",
+              "sourceRevision": "56125aac5cd09ba478c217fa76535a406db37df9be9b5ae2dc6dd9372afcb3ab",
+              "name": "Sri Triloknathji",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recsm43oeUdKNUMqs",
+              "saintId": "cms0w7i3s07f307qiuaezle9f",
+              "sourceRevision": "4aa5af436e0b66276924c3731632d93eb9ead023178f915737a17179123f4329",
+              "name": "Sri Bimal Das Bapu",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.4166666666666667
+            },
+            {
+              "sourceId": "recTAvhZnozTlJRko",
+              "saintId": "cms0w7iad07lx07qiyw61tclm",
+              "sourceRevision": "45847e7d98a9c470a695fc6e9ac6074390d3d755f40450afd2f55636883664a3",
+              "name": "Sri Mahant Sri Raj Giri Bapu",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.4166666666666667
+            },
+            {
+              "sourceId": "recVJcxLhwAMqNOpT",
+              "saintId": "cms0w7iyh08bq07qia90zmfrp",
+              "sourceRevision": "43f7bbcc4b575fabcd9cca0c7c58f59fa25c6240f56f28ae08742edfb26a8436",
+              "name": "Sri Sri 1008 Mahamandaleshwar Sri Ramroopdas Ji",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            }
+          ]
+        },
+        {
+          "id": "west-v6-40-2",
+          "title": "Bhavnagar / Botad",
+          "sources": [
+            {
+              "sourceId": "recBiuGXStrJWEtln",
+              "saintId": "cms0w7dyc029f07qiiey4cjst",
+              "sourceRevision": "4718310f37ce7630674b2c9761a33e9c5d596002c4a165ced52217331e0875ef",
+              "name": "Sant Sri Chaturbapa",
+              "previousDestination": "39",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recjT5Upm7602ZMk5",
+              "saintId": "cms0w7fzk04vj07qiblmtcz36",
+              "sourceRevision": "93b6d0789b6221e5ee892e6620e1390a684904532b0f3acbb8f0004531ba797a",
+              "name": "Sant Sri Dhana Bapa",
+              "previousDestination": "39",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recc3LvwfAsmpcyVs",
+              "saintId": "cms0w7e4t02hn07qimn4blwg0",
+              "sourceRevision": "d456fc57e3290fd8ec7a3f1f67d705d215af9cfc4bad3a640c80906dc8c772c4",
+              "name": "Ai Sri Moghal Dham Targhara, Botad, Gujarat (it’s a place not a saint !)",
+              "previousDestination": "39",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "recXShqVBITXHevvg",
+              "saintId": "cms0w7jn2090y07qiz7m48urv",
+              "sourceRevision": "9a14a2dc25f9ee94eff0de5ed2e06c50c5072c8e8d478fc6c0abdb54c64ae2e0",
+              "name": "Sri Balakdasji Bapu",
+              "previousDestination": "39",
+              "previousAdditionVersion": 0,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recDLP5EHZlE5vMqr",
+              "saintId": "cms0w7eie02z707qiwragje64",
+              "sourceRevision": "48207d7cd862b9963ebfd55eee25d051db3eb7651dc8db5650693276893f17f0",
+              "name": "Sri Bapa Sitaram",
+              "previousDestination": "39",
+              "previousAdditionVersion": 0,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recF0t6pLVTnvxUhh",
+              "saintId": "cms0w7ewh03i007qigei9b8nl",
+              "sourceRevision": "74579aba7422eaad67a8347f69c54d7518f5118af31736b8771e6b4ded2ac28a",
+              "name": "Sant Sri Savaiyanath",
+              "previousDestination": "39",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "reckdVud6NWQxexjT",
+              "saintId": "cms0w7g56052d07qi033zxj1z",
+              "sourceRevision": "b1fb85aac25406e4896fc2748d6fe82356e90b4dd110435eb54512562cea3e73",
+              "name": "Sri Giga Bapa",
+              "previousDestination": "39",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recOu0IN1AvJXrywl",
+              "saintId": "cms0w7h9906f007qi6ybx4kl1",
+              "sourceRevision": "1b97c91c50c796421356357277faa4995f85c8794b19e9418c6240ef695a0f02",
+              "name": "Sri Ramgarh Swami",
+              "previousDestination": "39",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recVzUfFbQrS7Kx1h",
+              "saintId": "cms0w7j3d08h507qi7hdh2tja",
+              "sourceRevision": "8d7ef84488f15c0e5129043da63dc3befb35140ef6b6859b839f126c3ea51def",
+              "name": "Sri Siddhayogi Fakdanath",
+              "previousDestination": "39",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-40-3",
+          "title": "Bhavnagar · Mastrambapu",
+          "sources": [
+            {
+              "sourceId": "recrnRwlcWV9vc8G4",
+              "saintId": "cms0w7hwl076p07qiruei1t2r",
+              "sourceRevision": "a1b5c9559fba4f165336d072a2a127e616322af2845a233ea623adeb0e8c7341",
+              "name": "Sri Mastrambapu",
+              "previousDestination": "39",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "41",
+      "headline": "Mount Abu veena · Brahma Kumaris · Palanpur boundary",
+      "knownFootprint": 1.8583333333333334,
+      "unknownFootprints": 0,
+      "notes": [
+        "Reserve space for the Mount Abu veena display (three shelf-level estimate). Check instrument dimensions before arranging the remaining groups."
+      ],
+      "groups": [
+        {
+          "id": "west-v6-41-1",
+          "title": "Brahma Kumaris · Mount Abu",
+          "sources": [
+            {
+              "sourceId": "recxUEG6Dr1cErcNq",
+              "saintId": "cms0w7jn9091507qiq8vn6qk3",
+              "sourceRevision": "6a57b3780d2c407073864bad666abc6d41f81930f382d925d9d2b8e3c1d8f589",
+              "name": "Sri Dada Lekhraj (or Brahma Baba or Shiva Baba)",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "rechuanXWbFyugaqd",
+              "saintId": "cms0w7fk804cw07qiqhh9p4a4",
+              "sourceRevision": "925b1e6360216dd53604fffb2eee9134c60f80fc27cd96afc1cf2f2de55edb1f",
+              "name": "Sri Dadi Janki",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "recqLYxJHUYVnoU7Q",
+              "saintId": "cms0w7hmr06v007qiogpetle1",
+              "sourceRevision": "88f87ebf0b8d2bd36d67c2e013a69e82b0f337ce5f123fc47c9b0bf738d78ff1",
+              "name": "Sri Dadi Nirmala Shanta",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "recjA6zCEVozbTcwK",
+              "saintId": "cms0w7fu504ow07qijyvm9tj0",
+              "sourceRevision": "11f5b45b5cd97ceccd9cf0b2bd9aab8caf515cffce4fca469eb2cda76c3ad7c7",
+              "name": "Sri Dadi Prakashmani",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "recSjxSEQTJJiG5Xf",
+              "saintId": "cms0w7i3e07eo07qihv6zoxls",
+              "sourceRevision": "36c7ae57a88d7a91e80ffe2c898038a1f1d64ac36a2f36dadaa2a2cb3c5def0b",
+              "name": "Sri Dadi Ratan Mohini",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "recf8bQTi2i9L3qr4",
+              "saintId": "cms0w7eyp03kz07qie8f5kucx",
+              "sourceRevision": "49bb85944da35861e297b30ef3018c24acb7e8e9e08f70183c4418906f247cf3",
+              "name": "Sri Didi Sudesh",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "rech7wuJ9bGG0N7Th",
+              "saintId": "cms0w7feo045v07qiym3gcoyc",
+              "sourceRevision": "e5cf4632aa17885366a2dcb9ad44eec0e1fe2bd0e30392ca74b9d1ee47210f58",
+              "name": "Sri Narayan Dada",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "rech80UeXCXC0g3kc",
+              "saintId": "cms0w7fes045z07qi76aco0af",
+              "sourceRevision": "d665edff27797b73c7bd019e2856ad5a2fe01d08678f683d36eadb9eae63d987",
+              "name": "Sri Puttu Dadi",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "rec27yePMb0DBtY69",
+              "saintId": "cms0w7ciq00f007qina5rw35p",
+              "sourceRevision": "960022417937b8284abf92bf887a7022f3f0a4702c1ff721d0d3bdfb06f56c35",
+              "name": "Sri Shreya Didi",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "recsMylAeFSJtM7mM",
+              "saintId": "cms0w7i4h07fv07qixzcfcrmf",
+              "sourceRevision": "7f1bf07cb4a2b38b213c7db5a41c4c79d5f8a918387a2c660b790cfca58d948a",
+              "name": "Sri Dr. Nirmala Didi (Brahma Kumari)",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            }
+          ]
+        },
+        {
+          "id": "west-v6-41-2",
+          "title": "Morbi",
+          "sources": [
+            {
+              "sourceId": "rec1G18VHatva4b4n",
+              "saintId": "cms0w7ce9009b07qi9ivshqng",
+              "sourceRevision": "0323a0eb04c3ce30c186950a47d9f4ebe58c3a50b204172ec498feafa209b835",
+              "name": "Sant Sri Bhim Saheb",
+              "previousDestination": "41",
+              "previousAdditionVersion": 0,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-41-3",
+          "title": "Palanpur · North Gujarat–Mount Abu context",
+          "sources": [
+            {
+              "sourceId": "recaIEj3pzuJ3ldHR",
+              "saintId": "cms0w7dq701ya07qidjikpzof",
+              "sourceRevision": "322593da2eddde28f920ddadf7c9edcc0f6f98e88c2ef0821c55d996631306f1",
+              "name": "Sri Vivampuriji Maharaj",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.8333333333333333
+            }
+          ]
+        },
+        {
+          "id": "west-v6-41-4",
+          "title": "Jamnagar / Khambhalida · Morar Saheb",
+          "sources": [
+            {
+              "sourceId": "recXoGywQkhXyMSrp",
+              "saintId": "cms0w7jlf08z907qi10frkbuw",
+              "sourceRevision": "220970be6b30b1752e255279fb45a0f499c413039bf0ff7cb0d4c47824645446",
+              "name": "Sant Sri Morar Saheb",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "42",
+      "headline": "Dadu & Ramdev Pir–Dali Bai · western Rajasthan & Gyaan Gufa",
+      "knownFootprint": 4.65,
+      "unknownFootprints": 0,
+      "notes": [],
+      "groups": [
+        {
+          "id": "west-v6-42-1",
+          "title": "Dadu Dayal & Garib Das",
+          "sources": [
+            {
+              "sourceId": "recCC420vYWEjA1ZK",
+              "saintId": "cms0w7e6j02jv07qithu0nm2a",
+              "sourceRevision": "07fb0aef8c56f96486b9f99cbf38ec61c1aeceb319e9ba744ad3d6a957031ead",
+              "name": "Sri Dadu Dayal ji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 1
+            },
+            {
+              "sourceId": "rec2bbFehLglJVIEe",
+              "saintId": "cms0w7civ00f707qiz16btwyg",
+              "sourceRevision": "297df5fb8162b57badcbbccb7210a4badd0023c70a714e6d7fad10a84792554e",
+              "name": "Sri Garib Das ji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            }
+          ]
+        },
+        {
+          "id": "west-v6-42-2",
+          "title": "Sri Tulsidas ji Maharaj & Sri Shanteshwar Maharaj ji Babaji",
+          "sources": [
+            {
+              "sourceId": "recnthhKz3ywaXM8Q",
+              "saintId": "cms0w7h0d064v07qi219gu6xi",
+              "sourceRevision": "4433a0cf94511e1c7d635dc4a8ac55ea18e1a08617b9cdf20829b03808d65b9f",
+              "name": "Sri Shanteshwar Maharaj ji Babaji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recLfl2CGYJTNN55c",
+              "saintId": "cms0w7gfr05fp07qilasx6wgy",
+              "sourceRevision": "f7cbc8b8701c513fe7daa80da589663012bc9f85c2374360a390df64eeb61599",
+              "name": "Sri Tulsidas ji Maharaj",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-42-3",
+          "title": "Alwar",
+          "sources": [
+            {
+              "sourceId": "rec66gnHbtkholMkg",
+              "saintId": "cms0w7d2r013u07qiix2gr865",
+              "sourceRevision": "63cd49dffaaf342197cd000f10a86d456fb487b74fa670286974fb1bb2d43fe2",
+              "name": "Sri Sri 108 Sri Baba Laldas Ji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 0,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-42-4",
+          "title": "Jhunjhunu",
+          "sources": [
+            {
+              "sourceId": "recqbV4fEbe5S2a3r",
+              "saintId": "cms0w7hkb06s407qiqsjxzzg6",
+              "sourceRevision": "85443bd711ce23314ef0355a2cb35ae81a7d4602a699211b8b718cd5269157cd",
+              "name": "Sri Gulap Giriji Maharaj",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            }
+          ]
+        },
+        {
+          "id": "west-v6-42-5",
+          "title": "Madhavgarh",
+          "sources": [
+            {
+              "sourceId": "recv7Koa6d8uoW92S",
+              "saintId": "cms0w7iuq087t07qipij3vndz",
+              "sourceRevision": "18e95276254d5215d6bb5d4b866926b25bec09003c1e991331970fa38f0d761f",
+              "name": "Sri Bhagwan Das ji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "recuJRn66FXBWfG5e",
+              "saintId": "cms0w7ip6081y07qixmu7ii5k",
+              "sourceRevision": "c7af09486d8713e01b4546feabe4601b8506d77ede4b2f8fb61ffb581fdd23dc",
+              "name": "Sri Sri 1008 Sri Kishandas ji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.16666666666666666
+            }
+          ]
+        },
+        {
+          "id": "west-v6-42-6",
+          "title": "Naklank",
+          "sources": [
+            {
+              "sourceId": "receXeBatQqUN9Tfw",
+              "saintId": "cms0w7ew303hh07qi9olw81qv",
+              "sourceRevision": "819ada6e5c65a31b04dd71be419f921f7241de2b202245a0fa5bdf99dc114225",
+              "name": "Sri Bhagat Nagji Bapu",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-42-7",
+          "title": "Mount Abu · Gyaan Gufa",
+          "sources": [
+            {
+              "sourceId": "recrC9U16Vn5vP9Fn",
+              "saintId": "cms0w7ht8072r07qilnv4xzsy",
+              "sourceRevision": "c0a638dbb87e11a188b3d28cc056109435b2c48cde560cead29315a2c6086b4a",
+              "name": "Sri Badridasji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recmGHWXiRWRyqNCz",
+              "saintId": "cms0w7gnf05p107qik0azuezt",
+              "sourceRevision": "82aae68e355a7ee6bfc5f7df8c84f3299fb29cd44b94da3361cb9e6e7358cfa7",
+              "name": "Sri Bharatdasji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.8333333333333333
+            }
+          ]
+        },
+        {
+          "id": "west-v6-42-8",
+          "title": "Ramdev Pir & Dali Bai",
+          "sources": [
+            {
+              "sourceId": "recmPZzMUEZjUowj5",
+              "saintId": "cms0w7gqo05sy07qibs4cdfjo",
+              "sourceRevision": "f2a0d81d1afafea6a01ab0e2c39f16daf3fd699e586473b0a743c956d9b04257",
+              "name": "Sri Baba Ramdev Pir ji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "recZc9KpAaqKZvtxN",
+              "saintId": "cms0w7k1g09fv07qi3dskklz2",
+              "sourceRevision": "f072eb9d062fa6b148d3b99c71f1a3242b3942313032ef7f93b24c320d62c5b7",
+              "name": "Sri Dali Bai",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-42-9",
+          "title": "Barmer",
+          "sources": [
+            {
+              "sourceId": "rech71dbwgDjSXrXC",
+              "saintId": "cms0w7feg045k07qipkf8pgij",
+              "sourceRevision": "5df2d1ce954080951bb7748eebecebc80cce12168cb6369debfad5bde0cac868",
+              "name": "Sri Sri 1008 Sri Pragnath ji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recLALdvz3213jSPb",
+              "saintId": "cms0w7gew05en07qi88q83tok",
+              "sourceRevision": "106da5d1c3a464ef972924824c635df79276628f5258100875208882f8f7a3f4",
+              "name": "Sri Sri 1008 Sri Chanchalnathji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.16666666666666666
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "43",
+      "headline": "Pushkar ashrams · distinct Jodhpur branches",
+      "knownFootprint": 4.969047619047619,
+      "unknownFootprints": 1,
+      "notes": [],
+      "groups": [
+        {
+          "id": "west-v6-43-1",
+          "title": "Anuvrat Swami & Bhikhi Bai",
+          "sources": [
+            {
+              "sourceId": "recXr00H5P0KlYhAO",
+              "saintId": "cms0w7jmh090b07qiobabt47p",
+              "sourceRevision": "286232beecb828f46bc011bccecb25fb786c493b7a5013a4989ef131380068a8",
+              "name": "Sri 1008 Bhikhi Bai Ji Maharaj",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "rec1MAZOzdCRybJGN",
+              "saintId": "cms0w7cfb00aj07qisbuppvqo",
+              "sourceRevision": "19876bd9ee124f51d810e50fb82f4ce9d89523e30369eb0d778af5803a32a80a",
+              "name": "Sri Sri 1008 Sri Anuvrat Swami Ji",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.16666666666666666
+            }
+          ]
+        },
+        {
+          "id": "west-v6-43-2",
+          "title": "Pushkar · Varaha Ghat",
+          "sources": [
+            {
+              "sourceId": "recHaH4vCPuzQfYjX",
+              "saintId": "cms0w7ffc046m07qifc9u2wme",
+              "sourceRevision": "4e8c7ea798d7196a83a41225917ed86af96b892c05cb12f2cc2ef821bfe65b7a",
+              "name": "Sri Sri 1008 Sri Mahant Bhishma Das Ji Maharaj Tyagi",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "recNrnCbFSc9fZ2yN",
+              "saintId": "cms0w7gzl063x07qi3agdpmk2",
+              "sourceRevision": "3c6f00c93ac5e3f03aeba8a444ad951af889f66550b731dc4735c7d23f361627",
+              "name": "Sri Maalik Maharaj",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "recyn09Qjn3Xlfm4Y",
+              "saintId": "cms0w7juj098t07qifz4tmpsy",
+              "sourceRevision": "04e46012db59b302de6e5897a3dc4f6eb27d42a7fc5007952b3ed742924628c5",
+              "name": "Sri Laal Babaji Maharaj",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-43-3",
+          "title": "Pushkar · Kanbay Temple / Suraj Kund",
+          "sources": [
+            {
+              "sourceId": "rechyCs2mWztexXfF",
+              "saintId": "cms0w7fla04e907qigkwyvl8x",
+              "sourceRevision": "8b6df6161906850fdd6e4b5510dc8aae3655277b88e4783d4ca367e6b4d4a1bf",
+              "name": "Sri Sri Ramkishun Das Ji Maharaj",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recGYo15kva4Wic4D",
+              "saintId": "cms0w7fce042u07qi8g5bvp5j",
+              "sourceRevision": "eac0c11b68555f1cf81dd9416b99bffcffe291d340b8e68d51346e1cf73861e8",
+              "name": "Mahant Sri Sri 1008 Swami Sri Mangal Das Ji Maharaj",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.16666666666666666
+            }
+          ]
+        },
+        {
+          "id": "west-v6-43-4",
+          "title": "Pushkar · Gorakhnath area",
+          "sources": [
+            {
+              "sourceId": "recBiNVX3OFLjOi6B",
+              "saintId": "cms0w7dy4029307qikj9etgsw",
+              "sourceRevision": "6ea6d68c27e961dfb2f5d939d16645af09585cc4c06f1a4bc862d4576221e5bb",
+              "name": "Sri Sri 1008 Swami Sri Swanand Ji",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recKA3SQQEw4kBRHm",
+              "saintId": "cms0w7g3n050f07qi0ixa1rtj",
+              "sourceRevision": "a5051de329bf1e3487301e84b5fb6eb7ce846f2ac428209a9b2af1b595420123",
+              "name": "Sri Kishan Bhagwan Maharaj Ji",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-43-5",
+          "title": "Pushkar · other ashrams and local saints",
+          "sources": [
+            {
+              "sourceId": "recdNqG8o5GNgVfbL",
+              "saintId": "cms0w7ejn030q07qi5n2v0hjl",
+              "sourceRevision": "c7815ae7c0df005160cb25133d2a762cb575c363789afe0efef77b5522d15748",
+              "name": "Sri Aloo Baba Sri Chandan Giri",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "rec0bOAYNqmpEYZ5H",
+              "saintId": "cms0w7c72001z07qi9buvdma7",
+              "sourceRevision": "c109968f55a32fb4031e27d2e809e5ef5c6a5c79730b19354e4b56b77f5b34f9",
+              "name": "Sri Karmayogi Shivananda Ji Maharaj",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "rec4e9r4nLG2LJfUI",
+              "saintId": "cms0w7cr500pv07qir2ekk6k4",
+              "sourceRevision": "b0cb5193a90a01dedfb5aa36ab1a190924a5a480611be3bec5487b8d7f1643a7",
+              "name": "Sri Digambar Baba Naag Baba Harivansh Giri",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "receXAx0CQQFwgjbh",
+              "saintId": "cms0w7evv03h507qipua2iaqv",
+              "sourceRevision": "4833a28f677e4edb4fe699e00a384752482c9d09a8a1f3fef7b40e6782d439a6",
+              "name": "Sri Sri 1008 Swami Sri Devaanath Ji Maharaj",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recPNGkHyQVT3hbOb",
+              "saintId": "cms0w7hed06l607qiqzkhoc6p",
+              "sourceRevision": "9bbf44e6a7947f12a3cd2349a03f8b78eebeeadbf6ffebf89eef14d4acabfa60",
+              "name": "Sri Bhagwan Ramsa Peer Baba",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "recrMotrBmcVRnEgx",
+              "saintId": "cms0w7hwc076f07qimzv81wyf",
+              "sourceRevision": "022d8faf678e36d15ac2f211e555544dd72b904d15deab7d0d5724c1b4ed04d6",
+              "name": "Sri Sri 1008 Bengali Baba (Arjun Baba)",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "rectELlRzsDIChmDJ",
+              "saintId": "cms0w7ib607mp07qidgh8ns8m",
+              "sourceRevision": "a1ff114c4121aafedccd39c33b43387f46c21a7040c0c1626f1d3bfac9667b92",
+              "name": "Sri Mahamahim Sant Shiromani Sri Avdhoot Ji Maharaj",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": null
+            },
+            {
+              "sourceId": "recYnMDX2zACvtMWv",
+              "saintId": "cms0w7jvf099t07qijc7bu9ld",
+              "sourceRevision": "c4c68528603cc15c8f89f530e7a770b82737c14480f9645767040514e755bf93",
+              "name": "Sri Sri 1008 Paramahans Yoganandji (Am Wale Baba)",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-43-6",
+          "title": "Jodhpur · Bijolai branch",
+          "sources": [
+            {
+              "sourceId": "recEQQYgmuQftTjJl",
+              "saintId": "cms0w7euf03f907qihl19wn38",
+              "sourceRevision": "eb2928efe011b4f76284f4f88ed1fddcfc8a2d87a329ac89d112e693a395950d",
+              "name": "Sri Mahamandaleshwar 1008 Someshwar Giri Maharaj",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.125
+            },
+            {
+              "sourceId": "recqFP7HP0TK5Q0xE",
+              "saintId": "cms0w7hl106sx07qicpmkb3u9",
+              "sourceRevision": "ff883d97c27045d1e4b141e4851d3171f094ae798a7ce4600a3dc8b3434183eb",
+              "name": "Sri Sri 1008 Paramahamsa Kishan Giri Maharaj",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.125
+            }
+          ]
+        },
+        {
+          "id": "west-v6-43-7",
+          "title": "Jodhpur · Dadaji succession",
+          "sources": [
+            {
+              "sourceId": "recaeoWdBMpV6js3e",
+              "saintId": "cms0w7doh01w307qis3zm2p07",
+              "sourceRevision": "6c656a5921c9d6e184c51e3930e8f752c2fccdee9dde6c1641b46a1b23f4e1bf",
+              "name": "Sri Gori Shankar Giri (Nepal Baba - Chota Dadaji)",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.125
+            },
+            {
+              "sourceId": "recGiFrjeMnduqdeu",
+              "saintId": "cms0w7f6u03vl07qibxtq9swm",
+              "sourceRevision": "5e8fcf0fa6cfd65c6c77c9216fcaaecfcdb0b11a9a3b72a7c9915213281fb1e9",
+              "name": "Sri Swami Narayan Barah Dadaji Siddha Purushadas",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.125
+            }
+          ]
+        },
+        {
+          "id": "west-v6-43-8",
+          "title": "Jodhpur",
+          "sources": [
+            {
+              "sourceId": "recmNoHLsJMMGqsch",
+              "saintId": "cms0w7gpk05rl07qi81hjw8p7",
+              "sourceRevision": "6cac62659717c7a99753fb0a459b0453e9c9b889071d01bc5ec28fcd74117357",
+              "name": "Sri Nepali Baba",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "recNXEfLXZgZ1sXX7",
+              "saintId": "cms0w7h1i066407qiojx8dc2e",
+              "sourceRevision": "70087f6332eed4ceece5db62ec14e8e87a7921ec1378c1081ee79700b782a860",
+              "name": "Sri Rishigiri ji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            }
+          ]
+        },
+        {
+          "id": "west-v6-43-9",
+          "title": "Pushkar · Anand Kutir & Thakur Lekhraj Ratanlal",
+          "sources": [
+            {
+              "sourceId": "recyIFyZ0KTE3ROZk",
+              "saintId": "cms0w7jta097g07qi6j1ar7oa",
+              "sourceRevision": "538daeab700fb97ff1ce58d9bfb17acf49d3b9ae61e1d2f2d2a36d264dff1c86",
+              "name": "Swami Sri Atmanand Ji Maharaj",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "rec4sQIfi3eQ6htF4",
+              "saintId": "cms0w7cub00ty07qihp3ontog",
+              "sourceRevision": "933c3752812eb6f73399fb1be5db2ec4c76e9e248051c06bca1995fb09c09eb8",
+              "name": "Sri Thakur Lekhraj Ratanlal Ji Maharaj",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.14285714285714285
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "44",
+      "headline": "Jaipur · Teoon Ram, with supporting Pushkar saints",
+      "knownFootprint": 4.085714285714285,
+      "unknownFootprints": 0,
+      "notes": [],
+      "groups": [
+        {
+          "id": "west-v6-44-1",
+          "title": "Pushkar · other ashrams and local saints",
+          "sources": [
+            {
+              "sourceId": "recBJm0GXEQdSnxdX",
+              "saintId": "cms0w7dys02a007qig9hyv7c9",
+              "sourceRevision": "760ab05fb985d1c5a498b60f2b5da50ac0c258f60b461b322f70676f36886569",
+              "name": "Pujaniya Sri Sri 1008 Sita Ram Aghori Baba",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "recUixTPfpixTRMRW",
+              "saintId": "cms0w7iou081k07qi2s3dabuk",
+              "sourceRevision": "d015782934d2a7aeaddd8822b83b006da42b88619593a8a26430953c61395513",
+              "name": "Sri (Sri Ji) Maharaj Sri Radhasarveshwarsharan Devacharya",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "rec5AerEYeHDF4ntd",
+              "saintId": "cms0w7cxm00xv07qi3nrqb002",
+              "sourceRevision": "d49dc8f23c681d315f511b8a0ac8238aea63ca4ad6f8c3f02dc1088a58b9c44c",
+              "name": "Sri Rayibai Ji",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "reckx4eycMx5ANNAu",
+              "saintId": "cms0w7gc105aw07qi6vq2ow57",
+              "sourceRevision": "6f123707f4936982fc04057f85c936a23cdb6ac24433b5ec0cd096791bd05caa",
+              "name": "Sri Sri 1008 Sri Dayalnath Ji Maharaj",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recOQhwGvleb65Mqd",
+              "saintId": "cms0w7h7t06d707qibtjubjxt",
+              "sourceRevision": "8bf081ea8018cacf03b19188802bfd6aa7c3bbde69431b4249f1da5df752fed6",
+              "name": "Sri Digambar Niranjan Giri Maharaj (Mouni Bapu)",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recP57LKD7oNwsMsO",
+              "saintId": "cms0w7hb806hc07qisrwso56f",
+              "sourceRevision": "88bbb7d635e8d40818e08996a2a83fef4aa3a028ece6ea321f0903cadc845ec0",
+              "name": "Sri Mahayogiraj Goswami Sant Sri Nirbhaypuri Ji Maharaj",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "recU2EVkXi0BiPCyj",
+              "saintId": "cms0w7ije07vo07qiz0sb5hk1",
+              "sourceRevision": "8c9e2711b0fce73976685039fbbb27186ea4513fefead238aaa6a7c30ee41c29",
+              "name": "Sri Digambar Omendrapuri Ji Maharaj",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recVKiqOCdqsgGRbE",
+              "saintId": "cms0w7iz108cd07qinzm6a08k",
+              "sourceRevision": "176939af14fd0cf8c506f406abd7375133f59276bfdf4b7c0a3036029f8e25f6",
+              "name": "Sri Swami Pragyanand Ji Maharaj",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "reczx3vjziBqyguwP",
+              "saintId": "cms0w7k9u09od07qi1nsi5php",
+              "sourceRevision": "6cbf13e283d3d19cb341f2537fe84b4c72cbacda3373ee09be04e4ae60188ddc",
+              "name": "Sri 108 Paramahamsa Swami Brahmanand ji Maharaj",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.25
+            }
+          ]
+        },
+        {
+          "id": "west-v6-44-2",
+          "title": "Jaipur",
+          "sources": [
+            {
+              "sourceId": "recqypCoigbH3X8cR",
+              "saintId": "cms0w7hq006yu07qi3s7m1xpe",
+              "sourceRevision": "e48e452dd72510fe31d4e30908628c51056a41a150bfd7555359c822ad46dffd",
+              "name": "Sri 1008 Satguru Swami Teoon Ramji Maharaj",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "recDOBzriwy6mnddl",
+              "saintId": "cms0w7ejx031507qirjqvm7zj",
+              "sourceRevision": "82d97d5206d508f9ec3fcd31b4c54d9ee78652e240cec889c215478b1d7c7678",
+              "name": "Sri Krishnadas Falhari Rishi",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "rec7pgsaA6Wi288cj",
+              "saintId": "cms0w7dan01dl07qi7fqvvqox",
+              "sourceRevision": "53bbd9abad0b25031512c589710060d58b1e5748713ba3673edb08aa34aa4a09",
+              "name": "Sri Lakshmananda Acharya",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.5
+            },
+            {
+              "sourceId": "recAmCsRatjIKPDGg",
+              "saintId": "cms0w7ds3020v07qin3plkjvk",
+              "sourceRevision": "294236687487fd5ea0fe39fa437fe65935336300e90952457ff682a3c059b41f",
+              "name": "Sri Satguru Bhagat Prakash ji Maharaj",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "recTOHNPK6sqmU0zq",
+              "saintId": "cms0w7ifc07rd07qi4ik8p974",
+              "sourceRevision": "01a17aa3ca0a2796109f3779a0be855c210efedf6d392b8d5ae7271219bf00c8",
+              "name": "Sri Sri 1008 Brahmachari Bengali Baba",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "recgYUiLIMUzFX6fn",
+              "saintId": "cms0w7fcz043n07qi622w2bq3",
+              "sourceRevision": "17ee457060e9d82762be4ef1c42e2d9e3bfa368d5f95a158163b065fa5dc8cb4",
+              "name": "Sri Sri 1008 Brahmlin Tapasvi Baba",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "recXfCH80LDGxFvg9",
+              "saintId": "cms0w7jho08v807qi56c5cewt",
+              "sourceRevision": "89583cf726cdb71473c6e72b8fc81247dec55151fd8856e6e68b18d6ac3610e7",
+              "name": "Sri Ramcharanananda Acharya",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "reccw2vxTbeGsIJ1x",
+              "saintId": "cms0w7eco02rt07qi1jz0kkqb",
+              "sourceRevision": "049b03ebde56dbedc1f4048e2df1676282deb6aecae611683466e799fc12ae87",
+              "name": "Sri Tapasvi Baba",
+              "previousDestination": "44",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "83",
+      "headline": "Mekan Dada / Kutch · Dwarka & Rajkot",
+      "knownFootprint": 4.958994708994709,
+      "unknownFootprints": 1,
+      "notes": [
+        "New vitrine; confirm shelf spacing and actual fit on site."
+      ],
+      "groups": [
+        {
+          "id": "west-v6-83-1",
+          "title": "Dwarka",
+          "sources": [
+            {
+              "sourceId": "rec7aLLgDa0jXhEKc",
+              "saintId": "cms0w7d9701bh07qieuy2yyp5",
+              "sourceRevision": "407366f0f46867e5e10769fec92693881703fc74dbe7bdb6e563232f7c8fd84b",
+              "name": "Sri Baldev Das Ji",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2777777777777778
+            },
+            {
+              "sourceId": "recjA6O6snsRrdlUA",
+              "saintId": "cms0w7ftx04om07qi7pv9agbp",
+              "sourceRevision": "58ffc66b7bbb40157ad4a7e50255af174e42d2b9abf93f334b914b97964673e6",
+              "name": "Sri Kandas Bapuji",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.23809523809523808
+            },
+            {
+              "sourceId": "rec6hHwCPZlG7imPh",
+              "saintId": "cms0w7d3p014w07qit94pgvyq",
+              "sourceRevision": "71bb259e625fa3d64662273d7c2cfeef5b455abbe80c0a2af5c6722e30c364ab",
+              "name": "Sri Nityanand Ji Maharaj",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.23809523809523808
+            },
+            {
+              "sourceId": "rece8TkBogU3sVpwc",
+              "saintId": "cms0w7ep4038607qidbf8r0yv",
+              "sourceRevision": "889a9aef8a5b9063c993b0683bf375401725249d80562100616ea5803e1a7d3c",
+              "name": "Sri Ramdas ji Maharaj",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.23809523809523808
+            },
+            {
+              "sourceId": "recGwFSR5sfdlhTMT",
+              "saintId": "cms0w7fbh041l07qib7xge5jx",
+              "sourceRevision": "7956c8c3263dfb496db5f547cf7e281cfa68c0a285bfe5150e73f5277f0f6fbd",
+              "name": "Sri Rami Mataji",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.23809523809523808
+            },
+            {
+              "sourceId": "rec6RzhtQGKjyWUu0",
+              "saintId": "cms0w7d5m016y07qiwzwe10uf",
+              "sourceRevision": "1cd9924ec7c26b82f2e7e8bc78387c98038ab0f5d073fb41e2bc7b78d88e7ce0",
+              "name": "Sri Tokhra Swami",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.23809523809523808
+            },
+            {
+              "sourceId": "recvtWm0B1R3MVPxd",
+              "saintId": "cms0w7j2608fy07qik9ntnke5",
+              "sourceRevision": "851616a521dae574aacb549bb4c916fc934e6e46c6bb5c6a25bafb0b58675991",
+              "name": "Sri Abba Babu",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2777777777777778
+            },
+            {
+              "sourceId": "recp9Qd482IPagFW7",
+              "saintId": "cms0w7hc806ii07qieqcpeimy",
+              "sourceRevision": "7b1cfb54e1681b4b3bac7b083d9c494f54b6d85cf7bcb6017963315094b6305f",
+              "name": "Sri Gangadas Guru Changadas Kabir Saheb",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2777777777777778
+            },
+            {
+              "sourceId": "recvtg4qmPTrKNB5c",
+              "saintId": "cms0w7j1k08f607qi0ys6bonk",
+              "sourceRevision": "2c91d19a02998c1312527fbcab21eec253689e85e9553340834aefbca338086e",
+              "name": "Sri Gurusri Tapasui Bapu (Tapsi Bapu)",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2777777777777778
+            },
+            {
+              "sourceId": "recoJDmYfi6mW01ol",
+              "saintId": "cms0w7h5j06ar07qi4nnomum6",
+              "sourceRevision": "b59ffada5f877486ba92f82cbea29ac17568d2532880a94003cb8fd22e55a0c6",
+              "name": "Sri Purushottam Bapu",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2777777777777778
+            },
+            {
+              "sourceId": "recr0IW26sqLI5tHu",
+              "saintId": "cms0w7hqr06zt07qioqb171h8",
+              "sourceRevision": "06004b704dc0115a0338d27c61c305f43544971aa5545c4b5a76f31b0526e406",
+              "name": "Sri Sitaram Kabir Das Bapu (Lakhar Das)",
+              "previousDestination": "40",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.2777777777777778
+            }
+          ]
+        },
+        {
+          "id": "west-v6-83-2",
+          "title": "Mekan Dada · two source entries",
+          "sources": [
+            {
+              "sourceId": "recCz6sIHu6BniUdw",
+              "saintId": "cms0w7edo02t307qijd97erou",
+              "sourceRevision": "555382b1a6eb832e92bddb833437fd330afbcd95167303615beab4a9d4838e4f",
+              "name": "Same!!! Sri Mekhran Dada",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "recjtrqGSGg72x6Fs",
+              "saintId": "cms0w7fzs04vs07qiz8qvuce6",
+              "sourceRevision": "a10b8a06bef767ced3a4a1b0bd8e942b092f9194c570083fcea8ff8ba1245c0b",
+              "name": "Sri Mekan Dada",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.25
+            }
+          ]
+        },
+        {
+          "id": "west-v6-83-3",
+          "title": "Kutch / Bhuj",
+          "sources": [
+            {
+              "sourceId": "recAJ0dmE9ty7xQmP",
+              "saintId": "cms0w7dqf01yn07qitfipppjj",
+              "sourceRevision": "cd3023f44994d8ac0bc99c1d8cc8ef1206c7c4bea0bb34bde96cc4e0024bf67e",
+              "name": "Sri Valji Dada",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.3333333333333333
+            },
+            {
+              "sourceId": "recodCOSnNUM3ABwM",
+              "saintId": "cms0w7h3y068y07qiis9ng6h2",
+              "sourceRevision": "5adae9946cf783f9368716804bed94278f2c2addcb7e7f7b59c75e740d532aac",
+              "name": "Sri Jesal Toral",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": null
+            }
+          ]
+        },
+        {
+          "id": "west-v6-83-4",
+          "title": "Rajkot / Virpur",
+          "sources": [
+            {
+              "sourceId": "recc1CC82GbnM5dJt",
+              "saintId": "cms0w7e4j02hb07qirifvqylv",
+              "sourceRevision": "94bd0c404cba3cf0d16581210074d62c141fef4f4b33dcb66c3152e7e349a711",
+              "name": "Sri Pawan Giri Maharaj",
+              "previousDestination": "41",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "recEnD8tEMbdNXtbQ",
+              "saintId": "cms0w7eta03do07qiti81b4w0",
+              "sourceRevision": "1083eaeb2d9fd60083244deed9e7b37ec505fc6be9f0c4991f533cbe53ebc681",
+              "name": "Mahant Sri Kuldeep Bharatiji Maharaj",
+              "previousDestination": "41",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.18518518518518517
+            },
+            {
+              "sourceId": "recmtsRvLYP37610P",
+              "saintId": "cms0w7grs05uc07qiji2jzt5o",
+              "sourceRevision": "1d13d406a582ffe07d7a04fd5bb5f70b88786cc1455c6d7766d760102dfa8921",
+              "name": "Sri Balak Giri",
+              "previousDestination": "41",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "reccKKvB9Ep8ilaYM",
+              "saintId": "cms0w7e9c02ng07qi7mr7779j",
+              "sourceRevision": "d4b82a38fbe0e87790f5813e91952eee7981d50e38f9c32b89d8967ec324905c",
+              "name": "Sri Hirsagar Bapa",
+              "previousDestination": "41",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "reci5j0k7U8Ha2f2m",
+              "saintId": "cms0w7flv04f007qix5jrk3p9",
+              "sourceRevision": "9a54b01662f1e0f063cb2e9bdd2d46fc49fda0e8bd42561cd75a071ac44edd38",
+              "name": "Sri Ranchordasji Maharaj",
+              "previousDestination": "41",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.25
+            },
+            {
+              "sourceId": "recTqpJdgwHXGebdi",
+              "saintId": "cms0w7ig307s507qi8jjbqa70",
+              "sourceRevision": "d98eff2ed02466c0038b37dcf7d399cf50b4d4f2319bc46a660f7a217ed21bff",
+              "name": "Sant Sri Jayshankar Dada",
+              "previousDestination": "41",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.25
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pending": [
+    {
+      "sourceId": "recXea9CGfmGP4ywn",
+      "saintId": "cms0w7jgp08ub07qiba41sdtm",
+      "sourceRevision": "88847e60112c8a725ca3af1648fadb57bd1a78043459e0d65d0ec110a1ca906c",
+      "oldProposal": "39",
+      "additionVersion": 1
+    },
+    {
+      "sourceId": "recQUDUFnAGpc6hCA",
+      "saintId": "cms0w7hoi06wx07qip7rrnri3",
+      "sourceRevision": "14ed95717d7b53f81447957988fb2c350f905926a5a15267fcf7e3f9047f8bb7",
+      "oldProposal": "39",
+      "additionVersion": 1
+    },
+    {
+      "sourceId": "recK6tqphQIk425FL",
+      "saintId": "cms0w7g2w04zk07qiediqneky",
+      "sourceRevision": "0807fea2f478ac607adcc7359d6d6102eee3a87e2faccddad109b0c6b9cfb51c",
+      "oldProposal": "39",
+      "additionVersion": 1
+    },
+    {
+      "sourceId": "recJxB8V6ELyj1f9A",
+      "saintId": "cms0w7g1a04xi07qikqkz6cvz",
+      "sourceRevision": "0d11d8854853c1b217e8a9de64683c7ba65f80e8feb7e1cf543bd998a8ed27f1",
+      "oldProposal": "39",
+      "additionVersion": 1
+    },
+    {
+      "sourceId": "recIdjy5HDFKA3Zu9",
+      "saintId": "cms0w7foq04ie07qi3n70mgdy",
+      "sourceRevision": "9662febb29e3d10d2dfd231234b65283c86cdf831304c646a79e69149c0ffb95",
+      "oldProposal": "39",
+      "additionVersion": 1
+    },
+    {
+      "sourceId": "recic7dKaAtT15WXV",
+      "saintId": "cms0w7fnn04h507qibdgrx29m",
+      "sourceRevision": "eca37fa476d3fe4e184126669fc75efb9bcfd973ac4e36f42451bf0ed238a02a",
+      "oldProposal": "39",
+      "additionVersion": 1
+    }
+  ],
+  "transfers": [
+    {
+      "code": "80",
+      "headline": "",
+      "notes": [],
+      "groups": [
+        {
+          "id": "west-v6-transfer-80-1",
+          "title": "Pushkar · Ramsakha Ashram",
+          "sources": [
+            {
+              "sourceId": "rec1QqhICMFBtQj5A",
+              "saintId": "cms0w7cfs00b707qis6unyr25",
+              "sourceRevision": "a79cba3a29364321f64ff47d5f459344db93778d746597bc5946abb1ada3e0a8",
+              "name": "Sri Sri 1008 Sri Ramswaroopsharan Ji Maharaj",
+              "previousDestination": "80",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recrfXQmBtI7KHtm3",
+              "saintId": "cms0w7hu4073v07qi694zvwpt",
+              "sourceRevision": "4670f00dfc881fc96918a4ff2ac2c477e39f268943bae1a681eb2e4817e3b0b0",
+              "name": "Sri 108 Sri Swami Siyasharan Ji Maharaj",
+              "previousDestination": "80",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.16666666666666666
+            },
+            {
+              "sourceId": "recRWM4AUfyZKTYhX",
+              "saintId": "cms0w7hyg078x07qi251p5gc7",
+              "sourceRevision": "a9b2dd189942e571959f01e0159f693e700c986b8673733c7ee3ed191990fa83",
+              "name": "Sri Sri 108 Mahant Sri Nandramsharan Ji Maharaj",
+              "previousDestination": "80",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.2
+            },
+            {
+              "sourceId": "recxnvPUj8a2yOr5k",
+              "saintId": "cms0w7jkv08yn07qitqo4foda",
+              "sourceRevision": "917acb463af59b11eac487e80b33caf4178869cb1397b46e8aa3a2b120501b5b",
+              "name": "Sant Sri Mirabai Maankala Ji (Maan Das Ji)",
+              "previousDestination": "80",
+              "previousAdditionVersion": 3,
+              "knownFootprint": 0.2
+            }
+          ]
+        },
+        {
+          "id": "west-v6-transfer-80-2",
+          "title": "Pushkar · Ramrai Mandir",
+          "sources": [
+            {
+              "sourceId": "reciFCVKbvU8jZLB5",
+              "saintId": "cms0w7fpc04j607qiicitepx6",
+              "sourceRevision": "75df0a52fcbfbbf12117f97ec97e99b05a2e19a5d99d1035d9c78d687ae81085",
+              "name": "Sri Sri 1008 Sri Lacchiramji Maharaj",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.14285714285714285
+            },
+            {
+              "sourceId": "recx91dvPplqsQoSv",
+              "saintId": "cms0w7jf908su07qi1s836diy",
+              "sourceRevision": "2ab860e47633627260064d6db5e8505286aa31e9f07b5d971caa92c1102c1a27",
+              "name": "Mahant Sri 1008 Haridas Ji Maharaj",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.14285714285714285
+            }
+          ]
+        },
+        {
+          "id": "west-v6-transfer-80-3",
+          "title": "Pushkar · other ashrams and local saints",
+          "sources": [
+            {
+              "sourceId": "recJVyEGZQ3PdhXGN",
+              "saintId": "cms0w7g0o04wp07qiwm2yjsl5",
+              "sourceRevision": "7048b8279bc9ed57eef8fb03d096edf8484c9185f5a4b0da542442b026068c2b",
+              "name": "Sri 1008 Baba Vankhandi Rishi Ji Maharaj",
+              "previousDestination": "43",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.16666666666666666
+            }
+          ]
+        },
+        {
+          "id": "west-v6-transfer-80-4",
+          "title": "Ramsakha Ashram, curator-identified",
+          "sources": [
+            {
+              "sourceId": "recj7c40zinWSzouu",
+              "saintId": "cms0w7fth04o407qiy76x0nbm",
+              "sourceRevision": "a967a96c3f89fbbf2e961c483a3e515ec0b6a0d601886bf87b78bcc9f2ed54b9",
+              "name": "Sri 108 Sri Mahant Saraya Sharan Ji Maharaj",
+              "previousDestination": "80",
+              "previousAdditionVersion": 2,
+              "knownFootprint": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "81",
+      "headline": "",
+      "notes": [],
+      "groups": [
+        {
+          "id": "west-v6-transfer-81-1",
+          "title": "Belapur",
+          "sources": [
+            {
+              "sourceId": "reckIAnRCfjle4JRW",
+              "saintId": "cms0w7g6j054907qi8m0sd72t",
+              "sourceRevision": "f19c66950e4e7f246ed148f1156f91ddb870686ca8c908b1f198028f98cad665",
+              "name": "Sri Vidhyanand Maharaj",
+              "previousDestination": "81",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "case83Availability": {
+    "status": "new",
+    "confirmedDate": "2026-11-02",
+    "basis": "Curator confirmed installed and usable",
+    "physicalPlacementsInferred": false
+  }
+}
