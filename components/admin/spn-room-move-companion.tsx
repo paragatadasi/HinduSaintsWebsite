@@ -462,7 +462,7 @@ function SpnRoomMoveCompanionContent({guide:initialGuide,initialPhysical,canMana
    return matches.length?<section key={tier}><h3 className="museum-guide-stage">{tier} · {matches.length}</h3>{matches.map(id=>display(id,selected,true,false,true))}</section>:null;
   });
  }
- function catalogEntry(entry:CompanionSearchEntry){return {componentScope:entry.componentScope,sourceId:entry.sourceId,saintId:entry.saintId,name:entry.name,tier:entry.tier,city:entry.city,relicDescription:allEntries.get(entry.sourceId)?.relicDescription??"",destination:entry.destination,proposalTransfer:entry.proposalTransfer,section:entry.section,family:"",lifeStatus:entry.lifeStatus??allEntries.get(entry.sourceId)?.lifeStatus,rationale:"Curator-added destination"};}
+ function catalogEntry(entry:CompanionSearchEntry){return {allocationPending:entry.allocationPending,componentScope:entry.componentScope,sourceId:entry.sourceId,saintId:entry.saintId,name:entry.name,tier:entry.tier,city:entry.city,relicDescription:allEntries.get(entry.sourceId)?.relicDescription??"",destination:entry.destination,proposalTransfer:entry.proposalTransfer,section:entry.section,family:"",lifeStatus:entry.lifeStatus??allEntries.get(entry.sourceId)?.lifeStatus,rationale:"Curator-added destination"};}
  function retryAddition(){
   const value=retry.current?.body.curatorAddition;
   return value&&typeof value==="object"&&"sourceId" in value&&typeof value.sourceId==="string"&&"version" in value&&typeof value.version==="number"?{sourceId:value.sourceId,version:value.version}:null;

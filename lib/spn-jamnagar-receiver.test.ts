@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {allOperationalSpnShelves} from "./spn-operational-shelves";
+import {beforeWestShelves as allOperationalSpnShelves} from "./spn-operational-shelves";
 import {applyJamnagarGuideRefinement,jamnagarReceiver} from "./spn-jamnagar-receiver";
 import type {StarterMoveGuide} from "./spn-move-guide";
 const additions=jamnagarReceiver.allocations.map(a=>({sourceId:a.sourceId,saintId:a.saintId,sourceRevision:a.sourceRevision,vitrine:"49",shelf:null,version:1,updatedAt:"2026-11-01T12:14:00Z",clientRequestId:"test"}));

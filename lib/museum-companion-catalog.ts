@@ -27,7 +27,7 @@ function projectCatalog(snapshot:MuseumCompanionReadSnapshot){
   const proposalTransfer=pendingTransfer?.sourceId===row.sourceId?pendingTransfer:null;
   const planningContext=paramanandPlanningContext({source:row,placement,effectiveDestination:addition?.vitrine??alternative?.vitrine??bySource.get(row.sourceId)?.effectiveVitrine??null,
    pendingReason:pendingBySource.get(row.sourceId)?.reason});
-  const allocationPending=auditedPendingAllocations[row.sourceId]&&pendingBySource.has(row.sourceId)&&!addition&&!alternative?{reason:pendingBySource.get(row.sourceId)!.reason}:null;
+  const allocationPending=auditedPendingAllocations[row.sourceId]&&pendingBySource.has(row.sourceId)?{reason:pendingBySource.get(row.sourceId)!.reason}:null;
   return {...row,allocationPending,componentScope:addition?.componentScope,proposalTransfer,lifeStatus:lifeBySource.get(row.sourceId),section:placement?.section??"",region:SPN_REGION_GROUPS.find(g=>(g.sections as readonly string[]).includes(placement?.section??""))?.title??"",tier:placement?.tier??"",city:placement?.normalizedPlaces.join(" · ")??"",searchNames:placement?.searchNames??[],destination:allocationPending?"":planningContext?planningContext.effectiveDestination??"":addition?.vitrine??alternative?.vitrine??bySource.get(row.sourceId)?.effectiveVitrine??"",destinationShelf:allocationPending||proposalTransfer?"":addition?addition.shelf??"":alternative?alternative.shelf??"":planningContext?"":row.proposalDestination?.shelf??"",additionVersion:additionsBySource.get(row.sourceId)?.version??0,...(planningContext?{planningContext}: {})};
  })};
 }
