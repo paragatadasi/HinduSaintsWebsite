@@ -1,10 +1,10 @@
 "use client";
-import {useState,useRef,useId,useLayoutEffect,type ReactNode} from "react";
+import React,{useState,useRef,useId,useLayoutEffect,type ReactNode} from "react";
 import addon from "@/data/museum/spn-vitrine5-shelves-v1.json";
 import packet from "@/data/museum/spn-northern-shelves-v1.json";
 import {companionLocationLabel,isPlaced,type CompanionRow,type GuideEntry} from "@/lib/spn-move-guide";
 
-const bandLabels:Record<string,string>={"retain-current":"Retain current arrangement",story:"Main story · exact shelf to confirm","below-top":"Below top · exact shelf to confirm",lower:"Lower display · exact shelf to confirm"};
+const bandLabels:Record<string,string>={"fit-review":"Shelf position to review","retain-current":"Retain current arrangement",story:"Main story · exact shelf to confirm","below-top":"Below top · exact shelf to confirm",lower:"Lower display · exact shelf to confirm"};
 type Allocation={optional?:boolean;confirmedShelfToProtect?:{vitrine:string;shelf:string}|null;sourceId:string;name:string;tier?:string;capturedTier?:string;groupId:string;suggestedShelfIndex:number|null;suggestedBand?:string;isContextOnly?:boolean;knownFootprint?:number|null;projectedLifeStatus?:{tag:string|null;basis:string}|null;reviewAlerts:{message:string}[]};
 export type ShelfPlan={code:string;notes?:string[];refinedBandExceptions?:{shelfIndex:number;knownLoad:number}[];groups:{id:string;title:string;kind:string}[];allocations:Allocation[];relationships:{fromSourceId:string;toSourceId:string;label:string;direction:string;uncertain:boolean}[];contextNodes?:{id:string;label:string;physicalHolding:boolean}[]};
 const plans:ShelfPlan[]=[...packet.vitrines,...addon.vitrines];
@@ -70,7 +70,7 @@ export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,r
  <div className="museum-shelf__legend">{groups.map((g,i)=><span data-group-color={i%6} key={g.id}>{g.title} · {g.kind}</span>)}</div>
  {familyGroups.length?<div className="museum-shelf__rail-header"><button type="button" className="museum-shelf__disclosure" aria-expanded={railOpen} aria-controls={railId} onClick={()=>setRailOpen(open=>!open)}><span aria-hidden="true">{railOpen?"▾":"▸"}</span>Family connections</button></div>:null}
  <div className="museum-shelf__workspace" data-expanded={expanded!==null} data-rail-collapsed={!railOpen||!familyGroups.length}><div className="museum-shelf__bands">{pendingBand("story")}{pendingBand("below-top")}{[1,2,3,4,5].filter(index=>!allocations.some(a=>a.suggestedBand)||allocations.some(a=>a.suggestedShelfIndex===index)).map(index=><section className="museum-shelf__band" key={index}><small>{index===1?"Top":index===5?"Bottom":`Row ${index}`}</small><div>{familyGroups.map(g=><div className="museum-shelf__column" key={g.id}>{allocations.filter(a=>a.suggestedShelfIndex===index&&a.groupId===g.id).map(a=>member(a))}</div>)}<div className="museum-shelf__locality">{allocations.filter(a=>a.suggestedShelfIndex===index&&!familyGroups.some(g=>g.id===a.groupId)).map(a=>member(a))}</div></div></section>)}
- {pendingBand("lower")}{pendingBand("retain-current")}{pendingBand("unspecified")}
+ {pendingBand("lower")}{pendingBand("fit-review")}{pendingBand("retain-current")}{pendingBand("unspecified")}
  {sourceIds.some(id=>!ids.has(id))?<p className="muted">Other current assignments are in the complete checklist below.</p>:null}</div>
  <aside id={railId} hidden={!railOpen||!familyGroups.length} aria-label="Connections">{familyGroups.map(g=><section key={g.id}><button type="button" className="museum-shelf__disclosure" aria-expanded={expanded===g.id} onClick={()=>setExpanded(expanded===g.id?null:g.id)}><span aria-hidden="true">{expanded===g.id?"▸":"◂"}</span>{g.title}</button>{tree(g.id)}</section>)}</aside></div></section>;
 }

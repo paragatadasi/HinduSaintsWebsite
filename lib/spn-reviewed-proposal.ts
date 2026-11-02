@@ -1,3 +1,4 @@
+import combinedReview from "../data/museum/spn-combined-reviewed-allocations-v1.json";
 import {westMountAbu} from "./spn-west-mount-abu";
 import {companionLocationLabel} from "./spn-move-guide";
 import {auditedPendingAllocations} from "./spn-audited-pending-allocation";
@@ -70,6 +71,14 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
  for(const pending of projectAuditedPendingAllocations(reconciled,current,alternatives,sources))if(!pendingPlacements.some(p=>p.sourceId===pending.sourceId))pendingPlacements.push(pending);
  const withheld=new Set(pendingPlacements.map(row=>row.sourceId));
  const rows=reconciled.filter(row=>!withheld.has(row.sourceId));
+ const sourcePins=new Map(sources.map(source=>[source.sourceId,source]));
+ const activeRows=new Map(rows.map(row=>[row.sourceId,row]));
+ const preservedOverrides=new Set(combinedReview.preservedCuratorOverrides.map(row=>row.sourceId));
+ const combinedCases=new Set(combinedReview.sources.filter(source=>{
+  const live=sourcePins.get(source.sourceId),row=activeRows.get(source.sourceId);
+  return !preservedOverrides.has(source.sourceId)&&live&&!live.identityChanged&&live.saintId===source.saintId&&live.sourceRevision===source.sourceRevision&&row?.saintId===source.saintId&&row.effectiveVitrine===source.draftVitrine;
+ }).map(source=>source.draftVitrine));
+ const combinedNotes=new Map(combinedReview.cases.filter(v=>combinedCases.has(v.code)).map(v=>[v.code,v.notes.join(" ")]));
  const estimates=new Map(base.proposal.rows.map(row=>[row.sourceId,row.planningShelfEstimate]));
  for(const change of overlay.overrides)if("spaceEstimate" in change)estimates.set(change.sourceId,change.spaceEstimate??null);
  for(const change of vraj.assignments)estimates.set(change.sourceId,change.spaceEstimate);
@@ -84,7 +93,7 @@ export function buildLatestSpnReview(current:MuseumSaintPlacement[], alternative
   return {...indicator,estimatedRequiredShelfShares:estimate,planningHeadroomShelfShares:5-estimate,unknownPlanningFootprintCount:unknown.length,unknownPlanningFootprintSourceIds:unknown.map(row=>row.sourceId),namedOnlyUnknownFootprintCount:0,
    potentialFlexibleSpace:!indicator.flexibleSpaceExclusion&&!unknown.length&&estimate<=4,
    hasUnresolvedHoldings:!!unresolved.length,unresolvedSourceObservationCount:unresolved.length,
-   specialFitNote:westMountAbu.vitrines.some(v=>v.code===indicator.vitrine)?westMountAbu.vitrines.find(v=>v.code===indicator.vitrine)!.notes.join(" ")||null:indicator.vitrine==="26"?"Durgaprasad’s large display and the arm support remain unmeasured. Shelf recommendations are pending.":indicator.vitrine==="25"?"Shelf recommendations are pending.":Object.hasOwn(currentCaseNotes,indicator.vitrine)?currentCaseNotes[indicator.vitrine]:indicator.vitrine==="38"?null:indicator.vitrine==="4"?"Approved core: 15 source entries, estimated 5.47 / 5 shelf-height spaces. Check fit before filling. Other current occupants need separate review.":indicator.vitrine==="37"?"Approved core: 10 source entries, estimated 3.39 / 5 shelf-height spaces. Yogmayaâ€™s two observations retain a combined allowance of 1.5. Seven city entries await separate destinations.":indicator.specialFitNote};
+   specialFitNote:combinedNotes.get(indicator.vitrine)??(westMountAbu.vitrines.some(v=>v.code===indicator.vitrine)?westMountAbu.vitrines.find(v=>v.code===indicator.vitrine)!.notes.join(" ")||null:indicator.vitrine==="26"?"Durgaprasad’s large display and the arm support remain unmeasured. Shelf recommendations are pending.":indicator.vitrine==="25"?"Shelf recommendations are pending.":Object.hasOwn(currentCaseNotes,indicator.vitrine)?currentCaseNotes[indicator.vitrine]:indicator.vitrine==="38"?null:indicator.vitrine==="4"?"Approved core: 15 source entries, estimated 5.47 / 5 shelf-height spaces. Check fit before filling. Other current occupants need separate review.":indicator.vitrine==="37"?"Approved core: 10 source entries, estimated 3.39 / 5 shelf-height spaces. Yogmayaâ€™s two observations retain a combined allowance of 1.5. Seven city entries await separate destinations.":indicator.specialFitNote)};
  });
  const guides=[{...eastRemainderMoveGuide,vitrines:eastRemainderMoveGuide.vitrines.filter(v=>v.code==="25"||v.code==="26")},{...starterMoveGuide,vitrines:starterMoveGuide.vitrines.filter(v=>["27","28","29"].includes(v.code))},dattaMoveGuide,ramBhaktiMoveGuide,{...gosaijiSaiMoveGuide,vitrines:gosaijiSaiMoveGuide.vitrines.filter(v=>v.code!=="75")},vrajMoveGuide,fillFirstMoveGuide,northernMoveGuide];
  const reviewedFamilies=guides.flatMap(guide=>guide.vitrines.map(v=>({...v,families:v.families.map(group=>{const present=new Set(rows.filter(row=>row.effectiveVitrine===v.code).map(row=>row.sourceId));return {...group,sourceIds:group.sourceIds.filter(id=>present.has(id)),edges:group.edges?.filter(edge=>present.has(edge.fromSourceId)&&present.has(edge.toSourceId))};}),entries:guide.entries.map(entry=>{const row=rows.find(row=>row.sourceId===entry.sourceId);return row?{...entry,name:row.name,tier:row.tier}:entry;})})));

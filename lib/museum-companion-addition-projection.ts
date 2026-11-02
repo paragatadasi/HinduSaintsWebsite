@@ -1,3 +1,4 @@
+import {registerCombinedReceivers,applyCombinedReviewedGuide} from "./spn-combined-reviewed-allocations";
 import {registerWestReceiver,applyWestMountAbuGuide} from "./spn-west-mount-abu";
 import {applySolapurKeralaGuide} from "./spn-solapur-kerala-refinement";
 import {reconcileCompanionMembership} from "./museum-companion-membership";
@@ -17,7 +18,7 @@ export function companionVitrineOwner<T extends string>(guides:Record<T,StarterM
  return keys.sort((a,b)=>rank(a)-rank(b)).find(key=>guides[key].vitrines.some(v=>v.code===code));
 }
 export function projectCompanionAdditions<T extends string>(guides:Record<T,StarterMoveGuide>,additions:CompanionAddition[],catalog:GuideEntry[]):Record<T,StarterMoveGuide>{
- guides=registerWestReceiver(guides);
+ guides=registerCombinedReceivers(registerWestReceiver(guides));
  const entries=new Map(catalog.map(e=>[e.sourceId,e]));
  const pending=new Set(catalog.filter(e=>e.allocationPending||e.proposalTransfer?.state==="approved_case_pending").map(e=>e.sourceId));
  const byId=new Map(additions.filter(a=>entries.has(a.sourceId)&&!pending.has(a.sourceId)).map(a=>[a.sourceId,a]));
@@ -59,6 +60,6 @@ export function projectCompanionAdditions<T extends string>(guides:Record<T,Star
    return {...entry,reviewNotes:[...new Set([...(entry.reviewNotes??[]),note])]};
   })})))), additions),additions),catalog.map(e=>byId.has(e.sourceId)?{...e,destination:byId.get(e.sourceId)!.vitrine}:e))];
  })) as Record<T,StarterMoveGuide>;
- const refined=Object.fromEntries(Object.entries(projected).map(([key,value])=>[key,applyWestMountAbuGuide(applySolapurKeralaGuide(value as StarterMoveGuide,additions,catalog))])) as Record<T,StarterMoveGuide>;
+ const refined=Object.fromEntries(Object.entries(projected).map(([key,value])=>[key,applyCombinedReviewedGuide(applyWestMountAbuGuide(applySolapurKeralaGuide(value as StarterMoveGuide,additions,catalog)),additions)])) as Record<T,StarterMoveGuide>;
  return reconcileCompanionMembership(refined,catalog.map(entry=>byId.has(entry.sourceId)?{...entry,destination:byId.get(entry.sourceId)!.vitrine}:entry));
 }

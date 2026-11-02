@@ -66,7 +66,7 @@ test("installed 83 is available in room and physical-route layout while 84/85 re
  }
 });
 
-import {beforeWestShelves, allOperationalSpnShelves} from "./spn-operational-shelves";
+import {beforeWestShelves, beforeCombinedShelves as allOperationalSpnShelves} from "./spn-operational-shelves";
 test("final West composition relocates exactly the reviewed sources and preserves other recommendations",()=>{
  const targets=new Map([...westMountAbu.vitrines,...westMountAbu.transfers].flatMap(v=>v.groups.flatMap(g=>g.sources.map(s=>[s.sourceId,{...s,code:v.code}] as const))));
  const final=allOperationalSpnShelves.vitrines.flatMap(v=>v.allocations.map(a=>({code:v.code,a})));

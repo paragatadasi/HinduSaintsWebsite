@@ -1,0 +1,1274 @@
+{
+  "version": "spn-combined-reviewed-allocations-2026-11-02-v1",
+  "sources": [
+    {
+      "sourceId": "rec2nZkEPSKUov5Tj",
+      "saintId": "cms0w7cjq00g807qiw146fm4p",
+      "sourceRevision": "751870595c19d457c9ba0a771352c2a334b124fdfe8087ea714b11f39217a25c",
+      "name": "Sri Sri Sri Sadguru Balanjaneya Swami",
+      "draftVitrine": "61",
+      "basis": "Karnataka source or curator-provisional Karnataka context; Bhramaananda based on caption-language clue only. No identity, biography or family inferred. Curator reports62 full; provisional adjacent Karnataka continuation in61, separate from Pune families.",
+      "shelfAdvice": "Fit hold: inspect an available lower review position in61; living saints bottom only. Do not displace Pune headline groups or record a physical move."
+    },
+    {
+      "sourceId": "rec5hoT3MY3b5Vb3K",
+      "saintId": "cms0w7czn010907qid647obxq",
+      "sourceRevision": "6a37d61fc9ea171265f532ed2fac63a0a394521404311202cc2052de4be9c686",
+      "name": "Sri Thangal Karipoor Abdul Salam",
+      "draftVitrine": "56",
+      "basis": "User photo/name-language clue for Shivanath, tentative Kerala Muslim/Sufi reading for Thangal. Regional display hypothesis only.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recgQf22pongtyYV6",
+      "saintId": "cms0w7f9v03zm07qiuur9aeoq",
+      "sourceRevision": "7c06cbd67b60a82c2e778f82893087785a7edc8a252252ea57d8f40b6d2abbfe",
+      "name": "Sri Ramdas Baba ji",
+      "draftVitrine": "32",
+      "basis": "Explicit curator instruction to keep Ramdas Baba with Vrindavan; no namesake merge.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recic7dKaAtT15WXV",
+      "saintId": "cms0w7fnn04h507qibdgrx29m",
+      "sourceRevision": "eca37fa476d3fe4e184126669fc75efb9bcfd973ac4e36f42451bf0ed238a02a",
+      "name": "Sri Swami Pritam Muni",
+      "draftVitrine": "83",
+      "basis": "Provisional Gujarat receiving review; exact localities remain partly unresolved. Buddha Bapu follows user-reported Pipaliya/Gondal context. Prior optional deferral remains until approved loading/fit review.",
+      "shelfAdvice": "Bottom-first; second-from-bottom only under approved living overflow policy"
+    },
+    {
+      "sourceId": "recIdjy5HDFKA3Zu9",
+      "saintId": "cms0w7foq04ie07qi3n70mgdy",
+      "sourceRevision": "9662febb29e3d10d2dfd231234b65283c86cdf831304c646a79e69149c0ffb95",
+      "name": "Sri Buddha Bapu",
+      "draftVitrine": "83",
+      "basis": "Provisional Gujarat receiving review; exact localities remain partly unresolved. Buddha Bapu follows user-reported Pipaliya/Gondal context. Prior optional deferral remains until approved loading/fit review.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recIE7h4k6e7GJnGa",
+      "saintId": "cms0w7fov04il07qi2wi9wtqb",
+      "sourceRevision": "c8d2e218a74036dbc929c690eeee33f309621c43090eaba9be90894af7f84694",
+      "name": "Sri Yerriswamy",
+      "draftVitrine": "61",
+      "basis": "Karnataka source or curator-provisional Karnataka context; Bhramaananda based on caption-language clue only. No identity, biography or family inferred. Curator reports62 full; provisional adjacent Karnataka continuation in61, separate from Pune families.",
+      "shelfAdvice": "Fit hold: inspect an available lower review position in61; living saints bottom only. Do not displace Pune headline groups or record a physical move."
+    },
+    {
+      "sourceId": "recjOwQ0YKGIQUU9G",
+      "saintId": "cms0w7fyh04ua07qi91gx9hfe",
+      "sourceRevision": "32ae4f637da38d4fe2423571d28702b8e731b368fbe15bed42035ab8dddaf54f",
+      "name": "Sri Brahmarishi Mohan ji",
+      "draftVitrine": "60",
+      "basis": "Provisional separately labelled western/global context using original source41 and potential flexible lower space; no claim of Mohanji belonging to host guru family or residing in Mumbai.",
+      "shelfAdvice": "Reserve lower placement and verify current life status before loading; no living assertion inferred from missing death."
+    },
+    {
+      "sourceId": "recJxB8V6ELyj1f9A",
+      "saintId": "cms0w7g1a04xi07qikqkz6cvz",
+      "sourceRevision": "0d11d8854853c1b217e8a9de64683c7ba65f80e8feb7e1cf543bd998a8ed27f1",
+      "name": "Sri Hansoy Mataji",
+      "draftVitrine": "83",
+      "basis": "Provisional Gujarat receiving review; exact localities remain partly unresolved. Buddha Bapu follows user-reported Pipaliya/Gondal context. Prior optional deferral remains until approved loading/fit review.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recK6tqphQIk425FL",
+      "saintId": "cms0w7g2w04zk07qiediqneky",
+      "sourceRevision": "0807fea2f478ac607adcc7359d6d6102eee3a87e2faccddad109b0c6b9cfb51c",
+      "name": "Sri Purandas ji",
+      "draftVitrine": "83",
+      "basis": "Provisional Gujarat receiving review; exact localities remain partly unresolved. Buddha Bapu follows user-reported Pipaliya/Gondal context. Prior optional deferral remains until approved loading/fit review.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recLs6T066cSNJb35",
+      "saintId": "cms0w7ghq05ia07qiuk8ov2sn",
+      "sourceRevision": "4a80ece28135cd559f503300c6120d4cb84531f08c9301752096411e6d1ce017",
+      "name": "Sri Bhakta Narasimha",
+      "draftVitrine": "53",
+      "basis": "User-confirmed Andhra context: Machilipatnam temple for Bhakta Narasimha; source Andhra institutional place for Devakinandashrama. Andhra subgroup distinct from headline family.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recneBQ4cSLNVqSSq",
+      "saintId": "cms0w7gwt060f07qi7pvdiaps",
+      "sourceRevision": "c8e0160f63aada105742496ee4f14bf10825cb02d76ca54be863910b9d1a9b10",
+      "name": "Sri Devakinandashrama Swami",
+      "draftVitrine": "53",
+      "basis": "User-confirmed Andhra context: Machilipatnam temple for Bhakta Narasimha; source Andhra institutional place for Devakinandashrama. Andhra subgroup distinct from headline family.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recQUDUFnAGpc6hCA",
+      "saintId": "cms0w7hoi06wx07qip7rrnri3",
+      "sourceRevision": "14ed95717d7b53f81447957988fb2c350f905926a5a15267fcf7e3f9047f8bb7",
+      "name": "Sri Sri Mahamandaleshwar Ananta Vibhushit Swami Krishnand Puri Maharaj",
+      "draftVitrine": "83",
+      "basis": "Provisional Gujarat receiving review; exact localities remain partly unresolved. Buddha Bapu follows user-reported Pipaliya/Gondal context. Prior optional deferral remains until approved loading/fit review.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recrPWc8bPOHLOaME",
+      "saintId": "cms0w7hxb077l07qil0tx45on",
+      "sourceRevision": "f6a68d18030d22f84da048082b71f8dafd360688fb414a9a7192c2d74b6214cb",
+      "name": "Sri Baba Thakur Singh",
+      "draftVitrine": "68",
+      "basis": "Curator tentative Sikh best guess; source identity unverified, separate lower review cohort. Case has no current shelf roster, so receiving/space review required.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recXea9CGfmGP4ywn",
+      "saintId": "cms0w7jgp08ub07qiba41sdtm",
+      "sourceRevision": "88847e60112c8a725ca3af1648fadb57bd1a78043459e0d65d0ec110a1ca906c",
+      "name": "Sri Mahatma Isar Das",
+      "draftVitrine": "83",
+      "basis": "Provisional Gujarat receiving review; exact localities remain partly unresolved. Buddha Bapu follows user-reported Pipaliya/Gondal context. Prior optional deferral remains until approved loading/fit review.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recyk3KlMHvT4dYKJ",
+      "saintId": "cms0w7jtv098407qiq63nqvcz",
+      "sourceRevision": "55eefa2e07775c3bc26204970662b7c0124286ed1af162caad507847cd78cb3e",
+      "name": "Sri Muddiappa",
+      "draftVitrine": "61",
+      "basis": "Karnataka source or curator-provisional Karnataka context; Bhramaananda based on caption-language clue only. No identity, biography or family inferred. Curator reports62 full; provisional adjacent Karnataka continuation in61, separate from Pune families.",
+      "shelfAdvice": "Fit hold: inspect an available lower review position in61; living saints bottom only. Do not displace Pune headline groups or record a physical move."
+    },
+    {
+      "sourceId": "reczP3YscrJXar1R9",
+      "saintId": "cms0w7k6i09kz07qiuzaj6mh0",
+      "sourceRevision": "2010506ded9777b36c97e43d2f2e5e8135a74f656275ac69368d8545f4bc67f8",
+      "name": "Sadguru Sri Rajyalakshmi Devi",
+      "draftVitrine": "61",
+      "basis": "Karnataka source or curator-provisional Karnataka context; Bhramaananda based on caption-language clue only. No identity, biography or family inferred. Curator reports62 full; provisional adjacent Karnataka continuation in61, separate from Pune families.",
+      "shelfAdvice": "Fit hold: inspect an available lower review position in61; living saints bottom only. Do not displace Pune headline groups or record a physical move."
+    },
+    {
+      "sourceId": "reciZN7K0OfQrQmja",
+      "saintId": "cms0w7fsg04my07qiojajgz74",
+      "sourceRevision": "af0ca54de0d94bee261c4d20965f9159b336de0e94788bc82286ef9422a5beed",
+      "name": "Bhramaananda swami",
+      "draftVitrine": "61",
+      "basis": "Karnataka source or curator-provisional Karnataka context; Bhramaananda based on caption-language clue only. No identity, biography or family inferred. Curator reports62 full; provisional adjacent Karnataka continuation in61, separate from Pune families.",
+      "shelfAdvice": "Fit hold: inspect an available lower review position in61; living saints bottom only. Do not displace Pune headline groups or record a physical move."
+    },
+    {
+      "sourceId": "reczjSJvPXutRo4qy",
+      "saintId": "cms0w7k4m09j807qin6l01s6o",
+      "sourceRevision": "70d98f53f2c0a6f50d8d91d79cbd1204313513bbe68bdcc423b5ce4b6e3dc89f",
+      "name": "Invisible Saint",
+      "draftVitrine": "58",
+      "basis": "User-authorized space-led lower review cohort. Preserve source IDs and uncertainty; do not inherit Maharashtra biography or host family. Brahmacharini and Maheshwar Yogi retain source29/E adjacency. Digambar accommodates Devanagari-region guidance without proving residence.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recxqQtsjSsVdFlw7",
+      "saintId": "cms0w7jmd090907qib4sak76j",
+      "sourceRevision": "9451b473149312fb6d497df74896abc6b9421f0947acd622dcd0f7a84b813bde",
+      "name": "Jatashakan Ashram",
+      "draftVitrine": "58",
+      "basis": "User-supplied Jatashankar/Pachmarhi link supports a provisional Central India site lead, exact source/site binding not verified. Use separately labelled lower space-led review reserve58; no Maharashtra geography/family inheritance. Do not crowd47 merely from oldsource adjacency.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recSvsKfiO40HowDi",
+      "saintId": "cms0w7i7s07j507qiiwkuke6t",
+      "sourceRevision": "bb5f048fa701b84d537d427f6cd12a17fa8a03603f0715fccd8cdd1a58f6f9f2",
+      "name": "Sri Abhilash Das",
+      "draftVitrine": "58",
+      "basis": "User-authorized space-led lower review cohort. Preserve source IDs and uncertainty; do not inherit Maharashtra biography or host family. Brahmacharini and Maheshwar Yogi retain source29/E adjacency. Digambar accommodates Devanagari-region guidance without proving residence.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recg1II6CYhhSp3qd",
+      "saintId": "cms0w7f5503ta07qis055ia4v",
+      "sourceRevision": "1db68b415f5128a40ab42cecdd79133cb9d11c7d13e34ce86cacda1b509757fd",
+      "name": "Sri Baba Shivanath",
+      "draftVitrine": "56",
+      "basis": "User photo/name-language clue for Shivanath, tentative Kerala Muslim/Sufi reading for Thangal. Regional display hypothesis only.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recXemzcQzePEO7Ds",
+      "saintId": "cms0w7jh808uu07qinkiwlif5",
+      "sourceRevision": "01e9255458be897fbaab890d448fc16ddfff8224bee22e0d0778fe0648708c49",
+      "name": "Sri Brahmacharini",
+      "draftVitrine": "58",
+      "basis": "User-authorized space-led lower review cohort. Preserve source IDs and uncertainty; do not inherit Maharashtra biography or host family. Brahmacharini and Maheshwar Yogi retain source29/E adjacency. Digambar accommodates Devanagari-region guidance without proving residence.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recAzfIwKLhCIKfMI",
+      "saintId": "cms0w7dvr025o07qicw1kx0jm",
+      "sourceRevision": "595c65840954f09ecedb5bb2a129036a8b4e024a6be4f5434da80db7bd1ee4b2",
+      "name": "Sri Chaytanya Muni",
+      "draftVitrine": "47",
+      "basis": "Recorded institution-name context or curator-requested cave-cohort grouping, not a canonical identity/family claim. Keep Chyavan pair together; Jatashakan location remains provisional.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed",
+      "keepTogetherSourceIds": [
+        "recAzfIwKLhCIKfMI",
+        "recjdmdb2e3YENF8B"
+      ]
+    },
+    {
+      "sourceId": "recadPLhZJbgStVTL",
+      "saintId": "cms0w7dob01vw07qi9i9sfp6v",
+      "sourceRevision": "698b0477d72fb5228aa5c969014c3cc67d5dfe28843d79bcbc5e8b3e0e4fa8db",
+      "name": "Sri Digambar Saraswati Giri ji Maharaj Tapasvi",
+      "draftVitrine": "58",
+      "basis": "User-authorized space-led lower review cohort. Preserve source IDs and uncertainty; do not inherit Maharashtra biography or host family. Brahmacharini and Maheshwar Yogi retain source29/E adjacency. Digambar accommodates Devanagari-region guidance without proving residence.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "rec0XnrVfWBRsE1xa",
+      "saintId": "cms0w7ccq007l07qityuvwt4d",
+      "sourceRevision": "6e91d058f79a62007b907d80295e9e5febb68765e9315c193d212633468fbf1a",
+      "name": "Sri Jaganath Das Babaji",
+      "draftVitrine": "47",
+      "basis": "Recorded institution-name context or curator-requested cave-cohort grouping, not a canonical identity/family claim. Keep Chyavan pair together; Jatashakan location remains provisional.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed",
+      "coLocationEvidence": "User-requested; both source11/B and cave descriptions. Separate canonical IDs; no identity merge.",
+      "coLocateWithSourceId": "recLUMkn9nchq6xSn"
+    },
+    {
+      "sourceId": "rec5nItvGYsM5rwtG",
+      "saintId": "cms0w7d0v011n07qifn0w9ain",
+      "sourceRevision": "4c6c2cd8e2c147bd4fe8c6bdf5147bd03c7a262988de7500fc8dc5e0dec903c0",
+      "name": "Sri Maheshwar Yogi",
+      "draftVitrine": "58",
+      "basis": "User-authorized space-led lower review cohort. Preserve source IDs and uncertainty; do not inherit Maharashtra biography or host family. Brahmacharini and Maheshwar Yogi retain source29/E adjacency. Digambar accommodates Devanagari-region guidance without proving residence.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "reczKrjEcAZkNCXBr",
+      "saintId": "cms0w7k5009ji07qiltr0vbkc",
+      "sourceRevision": "c559db2af5c5a573b304c90f9b2832cb0c57199916d7fcc3a557843396c4d8f8",
+      "name": "Sri Mounaguru Swamigal",
+      "draftVitrine": "54",
+      "basis": "Mounaguru follows user Tamil Nadu instruction. Prabudhananda is source54/E plus space-led lower review, not inferred Tamil identity.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recRWteZMKTbR4ckh",
+      "saintId": "cms0w7hyq079907qizduw3gj8",
+      "sourceRevision": "883e36adf100a4b2fa2f2cea0ab7a692f8da458bc42567b5e777fa6e99449927",
+      "name": "Sri Narotamanandji Maharaj",
+      "draftVitrine": "35",
+      "basis": "Space-led lower Vraj review cohort; Radha Govind and Narotamanand retain original12/E association. Sanatan identity remains held; host location is not canonical geography.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recIqK1WjTXyiSSGr",
+      "saintId": "cms0w7fr704ll07qi8h7ii3ml",
+      "sourceRevision": "8d9468ed88c246a4351830e4d32486775e1137b08068b8a32fb3c477d46a4c57",
+      "name": "Sri Paramahamsa Advaitananda Saraswati ji",
+      "draftVitrine": "37",
+      "basis": "Explicit curator recommendation after institution/book evidence for Advaitananda; lineage-to-Gosaiji context, not direct discipleship.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recqlhfsI5UV1pFLn",
+      "saintId": "cms0w7hmo06uy07qiuryckio0",
+      "sourceRevision": "2efd743ec60db50956e5c2a533049cf5f9d4d8e305479f9593907a2febbe29c0",
+      "name": "Sri Prabudhananda Saraswati Maharaj - Swami Gopal Krishna",
+      "draftVitrine": "54",
+      "basis": "Mounaguru follows user Tamil Nadu instruction. Prabudhananda is source54/E plus space-led lower review, not inferred Tamil identity.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "rec1ka8KyvHIO1Iq8",
+      "saintId": "cms0w7cf900ah07qi5snh6k15",
+      "sourceRevision": "49479881f56394854485c92ee4c5ae719e0b39471244a90877adb0c9da6e7d8e",
+      "name": "Sri Radha Govind Dasji (Mauni Baba)",
+      "draftVitrine": "35",
+      "basis": "Space-led lower Vraj review cohort; Radha Govind and Narotamanand retain original12/E association. Sanatan identity remains held; host location is not canonical geography.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recOMJQF11bylWIHR",
+      "saintId": "cms0w7h6m06c107qi6l0tpp6v",
+      "sourceRevision": "696b0ec1300f222aef25585102f4721d97f7dcb530ddfd5a822d595f470d43f4",
+      "name": "Sri Ram Shaiyya",
+      "draftVitrine": "80",
+      "basis": "Explicit curator instruction: Ram Shaiyya in Ram Bhakti nexus; retain stone/site nature, not a person merge.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recjdmdb2e3YENF8B",
+      "saintId": "cms0w7fuy04pz07qiiipabue9",
+      "sourceRevision": "72bc4344f7292c763877b0647ef37a8e1c28009756815723e91d4eb00b9cb33c",
+      "name": "Sri Ramgopaldas Maharaj Mahant",
+      "draftVitrine": "47",
+      "basis": "Recorded institution-name context or curator-requested cave-cohort grouping, not a canonical identity/family claim. Keep Chyavan pair together; Jatashakan location remains provisional.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed",
+      "keepTogetherSourceIds": [
+        "recAzfIwKLhCIKfMI",
+        "recjdmdb2e3YENF8B"
+      ]
+    },
+    {
+      "sourceId": "recCILjO1fpLxkZ4V",
+      "saintId": "cms0w7e8902m307qiu2qhtcpb",
+      "sourceRevision": "d859e06a08ba63d8e5c3a588ea9cd37d720bd98119277e700a31d92d065b4e9b",
+      "name": "Sri Sanatan Das Babaji",
+      "draftVitrine": "35",
+      "basis": "Space-led lower Vraj review cohort; Radha Govind and Narotamanand retain original12/E association. Sanatan identity remains held; host location is not canonical geography.",
+      "shelfAdvice": "Separate labelled lower review position; exact shelf and fit not confirmed"
+    },
+    {
+      "sourceId": "recaTTfjinlSVDk4n",
+      "saintId": "cms0w7du2023h07qiu09uydpu",
+      "sourceRevision": "dc9ce69203ff8d69db6bdd1c25efae5fa379a7d05a01ad693c624345f5da1681",
+      "name": "Unknown collection",
+      "draftVitrine": "16",
+      "basis": "Explicit latest curator instruction: Unknown collection at bottom16; overrides earlier blanket-empty exclusion.",
+      "shelfAdvice": "Bottom16, user specified; case not present in shelf reader, fit unverified."
+    },
+    {
+      "sourceId": "recMvcItnlNqMFR0E",
+      "saintId": "cms0w7gsd05v107qie7cyj0rb",
+      "sourceRevision": "183f84b79f7cc6a8d222cf1095b87212ab404112354c3a162c93926108aa63ff",
+      "name": "Mahant Sri Narmada Bharati",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Madhya Pradesh · Bhopal · Parvati Gufa Mandir · Bhojpur"
+    },
+    {
+      "sourceId": "recPrmQyg2K1KtGJM",
+      "saintId": "cms0w7hfn06mo07qip7zklp9r",
+      "sourceRevision": "49cea63e05f295fbe63d8091c7772fff6b0dd2033d6d93c403fa1e5f06437f3a",
+      "name": "Mahant Sri Shiva Dēvī Udasin",
+      "draftVitrine": "11",
+      "basis": "Prayagraj exactgroup or Rewa/Mirzapur boundary, preserve separate locality.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Prayagraj"
+    },
+    {
+      "sourceId": "recPNwVtp8N539swc",
+      "saintId": "cms0w7heo06li07qifecs9b8i",
+      "sourceRevision": "c1039e67f7d7af1c4dff11a93d036c5dd1848339454878a4aa3e8b6c49fced57",
+      "name": "Paramahamsa Sri Anant Maharaj (Baba)",
+      "draftVitrine": "81",
+      "basis": "Akola/Vidarbha beside current Amravati regional group, not Gajanan discipleship.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Maharashtra · Akola"
+    },
+    {
+      "sourceId": "recrHwxTGSlqDn2Ff",
+      "saintId": "cms0w7hul074g07qi85jo0qmq",
+      "sourceRevision": "3992ca15db3826ab401fcc6f83cc0ee5ad50d0bc193426a28776889a8a9037a3",
+      "name": "Paramahamsa Sri Pundalik Baba",
+      "draftVitrine": "58",
+      "basis": "Inland Maharashtra/Vidarbha receiving cohort, distinct locality labels. Pundalik-Anashuya pair and Murtyjapur holdings kept together without inventing personal links.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "groupQualification": "Source-recorded institutional/locality/display group, not an independently verified canonical guru edge or person merge.",
+      "localityDriver": "Maharashtra · Murtyjapur",
+      "keepTogetherSourceIds": [
+        "recrHwxTGSlqDn2Ff",
+        "reckCTwbniQyfKdob"
+      ]
+    },
+    {
+      "sourceId": "recP5x11FRPXMSRTj",
+      "saintId": "cms0w7hbh06ho07qi5493osnt",
+      "sourceRevision": "0122f86493c0d9fe055973aecddd60bad5c46dce37e601056baafedc35292172",
+      "name": "Paramahansa Sri Satyadeva Maharaj",
+      "draftVitrine": "58",
+      "basis": "Inland Maharashtra/Vidarbha receiving cohort, distinct locality labels. Pundalik-Anashuya pair and Murtyjapur holdings kept together without inventing personal links.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Maharashtra · Bharwadi"
+    },
+    {
+      "sourceId": "reckCTwbniQyfKdob",
+      "saintId": "cms0w7g4h051j07qissl6dkgl",
+      "sourceRevision": "182a7d8d313b3241862272dfb1221401543b321ec140c81920a42a3c9d1d8537",
+      "name": "Sri Anashuya Mataji",
+      "draftVitrine": "58",
+      "basis": "Inland Maharashtra/Vidarbha receiving cohort, distinct locality labels. Pundalik-Anashuya pair and Murtyjapur holdings kept together without inventing personal links.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "groupQualification": "Source-recorded institutional/locality/display group, not an independently verified canonical guru edge or person merge.",
+      "localityDriver": "Maharashtra · Paradsinga · Arunachala",
+      "keepTogetherSourceIds": [
+        "recrHwxTGSlqDn2Ff",
+        "reckCTwbniQyfKdob"
+      ]
+    },
+    {
+      "sourceId": "recuSAdjFSdPqNnfE",
+      "saintId": "cms0w7iqh083e07qipj6urxm3",
+      "sourceRevision": "5c7cb9c9551cead5ed684566709df9f0d39d7418a8338285d367fdfb53e064b9",
+      "name": "Sri Baba Ram Sanehi",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Jabalpur"
+    },
+    {
+      "sourceId": "recUhNLRTtAmi9JZG",
+      "saintId": "cms0w7io1080q07qi7ruw3xdx",
+      "sourceRevision": "962f86f4c34acb276a72403e000837747aa69cbef5c56f648a00a1fb8d87f795",
+      "name": "Sri Baba Udasin",
+      "draftVitrine": "49",
+      "basis": "Girnar Gate exactregional sacred-site context; Udasin title does not force Sikh placement.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Girnar · Girnar Gate"
+    },
+    {
+      "sourceId": "rec3tCQCd95bdyD01",
+      "saintId": "cms0w7coz00mz07qiba99y88w",
+      "sourceRevision": "32f32253a17cd312d75e84674cea7b718836ac327c1f018e82b749c02c3a8641",
+      "name": "Sri Baba Vaikunthanath Brahmachari",
+      "draftVitrine": "26",
+      "basis": "Puri/Bhubaneswar exact existinglocality or named Brahmananda/Puri group; preserve source binding and no namesake merges.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Bhubaneswar"
+    },
+    {
+      "sourceId": "rec0Yg75hdKUasqV8",
+      "saintId": "cms0w7cct007n07qi5rkg1jx9",
+      "sourceRevision": "93e86c359edd4fe24aceaf541d4dbd5be03a0ac73692bbb5c72ba060e0f3d742",
+      "name": "Sri Balayogitalli Devudamma Garu",
+      "draftVitrine": "54",
+      "basis": "Separately labelled Andhra overflow alongside Southern continuation; no Tamil identity inherited.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Andhra Pradesh · Indupalli"
+    },
+    {
+      "sourceId": "rec0LGdguKhFmZOhg",
+      "saintId": "cms0w7c8j003m07qiwlezpnqe",
+      "sourceRevision": "2124824a9c9bea58c039d67cf8a2d7a8b9cfa2f5d9899742afc2f956da651500",
+      "name": "Sri Balyogi Umesh Nath ji Maharaj",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "objectQualification": "Raw source says Padukas (Fake); label authenticity meaning needs clarification.",
+      "localityDriver": "Ujjain · Madhya Pradesh · Pithadishwar Sri kshetra Valmiki Dham"
+    },
+    {
+      "sourceId": "recwoqG8uSC9Va2Vj",
+      "saintId": null,
+      "sourceRevision": "4361676c83db9ed2467d535c58876c74f0e543fc55d8e5e57ad3ca6bf703d28a",
+      "name": "Sri Bupathiraju Venkata Lakshmi Narasimha Raju Garu (Sri Nanna Garu) of ??, Andhra Pradesh",
+      "draftVitrine": "54",
+      "basis": "Separately labelled Andhra overflow alongside Southern continuation; no Tamil identity inherited.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Andhra Pradesh, India"
+    },
+    {
+      "sourceId": "reclgGlgEze6aQUzo",
+      "saintId": "cms0w7gg005g107qilt3bclxd",
+      "sourceRevision": "cf73a25ad1e50d860c7068ea5764abb99c7b88e2d711001a88926bdb6474a83c",
+      "name": "Sri Dhuniwale Dadaji",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "groupQualification": "Source-recorded institutional/locality/display group, not an independently verified canonical guru edge or person merge.",
+      "localityDriver": "Madhya Pradesh · Kheri Ghat · Narmada and Khandwa",
+      "keepTogetherSourceIds": [
+        "reclgGlgEze6aQUzo",
+        "reckMEo9zwH4wKJJM"
+      ]
+    },
+    {
+      "sourceId": "recGTf7AkPWc75SOV",
+      "saintId": "cms0w7fao040l07qi9assmq4q",
+      "sourceRevision": "22eed6117eb7745b257285c70e37fb9c6dd6c44356431059cbd79f62e542cbc3",
+      "name": "Sri Hari Ram Bapa",
+      "draftVitrine": "58",
+      "basis": "Inland Maharashtra/Vidarbha receiving cohort, distinct locality labels. Pundalik-Anashuya pair and Murtyjapur holdings kept together without inventing personal links.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Nagpur"
+    },
+    {
+      "sourceId": "recZrKDcgmViS9JoV",
+      "saintId": "cms0w7k7u09mb07qi8jo1c4b8",
+      "sourceRevision": "6b4a4722276f55e5faf86de2e68615ffc235e6e9504f1d4c45e3d060e4b799a5",
+      "name": "Sri Hazrath Kale Masthan Shavali Baba Avadoota",
+      "draftVitrine": "54",
+      "basis": "Separately labelled Andhra overflow alongside Southern continuation; no Tamil identity inherited.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Andhra Pradesh · ???"
+    },
+    {
+      "sourceId": "recUGf2K67AR5c59I",
+      "saintId": "cms0w7imy07zm07qi34x8v6hg",
+      "sourceRevision": "3363fdb947c9d0318668a9752d88ec8404dbb020f96695035075e8514e376dc4",
+      "name": "Sri Janardhana Giri (Swami) Maharaj",
+      "draftVitrine": "47",
+      "basis": "Current Aurangabad/Ellora or inland Maharashtra locality context; Janardhana/Paramananda/Shanti recordedgroup kept intact provisionally.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "groupQualification": "Source-recorded institutional/locality/display group, not an independently verified canonical guru edge or person merge.",
+      "localityDriver": "Maharashtra · Ellora",
+      "keepTogetherSourceIds": [
+        "recUGf2K67AR5c59I",
+        "rec3nvB9eJa9oBCnp",
+        "rec9kMxYCspmmByD1"
+      ]
+    },
+    {
+      "sourceId": "recmuslI1NvDbEYRI",
+      "saintId": "cms0w7gs605us07qi8w81rsd8",
+      "sourceRevision": "00e62ba7c14b2246214851399bdc84d6af52f78b8ebad8aa9bb98fab11aab2d9",
+      "name": "Sri Jhooladas Ji Maharaj",
+      "draftVitrine": "11",
+      "basis": "Prayagraj exactgroup or Rewa/Mirzapur boundary, preserve separate locality.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Madhya Pradesh · Rewa · M P"
+    },
+    {
+      "sourceId": "recUdtBAXSU7RWzFl",
+      "saintId": "cms0w7im107ym07qi6bgalhdm",
+      "sourceRevision": "a9f39e30f540130552cd86d4d1369dcff121c8ff6fb80b1dd8c7388ae6fb9cdd",
+      "name": "Sri Kalyan Das Babaji",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Bottom-first; bottom-two only as approved living overflow",
+      "localityDriver": "Amarkantak · Amarkantak Shivalingam Baba"
+    },
+    {
+      "sourceId": "rechNsZrAAHvPvA8L",
+      "saintId": null,
+      "sourceRevision": "376767d339a9a84aebe165336e2794595d3f6d8ddab4196c02daba12a359a049",
+      "name": "Sri Krishna Dasji Maharaj of Govardhana",
+      "draftVitrine": "32",
+      "basis": "Vraj/Govardhana context; identity holds retained, no Krishna Das/Raghavdas namesake merge.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Vrindavan, Uttar Pradesh, India"
+    },
+    {
+      "sourceId": "recSrBwSNp68fQDXg",
+      "saintId": "cms0w7i5t07h607qi3kwsrdd5",
+      "sourceRevision": "335276d031b848ae1ae005457ebeed7d2b200236e0f2b977a58f6c628029d17b",
+      "name": "Sri Mahant Badri Maharaj",
+      "draftVitrine": "58",
+      "basis": "Inland Maharashtra/Vidarbha receiving cohort, distinct locality labels. Pundalik-Anashuya pair and Murtyjapur holdings kept together without inventing personal links.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Murtyjapur"
+    },
+    {
+      "sourceId": "rec4ybE4kwbW2lWQ8",
+      "saintId": "cms0w7cvr00vo07qixqkuwlzu",
+      "sourceRevision": "078a7c2a7acab62421b82231439b6dcfc5a26f1b3d3628e8d93d740944ff3984",
+      "name": "Sri Mahant Brahmarishi Maharaj",
+      "draftVitrine": "60",
+      "basis": "Current Mumbai/Mulund locality grouping; no automatic host-family membership.",
+      "shelfAdvice": "Bottom-first; bottom-two only as approved living overflow",
+      "localityDriver": "Mumbai · Mulund"
+    },
+    {
+      "sourceId": "recoPhGVZxY6UthiD",
+      "saintId": "cms0w7h7406ch07qixx94ha7i",
+      "sourceRevision": "9c96507d26767a087c225a368668616bd12ded9c7bd545aefcc9efb0990d55b4",
+      "name": "Sri Mangaldas ji Maharaj",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Ujjain · Madhya Pradesh"
+    },
+    {
+      "sourceId": "recKK1KWt4QYdAmcU",
+      "saintId": "cms0w7g7d055907qixpxlayat",
+      "sourceRevision": "8e9b6ba58633da40cef89300932e01d855224161fcb810bf94b7b677a0bd14d6",
+      "name": "Sri Mata Jyotirmayanda Barathi",
+      "draftVitrine": "54",
+      "basis": "Separately labelled Andhra overflow alongside Southern continuation; no Tamil identity inherited.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Andhra Pradesh"
+    },
+    {
+      "sourceId": "recpVMZF5kNJtG2cL",
+      "saintId": "cms0w7hh706oj07qipvidzum9",
+      "sourceRevision": "bac5db35a7646c975c36d388fa8c957cd294057389f8ba8ec745a5c2165af473",
+      "name": "Sri Mata Sugnananda Giri Swami",
+      "draftVitrine": "54",
+      "basis": "Separately labelled Andhra overflow alongside Southern continuation; no Tamil identity inherited.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Andhra Pradesh · Bharathi Gitashramam · Mamidipalli Village"
+    },
+    {
+      "sourceId": "rectIOEaE15eMvB2I",
+      "saintId": "cms0w7icb07nz07qitcw29bc7",
+      "sourceRevision": "e7e0d4293c0bcee4d7ff88c706f1a5239757278bb36fdaa259238152a7b136d8",
+      "name": "Sri Mohan Maharaj",
+      "draftVitrine": "58",
+      "basis": "Inland Maharashtra/Vidarbha receiving cohort, distinct locality labels. Pundalik-Anashuya pair and Murtyjapur holdings kept together without inventing personal links.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Maharashtra · Dabha · Yavatmal"
+    },
+    {
+      "sourceId": "recx5ElFhvJ8JYJpx",
+      "saintId": "cms0w7jec08ry07qimtzt8r52",
+      "sourceRevision": "61573b55213bb9bfeaaa296ac0e4a12baeaa3f9e7048a4c47db3ef0abe75b467",
+      "name": "Sri Narayan Baba",
+      "draftVitrine": "19",
+      "basis": "Exact Shimla group or separately labelled Delhi/North context; no Himachal biography inferred for Delhi saint.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Delhi"
+    },
+    {
+      "sourceId": "recP6ZuudBjVjGptl",
+      "saintId": "cms0w7hbr06hz07qialjtlli9",
+      "sourceRevision": "6d016fecd95c8eeffa46d4b9a86267ea702627eea6432fd3a6293ef27c14e287",
+      "name": "Sri Nilkanta Gopal Rao Garge Baba (Nilya das Maharaj)",
+      "draftVitrine": "58",
+      "basis": "Inland Maharashtra/Vidarbha receiving cohort, distinct locality labels. Pundalik-Anashuya pair and Murtyjapur holdings kept together without inventing personal links.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Nagpur · Maharashtra"
+    },
+    {
+      "sourceId": "recG5hPbr3Rgvx80V",
+      "saintId": "cms0w7f5m03tu07qivw8wlkoh",
+      "sourceRevision": "071c4341e0e98f8dd325b945a2d7329f45fcf64af55e805a5da9e67c3a4bcb7b",
+      "name": "Sri Paramahamsa Swami Sandipendra",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Bottom-first; bottom-two only as approved living overflow",
+      "localityDriver": "Madhya Pradesh · Baglamukhi Temple · Agar"
+    },
+    {
+      "sourceId": "rec3nvB9eJa9oBCnp",
+      "saintId": "cms0w7coj00mh07qi20xdjr8j",
+      "sourceRevision": "202ace8903ff21bf30314af52b252ba780e6720d1be725c77295f481034babcf",
+      "name": "Sri Paramananda Giri Maharaj",
+      "draftVitrine": "47",
+      "basis": "Current Aurangabad/Ellora or inland Maharashtra locality context; Janardhana/Paramananda/Shanti recordedgroup kept intact provisionally.",
+      "shelfAdvice": "Bottom-first; bottom-two only as approved living overflow",
+      "groupQualification": "Source-recorded institutional/locality/display group, not an independently verified canonical guru edge or person merge.",
+      "localityDriver": "Aurangabad",
+      "keepTogetherSourceIds": [
+        "recUGf2K67AR5c59I",
+        "rec3nvB9eJa9oBCnp",
+        "rec9kMxYCspmmByD1"
+      ]
+    },
+    {
+      "sourceId": "recCNbMlJpZj6ddZ2",
+      "saintId": "cms0w7ea302og07qidv4y3p88",
+      "sourceRevision": "8e5b55690cd56f7318ce4f3cbcdacb0ac3dd402b28a8a91fb4ad8fd9254a59de",
+      "name": "Sri Pelluri Venkat Seetaramanjaneya Sharma",
+      "draftVitrine": "53",
+      "basis": "Recorded Veerabrahmendra samadhi/site context or Andhra boundary locality; no discipleship inferred.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Andhra Pradesh · Purvashram · Veera Brahmendra Swami Samadhi"
+    },
+    {
+      "sourceId": "recutsIc9XZrXmzXY",
+      "saintId": "cms0w7irc084c07qiutq99xra",
+      "sourceRevision": "f2b74804d7acff24962942b9ae5ac0f094e4b65648ae57b3879cdd20492b73ac",
+      "name": "Sri Prabarkar Garu",
+      "draftVitrine": "54",
+      "basis": "Separately labelled Andhra overflow alongside Southern continuation; no Tamil identity inherited.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Andhra Pradesh"
+    },
+    {
+      "sourceId": "rec9f2J4B7qkcMQ3p",
+      "saintId": "cms0w7dhu01mr07qioo2js9tb",
+      "sourceRevision": "716b61ce60dbbe3446c6788552e8dfecc8960e7d66fbc7d672928e1599e2574a",
+      "name": "Sri Raghavdas Ji Maharaj",
+      "draftVitrine": "32",
+      "basis": "Vraj/Govardhana context; identity holds retained, no Krishna Das/Raghavdas namesake merge.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Vrindavan"
+    },
+    {
+      "sourceId": "rec3ke5uNczm1awEG",
+      "saintId": "cms0w7cnx00ln07qiqwd2camd",
+      "sourceRevision": "88bffd209ef171f49653a0c024d36d30e76382f17b57cb05fdab790bf7068323",
+      "name": "Sri Ram Lakhan Das",
+      "draftVitrine": "58",
+      "basis": "Inland Maharashtra/Vidarbha receiving cohort, distinct locality labels. Pundalik-Anashuya pair and Murtyjapur holdings kept together without inventing personal links.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Yavatmal · Maharashtra"
+    },
+    {
+      "sourceId": "recJpcbax5r8RD2NR",
+      "saintId": "cms0w7fyv04up07qi2dmqyvwr",
+      "sourceRevision": "72fda2dbe01d569d77c87a3f55cc14a22ae1b57f6c7f4b746b8baf90bc079fc9",
+      "name": "Sri Rangaiah Swami",
+      "draftVitrine": "53",
+      "basis": "Recorded Veerabrahmendra samadhi/site context or Andhra boundary locality; no discipleship inferred.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "objectQualification": "Veena PIECE, not a whole large veena; not routed70 from keyword.",
+      "localityDriver": "Andhra Pradesh · Kummara Palli · Jettivaripalle Road"
+    },
+    {
+      "sourceId": "recmWirQlF3WoLTYk",
+      "saintId": "cms0w7gt005vs07qi1fugt3lm",
+      "sourceRevision": "65cb1d509653b6bd8ea8192abcae8da7cc51c42d4c852f7ece7ff6c605a2c3fa",
+      "name": "Sri Rishi Vashishta (+ Vashishta and Sita cave Devghat Triben Nepal",
+      "draftVitrine": "74",
+      "basis": "Devghat/Triveni/Nepal cave material with existing Nepal group; site/object interpretation retained.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Devghat / Triveni · Nepal (source name)"
+    },
+    {
+      "sourceId": "recKtDIb88PWMib5O",
+      "saintId": "cms0w7gay059m07qiauucnr3n",
+      "sourceRevision": "7c40cde4a7d14a518af9ee4370f74d0fcdd480d063a48bb53311bc453a3985d3",
+      "name": "Sri Rupam Vyas",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Ujjain"
+    },
+    {
+      "sourceId": "recQ5DGaZMFXI6ehA",
+      "saintId": "cms0w7hix06qg07qi1919vzb5",
+      "sourceRevision": "8eaa777e52a38137616ade631f88d2f194e595ad506517133b8396543f2d56f4",
+      "name": "Sri Sacchidanand Maniram Maharaj (Baba)",
+      "draftVitrine": "58",
+      "basis": "Inland Maharashtra/Vidarbha receiving cohort, distinct locality labels. Pundalik-Anashuya pair and Murtyjapur holdings kept together without inventing personal links.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Maharashtra · Nagpur · Baggi · Amravati"
+    },
+    {
+      "sourceId": "recj7tGgKoauOaM4r",
+      "saintId": "cms0w7ftr04og07qiepka6lk0",
+      "sourceRevision": "d750dc6055b81ecfe8b91809f2082a47bd1af066ba424fe5fe54e1437d243826",
+      "name": "Sri Samarth Sadguru Kisangiri Baba",
+      "draftVitrine": "47",
+      "basis": "Current Aurangabad/Ellora or inland Maharashtra locality context; Janardhana/Paramananda/Shanti recordedgroup kept intact provisionally.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Godhegaon"
+    },
+    {
+      "sourceId": "rec9kMxYCspmmByD1",
+      "saintId": "cms0w7dj801oo07qi8xnzcd7p",
+      "sourceRevision": "1e69397845c69f18da6df2425228e021e001900ae9ad087b27a65a22e65793f1",
+      "name": "Sri Shanti Giri Maharaj",
+      "draftVitrine": "47",
+      "basis": "Current Aurangabad/Ellora or inland Maharashtra locality context; Janardhana/Paramananda/Shanti recordedgroup kept intact provisionally.",
+      "shelfAdvice": "Bottom-first; bottom-two only as approved living overflow",
+      "groupQualification": "Source-recorded institutional/locality/display group, not an independently verified canonical guru edge or person merge.",
+      "localityDriver": "Maharashtra · Ellora",
+      "keepTogetherSourceIds": [
+        "recUGf2K67AR5c59I",
+        "rec3nvB9eJa9oBCnp",
+        "rec9kMxYCspmmByD1"
+      ]
+    },
+    {
+      "sourceId": "recouEy9jFx0IXGrV",
+      "saintId": "cms0w7h9h06f907qizl4z8kro",
+      "sourceRevision": "5d8958d97aa7f091eccadf755864c79c84792709e90e115c69c710de3645d1eb",
+      "name": "Sri Sitaram",
+      "draftVitrine": "54",
+      "basis": "Separately labelled Andhra overflow alongside Southern continuation; no Tamil identity inherited.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Andhra Pradesh · Pedamuttevi · Movva · Krishna"
+    },
+    {
+      "sourceId": "rec731zp4RUjeaWaY",
+      "saintId": "cms0w7d8x01b407qiucwuuo7t",
+      "sourceRevision": "16c3c64bbb5e275ca62c0c3c184432a04cd42fbd70a40be0581a87c65da27a42",
+      "name": "Sri Sitaramdas Bapu",
+      "draftVitrine": "83",
+      "basis": "Gujarat/Kahona provisional regional receiving review. Additional to six reviewed Gujarat entries; useroneempty-shelf report is not proof of seven-record fit.",
+      "shelfAdvice": "Bottom-first; bottom-two only as approved living overflow",
+      "localityDriver": "Gujarat · Kahona"
+    },
+    {
+      "sourceId": "rec7wI21383fcNIve",
+      "saintId": "cms0w7dc601fm07qitni86fwl",
+      "sourceRevision": "eb8a9425ddd8b0f9df22b8b17e322831d36e34d1c5faf5afe89d282e8ccdf506",
+      "name": "Sri Siyaram Baba",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Bottom-first; bottom-two only as approved living overflow",
+      "localityDriver": "Madhya Pradesh · Hanuman Temple · Mohammed Badodiya"
+    },
+    {
+      "sourceId": "recOTh7Spyq1ic759",
+      "saintId": "cms0w7h8u06eg07qim0rfkniy",
+      "sourceRevision": "093f3139aace07da23dba392bb710ca117ed47df6bb93abdd0393c39630a381a",
+      "name": "Sri Sri 1008 Peer Sri Mahant Rajendra Bharatiji Maharaj",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Ujjain · Madhya Pradesh · Datt Akhada · Gaadipati · Chipra tat"
+    },
+    {
+      "sourceId": "reckMEo9zwH4wKJJM",
+      "saintId": "cms0w7g7t055p07qif7vo650y",
+      "sourceRevision": "9004994a91d6508b9fc66613c9a50f44e4e49469e5cb2912b0c927954c3bc7ec",
+      "name": "Sri Sri 1008 Sri Dadaji Dhuniwaley (Sri Keshavanandji Maharaj)",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "groupQualification": "Source-recorded institutional/locality/display group, not an independently verified canonical guru edge or person merge.",
+      "localityDriver": "Madhya Pradesh · Narmada · Kheri Ghat",
+      "keepTogetherSourceIds": [
+        "reclgGlgEze6aQUzo",
+        "reckMEo9zwH4wKJJM"
+      ]
+    },
+    {
+      "sourceId": "recRoVxSYIxoob8sJ",
+      "saintId": "cms0w7hx2077907qiql8e3nfe",
+      "sourceRevision": "091c10210569214eb7a67cdd971f6a782f3af5a46453baf8ebc3a3d27968fb83",
+      "name": "Sri Sri 108 Mahant Lakshman Das Ji",
+      "draftVitrine": "26",
+      "basis": "Puri/Bhubaneswar exact existinglocality or named Brahmananda/Puri group; preserve source binding and no namesake merges.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Puri, Orissa · Puri · Orissa"
+    },
+    {
+      "sourceId": "recqIwxHUPhbdDOGa",
+      "saintId": null,
+      "sourceRevision": "a9c1152e7d0eac500adb27eae6dfe0558796452290c65d976e5c0e5a3a1b85af",
+      "name": "Sri Sri 108 Mauni Baba of Basak Para, Navadwip",
+      "draftVitrine": "78",
+      "basis": "Exact Mauni Baba source in starter-v6 Basak Para/Navadwip group; repair projection/binding, not name matching.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Navadwip, West Bengal, India"
+    },
+    {
+      "sourceId": "recQTaLJGkfBoAU2w",
+      "saintId": "cms0w7ho506wk07qivo8fx4z1",
+      "sourceRevision": "424226071b7a2bc4f3dfefe8b8ba56ea004175c614f55731539d47a826823694",
+      "name": "Sri Sri 108 Sri Trilokidas",
+      "draftVitrine": "71",
+      "basis": "Conditional Central India/Narmada/Ujjain cohort at existing eastern-UP/Gorakhpur hinge, distinct labels; no South placement or new guru claim. Fit review required.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Gadighat · Mailani · U P"
+    },
+    {
+      "sourceId": "recMajTBqEWnjz0II",
+      "saintId": "cms0w7gls05n307qi5yfv4cyi",
+      "sourceRevision": "9801af1cc2770fe6e596815f72b6807752127219587466b759b70bb7b31cb6f4",
+      "name": "Sri Sripad Bimala Charandas",
+      "draftVitrine": "26",
+      "basis": "Puri/Bhubaneswar exact existinglocality or named Brahmananda/Puri group; preserve source binding and no namesake merges.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Puri"
+    },
+    {
+      "sourceId": "receCbIjIoMadEX8E",
+      "saintId": "cms0w7epm038v07qif78p29gu",
+      "sourceRevision": "9b75c5be570821cb0f2421678215482c7cdf0559f280c857ba782184a990ad3f",
+      "name": "Sri Sukhdev Das Ji Maharaj",
+      "draftVitrine": "44",
+      "basis": "Current Jaipur group; older39reference superseded. No inferred guru link from inheritedfamilykey.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Jaipur"
+    },
+    {
+      "sourceId": "recpno7QmMS0oXg1e",
+      "saintId": null,
+      "sourceRevision": "1732daea0e04c662d492f8d3e5277c49e4bb89dee37ed94aacc43b3216b0da9a",
+      "name": "Sri Swami Brahmananda ji Maharaj of Puri, Orissa",
+      "draftVitrine": "26",
+      "basis": "Puri/Bhubaneswar exact existinglocality or named Brahmananda/Puri group; preserve source binding and no namesake merges.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Puri, Odisha, India"
+    },
+    {
+      "sourceId": "recJbFlE9bbk8n97G",
+      "saintId": "cms0w7fub04p407qiwdhjdqh3",
+      "sourceRevision": "3472fc36e14cb07ac25bb03810da4b89837fdf1c7bde54f06f86caf28a26244b",
+      "name": "Sri Swami Gurusharandas ji Maharaj",
+      "draftVitrine": "19",
+      "basis": "Exact Shimla group or separately labelled Delhi/North context; no Himachal biography inferred for Delhi saint.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Himachal Pradesh · Shimla · Udasin Ashram"
+    },
+    {
+      "sourceId": "recz8ehiRtPIbdX6A",
+      "saintId": "cms0w7k0t09fd07qi4queorgj",
+      "sourceRevision": "7496472d2856ec79e74778d03939452ab60706f3e250a99ec7b47840eaedd947",
+      "name": "Sri Swami Ramji Maharaj (Udasin Saint)",
+      "draftVitrine": "20",
+      "basis": "Exact Uttarkashi/Bhoomanand context; existingsource family claim retained without new canonicaledge.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Uttarkashi"
+    },
+    {
+      "sourceId": "rec4A1h4js5LeKTIs",
+      "saintId": "cms0w7cqj00p307qiy4043dmx",
+      "sourceRevision": "adaad30ecb6bb0c0a0df641868b8c2b353cd089ec6a19c919ccc79ff0c4131f4",
+      "name": "Sri Swami Tukaram Maharaj",
+      "draftVitrine": "58",
+      "basis": "Inland Maharashtra/Vidarbha receiving cohort, distinct locality labels. Pundalik-Anashuya pair and Murtyjapur holdings kept together without inventing personal links.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Nagpur · Mohapa"
+    },
+    {
+      "sourceId": "rec2pnyKDQXTPVdRW",
+      "saintId": "cms0w7cjy00gh07qibf960gem",
+      "sourceRevision": "cdef9eb6026a444a5b98a00057f0a4d6412b387d3e40d19bbe8fc4e481fe87b7",
+      "name": "Sri Thakurdas Udasin Maharaj",
+      "draftVitrine": "60",
+      "basis": "Current Mumbai/Mulund locality grouping; no automatic host-family membership.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Mumbai · Mulund"
+    },
+    {
+      "sourceId": "recZIUYP9Lvl4Z1Hq",
+      "saintId": "cms0w7k4609it07qidyjr5kut",
+      "sourceRevision": "5fe88da85d32e17c35f938a3f00c43ed5944bc8fd7620838b1ad8b183d771557",
+      "name": "Sri Tukamayi",
+      "draftVitrine": "58",
+      "basis": "Inland Maharashtra/Vidarbha receiving cohort, distinct locality labels. Pundalik-Anashuya pair and Murtyjapur holdings kept together without inventing personal links.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Hingoli"
+    },
+    {
+      "sourceId": "recvK0pu5daFyC8Z2",
+      "saintId": "cms0w7iys08c407qigc1xjx1s",
+      "sourceRevision": "5ffd155589456c7930e6e0fe79f20cca34c13be89625836265260ffcb442766d",
+      "name": "Sri Udasin Bapu",
+      "draftVitrine": "48",
+      "basis": "Jamnagar joins existing current48Jamnagar cohort, not old17. Distinct Udasin tradition label retained.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Gujarat · Jamnagar"
+    },
+    {
+      "sourceId": "recR9qnKtPTNfO82A",
+      "saintId": "cms0w7hse071v07qi5bt02orc",
+      "sourceRevision": "66bcabbc6b6775f200a4bfd58919e2951aa70a14b1960306cf3424415c6a7da8",
+      "name": "Sri Vishudhanand Paramahamsa",
+      "draftVitrine": "24",
+      "basis": "Bardhaman/Burdwan exact localitygroup; no namesake identitymerge.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Bardwan · Burdwan"
+    },
+    {
+      "sourceId": "rec0HQJdjNnHKOmq3",
+      "saintId": "cms0w7c89003b07qiaa04itc4",
+      "sourceRevision": "96f14d80c87988037e9b0844a0475eff74656ec936550f5a371ab8a833bc5656",
+      "name": "Sri Visuddhananda Saraswathi Garu",
+      "draftVitrine": "54",
+      "basis": "Separately labelled Andhra overflow alongside Southern continuation; no Tamil identity inherited.",
+      "shelfAdvice": "Exact shelf and fit remain unconfirmed",
+      "localityDriver": "Andhra Pradesh"
+    },
+    {
+      "sourceId": "recAlL7swiwtjJ6nO",
+      "saintId": "cms0w7dru020j07qiyfupy3cc",
+      "sourceRevision": "f72f74d2ca0571ab735b64acff28d9b8a4d196eb5d61a8b16c1ecc4afb1ec9e0",
+      "name": "Sri Yogi Niranjannath",
+      "draftVitrine": "22",
+      "basis": "Exact Dunagiri/Dwarahat/Kumaon group, notold48.",
+      "shelfAdvice": "Bottom-first; bottom-two only as approved living overflow",
+      "localityDriver": "Dwarahat · Uttarkhand · Dunagiri"
+    },
+    {
+      "sourceId": "recqTSYY3AZJelvNJ",
+      "saintId": "cms0w7hoe06wv07qih1czy3eu",
+      "sourceRevision": "2d784570dfd4d3797108a064aa9d0002c32b319f05f7dff1cccd0c41d17b1929",
+      "name": "Sri Bhakti Vedanta Narayan Maharaj",
+      "draftVitrine": "29",
+      "basis": "Existing exact-source Keshava–Narayana group membership; reconcile missing projected entry, not a new identity match.",
+      "shelfAdvice": "Living: bottom shelf only. Unknown life status: verify before upper placement."
+    },
+    {
+      "sourceId": "reckSOP93swGpRjsT",
+      "saintId": "cms0w7ga3058l07qi7l1z5qfw",
+      "sourceRevision": "9e2a6045b7227eca4922a77a704320ea2b476474075658510c93c367ec1afd1b",
+      "name": "Sri Ganesh Baba (Shri Mahant Ganesh Giriji Maharaj",
+      "draftVitrine": "21",
+      "basis": "Provisional Rishikesh–Haridwar section-based placement; Haridwar host chosen as a separate review cohort. No specific local biography or guru edge established.",
+      "shelfAdvice": "Living: bottom shelf only. Unknown life status: verify before upper placement."
+    },
+    {
+      "sourceId": "recHatM8WlLSqKeyy",
+      "saintId": "cms0w7ffl047007qi6utbpsko",
+      "sourceRevision": "98f64b3e6358cc08f12ddd1d6436905ebc9ca4b57a730aedbc62160604d63dd4",
+      "name": "Sri Swami D.R. Paravatikar Veena Maharaj",
+      "draftVitrine": "70",
+      "basis": "Explicit curator choice: large Badrinath veena. Dedicated housing and clearance check required.",
+      "shelfAdvice": "Living: bottom shelf only. Unknown life status: verify before upper placement."
+    },
+    {
+      "sourceId": "recAWiaewet8pwK53",
+      "saintId": "cms0w7dv0024q07qi9o6twjus",
+      "sourceRevision": "6123378b6b82721732e56ebb95a1e2cdf2762f82d517345ef82ae232239c2574",
+      "name": "Sri Yogi Parashuram",
+      "draftVitrine": "8",
+      "basis": "Explicit curator instruction: Ramanandi context; Ayodhya display. Separate identity; no inferred guru link.",
+      "shelfAdvice": "Living: bottom shelf only. Unknown life status: verify before upper placement."
+    }
+  ],
+  "cases": [
+    {
+      "code": "61",
+      "headline": "Pune · Vaswani family and Dilip Roy–Indira Devi",
+      "notes": [
+        "Known comparison exceeds five shelf shares; resolve fit before moving.",
+        "2 footprints unmeasured or unknown; inspect fit.",
+        "Karnataka continuation beside full62; preserve Pune headlines. No confirmed lower-shelf clearance.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "56",
+      "headline": "Kerala · Shivaprabhakara Brahmananda and Chattampi",
+      "notes": [
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "32",
+      "headline": "Vitrine 32",
+      "notes": [
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "83",
+      "headline": "Vitrine 83",
+      "notes": [
+        "Known comparison exceeds five shelf shares; resolve fit before moving.",
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Curator confirms one empty shelf. The six incoming additions must be checked together against that same shelf.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "60",
+      "headline": "Mumbai & Maharashtra branches · Shivgiri and the coastal transition",
+      "notes": [
+        "Known comparison exceeds five shelf shares; resolve fit before moving.",
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "53",
+      "headline": "Veerabrahmendra–Siddhaiah · northern Tamil Nadu / Andhra boundary",
+      "notes": [
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "68",
+      "headline": "Vitrine 68",
+      "notes": [
+        "Retained Sikh display: no clearance assumed. Tentative Sikh affiliation is a curator fit/context review, not an immediate move.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "58",
+      "headline": "Hingoli & inland Maharashtra · Nange Baba and recorded branch",
+      "notes": [
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "Known comparison exceeds five shelf shares; resolve fit before moving.",
+        "3 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "47",
+      "headline": "Inland Maharashtra · Jaganath Das, Nashik and regional saints",
+      "notes": [
+        "Known comparison exceeds five shelf shares; resolve fit before moving.",
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "54",
+      "headline": "Gnanananda Giri and Ramalinga · Tamil interior",
+      "notes": [
+        "2 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "35",
+      "headline": "Vitrine 35",
+      "notes": [
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "37",
+      "headline": "Vitrine 37",
+      "notes": [
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "80",
+      "headline": "Rama devotion · Samarth Ramdas, Neem Karoli & Gondavalekar",
+      "notes": [
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "16",
+      "headline": "Special / receiving review",
+      "notes": [
+        "No shelf-load baseline; inspect receiving display before moving.",
+        "13 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "71",
+      "headline": "Kashi continuation → Gorakhpur / eastern UP",
+      "notes": [
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "Known comparison exceeds five shelf shares; resolve fit before moving.",
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "11",
+      "headline": "Prayagraj → Mirzapur / Ahraura",
+      "notes": [
+        "Known comparison exceeds five shelf shares; resolve fit before moving.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "81",
+      "headline": "Gajanan Maharaj · Shegaon & Amravati",
+      "notes": [
+        "3 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "49",
+      "headline": "Girnar ascetics, caves and sacred places",
+      "notes": [
+        "Known comparison exceeds five shelf shares; resolve fit before moving.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "26",
+      "headline": "Durgaprasad Saraswati · Bhubaneswar & Puri",
+      "notes": [
+        "2 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "3 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "19",
+      "headline": "Vitrine 19",
+      "notes": [
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "74",
+      "headline": "Vitrine 74",
+      "notes": [
+        "3 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "78",
+      "headline": "Vitrine 78",
+      "notes": [
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "44",
+      "headline": "Jaipur → Pushkar · first ashram neighbourhood",
+      "notes": [
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "20",
+      "headline": "Vitrine 20",
+      "notes": [
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "48",
+      "headline": "Junagadh bhakti · Narsinh Mehta and devotional communities",
+      "notes": [
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "Known comparison exceeds five shelf shares; resolve fit before moving.",
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "24",
+      "headline": "Vitrine 24",
+      "notes": [
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "3 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "22",
+      "headline": "Vitrine 22",
+      "notes": [
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "29",
+      "headline": "Vitrine 29",
+      "notes": [
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "21",
+      "headline": "Vitrine 21",
+      "notes": [
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "70",
+      "headline": "Special / receiving review",
+      "notes": [
+        "No shelf-load baseline; inspect receiving display before moving.",
+        "1 other catalogue/roster entries lack a modelled footprint; baseline is incomplete.",
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Large veena: verify dimensions, support and availability; ordinary shelf-share arithmetic is insufficient.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    },
+    {
+      "code": "8",
+      "headline": "Ayodhya · Rama devotion",
+      "notes": [
+        "1 footprints unmeasured or unknown; inspect fit.",
+        "Check living-saint bottom-shelf fit separately; unknown living status is not permission for upper placement."
+      ]
+    }
+  ],
+  "preservedCuratorOverrides": [
+    {
+      "sourceId": "recx5ElFhvJ8JYJpx",
+      "vitrine": "11"
+    },
+    {
+      "sourceId": "rec731zp4RUjeaWaY",
+      "vitrine": "40"
+    }
+  ]
+}
