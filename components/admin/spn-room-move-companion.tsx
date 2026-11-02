@@ -354,8 +354,8 @@ function SpnRoomMoveCompanionContent({guide:initialGuide,initialPhysical,canMana
   const finalProposal=items.length===1&&!clearedVitrines&&to.kind==="vitrine"?finalProposals.find(p=>p.sourceId===items[0].sourceId&&p.vitrine===to.code):undefined;
   const alternative=items.length===1&&!clearedVitrines?alternatives.find(a=>a.sourceId===items[0].sourceId&&to.kind==="vitrine"&&a.vitrine===to.code):undefined;
   const addition=items.length===1&&!clearedVitrines&&to.kind==="vitrine"?additions.find(a=>a.sourceId===items[0].sourceId&&a.vitrine===to.code):undefined;
-  else if(addition)to={...to,...(addition.shelf?{shelf:addition.shelf}:{})};
-  else if(alternative)to={...to,...(alternative.shelf?{shelf:alternative.shelf}:{})};
+  if(!finalProposal&&addition)to={...to,...(addition.shelf?{shelf:addition.shelf}:{})};
+  else if(!finalProposal&&alternative)to={...to,...(alternative.shelf?{shelf:alternative.shelf}:{})};
   const authorizationGuide=addition?(capturedPhaseGuides?Object.values(capturedPhaseGuides):[initialGuide]).find(g=>g.vitrines.some(v=>v.code===to.code)):guide;
   const now=new Date();const confirmedDate=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
   const submit=items.length===1&&to.kind==="vitrine"&&!clearedVitrines?(body:RequestBody)=>savePlacement(body):(body:RequestBody)=>send("POST",body);
