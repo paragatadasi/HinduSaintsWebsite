@@ -3,7 +3,9 @@ import assert from "node:assert/strict";
 import {starterMoveGuide} from "./spn-starter-move-guide";
 import base from "../data/museum/spn-starter-move-guide-v3.json";
 import frozen from "../data/museum/spn-starter-move-guide-v4.json";
-import current from "../data/museum/spn-starter-move-guide-v6.json";
+import previous from "../data/museum/spn-starter-move-guide-v6.json";
+import {registeredStarterGuide as current} from "./spn-starter-guide-v7";
+import {readStarterGuideDefinition} from "./spn-starter-guide-registry";
 import overlay from "../data/museum/spn-vitrine-two-tree-v1.json";
 test("Vitrine 2 presentation tree preserves roster and distinct relationships",()=>{
  const v=starterMoveGuide.vitrines.find(v=>v.code==="2")!;
@@ -19,5 +21,9 @@ test("Vitrine 2 presentation tree preserves roster and distinct relationships",(
  assert.deepEqual(frozen.rows.filter(r=>r.vitrine==="2"),base.rows.filter(r=>r.vitrine==="2"));
  assert.equal(base.version,overlay.baseGuideVersion);
  assert.equal(starterMoveGuide.version,current.version);
+ assert.notEqual(current.contentDigest,previous.contentDigest);
+ assert.equal(readStarterGuideDefinition(previous.version).context.contentDigest,previous.contentDigest);
+ assert.equal(readStarterGuideDefinition(previous.version).readOnly,true);
+ assert.deepEqual(current.vitrines.find(v=>v.code==="2"),previous.vitrines.find(v=>v.code==="2"));
  for(const edge of edges){assert.ok(ids.includes(edge.fromSourceId));assert.ok(ids.includes(edge.toSourceId));}
 });
