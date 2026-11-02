@@ -1,3 +1,4 @@
+import {applyGaudiyaMayapurPresentation} from "./spn-gaudiya-mayapur-presentation";
 import {registerCombinedReceivers,applyCombinedReviewedGuide} from "./spn-combined-reviewed-allocations";
 import {registerWestReceiver,applyWestMountAbuGuide} from "./spn-west-mount-abu";
 import {applySolapurKeralaGuide} from "./spn-solapur-kerala-refinement";
@@ -61,5 +62,6 @@ export function projectCompanionAdditions<T extends string>(guides:Record<T,Star
   })})))), additions),additions),catalog.map(e=>byId.has(e.sourceId)?{...e,destination:byId.get(e.sourceId)!.vitrine}:e))];
  })) as Record<T,StarterMoveGuide>;
  const refined=Object.fromEntries(Object.entries(projected).map(([key,value])=>[key,applyCombinedReviewedGuide(applyWestMountAbuGuide(applySolapurKeralaGuide(value as StarterMoveGuide,additions,catalog)),additions)])) as Record<T,StarterMoveGuide>;
- return reconcileCompanionMembership(refined,catalog.map(entry=>byId.has(entry.sourceId)?{...entry,destination:byId.get(entry.sourceId)!.vitrine}:entry));
+ const reconciled = reconcileCompanionMembership(refined,catalog.map(entry=>byId.has(entry.sourceId)?{...entry,destination:byId.get(entry.sourceId)!.vitrine}:entry));
+ return Object.fromEntries(Object.entries(reconciled).map(([key, guide]) => [key, applyGaudiyaMayapurPresentation(guide as StarterMoveGuide)])) as Record<T,StarterMoveGuide>;
 }
