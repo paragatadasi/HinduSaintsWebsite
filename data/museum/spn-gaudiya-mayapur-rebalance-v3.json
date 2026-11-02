@@ -1,0 +1,1367 @@
+{
+  "version": "spn-gaudiya-mayapur-balanced-rebalance-2026-11-02-v3",
+  "status": "Proposal for review only; not loaded",
+  "scope": [
+    "27",
+    "28",
+    "76",
+    "29"
+  ],
+  "cases": [
+    {
+      "code": "27",
+      "story": "Radharaman–Ramdas–Pathbari · Jagad Bandhu and Banamali context",
+      "groups": [
+        {
+          "title": "Pathbari family",
+          "sourceIds": [
+            "reco84eCakzUdrmmP",
+            "rec7cV8OOW6dYau1K",
+            "recNmKsCz7Kg7x7Dr",
+            "rec1bOVrWmAFek7Tn",
+            "recZQoZ10WJGCQxUR",
+            "recvIK4EYJwVrkvk5",
+            "recFh4kJRO5WJaJKW",
+            "recmJs0NX4r3MNORL",
+            "rec0OP1dCSvyKBTCm",
+            "rec72DZPKexDMty7G",
+            "recT2VuCD6lF7YwX0",
+            "recqPwPML5FbWMvaV",
+            "rec1r3rtk9HfJiU4d",
+            "recsygmC7mtnPPp1W",
+            "recSLQO2o5c8gbzEc",
+            "recyL3SDKfJkAJ073",
+            "recOs3jGNyfMlakIB",
+            "reczpRoU3454ShsPN"
+          ],
+          "note": "Keep the complete existing display cohort and its qualified relationship labels."
+        },
+        {
+          "title": "Jagad Bandhu–Mahanambrata",
+          "sourceIds": [
+            "recKh2RvgoYZimvdt",
+            "recsYELxoJkSd4fJB"
+          ],
+          "note": "Keep Jagad Bandhu and Mahanambrata with Radharaman Charan Das and both Banamali source observations. Banamali patron/devotee link does not establish formal initiation."
+        }
+      ],
+      "recordCount": 20,
+      "knownReferenceShares": 4.387301587301588,
+      "unknownFootprints": 1,
+      "rows": [
+        {
+          "sourceId": "reco84eCakzUdrmmP",
+          "saintId": "cms0w7h3c068907qi1ajzanag",
+          "name": "Sri Radha Raman Charan Das",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.3333333333333333,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "c2e1baae0c3a38754bf75c043603f5af109dae633755c71a0207fa27d784f85b"
+        },
+        {
+          "sourceId": "rec7cV8OOW6dYau1K",
+          "saintId": "cms0w7d9l01c207qil0n62o19",
+          "name": "Sri Sankaranya Puri Goswami",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.1111111111111111,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "06e4d161f8056faddfe2880444041e54547cc5ca22d6f6404e4aa047ad1186e1"
+        },
+        {
+          "sourceId": "recNmKsCz7Kg7x7Dr",
+          "saintId": "cms0w7gxy062007qioyp38v29",
+          "name": "Sri Baya Baba (Sri Srimad 108 Sachinandan Das Baba)",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "1445c75b65c7ef5f0974371c387ae4df37e602e0396b7406cb178b0cc58f3d5d"
+        },
+        {
+          "sourceId": "rec1bOVrWmAFek7Tn",
+          "saintId": "cms0w7cdh008j07qi1bj66ukn",
+          "name": "Sri Harendranath Mukarji",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "78",
+            "kind": "vitrine",
+            "label": "Vitrine 78"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "27dfd9bc6d7b8eedb5ed3135f5a4d032d85ee03dd37cc15fad6c36ee9b070d45"
+        },
+        {
+          "sourceId": "recZQoZ10WJGCQxUR",
+          "saintId": "cms0w7k7b09lr07qiqrj5bzra",
+          "name": "Sri Jiva Krishnadas Babaji",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "a553b2ea96a87a1df9233762a5d395869438b66cc39195b6ba3d4cffa985e615"
+        },
+        {
+          "sourceId": "recvIK4EYJwVrkvk5",
+          "saintId": "cms0w7iy708bf07qistht60tu",
+          "name": "Sri Krishnananda Das Babaji",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.3333333333333333,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "4b4c8a6b04dcef31005891907320bea4c45c0a1997f4b72d8311eb3ea410ba19"
+        },
+        {
+          "sourceId": "recFh4kJRO5WJaJKW",
+          "saintId": "cms0w7f0103mn07qiabdbm67v",
+          "name": "Sri Lalita Sakhi Dasi",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "43bfea734d79b0bc22c21d7686615182ff06a2b48984cbbc48c7ce803f74eb67"
+        },
+        {
+          "sourceId": "recmJs0NX4r3MNORL",
+          "saintId": "cms0w7gog05qa07qiiiai9s7a",
+          "name": "Sri Murali Das Babaji Maharaj",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "3cb30aa300ee153d78f4bd7e6cfb061c5326770abd51b55838e2a1c18e93bd18"
+        },
+        {
+          "sourceId": "rec0OP1dCSvyKBTCm",
+          "saintId": "cms0w7c8y004407qinfvge01n",
+          "name": "Sri Nityananda Das Babaji",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "1d1d1cc7d5cbb27c9d56270d6786500b19baa924fa301d1d2618a203667ccf91"
+        },
+        {
+          "sourceId": "rec72DZPKexDMty7G",
+          "saintId": "cms0w7d8p01as07qiou3y7gat",
+          "name": "Sri Rajarshi Banamali Roy",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "3a5b6c3dd5c51de574309f0c78b0affac2a2a8faedba32baf9647ff778695f05"
+        },
+        {
+          "sourceId": "recT2VuCD6lF7YwX0",
+          "saintId": "cmus3rxr2008t07o51gvefkgd",
+          "name": "Sri Ramdas Babaji",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.16666666666666666,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "8b592b6692ec037c00288b699be539190ed8e65d59808846d0f7ef643f8f0776"
+        },
+        {
+          "sourceId": "recqPwPML5FbWMvaV",
+          "saintId": "cms0w7hnd06vp07qig7l3diim",
+          "name": "Sri Ramdas Babaji Maharaj",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "e9bc0bbc3993b2e97d4c354e9155346509a3474184d1e33e218950638413db64"
+        },
+        {
+          "sourceId": "rec1r3rtk9HfJiU4d",
+          "saintId": "cms0w7cg500bo07qig91avybs",
+          "name": "Sri Srimad Madhusudan Das Babaji Maharaj",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "50a5bd56e0bf33a0da56834994cec59af9ef2de68d069c0abbeffb78b7a539df"
+        },
+        {
+          "sourceId": "recsygmC7mtnPPp1W",
+          "saintId": "cms0w7i8y07kc07qi4j1cuqny",
+          "name": "Sri Srimat Govardhandas Babaji",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.16666666666666666,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "1718ce7f8a5c70fc41261a7582dee7b5f29402f2bd4ef75c775fa704327b4361"
+        },
+        {
+          "sourceId": "recSLQO2o5c8gbzEc",
+          "saintId": "cms0w7i3m07ew07qi1bkzes05",
+          "name": "Sri Krishna Jeevan Das Babaji",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "36d0738b4a3ec2eb577fd525a9dc008c41576f564111da8678990af42fe50338"
+        },
+        {
+          "sourceId": "recyL3SDKfJkAJ073",
+          "saintId": "cms0w7ju3098d07qir0290rv5",
+          "name": "Sri Narotamdas Babaji",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.3333333333333333,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "f5c7b087c6004ebeb18324924322b0cdaaf130554243930af57ea5ac1167a519"
+        },
+        {
+          "sourceId": "recOs3jGNyfMlakIB",
+          "saintId": null,
+          "name": "Sri Rajarshi Banamali Roy of Vrindavan ",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": null,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "f6e4c5538808aae1599c4bf096dc91e6bad24e7530b923eae1661df0d13dfda2"
+        },
+        {
+          "sourceId": "reczpRoU3454ShsPN",
+          "saintId": "cms0w7k7209lj07qipmi0fkp4",
+          "name": "Sri Vaishnav Charana Das Babaji Panchatirtha",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "a8ac208c9b48225f2f25c704d3bac568e9006af2d34a5b8337b9c2ff59557f52"
+        },
+        {
+          "sourceId": "recKh2RvgoYZimvdt",
+          "saintId": "cms0w7g60053j07qijiw8qh3j",
+          "name": "Sri Jagad Bandhu Sundar",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "9b5c54661323b9998f833c77576a0e765adbdf5c897295d8d996e52f66d13237"
+        },
+        {
+          "sourceId": "recsYELxoJkSd4fJB",
+          "saintId": "cms0w7i8r07k607qib72u99nr",
+          "name": "Sri Mahanambrata Brahmachari",
+          "previousProposal": "27",
+          "proposed": "27",
+          "knownFootprint": 0.14285714285714285,
+          "currentSnapshot": {
+            "code": "27",
+            "kind": "vitrine",
+            "label": "Vitrine 27"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "335b20524f787090ab0831aabffb95bbdb46402c2da6df347216b9a1f869fce9"
+        }
+      ]
+    },
+    {
+      "code": "28",
+      "story": "Mayapur · temples, ashrams and local teachers",
+      "groups": [
+        {
+          "title": "Sri Sri Gaur Nityananda Mandir · Mayapur",
+          "sourceIds": [
+            "recKGgwcgPuqHViQf",
+            "recajHedfWqHODkDT",
+            "recsmmsRLMaknhBgv",
+            "rectTDL0YBu5LYFMT",
+            "recxGk0T57mUVNbn8"
+          ],
+          "note": "Five source-labelled institutional observations, grouped by the recorded temple context, not a newly inferred lineage."
+        },
+        {
+          "title": "Nandakishor Bhaktha Nivas Ashram · Amaresh Kumar Ganguly",
+          "sourceIds": [
+            "recCnkObcmH34kMNn",
+            "recOOzk45gQj2o287"
+          ],
+          "note": "Keep both inventory observations together. They repeat the same name and relic description; do not treat them as two saints or confirm two distinct relics. Preserve the unlinked record and do not merge identities."
+        },
+        {
+          "title": "Gopinath Gaudiya Math · Anant Das Baba",
+          "sourceIds": [
+            "recVnva3yyGuxFvmY"
+          ],
+          "note": "Source-recorded institutional locality; no new guru edge."
+        },
+        {
+          "title": "Mayapur · supporting teachers",
+          "sourceIds": [
+            "rec1rr4Ktv320QXvd",
+            "recPX35zXqDW7g5y6",
+            "rec5IIcrl7ssQtJyf",
+            "reckMBC141nW5gI18",
+            "recxVwC57pIeYTxW3"
+          ],
+          "note": "Keep individuals separately identified. Grouped by recorded Mayapur locality, not a new personal lineage."
+        }
+      ],
+      "recordCount": 13,
+      "knownReferenceShares": 1.3333333333333333,
+      "unknownFootprints": 1,
+      "rows": [
+        {
+          "sourceId": "recKGgwcgPuqHViQf",
+          "saintId": "cms0w7g5t053907qi4loedd4n",
+          "name": "Sri Srimad Bhakti Arnav Paramarthi Maharaj",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "622dfc479fe011cfde070cb94b61eeef68c88e4c9cd9784618e83dd6b7eac1b4"
+        },
+        {
+          "sourceId": "recajHedfWqHODkDT",
+          "saintId": "cms0w7dqw01z907qi2hmpf32w",
+          "name": "Om Vishnupad 108 Sri Sri Bhakti Suhrid Akinchan Goswami Maharaj",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "9785a3cc450c535f3b4bf4b243676ba3b4494eebd479eed0454c6fcbf50d50e5"
+        },
+        {
+          "sourceId": "recsmmsRLMaknhBgv",
+          "saintId": "cms0w7i4607fi07qi58ovhq2n",
+          "name": "Sri Madani Skinchan Maharaj",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "0f77235380c0f2989badf0570aadfd1488b32040f57a15208001749eb40a9332"
+        },
+        {
+          "sourceId": "rectTDL0YBu5LYFMT",
+          "saintId": "cms0w7ihf07tk07qi431vuroc",
+          "name": "Sri Srimad Bhakti Amrit Avdhoot Maharaj",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "61f8b9866fcd372507e512f2a36ebec2699a015a30914a3f476fd82c5f99dd96"
+        },
+        {
+          "sourceId": "recxGk0T57mUVNbn8",
+          "saintId": "cms0w7jhv08vg07qiepmx1gni",
+          "name": "Sri Srimad Van Vihari Das Babaji Maharaj",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "8c61cf010e8619bdd5940f1217e0a0fdc4c5d08657b9574fd0b7c984f99807ba"
+        },
+        {
+          "sourceId": "recCnkObcmH34kMNn",
+          "saintId": "cms0w7ea902op07qiwwj5suix",
+          "name": "Sri Sri Amaresh Kumar Ganguly",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.16666666666666666,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "dd23417d8fa691ba76e751e7c4f26f6ca59b3fe46315ac52c3cbb0dd86152e06"
+        },
+        {
+          "sourceId": "recOOzk45gQj2o287",
+          "saintId": null,
+          "name": "Sri Sri Amaresh Kumar Ganguly of Nandakishor Bhaktha Nivas Ashram, Mayapur, West Bengal ",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": null,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "74454034d1a23d279731c23fde44bccb9f96423f9cb1d1920cdd05498275463b"
+        },
+        {
+          "sourceId": "recVnva3yyGuxFvmY",
+          "saintId": "cms0w7j0208dj07qij2mqzfw1",
+          "name": "Sri Anant Das Baba",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.3333333333333333,
+          "currentSnapshot": {
+            "code": "53",
+            "kind": "vitrine",
+            "label": "Vitrine 53",
+            "shelf": "B"
+          },
+          "currentBasis": "source",
+          "sourceRevision": "aea8cfd8ec0d6293b671efde5fa8f7c983203c951a5201064d8552c19b650214"
+        },
+        {
+          "sourceId": "rec1rr4Ktv320QXvd",
+          "saintId": "cms0w7cgw00ck07qiyhdhooin",
+          "name": "Sri Sri Nityaleela Prabistha Bhaktivijay Sagar Goswami Maharaj",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "092def8461700b4673a8a915298a25aa871437fb893ece8503b3d2849141c806"
+        },
+        {
+          "sourceId": "recPX35zXqDW7g5y6",
+          "saintId": "cms0w7hhk06p007qit3z2itun",
+          "name": "Sri Sumanta Goswami",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "3674411ac86e7ee483373fc963a2b6e84b132bb58a1ace510920ee3a30e8c254"
+        },
+        {
+          "sourceId": "rec5IIcrl7ssQtJyf",
+          "saintId": "cms0w7czs010e07qi2zpz0qxx",
+          "name": "Sri Shrila Nityaleela Prabista Om Vishnupad Bhakti Prapanna Parbrajak Goswami Maharaj",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "36efc66ba888e90d2326d4bed5edabc79006439a430270e9f6eda661ca3ea5e8"
+        },
+        {
+          "sourceId": "reckMBC141nW5gI18",
+          "saintId": "cms0w7g7j055g07qih1t1vqe9",
+          "name": "Sri Bhakti Vistar Vishnu Goswami Maharaj",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "a53098d50d201a44df78849b7ea7b6c3ab27db72c29915073fc5748ab636661d"
+        },
+        {
+          "sourceId": "recxVwC57pIeYTxW3",
+          "saintId": "cms0w7jnz091s07qiven2pcq1",
+          "name": "Sri Sri Nigmanand Goswami",
+          "previousProposal": "29",
+          "proposed": "28",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "76a0c2906ef0c0bee746d02c583b6d51cfc290fbb940d312c17ef9158243e963"
+        }
+      ]
+    },
+    {
+      "code": "76",
+      "story": "Bhaktisiddhanta · Gaudiya Math core",
+      "groups": [
+        {
+          "title": "Bhaktisiddhanta and the Gaudiya Math",
+          "sourceIds": [
+            "recdWTI4NXwgPek2O",
+            "rec4ZYq1brPdqn8Px",
+            "recs5oR89BMYi1sGB",
+            "recu0OJ76jqCF2Wmj",
+            "recjEQvrerGobZcVO",
+            "recMF6lJ4Vq5sZPUN",
+            "rec4uzk83q3AtQGgi",
+            "recIc6Bef1qpL1bD5",
+            "recyu7A0Cmfh0EA9N",
+            "recDske4jSTiuYtga",
+            "reccRAlL008YucnZG",
+            "reckHUfQ5SSZ3CGWg",
+            "recKtizoUkcDgeBQ8",
+            "rec9fZun1s41EybhH",
+            "recsy2wkjoTURVDaG",
+            "recJ3aBvnSJBFARPp",
+            "recXZDTaMq5srfDv2",
+            "recNqB17mPt800csa",
+            "rec04l9qkmMIbbo2J",
+            "receYXrNaTeGyvi3M",
+            "rec9s8V6nRU4YOcwj",
+            "recozhkjd7tfSJLxO"
+          ],
+          "note": "Keep the existing core, shelf recommendations and completed placements intact."
+        }
+      ],
+      "recordCount": 22,
+      "knownReferenceShares": 4.333333333333333,
+      "unknownFootprints": 0,
+      "rows": [
+        {
+          "sourceId": "recdWTI4NXwgPek2O",
+          "saintId": "cms0w7en7035g07qiz6rl1u9d",
+          "name": "A. C. Bhaktivedanta Swami Prabhupada",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "5d8e7ff414ed2a764ba9c5db99d65bf721e8b38c0310b4cfaa3a3b53919dfd6f"
+        },
+        {
+          "sourceId": "rec4ZYq1brPdqn8Px",
+          "saintId": "cms0w7cw800w707qip4vr4swx",
+          "name": "Bhaktisiddhanta Sarasvati Thakura Goswami",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "16e5fb5faf9d5103cad20c2277a2794acf3679859967bb242ca8b49e3346dd58"
+        },
+        {
+          "sourceId": "recs5oR89BMYi1sGB",
+          "saintId": "cms0w7i0o07bk07qirgyejijk",
+          "name": "Sri Jagannath Das Babaji",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.3333333333333333,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "d00e3a65c9360371039259a18609eda0fd8524c6c4564d14e6b2e44169bb8351"
+        },
+        {
+          "sourceId": "recu0OJ76jqCF2Wmj",
+          "saintId": "cms0w7iim07ux07qig2zphlqj",
+          "name": "Sri Aindra Prabhu",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.16666666666666666,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "19da136053b016e5d60b83a354fa6d0dea51304c67c27306ece9ef9f64b71148"
+        },
+        {
+          "sourceId": "recjEQvrerGobZcVO",
+          "saintId": "cms0w7fvo04qs07qi5l3znh4c",
+          "name": "Sri Gaura Kishor Das Babaji",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.3333333333333333,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "f68a81f3eeff85f16e616809a4e8f5fff3dcb383869ad9297322391144ce0fe8"
+        },
+        {
+          "sourceId": "recMF6lJ4Vq5sZPUN",
+          "saintId": "cms0w7gn605or07qiqqkmapkt",
+          "name": "Om Vishnupad Tridandi Swami 108 Sri Srimat Bhakti Sravan Tirtha Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "edc4cdda4cafa15507bce649f12af4ded50fd0b812430cbe34a4762ae40af159"
+        },
+        {
+          "sourceId": "rec4uzk83q3AtQGgi",
+          "saintId": "cms0w7cuw00up07qim6gz8ray",
+          "name": "Parivrajak Acharyabarya Jagadguru Sri Srimad Bhakti Saura Bhaktisara Goswami",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "aa0ae87b8b1012bf2933356bc717a1d1f6cd0b1a68b2b630e1edda531e77c469"
+        },
+        {
+          "sourceId": "recIc6Bef1qpL1bD5",
+          "saintId": "cms0w7fnh04gy07qitnrp1c2u",
+          "name": "Sri 108 Sri Sripad Srila Bhakti Dayita Madhav Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.16666666666666666,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "ba820fff2439b2f2b3f1835798c8eb61c1837ea43ef5f625aab72d625337c44f"
+        },
+        {
+          "sourceId": "recyu7A0Cmfh0EA9N",
+          "saintId": "cms0w7jxx09cf07qij6u82qxo",
+          "name": "Sri Aoudolom Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.16666666666666666,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "4d367091c3a65080bafb23ae4c3d59b657e8ad463ffff1f03f70cb15d7a5c67c"
+        },
+        {
+          "sourceId": "recDske4jSTiuYtga",
+          "saintId": "cms0w7elh033907qiub5841j0",
+          "name": "Sri Bhakti Pradeep Tirtha Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "a0e42b690b989380bec2994fe1314207f435d6ee54784ddea2c0fa3c40f15447"
+        },
+        {
+          "sourceId": "reccRAlL008YucnZG",
+          "saintId": "cms0w7eb302ps07qi6spgrqk9",
+          "name": "Sri Bhakti Prasad Puri Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.16666666666666666,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "af6d4a09d5b045b9a99fc0a6675e6913c243904c7d73b9d95a3bf0f7b35dfa9f"
+        },
+        {
+          "sourceId": "reckHUfQ5SSZ3CGWg",
+          "saintId": "cms0w7g6b053x07qi1mlbtbt6",
+          "name": "Sri Bhakti Sri Rupesh Bhagavat Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.16666666666666666,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "07592b623b41d6268b867017cde654ae2c66f749ccbe2c46b8619e9d171fead4"
+        },
+        {
+          "sourceId": "recKtizoUkcDgeBQ8",
+          "saintId": "cms0w7gb3059r07qinx72kgyh",
+          "name": "Sri Bhakti Vilas Tirtha Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "5fb2810573d9fd6047ed3ace6dbf7235f113d854837e2c77227d0b6462343f79"
+        },
+        {
+          "sourceId": "rec9fZun1s41EybhH",
+          "saintId": "cms0w7dih01nm07qijrrpvmfh",
+          "name": "Sri Bhakti Vinod Thakur",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.16666666666666666,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "e84abfdfc0504c0ad550ab06d43b1a77bf610487d0f3e292c1ba6804b5af3902"
+        },
+        {
+          "sourceId": "recsy2wkjoTURVDaG",
+          "saintId": "cms0w7i8807jk07qi6c6frsms",
+          "name": "Sri Srila Srimad Bhakti Kamal Madhusudan Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "9f8b7a119e7f8fc4c9e27e88898d83367eafd361ef19858415baa1c3bbcd2adc"
+        },
+        {
+          "sourceId": "recJ3aBvnSJBFARPp",
+          "saintId": "cms0w7ft404np07qi7drlsnb7",
+          "name": "Sri Srimad Bhakti Bhichar Yayavar Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.16666666666666666,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "c7f19d93dab525e325dd25012d036b85821a855b9354405c4190c9551e23850c"
+        },
+        {
+          "sourceId": "recXZDTaMq5srfDv2",
+          "saintId": "cms0w7jpj093e07qim8arbl3j",
+          "name": "Sri Srimad Bhakti Kumud Santa Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "cb886e7b86b350ab6087729cf7a0df2732bcbf7a6e574b7bf588f39da80ace41"
+        },
+        {
+          "sourceId": "recNqB17mPt800csa",
+          "saintId": "cms0w7gyt062z07qirs9cmb3e",
+          "name": "Sri Srimad Bhakti Saranga Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "1b2a6c5bbe153549902f03d7d2253ed9c45d3bab5b2b5af7256e7b30c6f99a53"
+        },
+        {
+          "sourceId": "rec04l9qkmMIbbo2J",
+          "saintId": "cms0w7c5g000n07qi3gj4kw02",
+          "name": "Sri Srimad Bhakti Vaibhav Puri Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "1bb9a1d5f381c8f9e91a0038d80d3a3c1a51bbcf9e4d5fc262e696b00091baae"
+        },
+        {
+          "sourceId": "receYXrNaTeGyvi3M",
+          "saintId": "cms0w7ew903hq07qist3cfvi3",
+          "name": "Sri Srimat Bhakti Pramod Paryajak Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "76ec747b37c1b0dc7b6db1db4ff728b10a87308be8f55d7c87b9a468c53b73a9"
+        },
+        {
+          "sourceId": "rec9s8V6nRU4YOcwj",
+          "saintId": "cms0w7dkk01qi07qi3aqn1oj2",
+          "name": "Sri Swami Bon Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "e6ee776f1c02929bce63fa733ba5ba0175fc9e292d7bc0d08d50c960a67a3c72"
+        },
+        {
+          "sourceId": "recozhkjd7tfSJLxO",
+          "saintId": "cms0w7hah06gi07qil5pafm2a",
+          "name": "Sri Tridandi Swami Srimad Bhakti Pramod Puri Goswami Maharaj",
+          "previousProposal": "76",
+          "proposed": "76",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "76",
+            "kind": "vitrine",
+            "label": "Vitrine 76"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "98e19e0aed8065190ce8b0fe39f48351a8d22086626b675838cd7670654aaeb9"
+        }
+      ]
+    },
+    {
+      "code": "29",
+      "story": "Keshava–Narayana · other Mayapur teachers",
+      "groups": [
+        {
+          "title": "Keshava–Narayana branch",
+          "sourceIds": [
+            "rec5R2rIVB6cYMOxN",
+            "recv7456zY968qEFJ",
+            "rec3J8BiVe9xTnSWx",
+            "recqTSYY3AZJelvNJ"
+          ],
+          "note": "Keep the complete branch, including repeated-source holdings, together."
+        },
+        {
+          "title": "Other Mayapur holdings",
+          "sourceIds": [
+            "recDvSBJ3DhGH8STC",
+            "recPXP5H1JT02Vdhm",
+            "rec5ZWg6A1QYWN7Mt",
+            "rec8kLoCs2julYZOc",
+            "recSddYwfXb751bOE",
+            "recyG2prFIlU68xEL"
+          ],
+          "note": "Retain separate institutional/locality evidence; no inherited affiliation from the headline family."
+        }
+      ],
+      "recordCount": 10,
+      "knownReferenceShares": 1.4666666666666668,
+      "unknownFootprints": 1,
+      "rows": [
+        {
+          "sourceId": "rec5R2rIVB6cYMOxN",
+          "saintId": "cms0w7d0y011p07qi7nkexcob",
+          "name": "Sri Bhakti Prajnan Keshava Maharaj (Keshav Goswami)",
+          "previousProposal": "29",
+          "proposed": "29",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "07f0788b95deb854010c80ee144928d1d405f5b1c27de8bf1c863f98b3e1d53b"
+        },
+        {
+          "sourceId": "recv7456zY968qEFJ",
+          "saintId": "cms0w7iuf087j07qicygi4d23",
+          "name": "Sri Bhakti Prajnana Keshav Goswami",
+          "previousProposal": "29",
+          "proposed": "29",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "07356b9df0aae450da509ed2c85f7544b1e0ef48dd3402b105f3eed8e7121110"
+        },
+        {
+          "sourceId": "rec3J8BiVe9xTnSWx",
+          "saintId": "cms0w7cnn00la07qiw5wujiam",
+          "name": "Sri Srimad Bhakti Vedanta Narayan Goswami Maharaj",
+          "previousProposal": "29",
+          "proposed": "29",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "71478301c93acc086c8e77d958ab47ddcfeb7f48ff1a38830d79c28eff40d77e"
+        },
+        {
+          "sourceId": "recqTSYY3AZJelvNJ",
+          "saintId": "cms0w7hoe06wv07qih1czy3eu",
+          "name": "Sri Bhakti Vedanta Narayan Maharaj",
+          "previousProposal": "29",
+          "proposed": "29",
+          "knownFootprint": null,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "2d784570dfd4d3797108a064aa9d0002c32b319f05f7dff1cccd0c41d17b1929"
+        },
+        {
+          "sourceId": "recDvSBJ3DhGH8STC",
+          "saintId": "cms0w7emr034x07qiktuqh7ve",
+          "name": "Sri Srila Bhaktalok Paramahamsa Dev Goswami Maharaj",
+          "previousProposal": "29",
+          "proposed": "29",
+          "knownFootprint": 0.2,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "f6ecf8b108bfa20f0b1f8fce76264d3cfee4511ea56b7e6697ac198209f8f892"
+        },
+        {
+          "sourceId": "recPXP5H1JT02Vdhm",
+          "saintId": "cms0w7hhz06pf07qingfm8o3x",
+          "name": "Sri Shreemad Bhakti Bhilash Bharati",
+          "previousProposal": "29",
+          "proposed": "29",
+          "knownFootprint": 0.25,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "e1683e43f2b399766d8557c3bff0ee351316ad2392970a086ab5b737efd4ec05"
+        },
+        {
+          "sourceId": "rec5ZWg6A1QYWN7Mt",
+          "saintId": "cms0w7d29013907qigdnksqab",
+          "name": "Sri Darbesh Nabi Khepa",
+          "previousProposal": "29",
+          "proposed": "29",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "bc23bd50ce8078adcfc8930f5156b6d51f397b40c658cd4cd501ca9789f71290"
+        },
+        {
+          "sourceId": "rec8kLoCs2julYZOc",
+          "saintId": "cms0w7dfd01jj07qitbvtp341",
+          "name": "Sri Bhakti Sumit Paribrajak Maharaj",
+          "previousProposal": "29",
+          "proposed": "29",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "staging-area",
+            "kind": "table",
+            "label": "Staging area"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "b444ea3ff0fc0959de08793df354357f0a44c63018e2d131c91ce56832f20cde"
+        },
+        {
+          "sourceId": "recSddYwfXb751bOE",
+          "saintId": "cms0w7i2707df07qivtgaktam",
+          "name": "Sri Pujyapada Madan Mohan Dasadikari Prabhu",
+          "previousProposal": "29",
+          "proposed": "29",
+          "knownFootprint": 0.16666666666666666,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "01a70a23417b188fc5fc7b03e53500fc2da0d667bbcf5c4dd3199b3878608203"
+        },
+        {
+          "sourceId": "recyG2prFIlU68xEL",
+          "saintId": "cms0w7js3096807qi286fpwh5",
+          "name": "Sri Nithyaleela Prabistha Om Vishnupad Van Maharaj",
+          "previousProposal": "29",
+          "proposed": "29",
+          "knownFootprint": 0.08333333333333333,
+          "currentSnapshot": {
+            "code": "29",
+            "kind": "vitrine",
+            "label": "Vitrine 29"
+          },
+          "currentBasis": "confirmed",
+          "sourceRevision": "b3889c09381c615885627da6939ffc82547514d653acd7cb2f202eaf5a18fbcb"
+        }
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "sourceId": "rec1rr4Ktv320QXvd",
+      "saintId": "cms0w7cgw00ck07qiyhdhooin",
+      "name": "Sri Sri Nityaleela Prabistha Bhaktivijay Sagar Goswami Maharaj",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.08333333333333333,
+      "currentSnapshot": {
+        "code": "staging-area",
+        "kind": "table",
+        "label": "Staging area"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "092def8461700b4673a8a915298a25aa871437fb893ece8503b3d2849141c806"
+    },
+    {
+      "sourceId": "recPX35zXqDW7g5y6",
+      "saintId": "cms0w7hhk06p007qit3z2itun",
+      "name": "Sri Sumanta Goswami",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.08333333333333333,
+      "currentSnapshot": {
+        "code": "29",
+        "kind": "vitrine",
+        "label": "Vitrine 29"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "3674411ac86e7ee483373fc963a2b6e84b132bb58a1ace510920ee3a30e8c254"
+    },
+    {
+      "sourceId": "recVnva3yyGuxFvmY",
+      "saintId": "cms0w7j0208dj07qij2mqzfw1",
+      "name": "Sri Anant Das Baba",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.3333333333333333,
+      "currentSnapshot": {
+        "code": "53",
+        "kind": "vitrine",
+        "label": "Vitrine 53",
+        "shelf": "B"
+      },
+      "currentBasis": "source",
+      "sourceRevision": "aea8cfd8ec0d6293b671efde5fa8f7c983203c951a5201064d8552c19b650214"
+    },
+    {
+      "sourceId": "rec5IIcrl7ssQtJyf",
+      "saintId": "cms0w7czs010e07qi2zpz0qxx",
+      "name": "Sri Shrila Nityaleela Prabista Om Vishnupad Bhakti Prapanna Parbrajak Goswami Maharaj",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.08333333333333333,
+      "currentSnapshot": {
+        "code": "29",
+        "kind": "vitrine",
+        "label": "Vitrine 29"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "36efc66ba888e90d2326d4bed5edabc79006439a430270e9f6eda661ca3ea5e8"
+    },
+    {
+      "sourceId": "recCnkObcmH34kMNn",
+      "saintId": "cms0w7ea902op07qiwwj5suix",
+      "name": "Sri Sri Amaresh Kumar Ganguly",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.16666666666666666,
+      "currentSnapshot": {
+        "code": "29",
+        "kind": "vitrine",
+        "label": "Vitrine 29"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "dd23417d8fa691ba76e751e7c4f26f6ca59b3fe46315ac52c3cbb0dd86152e06"
+    },
+    {
+      "sourceId": "recKGgwcgPuqHViQf",
+      "saintId": "cms0w7g5t053907qi4loedd4n",
+      "name": "Sri Srimad Bhakti Arnav Paramarthi Maharaj",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.08333333333333333,
+      "currentSnapshot": {
+        "code": "29",
+        "kind": "vitrine",
+        "label": "Vitrine 29"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "622dfc479fe011cfde070cb94b61eeef68c88e4c9cd9784618e83dd6b7eac1b4"
+    },
+    {
+      "sourceId": "recOOzk45gQj2o287",
+      "saintId": null,
+      "name": "Sri Sri Amaresh Kumar Ganguly of Nandakishor Bhaktha Nivas Ashram, Mayapur, West Bengal ",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": null,
+      "currentSnapshot": {
+        "code": "29",
+        "kind": "vitrine",
+        "label": "Vitrine 29"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "74454034d1a23d279731c23fde44bccb9f96423f9cb1d1920cdd05498275463b"
+    },
+    {
+      "sourceId": "recajHedfWqHODkDT",
+      "saintId": "cms0w7dqw01z907qi2hmpf32w",
+      "name": "Om Vishnupad 108 Sri Sri Bhakti Suhrid Akinchan Goswami Maharaj",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.08333333333333333,
+      "currentSnapshot": {
+        "code": "29",
+        "kind": "vitrine",
+        "label": "Vitrine 29"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "9785a3cc450c535f3b4bf4b243676ba3b4494eebd479eed0454c6fcbf50d50e5"
+    },
+    {
+      "sourceId": "reckMBC141nW5gI18",
+      "saintId": "cms0w7g7j055g07qih1t1vqe9",
+      "name": "Sri Bhakti Vistar Vishnu Goswami Maharaj",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.08333333333333333,
+      "currentSnapshot": {
+        "code": "29",
+        "kind": "vitrine",
+        "label": "Vitrine 29"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "a53098d50d201a44df78849b7ea7b6c3ab27db72c29915073fc5748ab636661d"
+    },
+    {
+      "sourceId": "recsmmsRLMaknhBgv",
+      "saintId": "cms0w7i4607fi07qi58ovhq2n",
+      "name": "Sri Madani Skinchan Maharaj",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.08333333333333333,
+      "currentSnapshot": {
+        "code": "29",
+        "kind": "vitrine",
+        "label": "Vitrine 29"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "0f77235380c0f2989badf0570aadfd1488b32040f57a15208001749eb40a9332"
+    },
+    {
+      "sourceId": "rectTDL0YBu5LYFMT",
+      "saintId": "cms0w7ihf07tk07qi431vuroc",
+      "name": "Sri Srimad Bhakti Amrit Avdhoot Maharaj",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.08333333333333333,
+      "currentSnapshot": {
+        "code": "29",
+        "kind": "vitrine",
+        "label": "Vitrine 29"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "61f8b9866fcd372507e512f2a36ebec2699a015a30914a3f476fd82c5f99dd96"
+    },
+    {
+      "sourceId": "recxGk0T57mUVNbn8",
+      "saintId": "cms0w7jhv08vg07qiepmx1gni",
+      "name": "Sri Srimad Van Vihari Das Babaji Maharaj",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.08333333333333333,
+      "currentSnapshot": {
+        "code": "29",
+        "kind": "vitrine",
+        "label": "Vitrine 29"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "8c61cf010e8619bdd5940f1217e0a0fdc4c5d08657b9574fd0b7c984f99807ba"
+    },
+    {
+      "sourceId": "recxVwC57pIeYTxW3",
+      "saintId": "cms0w7jnz091s07qiven2pcq1",
+      "name": "Sri Sri Nigmanand Goswami",
+      "previousProposal": "29",
+      "proposed": "28",
+      "knownFootprint": 0.08333333333333333,
+      "currentSnapshot": {
+        "code": "29",
+        "kind": "vitrine",
+        "label": "Vitrine 29"
+      },
+      "currentBasis": "confirmed",
+      "sourceRevision": "76a0c2906ef0c0bee746d02c583b6d51cfc290fbb940d312c17ef9158243e963"
+    }
+  ],
+  "coverage": {
+    "records": 65,
+    "duplicates": 0,
+    "counts": [
+      20,
+      13,
+      22,
+      10
+    ]
+  },
+  "constraints": [
+    "No physical writes or new relationship edges.",
+    "65 is a count of inventory observations, not65uniquepeople or objects.",
+    "Reference shares are older comparison estimates; unknown footprints are additional fit needs.",
+    "Living saints bottom shelf; check unknown living status before upper placement.",
+    "Final review and native proposals must be updated together only after approval and fresh preflight."
+  ],
+  "physicalEvidence": "Starting locations in this draft use the dated2November saved catalogue, not a fresh post-execution physical inventory."
+}

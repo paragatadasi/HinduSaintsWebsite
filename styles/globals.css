@@ -12346,3 +12346,11 @@ select:not([multiple]) {
 .museum-room__progress-fill { fill:var(--display-fill,var(--color-museum-region-5)); }
 
 .museum-room__vitrine[data-review-complete="true"] .museum-room__progress-fill { fill:color-mix(in oklch,var(--display-fill,var(--color-museum-region-5)) 60%,var(--room-region,var(--color-museum-region-5))); }
+
+/* Keep record actions below their content in tablet and narrow guide columns. */
+.museum-companion { container-type:inline-size; container-name:move-companion; }
+@container move-companion (max-width:65rem) {
+ .museum-guide-check { display:grid; grid-template-columns:var(--space-5) minmax(0,1fr); }
+ .museum-guide-check>.museum-guide-check__body { min-width:0; }
+ .museum-guide-check>.review-actions { grid-column:2; margin-left:0; flex-wrap:wrap; justify-content:flex-start; }
+}
