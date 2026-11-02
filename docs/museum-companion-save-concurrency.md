@@ -57,3 +57,18 @@ Local service measurements during development (six simultaneous saves are batch 
 | Six to-do creates | 0.6–1.5 seconds per batch |
 
 These are disposable-localhost service measurements, with concurrent build checks affecting some runs. They exclude browser rendering and network/proxy latency; no per-request p50/p95 or production latency claim is implied. Existing Active move concurrency regressions also passed, including overlap, same-source conflicts, receipt replay, clearing races, shelf/physical races, component scope and undo.
+
+
+### Separate final-placement review (2 November 2026)
+
+A moved record is not automatically finally reviewed. Existing records start with no review marker. The final-review snapshot always returns `finallyReviewed` and a nullable ISO `reviewedAt`; catalogue entries and source-scoped decision overlays also return `finallyReviewed` for the shared progress reader.
+
+`review.confirm` requires the common source/review pins, the selected effective `vitrine`, and both physical pins (`expectedCurrentRevision`, `expectedLocationVersion`). `review.clear` requires the common and physical pins but no destination. Neither action accepts a shelf. A confirmation creates a physical confirmation and a review marker in one serializable transaction when the source is not yet confirmed at its final vitrine. Already-correct confirmed placements get only the marker, with no duplicate physical event. Clearing removes only the marker and preserves the physical ledger.
+
+The marker binds the source identity/evidence, final plan version, vitrine, physical version and any separately tracked component revision. A later actual move, component revision, identity change or explicit proposal change invalidates it. Returning to an earlier vitrine does not resurrect the old review. Shared shelf notes and other annotations do not change the physical version and do not revoke a vitrine review. Proposed shelves are never copied into a checkbox confirmation.
+
+An explicit review confirmation can supersede an older declined or deferred decision. Not-on-display records must first receive an explicit destination update. An open Missing flag must be resolved before presence is confirmed; an Other follow-up may remain open. No flag is resolved automatically. Finally reviewed implies addressed in both the record and shared progress overlay; the reverse is false. The final-placement denominator excludes not-on-display and existing static nonholding/private exclusions.
+
+Marker-only edits use the indexed review counter and receipts without invalidating the heavy inventory cache. Receipts now separately record whether source/physical evidence remained unchanged. The snapshot-reuse optimization must exclude transactions that also confirmed this same source’s physical placement, even though those transactions have a final-review receipt. Other-source review moves can reuse this source’s pinned evidence. New successful review actions return their authoritative transaction result with a lightweight refreshed head; idempotent replays still reread the latest record.
+
+Verification covers initially unchecked existing moves, stale reviewers, retry receipts, review clearing without physical change, explicit proposal invalidation, shelf-note preservation, actual move/return invalidation, and an injected review-write failure that rolls back the physical confirmation in the same transaction. Use the disposable localhost PostgreSQL verifier; these checks do not authorize production backfills.
