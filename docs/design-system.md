@@ -851,3 +851,5 @@ Final review checkboxes represent a separate, explicit second pass, independent 
 Completed final-review vitrines use a stronger regional fill (shared room-map styling), while partial review retains its pale proportional fill. Completion requires a nonzero eligible roster with every entry finally reviewed; the accessible reviewed count remains the non-color cue.
 
 In narrow move-companion containers (tablet and smaller), checklist actions sit below the record text, aligned with the content column. Preserve the checkbox in its own column and let action buttons wrap. Wide layouts retain side-by-side actions.
+
+Final-review room-map fill counts checked or openly flagged records once each. Full coverage saturates the regional color; an exclamation mark with an accessible flag count distinguishes unresolved flags from completed placement review. Numeric final-review completion continues to count confirmed reviews only.

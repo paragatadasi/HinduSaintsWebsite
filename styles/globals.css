@@ -12354,3 +12354,5 @@ select:not([multiple]) {
  .museum-guide-check>.museum-guide-check__body { min-width:0; }
  .museum-guide-check>.review-actions { grid-column:2; margin-left:0; flex-wrap:wrap; justify-content:flex-start; }
 }
+
+.museum-room__flag { display:inline-block; margin-inline-start:var(--space-1); font-size:var(--font-size-museum-schematic-number); }
