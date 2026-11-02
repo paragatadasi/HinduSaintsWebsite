@@ -23,3 +23,17 @@ export function finalReviewProgress(records:FinalReviewRecord[]){
  }
  return {total:seen.size,complete:[...cases.values()].reduce((sum,v)=>sum+v.complete,0),regions:[...regions.values()],vitrines:Object.fromEntries(cases)};
 }
+
+export function emptyReviewVitrines(records:FinalReviewRecord[],physical:import("./spn-move-guide").PhysicalState|null|undefined,layout:import("./museum-room-layout").MuseumRoomLayout){
+ if(!physical)return [];
+ const occupied=new Set<string>();
+ for(const row of [...physical.rows,...records.map(record=>record.row)]){
+  const location=row.componentPlacement?.location??row.current;
+  if(location?.kind==="vitrine")occupied.add(location.code);
+ }
+ for(const row of physical.unmappedCurrentLocations)if(row.location.kind==="vitrine")occupied.add(row.location.code);
+ const assigned=new Set(records.filter(record=>record.decision!=="not_on_display").map(record=>record.destination));
+ const cleared=new Set(physical.phaseClearances?.map(item=>item.vitrine));
+ for(const item of physical.preparations??[])if(item.basis==="legacy_clear"&&item.prepared)cleared.add(item.vitrine);
+ return layout.vitrines.filter(v=>v.availability!=="future"&&!assigned.has(v.number)&&!occupied.has(v.number)&&(cleared.has(v.number)||v.availability==="new")).map(v=>v.number);
+}

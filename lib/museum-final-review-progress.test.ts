@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {finalReviewProgress} from "./museum-final-review-progress";
+import {emptyReviewVitrines,finalReviewProgress} from "./museum-final-review-progress";
 import type {FinalReviewRecord} from "./museum-final-review-view";
 const row=(sourceId:string,destination:string,finallyReviewed=false)=>({sourceId,destination,finallyReviewed,addressed:true} as FinalReviewRecord);
 test("final review is independent of move completion and deduplicates source records",()=>{
@@ -23,4 +23,15 @@ test("map coverage counts reviews or flags once while completion remains distinc
  const resolved=finalReviewProgress([row("flagged","19")]);
  assert.equal(resolved.vitrines["19"].addressed,0);
  assert.equal(resolved.vitrines["19"].flagged,0);
+});
+
+import {spnMuseumLayout} from "./spn-museum-layout";
+import type {PhysicalState} from "./spn-move-guide";
+test("empty vitrines need no assignments or occupants and known empty evidence",()=>{
+ const physical:PhysicalState={rows:[],unmappedCurrentLocations:[],phaseClearances:[{vitrine:"19",guideVersion:"test",receiptId:"clear",recordedAt:"today"}]};
+ assert.ok(emptyReviewVitrines([],physical,spnMuseumLayout).includes("19"));
+ assert.ok(!emptyReviewVitrines([{...row("assigned","19"),row:{current:null} as FinalReviewRecord["row"]}],physical,spnMuseumLayout).includes("19"));
+ assert.ok(!emptyReviewVitrines([],{...physical,unmappedCurrentLocations:[{sourceId:"unlinked",version:1,location:{kind:"vitrine",code:"19",label:"Vitrine 19"}}]},spnMuseumLayout).includes("19"));
+ assert.deepEqual(emptyReviewVitrines([],null,spnMuseumLayout),[]);
+ assert.ok(!emptyReviewVitrines([],physical,{...spnMuseumLayout,vitrines:spnMuseumLayout.vitrines.map(v=>v.number==="19"?{...v,availability:"future"}:v)}).includes("19"));
 });
