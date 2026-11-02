@@ -1,5 +1,5 @@
 {
-  "version": "spn-west-mount-abu41-rebalanced-2026-11-02-v6",
+  "version": "spn-west-mount-abu41-rebalanced-2026-11-02-v6-institution-correction",
   "reviewedAt": "2026-11-02",
   "sourceSnapshotRevision": "c62ff3d9d122cd6649c7cf2d7e18cde95cfb063c48446a619169455cad860b34",
   "physicalWrites": false,
@@ -985,106 +985,34 @@
     },
     {
       "code": "41",
-      "headline": "Mount Abu veena · Brahma Kumaris · Palanpur boundary",
-      "knownFootprint": 1.8583333333333334,
+      "headline": "Mount Abu veena · Gyaan Gufa · Palanpur boundary",
+      "knownFootprint": 2.2666666666666666,
       "unknownFootprints": 0,
       "notes": [
-        "Reserve space for the Mount Abu veena display (three shelf-level estimate). Check instrument dimensions before arranging the remaining groups."
+        "Reserve three shelf-level spaces for the Mount Abu veena with Gyaan Gufa. Estimated total including this reserve: 5.27 shelf spaces. Curator accepts on-site fit; arrange companions alongside or below as needed, with living saints at the bottom."
       ],
       "groups": [
         {
-          "id": "west-v6-41-1",
-          "title": "Brahma Kumaris · Mount Abu",
+          "id": "west-v6-42-7",
+          "title": "Mount Abu · Gyaan Gufa",
           "sources": [
             {
-              "sourceId": "recxUEG6Dr1cErcNq",
-              "saintId": "cms0w7jn9091507qiq8vn6qk3",
-              "sourceRevision": "6a57b3780d2c407073864bad666abc6d41f81930f382d925d9d2b8e3c1d8f589",
-              "name": "Sri Dada Lekhraj (or Brahma Baba or Shiva Baba)",
-              "previousDestination": "41",
-              "previousAdditionVersion": 1,
-              "knownFootprint": 0.0625
+              "sourceId": "recrC9U16Vn5vP9Fn",
+              "saintId": "cms0w7ht8072r07qilnv4xzsy",
+              "sourceRevision": "c0a638dbb87e11a188b3d28cc056109435b2c48cde560cead29315a2c6086b4a",
+              "name": "Sri Badridasji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.2
             },
             {
-              "sourceId": "rechuanXWbFyugaqd",
-              "saintId": "cms0w7fk804cw07qiqhh9p4a4",
-              "sourceRevision": "925b1e6360216dd53604fffb2eee9134c60f80fc27cd96afc1cf2f2de55edb1f",
-              "name": "Sri Dadi Janki",
-              "previousDestination": "41",
-              "previousAdditionVersion": 1,
-              "knownFootprint": 0.0625
-            },
-            {
-              "sourceId": "recqLYxJHUYVnoU7Q",
-              "saintId": "cms0w7hmr06v007qiogpetle1",
-              "sourceRevision": "88f87ebf0b8d2bd36d67c2e013a69e82b0f337ce5f123fc47c9b0bf738d78ff1",
-              "name": "Sri Dadi Nirmala Shanta",
-              "previousDestination": "41",
-              "previousAdditionVersion": 1,
-              "knownFootprint": 0.0625
-            },
-            {
-              "sourceId": "recjA6zCEVozbTcwK",
-              "saintId": "cms0w7fu504ow07qijyvm9tj0",
-              "sourceRevision": "11f5b45b5cd97ceccd9cf0b2bd9aab8caf515cffce4fca469eb2cda76c3ad7c7",
-              "name": "Sri Dadi Prakashmani",
-              "previousDestination": "41",
-              "previousAdditionVersion": 1,
-              "knownFootprint": 0.0625
-            },
-            {
-              "sourceId": "recSjxSEQTJJiG5Xf",
-              "saintId": "cms0w7i3e07eo07qihv6zoxls",
-              "sourceRevision": "36c7ae57a88d7a91e80ffe2c898038a1f1d64ac36a2f36dadaa2a2cb3c5def0b",
-              "name": "Sri Dadi Ratan Mohini",
-              "previousDestination": "41",
-              "previousAdditionVersion": 1,
-              "knownFootprint": 0.0625
-            },
-            {
-              "sourceId": "recf8bQTi2i9L3qr4",
-              "saintId": "cms0w7eyp03kz07qie8f5kucx",
-              "sourceRevision": "49bb85944da35861e297b30ef3018c24acb7e8e9e08f70183c4418906f247cf3",
-              "name": "Sri Didi Sudesh",
-              "previousDestination": "41",
-              "previousAdditionVersion": 1,
-              "knownFootprint": 0.0625
-            },
-            {
-              "sourceId": "rech7wuJ9bGG0N7Th",
-              "saintId": "cms0w7feo045v07qiym3gcoyc",
-              "sourceRevision": "e5cf4632aa17885366a2dcb9ad44eec0e1fe2bd0e30392ca74b9d1ee47210f58",
-              "name": "Sri Narayan Dada",
-              "previousDestination": "41",
-              "previousAdditionVersion": 1,
-              "knownFootprint": 0.0625
-            },
-            {
-              "sourceId": "rech80UeXCXC0g3kc",
-              "saintId": "cms0w7fes045z07qi76aco0af",
-              "sourceRevision": "d665edff27797b73c7bd019e2856ad5a2fe01d08678f683d36eadb9eae63d987",
-              "name": "Sri Puttu Dadi",
-              "previousDestination": "41",
-              "previousAdditionVersion": 1,
-              "knownFootprint": 0.0625
-            },
-            {
-              "sourceId": "rec27yePMb0DBtY69",
-              "saintId": "cms0w7ciq00f007qina5rw35p",
-              "sourceRevision": "960022417937b8284abf92bf887a7022f3f0a4702c1ff721d0d3bdfb06f56c35",
-              "name": "Sri Shreya Didi",
-              "previousDestination": "41",
-              "previousAdditionVersion": 1,
-              "knownFootprint": 0.0625
-            },
-            {
-              "sourceId": "recsMylAeFSJtM7mM",
-              "saintId": "cms0w7i4h07fv07qixzcfcrmf",
-              "sourceRevision": "7f1bf07cb4a2b38b213c7db5a41c4c79d5f8a918387a2c660b790cfca58d948a",
-              "name": "Sri Dr. Nirmala Didi (Brahma Kumari)",
-              "previousDestination": "41",
-              "previousAdditionVersion": 1,
-              "knownFootprint": 0.0625
+              "sourceId": "recmGHWXiRWRyqNCz",
+              "saintId": "cms0w7gnf05p107qik0azuezt",
+              "sourceRevision": "82aae68e355a7ee6bfc5f7df8c84f3299fb29cd44b94da3361cb9e6e7358cfa7",
+              "name": "Sri Bharatdasji",
+              "previousDestination": "42",
+              "previousAdditionVersion": 2,
+              "knownFootprint": 0.8333333333333333
             }
           ]
         },
@@ -1137,8 +1065,8 @@
     },
     {
       "code": "42",
-      "headline": "Dadu & Ramdev Pir–Dali Bai · western Rajasthan & Gyaan Gufa",
-      "knownFootprint": 4.65,
+      "headline": "Dadu & Ramdev Pir–Dali Bai · western Rajasthan & Brahma Kumaris",
+      "knownFootprint": 4.241666666666666,
       "unknownFootprints": 0,
       "notes": [],
       "groups": [
@@ -1260,26 +1188,98 @@
           ]
         },
         {
-          "id": "west-v6-42-7",
-          "title": "Mount Abu · Gyaan Gufa",
+          "id": "west-v6-41-1",
+          "title": "Brahma Kumaris · Mount Abu",
           "sources": [
             {
-              "sourceId": "recrC9U16Vn5vP9Fn",
-              "saintId": "cms0w7ht8072r07qilnv4xzsy",
-              "sourceRevision": "c0a638dbb87e11a188b3d28cc056109435b2c48cde560cead29315a2c6086b4a",
-              "name": "Sri Badridasji",
-              "previousDestination": "42",
-              "previousAdditionVersion": 2,
-              "knownFootprint": 0.2
+              "sourceId": "recxUEG6Dr1cErcNq",
+              "saintId": "cms0w7jn9091507qiq8vn6qk3",
+              "sourceRevision": "6a57b3780d2c407073864bad666abc6d41f81930f382d925d9d2b8e3c1d8f589",
+              "name": "Sri Dada Lekhraj (or Brahma Baba or Shiva Baba)",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
             },
             {
-              "sourceId": "recmGHWXiRWRyqNCz",
-              "saintId": "cms0w7gnf05p107qik0azuezt",
-              "sourceRevision": "82aae68e355a7ee6bfc5f7df8c84f3299fb29cd44b94da3361cb9e6e7358cfa7",
-              "name": "Sri Bharatdasji",
-              "previousDestination": "42",
-              "previousAdditionVersion": 2,
-              "knownFootprint": 0.8333333333333333
+              "sourceId": "rechuanXWbFyugaqd",
+              "saintId": "cms0w7fk804cw07qiqhh9p4a4",
+              "sourceRevision": "925b1e6360216dd53604fffb2eee9134c60f80fc27cd96afc1cf2f2de55edb1f",
+              "name": "Sri Dadi Janki",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "recqLYxJHUYVnoU7Q",
+              "saintId": "cms0w7hmr06v007qiogpetle1",
+              "sourceRevision": "88f87ebf0b8d2bd36d67c2e013a69e82b0f337ce5f123fc47c9b0bf738d78ff1",
+              "name": "Sri Dadi Nirmala Shanta",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "recjA6zCEVozbTcwK",
+              "saintId": "cms0w7fu504ow07qijyvm9tj0",
+              "sourceRevision": "11f5b45b5cd97ceccd9cf0b2bd9aab8caf515cffce4fca469eb2cda76c3ad7c7",
+              "name": "Sri Dadi Prakashmani",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "recSjxSEQTJJiG5Xf",
+              "saintId": "cms0w7i3e07eo07qihv6zoxls",
+              "sourceRevision": "36c7ae57a88d7a91e80ffe2c898038a1f1d64ac36a2f36dadaa2a2cb3c5def0b",
+              "name": "Sri Dadi Ratan Mohini",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "recf8bQTi2i9L3qr4",
+              "saintId": "cms0w7eyp03kz07qie8f5kucx",
+              "sourceRevision": "49bb85944da35861e297b30ef3018c24acb7e8e9e08f70183c4418906f247cf3",
+              "name": "Sri Didi Sudesh",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "rech7wuJ9bGG0N7Th",
+              "saintId": "cms0w7feo045v07qiym3gcoyc",
+              "sourceRevision": "e5cf4632aa17885366a2dcb9ad44eec0e1fe2bd0e30392ca74b9d1ee47210f58",
+              "name": "Sri Narayan Dada",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "rech80UeXCXC0g3kc",
+              "saintId": "cms0w7fes045z07qi76aco0af",
+              "sourceRevision": "d665edff27797b73c7bd019e2856ad5a2fe01d08678f683d36eadb9eae63d987",
+              "name": "Sri Puttu Dadi",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "rec27yePMb0DBtY69",
+              "saintId": "cms0w7ciq00f007qina5rw35p",
+              "sourceRevision": "960022417937b8284abf92bf887a7022f3f0a4702c1ff721d0d3bdfb06f56c35",
+              "name": "Sri Shreya Didi",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
+            },
+            {
+              "sourceId": "recsMylAeFSJtM7mM",
+              "saintId": "cms0w7i4h07fv07qixzcfcrmf",
+              "sourceRevision": "7f1bf07cb4a2b38b213c7db5a41c4c79d5f8a918387a2c660b790cfca58d948a",
+              "name": "Sri Dr. Nirmala Didi (Brahma Kumari)",
+              "previousDestination": "41",
+              "previousAdditionVersion": 1,
+              "knownFootprint": 0.0625
             }
           ]
         },
@@ -2196,5 +2196,12 @@
     "confirmedDate": "2026-11-02",
     "basis": "Curator confirmed installed and usable",
     "physicalPlacementsInferred": false
+  },
+  "institutionCorrection": {
+    "reviewedAt": "2026-11-02",
+    "proposalOnly": true,
+    "gyaanGufaDestination": "41",
+    "brahmaKumarisDestination": "42",
+    "acceptedFitEstimateIncludingVeena": 5.266666666666667
   }
 }
