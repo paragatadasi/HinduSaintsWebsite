@@ -11,15 +11,15 @@ export async function lockMuseumPlacement(tx: Prisma.TransactionClient, requestI
   }
 }
 
-export async function retryMuseumSerialization<T>(write: () => Promise<T>): Promise<T> {
+export async function retryMuseumSerialization<T>(write: () => Promise<T>, options:{maxRetries?:number;maxDelayMs?:number}={}): Promise<T> {
   for (let attempt = 0; ; attempt++) {
     try { return await write(); }
     catch (error) {
       if (!isMuseumSerializationConflict(error)) throw error;
-      if (attempt >= 4) throw new MuseumMoveSessionError(409, "This record changed while saving. Reload its current state before trying again.");
+      if (attempt >= (options.maxRetries??4)) throw new MuseumMoveSessionError(409, "This record changed while saving. Reload its current state before trying again.");
       // Restart outside the rolled-back transaction, without keeping any locks.
       // Stagger users so they do not repeatedly collide on the same retry wave.
-      await new Promise(resolve => setTimeout(resolve, 50 * 2 ** attempt + Math.floor(Math.random() * 50)));
+      await new Promise(resolve => setTimeout(resolve, Math.min(50 * 2 ** attempt,options.maxDelayMs??Infinity) + Math.floor(Math.random() * 50)));
     }
   }
 }

@@ -1,3 +1,5 @@
+import type {FinalReviewDecision} from "./museum-final-review-domain";
+import {db} from "./db";
 import {auditedPendingAllocations} from "./spn-audited-pending-allocation";
 import {projectCurrentGuideLifeStatus} from "./museum-guide-life-status";
 import proposalOverlay from "../data/museum/spn-approved-proposal-overlay-v1.json";
@@ -10,7 +12,7 @@ import {regionalPendingTransfer,regionalPendingSourceIds} from "./spn-regional-p
 import {readSharedMuseumCompanionRevision,readSharedMuseumCompanionSnapshot,type MuseumCompanionReadSnapshot} from "./museum-companion-read-snapshot";
 import {companionResourceRevision} from "./museum-companion-read-revision";
 
-function projectCatalog(snapshot:MuseumCompanionReadSnapshot){
+export function projectCatalog(snapshot:MuseumCompanionReadSnapshot,sourceId?:string){
  const {current:data,physical,additions,alternatives,valid,destinations,review:reviewed}=snapshot;
  const placements=new Map(data.placements.filter(p=>p.sourceRecordId).map(p=>[p.sourceRecordId!,p]));
  const pendingTransfer=regionalPendingTransfer(data.placements,physical.rows,destinations,
@@ -23,27 +25,33 @@ function projectCatalog(snapshot:MuseumCompanionReadSnapshot){
  const alternativesBySource=new Map(alternatives.map(row=>[row.sourceId,row]));
  const lifeEntries=projectCurrentGuideLifeStatus({entries:physical.rows.map(row=>({sourceId:row.sourceId,saintId:row.saintId,name:row.name,tier:"",city:"",relicDescription:"",destination:"",section:"",family:"",rationale:""}))},data).entries;
  const lifeBySource=new Map(lifeEntries.map(row=>[row.sourceId,row.lifeStatus]));
- return {revision:snapshot.revision,additions:valid,vitrines:availableDeclineAlternatives(currentSpnProposalRelease.proposal.layout.vitrines),entries:physical.rows.filter(r=>isActiveSpnObservation(r.sourceId)&&!proposalOverlay.excludedFromMuseumDisplay.some(item=>item.sourceId===r.sourceId)).map(row=>{
+ return {revision:snapshot.revision,finalReviewProposals:snapshot.finalReviewProposals,finalReviewDecisions:snapshot.finalReviewStates.map((state):FinalReviewDecision=>({...state,decision:state.decision as FinalReviewDecision["decision"],plannedAt:state.plannedAt?.toISOString()??null,decisionAt:state.decisionAt?.toISOString()??null})),additions:valid,vitrines:availableDeclineAlternatives(currentSpnProposalRelease.proposal.layout.vitrines),entries:physical.rows.filter(r=>(!sourceId||r.sourceId===sourceId)&&isActiveSpnObservation(r.sourceId)&&!proposalOverlay.excludedFromMuseumDisplay.some(item=>item.sourceId===r.sourceId)).map(row=>{
   const placement=placements.get(row.sourceId),addition=validBySource.get(row.sourceId),alternative=alternativesBySource.get(row.sourceId);
   const confirmedDestination=confirmedBySource.get(row.sourceId)??null;
+  const finalReview=snapshot.finalReviewProposals.find(plan=>plan.sourceId===row.sourceId)??null;
   const proposalTransfer=!confirmedDestination&&pendingTransfer?.sourceId===row.sourceId?pendingTransfer:null;
   const planningContext=paramanandPlanningContext({source:row,placement,effectiveDestination:addition?.vitrine??alternative?.vitrine??bySource.get(row.sourceId)?.effectiveVitrine??null,
    pendingReason:pendingBySource.get(row.sourceId)?.reason});
   const allocationPending=!confirmedDestination&&auditedPendingAllocations[row.sourceId]&&pendingBySource.has(row.sourceId)?{reason:pendingBySource.get(row.sourceId)!.reason}:null;
-  return {...row,allocationPending,confirmedDestination,destinationBasis:confirmedDestination?"confirmed" as const:"proposal" as const,componentScope:confirmedDestination?.componentScope??addition?.componentScope,proposalTransfer,lifeStatus:lifeBySource.get(row.sourceId),section:placement?.section??"",region:SPN_REGION_GROUPS.find(g=>(g.sections as readonly string[]).includes(placement?.section??""))?.title??"",tier:placement?.tier??"",city:placement?.normalizedPlaces.join(" · ")??"",searchNames:placement?.searchNames??[],destination:confirmedDestination?confirmedDestination.vitrine:allocationPending?"":planningContext?planningContext.effectiveDestination??"":addition?.vitrine??alternative?.vitrine??bySource.get(row.sourceId)?.effectiveVitrine??"",destinationShelf:confirmedDestination?confirmedDestination.shelf??"":allocationPending||proposalTransfer?"":addition?addition.shelf??"":alternative?alternative.shelf??"":planningContext?"":row.proposalDestination?.shelf??"",additionVersion:additionsBySource.get(row.sourceId)?.version??0,...(planningContext?{planningContext}: {})};
+  return {...row,allocationPending,confirmedDestination,finalReview,destinationBasis:confirmedDestination?"confirmed" as const:finalReview?"final_review" as const:"proposal" as const,componentScope:confirmedDestination?.componentScope??addition?.componentScope,proposalTransfer,lifeStatus:lifeBySource.get(row.sourceId),section:placement?.section??"",region:SPN_REGION_GROUPS.find(g=>(g.sections as readonly string[]).includes(placement?.section??""))?.title??"",tier:placement?.tier??"",city:placement?.normalizedPlaces.join(" · ")??"",relicDescription:data.membersById.get(placement?.id??"")?.RelicsDescription??"",searchNames:placement?.searchNames??[],destination:confirmedDestination?confirmedDestination.vitrine:allocationPending?"":finalReview?finalReview.vitrine:planningContext?planningContext.effectiveDestination??"":addition?.vitrine??alternative?.vitrine??bySource.get(row.sourceId)?.effectiveVitrine??"",destinationShelf:confirmedDestination?confirmedDestination.shelf??"":allocationPending||proposalTransfer?"":finalReview?finalReview.shelf??"":addition?addition.shelf??"":alternative?alternative.shelf??"":planningContext?"":row.proposalDestination?.shelf??"",additionVersion:additionsBySource.get(row.sourceId)?.version??0,...(planningContext?{planningContext}: {})};
  })};
 }
 
 const catalogs=new WeakMap<MuseumCompanionReadSnapshot,ReturnType<typeof projectCatalog>>();
 export async function readCompanionCatalogIfChanged(knownRevisions:string[]=[]){
- const revision=await readSharedMuseumCompanionRevision();
- const tag=companionResourceRevision(revision,"catalog");
+ const [revision,reviewRevision]=await Promise.all([readSharedMuseumCompanionRevision(),db.museumFinalReviewRevision.findUnique({where:{museumId:"museum-spn"}})]);
+ const counter=String(reviewRevision?.revision??0n);
+ const tag=companionResourceRevision(revision,"catalog:"+counter);
  if(knownRevisions.includes(tag))return {changed:false as const,revision:tag};
  const snapshot=await readSharedMuseumCompanionSnapshot();
- const actualTag=companionResourceRevision(snapshot.revision,"catalog");
+ const actualTag=companionResourceRevision(snapshot.revision,"catalog:"+counter);
  if(knownRevisions.includes(actualTag))return {changed:false as const,revision:actualTag};
  let data=catalogs.get(snapshot);if(!data){data=projectCatalog(snapshot);catalogs.set(snapshot,data);}
- return {changed:true as const,revision:actualTag,data};
+ const versions=await db.museumFinalReviewState.findMany({where:{museumId:"museum-spn",planVersion:{gt:0}},select:{sourceId:true,version:true}});
+ const bySource=new Map(versions.map(row=>[row.sourceId,row.version]));
+ const finalReviewProposals=data.finalReviewProposals.map(row=>({...row,reviewVersion:bySource.get(row.sourceId)??row.version}));
+ const projected={...data,reviewRevision:counter,finalReviewProposals,entries:data.entries.map(row=>({...row,finalReview:finalReviewProposals.find(plan=>plan.sourceId===row.sourceId)??null}))};
+ return {changed:true as const,revision:actualTag,data:projected};
 }
 export async function readCompanionCatalog(){
  const result=await readCompanionCatalogIfChanged();

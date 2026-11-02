@@ -22,7 +22,12 @@ export function projectConfirmedRosters<T extends string>(guides:Record<T,Starte
     (!row.componentPlacement&&row.currentBasis!=="confirmed")||location?.kind!=="vitrine"||entry.destination!==location.code)return [];
   return [{entry,code:location.code}];
  });
- if(!confirmed.length)return guides;
+ return projectResolvedRosters(guides,confirmed,"confirmed","Confirmed placements");
+}
+
+/** Project a resolved destination without creating a move or changing guide identity. */
+export function projectResolvedRosters<T extends string>(guides:Record<T,StarterMoveGuide>,resolved:{entry:GuideEntry;code:string}[],groupKey:string,title:string):Record<T,StarterMoveGuide>{
+ if(!resolved.length)return guides;
  const result=Object.fromEntries(Object.entries<StarterMoveGuide>(guides).map(([key,guide])=>[key,{...guide,entries:[...guide.entries],vitrines:guide.vitrines.map(v=>({...v,families:[...v.families],cityGroups:[...v.cityGroups]}))}])) as Record<T,StarterMoveGuide>;
  const keys=Object.keys(result) as T[];
  const targets=new Map<string,{entry:GuideEntry;code:string;owner:T}>();
@@ -30,13 +35,13 @@ export function projectConfirmedRosters<T extends string>(guides:Record<T,Starte
  for(const key of keys)for(const vitrine of result[key].vitrines){const owner=companionVitrineOwner(result,vitrine.code);if(owner)owners.set(vitrine.code,owner);}
  const sourceOwners=new Map<string,T>();
  for(const key of keys)for(const entry of result[key].entries)if(!sourceOwners.has(entry.sourceId))sourceOwners.set(entry.sourceId,key);
- for(const {entry,code} of confirmed){
+ for(const {entry,code} of resolved){
   let owner=owners.get(code);
   if(!owner){
    const regionOwner:Record<string,string>={N:"north",K:"north",B:"vraj",E:"east2",W:"west40-44",S:"south",C:"hinge"};
    owner=keys.find(key=>key===regionOwner[spnDisplayMemberships[code]?.[0]])??sourceOwners.get(entry.sourceId)??keys[0];
    if(!owner)continue;
-   result[owner].vitrines.push({code,summary:"Confirmed placements",families:[],cityGroups:[]});owners.set(code,owner);
+   result[owner].vitrines.push({code,summary:title,families:[],cityGroups:[]});owners.set(code,owner);
   }
   targets.set(entry.sourceId,{entry,code,owner});
  }
@@ -62,8 +67,8 @@ export function projectConfirmedRosters<T extends string>(guides:Record<T,Starte
    const ids=added.get(code)??[];ids.push(entry.sourceId);added.set(code,ids);
   }
   for(const [code,sourceIds] of added){
-   const groups=cases.get(code)!.cityGroups,index=groups.findIndex(group=>group.id===`confirmed:${code}`);
-   if(index<0)groups.push({id:`confirmed:${code}`,title:"Confirmed placements",sourceIds,rationale:"",suggestedVitrines:[code]});
+   const groups=cases.get(code)!.cityGroups,index=groups.findIndex(group=>group.id===`${groupKey}:${code}`);
+   if(index<0)groups.push({id:`${groupKey}:${code}`,title,sourceIds,rationale:"",suggestedVitrines:[code]});
    else groups[index]={...groups[index],sourceIds:[...groups[index].sourceIds,...sourceIds]};
   }
  }

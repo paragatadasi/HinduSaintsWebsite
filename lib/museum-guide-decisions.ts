@@ -1,3 +1,4 @@
+import {assertNoFinalReviewPlan} from "./museum-final-review-plans";
 import { guideDecisionInput, assertDeclineAlternative, availableDeclineAlternatives, declineAlternativeValues } from "./museum-guide-decision-domain";
 export { guideDecisionInput } from "./museum-guide-decision-domain";
 import { currentSpnProposalRelease } from "./spn-current-proposal";
@@ -50,6 +51,7 @@ export async function saveMuseumGuideDecision(raw: unknown, actor: MoveSessionAc
       if (savedFingerprint !== fingerprint && savedFingerprint !== legacyFingerprint) throw new MuseumMoveSessionError(409, "This request already reviewed a different suggestion. Reload before trying again.");
       return { decision: before, receipt: retry, replayed: true };
     }
+    if(input.alternativeVitrine)for(const sourceId of [...suggestion.sourceIds].sort())await assertNoFinalReviewPlan(tx,sourceId);
     if ((before?.version ?? 0) !== input.expectedVersion) throw new MuseumMoveSessionError(409, "This suggestion was reviewed elsewhere. Reload its latest decision.");
     const after = await tx.museumGuideSuggestionDecision.upsert({ where: { museumId_guideVersion_suggestionId: key },
       create: { ...key, decision: input.decision, note: input.note || null, ...alternatives, updatedById: actor.id },

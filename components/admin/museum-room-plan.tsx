@@ -1,6 +1,6 @@
 "use client";
 import {ROOM_COLUMNS,ROOM_ROWS} from "@/lib/museum-diagram-geometry";
-import {useState} from "react";
+import React,{useState} from "react";
 import {vrindavanVitrines} from "@/lib/museum-move-planner-domain";
 import {destinationEligibility,type MuseumRoomLayout} from "@/lib/museum-room-layout";
 
