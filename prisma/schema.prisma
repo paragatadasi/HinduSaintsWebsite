@@ -1937,6 +1937,11 @@ model MuseumFinalReviewState {
   decision String @default("pending")
   decisionNote String?
   decisionAt DateTime?
+  reviewedAt DateTime?
+  reviewedVitrine String?
+  reviewedPlanVersion Int?
+  reviewedPhysicalVersion Int?
+  reviewedComponentRevision String?
   flagKind String?
   flagNote String?
   flagStatus String?
@@ -1944,6 +1949,7 @@ model MuseumFinalReviewState {
   updatedById String
   @@id([museumId, sourceId])
   @@index([museumId, flagStatus, updatedAt])
+  @@index([museumId, reviewedAt])
 }
 
 model MuseumFinalReviewRevision {
@@ -1959,6 +1965,7 @@ model MuseumFinalReviewReceipt {
   revision BigInt
   transactionId BigInt
   inventoryRevisionBumped Boolean @default(false)
+  sourceEvidenceUnchanged Boolean @default(true)
   result Json
   createdAt DateTime @default(now())
   createdById String

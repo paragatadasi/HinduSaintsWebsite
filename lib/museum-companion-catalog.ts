@@ -1,3 +1,4 @@
+import {isFinallyReviewed} from "./museum-final-review-domain";
 import type {FinalReviewDecision} from "./museum-final-review-domain";
 import {db} from "./db";
 import {auditedPendingAllocations} from "./spn-audited-pending-allocation";
@@ -47,10 +48,20 @@ export async function readCompanionCatalogIfChanged(knownRevisions:string[]=[]){
  const actualTag=companionResourceRevision(snapshot.revision,"catalog:"+counter);
  if(knownRevisions.includes(actualTag))return {changed:false as const,revision:actualTag};
  let data=catalogs.get(snapshot);if(!data){data=projectCatalog(snapshot);catalogs.set(snapshot,data);}
- const versions=await db.museumFinalReviewState.findMany({where:{museumId:"museum-spn",planVersion:{gt:0}},select:{sourceId:true,version:true}});
+ const versions=await db.museumFinalReviewState.findMany({where:{museumId:"museum-spn"}});
  const bySource=new Map(versions.map(row=>[row.sourceId,row.version]));
  const finalReviewProposals=data.finalReviewProposals.map(row=>({...row,reviewVersion:bySource.get(row.sourceId)??row.version}));
- const projected={...data,reviewRevision:counter,finalReviewProposals,entries:data.entries.map(row=>({...row,finalReview:finalReviewProposals.find(plan=>plan.sourceId===row.sourceId)??null}))};
+ const states=new Map(versions.map(row=>[row.sourceId,row]));
+ const entries=data.entries.map(row=>{
+  const state=states.get(row.sourceId);
+  const bound=state?.sourceRevision===row.sourceRevision&&state.saintId===row.saintId?state:null;
+  return {...row,finallyReviewed:isFinallyReviewed(row,row.destination||null,bound),finalReview:finalReviewProposals.find(plan=>plan.sourceId===row.sourceId)??null};
+ });
+ const finalReviewDecisions=versions.flatMap(state=>{
+  const entry=entries.find(row=>row.sourceId===state.sourceId&&row.saintId===state.saintId&&row.sourceRevision===state.sourceRevision);
+  return entry?[{sourceId:state.sourceId,saintId:state.saintId,sourceRevision:state.sourceRevision,planVersion:state.planVersion,vitrine:state.vitrine,shelf:state.shelf,plannedAt:state.plannedAt?.toISOString()??null,decision:state.decision as FinalReviewDecision["decision"],decisionAt:state.decisionAt?.toISOString()??null,decisionNote:state.decisionNote,finallyReviewed:entry.finallyReviewed}]:[];
+ });
+ const projected={...data,reviewRevision:counter,finalReviewProposals,finalReviewDecisions,entries};
  return {changed:true as const,revision:actualTag,data:projected};
 }
 export async function readCompanionCatalog(){
