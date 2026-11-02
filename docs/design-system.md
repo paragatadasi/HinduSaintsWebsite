@@ -855,3 +855,5 @@ In narrow move-companion containers (tablet and smaller), checklist actions sit 
 Final-review room-map fill counts checked or openly flagged records once each. Full coverage saturates the regional color; an exclamation mark with an accessible flag count distinguishes unresolved flags from completed placement review. Numeric final-review completion continues to count confirmed reviews only.
 
 Empty final-review vitrines use saturated completion color only with no assigned saints, no current or unlinked occupants, and recorded clearing or new-vitrine status. Future and unknown contents remain unsaturated; empty cases add no records to progress totals.
+
+Move and Final review progress share `companionRows` group labels/order and guide-owner membership. Maharashtra belongs to West; journey labels are Central and North. Final review retains Other vitrines and No destination for records outside loaded guide groups.
