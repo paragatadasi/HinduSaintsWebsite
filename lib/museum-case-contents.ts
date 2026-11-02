@@ -1,3 +1,7 @@
+import {confirmedCompanionDestinations} from "./museum-confirmed-destination";
+import {isActiveSpnObservation} from "./spn-observation-suppression";
+import proposalOverlay from "../data/museum/spn-approved-proposal-overlay-v1.json";
+import {readSharedMuseumCompanionSnapshot,readCompanionPlanningUpdates} from "./museum-companion-read-snapshot";
 import {db} from "./db";
 import {Prisma} from "./generated/prisma/client";
 import {readPhysicalLocationView,type PhysicalSnapshotLoader} from "./museum-physical-locations";
@@ -15,7 +19,8 @@ import {currentReceiverGuideDefinitions} from "./spn-starter-guide-registry";
 const json=(value:unknown)=>JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 type PreviewOptions={vitrine:string;mode:"selected_contents"|"historical";preparationReceiptId?:string};
 export async function readCaseContentsPreview(loader:PhysicalSnapshotLoader,options:PreviewOptions,client:Prisma.TransactionClient=db){
- const [physical,current,additions,alternatives]=await Promise.all([readPhysicalLocationView(loader,client,undefined,false),readMuseumData(client),readEffectiveCompanionAdditions(client),readGuideAlternativeDestinations(client)]);
+ const shared=client===db?await readSharedMuseumCompanionSnapshot():null;
+ const [physical,current,additions,alternatives]=shared?[shared.physical,shared.current,shared.valid,shared.alternatives]:await Promise.all([readPhysicalLocationView(loader,client,undefined,false),readMuseumData(client),readEffectiveCompanionAdditions(client),readGuideAlternativeDestinations(client)]);
  let preparation:CasePreparationEvidence|undefined;
  if(options.mode==="historical"){
   const event=await client.auditEvent.findFirst({where:{...(options.preparationReceiptId?{id:options.preparationReceiptId}:{}),action:"museum.vitrine.preparation.updated",entityType:"MuseumVitrinePreparation",AND:[{afterJson:{path:["museumId"],equals:"museum-spn"}},{afterJson:{path:["vitrine"],equals:options.vitrine}},{afterJson:{path:["prepared"],equals:true}}]},orderBy:[{createdAt:"desc"},{id:"desc"}],select:{id:true,createdAt:true}});
@@ -23,7 +28,10 @@ export async function readCaseContentsPreview(loader:PhysicalSnapshotLoader,opti
   preparation={receiptId:event.id,vitrine:options.vitrine,prepared:true,recordedAt:event.createdAt.toISOString(),physicalMoveClaim:false,emptyCaseClaim:false};
  }
  const valid=currentCompanionAdditions(additions,physical.rows);
- const review=buildLatestSpnReview(current.placements,[...valid,...alternatives.filter(row=>!valid.some(a=>a.sourceId===row.sourceId))],physical.rows);
+ const planned=[...valid,...alternatives.filter(row=>!valid.some(a=>a.sourceId===row.sourceId))];
+ const confirmed=shared?.confirmedDestinations??confirmedCompanionDestinations(physical.rows,planned,await readCompanionPlanningUpdates(client),current.placements,
+  sourceId=>!isActiveSpnObservation(sourceId)||proposalOverlay.excludedFromMuseumDisplay.some(item=>item.sourceId===sourceId));
+ const review=shared?.review??buildLatestSpnReview(current.placements,[...confirmed,...planned.filter(row=>!confirmed.some(c=>c.sourceId===row.sourceId))],physical.rows);
  return caseContentsPreview(physical.rows,review.rows.map(row=>({sourceId:row.sourceId,vitrine:row.effectiveVitrine})),options.vitrine,options.mode,preparation,currentReceiverGuideDefinitions(options.vitrine).length>0);
 }
 

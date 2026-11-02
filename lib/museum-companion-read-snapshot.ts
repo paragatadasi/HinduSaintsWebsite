@@ -1,3 +1,6 @@
+import {confirmedCompanionDestinations} from "./museum-confirmed-destination";
+import proposalOverlay from "../data/museum/spn-approved-proposal-overlay-v1.json";
+import {isActiveSpnObservation} from "./spn-observation-suppression";
 import {db} from "./db";
 import {readMuseumCompanionRevision} from "./museum-companion-read-revision";
 import {cachedByMuseumRevision} from "./museum-snapshot-cache";
@@ -22,11 +25,23 @@ async function buildSnapshot(tx:Prisma.TransactionClient){
   ]);
   const effective=await readEffectiveCompanionAdditions(tx,{additions,alternatives});
   const valid=currentCompanionAdditions(effective,physical.rows);
-  const destinations=[...valid,...alternatives.filter(row=>!valid.some(addition=>addition.sourceId===row.sourceId))];
-  const shelfReview=buildLatestSpnReview(current.placements,alternatives,physical.rows);
-  const review=valid.length?buildLatestSpnReview(current.placements,destinations,physical.rows):shelfReview;
-  return {revision,current,physical,additions,alternatives,valid,destinations,review,shelfReview};
+  const plannedDestinations=[...valid,...alternatives.filter(row=>!valid.some(addition=>addition.sourceId===row.sourceId))];
+  const latestPlanningUpdates=await readCompanionPlanningUpdates(tx);
+  const confirmedDestinations=confirmedCompanionDestinations(physical.rows,plannedDestinations,latestPlanningUpdates,current.placements,
+   sourceId=>!isActiveSpnObservation(sourceId)||proposalOverlay.excludedFromMuseumDisplay.some(item=>item.sourceId===sourceId));
+  const confirmedIds=new Set(confirmedDestinations.map(row=>row.sourceId));
+  const destinations=[...confirmedDestinations,...plannedDestinations.filter(row=>!confirmedIds.has(row.sourceId))];
+  const shelfDestinations=[...confirmedDestinations,...alternatives.filter(row=>!confirmedIds.has(row.sourceId))];
+  const shelfReview=buildLatestSpnReview(current.placements,shelfDestinations,physical.rows);
+  const review=destinations.length?buildLatestSpnReview(current.placements,destinations,physical.rows):shelfReview;
+  return {revision,current,physical,additions,alternatives,valid,destinations,review,shelfReview,latestPlanningUpdates,confirmedDestinations};
  });
+}
+export async function readCompanionPlanningUpdates(tx:Prisma.TransactionClient){
+ const events=await tx.auditEvent.findMany({where:{action:"museum.arrangement.updated",entityType:"MuseumArrangement",afterJson:{path:["museumId"],equals:"museum-spn"}},select:{entityId:true,createdAt:true},orderBy:{createdAt:"desc"}});
+ const updates=new Map<string,string>();
+ for(const event of events)if(event.entityId&&!updates.has(event.entityId))updates.set(event.entityId,event.createdAt.toISOString());
+ return updates;
 }
 export type MuseumCompanionReadSnapshot=Awaited<ReturnType<typeof buildSnapshot>>;
 const globalReads=globalThis as typeof globalThis&{museumCompanionRevisionState?:{revisionRead:Promise<string>|null}};

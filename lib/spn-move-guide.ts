@@ -2,7 +2,7 @@ import type {ComponentPlacement} from "./museum-component-clearance-domain";
 export type GuideEntry = {
  allocationPending?:{reason:string}|null;
  proposalTransfer?:import("./spn-regional-pending-transfers").RegionalPendingTransfer|null;
- componentScope?:"vitrine_19_contents_only";reviewOnly?:boolean;optionalAddition?:boolean;displayRoleTier?:string|null;
+ componentScope?:ComponentPlacement["scope"];reviewOnly?:boolean;optionalAddition?:boolean;displayRoleTier?:string|null;
  sourceId:string;saintId:string|null;name:string;tier:string;city:string;relicDescription:string;
  destination:string;section:string;family:string;rationale:string;
  reviewNotesCollapsible?:boolean;reviewNotes?:string[];movementBlockedReason?:string;reportedOrigin?:string|null;

@@ -19,16 +19,18 @@ function projectCatalog(snapshot:MuseumCompanionReadSnapshot){
  const pendingBySource=new Map(reviewed.proposal.pendingPlacements.map(row=>[row.sourceId,row]));
  const additionsBySource=new Map(additions.map(row=>[row.sourceId,row]));
  const validBySource=new Map(valid.map(row=>[row.sourceId,row]));
+ const confirmedBySource=new Map(snapshot.confirmedDestinations.map(row=>[row.sourceId,row]));
  const alternativesBySource=new Map(alternatives.map(row=>[row.sourceId,row]));
  const lifeEntries=projectCurrentGuideLifeStatus({entries:physical.rows.map(row=>({sourceId:row.sourceId,saintId:row.saintId,name:row.name,tier:"",city:"",relicDescription:"",destination:"",section:"",family:"",rationale:""}))},data).entries;
  const lifeBySource=new Map(lifeEntries.map(row=>[row.sourceId,row.lifeStatus]));
  return {revision:snapshot.revision,additions:valid,vitrines:availableDeclineAlternatives(currentSpnProposalRelease.proposal.layout.vitrines),entries:physical.rows.filter(r=>isActiveSpnObservation(r.sourceId)&&!proposalOverlay.excludedFromMuseumDisplay.some(item=>item.sourceId===r.sourceId)).map(row=>{
   const placement=placements.get(row.sourceId),addition=validBySource.get(row.sourceId),alternative=alternativesBySource.get(row.sourceId);
-  const proposalTransfer=pendingTransfer?.sourceId===row.sourceId?pendingTransfer:null;
+  const confirmedDestination=confirmedBySource.get(row.sourceId)??null;
+  const proposalTransfer=!confirmedDestination&&pendingTransfer?.sourceId===row.sourceId?pendingTransfer:null;
   const planningContext=paramanandPlanningContext({source:row,placement,effectiveDestination:addition?.vitrine??alternative?.vitrine??bySource.get(row.sourceId)?.effectiveVitrine??null,
    pendingReason:pendingBySource.get(row.sourceId)?.reason});
-  const allocationPending=auditedPendingAllocations[row.sourceId]&&pendingBySource.has(row.sourceId)?{reason:pendingBySource.get(row.sourceId)!.reason}:null;
-  return {...row,allocationPending,componentScope:addition?.componentScope,proposalTransfer,lifeStatus:lifeBySource.get(row.sourceId),section:placement?.section??"",region:SPN_REGION_GROUPS.find(g=>(g.sections as readonly string[]).includes(placement?.section??""))?.title??"",tier:placement?.tier??"",city:placement?.normalizedPlaces.join(" · ")??"",searchNames:placement?.searchNames??[],destination:allocationPending?"":planningContext?planningContext.effectiveDestination??"":addition?.vitrine??alternative?.vitrine??bySource.get(row.sourceId)?.effectiveVitrine??"",destinationShelf:allocationPending||proposalTransfer?"":addition?addition.shelf??"":alternative?alternative.shelf??"":planningContext?"":row.proposalDestination?.shelf??"",additionVersion:additionsBySource.get(row.sourceId)?.version??0,...(planningContext?{planningContext}: {})};
+  const allocationPending=!confirmedDestination&&auditedPendingAllocations[row.sourceId]&&pendingBySource.has(row.sourceId)?{reason:pendingBySource.get(row.sourceId)!.reason}:null;
+  return {...row,allocationPending,confirmedDestination,destinationBasis:confirmedDestination?"confirmed" as const:"proposal" as const,componentScope:confirmedDestination?.componentScope??addition?.componentScope,proposalTransfer,lifeStatus:lifeBySource.get(row.sourceId),section:placement?.section??"",region:SPN_REGION_GROUPS.find(g=>(g.sections as readonly string[]).includes(placement?.section??""))?.title??"",tier:placement?.tier??"",city:placement?.normalizedPlaces.join(" · ")??"",searchNames:placement?.searchNames??[],destination:confirmedDestination?confirmedDestination.vitrine:allocationPending?"":planningContext?planningContext.effectiveDestination??"":addition?.vitrine??alternative?.vitrine??bySource.get(row.sourceId)?.effectiveVitrine??"",destinationShelf:confirmedDestination?confirmedDestination.shelf??"":allocationPending||proposalTransfer?"":addition?addition.shelf??"":alternative?alternative.shelf??"":planningContext?"":row.proposalDestination?.shelf??"",additionVersion:additionsBySource.get(row.sourceId)?.version??0,...(planningContext?{planningContext}: {})};
  })};
 }
 
