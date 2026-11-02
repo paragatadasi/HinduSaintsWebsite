@@ -1,3 +1,4 @@
+import {applyCombinedReviewedShelves} from "./spn-combined-reviewed-allocations";
 import {applyWestMountAbuShelves} from "./spn-west-mount-abu";
 import {applySolapurKeralaShelves} from "./spn-solapur-kerala-refinement";
 import {applyCohort27Shelves} from "./spn-cohort27-shelves";
@@ -34,4 +35,5 @@ const reviewedOperationalShelves:ShelfPlanningPacket={
 
 export const beforeWestShelves=applySolapurKeralaShelves(applyCohort27Shelves(applyEasternShelfRecommendations(applyJamnagarShelfRefinement(appendReviewedShelfSupplements(reviewedOperationalShelves,[...northern.vitrines,...kriya.vitrines],delta)))));
 
-export const allOperationalSpnShelves=applyWestMountAbuShelves(beforeWestShelves);
+export const beforeCombinedShelves=applyWestMountAbuShelves(beforeWestShelves);
+export const allOperationalSpnShelves=applyCombinedReviewedShelves(beforeCombinedShelves);

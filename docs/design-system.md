@@ -104,6 +104,11 @@ must never replace production recommendation logic.
 
 ## Admin review UX direction
 
+Shelf recommendations with no exact row remain visible in the shared shelf
+workspace under “Shelf position to review”. Use the normal cards and controls;
+never imply that a fit-review placement is a confirmed shelf assignment.
+
+
 Shelf workspaces expose a quiet “Family connections” disclosure above the tree
 rail. Collapsing it gives the shelf rows the full available width and removes
 their minimum scrolling width; reopening restores the existing tree expansion.
