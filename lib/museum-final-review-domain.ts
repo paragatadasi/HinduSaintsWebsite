@@ -3,6 +3,7 @@ import type {CompanionRow} from "./spn-move-guide";
 import {MuseumMoveSessionError} from "./museum-move-session-domain";
 
 export type FinalReviewProposal={sourceId:string;saintId:string|null;sourceRevision:string;vitrine:string;shelf:string|null;version:number;reviewVersion:number;updatedAt:string;componentScope?:NonNullable<CompanionRow["componentPlacement"]>["scope"]};
+export type FinalReviewDecision={sourceId:string;saintId:string|null;sourceRevision:string;planVersion:number;vitrine:string|null;shelf:string|null;plannedAt:string|null;decision:FinalReviewRecord["decision"];decisionAt:string|null;decisionNote:string|null};
 export type FinalReviewFlag={kind:"missing"|"other";note:string|null;status:"open"|"resolved"};
 export type FinalReviewRecord={
  sourceId:string;saintId:string|null;sourceRevision:string;

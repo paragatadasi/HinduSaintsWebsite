@@ -1,3 +1,4 @@
+import type {FinalReviewDecision} from "./museum-final-review-domain";
 import {db} from "./db";
 import {auditedPendingAllocations} from "./spn-audited-pending-allocation";
 import {projectCurrentGuideLifeStatus} from "./museum-guide-life-status";
@@ -24,7 +25,7 @@ export function projectCatalog(snapshot:MuseumCompanionReadSnapshot,sourceId?:st
  const alternativesBySource=new Map(alternatives.map(row=>[row.sourceId,row]));
  const lifeEntries=projectCurrentGuideLifeStatus({entries:physical.rows.map(row=>({sourceId:row.sourceId,saintId:row.saintId,name:row.name,tier:"",city:"",relicDescription:"",destination:"",section:"",family:"",rationale:""}))},data).entries;
  const lifeBySource=new Map(lifeEntries.map(row=>[row.sourceId,row.lifeStatus]));
- return {revision:snapshot.revision,finalReviewProposals:snapshot.finalReviewProposals,finalReviewDecisions:snapshot.finalReviewStates,additions:valid,vitrines:availableDeclineAlternatives(currentSpnProposalRelease.proposal.layout.vitrines),entries:physical.rows.filter(r=>(!sourceId||r.sourceId===sourceId)&&isActiveSpnObservation(r.sourceId)&&!proposalOverlay.excludedFromMuseumDisplay.some(item=>item.sourceId===r.sourceId)).map(row=>{
+ return {revision:snapshot.revision,finalReviewProposals:snapshot.finalReviewProposals,finalReviewDecisions:snapshot.finalReviewStates.map((state):FinalReviewDecision=>({...state,decision:state.decision as FinalReviewDecision["decision"],plannedAt:state.plannedAt?.toISOString()??null,decisionAt:state.decisionAt?.toISOString()??null})),additions:valid,vitrines:availableDeclineAlternatives(currentSpnProposalRelease.proposal.layout.vitrines),entries:physical.rows.filter(r=>(!sourceId||r.sourceId===sourceId)&&isActiveSpnObservation(r.sourceId)&&!proposalOverlay.excludedFromMuseumDisplay.some(item=>item.sourceId===r.sourceId)).map(row=>{
   const placement=placements.get(row.sourceId),addition=validBySource.get(row.sourceId),alternative=alternativesBySource.get(row.sourceId);
   const confirmedDestination=confirmedBySource.get(row.sourceId)??null;
   const finalReview=snapshot.finalReviewProposals.find(plan=>plan.sourceId===row.sourceId)??null;
