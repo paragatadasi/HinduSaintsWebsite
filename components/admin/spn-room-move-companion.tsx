@@ -76,9 +76,10 @@ function SpnRoomMoveCompanionContent({guide:initialGuide,initialPhysical,canMana
   const restoredPhase=requestedPhase&&capturedPhaseGuides&&requestedPhase in capturedPhaseGuides?requestedPhase as Phase:initialPhase;
   const restoredGuide=basePhaseGuides?.[restoredPhase]??fallbackGuide;
   const requestedVitrine=url.searchParams.get("vitrine");
-  setPhase(restoredPhase);
-  if(requestedVitrine&&restoredGuide.vitrines.some(item=>item.code===requestedVitrine))setSelected(requestedVitrine);
   const requestedView=url.searchParams.get("moveView");
+  setPhase(restoredPhase);
+  const validVitrine=requestedView==="final"||requestedView==="unaddressed"?spnMuseumLayout.vitrines.some(item=>String(item.number)===requestedVitrine):restoredGuide.vitrines.some(item=>item.code===requestedVitrine);
+  if(requestedVitrine&&validVitrine)setSelected(requestedVitrine);
   if(requestedView==="final"||requestedView==="unaddressed"||requestedView==="staging"||requestedView==="tasks"||requestedView==="shelves"||requestedView==="progress")setSessionView(requestedView);
   setViewRestored(true);
  },[]);
