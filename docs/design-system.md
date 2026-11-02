@@ -104,6 +104,12 @@ must never replace production recommendation logic.
 
 ## Admin review UX direction
 
+Shelf workspaces expose a quiet “Family connections” disclosure above the tree
+rail. Collapsing it gives the shelf rows the full available width and removes
+their minimum scrolling width; reopening restores the existing tree expansion.
+Keep shelf controls and placements unchanged when toggling this view.
+
+
 Apply [Admin interface performance](design/admin-performance.md) and the shared
 `emil-performance` skill when building or reviewing interactive admin workflows.
 

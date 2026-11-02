@@ -12322,3 +12322,10 @@ select:not([multiple]) {
 .museum-progress__region .room-move__phase { margin-top:var(--space-3); }
 .museum-progress__vitrine { display:flex; flex-direction:column; gap:var(--space-1); font-variant-numeric:tabular-nums; }
 .museum-progress__vitrine small { font-size:var(--font-size-review-hint); font-weight:normal; }
+
+/* Collapsing connections returns all available width to the five shelf rows. */
+.museum-shelf__rail-header { display:flex; justify-content:flex-end; }
+.museum-shelf__workspace[data-rail-collapsed="true"] { grid-template-columns:minmax(0,1fr); }
+.museum-shelf__workspace[data-rail-collapsed="true"] .museum-shelf__band { min-width:0; }
+.museum-shelf__workspace[data-rail-collapsed="true"] .museum-shelf__member { min-width:0; overflow-wrap:anywhere; }
+.museum-shelf__workspace[data-rail-collapsed="true"] .museum-shelf__member > div { overflow-wrap:anywhere; }

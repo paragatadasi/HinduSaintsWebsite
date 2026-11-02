@@ -1,5 +1,5 @@
 "use client";
-import {useState,useRef,useLayoutEffect,type ReactNode} from "react";
+import {useState,useRef,useId,useLayoutEffect,type ReactNode} from "react";
 import addon from "@/data/museum/spn-vitrine5-shelves-v1.json";
 import packet from "@/data/museum/spn-northern-shelves-v1.json";
 import {companionLocationLabel,isPlaced,type CompanionRow,type GuideEntry} from "@/lib/spn-move-guide";
@@ -20,6 +20,8 @@ function TreeLines({children,wide,edges}:{children:ReactNode;wide:boolean;edges:
 }
 export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,renderActions,plan:providedPlan}:{plan?:ShelfPlan;vitrine:string;entries:Map<string,GuideEntry>;rows:CompanionRow[];sourceIds:string[];renderControl:(id:string)=>ReactNode;renderActions:(id:string)=>ReactNode}){
  const [expanded,setExpanded]=useState<string|null>(null);
+ const [railOpen,setRailOpen]=useState(true);
+ const railId=useId();
  const plan=providedPlan??plans.find(v=>v.code===vitrine);
  if(!plan)return null;
  const allowed=new Set(sourceIds);
@@ -66,8 +68,9 @@ export function MuseumShelfGuide({vitrine,entries,rows,sourceIds,renderControl,r
  return <section className="museum-shelf" aria-label="Suggested shelf arrangement"><h3>Shelf arrangement</h3><p className="muted">Suggested positions · confirm shelf spacing on site</p>
  {plan.notes?.length||plan.refinedBandExceptions?.length||unknownBands.length?<details className="museum-shelf__alert"><summary>{plan.refinedBandExceptions?.length||unknownBands.length?"Shelf fit review":"Fit notes"}</summary>{plan.notes?.map(note=><p key={note}>{note}</p>)}{plan.refinedBandExceptions?.map(item=><p key={item.shelfIndex}>Row {item.shelfIndex}: {item.knownLoad.toFixed(2)} reference spaces. Review spacing on site.</p>)}{unknownBands.map(row=><p key={row.index}>Row {row.index}: {row.count} {row.count===1?"holding has":"holdings have"} an unknown size, in addition to the known load.</p>)}</details>:null}
  <div className="museum-shelf__legend">{groups.map((g,i)=><span data-group-color={i%6} key={g.id}>{g.title} · {g.kind}</span>)}</div>
- <div className="museum-shelf__workspace" data-expanded={expanded!==null}><div className="museum-shelf__bands">{pendingBand("story")}{pendingBand("below-top")}{[1,2,3,4,5].filter(index=>!allocations.some(a=>a.suggestedBand)||allocations.some(a=>a.suggestedShelfIndex===index)).map(index=><section className="museum-shelf__band" key={index}><small>{index===1?"Top":index===5?"Bottom":`Row ${index}`}</small><div>{familyGroups.map(g=><div className="museum-shelf__column" key={g.id}>{allocations.filter(a=>a.suggestedShelfIndex===index&&a.groupId===g.id).map(a=>member(a))}</div>)}<div className="museum-shelf__locality">{allocations.filter(a=>a.suggestedShelfIndex===index&&!familyGroups.some(g=>g.id===a.groupId)).map(a=>member(a))}</div></div></section>)}
+ {familyGroups.length?<div className="museum-shelf__rail-header"><button type="button" className="museum-shelf__disclosure" aria-expanded={railOpen} aria-controls={railId} onClick={()=>setRailOpen(open=>!open)}><span aria-hidden="true">{railOpen?"▾":"▸"}</span>Family connections</button></div>:null}
+ <div className="museum-shelf__workspace" data-expanded={expanded!==null} data-rail-collapsed={!railOpen||!familyGroups.length}><div className="museum-shelf__bands">{pendingBand("story")}{pendingBand("below-top")}{[1,2,3,4,5].filter(index=>!allocations.some(a=>a.suggestedBand)||allocations.some(a=>a.suggestedShelfIndex===index)).map(index=><section className="museum-shelf__band" key={index}><small>{index===1?"Top":index===5?"Bottom":`Row ${index}`}</small><div>{familyGroups.map(g=><div className="museum-shelf__column" key={g.id}>{allocations.filter(a=>a.suggestedShelfIndex===index&&a.groupId===g.id).map(a=>member(a))}</div>)}<div className="museum-shelf__locality">{allocations.filter(a=>a.suggestedShelfIndex===index&&!familyGroups.some(g=>g.id===a.groupId)).map(a=>member(a))}</div></div></section>)}
  {pendingBand("lower")}{pendingBand("retain-current")}{pendingBand("unspecified")}
  {sourceIds.some(id=>!ids.has(id))?<p className="muted">Other current assignments are in the complete checklist below.</p>:null}</div>
- <aside aria-label="Connections">{familyGroups.map(g=><section key={g.id}><button type="button" className="museum-shelf__disclosure" aria-expanded={expanded===g.id} onClick={()=>setExpanded(expanded===g.id?null:g.id)}><span aria-hidden="true">{expanded===g.id?"▸":"◂"}</span>{g.title}</button>{tree(g.id)}</section>)}</aside></div></section>;
+ <aside id={railId} hidden={!railOpen||!familyGroups.length} aria-label="Connections">{familyGroups.map(g=><section key={g.id}><button type="button" className="museum-shelf__disclosure" aria-expanded={expanded===g.id} onClick={()=>setExpanded(expanded===g.id?null:g.id)}><span aria-hidden="true">{expanded===g.id?"▸":"◂"}</span>{g.title}</button>{tree(g.id)}</section>)}</aside></div></section>;
 }

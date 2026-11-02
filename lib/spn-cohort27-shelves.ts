@@ -5,7 +5,7 @@ import type {ShelfPlanningPacket} from "./museum-shelf-planning-context";
 export function applyCohort27Shelves(packet:ShelfPlanningPacket):ShelfPlanningPacket {
  const source=packet.vitrines.find(v=>v.code==="28");
  const ids=new Set(approved.sourceIds);
- if(!source||source.allocations.length!==ids.size||source.allocations.some(a=>!ids.has(a.sourceId)))
+ if(!source||source.allocations.length!==ids.size||new Set(source.allocations.map(a=>a.sourceId)).size!==ids.size||source.allocations.some(a=>!ids.has(a.sourceId)))
   throw new Error("The reviewed Vitrine 27 shelf cohort needs reconciliation.");
  const previous=packet.vitrines.find(v=>v.code==="27");
  if(previous?.allocations.some(a=>!ids.has(a.sourceId)))throw new Error("Vitrine 27 has additional recommendations requiring review.");
