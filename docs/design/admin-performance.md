@@ -1,5 +1,24 @@
 # Admin interface performance
 
+Sprint consolidation: [8 November retrospective](../reviews/museum-sprint-learning-2026-11-08.md).
+
+## Collaborative-workflow regression gate
+
+Before optimizing, identify whether time is spent before the request, waiting for a response, or rendering it. Trace one action end to end; then multiply background requests by active sessions. Faster animation cannot repair an expensive server refresh.
+
+Use the existing snapshot-cache, physical-undo-domain, physical-progress-client and write-concurrency tests for the relevant invariants. The disposable database verifiers in the linked read/save contracts cover behavior that mocks cannot prove. Do not rerun production mutations to benchmark a save.
+
+For a performance-sensitive release, compare one and six authenticated sessions:
+
+- Cold load, warm load, unchanged refresh, selected-vitrine navigation, checkbox, shelf and task save.
+- Different-record simultaneous writes, same-record conflict, repeated request ID after an uncertain response, late reads after a newer write, and clearing concurrent with placement.
+- Remote updates reach the second session without replacing its selection or unsaved input.
+- Report repeated-sample median and p95, errors, query/request counts, bytes and server CPU with dataset, hardware and commit. Record missing measurements explicitly.
+
+The current snapshot cache is bounded and process-local, with consistent read-only transactions and independent returned clones. It is not a distributed cache and must not authorize writes. Assess clone/projection cost and database counter contention as well as cache hits. Preserve cache dependency coverage when adding tables or variants.
+
+Validate repeated receipt data once per shared collection and reuse a source index, as in lib/museum-physical-undo-domain.ts. Preserve ordering and value equality; do not mutate an indexed collection in place.
+
 Use the shared `emil-performance` skill when building or reviewing admin screens with long lists, frequent updates, media, or slow interactions. It is installed in the user's Codex skills directory; discover it through the available-skills catalogue rather than assuming a machine-specific path. This topic applies its interface guidance to this project's protected, collaborative workflows.
 
 ## Measure the task, not just page availability
