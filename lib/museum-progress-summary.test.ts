@@ -43,3 +43,17 @@ test("loading genuinely new proposal members increases the denominator once",()=
  assert.equal(museumProgressSummary({starter:first} as Record<CompanionPhase,StarterMoveGuide>,[],{}).total,1);
  assert.equal(museumProgressSummary({starter:next} as Record<CompanionPhase,StarterMoveGuide>,[],{}).total,2);
 });
+
+import {finalReviewProgress} from "./museum-final-review-progress";
+import type {FinalReviewRecord} from "./museum-final-review-view";
+test("move and final review share ordered regional groups with Maharashtra in West",()=>{
+ const guides={north:guide("n","19",["n"]),hinge:guide("h","38",["h"]),west45:guide("w","45",["w"]),maharashtra:guide("m","61",["m"]),starter:guide("s","2",["s"])} as Record<CompanionPhase,StarterMoveGuide>;
+ const records=Object.values(guides).flatMap(g=>g.entries.map(e=>({sourceId:e.sourceId,destination:e.destination,finallyReviewed:true} as FinalReviewRecord)));
+ const move=museumProgressSummary(guides,[],{}),review=finalReviewProgress(records,guides);
+ assert.deepEqual(review.regions.map(r=>[r.label,r.total]),move.regions.map(r=>[r.label,r.total]));
+ assert.deepEqual(review.regions.map(r=>r.label),["Gaudiya East","Central","North","West"]);
+ assert.deepEqual(review.regions.find(r=>r.label==="West")!.vitrines.map(v=>v.code),["45","61"]);
+ assert.equal(review.total,5);assert.equal(review.complete,5);
+ const extra=finalReviewProgress([...records,{sourceId:"unknown",destination:"99"},{sourceId:"pending",destination:""}] as FinalReviewRecord[],guides);
+ assert.deepEqual(extra.regions.slice(-2).map(r=>r.label),["No destination","Other vitrines"]);
+});
