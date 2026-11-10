@@ -30,6 +30,7 @@ export type StarterMoveGuide = {
 };
 export type PhysicalLocation={kind:"vitrine"|"table";code:string;label:string;shelf?:string|null};
 export type CompanionRow={
+ finallyReviewed?:boolean;
  reviewedHousing?:{classification:string;reviewedDate:string;fitNote:string};
  housingEvidenceRevision?:string;
  componentPlacement?:ComponentPlacement|null;
