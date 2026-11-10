@@ -2,6 +2,12 @@
 
 This is a production MVP for the Hindu Saints Website.
 
+Reusable sprint learnings:
+- For slow or collaborative admin workflows, read `docs/design/admin-performance.md` and `docs/skills/collaborative-workflow-performance/SKILL.md` before proposing changes. Preserve concurrent-edit correctness while reducing work.
+- When implementing an approved prototype, read `docs/skills/prototype-production-fidelity/SKILL.md`. For museum interfaces, also read `docs/design-system/museum-design-delivery.md` through the canonical design index.
+- These repository skill copies are authoritative for this project and can be read directly even when they are absent from the host's skill catalogue. See `docs/skills/README.md` for discovery and optional installation; no installation is required to use this guidance.
+- Consult `docs/reviews/museum-sprint-learning-2026-11-08.md` for the evidence behind these rules. Read task-relevant guidance rather than the entire historical backlog. Preserve current code/contracts and explicit curator decisions when historical examples differ.
+
 Architecture:
 - Use Next.js App Router, TypeScript, PostgreSQL, Prisma, and Docker.
 - The app includes both public pages and a custom protected admin CMS.

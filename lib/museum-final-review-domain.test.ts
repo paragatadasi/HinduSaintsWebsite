@@ -41,3 +41,12 @@ test("review confirmation accepts only a vitrine and requires both physical pins
  assert.equal(finalReviewInput.safeParse({...request,shelf:"C"}).success,false);
  assert.equal(finalReviewInput.safeParse({...request,expectedLocationVersion:undefined}).success,false);
 });
+
+test("preliminary note payload is bounded and cannot claim a placement",()=>{
+ const input={action:"note.set",museumId:"museum-spn",sourceId:"source",saintId:null,expectedSourceRevision:"a".repeat(64),expectedReviewVersion:0,clientRequestId:"00000000-0000-4000-8000-000000000001",note:"  Check label  "};
+ const result=finalReviewInput.parse(input);assert.equal(result.action,"note.set");
+ if(result.action==="note.set")assert.equal(result.note,"Check label");
+ assert.ok(finalReviewInput.safeParse({...input,note:" "}).success);
+ assert.equal(finalReviewInput.safeParse({...input,note:"x".repeat(2001)}).success,false);
+ assert.equal(finalReviewInput.safeParse({...input,vitrine:"14",physicalConfirmation:true}).success,false);
+});

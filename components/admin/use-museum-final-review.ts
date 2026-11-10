@@ -82,10 +82,10 @@ export function useMuseumFinalReview(active:boolean,onPhysicalSaved:(rows:Compan
       }
       let proposal=save.proposalSaved;
       if(!proposal&&action.action!=="undo"){
-        const fields=action.action==="flag"?{action:"flag.set",kind:action.type,note:action.note}:action.action==="resolve"?{action:"flag.resolve"}:action.action==="destination"&&action.notOnDisplay?{action:"decision.set",decision:"not_on_display",note:action.note}:{action:"proposal.set",vitrine:action.action==="destination"?action.vitrine:record.destination,shelf:action.action==="destination"?action.shelf:record.destinationShelf??undefined,expectedCurrentRevision:record.row.currentRevision,expectedLocationVersion:record.row.currentVersion};
+        const fields=action.action==="note"?{action:"note.set",note:action.note}:action.action==="flag"?{action:"flag.set",kind:action.type,note:action.note}:action.action==="resolve"?{action:"flag.resolve"}:action.action==="destination"&&action.notOnDisplay?{action:"decision.set",decision:"not_on_display",note:action.note}:{action:"proposal.set",vitrine:action.action==="destination"?action.vitrine:record.destination,shelf:action.action==="destination"?action.shelf:record.destinationShelf??undefined,expectedCurrentRevision:record.row.currentRevision,expectedLocationVersion:record.row.currentVersion};
         const result=await post(endpoint,{...common,...fields});
         if(!result.record)throw new Error("The save has not been confirmed. Retry the same save.");
-        proposal=result.record;save.proposalSaved=proposal;applyRecord(result.record);etag.current="";callbacks.current.onChanged();
+        proposal=result.record;save.proposalSaved=proposal;applyRecord(result.record);etag.current="";if(action.action!=="note")callbacks.current.onChanged();
       }
       if(action.action==="destination"&&action.moved&&!action.notOnDisplay&&!action.shelf.trim()&&proposal){
         save.reviewBody??={...common,action:"review.confirm",clientRequestId:crypto.randomUUID(),expectedReviewVersion:proposal.reviewVersion,expectedCurrentRevision:record.row.currentRevision,expectedLocationVersion:record.row.currentVersion,vitrine:action.vitrine};

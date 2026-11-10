@@ -1,8 +1,11 @@
 import type {FinalReviewRecord} from "./museum-final-review-view";
 import {isCountedSpnProgressSource} from "./spn-progress-exclusions";
+import {companionRows,type CompanionPhase} from "./museum-companion-navigation";
+import {companionVitrineOwner} from "./museum-companion-addition-projection";
+import type {StarterMoveGuide} from "./spn-move-guide";
 import {spnDisplayLabel} from "./spn-display-regions";
 
-export function finalReviewProgress(records:FinalReviewRecord[]){
+export function finalReviewProgress(records:FinalReviewRecord[],guides?:Record<CompanionPhase,StarterMoveGuide>){
  const seen=new Set<string>();
  const cases=new Map<string,{code:string;total:number;complete:number;addressed:number;flagged:number}>();
  for(const record of records){
@@ -17,11 +20,13 @@ export function finalReviewProgress(records:FinalReviewRecord[]){
  }
  const regions=new Map<string,{label:string;total:number;complete:number;vitrines:{code:string;total:number;complete:number}[]}>();
  for(const vitrine of [...cases.values()].sort((a,b)=>a.code.localeCompare(b.code,undefined,{numeric:true}))){
-  const label=vitrine.code?spnDisplayLabel(vitrine.code)||"Other vitrines":"No destination";
+  const owner=guides&&vitrine.code?companionVitrineOwner(guides,vitrine.code):undefined;
+  const group=owner?companionRows.find(group=>group.phases.some(phase=>phase===owner)):undefined;
+  const label=group?.label??(vitrine.code?(guides?"Other vitrines":spnDisplayLabel(vitrine.code)||"Other vitrines"):"No destination");
   const region=regions.get(label)??{label,total:0,complete:0,vitrines:[]};
   region.total+=vitrine.total;region.complete+=vitrine.complete;region.vitrines.push(vitrine);regions.set(label,region);
  }
- return {total:seen.size,complete:[...cases.values()].reduce((sum,v)=>sum+v.complete,0),regions:[...regions.values()],vitrines:Object.fromEntries(cases)};
+ return {total:seen.size,complete:[...cases.values()].reduce((sum,v)=>sum+v.complete,0),regions:[...regions.values()].sort((a,b)=>{const rank=(label:string)=>{const index=companionRows.findIndex(group=>group.label===label);return index<0?companionRows.length:index;};return rank(a.label)-rank(b.label);}),vitrines:Object.fromEntries(cases)};
 }
 
 export function emptyReviewVitrines(records:FinalReviewRecord[],physical:import("./spn-move-guide").PhysicalState|null|undefined,layout:import("./museum-room-layout").MuseumRoomLayout){

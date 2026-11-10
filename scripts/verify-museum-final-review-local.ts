@@ -173,6 +173,27 @@ try{
   await db.museumMoveCurrentLocation.update({where:{museumId_sourceId:{museumId:"museum-spn",sourceId:flagBeforeMove.sourceId}},data:{location:{kind:"vitrine",code:"18",label:"Vitrine 18"},version:{increment:1},confirmedAt:new Date()}});
  }finally{await flagGate.query("COMMIT");await flagGate.end();}
  const refreshedFlag=await waitingFlag;assert.equal(refreshedFlag.record.physical.current?.code,"18");assert.ok(refreshedFlag.record.physical.currentVersion>flagBeforeMove.physical.currentVersion);
+ const noteRows=await Promise.all(fixtures.map(row=>get(row.sourceId)));
+ const noteInventory=await readMuseumRevision();
+ const noteSaves=await timed("six concurrent preliminary notes",()=>Promise.all(noteRows.map(row=>saveFinalReview({...common(row),action:"note.set",note:"Discuss label with curator"},actor.id))));
+ assert.equal(await readMuseumRevision(),noteInventory,"Notes do not invalidate heavy inventory");
+ for(let i=0;i<noteRows.length;i++){
+  const before=noteRows[i],after=noteSaves[i].record;
+  assert.equal(after.preliminaryNote,"Discuss label with curator");
+  const {finallyReviewed: _beforeReview, ...beforePhysical}=before.physical;
+  const {finallyReviewed: _afterReview, ...afterPhysical}=after.physical;
+  assert.deepEqual(afterPhysical,beforePhysical);assert.deepEqual(after.flag,before.flag);
+  assert.deepEqual(after.effectiveDestination,before.effectiveDestination);
+  assert.equal(after.finallyReviewed,before.finallyReviewed);assert.equal(after.addressed,before.addressed);
+  assert.equal((await get(before.sourceId)).preliminaryNote,after.preliminaryNote);
+ }
+ const noteHead=await get(fixtures[0].sourceId);
+ const noteRequest={...common(noteHead),action:"note.set",note:"Updated hypothesis"};
+ const savedNote=await saveFinalReview(noteRequest,actor.id);
+ assert.equal((await saveFinalReview(noteRequest,actor.id)).replayed,true);
+ await assert.rejects(()=>saveFinalReview({...noteRequest,clientRequestId:randomUUID(),note:"Stale overwrite"},actor.id),e=>e instanceof MuseumMoveSessionError&&e.status===409);
+ const clearedNote=await saveFinalReview({...common(savedNote.record),action:"note.set",note:" "},actor.id);
+ assert.equal(clearedNote.record.preliminaryNote,null);
  const source=await get(fixtures[3].sourceId);
  const gate=new pg.Client({connectionString:url.href});await gate.connect();await gate.query("BEGIN");
  await gate.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))",["museum-final-review:spn:"+source.sourceId]);

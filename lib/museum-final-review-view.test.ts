@@ -25,3 +25,11 @@ test("review sorting keeps tiers together without changing the shared roster",()
   assert.deepEqual(sortReviewRecords(input).map(row=>row.name),["P","S","T"]);
   assert.deepEqual(input.map(row=>row.name),["T","P","S"]);
 });
+
+ test("preliminary notes filter independently of flags and addressed status",()=>{
+ const noted=record({preliminaryNote:"Check the label with Swami"});
+ const blank=record({sourceId:"two",preliminaryNote:"  "});
+ assert.deepEqual(filterReviewRecords([noted,blank],{...emptyReviewFilters,noteStatus:"added"}),[noted]);
+ assert.deepEqual(filterReviewRecords([noted,blank],{...emptyReviewFilters,noteStatus:"needed"}),[blank]);
+ assert.equal(partitionReviewRecords([noted,blank]).unaddressed.length,2);
+ });
