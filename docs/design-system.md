@@ -111,8 +111,8 @@ Final museum review reuses the room map and complete checklist, without clearing
 family-tree or shelf-proposal panels. Show Starting, Proposed and Current as a quiet
 label/value group on each record. Flags are independent of physical location; use
 Missing or Other with an optional note and an explicit Resolve flag action.
-Flagged and remaining unaddressed records have separate filterable, paginated
-panels. Keep per-record pending/error feedback beside the action and preserve
+Flagged and remaining unaddressed records use separate horizontal tabs with filterable, paginated
+panels. Preliminary notes use a muted surface and explicit To discuss label; note filters and counts do not imply resolution or placement. Keep per-record pending/error feedback beside the action and preserve
 unfinished input when another reviewer updates the record.
 
 Confirmed holdings without shelf recommendations use the standard vitrine checklist

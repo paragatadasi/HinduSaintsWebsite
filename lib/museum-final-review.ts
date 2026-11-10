@@ -26,7 +26,7 @@ export function projectFinalReviewRecord(entry:Entry,state:MuseumFinalReviewStat
  const flag=bound?.flagKind&&bound.flagStatus?{kind:bound.flagKind as "missing"|"other",note:bound.flagNote,status:bound.flagStatus as "open"|"resolved"}:null;
  return {sourceId:entry.sourceId,saintId:entry.saintId,sourceRevision:entry.sourceRevision,name:entry.name,tier:entry.tier,section:entry.section,region:entry.region,city:entry.city,relicDescription:description,
   physical:entry,effectiveDestination:entry.destination?{vitrine:entry.destination,shelf:entry.destinationShelf||null,basis:entry.destinationBasis}:null,
-  reviewVersion:state?.version??0,flag,finallyReviewed,reviewedAt:finallyReviewed?bound!.reviewedAt!.toISOString():null,decision:safeDecision,addressed:finallyReviewed||finalReviewAddressed(entry,entry.destination||null,safeDecision)};
+  preliminaryNote:bound?.preliminaryNote??null,reviewVersion:state?.version??0,flag,finallyReviewed,reviewedAt:finallyReviewed?bound!.reviewedAt!.toISOString():null,decision:safeDecision,addressed:finallyReviewed||finalReviewAddressed(entry,entry.destination||null,safeDecision)};
 }
 async function priorDecisions(){
  const decisions=await db.museumGuideSuggestionDecision.findMany({where:{museumId},orderBy:{updatedAt:"desc"}});
@@ -123,8 +123,9 @@ export async function saveFinalReview(raw:unknown,actorId:string):Promise<FinalR
     :input.action==="review.clear"?clearedReview
     :input.action==="flag.set"?{flagKind:input.kind,flagNote:input.note||null,flagStatus:"open",...(input.kind==="missing"?clearedReview:{})}
     :input.action==="flag.resolve"?{flagStatus:"resolved"}
+    :input.action==="note.set"?{preliminaryNote:input.note||null}
     :{decision:input.decision,decisionNote:input.note||null,decisionAt:now,...clearedReview};
-   const reset=rebound?{...clearedReview,vitrine:null,shelf:null,plannedAt:null,planVersion:(before?.planVersion??0)+1,decision:"pending",decisionNote:null,decisionAt:now,flagKind:null,flagNote:null,flagStatus:null}:{};
+   const reset=rebound?{...clearedReview,vitrine:null,shelf:null,plannedAt:null,planVersion:(before?.planVersion??0)+1,decision:"pending",decisionNote:null,decisionAt:now,flagKind:null,flagNote:null,flagStatus:null,preliminaryNote:null}:{};
    const state=await tx.museumFinalReviewState.upsert({where:{museumId_sourceId:key},create:{...key,saintId:entry.saintId,sourceRevision:entry.sourceRevision,updatedById:actorId,...changes},update:{saintId:entry.saintId,sourceRevision:entry.sourceRevision,updatedById:actorId,version:{increment:1},...reset,...changes}});
    const counter=await tx.museumFinalReviewRevision.findUniqueOrThrow({where:{museumId}});
    // Take the source-revision barrier only after the review counter lock, so

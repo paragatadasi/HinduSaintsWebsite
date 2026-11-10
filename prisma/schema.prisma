@@ -1944,6 +1944,7 @@ model MuseumFinalReviewState {
   reviewedComponentRevision String?
   flagKind String?
   flagNote String?
+  preliminaryNote String?
   flagStatus String?
   updatedAt DateTime @updatedAt
   updatedById String

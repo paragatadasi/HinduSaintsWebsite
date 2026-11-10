@@ -18,8 +18,9 @@ export type FinalReviewRecord = {
   flag:ReviewFlag|null;
   version:number;
   hasFinalProposal?:boolean;
+  preliminaryNote?:string|null;
 };
-export type ReviewFilters = {query:string;starting:string;proposed:string;current:string};
+export type ReviewFilters = {query:string;starting:string;proposed:string;current:string;noteStatus?:""|"needed"|"added"};
 export const emptyReviewFilters:ReviewFilters={query:"",starting:"",proposed:"",current:""};
 
 function locationMatches(value:CompanionRow["current"],filter:string){
@@ -31,6 +32,7 @@ function locationMatches(value:CompanionRow["current"],filter:string){
 export function filterReviewRecords(records:FinalReviewRecord[],filters:ReviewFilters){
   const query=filters.query.trim().toLocaleLowerCase();
   return records.filter(record=>(!query||[record.name,record.city,record.section].some(value=>value.toLocaleLowerCase().includes(query)))
+    &&(!filters.noteStatus||(filters.noteStatus==="added"?Boolean(record.preliminaryNote?.trim()):!record.preliminaryNote?.trim()))
     &&locationMatches(record.row.original,filters.starting)
     &&(!filters.proposed||(filters.proposed==="unknown"?!record.destination:record.destination===filters.proposed))
     &&locationMatches(record.row.componentPlacement?.location??record.row.current,filters.current));

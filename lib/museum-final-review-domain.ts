@@ -10,6 +10,7 @@ export type FinalReviewRecord={
  name:string;tier:string;section:string;region:string;city:string;relicDescription:string;
  physical:CompanionRow;
  effectiveDestination:{vitrine:string;shelf:string|null;basis:"confirmed"|"final_review"|"proposal"}|null;
+ preliminaryNote?:string|null;
  reviewVersion:number;flag:FinalReviewFlag|null;addressed:boolean;finallyReviewed:boolean;reviewedAt:string|null;
  decision:"pending"|"declined"|"not_on_display"|"deferred";
 };
@@ -22,6 +23,7 @@ export const finalReviewInput=z.discriminatedUnion("action",[
  z.object({...common,action:z.literal("review.clear"),expectedCurrentRevision:z.string().regex(/^[a-f0-9]{64}$/),expectedLocationVersion:z.number().int().nonnegative()}).strict(),
  z.object({...common,action:z.literal("flag.set"),kind:z.enum(["missing","other"]),note}).strict(),
  z.object({...common,action:z.literal("flag.resolve")}).strict(),
+ z.object({...common,action:z.literal("note.set"),note:z.string().trim().max(2000)}).strict(),
  z.object({...common,action:z.literal("decision.set"),decision:z.enum(["declined","not_on_display","deferred"]),note}).strict()
 ]);
 export type FinalReviewInput=z.infer<typeof finalReviewInput>;
