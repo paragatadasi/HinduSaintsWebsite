@@ -72,3 +72,11 @@ An explicit review confirmation can supersede an older declined or deferred deci
 Marker-only edits use the indexed review counter and receipts without invalidating the heavy inventory cache. Receipts now separately record whether source/physical evidence remained unchanged. The snapshot-reuse optimization must exclude transactions that also confirmed this same source’s physical placement, even though those transactions have a final-review receipt. Other-source review moves can reuse this source’s pinned evidence. New successful review actions return their authoritative transaction result with a lightweight refreshed head; idempotent replays still reread the latest record.
 
 Verification covers initially unchecked existing moves, stale reviewers, retry receipts, review clearing without physical change, explicit proposal invalidation, shelf-note preservation, actual move/return invalidation, and an injected review-write failure that rolls back the physical confirmation in the same transaction. Use the disposable localhost PostgreSQL verifier; these checks do not authorize production backfills.
+
+### Preliminary resolution notes (10 November 2026)
+
+`note.set` accepts a trimmed note up to 2,000 characters; an empty string removes it. The nullable preliminaryNote belongs to the source-bound final-review state. It shares review-version conflict detection, request receipts, source locking and delta polling. It does not set a destination, alter a physical location, resolve a flag, change addressed status or confirm/invalidate an existing placement review. Identity/evidence rebinding clears an obsolete note; audit receipts retain its history.
+
+Note-only updates advance the lightweight final-review revision, not the heavy inventory revision. No new polling loop is added. The client skips proposal/catalog invalidation for note saves. The flagged and unaddressed queues remain disjoint, with saved-note status filters independent of placement progress. Notes are hypotheses for discussion, not completion evidence.
+
+Migration `20261110000000_review_preliminary_note` adds one nullable column without backfill. Apply in the release migration phase before the new application. The previous application can ignore the column on rollback.

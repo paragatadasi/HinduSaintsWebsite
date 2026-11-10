@@ -23,9 +23,9 @@ test("unaddressed renders flagged records separately and limits long lists",()=>
   assert.match(html,/All vitrines/);
   assert.match(html,/museum-companion__guide museum-review-panels/);
   assert.doesNotMatch(html,/Confirm cleared|Confirm space available/);
-  assert.ok(html.indexOf("Flagged records")<html.indexOf("Remaining unaddressed records"));
-  assert.equal((html.match(/museum-final-review__record/g)??[]).length,31);
-  assert.match(html,/Check staging/);assert.match(html,/Resolve flag/);assert.match(html,/Page 1 of 3/);
+  assert.match(html,/Flagged \(1\)/);assert.match(html,/Unaddressed \(79\)/);
+  assert.equal((html.match(/museum-final-review__record/g)??[]).length,1);
+  assert.match(html,/Check staging/);assert.match(html,/Resolve flag/);assert.doesNotMatch(html,/Test saint 1<|Page 1 of 3/);
 });
 
 test("already placed records remain unchecked until separately finally reviewed",()=>{
@@ -33,4 +33,11 @@ test("already placed records remain unchecked until separately finally reviewed"
  assert.doesNotMatch(render([placed]),/type="checkbox"[^>]*checked=""/);
  assert.match(render([{...placed,finallyReviewed:true}]),/type="checkbox"[^>]*checked=""/);
  assert.match(render([{...placed,finallyReviewed:true}]),/1 of 1 finally reviewed/);
+});
+
+test("saved hypotheses are visible without marking review complete",()=>{
+ const html=render([{...record,preliminaryNote:"Ask about the label"}]);
+ assert.match(html,/museum-final-review__record--noted/);
+ assert.match(html,/Ask about the label/);assert.match(html,/Edit preliminary note/);
+ assert.doesNotMatch(html,/type="checkbox"[^>]*checked=""/);
 });

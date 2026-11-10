@@ -1,5 +1,5 @@
 "use client";
-import {useEffect,useRef} from "react";
+import React,{useEffect,useRef} from "react";
 export function AdminViewTabs<T extends string>({label,value,onChange,options,disabled=false,scrollable=false}:{label:string;scrollable?:boolean;disabled?:boolean;value:T;onChange:(value:T)=>void;options:{value:T;label:string}[]}){
  const strip=useRef<HTMLElement>(null);
  useEffect(()=>{
