@@ -2,7 +2,9 @@
 import {useCallback,useEffect,useRef,useState} from "react";
 
 import {mergeShuffleStates,type ShuffleState} from "@/lib/museum-shuffle-client";
-type Pending={actionId:string;completed:boolean;expectedVersion:number;clientRequestId:string};
+export type ShufflePhysicalConfirmation={revision:string;confirmedDate:string};
+export type ShufflePhysicalPreview={revision:string;alreadyAtTarget?:boolean;records:{sourceId:string;name:string;bottomShelfRequired:boolean;from:{kind:string;code:string;label:string;shelf?:string|null}|null;to:{kind:string;code:string;label:string;shelf?:string|null}}[]};
+type Pending={actionId:string;completed:boolean;expectedVersion:number;clientRequestId:string;physicalConfirmation?:ShufflePhysicalConfirmation};
 const endpoint="/api/museum/shuffle-guide";
 export function useMuseumShuffle(){
  const [states,setStates]=useState<Record<string,ShuffleState>>({});
@@ -11,6 +13,7 @@ export function useMuseumShuffle(){
  const [pendingView,setPendingView]=useState<Record<string,Pending>>({});
  const [saving,setSaving]=useState<ReadonlySet<string>>(new Set());
  const [permitted,setPermitted]=useState(true);
+ const [physicalActionIds,setPhysicalActionIds]=useState<string[]>([]);
  const current=useRef(states),pending=useRef(new Map<string,Pending>()),writing=useRef(new Set<string>());
  const reading=useRef(false),mounted=useRef(true);
  const merge=useCallback((rows:ShuffleState[])=>{
@@ -26,7 +29,7 @@ export function useMuseumShuffle(){
    const response=await fetch(endpoint,{cache:"no-store",signal:AbortSignal.timeout(15000)});
    const result=await response.json();
    if(!response.ok||!Array.isArray(result.actions))throw Error(result.error||"Could not load the checklist.");
-   if(mounted.current){merge(result.actions);setLoaded(true);setPermitted(result.canEdit!==false);setError("");}
+   if(mounted.current){merge(result.actions);setLoaded(true);setPermitted(result.canEdit!==false);setPhysicalActionIds(result.physicalActionIds??[]);setError("");}
   }catch(cause){if(mounted.current)setError(cause instanceof Error?cause.message:"Could not refresh the checklist.");}
   finally{reading.current=false;}
  },[merge]);
@@ -37,9 +40,15 @@ export function useMuseumShuffle(){
   window.addEventListener("focus",refresh);document.addEventListener("visibilitychange",refresh);
   return()=>{mounted.current=false;window.clearInterval(timer);window.removeEventListener("focus",refresh);document.removeEventListener("visibilitychange",refresh);};
  },[reload]);
- async function save(actionId:string,completed:boolean){
+ async function preview(actionId:string):Promise<ShufflePhysicalPreview>{
+  const response=await fetch(endpoint+"?actionId="+encodeURIComponent(actionId),{cache:"no-store",signal:AbortSignal.timeout(15000)});
+  const result=await response.json();
+  if(!response.ok||!result.physical)throw Error(result.error||"Could not load the current locations.");
+  return result.physical;
+ }
+ async function save(actionId:string,completed:boolean,physicalConfirmation?:ShufflePhysicalConfirmation){
   if(writing.current.has(actionId))return;
-  const request=pending.current.get(actionId)??{actionId,completed,expectedVersion:current.current[actionId]?.version??0,clientRequestId:crypto.randomUUID()};
+  const request=pending.current.get(actionId)??{actionId,completed,expectedVersion:current.current[actionId]?.version??0,clientRequestId:crypto.randomUUID(),...(physicalConfirmation?{physicalConfirmation}:{})};
   pending.current.set(actionId,request);setPendingView(Object.fromEntries(pending.current));
   writing.current.add(actionId);setSaving(new Set(writing.current));setErrors(previous=>({...previous,[actionId]:""}));
   try{
@@ -51,12 +60,14 @@ export function useMuseumShuffle(){
    }
    if(!result.action||result.action.actionId!==actionId)throw Error("Save could not be verified. Retry to check.");
    pending.current.delete(actionId);if(mounted.current)merge([result.action]);
+   return true;
   }catch(cause){
    if(mounted.current)setErrors(previous=>({...previous,[actionId]:cause instanceof Error&&cause.name!=="TimeoutError"?cause.message:"Save not confirmed. Retry to check."}));
+   return false;
   }finally{
    writing.current.delete(actionId);
    if(mounted.current){setSaving(new Set(writing.current));setPendingView(Object.fromEntries(pending.current));}
   }
  }
- return {states,loaded,error,errors,saving,pending:pendingView,permitted,reload,save};
+ return {states,loaded,error,errors,saving,pending:pendingView,permitted,physicalActionIds,preview,reload,save};
 }

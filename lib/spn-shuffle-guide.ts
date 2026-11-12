@@ -1,5 +1,5 @@
 // IDs identify checklist actions, not inventory records. Preserve them across copy edits.
-export type ShuffleAction = {id:string;text:string;conditional:boolean};
+export type ShuffleAction = {id:string;text:string;conditional:boolean;note?:string};
 export type ShuffleGroup = {id:string;title:string;notes:string[];actions:ShuffleAction[]};
 export type ShuffleSection = {id:string;title:string;groups:ShuffleGroup[]};
 export const shuffleGuideId = "spn-final-shuffle";
@@ -183,7 +183,8 @@ export const shuffleSections:ShuffleSection[] = [
           },
           {
             "id": "move-together-kamesh-maharshi-prasad-raju-swamiji-unflagged-entry-and-premanandagiri-mataji-konaseem",
-            "text": "Move together: Kamesh Maharshi, Prasad Raju Swamiji (unflagged entry) and Premanandagiri Mataji (Konaseema group) · from 51",
+            "text": "Move together: Kamesh Maharshi, Prasad Raju Swamiji and Premanandagiri Mataji (Konaseema group) · from 51",
+            "note": "Verify which Prasad Raju holdings are present and whether both inventory entries refer to the metal murti.",
             "conditional": false
           },
           {

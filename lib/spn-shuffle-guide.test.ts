@@ -20,6 +20,6 @@ test("shuffle renders one checkbox per action, fit notes and conditional explana
  assert.match(html,/Check space for Rangacharya/);
  assert.match(html,/leave them in 51 and pause/);
  assert.match(html,/Conditional/);
- assert.match(html,/recorded relic locations stay unchanged/);
+ assert.match(html,/Confirming a move saves the relic locations/);
  assert.equal((html.match(/disabled=""/g)??[]).length,34,"Cannot write until shared state loads");
 });
