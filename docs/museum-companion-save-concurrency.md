@@ -80,3 +80,5 @@ Verification covers initially unchecked existing moves, stale reviewers, retry r
 Note-only updates advance the lightweight final-review revision, not the heavy inventory revision. No new polling loop is added. The client skips proposal/catalog invalidation for note saves. The flagged and unaddressed queues remain disjoint, with saved-note status filters independent of placement progress. Notes are hypotheses for discussion, not completion evidence.
 
 Migration `20261110000000_review_preliminary_note` adds one nullable column without backfill. Apply in the release migration phase before the new application. The previous application can ignore the column on rollback.
+
+Final review may confirm a placement while a flag remains open. Confirmation preserves the flag and note; resolving the flag later preserves the placement check. A newly added missing flag still invalidates an earlier review, requiring a fresh confirmation.

@@ -45,7 +45,7 @@ export function effectiveFinalReviewDecision(state:{decision:string;decisionAt:u
 
 export type ReviewBinding={flagKind?:string|null;flagStatus?:string|null;decision?:string;reviewedAt:Date|null;reviewedVitrine:string|null;reviewedPlanVersion:number|null;reviewedPhysicalVersion:number|null;reviewedComponentRevision:string|null;planVersion:number};
 export function isFinallyReviewed(row:CompanionRow,destination:string|null,state:ReviewBinding|null){
- if(!state?.reviewedAt||state.flagKind==="missing"&&state.flagStatus==="open"||state.decision&&state.decision!=="pending"||row.identityChanged||!destination||state.reviewedVitrine!==destination||state.reviewedPlanVersion!==state.planVersion)return false;
+ if(!state?.reviewedAt||state.decision&&state.decision!=="pending"||row.identityChanged||!destination||state.reviewedVitrine!==destination||state.reviewedPlanVersion!==state.planVersion)return false;
  const location=row.componentPlacement?.location??row.current;
  return (!!row.componentPlacement||row.currentBasis==="confirmed")&&location?.kind==="vitrine"&&location.code===destination&&state.reviewedPhysicalVersion===row.currentVersion&&state.reviewedComponentRevision===(row.componentPlacement?.revision??null);
 }
