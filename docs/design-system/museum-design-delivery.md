@@ -46,3 +46,4 @@ Read only the skills that address the task. Their examples do not override repos
 
 Example: keep the approved map-and-guide arrangement and replace sample rows with live records. Do not recreate the screen as a generic stack of cards and plan to restore the design after launch.
 
+Shuffle Guide uses the companion parchment theme, sequential sections and compact labelled checklist rows. Keep fit notes adjacent to actions. Conditional actions are visibly labelled and excluded from required progress. Shared checklist completion never writes inventory locations; stable action IDs survive copy edits.

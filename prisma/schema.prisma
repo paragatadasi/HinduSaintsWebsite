@@ -1974,3 +1974,15 @@ model MuseumFinalReviewReceipt {
   @@index([museumId, revision])
   @@index([museumId, inventoryRevisionBumped, transactionId])
 }
+
+model MuseumShuffleGuideActionRevision {
+  guideId         String
+  actionId        String
+  version         Int
+  completed       Boolean
+  clientRequestId String @unique
+  updatedById     String
+  createdAt       DateTime @default(now())
+
+  @@id([guideId, actionId, version])
+}

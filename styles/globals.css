@@ -12360,3 +12360,12 @@ select:not([multiple]) {
 .museum-final-review__record--noted {background:var(--color-surface-muted);border-inline-start:var(--border-width-default) solid var(--color-accent);padding-inline-start:var(--space-3)}
 .museum-review-preliminary-note {font-size:var(--font-size-companion-small);margin-block:var(--space-2)}
 .museum-review-preliminary-note p {white-space:pre-wrap;margin-block:var(--space-1)}
+
+.museum-shuffle {display:grid;gap:var(--space-5);max-width:var(--width-prose);margin-inline:auto}
+.museum-shuffle__section {scroll-margin-block-start:var(--space-6)}
+.museum-shuffle__group {margin-block-start:var(--space-5)}
+.museum-shuffle__actions {list-style:none;padding:0;margin:var(--space-2) 0}
+.museum-shuffle__actions>li {border-bottom:var(--border-width-default) solid var(--color-border)}
+.museum-shuffle__actions .room-move__check {align-items:flex-start;margin:0}
+.museum-shuffle__actions input {margin-top:var(--space-1)}
+.museum-shuffle__actions small {display:block}
