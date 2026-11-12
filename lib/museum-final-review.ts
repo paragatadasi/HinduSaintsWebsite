@@ -106,7 +106,6 @@ export async function saveFinalReview(raw:unknown,actorId:string):Promise<FinalR
    let reviewedPhysical=entry;
    let physicalChanged=false;
    if(input.action==="review.confirm"){
-    if(!rebound&&before?.flagKind==="missing"&&before.flagStatus==="open")throw new MuseumMoveSessionError(409,"This record is flagged as missing. Resolve the missing flag before confirming its placement review.");
     if(entry.destination!==input.vitrine||!catalog.vitrines.includes(input.vitrine))throw new MuseumMoveSessionError(409,"The final destination changed. Reload it before confirming the review.");
     if(effectiveFinalReviewDecision(rebound?null:before,priorDecision)==="not_on_display")throw new MuseumMoveSessionError(409,"This record is marked not on display. Update its destination before reviewing its placement.");
     const location=entry.componentPlacement?.location??entry.current;
