@@ -58,6 +58,16 @@ only in the running server process and are removed after the rate-limit window,
 with cleanup running once per minute. The in-memory limit resets if the server
 restarts.
 
+## Feedback retention
+
+The production web server checks for expired feedback at startup and hourly
+thereafter. A submission expires one calendar year after it was received (UTC),
+regardless of its review status. Cleanup deletes the full response and its
+linked inbox audit events in one transaction. Free-text messages, source links,
+and staff notes can all contain personal data. The cleanup applies to existing
+and new submissions. Restored databases are checked again when the server
+starts. Backup copies expire under the separate backup retention policy.
+
 The site privacy-policy link is configured through `SiteConfig` and currently
 defaults to <https://bhaktimarga.org/privacy>. The public renderer maps the
 former `/privacy-policy` default to the current policy URL for existing site
