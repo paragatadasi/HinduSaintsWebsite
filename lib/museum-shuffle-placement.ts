@@ -5,6 +5,7 @@ import { MuseumMoveSessionError } from "./museum-move-session-domain";
 import { readMuseumMoveSessionSource, registeredMoveProposal } from "./museum-move-session-source";
 import { physicalFingerprint } from "./museum-physical-location-current";
 import { confirmMuseumPhysicalLocations, readPhysicalLocationView, type PhysicalSnapshotLoader } from "./museum-physical-locations";
+import { shuffleGuideId } from "./spn-shuffle-guide";
 import { currentSpnProposalRelease } from "./spn-current-proposal";
 
 type Binding = {
@@ -36,13 +37,20 @@ async function preparePlacement(actionId: string, tx: Prisma.TransactionClient) 
     throw new MuseumMoveSessionError(409, "The receiving vitrine is unavailable.");
   }
   const view = await readPhysicalLocationView(loader, tx, sourceIds, false);
+  const alreadyAtTarget = view.rows.every(row => row.current?.kind === "vitrine" && row.current.code === binding.target);
+  const prior = alreadyAtTarget ? await tx.museumShuffleGuideActionRevision.findFirst({
+    where: { guideId: shuffleGuideId, actionId, physicalReceiptId: { not: null } },
+    orderBy: { version: "desc" }, select: { physicalReceiptId: true }
+  }) : null;
+  const priorReceiptId = prior?.physicalReceiptId ?? null;
   const records = binding.holdings.map(holding => {
-    const row = view.rows.find(record => record.sourceId === holding.sourceId)!;
+    const row = view.rows.find(record => record.sourceId === holding.sourceId);
+    if (!row?.current) throw new MuseumMoveSessionError(409, "A holding or its current location is unavailable. Reload the inventory.");
     if (row.identityChanged || row.duplicateOfSourceId) {
       throw new MuseumMoveSessionError(409, `${row.name} has an unresolved source identity. Review the holding before confirming this move.`);
     }
-    if (row.current?.kind !== "vitrine" || row.current.code !== binding.origin ||
-      (binding.originShelf && row.current.shelf?.toUpperCase() !== binding.originShelf.toUpperCase())) {
+    if (!priorReceiptId && (row.current.kind !== "vitrine" || row.current.code !== binding.origin ||
+      (binding.originShelf && row.current.shelf?.toUpperCase() !== binding.originShelf.toUpperCase()))) {
       throw new MuseumMoveSessionError(409, `${row.name} is no longer recorded at the guide’s starting location. Check the current inventory before saving.`);
     }
     return {
@@ -57,12 +65,12 @@ async function preparePlacement(actionId: string, tx: Prisma.TransactionClient) 
       expectedLocationVersion: row.currentVersion
     };
   });
-  return { records, loader, revision: physicalFingerprint({ actionId, records }) };
+  return { records, loader, priorReceiptId, revision: physicalFingerprint({ actionId, records, priorReceiptId }) };
 }
 
 export async function readShufflePlacement(actionId: string) {
-  const { records, revision } = await db.$transaction(tx => preparePlacement(actionId, tx), { isolationLevel: "RepeatableRead" });
-  return { revision, records: records.map(({ sourceId, name, from, to, bottomShelfRequired }) => ({ sourceId, name, from, to, bottomShelfRequired })) };
+  const { records, revision, priorReceiptId } = await db.$transaction(tx => preparePlacement(actionId, tx), { isolationLevel: "RepeatableRead" });
+  return { revision, alreadyAtTarget: Boolean(priorReceiptId), records: records.map(({ sourceId, name, from, to, bottomShelfRequired }) => ({ sourceId, name, from, to, bottomShelfRequired })) };
 }
 
 export async function saveShufflePlacement(tx: Prisma.TransactionClient, input: {
@@ -70,10 +78,11 @@ export async function saveShufflePlacement(tx: Prisma.TransactionClient, input: 
   clientRequestId: string;
   physicalConfirmation: { revision: string; confirmedDate: string };
 }, actorId: string) {
-  const { records, revision, loader } = await preparePlacement(input.actionId, tx);
+  const { records, revision, loader, priorReceiptId } = await preparePlacement(input.actionId, tx);
   if (revision !== input.physicalConfirmation.revision) {
     throw new MuseumMoveSessionError(409, "The source or location changed. Review the current move again.");
   }
+  if (priorReceiptId) return priorReceiptId;
   const result = await confirmMuseumPhysicalLocations({
     museumId,
     clientRequestId: input.clientRequestId,
