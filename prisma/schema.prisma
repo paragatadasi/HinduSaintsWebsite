@@ -1981,6 +1981,8 @@ model MuseumShuffleGuideActionRevision {
   version         Int
   completed       Boolean
   clientRequestId String @unique
+  physicalReceiptId String?
+  physicalRequestFingerprint String?
   updatedById     String
   createdAt       DateTime @default(now())
 
