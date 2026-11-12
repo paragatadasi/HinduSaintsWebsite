@@ -102,18 +102,17 @@ try{
  const shelfSix=await timed("six concurrent shared shelf saves",()=>Promise.all(forShelves.map(r=>saveCompanionWork({action:"shelf.update",museumId:"museum-spn",clientRequestId:randomUUID(),sourceId:r.sourceId,saintId:r.saintId,vitrine:"16",shelf:"C",expectedVersion:work.shelves.find(s=>s.sourceId===r.sourceId)?.version??0,expectedCurrentRevision:r.physical.currentRevision,expectedSourceRevision:r.sourceRevision,expectedLocationVersion:r.physical.currentVersion},actor,loader))));
  assert.equal(shelfSix.length,6);
  const reviewRequest=(r:Awaited<ReturnType<typeof get>>,action:"review.confirm"|"review.clear"="review.confirm")=>({...common(r),action,expectedCurrentRevision:r.physical.currentRevision,expectedLocationVersion:r.physical.currentVersion,...(action==="review.confirm"?{vitrine:r.effectiveDestination!.vitrine}:{})});
- for(const fixture of fixtures){
-  const r=await get(fixture.sourceId);
-  if(r.flag?.kind==="missing"&&r.flag.status==="open"){
-   await assert.rejects(()=>saveFinalReview(reviewRequest(r),actor.id),e=>e instanceof MuseumMoveSessionError&&e.status===409);
-   await saveFinalReview({...common(r),action:"flag.resolve"},actor.id);
-  }
- }
  const beforeReviews=await Promise.all(fixtures.map(row=>get(row.sourceId)));
  assert.ok(beforeReviews.every(r=>!r.finallyReviewed));
  const moveEventsBefore=await db.auditEvent.count({where:{action:"museum.physical_location.confirmed"}});
  const reviewedSix=await timed("six concurrent finally-reviewed confirmations without duplicate moves",()=>Promise.all(beforeReviews.map(r=>saveFinalReview(reviewRequest(r),actor.id))));
  assert.ok(reviewedSix.every(r=>r.record.finallyReviewed&&r.record.addressed));
+ const flaggedReview=reviewedSix.find(r=>r.record.flag?.kind==="missing"&&r.record.flag.status==="open")!.record;
+ assert.ok(flaggedReview,"A missing flag remains open after placement confirmation");
+ assert.equal((await get(flaggedReview.sourceId)).finallyReviewed,true);
+ const resolvedReview=await saveFinalReview({...common(flaggedReview),action:"flag.resolve"},actor.id);
+ assert.equal(resolvedReview.record.finallyReviewed,true,"Resolving the flag preserves the placement check");
+ assert.equal(resolvedReview.record.flag?.status,"resolved");
  assert.equal(await db.auditEvent.count({where:{action:"museum.physical_location.confirmed"}}),moveEventsBefore);
  const reviewedCatalog=await readCompanionCatalog();
  assert.ok(fixtures.every(f=>reviewedCatalog.entries.find(r=>r.sourceId===f.sourceId)?.finallyReviewed));
@@ -180,8 +179,8 @@ try{
  for(let i=0;i<noteRows.length;i++){
   const before=noteRows[i],after=noteSaves[i].record;
   assert.equal(after.preliminaryNote,"Discuss label with curator");
-  const {finallyReviewed: _beforeReview, ...beforePhysical}=before.physical;
-  const {finallyReviewed: _afterReview, ...afterPhysical}=after.physical;
+  const {finallyReviewed: _beforeReview, ...beforePhysical}=before.physical as typeof before.physical & {finallyReviewed?:boolean};
+  const {finallyReviewed: _afterReview, ...afterPhysical}=after.physical as typeof after.physical & {finallyReviewed?:boolean};
   assert.deepEqual(afterPhysical,beforePhysical);assert.deepEqual(after.flag,before.flag);
   assert.deepEqual(after.effectiveDestination,before.effectiveDestination);
   assert.equal(after.finallyReviewed,before.finallyReviewed);assert.equal(after.addressed,before.addressed);

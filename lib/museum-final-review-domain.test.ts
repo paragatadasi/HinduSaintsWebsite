@@ -29,6 +29,7 @@ test("final review starts unchecked and binds to vitrine, source plan and physic
  const binding={reviewedAt:new Date(),reviewedVitrine:"14",reviewedPlanVersion:2,planVersion:2,reviewedPhysicalVersion:1,reviewedComponentRevision:null};
  assert.equal(isFinallyReviewed(row,"14",null),false);
  assert.equal(isFinallyReviewed(row,"14",binding),true);
+ assert.equal(isFinallyReviewed(row,"14",{...binding,flagKind:"missing",flagStatus:"open"}),true);
  assert.equal(isFinallyReviewed({...row,identityChanged:true},"14",binding),false);
  assert.equal(isFinallyReviewed(row,"15",binding),false);
  assert.equal(isFinallyReviewed({...row,currentVersion:2},"14",binding),false);
